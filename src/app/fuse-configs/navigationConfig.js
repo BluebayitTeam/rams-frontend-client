@@ -7,6 +7,15 @@ i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
-const navigationConfig = [];
+const navigationConfig = [
+    // {
+    //     id: 'employees',
+    //     title: 'Full Width 2 Tabbed',
+    //     translate: 'Employees',
+    //     type: 'item',
+    //     url: '/apps/employee-management/employees',
+    //     exact: true
+    // },
+];
 
 export default navigationConfig;

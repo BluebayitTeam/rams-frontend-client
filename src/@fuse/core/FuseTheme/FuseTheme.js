@@ -28,7 +28,7 @@ function FuseTheme(props) {
 		fetch(`${USER_BY_ID}${userId}`).then(res => res.json()).then(user => {
 			console.log("userRes", user)
 			dispatch(setUser({ id: user.id, email: user.email, displayName: user.username, role: user.role, photoURL: user.image }))
-		})
+		}).catch(() => { })
 	}, [])
 
 
