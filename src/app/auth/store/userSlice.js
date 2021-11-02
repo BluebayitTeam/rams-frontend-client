@@ -82,7 +82,9 @@ export const setUserData = user => async (dispatch, getState) => {
 	/*
 	Set User Settings
 	 */
-	dispatch(setDefaultSettings(user.data.settings));
+	if (user?.data?.settings) {
+		dispatch(setDefaultSettings(user.data.settings));
+	}
 
 	dispatch(setUser(user));
 };
