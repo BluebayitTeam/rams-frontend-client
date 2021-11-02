@@ -7,3 +7,6 @@ export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
 //menu item
 export const MENU_ITEM = `${BASE_URL}/menu_item/api/v1/menu_item/menu_items_by_user_role/`
 
+//user
+export const USER_BY_ID = `${BASE_URL}/user/api/v1/user/`
+

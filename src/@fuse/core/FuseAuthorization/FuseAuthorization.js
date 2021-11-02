@@ -48,9 +48,9 @@ class FuseAuthorization extends Component {
 		const redirectUrl = state && state.redirectUrl ? state.redirectUrl : '/';
 
 		/*
-        User is guest
-        Redirect to Login Page
-        */
+		User is guest
+		Redirect to Login Page
+		*/
 		if (!userRole || userRole.length === 0) {
 			history.push({
 				pathname: '/login',
@@ -58,10 +58,10 @@ class FuseAuthorization extends Component {
 			});
 		} else {
 			/*
-        User is member
-        User must be on unAuthorized page or just logged in
-        Redirect to dashboard or redirectUrl
-        */
+		User is member
+		User must be on unAuthorized page or just logged in
+		Redirect to dashboard or redirectUrl
+		*/
 			history.push({
 				pathname: redirectUrl
 			});

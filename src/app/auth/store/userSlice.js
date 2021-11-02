@@ -2,12 +2,11 @@
 import history from '@history';
 import _ from '@lodash';
 import { createSlice } from '@reduxjs/toolkit';
-import { userRole } from 'app/@data/@userData';
 import auth0Service from 'app/services/auth0Service';
 import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
 import { showMessage } from 'app/store/fuse/messageSlice';
-import { setInitialSettings } from 'app/store/fuse/settingsSlice';
+import { setDefaultSettings, setInitialSettings } from 'app/store/fuse/settingsSlice';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -83,7 +82,7 @@ export const setUserData = user => async (dispatch, getState) => {
 	/*
 	Set User Settings
 	 */
-	// dispatch(setDefaultSettings(user.data.settings));
+	dispatch(setDefaultSettings(user.data.settings));
 
 	dispatch(setUser(user));
 };
@@ -107,15 +106,16 @@ export const updateUserShortcuts = shortcuts => async (dispatch, getState) => {
 		}
 	};
 
+
 	dispatch(updateUserData(user));
 
 	return dispatch(setUserData(newUser));
 };
 
-export const logoutUser = (userRole) => async (dispatch, getState) => {
+export const logoutUser = () => async (dispatch, getState) => {
 	const { user } = getState().auth;
 
-	if (!userRole || userRole?.length === 0) {
+	if (!user.role || user.role.length === 0) {
 		// is guest
 		return null;
 	}
@@ -144,7 +144,7 @@ export const logoutUser = (userRole) => async (dispatch, getState) => {
 };
 
 export const updateUserData = user => async (dispatch, getState) => {
-	if (!userRole || userRole?.length === 0) {
+	if (!user.role || user.role?.length === 0) {
 		// is guest
 		return;
 	}

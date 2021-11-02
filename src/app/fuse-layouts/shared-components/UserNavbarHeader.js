@@ -2,7 +2,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import useUserInfo from 'app/@customHook/@useUserInfo';
+import { BASE_URL } from 'app/constant/constants';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 
@@ -33,8 +33,6 @@ const useStyles = makeStyles(theme => ({
 function UserNavbarHeader(props) {
 	const user = useSelector(({ auth }) => auth.user);
 
-	const { displayName, userEmail, userImage } = useUserInfo()
-
 	const classes = useStyles();
 
 	return (
@@ -45,18 +43,18 @@ function UserNavbarHeader(props) {
 			className="user relative flex flex-col items-center justify-center pt-24 pb-64 mb-32 z-0 shadow-0"
 		>
 			<Typography className="username text-18 whitespace-nowrap font-semibold mb-4" color="inherit">
-				{displayName}
+				{user?.displayName}
 			</Typography>
 			<Typography className="email text-13 opacity-50 whitespace-nowrap font-medium" color="inherit">
-				{userEmail}
+				{user?.email}
 			</Typography>
 			<div className="flex items-center justify-center absolute bottom-0 -mb-44">
 				<Avatar
 					className={clsx(classes.avatar, 'avatar w-72 h-72 p-8 box-content')}
 					alt="user photo"
 					src={
-						userImage && userImage !== ''
-							? userImage
+						user?.photoURL && user?.photoURL !== ''
+							? `${BASE_URL}${user?.photoURL}`
 							: 'assets/images/avatars/profile.jpg'
 					}
 				/>
@@ -66,3 +64,4 @@ function UserNavbarHeader(props) {
 }
 
 export default UserNavbarHeader;
+

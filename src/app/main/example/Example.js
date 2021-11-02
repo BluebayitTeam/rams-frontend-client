@@ -1,9 +1,6 @@
 import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
-import { setMenuItem } from 'app/store/fuse/navigationSlice';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles({
 	layoutRoot: {}
@@ -12,11 +9,11 @@ const useStyles = makeStyles({
 function SimpleFullWidthSample() {
 	const classes = useStyles();
 
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(setMenuItem())
-	}, [])
+	// useEffect(() => {
+	// 	dispatch(setMenuItem())
+	// }, [])
 
 
 

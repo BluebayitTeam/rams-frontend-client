@@ -1,5 +1,5 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
-import { BASE_URL, LOGIN_URL } from "app/constant/constants";
+import { LOGIN_URL } from "app/constant/constants";
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 /* eslint-disable camelcase */
@@ -66,7 +66,10 @@ class JwtService extends FuseUtils.EventEmitter {
 				.post(`${LOGIN_URL}`, { email, password })
 				.then(response => {
 					// if (response) {
-					this.setSession(`Bearer ${response.data.access}`);
+					// this.setSession();
+
+					localStorage.setItem('jwt_token', `Bearer ${response.data.access}`);
+					axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
 
 					const user = {
 						email: response.data.email,
@@ -78,10 +81,10 @@ class JwtService extends FuseUtils.EventEmitter {
 
 					// localStorage.setItem("jwt_token", response.data.access)
 					localStorage.setItem("user_id", response.data.id)
-					localStorage.setItem("user_email", response.data.email)
-					localStorage.setItem("user_name", response.data.username)
-					localStorage.setItem("user_role", response.data.role)
-					localStorage.setItem("user_image", `${BASE_URL}${response.data.image}`)
+					// localStorage.setItem("user_email", response.data.email)
+					// localStorage.setItem("user_name", response.data.username)
+					// localStorage.setItem("user_role", response.data.role)
+					// localStorage.setItem("user_image", `${BASE_URL}${response.data.image}`)
 
 					resolve(user);
 
@@ -132,11 +135,11 @@ class JwtService extends FuseUtils.EventEmitter {
 			localStorage.removeItem('jwt_token');
 			delete axios.defaults.headers.common.Authorization;
 
-			localStorage.removeItem("user_id")
-			localStorage.removeItem("user_email")
-			localStorage.removeItem("user_name")
-			localStorage.removeItem("user_role")
-			localStorage.removeItem("user_image")
+			// localStorage.removeItem("user_id")
+			// localStorage.removeItem("user_email")
+			// localStorage.removeItem("user_name")
+			// localStorage.removeItem("user_role")
+			// localStorage.removeItem("user_image")
 		}
 	};
 

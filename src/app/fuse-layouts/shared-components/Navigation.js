@@ -1,9 +1,9 @@
 import FuseNavigation from '@fuse/core/FuseNavigation';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { selectNavigation, setMenuItem } from 'app/store/fuse/navigationSlice';
+import { selectNavigation } from 'app/store/fuse/navigationSlice';
 import clsx from 'clsx';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { navbarCloseMobile } from '../../store/fuse/navbarSlice';
 
@@ -17,10 +17,6 @@ function Navigation(props) {
 	function handleItemClick(item) {
 		mdDown && dispatch(navbarCloseMobile());
 	}
-
-	useEffect(() => {
-		dispatch(setMenuItem())
-	}, [])
 
 	return (
 		<FuseNavigation

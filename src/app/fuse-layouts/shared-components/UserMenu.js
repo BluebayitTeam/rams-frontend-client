@@ -6,8 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-import useUserInfo from 'app/@customHook/@useUserInfo';
 import { logoutUser } from 'app/auth/store/userSlice';
+import { BASE_URL } from 'app/constant/constants';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -15,8 +15,6 @@ import { Link } from 'react-router-dom';
 function UserMenu(props) {
 	const dispatch = useDispatch();
 	const user = useSelector(({ auth }) => auth.user);
-
-	const { displayName, userImage, userRole } = useUserInfo()
 
 	const [userMenu, setUserMenu] = useState(null);
 
@@ -33,18 +31,18 @@ function UserMenu(props) {
 			<Button className="min-h-40 min-w-40 px-0 md:px-16 py-0 md:py-6" onClick={userMenuClick}>
 				<div className="hidden md:flex flex-col mx-4 items-end">
 					<Typography component="span" className="font-semibold flex">
-						{displayName || ""}
+						{user?.displayName}
 					</Typography>
 					<Typography className="text-11 font-medium capitalize" color="textSecondary">
-						{userRole || "Guest"}
-						{/* {(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'} */}
+						{user?.role.toString()}
+						{(!user?.role || (Array.isArray(user?.role) && user?.role.length === 0)) && 'Guest'}
 					</Typography>
 				</div>
 
-				{userImage ? (
-					<Avatar className="md:mx-4" alt="user photo" src={userImage} />
+				{user?.photoURL ? (
+					<Avatar className="md:mx-4" alt="user photo" src={`${BASE_URL}${user?.photoURL}`} />
 				) : (
-					<Avatar className="md:mx-4">{displayName || ""}</Avatar>
+					<Avatar className="md:mx-4">{user?.displayName}</Avatar>
 				)}
 			</Button>
 
@@ -64,7 +62,7 @@ function UserMenu(props) {
 					paper: 'py-8'
 				}}
 			>
-				{!userRole || userRole?.length === 0 ? (
+				{!user?.role || user?.role.length === 0 ? (
 					<>
 						<MenuItem component={Link} to="/login" role="button">
 							<ListItemIcon className="min-w-40">
@@ -95,7 +93,12 @@ function UserMenu(props) {
 						</MenuItem>
 						<MenuItem
 							onClick={() => {
-								dispatch(logoutUser(userRole));
+								localStorage.removeItem("user_id")
+								// localStorage.removeItem("user_email")
+								// localStorage.removeItem("user_name")
+								// localStorage.removeItem("user_role")
+								// localStorage.removeItem("user_image")
+								dispatch(logoutUser());
 								userMenuClose();
 							}}
 						>
