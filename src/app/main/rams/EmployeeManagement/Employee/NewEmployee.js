@@ -1,6 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Tab, Tabs } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import withReducer from 'app/store/withReducer';
@@ -68,6 +69,7 @@ const NewEmployee = () => {
     const dispatch = useDispatch();
     const employee = useSelector(({ employeesManagement }) => employeesManagement.employee);
     const routeParams = useParams();
+    const [tabValue, setTabValue] = useState(0);
     //console.log(routeParams);
     const [noEmployee, setNoEmployee] = useState(false);
     const methods = useForm({
@@ -132,6 +134,15 @@ const NewEmployee = () => {
         };
     }, [dispatch]);
 
+
+
+    function handleTabChange(event, value) {
+        //console.log(value);
+        //console.log(value);
+        setTabValue(value);
+    }
+
+
     /**
      * Show Message if the requested products is not exists
      */
@@ -171,6 +182,24 @@ const NewEmployee = () => {
                     root: {},
                     toolbar: 'p-0'
                 }}
+
+                contentToolbar={
+                    <Tabs
+                        value={tabValue}
+                        onChange={handleTabChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        classes={{ root: 'w-full h-64' }}
+                    >
+                        <Tab className="h-64" label="Basic Info" />
+                    </Tabs>
+                }
+
+
+
+
                 header={<NewEmployeeHeader />}
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">

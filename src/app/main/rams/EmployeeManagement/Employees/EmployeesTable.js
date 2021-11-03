@@ -42,8 +42,8 @@ const EmployeesTable = (props) => {
     const [data, setData] = useState(employees);
     //console.log('Data', data);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 5 });
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 10 });
 
     const totalPages = sessionStorage.getItem('total_employees_pages');
     const totalElements = sessionStorage.getItem('total_employees_elements');
@@ -214,87 +214,85 @@ const EmployeesTable = (props) => {
                                 }
                             ],
                             [order.direction]
-                        )
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map(n => {
-                                const isSelected = selected.indexOf(n.id) !== -1;
-                                return (
-                                    <TableRow
-                                        //className="h-72 cursor-pointer"
-                                        hover
-                                        role="checkbox"
-                                        aria-checked={isSelected}
-                                        tabIndex={-1}
-                                        key={n.id}
-                                        selected={isSelected}
+                        ).map(n => {
+                            const isSelected = selected.indexOf(n.id) !== -1;
+                            return (
+                                <TableRow
+                                    //className="h-72 cursor-pointer"
+                                    hover
+                                    role="checkbox"
+                                    aria-checked={isSelected}
+                                    tabIndex={-1}
+                                    key={n.id}
+                                    selected={isSelected}
 
+                                >
+                                    <TableCell className="w-40 md:w-64 text-center" padding="none">
+                                        <Checkbox
+                                            checked={isSelected}
+                                            onClick={event => event.stopPropagation()}
+                                            onChange={event => handleCheck(event, n.id)}
+                                        />
+                                    </TableCell>
+
+                                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                        {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
+                                    </TableCell>
+
+                                    <TableCell
+                                        className="w-52 px-4 md:px-0"
+                                        component="th"
+                                        scope="row"
+                                        padding="none"
                                     >
-                                        <TableCell className="w-40 md:w-64 text-center" padding="none">
-                                            <Checkbox
-                                                checked={isSelected}
-                                                onClick={event => event.stopPropagation()}
-                                                onChange={event => handleCheck(event, n.id)}
+                                        {n.image && n.featuredImageId ? (
+                                            <img
+                                                className="w-full block rounded"
+                                                src={_.find(n.image, { id: n.featuredImageId }).url}
+                                                alt={n.name}
                                             />
-                                        </TableCell>
+                                        ) : (
+                                            <img
+                                                className="w-full block rounded"
+                                                style={{ borderRadius: '50%' }}
+                                                src={`${BASE_URL}${n.image}`}
+                                                alt={n.first_name}
+                                            />
+                                        )}
+                                    </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
-                                        </TableCell>
+                                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                        {n.branch}
+                                    </TableCell>
 
-                                        <TableCell
-                                            className="w-52 px-4 md:px-0"
-                                            component="th"
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            {n.image && n.featuredImageId ? (
-                                                <img
-                                                    className="w-full block rounded"
-                                                    src={_.find(n.image, { id: n.featuredImageId }).url}
-                                                    alt={n.name}
-                                                />
-                                            ) : (
-                                                <img
-                                                    className="w-full block rounded"
-                                                    style={{ borderRadius: '50%' }}
-                                                    src={`${BASE_URL}${n.image}`}
-                                                    alt={n.first_name}
-                                                />
-                                            )}
-                                        </TableCell>
+                                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                        {n.emp_id_no}
+                                    </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.branch}
-                                        </TableCell>
+                                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                        {n.username}
+                                    </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.emp_id_no}
-                                        </TableCell>
+                                    <TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
+                                        {n.primary_phone}
+                                    </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.username}
-                                        </TableCell>
+                                    <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                        <div>
+                                            <EditIcon
+                                                onClick={event => handleUpdateEmployee(n, "updateEmployee")} className="h-72 cursor-pointer"
+                                                style={{ color: 'green' }}
+                                            />
+                                            <DeleteIcon
+                                                onClick={event => handleDeleteEmployee(n, "deleteEmployee")} className="h-72 cursor-pointer"
+                                                style={{ color: 'red' }}
+                                            />
+                                        </div>
+                                    </TableCell>
 
-                                        <TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-                                            {n.primary_phone}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            <div>
-                                                <EditIcon
-                                                    onClick={event => handleUpdateEmployee(n, "updateEmployee")} className="h-72 cursor-pointer"
-                                                    style={{ color: 'green' }}
-                                                />
-                                                <DeleteIcon
-                                                    onClick={event => handleDeleteEmployee(n, "deleteEmployee")} className="h-72 cursor-pointer"
-                                                    style={{ color: 'red' }}
-                                                />
-                                            </div>
-                                        </TableCell>
-
-                                    </TableRow>
-                                );
-                            })}
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </FuseScrollbars>
