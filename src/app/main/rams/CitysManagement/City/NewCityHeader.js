@@ -62,7 +62,7 @@ const NewCityHeader = () => {
                         color="inherit"
                     >
                         <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-                        <span className="hidden sm:flex mx-4 font-medium">cities</span>
+                        <span className="hidden sm:flex mx-4 font-medium">Districts</span>
                     </Typography>
                 </motion.div>
 
@@ -75,10 +75,10 @@ const NewCityHeader = () => {
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                {name || 'Create New City'}
+                                {name || 'Create New District'}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                cities Detail
+                                Districts Detail
                             </Typography>
                         </motion.div>
                     </div>
@@ -95,7 +95,7 @@ const NewCityHeader = () => {
                         className='mt-6'
                         variant="subtitle2"
                     >
-                        Do you want to remove this City?
+                        Do you want to remove this District?
                     </Typography>
                 }
                 {handleDelete === 'Delete' && routeParams.cityId !== "new" && <Button

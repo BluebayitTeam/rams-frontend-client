@@ -57,8 +57,8 @@ const navigationConfig = [
             //cities
             {
                 id: 'cities',
-                title: 'District',
-                translate: 'District',
+                title: 'Districts',
+                translate: 'Districts',
                 type: 'item',
                 url: '/apps/city-management/cities',
                 exact: true
@@ -66,8 +66,8 @@ const navigationConfig = [
             //thanas
             {
                 id: 'thanas',
-                title: 'Police Station',
-                translate: 'Police Station',
+                title: 'Police Stations',
+                translate: 'Police Stations',
                 type: 'item',
                 url: '/apps/thana-management/thanas',
                 exact: true

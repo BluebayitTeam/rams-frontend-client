@@ -59,7 +59,7 @@ const NewThanaHeader = () => {
                         color="inherit"
                     >
                         <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-                        <span className="hidden sm:flex mx-4 font-medium">Thanas</span>
+                        <span className="hidden sm:flex mx-4 font-medium">Police Stations</span>
                     </Typography>
                 </motion.div>
 
@@ -73,10 +73,10 @@ const NewThanaHeader = () => {
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                {name || 'Create New Thana'}
+                                {name || 'Create New Police Station'}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                Thanas Detail
+                                Police Stations Detail
                             </Typography>
                         </motion.div>
                     </div>
@@ -93,7 +93,7 @@ const NewThanaHeader = () => {
                         className='mt-6'
                         variant="subtitle2"
                     >
-                        Do you want to remove this Thana?
+                        Do you want to remove this Police Station?
                     </Typography>
                 }
                 {handleDelete === 'Delete' && routeParams.thanaId !== "new" && <Button

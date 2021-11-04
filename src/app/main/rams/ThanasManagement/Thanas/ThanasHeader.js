@@ -84,7 +84,7 @@ const ThanasHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Thanas
+					Police Stations
 				</Typography>
 			</div>
 
@@ -120,7 +120,7 @@ const ThanasHeader = () => {
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Thana</span>
+					<span className="hidden sm:flex">Add New Police Station</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
