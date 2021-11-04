@@ -54,7 +54,7 @@ const ThanasTable = props => {
 	const totalElements = sessionStorage.getItem('thanas_total_elements');
 	const classes = useStyles();
 
-	const citys = useSelector(state => state.data.citys);
+	const citys = useSelector(state => state.data.cities);
 
 	useEffect(() => {
 		dispatch(getThanas(parameter)).then(() => setLoading(false));

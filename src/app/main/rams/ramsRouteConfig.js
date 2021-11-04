@@ -116,6 +116,20 @@ const ramsRouteConfig = {
             path: '/apps/permission-management/:permissionId',
             component: lazy(() => import('./PermissionsManagement/Permission/NewPermission'))
         },
+
+        //roles
+        {
+            path: '/apps/roles-management/roles',
+            component: lazy(() => import('./RoleManagement/Roles/Roles'))
+        },
+        {
+            path: '/apps/roles-management/:roleId',
+            component: lazy(() => import('./RoleManagement/Role/NewRole'))
+        },
+        {
+            path: '/apps/roles-management/:roleId/:roleName?',
+            component: lazy(() => import('./RoleManagement/Role/NewRole'))
+        },
     ]
 }
 

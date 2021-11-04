@@ -115,6 +115,14 @@ const navigationConfig = [
                 url: '/apps/permission-management/permissions',
                 exact: true
             },
+            //roles
+            {
+                id: 'roles',
+                title: 'roles',
+                translate: 'Roles',
+                type: 'item',
+                url: '/apps/roles-management/roles'
+            },
         ]
     }
 ];

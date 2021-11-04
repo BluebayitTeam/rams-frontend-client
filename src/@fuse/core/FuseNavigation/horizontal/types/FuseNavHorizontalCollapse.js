@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { memo, useState, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { Manager, Popper, Reference } from 'react-popper';
 import { withRouter } from 'react-router-dom';

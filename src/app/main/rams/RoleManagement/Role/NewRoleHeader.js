@@ -1,4 +1,3 @@
-import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
@@ -8,63 +7,51 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { BASE_URL } from '../../../../constant/constants';
-import { removeEmployee, saveEmployee, updateEmployee } from '../store/employeeSlice';
+import { removeRole, saveRole, updateRole } from '../store/roleSlice';
 
-
-const NewEmployeeHeader = () => {
+const NewRoleHeader = () => {
     const dispatch = useDispatch();
     const methods = useFormContext();
-    const { formState, watch, getValues } = methods;
-    const { isValid, dirtyFields } = formState;
-    const image = watch('image');
-    //console.log(image);
-    const featuredImageId = watch('featuredImageId');
-    const name = watch('first_name');
+    const { getValues, watch } = methods;
+    const name = watch('name');
     //console.log(name);
     const theme = useTheme();
     const history = useHistory();
+
     const routeParams = useParams();
-    const { employeeId } = routeParams;
 
-    const handleDelete = localStorage.getItem('deleteEmployee');
-    const handleUpdate = localStorage.getItem('updateEmployee');
+    const handleDelete = localStorage.getItem('deleteRole');
+    const handleUpdate = localStorage.getItem('updateRole');
 
-
-    function handleSaveEmployee() {
+    function handleSaveRole() {
         console.log(getValues());
-        const data = getValues();
-        data.primary_phone = data.country_code1 + data.primary_phone;
-        if (data.country_code2 && data.secondary_phone)
-            data.secondary_phone = data.country_code2 + data.secondary_phone;
-        console.log(data.primary_phone);
-        dispatch(saveEmployee(data));
+        dispatch(saveRole(getValues())).then(() => {
+            history.push('/apps/roles-management/roles');
+        });
     }
 
-    function handleUpdateEmployee() {
-        console.log(getValues());
-
-        dispatch(updateEmployee(getValues())).then(() => {
-            history.push('/apps/employee-management/employees');
+    function handleUpdateRole() {
+        //console.log(getValues());
+        dispatch(updateRole(getValues())).then(() => {
+            history.push('/apps/roles-management/roles');
         });
 
     }
 
-    function handleRemoveEmployee() {
-        dispatch(removeEmployee(getValues())).then(() => {
-            history.push('/apps/employee-management/employees');
+    function handleRemoveRole() {
+        console.log(getValues());
+        dispatch(removeRole(getValues())).then(() => {
+            history.push('/apps/roles-management/roles');
         });
     }
 
     function handleCancel() {
-        history.push('/apps/employee-management/employees')
+        history.push('/apps/roles-management/roles')
     }
 
     // if (loading) {
     //     return <FuseLoading />;
     // }
-
-
 
     return (
         <div className="flex flex-1 w-full items-center justify-between">
@@ -74,11 +61,11 @@ const NewEmployeeHeader = () => {
                         className="flex items-center sm:mb-12"
                         component={Link}
                         role="button"
-                        to="/apps/employee-management/employees"
+                        to="/apps/roles-management/roles"
                         color="inherit"
                     >
                         <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-                        <span className="hidden sm:flex mx-4 font-medium">Employees</span>
+                        <span className="hidden sm:flex mx-4 font-medium">Roles</span>
                     </Typography>
                 </motion.div>
 
@@ -88,27 +75,14 @@ const NewEmployeeHeader = () => {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1, transition: { delay: 0.3 } }}
                     >
-                        {image && featuredImageId ? (
-                            <img
-                                className="w-32 sm:w-48 rounded"
-                                src={_.find(image, { id: featuredImageId }).url}
-                                alt={name}
-                            />
-                        ) : (
-                            <img
-                                className="w-32 sm:w-48 rounded"
-                                src={`${BASE_URL}${image}`}
-                                alt={name}
-                            />
-                        )}
                     </motion.div>
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                {name || 'Create New Employee'}
+                                {name || 'Create New Role'}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                Employees Detail
+                                Roles Detail
                             </Typography>
                         </motion.div>
                     </div>
@@ -120,40 +94,40 @@ const NewEmployeeHeader = () => {
                 animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
             >
                 {
-                    handleDelete === 'deleteEmployee' &&
+                    handleDelete === 'deleteRole' &&
                     <Typography
                         className='mt-6'
                         variant="subtitle2"
                     >
-                        Do you want to remove this employee?
+                        Do you want to remove this Roles?
                     </Typography>
                 }
-                {handleDelete === 'deleteEmployee' && <Button
+                {handleDelete === 'deleteRole' && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    onClick={handleRemoveEmployee}
+                    onClick={handleRemoveRole}
                     startIcon={<Icon className="hidden sm:flex">delete</Icon>}
                     style={{ backgroundColor: '#ea5b78', color: 'white' }}
                 >
                     Remove
                 </Button>}
-                {handleDelete !== 'deleteEmployee' && employeeId === "new" && <Button
+                {handleDelete !== 'deleteRole' && routeParams.roleId === "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    disabled={_.isEmpty(dirtyFields) || !isValid}
-                    onClick={handleSaveEmployee}
+                    // disabled={_.isEmpty(dirtyFields) || !isValid}
+                    onClick={handleSaveRole}
                 >
                     Save
                 </Button>}
-                {handleDelete !== 'deleteEmployee' && handleUpdate === 'updateEmployee' && <Button
+                {handleDelete !== 'deleteRole' && handleUpdate === 'updateRole' && <Button
                     className="whitespace-nowrap mx-4"
                     color="secondary"
                     variant="contained"
                     //disabled={_.isEmpty(dirtyFields) || !isValid}
                     style={{ backgroundColor: "#4dc08e", color: 'white' }}
-                    onClick={handleUpdateEmployee}
+                    onClick={handleUpdateRole}
                 >
                     Update
                 </Button>}
@@ -170,4 +144,4 @@ const NewEmployeeHeader = () => {
     );
 };
 
-export default NewEmployeeHeader;
+export default NewRoleHeader;
