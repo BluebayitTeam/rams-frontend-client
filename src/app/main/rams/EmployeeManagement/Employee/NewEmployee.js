@@ -77,8 +77,7 @@ const NewEmployee = () => {
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const { reset, watch, control, onChange, formState } = methods;
-    const form = watch();
+    const { reset, watch } = methods;
 
     useDeepCompareEffect(() => {
         function updateEmployeeState() {

@@ -5,14 +5,6 @@ const ramsRouteConfig = {
         layout: {}
     },
     routes: [
-        // {
-        //     path: '/apps/users-management/users',
-        //     component: lazy(() => import('./UserManagement/Users/Users.js'))
-        // },
-        // {
-        //     path: '/apps/users-management/user/:userId',
-        //     component: lazy(() => import('./UserManagement/NewUser/NewUser.js'))
-        // },
         //employee
         {
             path: '/apps/employee-management/employees',
@@ -25,6 +17,20 @@ const ramsRouteConfig = {
         {
             path: '/apps/employee-management/:employeeId/:employeeName?',
             component: lazy(() => import('./EmployeeManagement/Employee/NewEmployee'))
+        },
+
+        //department
+        {
+            path: '/apps/department-management/departments/:departmentId/:departmentName?',
+            component: lazy(() => import('./DepartmentsManagement/Department/NewDepartment'))
+        },
+        {
+            path: '/apps/department-management/departments',
+            component: lazy(() => import('./DepartmentsManagement/Departments/Departments'))
+        },
+        {
+            path: '/apps/department-management/:departmentId',
+            component: lazy(() => import('./DepartmentsManagement/Department/NewDepartment'))
         },
     ]
 }

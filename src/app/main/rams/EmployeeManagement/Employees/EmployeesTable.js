@@ -1,6 +1,7 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
+import { Typography } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -11,21 +12,19 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Pagination from '@material-ui/lab/Pagination';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { BASE_URL, SEARCH_EMPLOYEE } from '../../../../constant/constants';
 import { getEmployees, selectEmployees } from '../store/employeesSlice';
+import EmployeesTableHead from './EmployeesTableHead';
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: "flex",
         justifyContent: "space-between",
-        flexWrap: "wrap",
-        '& > *': {
-            marginTop: theme.spacing(2),
-            marginBottom: theme.spacing(3),
-        }
+        flexWrap: "nowrap",
     }
 }))
 
@@ -38,12 +37,9 @@ const EmployeesTable = (props) => {
     const [searchEmployee, setSearchEmployee] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
-    //console.log(selected);
-    const [data, setData] = useState(employees);
-    //console.log('Data', data);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 10 });
+    const [rowsPerPage, setRowsPerPage] = useState(30);
+    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 
     const totalPages = sessionStorage.getItem('total_employees_pages');
     const totalElements = sessionStorage.getItem('total_employees_elements');
@@ -53,7 +49,6 @@ const EmployeesTable = (props) => {
         id: null
     });
     let serialNumber = 1;
-    const [deleteItem, setDeleteItem] = useState('');
     useEffect(() => {
         dispatch(getEmployees(pageAndSize)).then(() => setLoading(false));
     }, [dispatch]);
@@ -170,26 +165,26 @@ const EmployeesTable = (props) => {
     if (loading) {
         return <FuseLoading />;
     }
-    //console.log("token", localStorage.getItem('jwt_token'));
-    // if (data.length === 0) {
-    // 	return (
-    // 		<motion.div
-    // 			initial={{ opacity: 0 }}
-    // 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
-    // 			className="flex flex-1 items-center justify-center h-full"
-    // 		>
-    // 			<Typography color="textSecondary" variant="h5">
-    // 				There are no products!
-    // 			</Typography>
-    // 		</motion.div>
-    // 	);
-    // }
+    //console.log("token", localStorage.getItem('jwt_access_token'));
+    if (employees.length === 0) {
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { delay: 0.1 } }}
+                className="flex flex-1 items-center justify-center h-full"
+            >
+                <Typography color="textSecondary" variant="h5">
+                    There are no employee!
+                </Typography>
+            </motion.div>
+        );
+    }
 
     return (
         <div className="w-full flex flex-col">
             <FuseScrollbars className="flex-grow overflow-x-auto">
                 <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <employeesTableHead
+                    <EmployeesTableHead
                         selectedProductIds={selected}
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
@@ -218,7 +213,7 @@ const EmployeesTable = (props) => {
                             const isSelected = selected.indexOf(n.id) !== -1;
                             return (
                                 <TableRow
-                                    //className="h-72 cursor-pointer"
+                                    className="h-72 cursor-pointer"
                                     hover
                                     role="checkbox"
                                     aria-checked={isSelected}
@@ -240,21 +235,21 @@ const EmployeesTable = (props) => {
                                     </TableCell>
 
                                     <TableCell
-                                        className="w-52 px-4 md:px-0"
+                                        className="w-52 px-4 md:px-0 h-72"
                                         component="th"
                                         scope="row"
                                         padding="none"
                                     >
                                         {n.image && n.featuredImageId ? (
                                             <img
-                                                className="w-full block rounded"
+                                                className="h-full block rounded p-8"
                                                 src={_.find(n.image, { id: n.featuredImageId }).url}
                                                 alt={n.name}
                                             />
                                         ) : (
                                             <img
-                                                className="w-full block rounded"
-                                                style={{ borderRadius: '50%' }}
+                                                className="h-full block rounded p-8"
+                                                style={{ borderRadius: '15px' }}
                                                 src={`${BASE_URL}${n.image}`}
                                                 alt={n.first_name}
                                             />
@@ -280,11 +275,11 @@ const EmployeesTable = (props) => {
                                     <TableCell className="p-4 md:p-16" component="th" scope="row">
                                         <div>
                                             <EditIcon
-                                                onClick={event => handleUpdateEmployee(n, "updateEmployee")} className="h-72 cursor-pointer"
+                                                onClick={event => handleUpdateEmployee(n, "updateEmployee")} className="cursor-pointer"
                                                 style={{ color: 'green' }}
                                             />
                                             <DeleteIcon
-                                                onClick={event => handleDeleteEmployee(n, "deleteEmployee")} className="h-72 cursor-pointer"
+                                                onClick={event => handleDeleteEmployee(n, "deleteEmployee")} className="cursor-pointer"
                                                 style={{ color: 'red' }}
                                             />
                                         </div>
@@ -311,7 +306,7 @@ const EmployeesTable = (props) => {
                 />
 
                 <TablePagination
-                    className="flex-shrink-0 border-t-1"
+                    // className="flex-shrink-0 border-t-1"
                     rowsPerPageOptions={[5, 10, 30, 50, 100]}
                     component="div"
                     count={totalElements}

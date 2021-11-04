@@ -7,7 +7,7 @@ export const getEmployee = createAsyncThunk('employeeManagement/employee/getEmpl
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     const response = await axios.get(`${GET_EMPLOYEE_BY_ID}${params.employeeId}`, authTOKEN)
@@ -22,7 +22,7 @@ export const removeEmployee = createAsyncThunk(
         const authTOKEN = {
             headers: {
                 'Content-type': 'application/json',
-                Authorization: localStorage.getItem('jwt_token'),
+                Authorization: localStorage.getItem('jwt_access_token'),
             }
         }
         const employeeId = val.id;
@@ -61,7 +61,7 @@ export const updateEmployee = createAsyncThunk(
         const authTOKEN = {
             headers: {
                 'Content-type': 'multipart/form-data',
-                Authorization: localStorage.getItem('jwt_token'),
+                Authorization: localStorage.getItem('jwt_access_token'),
             }
         }
         const { employee } = getState().employeesManagement;
@@ -82,7 +82,7 @@ export const saveEmployee = createAsyncThunk(
         const authTOKEN = {
             headers: {
                 'Content-type': 'multipart/form-data',
-                Authorization: localStorage.getItem('jwt_token'),
+                Authorization: localStorage.getItem('jwt_access_token'),
             }
         }
         const response = await axios.post(`${CREATE_EMPLOYEE}`, employeeDataToFormData, authTOKEN)

@@ -5,7 +5,7 @@ function useUserInfo() {
     const authToken = {
         headers: {
             "Content-type": "application/json",
-            Authorization: localStorage.getItem("jwt_token"),
+            Authorization: localStorage.getItem("jwt_access_token"),
         },
     };
 

@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
@@ -9,12 +10,15 @@ import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUsersSearchText } from '../store/usersSlice';
+import { Link } from 'react-router-dom';
+import { setDepartmentsSearchText } from '../store/departmentsSlice';
+
 
 const useStyles = makeStyles(theme => ({
 	alert: (props) => ({
 		width: "20%",
-		height: "50px",
+		minWidth: "250px",
+		height: "35px",
 		position: "fixed",
 		right: "30px",
 		marginTop: "-85px",
@@ -28,32 +32,43 @@ const useStyles = makeStyles(theme => ({
 	}),
 }));
 
+const DepartmentsHeader = () => {
 
-const UsersListHeader = () => {
-	const mainTheme = useSelector(selectMainTheme);
-	const dispatch = useDispatch();
-	const searchText = useSelector(({ employeesManagement }) => employeesManagement.usersList.searchText);
-
-
-	//alert state
 	const [alerOpen, setAlertOpen] = useState(false)
 	const [alertMessage, setAlertMessage] = useState("")
-	const classes = useStyles(alerOpen);
-	//alert
-	useEffect(() => {
-		const alert = localStorage.getItem("userAlertPermission")
+	const mainTheme = useSelector(selectMainTheme);
+	const dispatch = useDispatch();
+	const searchText = useSelector(({ departmentsManagement }) => departmentsManagement.departments.searchText);
 
-		if (alert === "updatePasswordSuccessfully") {
+	const classes = useStyles(alerOpen);
+
+	useEffect(() => {
+		const alert = localStorage.getItem("departmentAlert")
+
+		console.log(alert)
+
+		if (alert === "saveDepartment") {
 			setAlertOpen(true)
-			setAlertMessage("Updated Successfully...")
-			localStorage.removeItem("userAlertPermission")
+			setAlertMessage("Add Success...")
+			localStorage.removeItem("departmentAlert")
+		}
+		if (alert === "updateDepartment") {
+			setAlertOpen(true)
+			setAlertMessage("Update Success...")
+			localStorage.removeItem("departmentAlert")
+		}
+		if (alert === "deleteDepartment") {
+			setAlertOpen(true)
+			setAlertMessage("Remove Success...")
+			localStorage.removeItem("departmentAlert")
 		}
 
 		setTimeout(() => {
 			setAlertOpen(false)
 		}, 3000)
 
-	}, []);
+	}, [])
+
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -73,7 +88,7 @@ const UsersListHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Users
+					Departments
 				</Typography>
 			</div>
 
@@ -86,6 +101,7 @@ const UsersListHeader = () => {
 						className="flex items-center w-full max-w-512 px-8 py-4 rounded-16 shadow"
 					>
 						<Icon color="action">search</Icon>
+
 						<Input
 							placeholder="Search"
 							className="flex flex-1 mx-8"
@@ -95,11 +111,24 @@ const UsersListHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setUsersSearchText(ev))}
+							onBlur={ev => dispatch(setDepartmentsSearchText(ev))}
 						/>
 					</Paper>
 				</ThemeProvider>
 			</div>
+			<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
+				<Button
+					component={Link}
+					to="/apps/department-management/new"
+					className="whitespace-nowrap"
+					variant="contained"
+					color="secondary"
+				>
+					<span className="hidden sm:flex">Add New Department</span>
+					<span className="flex sm:hidden">New</span>
+				</Button>
+			</motion.div>
+
 			<Alert variant="filled" severity="success" className={classes.alert}
 				action={
 					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
@@ -107,20 +136,9 @@ const UsersListHeader = () => {
 			>
 				{alertMessage}
 			</Alert>
-			{/* <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-				<Button
-					component={Link}
-					to="/apps/employee-management/new"
-					className="whitespace-nowrap"
-					variant="contained"
-					color="secondary"
-				>
-					<span className="hidden sm:flex">Add New Employee</span>
-					<span className="flex sm:hidden">New</span>
-				</Button>
-			</motion.div> */}
+
 		</div>
 	);
 };
 
-export default UsersListHeader;
+export default DepartmentsHeader;

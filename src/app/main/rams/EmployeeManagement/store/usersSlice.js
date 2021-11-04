@@ -5,7 +5,7 @@ import { ALL_USERS } from '../../../../constant/constants';
 export const getUsers = createAsyncThunk('employeeManagement/users/getUsers', async (pageAndSize) => {
 
     axios.defaults.headers.common['Content-type'] = 'application/json';
-    axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_token');
+    axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
     const response = axios.get(ALL_USERS, { params: pageAndSize });
     const data = await response;

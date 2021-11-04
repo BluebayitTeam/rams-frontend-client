@@ -40,7 +40,7 @@ export const getEmployees = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(GET_EMPLOYEES_WITHOUT_PAGINATION, authTOKEN)
@@ -51,7 +51,7 @@ export const getProducts = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(aLLProductsWithoutPagination, authTOKEN)
@@ -62,7 +62,7 @@ export const getAttributes = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(GET_ATTRIBUTES_WITHOUT_PAGINATION, authTOKEN)
@@ -74,7 +74,7 @@ export const getAttributes = () => (dispatch) => {
 //     const authTOKEN = {
 //         headers: {
 //             'Content-type': 'application/json',
-//             Authorization: localStorage.getItem('jwt_token'),
+//             Authorization: localStorage.getItem('jwt_access_token'),
 //         }
 //     }
 //     fetch(CITIES, authTOKEN)
@@ -92,7 +92,7 @@ export const getUsers = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(GET_USERS_WITHOUT_PAGINATION, authTOKEN)
@@ -103,7 +103,7 @@ export const getVendors = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(GET_VENDORS_WITHOUT_PAGINATION, authTOKEN)
@@ -115,7 +115,7 @@ export const getOrdersStatus = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(ORDERSTATUS, authTOKEN)
@@ -127,7 +127,7 @@ export const getPaymentMathods = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(PAYMENTMATHODS, authTOKEN)
@@ -140,7 +140,7 @@ export const getCusotmerTypes = () => (dispatch) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_token'),
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
     }
     fetch(CUSOTMERTYPES, authTOKEN)

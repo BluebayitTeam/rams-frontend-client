@@ -5,54 +5,26 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import React from 'react';
+import React, { useState } from 'react';
 
 const rows = [
     {
         id: 'sl_no',
         align: 'left',
         disablePadding: false,
-        label: 'Sl_No',
+        label: 'SL_NO',
         sort: true
     },
     {
-        id: 'image',
+        id: 'name',
         align: 'left',
         disablePadding: false,
-        label: 'Image',
-        sort: true
-    },
-    {
-        id: 'branch',
-        align: 'left',
-        disablePadding: false,
-        label: 'Branch',
-        sort: true
-    },
-    {
-        id: 'employeeid',
-        align: 'left',
-        disablePadding: false,
-        label: 'Employee Id',
-        sort: true
-    },
-    {
-        id: 'username',
-        align: 'left',
-        disablePadding: false,
-        label: 'Username',
-        sort: true
-    },
-    {
-        id: 'Mobile',
-        align: 'left',
-        disablePadding: false,
-        label: 'mobile',
+        label: 'Name',
         sort: true
     },
     {
         id: 'action',
-        align: 'left',
+        align: 'center',
         disablePadding: false,
         label: 'Action',
         sort: true
@@ -64,15 +36,19 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const EmployeesTableHead = (props) => {
-    const { selectedEmployeeIds } = props;
-    //console.log(selectedEmployeeIds);
-    const numSelected = selectedEmployeeIds?.length;
+const DepartmentsTableHead = (props) => {
+    const { selectedDepartmentIds } = props;
+    const numSelected = selectedDepartmentIds.length;
 
+    const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
     const createSortHandler = property => event => {
         props.onRequestSort(event, property);
     };
+
+    function openSelectedProductsMenu(event) {
+        setSelectedProductsMenu(event.currentTarget);
+    }
 
     return (
         <TableHead>
@@ -118,4 +94,4 @@ const EmployeesTableHead = (props) => {
     );
 };
 
-export default EmployeesTableHead;
+export default DepartmentsTableHead;

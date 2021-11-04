@@ -42,7 +42,7 @@ export const setMenuItem = () => (dispatch) => {
 
 	const { authToken } = useUserInfo()
 
-	if (localStorage.getItem("jwt_token")) {
+	if (localStorage.getItem("jwt_access_token")) {
 		console.log("haveauthToken")
 		axios.get(`${MENU_ITEM}`, authToken).then(data => {
 			dispatch(resetNavigation(navigationAdapter.upsertMany(emptyInitialState, data.data)))

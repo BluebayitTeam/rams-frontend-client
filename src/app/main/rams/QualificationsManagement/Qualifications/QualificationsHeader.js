@@ -11,12 +11,14 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setEmployeesSearchText } from '../store/employeesSlice';
+import { setQualificationsSearchText } from '../store/qualificationsSlice';
+
 
 const useStyles = makeStyles(theme => ({
 	alert: (props) => ({
 		width: "20%",
-		height: "50px",
+		minWidth: "250px",
+		height: "35px",
 		position: "fixed",
 		right: "30px",
 		marginTop: "-85px",
@@ -30,33 +32,33 @@ const useStyles = makeStyles(theme => ({
 	}),
 }));
 
+const QualificationsHeader = () => {
 
-const EmployeesHeader = () => {
-	const mainTheme = useSelector(selectMainTheme);
-	const dispatch = useDispatch();
-
-	//alert state
 	const [alerOpen, setAlertOpen] = useState(false)
 	const [alertMessage, setAlertMessage] = useState("")
-	const classes = useStyles(alerOpen);
-	//alert
-	useEffect(() => {
-		const alert = localStorage.getItem("employeeAlertPermission");
+	const mainTheme = useSelector(selectMainTheme);
+	const dispatch = useDispatch();
+	const searchText = useSelector(({ qualificationsManagement }) => qualificationsManagement.qualifications.searchText);
 
-		if (alert === "saveEmployeeSuccessfully") {
+	const classes = useStyles(alerOpen);
+
+	useEffect(() => {
+		const alert = localStorage.getItem("qualificationAlert")
+
+		if (alert === "saveQualification") {
 			setAlertOpen(true)
-			setAlertMessage("Added Successfully...")
-			localStorage.removeItem("employeeAlertPermission")
+			setAlertMessage("Add Success...")
+			localStorage.removeItem("qualificationAlert")
 		}
-		if (alert === "updateEmployeeSuccessfully") {
+		if (alert === "updateQualification") {
 			setAlertOpen(true)
-			setAlertMessage("Updated Successfully...")
-			localStorage.removeItem("employeeAlertPermission")
+			setAlertMessage("Update Success...")
+			localStorage.removeItem("qualificationAlert")
 		}
-		if (alert === "removeEmployeeSuccessfully") {
+		if (alert === "deleteQualification") {
 			setAlertOpen(true)
-			setAlertMessage("Removed Successfully...")
-			localStorage.removeItem("employeeAlertPermission")
+			setAlertMessage("Remove Success...")
+			localStorage.removeItem("qualificationAlert")
 		}
 
 		setTimeout(() => {
@@ -84,7 +86,7 @@ const EmployeesHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Employees
+					Qualifications
 				</Typography>
 			</div>
 
@@ -97,6 +99,7 @@ const EmployeesHeader = () => {
 						className="flex items-center w-full max-w-512 px-8 py-4 rounded-16 shadow"
 					>
 						<Icon color="action">search</Icon>
+
 						<Input
 							placeholder="Search"
 							className="flex flex-1 mx-8"
@@ -106,7 +109,7 @@ const EmployeesHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setEmployeesSearchText(ev))}
+							onBlur={ev => dispatch(setQualificationsSearchText(ev))}
 						/>
 					</Paper>
 				</ThemeProvider>
@@ -114,15 +117,16 @@ const EmployeesHeader = () => {
 			<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
 				<Button
 					component={Link}
-					to="/apps/employee-management/new"
+					to="/apps/qualification-management/new"
 					className="whitespace-nowrap"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Employee</span>
+					<span className="hidden sm:flex">Add New Qualification</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
+
 			<Alert variant="filled" severity="success" className={classes.alert}
 				action={
 					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
@@ -130,8 +134,9 @@ const EmployeesHeader = () => {
 			>
 				{alertMessage}
 			</Alert>
+
 		</div>
 	);
 };
 
-export default EmployeesHeader;
+export default QualificationsHeader;
