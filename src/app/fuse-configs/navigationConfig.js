@@ -72,6 +72,15 @@ const navigationConfig = [
                 url: '/apps/thana-management/thanas',
                 exact: true
             },
+            //branch
+            {
+                id: 'branches',
+                title: 'branches',
+                translate: 'Branches',
+                type: 'item',
+                url: '/apps/branch-management/branchs',
+                exact: true
+            },
         ]
     }
 ];

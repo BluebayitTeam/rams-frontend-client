@@ -74,6 +74,20 @@ const ramsRouteConfig = {
             path: '/apps/thana-management/:thanaId',
             component: lazy(() => import('./ThanasManagement/Thana/NewThana'))
         },
+
+        //branch
+        {
+            path: '/apps/branch-management/branchs/:branchId/:branchName?',
+            component: lazy(() => import('./BranchsManagement/Branch/NewBranch'))
+        },
+        {
+            path: '/apps/branch-management/branchs',
+            component: lazy(() => import('./BranchsManagement/Branchs/Branchs'))
+        },
+        {
+            path: '/apps/branch-management/:branchId',
+            component: lazy(() => import('./BranchsManagement/Branch/NewBranch'))
+        },
     ]
 }
 
