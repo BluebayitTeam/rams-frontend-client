@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getCities } from '../../../store/dataSlice';
+import { getCities } from '../../../../store/dataSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -17,12 +17,10 @@ const useStyles = makeStyles(theme => ({
 
 function ThanaForm(props) {
 
-
     const userID = localStorage.getItem('UserID')
 
     const dispatch = useDispatch()
-    const citys = useSelector(state => state.data.citys)
-
+    const citys = useSelector(state => state.data.cities)
 
     const classes = useStyles(props);
 
@@ -34,12 +32,8 @@ function ThanaForm(props) {
     const { thanaId } = routeParams;
 
     useEffect(() => {
-
         dispatch(getCities())
-
     }, [])
-
-    console.log(citys)
 
     return (
         <div>

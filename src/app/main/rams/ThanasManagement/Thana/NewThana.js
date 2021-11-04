@@ -41,8 +41,7 @@ const Thana = () => {
     });
     const routeParams = useParams();
 
-    const { reset, watch, control, onChange, formState } = methods;
-    const form = watch();
+    const { reset } = methods;
 
     useDeepCompareEffect(() => {
         function updateThanaState() {

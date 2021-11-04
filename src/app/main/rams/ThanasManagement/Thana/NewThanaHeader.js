@@ -19,8 +19,6 @@ const NewThanaHeader = () => {
     const theme = useTheme();
     const history = useHistory();
 
-
-
     const routeParams = useParams();
 
     const handleDelete = localStorage.getItem('thanaEvent');

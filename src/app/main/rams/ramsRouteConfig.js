@@ -60,6 +60,20 @@ const ramsRouteConfig = {
             path: '/apps/city-management/:cityId',
             component: lazy(() => import('./CitysManagement/City/NewCity'))
         },
+
+        //thana
+        {
+            path: '/apps/thana-management/thanas/:thanaId/:thanaName?',
+            component: lazy(() => import('./ThanasManagement/Thana/NewThana'))
+        },
+        {
+            path: '/apps/thana-management/thanas',
+            component: lazy(() => import('./ThanasManagement/Thanas/Thanas'))
+        },
+        {
+            path: '/apps/thana-management/:thanaId',
+            component: lazy(() => import('./ThanasManagement/Thana/NewThana'))
+        },
     ]
 }
 

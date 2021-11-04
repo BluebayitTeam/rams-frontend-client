@@ -1,6 +1,7 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
+import { Typography } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -11,11 +12,12 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Pagination from '@material-ui/lab/Pagination';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { SEARCH_THANA } from '../../../../constant/constants';
-import { getCitys } from '../../../store/dataSlice';
+import { getCities } from '../../../../store/dataSlice';
 import { getThanas, selectThanas } from '../store/thanasSlice';
 import ThanasTableHead from './ThanasTableHead';
 
@@ -25,8 +27,8 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'space-between',
 		flexWrap: 'wrap',
 		'& > *': {
-			marginTop: theme.spacing(2),
-			marginBottom: theme.spacing(3)
+			marginTop: theme.spacing(1),
+			// marginBottom: theme.spacing(3)
 		}
 	}
 }));
@@ -74,7 +76,7 @@ const ThanasTable = props => {
 	}
 
 	useEffect(() => {
-		dispatch(getCitys());
+		dispatch(getCities());
 	}, []);
 
 	function handleRequestSort(thanaEvent, property) {
@@ -151,7 +153,20 @@ const ThanasTable = props => {
 	if (loading) {
 		return <FuseLoading />;
 	}
-	console.log('token', localStorage.getItem('jwt_access_token'));
+
+	if (thanas?.length === 0) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There are no thana!
+				</Typography>
+			</motion.div>
+		);
+	}
 
 	return (
 		<div className="w-full flex flex-col">
@@ -186,6 +201,7 @@ const ThanasTable = props => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
+									className="h-72 cursor-pointer"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -217,12 +233,12 @@ const ThanasTable = props => {
 										<div>
 											<EditIcon
 												onClick={thanaEvent => handleUpdateThana(n)}
-												className="h-72 cursor-pointer"
+												className="cursor-pointer"
 												style={{ color: 'green' }}
 											/>{' '}
 											<DeleteIcon
 												onClick={event => handleDeleteThana(n, 'Delete')}
-												className="h-72 cursor-pointer"
+												className="cursor-pointer"
 												style={{ color: 'red' }}
 											/>
 										</div>

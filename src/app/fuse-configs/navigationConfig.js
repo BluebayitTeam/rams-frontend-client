@@ -63,6 +63,15 @@ const navigationConfig = [
                 url: '/apps/city-management/cities',
                 exact: true
             },
+            //thanas
+            {
+                id: 'thanas',
+                title: 'Police Station',
+                translate: 'Police Station',
+                type: 'item',
+                url: '/apps/thana-management/thanas',
+                exact: true
+            },
         ]
     }
 ];
