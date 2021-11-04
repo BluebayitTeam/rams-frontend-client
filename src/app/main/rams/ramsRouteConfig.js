@@ -102,6 +102,20 @@ const ramsRouteConfig = {
             path: '/apps/sitesettings-management/sitesetting/:sitesettingId',
             component: lazy(() => import('./SitesettingsManagement/Sitesetting/NewSitesetting'))
         },
+
+        //permission
+        {
+            path: '/apps/permission-management/permissions/:permissionId/:permissionName?',
+            component: lazy(() => import('./PermissionsManagement/Permission/NewPermission'))
+        },
+        {
+            path: '/apps/permission-management/permissions',
+            component: lazy(() => import('./PermissionsManagement/Permissions/Permissions'))
+        },
+        {
+            path: '/apps/permission-management/:permissionId',
+            component: lazy(() => import('./PermissionsManagement/Permission/NewPermission'))
+        },
     ]
 }
 

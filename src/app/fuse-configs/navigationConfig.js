@@ -8,6 +8,7 @@ i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
 const navigationConfig = [
+    //employee
     {
         id: 'employee',
         title: 'Employee',
@@ -45,6 +46,8 @@ const navigationConfig = [
             },
         ]
     },
+
+    //setting
     {
         id: 'Settings',
         title: 'Settings',
@@ -88,6 +91,28 @@ const navigationConfig = [
                 translate: 'Site Settings',
                 type: 'item',
                 url: '/apps/sitesettings-management/sitesettings',
+                exact: true
+            },
+        ]
+    },
+
+    //user config
+    {
+        id: 'userconfig',
+        title: 'User Config',
+        translate: 'User Config',
+        type: 'collapse',
+        icon: 'people',
+        url: '/apps/dashboards/project',
+        exact: true,
+        children: [
+            //permissions
+            {
+                id: 'permissions',
+                title: 'Permissions',
+                translate: 'Permissions',
+                type: 'item',
+                url: '/apps/permission-management/permissions',
                 exact: true
             },
         ]
