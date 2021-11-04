@@ -4,7 +4,8 @@ import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { getCountries } from '../../../../store/dataSlice';
+import { useParams } from 'react-router-dom';
+import { getCities } from '../../../store/dataSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -14,23 +15,55 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function CityForm(props) {
+function ThanaForm(props) {
+
+
+    const userID = localStorage.getItem('UserID')
 
     const dispatch = useDispatch()
-    const countries = useSelector(state => state.data.countries)
+    const citys = useSelector(state => state.data.citys)
+
+
+    const classes = useStyles(props);
 
     const methods = useFormContext();
     const { control, formState } = methods;
     const { errors } = formState;
 
+    const routeParams = useParams();
+    const { thanaId } = routeParams;
+
     useEffect(() => {
 
-        dispatch(getCountries())
+        dispatch(getCities())
 
     }, [])
 
+    console.log(citys)
+
     return (
         <div>
+
+            <Controller
+                name={thanaId === 'new' ? 'created_by' : 'updated_by'}
+                control={control}
+                defaultValue={userID}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className={classes.hidden}
+                        label="created by"
+                        id="created_by"
+                        error={false}
+                        helperText=""
+                        required
+                        variant="outlined"
+                        fullWidth
+                    />)
+                }}
+            />
+
+
             <Controller
                 name="name"
                 control={control}
@@ -49,27 +82,30 @@ function CityForm(props) {
                     />)
                 }}
             />
+
+
             <Controller
-                name="country"
+                name="city"
                 control={control}
                 render={({ field: { onChange, value, name } }) => (
                     <Autocomplete
                         className="mt-8 mb-16"
                         freeSolo
-                        value={value ? countries.find(data => data.id === value) : null}
-                        options={countries}
+                        value={value ? citys.find(data => data.id === value) : null}
+                        options={citys}
                         getOptionLabel={(option) => `${option.name}`}
                         onChange={(event, newValue) => {
                             onChange(newValue?.id)
                         }}
                         renderInput={params => (
+
                             <TextField
                                 {...params}
-                                placeholder="Select Country"
-                                label="Country"
-                                error={!!errors.country}
+                                placeholder="Select City"
+                                label="City"
+                                error={!!errors.city}
                                 required
-                                helperText={errors?.country?.message}
+                                helperText={errors?.city?.message}
                                 variant="outlined"
                                 autoFocus
                                 InputLabelProps={{
@@ -80,8 +116,11 @@ function CityForm(props) {
                     />
                 )}
             />
+
+
+
         </div>
     );
 }
 
-export default CityForm
+export default ThanaForm

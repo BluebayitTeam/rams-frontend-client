@@ -46,6 +46,20 @@ const ramsRouteConfig = {
             path: '/apps/qualification-management/:qualificationId',
             component: lazy(() => import('./QualificationsManagement/Qualification/NewQualification'))
         },
+
+        //city
+        {
+            path: '/apps/city-management/cities/:cityId/:cityName?',
+            component: lazy(() => import('./CitysManagement/City/NewCity'))
+        },
+        {
+            path: '/apps/city-management/cities',
+            component: lazy(() => import('./CitysManagement/Citys/Citys'))
+        },
+        {
+            path: '/apps/city-management/:cityId',
+            component: lazy(() => import('./CitysManagement/City/NewCity'))
+        },
     ]
 }
 

@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setCitysSearchText } from '../store/citysSlice';
+import { setThanasSearchText } from '../store/thanasSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,32 +31,33 @@ const useStyles = makeStyles(theme => ({
 	}),
 }));
 
-const CitysHeader = () => {
+const ThanasHeader = () => {
 
 	const [alerOpen, setAlertOpen] = useState(false)
 	const [alertMessage, setAlertMessage] = useState("")
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
+	const searchText = useSelector(({ thanasManagement }) => thanasManagement.thanas.searchText);
 
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem("cityAlert")
+		const alert = localStorage.getItem("thanaAlert")
 
-		if (alert === "saveCity") {
+		if (alert === "saveThana") {
 			setAlertOpen(true)
 			setAlertMessage("Add Success...")
-			localStorage.removeItem("cityAlert")
+			localStorage.removeItem("thanaAlert")
 		}
-		if (alert === "updateCity") {
+		if (alert === "updateThana") {
 			setAlertOpen(true)
 			setAlertMessage("Update Success...")
-			localStorage.removeItem("cityAlert")
+			localStorage.removeItem("thanaAlert")
 		}
-		if (alert === "deleteCity") {
+		if (alert === "deleteThana") {
 			setAlertOpen(true)
 			setAlertMessage("Remove Success...")
-			localStorage.removeItem("cityAlert")
+			localStorage.removeItem("thanaAlert")
 		}
 
 		setTimeout(() => {
@@ -64,7 +65,6 @@ const CitysHeader = () => {
 		}, 3000)
 
 	}, [])
-
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -84,7 +84,7 @@ const CitysHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Cities
+					Thanas
 				</Typography>
 			</div>
 
@@ -107,7 +107,7 @@ const CitysHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setCitysSearchText(ev))}
+							onBlur={ev => dispatch(setThanasSearchText(ev))}
 						/>
 					</Paper>
 				</ThemeProvider>
@@ -115,12 +115,12 @@ const CitysHeader = () => {
 			<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
 				<Button
 					component={Link}
-					to="/apps/city-management/new"
+					to="/apps/thana-management/new"
 					className="whitespace-nowrap"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New City</span>
+					<span className="hidden sm:flex">Add New Thana</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
@@ -137,4 +137,4 @@ const CitysHeader = () => {
 	);
 };
 
-export default CitysHeader;
+export default ThanasHeader;

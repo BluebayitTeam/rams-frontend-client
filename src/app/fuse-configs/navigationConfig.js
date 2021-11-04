@@ -54,6 +54,15 @@ const navigationConfig = [
         url: '/apps/dashboards/project',
         exact: true,
         children: [
+            //cities
+            {
+                id: 'cities',
+                title: 'District',
+                translate: 'District',
+                type: 'item',
+                url: '/apps/city-management/cities',
+                exact: true
+            },
         ]
     }
 ];

@@ -1,11 +1,20 @@
 import Checkbox from '@material-ui/core/Checkbox';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { removeThanas } from '../store/thanasSlice';
 
 const rows = [
     {
@@ -15,6 +24,7 @@ const rows = [
         label: 'SL_NO',
         sort: true
     },
+
     {
         id: 'name',
         align: 'left',
@@ -23,12 +33,13 @@ const rows = [
         sort: true
     },
     {
-        id: 'country',
+        id: 'city',
         align: 'left',
         disablePadding: false,
-        label: 'Country',
+        label: 'City',
         sort: true
     },
+
     {
         id: 'action',
         align: 'center',
@@ -38,10 +49,10 @@ const rows = [
     }
 ];
 
-const CitysTableHead = (props) => {
-    const { selectedCityIds } = props;
+const ThanasTableHead = (props) => {
+    const { selectedThanaIds } = props;
 
-    const numSelected = selectedCityIds.length;
+    const numSelected = selectedThanaIds.length;
 
     const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
@@ -69,6 +80,40 @@ const CitysTableHead = (props) => {
                         onChange={props.onSelectAllClick}
                     />
 
+                    <div
+                        className={clsx(
+                            'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1'
+                        )}
+                    >
+                        <IconButton
+                            aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
+                            aria-haspopup="true"
+                            onClick={openSelectedProductsMenu}
+                        >
+                            <Icon>more_horiz</Icon>
+                        </IconButton>
+                        <Menu
+                            id="selectedProductsMenu"
+                            anchorEl={selectedProductsMenu}
+                            open={Boolean(selectedProductsMenu)}
+                            onClose={closeSelectedProductsMenu}
+                        >
+                            <MenuList>
+                                <MenuItem
+                                    onClick={() => {
+                                        dispatch(removeThanas(selectedThanaIds));
+                                        props.onMenuItemClick();
+                                        closeSelectedProductsMenu();
+                                    }}
+                                >
+                                    <ListItemIcon className="min-w-40">
+                                        <Icon>delete</Icon>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Remove" />
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
+                    </div>
                 </TableCell>
                 {rows.map(row => {
                     return (
@@ -103,4 +148,4 @@ const CitysTableHead = (props) => {
     );
 };
 
-export default CitysTableHead;
+export default ThanasTableHead;
