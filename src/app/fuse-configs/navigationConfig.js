@@ -34,6 +34,26 @@ const navigationConfig = [
                 url: '/apps/department-management/departments',
                 exact: true
             },
+            //qualifications
+            {
+                id: 'qualifications',
+                title: 'Qualifications',
+                translate: 'Qualifications',
+                type: 'item',
+                url: '/apps/qualification-management/qualifications',
+                exact: true
+            },
+        ]
+    },
+    {
+        id: 'Settings',
+        title: 'Settings',
+        translate: 'Settings',
+        type: 'collapse',
+        icon: 'settings',
+        url: '/apps/dashboards/project',
+        exact: true,
+        children: [
         ]
     }
 ];

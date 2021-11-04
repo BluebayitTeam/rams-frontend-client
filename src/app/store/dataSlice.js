@@ -5,36 +5,42 @@ import { CUSOTMERTYPES, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PA
 export const getBranches = () => (dispatch) => {
     fetch(GET_BRANCH_WITHOUT_PAGINATION)
         .then(response => response.json())
-        .then(data => dispatch(setBranches(data.branches)));
+        .then(data => dispatch(setBranches(data.branches)))
+        .catch(() => { });
 }
 
 export const getThanas = () => (dispatch) => {
     fetch(GET_THANAS_WITHOUT_PAGINATION)
         .then(response => response.json())
-        .then(data => dispatch(setThanas(data.thanas)));
+        .then(data => dispatch(setThanas(data.thanas)))
+        .catch(() => { });
 }
 export const getCities = () => (dispatch) => {
     fetch(GET_CITYS_WITHOUT_PAGINATION)
         .then(response => response.json())
-        .then(data => dispatch(setCities(data.cities)));
+        .then(data => dispatch(setCities(data.cities)))
+        .catch(() => { });
 }
 
 export const getCountries = () => (dispatch) => {
     fetch(GET_COUNTRIES_WITHOUT_PAGINATION)
         .then(response => response.json())
-        .then(data => dispatch(setCountries(data.countries)));
+        .then(data => dispatch(setCountries(data.countries)))
+        .catch(() => { });
 }
 
 export const getRoles = () => (dispatch) => {
     fetch(GET_ROLES_WITHOUT_PAGINATION)
         .then(response => response.json())
-        .then(data => dispatch(setRoles(data.roles)));
+        .then(data => dispatch(setRoles(data.roles)))
+        .catch(() => { });
 }
 
 export const getDepartments = () => (dispatch) => {
     fetch(`${GET_DEPARTMENTS_WITHOUT_PAGINATION}`)
         .then(response => response.json())
         .then(data => dispatch(setDepartments(data.departments)))
+        .catch(() => { })
 }
 export const getEmployees = () => (dispatch) => {
     const authTOKEN = {
@@ -46,6 +52,7 @@ export const getEmployees = () => (dispatch) => {
     fetch(GET_EMPLOYEES_WITHOUT_PAGINATION, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setEmployees(data.employees)))
+        .catch(() => { })
 }
 export const getProducts = () => (dispatch) => {
     const authTOKEN = {
@@ -57,6 +64,7 @@ export const getProducts = () => (dispatch) => {
     fetch(aLLProductsWithoutPagination, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setProducts(data.products)))
+        .catch(() => { })
 }
 export const getAttributes = () => (dispatch) => {
     const authTOKEN = {
@@ -68,6 +76,7 @@ export const getAttributes = () => (dispatch) => {
     fetch(GET_ATTRIBUTES_WITHOUT_PAGINATION, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setAttributes(data.attributes)))
+        .catch(() => { })
 }
 //
 // export const getCitys = () => (dispatch) => {
@@ -86,6 +95,7 @@ export const getPermissions = () => (dispatch) => {
     fetch(GET_PERMISSIONS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setPermissions(data.permissions)))
+        .catch(() => { })
 }
 
 export const getUsers = () => (dispatch) => {
@@ -98,6 +108,7 @@ export const getUsers = () => (dispatch) => {
     fetch(GET_USERS_WITHOUT_PAGINATION, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setUsers(data.users)))
+        .catch(() => { })
 }
 export const getVendors = () => (dispatch) => {
     const authTOKEN = {
@@ -109,6 +120,7 @@ export const getVendors = () => (dispatch) => {
     fetch(GET_VENDORS_WITHOUT_PAGINATION, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setVendors(data.vendors)))
+        .catch(() => { })
 }
 
 export const getOrdersStatus = () => (dispatch) => {
@@ -121,6 +133,7 @@ export const getOrdersStatus = () => (dispatch) => {
     fetch(ORDERSTATUS, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setOrdersStatus(data.orderstatuses)))
+        .catch(() => { })
 }
 
 export const getPaymentMathods = () => (dispatch) => {
@@ -133,6 +146,7 @@ export const getPaymentMathods = () => (dispatch) => {
     fetch(PAYMENTMATHODS, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setPaymentMathods(data.paymentmethods)))
+        .catch(() => { })
 }
 
 
@@ -146,12 +160,14 @@ export const getCusotmerTypes = () => (dispatch) => {
     fetch(CUSOTMERTYPES, authTOKEN)
         .then(response => response.json())
         .then(data => dispatch(setCusotmerTypes(data.customer_types)))
+        .catch(() => { })
 }
 
 export const getBrand = () => (dispatch) => {
     fetch(GET_BRANDS_WITHOUT_PAGINATION)
         .then(response => response.json())
-        .then(data => dispatch(setBrands(data.brands)));
+        .then(data => dispatch(setBrands(data.brands)))
+        .catch(() => { });
 }
 
 export const getCategory = () => (dispatch) => {
@@ -160,7 +176,8 @@ export const getCategory = () => (dispatch) => {
         .then(data => {
             console.log(data);
             dispatch(setCategories(data.categories))
-        });
+        })
+        .catch(() => { });
 }
 
 const dataSlice = createSlice({

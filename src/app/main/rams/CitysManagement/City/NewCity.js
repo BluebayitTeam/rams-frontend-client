@@ -9,38 +9,28 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { getCity, newCity, resetCity } from '../store/citySlice';
 import reducer from '../store/index';
-import { getQualification, newQualification, resetQualification } from '../store/qualificationSlice';
-import NewQualificationHeader from './NewQualificationHeader';
-import QualificationForm from './QualificationForm';
+import CityForm from './CityForm';
+import NewCityHeader from './NewCityHeader';
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
 
-    employee_id: yup.number()
-        .required("Employee ID is required"),
-    degree_name: yup.string()
-        .required("Degree Name is required"),
-    passign_year: yup.string()
-        .required("Passign Year is required")
-        .max(4, "Passign cann't be more than 4 characters"),
-    board: yup.string()
-        .required("Board is required"),
-    institute_name: yup.string()
-        .required("Institute Name is required"),
-    grade: yup.string()
-        .matches(/^\d{0,3}(\.\d{0,100})?$/i, "Grade cann't be more than 3 digit")
-        .matches(/^\d{0,3}(\.\d{0,2})?$/i, "Grade cann't be more than 5 digit in total")
+    country: yup.number()
+        .required("Country is required"),
+    name: yup.string()
+        .required("Name is required"),
 })
 
-const Qualification = () => {
+const City = () => {
 
     const dispatch = useDispatch();
-    const qualification = useSelector(({ qualificationsManagement }) => qualificationsManagement.qualification);
+    const city = useSelector(({ citysManagement }) => citysManagement.city);
 
-    const [noQualification, setNoQualification] = useState(false);
+    const [noCity, setNoCity] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -48,37 +38,39 @@ const Qualification = () => {
     });
     const routeParams = useParams();
 
-    const { reset } = methods;
+    const { reset, watch, control, onChange, formState } = methods;
+    const form = watch();
 
     useDeepCompareEffect(() => {
-        function updateQualificationState() {
-            const { qualificationId } = routeParams;
+        function updateCityState() {
+            const { cityId } = routeParams;
+            console.log(cityId)
 
-            if (qualificationId === 'new') {
+            if (cityId === 'new') {
 
                 localStorage.removeItem('event')
                 /**
                  * Create New User data
                  */
-                dispatch(newQualification());
+                dispatch(newCity());
             } else {
                 /**
                  * Get User data
                  */
 
-                dispatch(getQualification(qualificationId)).then(action => {
+                dispatch(getCity(cityId)).then(action => {
                     console.log(action.payload);
                     /**
                      * If the requested product is not exist show message
                      */
                     if (!action.payload) {
-                        setNoQualification(true);
+                        setNoCity(true);
                     }
                 });
             }
         }
 
-        updateQualificationState();
+        updateCityState();
     }, [dispatch, routeParams]);
 
     useEffect(() => {
@@ -88,30 +80,29 @@ const Qualification = () => {
 
 
     useEffect(() => {
-        if (!qualification) {
+        if (!city) {
             return;
         }
         /**
-         * Reset the form on qualification state changes
+         * Reset the form on city state changes
          */
-        reset(qualification);
-    }, [qualification, reset]);
+        reset(city);
+    }, [city, reset]);
 
     useEffect(() => {
         return () => {
             /**
-             * Reset Qualification on component unload
+             * Reset City on component unload
              */
-            dispatch(resetQualification());
-            setNoQualification(false);
+            dispatch(resetCity());
+            setNoCity(false);
         };
     }, [dispatch]);
-
 
     /**
      * Show Message if the requested products is not exists
      */
-    if (noQualification) {
+    if (noCity) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -119,7 +110,7 @@ const Qualification = () => {
                 className="flex flex-col flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There is no such qualification!
+                    There is no such city!
                 </Typography>
                 <Button
                     className="mt-24"
@@ -128,7 +119,7 @@ const Qualification = () => {
                     to="/apps/e-commerce/products"
                     color="inherit"
                 >
-                    Go to Qualification Page
+                    Go to City Page
                 </Button>
             </motion.div>
         );
@@ -142,10 +133,10 @@ const Qualification = () => {
                     toolbar: 'p-0',
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
                 }}
-                header={<NewQualificationHeader />}
+                header={<NewCityHeader />}
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <QualificationForm />
+                        <CityForm />
                     </div>
                 }
                 innerScroll
@@ -153,4 +144,4 @@ const Qualification = () => {
         </FormProvider>
     );
 };
-export default withReducer('qualificationsManagement', reducer)(Qualification);
+export default withReducer('citysManagement', reducer)(City);

@@ -1,11 +1,10 @@
 import Checkbox from '@material-ui/core/Checkbox';
-import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import React, { useState } from 'react';
+import React from 'react';
 
 const rows = [
     {
@@ -30,25 +29,15 @@ const rows = [
         sort: true
     }
 ];
-const useStyles = makeStyles(theme => ({
-    actionsButtonWrapper: {
-        background: theme.palette.background.paper
-    }
-}));
 
 const DepartmentsTableHead = (props) => {
     const { selectedDepartmentIds } = props;
     const numSelected = selectedDepartmentIds.length;
 
-    const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
-
     const createSortHandler = property => event => {
         props.onRequestSort(event, property);
     };
 
-    function openSelectedProductsMenu(event) {
-        setSelectedProductsMenu(event.currentTarget);
-    }
 
     return (
         <TableHead>

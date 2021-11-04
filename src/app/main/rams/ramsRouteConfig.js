@@ -32,6 +32,20 @@ const ramsRouteConfig = {
             path: '/apps/department-management/:departmentId',
             component: lazy(() => import('./DepartmentsManagement/Department/NewDepartment'))
         },
+
+        //qualification
+        {
+            path: '/apps/qualification-management/qualifications/:qualificationId/:qualificationName?',
+            component: lazy(() => import('./QualificationsManagement/Qualification/NewQualification'))
+        },
+        {
+            path: '/apps/qualification-management/qualifications',
+            component: lazy(() => import('./QualificationsManagement/Qualifications/Qualifications'))
+        },
+        {
+            path: '/apps/qualification-management/:qualificationId',
+            component: lazy(() => import('./QualificationsManagement/Qualification/NewQualification'))
+        },
     ]
 }
 

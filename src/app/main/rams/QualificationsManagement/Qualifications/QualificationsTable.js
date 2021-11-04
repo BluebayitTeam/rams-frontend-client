@@ -1,6 +1,7 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
+import { Typography } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -11,11 +12,12 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Pagination from '@material-ui/lab/Pagination';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { SEARCH_QUALIFICATON } from '../../../../constant/constants';
-import { getEmployees } from '../../../store/dataSlice';
+import { getEmployees } from '../../../../store/dataSlice';
 import { getQualifications, selectQualifications } from '../store/qualificationsSlice';
 import QualificationsTableHead from './QualificationsTableHead';
 
@@ -25,8 +27,8 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'space-between',
 		flexWrap: 'wrap',
 		'& > *': {
-			marginTop: theme.spacing(2),
-			marginBottom: theme.spacing(3)
+			marginTop: theme.spacing(1),
+			// marginBottom: theme.spacing(3)
 		}
 	}
 }));
@@ -41,7 +43,6 @@ const QualificationsTable = props => {
 	const [searchQualificaton, setSearchQualification] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(qualifications);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(30);
 	const [order, setOrder] = useState({
@@ -164,6 +165,20 @@ const QualificationsTable = props => {
 		return <FuseLoading />;
 	}
 
+	if (qualifications?.length === 0) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There are no qualification!
+				</Typography>
+			</motion.div>
+		);
+	}
+
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -197,6 +212,7 @@ const QualificationsTable = props => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
+									className="h-72 cursor-pointer"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -245,12 +261,12 @@ const QualificationsTable = props => {
 										<div>
 											<EditIcon
 												onClick={qualificationEvent => handleUpdateQualification(n)}
-												className="h-72 cursor-pointer"
+												className="cursor-pointer"
 												style={{ color: 'green' }}
 											/>{' '}
 											<DeleteIcon
 												onClick={event => handleDeleteQualification(n, 'Delete')}
-												className="h-72 cursor-pointer"
+												className="cursor-pointer"
 												style={{ color: 'red' }}
 											/>
 										</div>
