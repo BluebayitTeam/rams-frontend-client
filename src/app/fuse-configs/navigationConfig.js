@@ -81,6 +81,15 @@ const navigationConfig = [
                 url: '/apps/branch-management/branchs',
                 exact: true
             },
+            //site setting
+            {
+                id: 'sitesettings',
+                title: 'siteSettings',
+                translate: 'Site Settings',
+                type: 'item',
+                url: '/apps/sitesettings-management/sitesettings',
+                exact: true
+            },
         ]
     }
 ];

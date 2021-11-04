@@ -88,6 +88,20 @@ const ramsRouteConfig = {
             path: '/apps/branch-management/:branchId',
             component: lazy(() => import('./BranchsManagement/Branch/NewBranch'))
         },
+
+        //sitesettings
+        {
+            path: '/apps/sitesettings-management/sitesetting/:sitesettingId/:sitesettingName?',
+            component: lazy(() => import('./SitesettingsManagement/Sitesetting/NewSitesetting'))
+        },
+        {
+            path: '/apps/sitesettings-management/sitesettings/',
+            component: lazy(() => import('./SitesettingsManagement/Sitesettings/Sitesettings'))
+        },
+        {
+            path: '/apps/sitesettings-management/sitesetting/:sitesettingId',
+            component: lazy(() => import('./SitesettingsManagement/Sitesetting/NewSitesetting'))
+        },
     ]
 }
 
