@@ -1,4 +1,5 @@
 //http://api.cashconnectbd.com
+//http://192.168.0.172:8001
 
 //base url
 export const BASE_URL = 'http://192.168.0.172:8002';
