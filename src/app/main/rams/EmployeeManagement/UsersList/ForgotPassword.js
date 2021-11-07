@@ -13,8 +13,6 @@ import { USERS_PASSWORDCHANGE } from '../../../../constant/constants';
 
 //validation
 const schema = yup.object().shape({
-    oldPassword: yup.string()
-        .required("Old password is required"),
     password: yup.string()
         .min(6, 'Password must be at least 6 characters')
         .required('Password is required'),
@@ -27,53 +25,39 @@ const ForgotPassword = () => {
     const routeParams = useParams();
     const { userId } = routeParams;
     const history = useHistory();
-    const { handleSubmit, control, reset, formState: { errors } } = useForm({
+    const { handleSubmit, control, formState: { errors } } = useForm({
         mode: 'onChange',
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    //console.log(formState);
 
-    const [showOldPassword, setShowOldPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [invalidOldPassword, setInvalidOldPassword] = useState(false);
-    console.log(invalidOldPassword);
 
-    //form data submit
     const onSubmit = async (Passwords) => {
-        //localStorage.removeItem('userPassword');
         console.log(Passwords);
         const userPassword = localStorage.getItem('userPassword');
         console.log(userPassword);
-        const { oldPassword } = Passwords;
-        //console.log(oldPassword)
-
-        if (userPassword === oldPassword) {
-            //localStorage.removeItem('userPassword');
-            const newdata = {
-                password: Passwords.password,
-                confirm_password: Passwords.confirm_password
-            }
-            const authTOKEN = {
-                headers: {
-                    'Content-type': 'application/json',
-                    Authorization: localStorage.getItem('jwt_access_token'),
-                }
-            }
-
-            const response = axios.patch(`${USERS_PASSWORDCHANGE}${userId}`, newdata, authTOKEN);
-            console.log(response);
-            if (response) {
-                localStorage.setItem('userAlertPermission', 'updatePasswordSuccessfully')
-                history.push('/apps/users-management/userslist');
-            }
-            const data = await response.data;
-            console.log(data);
+        const newdata = {
+            password: Passwords.password,
+            confirm_password: Passwords.confirm_password
         }
-        else {
-            setInvalidOldPassword(true);
+        const authTOKEN = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: localStorage.getItem('jwt_access_token'),
+            }
         }
+
+        const response = axios.patch(`${USERS_PASSWORDCHANGE}${userId}`, newdata, authTOKEN);
+        console.log(response);
+        if (response) {
+            localStorage.setItem('userAlertPermission', 'updatePasswordSuccessfully')
+            history.push('/apps/users-management/userslist');
+        }
+        const data = await response.data;
+        console.log(data);
+
     };
 
     return (
@@ -88,39 +72,6 @@ const ForgotPassword = () => {
                         <Typography variant="h5">Change User Password</Typography>
                     </Box>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Controller
-                            name="oldPassword"
-                            control={control}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    className="mt-8 mb-16"
-                                    label="Old Password"
-                                    type="password"
-                                    error={!!errors.oldPassword}
-                                    helperText={errors?.oldPassword?.message}
-                                    variant="outlined"
-                                    fullWidth
-                                    InputProps={{
-                                        className: 'pr-2',
-                                        type: showOldPassword ? 'text' : 'password',
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton onClick={() => setShowOldPassword(!showOldPassword)}>
-                                                    <Icon className="text-20" color="action">
-                                                        {showOldPassword ? 'visibility' : 'visibility_off'}
-                                                    </Icon>
-                                                </IconButton>
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    required
-                                    InputLabelProps={{ shrink: true }}
-                                />
-                            )}
-                        />
-                        {invalidOldPassword && <Typography className="mb-4" style={{ color: 'red' }}>Invalid Old Password</Typography>}
-
                         <Controller
                             name="password"
                             control={control}

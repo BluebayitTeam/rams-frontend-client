@@ -3,7 +3,6 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -41,7 +40,6 @@ const UsersListTable = (props) => {
     const [searchUser, setSearchUser] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
-    const [data, setData] = useState(users);
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -55,7 +53,7 @@ const UsersListTable = (props) => {
         id: null
     });
     let serialNumber = 1;
-    const [deleteItem, setDeleteItem] = useState('');
+
     useEffect(() => {
         dispatch(getUsers(pageAndSize)).then(() => setLoading(false));
     }, [dispatch]);
@@ -119,38 +117,6 @@ const UsersListTable = (props) => {
         dispatch(getUsers({ ...pageAndSize, size: event.target.value }))
     }
 
-    function handleUpdateEmployee(item, event) {
-        localStorage.removeItem('deleteEmployee');
-        console.log("clicked");
-        localStorage.setItem('updateEmployee', event);
-        props.history.push(`/apps/employee-management/${item.id}/${item.first_name}`);
-    }
-    function handleDeleteEmployee(item, event) {
-        localStorage.removeItem('updateEmployee');
-        localStorage.setItem('deleteEmployee', event);
-        props.history.push(`/apps/employee-management/${item.id}/${item.first_name}`);
-        // dispatch(removeEmployee(item));
-        // window.location.reload();
-        //props.history.push(`/apps/employee-management/employees/${item.id}/${item.first_name}`);
-    }
-
-    function handleCheck(event, id) {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-        }
-
-        setSelected(newSelected);
-    }
-
     if (loading) {
         return <FuseLoading />;
     }
@@ -212,13 +178,6 @@ const UsersListTable = (props) => {
                                         selected={isSelected}
 
                                     >
-                                        <TableCell className="w-40 md:w-64 text-center" padding="none">
-                                            <Checkbox
-                                                checked={isSelected}
-                                                onClick={event => event.stopPropagation()}
-                                                onChange={event => handleCheck(event, n.id)}
-                                            />
-                                        </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {serialNumber++}
@@ -233,14 +192,14 @@ const UsersListTable = (props) => {
                                             {n.image && n.featuredImageId ? (
                                                 <img
                                                     className="h-full block rounded"
-                                                    style={{ borderRadius: '15px' }}
+                                                    style={{ borderRadius: '15' }}
                                                     src={_.find(n.image, { id: n.featuredImageId }).url}
                                                     alt={n.name}
                                                 />
                                             ) : (
                                                 <img
                                                     className="h-full block rounded"
-                                                    style={{ borderRadius: '15px' }}
+                                                    style={{ borderRadius: '15' }}
                                                     src={`${BASE_URL}${n.image}`}
                                                     alt={n.first_name}
                                                 />

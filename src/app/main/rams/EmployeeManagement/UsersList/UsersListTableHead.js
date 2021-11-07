@@ -1,9 +1,11 @@
+import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const rows = [
     {
@@ -49,16 +51,81 @@ const rows = [
         sort: true
     }
 ];
+const useStyles = makeStyles(theme => ({
+    actionsButtonWrapper: {
+        background: theme.palette.background.paper
+    }
+}));
 
 const UsersListTableHead = (props) => {
+    const classes = useStyles(props);
+    const { selectedUserIds } = props;
+    //console.log(selectedUserIds);
+    const numSelected = selectedUserIds.length;
+
+    const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+
+    const dispatch = useDispatch();
 
     const createSortHandler = property => event => {
         props.onRequestSort(event, property);
     };
 
+    function openSelectedProductsMenu(event) {
+        setSelectedProductsMenu(event.currentTarget);
+    }
+
+    function closeSelectedProductsMenu() {
+        setSelectedProductsMenu(null);
+    }
+
     return (
         <TableHead>
             <TableRow className="h-48 sm:h-64">
+                {/* <TableCell padding="none" className="w-40 md:w-64 text-center z-99">
+                    <Checkbox
+                        indeterminate={numSelected > 0 && numSelected < props.rowCount}
+                        checked={props.rowCount !== 0 && numSelected === props.rowCount}
+                        onChange={props.onSelectAllClick}
+                    />
+                    {numSelected > 0 && (
+                        <div
+                            className={clsx(
+                                'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1',
+                                classes.actionsButtonWrapper
+                            )}
+                        >
+                            <IconButton
+								aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
+								aria-haspopup="true"
+								onClick={openSelectedProductsMenu}
+							>
+								<Icon>more_horiz</Icon>
+							</IconButton>
+                            <Menu
+                                id="selectedProductsMenu"
+                                anchorEl={selectedProductsMenu}
+                                open={Boolean(selectedProductsMenu)}
+                                onClose={closeSelectedProductsMenu}
+                            >
+                                <MenuList>
+                                    <MenuItem
+                                        onClick={() => {
+                                            dispatch(removeProducts(selectedProductIds));
+                                            props.onMenuItemClick();
+                                            closeSelectedProductsMenu();
+                                        }}
+                                    >
+                                        <ListItemIcon className="min-w-40">
+                                            <Icon>delete</Icon>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Remove" />
+                                    </MenuItem>
+                                </MenuList>
+                            </Menu>
+                        </div>
+                    )}
+                </TableCell> */}
                 {rows.map(row => {
                     return (
                         <TableCell
