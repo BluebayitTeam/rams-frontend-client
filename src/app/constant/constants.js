@@ -2,7 +2,7 @@
 //http://192.168.0.172:8001
 
 //base url
-export const BASE_URL = 'http://192.168.0.172:8002';
+export const BASE_URL = 'http://192.168.0.172:8001';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;

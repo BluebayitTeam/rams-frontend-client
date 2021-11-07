@@ -123,6 +123,16 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/roles-management/roles'
             },
+            //users
+            {
+                id: 'userslist',
+                title: 'userslist',
+                translate: 'User List',
+                type: 'item',
+                url: '/apps/users-management/userslist',
+                exact: true
+            },
+
         ]
     }
 ];

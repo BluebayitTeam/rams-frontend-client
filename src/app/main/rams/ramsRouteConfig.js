@@ -18,6 +18,14 @@ const ramsRouteConfig = {
             path: '/apps/employee-management/:employeeId/:employeeName?',
             component: lazy(() => import('./EmployeeManagement/Employee/NewEmployee'))
         },
+        {
+            path: '/apps/users-management/userslist',
+            component: lazy(() => import('./EmployeeManagement/UsersList/UsersList'))
+        },
+        {
+            path: '/apps/users-management/forgot-password/:userId',
+            component: lazy(() => import('./EmployeeManagement/UsersList/ForgotPassword'))
+        },
 
         //department
         {

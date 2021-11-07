@@ -2,7 +2,6 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import useUserInfo from 'app/@customHook/@useUserInfo';
 import { setUser } from 'app/auth/store/userSlice';
 import { USER_BY_ID } from 'app/constant/constants';
-import { setMenuItem } from 'app/store/fuse/navigationSlice';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +18,7 @@ function FuseTheme(props) {
 	const { userId } = useUserInfo()
 
 	useLayoutEffect(() => {
-		dispatch(setMenuItem())
+		// dispatch(setMenuItem())
 
 		console.log("hitDispatch")
 	}, [auth])
