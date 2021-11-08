@@ -2,7 +2,7 @@
 //http://192.168.0.172:8001
 
 //base url
-export const BASE_URL = 'http://192.168.0.172:8001';
+export const BASE_URL = 'http://192.168.0.172:8002';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -634,4 +634,17 @@ export const GET_CUSTOMERTYPES = `${BASE_URL}/customer_type/api/v1/customer_type
 export const UPDATE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_type/update/`;
 
 export const DELETE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_type/delete/`;
+
+//menu
+export const CREATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/create/`;
+
+export const DELETE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/delete/`;
+
+export const GET_MENUS = `${BASE_URL}/menu_item/api/v1/menu_item/`;
+
+export const UPDATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/update/`;
+
+export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/all`
+
+export const SEARCH_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/search/`;
 

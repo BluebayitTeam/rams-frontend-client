@@ -154,13 +154,6 @@ const EmployeesTable = (props) => {
         setSelected(newSelected);
     }
 
-    // function handleChangePage(event, value) {
-    //     setPage(value);
-    // }
-
-    // function handleChangeRowsPerPage(event) {
-    //     setRowsPerPage(event.target.value);
-    // }
 
     if (loading) {
         return <FuseLoading />;

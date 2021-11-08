@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CUSOTMERTYPES, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PAGINATION, GET_BRANDS_WITHOUT_PAGINATION, GET_CATEGORIES_WITHOUT_PAGINATION, GET_CITYS_WITHOUT_PAGINATION, GET_COUNTRIES_WITHOUT_PAGINATION, GET_DEPARTMENTS_WITHOUT_PAGINATION, GET_EMPLOYEES_WITHOUT_PAGINATION, GET_PERMISSIONS_WITHOUT_PAGINATION, GET_ROLES_WITHOUT_PAGINATION, GET_THANAS_WITHOUT_PAGINATION, GET_USERS_WITHOUT_PAGINATION, GET_VENDORS_WITHOUT_PAGINATION, ORDERSTATUS, PAYMENTMATHODS } from 'app/constant/constants';
+import { CUSOTMERTYPES, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PAGINATION, GET_BRANDS_WITHOUT_PAGINATION, GET_CATEGORIES_WITHOUT_PAGINATION, GET_CITYS_WITHOUT_PAGINATION, GET_COUNTRIES_WITHOUT_PAGINATION, GET_DEPARTMENTS_WITHOUT_PAGINATION, GET_EMPLOYEES_WITHOUT_PAGINATION, GET_MENUS_ALL, GET_PERMISSIONS_WITHOUT_PAGINATION, GET_ROLES_WITHOUT_PAGINATION, GET_THANAS_WITHOUT_PAGINATION, GET_USERS_WITHOUT_PAGINATION, GET_VENDORS_WITHOUT_PAGINATION, ORDERSTATUS, PAYMENTMATHODS } from 'app/constant/constants';
 
 
 export const getBranches = () => (dispatch) => {
@@ -78,18 +78,6 @@ export const getAttributes = () => (dispatch) => {
         .then(data => dispatch(setAttributes(data.attributes)))
         .catch(() => { })
 }
-//
-// export const getCitys = () => (dispatch) => {
-//     const authTOKEN = {
-//         headers: {
-//             'Content-type': 'application/json',
-//             Authorization: localStorage.getItem('jwt_access_token'),
-//         }
-//     }
-//     fetch(CITIES, authTOKEN)
-//         .then(response => response.json())
-//         .then(data => dispatch(setCitys(data.cities)))
-// }
 
 export const getPermissions = () => (dispatch) => {
     fetch(GET_PERMISSIONS_WITHOUT_PAGINATION)
@@ -180,6 +168,13 @@ export const getCategory = () => (dispatch) => {
         .catch(() => { });
 }
 
+export const getParentMenus = () => (dispatch) => {
+    fetch(GET_MENUS_ALL)
+        .then(response => response.json())
+        .then(data => { dispatch(setParentMenus(data.menu_items)) })
+        .catch(() => { });
+}
+
 const dataSlice = createSlice({
     name: "employeeManagement/data",
     initialState: {
@@ -204,6 +199,7 @@ const dataSlice = createSlice({
         cusotmerTypes: [],
         brands: [],
         categories: [],
+        parentMenus: [],
     },
     reducers: {
         setBranches: (state, action) => {
@@ -265,6 +261,9 @@ const dataSlice = createSlice({
         },
         setCategories: (state, action) => {
             state.categories = action.payload ? action.payload : []
+        },
+        setParentMenus: (state, action) => {
+            state.parentMenus = action.payload ? action.payload : []
         }
     }
 })
@@ -289,7 +288,8 @@ const {
     setPaymentMathods,
     setCusotmerTypes,
     setBrands,
-    setCategories
+    setCategories,
+    setParentMenus
 } = dataSlice.actions;
 export default dataSlice.reducer;
 

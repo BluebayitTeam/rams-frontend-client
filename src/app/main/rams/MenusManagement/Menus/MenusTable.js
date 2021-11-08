@@ -2,28 +2,28 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import { Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
+import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import Pagination from '@material-ui/lab/Pagination';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import { Pagination } from '@material-ui/lab';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import { BASE_URL, SEARCH_USER } from '../../../../constant/constants';
-import { getUsers, selectUsers } from '../store/usersSlice';
-import UsersListTableHead from './UsersListTableHead';
+import { withRouter } from 'react-router-dom';
+import { getMenus, selectMenus } from '../store/menusSlice';
+import MenusTableHead from './MenusTableHead';
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: "flex",
         justifyContent: "space-between",
-        flexWrap: "wrap",
+        flexWrap: "nowrap",
         '& > *': {
             marginTop: theme.spacing(1),
             // marginBottom: theme.spacing(3),
@@ -31,48 +31,49 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const UsersListTable = (props) => {
-
+const MenusTable = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const users = useSelector(selectUsers);
-    const searchText = useSelector(({ employeesManagement }) => employeesManagement.usersList.searchText);
-    const [searchUser, setSearchUser] = useState([]);
+    const menus = useSelector(selectMenus);
+    const searchText = useSelector(({ menusManagement }) => menusManagement.menus.searchText);
+    const [searchMenu, setSearchMenu] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
-
+    const [data, setData] = useState(menus);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(30);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
-
-    const totalPages = sessionStorage.getItem('total_userlist_pages');
-    const totalElements = sessionStorage.getItem('total_userlist_elements');
-
     const [order, setOrder] = useState({
         direction: 'asc',
         id: null
     });
+
+
     let serialNumber = 1;
 
+    const totalPages = sessionStorage.getItem('total_menus_pages');
+    const totalElements = sessionStorage.getItem('total_menus_elements');
+
     useEffect(() => {
-        dispatch(getUsers(pageAndSize)).then(() => setLoading(false));
+        dispatch(getMenus(pageAndSize)).then(() => setLoading(false));
     }, [dispatch]);
 
-
-    //searchCustomer
     useEffect(() => {
-        searchText !== "" && getSearchUser();
+        searchText !== "" && getSearchMenu();
     }, [searchText])
 
-    const getSearchUser = () => {
-        fetch(`${SEARCH_USER}?username=${searchText}`)
+    const getSearchMenu = () => {
+        console.log(`${SEARCH_MENU}?username=${searchText}`);
+        fetch(`${SEARCH_MENU}?username=${searchText}`)
             .then(response => response.json())
-            .then(userData => {
-                setSearchUser(userData.users);
-            });
+            .then(res => {
+                // setSearchMenu(searchedEmployeedData.employees);
+                // console.log(searchedEmployeedData)
+            })
+            .catch(() => { });
     }
 
-    function handleRequestSort(event, property) {
+    function handleRequestSort(menuEvent, property) {
         const id = property;
         let direction = 'desc';
 
@@ -86,9 +87,9 @@ const UsersListTable = (props) => {
         });
     }
 
-    function handleSelectAllClick(event) {
-        if (event.target.checked) {
-            setSelected(users.map(n => n.id));
+    function handleSelectAllClick(menuEvent) {
+        if (menuEvent.target.checked) {
+            setSelected(data.map(n => n.id));
             return;
         }
         setSelected([]);
@@ -98,30 +99,57 @@ const UsersListTable = (props) => {
         setSelected([]);
     }
 
+    function handleUpdateMenu(item) {
+        localStorage.removeItem('menuEvent')
+        props.history.push(`/apps/menu-management/menus/${item.id}/${item.name}`);
+    }
+    function handleDeleteMenu(item, menuEvent) {
+        localStorage.removeItem('menuEvent')
+        localStorage.setItem('menuEvent', menuEvent);
+        props.history.push(`/apps/menu-management/menus/${item.id}/${item.name}`);
+    }
+
+    function handleCheck(menuEvent, id) {
+        const selectedIndex = selected.indexOf(id);
+        let newSelected = [];
+
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, id);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+        }
+
+        setSelected(newSelected);
+    }
+
     //pagination
     const handlePagination = (e, handlePage) => {
         setPageAndSize({ ...pageAndSize, page: handlePage })
         setPage(handlePage - 1)
-        dispatch(getUsers({ ...pageAndSize, page: handlePage }))
+        dispatch(getMenus({ ...pageAndSize, page: handlePage }))
     }
 
-    function handleChangePage(event, value) {
+    function handleChangePage(menuEvent, value) {
         setPage(value);
         setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getUsers({ ...pageAndSize, page: value + 1 }))
+        dispatch(getMenus({ ...pageAndSize, page: value + 1 }))
     }
 
-    function handleChangeRowsPerPage(event) {
-        setRowsPerPage(event.target.value);
-        setPageAndSize({ ...pageAndSize, size: event.target.value })
-        dispatch(getUsers({ ...pageAndSize, size: event.target.value }))
+    function handleChangeRowsPerPage(menuEvent) {
+        setRowsPerPage(menuEvent.target.value);
+        setPageAndSize({ ...pageAndSize, size: menuEvent.target.value })
+        dispatch(getMenus({ ...pageAndSize, size: menuEvent.target.value }))
     }
 
     if (loading) {
         return <FuseLoading />;
     }
 
-    if (users?.length === 0) {
+    if (menus?.length === 0) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -129,7 +157,7 @@ const UsersListTable = (props) => {
                 className="flex flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There are no user!
+                    There are no menu!
                 </Typography>
             </motion.div>
         );
@@ -139,18 +167,18 @@ const UsersListTable = (props) => {
         <div className="w-full flex flex-col">
             <FuseScrollbars className="flex-grow overflow-x-auto">
                 <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <UsersListTableHead
-                        selectedUserIds={selected}
+                    <MenusTableHead
+                        selectedMenuIds={selected}
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={users.length}
+                        rowCount={data.length}
                         onMenuItemClick={handleDeselect}
                     />
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && searchUser ? searchUser : users,
+                            searchText !== "" && searchMenu || menus,
                             [
                                 o => {
                                     switch (order.id) {
@@ -169,7 +197,6 @@ const UsersListTable = (props) => {
                                 const isSelected = selected.indexOf(n.id) !== -1;
                                 return (
                                     <TableRow
-                                        className="h-72 cursor-pointer"
                                         hover
                                         role="checkbox"
                                         aria-checked={isSelected}
@@ -178,50 +205,52 @@ const UsersListTable = (props) => {
                                         selected={isSelected}
 
                                     >
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {serialNumber++}
+                                        <TableCell className="w-40 md:w-64 text-center" padding="none">
+                                            <Checkbox
+                                                checked={isSelected}
+                                                onClick={menuEvent => menuEvent.stopPropagation()}
+                                                onChange={menuEvent => handleCheck(menuEvent, n.id)}
+                                            />
                                         </TableCell>
 
-                                        <TableCell
-                                            className="h-52 px-4 md:px-0"
-                                            component="th"
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            {n.image && n.featuredImageId ? (
-                                                <img
-                                                    className="h-full block rounded"
-                                                    style={{ borderRadius: '15' }}
-                                                    src={_.find(n.image, { id: n.featuredImageId }).url}
-                                                    alt={n.name}
-                                                />
-                                            ) : (
-                                                <img
-                                                    className="h-full block rounded"
-                                                    style={{ borderRadius: '15' }}
-                                                    src={`${BASE_URL}${n.image}`}
-                                                    alt={n.first_name}
-                                                />
-                                            )}
+                                        <TableCell className="w-40 md:w-64" component="th" scope="row">
+                                            {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.username}
+                                            {n.parent}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.email}
+                                            {n.menu_id}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.secondary_phone}
+                                            {n.title}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            <Box component={Link} to={`/apps/users-management/forgot-password/${n.id}`}>
-                                                <VpnKeyIcon className="cursor-pointer" style={{ color: 'green' }} />
-                                            </Box>
+                                            {n.translate}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.type}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.icon}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.url}
+                                        </TableCell>
+
+
+
+                                        <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
+                                            <div>
+                                                <EditIcon onClick={menuEvent => handleUpdateMenu(n)} className="h-72 cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteMenu(n, "Delete")} className="h-72 cursor-pointer" style={{ color: 'red' }} />
+                                            </div>
                                         </TableCell>
 
                                     </TableRow>
@@ -245,7 +274,7 @@ const UsersListTable = (props) => {
                 />
 
                 <TablePagination
-                    className="flex-shrink-0 border-t-1"
+                    // className="flex-shrink-0 border-t-1"
                     rowsPerPageOptions={[5, 10, 30, 50, 100]}
                     component="div"
                     count={totalElements}
@@ -265,4 +294,4 @@ const UsersListTable = (props) => {
     );
 };
 
-export default withRouter(UsersListTable);
+export default withRouter(MenusTable);

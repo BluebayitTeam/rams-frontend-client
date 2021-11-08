@@ -54,7 +54,7 @@ const navigationConfig = [
         translate: 'Settings',
         type: 'collapse',
         icon: 'settings',
-        url: '/apps/dashboards/project',
+        url: '',
         exact: true,
         children: [
             //cities
@@ -132,7 +132,15 @@ const navigationConfig = [
                 url: '/apps/users-management/userslist',
                 exact: true
             },
-
+            //menu
+            {
+                id: 'menus',
+                title: 'Menus',
+                translate: 'Menus',
+                type: 'item',
+                url: '/apps/menu-management/menus',
+                exact: true
+            }
         ]
     }
 ];
