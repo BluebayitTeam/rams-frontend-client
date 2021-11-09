@@ -113,7 +113,7 @@ function SitesettingForm(props) {
                         }}
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -166,6 +166,7 @@ function SitesettingForm(props) {
                                         ...params.inputProps,
                                         autoComplete: 'new-password', // disable autocomplete and autofill
                                     }}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             )}
                         />
@@ -199,7 +200,7 @@ function SitesettingForm(props) {
                             id="primary_phone"
                             variant="outlined"
                             fullWidth
-                            InputLabelProps={{ shrink: true }}
+                            InputLabelProps={field.value && { shrink: true }}
                         />
                     )}
                 />
@@ -218,7 +219,7 @@ function SitesettingForm(props) {
                         id="address"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -236,7 +237,7 @@ function SitesettingForm(props) {
                         id="facebook_url"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -254,7 +255,7 @@ function SitesettingForm(props) {
                         id="twitter_url"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -272,7 +273,7 @@ function SitesettingForm(props) {
                         id="instagram_url"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />

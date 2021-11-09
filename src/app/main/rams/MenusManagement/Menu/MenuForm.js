@@ -63,7 +63,7 @@ function MenuForm(props) {
                         options={parents}
                         getOptionLabel={(option) => `${option?.translate}`}
                         onChange={(event, newValue) => {
-                            onChange(newValue.id)
+                            onChange(newValue?.id)
                         }}
                         renderInput={params => (
 
@@ -213,6 +213,7 @@ function MenuForm(props) {
                             required
                             label="Exact"
                             control={<Checkbox
+                                color="primary"
                                 {...field}
                                 checked={field.value ? field.value : false}
                             />}

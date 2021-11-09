@@ -151,6 +151,21 @@ const ramsRouteConfig = {
             path: '/apps/menu-management/:menuId',
             component: lazy(() => import('./MenusManagement/Menu/NewMenu'))
         },
+
+        //roleMenu
+        {
+            path: '/apps/roleMenu-management/roleMenus/:roleMenuId/:roleMenuName?',
+            component: lazy(() => import('./RoleMenusManagement/RoleMenu/NewRoleMenu.js'))
+        },
+        {
+            path: '/apps/roleMenu-management/roleMenus',
+            component: lazy(() => import('./RoleMenusManagement/RoleMenus/RoleMenus'))
+        },
+        {
+            path: '/apps/roleMenu-management/:roleMenuId',
+            component: lazy(() => import('./RoleMenusManagement/RoleMenu/NewRoleMenu'))
+        },
+
     ]
 }
 

@@ -79,46 +79,10 @@ const RoleForm = (props) => {
                         id="name"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 }
             />
-            {/* <Controller
-                name="permissions"
-                control={control}
-                render={({ field: { onChange, value } }) =>
-                    <FormControl >
-                        <InputLabel shrink htmlFor="select-multiple-native">
-                            Permissions
-                        </InputLabel>
-                        <Select
-                            multiple
-                            native
-                            value={value}
-                            //label="Permissions"
-                            onChange={(event, newValue) => {
-                                const { options } = event.target;
-                                const values = [];
-                                for (let i = 0, l = options.length; i < l; i += 1) {
-                                    if (options[i].selected) {
-                                        values.push(options[i].value);
-                                    }
-                                }
-                                onChange(values);
-                            }}
-                            inputProps={{
-                                id: 'select-multiple-native',
-                            }}
-                        >
-                            {permissions.map((permission) => (
-                                <option key={permission.id} value={permission.id}>
-                                    {permission?.name}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                }
-            /> */}
             <div style={{ display: "flex", flexDirection: "column", }}>
 
                 <Controller

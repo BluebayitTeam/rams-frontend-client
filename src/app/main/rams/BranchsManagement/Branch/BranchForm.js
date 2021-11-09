@@ -35,7 +35,7 @@ function BranchForm(props) {
                         className="mt-8 mb-16"
                         error={!!errors.name}
                         required
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                         helperText={errors?.name?.message}
                         label="Name"
                         autoFocus
@@ -53,7 +53,7 @@ function BranchForm(props) {
                         {...field}
                         className="mt-8 mb-16"
                         error={!!errors.short_desc}
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                         helperText={errors?.short_desc?.message}
                         id="short_desc"
                         label="Short Description"
@@ -76,7 +76,7 @@ function BranchForm(props) {
                         label="Full Description"
                         type="text"
                         error={!!errors.full_desc}
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                         helperText={errors?.full_desc?.message}
                         multiline
                         rows={5}
@@ -134,7 +134,7 @@ function BranchForm(props) {
                         id="street_address_two"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />

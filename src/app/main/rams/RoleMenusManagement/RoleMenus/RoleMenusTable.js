@@ -16,8 +16,9 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getMenus, selectMenus } from '../store/menusSlice';
-import MenusTableHead from './MenusTableHead';
+import { getRoleMenus, selectRoleMenus } from '../store/roleMenusSlice';
+import RoleMenusTableHead from './RoleMenusTableHead';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -31,49 +32,38 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const MenusTable = (props) => {
+const RoleMenusTable = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const menus = useSelector(selectMenus);
-    const searchText = useSelector(({ menusManagement }) => menusManagement.menus.searchText);
-    const [searchMenu, setSearchMenu] = useState([]);
+    const roleMenus = useSelector(selectRoleMenus);
+    const searchText = useSelector(({ roleMenusManagement }) => roleMenusManagement.roleMenus.searchText);
+    const [searchRoleMenu, setSearchRoleMenu] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
-    const [data, setData] = useState(menus);
+    const [data, setData] = useState(roleMenus);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(30);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+
     const [order, setOrder] = useState({
         direction: 'asc',
         id: null
     });
 
-
     let serialNumber = 1;
-
-    const totalPages = sessionStorage.getItem('total_menus_pages');
-    const totalElements = sessionStorage.getItem('total_menus_elements');
+    const totalPages = sessionStorage.getItem('total_roleMenus_pages');
+    const totalElements = sessionStorage.getItem('total_roleMenus_elements');
 
     useEffect(() => {
-        dispatch(getMenus(pageAndSize)).then(() => setLoading(false));
+        dispatch(getRoleMenus(pageAndSize)).then(() => setLoading(false));
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchMenu();
+        searchText !== "" && "getSearchRoleMenu()";
     }, [searchText])
 
-    const getSearchMenu = () => {
-        console.log(`${SEARCH_MENU}?username=${searchText}`);
-        fetch(`${SEARCH_MENU}?username=${searchText}`)
-            .then(response => response.json())
-            .then(res => {
-                // setSearchMenu(searchedEmployeedData.employees);
-                // console.log(searchedEmployeedData)
-            })
-            .catch(() => { });
-    }
 
-    function handleRequestSort(menuEvent, property) {
+    function handleRequestSort(roleMenuEvent, property) {
         const id = property;
         let direction = 'desc';
 
@@ -87,8 +77,8 @@ const MenusTable = (props) => {
         });
     }
 
-    function handleSelectAllClick(menuEvent) {
-        if (menuEvent.target.checked) {
+    function handleSelectAllClick(roleMenuEvent) {
+        if (roleMenuEvent.target.checked) {
             setSelected(data.map(n => n.id));
             return;
         }
@@ -99,17 +89,17 @@ const MenusTable = (props) => {
         setSelected([]);
     }
 
-    function handleUpdateMenu(item) {
-        localStorage.removeItem('menuEvent')
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.name}`);
+    function handleUpdateRoleMenu(item) {
+        localStorage.removeItem('roleMenuEvent')
+        props.history.push(`/apps/roleMenu-management/roleMenus/${item.id}/${item.name}`);
     }
-    function handleDeleteMenu(item, menuEvent) {
-        localStorage.removeItem('menuEvent')
-        localStorage.setItem('menuEvent', menuEvent);
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.name}`);
+    function handleDeleteRoleMenu(item, roleMenuEvent) {
+        localStorage.removeItem('roleMenuEvent')
+        localStorage.setItem('roleMenuEvent', roleMenuEvent);
+        props.history.push(`/apps/roleMenu-management/roleMenus/${item.id}/${item.name}`);
     }
 
-    function handleCheck(menuEvent, id) {
+    function handleCheck(roleMenuEvent, id) {
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
@@ -130,26 +120,26 @@ const MenusTable = (props) => {
     const handlePagination = (e, handlePage) => {
         setPageAndSize({ ...pageAndSize, page: handlePage })
         setPage(handlePage - 1)
-        dispatch(getMenus({ ...pageAndSize, page: handlePage }))
+        dispatch(getRoleMenus({ ...pageAndSize, page: handlePage }))
     }
 
-    function handleChangePage(menuEvent, value) {
+    function handleChangePage(event, value) {
         setPage(value);
         setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getMenus({ ...pageAndSize, page: value + 1 }))
+        dispatch(getRoleMenus({ ...pageAndSize, page: value + 1 }))
     }
 
-    function handleChangeRowsPerPage(menuEvent) {
-        setRowsPerPage(menuEvent.target.value);
-        setPageAndSize({ ...pageAndSize, size: menuEvent.target.value })
-        dispatch(getMenus({ ...pageAndSize, size: menuEvent.target.value }))
+    function handleChangeRowsPerPage(roleMenuEvent) {
+        setRowsPerPage(roleMenuEvent.target.value);
+        setPageAndSize({ ...pageAndSize, size: roleMenuEvent.target.value })
+        dispatch(getRoleMenus({ ...pageAndSize, size: roleMenuEvent.target.value }))
     }
 
     if (loading) {
         return <FuseLoading />;
     }
 
-    if (menus?.length === 0) {
+    if (roleMenus?.length === 0) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -157,7 +147,7 @@ const MenusTable = (props) => {
                 className="flex flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There are no menu!
+                    There are no roleMenu!
                 </Typography>
             </motion.div>
         );
@@ -167,8 +157,8 @@ const MenusTable = (props) => {
         <div className="w-full flex flex-col">
             <FuseScrollbars className="flex-grow overflow-x-auto">
                 <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <MenusTableHead
-                        selectedMenuIds={selected}
+                    <RoleMenusTableHead
+                        selectedRoleMenuIds={selected}
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
@@ -178,7 +168,7 @@ const MenusTable = (props) => {
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && searchMenu || menus,
+                            searchText !== "" && searchRoleMenu || roleMenus,
                             [
                                 o => {
                                     switch (order.id) {
@@ -209,8 +199,8 @@ const MenusTable = (props) => {
                                         <TableCell className="w-40 md:w-64 text-center" padding="none">
                                             <Checkbox
                                                 checked={isSelected}
-                                                onClick={menuEvent => menuEvent.stopPropagation()}
-                                                onChange={menuEvent => handleCheck(menuEvent, n.id)}
+                                                onClick={roleMenuEvent => roleMenuEvent.stopPropagation()}
+                                                onChange={roleMenuEvent => handleCheck(roleMenuEvent, n.id)}
                                             />
                                         </TableCell>
 
@@ -218,38 +208,20 @@ const MenusTable = (props) => {
                                             {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
                                         </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.parent}
-                                        </TableCell>
+
+
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.menu_id}
+                                            {n.role}
                                         </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.title}
-                                        </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.translate}
-                                        </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.type}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.icon}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.url}
-                                        </TableCell>
 
 
                                         <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
                                             <div>
-                                                <EditIcon onClick={menuEvent => handleUpdateMenu(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteMenu(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
+                                                <EditIcon onClick={roleMenuEvent => handleUpdateRoleMenu(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteRoleMenu(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
                                             </div>
                                         </TableCell>
 
@@ -294,4 +266,4 @@ const MenusTable = (props) => {
     );
 };
 
-export default withRouter(MenusTable);
+export default withRouter(RoleMenusTable);

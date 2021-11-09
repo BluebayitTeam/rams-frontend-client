@@ -140,7 +140,16 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/menu-management/menus',
                 exact: true
-            }
+            },
+            //roleMenu
+            {
+                id: 'roleMenus',
+                title: 'RoleMenus',
+                translate: 'RoleMenus',
+                type: 'item',
+                url: '/apps/roleMenu-management/roleMenus',
+                exact: true
+            },
         ]
     }
 ];

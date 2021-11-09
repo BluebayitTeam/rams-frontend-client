@@ -302,7 +302,7 @@ const EmployeeForm = (props) => {
                         id="employeeid"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 }
             />
@@ -320,7 +320,7 @@ const EmployeeForm = (props) => {
                         id="firstName"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 }
             />
@@ -338,7 +338,7 @@ const EmployeeForm = (props) => {
                         id="lastName"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -357,7 +357,7 @@ const EmployeeForm = (props) => {
                         id="userName"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -385,7 +385,7 @@ const EmployeeForm = (props) => {
                         }}
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -417,7 +417,7 @@ const EmployeeForm = (props) => {
                                 )
                             }}
                             required
-                            InputLabelProps={{ shrink: true }}
+                            InputLabelProps={field.value && { shrink: true }}
                         />
                     )}
                 />
@@ -448,7 +448,7 @@ const EmployeeForm = (props) => {
                                 )
                             }}
                             required
-                            InputLabelProps={{ shrink: true }}
+                            InputLabelProps={field.value && { shrink: true }}
                         />
                     )}
                 />
@@ -536,7 +536,7 @@ const EmployeeForm = (props) => {
                             id="primary_phone"
                             variant="outlined"
                             fullWidth
-                            InputLabelProps={{ shrink: true }}
+                            InputLabelProps={field.value && { shrink: true }}
                         />
                     )}
                 />
@@ -623,7 +623,7 @@ const EmployeeForm = (props) => {
                             id="secondary_phone"
                             variant="outlined"
                             fullWidth
-                            InputLabelProps={{ shrink: true }}
+                            InputLabelProps={field.value && { shrink: true }}
                         />
                     )}
                 />
@@ -643,7 +643,7 @@ const EmployeeForm = (props) => {
                         id="address1"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -660,7 +660,7 @@ const EmployeeForm = (props) => {
                         id="address2"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -815,7 +815,7 @@ const EmployeeForm = (props) => {
                         id="postal_code"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -832,7 +832,7 @@ const EmployeeForm = (props) => {
                         id="nid"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             /><Controller
@@ -906,7 +906,7 @@ const EmployeeForm = (props) => {
                         id="basic_money"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />
@@ -923,7 +923,7 @@ const EmployeeForm = (props) => {
                         id="allowance_money"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        InputLabelProps={field.value && { shrink: true }}
                     />
                 )}
             />

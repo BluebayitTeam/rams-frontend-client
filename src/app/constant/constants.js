@@ -2,13 +2,11 @@
 //http://192.168.0.172:8001
 
 //base url
-export const BASE_URL = 'http://192.168.0.172:8002';
+export const BASE_URL = 'http://192.168.0.172:8001';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
 
-//menu item
-export const MENU_ITEM = `${BASE_URL}/menu_item/api/v1/menu_item/menu_items_by_user_role/`
 
 //user
 export const USER_BY_ID = `${BASE_URL}/user/api/v1/user/`
@@ -635,7 +633,9 @@ export const UPDATE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_ty
 
 export const DELETE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_type/delete/`;
 
-//menu
+//menu item
+export const MENU_ITEMS = `${BASE_URL}/menu_item/api/v1/menu_item/menu_items_by_user_role/`
+
 export const CREATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/create/`;
 
 export const DELETE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/delete/`;
@@ -647,4 +647,17 @@ export const UPDATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/update/`;
 export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/all`
 
 export const SEARCH_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/search/`;
+
+//role menu
+export const CREATE_ROLEMENU = `${BASE_URL}/role_menu/api/v1/role_menu/create/`;
+
+export const GET_ROLEMENUS = `${BASE_URL}/role_menu/api/v1/role_menu/all`;
+
+export const GET_ROLEMENU_BY_ID = `${BASE_URL}/role_menu/api/v1/role_menu/`;
+
+export const UPDATE_ROLEMENU = `${BASE_URL}/role_menu/api/v1/role_menu/update/`;
+
+export const DELETE_ROLEMENU = `${BASE_URL}/role_menu/api/v1/role_menu/delete/`;
+
+// export const SEARCH_ROLEMENU = `${BASE_URL}/rolemenu/api/v1/rolemenu/search/`;
 

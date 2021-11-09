@@ -10,8 +10,8 @@ export const getMenus = createAsyncThunk('menuManagement/menus/geMenus', async (
     const response = axios.get(GET_MENUS_ALL, { params: pageAndSize });
     const data = await response;
 
-    // sessionStorage.setItem('total_menus_elements', response.data.total_elements);
-    // sessionStorage.setItem('total_menus_pages', response.data.total_pages);
+    sessionStorage.setItem('total_menus_elements', data.data.total_elements);
+    sessionStorage.setItem('total_menus_pages', data.data.total_pages);
     delete axios.defaults.headers.common['Content-type'];
     delete axios.defaults.headers.common.Authorization;
 
