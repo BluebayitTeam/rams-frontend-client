@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CUSOTMERTYPES, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PAGINATION, GET_BRANDS_WITHOUT_PAGINATION, GET_CATEGORIES_WITHOUT_PAGINATION, GET_CITYS_WITHOUT_PAGINATION, GET_COUNTRIES_WITHOUT_PAGINATION, GET_DEPARTMENTS_WITHOUT_PAGINATION, GET_EMPLOYEES_WITHOUT_PAGINATION, GET_MENUS_ALL, GET_PERMISSIONS_WITHOUT_PAGINATION, GET_ROLES_WITHOUT_PAGINATION, GET_THANAS_WITHOUT_PAGINATION, GET_USERS_WITHOUT_PAGINATION, GET_VENDORS_WITHOUT_PAGINATION, ORDERSTATUS, PAYMENTMATHODS } from 'app/constant/constants';
+import { CUSOTMERTYPES, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PAGINATION, GET_BRANDS_WITHOUT_PAGINATION, GET_CATEGORIES_WITHOUT_PAGINATION, GET_CITYS_WITHOUT_PAGINATION, GET_COUNTRIES_WITHOUT_PAGINATION, GET_DEPARTMENTS_WITHOUT_PAGINATION, GET_EMPLOYEES_WITHOUT_PAGINATION, GET_MENUS_ALL, GET_MENUS_WITHOUT_PAGINATION, GET_PERMISSIONS_WITHOUT_PAGINATION, GET_ROLES_WITHOUT_PAGINATION, GET_THANAS_WITHOUT_PAGINATION, GET_USERS_WITHOUT_PAGINATION, GET_VENDORS_WITHOUT_PAGINATION, ORDERSTATUS, PAYMENTMATHODS } from 'app/constant/constants';
+import axios from "axios";
 
 
 export const getBranches = () => (dispatch) => {
@@ -169,10 +170,25 @@ export const getCategory = () => (dispatch) => {
 }
 
 export const getParentMenus = () => (dispatch) => {
-    fetch(GET_MENUS_ALL)
+    fetch(GET_MENUS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => { dispatch(setParentMenus(data.menu_items)) })
         .catch(() => { });
+}
+
+export const getAllMenuNested = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    axios.get(GET_MENUS_ALL, authTOKEN)
+        .then(res => {
+            console.log("res", res)
+            dispatch(setAllMenuNested(res.data?.menu_items))
+        })
+        .catch(() => { dispatch(setAllMenuNested([])) });
 }
 
 const dataSlice = createSlice({
@@ -200,6 +216,7 @@ const dataSlice = createSlice({
         brands: [],
         categories: [],
         parentMenus: [],
+        nestedMenus: [],
     },
     reducers: {
         setBranches: (state, action) => {
@@ -264,6 +281,9 @@ const dataSlice = createSlice({
         },
         setParentMenus: (state, action) => {
             state.parentMenus = action.payload ? action.payload : []
+        },
+        setAllMenuNested: (state, action) => {
+            state.nestedMenus = action.payload ? action.payload : []
         }
     }
 })
@@ -289,7 +309,8 @@ const {
     setCusotmerTypes,
     setBrands,
     setCategories,
-    setParentMenus
+    setParentMenus,
+    setAllMenuNested,
 } = dataSlice.actions;
 export default dataSlice.reducer;
 

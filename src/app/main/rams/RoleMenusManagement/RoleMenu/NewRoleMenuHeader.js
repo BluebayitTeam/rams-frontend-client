@@ -1,4 +1,3 @@
-import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
@@ -16,7 +15,7 @@ const NewRoleMenuHeader = () => {
     const methods = useFormContext();
     const { formState, watch, getValues } = methods;
     const { isValid, dirtyFields } = formState;
-    const name = watch('name');
+    const name = watch('role');
     const theme = useTheme();
     const history = useHistory();
 
@@ -113,7 +112,7 @@ const NewRoleMenuHeader = () => {
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    disabled={_.isEmpty(dirtyFields) || !isValid}
+                    disabled={!name}
                     onClick={handleSaveRoleMenu}
                 >
                     Save

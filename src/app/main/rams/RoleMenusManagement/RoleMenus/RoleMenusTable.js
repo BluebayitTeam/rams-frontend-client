@@ -91,12 +91,12 @@ const RoleMenusTable = (props) => {
 
     function handleUpdateRoleMenu(item) {
         localStorage.removeItem('roleMenuEvent')
-        props.history.push(`/apps/roleMenu-management/roleMenus/${item.id}/${item.name}`);
+        props.history.push(`/apps/roleMenu-management/roleMenus/${item.id}/${item.role}`);
     }
     function handleDeleteRoleMenu(item, roleMenuEvent) {
         localStorage.removeItem('roleMenuEvent')
         localStorage.setItem('roleMenuEvent', roleMenuEvent);
-        props.history.push(`/apps/roleMenu-management/roleMenus/${item.id}/${item.name}`);
+        props.history.push(`/apps/roleMenu-management/roleMenus/${item.id}/${item.role}`);
     }
 
     function handleCheck(roleMenuEvent, id) {

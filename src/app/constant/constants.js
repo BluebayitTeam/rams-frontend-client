@@ -2,7 +2,7 @@
 //http://192.168.0.172:8001
 
 //base url
-export const BASE_URL = 'http://192.168.0.172:8001';
+export const BASE_URL = 'http://192.168.0.172:8002';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -644,9 +644,11 @@ export const GET_MENUS = `${BASE_URL}/menu_item/api/v1/menu_item/`;
 
 export const UPDATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/update/`;
 
-export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/all`
+export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/nested/all/`
 
 export const SEARCH_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/search/`;
+
+export const GET_MENUS_WITHOUT_PAGINATION = `${BASE_URL}/menu_item/api/v1/menu_item/without_pagination/all/`;
 
 //role menu
 export const CREATE_ROLEMENU = `${BASE_URL}/role_menu/api/v1/role_menu/create/`;

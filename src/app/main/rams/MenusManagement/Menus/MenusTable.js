@@ -101,12 +101,12 @@ const MenusTable = (props) => {
 
     function handleUpdateMenu(item) {
         localStorage.removeItem('menuEvent')
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.name}`);
+        props.history.push(`/apps/menu-management/menus/${item.id}/${item.translate}`);
     }
     function handleDeleteMenu(item, menuEvent) {
         localStorage.removeItem('menuEvent')
         localStorage.setItem('menuEvent', menuEvent);
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.name}`);
+        props.history.push(`/apps/menu-management/menus/${item.id}/${item.translate}`);
     }
 
     function handleCheck(menuEvent, id) {

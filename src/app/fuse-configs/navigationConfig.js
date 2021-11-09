@@ -10,7 +10,7 @@ i18next.addResourceBundle('ar', 'navigation', ar);
 const navigationConfig = [
     //employee
     {
-        id: 'employee',
+        id: 1,
         title: 'Employee',
         translate: 'Employee Management',
         type: 'collapse',
@@ -19,7 +19,7 @@ const navigationConfig = [
         children: [
             //employees
             {
-                id: 'employees',
+                id: 2,
                 title: 'Emloyees',
                 translate: 'Employees',
                 type: 'item',
@@ -28,7 +28,7 @@ const navigationConfig = [
             },
             //departments
             {
-                id: 'departments',
+                id: 3,
                 title: 'Departments',
                 translate: 'Departments',
                 type: 'item',
@@ -37,7 +37,7 @@ const navigationConfig = [
             },
             //qualifications
             {
-                id: 'qualifications',
+                id: 4,
                 title: 'Qualifications',
                 translate: 'Qualifications',
                 type: 'item',
@@ -49,7 +49,7 @@ const navigationConfig = [
 
     //setting
     {
-        id: 'Settings',
+        id: 5,
         title: 'Settings',
         translate: 'Settings',
         type: 'collapse',
@@ -59,7 +59,7 @@ const navigationConfig = [
         children: [
             //cities
             {
-                id: 'cities',
+                id: 6,
                 title: 'Districts',
                 translate: 'Districts',
                 type: 'item',
@@ -68,7 +68,7 @@ const navigationConfig = [
             },
             //thanas
             {
-                id: 'thanas',
+                id: 7,
                 title: 'Police Stations',
                 translate: 'Police Stations',
                 type: 'item',
@@ -77,7 +77,7 @@ const navigationConfig = [
             },
             //branch
             {
-                id: 'branches',
+                id: 8,
                 title: 'branches',
                 translate: 'Branches',
                 type: 'item',
@@ -86,7 +86,7 @@ const navigationConfig = [
             },
             //site setting
             {
-                id: 'sitesettings',
+                id: 9,
                 title: 'siteSettings',
                 translate: 'Site Settings',
                 type: 'item',
@@ -98,7 +98,7 @@ const navigationConfig = [
 
     //user config
     {
-        id: 'userconfig',
+        id: 10,
         title: 'User Config',
         translate: 'User Config',
         type: 'collapse',
@@ -108,7 +108,7 @@ const navigationConfig = [
         children: [
             //permissions
             {
-                id: 'permissions',
+                id: 11,
                 title: 'Permissions',
                 translate: 'Permissions',
                 type: 'item',
@@ -117,7 +117,7 @@ const navigationConfig = [
             },
             //roles
             {
-                id: 'roles',
+                id: 12,
                 title: 'roles',
                 translate: 'Roles',
                 type: 'item',
@@ -125,7 +125,7 @@ const navigationConfig = [
             },
             //users
             {
-                id: 'userslist',
+                id: 13,
                 title: 'userslist',
                 translate: 'User List',
                 type: 'item',
@@ -134,7 +134,7 @@ const navigationConfig = [
             },
             //menu
             {
-                id: 'menus',
+                id: 14,
                 title: 'Menus',
                 translate: 'Menus',
                 type: 'item',
@@ -143,7 +143,7 @@ const navigationConfig = [
             },
             //roleMenu
             {
-                id: 'roleMenus',
+                id: 15,
                 title: 'RoleMenus',
                 translate: 'RoleMenus',
                 type: 'item',
