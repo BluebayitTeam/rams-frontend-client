@@ -150,6 +150,15 @@ const navigationConfig = [
                 url: '/apps/roleMenu-management/roleMenus',
                 exact: true
             },
+            //passengerType
+            {
+                id: 'passengerTypes',
+                title: 'PassengerTypes',
+                translate: 'PassengerTypes',
+                type: 'item',
+                url: '/apps/passengerType-management/passengerTypes',
+                exact: true
+            }
         ]
     }
 ];

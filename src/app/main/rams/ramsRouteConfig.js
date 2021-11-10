@@ -166,6 +166,21 @@ const ramsRouteConfig = {
             component: lazy(() => import('./RoleMenusManagement/RoleMenu/NewRoleMenu'))
         },
 
+        //passengerType
+        {
+            path: '/apps/passengerType-management/passengerTypes/:passengerTypeId/:passengerTypeName?',
+            component: lazy(() => import('./PassengerTypesManagement/PassengerType/NewPassengerType.js'))
+        },
+        {
+            path: '/apps/passengerType-management/passengerTypes',
+            component: lazy(() => import('./PassengerTypesManagement/PassengerTypes/PassengerTypes'))
+        },
+        {
+            path: '/apps/passengerType-management/:passengerTypeId',
+            component: lazy(() => import('./PassengerTypesManagement/PassengerType/NewPassengerType'))
+        },
+
+
     ]
 }
 

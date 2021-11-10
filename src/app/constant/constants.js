@@ -669,3 +669,16 @@ export const DELETE_ROLEMENU = `${BASE_URL}/role_menu/api/v1/role_menu/delete/`;
 
 // export const SEARCH_ROLEMENU = `${BASE_URL}/rolemenu/api/v1/rolemenu/search/`;
 
+//role menu
+export const CREATE_PASSENGERTYPE = `${BASE_URL}/passengerType/api/v1/passengerType/create`;
+
+export const GET_PASSENGERTYPES = `${BASE_URL}/passengerType/api/v1/passengerType/all`;
+
+export const GET_PASSENGERTYPE_BY_ID = `${BASE_URL}/passengerType/api/v1/passengerType/`;
+
+export const UPDATE_PASSENGERTYPE = `${BASE_URL}/passengerType/api/v1/passengerType/update/`;
+
+export const DELETE_PASSENGERTYPE = `${BASE_URL}/passengerType/api/v1/passengerType/delete/`;
+
+export const SEARCH_PASSENGERTYPE = `${BASE_URL}/passengerType/api/v1/passengerType/search/`;
+
