@@ -13,7 +13,7 @@ import { removePermission, savePermission, updatePermission } from '../store/per
 const NewPermissionHeader = () => {
     const dispatch = useDispatch();
     const methods = useFormContext();
-    const { formState, watch, getValues } = methods;
+    const { formState, watch, getValues, setError } = methods;
     const { isValid, dirtyFields } = formState;
     const name = watch('name');
     const theme = useTheme();
@@ -24,13 +24,21 @@ const NewPermissionHeader = () => {
     const handleDelete = localStorage.getItem('permissionEvent');
 
     function handleSavePermission() {
-        dispatch(savePermission(getValues())).then(() => {
-            history.push('/apps/permission-management/permissions');
+        dispatch(savePermission(getValues())).then((res) => {
+            if (!res.payload.data?.detail) {
+                localStorage.setItem("permissionAlert", "savePermission")
+                history.push('/apps/permission-management/permissions')
+            }
+            else {
+                console.log("dublicate")
+                setError("name", { type: "manual", message: res.payload.data.detail })
+            }
         });
     }
 
     function handleUpdatePermission() {
         dispatch(updatePermission(getValues())).then(() => {
+            localStorage.setItem("permissionAlert", "deletePermission")
             history.push('/apps/permission-management/permissions');
         });
     }
@@ -38,6 +46,7 @@ const NewPermissionHeader = () => {
     function handleRemovePermission() {
         dispatch(removePermission(getValues())).then(() => {
             localStorage.removeItem("permissionEvent")
+            localStorage.setItem("permissionAlert", "updatePermission")
             history.push('/apps/permission-management/permissions');
         });
     }

@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
+import { SEARCH_MENU } from 'app/constant/constants';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,7 +40,6 @@ const MenusTable = (props) => {
     const [searchMenu, setSearchMenu] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
-    const [data, setData] = useState(menus);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(30);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
@@ -63,15 +63,15 @@ const MenusTable = (props) => {
     }, [searchText])
 
     const getSearchMenu = () => {
-        console.log(`${SEARCH_MENU}?username=${searchText}`);
-        fetch(`${SEARCH_MENU}?username=${searchText}`)
+        console.log(`${SEARCH_MENU}?=${searchText}`);
+        fetch(`${SEARCH_MENU}?title=${searchText}`)
             .then(response => response.json())
             .then(res => {
-                // setSearchMenu(searchedEmployeedData.employees);
-                // console.log(searchedEmployeedData)
+                setSearchMenu(res?.branches)
             })
-            .catch(() => { });
+            .catch(() => setSearchMenu([]));
     }
+
 
     function handleRequestSort(menuEvent, property) {
         const id = property;
@@ -89,7 +89,7 @@ const MenusTable = (props) => {
 
     function handleSelectAllClick(menuEvent) {
         if (menuEvent.target.checked) {
-            setSelected(data.map(n => n.id));
+            setSelected(menus.map(n => n.id));
             return;
         }
         setSelected([]);
@@ -172,13 +172,13 @@ const MenusTable = (props) => {
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={data.length}
+                        rowCount={menus.length}
                         onMenuItemClick={handleDeselect}
                     />
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && searchMenu || menus,
+                            searchText !== "" && !_.isEmpty(searchMenu) ? searchMenu : menus,
                             [
                                 o => {
                                     switch (order.id) {

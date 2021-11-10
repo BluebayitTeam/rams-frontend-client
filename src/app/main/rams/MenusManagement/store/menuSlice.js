@@ -34,7 +34,8 @@ export const removeMenu = createAsyncThunk(
         };
 
         const menuId = val.id;
-        await axios.delete(`${DELETE_MENU}${menuId}`, authTOKEN);
+        const response = await axios.delete(`${DELETE_MENU}${menuId}`, authTOKEN);
+        return response
     }
 );
 
@@ -51,6 +52,7 @@ export const updateMenu = createAsyncThunk(
             }
         };
         const response = await axios.put(`${UPDATE_MENU}${menu.id}`, menuData, authTOKEN);
+        return response
     }
 
 )
@@ -67,6 +69,7 @@ export const saveMenu = createAsyncThunk(
             }
         };
         const response = await axios.post(`${CREATE_MENU}`, menuData, authTOKEN)
+        return response
     }
 )
 
@@ -84,12 +87,9 @@ const menuSlice = createSlice({
     },
     extraReducers: {
         [getMenu.fulfilled]: (state, action) => action.payload,
-        [saveMenu.fulfilled]: (state, action) => {
-            localStorage.setItem("menuAlert", "saveMenu")
-            return action.payload
-        },
-        [removeMenu.fulfilled]: () => { localStorage.setItem("menuAlert", "deleteMenu") },
-        [updateMenu.fulfilled]: () => { localStorage.setItem("menuAlert", "updateMenu") }
+        [saveMenu.fulfilled]: (state, action) => action.payload,
+        [removeMenu.fulfilled]: (state, action) => action.payload,
+        [updateMenu.fulfilled]: (state, action) => action.payload
     }
 })
 

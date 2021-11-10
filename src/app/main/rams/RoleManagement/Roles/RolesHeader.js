@@ -105,7 +105,12 @@ const RolesHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setRolesSearchText(ev))}
+							//onBlur={ev => dispatch(setRolesSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setRolesSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

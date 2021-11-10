@@ -24,7 +24,7 @@ export const getThana = createAsyncThunk('thanaManagement/thana/getThana', async
 
 export const removeThana = createAsyncThunk(
   'thanaManagement/thana/removeThana',
-  async (val, { dispatch, getState }) => {
+  async (val) => {
 
     const authTOKEN = {
       headers: {
@@ -34,7 +34,8 @@ export const removeThana = createAsyncThunk(
     };
 
     const thanaId = val.id;
-    await axios.delete(`${DELETE_THANA}${thanaId}`, authTOKEN);
+    const response = await axios.delete(`${DELETE_THANA}${thanaId}`, authTOKEN);
+    return response
   }
 );
 
@@ -51,13 +52,14 @@ export const updateThana = createAsyncThunk(
       }
     };
     const response = await axios.put(`${UPDATE_THANA}${thana.id}`, thanaData, authTOKEN);
+    return response
   }
 
 )
 
 export const saveThana = createAsyncThunk(
   'thanaManagement/thana/saveThana',
-  async (thanaData, { dispatch, getState }) => {
+  async (thanaData) => {
 
 
     const authTOKEN = {
@@ -67,6 +69,7 @@ export const saveThana = createAsyncThunk(
       }
     };
     const response = await axios.post(`${CREATE_THANA}`, thanaData, authTOKEN)
+    return response
   }
 )
 
@@ -84,12 +87,9 @@ const thanaSlice = createSlice({
   },
   extraReducers: {
     [getThana.fulfilled]: (state, action) => action.payload,
-    [saveThana.fulfilled]: (state, action) => {
-      localStorage.setItem("thanaAlert", "saveThana")
-      return action.payload
-    },
-    [removeThana.fulfilled]: () => { localStorage.setItem("thanaAlert", "deleteThana") },
-    [updateThana.fulfilled]: () => { localStorage.setItem("thanaAlert", "updateThana") }
+    [saveThana.fulfilled]: (state, action) => action.payload,
+    [removeThana.fulfilled]: (state, action) => action.payload,
+    [updateThana.fulfilled]: (state, action) => action.payload
   }
 })
 

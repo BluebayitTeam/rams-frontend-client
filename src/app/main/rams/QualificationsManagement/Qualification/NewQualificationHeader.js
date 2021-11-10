@@ -27,21 +27,33 @@ const NewQualificationHeader = () => {
     const handleDelete = localStorage.getItem('qualificationEvent');
 
     function handleSaveQualification() {
-        dispatch(saveQualification(getValues())).then(() => {
-            history.push('/apps/qualification-management/qualifications');
+        dispatch(saveQualification(getValues())).then((res) => {
+            console.log("saveQualificationRes", res)
+            if (res.payload) {
+                localStorage.setItem("qualificationAlert", "saveQualification")
+                history.push('/apps/qualification-management/qualifications');
+            }
         });
     }
 
     function handleUpdateQualification() {
-        dispatch(updateQualification(getValues())).then(() => {
-            history.push('/apps/qualification-management/qualifications');
+        dispatch(updateQualification(getValues())).then((res) => {
+            console.log("updateQualificationRes", res)
+            if (res.payload) {
+                localStorage.setItem("qualificationAlert", "updateQualification")
+                history.push('/apps/qualification-management/qualifications');
+            }
         });
     }
 
     function handleRemoveQualification() {
-        dispatch(removeQualification(getValues())).then(() => {
-            localStorage.removeItem("qualificationEvent")
-            history.push('/apps/qualification-management/qualifications');
+        dispatch(removeQualification(getValues())).then((res) => {
+            console.log("removeQualificationRes", res)
+            if (res.payload) {
+                localStorage.removeItem("qualificationEvent")
+                localStorage.setItem("qualificationAlert", "deleteQualification")
+                history.push('/apps/qualification-management/qualifications');
+            }
         });
     }
 

@@ -12,9 +12,10 @@ import { removeRole, saveRole, updateRole } from '../store/roleSlice';
 const NewRoleHeader = () => {
     const dispatch = useDispatch();
     const methods = useFormContext();
-    const { getValues, watch } = methods;
+    const { getValues, watch, setError } = methods;
     const name = watch('name');
-    //console.log(name);
+    const permissions = watch('permissions');
+    console.log(permissions);
     const theme = useTheme();
     const history = useHistory();
 
@@ -24,23 +25,29 @@ const NewRoleHeader = () => {
     const handleUpdate = localStorage.getItem('updateRole');
 
     function handleSaveRole() {
-        console.log(getValues());
-        dispatch(saveRole(getValues())).then(() => {
-            history.push('/apps/roles-management/roles');
+        dispatch(saveRole(getValues())).then((res) => {
+            if (!res.payload.data?.detail) {
+                localStorage.setItem('roleAlertPermission', 'saveRoleSuccessfully')
+                history.push('/apps/roles-management/roles');
+            }
+            else {
+                setError("name", { type: "manual", message: res.payload.data.detail })
+                console.log(res.payload.data.detail)
+            }
         });
     }
 
     function handleUpdateRole() {
-        //console.log(getValues());
         dispatch(updateRole(getValues())).then(() => {
+            localStorage.setItem('roleAlertPermission', 'updateRoleSuccessfully')
             history.push('/apps/roles-management/roles');
         });
 
     }
 
     function handleRemoveRole() {
-        console.log(getValues());
         dispatch(removeRole(getValues())).then(() => {
+            localStorage.setItem('roleAlertPermission', 'removeRoleSuccessfully')
             history.push('/apps/roles-management/roles');
         });
     }
@@ -116,7 +123,7 @@ const NewRoleHeader = () => {
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    // disabled={_.isEmpty(dirtyFields) || !isValid}
+                    disabled={!name || _.isEmpty(permissions)}
                     onClick={handleSaveRole}
                 >
                     Save

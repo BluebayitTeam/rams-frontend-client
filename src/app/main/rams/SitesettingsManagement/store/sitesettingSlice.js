@@ -33,7 +33,8 @@ export const removeSitesetting = createAsyncThunk(
     };
 
     const sitesettingId = val.id;
-    await axios.delete(`${DELETE_SITESETTING}${sitesettingId}`, authTOKEN);
+    const response = await axios.delete(`${DELETE_SITESETTING}${sitesettingId}`, authTOKEN);
+    return response
   }
 );
 
@@ -50,7 +51,7 @@ export const updateSitesetting = createAsyncThunk(
       }
     };
     const response = await axios.put(`${UPDATE_SITESETTING}${sitesetting.id}`, sitesettingDataToFormData, authTOKEN);
-    console.log(response);
+    return response
   }
 )
 
@@ -66,7 +67,7 @@ export const saveSitesetting = createAsyncThunk(
       }
     };
     const response = await axios.post(`${CREATE_SITESETTING}`, sitesettingDataToFormData, authTOKEN);
-    console.log(response);
+    return response
   }
 )
 
@@ -120,12 +121,9 @@ const sitesettingSlice = createSlice({
   },
   extraReducers: {
     [getSitesetting.fulfilled]: (state, action) => action.payload,
-    [saveSitesetting.fulfilled]: (state, action) => {
-      localStorage.setItem("sitesettingAlert", "saveSitesetting")
-      return action.payload
-    },
-    [removeSitesetting.fulfilled]: () => { localStorage.setItem("sitesettingAlert", "deleteSitesetting") },
-    [updateSitesetting.fulfilled]: () => { localStorage.setItem("sitesettingAlert", "updateSitesetting") }
+    [saveSitesetting.fulfilled]: (state, action) => action.payload,
+    [removeSitesetting.fulfilled]: (state, action) => action.payload,
+    [updateSitesetting.fulfilled]: (state, action) => action.payload,
   }
 })
 

@@ -19,7 +19,7 @@ export const getRole = createAsyncThunk(
 
 
 export const removeRole = createAsyncThunk('roleManagement/role/removeRole',
-    async (val, { dispatch, getState }) => {
+    async (val) => {
         const authTOKEN = {
             headers: {
                 'Content-type': 'application/json',
@@ -28,7 +28,7 @@ export const removeRole = createAsyncThunk('roleManagement/role/removeRole',
         }
         const roleId = val.id;
         const response = await axios.delete(`${DELETE_ROLE}${roleId}`, authTOKEN);
-        console.log(response);
+        return response
     }
 );
 
@@ -42,18 +42,15 @@ export const updateRole = createAsyncThunk(
             }
         }
         const { role } = getState().rolesManagement;
-        //const updatedEmployeeData = { ...employee, ...employeeData };
 
         const response = await axios.put(`${UPDATE_ROLE}${role.id}`, roleData, authTOKEN);
-        //console.log(response);
-        //history.push({ pathname: '/apps/employee-management/employees' });
+        return response
     }
 )
 
 export const saveRole = createAsyncThunk(
     'roleManagement/role/saveRole',
-    async (roleData, { dispatch, getState }) => {
-        // console.log(employeeData)
+    async (roleData) => {
         const authTOKEN = {
             headers: {
                 'Content-type': 'application/json',
@@ -61,7 +58,7 @@ export const saveRole = createAsyncThunk(
             }
         }
         const response = await axios.post(`${CREATE_ROLE}`, roleData, authTOKEN)
-        //console.log(response);
+        return response
     }
 )
 
@@ -82,18 +79,9 @@ const roleSlice = createSlice({
     },
     extraReducers: {
         [getRole.fulfilled]: (state, action) => action.payload,
-        [saveRole.fulfilled]: (state, action) => {
-            localStorage.setItem('roleAlertPermission', 'saveRoleSuccessfully')
-            return action.payload
-        },
-        [removeRole.fulfilled]: (state, action) => {
-            localStorage.setItem('roleAlertPermission', 'removeRoleSuccessfully')
-            return null
-        },
-        [updateRole.fulfilled]: (state, action) => {
-            localStorage.setItem('roleAlertPermission', 'updateRoleSuccessfully')
-            return action.payload
-        }
+        [saveRole.fulfilled]: (state, action) => action.payload,
+        [removeRole.fulfilled]: (state, action) => action.payload,
+        [updateRole.fulfilled]: (state, action) => action.payload
     }
 })
 

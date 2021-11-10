@@ -59,18 +59,16 @@ const DepartmentsTable = props => {
 
 	//search department
 	useEffect(() => {
-		console.log("call");
 		searchText !== "" && getSearchDepartment();
 	}, [searchText])
 
 	const getSearchDepartment = () => {
-		console.log("call");
 		fetch(`${SEARCH_DEPARTMENT}?name=${searchText}`)
 			.then(response => response.json())
 			.then(searchedDepartmentData => {
 				setSearchDepartment(searchedDepartmentData.departments);
-				// console.log(searchedDepartmentData)
-			});
+			})
+			.catch(() => setSearchDepartment())
 	}
 
 	function handleRequestSort(departmentEvent, property) {
@@ -178,7 +176,7 @@ const DepartmentsTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && searchDepartment ? searchDepartment : departments,
+							searchText !== "" && !_.isEmpty(searchDepartment) ? searchDepartment : departments,
 							[
 								o => {
 									switch (order.id) {

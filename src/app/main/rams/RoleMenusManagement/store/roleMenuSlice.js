@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CREATE_ROLEMENU, DELETE_ROLEMENU, GET_ROLEMENU_BY_ID, UPDATE_ROLEMENU } from '../../../../constant/constants';
+import { CREATE_ROLEMENU, DELETE_ROLEMENU, GET_ROLEMENU_BY_ID } from '../../../../constant/constants';
 
 
 export const getRoleMenu = createAsyncThunk('roleMenuManagement/roleMenu/getRoleMenu', async (params, { rejectWithValue }) => {
@@ -24,7 +24,7 @@ export const getRoleMenu = createAsyncThunk('roleMenuManagement/roleMenu/getRole
 
 export const removeRoleMenu = createAsyncThunk(
     'roleMenuManagement/roleMenu/removeRoleMenu',
-    async (val, { dispatch, getState }) => {
+    async (val) => {
 
         const authTOKEN = {
             headers: {
@@ -34,23 +34,23 @@ export const removeRoleMenu = createAsyncThunk(
         };
 
         const roleMenuId = val.id;
-        await axios.delete(`${DELETE_ROLEMENU}${roleMenuId}`, authTOKEN);
+        const response = await axios.delete(`${DELETE_ROLEMENU}${roleMenuId}`, authTOKEN);
+        return response
     }
 );
 
 export const updateRoleMenu = createAsyncThunk(
     'roleMenuManagement/roleMenu/updateRoleMenu',
-    async (roleMenuData, { dispatch, getState }) => {
-        const { roleMenu } = getState().roleMenusManagement;
-
-
+    async (roleMenuData) => {
+        // const { roleMenu } = getState().roleMenusManagement;
         const authTOKEN = {
             headers: {
                 'Content-type': 'application/json',
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.put(`${UPDATE_ROLEMENU}${roleMenu.id}`, roleMenuData, authTOKEN);
+        const response = await axios.post(`${CREATE_ROLEMENU}`, roleMenuData, authTOKEN)
+        return response
     }
 
 )
@@ -67,6 +67,7 @@ export const saveRoleMenu = createAsyncThunk(
             }
         };
         const response = await axios.post(`${CREATE_ROLEMENU}`, roleMenuData, authTOKEN)
+        return response
     }
 )
 
@@ -84,12 +85,9 @@ const roleMenuSlice = createSlice({
     },
     extraReducers: {
         [getRoleMenu.fulfilled]: (state, action) => action.payload,
-        [saveRoleMenu.fulfilled]: (state, action) => {
-            localStorage.setItem("roleMenuAlert", "saveRoleMenu")
-            return action.payload
-        },
-        [removeRoleMenu.fulfilled]: () => { localStorage.setItem("roleMenuAlert", "deleteRoleMenu") },
-        [updateRoleMenu.fulfilled]: () => { localStorage.setItem("roleMenuAlert", "updateRoleMenu") }
+        [saveRoleMenu.fulfilled]: (state, action) => action.payload,
+        [removeRoleMenu.fulfilled]: (state, action) => action.payload,
+        [updateRoleMenu.fulfilled]: (state, action) => action.payload
     }
 })
 

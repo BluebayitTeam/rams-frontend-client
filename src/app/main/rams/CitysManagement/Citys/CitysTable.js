@@ -69,7 +69,8 @@ const CitysTable = (props) => {
             .then(searchedCitiesData => {
                 setSearchCity(searchedCitiesData.cities);
                 // console.log(searchedCitiesData)
-            });
+            })
+            .catch(() => setSearchCity([]))
     }
 
     function handleRequestSort(cityEvent, property) {
@@ -177,7 +178,7 @@ const CitysTable = (props) => {
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && searchCity ? searchCity : citys,
+                            searchText !== "" && !_.isEmpty(searchCity) ? searchCity : citys,
                             [
                                 o => {
                                     switch (order.id) {

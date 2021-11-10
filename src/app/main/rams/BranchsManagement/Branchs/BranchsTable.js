@@ -1,7 +1,7 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import { Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +10,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { Pagination } from '@material-ui/lab';
+import { SEARCH_BRANCH } from 'app/constant/constants';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,33 +20,55 @@ import { getBranchs, selectBranchs } from '../store/branchsSlice';
 import BranchsTableHead from './BranchsTableHead';
 
 
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: "flex",
+        justifyContent: "space-between",
+        flexWrap: "nowrap",
+        '& > *': {
+            marginTop: theme.spacing(1),
+            // marginBottom: theme.spacing(3),
+        }
+    }
+}))
+
 const BranchsTable = (props) => {
     const dispatch = useDispatch();
+    const classes = useStyles();
     const branchs = useSelector(selectBranchs);
     const searchText = useSelector(({ branchsManagement }) => branchsManagement.branchs.searchText);
+    const [searchBranch, setSearchBranch] = useState([])
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
-    const [data, setData] = useState(branchs);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(30);
+    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
     const [order, setOrder] = useState({
         direction: 'asc',
         id: null
     });
     let serialNumber = 1;
 
+    const totalPages = sessionStorage.getItem('total_branchs_pages');
+    const totalElements = sessionStorage.getItem('total_branchs_elements');
+
     useEffect(() => {
-        dispatch(getBranchs()).then(() => setLoading(false));
+        dispatch(getBranchs(pageAndSize)).then(() => setLoading(false));
     }, [dispatch]);
 
     useEffect(() => {
-        if (searchText.length !== 0) {
-            setData(_.filter(branchs, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-            setPage(0);
-        } else {
-            setData(branchs);
-        }
-    }, [branchs, searchText]);
+        searchText !== "" && getSearchBranch();
+    }, [searchText])
+
+    const getSearchBranch = () => {
+        fetch(`${SEARCH_BRANCH}?name=${searchText}`)
+            .then(response => response.json())
+            .then(data => {
+                setSearchBranch(data?.branchs);
+                console.log(data)
+            })
+            .catch(() => setSearchCity([]))
+    }
 
     function handleRequestSort(branchEvent, property) {
         const id = property;
@@ -62,7 +86,7 @@ const BranchsTable = (props) => {
 
     function handleSelectAllClick(branchEvent) {
         if (branchEvent.target.checked) {
-            setSelected(data.map(n => n.id));
+            setSelected(branchs.map(n => n.id));
             return;
         }
         setSelected([]);
@@ -99,19 +123,30 @@ const BranchsTable = (props) => {
         setSelected(newSelected);
     }
 
-    function handleChangePage(branchEvent, value) {
-        setPage(value);
+    //pagination
+    const handlePagination = (e, handlePage) => {
+        setPageAndSize({ ...pageAndSize, page: handlePage })
+        setPage(handlePage - 1)
+        dispatch(getBranchs({ ...pageAndSize, page: handlePage }))
     }
 
-    function handleChangeRowsPerPage(branchEvent) {
-        setRowsPerPage(branchEvent.target.value);
+    function handleChangePage(menuEvent, value) {
+        setPage(value);
+        setPageAndSize({ ...pageAndSize, page: value + 1 })
+        dispatch(getBranchs({ ...pageAndSize, page: value + 1 }))
+    }
+
+    function handleChangeRowsPerPage(menuEvent) {
+        setRowsPerPage(menuEvent.target.value);
+        setPageAndSize({ ...pageAndSize, size: menuEvent.target.value })
+        dispatch(getBranchs({ ...pageAndSize, size: menuEvent.target.value }))
     }
 
     if (loading) {
         return <FuseLoading />;
     }
 
-    if (data?.length === 0) {
+    if (branchs?.length === 0) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -134,13 +169,13 @@ const BranchsTable = (props) => {
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={data.length}
+                        rowCount={branchs.length}
                         onMenuItemClick={handleDeselect}
                     />
 
                     <TableBody>
                         {_.orderBy(
-                            data,
+                            searchText !== "" && !_.isEmpty(searchBranch) ? searchBranch : branchs,
                             [
                                 o => {
                                     switch (order.id) {
@@ -197,22 +232,36 @@ const BranchsTable = (props) => {
                 </Table>
             </FuseScrollbars>
 
-            <TablePagination
-                className="flex-shrink-0 border-t-1"
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={data.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                backIconButtonProps={{
-                    'aria-label': 'Previous Page'
-                }}
-                nextIconButtonProps={{
-                    'aria-label': 'Next Page'
-                }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
+            <div className={classes.root} id="pagiContainer">
+                <Pagination
+                    count={totalPages}
+                    page={page + 1}
+                    defaultPage={1}
+                    color="primary"
+                    showFirstButton
+                    showLastButton
+                    variant="outlined"
+                    shape="rounded"
+                    onChange={handlePagination}
+                />
+
+                <TablePagination
+                    // className="flex-shrink-0 border-t-1"
+                    rowsPerPageOptions={[5, 10, 30, 50, 100]}
+                    component="div"
+                    count={totalElements}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    backIconButtonProps={{
+                        'aria-label': 'Previous Page'
+                    }}
+                    nextIconButtonProps={{
+                        'aria-label': 'Next Page'
+                    }}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            </div>
         </div>
     );
 };

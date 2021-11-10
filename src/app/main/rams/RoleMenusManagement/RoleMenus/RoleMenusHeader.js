@@ -108,7 +108,12 @@ const RoleMenusHeader = () => {
                             inputProps={{
                                 'aria-label': 'Search'
                             }}
-                            onChange={ev => dispatch(setRoleMenusSearchText(ev))}
+                            //onBlur={ev => dispatch(setRoleMenusSearchText(ev))}
+                            onKeyDown={(ev) => {
+                                if (ev.key === 'Enter') {
+                                    dispatch(setRoleMenusSearchText(ev))
+                                }
+                            }}
                         />
                     </Paper>
                 </ThemeProvider>

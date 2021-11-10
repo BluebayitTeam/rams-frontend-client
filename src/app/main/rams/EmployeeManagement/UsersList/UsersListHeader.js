@@ -95,7 +95,12 @@ const UsersListHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setUsersSearchText(ev))}
+							// onBlur={ev => dispatch(setUsersSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setUsersSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

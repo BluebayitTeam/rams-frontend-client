@@ -8,6 +8,7 @@ import {
 import { orange } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
+import useRemoveCountryCode from "app/@customHook/@useRemoveCountryCode";
 import countryCodes from 'app/@data/@Countrycodes';
 import clsx from 'clsx';
 import { React, useEffect, useState } from 'react';
@@ -18,7 +19,6 @@ import {
     BASE_URL, CHECK_EMAIL, CHECK_EMAIL_UPDATE, CHECK_PRIMARY_PHONE, CHECK_PRIMARY_PHONE_UPDATE, CHECK_SECONDARY_PHONE, CHECK_SECONDARY_PHONE_UPDATE, CHECK_USERNAME, CHECK_USERNAME_UPDATE
 } from '../../../../constant/constants';
 import { getBranches, getCities, getCountries, getDepartments, getEmployees, getRoles, getThanas } from '../../../../store/dataSlice';
-
 
 const useStyles = makeStyles(theme => ({
     productImageFeaturedStar: {
@@ -91,16 +91,16 @@ const EmployeeForm = (props) => {
     }, []);
     const getCountryCode1 = watch('country_code1');
     const getCountryCode2 = watch('country_code2');
-    // console.log(getCountryCode1);
-    // console.log(getValues());
-    // const [primaryPhone, secondaryPhone] = useRemoveCountryCode(phoneNoPrimary, phoneNoSecondary);
-    // useEffect(() => {
-    //     if (phoneNoPrimary && phoneNoSecondary) {
-    //         console.log(primaryPhone, secondaryPhone);
-    //         console.log(updateEmployeeData);
-    //         reset({ ...updateEmployeeData, primary_phone: primaryPhone, secondary_phone: secondaryPhone, country_code1: "+880", show_country_code1: "+880", country_code2: "+880", show_country_code2: "+880" });
-    //     }
-    // }, [phoneNoPrimary, phoneNoSecondary]);
+    console.log(getCountryCode1);
+    console.log(getValues());
+    const [primaryPhone, secondaryPhone] = useRemoveCountryCode(phoneNoPrimary, phoneNoSecondary);
+    useEffect(() => {
+        if (phoneNoPrimary && phoneNoSecondary) {
+            console.log(primaryPhone, secondaryPhone);
+            console.log(updateEmployeeData);
+            reset({ ...updateEmployeeData, primary_phone: primaryPhone, secondary_phone: secondaryPhone, country_code1: "+880", show_country_code1: "+880", country_code2: "+880", show_country_code2: "+880" });
+        }
+    }, [phoneNoPrimary, phoneNoSecondary]);
 
     //genders
     const genders = [{ id: "male", name: "Male" }, { id: "female", name: "Female" }, { id: "others", name: "Others" }];

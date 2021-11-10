@@ -26,12 +26,14 @@ const NewSitesettingHeader = () => {
         const data = getValues();
         data.phone = data.country_code1 + data.phone;
         dispatch(saveSitesetting(data)).then(() => {
+            localStorage.setItem("sitesettingAlert", "saveSitesetting")
             history.push('/apps/sitesettings-management/sitesettings/');
         });
     }
 
     function handleUpdateSitesetting() {
         dispatch(updateSitesetting(getValues())).then(() => {
+            localStorage.setItem("sitesettingAlert", "updateSitesetting")
             history.push('/apps/sitesettings-management/sitesettings/');
         });
     }
@@ -39,6 +41,7 @@ const NewSitesettingHeader = () => {
     function handleRemoveSitesetting() {
         dispatch(removeSitesetting(getValues())).then(() => {
             localStorage.removeItem("sitesettingEvent")
+            localStorage.setItem("sitesettingAlert", "deleteSitesetting")
             history.push('/apps/sitesettings-management/sitesettings/');
         });
     }

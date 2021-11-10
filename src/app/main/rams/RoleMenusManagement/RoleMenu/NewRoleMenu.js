@@ -36,7 +36,7 @@ const RoleMenu = () => {
     });
     const routeParams = useParams();
 
-    const { reset } = methods;
+    const { reset, getValues } = methods;
 
     useDeepCompareEffect(() => {
         function updateRoleMenuState() {
@@ -77,7 +77,7 @@ const RoleMenu = () => {
         /**
          * Reset the form on roleMenu state changes
          */
-        reset(roleMenu);
+        reset({ ...getValues(), ...roleMenu });
     }, [roleMenu, reset]);
 
     useEffect(() => {

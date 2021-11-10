@@ -109,7 +109,12 @@ const PermissionsHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setPermissionsSearchText(ev))}
+							// onBlur={ev => dispatch(setPermissionsSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setPermissionsSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

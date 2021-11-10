@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import { BASE_URL } from '../../../../constant/constants';
 import { getEmployees } from '../../../../store/dataSlice';
 
@@ -59,13 +58,9 @@ function QualificationForm(props) {
     const image2 = watch('image_doc_two');
     const image3 = watch('image_doc_three');
     const image4 = watch('image_doc_four');
-    const routeParams = useParams();
-    const { qualificationId } = routeParams;
 
     useEffect(() => {
-
         dispatch(getEmployees())
-
     }, [])
 
 

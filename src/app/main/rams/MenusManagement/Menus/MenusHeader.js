@@ -99,15 +99,20 @@ const MenusHeader = () => {
                         <Icon color="action">search</Icon>
 
                         <Input
-                            placeholder="Search"
+                            placeholder="search by title"
                             className="flex flex-1 mx-8"
                             disableUnderline
                             fullWidth
-                            value={searchText}
+                            //value={searchText}
                             inputProps={{
                                 'aria-label': 'Search'
                             }}
-                            onChange={ev => dispatch(setMenusSearchText(ev))}
+                            onKeyDown={(ev) => {
+                                if (ev.key === 'Enter') {
+                                    dispatch(setMenusSearchText(ev))
+                                }
+                            }
+                            }
                         />
                     </Paper>
                 </ThemeProvider>

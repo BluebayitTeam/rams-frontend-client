@@ -25,6 +25,10 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         justifyContent: "space-between",
         flexWrap: "nowrap",
+        '& > *': {
+            marginTop: theme.spacing(1),
+            // marginBottom: theme.spacing(3),
+        }
     }
 }))
 
@@ -64,18 +68,11 @@ const EmployeesTable = (props) => {
             .then(response => response.json())
             .then(searchedEmployeedData => {
                 setSearchEmployee(searchedEmployeedData.employees);
-                // console.log(searchedEmployeedData)
-            });
+                console.log("searchedEmployeedData", searchedEmployeedData)
+            }).catch(() => {
+                setSearchEmployee([])
+            })
     }
-
-    // useEffect(() => {
-    //     if (searchText.length !== 0) {
-    //         setData(_.filter(employees, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-    //         setPage(0);
-    //     } else {
-    //         setData(employees);
-    //     }
-    // }, [employees, searchText]);
 
     function handleRequestSort(event, property) {
         const id = property;
@@ -132,9 +129,6 @@ const EmployeesTable = (props) => {
         localStorage.removeItem('updateEmployee');
         localStorage.setItem('deleteEmployee', event);
         props.history.push(`/apps/employee-management/${item.id}/${item.first_name}`);
-        // dispatch(removeEmployee(item));
-        // window.location.reload();
-        //props.history.push(`/apps/employee-management/employees/${item.id}/${item.first_name}`);
     }
 
     function handleCheck(event, id) {
@@ -188,7 +182,7 @@ const EmployeesTable = (props) => {
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && searchEmployee ? searchEmployee : employees,
+                            searchText !== "" && !_.isEmpty(searchEmployee) ? searchEmployee : employees,
                             [
                                 o => {
                                     switch (order.id) {

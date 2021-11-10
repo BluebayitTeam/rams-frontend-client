@@ -69,8 +69,7 @@ const RolesTable = (props) => {
             .then(response => response.json())
             .then(searchedRoleData => {
                 setSearchRole(searchedRoleData.roles);
-                // console.log(searchedRoleData);
-            });
+            }).catch(() => setSearchRole([]))
     }
 
     function handleRequestSort(event, property) {
@@ -184,7 +183,7 @@ const RolesTable = (props) => {
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && searchRole ? searchRole : roles,
+                            searchText !== "" && !_.isEmpty(searchRole) ? searchRole : roles,
                             [
                                 o => {
                                     switch (order.id) {

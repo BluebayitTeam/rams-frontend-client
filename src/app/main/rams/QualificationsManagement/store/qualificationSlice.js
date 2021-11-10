@@ -24,7 +24,7 @@ export const getQualification = createAsyncThunk('qualificationManagement/qualif
 
 export const removeQualification = createAsyncThunk(
   'qualificationManagement/qualification/removeQualification',
-  async (val, { dispatch, getState }) => {
+  async (val) => {
 
     const authTOKEN = {
       headers: {
@@ -34,14 +34,14 @@ export const removeQualification = createAsyncThunk(
     };
 
     const qualificationId = val.id;
-    await axios.delete(`${DELETE_QUALIFICATION}${qualificationId}`, authTOKEN);
+    const response = await axios.delete(`${DELETE_QUALIFICATION}${qualificationId}`, authTOKEN);
+    return response
   }
 );
 
 export const updateQualification = createAsyncThunk(
   'qualificationManagement/qualification/updateQualification',
   async (qualificationData, { dispatch, getState }) => {
-    console.log(qualificationData);
     const { qualification } = getState().qualificationsManagement;
 
     function buildFormData(formData, data, parentKey) {
@@ -64,7 +64,7 @@ export const updateQualification = createAsyncThunk(
       return formData;
     }
 
-    const qualificationDataToFormData = jsonToFormData(qualificationData)
+    const qualificationDataToFormData = jsonToFormData({ ...qualificationData, image_doc_one: qualificationData.image_doc_one || "", image_doc_two: qualificationData.image_doc_two || "", image_doc_three: qualificationData.image_doc_three || "", image_doc_four: qualificationData.image_doc_four || "" })
 
     const authTOKEN = {
       headers: {
@@ -73,15 +73,14 @@ export const updateQualification = createAsyncThunk(
       }
     };
     const response = await axios.put(`${UPDATE_QUALIFICATION}${qualification.id}`, qualificationDataToFormData, authTOKEN);
-    console.log(response);
+    return response
   }
 
 )
 
 export const saveQualification = createAsyncThunk(
   'qualificationManagement/qualification/saveQualification',
-  async (qualificationData, { dispatch, getState }) => {
-    console.log(qualificationData);
+  async (qualificationData) => {
     function buildFormData(formData, data, parentKey) {
       if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
         Object.keys(data).forEach(key => {
@@ -102,7 +101,7 @@ export const saveQualification = createAsyncThunk(
       return formData;
     }
 
-    const getFormDateFJ = jsonToFormData(qualificationData)
+    const getFormDateFJ = jsonToFormData({ ...qualificationData, image_doc_one: qualificationData.image_doc_one || "", image_doc_two: qualificationData.image_doc_two || "", image_doc_three: qualificationData.image_doc_three || "", image_doc_four: qualificationData.image_doc_four || "" })
 
     const authTOKEN = {
       headers: {
@@ -111,6 +110,7 @@ export const saveQualification = createAsyncThunk(
       }
     };
     const response = await axios.post(`${CREATE_QUALIFICATION}`, getFormDateFJ, authTOKEN)
+    return response
   }
 )
 
@@ -128,12 +128,9 @@ const qualificationSlice = createSlice({
   },
   extraReducers: {
     [getQualification.fulfilled]: (state, action) => action.payload,
-    [saveQualification.fulfilled]: (state, action) => {
-      localStorage.setItem("qualificationAlert", "saveQualification")
-      return action.payload
-    },
-    [removeQualification.fulfilled]: () => { localStorage.setItem("qualificationAlert", "deleteQualification") },
-    [updateQualification.fulfilled]: () => { localStorage.setItem("qualificationAlert", "updateQualification") }
+    [saveQualification.fulfilled]: (state, action) => action.payload,
+    [removeQualification.fulfilled]: (state, action) => action.payload,
+    [updateQualification.fulfilled]: (state, action) => action.payload
   }
 })
 

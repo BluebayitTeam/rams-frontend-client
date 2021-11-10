@@ -71,24 +71,14 @@ const QualificationsTable = props => {
 	}, [searchText])
 
 	const getSearchQualificaton = () => {
-		fetch(`${SEARCH_QUALIFICATON}?name=${searchText}`)
+		fetch(`${SEARCH_QUALIFICATON}?degree_name=${searchText}`)
 			.then(response => response.json())
 			.then(searchedQualificationData => {
 				setSearchQualification(searchedQualificationData.qualifications);
-				//console.log(searchedQualificationData)
-			});
+				console.log("searchedQualificationData", searchedQualificationData)
+			})
+			.catch(() => setSearchQualification([]))
 	}
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(
-	// 			_.filter(qualifications, item => item.degree_name.toLowerCase().includes(searchText.toLowerCase()))
-	// 		);
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(qualifications);
-	// 	}
-	// }, [qualifications, searchText]);
 
 	function handleRequestSort(qualificationEvent, property) {
 		const id = property;
@@ -194,7 +184,7 @@ const QualificationsTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && searchQualificaton ? searchQualificaton : qualifications,
+							searchText !== "" && !_.isEmpty(searchQualificaton) ? searchQualificaton : qualifications,
 							[
 								o => {
 									switch (order.id) {

@@ -69,7 +69,7 @@ const UsersListTable = (props) => {
             .then(response => response.json())
             .then(userData => {
                 setSearchUser(userData.users);
-            });
+            }).catch(() => setSearchUser([]))
     }
 
     function handleRequestSort(event, property) {

@@ -1,4 +1,4 @@
-import countryCodes from "./Countrycodes";
+import countryCodes from "../@data/@Countrycodes";
 
 const RemoveCountryCodeFromPgoneNo = (phoneNoPrimary = "", phoneNoSecondary = "") => {
 

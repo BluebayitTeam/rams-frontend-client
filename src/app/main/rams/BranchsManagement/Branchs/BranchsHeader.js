@@ -97,17 +97,20 @@ const BranchsHeader = () => {
 						className="flex items-center w-full max-w-512 px-8 py-4 rounded-16 shadow"
 					>
 						<Icon color="action">search</Icon>
-
 						<Input
 							placeholder="Search"
 							className="flex flex-1 mx-8"
 							disableUnderline
 							fullWidth
-							value={searchText}
+							//value={searchText}
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onChange={ev => dispatch(setBranchsSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setBranchsSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

@@ -72,9 +72,9 @@ const RoleForm = (props) => {
                     <TextField
                         {...field}
                         className="mt-8 mb-16"
-                        error={!!errors.first_name}
+                        error={!!errors.name}
                         required
-                        helperText={errors?.first_name?.message}
+                        helperText={errors?.name?.message}
                         label="Name"
                         id="name"
                         variant="outlined"
@@ -128,7 +128,7 @@ const RoleForm = (props) => {
                         name={`permission${permission?.id}`}
                         control={control}
                         render={({ field }) => (
-                            <FormControl style={{ marginLeft: "5px" }}>
+                            <FormControl >
                                 <FormControlLabel
                                     required
                                     label={`${permission.name}`}

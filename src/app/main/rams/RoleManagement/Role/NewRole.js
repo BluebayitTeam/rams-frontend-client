@@ -19,7 +19,7 @@ import RoleForm from './RoleForm';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-    name: yup.number()
+    name: yup.string()
         .required("Name is required"),
     permissions: yup.string().
         required('Permissions is required')

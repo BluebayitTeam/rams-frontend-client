@@ -26,12 +26,14 @@ const NewMenuHeader = () => {
 
     function handleSaveMenu() {
         dispatch(saveMenu(getValues())).then(() => {
+            localStorage.setItem("menuAlert", "saveMenu")
             history.push('/apps/menu-management/menus');
         });
     }
 
     function handleUpdateMenu() {
         dispatch(updateMenu(getValues())).then(() => {
+            localStorage.setItem("menuAlert", "updateMenu")
             history.push('/apps/menu-management/menus');
         });
     }
@@ -39,6 +41,7 @@ const NewMenuHeader = () => {
     function handleRemoveMenu() {
         dispatch(removeMenu(getValues())).then(() => {
             localStorage.removeItem("menuEvent")
+            localStorage.setItem("menuAlert", "deleteMenu")
             history.push('/apps/menu-management/menus');
         });
     }

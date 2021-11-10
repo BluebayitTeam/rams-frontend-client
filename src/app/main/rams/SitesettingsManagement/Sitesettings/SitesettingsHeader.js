@@ -105,7 +105,12 @@ const SitesettingsHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onChange={ev => dispatch(setSitesettingsSearchText(ev))}
+							//onBlur={ev => dispatch(setSitesettingsSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setSitesettingsSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

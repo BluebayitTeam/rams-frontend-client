@@ -20,6 +20,7 @@ export const getCitys = createAsyncThunk('cityManagement/citys/geCitys', async (
 });
 
 
+
 export const removeCitys = createAsyncThunk(
     'cityManagement/citys/removeCitys',
     async (cityIds, { dispatch, getState }) => {

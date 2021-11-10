@@ -24,7 +24,7 @@ export const getPermission = createAsyncThunk('permissionManagement/permission/g
 
 export const removePermission = createAsyncThunk(
   'permissionManagement/permission/removePermission',
-  async (val, { dispatch, getState }) => {
+  async (val) => {
 
     const authTOKEN = {
       headers: {
@@ -34,7 +34,8 @@ export const removePermission = createAsyncThunk(
     };
 
     const permissionId = val.id;
-    await axios.delete(`${DELETE_PERMISSION}${permissionId}`, authTOKEN);
+    const response = await axios.delete(`${DELETE_PERMISSION}${permissionId}`, authTOKEN);
+    return response
   }
 );
 
@@ -50,6 +51,7 @@ export const updatePermission = createAsyncThunk(
       }
     };
     const response = await axios.put(`${UPDATE_PERMISSION}${permission.id}`, permissionData, authTOKEN);
+    return response
   }
 )
 
@@ -64,6 +66,7 @@ export const savePermission = createAsyncThunk(
       }
     };
     const response = await axios.post(`${CREATE_PERMISSION}`, permissionData, authTOKEN)
+    return response
   }
 )
 
@@ -84,12 +87,9 @@ const permissionSlice = createSlice({
   },
   extraReducers: {
     [getPermission.fulfilled]: (state, action) => action.payload,
-    [savePermission.fulfilled]: (state, action) => {
-      localStorage.setItem("permissionAlert", "savePermission")
-      return action.payload
-    },
-    [removePermission.fulfilled]: () => { localStorage.setItem("permissionAlert", "deletePermission") },
-    [updatePermission.fulfilled]: () => { localStorage.setItem("permissionAlert", "updatePermission") }
+    [savePermission.fulfilled]: (state, action) => action.payload,
+    [removePermission.fulfilled]: (state, action) => action.payload,
+    [updatePermission.fulfilled]: (state, action) => action.payload
   }
 })
 

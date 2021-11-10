@@ -107,7 +107,11 @@ const CitysHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setCitysSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setCitysSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

@@ -66,8 +66,7 @@ const PermissionsTable = props => {
 			.then(response => response.json())
 			.then(searchedPermissionData => {
 				setSearchPermission(searchedPermissionData.permissions);
-				//console.log(searchedPermissionData)
-			});
+			}).catch(() => setSearchPermission([]))
 	}
 
 	function handleRequestSort(permissionEvent, property) {
@@ -174,7 +173,7 @@ const PermissionsTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && searchPermission ? searchPermission : permissions,
+							searchText !== "" && !_.isEmpty(searchPermission) ? searchPermission : permissions,
 							[
 								o => {
 									switch (order.id) {

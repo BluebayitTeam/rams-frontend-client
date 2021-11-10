@@ -107,7 +107,12 @@ const ThanasHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setThanasSearchText(ev))}
+							// onBlur={ev => dispatch(setThanasSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setThanasSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

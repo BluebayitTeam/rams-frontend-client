@@ -31,6 +31,7 @@ const schema = yup.object().shape({
     institute_name: yup.string()
         .required("Institute Name is required"),
     grade: yup.string()
+        .required("Grade Name is required")
         .matches(/^\d{0,3}(\.\d{0,100})?$/i, "Grade cann't be more than 3 digit")
         .matches(/^\d{0,3}(\.\d{0,2})?$/i, "Grade cann't be more than 5 digit in total")
 })

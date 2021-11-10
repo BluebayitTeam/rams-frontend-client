@@ -2,16 +2,20 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import axios from 'axios';
 import { DELETE_BRANCH, GET_BRANCHS } from '../../../../constant/constants';
 
-export const getBranchs = createAsyncThunk('branchManagement/branchs/geBranchs', async () => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
+export const getBranchs = createAsyncThunk('branchManagement/branchs/geBranchs', async (parameter) => {
+    const { page, size } = parameter
 
-    const response = axios.get(GET_BRANCHS, authTOKEN);
+    axios.defaults.headers.common['Content-type'] = 'application/json'
+    axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token')
+
+    const response = axios.get(GET_BRANCHS, { params: { page, size } });
     const data = await response;
+
+    sessionStorage.setItem('total_branchs_elements', data.data.total_elements);
+    sessionStorage.setItem('total_branchs_pages', data.data.total_pages);
+    delete axios.defaults.headers.common['Content-type'];
+    delete axios.defaults.headers.common.Authorization;
+
     return data.data.branches;
 });
 

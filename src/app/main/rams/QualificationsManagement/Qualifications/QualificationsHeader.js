@@ -101,7 +101,7 @@ const QualificationsHeader = () => {
 						<Icon color="action">search</Icon>
 
 						<Input
-							placeholder="Search"
+							placeholder="search by degree name"
 							className="flex flex-1 mx-8"
 							disableUnderline
 							fullWidth
@@ -109,7 +109,12 @@ const QualificationsHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setQualificationsSearchText(ev))}
+							// onBlur={ev => dispatch(setQualificationsSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setQualificationsSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

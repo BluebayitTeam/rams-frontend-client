@@ -103,15 +103,18 @@ const DepartmentsHeader = () => {
 						<Icon color="action">search</Icon>
 
 						<Input
-							placeholder="Search"
+							placeholder="search by name"
 							className="flex flex-1 mx-8"
 							disableUnderline
 							fullWidth
-							//value={searchText}
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setDepartmentsSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setDepartmentsSearchText(ev))
+								}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>

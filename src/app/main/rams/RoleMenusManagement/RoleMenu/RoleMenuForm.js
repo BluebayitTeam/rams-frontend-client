@@ -1,8 +1,11 @@
 import { Checkbox, FormControl, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { KeyboardArrowDown, KeyboardArrowRight } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
+import { GET_MENUS_BY_ROLE } from 'app/constant/constants';
+import axios from 'axios';
+import _ from "lodash";
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +24,7 @@ function RoleMenuForm(props) {
 
     const dispatch = useDispatch()
     const roles = useSelector(state => state.data.roles)
+    const roleId = useSelector(({ roleMenusManagement }) => roleMenusManagement.roleMenu?.role);
     const roleMenus = useSelector(state => state.data.nestedMenus)
 
     const classes = useStyles(props);
@@ -35,13 +39,49 @@ function RoleMenuForm(props) {
     // const roleMenus = useSelector(selectNavigationAll);
 
     useEffect(() => {
-
         dispatch(getRoles())
         // dispatch(setMenuItem())
         dispatch(getAllMenuNested())
     }, [])
 
-    console.log("meni_items_Id", getValues().menu_items)
+    useEffect(() => {
+        if (!_.isEmpty(roleMenus)) {
+            roleMenus.map(parenMenu => {
+                reset({ ...getValues(), [`extend${parenMenu.id}`]: true })
+            })
+        }
+    }, [roleMenus])
+
+    useEffect(() => {
+        if (roleId) {
+            getRoleSpecificMenus(roleId)
+        }
+    }, [roleId])
+
+    const getRoleSpecificMenus = (roleId) => {
+        const authTOKEN = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: localStorage.getItem('jwt_access_token'),
+            }
+        };
+        axios.get(`${GET_MENUS_BY_ROLE}${roleId}`, authTOKEN).then(res => {
+            console.log("rolesmenu", res.data.menu_items)
+            let menuItemIds = []
+            res.data.menu_items?.map(parentMenu => {
+                menuItemIds.push(parentMenu.id)
+
+                if (!_.isEmpty(parentMenu.children)) {
+                    parentMenu.children.map(childMenu => {
+                        menuItemIds.push(childMenu.id)
+                    })
+                }
+            })
+            reset({ ...getValues(), menu_items: _.uniq(menuItemIds) })
+        })
+    }
+
+    console.log("getValues", getValues())
 
     return (
         <div>
@@ -68,7 +108,7 @@ function RoleMenuForm(props) {
             <Controller
                 name="role"
                 control={control}
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, value } }) => (
                     <Autocomplete
                         className="mt-8 mb-16"
                         freeSolo
@@ -76,7 +116,8 @@ function RoleMenuForm(props) {
                         options={roles}
                         getOptionLabel={(option) => `${option.name}`}
                         onChange={(event, newValue) => {
-                            onChange(newValue?.id)
+                            onChange(newValue?.id);
+                            getRoleSpecificMenus(newValue?.id)
                         }}
                         renderInput={params => (
 
@@ -109,6 +150,18 @@ function RoleMenuForm(props) {
                                 render={({ field }) => (
                                     <FormControl>
                                         <div style={{ display: "flex", flexDirection: "row" }}>
+
+                                            {getValues()[`extend${Parent_menu.id}`] ?
+                                                (<KeyboardArrowDown
+                                                    style={{ marginTop: "10px", marginRight: "5px", cursor: "pointer" }}
+                                                    onClick={() => reset({ ...getValues(), [`extend${Parent_menu.id}`]: false })}
+                                                />) :
+                                                (<KeyboardArrowRight
+                                                    style={{ marginTop: "10px", marginRight: "5px", cursor: "pointer" }}
+                                                    onClick={() => reset({ ...getValues(), [`extend${Parent_menu.id}`]: true })}
+                                                />)
+                                            }
+
                                             <FormControlLabel
                                                 required
                                                 label={`${Parent_menu?.translate}`}
@@ -148,7 +201,7 @@ function RoleMenuForm(props) {
 
                                                     </>}
                                             />
-                                            <KeyboardArrowDown style={{ marginTop: "10px", cursor: "pointer" }} onClick={() => reset({ ...getValues(), [`extend${Parent_menu.id}`]: !getValues()[`extend${Parent_menu.id}`] })} />
+
                                         </div>
                                     </FormControl>
                                 )}
@@ -162,7 +215,7 @@ function RoleMenuForm(props) {
                                         name={`menu_item${menu_item?.id}`}
                                         control={control}
                                         render={({ field }) => (
-                                            <FormControl style={{ marginLeft: "30px" }}>
+                                            <FormControl style={{ marginLeft: "55px" }}>
                                                 <FormControlLabel
                                                     required
                                                     label={`${menu_item?.translate}`}
@@ -170,16 +223,17 @@ function RoleMenuForm(props) {
                                                         <Checkbox
                                                             {...field}
                                                             color="primary"
-                                                            checked={getValues()?.menu_items?.find(id => id == menu_item?.id) || false}
+                                                            checked={getValues()?.menu_items?.find(id => id == menu_item.id) || false}
                                                             onChange={(event) => {
                                                                 if (event.target.checked) {
                                                                     let unicMenuItemds = _.uniq(getValues()?.menu_items)
-                                                                    unicMenuItemds.push(menu_item?.id)
+                                                                    unicMenuItemds.push(menu_item.id)
+                                                                    unicMenuItemds.push(Parent_menu.id)
                                                                     reset({ ...getValues(), menu_items: _.uniq(unicMenuItemds) })
                                                                 }
                                                                 else {
                                                                     let menuItemIdAll = _.uniq(getValues()?.menu_items)
-                                                                    let removableIndex = menuItemIdAll?.indexOf(menu_item?.id)
+                                                                    let removableIndex = menuItemIdAll?.indexOf(menu_item.id)
                                                                     if (removableIndex >= 0) {
                                                                         menuItemIdAll.splice(removableIndex, 1)
                                                                     }

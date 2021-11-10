@@ -25,12 +25,14 @@ const NewThanaHeader = () => {
 
     function handleSaveThana() {
         dispatch(saveThana(getValues())).then(() => {
+            localStorage.setItem("thanaAlert", "saveThana")
             history.push('/apps/thana-management/thanas');
         });
     }
 
     function handleUpdateThana() {
         dispatch(updateThana(getValues())).then(() => {
+            localStorage.setItem("thanaAlert", "updateThana")
             history.push('/apps/thana-management/thanas');
         });
     }
@@ -38,6 +40,7 @@ const NewThanaHeader = () => {
     function handleRemoveThana() {
         dispatch(removeThana(getValues())).then(() => {
             localStorage.removeItem("thanaEvent")
+            localStorage.setItem("thanaAlert", "deleteThana")
             history.push('/apps/thana-management/thanas');
         });
     }

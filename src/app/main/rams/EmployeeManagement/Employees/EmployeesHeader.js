@@ -98,7 +98,7 @@ const EmployeesHeader = () => {
 					>
 						<Icon color="action">search</Icon>
 						<Input
-							placeholder="Search"
+							placeholder="search by user name"
 							className="flex flex-1 mx-8"
 							disableUnderline
 							fullWidth
@@ -106,7 +106,12 @@ const EmployeesHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onBlur={ev => dispatch(setEmployeesSearchText(ev))}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									dispatch(setEmployeesSearchText(ev))
+								}
+							}
+							}
 						/>
 					</Paper>
 				</ThemeProvider>

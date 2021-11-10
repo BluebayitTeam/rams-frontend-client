@@ -622,6 +622,8 @@ export const UPDATE_BRANCH = `${BASE_URL}/branch/api/v1/branch/update/`;
 
 export const DELETE_BRANCH = `${BASE_URL}/branch/api/v1/branch/delete/`;
 
+export const SEARCH_BRANCH = `${BASE_URL}/branch/api/v1/branch/search/`;
+
 // customer types
 export const CREATE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_type/create/`;
 
@@ -634,7 +636,7 @@ export const UPDATE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_ty
 export const DELETE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_type/delete/`;
 
 //menu item
-export const MENU_ITEMS = `${BASE_URL}/menu_item/api/v1/menu_item/menu_items_by_user_role/`
+export const MENU_ITEMS = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_by_user_role/`
 
 export const CREATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/create/`;
 
@@ -644,7 +646,11 @@ export const GET_MENUS = `${BASE_URL}/menu_item/api/v1/menu_item/`;
 
 export const UPDATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/update/`;
 
-export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/nested/all/`
+export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/all/`
+
+export const GET_MENUS_ALL_NESTED = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_without_pagination/all/`
+
+export const GET_MENUS_BY_ROLE = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_by_role_id/`
 
 export const SEARCH_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/search/`;
 

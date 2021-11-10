@@ -71,8 +71,7 @@ const ThanasTable = props => {
 			.then(response => response.json())
 			.then(searchedThanasData => {
 				setSearchThana(searchedThanasData.thanas);
-				//console.log(searchedThanasData)
-			});
+			}).catch(() => setSearchThana([]))
 	}
 
 	useEffect(() => {
@@ -183,7 +182,7 @@ const ThanasTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && searchThana ? searchThana : thanas,
+							searchText !== "" && !_.isEmpty(searchThana) ? searchThana : thanas,
 							[
 								o => {
 									switch (order.id) {
