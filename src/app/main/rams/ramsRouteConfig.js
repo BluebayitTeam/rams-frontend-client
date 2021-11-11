@@ -180,6 +180,19 @@ const ramsRouteConfig = {
             component: lazy(() => import('./PassengerTypesManagement/PassengerType/NewPassengerType'))
         },
 
+        //currentStatus
+        {
+            path: '/apps/currentStatus-management/currentStatuss/:currentStatusId/:currentStatusName?',
+            component: lazy(() => import('./CurrentStatussManagement/CurrentStatus/NewCurrentStatus.js'))
+        },
+        {
+            path: '/apps/currentStatus-management/currentStatuss',
+            component: lazy(() => import('./CurrentStatussManagement/CurrentStatuss/CurrentStatuss'))
+        },
+        {
+            path: '/apps/currentStatus-management/:currentStatusId',
+            component: lazy(() => import('./CurrentStatussManagement/CurrentStatus/NewCurrentStatus'))
+        },
 
     ]
 }

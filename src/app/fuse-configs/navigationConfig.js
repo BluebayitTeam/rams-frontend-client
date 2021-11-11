@@ -93,6 +93,24 @@ const navigationConfig = [
                 url: '/apps/sitesettings-management/sitesettings',
                 exact: true
             },
+            //passengerType
+            {
+                id: 'passengerTypes',
+                title: 'PassengerTypes',
+                translate: 'PassengerTypes',
+                type: 'item',
+                url: '/apps/passengerType-management/passengerTypes',
+                exact: true
+            },
+            //currentStatus
+            {
+                id: 'currentStatuss',
+                title: 'CurrentStatuss',
+                translate: 'CurrentStatuss',
+                type: 'item',
+                url: '/apps/currentStatus-management/currentStatuss',
+                exact: true
+            }
         ]
     },
 
@@ -150,15 +168,7 @@ const navigationConfig = [
                 url: '/apps/roleMenu-management/roleMenus',
                 exact: true
             },
-            //passengerType
-            {
-                id: 'passengerTypes',
-                title: 'PassengerTypes',
-                translate: 'PassengerTypes',
-                type: 'item',
-                url: '/apps/passengerType-management/passengerTypes',
-                exact: true
-            }
+
         ]
     }
 ];

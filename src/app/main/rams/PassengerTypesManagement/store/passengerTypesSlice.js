@@ -15,7 +15,7 @@ export const getPassengerTypes = createAsyncThunk('passengerTypeManagement/passe
     delete axios.defaults.headers.common['Content-type'];
     delete axios.defaults.headers.common.Authorization;
 
-    return data.data.passengerTypes
+    return data.data.passenger_types
 });
 
 

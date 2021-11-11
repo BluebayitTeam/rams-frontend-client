@@ -8,10 +8,10 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { removePassengerType, savePassengerType, updatePassengerType } from '../store/passengerTypeSlice';
+import { removeCurrentStatus, saveCurrentStatus, updateCurrentStatus } from '../store/currentStatusSlice';
 
 
-const NewPassengerTypeHeader = () => {
+const NewCurrentStatusHeader = () => {
     const dispatch = useDispatch();
     const methods = useFormContext();
     const { formState, watch, getValues, setError } = methods;
@@ -21,11 +21,11 @@ const NewPassengerTypeHeader = () => {
     const history = useHistory();
     const routeParams = useParams();
 
-    const handleDelete = localStorage.getItem('passengerTypeEvent');
+    const handleDelete = localStorage.getItem('currentStatusEvent');
 
-    function handleSavePassengerType() {
-        dispatch(savePassengerType(getValues())).then((res) => {
-            console.log("savePassengerTypeRes", res)
+    function handleSaveCurrentStatus() {
+        dispatch(saveCurrentStatus(getValues())).then((res) => {
+            console.log("saveCurrentStatusRes", res)
             if (res.payload.data?.detail) {
                 setError('name', {
                     type: 'manual',
@@ -33,15 +33,15 @@ const NewPassengerTypeHeader = () => {
                 });
             }
             else {
-                localStorage.setItem("passengerTypeAlert", "savePassengerType")
-                history.push('/apps/passengerType-management/passengerTypes');
+                localStorage.setItem("currentStatusAlert", "saveCurrentStatus")
+                history.push('/apps/currentStatus-management/currentStatuss');
             }
         });
     }
 
-    function handleUpdatePassengerType() {
-        dispatch(updatePassengerType(getValues())).then((res) => {
-            console.log("updatePassengerTypeRes", res)
+    function handleUpdateCurrentStatus() {
+        dispatch(updateCurrentStatus(getValues())).then((res) => {
+            console.log("updateCurrentStatusRes", res)
             if (res.payload.data?.detail) {
                 setError('name', {
                     type: 'manual',
@@ -49,25 +49,25 @@ const NewPassengerTypeHeader = () => {
                 });
             }
             else {
-                localStorage.setItem("passengerTypeAlert", "updatePassengerType")
-                history.push('/apps/passengerType-management/passengerTypes');
+                localStorage.setItem("currentStatusAlert", "updateCurrentStatus")
+                history.push('/apps/currentStatus-management/currentStatuss');
             }
         });
     }
 
-    function handleRemovePassengerType() {
-        dispatch(removePassengerType(getValues())).then((res) => {
-            console.log("removePassengerTypeRes", res)
+    function handleRemoveCurrentStatus() {
+        dispatch(removeCurrentStatus(getValues())).then((res) => {
+            console.log("removeCurrentStatusRes", res)
             if (res.payload) {
-                localStorage.removeItem("passengerTypeEvent")
-                localStorage.setItem("passengerTypeAlert", "deletePassengerType")
-                history.push('/apps/passengerType-management/passengerTypes');
+                localStorage.removeItem("currentStatusEvent")
+                localStorage.setItem("currentStatusAlert", "deleteCurrentStatus")
+                history.push('/apps/currentStatus-management/currentStatuss');
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/passengerType-management/passengerTypes')
+        history.push('/apps/currentStatus-management/currentStatuss')
     }
 
 
@@ -79,11 +79,11 @@ const NewPassengerTypeHeader = () => {
                         className="flex items-center sm:mb-12"
                         component={Link}
                         role="button"
-                        to="/apps/passengerType-management/passengerTypes"
+                        to="/apps/currentStatus-management/currentStatuss"
                         color="inherit"
                     >
                         <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-                        <span className="hidden sm:flex mx-4 font-medium">PassengerTypes</span>
+                        <span className="hidden sm:flex mx-4 font-medium">CurrentStatuss</span>
                     </Typography>
                 </motion.div>
 
@@ -99,10 +99,10 @@ const NewPassengerTypeHeader = () => {
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                {name || 'Create New PassengerType'}
+                                {name || 'Create New CurrentStatus'}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                PassengerTypes Detail
+                                CurrentStatuses Detail
                             </Typography>
                         </motion.div>
                     </div>
@@ -119,34 +119,34 @@ const NewPassengerTypeHeader = () => {
                         className='mt-6'
                         variant="subtitle2"
                     >
-                        Do you want to remove this PassengerType?
+                        Do you want to remove this CurrentStatus?
                     </Typography>
                 }
-                {handleDelete == 'Delete' && routeParams.passengerTypeId !== "new" && <Button
+                {handleDelete == 'Delete' && routeParams.currentStatusId !== "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    onClick={handleRemovePassengerType}
+                    onClick={handleRemoveCurrentStatus}
                     startIcon={<Icon className="hidden sm:flex">delete</Icon>}
                     style={{ backgroundColor: '#ea5b78', color: 'white' }}
                 >
                     Remove
                 </Button>}
-                {routeParams.passengerTypeId == "new" && <Button
+                {routeParams.currentStatusId == "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
                     disabled={_.isEmpty(dirtyFields) || !isValid}
-                    onClick={handleSavePassengerType}
+                    onClick={handleSaveCurrentStatus}
                 >
                     Save
                 </Button>}
-                {handleDelete !== 'Delete' && routeParams?.passengerTypeName && <Button
+                {handleDelete !== 'Delete' && routeParams?.currentStatusName && <Button
                     className="whitespace-nowrap mx-4"
                     color="secondary"
                     variant="contained"
                     style={{ backgroundColor: "#4dc08e", color: 'white' }}
-                    onClick={handleUpdatePassengerType}
+                    onClick={handleUpdateCurrentStatus}
                 >
                     Update
                 </Button>}
@@ -163,4 +163,4 @@ const NewPassengerTypeHeader = () => {
     );
 };
 
-export default NewPassengerTypeHeader;
+export default NewCurrentStatusHeader;

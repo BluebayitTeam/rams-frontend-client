@@ -33,7 +33,7 @@ export const removeRoleMenu = createAsyncThunk(
             }
         };
 
-        const roleMenuId = val.id;
+        const roleMenuId = val.role;
         const response = await axios.delete(`${DELETE_ROLEMENU}${roleMenuId}`, authTOKEN);
         return response
     }
