@@ -66,8 +66,7 @@ const PassengerTypesTable = (props) => {
         fetch(`${SEARCH_PASSENGERTYPE}?name=${searchText}`)
             .then(response => response.json())
             .then(searchedPassengerTypeData => {
-                setSearchPassengerType(searchedPassengerTypeData?.passengerTypes);
-                console.log("searchedPassengerTypeData", searchedPassengerTypeData)
+                setSearchPassengerType(searchedPassengerTypeData?.passenger_types);
             })
             .catch(() => setSearchPassengerType([]))
     }

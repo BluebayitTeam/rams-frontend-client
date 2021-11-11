@@ -1,3 +1,4 @@
+import _ from '@lodash';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 // import { orange } from '@material-ui/core/colors';
 import FormControl from '@material-ui/core/FormControl';
@@ -6,42 +7,9 @@ import TextField from '@material-ui/core/TextField';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import { getPermissions } from '../../../../store/dataSlice';
-
-// const useStyles = makeStyles(theme => ({
-//     productImageFeaturedStar: {
-//         position: 'absolute',
-//         top: 0,
-//         right: 0,
-//         color: orange[400],
-//         opacity: 0
-//     },
-//     productImageUpload: {
-//         transitionProperty: 'box-shadow',
-//         transitionDuration: theme.transitions.duration.short,
-//         transitionTimingFunction: theme.transitions.easing.easeInOut
-//     },
-//     productImageItem: {
-//         transitionProperty: 'box-shadow',
-//         transitionDuration: theme.transitions.duration.short,
-//         transitionTimingFunction: theme.transitions.easing.easeInOut,
-//         '&:hover': {
-//             '& $productImageFeaturedStar': {
-//                 opacity: 0.8
-//             }
-//         },
-//         '&.featured': {
-//             pointerEvents: 'none',
-//             boxShadow: theme.shadows[3],
-//             '& $productImageFeaturedStar': {
-//                 opacity: 1
-//             },
-//             '&:hover $productImageFeaturedStar': {
-//                 opacity: 1
-//             }
-//         }
-//     }
-// }));
+import { saveRole, updateRole } from '../store/roleSlice';
 
 
 const RoleForm = (props) => {
@@ -50,18 +18,59 @@ const RoleForm = (props) => {
     //console.log(thanas);
     const methods = useFormContext();
     const { control, watch, formState, reset, getValues } = methods;
-
     const image = watch('image', []);
     console.log(image);
-    const { errors } = formState;
+    const { errors, isValid, dirtyField } = formState;
     const permissions = useSelector(state => state.data.permissions);
 
+    const routeParams = useParams();
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('updateRole');
+
+    const name = watch('name');
+    const permissionss = watch('permissions');
 
     useEffect(() => {
         dispatch(getPermissions());
     }, [])
 
-    console.log("permissions", watch("permissions"))
+
+    function handleSaveRole() {
+        dispatch(saveRole(getValues())).then((res) => {
+            if (!res.payload.data?.detail) {
+                localStorage.setItem('roleAlertPermission', 'saveRoleSuccessfully')
+                history.push('/apps/roles-management/roles');
+            }
+            else {
+                setError("name", { type: "manual", message: res.payload.data.detail })
+                console.log(res.payload.data.detail)
+            }
+        });
+    }
+
+    function handleUpdateRole() {
+        dispatch(updateRole(getValues())).then((res) => {
+            console.log("updateRoleRes", res)
+            if (res.payload) {
+                localStorage.setItem("roleAlert", "updateRole")
+                history.push('/apps/roles-management/roles');
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.roleId === "new" && !(!name || _.isEmpty(permissionss))) {
+                handleSaveRole()
+                console.log("saved")
+            }
+            else if (handleDelete == 'updateRole') {
+                handleUpdateRole()
+                console.log("updated")
+            }
+        }
+    }
+
 
     return (
         <div>
@@ -80,6 +89,7 @@ const RoleForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 }
             />

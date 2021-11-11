@@ -25,28 +25,34 @@ const NewPermissionHeader = () => {
 
     function handleSavePermission() {
         dispatch(savePermission(getValues())).then((res) => {
-            if (!res.payload.data?.detail) {
-                localStorage.setItem("permissionAlert", "savePermission")
-                history.push('/apps/permission-management/permissions')
-            }
-            else {
+            if (res.payload.data?.detail) {
                 console.log("dublicate")
                 setError("name", { type: "manual", message: res.payload.data.detail })
+            }
+            else {
+                localStorage.setItem("permissionAlert", "savePermission")
+                history.push('/apps/permission-management/permissions')
             }
         });
     }
 
     function handleUpdatePermission() {
-        dispatch(updatePermission(getValues())).then(() => {
-            localStorage.setItem("permissionAlert", "deletePermission")
-            history.push('/apps/permission-management/permissions');
+        dispatch(updatePermission(getValues())).then((res) => {
+            if (res.payload?.data?.detail) {
+                console.log("dublicate")
+                setError("name", { type: "manual", message: res.payload.data.detail })
+            }
+            else {
+                localStorage.setItem("permissionAlert", "updatePermission")
+                history.push('/apps/permission-management/permissions');
+            }
         });
     }
 
     function handleRemovePermission() {
-        dispatch(removePermission(getValues())).then(() => {
+        dispatch(removePermission(getValues())).then((res) => {
             localStorage.removeItem("permissionEvent")
-            localStorage.setItem("permissionAlert", "updatePermission")
+            localStorage.setItem("permissionAlert", "deletePermission")
             history.push('/apps/permission-management/permissions');
         });
     }

@@ -66,6 +66,7 @@ const CurrentStatussTable = (props) => {
         fetch(`${SEARCH_CURRENTSTATUS}?name=${searchText}`)
             .then(response => response.json())
             .then(searchedCurrentStatusData => {
+                console.log("search", searchedCurrentStatusData)
                 setSearchCurrentStatus(searchedCurrentStatusData?.current_statuses);
             })
             .catch(() => setSearchCurrentStatus([]))

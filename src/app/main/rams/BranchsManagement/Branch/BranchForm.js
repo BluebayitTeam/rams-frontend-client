@@ -6,13 +6,19 @@ import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import { getCities, getCountries, getThanas } from '../../../../store/dataSlice';
+import { saveBranch, updateBranch } from '../store/branchSlice';
 
 function BranchForm(props) {
     const dispatch = useDispatch();
     const methods = useFormContext();
-    const { control, formState } = methods;
-    const { errors } = formState;
+    const { control, formState, getValues } = methods;
+    const { errors, isValid, dirtyFields } = formState;
+
+    const history = useHistory();
+    const routeParams = useParams();
+    const handleDelete = localStorage.getItem('branchEvent');
 
     const thanas = useSelector(state => state.data.thanas);
     const cities = useSelector(state => state.data.cities);
@@ -23,6 +29,33 @@ function BranchForm(props) {
         dispatch(getCountries());
         dispatch(getCities());
     }, []);
+
+    function handleSaveBranch() {
+        console.log(getValues());
+        dispatch(saveBranch(getValues())).then(() => {
+            history.push('/apps/branch-management/branchs');
+        });
+    }
+
+    function handleUpdateBranch() {
+        dispatch(updateBranch(getValues())).then(() => {
+            history.push('/apps/branch-management/branchs');
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.branchId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveBranch()
+                console.log("saved")
+            }
+            else if (handleDelete !== 'Delete' && routeParams?.branchName) {
+                handleUpdateBranch()
+                console.log("updated")
+            }
+        }
+    }
+
 
     return (
         <div>
@@ -42,6 +75,7 @@ function BranchForm(props) {
                         id="name"
                         variant="outlined"
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -183,6 +217,7 @@ function BranchForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
+                                onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />

@@ -24,6 +24,7 @@ const NewRoleHeader = () => {
     const handleDelete = localStorage.getItem('deleteRole');
     const handleUpdate = localStorage.getItem('updateRole');
 
+
     function handleSaveRole() {
         dispatch(saveRole(getValues())).then((res) => {
             if (!res.payload.data?.detail) {
@@ -38,17 +39,23 @@ const NewRoleHeader = () => {
     }
 
     function handleUpdateRole() {
-        dispatch(updateRole(getValues())).then(() => {
-            localStorage.setItem('roleAlertPermission', 'updateRoleSuccessfully')
-            history.push('/apps/roles-management/roles');
+        dispatch(updateRole(getValues())).then((res) => {
+            console.log("updateRoleRes", res)
+            if (res.payload) {
+                localStorage.setItem("roleAlert", "updateRole")
+                history.push('/apps/roles-management/roles');
+            }
         });
-
     }
 
     function handleRemoveRole() {
-        dispatch(removeRole(getValues())).then(() => {
-            localStorage.setItem('roleAlertPermission', 'removeRoleSuccessfully')
-            history.push('/apps/roles-management/roles');
+        dispatch(removeRole(getValues())).then((res) => {
+            console.log("removeRoleRes", res)
+            if (res.payload) {
+                localStorage.removeItem("roleEvent")
+                localStorage.setItem("roleAlert", "deleteRole")
+                history.push('/apps/roles-management/roles');
+            }
         });
     }
 

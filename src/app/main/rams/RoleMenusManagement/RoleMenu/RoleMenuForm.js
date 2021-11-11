@@ -9,8 +9,9 @@ import _ from "lodash";
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { getAllMenuNested, getRoles } from '../../../../store/dataSlice';
+import { saveRoleMenu, updateRoleMenu } from '../store/roleMenuSlice';
 
 const useStyles = makeStyles(theme => ({
     hidden: {
@@ -26,15 +27,16 @@ function RoleMenuForm(props) {
     const roles = useSelector(state => state.data.roles)
     const roleId = useSelector(({ roleMenusManagement }) => roleMenusManagement.roleMenu?.role);
     const roleMenus = useSelector(state => state.data.nestedMenus)
-
     const classes = useStyles(props);
-
     const methods = useFormContext();
-    const { control, formState, getValues, reset } = methods;
-    const { errors } = formState;
-
+    const { control, formState, getValues, reset, watch } = methods;
+    const { errors, isValid, dirtyFields } = formState;
     const routeParams = useParams();
     const { roleMenuId } = routeParams;
+    const name = watch('role');
+
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('roleMenuEvent');
 
     // const roleMenus = useSelector(selectNavigationAll);
 
@@ -81,7 +83,40 @@ function RoleMenuForm(props) {
         })
     }
 
-    console.log("getValues", getValues())
+
+    function handleSaveRoleMenu() {
+        dispatch(saveRoleMenu(getValues())).then((res) => {
+            console.log("saveRoleMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("roleMenuAlert", "saveRoleMenu")
+                history.push('/apps/roleMenu-management/roleMenus');
+            }
+        });
+    }
+
+    function handleUpdateRoleMenu() {
+        dispatch(updateRoleMenu(getValues())).then((res) => {
+            console.log("updateRoleMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("roleMenuAlert", "updateRoleMenu")
+                history.push('/apps/roleMenu-management/roleMenus');
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.roleMenuId === "new" && name) {
+                handleSaveRoleMenu()
+                console.log("saved")
+            }
+            else if (handleDelete !== 'Delete' && routeParams?.roleMenuName) {
+                handleUpdateRoleMenu()
+                console.log("updated")
+            }
+        }
+    }
+
 
     return (
         <div>
@@ -133,6 +168,7 @@ function RoleMenuForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
+                                onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />

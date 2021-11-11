@@ -1,3 +1,4 @@
+import _ from '@lodash';
 import { Checkbox, FormControl, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -5,8 +6,9 @@ import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { getParentMenus } from '../../../../store/dataSlice';
+import { saveMenu, updateMenu } from '../store/menuSlice';
 
 const useStyles = makeStyles(theme => ({
     hidden: {
@@ -17,18 +19,54 @@ const useStyles = makeStyles(theme => ({
 
 function MenuForm(props) {
     const userID = localStorage.getItem('UserID')
-    const dispatch = useDispatch()
-    const parents = useSelector(state => state.data.parentMenus)
     const classes = useStyles(props);
     const methods = useFormContext();
-    const { control, formState } = methods;
-    const { errors } = formState;
+    const { control, formState, getValues } = methods;
+    const { errors, isValid, dirtyFields } = formState;
     const routeParams = useParams();
     const { menuId } = routeParams;
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('menuEvent');
+    const dispatch = useDispatch()
+    const parents = useSelector(state => state.data.parentMenus)
 
     useEffect(() => {
         dispatch(getParentMenus())
     }, [])
+
+    function handleSaveMenu() {
+        dispatch(saveMenu(getValues())).then((res) => {
+            console.log("saveMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("menuAlert", "saveMenu")
+                history.push('/apps/menu-management/menus');
+            }
+        });
+    }
+
+    function handleUpdateMenu() {
+        dispatch(updateMenu(getValues())).then((res) => {
+            console.log("updateMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("menuAlert", "updateMenu")
+                history.push('/apps/menu-management/menus');
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.menuId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveMenu()
+                console.log("saved")
+            }
+            else if (handleDelete !== 'Delete' && routeParams?.menuName) {
+                handleUpdateMenu()
+                console.log("updated")
+            }
+        }
+    }
+
 
     return (
         <div>
@@ -79,6 +117,7 @@ function MenuForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
+                                onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />
@@ -100,6 +139,7 @@ function MenuForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -120,6 +160,7 @@ function MenuForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -140,6 +181,7 @@ function MenuForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -160,6 +202,7 @@ function MenuForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -180,6 +223,7 @@ function MenuForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -200,6 +244,7 @@ function MenuForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />

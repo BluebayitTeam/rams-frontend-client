@@ -19,9 +19,6 @@ const NewQualificationHeader = () => {
     const theme = useTheme();
     const history = useHistory();
 
-    const image = watch('image');
-    const featuredImageId = watch('featuredImageId');
-
     const routeParams = useParams();
 
     const handleDelete = localStorage.getItem('qualificationEvent');

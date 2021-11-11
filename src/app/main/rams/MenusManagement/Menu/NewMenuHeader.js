@@ -25,24 +25,32 @@ const NewMenuHeader = () => {
     const handleDelete = localStorage.getItem('menuEvent');
 
     function handleSaveMenu() {
-        dispatch(saveMenu(getValues())).then(() => {
-            localStorage.setItem("menuAlert", "saveMenu")
-            history.push('/apps/menu-management/menus');
+        dispatch(saveMenu(getValues())).then((res) => {
+            console.log("saveMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("menuAlert", "saveMenu")
+                history.push('/apps/menu-management/menus');
+            }
         });
     }
 
     function handleUpdateMenu() {
-        dispatch(updateMenu(getValues())).then(() => {
-            localStorage.setItem("menuAlert", "updateMenu")
-            history.push('/apps/menu-management/menus');
+        dispatch(updateMenu(getValues())).then((res) => {
+            console.log("updateMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("menuAlert", "updateMenu")
+                history.push('/apps/menu-management/menus');
+            }
         });
     }
 
     function handleRemoveMenu() {
-        dispatch(removeMenu(getValues())).then(() => {
-            localStorage.removeItem("menuEvent")
-            localStorage.setItem("menuAlert", "deleteMenu")
-            history.push('/apps/menu-management/menus');
+        dispatch(removeMenu(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.removeItem("menuEvent")
+                localStorage.setItem("menuAlert", "deleteMenu")
+                history.push('/apps/menu-management/menus');
+            }
         });
     }
 

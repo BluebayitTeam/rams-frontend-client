@@ -24,24 +24,33 @@ const NewRoleMenuHeader = () => {
     const handleDelete = localStorage.getItem('roleMenuEvent');
 
     function handleSaveRoleMenu() {
-        dispatch(saveRoleMenu(getValues())).then(() => {
-            localStorage.setItem("roleMenuAlert", "saveRoleMenu")
-            history.push('/apps/roleMenu-management/roleMenus');
+        dispatch(saveRoleMenu(getValues())).then((res) => {
+            console.log("saveRoleMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("roleMenuAlert", "saveRoleMenu")
+                history.push('/apps/roleMenu-management/roleMenus');
+            }
         });
     }
 
     function handleUpdateRoleMenu() {
-        dispatch(updateRoleMenu(getValues())).then(() => {
-            localStorage.setItem("roleMenuAlert", "updateRoleMenu")
-            history.push('/apps/roleMenu-management/roleMenus');
+        dispatch(updateRoleMenu(getValues())).then((res) => {
+            console.log("updateRoleMenuRes", res)
+            if (res.payload) {
+                localStorage.setItem("roleMenuAlert", "updateRoleMenu")
+                history.push('/apps/roleMenu-management/roleMenus');
+            }
         });
     }
 
     function handleRemoveRoleMenu() {
-        dispatch(removeRoleMenu(getValues())).then(() => {
-            localStorage.removeItem("roleMenuEvent")
-            localStorage.setItem("roleMenuAlert", "deleteRoleMenu")
-            history.push('/apps/roleMenu-management/roleMenus');
+        dispatch(removeRoleMenu(getValues())).then((res) => {
+            console.log("removeRoleMenuRes", res)
+            if (res.payload) {
+                localStorage.removeItem("roleMenuEvent")
+                localStorage.setItem("roleMenuAlert", "deleteRoleMenu")
+                history.push('/apps/roleMenu-management/roleMenus');
+            }
         });
     }
 

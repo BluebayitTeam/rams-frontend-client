@@ -121,12 +121,12 @@ const RolesTable = (props) => {
         localStorage.removeItem('deleteRole');
         console.log("clicked");
         localStorage.setItem('updateRole', event);
-        props.history.push(`/apps/roles-management/${item.id}/${item.first_name}`);
+        props.history.push(`/apps/roles-management/${item.id}/${item.name}`);
     }
     function handleDeleteRole(item, event) {
         localStorage.removeItem('updateRole');
         localStorage.setItem('deleteRole', event);
-        props.history.push(`/apps/roles-management/${item.id}/${item.first_name}`);
+        props.history.push(`/apps/roles-management/${item.id}/${item.name}`);
         // dispatch(removeEmployee(item));
         // window.location.reload();
         //props.history.push(`/apps/employee-management/employees/${item.id}/${item.first_name}`);
