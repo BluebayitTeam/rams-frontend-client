@@ -22,11 +22,9 @@ export const getDepartment = createAsyncThunk('departmentManagement/department/g
 
 })
 
-
-
 export const removeDepartment = createAsyncThunk(
   'departmentManagement/department/removeDepartment',
-  async (val, { dispatch, getState }) => {
+  async (val) => {
 
     const authTOKEN = {
       headers: {
@@ -36,7 +34,8 @@ export const removeDepartment = createAsyncThunk(
     };
 
     const departmentId = val.id;
-    await axios.delete(`${DELETE_DEPARTMENT}${departmentId}`, authTOKEN);
+    const response = await axios.delete(`${DELETE_DEPARTMENT}${departmentId}`, authTOKEN)
+    return response
   }
 );
 
@@ -52,6 +51,7 @@ export const updateDepartment = createAsyncThunk(
       }
     };
     const response = await axios.put(`${UPDATE_DEPARTMENT}${department.id}`, departmentData, authTOKEN);
+    return response
   }
 )
 
@@ -66,6 +66,7 @@ export const saveDepartment = createAsyncThunk(
       }
     };
     const response = await axios.post(`${CREATE_DEPARTMENT}`, departmentData, authTOKEN)
+    return response
   }
 )
 
@@ -86,15 +87,9 @@ const departmentSlice = createSlice({
   },
   extraReducers: {
     [getDepartment.fulfilled]: (state, action) => action.payload,
-    [saveDepartment.fulfilled]: (state, action) => {
-      localStorage.setItem("departmentAlert", "saveDepartment")
-      return action.payload
-    },
-    [removeDepartment.fulfilled]: () => {
-      localStorage.setItem("departmentAlert", "deleteDepartment")
-      return null
-    },
-    [updateDepartment.fulfilled]: () => { localStorage.setItem("departmentAlert", "updateDepartment") },
+    [saveDepartment.fulfilled]: (state, action) => action.payload,
+    [removeDepartment.fulfilled]: (state, action) => action.payload,
+    [updateDepartment.fulfilled]: (state, action) => action.payload
   }
 })
 

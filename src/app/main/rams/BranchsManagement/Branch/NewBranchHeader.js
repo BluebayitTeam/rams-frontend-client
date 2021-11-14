@@ -24,22 +24,30 @@ const NewBranchHeader = () => {
     const handleDelete = localStorage.getItem('branchEvent');
 
     function handleSaveBranch() {
-        console.log(getValues());
-        dispatch(saveBranch(getValues())).then(() => {
-            history.push('/apps/branch-management/branchs');
+        dispatch(saveBranch(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("branchAlert", "saveBranch")
+                history.push('/apps/branch-management/branchs');
+            }
         });
     }
 
     function handleUpdateBranch() {
-        dispatch(updateBranch(getValues())).then(() => {
-            history.push('/apps/branch-management/branchs');
+        dispatch(updateBranch(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("branchAlert", "updateBranch")
+                history.push('/apps/branch-management/branchs');
+            }
         });
     }
 
     function handleRemoveBranch() {
-        dispatch(removeBranch(getValues())).then(() => {
-            localStorage.removeItem("branchEvent")
-            history.push('/apps/branch-management/branchs');
+        dispatch(removeBranch(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("branchAlert", "deleteBranch")
+                localStorage.removeItem("branchEvent")
+                history.push('/apps/branch-management/branchs');
+            }
         });
     }
 

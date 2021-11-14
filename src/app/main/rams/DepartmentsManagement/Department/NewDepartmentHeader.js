@@ -24,22 +24,30 @@ const NewDepartmentHeader = () => {
     const handleDelete = localStorage.getItem('departmentEvent');
 
     function handleSaveDepartment() {
-        dispatch(saveDepartment(getValues())).then(() => {
-            history.push('/apps/department-management/departments');
+        dispatch(saveDepartment(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("departmentAlert", "saveDepartment")
+                history.push('/apps/department-management/departments')
+            }
         });
     }
 
     function handleUpdateDepartment() {
-        dispatch(updateDepartment(getValues())).then(() => {
-            history.push('/apps/department-management/departments');
+        dispatch(updateDepartment(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("departmentAlert", "updateDepartment")
+                history.push('/apps/department-management/departments')
+            }
         });
-
     }
 
     function handleRemoveDepartment() {
-        dispatch(removeDepartment(getValues())).then(() => {
-            localStorage.removeItem("departmentEvent")
-            history.push('/apps/department-management/departments');
+        dispatch(removeDepartment(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("departmentAlert", "deleteDepartment")
+                localStorage.removeItem("departmentEvent")
+                history.push('/apps/department-management/departments')
+            }
         });
     }
 

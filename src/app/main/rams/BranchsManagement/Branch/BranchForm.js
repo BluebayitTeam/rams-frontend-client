@@ -31,15 +31,20 @@ function BranchForm(props) {
     }, []);
 
     function handleSaveBranch() {
-        console.log(getValues());
-        dispatch(saveBranch(getValues())).then(() => {
-            history.push('/apps/branch-management/branchs');
+        dispatch(saveBranch(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("branchAlert", "saveBranch")
+                history.push('/apps/branch-management/branchs');
+            }
         });
     }
 
     function handleUpdateBranch() {
-        dispatch(updateBranch(getValues())).then(() => {
-            history.push('/apps/branch-management/branchs');
+        dispatch(updateBranch(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("branchAlert", "updateBranch")
+                history.push('/apps/branch-management/branchs');
+            }
         });
     }
 
@@ -151,6 +156,7 @@ function BranchForm(props) {
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
                         />
                     );
                 }}
@@ -169,6 +175,7 @@ function BranchForm(props) {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -187,6 +194,7 @@ function BranchForm(props) {
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
                         />
                     );
                 }}
@@ -217,7 +225,7 @@ function BranchForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
-                                onKeyDown={handleSubmitOnKeyDownEnter}
+                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />
@@ -249,6 +257,7 @@ function BranchForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
+                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />
@@ -280,6 +289,7 @@ function BranchForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
+                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />

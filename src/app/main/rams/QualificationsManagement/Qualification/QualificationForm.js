@@ -1,3 +1,4 @@
+import _ from '@lodash';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -6,8 +7,10 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import { BASE_URL } from '../../../../constant/constants';
 import { getEmployees } from '../../../../store/dataSlice';
+import { saveQualification, updateQualification } from '../store/qualificationSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,30 +46,59 @@ function QualificationForm(props) {
     const [previewImage2, setPreviewImage2] = useState(null)
     const [previewImage3, setPreviewImage3] = useState(null)
     const [previewImage4, setPreviewImage4] = useState(null)
-
     const dispatch = useDispatch()
-
     const userID = localStorage.getItem('UserID')
     const employees = useSelector(state => state.data.employees)
-
+    const routeParams = useParams();
     const classes = useStyles(props);
-
     const methods = useFormContext();
-    const { control, formState, watch } = methods;
-    const { errors } = formState;
+    const { control, formState, watch, getValues } = methods;
+    const { errors, isValid, dirtyFields } = formState;
     const image1 = watch('image_doc_one');
     const image2 = watch('image_doc_two');
     const image3 = watch('image_doc_three');
     const image4 = watch('image_doc_four');
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('qualificationEvent');
 
     useEffect(() => {
         dispatch(getEmployees())
     }, [])
 
+    function handleSaveQualification() {
+        dispatch(saveQualification(getValues())).then((res) => {
+            console.log("saveQualificationRes", res)
+            if (res.payload) {
+                localStorage.setItem("qualificationAlert", "saveQualification")
+                history.push('/apps/qualification-management/qualifications');
+            }
+        });
+    }
 
-    console.log(userID)
-    console.dir(`${BASE_URL}${image1}`)
-    console.dir(previewImage1)
+    function handleUpdateQualification() {
+        dispatch(updateQualification(getValues())).then((res) => {
+            console.log("updateQualificationRes", res)
+            if (res.payload) {
+                localStorage.setItem("qualificationAlert", "updateQualification")
+                history.push('/apps/qualification-management/qualifications');
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.qualificationId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveQualification()
+                console.log("saved")
+            }
+            else if (handleDelete !== 'Delete' && routeParams?.qualificationName) {
+                handleUpdateQualification()
+                console.log("updated")
+            }
+        }
+    }
+
+
     return (
         <div>
             <Controller
@@ -118,6 +150,7 @@ function QualificationForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -137,6 +170,7 @@ function QualificationForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -156,6 +190,7 @@ function QualificationForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -175,6 +210,7 @@ function QualificationForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -194,6 +230,7 @@ function QualificationForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -401,8 +438,6 @@ function QualificationForm(props) {
                 </div>
 
             </div>
-
-
 
 
         </div>

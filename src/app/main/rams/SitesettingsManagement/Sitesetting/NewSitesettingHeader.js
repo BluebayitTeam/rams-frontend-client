@@ -25,16 +25,20 @@ const NewSitesettingHeader = () => {
     function handleSaveSitesetting() {
         const data = getValues();
         data.phone = data.country_code1 + data.phone;
-        dispatch(saveSitesetting(data)).then(() => {
-            localStorage.setItem("sitesettingAlert", "saveSitesetting")
-            history.push('/apps/sitesettings-management/sitesettings/');
+        dispatch(saveSitesetting(data)).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("sitesettingAlert", "saveSitesetting")
+                history.push('/apps/sitesettings-management/sitesettings/')
+            }
         });
     }
 
     function handleUpdateSitesetting() {
-        dispatch(updateSitesetting(getValues())).then(() => {
-            localStorage.setItem("sitesettingAlert", "updateSitesetting")
-            history.push('/apps/sitesettings-management/sitesettings/');
+        dispatch(updateSitesetting(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("sitesettingAlert", "updateSitesetting")
+                history.push('/apps/sitesettings-management/sitesettings/')
+            }
         });
     }
 

@@ -1,4 +1,3 @@
-import history from '@history';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { CREATE_EMPLOYEE, DELETE_EMPLOYEE, GET_EMPLOYEE_BY_ID, UPDATE_EMPLOYEE } from '../../../../constant/constants';
@@ -18,7 +17,7 @@ export const getEmployee = createAsyncThunk('employeeManagement/employee/getEmpl
 
 export const removeEmployee = createAsyncThunk(
     'employeeManagement/employee/removeEmployee',
-    async (val, { dispatch, getState }) => {
+    async (val) => {
         const authTOKEN = {
             headers: {
                 'Content-type': 'application/json',
@@ -26,7 +25,8 @@ export const removeEmployee = createAsyncThunk(
             }
         }
         const employeeId = val.id;
-        await axios.delete(`${DELETE_EMPLOYEE}${employeeId}`, authTOKEN);
+        const response = await axios.delete(`${DELETE_EMPLOYEE}${employeeId}`, authTOKEN)
+        return response
     }
 );
 
@@ -68,8 +68,7 @@ export const updateEmployee = createAsyncThunk(
         //const updatedEmployeeData = { ...employee, ...employeeData };
 
         const response = await axios.put(`${UPDATE_EMPLOYEE}${employee.id}`, employeeDataToFormData, authTOKEN);
-        console.log(response);
-        //history.push({ pathname: '/apps/employee-management/employees' });
+        return response
     }
 )
 
@@ -86,8 +85,7 @@ export const saveEmployee = createAsyncThunk(
             }
         }
         const response = await axios.post(`${CREATE_EMPLOYEE}`, employeeDataToFormData, authTOKEN)
-        console.log(response);
-        history.push({ pathname: '/apps/employee-management/employees' });
+        return response
     }
 )
 
@@ -140,16 +138,9 @@ const employeeSlice = createSlice({
     },
     extraReducers: {
         [getEmployee.fulfilled]: (state, action) => action.payload,
-        [saveEmployee.fulfilled]: (state, action) => {
-            localStorage.setItem('employeeAlertPermission', 'saveEmployeeSuccessfully')
-            return action.payload
-        },
-        [removeEmployee.fulfilled]: (state, action) => {
-            localStorage.setItem('employeeAlertPermission', 'removeEmployeeSuccessfully')
-        },
-        [updateEmployee.fulfilled]: (state, action) => {
-            localStorage.setItem('employeeAlertPermission', 'updateEmployeeSuccessfully')
-        }
+        [saveEmployee.fulfilled]: (state, action) => action.payload,
+        [removeEmployee.fulfilled]: (state, action) => action.payload,
+        [updateEmployee.fulfilled]: (state, action) => action.payload
     }
 })
 

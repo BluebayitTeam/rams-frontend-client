@@ -24,24 +24,30 @@ const NewThanaHeader = () => {
     const handleDelete = localStorage.getItem('thanaEvent');
 
     function handleSaveThana() {
-        dispatch(saveThana(getValues())).then(() => {
-            localStorage.setItem("thanaAlert", "saveThana")
-            history.push('/apps/thana-management/thanas');
+        dispatch(saveThana(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("thanaAlert", "saveThana")
+                history.push('/apps/thana-management/thanas')
+            }
         });
     }
 
     function handleUpdateThana() {
-        dispatch(updateThana(getValues())).then(() => {
-            localStorage.setItem("thanaAlert", "updateThana")
-            history.push('/apps/thana-management/thanas');
+        dispatch(updateThana(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("thanaAlert", "updateThana")
+                history.push('/apps/thana-management/thanas')
+            }
         });
     }
 
     function handleRemoveThana() {
-        dispatch(removeThana(getValues())).then(() => {
-            localStorage.removeItem("thanaEvent")
-            localStorage.setItem("thanaAlert", "deleteThana")
-            history.push('/apps/thana-management/thanas');
+        dispatch(removeThana(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.removeItem("thanaEvent")
+                localStorage.setItem("thanaAlert", "deleteThana")
+                history.push('/apps/thana-management/thanas')
+            }
         });
     }
 

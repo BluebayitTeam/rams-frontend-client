@@ -1,33 +1,58 @@
-import { makeStyles } from '@material-ui/core/styles';
+import _ from '@lodash';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import { getCountries } from '../../../../store/dataSlice';
-
-
-const useStyles = makeStyles(theme => ({
-    hidden: {
-        display: "none"
-    }
-}));
+import { saveCity, updateCity } from '../store/citySlice';
 
 
 function CityForm(props) {
-
     const dispatch = useDispatch()
     const countries = useSelector(state => state.data.countries)
-
     const methods = useFormContext();
-    const { control, formState } = methods;
-    const { errors } = formState;
+    const { control, formState, getValues } = methods;
+    const { errors, isValid, dirtyFields } = formState;
+    const routeParams = useParams();
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('cityEvent');
 
     useEffect(() => {
-
         dispatch(getCountries())
-
     }, [])
+
+    function handleSaveCity() {
+        dispatch(saveCity(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("cityAlert", "saveCity")
+                history.push('/apps/city-management/cities')
+            }
+        });
+    }
+
+    function handleUpdateCity() {
+        dispatch(updateCity(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("cityAlert", "updateCity")
+                history.push('/apps/city-management/cities')
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.cityId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveCity()
+                console.log("saved")
+            }
+            else if (handleDelete !== 'Delete' && routeParams?.cityName) {
+                handleUpdateCity()
+                console.log("updated")
+            }
+        }
+    }
 
     return (
         <div>
@@ -46,6 +71,7 @@ function CityForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />

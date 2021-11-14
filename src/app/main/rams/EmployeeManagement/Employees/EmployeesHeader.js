@@ -15,8 +15,8 @@ import { setEmployeesSearchText } from '../store/employeesSlice';
 
 const useStyles = makeStyles(theme => ({
 	alert: (props) => ({
-		width: "20%",
-		height: "50px",
+		width: "fit-content",
+		height: "40px",
 		position: "fixed",
 		right: "30px",
 		marginTop: "-85px",

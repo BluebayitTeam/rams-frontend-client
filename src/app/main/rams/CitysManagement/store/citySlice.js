@@ -24,7 +24,7 @@ export const getCity = createAsyncThunk('cityManagement/city/getCity', async (pa
 
 export const removeCity = createAsyncThunk(
   'cityManagement/city/removeCity',
-  async (val, { dispatch, getState }) => {
+  async (val) => {
 
     const authTOKEN = {
       headers: {
@@ -34,7 +34,8 @@ export const removeCity = createAsyncThunk(
     };
 
     const cityId = val.id;
-    await axios.delete(`${DELETE_CITY}${cityId}`, authTOKEN);
+    const response = await axios.delete(`${DELETE_CITY}${cityId}`, authTOKEN);
+    return response
   }
 );
 
@@ -51,13 +52,14 @@ export const updateCity = createAsyncThunk(
       }
     };
     const response = await axios.put(`${UPDATE_CITY}${city.id}`, cityData, authTOKEN);
+    return response
   }
 
 )
 
 export const saveCity = createAsyncThunk(
   'cityManagement/city/saveCity',
-  async (cityData, { dispatch, getState }) => {
+  async (cityData) => {
 
 
     const authTOKEN = {
@@ -67,6 +69,7 @@ export const saveCity = createAsyncThunk(
       }
     };
     const response = await axios.post(`${CREATE_CITY}`, cityData, authTOKEN)
+    return response
   }
 )
 
@@ -84,12 +87,9 @@ const citySlice = createSlice({
   },
   extraReducers: {
     [getCity.fulfilled]: (state, action) => action.payload,
-    [saveCity.fulfilled]: (state, action) => {
-      localStorage.setItem("cityAlert", "saveCity")
-      return action.payload
-    },
-    [removeCity.fulfilled]: () => { localStorage.setItem("cityAlert", "deleteCity") },
-    [updateCity.fulfilled]: () => { localStorage.setItem("cityAlert", "updateCity") }
+    [saveCity.fulfilled]: (state, action) => action.payload,
+    [removeCity.fulfilled]: (state, action) => action.payload,
+    [updateCity.fulfilled]: (state, action) => action.payload
   }
 })
 

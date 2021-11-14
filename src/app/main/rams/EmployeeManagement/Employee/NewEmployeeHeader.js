@@ -32,38 +32,40 @@ const NewEmployeeHeader = () => {
 
 
     function handleSaveEmployee() {
-        console.log(getValues());
         const data = getValues();
         data.primary_phone = data.country_code1 + data.primary_phone;
         if (data.country_code2 && data.secondary_phone)
             data.secondary_phone = data.country_code2 + data.secondary_phone;
         console.log(data.primary_phone);
-        dispatch(saveEmployee(data));
+        dispatch(saveEmployee(data)).then((res) => {
+            if (res.payload) {
+                localStorage.setItem('employeeAlertPermission', 'saveEmployeeSuccessfully')
+                history.push('/apps/employee-management/employees')
+            }
+        });
     }
 
     function handleUpdateEmployee() {
-        console.log(getValues());
-
-        dispatch(updateEmployee(getValues())).then(() => {
-            history.push('/apps/employee-management/employees');
+        dispatch(updateEmployee(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem('employeeAlertPermission', 'updateEmployeeSuccessfully')
+                history.push('/apps/employee-management/employees')
+            }
         });
-
     }
 
     function handleRemoveEmployee() {
-        dispatch(removeEmployee(getValues())).then(() => {
-            history.push('/apps/employee-management/employees');
+        dispatch(removeEmployee(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem('employeeAlertPermission', 'removeEmployeeSuccessfully')
+                history.push('/apps/employee-management/employees')
+            }
         });
     }
 
     function handleCancel() {
         history.push('/apps/employee-management/employees')
     }
-
-    // if (loading) {
-    //     return <FuseLoading />;
-    // }
-
 
 
     return (

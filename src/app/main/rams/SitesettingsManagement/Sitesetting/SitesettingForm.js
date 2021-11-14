@@ -1,3 +1,4 @@
+import _ from '@lodash';
 import { Box } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -9,8 +10,10 @@ import countryCodes from 'app/@data/@Countrycodes';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
-import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
 import { BASE_URL } from '../../../../constant/constants';
+import { saveSitesetting, updateSitesetting } from '../store/sitesettingSlice';
 
 const useStyles = makeStyles(theme => ({
     hidden: {
@@ -20,18 +23,55 @@ const useStyles = makeStyles(theme => ({
 
 function SitesettingForm(props) {
 
-    const userID = localStorage.getItem('UserID');
     const classes = useStyles(props);
     const methods = useFormContext();
-    const { control, formState, watch } = methods;
-    const { errors } = formState;
     const routeParams = useParams();
-    const { sitesettingId } = routeParams;
+    const { control, formState, getValues, watch } = methods;
+    const { errors, isValid, dirtyFields } = formState;
     const image1 = watch('logo');
     const image2 = watch('favicon');
     const getCountryCode1 = watch('country_code1');
     const [previewImage1, setPreviewImage1] = useState();
     const [previewImage2, setPreviewImage2] = useState();
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('deleteSitesettingEvent');
+    const dispatch = useDispatch()
+
+
+    function handleSaveSitesetting() {
+        const data = getValues();
+        data.phone = data.country_code1 + data.phone;
+        dispatch(saveSitesetting(data)).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("sitesettingAlert", "saveSitesetting")
+                history.push('/apps/sitesettings-management/sitesettings/')
+            }
+        });
+    }
+
+    function handleUpdateSitesetting() {
+        dispatch(updateSitesetting(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("sitesettingAlert", "updateSitesetting")
+                history.push('/apps/sitesettings-management/sitesettings/')
+            }
+        });
+    }
+
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.sitesettingId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveSitesetting()
+                console.log("saved")
+            }
+            else if (!handleDelete && routeParams.sitesettingId !== "new") {
+                handleUpdateSitesetting()
+                console.log("updated")
+            }
+        }
+    }
+
 
     return (
 
@@ -51,6 +91,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -69,6 +110,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -87,6 +129,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -114,6 +157,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -201,6 +245,7 @@ function SitesettingForm(props) {
                             variant="outlined"
                             fullWidth
                             InputLabelProps={field.value && { shrink: true }}
+                            onKeyDown={handleSubmitOnKeyDownEnter}
                         />
                     )}
                 />
@@ -220,6 +265,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -238,6 +284,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -256,6 +303,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -274,6 +322,7 @@ function SitesettingForm(props) {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />

@@ -1,11 +1,13 @@
+import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { getCities } from '../../../../store/dataSlice';
+import { saveThana, updateThana } from '../store/thanaSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,21 +21,57 @@ function ThanaForm(props) {
 
     const userID = localStorage.getItem('UserID')
 
-    const dispatch = useDispatch()
     const citys = useSelector(state => state.data.cities)
 
     const classes = useStyles(props);
 
     const methods = useFormContext();
-    const { control, formState } = methods;
-    const { errors } = formState;
-
+    const { control, formState, getValues } = methods;
+    const { errors, isValid, dirtyFields } = formState;
     const routeParams = useParams();
     const { thanaId } = routeParams;
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('thanaEvent');
+    const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(getCities())
     }, [])
+
+
+    function handleSaveThana() {
+        dispatch(saveThana(getValues())).then((res) => {
+            console.log("saveThanaRes", res)
+            if (res.payload) {
+                localStorage.setItem("thanaAlert", "saveThana")
+                history.push('/apps/thana-management/thanas');
+            }
+        });
+    }
+
+    function handleUpdateThana() {
+        dispatch(updateThana(getValues())).then((res) => {
+            console.log("updateThanaRes", res)
+            if (res.payload) {
+                localStorage.setItem("thanaAlert", "updateThana")
+                history.push('/apps/thana-management/thanas');
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.thanaId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveThana()
+                console.log("saved")
+            }
+            else if (handleDelete !== 'Delete' && routeParams?.thanaName) {
+                handleUpdateThana()
+                console.log("updated")
+            }
+        }
+    }
+
 
     return (
         <div>
@@ -73,6 +111,7 @@ function ThanaForm(props) {
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -105,6 +144,7 @@ function ThanaForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
+                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />

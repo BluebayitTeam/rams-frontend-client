@@ -26,22 +26,30 @@ const NewCityHeader = () => {
     const handleDelete = localStorage.getItem('cityEvent');
 
     function handleSaveCity() {
-        console.log(getValues());
-        dispatch(saveCity(getValues())).then(() => {
-            history.push('/apps/city-management/cities');
+        dispatch(saveCity(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("cityAlert", "saveCity")
+                history.push('/apps/city-management/cities')
+            }
         });
     }
 
     function handleUpdateCity() {
-        dispatch(updateCity(getValues())).then(() => {
-            history.push('/apps/city-management/cities');
+        dispatch(updateCity(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("cityAlert", "updateCity")
+                history.push('/apps/city-management/cities')
+            }
         });
     }
 
     function handleRemoveCity() {
-        dispatch(removeCity(getValues())).then(() => {
-            localStorage.removeItem("cityEvent")
-            history.push('/apps/city-management/cities');
+        dispatch(removeCity(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem("cityAlert", "deleteCity")
+                localStorage.removeItem("cityEvent")
+                history.push('/apps/city-management/cities')
+            }
         });
     }
 

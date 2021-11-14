@@ -37,7 +37,8 @@ export const removeBranch = createAsyncThunk(
     };
 
     const branchId = val.id;
-    await axios.delete(`${DELETE_BRANCH}${branchId}`, authTOKEN);
+    const response = await axios.delete(`${DELETE_BRANCH}${branchId}`, authTOKEN);
+    return response
   }
 );
 
@@ -54,6 +55,7 @@ export const updateBranch = createAsyncThunk(
       }
     };
     const response = await axios.put(`${UPDATE_BRANCH}${branch.id}`, branchData, authTOKEN);
+    return response
   }
 
 )
@@ -69,6 +71,7 @@ export const saveBranch = createAsyncThunk(
       }
     };
     const response = await axios.post(`${CREATE_BRANCH}`, branchData, authTOKEN)
+    return response
   }
 )
 
@@ -97,12 +100,9 @@ const branchSlice = createSlice({
   },
   extraReducers: {
     [getBranch.fulfilled]: (state, action) => action.payload,
-    [saveBranch.fulfilled]: (state, action) => {
-      localStorage.setItem("branchAlert", "saveBranch")
-      return action.payload
-    },
-    [removeBranch.fulfilled]: () => { localStorage.setItem("branchAlert", "deleteBranch") },
-    [updateBranch.fulfilled]: () => { localStorage.setItem("branchAlert", "updateBranch") }
+    [saveBranch.fulfilled]: (state, action) => action.payload,
+    [removeBranch.fulfilled]: (state, action) => action.payload,
+    [updateBranch.fulfilled]: (state, action) => action.payload
   }
 })
 
