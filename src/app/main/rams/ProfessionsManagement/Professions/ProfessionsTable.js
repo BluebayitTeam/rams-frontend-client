@@ -12,13 +12,13 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
-import { SEARCH_MENU } from 'app/constant/constants';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getMenus, selectMenus } from '../store/menusSlice';
-import MenusTableHead from './MenusTableHead';
+import { SEARCH_PROFESSION } from '../../../../constant/constants';
+import { getProfessions, selectProfessions } from '../store/professionsSlice';
+import ProfessionsTableHead from './ProfessionsTableHead';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,48 +32,46 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const MenusTable = (props) => {
+const ProfessionsTable = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const menus = useSelector(selectMenus);
-    const searchText = useSelector(({ menusManagement }) => menusManagement.menus.searchText);
-    const [searchMenu, setSearchMenu] = useState([]);
+    const professions = useSelector(selectProfessions);
+    const searchText = useSelector(({ professionsManagement }) => professionsManagement.professions.searchText);
+    const [searchProfession, setSearchProfession] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(30);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+
     const [order, setOrder] = useState({
         direction: 'asc',
         id: null
     });
 
-
     let serialNumber = 1;
-
-    const totalPages = sessionStorage.getItem('total_menus_pages');
-    const totalElements = sessionStorage.getItem('total_menus_elements');
+    const totalPages = sessionStorage.getItem('total_professions_pages');
+    const totalElements = sessionStorage.getItem('total_professions_elements');
 
     useEffect(() => {
-        dispatch(getMenus(pageAndSize)).then(() => setLoading(false));
+        dispatch(getProfessions(pageAndSize)).then(() => setLoading(false));
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchMenu();
+        searchText !== "" && getSearchProfession();
     }, [searchText])
 
-    const getSearchMenu = () => {
-        console.log(`${SEARCH_MENU}?=${searchText}`);
-        fetch(`${SEARCH_MENU}?title=${searchText}`)
+    const getSearchProfession = () => {
+        fetch(`${SEARCH_PROFESSION}?name=${searchText}`)
             .then(response => response.json())
-            .then(res => {
-                setSearchMenu(res?.branches)
+            .then(searchedProfessionData => {
+                setSearchProfession(searchedProfessionData?.professions);
+                console.log("searchedProfessionData", searchedProfessionData)
             })
-            .catch(() => setSearchMenu([]));
+            .catch(() => setSearchProfession([]))
     }
 
-
-    function handleRequestSort(menuEvent, property) {
+    function handleRequestSort(professionEvent, property) {
         const id = property;
         let direction = 'desc';
 
@@ -87,9 +85,9 @@ const MenusTable = (props) => {
         });
     }
 
-    function handleSelectAllClick(menuEvent) {
-        if (menuEvent.target.checked) {
-            setSelected(menus.map(n => n.id));
+    function handleSelectAllClick(professionEvent) {
+        if (professionEvent.target.checked) {
+            setSelected(professions.map(n => n.id));
             return;
         }
         setSelected([]);
@@ -99,17 +97,17 @@ const MenusTable = (props) => {
         setSelected([]);
     }
 
-    function handleUpdateMenu(item) {
-        localStorage.removeItem('menuEvent')
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.translate}`);
+    function handleUpdateProfession(item) {
+        localStorage.removeItem('professionEvent')
+        props.history.push(`/apps/profession-management/professions/${item.id}/${item.name}`);
     }
-    function handleDeleteMenu(item, menuEvent) {
-        localStorage.removeItem('menuEvent')
-        localStorage.setItem('menuEvent', menuEvent);
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.translate}`);
+    function handleDeleteProfession(item, professionEvent) {
+        localStorage.removeItem('professionEvent')
+        localStorage.setItem('professionEvent', professionEvent);
+        props.history.push(`/apps/profession-management/professions/${item.id}/${item.name}`);
     }
 
-    function handleCheck(menuEvent, id) {
+    function handleCheck(professionEvent, id) {
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
@@ -130,26 +128,27 @@ const MenusTable = (props) => {
     const handlePagination = (e, handlePage) => {
         setPageAndSize({ ...pageAndSize, page: handlePage })
         setPage(handlePage - 1)
-        dispatch(getMenus({ ...pageAndSize, page: handlePage }))
+        dispatch(getProfessions({ ...pageAndSize, page: handlePage }))
     }
 
-    function handleChangePage(menuEvent, value) {
+    function handleChangePage(event, value) {
         setPage(value);
         setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getMenus({ ...pageAndSize, page: value + 1 }))
+        dispatch(getProfessions({ ...pageAndSize, page: value + 1 }))
     }
 
-    function handleChangeRowsPerPage(menuEvent) {
-        setRowsPerPage(menuEvent.target.value);
-        setPageAndSize({ ...pageAndSize, size: menuEvent.target.value })
-        dispatch(getMenus({ ...pageAndSize, size: menuEvent.target.value }))
+    function handleChangeRowsPerPage(professionEvent) {
+        setRowsPerPage(professionEvent.target.value);
+        setPageAndSize({ ...pageAndSize, size: professionEvent.target.value })
+        dispatch(getProfessions({ ...pageAndSize, size: professionEvent.target.value }))
     }
+
 
     if (loading) {
         return <FuseLoading />;
     }
 
-    if (menus?.length === 0) {
+    if (professions?.length === 0) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -157,7 +156,7 @@ const MenusTable = (props) => {
                 className="flex flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There are no menu!
+                    There are no profession!
                 </Typography>
             </motion.div>
         );
@@ -167,18 +166,18 @@ const MenusTable = (props) => {
         <div className="w-full flex flex-col">
             <FuseScrollbars className="flex-grow overflow-x-auto">
                 <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <MenusTableHead
-                        selectedMenuIds={selected}
+                    <ProfessionsTableHead
+                        selectedProfessionIds={selected}
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={menus.length}
+                        rowCount={professions.length}
                         onMenuItemClick={handleDeselect}
                     />
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && !_.isEmpty(searchMenu) ? searchMenu : menus,
+                            searchText !== "" && !_.isEmpty(searchProfession) ? searchProfession : professions,
                             [
                                 o => {
                                     switch (order.id) {
@@ -209,8 +208,8 @@ const MenusTable = (props) => {
                                         <TableCell className="w-40 md:w-64 text-center" padding="none">
                                             <Checkbox
                                                 checked={isSelected}
-                                                onClick={menuEvent => menuEvent.stopPropagation()}
-                                                onChange={menuEvent => handleCheck(menuEvent, n.id)}
+                                                onClick={professionEvent => professionEvent.stopPropagation()}
+                                                onChange={professionEvent => handleCheck(professionEvent, n.id)}
                                             />
                                         </TableCell>
 
@@ -219,32 +218,12 @@ const MenusTable = (props) => {
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.parent}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.menu_id}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.title}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.translate}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.type}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.url}
+                                            {n.name}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
                                             <div>
-                                                <EditIcon onClick={menuEvent => handleUpdateMenu(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteMenu(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
+                                                <EditIcon onClick={professionEvent => handleUpdateProfession(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteProfession(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
                                             </div>
                                         </TableCell>
 
@@ -289,4 +268,4 @@ const MenusTable = (props) => {
     );
 };
 
-export default withRouter(MenusTable);
+export default withRouter(ProfessionsTable);

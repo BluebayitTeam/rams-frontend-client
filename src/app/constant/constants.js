@@ -669,7 +669,7 @@ export const DELETE_ROLEMENU = `${BASE_URL}/role_menu/api/v1/role_menu/delete/`;
 
 // export const SEARCH_ROLEMENU = `${BASE_URL}/rolemenu/api/v1/rolemenu/search/`;
 
-//role menu
+//passenger
 export const CREATE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/create/`;
 
 export const GET_PASSENGERTYPES = `${BASE_URL}/passenger_type/api/v1/passenger_type/all`;
@@ -682,7 +682,7 @@ export const DELETE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger
 
 export const SEARCH_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/search/`;
 
-//role menu
+//current status
 export const CREATE_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/create/`;
 
 export const GET_CURRENTSTATUSS = `${BASE_URL}/current_status/api/v1/current_status/all`;
@@ -695,3 +695,15 @@ export const DELETE_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_s
 
 export const SEARCH_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/search/`;
 
+//profession
+export const CREATE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/create/`;
+
+export const GET_PROFESSIONS = `${BASE_URL}/profession/api/v1/profession/all`;
+
+export const GET_PROFESSION_BY_ID = `${BASE_URL}/profession/api/v1/profession/`;
+
+export const UPDATE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/update/`;
+
+export const DELETE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/delete/`;
+
+export const SEARCH_PROFESSION = `${BASE_URL}/profession/api/v1/profession/search/`;

@@ -15,48 +15,12 @@ const rows = [
         sort: true
     },
     {
-        id: 'parent',
+        id: 'name',
         align: 'left',
         disablePadding: false,
-        label: 'Parent',
+        label: 'Name',
         sort: true
     },
-    {
-        id: 'menu_id',
-        align: 'left',
-        disablePadding: false,
-        label: 'Menu ID',
-        sort: true
-    },
-    {
-        id: 'title',
-        align: 'left',
-        disablePadding: false,
-        label: 'Title',
-        sort: true
-    },
-    {
-        id: 'translate',
-        align: 'left',
-        disablePadding: false,
-        label: 'Translate',
-        sort: true
-    },
-    {
-        id: 'type',
-        align: 'left',
-        disablePadding: false,
-        label: 'Type',
-        sort: true
-    },
-    {
-        id: 'url',
-        align: 'left',
-        disablePadding: false,
-        label: 'Url',
-        sort: true
-    },
-
     {
         id: 'action',
         align: 'center',
@@ -66,12 +30,12 @@ const rows = [
     }
 ];
 
-const MenusTableHead = (props) => {
-    const { selectedMenuIds } = props;
+const ProfessionsTableHead = (props) => {
+    const { selectedProfessionIds } = props;
 
-    const numSelected = selectedMenuIds.length;
+    const numSelected = selectedProfessionIds.length;
 
-    // const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+    // const [selectedProfessionsMenu, setselectedProfessionsMenu] = useState(null);
 
     // const dispatch = useDispatch();
 
@@ -79,12 +43,12 @@ const MenusTableHead = (props) => {
         props.onRequestSort(event, property);
     };
 
-    // function openSelectedProductsMenu(event) {
-    //     setSelectedProductsMenu(event.currentTarget);
+    // function openselectedProfessionsMenu(event) {
+    //     setselectedProfessionsMenu(event.currentTarget);
     // }
 
-    // function closeSelectedProductsMenu() {
-    //     setSelectedProductsMenu(null);
+    // function closeselectedProfessionsMenu() {
+    //     setselectedProfessionsMenu(null);
     // }
 
     return (
@@ -103,24 +67,24 @@ const MenusTableHead = (props) => {
                         )}
                     >
                         <IconButton
-                            aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
+                            aria-owns={selectedProfessionsMenu ? 'selectedProfessionsMenu' : null}
                             aria-haspopup="true"
-                            onClick={openSelectedProductsMenu}
+                            onClick={openselectedProfessionsMenu}
                         >
                             <Icon>more_horiz</Icon>
                         </IconButton>
                         <Menu
-                            id="selectedProductsMenu"
-                            anchorEl={selectedProductsMenu}
-                            open={Boolean(selectedProductsMenu)}
-                            onClose={closeSelectedProductsMenu}
+                            id="selectedProfessionsMenu"
+                            anchorEl={selectedProfessionsMenu}
+                            open={Boolean(selectedProfessionsMenu)}
+                            onClose={closeselectedProfessionsMenu}
                         >
                             <MenuList>
                                 <MenuItem
                                     onClick={() => {
-                                        dispatch(removeMenus(selectedMenuIds));
+                                        dispatch(removeProfessions(selectedProfessionIds));
                                         props.onMenuItemClick();
-                                        closeSelectedProductsMenu();
+                                        closeselectedProfessionsMenu();
                                     }}
                                 >
                                     <ListItemIcon className="min-w-40">
@@ -165,4 +129,4 @@ const MenusTableHead = (props) => {
     );
 };
 
-export default MenusTableHead;
+export default ProfessionsTableHead;

@@ -105,10 +105,19 @@ const navigationConfig = [
             //currentStatus
             {
                 id: 'currentStatuss',
-                title: 'CurrentStatuss',
-                translate: 'CurrentStatuss',
+                title: 'Current Statuses',
+                translate: 'Current Statuses',
                 type: 'item',
                 url: '/apps/currentStatus-management/currentStatuss',
+                exact: true
+            },
+            //profession
+            {
+                id: 'professions',
+                title: 'Professions',
+                translate: 'Professions',
+                type: 'item',
+                url: '/apps/profession-management/professions',
                 exact: true
             }
         ]

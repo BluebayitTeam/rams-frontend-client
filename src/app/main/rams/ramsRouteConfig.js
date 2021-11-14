@@ -193,6 +193,19 @@ const ramsRouteConfig = {
             path: '/apps/currentStatus-management/:currentStatusId',
             component: lazy(() => import('./CurrentStatussManagement/CurrentStatus/NewCurrentStatus'))
         },
+        //profession
+        {
+            path: '/apps/profession-management/professions/:professionId/:professionName?',
+            component: lazy(() => import('./ProfessionsManagement/Profession/NewProfession'))
+        },
+        {
+            path: '/apps/profession-management/professions',
+            component: lazy(() => import('./ProfessionsManagement/Professions/Professions'))
+        },
+        {
+            path: '/apps/profession-management/:professionId',
+            component: lazy(() => import('./ProfessionsManagement/Profession/NewProfession'))
+        },
 
     ]
 }
