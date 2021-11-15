@@ -106,7 +106,10 @@ export const CUSOTMERTYPES = `${BASE_URL}/customer_type/api/v1/customer_type/all
 export const USERS_PASSWORDCHANGE = `${BASE_URL}/user/api/v1/user/passwordchange/`;
 
 //group
-export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/all/`
+export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/without_pagination/all/`
+
+//designation
+export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/designation/without_pagination/all/`
 
 //  employee
 export const CREATE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/create/`;

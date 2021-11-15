@@ -1,3 +1,4 @@
+import _ from '@lodash';
 import {
     Box, Checkbox, FormControl,
     FormControlLabel, Icon,
@@ -15,11 +16,13 @@ import clsx from 'clsx';
 import { React, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
     BASE_URL, CHECK_EMAIL, CHECK_EMAIL_UPDATE, CHECK_PRIMARY_PHONE, CHECK_PRIMARY_PHONE_UPDATE, CHECK_SECONDARY_PHONE, CHECK_SECONDARY_PHONE_UPDATE, CHECK_USERNAME, CHECK_USERNAME_UPDATE
 } from '../../../../constant/constants';
 import { getBranches, getCities, getCountries, getDepartments, getEmployees, getRoles, getThanas } from '../../../../store/dataSlice';
+import { saveEmployee } from '../store/employeeSlice';
+
 
 const useStyles = makeStyles(theme => ({
     productImageFeaturedStar: {
@@ -70,7 +73,7 @@ const EmployeeForm = (props) => {
     const { control, watch, setValue, formState, setError, reset, getValues } = methods;
     const image = watch('image');
     const classes = useStyles(props);
-    const { errors } = formState;
+    const { errors, isValid, dirtyFields } = formState;
     console.log("Formstate", getValues());
     const [showPassword, setShowPassword] = useState(false);
     const routeParams = useParams();
@@ -80,6 +83,9 @@ const EmployeeForm = (props) => {
     const updateEmployeeData = useSelector(({ employeesManagement }) => employeesManagement.employee);
     const phoneNoPrimary = updateEmployeeData?.primary_phone;
     const phoneNoSecondary = updateEmployeeData?.secondary_phone;
+
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('employeeEvent');
 
     useEffect(() => {
         dispatch(getBranches());
@@ -247,8 +253,45 @@ const EmployeeForm = (props) => {
                     });
             }
         }
-
     }
+
+
+    function handleSaveEmployee() {
+        const data = getValues();
+        data.primary_phone = data.country_code1 + data.primary_phone;
+        if (data.country_code2 && data.secondary_phone)
+            data.secondary_phone = data.country_code2 + data.secondary_phone;
+        console.log(data.primary_phone);
+        dispatch(saveEmployee(data)).then((res) => {
+            if (res.payload) {
+                localStorage.setItem('employeeAlertPermission', 'saveEmployeeSuccessfully')
+                history.push('/apps/employee-management/employees')
+            }
+        });
+    }
+
+    function handleUpdateEmployee() {
+        dispatch(updateEmployee(getValues())).then((res) => {
+            if (res.payload) {
+                localStorage.setItem('employeeAlertPermission', 'updateEmployeeSuccessfully')
+                history.push('/apps/employee-management/employees')
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.employeeId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveEmployee()
+                console.log("saved")
+            }
+            else if (!handleDelete && routeParams?.employeeName) {
+                handleUpdateEmployee()
+                console.log("updated")
+            }
+        }
+    }
+
 
     return (
         <div>
@@ -301,6 +344,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 }
             />
@@ -319,6 +363,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 }
             />
@@ -337,6 +382,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -356,6 +402,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -384,6 +431,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -535,6 +583,7 @@ const EmployeeForm = (props) => {
                             variant="outlined"
                             fullWidth
                             InputLabelProps={field.value && { shrink: true }}
+                            onKeyDown={handleSubmitOnKeyDownEnter}
                         />
                     )}
                 />
@@ -588,6 +637,7 @@ const EmployeeForm = (props) => {
                                         ...params.inputProps,
                                         autoComplete: 'new-password', // disable autocomplete and autofill
                                     }}
+                                    onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -642,6 +692,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -659,6 +710,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -675,7 +727,7 @@ const EmployeeForm = (props) => {
                         required
                         helperText={errors?.date_of_birth?.message}
                         type="date"
-                        defaultValue="2017-05-24"
+                        // defaultValue="2017-05-24"
                         fullWidth
                         InputLabelProps={{
                             shrink: true,
@@ -814,6 +866,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -831,6 +884,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             /><Controller
@@ -905,6 +959,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />
@@ -922,6 +977,7 @@ const EmployeeForm = (props) => {
                         variant="outlined"
                         fullWidth
                         InputLabelProps={field.value && { shrink: true }}
+                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />
                 )}
             />

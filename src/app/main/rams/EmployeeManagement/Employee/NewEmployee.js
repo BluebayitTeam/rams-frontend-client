@@ -13,6 +13,7 @@ import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { getEmployee, newEmployee, resetEmployee } from '../store/employeeSlice';
 import reducer from '../store/index';
+import PersonalInfoTab from "../tabs/PersonalInfoTab";
 import EmployeeForm from './EmployeeForm';
 import NewEmployeeHeader from './NewEmployeeHeader';
 
@@ -58,10 +59,19 @@ const schema = yup.object().shape({
         .required('Role is required'),
     department: yup.number()
         .required('Department is required'),
-    // emp_join_date: yup.string()
-    //     .required('Join date is required'),
-    // is_active: yup.bool()
-    //     .oneOf([true], 'Is active is required')
+
+    // designation: yup.string()
+    //     .required("Designation is required"),
+    // marital_status: yup.string()
+    //     .required("Marital Status is required"),
+    // father_name: yup.string()
+    //     .required("Father Name is required"),
+    // mother_name: yup.string()
+    //     .required("Mother Name is required"),
+    // spouse_name: yup.string()
+    //     .required("Spouse Name is required"),
+    // marriage_date: yup.string()
+    //     .required("Marriage Date is required"),
 });
 
 
@@ -134,10 +144,8 @@ const NewEmployee = () => {
     }, [dispatch]);
 
 
-
     function handleTabChange(event, value) {
-        //console.log(value);
-        //console.log(value);
+        console.log(value);
         setTabValue(value);
     }
 
@@ -193,6 +201,7 @@ const NewEmployee = () => {
                         classes={{ root: 'w-full h-64' }}
                     >
                         <Tab className="h-64" label="Basic Info" />
+                        <Tab className="h-64" label="Personal Info" />
                     </Tabs>
                 }
 
@@ -202,7 +211,12 @@ const NewEmployee = () => {
                 header={<NewEmployeeHeader />}
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <EmployeeForm />
+                        <div className={tabValue !== 0 ? 'hidden' : ''}>
+                            <EmployeeForm />
+                        </div>
+                        <div className={tabValue !== 1 ? 'hidden' : ''}>
+                            <PersonalInfoTab />
+                        </div>
                     </div>
                 }
                 innerScroll
