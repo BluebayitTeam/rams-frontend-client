@@ -130,7 +130,7 @@ const navigationConfig = [
         translate: 'User Config',
         type: 'collapse',
         icon: 'people',
-        url: '/apps/dashboards/project',
+        url: '',
         exact: true,
         children: [
             //permissions
@@ -178,6 +178,27 @@ const navigationConfig = [
                 exact: true
             },
 
+        ]
+    },
+    //agent
+    {
+        id: 16,
+        title: 'Agent',
+        translate: 'Agent',
+        type: 'collapse',
+        icon: 'people',
+        url: '',
+        exact: true,
+        children: [
+            //agent list
+            {
+                id: 'agentList',
+                title: 'Agent List',
+                translate: 'Agent List',
+                type: 'item',
+                url: '/apps/agent-management/agents',
+                exact: true
+            }
         ]
     }
 ];

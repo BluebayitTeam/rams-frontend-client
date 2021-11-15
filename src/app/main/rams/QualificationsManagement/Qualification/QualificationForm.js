@@ -47,7 +47,7 @@ function QualificationForm(props) {
     const [previewImage3, setPreviewImage3] = useState(null)
     const [previewImage4, setPreviewImage4] = useState(null)
     const dispatch = useDispatch()
-    const userID = localStorage.getItem('UserID')
+    const userID = localStorage.getItem('user_id')
     const employees = useSelector(state => state.data.employees)
     const routeParams = useParams();
     const classes = useStyles(props);

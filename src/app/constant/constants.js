@@ -105,6 +105,9 @@ export const CUSOTMERTYPES = `${BASE_URL}/customer_type/api/v1/customer_type/all
 //  export const ALL_USERS = `${BASE_URL}/users/api/v1/users/all/`;
 export const USERS_PASSWORDCHANGE = `${BASE_URL}/user/api/v1/user/passwordchange/`;
 
+//group
+export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/all/`
+
 //  employee
 export const CREATE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/create/`;
 
@@ -707,3 +710,16 @@ export const UPDATE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/updat
 export const DELETE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/delete/`;
 
 export const SEARCH_PROFESSION = `${BASE_URL}/profession/api/v1/profession/search/`;
+
+//agent
+export const CREATE_AGENT = `${BASE_URL}/agent/api/v1/agent/create/`;
+
+export const GET_AGENTS = `${BASE_URL}/agent/api/v1/agent/all`;
+
+export const GET_AGENT_BY_ID = `${BASE_URL}/agent/api/v1/agent/`;
+
+export const UPDATE_AGENT = `${BASE_URL}/agent/api/v1/agent/update/`;
+
+export const DELETE_AGENT = `${BASE_URL}/agent/api/v1/agent/delete/`;
+
+export const SEARCH_AGENT = `${BASE_URL}/agent/api/v1/agent/search/`;

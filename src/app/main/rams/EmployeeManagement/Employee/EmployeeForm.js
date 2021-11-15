@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
 import useRemoveCountryCode from "app/@customHook/@useRemoveCountryCode";
 import countryCodes from 'app/@data/@Countrycodes';
+import { genders } from 'app/@data/@data';
 import clsx from 'clsx';
 import { React, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -101,9 +102,6 @@ const EmployeeForm = (props) => {
             reset({ ...updateEmployeeData, primary_phone: primaryPhone, secondary_phone: secondaryPhone, country_code1: "+880", show_country_code1: "+880", country_code2: "+880", show_country_code2: "+880" });
         }
     }, [phoneNoPrimary, phoneNoSecondary]);
-
-    //genders
-    const genders = [{ id: "male", name: "Male" }, { id: "female", name: "Female" }, { id: "others", name: "Others" }];
 
     const handleOnChange = (field, event) => {
         // console.log("field name", event.target.name);

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CUSOTMERTYPES, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PAGINATION, GET_BRANDS_WITHOUT_PAGINATION, GET_CATEGORIES_WITHOUT_PAGINATION, GET_CITYS_WITHOUT_PAGINATION, GET_COUNTRIES_WITHOUT_PAGINATION, GET_DEPARTMENTS_WITHOUT_PAGINATION, GET_EMPLOYEES_WITHOUT_PAGINATION, GET_MENUS_ALL_NESTED, GET_MENUS_WITHOUT_PAGINATION, GET_PERMISSIONS_WITHOUT_PAGINATION, GET_ROLES_WITHOUT_PAGINATION, GET_THANAS_WITHOUT_PAGINATION, GET_USERS_WITHOUT_PAGINATION, GET_VENDORS_WITHOUT_PAGINATION, ORDERSTATUS, PAYMENTMATHODS } from 'app/constant/constants';
+import { CUSOTMERTYPES, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PAGINATION, GET_BRANDS_WITHOUT_PAGINATION, GET_CATEGORIES_WITHOUT_PAGINATION, GET_CITYS_WITHOUT_PAGINATION, GET_COUNTRIES_WITHOUT_PAGINATION, GET_DEPARTMENTS_WITHOUT_PAGINATION, GET_EMPLOYEES_WITHOUT_PAGINATION, GET_MENUS_ALL_NESTED, GET_MENUS_WITHOUT_PAGINATION, GET_PERMISSIONS_WITHOUT_PAGINATION, GET_ROLES_WITHOUT_PAGINATION, GET_THANAS_WITHOUT_PAGINATION, GET_USERS_WITHOUT_PAGINATION, GET_VENDORS_WITHOUT_PAGINATION, GROUPS_WITHOUT_PAGINATION, ORDERSTATUS, PAYMENTMATHODS } from 'app/constant/constants';
 import axios from "axios";
 
 
@@ -191,6 +191,19 @@ export const getAllMenuNested = () => (dispatch) => {
         .catch(() => { dispatch(setAllMenuNested([])) });
 }
 
+export const getGroups = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(GROUPS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setGroups(data.groups)))
+        .catch(() => { });
+}
+
 const dataSlice = createSlice({
     name: "employeeManagement/data",
     initialState: {
@@ -217,6 +230,7 @@ const dataSlice = createSlice({
         categories: [],
         parentMenus: [],
         nestedMenus: [],
+        groups: [],
     },
     reducers: {
         setBranches: (state, action) => {
@@ -284,7 +298,10 @@ const dataSlice = createSlice({
         },
         setAllMenuNested: (state, action) => {
             state.nestedMenus = action.payload ? action.payload : []
-        }
+        },
+        setGroups: (state, action) => {
+            state.groups = action.payload ? action.payload : []
+        },
     }
 })
 
@@ -311,6 +328,7 @@ const {
     setCategories,
     setParentMenus,
     setAllMenuNested,
+    setGroups,
 } = dataSlice.actions;
 export default dataSlice.reducer;
 

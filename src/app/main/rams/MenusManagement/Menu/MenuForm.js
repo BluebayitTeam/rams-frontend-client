@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 
 function MenuForm(props) {
-    const userID = localStorage.getItem('UserID')
+    const userID = localStorage.getItem('user_id')
     const classes = useStyles(props);
     const methods = useFormContext();
     const { control, formState, getValues } = methods;

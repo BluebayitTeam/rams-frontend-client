@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 function RoleMenuForm(props) {
 
-    const userID = localStorage.getItem('UserID')
+    const userID = localStorage.getItem('user_id')
 
     const dispatch = useDispatch()
     const roles = useSelector(state => state.data.roles)

@@ -15,47 +15,147 @@ const rows = [
         sort: true
     },
     {
-        id: 'parent',
+        id: 'image',
         align: 'left',
         disablePadding: false,
-        label: 'Parent',
+        label: 'Image',
+        sort: true,
+    },
+    // {
+    //     id: 'gender',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Gender',
+    //     sort: true
+    // },
+    // {
+    //     id: 'role',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Role',
+    //     sort: true
+    // },
+    // {
+    //     id: 'thana',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Thana',
+    //     sort: true
+    // },
+    // {
+    //     id: 'city',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'City',
+    //     sort: true
+    // },
+    // {
+    //     id: 'country',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Country',
+    //     sort: true
+    // },
+    // {
+    //     id: 'group',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Group',
+    //     sort: true
+    // },
+
+    // {
+    //     id: 'first_name',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'First Name',
+    //     sort: true
+    // },
+    // {
+    //     id: 'last_name',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Last Name',
+    //     sort: true
+    // },
+    // {
+    //     id: 'father_name',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Father Name',
+    //     sort: true
+    // },
+    // {
+    //     id: 'mother_name',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Mother Name',
+    //     sort: true
+    // },
+    {
+        id: 'username',
+        align: 'left',
+        disablePadding: false,
+        label: 'User Name',
         sort: true
     },
     {
-        id: 'menu_id',
+        id: 'email',
         align: 'left',
         disablePadding: false,
-        label: 'Menu ID',
+        label: 'Email',
         sort: true
     },
     {
-        id: 'title',
+        id: 'phone',
         align: 'left',
         disablePadding: false,
-        label: 'Title',
+        label: 'Phone',
         sort: true
     },
+    // {
+    //     id: 'secondary_phone',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Secondary Phone',
+    //     sort: true
+    // },
+    // {
+    //     id: 'user_type',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'User Type',
+    //     sort: true
+    // },
     {
-        id: 'translate',
+        id: 'address',
         align: 'left',
         disablePadding: false,
-        label: 'Translate',
+        label: 'Address',
         sort: true
     },
-    {
-        id: 'type',
-        align: 'left',
-        disablePadding: false,
-        label: 'Type',
-        sort: true
-    },
-    {
-        id: 'url',
-        align: 'left',
-        disablePadding: false,
-        label: 'Url',
-        sort: true
-    },
+    // {
+    //     id: 'street_address_two',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Street Address Two',
+    //     sort: true
+    // },
+    // {
+    //     id: 'postal_code',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'Postal Code',
+    //     sort: true
+    // },
+    // {
+    //     id: 'nid',
+    //     align: 'left',
+    //     disablePadding: false,
+    //     label: 'NID',
+    //     sort: true
+    // },
+
     {
         id: 'action',
         align: 'center',
@@ -65,12 +165,12 @@ const rows = [
     }
 ];
 
-const MenusTableHead = (props) => {
-    const { selectedMenuIds } = props;
+const AgentsTableHead = (props) => {
+    const { selectedAgentIds } = props;
 
-    const numSelected = selectedMenuIds.length;
+    const numSelected = selectedAgentIds.length;
 
-    // const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+    // const [selectedAgentsMenu, setselectedAgentsMenu] = useState(null);
 
     // const dispatch = useDispatch();
 
@@ -78,12 +178,12 @@ const MenusTableHead = (props) => {
         props.onRequestSort(event, property);
     };
 
-    // function openSelectedProductsMenu(event) {
-    //     setSelectedProductsMenu(event.currentTarget);
+    // function openselectedAgentsMenu(event) {
+    //     setselectedAgentsMenu(event.currentTarget);
     // }
 
-    // function closeSelectedProductsMenu() {
-    //     setSelectedProductsMenu(null);
+    // function closeselectedAgentsMenu() {
+    //     setselectedAgentsMenu(null);
     // }
 
     return (
@@ -102,24 +202,24 @@ const MenusTableHead = (props) => {
                         )}
                     >
                         <IconButton
-                            aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
+                            aria-owns={selectedAgentsMenu ? 'selectedAgentsMenu' : null}
                             aria-haspopup="true"
-                            onClick={openSelectedProductsMenu}
+                            onClick={openselectedAgentsMenu}
                         >
                             <Icon>more_horiz</Icon>
                         </IconButton>
                         <Menu
-                            id="selectedProductsMenu"
-                            anchorEl={selectedProductsMenu}
-                            open={Boolean(selectedProductsMenu)}
-                            onClose={closeSelectedProductsMenu}
+                            id="selectedAgentsMenu"
+                            anchorEl={selectedAgentsMenu}
+                            open={Boolean(selectedAgentsMenu)}
+                            onClose={closeselectedAgentsMenu}
                         >
                             <MenuList>
                                 <MenuItem
                                     onClick={() => {
-                                        dispatch(removeMenus(selectedMenuIds));
+                                        dispatch(removeAgents(selectedAgentIds));
                                         props.onMenuItemClick();
-                                        closeSelectedProductsMenu();
+                                        closeselectedAgentsMenu();
                                     }}
                                 >
                                     <ListItemIcon className="min-w-40">
@@ -164,4 +264,4 @@ const MenusTableHead = (props) => {
     );
 };
 
-export default MenusTableHead;
+export default AgentsTableHead;

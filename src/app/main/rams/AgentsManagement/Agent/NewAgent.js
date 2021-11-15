@@ -7,33 +7,42 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { getAgent, newAgent, resetAgent } from '../store/agentSlice';
 import reducer from '../store/index.js';
-import { getMenu, newMenu, resetMenu } from '../store/menuSlice';
-import MenuForm from './MenuForm.js';
-import NewMenuHeader from './NewMenuHeader.js';
-
+import AgentForm from './AgentForm.js';
+import NewAgentHeader from './NewAgentHeader.js';
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
 
-    translate: yup.string()
-        .required("Translate is required"),
-
-    type: yup.string()
-        .required("Type is required"),
-
-    // url: yup.string()
-    //     .required("Url is required"),
+    first_name: yup.string()
+        .required("First Name is required"),
+    last_name: yup.string()
+        .required("Last Name is required"),
+    username: yup.string()
+        .required("User Name is required"),
+    email: yup.string()
+        .required("Email is required"),
+    gender: yup.string()
+        .required("Gender is required"),
+    group: yup.string()
+        .required("Group is required"),
+    password: yup.string()
+        .min(6, 'Password must be at least 6 characters')
+        .required('Password is required'),
+    confirmPassword: yup.string()
+        .required('Confirm password is required')
+        .oneOf([yup.ref('password'), null], 'Passwords must match'),
 })
 
-const Menu = () => {
+const Agent = () => {
 
     const dispatch = useDispatch();
-    const menu = useSelector(({ menusManagement }) => menusManagement.menu);
+    const agent = useSelector(({ agentsManagement }) => agentsManagement.agent);
 
-    const [noMenu, setNoMenu] = useState(false);
+    const [noAgent, setNoAgent] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -44,66 +53,61 @@ const Menu = () => {
     const { reset } = methods;
 
     useDeepCompareEffect(() => {
-        function updateMenuState() {
-            const { menuId } = routeParams;
+        function updateAgentState() {
+            const { agentId } = routeParams;
 
-            if (menuId === 'new') {
+            if (agentId === 'new') {
 
                 localStorage.removeItem('event')
                 /**
                  * Create New User data
                  */
-                dispatch(newMenu());
+                dispatch(newAgent());
             } else {
                 /**
                  * Get User data
                  */
 
-                dispatch(getMenu(menuId)).then(action => {
+                dispatch(getAgent(agentId)).then(action => {
                     console.log(action.payload);
                     /**
                      * If the requested product is not exist show message
                      */
                     if (!action.payload) {
-                        setNoMenu(true);
+                        setNoAgent(true);
                     }
                 });
             }
         }
 
-        updateMenuState();
+        updateAgentState();
     }, [dispatch, routeParams]);
 
-    useEffect(() => {
-
-
-    }, [])
-
 
     useEffect(() => {
-        if (!menu) {
+        if (!agent) {
             return;
         }
         /**
-         * Reset the form on menu state changes
+         * Reset the form on agent state changes
          */
-        reset(menu);
-    }, [menu, reset]);
+        reset(agent);
+    }, [agent, reset]);
 
     useEffect(() => {
         return () => {
             /**
-             * Reset Menu on component unload
+             * Reset Agent on component unload
              */
-            dispatch(resetMenu());
-            setNoMenu(false);
+            dispatch(resetAgent());
+            setNoAgent(false);
         };
     }, [dispatch]);
 
     /**
      * Show Message if the requested products is not exists
      */
-    if (noMenu) {
+    if (noAgent) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -111,7 +115,7 @@ const Menu = () => {
                 className="flex flex-col flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There is no such menu!
+                    There is no such agent!
                 </Typography>
                 <Button
                     className="mt-24"
@@ -120,12 +124,11 @@ const Menu = () => {
                     to="/apps/e-commerce/products"
                     color="inherit"
                 >
-                    Go to Menu Page
+                    Go to Agent Page
                 </Button>
             </motion.div>
         );
     }
-
 
     return (
         <FormProvider {...methods}>
@@ -134,10 +137,10 @@ const Menu = () => {
                     toolbar: 'p-0',
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
                 }}
-                header={<NewMenuHeader />}
+                header={<NewAgentHeader />}
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <MenuForm />
+                        <AgentForm />
                     </div>
                 }
                 innerScroll
@@ -145,4 +148,4 @@ const Menu = () => {
         </FormProvider>
     );
 };
-export default withReducer('menusManagement', reducer)(Menu);
+export default withReducer('agentsManagement', reducer)(Agent);

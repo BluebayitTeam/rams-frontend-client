@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 
 function ThanaForm(props) {
 
-    const userID = localStorage.getItem('UserID')
+    const userID = localStorage.getItem('user_id')
 
     const citys = useSelector(state => state.data.cities)
 

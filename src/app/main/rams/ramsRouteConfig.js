@@ -206,6 +206,20 @@ const ramsRouteConfig = {
             path: '/apps/profession-management/:professionId',
             component: lazy(() => import('./ProfessionsManagement/Profession/NewProfession'))
         },
+        //agent
+        {
+            path: '/apps/agent-management/agents/:agentId/:agentName?',
+            component: lazy(() => import('./AgentsManagement/Agent/NewAgent.js'))
+        },
+        {
+            path: '/apps/agent-management/agents',
+            component: lazy(() => import('./AgentsManagement/Agents/Agents'))
+        },
+        {
+            path: '/apps/agent-management/:agentId',
+            component: lazy(() => import('./AgentsManagement/Agent/NewAgent'))
+        },
+
 
     ]
 }

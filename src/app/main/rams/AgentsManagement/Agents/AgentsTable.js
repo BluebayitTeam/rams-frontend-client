@@ -13,13 +13,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/@data';
-import { SEARCH_MENU } from 'app/constant/constants';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getMenus, selectMenus } from '../store/menusSlice';
-import MenusTableHead from './MenusTableHead';
+import { BASE_URL, SEARCH_AGENT } from '../../../../constant/constants';
+import { getAgents, selectAgents } from '../store/agentsSlice';
+import AgentsTableHead from './AgentsTableHead';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,48 +33,46 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const MenusTable = (props) => {
+const AgentsTable = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const menus = useSelector(selectMenus);
-    const searchText = useSelector(({ menusManagement }) => menusManagement.menus.searchText);
-    const [searchMenu, setSearchMenu] = useState([]);
+    const agents = useSelector(selectAgents);
+    const searchText = useSelector(({ agentsManagement }) => agentsManagement.agents.searchText);
+    const [searchAgent, setSearchAgent] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(30);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+
     const [order, setOrder] = useState({
         direction: 'asc',
         id: null
     });
 
-
     let serialNumber = 1;
-
-    const totalPages = sessionStorage.getItem('total_menus_pages');
-    const totalElements = sessionStorage.getItem('total_menus_elements');
+    const totalPages = sessionStorage.getItem('total_agents_pages');
+    const totalElements = sessionStorage.getItem('total_agents_elements');
 
     useEffect(() => {
-        dispatch(getMenus(pageAndSize)).then(() => setLoading(false));
+        dispatch(getAgents(pageAndSize)).then(() => setLoading(false));
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchMenu();
+        searchText !== "" && getSearchAgent();
     }, [searchText])
 
-    const getSearchMenu = () => {
-        console.log(`${SEARCH_MENU}?=${searchText}`);
-        fetch(`${SEARCH_MENU}?title=${searchText}`)
+    const getSearchAgent = () => {
+        fetch(`${SEARCH_AGENT}?name=${searchText}`)
             .then(response => response.json())
-            .then(res => {
-                setSearchMenu(res?.branches)
+            .then(searchedAgentData => {
+                setSearchAgent(searchedAgentData?.agents);
+                console.log("searchedAgentData", searchedAgentData)
             })
-            .catch(() => setSearchMenu([]));
+            .catch(() => setSearchAgent([]))
     }
 
-
-    function handleRequestSort(menuEvent, property) {
+    function handleRequestSort(agentEvent, property) {
         const id = property;
         let direction = 'desc';
 
@@ -88,9 +86,9 @@ const MenusTable = (props) => {
         });
     }
 
-    function handleSelectAllClick(menuEvent) {
-        if (menuEvent.target.checked) {
-            setSelected(menus.map(n => n.id));
+    function handleSelectAllClick(agentEvent) {
+        if (agentEvent.target.checked) {
+            setSelected(agents.map(n => n.id));
             return;
         }
         setSelected([]);
@@ -100,17 +98,17 @@ const MenusTable = (props) => {
         setSelected([]);
     }
 
-    function handleUpdateMenu(item) {
-        localStorage.removeItem('menuEvent')
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.translate}`);
+    function handleUpdateAgent(item) {
+        localStorage.removeItem('agentEvent')
+        props.history.push(`/apps/agent-management/agents/${item.id}/${item.name}`);
     }
-    function handleDeleteMenu(item, menuEvent) {
-        localStorage.removeItem('menuEvent')
-        localStorage.setItem('menuEvent', menuEvent);
-        props.history.push(`/apps/menu-management/menus/${item.id}/${item.translate}`);
+    function handleDeleteAgent(item, agentEvent) {
+        localStorage.removeItem('agentEvent')
+        localStorage.setItem('agentEvent', agentEvent);
+        props.history.push(`/apps/agent-management/agents/${item.id}/${item.name}`);
     }
 
-    function handleCheck(menuEvent, id) {
+    function handleCheck(agentEvent, id) {
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
@@ -131,26 +129,27 @@ const MenusTable = (props) => {
     const handlePagination = (e, handlePage) => {
         setPageAndSize({ ...pageAndSize, page: handlePage })
         setPage(handlePage - 1)
-        dispatch(getMenus({ ...pageAndSize, page: handlePage }))
+        dispatch(getAgents({ ...pageAndSize, page: handlePage }))
     }
 
-    function handleChangePage(menuEvent, value) {
+    function handleChangePage(event, value) {
         setPage(value);
         setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getMenus({ ...pageAndSize, page: value + 1 }))
+        dispatch(getAgents({ ...pageAndSize, page: value + 1 }))
     }
 
-    function handleChangeRowsPerPage(menuEvent) {
-        setRowsPerPage(menuEvent.target.value);
-        setPageAndSize({ ...pageAndSize, size: menuEvent.target.value })
-        dispatch(getMenus({ ...pageAndSize, size: menuEvent.target.value }))
+    function handleChangeRowsPerPage(agentEvent) {
+        setRowsPerPage(agentEvent.target.value);
+        setPageAndSize({ ...pageAndSize, size: agentEvent.target.value })
+        dispatch(getAgents({ ...pageAndSize, size: agentEvent.target.value }))
     }
+
 
     if (loading) {
         return <FuseLoading />;
     }
 
-    if (menus?.length === 0) {
+    if (agents?.length === 0) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -158,7 +157,7 @@ const MenusTable = (props) => {
                 className="flex flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There are no menu!
+                    There are no agent!
                 </Typography>
             </motion.div>
         );
@@ -168,18 +167,18 @@ const MenusTable = (props) => {
         <div className="w-full flex flex-col">
             <FuseScrollbars className="flex-grow overflow-x-auto">
                 <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <MenusTableHead
-                        selectedMenuIds={selected}
+                    <AgentsTableHead
+                        selectedAgentIds={selected}
                         order={order}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={menus.length}
+                        rowCount={agents.length}
                         onMenuItemClick={handleDeselect}
                     />
 
                     <TableBody>
                         {_.orderBy(
-                            searchText !== "" && !_.isEmpty(searchMenu) ? searchMenu : menus,
+                            searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents,
                             [
                                 o => {
                                     switch (order.id) {
@@ -210,8 +209,8 @@ const MenusTable = (props) => {
                                         <TableCell className="w-40 md:w-64 text-center" padding="none">
                                             <Checkbox
                                                 checked={isSelected}
-                                                onClick={menuEvent => menuEvent.stopPropagation()}
-                                                onChange={menuEvent => handleCheck(menuEvent, n.id)}
+                                                onClick={agentEvent => agentEvent.stopPropagation()}
+                                                onChange={agentEvent => handleCheck(agentEvent, n.id)}
                                             />
                                         </TableCell>
 
@@ -219,33 +218,112 @@ const MenusTable = (props) => {
                                             {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
                                         </TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.parent}
+                                        <TableCell
+                                            className="w-52 px-4 md:px-0 h-72"
+                                            component="th"
+                                            scope="row"
+                                            padding="none"
+                                        >
+                                            {n.length > 0 && n.featuredImageId ? (
+                                                <img
+                                                    className="h-full block rounded p-8"
+                                                    style={{ borderRadius: '15px' }}
+                                                    src={_.find(n.image, { id: n.featuredImageId }).url}
+                                                    alt={n.name}
+                                                />
+                                            ) : (
+                                                <img
+                                                    className="h-full block rounded p-8"
+                                                    style={{ borderRadius: '15px' }}
+                                                    src={`${BASE_URL}${n.image}`}
+                                                    alt={n.name}
+                                                />
+                                            )}
+                                        </TableCell>
+
+
+                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.gender}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.menu_id}
+                                            {n.role}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.title}
+                                            {n.thana}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.translate}
+                                            {n.city}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.type}
+                                            {n.country}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.url}
+                                            {n.group}
                                         </TableCell>
+
+
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.first_name}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.last_name}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.father_name}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.mother_name}
+                                        </TableCell> */}
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.username}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.email}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.primary_phone}
+                                        </TableCell>
+
+                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.secondary_phone}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.user_type}
+                                        </TableCell> */}
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.street_address_one}
+                                        </TableCell>
+
+                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.street_address_two}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.postal_code}
+                                        </TableCell>
+
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.nid}
+                                        </TableCell> */}
+
 
                                         <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
                                             <div>
-                                                <EditIcon onClick={menuEvent => handleUpdateMenu(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteMenu(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
+                                                <EditIcon onClick={agentEvent => handleUpdateAgent(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteAgent(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
                                             </div>
                                         </TableCell>
 
@@ -290,4 +368,4 @@ const MenusTable = (props) => {
     );
 };
 
-export default withRouter(MenusTable);
+export default withRouter(AgentsTable);
