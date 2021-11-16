@@ -37,11 +37,11 @@ const RoleForm = (props) => {
 
     function handleSaveRole() {
         dispatch(saveRole(getValues())).then((res) => {
-            if (!res.payload.data?.detail) {
+            if (res.payload.data?.id) {
                 localStorage.setItem('roleAlertPermission', 'saveRoleSuccessfully')
                 history.push('/apps/roles-management/roles');
             }
-            else {
+            else if (res.payload.data?.detail) {
                 setError("name", { type: "manual", message: res.payload.data.detail })
                 console.log(res.payload.data.detail)
             }
@@ -51,9 +51,13 @@ const RoleForm = (props) => {
     function handleUpdateRole() {
         dispatch(updateRole(getValues())).then((res) => {
             console.log("updateRoleRes", res)
-            if (res.payload) {
+            if (res.payload.data?.id) {
                 localStorage.setItem("roleAlert", "updateRole")
                 history.push('/apps/roles-management/roles');
+            }
+            else if (res.payload.data?.detail) {
+                setError("name", { type: "manual", message: res.payload.data.detail })
+                console.log(res.payload.data.detail)
             }
         });
     }

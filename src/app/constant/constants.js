@@ -735,7 +735,6 @@ export const DELETE_AGENT = `${BASE_URL}/agent/api/v1/agent/delete/`;
 
 export const SEARCH_AGENT = `${BASE_URL}/agent/api/v1/agent/search/`;
 
-
 //demand
 export const CREATE_DEMAND = `${BASE_URL}/demand/api/v1/demand/create/`;
 
@@ -748,3 +747,16 @@ export const UPDATE_DEMAND = `${BASE_URL}/demand/api/v1/demand/update/`;
 export const DELETE_DEMAND = `${BASE_URL}/demand/api/v1/demand/delete/`;
 
 export const SEARCH_DEMAND = `${BASE_URL}/demand/api/v1/demand/search/`;
+
+//recruitingAgency
+export const CREATE_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/create/`;
+
+export const GET_RECRUITINGAGENCYS = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/all`;
+
+export const GET_RECRUITINGAGENCY_BY_ID = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/`;
+
+export const UPDATE_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/update/`;
+
+export const DELETE_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/delete/`;
+
+export const SEARCH_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/search/`;

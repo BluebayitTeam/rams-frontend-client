@@ -1,3 +1,4 @@
+import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
@@ -7,69 +8,67 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { removeRole, saveRole, updateRole } from '../store/roleSlice';
+import { removeRecruitingAgency, saveRecruitingAgency, updateRecruitingAgency } from '../store/recruitingAgencySlice';
 
-const NewRoleHeader = () => {
+
+const NewRecruitingAgencyHeader = () => {
     const dispatch = useDispatch();
     const methods = useFormContext();
-    const { getValues, watch, setError } = methods;
+    const { formState, watch, getValues, setError } = methods;
+    const { isValid, dirtyFields } = formState;
     const name = watch('name');
-    const permissions = watch('permissions');
-    console.log(permissions);
     const theme = useTheme();
     const history = useHistory();
 
+
+
     const routeParams = useParams();
 
-    const handleDelete = localStorage.getItem('deleteRole');
-    const handleUpdate = localStorage.getItem('updateRole');
+    const handleDelete = localStorage.getItem('recruitingAgencyEvent');
 
-
-    function handleSaveRole() {
-        dispatch(saveRole(getValues())).then((res) => {
-            if (res.payload.data?.id) {
-                localStorage.setItem('roleAlertPermission', 'saveRoleSuccessfully')
-                history.push('/apps/roles-management/roles');
+    function handleSaveRecruitingAgency() {
+        dispatch(saveRecruitingAgency(getValues())).then((res) => {
+            console.log("saveRecruitingAgencyRes", res)
+            if (res.payload?.data?.id) {
+                localStorage.setItem("recruitingAgencyAlert", "saveRecruitingAgency")
+                history.push('/apps/recruitingAgency-management/recruitingAgencys');
             }
-            else if (res.payload.data?.detail) {
+            else if (res.payload?.data?.detail) {
                 setError("name", { type: "manual", message: res.payload.data.detail })
                 console.log(res.payload.data.detail)
             }
         });
     }
 
-    function handleUpdateRole() {
-        dispatch(updateRole(getValues())).then((res) => {
-            console.log("updateRoleRes", res)
-            if (res.payload.data?.id) {
-                localStorage.setItem("roleAlert", "updateRole")
-                history.push('/apps/roles-management/roles');
+    function handleUpdateRecruitingAgency() {
+        dispatch(updateRecruitingAgency(getValues())).then((res) => {
+            console.log("updateRecruitingAgencyRes", res)
+            if (res.payload?.data?.id) {
+                localStorage.setItem("recruitingAgencyAlert", "updateRecruitingAgency")
+                history.push('/apps/recruitingAgency-management/recruitingAgencys');
             }
-            else if (res.payload.data?.detail) {
+            else if (res.payload?.data?.detail) {
                 setError("name", { type: "manual", message: res.payload.data.detail })
                 console.log(res.payload.data.detail)
             }
         });
     }
 
-    function handleRemoveRole() {
-        dispatch(removeRole(getValues())).then((res) => {
-            console.log("removeRoleRes", res)
+    function handleRemoveRecruitingAgency() {
+        dispatch(removeRecruitingAgency(getValues())).then((res) => {
+            console.log("removeRecruitingAgencyRes", res)
             if (res.payload) {
-                localStorage.removeItem("roleEvent")
-                localStorage.setItem("roleAlert", "deleteRole")
-                history.push('/apps/roles-management/roles');
+                localStorage.removeItem("recruitingAgencyEvent")
+                localStorage.setItem("recruitingAgencyAlert", "deleteRecruitingAgency")
+                history.push('/apps/recruitingAgency-management/recruitingAgencys');
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/roles-management/roles')
+        history.push('/apps/recruitingAgency-management/recruitingAgencys')
     }
 
-    // if (loading) {
-    //     return <FuseLoading />;
-    // }
 
     return (
         <div className="flex flex-1 w-full items-center justify-between">
@@ -79,11 +78,11 @@ const NewRoleHeader = () => {
                         className="flex items-center sm:mb-12"
                         component={Link}
                         role="button"
-                        to="/apps/roles-management/roles"
+                        to="/apps/recruitingAgency-management/recruitingAgencys"
                         color="inherit"
                     >
                         <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-                        <span className="hidden sm:flex mx-4 font-medium">Roles</span>
+                        <span className="hidden sm:flex mx-4 font-medium">RecruitingAgencies</span>
                     </Typography>
                 </motion.div>
 
@@ -93,14 +92,16 @@ const NewRoleHeader = () => {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1, transition: { delay: 0.3 } }}
                     >
+
+
                     </motion.div>
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                {name || 'Create New Role'}
+                                {name || 'Create New RecruitingAgency'}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                Roles Detail
+                                RecruitingAgencies Detail
                             </Typography>
                         </motion.div>
                     </div>
@@ -112,40 +113,39 @@ const NewRoleHeader = () => {
                 animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
             >
                 {
-                    handleDelete === 'deleteRole' &&
+                    handleDelete == 'Delete' &&
                     <Typography
                         className='mt-6'
                         variant="subtitle2"
                     >
-                        Do you want to remove this Roles?
+                        Do you want to remove this RecruitingAgency?
                     </Typography>
                 }
-                {handleDelete === 'deleteRole' && <Button
+                {handleDelete == 'Delete' && routeParams.recruitingAgencyId !== "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    onClick={handleRemoveRole}
+                    onClick={handleRemoveRecruitingAgency}
                     startIcon={<Icon className="hidden sm:flex">delete</Icon>}
                     style={{ backgroundColor: '#ea5b78', color: 'white' }}
                 >
                     Remove
                 </Button>}
-                {handleDelete !== 'deleteRole' && routeParams.roleId === "new" && <Button
+                {routeParams.recruitingAgencyId == "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    disabled={!name || _.isEmpty(permissions)}
-                    onClick={handleSaveRole}
+                    disabled={_.isEmpty(dirtyFields) || !isValid}
+                    onClick={handleSaveRecruitingAgency}
                 >
                     Save
                 </Button>}
-                {handleDelete !== 'deleteRole' && handleUpdate === 'updateRole' && <Button
+                {handleDelete !== 'Delete' && routeParams?.recruitingAgencyName && <Button
                     className="whitespace-nowrap mx-4"
                     color="secondary"
                     variant="contained"
-                    //disabled={_.isEmpty(dirtyFields) || !isValid}
                     style={{ backgroundColor: "#4dc08e", color: 'white' }}
-                    onClick={handleUpdateRole}
+                    onClick={handleUpdateRecruitingAgency}
                 >
                     Update
                 </Button>}
@@ -162,4 +162,4 @@ const NewRoleHeader = () => {
     );
 };
 
-export default NewRoleHeader;
+export default NewRecruitingAgencyHeader;

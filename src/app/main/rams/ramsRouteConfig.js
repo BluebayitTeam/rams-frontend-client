@@ -232,6 +232,19 @@ const ramsRouteConfig = {
             path: '/apps/demand-management/:demandId',
             component: lazy(() => import('./DemandsManagement/Demand/NewDemand'))
         },
+        //recruitingAgency
+        {
+            path: '/apps/recruitingAgency-management/recruitingAgencys/:recruitingAgencyId/:recruitingAgencyName?',
+            component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgency/NewRecruitingAgency.js'))
+        },
+        {
+            path: '/apps/recruitingAgency-management/recruitingAgencys',
+            component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgencys/RecruitingAgencys'))
+        },
+        {
+            path: '/apps/recruitingAgency-management/:recruitingAgencyId',
+            component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgency/NewRecruitingAgency'))
+        },
 
     ]
 }

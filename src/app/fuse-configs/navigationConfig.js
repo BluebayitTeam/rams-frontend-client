@@ -119,6 +119,15 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/profession-management/professions',
                 exact: true
+            },
+            //recruitingAgency
+            {
+                id: 'recruitingAgencies',
+                title: 'Recruiting Agencies',
+                translate: 'Recruiting Agencies',
+                type: 'item',
+                url: '/apps/recruitingAgency-management/recruitingAgencys',
+                exact: true
             }
         ]
     },
@@ -207,7 +216,8 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/demand-management/demands',
                 exact: true
-            }
+            },
+
         ]
     }
 ];
