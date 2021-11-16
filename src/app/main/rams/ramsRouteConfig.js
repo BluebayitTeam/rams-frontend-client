@@ -219,7 +219,19 @@ const ramsRouteConfig = {
             path: '/apps/agent-management/:agentId',
             component: lazy(() => import('./AgentsManagement/Agent/NewAgent'))
         },
-
+        //demand
+        {
+            path: '/apps/demand-management/demands/:demandId/:demandName?',
+            component: lazy(() => import('./DemandsManagement/Demand/NewDemand.js'))
+        },
+        {
+            path: '/apps/demand-management/demands',
+            component: lazy(() => import('./DemandsManagement/Demands/Demands'))
+        },
+        {
+            path: '/apps/demand-management/:demandId',
+            component: lazy(() => import('./DemandsManagement/Demand/NewDemand'))
+        },
 
     ]
 }

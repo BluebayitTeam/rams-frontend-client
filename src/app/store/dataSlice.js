@@ -1,5 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CUSOTMERTYPES, DESIGNATIONS_WITHOUT_PAGINATION, GET_ATTRIBUTES_WITHOUT_PAGINATION, GET_BRANCH_WITHOUT_PAGINATION, GET_BRANDS_WITHOUT_PAGINATION, GET_CATEGORIES_WITHOUT_PAGINATION, GET_CITYS_WITHOUT_PAGINATION, GET_COUNTRIES_WITHOUT_PAGINATION, GET_DEPARTMENTS_WITHOUT_PAGINATION, GET_EMPLOYEES_WITHOUT_PAGINATION, GET_MENUS_ALL_NESTED, GET_MENUS_WITHOUT_PAGINATION, GET_PERMISSIONS_WITHOUT_PAGINATION, GET_ROLES_WITHOUT_PAGINATION, GET_THANAS_WITHOUT_PAGINATION, GET_USERS_WITHOUT_PAGINATION, GET_VENDORS_WITHOUT_PAGINATION, GROUPS_WITHOUT_PAGINATION, ORDERSTATUS, PAYMENTMATHODS } from 'app/constant/constants';
+import {
+    CUSOTMERTYPES,
+    DESIGNATIONS_WITHOUT_PAGINATION,
+    GET_ATTRIBUTES_WITHOUT_PAGINATION,
+    GET_BRANCH_WITHOUT_PAGINATION,
+    GET_BRANDS_WITHOUT_PAGINATION,
+    GET_CATEGORIES_WITHOUT_PAGINATION,
+    GET_CITYS_WITHOUT_PAGINATION,
+    GET_COUNTRIES_WITHOUT_PAGINATION,
+    GET_DEPARTMENTS_WITHOUT_PAGINATION,
+    GET_EMPLOYEES_WITHOUT_PAGINATION,
+    GET_MENUS_ALL_NESTED, GET_MENUS_WITHOUT_PAGINATION,
+    GET_PERMISSIONS_WITHOUT_PAGINATION,
+    GET_ROLES_WITHOUT_PAGINATION,
+    GET_THANAS_WITHOUT_PAGINATION,
+    GET_USERS_WITHOUT_PAGINATION,
+    GET_VENDORS_WITHOUT_PAGINATION,
+    GROUPS_WITHOUT_PAGINATION,
+    ORDERSTATUS,
+    PAYMENTMATHODS,
+    PROFESSIONS_WITHOUT_PAGINATION,
+    VISAAGENTS_WITHOUT_PAGINATION
+} from 'app/constant/constants';
 import axios from "axios";
 
 
@@ -220,6 +242,36 @@ export const getDesignations = () => (dispatch) => {
         .catch(() => { });
 }
 
+export const getProfessions = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(PROFESSIONS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setProfessions(data.professions)))
+        .catch(() => { });
+}
+
+export const getVisaAgents = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(VISAAGENTS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => {
+            // console.log("visa_agentsRes", data)
+            dispatch(setVisaAgents(data.agents))
+        })
+        .catch(() => { });
+}
+
+
 const dataSlice = createSlice({
     name: "employeeManagement/data",
     initialState: {
@@ -248,6 +300,8 @@ const dataSlice = createSlice({
         nestedMenus: [],
         groups: [],
         designations: [],
+        professions: [],
+        visaAgents: [],
     },
     reducers: {
         setBranches: (state, action) => {
@@ -322,6 +376,12 @@ const dataSlice = createSlice({
         setDesignations: (state, action) => {
             state.designations = action.payload ? action.payload : []
         },
+        setProfessions: (state, action) => {
+            state.professions = action.payload ? action.payload : []
+        },
+        setVisaAgents: (state, action) => {
+            state.visaAgents = action.payload ? action.payload : []
+        }
     }
 })
 
@@ -349,7 +409,9 @@ const {
     setParentMenus,
     setAllMenuNested,
     setGroups,
-    setDesignations
+    setDesignations,
+    setProfessions,
+    setVisaAgents,
 } = dataSlice.actions;
 export default dataSlice.reducer;
 

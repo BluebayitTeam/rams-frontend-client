@@ -1,0 +1,239 @@
+import _ from '@lodash';
+import { Checkbox, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import React from 'react';
+import { Controller, useFormContext } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+import { saveAgent, updateAgent } from '../store/agentSlice';
+
+
+
+const useStyles = makeStyles(theme => ({
+    hidden: {
+        display: "none"
+    }
+}));
+
+
+function OpeningBalance(props) {
+
+
+    const userID = localStorage.getItem('user_id')
+
+
+    const classes = useStyles(props);
+
+    const methods = useFormContext();
+
+    const routeParams = useParams();
+    const { agentId } = routeParams;
+    const { control, formState, getValues } = methods;
+    const { errors, isValid, dirtyFields } = formState;
+    const history = useHistory();
+    const handleDelete = localStorage.getItem('agentEvent');
+    const dispatch = useDispatch()
+
+
+    function handleSaveAgent() {
+        dispatch(saveAgent(getValues())).then((res) => {
+            console.log("saveAgentRes", res)
+            if (res.payload?.data?.id) {
+                localStorage.setItem("agentAlert", "saveAgent")
+                history.push('/apps/agent-management/agents')
+            }
+            else if (res.payload?.data) {
+                const detail = res.payload.data
+                for (let name in detail) {
+                    setError(`${name}`, {
+                        type: 'manual',
+                        message: detail[name]
+                    })
+                }
+            }
+        });
+    }
+
+    function handleUpdateAgent() {
+        dispatch(updateAgent(getValues())).then((res) => {
+            console.log("updateAgentRes", res)
+            if (res.payload?.data?.id) {
+                localStorage.setItem("agentAlert", "updateAgent")
+                history.push('/apps/agent-management/agents');
+            }
+            else if (res.payload?.data) {
+                const detail = res.payload.data
+                for (let name in detail) {
+                    setError(`${name}`, {
+                        type: 'manual',
+                        message: detail[name]
+                    })
+                }
+            }
+        });
+    }
+
+    const handleSubmitOnKeyDownEnter = (ev) => {
+        if (ev.key === 'Enter') {
+            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveAgent()
+                console.log("saved")
+            }
+            else if (handleDelete !== 'Delete' && routeParams?.agentName) {
+                handleUpdateAgent()
+                console.log("updated")
+            }
+        }
+    }
+
+
+    return (
+        <div>
+
+            <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", alignItems: "center", paddingRight: "12px" }}><h4>Balance Type : </h4></div>
+
+                <div>
+                    <Controller
+                        name="creditors"
+                        control={control}
+                        render={({ field }) => (
+                            <FormControl>
+                                <FormControlLabel
+                                    required
+                                    label="Creditors"
+                                    control={<Radio
+                                        {...field}
+                                        color="primary"
+                                        checked={field.value || false}
+                                        onChange={(e) => console.log("radio", e.target.value)}
+                                    />}
+                                />
+                            </FormControl>
+                        )}
+                    />
+                    <Controller
+                        name="debitors"
+                        control={control}
+                        render={({ field }) => (
+                            <FormControl>
+                                <FormControlLabel
+                                    required
+                                    label="Debitors"
+                                    control={<Checkbox
+                                        {...field}
+                                        color="primary"
+                                        checked={field.value || false}
+                                    />}
+                                />
+                            </FormControl>
+                        )}
+                    />
+                </div>
+            </div>
+
+            <Controller
+                name="direction"
+                control={control}
+                render={({ field }) => (
+                    <FormControl component="fieldset" className={classes.formControl}>
+                        <FormLabel component="legend" className="text-14">
+                            Direction
+                        </FormLabel>
+                        <RadioGroup {...field} aria-label="Layout Direction" className={classes.group} row>
+                            <FormControlLabel key="rtl" value="rtl" control={<Radio />} label="RTL" />
+                            <FormControlLabel key="ltr" value="ltr" control={<Radio />} label="LTR" />
+                        </RadioGroup>
+                    </FormControl>
+                )}
+            />
+
+
+            <Controller
+                name={agentId === 'new' ? 'created_by' : 'updated_by'}
+                control={control}
+                defaultValue={userID}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className={classes.hidden}
+                        label="created by"
+                        id="created_by"
+                        error={false}
+                        helperText=""
+                        required
+                        variant="outlined"
+                        fullWidth
+                    />)
+                }}
+            />
+
+            <Controller
+                name="date"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className="mt-8 mb-16"
+                        error={!!errors.date}
+                        helperText={errors?.date?.message}
+                        label="Date"
+                        id="date"
+                        required
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        fullWidth
+                    // onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+            <Controller
+                name="amount"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className="mt-8 mb-16"
+                        error={!!errors.amount}
+                        helperText={errors?.amount?.message}
+                        label="Amount"
+                        id="amount"
+                        type="number"
+                        required
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+            <Controller
+                name="balance_notes"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className="mt-8 mb-16"
+                        error={!!errors.balance_notes}
+                        helperText={errors?.balance_notes?.message}
+                        label="Balance Notes *"
+                        id="balance_notes"
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                    // onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+
+        </div>
+    );
+}
+
+export default OpeningBalance

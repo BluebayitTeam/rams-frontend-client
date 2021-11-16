@@ -198,6 +198,15 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/agent-management/agents',
                 exact: true
+            },
+            //demand
+            {
+                id: 'demands',
+                title: 'Demands',
+                translate: 'Demands',
+                type: 'item',
+                url: '/apps/demand-management/demands',
+                exact: true
             }
         ]
     }

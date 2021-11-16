@@ -12,7 +12,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { BASE_URL } from '../../../../constant/constants';
-import { getCities, getCountries, getGroups, getRoles, getThanas } from '../../../../store/dataSlice';
+import { getCities, getCountries, getGroups, getThanas } from '../../../../store/dataSlice';
 import { saveAgent, updateAgent } from '../store/agentSlice';
 
 
@@ -33,7 +33,6 @@ function AgentForm(props) {
     const [previewImage, setPreviewImage] = useState()
     const userID = localStorage.getItem('user_id')
 
-    const roles = useSelector(state => state.data.roles)
     const thanas = useSelector(state => state.data.thanas)
     const cities = useSelector(state => state.data.cities)
     const countries = useSelector(state => state.data.countries)
@@ -55,8 +54,7 @@ function AgentForm(props) {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     useEffect(() => {
-        dispatch(getRoles()),
-            dispatch(getThanas()),
+        dispatch(getThanas()),
             dispatch(getCities()),
             dispatch(getCountries()),
             dispatch(getGroups())
@@ -563,59 +561,11 @@ function AgentForm(props) {
                             label="Is active"
                             control={<Checkbox
                                 {...field}
+                                color="primary"
                                 checked={field.value || false}
                             />}
                         />
                     </FormControl>
-                )}
-            />
-            <Controller
-                name="is_admin"
-                control={control}
-                render={({ field }) => (
-                    <FormControl>
-                        <FormControlLabel
-                            label="Is admin"
-                            control={<Checkbox
-                                {...field}
-                                checked={field.value || false}
-                            />}
-                        />
-                    </FormControl>
-                )}
-            />
-
-            <Controller
-                name="role"
-                control={control}
-                render={({ field: { onChange, value, name } }) => (
-                    <Autocomplete
-                        className="mt-8 mb-16"
-                        freeSolo
-                        value={value ? roles.find(data => data.id == value) : null}
-                        options={roles}
-                        getOptionLabel={(option) => `${option.name}`}
-                        onChange={(event, newValue) => {
-                            onChange(newValue?.id)
-                        }}
-                        renderInput={params => (
-
-                            <TextField
-                                {...params}
-                                placeholder="Select Role"
-                                label="Role"
-                                error={!!errors.role}
-                                required
-                                helperText={errors?.role?.message}
-                                variant="outlined"
-                                autoFocus
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
-                            />
-                        )}
-                    />
                 )}
             />
 

@@ -1,6 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Tab, Tabs } from '@material-ui/core';
 import withReducer from 'app/store/withReducer';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { getAgent, newAgent, resetAgent } from '../store/agentSlice';
 import reducer from '../store/index.js';
+import OpeningBalance from '../tabs/OpeningBalanceTab';
 import AgentForm from './AgentForm.js';
 import NewAgentHeader from './NewAgentHeader.js';
 
@@ -42,6 +44,7 @@ const Agent = () => {
     const dispatch = useDispatch();
     const agent = useSelector(({ agentsManagement }) => agentsManagement.agent);
 
+    const [tabValue, setTabValue] = useState(0);
     const [noAgent, setNoAgent] = useState(false);
     const methods = useForm({
         mode: 'onChange',
@@ -104,6 +107,10 @@ const Agent = () => {
         };
     }, [dispatch]);
 
+    function handleTabChange(event, value) {
+        setTabValue(value);
+    }
+
     /**
      * Show Message if the requested products is not exists
      */
@@ -137,10 +144,30 @@ const Agent = () => {
                     toolbar: 'p-0',
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
                 }}
+                contentToolbar={
+                    <Tabs
+                        value={tabValue}
+                        onChange={handleTabChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        classes={{ root: 'w-full h-64' }}
+                    >
+                        <Tab className="h-64" label="Basic Info" />
+                        <Tab className="h-64" label="Opening Balance" />
+                    </Tabs>
+                }
+
                 header={<NewAgentHeader />}
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <AgentForm />
+                        <div className={tabValue !== 0 ? 'hidden' : ''}>
+                            <AgentForm />
+                        </div>
+                        <div className={tabValue !== 1 ? 'hidden' : ''}>
+                            <OpeningBalance />
+                        </div>
                     </div>
                 }
                 innerScroll

@@ -111,6 +111,14 @@ export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/without
 //designation
 export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/designation/without_pagination/all/`
 
+//visa egent
+export const VISAAGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/agent/without_pagination/all/`
+
+//profession
+export const PROFESSIONS_WITHOUT_PAGINATION = `${BASE_URL}/profession/api/v1/profession/all/`
+
+
+
 //  employee
 export const CREATE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/create/`;
 
@@ -726,3 +734,17 @@ export const UPDATE_AGENT = `${BASE_URL}/agent/api/v1/agent/update/`;
 export const DELETE_AGENT = `${BASE_URL}/agent/api/v1/agent/delete/`;
 
 export const SEARCH_AGENT = `${BASE_URL}/agent/api/v1/agent/search/`;
+
+
+//demand
+export const CREATE_DEMAND = `${BASE_URL}/demand/api/v1/demand/create/`;
+
+export const GET_DEMANDS = `${BASE_URL}/demand/api/v1/demand/all`;
+
+export const GET_DEMAND_BY_ID = `${BASE_URL}/demand/api/v1/demand/`;
+
+export const UPDATE_DEMAND = `${BASE_URL}/demand/api/v1/demand/update/`;
+
+export const DELETE_DEMAND = `${BASE_URL}/demand/api/v1/demand/delete/`;
+
+export const SEARCH_DEMAND = `${BASE_URL}/demand/api/v1/demand/search/`;
