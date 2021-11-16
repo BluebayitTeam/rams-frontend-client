@@ -82,6 +82,23 @@ export const saveAgent = createAsyncThunk(
     'agentManagement/agent/saveAgent',
     async (agentData) => {
 
+        let modifiedData = agentData
+        const haveExtraData = agentData.balancce_type && agentData.balance_date && agentData.balance_amount && agentData.balance_note
+
+        if (haveExtraData) {
+            modifiedData = {
+                ...agentData,
+                extra_data: {
+                    balancce_type: agentData.balancce_type,
+                    balance_date: agentData.balance_date,
+                    balance_amount: agentData.balance_amount,
+                    balance_note: agentData.balance_note
+                }
+            }
+        }
+
+        console.log("data", modifiedData)
+
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
                 Object.keys(data).forEach(key => {
@@ -102,7 +119,7 @@ export const saveAgent = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(agentData)
+        const getFormDateFJ = jsonToFormData(modifiedData)
 
         const authTOKEN = {
             headers: {
@@ -125,9 +142,9 @@ const agentSlice = createSlice({
             prepare: event => ({
                 payload: {
                     country_code1: "+880",
-                    country_code2: "+880",
+                    // country_code2: "+880",
                     primary_phone: "+880",
-                    secondary_phone: "+880",
+                    // secondary_phone: "+880",
                 }
             })
         }

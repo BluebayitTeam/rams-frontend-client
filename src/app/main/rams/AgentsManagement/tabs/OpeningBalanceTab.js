@@ -2,13 +2,11 @@ import _ from '@lodash';
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { saveAgent, updateAgent } from '../store/agentSlice';
-
-
 
 const useStyles = makeStyles(theme => ({
     hidden: {
@@ -29,6 +27,10 @@ function OpeningBalance(props) {
     const handleDelete = localStorage.getItem('agentEvent');
     const dispatch = useDispatch()
 
+    const [_reRender, setreRender] = useState(0)
+    useEffect(() => {
+        setreRender(Math.random())
+    }, [getValues().balancce_type, getValues().balance_date, getValues().balance_amount, getValues().balance_note])
 
     function handleSaveAgent() {
         dispatch(saveAgent(getValues())).then((res) => {
@@ -70,7 +72,7 @@ function OpeningBalance(props) {
 
     const handleSubmitOnKeyDownEnter = (ev) => {
         if (ev.key === 'Enter') {
-            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid || ((getValues().balancce_type || getValues().balance_date || getValues().balance_amount || getValues().balance_note)) ? !(getValues().balancce_type && getValues().balance_date && getValues().balance_amount && getValues().balance_note) : false)) {
                 handleSaveAgent()
                 console.log("saved")
             }
@@ -81,10 +83,27 @@ function OpeningBalance(props) {
         }
     }
 
-    console.log("values", getValues())
     return (
         <div>
 
+            <Controller
+                name={agentId === 'new' ? 'created_by' : 'updated_by'}
+                control={control}
+                defaultValue={userID}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className={classes.hidden}
+                        label="created by"
+                        id="created_by"
+                        error={false}
+                        helperText=""
+                        required
+                        variant="outlined"
+                        fullWidth
+                    />)
+                }}
+            />
             {/* <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
                 <div style={{ display: "flex", alignItems: "center", paddingRight: "12px" }}><h4>Balance Type : </h4></div>
 
@@ -139,31 +158,11 @@ function OpeningBalance(props) {
                             Balance Type
                         </FormLabel>
                         <RadioGroup {...field} aria-label="Layout Direction" className={classes.group} row>
-                            <FormControlLabel key="creditors" value="creditors" control={<Radio color="primary" />} label="Creditors" />
-                            <FormControlLabel key="debtors" value="debitors" control={<Radio color="primary" />} label="Debtors" />
+                            <FormControlLabel key="creditors" value="creditors" control={<Radio checked={getValues().balancce_type === "creditors" ? true : false} color="primary" />} label="Creditors" />
+                            <FormControlLabel key="debtors" value="debtors" control={<Radio checked={getValues().balancce_type === "debtors" ? true : false} color="primary" />} label="Debtors" />
                         </RadioGroup>
                     </FormControl>
                 )}
-            />
-
-
-            <Controller
-                name={agentId === 'new' ? 'created_by' : 'updated_by'}
-                control={control}
-                defaultValue={userID}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        className={classes.hidden}
-                        label="created by"
-                        id="created_by"
-                        error={false}
-                        helperText=""
-                        required
-                        variant="outlined"
-                        fullWidth
-                    />)
-                }}
             />
 
             <Controller

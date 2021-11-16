@@ -53,6 +53,11 @@ function AgentForm(props) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const [_reRender, setreRender] = useState(0)
+    useEffect(() => {
+        setreRender(Math.random())
+    }, [getValues().balancce_type, getValues().balance_date, getValues().balance_amount, getValues().balance_note])
+
     useEffect(() => {
         dispatch(getThanas()),
             dispatch(getCities()),
@@ -98,9 +103,14 @@ function AgentForm(props) {
         });
     }
 
+
     const handleSubmitOnKeyDownEnter = (ev) => {
+
+        console.log("dirtyFields", dirtyFields)
+        console.log("isValid", isValid)
+
         if (ev.key === 'Enter') {
-            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid || ((getValues().balancce_type || getValues().balance_date || getValues().balance_amount || getValues().balance_note)) ? !(getValues().balancce_type && getValues().balance_date && getValues().balance_amount && getValues().balance_note) : false)) {
                 handleSaveAgent()
                 console.log("saved")
             }

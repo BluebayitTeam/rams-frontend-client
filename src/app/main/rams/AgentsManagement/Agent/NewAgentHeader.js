@@ -4,7 +4,7 @@ import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -26,6 +26,11 @@ const NewAgentHeader = () => {
     const routeParams = useParams();
 
     const handleDelete = localStorage.getItem('agentEvent');
+
+    const [_reRender, setreRender] = useState(0)
+    useEffect(() => {
+        setreRender(Math.random())
+    }, [getValues().balancce_type, getValues().balance_date, getValues().balance_amount, getValues().balance_note])
 
     function handleSaveAgent() {
         dispatch(saveAgent(getValues())).then((res) => {
@@ -158,7 +163,7 @@ const NewAgentHeader = () => {
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    disabled={_.isEmpty(dirtyFields) || !isValid}
+                    disabled={_.isEmpty(dirtyFields) || !isValid || ((getValues().balancce_type || getValues().balance_date || getValues().balance_amount || getValues().balance_note)) ? !(getValues().balancce_type && getValues().balance_date && getValues().balance_amount && getValues().balance_note) : false}
                     onClick={handleSaveAgent}
                 >
                     Save
