@@ -1,5 +1,5 @@
 import _ from '@lodash';
-import { Checkbox, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React from 'react';
@@ -18,15 +18,9 @@ const useStyles = makeStyles(theme => ({
 
 
 function OpeningBalance(props) {
-
-
     const userID = localStorage.getItem('user_id')
-
-
     const classes = useStyles(props);
-
     const methods = useFormContext();
-
     const routeParams = useParams();
     const { agentId } = routeParams;
     const { control, formState, getValues } = methods;
@@ -87,11 +81,11 @@ function OpeningBalance(props) {
         }
     }
 
-
+    console.log("values", getValues())
     return (
         <div>
 
-            <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
+            {/* <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
                 <div style={{ display: "flex", alignItems: "center", paddingRight: "12px" }}><h4>Balance Type : </h4></div>
 
                 <div>
@@ -107,7 +101,10 @@ function OpeningBalance(props) {
                                         {...field}
                                         color="primary"
                                         checked={field.value || false}
-                                        onChange={(e) => console.log("radio", e.target.value)}
+                                        onChange={(e) => {
+                                            console.log("radio", e.target.checked)
+                                            field.onChange(e.target.checked)
+                                        }}
                                     />}
                                 />
                             </FormControl>
@@ -131,19 +128,19 @@ function OpeningBalance(props) {
                         )}
                     />
                 </div>
-            </div>
+            </div> */}
 
             <Controller
-                name="direction"
+                name="balancce_type"
                 control={control}
                 render={({ field }) => (
                     <FormControl component="fieldset" className={classes.formControl}>
                         <FormLabel component="legend" className="text-14">
-                            Direction
+                            Balance Type
                         </FormLabel>
                         <RadioGroup {...field} aria-label="Layout Direction" className={classes.group} row>
-                            <FormControlLabel key="rtl" value="rtl" control={<Radio />} label="RTL" />
-                            <FormControlLabel key="ltr" value="ltr" control={<Radio />} label="LTR" />
+                            <FormControlLabel key="creditors" value="creditors" control={<Radio color="primary" />} label="Creditors" />
+                            <FormControlLabel key="debtors" value="debitors" control={<Radio color="primary" />} label="Debtors" />
                         </RadioGroup>
                     </FormControl>
                 )}
@@ -170,16 +167,16 @@ function OpeningBalance(props) {
             />
 
             <Controller
-                name="date"
+                name="balance_date"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         className="mt-8 mb-16"
-                        error={!!errors.date}
-                        helperText={errors?.date?.message}
+                        error={!!errors.balance_date}
+                        helperText={errors?.balance_date?.message}
                         label="Date"
-                        id="date"
+                        id="balance_date"
                         required
                         type="date"
                         InputLabelProps={{ shrink: true }}
@@ -190,16 +187,16 @@ function OpeningBalance(props) {
             />
 
             <Controller
-                name="amount"
+                name="balance_amount"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         className="mt-8 mb-16"
-                        error={!!errors.amount}
-                        helperText={errors?.amount?.message}
+                        error={!!errors.balance_amount}
+                        helperText={errors?.balance_amount?.message}
                         label="Amount"
-                        id="amount"
+                        id="balance_amount"
                         type="number"
                         required
                         variant="outlined"
@@ -211,16 +208,16 @@ function OpeningBalance(props) {
             />
 
             <Controller
-                name="balance_notes"
+                name="balance_note"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         className="mt-8 mb-16"
-                        error={!!errors.balance_notes}
-                        helperText={errors?.balance_notes?.message}
+                        error={!!errors.balance_note}
+                        helperText={errors?.balance_note?.message}
                         label="Balance Notes *"
-                        id="balance_notes"
+                        id="balance_note"
                         multiline
                         rows={4}
                         variant="outlined"
