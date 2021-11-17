@@ -96,7 +96,7 @@ const rows = [
         id: 'username',
         align: 'left',
         disablePadding: false,
-        label: 'User Name',
+        label: 'UserName',
         sort: true
     },
     {

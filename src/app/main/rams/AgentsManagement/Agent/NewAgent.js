@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { getAgent, newAgent, resetAgent } from '../store/agentSlice';
 import reducer from '../store/index.js';
+import ImageToText from '../tabs/ImageToText';
 import OpeningBalance from '../tabs/OpeningBalanceTab';
 import AgentForm from './AgentForm.js';
 import NewAgentHeader from './NewAgentHeader.js';
@@ -156,6 +157,7 @@ const Agent = () => {
                     >
                         <Tab className="h-64" label="Basic Info" />
                         <Tab className="h-64" label="Opening Balance" />
+                        <Tab className="h-64" label="Image To Text" />
                     </Tabs>
                 }
 
@@ -167,6 +169,9 @@ const Agent = () => {
                         </div>
                         <div className={tabValue !== 1 ? 'hidden' : ''}>
                             <OpeningBalance />
+                        </div>
+                        <div className={tabValue !== 2 ? 'hidden' : ''}>
+                            <ImageToText />
                         </div>
                     </div>
                 }

@@ -82,22 +82,22 @@ export const saveAgent = createAsyncThunk(
     'agentManagement/agent/saveAgent',
     async (agentData) => {
 
-        let modifiedData = agentData
-        const haveExtraData = agentData.balancce_type && agentData.balance_date && agentData.balance_amount && agentData.balance_note
+        // let modifiedData = agentData
+        // const haveExtraData = agentData.balancce_type && agentData.balance_date && agentData.balance_amount && agentData.balance_note
 
-        if (haveExtraData) {
-            modifiedData = {
-                ...agentData,
-                extra_data: {
-                    balancce_type: agentData.balancce_type,
-                    balance_date: agentData.balance_date,
-                    balance_amount: agentData.balance_amount,
-                    balance_note: agentData.balance_note
-                }
-            }
-        }
+        // if (haveExtraData) {
+        //     modifiedData = {
+        //         ...agentData,
+        //         extra_data: {
+        //             balancce_type: agentData.balancce_type,
+        //             balance_date: agentData.balance_date,
+        //             balance_amount: agentData.balance_amount,
+        //             balance_note: agentData.balance_note
+        //         }
+        //     }
+        // }
 
-        console.log("data", modifiedData)
+        // console.log("data", modifiedData)
 
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -119,7 +119,7 @@ export const saveAgent = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(modifiedData)
+        const getFormDateFJ = jsonToFormData(agentData)
 
         const authTOKEN = {
             headers: {

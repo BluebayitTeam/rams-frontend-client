@@ -43,7 +43,7 @@ function AgentForm(props) {
     const methods = useFormContext();
     const routeParams = useParams();
     const { agentId } = routeParams;
-    const { control, formState, watch, getValues, setValue } = methods;
+    const { control, formState, watch, getValues, setValue, setError } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
     const handleDelete = localStorage.getItem('agentEvent');
@@ -52,11 +52,6 @@ function AgentForm(props) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-    const [_reRender, setreRender] = useState(0)
-    useEffect(() => {
-        setreRender(Math.random())
-    }, [getValues().balancce_type, getValues().balance_date, getValues().balance_amount, getValues().balance_note])
 
     useEffect(() => {
         dispatch(getThanas()),
@@ -110,7 +105,7 @@ function AgentForm(props) {
         console.log("isValid", isValid)
 
         if (ev.key === 'Enter') {
-            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid || ((getValues().balancce_type || getValues().balance_date || getValues().balance_amount || getValues().balance_note)) ? !(getValues().balancce_type && getValues().balance_date && getValues().balance_amount && getValues().balance_note) : false)) {
+            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
                 handleSaveAgent()
                 console.log("saved")
             }
@@ -142,6 +137,40 @@ function AgentForm(props) {
                         fullWidth
                     />)
                 }}
+            />
+
+            <Controller
+                name="group"
+                control={control}
+                render={({ field: { onChange, value, name } }) => (
+                    <Autocomplete
+                        className="mt-8 mb-16"
+                        freeSolo
+                        value={value ? groups.find(data => data.id == value) : null}
+                        options={groups}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Group"
+                                label="Group"
+                                error={!!errors.group}
+                                required
+                                helperText={errors?.group?.message}
+                                variant="outlined"
+                                autoFocus
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            // onKeyDown={handleSubmitOnKeyDownEnter}
+                            />
+                        )}
+                    />
+                )}
             />
 
             <Controller
@@ -761,40 +790,6 @@ function AgentForm(props) {
                         onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
-            />
-
-            <Controller
-                name="group"
-                control={control}
-                render={({ field: { onChange, value, name } }) => (
-                    <Autocomplete
-                        className="mt-8 mb-16"
-                        freeSolo
-                        value={value ? groups.find(data => data.id == value) : null}
-                        options={groups}
-                        getOptionLabel={(option) => `${option.name}`}
-                        onChange={(event, newValue) => {
-                            onChange(newValue?.id)
-                        }}
-                        renderInput={params => (
-
-                            <TextField
-                                {...params}
-                                placeholder="Select Group"
-                                label="Group"
-                                error={!!errors.group}
-                                required
-                                helperText={errors?.group?.message}
-                                variant="outlined"
-                                autoFocus
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
-                            />
-                        )}
-                    />
-                )}
             />
 
             <Controller

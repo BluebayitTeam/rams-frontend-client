@@ -2,7 +2,7 @@ import _ from '@lodash';
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -21,16 +21,11 @@ function OpeningBalance(props) {
     const methods = useFormContext();
     const routeParams = useParams();
     const { agentId } = routeParams;
-    const { control, formState, getValues } = methods;
+    const { control, formState, getValues, setError } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
     const handleDelete = localStorage.getItem('agentEvent');
     const dispatch = useDispatch()
-
-    const [_reRender, setreRender] = useState(0)
-    useEffect(() => {
-        setreRender(Math.random())
-    }, [getValues().balancce_type, getValues().balance_date, getValues().balance_amount, getValues().balance_note])
 
     function handleSaveAgent() {
         dispatch(saveAgent(getValues())).then((res) => {
@@ -72,7 +67,7 @@ function OpeningBalance(props) {
 
     const handleSubmitOnKeyDownEnter = (ev) => {
         if (ev.key === 'Enter') {
-            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid || ((getValues().balancce_type || getValues().balance_date || getValues().balance_amount || getValues().balance_note)) ? !(getValues().balancce_type && getValues().balance_date && getValues().balance_amount && getValues().balance_note) : false)) {
+            if (routeParams.agentId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
                 handleSaveAgent()
                 console.log("saved")
             }
