@@ -217,7 +217,15 @@ const navigationConfig = [
                 url: '/apps/demand-management/demands',
                 exact: true
             },
-
+            //visaEntry
+            {
+                id: 'visaEntrys',
+                title: 'VisaEntries',
+                translate: 'VisaEntries',
+                type: 'item',
+                url: '/apps/visaEntry-management/visaEntrys',
+                exact: true
+            }
         ]
     }
 ];

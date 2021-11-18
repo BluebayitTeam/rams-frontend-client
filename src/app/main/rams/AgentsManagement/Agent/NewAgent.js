@@ -10,10 +10,10 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { getAgent, newAgent, resetAgent } from '../store/agentSlice';
 import reducer from '../store/index.js';
-import ImageToText from '../tabs/ImageToText';
-import OpeningBalance from '../tabs/OpeningBalanceTab';
 import AgentForm from './AgentForm.js';
 import NewAgentHeader from './NewAgentHeader.js';
+import ImageToText from './tabs/ImageToText';
+import OpeningBalance from './tabs/OpeningBalanceTab';
 
 /**
  * Form Validation Schema

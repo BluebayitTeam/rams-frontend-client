@@ -117,6 +117,8 @@ export const VISAAGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/agent/wit
 //profession
 export const PROFESSIONS_WITHOUT_PAGINATION = `${BASE_URL}/profession/api/v1/profession/all/`
 
+export const DEMANDS_WITHOUT_PAGINATION = `${BASE_URL}/demand/api/v1/demand/all/`
+
 
 
 //  employee
@@ -760,3 +762,19 @@ export const UPDATE_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/rec
 export const DELETE_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/delete/`;
 
 export const SEARCH_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/search/`;
+
+//visa_entry
+export const CREATE_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/create/`;
+
+export const GET_VISAENTRYS = `${BASE_URL}/visa_entry/api/v1/visa_entry/all`;
+
+export const GET_VISAENTRY_BY_ID = `${BASE_URL}/visa_entry/api/v1/visa_entry/`;
+
+export const UPDATE_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/update/`;
+
+export const DELETE_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/delete/`;
+
+export const DELETE_VISAENTRY_MULTIPLE = `${BASE_URL}/visa_entry/api/v1/visa_entry/delete/`;
+
+export const SEARCH_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/search/`;
+

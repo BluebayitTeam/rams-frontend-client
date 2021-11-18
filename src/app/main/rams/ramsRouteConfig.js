@@ -245,6 +245,19 @@ const ramsRouteConfig = {
             path: '/apps/recruitingAgency-management/:recruitingAgencyId',
             component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgency/NewRecruitingAgency'))
         },
+        //visaEntry
+        {
+            path: '/apps/visaEntry-management/visaEntrys/:visaEntryId/:visaEntryName?',
+            component: lazy(() => import('./VisaEntrysManagement/VisaEntry/NewVisaEntry.js'))
+        },
+        {
+            path: '/apps/visaEntry-management/visaEntrys',
+            component: lazy(() => import('./VisaEntrysManagement/VisaEntrys/VisaEntrys'))
+        },
+        {
+            path: '/apps/visaEntry-management/:visaEntryId',
+            component: lazy(() => import('./VisaEntrysManagement/VisaEntry/NewVisaEntry'))
+        },
 
     ]
 }

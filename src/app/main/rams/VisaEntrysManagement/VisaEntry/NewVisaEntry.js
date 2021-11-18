@@ -7,33 +7,47 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { getDemand, newDemand, resetDemand } from '../store/demandSlice';
 import reducer from '../store/index.js';
-import DemandForm from './DemandForm.js';
-import NewDemandHeader from './NewDemandHeader.js';
+import { getVisaEntry, newVisaEntry, resetVisaEntry } from '../store/visaEntrySlice';
+import NewVisaEntryHeader from './NewVisaEntryHeader.js';
+import VisaEntryForm from './VisaEntryForm.js';
+
+
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-    profession: yup.string()
-        .required("Profession is required"),
-    country: yup.string()
-        .required("Country is required"),
+
+    demand: yup.string()
+        .required("Demand is required"),
+
     visa_agent: yup.string()
         .required("Visa Agent is required"),
-    company_name: yup.string()
-        .required("Company Name is required"),
+
+    country: yup.string()
+        .required("Country is required"),
+
+    visa_number: yup.string()
+        .required("Visa Number is required"),
+
+    profession_english: yup.string()
+        .required("Profession English is required"),
+
     quantity: yup.string()
         .required("Quantity is required"),
+
+    sponsor_id_no: yup.string()
+        .required("Sponsor ID No is required"),
+
 })
 
-const Demand = () => {
+const VisaEntry = () => {
 
     const dispatch = useDispatch();
-    const demand = useSelector(({ demandsManagement }) => demandsManagement.demand);
+    const visaEntry = useSelector(({ visaEntrysManagement }) => visaEntrysManagement.visaEntry);
 
-    const [noDemand, setNoDemand] = useState(false);
+    const [noVisaEntry, setNoVisaEntry] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -44,66 +58,61 @@ const Demand = () => {
     const { reset } = methods;
 
     useDeepCompareEffect(() => {
-        function updateDemandState() {
-            const { demandId } = routeParams;
+        function updateVisaEntryState() {
+            const { visaEntryId } = routeParams;
 
-            if (demandId === 'new') {
+            if (visaEntryId === 'new') {
 
                 localStorage.removeItem('event')
                 /**
                  * Create New User data
                  */
-                dispatch(newDemand());
+                dispatch(newVisaEntry());
             } else {
                 /**
                  * Get User data
                  */
 
-                dispatch(getDemand(demandId)).then(action => {
+                dispatch(getVisaEntry(visaEntryId)).then(action => {
                     console.log(action.payload);
                     /**
                      * If the requested product is not exist show message
                      */
                     if (!action.payload) {
-                        setNoDemand(true);
+                        setNoVisaEntry(true);
                     }
                 });
             }
         }
 
-        updateDemandState();
+        updateVisaEntryState();
     }, [dispatch, routeParams]);
 
-    useEffect(() => {
-
-
-    }, [])
-
 
     useEffect(() => {
-        if (!demand) {
+        if (!visaEntry) {
             return;
         }
         /**
-         * Reset the form on demand state changes
+         * Reset the form on visaEntry state changes
          */
-        reset(demand);
-    }, [demand, reset]);
+        reset(visaEntry);
+    }, [visaEntry, reset]);
 
     useEffect(() => {
         return () => {
             /**
-             * Reset Demand on component unload
+             * Reset VisaEntry on component unload
              */
-            dispatch(resetDemand());
-            setNoDemand(false);
+            dispatch(resetVisaEntry());
+            setNoVisaEntry(false);
         };
     }, [dispatch]);
 
     /**
      * Show Message if the requested products is not exists
      */
-    if (noDemand) {
+    if (noVisaEntry) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -111,7 +120,7 @@ const Demand = () => {
                 className="flex flex-col flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There is no such demand!
+                    There is no such visaEntry!
                 </Typography>
                 <Button
                     className="mt-24"
@@ -120,7 +129,7 @@ const Demand = () => {
                     to="/apps/e-commerce/products"
                     color="inherit"
                 >
-                    Go to Demand Page
+                    Go to VisaEntry Page
                 </Button>
             </motion.div>
         );
@@ -134,10 +143,10 @@ const Demand = () => {
                     toolbar: 'p-0',
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
                 }}
-                header={<NewDemandHeader />}
+                header={<NewVisaEntryHeader />}
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <DemandForm />
+                        <VisaEntryForm />
                     </div>
                 }
                 innerScroll
@@ -145,4 +154,4 @@ const Demand = () => {
         </FormProvider>
     );
 };
-export default withReducer('demandsManagement', reducer)(Demand);
+export default withReducer('visaEntrysManagement', reducer)(VisaEntry);

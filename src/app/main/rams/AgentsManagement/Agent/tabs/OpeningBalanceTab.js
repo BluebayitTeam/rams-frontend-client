@@ -6,7 +6,7 @@ import React from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { saveAgent, updateAgent } from '../store/agentSlice';
+import { saveAgent, updateAgent } from '../../store/agentSlice';
 
 const useStyles = makeStyles(theme => ({
     hidden: {
@@ -145,7 +145,7 @@ function OpeningBalance(props) {
             </div> */}
 
             <Controller
-                name="balancce_type"
+                name="balance_type"
                 control={control}
                 render={({ field }) => (
                     <FormControl component="fieldset" className={classes.formControl}>
@@ -153,8 +153,8 @@ function OpeningBalance(props) {
                             Balance Type
                         </FormLabel>
                         <RadioGroup {...field} aria-label="Layout Direction" className={classes.group} row>
-                            <FormControlLabel key="creditors" value="creditors" control={<Radio checked={getValues().balancce_type === "creditors" ? true : false} color="primary" />} label="Creditors" />
-                            <FormControlLabel key="debtors" value="debtors" control={<Radio checked={getValues().balancce_type === "debtors" ? true : false} color="primary" />} label="Debtors" />
+                            <FormControlLabel key="creditors" value="creditors" control={<Radio checked={getValues().balance_type === "creditors" ? true : false} color="primary" />} label="Creditors" />
+                            <FormControlLabel key="debtors" value="debtors" control={<Radio checked={getValues().balance_type === "debtors" ? true : false} color="primary" />} label="Debtors" />
                         </RadioGroup>
                     </FormControl>
                 )}

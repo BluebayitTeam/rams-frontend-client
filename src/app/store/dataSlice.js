@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    CUSOTMERTYPES,
-    DESIGNATIONS_WITHOUT_PAGINATION,
+    CUSOTMERTYPES, DEMANDS_WITHOUT_PAGINATION, DESIGNATIONS_WITHOUT_PAGINATION,
     GET_ATTRIBUTES_WITHOUT_PAGINATION,
     GET_BRANCH_WITHOUT_PAGINATION,
     GET_BRANDS_WITHOUT_PAGINATION,
@@ -19,8 +18,7 @@ import {
     GROUPS_WITHOUT_PAGINATION,
     ORDERSTATUS,
     PAYMENTMATHODS,
-    PROFESSIONS_WITHOUT_PAGINATION,
-    VISAAGENTS_WITHOUT_PAGINATION
+    PROFESSIONS_WITHOUT_PAGINATION, VISAAGENTS_WITHOUT_PAGINATION
 } from 'app/constant/constants';
 import axios from "axios";
 
@@ -271,6 +269,21 @@ export const getVisaAgents = () => (dispatch) => {
         .catch(() => { });
 }
 
+export const getDemands = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(DEMANDS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setDemands(data.demands)))
+        .catch(() => { });
+}
+
+
+
 
 const dataSlice = createSlice({
     name: "employeeManagement/data",
@@ -302,6 +315,7 @@ const dataSlice = createSlice({
         designations: [],
         professions: [],
         visaAgents: [],
+        demands: [],
     },
     reducers: {
         setBranches: (state, action) => {
@@ -381,7 +395,10 @@ const dataSlice = createSlice({
         },
         setVisaAgents: (state, action) => {
             state.visaAgents = action.payload ? action.payload : []
-        }
+        },
+        setDemands: (state, action) => {
+            state.demands = action.payload ? action.payload : []
+        },
     }
 })
 
@@ -412,6 +429,7 @@ const {
     setDesignations,
     setProfessions,
     setVisaAgents,
+    setDemands,
 } = dataSlice.actions;
 export default dataSlice.reducer;
 
