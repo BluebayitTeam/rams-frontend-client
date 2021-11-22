@@ -8,20 +8,16 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { BASE_URL } from '../../../../constant/constants';
 import { removePassenger, savePassenger, updatePassenger } from '../store/passengerSlice';
 
-const NewPassengerHeader = () => {
+const NewPassengerHeader = ({ disableUpdate }) => {
     const dispatch = useDispatch();
     const methods = useFormContext();
     const { formState, watch, getValues } = methods;
     const { isValid, dirtyFields } = formState;
-    const name = watch('name');
+    const name = watch('passenger_id');
     const theme = useTheme();
     const history = useHistory();
-
-    const image = watch('image');
-    const featuredImageId = watch('featuredImageId');
 
     const routeParams = useParams();
 
@@ -80,7 +76,7 @@ const NewPassengerHeader = () => {
                 </motion.div>
 
                 <div className="flex items-center max-w-full">
-                    <motion.div
+                    {/* <motion.div
                         className="hidden sm:flex"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1, transition: { delay: 0.3 } }}
@@ -99,7 +95,7 @@ const NewPassengerHeader = () => {
                             />
                         )}
 
-                    </motion.div>
+                    </motion.div> */}
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
@@ -149,7 +145,8 @@ const NewPassengerHeader = () => {
                     className="whitespace-nowrap mx-4"
                     color="secondary"
                     variant="contained"
-                    style={{ backgroundColor: "#4dc08e", color: 'white' }}
+                    disabled={disableUpdate}
+                    style={{ backgroundColor: disableUpdate || "#4dc08e", color: 'white' }}
                     onClick={handleUpdatePassenger}
                 >
                     Update

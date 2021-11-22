@@ -16,7 +16,7 @@ const NewDemandHeader = () => {
     const methods = useFormContext();
     const { formState, watch, getValues } = methods;
     const { isValid, dirtyFields } = formState;
-    const name = watch('name');
+    const name = watch('company_name');
     const theme = useTheme();
     const history = useHistory();
 

@@ -45,6 +45,13 @@ const rows = [
     //     sort: true
     // },
     {
+        id: 'passport_no',
+        align: 'left',
+        disablePadding: false,
+        label: 'Passport No',
+        sort: true
+    },
+    {
         id: 'passenger_id',
         align: 'left',
         disablePadding: false,
@@ -179,13 +186,7 @@ const rows = [
     //         label: 'Religion',
     //         sort: true
     //     },
-    //  {
-    //         id: 'passport_no',
-    //         align: 'left',
-    //         disablePadding: false,
-    //         label: 'Passport No',
-    //         sort: true
-    //     },
+    //  
     //  {
     //         id: 'passport_type',
     //         align: 'left',

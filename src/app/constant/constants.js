@@ -805,3 +805,7 @@ export const DELETE_PASSENGER_MULTIPLE = `${BASE_URL}/passenger/api/v1/passenger
 
 export const SEARCH_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/search/`;
 
+export const CHECK_PASSPORT_NO_WHEN_CREATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_create/`
+
+export const CHECK_PASSPORT_NO_WHEN_UPDATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_update/`
+

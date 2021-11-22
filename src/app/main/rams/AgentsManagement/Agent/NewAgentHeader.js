@@ -16,7 +16,7 @@ const NewAgentHeader = () => {
     const methods = useFormContext();
     const { formState, watch, getValues, setError } = methods;
     const { isValid, dirtyFields } = formState;
-    const name = watch('name');
+    const name = watch('username');
     const theme = useTheme();
     const history = useHistory();
 

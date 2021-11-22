@@ -121,6 +121,7 @@ const Passenger = () => {
 
     const dispatch = useDispatch();
     const passenger = useSelector(({ passengersManagement }) => passengersManagement.passenger);
+    const [disableUpdate, setDisableUpdate] = useState(false)
 
     const [noPassenger, setNoPassenger] = useState(false);
     const methods = useForm({
@@ -218,10 +219,10 @@ const Passenger = () => {
                     toolbar: 'p-0',
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
                 }}
-                header={<NewPassengerHeader />}
+                header={<NewPassengerHeader disableUpdate={disableUpdate}/>}
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <PassengerForm />
+                        <PassengerForm disableUpdate={disableUpdate} setDisableUpdate={setDisableUpdate}/>
                     </div>
                 }
                 innerScroll

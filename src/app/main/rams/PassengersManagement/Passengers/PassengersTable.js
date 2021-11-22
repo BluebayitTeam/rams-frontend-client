@@ -63,7 +63,7 @@ const PassengersTable = (props) => {
     }, [searchText])
 
     const getSearchPassenger = () => {
-        fetch(`${SEARCH_PASSENGER}?nid=${searchText}`)
+        fetch(`${SEARCH_PASSENGER}?keyword=${searchText}`)
             .then(response => response.json())
             .then(searchedPassengerData => {
                 setSearchPassenger(searchedPassengerData?.passengers);
@@ -250,6 +250,9 @@ const PassengersTable = (props) => {
                                         {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.gender}
                                         </TableCell> */}
+                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
+                                            {n.passport_no}
+                                            </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.passenger_id}
@@ -327,10 +330,7 @@ const PassengersTable = (props) => {
                                             <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.religion}
                                             </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passport_no}
-                                            </TableCell>
+                                
                                     
                                             <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.passport_type}

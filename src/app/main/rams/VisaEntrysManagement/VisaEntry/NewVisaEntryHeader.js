@@ -16,11 +16,9 @@ const NewVisaEntryHeader = () => {
     const methods = useFormContext();
     const { formState, watch, getValues } = methods;
     const { isValid, dirtyFields } = formState;
-    const name = watch('name');
+    const name = watch('visa_number');
     const theme = useTheme();
     const history = useHistory();
-
-
 
     const routeParams = useParams();
 
