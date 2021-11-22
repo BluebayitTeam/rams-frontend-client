@@ -24,15 +24,19 @@ export const getVisaEntrys = createAsyncThunk('visaEntryManagement/visaEntrys/ge
 export const removeVisaEntrys = createAsyncThunk(
     'visaEntryManagement/visaEntrys/removeVisaEntrys',
     async (visaEntryIds) => {
-        const authTOKEN = {
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: localStorage.getItem('jwt_access_token'),
-            }
+        const headers = {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
-        await axios.delete(`${DELETE_VISAENTRY_MULTIPLE}`, { visaEntryIds }, authTOKEN);
+        const data = {
+            ids: visaEntryIds
+        }
 
-        return visaEntryIds;
+        const response = await axios.delete(`${DELETE_VISAENTRY_MULTIPLE}`, { headers, data });
+
+        console.log("multiple_delete", response)
+
+        return response;
     }
 );
 

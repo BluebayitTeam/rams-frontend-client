@@ -9,7 +9,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { BASE_URL } from '../../../../constant/constants';
-import { getCountries, getProfessions, getVisaAgents } from '../../../../store/dataSlice';
+import { getAgents, getCountries, getProfessions } from '../../../../store/dataSlice';
 import { saveDemand, updateDemand } from '../store/demandSlice';
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +30,7 @@ function DemandForm(props) {
     const userID = localStorage.getItem('user_id')
     const professions = useSelector(state => state.data.professions)
     const countries = useSelector(state => state.data.countries)
-    const visaAgents = useSelector(state => state.data.visaAgents)
+    const visaAgents = useSelector(state => state.data.agents)
     const classes = useStyles(props);
     const methods = useFormContext();
     const routeParams = useParams();
@@ -45,7 +45,7 @@ function DemandForm(props) {
     useEffect(() => {
         dispatch(getProfessions()),
             dispatch(getCountries()),
-            dispatch(getVisaAgents())
+            dispatch(getAgents())
     }, [])
 
     function handleSaveDemand() {

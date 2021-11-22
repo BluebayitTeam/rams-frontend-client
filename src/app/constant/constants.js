@@ -112,12 +112,24 @@ export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/without
 export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/designation/without_pagination/all/`
 
 //visa egent
-export const VISAAGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/agent/without_pagination/all/`
+export const AGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/agent/without_pagination/all/`
+
+//visa entry
+export const VISAENTRYS_WITHOUT_PAGINATION = `${BASE_URL}/visa_entry/api/v1/visa_entry/without_pagination/all/`;
 
 //profession
 export const PROFESSIONS_WITHOUT_PAGINATION = `${BASE_URL}/profession/api/v1/profession/all/`
 
+//demand
 export const DEMANDS_WITHOUT_PAGINATION = `${BASE_URL}/demand/api/v1/demand/all/`
+
+export const PASSENGERTYPES_WITHOUT_PAGINATION = `${BASE_URL}/passenger_type/api/v1/passenger_type/all/`;
+
+export const CURRENTSTATUSS_WITHOUT_PAGINATION = `${BASE_URL}/current_status/api/v1/current_status/all/`;
+
+export const AGENCIES_WITHOUT_PAGINATION = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/all/`;
+
+
 
 
 
@@ -774,7 +786,22 @@ export const UPDATE_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/update
 
 export const DELETE_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/delete/`;
 
-export const DELETE_VISAENTRY_MULTIPLE = `${BASE_URL}/visa_entry/api/v1/visa_entry/delete/`;
+export const DELETE_VISAENTRY_MULTIPLE = `${BASE_URL}/visa_entry/api/v1/visa_entry/delete_multiple/`;
 
 export const SEARCH_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/search/`;
+
+//passenger
+export const CREATE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/create/`;
+
+export const GET_PASSENGERS = `${BASE_URL}/passenger/api/v1/passenger/all`;
+
+export const GET_PASSENGER_BY_ID = `${BASE_URL}/passenger/api/v1/passenger/`;
+
+export const UPDATE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/update/`;
+
+export const DELETE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/delete/`;
+
+export const DELETE_PASSENGER_MULTIPLE = `${BASE_URL}/passenger/api/v1/passenger/delete_multiple/`;
+
+export const SEARCH_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/search/`;
 

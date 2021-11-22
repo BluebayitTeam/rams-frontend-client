@@ -64,10 +64,10 @@ const VisaEntrysTable = (props) => {
     }, [searchText])
 
     const getSearchVisaEntry = () => {
-        fetch(`${SEARCH_VISAENTRY}?name=${searchText}`)
+        fetch(`${SEARCH_VISAENTRY}?visa_number=${searchText}`)
             .then(response => response.json())
             .then(searchedVisaEntryData => {
-                setSearchVisaEntry(searchedVisaEntryData?.visaEntrys);
+                setSearchVisaEntry(searchedVisaEntryData?.visa_entries);
                 console.log("searchedVisaEntryData", searchedVisaEntryData)
             })
             .catch(() => setSearchVisaEntry([]))

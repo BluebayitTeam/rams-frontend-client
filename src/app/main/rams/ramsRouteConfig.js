@@ -258,6 +258,19 @@ const ramsRouteConfig = {
             path: '/apps/visaEntry-management/:visaEntryId',
             component: lazy(() => import('./VisaEntrysManagement/VisaEntry/NewVisaEntry'))
         },
+        //passenger
+        {
+            path: '/apps/passenger-management/passengers/:passengerId/:passengerName?',
+            component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger.js'))
+        },
+        {
+            path: '/apps/passenger-management/passengers',
+            component: lazy(() => import('./PassengersManagement/Passengers/Passengers'))
+        },
+        {
+            path: '/apps/passenger-management/:passengerId',
+            component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger'))
+        },
 
     ]
 }

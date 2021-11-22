@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { getCountries, getDemands, getVisaAgents } from '../../../../store/dataSlice';
+import { getAgents, getCountries, getDemands } from '../../../../store/dataSlice';
 import { saveVisaEntry, updateVisaEntry } from '../store/visaEntrySlice';
 
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 function VisaEntryForm(props) {
     const userID = localStorage.getItem('user_id')
     const demands = useSelector(state => state.data.demands)
-    const visaAgents = useSelector(state => state.data.visaAgents)
+    const visaAgents = useSelector(state => state.data.agents)
     const countries = useSelector(state => state.data.countries)
 
     const classes = useStyles(props);
@@ -35,14 +35,14 @@ function VisaEntryForm(props) {
 
     useEffect(() => {
         dispatch(getDemands())
-        dispatch(getVisaAgents())
+        dispatch(getAgents())
         dispatch(getCountries())
     }, [])
 
     function handleSaveVisaEntry() {
         dispatch(saveVisaEntry(getValues())).then((res) => {
             console.log("saveVisaEntryRes", res)
-            if (res.payload) {
+            if (res.payload?.data?.id) {
                 localStorage.setItem("visaEntryAlert", "saveVisaEntry")
                 history.push('/apps/visaEntry-management/visaEntrys');
             }
@@ -52,7 +52,7 @@ function VisaEntryForm(props) {
     function handleUpdateVisaEntry() {
         dispatch(updateVisaEntry(getValues())).then((res) => {
             console.log("updateVisaEntryRes", res)
-            if (res.payload) {
+            if (res.payload?.data?.id) {
                 localStorage.setItem("visaEntryAlert", "updateVisaEntry")
                 history.push('/apps/visaEntry-management/visaEntrys');
             }
@@ -104,7 +104,7 @@ function VisaEntryForm(props) {
                         freeSolo
                         value={value ? demands.find(data => data.id == value) : null}
                         options={demands}
-                        getOptionLabel={(option) => `${option.profession}`}
+                        getOptionLabel={(option) => `${option.company_name}`}
                         onChange={(event, newValue) => {
                             onChange(newValue?.id)
                         }}

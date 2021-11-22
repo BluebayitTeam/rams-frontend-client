@@ -63,7 +63,7 @@ const DemandsTable = (props) => {
     }, [searchText])
 
     const getSearchDemand = () => {
-        fetch(`${SEARCH_DEMAND}?name=${searchText}`)
+        fetch(`${SEARCH_DEMAND}?company_name=${searchText}`)
             .then(response => response.json())
             .then(searchedDemandData => {
                 setSearchDemand(searchedDemandData?.demands);

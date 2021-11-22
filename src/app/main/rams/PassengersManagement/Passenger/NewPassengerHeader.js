@@ -8,10 +8,10 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { removeVisaEntry, saveVisaEntry, updateVisaEntry } from '../store/visaEntrySlice';
+import { BASE_URL } from '../../../../constant/constants';
+import { removePassenger, savePassenger, updatePassenger } from '../store/passengerSlice';
 
-
-const NewVisaEntryHeader = () => {
+const NewPassengerHeader = () => {
     const dispatch = useDispatch();
     const methods = useFormContext();
     const { formState, watch, getValues } = methods;
@@ -20,45 +20,46 @@ const NewVisaEntryHeader = () => {
     const theme = useTheme();
     const history = useHistory();
 
-
+    const image = watch('image');
+    const featuredImageId = watch('featuredImageId');
 
     const routeParams = useParams();
 
-    const handleDelete = localStorage.getItem('visaEntryEvent');
+    const handleDelete = localStorage.getItem('passengerEvent');
 
-    function handleSaveVisaEntry() {
-        dispatch(saveVisaEntry(getValues())).then((res) => {
-            console.log("saveVisaEntryRes", res)
+    function handleSavePassenger() {
+        dispatch(savePassenger(getValues())).then((res) => {
+            console.log("savePassengerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("visaEntryAlert", "saveVisaEntry")
-                history.push('/apps/visaEntry-management/visaEntrys');
+                localStorage.setItem("passengerAlert", "savePassenger")
+                history.push('/apps/passenger-management/passengers');
             }
         });
     }
 
-    function handleUpdateVisaEntry() {
-        dispatch(updateVisaEntry(getValues())).then((res) => {
-            console.log("updateVisaEntryRes", res)
+    function handleUpdatePassenger() {
+        dispatch(updatePassenger(getValues())).then((res) => {
+            console.log("updatePassengerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("visaEntryAlert", "updateVisaEntry")
-                history.push('/apps/visaEntry-management/visaEntrys');
+                localStorage.setItem("passengerAlert", "updatePassenger")
+                history.push('/apps/passenger-management/passengers');
             }
         });
     }
 
-    function handleRemoveVisaEntry() {
-        dispatch(removeVisaEntry(getValues())).then((res) => {
-            console.log("removeVisaEntryRes", res)
+    function handleRemovePassenger() {
+        dispatch(removePassenger(getValues())).then((res) => {
+            console.log("removePassengerRes", res)
             if (res.payload) {
-                localStorage.removeItem("visaEntryEvent")
-                localStorage.setItem("visaEntryAlert", "deleteVisaEntry")
-                history.push('/apps/visaEntry-management/visaEntrys');
+                localStorage.removeItem("passengerEvent")
+                localStorage.setItem("passengerAlert", "deletePassenger")
+                history.push('/apps/passenger-management/passengers');
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/visaEntry-management/visaEntrys')
+        history.push('/apps/passenger-management/passengers')
     }
 
 
@@ -70,11 +71,11 @@ const NewVisaEntryHeader = () => {
                         className="flex items-center sm:mb-12"
                         component={Link}
                         role="button"
-                        to="/apps/visaEntry-management/visaEntrys"
+                        to="/apps/passenger-management/passengers"
                         color="inherit"
                     >
                         <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-                        <span className="hidden sm:flex mx-4 font-medium">VisaEntries</span>
+                        <span className="hidden sm:flex mx-4 font-medium">Passengers</span>
                     </Typography>
                 </motion.div>
 
@@ -84,16 +85,28 @@ const NewVisaEntryHeader = () => {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1, transition: { delay: 0.3 } }}
                     >
-
+                        {image && featuredImageId ? (
+                            <img
+                                className="w-32 sm:w-48 rounded"
+                                src={_.find(image, { id: featuredImageId }).url}
+                                alt={name}
+                            />
+                        ) : (
+                            <img
+                                className="w-32 sm:w-48 rounded"
+                                src={`${BASE_URL}${image}`}
+                                alt={name}
+                            />
+                        )}
 
                     </motion.div>
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                {name || 'Create New VisaEntry'}
+                                {name || 'Create New Passenger'}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                VisaEntries Detail
+                                Passengers Detail
                             </Typography>
                         </motion.div>
                     </div>
@@ -110,34 +123,34 @@ const NewVisaEntryHeader = () => {
                         className='mt-6'
                         variant="subtitle2"
                     >
-                        Do you want to remove this VisaEntry?
+                        Do you want to remove this Passenger?
                     </Typography>
                 }
-                {handleDelete == 'Delete' && routeParams.visaEntryId !== "new" && <Button
+                {handleDelete == 'Delete' && routeParams.passengerId !== "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    onClick={handleRemoveVisaEntry}
+                    onClick={handleRemovePassenger}
                     startIcon={<Icon className="hidden sm:flex">delete</Icon>}
                     style={{ backgroundColor: '#ea5b78', color: 'white' }}
                 >
                     Remove
                 </Button>}
-                {routeParams.visaEntryId == "new" && <Button
+                {routeParams.passengerId == "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
                     disabled={_.isEmpty(dirtyFields) || !isValid}
-                    onClick={handleSaveVisaEntry}
+                    onClick={handleSavePassenger}
                 >
                     Save
                 </Button>}
-                {handleDelete !== 'Delete' && routeParams?.visaEntryName && <Button
+                {handleDelete !== 'Delete' && routeParams?.passengerName && <Button
                     className="whitespace-nowrap mx-4"
                     color="secondary"
                     variant="contained"
                     style={{ backgroundColor: "#4dc08e", color: 'white' }}
-                    onClick={handleUpdateVisaEntry}
+                    onClick={handleUpdatePassenger}
                 >
                     Update
                 </Button>}
@@ -154,4 +167,4 @@ const NewVisaEntryHeader = () => {
     );
 };
 
-export default NewVisaEntryHeader;
+export default NewPassengerHeader;

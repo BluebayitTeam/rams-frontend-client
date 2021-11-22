@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CREATE_DEMAND, DELETE_DEMAND, GET_DEMAND_BY_ID, UPDATE_DEMAND } from '../../../../constant/constants';
+import { CREATE_PASSENGER, DELETE_PASSENGER, GET_PASSENGER_BY_ID, UPDATE_PASSENGER } from '../../../../constant/constants';
 
 
-export const getDemand = createAsyncThunk('demandManagement/demand/getDemand', async (params, { rejectWithValue }) => {
+export const getPassenger = createAsyncThunk('passengerManagement/passenger/getPassenger', async (params, { rejectWithValue }) => {
     const authTOKEN = {
         headers: {
             'Content-type': 'application/json',
@@ -12,7 +12,7 @@ export const getDemand = createAsyncThunk('demandManagement/demand/getDemand', a
     };
 
     try {
-        const response = await axios.get(`${GET_DEMAND_BY_ID}${params}`, authTOKEN);
+        const response = await axios.get(`${GET_PASSENGER_BY_ID}${params}`, authTOKEN);
         const data = await response.data;
         return data === undefined ? null : data;
     } catch (err) {
@@ -22,8 +22,8 @@ export const getDemand = createAsyncThunk('demandManagement/demand/getDemand', a
 
 })
 
-export const removeDemand = createAsyncThunk(
-    'demandManagement/demand/removeDemand',
+export const removePassenger = createAsyncThunk(
+    'passengerManagement/passenger/removePassenger',
     async (val) => {
 
         const authTOKEN = {
@@ -33,18 +33,16 @@ export const removeDemand = createAsyncThunk(
             }
         };
 
-        const demandId = val.id;
-        const response = await axios.delete(`${DELETE_DEMAND}${demandId}`, authTOKEN);
+        const passengerId = val.id;
+        const response = await axios.delete(`${DELETE_PASSENGER}${passengerId}`, authTOKEN);
         return response
     }
 );
 
-export const updateDemand = createAsyncThunk(
-    'demandManagement/demand/updateDemand',
-    async (demandData, { dispatch, getState }) => {
-        const { demand } = getState().demandsManagement;
-
-        const datas = { ...demandData, image: demandData.image || "" }
+export const updatePassenger = createAsyncThunk(
+    'passengerManagement/passenger/updatePassenger',
+    async (passengerData, { dispatch, getState }) => {
+        const { passenger } = getState().passengersManagement;
 
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -66,7 +64,7 @@ export const updateDemand = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(datas)
+        const getFormDateFJ = jsonToFormData(passengerData)
 
         const authTOKEN = {
             headers: {
@@ -74,16 +72,16 @@ export const updateDemand = createAsyncThunk(
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.put(`${UPDATE_DEMAND}${demand.id}`, getFormDateFJ, authTOKEN);
+        const response = await axios.put(`${UPDATE_PASSENGER}${passenger.id}`, getFormDateFJ, authTOKEN);
         return response
     }
 
 )
 
-export const saveDemand = createAsyncThunk(
-    'demandManagement/demand/saveDemand',
-    async (demandData) => {
-        const datas = { ...demandData, image: demandData.image || "" }
+export const savePassenger = createAsyncThunk(
+    'passengerManagement/passenger/savePassenger',
+    async (passengerData) => {
+
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
                 Object.keys(data).forEach(key => {
@@ -104,7 +102,7 @@ export const saveDemand = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(datas)
+        const getFormDateFJ = jsonToFormData(passengerData)
 
         const authTOKEN = {
             headers: {
@@ -112,17 +110,17 @@ export const saveDemand = createAsyncThunk(
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.post(`${CREATE_DEMAND}`, getFormDateFJ, authTOKEN)
+        const response = await axios.post(`${CREATE_PASSENGER}`, getFormDateFJ, authTOKEN)
         return response
     }
 )
 
-const demandSlice = createSlice({
-    name: 'demandManagement/demand',
+const passengerSlice = createSlice({
+    name: 'passengerManagement/passenger',
     initialState: null,
     reducers: {
-        resetDemand: () => null,
-        newDemand: {
+        resetPassenger: () => null,
+        newPassenger: {
             reducer: (state, action) => action.payload,
             prepare: event => ({
                 payload: {}
@@ -130,14 +128,14 @@ const demandSlice = createSlice({
         }
     },
     extraReducers: {
-        [getDemand.fulfilled]: (state, action) => action.payload,
-        [saveDemand.fulfilled]: (state, action) => action.payload,
-        [removeDemand.fulfilled]: (state, action) => action.payload,
-        [updateDemand.fulfilled]: (state, action) => action.payloHea
+        [getPassenger.fulfilled]: (state, action) => action.payload,
+        [savePassenger.fulfilled]: (state, action) => action.payload,
+        [removePassenger.fulfilled]: (state, action) => action.payload,
+        [updatePassenger.fulfilled]: (state, action) => action.payloHea
     }
 })
 
 
-export const { newDemand, resetDemand } = demandSlice.actions;
+export const { newPassenger, resetPassenger } = passengerSlice.actions;
 
-export default demandSlice.reducer;
+export default passengerSlice.reducer;

@@ -227,6 +227,27 @@ const navigationConfig = [
                 exact: true
             }
         ]
+    },
+    //passenger
+    {
+        id: 17,
+        title: 'Passengers',
+        translate: 'Passengers',
+        type: 'collapse',
+        icon: 'people',
+        url: '',
+        exact: true,
+        children: [
+            //passenger
+            {
+                id: 'passengers',
+                title: 'Passengers',
+                translate: 'Passengers',
+                type: 'item',
+                url: '/apps/passenger-management/passengers',
+                exact: true
+            }
+        ]
     }
 ];
 

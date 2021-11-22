@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    CUSOTMERTYPES, DEMANDS_WITHOUT_PAGINATION, DESIGNATIONS_WITHOUT_PAGINATION,
+    AGENCIES_WITHOUT_PAGINATION, AGENTS_WITHOUT_PAGINATION, CURRENTSTATUSS_WITHOUT_PAGINATION, CUSOTMERTYPES, DEMANDS_WITHOUT_PAGINATION, DESIGNATIONS_WITHOUT_PAGINATION,
     GET_ATTRIBUTES_WITHOUT_PAGINATION,
     GET_BRANCH_WITHOUT_PAGINATION,
     GET_BRANDS_WITHOUT_PAGINATION,
@@ -16,9 +16,9 @@ import {
     GET_USERS_WITHOUT_PAGINATION,
     GET_VENDORS_WITHOUT_PAGINATION,
     GROUPS_WITHOUT_PAGINATION,
-    ORDERSTATUS,
-    PAYMENTMATHODS,
-    PROFESSIONS_WITHOUT_PAGINATION, VISAAGENTS_WITHOUT_PAGINATION
+    ORDERSTATUS, PASSENGERTYPES_WITHOUT_PAGINATION, PAYMENTMATHODS,
+    PROFESSIONS_WITHOUT_PAGINATION,
+    VISAENTRYS_WITHOUT_PAGINATION
 } from 'app/constant/constants';
 import axios from "axios";
 
@@ -253,22 +253,6 @@ export const getProfessions = () => (dispatch) => {
         .catch(() => { });
 }
 
-export const getVisaAgents = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(VISAAGENTS_WITHOUT_PAGINATION, authTOKEN)
-        .then(response => response.json())
-        .then(data => {
-            // console.log("visa_agentsRes", data)
-            dispatch(setVisaAgents(data.agents))
-        })
-        .catch(() => { });
-}
-
 export const getDemands = () => (dispatch) => {
     const authTOKEN = {
         headers: {
@@ -281,6 +265,72 @@ export const getDemands = () => (dispatch) => {
         .then(data => dispatch(setDemands(data.demands)))
         .catch(() => { });
 }
+
+export const getAgents = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(AGENTS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setAgents(data.agents)))
+        .catch(() => { });
+}
+
+export const getAgencys = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setAgencies(data.recruiting_agencies)))
+        .catch(() => { });
+}
+
+export const getPassengerTypes = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(PASSENGERTYPES_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setPassengerTypes(data.passenger_types)))
+        .catch(() => { });
+}
+
+export const getCurrentStatuss = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(CURRENTSTATUSS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setCurrentStatuses(data.current_statuses)))
+        .catch(() => { });
+}
+
+export const getVisaEntrys = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(VISAENTRYS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setVisaEntries(data.visa_entries)))
+        .catch(() => { });
+}
+
 
 
 
@@ -314,8 +364,12 @@ const dataSlice = createSlice({
         groups: [],
         designations: [],
         professions: [],
-        visaAgents: [],
         demands: [],
+        agents: [],
+        agencies: [],
+        passengerTypes: [],
+        currentStatuss: [],
+        visaEntries: [],
     },
     reducers: {
         setBranches: (state, action) => {
@@ -393,11 +447,23 @@ const dataSlice = createSlice({
         setProfessions: (state, action) => {
             state.professions = action.payload ? action.payload : []
         },
-        setVisaAgents: (state, action) => {
-            state.visaAgents = action.payload ? action.payload : []
-        },
         setDemands: (state, action) => {
             state.demands = action.payload ? action.payload : []
+        },
+        setAgents: (state, action) => {
+            state.agents = action.payload ? action.payload : []
+        },
+        setAgencies: (state, action) => {
+            state.agencies = action.payload ? action.payload : []
+        },
+        setPassengerTypes: (state, action) => {
+            state.passengerTypes = action.payload ? action.payload : []
+        },
+        setCurrentStatuses: (state, action) => {
+            state.currentStatuss = action.payload ? action.payload : []
+        },
+        setVisaEntries: (state, action) => {
+            state.visaEntries = action.payload ? action.payload : []
         },
     }
 })
@@ -428,8 +494,12 @@ const {
     setGroups,
     setDesignations,
     setProfessions,
-    setVisaAgents,
     setDemands,
+    setAgents,
+    setAgencies,
+    setPassengerTypes,
+    setCurrentStatuses,
+    setVisaEntries
 } = dataSlice.actions;
 export default dataSlice.reducer;
 
