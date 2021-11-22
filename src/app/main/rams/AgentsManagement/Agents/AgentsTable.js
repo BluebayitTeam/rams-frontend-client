@@ -59,7 +59,7 @@ const AgentsTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchAgent();
+        searchText ? getSearchAgent() : setSearchAgent([])
     }, [searchText])
 
     const getSearchAgent = () => {

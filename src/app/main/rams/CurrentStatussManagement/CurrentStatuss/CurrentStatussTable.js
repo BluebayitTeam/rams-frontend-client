@@ -60,7 +60,7 @@ const CurrentStatussTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchCurrentStatus();
+        searchText ? getSearchCurrentStatus() : setSearchCurrentStatus([]);
     }, [searchText])
 
     const getSearchCurrentStatus = () => {

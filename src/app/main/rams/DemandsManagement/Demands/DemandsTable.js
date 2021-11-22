@@ -59,7 +59,7 @@ const DemandsTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchDemand();
+        searchText ? getSearchDemand() : setSearchDemand([]);
     }, [searchText])
 
     const getSearchDemand = () => {

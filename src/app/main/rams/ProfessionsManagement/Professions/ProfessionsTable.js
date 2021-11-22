@@ -59,7 +59,7 @@ const ProfessionsTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchProfession();
+        searchText ? getSearchProfession() : setSearchProfession([]);
     }, [searchText])
 
     const getSearchProfession = () => {

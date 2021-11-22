@@ -60,7 +60,7 @@ const CitysTable = (props) => {
 
     //search city
     useEffect(() => {
-        searchText !== "" && getSearchCity();
+        searchText ? getSearchCity() : setSearchCity([]);
     }, [searchText])
 
     const getSearchCity = () => {

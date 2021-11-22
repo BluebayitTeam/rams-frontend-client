@@ -62,7 +62,7 @@ const UsersListTable = (props) => {
 
     //searchCustomer
     useEffect(() => {
-        searchText !== "" && getSearchUser();
+        searchText ? getSearchUser() : setSearchUser([]);
     }, [searchText])
 
     const getSearchUser = () => {

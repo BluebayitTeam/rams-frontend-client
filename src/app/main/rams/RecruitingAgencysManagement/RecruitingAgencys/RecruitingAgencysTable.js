@@ -60,7 +60,7 @@ const RecruitingAgencysTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchRecruitingAgency();
+        searchText ? getSearchRecruitingAgency() : setSearchRecruitingAgency([]);
     }, [searchText])
 
     const getSearchRecruitingAgency = () => {

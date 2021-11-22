@@ -59,7 +59,7 @@ const PassengersTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchPassenger();
+        searchText ? getSearchPassenger() : setSearchPassenger([])
     }, [searchText])
 
     const getSearchPassenger = () => {
@@ -88,7 +88,7 @@ const PassengersTable = (props) => {
 
     function handleSelectAllClick(passengerEvent) {
         if (passengerEvent.target.checked) {
-            setSelected(passengers.map(n => n.id));
+            setSelected(_.isEmpty(searchPassenger) ? passengers.map(n => n.id) : searchPassenger.map(n => n.id));
             return;
         }
         setSelected([]);
@@ -252,7 +252,7 @@ const PassengersTable = (props) => {
                                         </TableCell> */}
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.passport_no}
-                                            </TableCell>
+                                        </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.passenger_id}

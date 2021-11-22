@@ -60,7 +60,7 @@ const VisaEntrysTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchVisaEntry();
+        searchText ? getSearchVisaEntry() : setSearchVisaEntry([]);
     }, [searchText])
 
     const getSearchVisaEntry = () => {

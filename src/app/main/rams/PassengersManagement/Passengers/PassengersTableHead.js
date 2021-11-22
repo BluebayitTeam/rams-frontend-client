@@ -295,6 +295,7 @@ const PassengersTableHead = (props) => {
         setselectedPassengersMenu(null);
     }
 
+    console.log("selectedPassengerIds", selectedPassengerIds)
     return (
         <TableHead>
             <TableRow className="h-48 sm:h-64">

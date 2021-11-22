@@ -24,15 +24,16 @@ export const getPassengers = createAsyncThunk('passengerManagement/passengers/ge
 export const removePassengers = createAsyncThunk(
     'passengerManagement/passengers/removePassengers',
     async (passengerIds) => {
-        const authTOKEN = {
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: localStorage.getItem('jwt_access_token'),
-            }
+        const headers = {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
         }
-        await axios.delete(`${DELETE_PASSENGER_MULTIPLE}`, { passengerIds }, authTOKEN);
+        const data = {
+            ids: passengerIds
+        }
 
-        return passengerIds;
+        const response = await axios.delete(`${DELETE_PASSENGER_MULTIPLE}`, { headers, data });
+        return response;
     }
 );
 

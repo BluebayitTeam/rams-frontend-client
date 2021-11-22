@@ -58,7 +58,7 @@ const PermissionsTable = props => {
 
 	//search qualification
 	useEffect(() => {
-		searchText !== "" && getSearchPermission();
+		searchText ? getSearchPermission() : setSearchPermission([]);
 	}, [searchText])
 
 	const getSearchPermission = () => {

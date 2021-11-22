@@ -60,7 +60,7 @@ const PassengerTypesTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchPassengerType();
+        searchText ? getSearchPassengerType() : setSearchPassengerType([]);
     }, [searchText])
 
     const getSearchPassengerType = () => {

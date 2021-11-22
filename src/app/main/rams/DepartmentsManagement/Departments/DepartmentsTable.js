@@ -59,7 +59,7 @@ const DepartmentsTable = props => {
 
 	//search department
 	useEffect(() => {
-		searchText !== "" && getSearchDepartment();
+		searchText ? getSearchDepartment() : setSearchDepartment([]);
 	}, [searchText])
 
 	const getSearchDepartment = () => {
@@ -68,7 +68,7 @@ const DepartmentsTable = props => {
 			.then(searchedDepartmentData => {
 				setSearchDepartment(searchedDepartmentData.departments);
 			})
-			.catch(() => setSearchDepartment())
+			.catch(() => setSearchDepartment([]))
 	}
 
 	function handleRequestSort(departmentEvent, property) {

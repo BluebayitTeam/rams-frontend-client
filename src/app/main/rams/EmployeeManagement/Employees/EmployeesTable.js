@@ -60,7 +60,7 @@ const EmployeesTable = (props) => {
 
     //searchEmployee
     useEffect(() => {
-        searchText !== "" && getSearchEmployee();
+        searchText ? getSearchEmployee() : setSearchEmployee([]);
     }, [searchText])
 
     const getSearchEmployee = () => {

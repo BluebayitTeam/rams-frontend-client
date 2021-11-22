@@ -60,7 +60,7 @@ const MenusTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchMenu();
+        searchText ? getSearchMenu() : setSearchMenu([]);
     }, [searchText])
 
     const getSearchMenu = () => {

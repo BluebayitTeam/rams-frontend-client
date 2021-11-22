@@ -63,7 +63,7 @@ const ThanasTable = props => {
 
 	//search thana
 	useEffect(() => {
-		searchText !== "" && getSearchThana();
+		searchText ? getSearchThana() : setSearchThana([]);
 	}, [searchText])
 
 	const getSearchThana = () => {

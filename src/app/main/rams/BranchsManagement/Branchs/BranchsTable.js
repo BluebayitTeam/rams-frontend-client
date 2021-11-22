@@ -58,7 +58,7 @@ const BranchsTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText !== "" && getSearchBranch();
+        searchText ? getSearchBranch() : setSearchCity([]);
     }, [searchText])
 
     const getSearchBranch = () => {

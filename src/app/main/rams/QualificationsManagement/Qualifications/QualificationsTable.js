@@ -67,7 +67,7 @@ const QualificationsTable = props => {
 
 	//search qualification
 	useEffect(() => {
-		searchText !== "" && getSearchQualificaton();
+		searchText ? getSearchQualificaton() : setSearchQualification([]);
 	}, [searchText])
 
 	const getSearchQualificaton = () => {

@@ -99,50 +99,6 @@ function OpeningBalance(props) {
                     />)
                 }}
             />
-            {/* <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-                <div style={{ display: "flex", alignItems: "center", paddingRight: "12px" }}><h4>Balance Type : </h4></div>
-
-                <div>
-                    <Controller
-                        name="creditors"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControl>
-                                <FormControlLabel
-                                    required
-                                    label="Creditors"
-                                    control={<Radio
-                                        {...field}
-                                        color="primary"
-                                        checked={field.value || false}
-                                        onChange={(e) => {
-                                            console.log("radio", e.target.checked)
-                                            field.onChange(e.target.checked)
-                                        }}
-                                    />}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                    <Controller
-                        name="debitors"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControl>
-                                <FormControlLabel
-                                    required
-                                    label="Debitors"
-                                    control={<Checkbox
-                                        {...field}
-                                        color="primary"
-                                        checked={field.value || false}
-                                    />}
-                                />
-                            </FormControl>
-                        )}
-                    />
-                </div>
-            </div> */}
 
             <Controller
                 name="balance_type"
@@ -153,8 +109,8 @@ function OpeningBalance(props) {
                             Balance Type
                         </FormLabel>
                         <RadioGroup {...field} aria-label="Layout Direction" className={classes.group} row>
-                            <FormControlLabel key="creditors" value="creditors" control={<Radio checked={getValues().balance_type === "creditors" ? true : false} color="primary" />} label="Creditors" />
-                            <FormControlLabel key="debtors" value="debtors" control={<Radio checked={getValues().balance_type === "debtors" ? true : false} color="primary" />} label="Debtors" />
+                            <FormControlLabel key="creditors" value="creditors" control={<Radio checked={getValues().balance_type === "creditors" ? true : false} color="primary" />} label="Creditor's" />
+                            <FormControlLabel key="debtors" value="debtors" control={<Radio checked={getValues().balance_type === "debtors" ? true : false} color="primary" />} label="Debtor's" />
                         </RadioGroup>
                     </FormControl>
                 )}

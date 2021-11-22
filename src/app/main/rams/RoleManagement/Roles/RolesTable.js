@@ -62,7 +62,7 @@ const RolesTable = (props) => {
 
     //search role
     useEffect(() => {
-        searchText !== "" && getSearchRole();
+        searchText ? getSearchRole() : setSearchRole([]);
     }, [searchText])
 
     const getSearchRole = () => {
