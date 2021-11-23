@@ -4,17 +4,20 @@ import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import Image from 'app/@components/Image';
+import useTextSeparator from 'app/@customHook/@useTextSeparator';
 import { genders, maritalStatuses } from 'app/@data/@data';
 import axios from 'axios';
 import clsx from 'clsx';
 import { addYears } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { BASE_URL, CHECK_PASSPORT_NO_WHEN_CREATE, CHECK_PASSPORT_NO_WHEN_UPDATE } from '../../../../constant/constants';
 import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getDemands, getPassengerTypes, getProfessions, getThanas, getVisaEntrys } from '../../../../store/dataSlice';
 import { savePassenger, updatePassenger } from '../store/passengerSlice';
+import ImageToText from './ImageToText';
 
 
 const useStyles = makeStyles(theme => ({
@@ -55,7 +58,15 @@ function PassengerForm(props) {
     const dispatch = useDispatch()
 
     const passportPic = watch('passport_pic');
-    const passengerPic = watch('passenger_pic');
+
+    const [passportText, setPassportText] = useState('');
+
+
+    const separated = useTextSeparator(passportText)
+
+    console.log("textFromHook", separated)
+
+    const childSubmitFunc = useRef(null)
 
     useEffect(() => {
         dispatch(getAgents());
@@ -1006,7 +1017,7 @@ function PassengerForm(props) {
 
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
-                <div className="flex justify-center flex-wrap w-full md:w-6/12 my-2 justify-evenly">
+                <div className="flex flex-wrap w-full md:w-6/12 my-2 justify-evenly items-center">
                     <Controller
                         name="passport_pic"
                         control={control}
@@ -1036,6 +1047,7 @@ function PassengerForm(props) {
 
                                             const file = e.target.files[0];
                                             onChange(file);
+                                            childSubmitFunc.current(URL.createObjectURL(e.target.files[0]))
                                         }}
                                     />
                                     <Icon fontSize="large" color="action">
@@ -1046,7 +1058,7 @@ function PassengerForm(props) {
                         )}
                     />
                     {
-                        passportPic && !previewImage1 && <img src={`${BASE_URL}${passportPic}`} />
+                        passportPic && !previewImage1 && (<div style={{ width: '100px', height: '100px' }}><img src={`${BASE_URL}${passportPic}`} /></div>)
                     }
 
                     <div style={{ width: '100px', height: '100px' }}>
@@ -1059,56 +1071,15 @@ function PassengerForm(props) {
 
 
                 <div className="flex justify-center flex-wrap w-full md:w-6/12 my-2 justify-evenly">
-                    <Controller
-                        name="passenger_pic"
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <div>
-                                <Typography className="text-center">Passenger Picture</Typography>
-                                <label
-                                    htmlFor="button-file-2"
-                                    className={clsx(
-                                        classes.productImageUpload,
-                                        'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-                                    )}
-                                >
-                                    <input
-                                        accept="image/*"
-                                        className="hidden"
-                                        id="button-file-2"
-                                        type="file"
-                                        onChange={async e => {
-                                            const reader = new FileReader();
-                                            reader.onload = () => {
-                                                if (reader.readyState === 2) {
-                                                    setPreviewImage2(reader.result);
-                                                }
-                                            }
-                                            reader.readAsDataURL(e.target.files[0]);
 
-                                            const file = e.target.files[0];
-                                            onChange(file);
-                                        }}
-                                    />
-                                    <Icon fontSize="large" color="action">
-                                        cloud_upload
-                                    </Icon>
-                                </label>
-                            </div>
-                        )}
-                    />
-                    {
-                        passengerPic && !previewImage2 && <img src={`${BASE_URL}${passengerPic}`} />
-                    }
+                    <Image name="passenger_pic" label="Passenger Picture" previewImage={previewImage2} setPreviewImage={setPreviewImage2} />
 
-                    <div style={{ width: '100px', height: '100px' }}>
-                        <img
-                            src={previewImage2}
-                        //alt="no image found"
-                        />
-                    </div>
                 </div>
             </div>
+
+
+
+            <ImageToText text={passportText} setText={setPassportText} childSubmitFunc={childSubmitFunc} />
 
         </div>
     );
