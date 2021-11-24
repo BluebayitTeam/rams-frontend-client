@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import Image from 'app/@components/Image';
-import useTextSeparator from 'app/@customHook/@useTextSeparator';
+import useTextSeparator from 'app/@customHook/useTextSeparator';
 import { genders, maritalStatuses } from 'app/@data/@data';
 import axios from 'axios';
 import clsx from 'clsx';
@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
+
 function PassengerForm(props) {
 
     const [previewImage1, setPreviewImage1] = useState()
@@ -49,7 +50,7 @@ function PassengerForm(props) {
     const districts = useSelector(state => state.data.cities)
     const classes = useStyles(props);
     const methods = useFormContext();
-    const { control, formState, watch, getValues, setError, setValue } = methods;
+    const { control, formState, watch, getValues, setError, setValue, reset } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const routeParams = useParams();
     const { passengerId } = routeParams;
@@ -59,14 +60,58 @@ function PassengerForm(props) {
 
     const passportPic = watch('passport_pic');
 
-    const [passportText, setPassportText] = useState('');
+    const [passportText, setPassportText] = useState(`| “ : 3} ,
+    ‘ Z 0N PERSONAL DATA AND EMERGENCY CONTACT i .
+    E.E ? Name:  MD MOHIUDDIN MAMUN .
+    V. Fathers Name: MAHATAE UDDIN |
+    S »°  MothersName:  BEGUM SALINA KHATUN
+    33y SpousesNeme:  NA
+    0.’ ParmmentAddmss:  MAHESWAR PASHA.MODHO PARA. BIT, 2 A
+    2 DAULATPUR, KHULNA = ™M ;
+    35, Emorgency Contact: § 3 s
+    5y Name: MAHATAB UDDIN 2 ov [ ) ‘
+    ’.*.  Relstionship: FATHER £ 0 O ‘
+    e Address: MAHESWAR PASHA, MODHO PARA, BIT, DAULATPUR, = o =k % ,}
+    T KHULNA E = ‘
+    s Tefophone No: 01952120078 ® o ‘
+    2 : i
+    iy e S e D. SAIDUR RAHMAN e
+    Birecier i
+    / Department of immigtation & Passports
+    . ~ Govt. of the Peapie’s Repudlic of Bangladesh
+    G ¢ H SOEETSR TTT Feopl’ Republcatnglte
+    | wessonrgd B oo ol
+    . B . . R
+    S e T Sumee e T e L
+    e 1;;,"“.:“" s - ;«» ~%§
+    W ~§: DDIN-= = = §§ —
+    g ] LIBAN 9320100184 P
+    g TR el e
+    G = . m Place of Birth L -
+    = | o oRe /patoofsse SRR SEHE i e
+    Sl e e EWMN G e
+    . [ Gart i ooy g y
+    \
+    i P<BGDMAMUN<<MD<MOHIUDDINKLLLLLLLLLLLLLLLLLLKL
+    | BN08986353BGD9402010M2204086<<<<<<<<<<<<<<08`);
 
 
-    const separated = useTextSeparator(passportText)
+    const { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district } = useTextSeparator(passportText)
 
-    console.log("textFromHook", separated)
+    console.log("values", getValues())
+
 
     const childSubmitFunc = useRef(null)
+
+    useEffect(() => {
+        console.log("insideEffect")
+        console.log("separetedText", { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district })
+        reset({
+            ...getValues(), passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district
+        })
+    }, [passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district])
+
+
 
     useEffect(() => {
         dispatch(getAgents());
@@ -759,7 +804,7 @@ function PassengerForm(props) {
                                 field.onChange(e.target.value)
                                 const addyear = addYears(new Date(e.target.value,), 5,)
                                 console.log()
-                                setValue('passport_expiry_date', `${addyear.getFullYear()}-${(addyear.getMonth() + 1).toString().padStart(2, 0)}-${addyear.getDate().toString().padStart(2, 0)}`);
+                                setValue('passport_expiry_date', `${addyear.getFullYear()}-${(addyear.getMonth() + 1).toString().padStart(2, 0)}-${(addyear.getDate() - 1).toString().padStart(2, 0)}`);
                             }}
                         // onKeyDown={handleSubmitOnKeyDownEnter}
                         />)
