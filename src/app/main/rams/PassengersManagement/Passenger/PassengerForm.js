@@ -1,10 +1,9 @@
 import _ from '@lodash';
-import { Typography } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import Image from 'app/@components/Image';
+import Image from 'app/@components/Image.jsx';
 import useTextSeparator from 'app/@customHook/useTextSeparator';
 import { genders, maritalStatuses } from 'app/@data/@data';
 import axios from 'axios';
@@ -96,7 +95,7 @@ function PassengerForm(props) {
     | BN08986353BGD9402010M2204086<<<<<<<<<<<<<<08`);
 
 
-    const { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district } = useTextSeparator(passportText)
+    const { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status } = useTextSeparator(passportText)
 
     console.log("values", getValues())
 
@@ -105,11 +104,35 @@ function PassengerForm(props) {
 
     useEffect(() => {
         console.log("insideEffect")
-        console.log("separetedText", { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district })
+        console.log("separetedText", { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status })
+
+        const getDistrict = districts.find(data => {
+            var districtName = new RegExp(data.name, 'i');
+            const isMatch = district.match(districtName)
+            if (isMatch) {
+                return true
+            }
+            else {
+                return false
+            }
+        })?.id
+
+        const getPoliceStation = thanas.find(data => {
+            var PoliceStationName = new RegExp(data.name, 'i');
+            const isMatch = police_station.match(PoliceStationName)
+            if (isMatch) {
+                return true
+            }
+            else {
+                return false
+            }
+        })?.id
+
+
         reset({
-            ...getValues(), passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district
+            ...getValues(), passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station: getPoliceStation, district: getDistrict, gender, marital_status
         })
-    }, [passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district])
+    }, [passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status])
 
 
 
@@ -126,6 +149,35 @@ function PassengerForm(props) {
         dispatch(getProfessions())
     }, [])
 
+
+    function checkPassportNoDuplicate(passportNo) {
+        if (routeParams.passengerId === "new") {
+            axios.get(`${CHECK_PASSPORT_NO_WHEN_CREATE}?passport_no=${passportNo}`).then(res => {
+                if (res.data.passport_no_exists) {
+                    setError("passport_no", {
+                        type: 'manual',
+                        message: "Passport No Already Exists"
+                    })
+                }
+            })
+        }
+        else if (handleDelete !== 'Delete' && routeParams?.passengerName) {
+            axios.get(`${CHECK_PASSPORT_NO_WHEN_UPDATE}?passport_no=${passportNo}&id=${getValues().id}`).then(res => {
+                console.log("passportCheckRes", res)
+                if (res.data.passport_no_exists) {
+                    setError("passport_no", {
+                        type: 'manual',
+                        message: "Passport No Already Exists"
+                    })
+                    props.setDisableUpdate(true)
+                }
+                else {
+                    props.setDisableUpdate(false)
+                }
+            })
+        }
+    }
+
     function handleSavePassenger() {
         dispatch(savePassenger(getValues())).then((res) => {
             console.log("savePassengerRes", res)
@@ -135,6 +187,11 @@ function PassengerForm(props) {
             }
         });
     }
+
+    useEffect(() => {
+        passport_no && checkPassportNoDuplicate(passport_no)
+    }, [passport_no])
+
 
     function handleUpdatePassenger() {
         dispatch(updatePassenger(getValues())).then((res) => {
@@ -181,6 +238,55 @@ function PassengerForm(props) {
                     />)
                 }}
             />
+
+
+
+            <div className="flex flex-col md:flex-row w-full mt-8 mb-16">
+                <Controller
+                    name="passport_pic"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <div className="flex flex-row justify-between w-full items-end items-center">
+                            {/* <Typography className="text-center">Passport Picture</Typography> */}
+                            <label
+                                htmlFor="button-file-1"
+                                style={{ boxShadow: "0px 0px 20px -10px}" }}
+                                className={clsx(
+                                    classes.productImageUpload,
+                                    'flex items-center justify-center relative w-80 h-60 rounded-12 overflow-hidden cursor-pointer hover:shadow-lg'
+                                )}
+                            >
+                                <input
+                                    accept="image/*"
+                                    className="hidden"
+                                    id="button-file-1"
+                                    type="file"
+                                    onChange={async e => {
+                                        const reader = new FileReader();
+                                        reader.onload = () => {
+                                            if (reader.readyState === 2) {
+                                                setPreviewImage1(reader.result);
+                                            }
+                                        }
+                                        reader.readAsDataURL(e.target.files[0]);
+
+                                        const file = e.target.files[0];
+                                        onChange(file);
+                                        childSubmitFunc.current(URL.createObjectURL(e.target.files[0]))
+                                    }}
+                                />
+                                <Icon fontSize="large" color="action">
+                                    cloud_upload
+                                </Icon>
+                            </label>
+
+                            <ImageToText text={passportText} setText={setPassportText} childSubmitFunc={childSubmitFunc} />
+                        </div>
+                    )}
+                />
+            </div>
+
+
 
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
@@ -660,32 +766,7 @@ function PassengerForm(props) {
                             onKeyDown={handleSubmitOnKeyDownEnter}
                             onChange={(event, newValue) => {
                                 field.onChange(event.target.value)
-
-                                if (routeParams.passengerId === "new") {
-                                    axios.get(`${CHECK_PASSPORT_NO_WHEN_CREATE}?passport_no=${event.target.value}`).then(res => {
-                                        if (res.data.passport_no_exists) {
-                                            setError("passport_no", {
-                                                type: 'manual',
-                                                message: "Passport No Already Exists"
-                                            })
-                                        }
-                                    })
-                                }
-                                else if (handleDelete !== 'Delete' && routeParams?.passengerName) {
-                                    axios.get(`${CHECK_PASSPORT_NO_WHEN_UPDATE}?passport_no=${event.target.value}&id=${getValues().id}`).then(res => {
-                                        console.log("passportCheckRes", res)
-                                        if (res.data.passport_no_exists) {
-                                            setError("passport_no", {
-                                                type: 'manual',
-                                                message: "Passport No Already Exists"
-                                            })
-                                            props.setDisableUpdate(true)
-                                        }
-                                        else {
-                                            props.setDisableUpdate(false)
-                                        }
-                                    })
-                                }
+                                checkPassportNoDuplicate(event.target.value)
                             }}
                         />)
                     }}
@@ -1063,45 +1144,7 @@ function PassengerForm(props) {
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
                 <div className="flex flex-wrap w-full md:w-6/12 my-2 justify-evenly items-center">
-                    <Controller
-                        name="passport_pic"
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <div>
-                                <Typography className="text-center">Passport Picture</Typography>
-                                <label
-                                    htmlFor="button-file-1"
-                                    className={clsx(
-                                        classes.productImageUpload,
-                                        'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-                                    )}
-                                >
-                                    <input
-                                        accept="image/*"
-                                        className="hidden"
-                                        id="button-file-1"
-                                        type="file"
-                                        onChange={async e => {
-                                            const reader = new FileReader();
-                                            reader.onload = () => {
-                                                if (reader.readyState === 2) {
-                                                    setPreviewImage1(reader.result);
-                                                }
-                                            }
-                                            reader.readAsDataURL(e.target.files[0]);
 
-                                            const file = e.target.files[0];
-                                            onChange(file);
-                                            childSubmitFunc.current(URL.createObjectURL(e.target.files[0]))
-                                        }}
-                                    />
-                                    <Icon fontSize="large" color="action">
-                                        cloud_upload
-                                    </Icon>
-                                </label>
-                            </div>
-                        )}
-                    />
                     {
                         passportPic && !previewImage1 && (<div style={{ width: '100px', height: '100px' }}><img src={`${BASE_URL}${passportPic}`} /></div>)
                     }
@@ -1124,7 +1167,7 @@ function PassengerForm(props) {
 
 
 
-            <ImageToText text={passportText} setText={setPassportText} childSubmitFunc={childSubmitFunc} />
+
 
         </div>
     );

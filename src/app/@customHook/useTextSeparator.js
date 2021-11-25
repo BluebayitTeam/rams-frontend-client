@@ -19,8 +19,9 @@ function useTextSeparator(text = "") {
     const [post_office, setpost_office] = useState("")
     const [police_station, setpolice_station] = useState("")
     const [district, setdistrict] = useState("")
-    // let NameText = ''
-    // let NameText = ''
+    const [gender, setgender] = useState("")
+    const [marital_status, setmarital_status] = useState("")
+
 
     const removeDirtyCharacter = (txt) => {
         const mainTxt = txt
@@ -31,7 +32,7 @@ function useTextSeparator(text = "") {
 
             const dirtyTxtExeptSpace = []
 
-            dirtyTxt.map(txt => {
+            dirtyTxt?.map(txt => {
                 txt != " " && dirtyTxtExeptSpace.push(txt)
             })
 
@@ -54,7 +55,7 @@ function useTextSeparator(text = "") {
 
         if (text) {
 
-            const NamePattern = /\sNa?e?me\:/;
+            const NamePattern = /[^s]\sN\wm\w\:/;
             const NamePatternText = text.match(NamePattern);
             if (NamePatternText) {
                 const NamePatternIndex = text.search(NamePattern);
@@ -64,8 +65,9 @@ function useTextSeparator(text = "") {
                 const cleanNameText = removeDirtyCharacter(NameTextByFirstIndex?.slice(0, NameLineBreakIndex))
                 setNameText(cleanNameText)
             }
+            else { setNameText("") }
 
-            const FathersNamePattern = /Father'?s\s?Na?e?me\:/;
+            const FathersNamePattern = /Father'?s\s?N\wm\w\:?/;
             const FathersNamePatternText = text.match(FathersNamePattern);
             if (FathersNamePatternText) {
                 const FathersNamePatternIndex = text.search(FathersNamePattern);
@@ -75,8 +77,9 @@ function useTextSeparator(text = "") {
                 const cleanFathersNameText = removeDirtyCharacter(FathersNameTextByFirstIndex?.slice(0, FathersNameLineBreakIndex))
                 setFathersNameText(cleanFathersNameText)
             }
+            else { setFathersNameText("") }
 
-            const MothersNamePattern = /Mother'?s\s?Na?e?me\:/;
+            const MothersNamePattern = /Mother'?s\s?N\wm\w\:?/;
             const MothersNamePatternText = text.match(MothersNamePattern);
             if (MothersNamePatternText) {
                 const MothersNamePatternIndex = text.search(MothersNamePattern);
@@ -86,8 +89,9 @@ function useTextSeparator(text = "") {
                 const cleanMothersNameText = removeDirtyCharacter(MothersNameTextByFirstIndex?.slice(0, MothersNameLineBreakIndex))
                 setMothersNameText(cleanMothersNameText)
             }
+            else { setMothersNameText("") }
 
-            const SpousesNamePattern = /Spouse\'?s\s?Na?e?me\:/;
+            const SpousesNamePattern = /Spouse\'?\’?s\s?N\wm\w\:?/;
             const SpousesNamePatternText = text.match(SpousesNamePattern);
             if (SpousesNamePatternText) {
                 const SpousesNamePatternIndex = text.search(SpousesNamePattern);
@@ -96,9 +100,16 @@ function useTextSeparator(text = "") {
                 const SpousesNameLineBreakIndex = SpousesNameTextByFirstIndex.search(/\n/)
                 const cleanSpousesNameText = removeDirtyCharacter(SpousesNameTextByFirstIndex?.slice(0, SpousesNameLineBreakIndex))
                 setSpousesNameText(cleanSpousesNameText)
+
+                const maritalStatusTxt = cleanSpousesNameText === "NA" ? "single" : "married"
+                setmarital_status(maritalStatusTxt)
+            }
+            else {
+                setSpousesNameText("")
+                setmarital_status("")
             }
 
-            const PermanentAddressPattern = /P\wrma?\went\s?Addr?\w?e?ss\:/;
+            const PermanentAddressPattern = /P\wrma?\went\s?Addr?\w?ss\:/;
             const PermanentAddressPatternText = text.match(PermanentAddressPattern);
             if (PermanentAddressPatternText) {
                 const PermanentAddressPatternIndex = text.search(PermanentAddressPattern);
@@ -111,17 +122,26 @@ function useTextSeparator(text = "") {
                 const PermanentAddressText = PermanentAddressTextByFirstIndex?.slice(0, PermanentAddressLnBrkIndex2).trim()
                 const separatedAddress = PermanentAddressText.split(/\,|\./)
 
+                const Comma = separatedAddress.length
+
                 const cleanVillageTxt = removeDirtyCharacter(separatedAddress[0])
                 setvillage(cleanVillageTxt)
 
-                const cleanPostOfficeTxt = removeDirtyCharacter(separatedAddress[1])
+                const cleanPostOfficeTxt = removeDirtyCharacter(Comma > 3 ? separatedAddress[1].concat(separatedAddress[2]) : separatedAddress[1])
                 setpost_office(cleanPostOfficeTxt)
 
-                const cleanPoliceStationTxt = removeDirtyCharacter(separatedAddress[2])
+                const cleanPoliceStationTxt = removeDirtyCharacter(separatedAddress[Comma > 3 ? 3 : 2])
                 setpolice_station(cleanPoliceStationTxt)
 
-                const cleanDistrictTxt = removeDirtyCharacter(separatedAddress[3])
+                const cleanDistrictTxt = removeDirtyCharacter(separatedAddress[Comma > 3 ? 4 : 3])
                 setdistrict(cleanDistrictTxt)
+            }
+            else {
+                setPermanentAddressText("")
+                setvillage("")
+                setpost_office("")
+                setpolice_station("")
+                setdistrict("")
             }
 
             const allTxtBGDIndex = text.lastIndexOf("BGD");
@@ -146,25 +166,34 @@ function useTextSeparator(text = "") {
                 const DOBYear = DOBMainText.substr(0, 2) > currentYear.toString().substr(0, 2) ? `19${DOBMainText.substr(0, 2)}` : `20${DOBMainText.substr(0, 2)}`
                 setdateOfBirthText(`${DOBYear}-${DOBMainText.substr(2, 2)}-${DOBMainText.substr(4, 2)}`)
 
-                const PspExpDMainTxt = BGDMainText.substr(BGDIndex + 11, 17)
+                const genderMainTxt = BGDMainText.substr(BGDIndex + 10, 1)
+                const genderTxt = genderMainTxt === "M" ? "male" : genderMainTxt === "F" ? "female" : "others"
+                setgender(genderTxt)
+
+                const PspExpDMainTxt = BGDMainText.substr(BGDIndex + 11, 6)
                 setpassportExpDateText(`20${PspExpDMainTxt.substr(0, 2)}-${PspExpDMainTxt.substr(2, 2)}-${PspExpDMainTxt.substr(4, 2)}`)
 
                 const passportExpDateTxt = `20${PspExpDMainTxt.substr(0, 2)}-${PspExpDMainTxt.substr(2, 2)}-${PspExpDMainTxt.substr(4, 2)}`
                 const decreaseYear = addYears(new Date(passportExpDateTxt,), -5,)
                 setpassportIssDateText(`${decreaseYear.getFullYear()}-${(decreaseYear.getMonth() + 1).toString().padStart(2, 0)}-${(decreaseYear.getDate() + 1).toString().padStart(2, 0)}`)
 
-                setnidNoText(BGDMainText.slice(BGDIndex + 17))
+                setnidNoText(BGDMainText.slice(BGDIndex + 18))
             }
-
+            else {
+                setBGDText("")
+                setpassportNoText("")
+                setdateOfBirthText("")
+                setpassportExpDateText("")
+                setpassportIssDateText("")
+                setnidNoText("")
+                setgender("")
+            }
 
 
         }
     }
 
 
-
-
-    console.log("useTextSeparator rendered")
     return {
         passenger_name: NameText,
         father_name: FathersNameText,
@@ -180,7 +209,9 @@ function useTextSeparator(text = "") {
         village,
         post_office,
         police_station,
-        district
+        district,
+        gender,
+        marital_status,
     }
 }
 

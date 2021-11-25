@@ -31,28 +31,25 @@ function ImageToText({ text, setText, childSubmitFunc }) {
     }, [])
 
     return (
-        <div className="container" style={{ height: 'fit-content', maxWidth: '450px' }}>
-            <div>
-                <div style={{ marginBottom: "48px", marginRight: "auto", marginLeft: "auto", marginTop: "100px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    {isLoading && (
-                        <>
-                            <progress style={{
-                                transition: "all .1s linear",
-                                width: "100%",
-                                padding: "0.375rem 0.75rem",
-                                paddingTop: "4px",
-                                paddingBottom: "3.28px",
-                                border: "1px solid #bdbdbd",
-                                borderRadius: "0.25rem",
-                                height: "15px"
-                            }}
-                                value={progress} max="100">
-                                {progress}%{' '}
-                            </progress>{' '}
-                            <p style={{ textAlign: "center" }}>Converting:- {progress} %</p>
-                        </>
-                    )}
-                    {!isLoading && text && (
+        <div style={{ height: 'fit-content', width: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+            {isLoading && (
+                <>
+                    <progress style={{
+                        transition: "all .1s linear",
+                        width: "100%",
+                        maxWidth: "500px",
+                        padding: "0.375rem 0.75rem",
+                        border: "1px solid #bdbdbd",
+                        borderRadius: "0.25rem",
+                        height: "15px"
+                    }}
+                        value={progress} max="100">
+                        {progress}%{' '}
+                    </progress>{' '}
+                    <p style={{ textAlign: "center", width: "fit-content" }}>Converting:- {progress} %</p>
+                </>
+            )}
+            {/* {!isLoading && text && (
                         <>
                             <textarea
                                 className="form-control w-100 mt-5"
@@ -62,9 +59,7 @@ function ImageToText({ text, setText, childSubmitFunc }) {
                                 onChange={(e) => setText(e.target.value)}
                             ></textarea>
                         </>
-                    )}
-                </div>
-            </div>
+                    )} */}
         </div>
     );
 
