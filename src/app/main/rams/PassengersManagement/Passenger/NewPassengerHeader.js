@@ -28,7 +28,7 @@ const NewPassengerHeader = ({ disableUpdate }) => {
             console.log("savePassengerRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("passengerAlert", "savePassenger")
-                history.push('/apps/passenger-management/passengers');
+                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
             }
         });
     }
@@ -38,7 +38,7 @@ const NewPassengerHeader = ({ disableUpdate }) => {
             console.log("updatePassengerRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("passengerAlert", "updatePassenger")
-                history.push('/apps/passenger-management/passengers');
+                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
             }
         });
     }
@@ -49,13 +49,13 @@ const NewPassengerHeader = ({ disableUpdate }) => {
             if (res.payload) {
                 localStorage.removeItem("passengerEvent")
                 localStorage.setItem("passengerAlert", "deletePassenger")
-                history.push('/apps/passenger-management/passengers');
+                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/passenger-management/passengers')
+        history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`)
     }
 
 
@@ -67,7 +67,7 @@ const NewPassengerHeader = ({ disableUpdate }) => {
                         className="flex items-center sm:mb-12"
                         component={Link}
                         role="button"
-                        to="/apps/passenger-management/passengers"
+                        to={`/apps/passenger-management/passengers/${routeParams.passengerType}`}
                         color="inherit"
                     >
                         <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>

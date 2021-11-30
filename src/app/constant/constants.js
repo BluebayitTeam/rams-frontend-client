@@ -129,6 +129,10 @@ export const CURRENTSTATUSS_WITHOUT_PAGINATION = `${BASE_URL}/current_status/api
 
 export const AGENCIES_WITHOUT_PAGINATION = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/all/`;
 
+export const MEDICALCENTERS_WITHOUT_PAGINATION = `${BASE_URL}/medical_center/api/v1/medical_center/all/`;
+
+export const PASSENGERS_WITHOUT_PAGINATION = `${BASE_URL}/passenger/api/v1/passenger/all/`;
+
 
 
 
@@ -793,7 +797,9 @@ export const SEARCH_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/search
 //passenger
 export const CREATE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/create/`;
 
-export const GET_PASSENGERS = `${BASE_URL}/passenger/api/v1/passenger/all`;
+// export const GET_PASSENGERS = `${BASE_URL}/passenger/api/v1/passenger/all/`;
+
+export const GET_PASSENGERS_BY_TYPE = `${BASE_URL}/passenger/api/v1/passenger/get_all_passenger_by_passenger_type_name/`;
 
 export const GET_PASSENGER_BY_ID = `${BASE_URL}/passenger/api/v1/passenger/`;
 
@@ -801,7 +807,7 @@ export const UPDATE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/update/`
 
 export const DELETE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/delete/`;
 
-export const DELETE_PASSENGER_MULTIPLE = `${BASE_URL}/passenger/api/v1/passenger/delete_multiple/`;
+// export const DELETE_PASSENGER_MULTIPLE = `${BASE_URL}/passenger/api/v1/passenger/delete_multiple/`;
 
 export const SEARCH_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/search/`;
 
@@ -809,3 +815,12 @@ export const CHECK_PASSPORT_NO_WHEN_CREATE = `${BASE_URL}/passenger/api/v1/passe
 
 export const CHECK_PASSPORT_NO_WHEN_UPDATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_update/`
 
+
+//medical
+export const CREATE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/create/`;
+
+export const UPDATE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/update/`;
+
+export const DELETE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/delete/`;
+
+export const MEDICAL_BY_PASSENGER_ID = `${BASE_URL}/medical/api/v1/medical/get_by_passenger_id/`;

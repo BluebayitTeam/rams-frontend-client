@@ -260,16 +260,29 @@ const ramsRouteConfig = {
         },
         //passenger
         {
-            path: '/apps/passenger-management/passengers/:passengerId/:passengerName?',
+            path: '/apps/passenger-management/passenger/:passengerId/:passengerName?/:passengerType?',
             component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger.js'))
         },
         {
-            path: '/apps/passenger-management/passengers',
+            path: '/apps/passenger-management/passengers/:passengerType?',
             component: lazy(() => import('./PassengersManagement/Passengers/Passengers'))
         },
         {
-            path: '/apps/passenger-management/:passengerId',
+            path: '/apps/passenger-management/:passengerId/:passengerType?',
             component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger'))
+        },
+        //medical
+        // {
+        //     path: '/apps/medical-management/medicals/:medicalId/:medicalName?',
+        //     component: lazy(() => import('./MedicalsManagement/Medical/NewMedical.js'))
+        // },
+        // {
+        //     path: '/apps/medical-management/medicals',
+        //     component: lazy(() => import('./MedicalsManagement/Medical/NewMedical'))
+        // },
+        {
+            path: '/apps/medical-management/medical/:medicalId',
+            component: lazy(() => import('./MedicalsManagement/Medical/NewMedical'))
         },
 
     ]

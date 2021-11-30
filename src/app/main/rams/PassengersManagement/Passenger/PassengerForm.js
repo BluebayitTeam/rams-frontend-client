@@ -2,10 +2,11 @@ import _ from '@lodash';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import { Autocomplete } from '@material-ui/lab';
 import Image from 'app/@components/Image.jsx';
 import useTextSeparator from 'app/@customHook/useTextSeparator';
-import { genders, maritalStatuses } from 'app/@data/@data';
+import { genders, maritalStatuses, passportTypes, religions } from 'app/@data/@data';
 import axios from 'axios';
 import clsx from 'clsx';
 import { addYears } from 'date-fns';
@@ -59,55 +60,47 @@ function PassengerForm(props) {
 
     const passportPic = watch('passport_pic');
 
-    const [passportText, setPassportText] = useState(`| “ : 3} ,
-    ‘ Z 0N PERSONAL DATA AND EMERGENCY CONTACT i .
-    E.E ? Name:  MD MOHIUDDIN MAMUN .
-    V. Fathers Name: MAHATAE UDDIN |
-    S »°  MothersName:  BEGUM SALINA KHATUN
-    33y SpousesNeme:  NA
-    0.’ ParmmentAddmss:  MAHESWAR PASHA.MODHO PARA. BIT, 2 A
-    2 DAULATPUR, KHULNA = ™M ;
-    35, Emorgency Contact: § 3 s
-    5y Name: MAHATAB UDDIN 2 ov [ ) ‘
-    ’.*.  Relstionship: FATHER £ 0 O ‘
-    e Address: MAHESWAR PASHA, MODHO PARA, BIT, DAULATPUR, = o =k % ,}
-    T KHULNA E = ‘
-    s Tefophone No: 01952120078 ® o ‘
-    2 : i
-    iy e S e D. SAIDUR RAHMAN e
-    Birecier i
-    / Department of immigtation & Passports
-    . ~ Govt. of the Peapie’s Repudlic of Bangladesh
-    G ¢ H SOEETSR TTT Feopl’ Republcatnglte
-    | wessonrgd B oo ol
-    . B . . R
-    S e T Sumee e T e L
-    e 1;;,"“.:“" s - ;«» ~%§
-    W ~§: DDIN-= = = §§ —
-    g ] LIBAN 9320100184 P
-    g TR el e
-    G = . m Place of Birth L -
-    = | o oRe /patoofsse SRR SEHE i e
-    Sl e e EWMN G e
-    . [ Gart i ooy g y
-    \
-    i P<BGDMAMUN<<MD<MOHIUDDINKLLLLLLLLLLLLLLLLLLKL
-    | BN08986353BGD9402010M2204086<<<<<<<<<<<<<<08`);
+    const [passportText, setPassportText] = useState("");
 
 
-    const { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status } = useTextSeparator(passportText)
+    const { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status, contact_no } = useTextSeparator(passportText)
 
     console.log("values", getValues())
 
 
     const childSubmitFunc = useRef(null)
 
+
+    useEffect(() => {
+        const passengerType = passengerTypes.find(data => data.name.toLowerCase() == routeParams.passengerType)?.id
+        setValue("passenger_type", passengerType)
+    }, [passengerTypes])
+
+    useEffect(() => {
+        if (!_.isEmpty(thanas)) {
+            const getPspIssPlace = thanas.find(data => data.name === "Dhaka" || data.name === "dhaka")?.id
+
+            setValue("passport_issue_place", getPspIssPlace)
+        }
+    }, [thanas])
+
     useEffect(() => {
         console.log("insideEffect")
-        console.log("separetedText", { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status })
+        console.log("separetedText", { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status, contact_no })
+
+        const getPlaceOfResidence = districts.find(data => {
+            const districtName = new RegExp(data.name, 'i');
+            const isMatch = district.match(districtName)
+            if (isMatch) {
+                return true
+            }
+            else {
+                return false
+            }
+        })?.name
 
         const getDistrict = districts.find(data => {
-            var districtName = new RegExp(data.name, 'i');
+            const districtName = new RegExp(data.name, 'i');
             const isMatch = district.match(districtName)
             if (isMatch) {
                 return true
@@ -118,7 +111,7 @@ function PassengerForm(props) {
         })?.id
 
         const getPoliceStation = thanas.find(data => {
-            var PoliceStationName = new RegExp(data.name, 'i');
+            const PoliceStationName = new RegExp(data.name, 'i');
             const isMatch = police_station.match(PoliceStationName)
             if (isMatch) {
                 return true
@@ -130,9 +123,9 @@ function PassengerForm(props) {
 
 
         reset({
-            ...getValues(), passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station: getPoliceStation, district: getDistrict, gender, marital_status
+            ...getValues(), passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station: getPoliceStation, passport_issue_place: getPoliceStation, district: getDistrict, gender, marital_status, place_of_residence: getPlaceOfResidence, contact_no
         })
-    }, [passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status])
+    }, [passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status, contact_no])
 
 
 
@@ -183,7 +176,7 @@ function PassengerForm(props) {
             console.log("savePassengerRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("passengerAlert", "savePassenger")
-                history.push('/apps/passenger-management/passengers');
+                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
             }
         });
     }
@@ -198,7 +191,7 @@ function PassengerForm(props) {
             console.log("updatePassengerRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("passengerAlert", "updatePassenger")
-                history.push('/apps/passenger-management/passengers');
+                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`)
             }
         });
     }
@@ -232,7 +225,6 @@ function PassengerForm(props) {
                         id="created_by"
                         error={false}
                         helperText=""
-                        required
                         variant="outlined"
                         fullWidth
                     />)
@@ -246,7 +238,7 @@ function PassengerForm(props) {
                     name="passport_pic"
                     control={control}
                     render={({ field: { onChange, value } }) => (
-                        <div className="flex flex-row justify-between w-full items-end items-center">
+                        <div className="flex flex-row justify-between w-full items-center">
                             {/* <Typography className="text-center">Passport Picture</Typography> */}
                             <label
                                 htmlFor="button-file-1"
@@ -288,6 +280,73 @@ function PassengerForm(props) {
 
 
 
+            <div className="flex md:space-x-12 flex-col md:flex-row">
+                <Controller
+                    name="agent"
+                    control={control}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Autocomplete
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            freeSolo
+                            value={value ? agents.find(data => data.id == value) : null}
+                            options={agents}
+                            getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+                            onChange={(event, newValue) => {
+                                onChange(newValue?.id)
+                            }}
+                            renderInput={params => (
+
+                                <TextField
+                                    {...params}
+                                    placeholder="Select Agent"
+                                    label="Agent"
+                                    error={!!errors.agent}
+                                    required
+                                    helperText={errors?.agent?.message}
+                                    variant="outlined"
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                // onKeyDown={handleSubmitOnKeyDownEnter}
+                                />
+                            )}
+                        />
+                    )}
+                />
+                <Controller
+                    name="passenger_type"
+                    control={control}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Autocomplete
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            freeSolo
+                            value={value ? passengerTypes.find(data => data.id == value) : null}
+                            options={passengerTypes}
+                            getOptionLabel={(option) => `${option.name}`}
+                            onChange={(event, newValue) => {
+                                onChange(newValue?.id)
+                            }}
+                            renderInput={params => (
+
+                                <TextField
+                                    {...params}
+                                    placeholder="Select Passenger Type"
+                                    label="Passenger Type"
+                                    error={!!errors.passenger_type}
+                                    required
+                                    helperText={errors?.passenger_type?.message}
+                                    variant="outlined"
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                // onKeyDown={handleSubmitOnKeyDownEnter}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </div>
+
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
                 <Controller
@@ -311,39 +370,69 @@ function PassengerForm(props) {
                 />
 
                 <Controller
-                    name="gender"
+                    name="father_name"
                     control={control}
-                    render={({ field: { onChange, value, name } }) => (
-                        <Autocomplete
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
                             className="mt-8 mb-16 w-full md:w-6/12"
-                            freeSolo
-                            value={value ? genders.find(data => data.id == value) : null}
-                            options={genders}
-                            getOptionLabel={(option) => `${option.name}`}
-                            onChange={(event, newValue) => {
-                                onChange(newValue?.id)
-                            }}
-                            renderInput={params => (
+                            error={!!errors.father_name}
+                            helperText={errors?.father_name?.message}
+                            label="Father Name"
+                            id="father_name"
 
-                                <TextField
-                                    {...params}
-                                    placeholder="Select Gender"
-                                    label="Gender"
-                                    error={!!errors.gender}
-                                    required
-                                    helperText={errors?.gender?.message}
-                                    variant="outlined"
-                                    autoFocus
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
-                                />
-                            )}
-                        />
-                    )}
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
                 />
             </div>
+
+
+            <div className="flex md:space-x-12 flex-col md:flex-row">
+
+                <Controller
+                    name="mother_name"
+                    control={control}
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            error={!!errors.mother_name}
+                            helperText={errors?.mother_name?.message}
+                            label="Mother Name"
+                            id="mother_name"
+
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
+                />
+                <Controller
+                    name="spouse_name"
+                    control={control}
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            error={!!errors.spouse_name}
+                            helperText={errors?.spouse_name?.message}
+                            label="Spouse Name"
+                            id="spouse_name"
+
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
+                />
+            </div>
+
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
 
@@ -370,6 +459,44 @@ function PassengerForm(props) {
                     )}
                 />
                 <Controller
+                    name="gender"
+                    control={control}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Autocomplete
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            freeSolo
+                            value={value ? genders.find(data => data.id == value) : null}
+                            options={genders}
+                            getOptionLabel={(option) => `${option.name}`}
+                            onChange={(event, newValue) => {
+                                onChange(newValue?.id)
+                            }}
+                            renderInput={params => (
+
+                                <TextField
+                                    {...params}
+                                    placeholder="Select Gender"
+                                    label="Gender"
+                                    error={!!errors.gender}
+                                    required
+                                    helperText={errors?.gender?.message}
+                                    variant="outlined"
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                // onKeyDown={handleSubmitOnKeyDownEnter}
+                                />
+                            )}
+                        />
+                    )}
+                />
+
+            </div>
+
+
+            <div className="flex md:space-x-12 flex-col md:flex-row">
+
+                <Controller
                     name="marital_status"
                     control={control}
                     render={({ field: { onChange, value, name } }) => (
@@ -389,10 +516,96 @@ function PassengerForm(props) {
                                     placeholder="Select Marital Status"
                                     label="Marital Status"
                                     error={!!errors.marital_status}
-                                    required
+
                                     helperText={errors?.marital_status?.message}
                                     variant="outlined"
-                                    autoFocus
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                // onKeyDown={handleSubmitOnKeyDownEnter}
+                                />
+                            )}
+                        />
+                    )}
+                />
+                <Controller
+                    name="contact_no"
+                    control={control}
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            error={!!errors.contact_no}
+                            helperText={errors?.contact_no?.message}
+                            label="Contact No"
+                            id="contact_no"
+
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
+                />
+            </div>
+
+
+            <div className="flex md:space-x-12 flex-col md:flex-row">
+                <Controller
+                    name="district"
+                    control={control}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Autocomplete
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            freeSolo
+                            value={value ? districts.find(data => data.id == value) : null}
+                            options={districts}
+                            getOptionLabel={(option) => `${option.name}`}
+                            onChange={(event, newValue) => {
+                                onChange(newValue?.id)
+                            }}
+                            renderInput={params => (
+
+                                <TextField
+                                    {...params}
+                                    placeholder="Select District"
+                                    label="District"
+                                    error={!!errors.district}
+
+                                    helperText={errors?.district?.message}
+                                    variant="outlined"
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                // onKeyDown={handleSubmitOnKeyDownEnter}
+                                />
+                            )}
+                        />
+                    )}
+                />
+                <Controller
+                    name="police_station"
+                    control={control}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Autocomplete
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            freeSolo
+                            value={value ? thanas.find(data => data.id == value) : null}
+                            options={thanas}
+                            getOptionLabel={(option) => `${option.name}`}
+                            onChange={(event, newValue) => {
+                                onChange(newValue?.id)
+                            }}
+                            renderInput={params => (
+
+                                <TextField
+                                    {...params}
+                                    placeholder="Select Police Station"
+                                    label="Police Station"
+                                    error={!!errors.police_station}
+
+                                    helperText={errors?.police_station?.message}
+                                    variant="outlined"
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -406,7 +619,50 @@ function PassengerForm(props) {
 
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
+                <Controller
+                    name="post_office"
+                    control={control}
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            error={!!errors.post_office}
+                            helperText={errors?.post_office?.message}
+                            label="Post Office"
+                            id="post_office"
 
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
+                />
+                <Controller
+                    name="village"
+                    control={control}
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            error={!!errors.village}
+                            helperText={errors?.village?.message}
+                            label="Village"
+                            id="village"
+
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
+                />
+            </div>
+
+
+
+
+            <div className="flex md:space-x-12 flex-col md:flex-row">
                 <Controller
                     name="nid"
                     control={control}
@@ -418,7 +674,7 @@ function PassengerForm(props) {
                             helperText={errors?.nid?.message}
                             label="NID"
                             id="nid"
-                            required
+
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
@@ -427,29 +683,50 @@ function PassengerForm(props) {
                     }}
                 />
                 <Controller
-                    name="agent"
+                    name="place_of_birth"
+                    control={control}
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            error={!!errors.place_of_birth}
+                            helperText={errors?.place_of_birth?.message}
+                            label="Place Of Birth"
+                            id="place_of_birth"
+
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
+                />
+            </div>
+
+
+            <div className="flex md:space-x-12 flex-col md:flex-row">
+                <Controller
+                    name="religion"
                     control={control}
                     render={({ field: { onChange, value, name } }) => (
                         <Autocomplete
                             className="mt-8 mb-16 w-full md:w-6/12"
                             freeSolo
-                            value={value ? agents.find(data => data.id == value) : null}
-                            options={agents}
-                            getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+                            value={value ? religions.find(data => data.id == value) : null}
+                            options={religions}
+                            getOptionLabel={(option) => `${option.name}`}
                             onChange={(event, newValue) => {
                                 onChange(newValue?.id)
                             }}
                             renderInput={params => (
-
                                 <TextField
                                     {...params}
-                                    placeholder="Select Agent"
-                                    label="Agent"
-                                    error={!!errors.agent}
-                                    required
-                                    helperText={errors?.agent?.message}
+                                    placeholder="Select Religion"
+                                    label="Religion"
+                                    error={!!errors.religion}
+
+                                    helperText={errors?.religion?.message}
                                     variant="outlined"
-                                    autoFocus
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -459,88 +736,6 @@ function PassengerForm(props) {
                         />
                     )}
                 />
-            </div>
-
-
-            <div className="flex md:space-x-12 flex-col md:flex-row">
-
-                <Controller
-                    name="spouse_name"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.spouse_name}
-                            helperText={errors?.spouse_name?.message}
-                            label="Spouse Name"
-                            id="spouse_name"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-
-                <Controller
-                    name="demand"
-                    control={control}
-                    render={({ field: { onChange, value, name } }) => (
-                        <Autocomplete
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            freeSolo
-                            value={value ? demands.find(data => data.id == value) : null}
-                            options={demands}
-                            getOptionLabel={(option) => `${option.company_name}`}
-                            onChange={(event, newValue) => {
-                                onChange(newValue?.id)
-                            }}
-                            renderInput={params => (
-
-                                <TextField
-                                    {...params}
-                                    placeholder="Select Demand"
-                                    label="Demand"
-                                    error={!!errors.demand}
-                                    required
-                                    helperText={errors?.demand?.message}
-                                    variant="outlined"
-                                    autoFocus
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
-                                />
-                            )}
-                        />
-                    )}
-                />
-            </div>
-
-
-            <div className="flex md:space-x-12 flex-col md:flex-row">
-                <Controller
-                    name="father_name"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.father_name}
-                            helperText={errors?.father_name?.message}
-                            label="Father Name"
-                            id="father_name"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-
                 <Controller
                     name="profession"
                     control={control}
@@ -564,7 +759,6 @@ function PassengerForm(props) {
                                     required
                                     helperText={errors?.profession?.message}
                                     variant="outlined"
-                                    autoFocus
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -578,26 +772,6 @@ function PassengerForm(props) {
 
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
-                <Controller
-                    name="mother_name"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.mother_name}
-                            helperText={errors?.mother_name?.message}
-                            label="Mother Name"
-                            id="mother_name"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-
                 <Controller
                     name="agency"
                     control={control}
@@ -621,7 +795,38 @@ function PassengerForm(props) {
                                     required
                                     helperText={errors?.agency?.message}
                                     variant="outlined"
-                                    autoFocus
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                // onKeyDown={handleSubmitOnKeyDownEnter}
+                                />
+                            )}
+                        />
+                    )}
+                />
+                <Controller
+                    name="demand"
+                    control={control}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Autocomplete
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            freeSolo
+                            value={value ? demands.find(data => data.id == value) : null}
+                            options={demands}
+                            getOptionLabel={(option) => `${option.company_name}`}
+                            onChange={(event, newValue) => {
+                                onChange(newValue?.id)
+                            }}
+                            renderInput={params => (
+
+                                <TextField
+                                    {...params}
+                                    placeholder="Select Demand"
+                                    label="Demand"
+                                    error={!!errors.demand}
+                                    required
+                                    helperText={errors?.demand?.message}
+                                    variant="outlined"
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -633,28 +838,7 @@ function PassengerForm(props) {
                 />
             </div>
 
-
             <div className="flex md:space-x-12 flex-col md:flex-row">
-                <Controller
-                    name="contact_no"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.contact_no}
-                            helperText={errors?.contact_no?.message}
-                            label="Contact No"
-                            id="contact_no"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-
                 <Controller
                     name="target_country"
                     control={control}
@@ -678,7 +862,38 @@ function PassengerForm(props) {
                                     required
                                     helperText={errors?.target_country?.message}
                                     variant="outlined"
-                                    autoFocus
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                // onKeyDown={handleSubmitOnKeyDownEnter}
+                                />
+                            )}
+                        />
+                    )}
+                />
+                <Controller
+                    name="visa_entry"
+                    control={control}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Autocomplete
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            freeSolo
+                            value={value ? visaEntrys.find(data => data.id == value) : null}
+                            options={visaEntrys}
+                            getOptionLabel={(option) => `${option.visa_number}`}
+                            onChange={(event, newValue) => {
+                                onChange(newValue?.id)
+                            }}
+                            renderInput={params => (
+
+                                <TextField
+                                    {...params}
+                                    placeholder="Select Visa Entry"
+                                    label="Visa Entry"
+                                    error={!!errors.visa_entry}
+
+                                    helperText={errors?.visa_entry?.message}
+                                    variant="outlined"
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -693,33 +908,14 @@ function PassengerForm(props) {
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
                 <Controller
-                    name="religion"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.religion}
-                            helperText={errors?.religion?.message}
-                            label="Religion"
-                            id="religion"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-                <Controller
-                    name="passenger_type"
+                    name="current_status"
                     control={control}
                     render={({ field: { onChange, value, name } }) => (
                         <Autocomplete
                             className="mt-8 mb-16 w-full md:w-6/12"
                             freeSolo
-                            value={value ? passengerTypes.find(data => data.id == value) : null}
-                            options={passengerTypes}
+                            value={value ? currentStatuss.find(data => data.id == value) : null}
+                            options={currentStatuss}
                             getOptionLabel={(option) => `${option.name}`}
                             onChange={(event, newValue) => {
                                 onChange(newValue?.id)
@@ -728,13 +924,12 @@ function PassengerForm(props) {
 
                                 <TextField
                                     {...params}
-                                    placeholder="Select Passenger Type"
-                                    label="Passenger Type"
-                                    error={!!errors.passenger_type}
-                                    required
-                                    helperText={errors?.passenger_type?.message}
+                                    placeholder="Select Current Status"
+                                    label="Current Status"
+                                    error={!!errors.current_status}
+
+                                    helperText={errors?.current_status?.message}
                                     variant="outlined"
-                                    autoFocus
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -744,10 +939,39 @@ function PassengerForm(props) {
                         />
                     )}
                 />
+                <Controller
+                    name="emergency_contact_no"
+                    control={control}
+                    render={({ field }) => {
+                        return (<TextField
+                            {...field}
+                            className="mt-8 mb-16 w-full md:w-6/12"
+                            error={!!errors.emergency_contact_no}
+                            helperText={errors?.emergency_contact_no?.message}
+                            label="Emergency Contact No"
+                            id="emergency_contact_no"
+
+                            variant="outlined"
+                            InputLabelProps={field.value && { shrink: true }}
+                            fullWidth
+                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                    }}
+                />
+            </div>
+
+
+
+
+
+
+            <div className="flex">
+                <Typography color="textSecondary" className="text-base mt-3 mb-2">Passport Information</Typography>
             </div>
 
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
+
                 <Controller
                     name="passport_no"
                     control={control}
@@ -773,14 +997,14 @@ function PassengerForm(props) {
                 />
 
                 <Controller
-                    name="current_status"
+                    name="passport_type"
                     control={control}
                     render={({ field: { onChange, value, name } }) => (
                         <Autocomplete
                             className="mt-8 mb-16 w-full md:w-6/12"
                             freeSolo
-                            value={value ? currentStatuss.find(data => data.id == value) : null}
-                            options={currentStatuss}
+                            value={value ? passportTypes.find(data => data.id == value) : null}
+                            options={passportTypes}
                             getOptionLabel={(option) => `${option.name}`}
                             onChange={(event, newValue) => {
                                 onChange(newValue?.id)
@@ -789,69 +1013,12 @@ function PassengerForm(props) {
 
                                 <TextField
                                     {...params}
-                                    placeholder="Select Current Status"
-                                    label="Current Status"
-                                    error={!!errors.current_status}
+                                    placeholder="Select Passport Type"
+                                    label="Passport Type"
                                     required
-                                    helperText={errors?.current_status?.message}
+                                    error={!!errors.passport_type}
+                                    helperText={errors?.passport_type?.message}
                                     variant="outlined"
-                                    autoFocus
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
-                                />
-                            )}
-                        />
-                    )}
-                />
-            </div>
-
-
-            <div className="flex md:space-x-12 flex-col md:flex-row">
-                <Controller
-                    name="passport_type"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.passport_type}
-                            helperText={errors?.passport_type?.message}
-                            label="Passport Type"
-                            id="passport_type"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-                <Controller
-                    name="visa_entry"
-                    control={control}
-                    render={({ field: { onChange, value, name } }) => (
-                        <Autocomplete
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            freeSolo
-                            value={value ? visaEntrys.find(data => data.id == value) : null}
-                            options={visaEntrys}
-                            getOptionLabel={(option) => `${option.visa_number}`}
-                            onChange={(event, newValue) => {
-                                onChange(newValue?.id)
-                            }}
-                            renderInput={params => (
-
-                                <TextField
-                                    {...params}
-                                    placeholder="Select Visa Entry"
-                                    label="Visa Entry"
-                                    error={!!errors.visa_entry}
-                                    required
-                                    helperText={errors?.visa_entry?.message}
-                                    variant="outlined"
-                                    autoFocus
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -891,44 +1058,6 @@ function PassengerForm(props) {
                         />)
                     }}
                 />
-
-                <Controller
-                    name="district"
-                    control={control}
-                    render={({ field: { onChange, value, name } }) => (
-                        <Autocomplete
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            freeSolo
-                            value={value ? districts.find(data => data.id == value) : null}
-                            options={districts}
-                            getOptionLabel={(option) => `${option.name}`}
-                            onChange={(event, newValue) => {
-                                onChange(newValue?.id)
-                            }}
-                            renderInput={params => (
-
-                                <TextField
-                                    {...params}
-                                    placeholder="Select District"
-                                    label="District"
-                                    error={!!errors.district}
-                                    required
-                                    helperText={errors?.district?.message}
-                                    variant="outlined"
-                                    autoFocus
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
-                                />
-                            )}
-                        />
-                    )}
-                />
-            </div>
-
-
-            <div className="flex md:space-x-12 flex-col md:flex-row">
                 <Controller
                     name="passport_expiry_date"
                     control={control}
@@ -952,9 +1081,12 @@ function PassengerForm(props) {
                         />)
                     }}
                 />
+            </div>
 
+
+            <div className="flex md:space-x-12 flex-col md:flex-row">
                 <Controller
-                    name="police_station"
+                    name="passport_issue_place"
                     control={control}
                     render={({ field: { onChange, value, name } }) => (
                         <Autocomplete
@@ -970,13 +1102,12 @@ function PassengerForm(props) {
 
                                 <TextField
                                     {...params}
-                                    placeholder="Select Police Station"
-                                    label="Police Station"
-                                    error={!!errors.police_station}
+                                    placeholder="Select Passport Issue Place"
+                                    label="Passport Issue Place"
                                     required
-                                    helperText={errors?.police_station?.message}
+                                    error={!!errors.passport_issue_place}
+                                    helperText={errors?.passport_issue_place?.message}
                                     variant="outlined"
-                                    autoFocus
                                     InputLabelProps={{
                                         shrink: true
                                     }}
@@ -986,113 +1117,7 @@ function PassengerForm(props) {
                         />
                     )}
                 />
-            </div>
 
-
-            <div className="flex md:space-x-12 flex-col md:flex-row">
-                <Controller
-                    name="village"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.village}
-                            helperText={errors?.village?.message}
-                            label="Village"
-                            id="village"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-                <Controller
-                    name="post_office"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.post_office}
-                            helperText={errors?.post_office?.message}
-                            label="Post Office"
-                            id="post_office"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-            </div>
-
-
-            <div className="flex md:space-x-12 flex-col md:flex-row">
-                <Controller
-                    name="place_of_birth"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.place_of_birth}
-                            helperText={errors?.place_of_birth?.message}
-                            label="Place Of Birth"
-                            id="place_of_birth"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-                <Controller
-                    name="emergency_contact_no"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.emergency_contact_no}
-                            helperText={errors?.emergency_contact_no?.message}
-                            label="Emergency Contact No"
-                            id="emergency_contact_no"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
-            </div>
-
-
-            <div className="flex md:space-x-12 flex-col md:flex-row">
-                <Controller
-                    name="passport_issue_place"
-                    control={control}
-                    render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.passport_issue_place}
-                            helperText={errors?.passport_issue_place?.message}
-                            label="Passport Issue Place"
-                            id="passport_issue_place"
-                            required
-                            variant="outlined"
-                            InputLabelProps={field.value && { shrink: true }}
-                            fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                    }}
-                />
                 <Controller
                     name="place_of_residence"
                     control={control}
@@ -1115,6 +1140,7 @@ function PassengerForm(props) {
             </div>
 
 
+
             <div className="flex md:space-x-12 flex-col md:flex-row">
 
                 <Controller
@@ -1128,19 +1154,16 @@ function PassengerForm(props) {
                             helperText={errors?.notes?.message}
                             label="Notes"
                             id="notes"
-                            required
                             variant="outlined"
                             multiline
                             rows={3}
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
-                            onKeyDown={handleSubmitOnKeyDownEnter}
+                        // onKeyDown={handleSubmitOnKeyDownEnter}
                         />)
                     }}
                 />
             </div>
-
-
 
             <div className="flex md:space-x-12 flex-col md:flex-row">
                 <div className="flex flex-wrap w-full md:w-6/12 my-2 justify-evenly items-center">
@@ -1158,7 +1181,7 @@ function PassengerForm(props) {
                 </div>
 
 
-                <div className="flex justify-center flex-wrap w-full md:w-6/12 my-2 justify-evenly">
+                <div className="flex flex-wrap w-full md:w-6/12 my-2 justify-evenly">
 
                     <Image name="passenger_pic" label="Passenger Picture" previewImage={previewImage2} setPreviewImage={setPreviewImage2} />
 

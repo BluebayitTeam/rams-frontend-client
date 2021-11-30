@@ -21,6 +21,7 @@ function useTextSeparator(text = "") {
     const [district, setdistrict] = useState("")
     const [gender, setgender] = useState("")
     const [marital_status, setmarital_status] = useState("")
+    const [contact_no, setcontact_no] = useState("")
 
 
     const removeDirtyCharacter = (txt) => {
@@ -101,7 +102,7 @@ function useTextSeparator(text = "") {
                 const cleanSpousesNameText = removeDirtyCharacter(SpousesNameTextByFirstIndex?.slice(0, SpousesNameLineBreakIndex))
                 setSpousesNameText(cleanSpousesNameText)
 
-                const maritalStatusTxt = cleanSpousesNameText === "NA" ? "single" : "married"
+                const maritalStatusTxt = cleanSpousesNameText === "NA" ? "Single" : "Married"
                 setmarital_status(maritalStatusTxt)
             }
             else {
@@ -142,6 +143,20 @@ function useTextSeparator(text = "") {
                 setpost_office("")
                 setpolice_station("")
                 setdistrict("")
+            }
+
+            const telephoneNoPattern = /Te\w\wphone\sNo:\s?/
+            const telephoneNoPatternText = text.match(telephoneNoPattern);
+            if (telephoneNoPatternText) {
+                const telephoneNoPatternIndex = text.search(telephoneNoPattern);
+                const telephoneNoFirstIndex = telephoneNoPatternIndex + telephoneNoPatternText?.toString().length;
+                const telephoneNoTextByFirstIndex = text.slice(telephoneNoFirstIndex).trim()
+                const telephoneNoSpaceIndex = telephoneNoTextByFirstIndex.search(/\s/)
+                const cleantelephoneNoText = removeDirtyCharacter(telephoneNoTextByFirstIndex?.slice(0, telephoneNoSpaceIndex))
+                setcontact_no(cleantelephoneNoText)
+            }
+            else {
+                setcontact_no("")
             }
 
             const allTxtBGDIndex = text.lastIndexOf("BGD");
@@ -212,6 +227,7 @@ function useTextSeparator(text = "") {
         district,
         gender,
         marital_status,
+        contact_no,
     }
 }
 

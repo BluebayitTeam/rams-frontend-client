@@ -28,10 +28,10 @@ function Image({ name, label, previewImage, setPreviewImage }) {
     return (
         <>
             <Controller
-                name="passenger_pic"
+                name={`${name}`}
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                    <div className="flex w-full flex-row justify-center items-center justify-evenly">
+                    <div className="flex w-full flex-row items-center justify-evenly">
                         <div className="flex-col">
                             {label && <Typography className="text-center">{label}</Typography>}
                             <label
@@ -68,12 +68,13 @@ function Image({ name, label, previewImage, setPreviewImage }) {
                             picture && !previewImage && (<div style={{ width: '100px', height: '100px' }}><img src={`${BASE_URL}${picture}`} /></div>)
                         }
 
-                        <div style={{ width: '100px', height: '100px' }}>
+                        {previewImage && (<div style={{ width: '100px', height: '100px' }}>
                             <img
                                 src={previewImage}
                             //alt="no image found"
                             />
-                        </div>
+                        </div>)
+                        }
                     </div>
 
                 )}

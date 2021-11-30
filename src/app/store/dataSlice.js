@@ -16,7 +16,9 @@ import {
     GET_USERS_WITHOUT_PAGINATION,
     GET_VENDORS_WITHOUT_PAGINATION,
     GROUPS_WITHOUT_PAGINATION,
-    ORDERSTATUS, PASSENGERTYPES_WITHOUT_PAGINATION, PAYMENTMATHODS,
+    MEDICALCENTERS_WITHOUT_PAGINATION,
+    ORDERSTATUS, PASSENGERS_WITHOUT_PAGINATION, PASSENGERTYPES_WITHOUT_PAGINATION,
+    PAYMENTMATHODS,
     PROFESSIONS_WITHOUT_PAGINATION,
     VISAENTRYS_WITHOUT_PAGINATION
 } from 'app/constant/constants';
@@ -331,6 +333,33 @@ export const getVisaEntrys = () => (dispatch) => {
         .catch(() => { });
 }
 
+export const getMedicalCenters = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setMedicalCenters(data.medical_centers)))
+        .catch(() => { });
+}
+
+export const getPassengers = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(PASSENGERS_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setPassengers(data.passengers)))
+        .catch(() => { });
+}
+
+
 
 
 
@@ -370,6 +399,8 @@ const dataSlice = createSlice({
         passengerTypes: [],
         currentStatuss: [],
         visaEntries: [],
+        medicalCenters: [],
+        passengers: [],
     },
     reducers: {
         setBranches: (state, action) => {
@@ -465,6 +496,12 @@ const dataSlice = createSlice({
         setVisaEntries: (state, action) => {
             state.visaEntries = action.payload ? action.payload : []
         },
+        setMedicalCenters: (state, action) => {
+            state.medicalCenters = action.payload ? action.payload : []
+        },
+        setPassengers: (state, action) => {
+            state.passengers = action.payload ? action.payload : []
+        },
     }
 })
 
@@ -499,7 +536,9 @@ const {
     setAgencies,
     setPassengerTypes,
     setCurrentStatuses,
-    setVisaEntries
+    setVisaEntries,
+    setMedicalCenters,
+    setPassengers,
 } = dataSlice.actions;
 export default dataSlice.reducer;
 

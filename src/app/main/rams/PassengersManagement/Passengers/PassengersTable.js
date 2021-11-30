@@ -2,7 +2,6 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import { Typography } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,10 +12,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/@data';
+import { differenceInYears } from 'date-fns';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useParams, withRouter } from 'react-router-dom';
 import { SEARCH_PASSENGER } from '../../../../constant/constants';
 import { getPassengers, selectPassengers } from '../store/passengersSlice';
 import PassengersTableHead from './PassengersTableHead';
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 const PassengersTable = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const passengers = useSelector(selectPassengers);
+    let passengers = useSelector(selectPassengers);
     const searchText = useSelector(({ passengersManagement }) => passengersManagement.passengers.searchText);
     const [searchPassenger, setSearchPassenger] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -44,6 +44,8 @@ const PassengersTable = (props) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(30);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+
+    const routeParams = useParams();
 
     const [order, setOrder] = useState({
         direction: 'asc',
@@ -55,8 +57,9 @@ const PassengersTable = (props) => {
     const totalElements = sessionStorage.getItem('total_passengers_elements');
 
     useEffect(() => {
-        dispatch(getPassengers(pageAndSize)).then(() => setLoading(false));
-    }, [dispatch]);
+        passengers = []
+        dispatch(getPassengers({ ...pageAndSize, passengerType: routeParams.passengerType })).then(() => setLoading(false));
+    }, [routeParams.passengerType]);
 
     useEffect(() => {
         searchText ? getSearchPassenger() : setSearchPassenger([])
@@ -94,54 +97,39 @@ const PassengersTable = (props) => {
         setSelected([]);
     }
 
+
     function handleDeselect() {
         setSelected([]);
     }
 
     function handleUpdatePassenger(item) {
         localStorage.removeItem('passengerEvent')
-        props.history.push(`/apps/passenger-management/passengers/${item.id}/${item.passenger_id}`);
+        props.history.push(`/apps/passenger-management/passenger/${item.id}/${item.passenger_id}/${routeParams.passengerType}`);
     }
     function handleDeletePassenger(item, passengerEvent) {
         localStorage.removeItem('passengerEvent')
         localStorage.setItem('passengerEvent', passengerEvent);
-        props.history.push(`/apps/passenger-management/passengers/${item.id}/${item.passenger_id}`);
+        props.history.push(`/apps/passenger-management/passenger/${item.id}/${item.passenger_id}/${routeParams.passengerType}`);
     }
 
-    function handleCheck(passengerEvent, id) {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-        }
-
-        setSelected(newSelected);
-    }
 
     //pagination
     const handlePagination = (e, handlePage) => {
         setPageAndSize({ ...pageAndSize, page: handlePage })
         setPage(handlePage - 1)
-        dispatch(getPassengers({ ...pageAndSize, page: handlePage }))
+        dispatch(getPassengers({ ...pageAndSize, page: handlePage, passengerType: routeParams.passengerType }))
     }
 
     function handleChangePage(event, value) {
         setPage(value);
         setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getPassengers({ ...pageAndSize, page: value + 1 }))
+        dispatch(getPassengers({ ...pageAndSize, page: value + 1, passengerType: routeParams.passengerType }))
     }
 
     function handleChangeRowsPerPage(passengerEvent) {
         setRowsPerPage(passengerEvent.target.value);
         setPageAndSize({ ...pageAndSize, size: passengerEvent.target.value })
-        dispatch(getPassengers({ ...pageAndSize, size: passengerEvent.target.value }))
+        dispatch(getPassengers({ ...pageAndSize, size: passengerEvent.target.value, passengerType: routeParams.passengerType }))
     }
 
 
@@ -205,57 +193,10 @@ const PassengersTable = (props) => {
                                         tabIndex={-1}
                                         key={n.id}
                                         selected={isSelected}
-
                                     >
-                                        <TableCell className="w-40 md:w-64 text-center" padding="none">
-                                            <Checkbox
-                                                checked={isSelected}
-                                                onClick={passengerEvent => passengerEvent.stopPropagation()}
-                                                onChange={passengerEvent => handleCheck(passengerEvent, n.id)}
-                                            />
-                                        </TableCell>
 
                                         <TableCell className="w-40 md:w-64" component="th" scope="row">
                                             {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
-                                        </TableCell>
-
-                                        {/* <TableCell
-                                            className="w-52 px-4 md:px-0 h-72"
-                                            component="th"
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            {n.length > 0 && n.featuredImageId ? (
-                                                <img
-                                                    className="h-full block rounded p-8"
-                                                    style={{ borderRadius: '15px'}}
-                                                    src={_.find(n.image, { id: n.featuredImageId }).url}
-                                                    alt={n.name}
-                                                />
-                                            ) : (
-                                                <img
-                                                    className="h-full block rounded p-8"
-                                                    style={{ borderRadius: '15px'}}
-                                                    src={`${BASE_URL}${n.image}`}
-                                                    alt={n.name}
-                                                />
-                                            )}
-                                        </TableCell> */}
-
-
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.marital_status}
-                                            </TableCell> */}
-
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.gender}
-                                        </TableCell> */}
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passport_no}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passenger_id}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
@@ -263,16 +204,11 @@ const PassengersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.date_of_birth}
+                                            {n.passport_no}
                                         </TableCell>
-
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.agent}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.demand}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
@@ -280,7 +216,7 @@ const PassengersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.agency}
+                                            {n.date_of_birth ? differenceInYears(new Date(), new Date(n.date_of_birth)) : ""}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
@@ -288,95 +224,12 @@ const PassengersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.current_status}
+                                            {n.visa_entry}
                                         </TableCell>
 
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passenger_type}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.current_status}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.visa_entry}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.police_station}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.district}
-                                            </TableCell>
-
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.nid}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.father_name}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.mother_name}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.spouse_name}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.religion}
-                                            </TableCell>
-                                
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passport_type}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passport_issue_date}
-                                    </TableCell>
-
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passport_expiry_date}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.village}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.post_office}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.contact_no}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.emergency_contact_no}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.place_of_birth}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.place_of_residence}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.passport_issue_place}
-                                            </TableCell>
-                                    
-                                            <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.notes}
-                                            </TableCell> */}
-
-
+                                            {n.current_status}
+                                        </TableCell>
 
                                         <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
                                             <div>

@@ -10,7 +10,7 @@ import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { setPassengersSearchText } from '../store/passengersSlice';
 
 
@@ -40,6 +40,8 @@ const PassengersHeader = () => {
     const searchText = useSelector(({ passengersManagement }) => passengersManagement.passengers.searchText);
 
     const classes = useStyles(alerOpen);
+
+    const routeParams = useParams();
 
     useEffect(() => {
         const alert = localStorage.getItem("passengerAlert")
@@ -121,7 +123,7 @@ const PassengersHeader = () => {
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
                 <Button
                     component={Link}
-                    to="/apps/passenger-management/new"
+                    to={`/apps/passenger-management/new/${routeParams.passengerType}`}
                     className="whitespace-nowrap"
                     variant="contained"
                     color="secondary"

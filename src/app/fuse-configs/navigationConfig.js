@@ -238,13 +238,79 @@ const navigationConfig = [
         url: '',
         exact: true,
         children: [
-            //passenger
+            //recruiting
             {
-                id: 'passengers',
-                title: 'Passengers',
-                translate: 'Passengers',
+                id: 'recruiting',
+                title: 'Recruitings',
+                translate: 'Recruitings',
                 type: 'item',
-                url: '/apps/passenger-management/passengers',
+                url: '/apps/passenger-management/passengers/recruiting',
+                exact: true
+            },
+            //processing
+            {
+                id: 'processing',
+                title: 'Processings',
+                translate: 'Processings',
+                type: 'item',
+                url: '/apps/passenger-management/passengers/processing',
+                exact: true
+            },
+            //hajj
+            {
+                id: 'hajj',
+                title: 'Hajjs',
+                translate: 'Hajjs',
+                type: 'item',
+                url: '/apps/passenger-management/passengers/hajj',
+                exact: true
+            },
+            //Umrah
+            {
+                id: 'umrah',
+                title: 'Umrahs',
+                translate: 'Umrahs',
+                type: 'item',
+                url: '/apps/passenger-management/passengers/umrah',
+                exact: true
+            },
+            //travel
+            {
+                id: 'travel',
+                title: 'Travels',
+                translate: 'Travels',
+                type: 'item',
+                url: '/apps/passenger-management/passengers/travel',
+                exact: true
+            },
+            //studennt
+            {
+                id: 'student',
+                title: 'Students',
+                translate: 'Students',
+                type: 'item',
+                url: '/apps/passenger-management/passengers/student',
+                exact: true
+            },
+        ]
+    },
+    //services
+    {
+        id: "services",
+        title: 'Services',
+        translate: 'Services',
+        type: 'collapse',
+        icon: 'people',
+        url: '',
+        exact: true,
+        children: [
+            //medical
+            {
+                id: 'medical',
+                title: 'Medical',
+                translate: 'Medical',
+                type: 'item',
+                url: '/apps/medical-management/medical/new',
                 exact: true
             }
         ]

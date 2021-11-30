@@ -1,29 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CREATE_PASSENGER, DELETE_PASSENGER, GET_PASSENGER_BY_ID, UPDATE_PASSENGER } from '../../../../constant/constants';
+import { CREATE_MEDICAL, DELETE_MEDICAL, UPDATE_MEDICAL } from '../../../../constant/constants';
 
 
-export const getPassenger = createAsyncThunk('passengerManagement/passenger/getPassenger', async (params, { rejectWithValue }) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    };
-
-    try {
-        const response = await axios.get(`${GET_PASSENGER_BY_ID}${params}`, authTOKEN);
-        const data = await response.data;
-        return data === undefined ? null : data;
-    } catch (err) {
-
-        return rejectWithValue(params)
-    }
-
-})
-
-export const removePassenger = createAsyncThunk(
-    'passengerManagement/passenger/removePassenger',
+export const removeMedical = createAsyncThunk(
+    'medicalManagement/medical/removeMedical',
     async (val) => {
 
         const authTOKEN = {
@@ -33,16 +14,17 @@ export const removePassenger = createAsyncThunk(
             }
         };
 
-        const passengerId = val.id;
-        const response = await axios.delete(`${DELETE_PASSENGER}${passengerId}`, authTOKEN);
+        const medicalId = val.id;
+        const response = await axios.delete(`${DELETE_MEDICAL}${medicalId}`, authTOKEN);
         return response
     }
 );
 
-export const updatePassenger = createAsyncThunk(
-    'passengerManagement/passenger/updatePassenger',
-    async (passengerData, { dispatch, getState }) => {
-        const { passenger } = getState().passengersManagement;
+export const updateMedical = createAsyncThunk(
+    'medicalManagement/medical/updateMedical',
+    async (medicalData) => {
+
+        const madicalDatas = { ...medicalData, created_by: "" }
 
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -64,7 +46,7 @@ export const updatePassenger = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(passengerData)
+        const getFormDateFJ = jsonToFormData(madicalDatas)
 
         const authTOKEN = {
             headers: {
@@ -72,15 +54,17 @@ export const updatePassenger = createAsyncThunk(
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.put(`${UPDATE_PASSENGER}${passenger.id}`, getFormDateFJ, authTOKEN);
+        const response = await axios.put(`${UPDATE_MEDICAL}${medicalData.id}`, getFormDateFJ, authTOKEN);
         return response
     }
 
 )
 
-export const savePassenger = createAsyncThunk(
-    'passengerManagement/passenger/savePassenger',
-    async (passengerData) => {
+export const saveMedical = createAsyncThunk(
+    'medicalManagement/medical/saveMedical',
+    async (medicalData) => {
+
+        const madicalDatas = { ...medicalData, updated_by: "" }
 
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
@@ -102,7 +86,7 @@ export const savePassenger = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(passengerData)
+        const getFormDateFJ = jsonToFormData(madicalDatas)
 
         const authTOKEN = {
             headers: {
@@ -110,35 +94,31 @@ export const savePassenger = createAsyncThunk(
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.post(`${CREATE_PASSENGER}`, getFormDateFJ, authTOKEN)
+        const response = await axios.post(`${CREATE_MEDICAL}`, getFormDateFJ, authTOKEN)
         return response
     }
 )
 
-const passengerSlice = createSlice({
-    name: 'passengerManagement/passenger',
+const medicalSlice = createSlice({
+    name: 'medicalManagement/medical',
     initialState: null,
     reducers: {
-        resetPassenger: () => null,
-        newPassenger: {
+        resetMedical: () => null,
+        newMedical: {
             reducer: (state, action) => action.payload,
             prepare: event => ({
-                payload: {
-                    religion: "Muslim",
-                    passport_type: "Ordinary"
-                }
+                payload: {}
             })
         }
     },
     extraReducers: {
-        [getPassenger.fulfilled]: (state, action) => action.payload,
-        [savePassenger.fulfilled]: (state, action) => action.payload,
-        [removePassenger.fulfilled]: (state, action) => action.payload,
-        [updatePassenger.fulfilled]: (state, action) => action.payloHea
+        [saveMedical.fulfilled]: (state, action) => action.payload,
+        [removeMedical.fulfilled]: (state, action) => action.payload,
+        [updateMedical.fulfilled]: (state, action) => action.payloHea
     }
 })
 
 
-export const { newPassenger, resetPassenger } = passengerSlice.actions;
+export const { newMedical, resetMedical } = medicalSlice.actions;
 
-export default passengerSlice.reducer;
+export default medicalSlice.reducer;
