@@ -128,7 +128,7 @@ const Medical = () => {
                                         freeSolo
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
-                                        getOptionLabel={(option) => `${option.passport_no} ${option.passenger_id} ${option.passenger_name}`}
+                                        getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
                                         onChange={(event, newValue) => {
                                             if (newValue?.id) {
                                                 axios.get(`${MEDICAL_BY_PASSENGER_ID}${newValue?.id}`).then(res => {

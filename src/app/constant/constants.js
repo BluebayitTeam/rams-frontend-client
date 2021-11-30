@@ -826,11 +826,19 @@ export const DELETE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/delete/`;
 export const MEDICAL_BY_PASSENGER_ID = `${BASE_URL}/medical/api/v1/medical/get_by_passenger_id/`;
 
 
-//medical_center
+//medicalCenter
 export const CREATE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/create/`;
+
+export const GET_MEDICALCENTERS = `${BASE_URL}/medical_center/api/v1/medical_center/all`;
+
+export const GET_MEDICALCENTER_BY_ID = `${BASE_URL}/medical_center/api/v1/medical_center/`;
 
 export const UPDATE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/update/`;
 
 export const DELETE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/delete/`;
 
-export const MEDICALCENTER_BY_PASSENGER_ID = `${BASE_URL}/medical_center/api/v1/medical_center/get_by_passenger_id/`;
+export const DELETE_MEDICALCENTER_MULTIPLE = `${BASE_URL}​/medical_center/api/v1/medical_center/delete_multiple/`;
+
+export const SEARCH_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/search/`;
+
+export const MEDICALCENTER_WHEN_UPDATE = `${BASE_URL}/medical_center/api/v1/medical_center/check_when_update/`;

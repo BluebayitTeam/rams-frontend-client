@@ -315,11 +315,11 @@ const navigationConfig = [
             },
             //medicalCenter
             {
-                id: 'medicalCenter',
-                title: 'Medical Center',
-                translate: 'Medical Center',
+                id: 'medicalCenters',
+                title: 'Medical Centers',
+                translate: 'Medical Centers',
                 type: 'item',
-                url: '/apps/medicalCenter-management/medicalCenter/new',
+                url: '/apps/medicalCenter-management/medicalCenters',
                 exact: true
             }
         ]

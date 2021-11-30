@@ -1139,6 +1139,25 @@ function PassengerForm(props) {
                 />
             </div>
 
+            <Controller
+                name="office_serial"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className="mt-8 mb-16 w-full"
+                        error={!!errors.office_serial}
+                        helperText={errors?.office_serial?.message}
+                        label="office_serial"
+                        id="office_serial"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
 
 
             <div className="flex md:space-x-12 flex-col md:flex-row">

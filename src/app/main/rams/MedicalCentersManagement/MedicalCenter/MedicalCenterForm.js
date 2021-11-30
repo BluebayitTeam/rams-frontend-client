@@ -1,13 +1,15 @@
 import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Autocomplete } from '@material-ui/lab';
-import React, { useEffect } from 'react';
+import fillSpaceByUnderscore from 'app/@utils/fillSpaceByUnderscore';
+import { MEDICALCENTER_WHEN_UPDATE } from 'app/constant/constants';
+import axios from 'axios';
+import React from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
 import { saveMedicalCenter, updateMedicalCenter } from '../store/medicalCenterSlice';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,26 +21,22 @@ const useStyles = makeStyles(theme => ({
 
 function MedicalCenterForm(props) {
 
+
     const userID = localStorage.getItem('user_id')
 
-    const currentStatuss = useSelector(state => state.data.currentStatuss)
-
+    const madicalId = useSelector(({ medicalCentersManagement }) => medicalCentersManagement.medicalCenter?.id)
 
     const classes = useStyles(props);
 
     const methods = useFormContext();
     const routeParams = useParams();
     const { medicalCenterId } = routeParams;
-    const { control, formState, getValues } = methods;
+    const { control, formState, getValues, setError } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
     const handleDelete = localStorage.getItem('medicalCenterEvent');
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getCurrentStatuss())
-        dispatch(getPassengers());
-    }, [])
 
 
     function handleSaveMedicalCenter() {
@@ -46,8 +44,10 @@ function MedicalCenterForm(props) {
             console.log("saveMedicalCenterRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("medicalCenterAlert", "saveMedicalCenter")
-                history.push('/apps/medicalCenter-management/medicalCenter/new');
-                reset({})
+                history.push('/apps/medicalCenter-management/medicalCenters');
+            }
+            else if (res.payload?.data?.detail) {
+                setError("name", { type: "manual", message: res.payload.data.detail })
             }
         });
     }
@@ -57,8 +57,10 @@ function MedicalCenterForm(props) {
             console.log("updateMedicalCenterRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("medicalCenterAlert", "updateMedicalCenter")
-                history.push('/apps/medicalCenter-management/medicalCenter/new');
-                reset({})
+                history.push('/apps/medicalCenter-management/medicalCenters');
+            }
+            else if (res.payload?.data?.detail) {
+                setError("name", { type: "manual", message: res.payload.data.detail })
             }
         });
     }
@@ -98,13 +100,15 @@ function MedicalCenterForm(props) {
                 }}
             />
 
+
+
+
             <Controller
                 name="name"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.name}
                         helperText={errors?.name?.message}
@@ -114,6 +118,16 @@ function MedicalCenterForm(props) {
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
                         required
+                        onChange={(e) => {
+                            if (e.target.value && madicalId) {
+                                axios.get(`${MEDICALCENTER_WHEN_UPDATE}?id=${madicalId}&name=${fillSpaceByUnderscore(e.target.value)}`).then(res => {
+                                    if (res.data.name_exists) {
+                                        setError("name", { type: "manual", message: "name already exists" })
+                                    }
+                                })
+                            }
+                            field.onChange(e.target.value)
+                        }}
                         onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
@@ -126,7 +140,6 @@ function MedicalCenterForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.email}
                         helperText={errors?.email?.message}
@@ -147,7 +160,6 @@ function MedicalCenterForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.contact_person}
                         helperText={errors?.contact_person?.message}
@@ -168,7 +180,6 @@ function MedicalCenterForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.mobile}
                         helperText={errors?.mobile?.message}
@@ -189,7 +200,6 @@ function MedicalCenterForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.phone_number}
                         helperText={errors?.phone_number?.message}
@@ -210,7 +220,6 @@ function MedicalCenterForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.web_address}
                         helperText={errors?.web_address?.message}
@@ -231,7 +240,6 @@ function MedicalCenterForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.google_map_link}
                         helperText={errors?.google_map_link?.message}
@@ -252,7 +260,6 @@ function MedicalCenterForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.address}
                         helperText={errors?.address?.message}
@@ -266,46 +273,9 @@ function MedicalCenterForm(props) {
                 }}
             />
 
-
-            <Controller
-                name="current_status"
-                control={control}
-                render={({ field: { onChange, value, name } }) => (
-                    <Autocomplete
-                        className="mt-8 mb-16"
-                        freeSolo
-                        value={value ? currentStatuss.find(data => data.id == value) : null}
-                        options={currentStatuss}
-                        getOptionLabel={(option) => `${option.name}`}
-                        onChange={(event, newValue) => {
-                            onChange(newValue?.id)
-                        }}
-                        renderInput={params => (
-
-                            <TextField
-                                {...params}
-                                placeholder="Select CurrentStatus"
-                                label="CurrentStatus"
-                                error={!!errors.current_status}
-                                helperText={errors?.current_status?.message}
-                                variant="outlined"
-                                autoFocus
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
-                            />
-                        )}
-                    />
-                )}
-            />
-
-
-
-
-
         </div>
     );
 }
+
 
 export default MedicalCenterForm

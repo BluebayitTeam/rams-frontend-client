@@ -278,9 +278,18 @@ const ramsRouteConfig = {
         },
         //medicalCenter
         {
-            path: '/apps/medicalCenter-management/medicalCenter/:medicalCenterId',
+            path: '/apps/medicalCenter-management/medicalCenters/:medicalCenterId/:medicalCenterName?',
             component: lazy(() => import('./MedicalCentersManagement/MedicalCenter/NewMedicalCenter'))
         },
+        {
+            path: '/apps/medicalCenter-management/medicalCenters',
+            component: lazy(() => import('./MedicalCentersManagement/MedicalCenters/MedicalCenters'))
+        },
+        {
+            path: '/apps/medicalCenter-management/:medicalCenterId',
+            component: lazy(() => import('./MedicalCentersManagement/MedicalCenter/NewMedicalCenter'))
+        },
+
 
     ]
 }

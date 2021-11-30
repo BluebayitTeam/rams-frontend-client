@@ -1,7 +1,26 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CREATE_MEDICALCENTER, DELETE_MEDICALCENTER, UPDATE_MEDICALCENTER } from '../../../../constant/constants';
+import { CREATE_MEDICALCENTER, DELETE_MEDICALCENTER, GET_MEDICALCENTER_BY_ID, UPDATE_MEDICALCENTER } from '../../../../constant/constants';
 
+
+export const getMedicalCenter = createAsyncThunk('medicalCenterManagement/medicalCenter/getMedicalCenter', async (params, { rejectWithValue }) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    };
+
+    try {
+        const response = await axios.get(`${GET_MEDICALCENTER_BY_ID}${params}`, authTOKEN);
+        const data = await response.data;
+        return data === undefined ? null : data;
+    } catch (err) {
+
+        return rejectWithValue(params)
+    }
+
+})
 
 export const removeMedicalCenter = createAsyncThunk(
     'medicalCenterManagement/medicalCenter/removeMedicalCenter',
@@ -22,8 +41,9 @@ export const removeMedicalCenter = createAsyncThunk(
 
 export const updateMedicalCenter = createAsyncThunk(
     'medicalCenterManagement/medicalCenter/updateMedicalCenter',
-    async (medicalCenterData) => {
-        const medicalCenterDatas = { ...medicalCenterData, created_by: "" }
+    async (medicalCenterData, { dispatch, getState }) => {
+        const { medicalCenter } = getState().medicalCentersManagement;
+
 
         const authTOKEN = {
             headers: {
@@ -31,7 +51,7 @@ export const updateMedicalCenter = createAsyncThunk(
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.put(`${UPDATE_MEDICALCENTER}${medicalCenterData.id}`, medicalCenterData, authTOKEN);
+        const response = await axios.put(`${UPDATE_MEDICALCENTER}${medicalCenter.id}`, medicalCenterData, authTOKEN);
         return response
     }
 
@@ -40,7 +60,7 @@ export const updateMedicalCenter = createAsyncThunk(
 export const saveMedicalCenter = createAsyncThunk(
     'medicalCenterManagement/medicalCenter/saveMedicalCenter',
     async (medicalCenterData) => {
-        const medicalCenterDatas = { ...medicalCenterData, updated_by: "" }
+
 
         const authTOKEN = {
             headers: {
@@ -66,6 +86,7 @@ const medicalCenterSlice = createSlice({
         }
     },
     extraReducers: {
+        [getMedicalCenter.fulfilled]: (state, action) => action.payload,
         [saveMedicalCenter.fulfilled]: (state, action) => action.payload,
         [removeMedicalCenter.fulfilled]: (state, action) => action.payload,
         [updateMedicalCenter.fulfilled]: (state, action) => action.payloHea
