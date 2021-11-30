@@ -272,17 +272,14 @@ const ramsRouteConfig = {
             component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger'))
         },
         //medical
-        // {
-        //     path: '/apps/medical-management/medicals/:medicalId/:medicalName?',
-        //     component: lazy(() => import('./MedicalsManagement/Medical/NewMedical.js'))
-        // },
-        // {
-        //     path: '/apps/medical-management/medicals',
-        //     component: lazy(() => import('./MedicalsManagement/Medical/NewMedical'))
-        // },
         {
             path: '/apps/medical-management/medical/:medicalId',
             component: lazy(() => import('./MedicalsManagement/Medical/NewMedical'))
+        },
+        //medicalCenter
+        {
+            path: '/apps/medicalCenter-management/medicalCenter/:medicalCenterId',
+            component: lazy(() => import('./MedicalCentersManagement/MedicalCenter/NewMedicalCenter'))
         },
 
     ]
