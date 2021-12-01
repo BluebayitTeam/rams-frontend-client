@@ -368,6 +368,27 @@ function VisaEntryForm(props) {
 
 
             <Controller
+                name="sponsor_name_english"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        className="mt-8 mb-16"
+                        error={!!errors.sponsor_name_english}
+                        helperText={errors?.sponsor_name_english?.message}
+                        label="Sponsor Name English"
+                        id="sponsor_name_english"
+                        required
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+
+            <Controller
                 name="sponsor_name_arabic"
                 control={control}
                 render={({ field }) => {
@@ -386,7 +407,6 @@ function VisaEntryForm(props) {
                     />)
                 }}
             />
-
 
             <Controller
                 name="sponsor_mobile"

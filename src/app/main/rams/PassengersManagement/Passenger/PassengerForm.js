@@ -1015,7 +1015,6 @@ function PassengerForm(props) {
                                     {...params}
                                     placeholder="Select Passport Type"
                                     label="Passport Type"
-                                    required
                                     error={!!errors.passport_type}
                                     helperText={errors?.passport_type?.message}
                                     variant="outlined"
@@ -1044,7 +1043,6 @@ function PassengerForm(props) {
                             helperText={errors?.passport_issue_date?.message}
                             label="Passport Issue Date"
                             id="passport_issue_date"
-                            required
                             type="date"
                             InputLabelProps={{ shrink: true }}
                             fullWidth
@@ -1070,7 +1068,6 @@ function PassengerForm(props) {
                             helperText={errors?.passport_expiry_date?.message}
                             label="Passport Expiry Date"
                             id="passport_expiry_date"
-                            required
                             type="date"
                             InputLabelProps={{ shrink: true }}
                             fullWidth
@@ -1104,7 +1101,6 @@ function PassengerForm(props) {
                                     {...params}
                                     placeholder="Select Passport Issue Place"
                                     label="Passport Issue Place"
-                                    required
                                     error={!!errors.passport_issue_place}
                                     helperText={errors?.passport_issue_place?.message}
                                     variant="outlined"
@@ -1129,7 +1125,6 @@ function PassengerForm(props) {
                             helperText={errors?.place_of_residence?.message}
                             label="Place Of Residence"
                             id="place_of_residence"
-                            required
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
@@ -1148,7 +1143,7 @@ function PassengerForm(props) {
                         className="mt-8 mb-16 w-full"
                         error={!!errors.office_serial}
                         helperText={errors?.office_serial?.message}
-                        label="office_serial"
+                        label="Office Serial"
                         id="office_serial"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}

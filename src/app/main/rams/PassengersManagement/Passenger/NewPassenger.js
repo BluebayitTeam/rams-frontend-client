@@ -19,9 +19,6 @@ import PassengerForm from './PassengerForm.js';
  */
 const schema = yup.object().shape({
 
-    // marital_status: yup.string()
-    //     .required("Marital Status is required"),
-
     gender: yup.string()
         .required("Gender is required"),
 
@@ -40,81 +37,17 @@ const schema = yup.object().shape({
     passenger_type: yup.string()
         .required("Passenger Type is required"),
 
-    // current_status: yup.string()
-    //     .required("Current Status is required"),
-
-    // visa_entry: yup.string()
-    //     .required("Visa Entry is required"),
-
-    // police_station: yup.string()
-    //     .required("Police Station is required"),
-
-    // district: yup.string()
-    //     .required("District is required"),
-
-
-    // passenger_id: yup.string()
-    //     .required("Passenger ID is required"),
-
     passenger_name: yup.string()
         .required("Passenger Name is required"),
 
     date_of_birth: yup.string()
         .required("Date Of Birth is required"),
 
-    // nid: yup.string()
-    //     .required("NID is required"),
-
-    // father_name: yup.string()
-    //     .required("Father Name is required"),
-
-    // mother_name: yup.string()
-    //     .required("Mother Name is required"),
-
-    // spouse_name: yup.string()
-    //     .required("Spouse Name is required"),
-
-    // religion: yup.string()
-    //     .required("Religion is required"),
-
     passport_no: yup.string()
         .required("Passport No is required"),
 
     profession: yup.string()
         .required("profession is required"),
-
-    // passport_type: yup.string()
-    //     .required("Passport Type is required"),
-
-    // passport_issue_date: yup.string()
-    //     .required("Passport Issue Date is required"),
-
-    // passport_expiry_date: yup.string()
-    //     .required("Passport Expiry Date is required"),
-
-    // village: yup.string()
-    //     .required("Village is required"),
-
-    // post_office: yup.string()
-    //     .required("Post Office is required"),
-
-    // contact_no: yup.string()
-    //     .required("Contact No is required"),
-
-    // emergency_contact_no: yup.string()
-    //     .required("Emergency Contact No is required"),
-
-    // place_of_birth: yup.string()
-    //     .required("Place Of Birth is required"),
-
-    // place_of_residence: yup.string()
-    //     .required("Place Of Residence is required"),
-
-    // passport_issue_place: yup.string()
-    //     .required("Passport Issue Place is required"),
-
-    // notes: yup.string()
-    //     .required("Notes is required"),
 })
 
 const Passenger = () => {

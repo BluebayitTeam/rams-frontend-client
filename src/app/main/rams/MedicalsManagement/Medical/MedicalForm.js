@@ -317,12 +317,11 @@ function MedicalForm(props) {
 
                             <TextField
                                 {...params}
-                                placeholder="Select CurrentStatus"
-                                label="CurrentStatus"
+                                placeholder="Select Current Status"
+                                label="Curren tStatus"
                                 error={!!errors.current_status}
                                 helperText={errors?.current_status?.message}
                                 variant="outlined"
-                                autoFocus
                                 InputLabelProps={{
                                     shrink: true
                                 }}

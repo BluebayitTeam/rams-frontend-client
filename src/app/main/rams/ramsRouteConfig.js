@@ -289,6 +289,11 @@ const ramsRouteConfig = {
             path: '/apps/medicalCenter-management/:medicalCenterId',
             component: lazy(() => import('./MedicalCentersManagement/MedicalCenter/NewMedicalCenter'))
         },
+        //embassy
+        {
+            path: '/apps/embassy-management/embassy/:embassyId',
+            component: lazy(() => import('./EmbassysManagement/Embassy/NewEmbassy'))
+        },
 
 
     ]

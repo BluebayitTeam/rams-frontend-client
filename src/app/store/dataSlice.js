@@ -294,6 +294,19 @@ export const getAgencys = () => (dispatch) => {
         .catch(() => { });
 }
 
+export const getRecruitingAgencys = () => (dispatch) => {
+    const authTOKEN = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: localStorage.getItem('jwt_access_token'),
+        }
+    }
+    fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
+        .then(response => response.json())
+        .then(data => dispatch(setRecruitingAgencys(data.recruiting_agencies)))
+        .catch(() => { });
+}
+
 export const getPassengerTypes = () => (dispatch) => {
     const authTOKEN = {
         headers: {
@@ -396,6 +409,7 @@ const dataSlice = createSlice({
         demands: [],
         agents: [],
         agencies: [],
+        recruitingAgencys: [],
         passengerTypes: [],
         currentStatuss: [],
         visaEntries: [],
@@ -487,6 +501,9 @@ const dataSlice = createSlice({
         setAgencies: (state, action) => {
             state.agencies = action.payload ? action.payload : []
         },
+        setRecruitingAgencys: (state, action) => {
+            state.recruitingAgencys = action.payload ? action.payload : []
+        },
         setPassengerTypes: (state, action) => {
             state.passengerTypes = action.payload ? action.payload : []
         },
@@ -534,6 +551,7 @@ const {
     setDemands,
     setAgents,
     setAgencies,
+    setRecruitingAgencys,
     setPassengerTypes,
     setCurrentStatuses,
     setVisaEntries,

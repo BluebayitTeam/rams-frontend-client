@@ -38,3 +38,16 @@
 // }
 
 // export default Alert
+
+
+import React from 'react'
+
+function Alert() {
+    return (
+        <div className="flex absolute left-1/2 right-1/2 w-min z-999 rounded-sm py-6 px-8 shadow-lg">
+            <h5>success</h5>
+        </div>
+    )
+}
+
+export default Alert

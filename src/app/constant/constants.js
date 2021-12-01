@@ -842,3 +842,13 @@ export const DELETE_MEDICALCENTER_MULTIPLE = `${BASE_URL}​/medical_center/api/
 export const SEARCH_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/search/`;
 
 export const MEDICALCENTER_WHEN_UPDATE = `${BASE_URL}/medical_center/api/v1/medical_center/check_when_update/`;
+
+
+//embassy
+export const CREATE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/create/`;
+
+export const UPDATE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/update/`;
+
+export const DELETE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/delete/`;
+
+export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/get_by_passenger_id/`;

@@ -128,6 +128,15 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/recruitingAgency-management/recruitingAgencys',
                 exact: true
+            },
+            //medicalCenter
+            {
+                id: 'medicalCenters',
+                title: 'Medical Centers',
+                translate: 'Medical Centers',
+                type: 'item',
+                url: '/apps/medicalCenter-management/medicalCenters',
+                exact: true
             }
         ]
     },
@@ -219,9 +228,9 @@ const navigationConfig = [
             },
             //visaEntry
             {
-                id: 'visaEntrys',
-                title: 'VisaEntries',
-                translate: 'VisaEntries',
+                id: 'visaEntry',
+                title: 'Visa Enty',
+                translate: 'Visa Enty',
                 type: 'item',
                 url: '/apps/visaEntry-management/visaEntrys',
                 exact: true
@@ -313,15 +322,15 @@ const navigationConfig = [
                 url: '/apps/medical-management/medical/new',
                 exact: true
             },
-            //medicalCenter
+            //embassy
             {
-                id: 'medicalCenters',
-                title: 'Medical Centers',
-                translate: 'Medical Centers',
+                id: 'embassy',
+                title: 'Embassy',
+                translate: 'Embassy',
                 type: 'item',
-                url: '/apps/medicalCenter-management/medicalCenters',
+                url: '/apps/embassy-management/embassy/new',
                 exact: true
-            }
+            },
         ]
     }
 ];

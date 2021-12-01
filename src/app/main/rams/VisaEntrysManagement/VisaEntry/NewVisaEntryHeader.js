@@ -91,7 +91,7 @@ const NewVisaEntryHeader = () => {
                                 {name || 'Create New VisaEntry'}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                VisaEntries Detail
+                                VisaEntry Detail
                             </Typography>
                         </motion.div>
                     </div>
