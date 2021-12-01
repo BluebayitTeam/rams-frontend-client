@@ -294,7 +294,11 @@ const ramsRouteConfig = {
             path: '/apps/embassy-management/embassy/:embassyId',
             component: lazy(() => import('./EmbassysManagement/Embassy/NewEmbassy'))
         },
-
+        //mofa
+        {
+            path: '/apps/mofa-management/mofa/:mofaId',
+            component: lazy(() => import('./MofasManagement/Mofa/NewMofa'))
+        },
 
     ]
 }

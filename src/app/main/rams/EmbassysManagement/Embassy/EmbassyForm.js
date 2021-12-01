@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import Image from 'app/@components/Image';
+import { addMonths } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,7 +37,7 @@ function EmbassyForm(props) {
     const methods = useFormContext();
     const routeParams = useParams();
     const { embassyId } = routeParams;
-    const { control, formState, watch, getValues } = methods;
+    const { control, formState, watch, getValues, setValue } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
     const handleDelete = localStorage.getItem('embassyEvent');
@@ -263,7 +264,11 @@ function EmbassyForm(props) {
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
+                        onChange={e => {
+                            field.onChange(e.target.value)
+                            const addMonth = addMonths(new Date(e.target.value,), 3,)
+                            setValue('visa_expiry_date', `${addMonth.getFullYear()}-${(addMonth.getMonth() + 1).toString().padStart(2, 0)}-${(addMonth.getDate() - 1).toString().padStart(2, 0)}`);
+                        }}
                     />)
                 }}
             />

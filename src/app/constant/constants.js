@@ -852,3 +852,12 @@ export const UPDATE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/update/`;
 export const DELETE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/delete/`;
 
 export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/get_by_passenger_id/`;
+
+//mofa
+export const CREATE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/create/`;
+
+export const UPDATE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/update/`;
+
+export const DELETE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/delete/`;
+
+export const MOFA_BY_PASSENGER_ID = `${BASE_URL}/mofa/api/v1/mofa/get_by_passenger_id/`;

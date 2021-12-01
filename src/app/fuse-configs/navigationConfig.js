@@ -331,6 +331,15 @@ const navigationConfig = [
                 url: '/apps/embassy-management/embassy/new',
                 exact: true
             },
+            //mofa
+            {
+                id: 'mofa',
+                title: 'Mofa',
+                translate: 'Mofa',
+                type: 'item',
+                url: '/apps/mofa-management/mofa/new',
+                exact: true
+            }
         ]
     }
 ];
