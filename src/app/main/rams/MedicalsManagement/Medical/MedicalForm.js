@@ -129,10 +129,9 @@ function MedicalForm(props) {
 
                             <TextField
                                 {...params}
-                                placeholder="Select MedicalCenter"
-                                label="MedicalCenter"
+                                placeholder="Select Medical Center"
+                                label="Medical Center"
                                 error={!!errors.medical_center}
-
                                 helperText={errors?.medical_center?.message}
                                 variant="outlined"
                                 autoFocus
@@ -318,7 +317,7 @@ function MedicalForm(props) {
                             <TextField
                                 {...params}
                                 placeholder="Select Current Status"
-                                label="Curren tStatus"
+                                label="Current Status"
                                 error={!!errors.current_status}
                                 helperText={errors?.current_status?.message}
                                 variant="outlined"

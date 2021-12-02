@@ -38,7 +38,6 @@ function MofaForm(props) {
     const handleDelete = localStorage.getItem('mofaEvent');
     const dispatch = useDispatch()
 
-
     useEffect(() => {
         dispatch(getPassengers());
         dispatch(getAgencys());
@@ -185,7 +184,6 @@ function MofaForm(props) {
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        type="number"
                         error={!!errors.re_mofa_charge}
                         helperText={errors?.re_mofa_charge?.message}
                         label="Re Mofa Charge"

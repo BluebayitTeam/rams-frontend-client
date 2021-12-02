@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@material-ui/core/styles';
+import Alert from "app/@components/Alert";
 import useUserInfo from 'app/@customHook/useUserInfo';
 import { setUser } from 'app/auth/store/userSlice';
 import { USER_BY_ID } from 'app/constant/constants';
@@ -12,6 +13,7 @@ function FuseTheme(props) {
 	const direction = useSelector(({ fuse }) => fuse.settings.defaults.direction);
 	const mainTheme = useSelector(selectMainTheme);
 	const auth = useSelector(({ auth }) => auth)
+
 	// const login = useSelector(({ auth }) => auth.login)
 
 	const dispatch = useDispatch()
@@ -36,7 +38,10 @@ function FuseTheme(props) {
 	}, [direction]);
 
 	// console.warn('FuseTheme:: rendered',mainTheme);
-	return <ThemeProvider theme={mainTheme}>{props.children}</ThemeProvider>;
+	return (<>
+		<Alert />
+		<ThemeProvider theme={mainTheme}>{props.children}</ThemeProvider>
+	</>);
 }
 
 export default FuseTheme;

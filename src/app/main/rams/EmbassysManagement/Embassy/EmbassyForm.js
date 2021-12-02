@@ -259,8 +259,8 @@ function EmbassyForm(props) {
                         className="mt-8 mb-16"
                         error={!!errors.stamping_date}
                         helperText={errors?.stamping_date?.message}
-                        label="stamping_date"
-                        id="Stamping Date"
+                        id="stamping_date"
+                        label="Stamping Date"
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
@@ -284,7 +284,7 @@ function EmbassyForm(props) {
                         className="mt-8 mb-16"
                         error={!!errors.visa_expiry_date}
                         helperText={errors?.visa_expiry_date?.message}
-                        label="visa_expiry_date"
+                        label="visa Expiry Date"
                         id="visa_expiry_date"
                         type="date"
                         InputLabelProps={{ shrink: true }}
@@ -305,7 +305,7 @@ function EmbassyForm(props) {
                         className="mt-8 mb-16"
                         error={!!errors.delivery_date}
                         helperText={errors?.delivery_date?.message}
-                        label="delivery_date"
+                        label="Delivery Date"
                         id="delivery_date"
                         type="date"
                         InputLabelProps={{ shrink: true }}
