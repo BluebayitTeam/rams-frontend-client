@@ -349,6 +349,15 @@ const navigationConfig = [
                 url: '/apps/femaleCV-management/femaleCV/new',
                 exact: true
             },
+            //flight
+            {
+                id: 'flight',
+                title: 'Flight',
+                translate: 'Flight',
+                type: 'item',
+                url: '/apps/flight-management/flight/new',
+                exact: true
+            },
         ]
     }
 ];

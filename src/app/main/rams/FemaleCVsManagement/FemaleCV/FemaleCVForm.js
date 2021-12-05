@@ -37,10 +37,9 @@ function FemaleCVForm(props) {
     const methods = useFormContext();
     const routeParams = useParams();
     const { femaleCVId } = routeParams;
-    const { control, formState, watch, getValues } = methods;
+    const { control, formState, watch, getValues, reset } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
-    const handleDelete = localStorage.getItem('femaleCVEvent');
     const dispatch = useDispatch()
 
 
@@ -49,6 +48,10 @@ function FemaleCVForm(props) {
         dispatch(getCountries());
         dispatch(getCurrentStatuss())
     }, [])
+
+    useEffect(() => {
+        watch("image") || setPreviewImage("")
+    }, [watch("image")])
 
 
     function handleSaveFemaleCV() {
@@ -79,7 +82,7 @@ function FemaleCVForm(props) {
                 handleSaveFemaleCV()
                 console.log("saved")
             }
-            else if (handleDelete !== 'Delete' && routeParams?.femaleCVName) {
+            else if (routeParams.femaleCVId !== "new" && watch('passenger')) {
                 handleUpdateFemaleCV()
                 console.log("updated")
             }
@@ -465,12 +468,9 @@ function FemaleCVForm(props) {
                         rows={4}
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
-
-
 
 
             <div className="flex justify-center sm:justify-start flex-wrap -mx-16">

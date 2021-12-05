@@ -32,10 +32,9 @@ function MofaForm(props) {
     const methods = useFormContext();
     const routeParams = useParams();
     const { mofaId } = routeParams;
-    const { control, formState, getValues } = methods;
+    const { control, formState, getValues, reset } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
-    const handleDelete = localStorage.getItem('mofaEvent');
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -72,7 +71,7 @@ function MofaForm(props) {
                 handleSaveMofa()
                 console.log("saved")
             }
-            else if (handleDelete !== 'Delete' && routeParams?.mofaName) {
+            else if (routeParams.mofaId !== "new" && watch('passenger')) {
                 handleUpdateMofa()
                 console.log("updated")
             }

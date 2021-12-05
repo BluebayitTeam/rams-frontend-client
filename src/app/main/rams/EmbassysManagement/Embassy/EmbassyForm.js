@@ -37,10 +37,9 @@ function EmbassyForm(props) {
     const methods = useFormContext();
     const routeParams = useParams();
     const { embassyId } = routeParams;
-    const { control, formState, watch, getValues, setValue } = methods;
+    const { control, formState, watch, getValues, setValue, reset } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
-    const handleDelete = localStorage.getItem('embassyEvent');
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -82,7 +81,7 @@ function EmbassyForm(props) {
                 handleSaveEmbassy()
                 console.log("saved")
             }
-            else if (handleDelete !== 'Delete' && routeParams?.embassyName) {
+            else if (routeParams.femaleCVId !== "new" && watch('passenger')) {
                 handleUpdateEmbassy()
                 console.log("updated")
             }

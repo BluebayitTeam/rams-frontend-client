@@ -282,91 +282,49 @@ export const getAgents = () => (dispatch) => {
 }
 
 export const getAgencys = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
+    fetch(AGENCIES_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setAgencies(data.recruiting_agencies)))
         .catch(() => { });
 }
 
 export const getRecruitingAgencys = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(AGENCIES_WITHOUT_PAGINATION, authTOKEN)
+    fetch(AGENCIES_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setRecruitingAgencys(data.recruiting_agencies)))
         .catch(() => { });
 }
 
 export const getPassengerTypes = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(PASSENGERTYPES_WITHOUT_PAGINATION, authTOKEN)
+    fetch(PASSENGERTYPES_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setPassengerTypes(data.passenger_types)))
         .catch(() => { });
 }
 
 export const getCurrentStatuss = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(CURRENTSTATUSS_WITHOUT_PAGINATION, authTOKEN)
+    fetch(CURRENTSTATUSS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setCurrentStatuses(data.current_statuses)))
         .catch(() => { });
 }
 
 export const getVisaEntrys = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(VISAENTRYS_WITHOUT_PAGINATION, authTOKEN)
+    fetch(VISAENTRYS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setVisaEntries(data.visa_entries)))
         .catch(() => { });
 }
 
 export const getMedicalCenters = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
+    fetch(MEDICALCENTERS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setMedicalCenters(data.medical_centers)))
         .catch(() => { });
 }
 
 export const getPassengers = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(PASSENGERS_WITHOUT_PAGINATION, authTOKEN)
+    fetch(PASSENGERS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setPassengers(data.passengers)))
         .catch(() => { });

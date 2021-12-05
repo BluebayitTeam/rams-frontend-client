@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import { MOFA_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import { FLIGHT_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
@@ -11,10 +11,10 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { resetFlight } from '../store/flightSlice';
 import reducer from '../store/index.js';
-import { resetMofa } from '../store/mofaSlice';
-import MofaForm from './MofaForm.js';
-import NewMofaHeader from './NewMofaHeader.js';
+import FlightForm from './FlightForm.js';
+import NewFlightHeader from './NewFlightHeader.js';
 
 
 
@@ -41,13 +41,13 @@ const schema = yup.object().shape({
         .required("Passenger is required"),
 })
 
-const Mofa = () => {
+const Flight = () => {
 
     const dispatch = useDispatch();
-    // const mofa = useSelector(({ mofasManagement }) => mofasManagement.mofa);
+    // const flight = useSelector(({ flightsManagement }) => flightsManagement.flight);
     const passengers = useSelector(state => state.data.passengers)
 
-    const [noMofa, setNoMofa] = useState(false);
+    const [noFlight, setNoFlight] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -65,17 +65,17 @@ const Mofa = () => {
     useEffect(() => {
         return () => {
             /**
-             * Reset Mofa on component unload
+             * Reset Flight on component unload
              */
-            dispatch(resetMofa());
-            setNoMofa(false);
+            dispatch(resetFlight());
+            setNoFlight(false);
         };
     }, [dispatch]);
 
     /**
      * Show Message if the requested products is not exists
      */
-    if (noMofa) {
+    if (noFlight) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -83,7 +83,7 @@ const Mofa = () => {
                 className="flex flex-col flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There is no such mofa!
+                    There is no such flight!
                 </Typography>
                 <Button
                     className="mt-24"
@@ -92,7 +92,7 @@ const Mofa = () => {
                     to="/apps/e-commerce/products"
                     color="inherit"
                 >
-                    Go to Mofa Page
+                    Go to Flight Page
                 </Button>
             </motion.div>
         );
@@ -106,7 +106,7 @@ const Mofa = () => {
                     toolbar: 'p-0',
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
                 }}
-                header={<NewMofaHeader />}
+                header={<NewFlightHeader />}
                 contentToolbar={
                     <Tabs
                         // value={tabValue}
@@ -130,21 +130,21 @@ const Mofa = () => {
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
                                         onChange={(event, newValue) => {
                                             if (newValue?.id) {
-                                                axios.get(`${MOFA_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
+                                                axios.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
                                                         reset({ ...res.data, passenger: newValue?.id })
-                                                        history.push(`/apps/mofa-management/mofa/${newValue?.passenger_id || newValue?.id}`)
+                                                        history.push(`/apps/flight-management/flight/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
-                                                        history.push(`/apps/mofa-management/mofa/new`)
+                                                        history.push(`/apps/flight-management/flight/new`)
                                                         reset({ passenger: newValue?.id })
                                                     }
                                                 }).catch(() => {
-                                                    history.push(`/apps/mofa-management/mofa/new`)
+                                                    history.push(`/apps/flight-management/flight/new`)
                                                     reset({ passenger: newValue?.id })
                                                 })
                                             } else {
-                                                history.push(`/apps/mofa-management/mofa/new`)
+                                                history.push(`/apps/flight-management/flight/new`)
                                                 reset({ passenger: newValue?.id })
                                             }
                                         }}
@@ -159,7 +159,6 @@ const Mofa = () => {
                                                 required
                                                 helperText={errors?.passenger?.message}
                                                 variant="outlined"
-                                                autoFocus
                                                 InputLabelProps={{
                                                     shrink: true
                                                 }}
@@ -174,7 +173,7 @@ const Mofa = () => {
                 }
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <MofaForm />
+                        <FlightForm />
                     </div>
                 }
                 innerScroll
@@ -182,4 +181,4 @@ const Mofa = () => {
         </FormProvider>
     );
 };
-export default withReducer('mofasManagement', reducer)(Mofa);
+export default withReducer('flightsManagement', reducer)(Flight);

@@ -870,3 +870,13 @@ export const UPDATE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/update/`;
 export const DELETE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/delete/`;
 
 export const FEMALECV_BY_PASSENGER_ID = `${BASE_URL}/female_cv/api/v1/female_cv/get_by_passenger_id/`;
+
+
+//flight
+export const CREATE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/create/`;
+
+export const UPDATE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/update/`;
+
+export const DELETE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/delete/`;
+
+export const FLIGHT_BY_PASSENGER_ID = `${BASE_URL}/flight/api/v1/flight/get_by_passenger_id/`;

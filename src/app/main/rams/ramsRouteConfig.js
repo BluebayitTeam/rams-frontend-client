@@ -304,6 +304,11 @@ const ramsRouteConfig = {
             path: '/apps/femaleCV-management/femaleCV/:femaleCVId',
             component: lazy(() => import('./FemaleCVsManagement/FemaleCV/NewFemaleCV'))
         },
+        //flight
+        {
+            path: '/apps/flight-management/flight/:flightId',
+            component: lazy(() => import('./FlightsManagement/Flight/NewFlight'))
+        },
 
     ]
 }

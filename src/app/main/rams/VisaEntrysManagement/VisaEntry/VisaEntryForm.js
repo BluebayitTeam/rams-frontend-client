@@ -2,7 +2,7 @@ import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -33,6 +33,8 @@ function VisaEntryForm(props) {
     const handleDelete = localStorage.getItem('visaEntryEvent');
     const dispatch = useDispatch()
 
+
+    const [issueDate, setissueDate] = useState("2021-12-31")
     useEffect(() => {
         dispatch(getDemands())
         dispatch(getAgents())
@@ -73,6 +75,7 @@ function VisaEntryForm(props) {
     }
 
 
+    console.log("values", getValues())
     return (
         <div>
 
@@ -226,6 +229,7 @@ function VisaEntryForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
+                        value={issueDate}
                         className="mt-8 mb-16"
                         error={!!errors.visa_issue_date}
                         helperText={errors?.visa_issue_date?.message}
@@ -235,7 +239,7 @@ function VisaEntryForm(props) {
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -361,7 +365,7 @@ function VisaEntryForm(props) {
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -461,7 +465,8 @@ function VisaEntryForm(props) {
                         helperText={errors?.notes?.message}
                         label="Notes"
                         id="notes"
-                        required
+                        multiline
+                        rows={4}
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
