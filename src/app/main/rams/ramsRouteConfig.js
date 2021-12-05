@@ -299,6 +299,11 @@ const ramsRouteConfig = {
             path: '/apps/mofa-management/mofa/:mofaId',
             component: lazy(() => import('./MofasManagement/Mofa/NewMofa'))
         },
+        //femaleCV
+        {
+            path: '/apps/femaleCV-management/femaleCV/:femaleCVId',
+            component: lazy(() => import('./FemaleCVsManagement/FemaleCV/NewFemaleCV'))
+        },
 
     ]
 }

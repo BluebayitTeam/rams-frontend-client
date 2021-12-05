@@ -339,7 +339,16 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/mofa-management/mofa/new',
                 exact: true
-            }
+            },
+            //femaleCV
+            {
+                id: 'femaleCV',
+                title: 'Female CV',
+                translate: 'Female CV',
+                type: 'item',
+                url: '/apps/femaleCV-management/femaleCV/new',
+                exact: true
+            },
         ]
     }
 ];

@@ -861,3 +861,12 @@ export const UPDATE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/update/`;
 export const DELETE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/delete/`;
 
 export const MOFA_BY_PASSENGER_ID = `${BASE_URL}/mofa/api/v1/mofa/get_by_passenger_id/`;
+
+//female_cv
+export const CREATE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/create/`;
+
+export const UPDATE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/update/`;
+
+export const DELETE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/delete/`;
+
+export const FEMALECV_BY_PASSENGER_ID = `${BASE_URL}/female_cv/api/v1/female_cv/get_by_passenger_id/`;
