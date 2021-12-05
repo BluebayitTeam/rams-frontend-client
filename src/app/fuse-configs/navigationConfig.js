@@ -358,6 +358,16 @@ const navigationConfig = [
                 url: '/apps/flight-management/flight/new',
                 exact: true
             },
+            //maleCV
+            {
+                id: 'maleCV',
+                title: 'Male CV',
+                translate: 'Male CV',
+                type: 'item',
+                url: '/apps/maleCV-management/maleCV/new',
+                exact: true
+            }
+
         ]
     }
 ];

@@ -181,7 +181,6 @@ function VisaEntryForm(props) {
                             onChange(newValue?.id)
                         }}
                         renderInput={params => (
-
                             <TextField
                                 {...params}
                                 placeholder="Select Visa Agent"
@@ -223,13 +222,33 @@ function VisaEntryForm(props) {
             />
 
 
+            {/* <Controller
+                name="visa_issue_date"
+                control={control}
+                render={({ field }) => {
+                    return (
+                        <DatePicker
+                            {...field}
+                            onChange={(value) => {
+                                field.onChange(moment(value, "MM-DD-YYYY"))
+                                console.log("e", value)
+                            }}
+                            className="mt-8 mb-16"
+                            label="Visa Issue Date"
+                            id="visa_issue_date"
+                            format="yyyy/mm/dd"
+                        // onKeyDown={handleSubmitOnKeyDownEnter}
+                        />)
+                }}
+            /> */}
+
+
             <Controller
                 name="visa_issue_date"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={issueDate}
                         className="mt-8 mb-16"
                         error={!!errors.visa_issue_date}
                         helperText={errors?.visa_issue_date?.message}
@@ -239,6 +258,7 @@ function VisaEntryForm(props) {
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
+                        renderInput={() => (<h1>2021</h1>)}
                     // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}

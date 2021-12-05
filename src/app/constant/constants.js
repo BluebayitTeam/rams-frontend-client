@@ -851,7 +851,7 @@ export const UPDATE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/update/`;
 
 export const DELETE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/delete/`;
 
-export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/get_by_passenger_id/`;
+export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/check_visa_entry_medical_mofa_and_get_embassy_by_passenger_id/`;
 
 //mofa
 export const CREATE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/create/`;
@@ -880,3 +880,13 @@ export const UPDATE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/update/`;
 export const DELETE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/delete/`;
 
 export const FLIGHT_BY_PASSENGER_ID = `${BASE_URL}/flight/api/v1/flight/get_by_passenger_id/`;
+
+
+//male_cv
+export const CREATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/create/`;
+
+export const UPDATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/update/`;
+
+export const DELETE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/delete/`;
+
+export const MALECV_BY_PASSENGER_ID = `${BASE_URL}/male_cv/api/v1/male_cv/get_by_passenger_id/`;

@@ -7,8 +7,8 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { getAgents, getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
-import { saveFlight, updateFlight } from '../store/flightSlice';
+import { getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
+import { saveMaleCV, updateMaleCV } from '../store/maleCVSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,20 +23,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function FlightForm(props) {
+function MaleCVForm(props) {
 
     const [previewImage, setPreviewImage] = useState()
     const userID = localStorage.getItem('user_id')
 
-    const ticketAgencys = useSelector(state => state.data.agents)
     const currentStatuss = useSelector(state => state.data.currentStatuss)
-
 
     const classes = useStyles(props);
 
     const methods = useFormContext();
     const routeParams = useParams();
-    const { flightId } = routeParams;
+    const { maleCVId } = routeParams;
     const { control, formState, watch, reset, getValues } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
@@ -45,33 +43,31 @@ function FlightForm(props) {
 
     useEffect(() => {
         dispatch(getPassengers());
-        dispatch(getAgents());
         dispatch(getCurrentStatuss())
     }, [])
 
 
     useEffect(() => {
-        watch("ticket_image") || setPreviewImage("")
-    }, [watch("ticket_image")])
+        watch("image") || setPreviewImage("")
+    }, [watch("image")])
 
-
-    function handleSaveFlight() {
-        dispatch(saveFlight(getValues())).then((res) => {
-            console.log("saveFlightRes", res)
+    function handleSaveMaleCV() {
+        dispatch(saveMaleCV(getValues())).then((res) => {
+            console.log("saveMaleCVRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("flightAlert", "saveFlight")
-                history.push('/apps/flight-management/flight/new');
+                localStorage.setItem("maleCVAlert", "saveMaleCV")
+                history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
             }
         });
     }
 
-    function handleUpdateFlight() {
-        dispatch(updateFlight(getValues())).then((res) => {
-            console.log("updateFlightRes", res)
+    function handleUpdateMaleCV() {
+        dispatch(updateMaleCV(getValues())).then((res) => {
+            console.log("updateMaleCVRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("flightAlert", "updateFlight")
-                history.push('/apps/flight-management/flight/new');
+                localStorage.setItem("maleCVAlert", "updateMaleCV")
+                history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
             }
         });
@@ -79,12 +75,12 @@ function FlightForm(props) {
 
     const handleSubmitOnKeyDownEnter = (ev) => {
         if (ev.key === 'Enter') {
-            if (routeParams.flightId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
-                handleSaveFlight()
+            if (routeParams.maleCVId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveMaleCV()
                 console.log("saved")
             }
-            else if (routeParams.flightId !== "new" && watch('passenger')) {
-                handleUpdateFlight()
+            else if (routeParams.maleCVId !== "new" && watch('passenger')) {
+                handleUpdateMaleCV()
                 console.log("updated")
             }
         }
@@ -95,7 +91,7 @@ function FlightForm(props) {
         <div>
 
             <Controller
-                name={flightId === 'new' ? 'created_by' : 'updated_by'}
+                name={maleCVId === 'new' ? 'created_by' : 'updated_by'}
                 control={control}
                 defaultValue={userID}
                 render={({ field }) => {
@@ -112,51 +108,19 @@ function FlightForm(props) {
                 }}
             />
 
-            <Controller
-                name="ticket_agency"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                    <Autocomplete
-                        className="mt-8 mb-16"
-                        freeSolo
-                        value={value ? ticketAgencys.find(data => data.id == value) : null}
-                        options={ticketAgencys}
-                        getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-                        onChange={(event, newValue) => {
-                            onChange(newValue?.id)
-                        }}
-                        renderInput={params => (
-
-                            <TextField
-                                {...params}
-                                placeholder="Select Ticket Agency"
-                                label="Ticket Agency"
-                                error={!!errors.ticket_agency}
-                                helperText={errors?.ticket_agency?.message}
-                                variant="outlined"
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
-                            />
-                        )}
-                    />
-                )}
-            />
-
 
             <Controller
-                name="carrier_air_way"
+                name="profession"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.carrier_air_way}
-                        helperText={errors?.carrier_air_way?.message}
-                        label="Carrier Air Way"
-                        id="carrier_air_way"
+                        error={!!errors.profession}
+                        helperText={errors?.profession?.message}
+                        label="Profession"
+                        id="profession"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
@@ -167,17 +131,17 @@ function FlightForm(props) {
 
 
             <Controller
-                name="flight_no"
+                name="qualification"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.flight_no}
-                        helperText={errors?.flight_no?.message}
-                        label="Flight No"
-                        id="flight_no"
+                        error={!!errors.qualification}
+                        helperText={errors?.qualification?.message}
+                        label="Qualification"
+                        id="qualification"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
@@ -188,17 +152,17 @@ function FlightForm(props) {
 
 
             <Controller
-                name="ticket_no"
+                name="experience"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.ticket_no}
-                        helperText={errors?.ticket_no?.message}
-                        label="Ticket No"
-                        id="ticket_no"
+                        error={!!errors.experience}
+                        helperText={errors?.experience?.message}
+                        label="Experience"
+                        id="experience"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
@@ -209,17 +173,17 @@ function FlightForm(props) {
 
 
             <Controller
-                name="sector_name"
+                name="year_of_experience"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.sector_name}
-                        helperText={errors?.sector_name?.message}
-                        label="Sector Name"
-                        id="sector_name"
+                        error={!!errors.year_of_experience}
+                        helperText={errors?.year_of_experience?.message}
+                        label="Year Of Eexperience"
+                        id="year_of_experience"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
@@ -230,17 +194,17 @@ function FlightForm(props) {
 
 
             <Controller
-                name="ticket_status"
+                name="height"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.ticket_status}
-                        helperText={errors?.ticket_status?.message}
-                        label="Ticket Status"
-                        id="ticket_status"
+                        error={!!errors.height}
+                        helperText={errors?.height?.message}
+                        label="Height"
+                        id="height"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
@@ -251,17 +215,17 @@ function FlightForm(props) {
 
 
             <Controller
-                name="flight_time"
+                name="weight"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.flight_time}
-                        helperText={errors?.flight_time?.message}
-                        label="Flight Time"
-                        id="flight_time"
+                        error={!!errors.weight}
+                        helperText={errors?.weight?.message}
+                        label="Weight"
+                        id="weight"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
@@ -272,61 +236,21 @@ function FlightForm(props) {
 
 
             <Controller
-                name="arrival_time"
+                name="language_skill"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.arrival_time}
-                        helperText={errors?.arrival_time?.message}
-                        label="Arrival Time"
-                        id="arrival_time"
+                        error={!!errors.language_skill}
+                        helperText={errors?.language_skill?.message}
+                        label="Language Skill"
+                        id="language_skill"
                         variant="outlined"
                         InputLabelProps={field.value && { shrink: true }}
                         fullWidth
                         onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="issue_date"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.issue_date}
-                        helperText={errors?.issue_date?.message}
-                        type="date"
-                        label="Issue Date"
-                        id="issue_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="flight_date"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.flight_date}
-                        helperText={errors?.flight_date?.message}
-                        type="date"
-                        label="Flight Date"
-                        id="flight_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
@@ -366,30 +290,9 @@ function FlightForm(props) {
 
 
 
-            <Controller
-                name="notes"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.notes}
-                        helperText={errors?.notes?.message}
-                        label="Notes"
-                        id="notes"
-                        variant="outlined"
-                        multiline
-                        rows={4}
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                    />)
-                }}
-            />
-
 
             <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-                <Image name="ticket_image" previewImage={previewImage} setPreviewImage={setPreviewImage} />
+                <Image name="image" previewImage={previewImage} setPreviewImage={setPreviewImage} />
             </div>
 
 
@@ -397,4 +300,4 @@ function FlightForm(props) {
     );
 }
 
-export default FlightForm
+export default MaleCVForm
