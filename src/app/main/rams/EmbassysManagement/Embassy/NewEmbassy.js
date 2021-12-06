@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { EMBASSY_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
@@ -167,23 +168,16 @@ const Embassy = () => {
                                                             updatePermission: false
                                                         })
                                                         history.push(`/apps/embassy-management/embassy/new`)
-
-                                                        console.log("createDataSet", {
-                                                            visa_number_readonly: visa_entry.visa_number,
-                                                            sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-                                                            sponsor_name_english_readonly: visa_entry.sponsor_name_english,
-                                                            sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
-                                                            mofa_no_readonly: mofa.mofa_no,
-                                                            passenger: newValue?.id,
-                                                            createPermission: true,
-                                                            updatePermission: false
-                                                        })
                                                     }
+                                                    //no data scope show alert
                                                     else {
                                                         history.push(`/apps/embassy-management/embassy/new`)
                                                         reset({ passenger: newValue?.id })
-
                                                         console.log("elseScope", res.data)
+                                                        dispatch(setAlert({
+                                                            alertType: "warning",
+                                                            alertValue: `please check ${res.data?.visa_entry == false ? "visa Entry," : ""} ${res.data?.mofa == false ? "Mofa," : ""} ${res.data?.medical == false ? "medical," : ""}information`
+                                                        }))
                                                     }
 
 
