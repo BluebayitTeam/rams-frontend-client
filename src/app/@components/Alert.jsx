@@ -1,8 +1,8 @@
 
 
-import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 function Alert() {
 
@@ -11,24 +11,55 @@ function Alert() {
     const alert = useSelector(({ alert }) => alert)
 
     useEffect(() => {
+        if (alersible) {
+            setTimeout(() => {
+                setAlersible(false)
+            }, 3000);
+        }
+    }, [alersible])
+
+    useEffect(() => {
         if (alert.alertValue) {
             setAlersible(true)
         }
     }, [alert.alertChanged])
 
-    return alersible ? (
+    return (
         <div
-            className={`flex fixed left-1/2 right-1/2 w-min z-999 rounded-sm py-4 px-8 ${alert.alertType === "success" ? "bg-green-A200" : alert.alertType === "warning" ? "bg-yellow-A100" : alert.alertType === "error" ? "bg-red-300" : ""} shadow-xl`}
             style={{
-                top: "118px",
-                whiteSpace: "pre",
+                position: 'absolute',
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '120px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
             }}
         >
-            <motion.div>
-                <h5>{alert.alertValue}</h5>
-            </motion.div>
-        </div>
-    ) : null
+            <div
+                style={{
+                    width: "fitContent",
+                    zIndex: 100,
+                }}
+            >
+                <motion.div>
+                    <pre
+                        className={` ${alert.alertType === "success" ? "bg-green-A200" : alert.alertType === "warning" ? "bg-yellow-A100" : alert.alertType === "error" ? "bg-red-300" : ""} shadow-xl lg:ml-288 lg:mr-8`}
+                        style={{
+                            padding: alersible ? "5px" : "0px",
+                            borderRadius: "5px",
+                            opacity: alersible ? 1 : 0,
+                            transitionProperty: "all",
+                            transitionDuration: "0.5s",
+                            transitionTimingFunction: "cubic-bezier(0.27, 0.24, 0, 1.03)",
+                            transitionDelay: "0s",
+                        }}
+                    >{alersible ? alert.alertValue : ""}</pre>
+                </motion.div>
+            </div>
+        </div >
+    )
 }
 
 export default Alert

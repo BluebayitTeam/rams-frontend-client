@@ -4,14 +4,14 @@ const dataSlice = createSlice({
     name: "alert/detail",
     initialState: {
         alertValue: "",
-        alertType: "",
+        alertType: "success",
         alertChanged: 0,
     },
     reducers: {
         setAlert: (state, action) => {
             const payload = action.payload
             return {
-                alertValue: payload.alertValue || "",
+                alertValue: typeof (payload) === "string" ? payload : payload.alertValue || "",
                 alertType: payload.alertType || "success",
                 alertChanged: Math.random(),
             }

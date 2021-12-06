@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import Image from 'app/@components/Image';
+import { setAlert } from 'app/store/alertSlice';
 import { addMonths } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -60,6 +61,7 @@ function EmbassyForm(props) {
                 localStorage.setItem("embassyAlert", "saveEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -71,6 +73,7 @@ function EmbassyForm(props) {
                 localStorage.setItem("embassyAlert", "updateEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }

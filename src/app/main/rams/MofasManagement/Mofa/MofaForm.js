@@ -2,6 +2,7 @@ import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,6 +51,7 @@ function MofaForm(props) {
                 localStorage.setItem("mofaAlert", "saveMofa")
                 history.push('/apps/mofa-management/mofa/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -61,6 +63,7 @@ function MofaForm(props) {
                 localStorage.setItem("mofaAlert", "updateMofa")
                 history.push('/apps/mofa-management/mofa/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }

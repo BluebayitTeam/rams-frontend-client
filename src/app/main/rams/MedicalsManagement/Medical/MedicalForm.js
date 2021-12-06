@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import Image from 'app/@components/Image';
+import { setAlert } from 'app/store/alertSlice';
 import { addMonths } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -61,6 +62,7 @@ function MedicalForm(props) {
                 localStorage.setItem("medicalAlert", "saveMedical")
                 history.push('/apps/medical-management/medical/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -72,6 +74,7 @@ function MedicalForm(props) {
                 localStorage.setItem("medicalAlert", "updateMedical")
                 history.push('/apps/medical-management/medical/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }

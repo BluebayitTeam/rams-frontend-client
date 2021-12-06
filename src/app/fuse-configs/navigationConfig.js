@@ -366,7 +366,17 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/maleCV-management/maleCV/new',
                 exact: true
+            },
+            //manPowerList
+            {
+                id: 'manPowerList',
+                title: 'ManPower List',
+                translate: 'ManPower List',
+                type: 'item',
+                url: '/apps/manPowerList-management/manPowerList/new',
+                exact: true
             }
+
 
         ]
     }

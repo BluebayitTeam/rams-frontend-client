@@ -890,3 +890,13 @@ export const UPDATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/update/`;
 export const DELETE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/delete/`;
 
 export const MALECV_BY_PASSENGER_ID = `${BASE_URL}/male_cv/api/v1/male_cv/get_by_passenger_id/`;
+
+
+//man_power_list
+export const CREATE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_list/create/`;
+
+export const UPDATE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_list/update/`;
+
+export const DELETE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_list/delete/`;
+
+export const MANPOWERLIST_BY_PASSENGER_ID = `${BASE_URL}/man_power_list/api/v1/man_power_list/get_by_passenger_id/`;

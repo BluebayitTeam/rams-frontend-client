@@ -2,6 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
+import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -27,6 +28,7 @@ const NewEmbassyHeader = () => {
                 localStorage.setItem("embassyAlert", "saveEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -38,6 +40,7 @@ const NewEmbassyHeader = () => {
                 localStorage.setItem("embassyAlert", "updateEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }
@@ -49,6 +52,7 @@ const NewEmbassyHeader = () => {
                 localStorage.setItem("embassyAlert", "deleteEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
                 reset({})
+                dispatch(setAlert("remove success"))
             }
         });
     }

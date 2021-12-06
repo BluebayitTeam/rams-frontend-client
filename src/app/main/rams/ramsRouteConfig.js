@@ -314,6 +314,12 @@ const ramsRouteConfig = {
             path: '/apps/maleCV-management/maleCV/:maleCVId',
             component: lazy(() => import('./MaleCVsManagement/MaleCV/NewMaleCV'))
         },
+        //manPowerList
+        {
+            path: '/apps/manPowerList-management/manPowerList/:manPowerListId',
+            component: lazy(() => import('./ManPowerListsManagement/ManPowerList/NewManPowerList'))
+        },
+
 
     ]
 }

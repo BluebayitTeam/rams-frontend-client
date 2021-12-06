@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -33,6 +34,7 @@ const NewMofaHeader = () => {
                 localStorage.setItem("mofaAlert", "saveMofa")
                 history.push('/apps/mofa-management/mofa/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -44,6 +46,7 @@ const NewMofaHeader = () => {
                 localStorage.setItem("mofaAlert", "updateMofa")
                 history.push('/apps/mofa-management/mofa/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }
@@ -55,6 +58,7 @@ const NewMofaHeader = () => {
                 localStorage.setItem("mofaAlert", "deleteMofa")
                 history.push('/apps/mofa-management/mofa/new');
                 reset({})
+                dispatch(setAlert("remove success"))
             }
         });
     }
