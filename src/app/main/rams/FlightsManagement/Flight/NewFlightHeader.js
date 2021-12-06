@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -33,6 +34,7 @@ const NewFlightHeader = () => {
                 localStorage.setItem("flightAlert", "saveFlight")
                 history.push('/apps/flight-management/flight/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -44,6 +46,7 @@ const NewFlightHeader = () => {
                 localStorage.setItem("flightAlert", "updateFlight")
                 history.push('/apps/flight-management/flight/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }
@@ -55,6 +58,7 @@ const NewFlightHeader = () => {
                 localStorage.setItem("flightAlert", "deleteFlight")
                 history.push('/apps/flight-management/flight/new');
                 reset({})
+                dispatch(setAlert("remove success"))
             }
         });
     }

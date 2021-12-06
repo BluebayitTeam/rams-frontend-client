@@ -1,8 +1,9 @@
 
 
+import { setAlert } from 'app/store/alertSlice'
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 function Alert() {
 
@@ -10,10 +11,13 @@ function Alert() {
 
     const alert = useSelector(({ alert }) => alert)
 
+    const dispatch = useDispatch()
+
     useEffect(() => {
         if (alersible) {
             setTimeout(() => {
                 setAlersible(false)
+                dispatch(setAlert(""))
             }, 3000);
         }
     }, [alersible])

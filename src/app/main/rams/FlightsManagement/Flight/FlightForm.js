@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import Image from 'app/@components/Image';
+import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,6 +63,7 @@ function FlightForm(props) {
                 localStorage.setItem("flightAlert", "saveFlight")
                 history.push('/apps/flight-management/flight/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -73,6 +75,7 @@ function FlightForm(props) {
                 localStorage.setItem("flightAlert", "updateFlight")
                 history.push('/apps/flight-management/flight/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }

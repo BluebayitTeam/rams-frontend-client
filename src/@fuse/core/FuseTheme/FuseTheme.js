@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@material-ui/core/styles';
-import Alert from "app/@components/Alert";
 import useUserInfo from 'app/@customHook/useUserInfo';
 import { setUser } from 'app/auth/store/userSlice';
 import { USER_BY_ID } from 'app/constant/constants';
@@ -39,7 +38,6 @@ function FuseTheme(props) {
 
 	// console.warn('FuseTheme:: rendered',mainTheme);
 	return (<>
-		<Alert />
 		<ThemeProvider theme={mainTheme}>{props.children}</ThemeProvider>
 	</>);
 }

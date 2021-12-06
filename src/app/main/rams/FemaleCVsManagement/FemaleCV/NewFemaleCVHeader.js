@@ -2,6 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
+import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -27,6 +28,7 @@ const NewFemaleCVHeader = () => {
                 localStorage.setItem("femaleCVAlert", "saveFemaleCV")
                 history.push('/apps/femaleCV-management/femaleCV/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -38,6 +40,7 @@ const NewFemaleCVHeader = () => {
                 localStorage.setItem("femaleCVAlert", "updateFemaleCV")
                 history.push('/apps/femaleCV-management/femaleCV/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }
@@ -49,6 +52,7 @@ const NewFemaleCVHeader = () => {
                 localStorage.setItem("femaleCVAlert", "deleteFemaleCV")
                 history.push('/apps/femaleCV-management/femaleCV/new');
                 reset({})
+                dispatch(setAlert("remove success"))
             }
         });
     }

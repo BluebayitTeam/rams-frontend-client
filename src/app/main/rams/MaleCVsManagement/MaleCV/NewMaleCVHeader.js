@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -19,9 +20,6 @@ const NewMaleCVHeader = () => {
     const theme = useTheme();
     const history = useHistory();
 
-    const image = watch('image');
-    const featuredImageId = watch('featuredImageId');
-
     const routeParams = useParams();
 
     const passengers = useSelector(state => state.data.passengers)
@@ -33,6 +31,7 @@ const NewMaleCVHeader = () => {
                 localStorage.setItem("maleCVAlert", "saveMaleCV")
                 history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
+                dispatch(setAlert("save success"))
             }
         });
     }
@@ -44,6 +43,7 @@ const NewMaleCVHeader = () => {
                 localStorage.setItem("maleCVAlert", "updateMaleCV")
                 history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
+                dispatch(setAlert("update success"))
             }
         });
     }
@@ -55,6 +55,7 @@ const NewMaleCVHeader = () => {
                 localStorage.setItem("maleCVAlert", "deleteMaleCV")
                 history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
+                dispatch(setAlert("remove success"))
             }
         });
     }
