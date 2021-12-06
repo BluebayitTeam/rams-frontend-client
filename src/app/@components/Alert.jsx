@@ -51,7 +51,7 @@ function Alert() {
                     <pre
                         className={` ${alert.alertType === "success" ? "bg-green-A200" : alert.alertType === "warning" ? "bg-yellow-A100" : alert.alertType === "error" ? "bg-red-300" : ""} shadow-xl lg:ml-288 lg:mr-8`}
                         style={{
-                            padding: alersible ? "5px" : "0px",
+                            padding: alersible ? "5px 10px" : "0px",
                             borderRadius: "5px",
                             opacity: alersible ? 1 : 0,
                             transitionProperty: "all",

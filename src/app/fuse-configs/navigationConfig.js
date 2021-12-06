@@ -375,7 +375,17 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/manPowerList-management/manPowerList/new',
                 exact: true
+            },
+            //musanedOkala
+            {
+                id: 'musanedOkala',
+                title: 'Musaned Okala',
+                translate: 'Musaned Okala',
+                type: 'item',
+                url: '/apps/musanedOkala-management/musanedOkala/new',
+                exact: true
             }
+
 
 
         ]

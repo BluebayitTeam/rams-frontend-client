@@ -80,11 +80,11 @@ function EmbassyForm(props) {
 
     const handleSubmitOnKeyDownEnter = (ev) => {
         if (ev.key === 'Enter') {
-            if (routeParams.embassyId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
+            if (routeParams.embassyId === "new" && !(_.isEmpty(dirtyFields) || !isValid) && watch('createPermission')) {
                 handleSaveEmbassy()
                 console.log("saved")
             }
-            else if (routeParams.femaleCVId !== "new" && watch('passenger')) {
+            else if (routeParams.femaleCVId !== "new" && watch('passenger') && watch('updatePermission')) {
                 handleUpdateEmbassy()
                 console.log("updated")
             }
@@ -95,7 +95,7 @@ function EmbassyForm(props) {
     return (
         <div>
 
-            <Controller
+            {/* <Controller
                 name={embassyId === 'new' ? 'created_by' : 'updated_by'}
                 control={control}
                 defaultValue={userID}
@@ -111,7 +111,7 @@ function EmbassyForm(props) {
                         fullWidth
                     />)
                 }}
-            />
+            /> */}
 
             <Controller
                 name="recruiting_agency"
@@ -291,7 +291,6 @@ function EmbassyForm(props) {
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -312,10 +311,124 @@ function EmbassyForm(props) {
                         type="date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
+
+
+
+
+
+            <Controller
+                name="visa_number_readonly"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.visa_number_readonly}
+                        helperText={errors?.visa_number_readonly?.message}
+                        label="Visa No"
+                        id="visa_number_readonly"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />)
+                }}
+            />
+
+            <Controller
+                name="sponsor_id_no_readonly"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.sponsor_id_no_readonly}
+                        helperText={errors?.sponsor_id_no_readonly?.message}
+                        label="Sponsor ID No"
+                        id="sponsor_id_no_readonly"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />)
+                }}
+            />
+
+            <Controller
+                name="sponsor_name_english_readonly"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.sponsor_name_english_readonly}
+                        helperText={errors?.sponsor_name_english_readonly?.message}
+                        label="Sponsor Name English"
+                        id="sponsor_name_english_readonly"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />)
+                }}
+            />
+
+            <Controller
+                name="sponsor_name_arabic_readonly"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.sponsor_name_arabic_readonly}
+                        helperText={errors?.sponsor_name_arabic_readonly?.message}
+                        label="Sponsor Name Arabic"
+                        id="sponsor_name_arabic_readonly"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />)
+                }}
+            />
+
+            <Controller
+                name="mofa_no_readonly"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.mofa_no_readonly}
+                        helperText={errors?.mofa_no_readonly?.message}
+                        label="Mofa No"
+                        id="mofa_no_readonly"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />)
+                }}
+            />
+
 
 
 

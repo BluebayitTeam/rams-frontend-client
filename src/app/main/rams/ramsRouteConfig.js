@@ -319,6 +319,12 @@ const ramsRouteConfig = {
             path: '/apps/manPowerList-management/manPowerList/:manPowerListId',
             component: lazy(() => import('./ManPowerListsManagement/ManPowerList/NewManPowerList'))
         },
+        //musanedOkala
+        {
+            path: '/apps/musanedOkala-management/musanedOkala/:musanedOkalaId',
+            component: lazy(() => import('./MusanedOkalasManagement/MusanedOkala/NewMusanedOkala'))
+        },
+
 
 
     ]

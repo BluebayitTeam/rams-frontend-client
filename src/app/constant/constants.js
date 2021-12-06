@@ -900,3 +900,13 @@ export const UPDATE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_
 export const DELETE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_list/delete/`;
 
 export const MANPOWERLIST_BY_PASSENGER_ID = `${BASE_URL}/man_power_list/api/v1/man_power_list/get_by_passenger_id/`;
+
+
+//musaned_okala
+export const CREATE_MUSANEDOKALA = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/create/`;
+
+export const UPDATE_MUSANEDOKALA = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/update/`;
+
+export const DELETE_MUSANEDOKALA = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/delete/`;
+
+export const MUSANEDOKALA_BY_PASSENGER_ID = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/get_by_passenger_id/`;

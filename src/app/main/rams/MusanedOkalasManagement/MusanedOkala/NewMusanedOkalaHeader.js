@@ -2,55 +2,55 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import { setAlert } from 'app/store/alertSlice';
+import { setAlert } from "app/store/alertSlice";
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { removeEmbassy, saveEmbassy, updateEmbassy } from '../store/embassySlice';
+import { removeMusanedOkala, saveMusanedOkala, updateMusanedOkala } from '../store/musanedOkalaSlice';
 
-const NewEmbassyHeader = () => {
+const NewMusanedOkalaHeader = () => {
     const dispatch = useDispatch();
     const methods = useFormContext();
     const { formState, watch, getValues, reset } = methods;
     const { isValid, dirtyFields } = formState;
     const history = useHistory();
 
-    const passengers = useSelector(state => state.data.passengers)
-
     const routeParams = useParams();
 
-    function handleSaveEmbassy() {
-        dispatch(saveEmbassy(getValues())).then((res) => {
-            console.log("saveEmbassyRes", res)
+    const passengers = useSelector(state => state.data.passengers)
+
+    function handleSaveMusanedOkala() {
+        dispatch(saveMusanedOkala(getValues())).then((res) => {
+            console.log("saveMusanedOkalaRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("embassyAlert", "saveEmbassy")
-                history.push('/apps/embassy-management/embassy/new');
+                localStorage.setItem("musanedOkalaAlert", "saveMusanedOkala")
+                history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
                 dispatch(setAlert("save success"))
             }
         });
     }
 
-    function handleUpdateEmbassy() {
-        dispatch(updateEmbassy(getValues())).then((res) => {
-            console.log("updateEmbassyRes", res)
+    function handleUpdateMusanedOkala() {
+        dispatch(updateMusanedOkala(getValues())).then((res) => {
+            console.log("updateMusanedOkalaRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("embassyAlert", "updateEmbassy")
-                history.push('/apps/embassy-management/embassy/new');
+                localStorage.setItem("musanedOkalaAlert", "updateMusanedOkala")
+                history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
                 dispatch(setAlert("update success"))
             }
         });
     }
 
-    function handleRemoveEmbassy() {
-        dispatch(removeEmbassy(getValues())).then((res) => {
-            console.log("removeEmbassyRes", res)
+    function handleRemoveMusanedOkala() {
+        dispatch(removeMusanedOkala(getValues())).then((res) => {
+            console.log("removeMusanedOkalaRes", res)
             if (res.payload) {
-                localStorage.setItem("embassyAlert", "deleteEmbassy")
-                history.push('/apps/embassy-management/embassy/new');
+                localStorage.setItem("musanedOkalaAlert", "deleteMusanedOkala")
+                history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
                 dispatch(setAlert("remove success"))
             }
@@ -58,7 +58,7 @@ const NewEmbassyHeader = () => {
     }
 
     function handleCancel() {
-        history.push('/apps/embassy-management/embassy/new')
+        history.push('/apps/musanedOkala-management/musanedOkala/new')
         reset({})
     }
 
@@ -70,46 +70,43 @@ const NewEmbassyHeader = () => {
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
-                                {routeParams.embassyId === "new" ? 'Create New Embassy' : passengers?.find(({ id }) => id == watch("passenger"))?.passenger_name || ""}
+                                {routeParams.musanedOkalaId === "new" ? 'Create New MusanedOkala' : passengers?.find(({ id }) => id == watch("passenger"))?.passenger_name || ""}
                             </Typography>
                             <Typography variant="caption" className="font-medium">
-                                {routeParams.embassyId !== "new" && "Embassy Detail"}
+                                {routeParams.musanedOkalaId !== "new" && "MusanedOkala Detail"}
                             </Typography>
                         </motion.div>
                     </div>
                 </div>
             </div>
-            {/* <motion.div>
-                <Alert />
-            </motion.div> */}
             <motion.div
                 className="flex"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
             >
-                {routeParams.embassyId === 'new' && watch('createPermission') && (<Button
+                {routeParams.musanedOkalaId === 'new' && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
                     disabled={_.isEmpty(dirtyFields) || !isValid}
-                    onClick={handleSaveEmbassy}
+                    onClick={handleSaveMusanedOkala}
                 >
                     Save
-                </Button>)}
-                {routeParams?.embassyId !== 'new' && watch('passenger') && watch('updatePermission') && <Button
+                </Button>}
+                {routeParams?.musanedOkalaId !== 'new' && watch('passenger') && <Button
                     className="whitespace-nowrap mx-4"
                     color="secondary"
                     variant="contained"
                     style={{ backgroundColor: "#4dc08e", color: 'white' }}
-                    onClick={handleUpdateEmbassy}
+                    onClick={handleUpdateMusanedOkala}
                 >
                     Update
                 </Button>}
-                {routeParams?.embassyId !== 'new' && watch('passenger') && watch('updatePermission') && <Button
+                {routeParams?.musanedOkalaId !== 'new' && watch('passenger') && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
                     color="secondary"
-                    onClick={handleRemoveEmbassy}
+                    onClick={handleRemoveMusanedOkala}
                     startIcon={<Icon className="hidden sm:flex">delete</Icon>}
                     style={{ backgroundColor: '#ea5b78', color: 'white' }}
                 >
@@ -129,4 +126,4 @@ const NewEmbassyHeader = () => {
     );
 };
 
-export default NewEmbassyHeader;
+export default NewMusanedOkalaHeader;

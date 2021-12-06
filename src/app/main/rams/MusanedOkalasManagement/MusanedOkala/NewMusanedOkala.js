@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import { EMBASSY_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import { MUSANEDOKALA_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
@@ -11,10 +11,10 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { resetEmbassy } from '../store/embassySlice';
 import reducer from '../store/index.js';
-import EmbassyForm from './EmbassyForm.js';
-import NewEmbassyHeader from './NewEmbassyHeader.js';
+import { resetMusanedOkala } from '../store/musanedOkalaSlice';
+import MusanedOkalaForm from './MusanedOkalaForm.js';
+import NewMusanedOkalaHeader from './NewMusanedOkalaHeader.js';
 
 
 
@@ -41,13 +41,13 @@ const schema = yup.object().shape({
         .required("Passenger is required"),
 })
 
-const Embassy = () => {
+const MusanedOkala = () => {
 
     const dispatch = useDispatch();
-    // const embassy = useSelector(({ embassysManagement }) => embassysManagement.embassy);
+    // const musanedOkala = useSelector(({ musanedOkalasManagement }) => musanedOkalasManagement.musanedOkala);
     const passengers = useSelector(state => state.data.passengers)
 
-    const [noEmbassy, setNoEmbassy] = useState(false);
+    const [noMusanedOkala, setNoMusanedOkala] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -65,17 +65,17 @@ const Embassy = () => {
     useEffect(() => {
         return () => {
             /**
-             * Reset Embassy on component unload
+             * Reset MusanedOkala on component unload
              */
-            dispatch(resetEmbassy());
-            setNoEmbassy(false);
+            dispatch(resetMusanedOkala());
+            setNoMusanedOkala(false);
         };
     }, [dispatch]);
 
     /**
      * Show Message if the requested products is not exists
      */
-    if (noEmbassy) {
+    if (noMusanedOkala) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -83,7 +83,7 @@ const Embassy = () => {
                 className="flex flex-col flex-1 items-center justify-center h-full"
             >
                 <Typography color="textSecondary" variant="h5">
-                    There is no such embassy!
+                    There is no such musanedOkala!
                 </Typography>
                 <Button
                     className="mt-24"
@@ -92,7 +92,7 @@ const Embassy = () => {
                     to="/apps/e-commerce/products"
                     color="inherit"
                 >
-                    Go to Embassy Page
+                    Go to MusanedOkala Page
                 </Button>
             </motion.div>
         );
@@ -106,7 +106,7 @@ const Embassy = () => {
                     toolbar: 'p-0',
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
                 }}
-                header={<NewEmbassyHeader />}
+                header={<NewMusanedOkalaHeader />}
                 contentToolbar={
                     <Tabs
                         // value={tabValue}
@@ -130,70 +130,21 @@ const Embassy = () => {
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
                                         onChange={(event, newValue) => {
                                             if (newValue?.id) {
-                                                axios.get(`${EMBASSY_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
+                                                axios.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
-
-                                                    //update scope
-                                                    if (res.data?.visa_entry?.id && res.data?.mofa?.id && res.data?.embassy?.id) {
-                                                        const visa_entry = res.data?.visa_entry
-                                                        const mofa = res.data?.mofa
-                                                        reset({
-                                                            ...res.data.embassy,
-                                                            visa_number_readonly: visa_entry.visa_number,
-                                                            sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-                                                            sponsor_name_english_readonly: visa_entry.sponsor_name_english,
-                                                            sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
-                                                            mofa_no_readonly: mofa.mofa_no,
-                                                            passenger: newValue?.id,
-                                                            updatePermission: true,
-                                                            createPermission: false,
-                                                        })
-                                                        history.push(`/apps/embassy-management/embassy/${newValue?.passenger_id || newValue?.id}`)
-                                                    }
-                                                    //create scope
-                                                    else if (res.data?.visa_entry?.id && res.data?.mofa?.id) {
-                                                        const visa_entry = res.data?.visa_entry
-                                                        const mofa = res.data?.mofa
-                                                        reset({
-                                                            profession_english: visa_entry.profession_english,
-                                                            profession_arabic: visa_entry.profession_arabic,
-                                                            visa_number_readonly: visa_entry.visa_number,
-                                                            sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-                                                            sponsor_name_english_readonly: visa_entry.sponsor_name_english,
-                                                            sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
-                                                            mofa_no_readonly: mofa.mofa_no,
-                                                            passenger: newValue?.id,
-                                                            createPermission: true,
-                                                            updatePermission: false
-                                                        })
-                                                        history.push(`/apps/embassy-management/embassy/new`)
-
-                                                        console.log("createDataSet", {
-                                                            visa_number_readonly: visa_entry.visa_number,
-                                                            sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-                                                            sponsor_name_english_readonly: visa_entry.sponsor_name_english,
-                                                            sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
-                                                            mofa_no_readonly: mofa.mofa_no,
-                                                            passenger: newValue?.id,
-                                                            createPermission: true,
-                                                            updatePermission: false
-                                                        })
-                                                    }
-                                                    else {
-                                                        history.push(`/apps/embassy-management/embassy/new`)
+                                                    if (res.data.id) {
+                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        history.push(`/apps/musanedOkala-management/musanedOkala/${newValue?.passenger_id || newValue?.id}`)
+                                                    } else {
+                                                        history.push(`/apps/musanedOkala-management/musanedOkala/new`)
                                                         reset({ passenger: newValue?.id })
-
-                                                        console.log("elseScope", res.data)
                                                     }
-
-
-                                                }).catch((err) => {
-                                                    history.push(`/apps/embassy-management/embassy/new`)
+                                                }).catch(() => {
+                                                    history.push(`/apps/musanedOkala-management/musanedOkala/new`)
                                                     reset({ passenger: newValue?.id })
-                                                    console.log("errorScope", err)
                                                 })
                                             } else {
-                                                history.push(`/apps/embassy-management/embassy/new`)
+                                                history.push(`/apps/musanedOkala-management/musanedOkala/new`)
                                                 reset({ passenger: newValue?.id })
                                             }
                                         }}
@@ -208,11 +159,9 @@ const Embassy = () => {
                                                 required
                                                 helperText={errors?.passenger?.message}
                                                 variant="outlined"
-                                                autoFocus
                                                 InputLabelProps={{
                                                     shrink: true
                                                 }}
-                                            // onKeyDown={handleSubmitOnKeyDownEnter}
                                             />
                                         )}
                                     />
@@ -223,7 +172,7 @@ const Embassy = () => {
                 }
                 content={
                     <div className="p-16 sm:p-24 max-w-2xl">
-                        <EmbassyForm />
+                        <MusanedOkalaForm />
                     </div>
                 }
                 innerScroll
@@ -231,4 +180,4 @@ const Embassy = () => {
         </FormProvider>
     );
 };
-export default withReducer('embassysManagement', reducer)(Embassy);
+export default withReducer('musanedOkalasManagement', reducer)(MusanedOkala);

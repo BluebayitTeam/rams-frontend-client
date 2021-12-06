@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CREATE_EMBASSY, DELETE_EMBASSY, UPDATE_EMBASSY } from '../../../../constant/constants';
+import { CREATE_MUSANEDOKALA, DELETE_MUSANEDOKALA, UPDATE_MUSANEDOKALA } from '../../../../constant/constants';
 
-export const removeEmbassy = createAsyncThunk(
-    'embassyManagement/embassy/removeEmbassy',
+export const removeMusanedOkala = createAsyncThunk(
+    'musanedOkalaManagement/musanedOkala/removeMusanedOkala',
     async (val) => {
 
         const authTOKEN = {
@@ -13,16 +13,16 @@ export const removeEmbassy = createAsyncThunk(
             }
         };
 
-        const embassyId = val.id;
-        const response = await axios.delete(`${DELETE_EMBASSY}${embassyId}`, authTOKEN);
+        const musanedOkalaId = val.id;
+        const response = await axios.delete(`${DELETE_MUSANEDOKALA}${musanedOkalaId}`, authTOKEN);
         return response
     }
 );
 
-export const updateEmbassy = createAsyncThunk(
-    'embassyManagement/embassy/updateEmbassy',
-    async (embassyData) => {
-        const embassyDatas = { ...embassyData, created_by: "", updated_by: "" }
+export const updateMusanedOkala = createAsyncThunk(
+    'musanedOkalaManagement/musanedOkala/updateMusanedOkala',
+    async (musanedOkalaData) => {
+        const musanedOkalaDatas = { ...musanedOkalaData, created_by: "" }
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
                 Object.keys(data).forEach(key => {
@@ -43,7 +43,7 @@ export const updateEmbassy = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(embassyDatas)
+        const getFormDateFJ = jsonToFormData(musanedOkalaDatas)
 
         const authTOKEN = {
             headers: {
@@ -51,16 +51,16 @@ export const updateEmbassy = createAsyncThunk(
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.put(`${UPDATE_EMBASSY}${embassyData.id}`, getFormDateFJ, authTOKEN);
+        const response = await axios.put(`${UPDATE_MUSANEDOKALA}${musanedOkalaData.id}`, getFormDateFJ, authTOKEN);
         return response
     }
 
 )
 
-export const saveEmbassy = createAsyncThunk(
-    'embassyManagement/embassy/saveEmbassy',
-    async (embassyData) => {
-        const embassyDatas = { ...embassyData, updated_by: "", created_by: "", }
+export const saveMusanedOkala = createAsyncThunk(
+    'musanedOkalaManagement/musanedOkala/saveMusanedOkala',
+    async (musanedOkalaData) => {
+        const musanedOkalaDatas = { ...musanedOkalaData, updated_by: "" }
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
                 Object.keys(data).forEach(key => {
@@ -81,7 +81,7 @@ export const saveEmbassy = createAsyncThunk(
             return formData;
         }
 
-        const getFormDateFJ = jsonToFormData(embassyDatas)
+        const getFormDateFJ = jsonToFormData(musanedOkalaDatas)
 
         const authTOKEN = {
             headers: {
@@ -89,17 +89,17 @@ export const saveEmbassy = createAsyncThunk(
                 Authorization: localStorage.getItem('jwt_access_token'),
             }
         };
-        const response = await axios.post(`${CREATE_EMBASSY}`, getFormDateFJ, authTOKEN)
+        const response = await axios.post(`${CREATE_MUSANEDOKALA}`, getFormDateFJ, authTOKEN)
         return response
     }
 )
 
-const embassySlice = createSlice({
-    name: 'embassyManagement/embassy',
+const musanedOkalaSlice = createSlice({
+    name: 'musanedOkalaManagement/musanedOkala',
     initialState: null,
     reducers: {
-        resetEmbassy: () => null,
-        newEmbassy: {
+        resetMusanedOkala: () => null,
+        newMusanedOkala: {
             reducer: (state, action) => action.payload,
             prepare: event => ({
                 payload: {}
@@ -107,13 +107,13 @@ const embassySlice = createSlice({
         }
     },
     extraReducers: {
-        [saveEmbassy.fulfilled]: (state, action) => action.payload,
-        [removeEmbassy.fulfilled]: (state, action) => action.payload,
-        [updateEmbassy.fulfilled]: (state, action) => action.payloHea
+        [saveMusanedOkala.fulfilled]: (state, action) => action.payload,
+        [removeMusanedOkala.fulfilled]: (state, action) => action.payload,
+        [updateMusanedOkala.fulfilled]: (state, action) => action.payloHea
     }
 })
 
 
-export const { newEmbassy, resetEmbassy } = embassySlice.actions;
+export const { newMusanedOkala, resetMusanedOkala } = musanedOkalaSlice.actions;
 
-export default embassySlice.reducer;
+export default musanedOkalaSlice.reducer;
