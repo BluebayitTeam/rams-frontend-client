@@ -920,3 +920,14 @@ export const UPDATE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/upd
 export const DELETE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/delete/`;
 
 export const OFFICEWORK_BY_PASSENGER_ID = `${BASE_URL}/office_work/api/v1/office_work/get_by_passenger_id/`;
+
+
+
+//training
+export const CREATE_TRAINING = `${BASE_URL}/training/api/v1/training/create/`;
+
+export const UPDATE_TRAINING = `${BASE_URL}/training/api/v1/training/update/`;
+
+export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
+
+export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;

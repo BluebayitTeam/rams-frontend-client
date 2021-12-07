@@ -329,6 +329,11 @@ const ramsRouteConfig = {
             path: '/apps/officeWork-management/officeWork/:officeWorkId',
             component: lazy(() => import('./OfficeWorksManagement/OfficeWork/NewOfficeWork'))
         },
+        //training
+        {
+            path: '/apps/training-management/training/:trainingId',
+            component: lazy(() => import('./TrainingsManagement/Training/NewTraining'))
+        },
 
 
 

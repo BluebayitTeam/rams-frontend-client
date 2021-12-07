@@ -35,19 +35,10 @@ function OfficeWorkForm(props) {
 
     useEffect(() => {
         watch("pc_image") || setpreviewPCImage("")
-    }, [watch("pc_image")])
-
-    useEffect(() => {
         watch("dl_image") || setpreviewDLImage("")
-    }, [watch("dl_image")])
-
-    useEffect(() => {
         watch("doc1_image") || setpreviewDoc1Image("")
-    }, [watch("doc1_image")])
-
-    useEffect(() => {
         watch("doc2_image") || setpreviewDoc2Image("")
-    }, [watch("doc2_image")])
+    }, [watch("pc_image"), watch("dl_image"), watch("doc1_image"), watch("doc2_image")])
 
     function handleSaveOfficeWork() {
         dispatch(saveOfficeWork(getValues())).then((res) => {

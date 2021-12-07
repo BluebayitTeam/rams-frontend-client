@@ -393,8 +393,16 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/officeWork-management/officeWork/new',
                 exact: true
+            },
+            //training
+            {
+                id: 'training',
+                title: 'Training',
+                translate: 'Training',
+                type: 'item',
+                url: '/apps/training-management/training/new',
+                exact: true
             }
-
 
         ]
     }

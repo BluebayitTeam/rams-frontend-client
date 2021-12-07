@@ -29,15 +29,11 @@ function EmbassyForm(props) {
 
     const [previewOldVisaImage, setPreviewOldVisaImage] = useState("")
     const [previewStampVisaImage, setPreviewStampVisaImage] = useState("")
-    const userID = localStorage.getItem('user_id')
 
     const recruitingAgencys = useSelector(state => state.data.recruitingAgencys)
 
-    const classes = useStyles(props);
-
     const methods = useFormContext();
     const routeParams = useParams();
-    const { embassyId } = routeParams;
     const { control, formState, watch, getValues, setValue, reset } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
@@ -94,24 +90,6 @@ function EmbassyForm(props) {
 
     return (
         <div>
-
-            {/* <Controller
-                name={embassyId === 'new' ? 'created_by' : 'updated_by'}
-                control={control}
-                defaultValue={userID}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        className={classes.hidden}
-                        label="created by"
-                        id="created_by"
-                        error={false}
-                        helperText=""
-                        variant="outlined"
-                        fullWidth
-                    />)
-                }}
-            /> */}
 
             <Controller
                 name="recruiting_agency"
