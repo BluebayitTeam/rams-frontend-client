@@ -931,6 +931,7 @@ export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
 
 export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;
 
+
 //visa_cancel_list
 export const CREATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/create/`;
 
@@ -939,3 +940,13 @@ export const UPDATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_c
 export const DELETE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/delete/`;
 
 export const VISACANCELLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/get_by_passenger_id/`;
+
+
+//visa_reissue_list
+export const CREATE_VISAREISSUELIST = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/create/`;
+
+export const UPDATE_VISAREISSUELIST = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/update/`;
+
+export const DELETE_VISAREISSUELIST = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/delete/`;
+
+export const VISAREISSUELIST_BY_PASSENGER_ID = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/get_by_passenger_id/`;

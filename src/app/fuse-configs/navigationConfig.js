@@ -411,8 +411,16 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/visaCancelList-management/visaCancelList/new',
                 exact: true
+            },
+            //visaReissueList
+            {
+                id: 'visaReissueList',
+                title: 'Visa Reissue List',
+                translate: 'Visa Reissue List',
+                type: 'item',
+                url: '/apps/visaReissueList-management/visaReissueList/new',
+                exact: true
             }
-
 
         ]
     }
