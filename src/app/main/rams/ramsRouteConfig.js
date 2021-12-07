@@ -334,6 +334,11 @@ const ramsRouteConfig = {
             path: '/apps/training-management/training/:trainingId',
             component: lazy(() => import('./TrainingsManagement/Training/NewTraining'))
         },
+        //visaCancelList
+        {
+            path: '/apps/visaCancelList-management/visaCancelList/:visaCancelListId',
+            component: lazy(() => import('./VisaCancelListsManagement/VisaCancelList/NewVisaCancelList'))
+        },
 
 
 

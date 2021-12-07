@@ -402,7 +402,17 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/training-management/training/new',
                 exact: true
+            },
+            //visaCancelList
+            {
+                id: 'visaCancelList',
+                title: 'Visa Cancel List',
+                translate: 'Visa Cancel List',
+                type: 'item',
+                url: '/apps/visaCancelList-management/visaCancelList/new',
+                exact: true
             }
+
 
         ]
     }

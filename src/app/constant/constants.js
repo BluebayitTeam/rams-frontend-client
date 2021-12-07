@@ -922,7 +922,6 @@ export const DELETE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/del
 export const OFFICEWORK_BY_PASSENGER_ID = `${BASE_URL}/office_work/api/v1/office_work/get_by_passenger_id/`;
 
 
-
 //training
 export const CREATE_TRAINING = `${BASE_URL}/training/api/v1/training/create/`;
 
@@ -931,3 +930,12 @@ export const UPDATE_TRAINING = `${BASE_URL}/training/api/v1/training/update/`;
 export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
 
 export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;
+
+//visa_cancel_list
+export const CREATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/create/`;
+
+export const UPDATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/update/`;
+
+export const DELETE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/delete/`;
+
+export const VISACANCELLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/get_by_passenger_id/`;
