@@ -344,6 +344,11 @@ const ramsRouteConfig = {
             path: '/apps/visaReissueList-management/visaReissueList/:visaReissueListId',
             component: lazy(() => import('./VisaReissueListsManagement/VisaReissueList/NewVisaReissueList'))
         },
+        //visaSubmissionList
+        {
+            path: '/apps/visaSubmissionList-management/visaSubmissionList/:visaSubmissionListId',
+            component: lazy(() => import('./VisaSubmissionListsManagement/VisaSubmissionList/NewVisaSubmissionList'))
+        },
 
 
     ]

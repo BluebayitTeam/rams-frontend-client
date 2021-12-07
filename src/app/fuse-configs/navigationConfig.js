@@ -420,7 +420,16 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/visaReissueList-management/visaReissueList/new',
                 exact: true
-            }
+            },
+            //visaSubmissionList
+            {
+                id: 'visaSubmissionList',
+                title: 'Visa Submission List',
+                translate: 'Visa Submission List',
+                type: 'item',
+                url: '/apps/visaSubmissionList-management/visaSubmissionList/new',
+                exact: true
+            },
 
         ]
     }

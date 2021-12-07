@@ -950,3 +950,13 @@ export const UPDATE_VISAREISSUELIST = `${BASE_URL}/visa_reissue_list/api/v1/visa
 export const DELETE_VISAREISSUELIST = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/delete/`;
 
 export const VISAREISSUELIST_BY_PASSENGER_ID = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/get_by_passenger_id/`;
+
+
+//visa_submission_list
+export const CREATE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/create/`;
+
+export const UPDATE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/update/`;
+
+export const DELETE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/delete/`;
+
+export const VISASUBMISSIONLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/get_by_passenger_id/`;
