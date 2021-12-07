@@ -910,3 +910,13 @@ export const UPDATE_MUSANEDOKALA = `${BASE_URL}/musaned_okala/api/v1/musaned_oka
 export const DELETE_MUSANEDOKALA = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/delete/`;
 
 export const MUSANEDOKALA_BY_PASSENGER_ID = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/get_by_passenger_id/`;
+
+
+//office_work
+export const CREATE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/create/`;
+
+export const UPDATE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/update/`;
+
+export const DELETE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/delete/`;
+
+export const OFFICEWORK_BY_PASSENGER_ID = `${BASE_URL}/office_work/api/v1/office_work/get_by_passenger_id/`;

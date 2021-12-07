@@ -384,8 +384,16 @@ const navigationConfig = [
                 type: 'item',
                 url: '/apps/musanedOkala-management/musanedOkala/new',
                 exact: true
+            },
+            //officeWork
+            {
+                id: 'officeWork',
+                title: 'Office Work',
+                translate: 'Office Work',
+                type: 'item',
+                url: '/apps/officeWork-management/officeWork/new',
+                exact: true
             }
-
 
 
         ]

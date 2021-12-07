@@ -324,6 +324,11 @@ const ramsRouteConfig = {
             path: '/apps/musanedOkala-management/musanedOkala/:musanedOkalaId',
             component: lazy(() => import('./MusanedOkalasManagement/MusanedOkala/NewMusanedOkala'))
         },
+        //officeWork
+        {
+            path: '/apps/officeWork-management/officeWork/:officeWorkId',
+            component: lazy(() => import('./OfficeWorksManagement/OfficeWork/NewOfficeWork'))
+        },
 
 
 

@@ -23,7 +23,7 @@ function Image({ name, label, previewImage, setPreviewImage }) {
     const classes = useStyles();
     const methods = useFormContext();
     const { control, watch } = methods;
-    const picture = watch(`${name}`)
+    const picture = watch(`${name}`) || ""
 
     return (
         <>
