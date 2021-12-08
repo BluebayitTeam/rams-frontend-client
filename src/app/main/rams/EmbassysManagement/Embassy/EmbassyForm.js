@@ -131,7 +131,7 @@ function EmbassyForm(props) {
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
+                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
                         className="mt-8 mb-16"
                         error={!!errors.submit_date}
                         helperText={errors?.submit_date?.message}

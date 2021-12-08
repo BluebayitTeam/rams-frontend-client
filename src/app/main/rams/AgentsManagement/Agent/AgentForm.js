@@ -4,9 +4,11 @@ import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import countryCodes from 'app/@data/@Countrycodes';
 import { genders } from 'app/@data/@data';
 import clsx from 'clsx';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -54,11 +56,15 @@ function AgentForm(props) {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     useEffect(() => {
-        dispatch(getThanas()),
-            dispatch(getCities()),
-            dispatch(getCountries()),
-            dispatch(getGroups())
+        dispatch(getThanas());
+        dispatch(getCities());
+        dispatch(getCountries());
+        dispatch(getGroups());
     }, [])
+
+    useEffect(() => {
+        console.log("dataker date", watch("date_of_birth"))
+    }, [watch("date_of_birth")])
 
     function handleSaveAgent() {
         dispatch(saveAgent(getValues())).then((res) => {
@@ -860,6 +866,54 @@ function AgentForm(props) {
                     />
                 </div>
             </div>
+
+
+
+
+
+
+
+
+            <Controller
+                name="date_of_birth"
+                control={control}
+                render={({ field }) => (
+                    <TextField
+                        {...field}
+                        className="mt-8 mb-16"
+                        id="date_of_birth"
+                        label="Birthday"
+                        error={!!errors.date_of_birth}
+                        required
+                        helperText={errors?.date_of_birth?.message}
+                        type="date"
+                        // defaultValue="2017-05-24"
+                        fullWidth
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                )}
+            />
+            <Controller
+                name="date_of_birth"
+                control={control}
+                render={({ field }) => (
+                    <KeyboardDatePicker
+                        {...field}
+                        autoOk
+                        className="w-full"
+                        variant="inline"
+                        inputVariant="outlined"
+                        label="With keyboard"
+                        format="dd/MM/yyyy"
+                        error={!!errors.date_of_birth}
+                        helperText={errors.date_of_birth?.message || ""}
+                        onChange={value => field.onChange(moment(value).format("YYYY-MM-DD"))}
+                        InputAdornmentProps={{ position: "start" }}
+                    />
+                )}
+            />
 
 
         </div>

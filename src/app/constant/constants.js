@@ -960,3 +960,13 @@ export const UPDATE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v
 export const DELETE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/delete/`;
 
 export const VISASUBMISSIONLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/get_by_passenger_id/`;
+
+
+//man_power
+export const CREATE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/create/`;
+
+export const UPDATE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/update/`;
+
+export const DELETE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/delete/`;
+
+export const MANPOWER_BY_PASSENGER_ID = `${BASE_URL}/man_power/api/v1/man_power/check_embassy_by_passenger_id/`;

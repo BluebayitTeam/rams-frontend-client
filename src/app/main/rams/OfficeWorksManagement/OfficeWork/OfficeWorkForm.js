@@ -124,6 +124,26 @@ function OfficeWorkForm(props) {
 
 
             <Controller
+                name="finger_status"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.finger_status}
+                        helperText={errors?.finger_status?.finger_status}
+                        label="Finger Status"
+                        id="finger_status"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+            <Controller
                 name="finger_date"
                 control={control}
                 render={({ field }) => {

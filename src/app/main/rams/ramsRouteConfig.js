@@ -349,6 +349,12 @@ const ramsRouteConfig = {
             path: '/apps/visaSubmissionList-management/visaSubmissionList/:visaSubmissionListId',
             component: lazy(() => import('./VisaSubmissionListsManagement/VisaSubmissionList/NewVisaSubmissionList'))
         },
+        //manPower
+        {
+            path: '/apps/manPower-management/manPower/:manPowerId',
+            component: lazy(() => import('./ManPowersManagement/ManPower/NewManPower'))
+        },
+
 
 
     ]

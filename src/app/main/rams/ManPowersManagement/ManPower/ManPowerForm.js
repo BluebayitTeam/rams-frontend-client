@@ -8,15 +8,14 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { getCurrentStatuss, getPassengers, getRecruitingAgencys } from '../../../../store/dataSlice';
-import { saveTraining, updateTraining } from '../store/trainingSlice';
+import { saveManPower, updateManPower } from '../store/manPowerSlice';
 
 
 
 
-function TrainingForm(props) {
+function ManPowerForm(props) {
 
-    const [previewDoc1Image, setpreviewDoc1Image] = useState("")
-    const [previewCertificateImage, setpreviewCertificateImage] = useState("")
+    const [previewImage, setPreviewImage] = useState()
 
     const recruitingAgencys = useSelector(state => state.data.recruitingAgencys)
     const currentStatuss = useSelector(state => state.data.currentStatuss)
@@ -28,6 +27,7 @@ function TrainingForm(props) {
     const history = useHistory();
     const dispatch = useDispatch()
 
+
     useEffect(() => {
         dispatch(getPassengers());
         dispatch(getRecruitingAgencys());
@@ -35,29 +35,28 @@ function TrainingForm(props) {
     }, [])
 
     useEffect(() => {
-        watch("doc1_image") || setpreviewDoc1Image("")
-        watch("certificate_image") || setpreviewCertificateImage("")
-    }, [watch("doc1_image"), watch("certificate_image")])
+        watch("smart_card_image") || setPreviewImage("")
+    }, [watch("smart_card_image")])
 
 
-    function handleSaveTraining() {
-        dispatch(saveTraining(getValues())).then((res) => {
-            console.log("saveTrainingRes", res)
+    function handleSaveManPower() {
+        dispatch(saveManPower(getValues())).then((res) => {
+            console.log("saveManPowerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("trainingAlert", "saveTraining")
-                history.push('/apps/training-management/training/new');
+                localStorage.setItem("manPowerAlert", "saveManPower")
+                history.push('/apps/manPower-management/manPower/new');
                 reset({})
                 dispatch(setAlert("save success"))
             }
         });
     }
 
-    function handleUpdateTraining() {
-        dispatch(updateTraining(getValues())).then((res) => {
-            console.log("updateTrainingRes", res)
+    function handleUpdateManPower() {
+        dispatch(updateManPower(getValues())).then((res) => {
+            console.log("updateManPowerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("trainingAlert", "updateTraining")
-                history.push('/apps/training-management/training/new');
+                localStorage.setItem("manPowerAlert", "updateManPower")
+                history.push('/apps/manPower-management/manPower/new');
                 reset({})
                 dispatch(setAlert("update success"))
             }
@@ -66,12 +65,12 @@ function TrainingForm(props) {
 
     const handleSubmitOnKeyDownEnter = (ev) => {
         if (ev.key === 'Enter') {
-            if (routeParams.trainingId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
-                handleSaveTraining()
+            if (routeParams.manPowerId === "new" && watch("createPermission") && !(_.isEmpty(dirtyFields) || !isValid)) {
+                handleSaveManPower()
                 console.log("saved")
             }
-            else if (routeParams.trainingId !== "new" && watch('passenger')) {
-                handleUpdateTraining()
+            else if (routeParams.manPowerId !== "new" && watch('passenger')) {
+                handleUpdateManPower()
                 console.log("updated")
             }
         }
@@ -113,20 +112,82 @@ function TrainingForm(props) {
             />
 
 
-
             <Controller
-                name="admission_date"
+                name="new_visa_no"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
                         value={field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.admission_date}
-                        helperText={errors?.admission_date?.message}
+                        error={!!errors.new_visa_no}
+                        helperText={errors?.new_visa_no?.message}
+                        label="New Visa No"
+                        id="new_visa_no"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+
+            <Controller
+                name="registration_id"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.registration_id}
+                        helperText={errors?.registration_id?.message}
+                        label="Registration ID"
+                        id="registration_id"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+
+            <Controller
+                name="man_power_status"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.man_power_status}
+                        helperText={errors?.man_power_status?.message}
+                        label="Man Power Status"
+                        id="man_power_status"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+
+            <Controller
+                name="man_power_date"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.man_power_date}
+                        helperText={errors?.man_power_date?.message}
                         type="date"
-                        label="Admission Date"
-                        id="admission_date"
+                        label="Man Power Date"
+                        id="man_power_date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
                     />)
@@ -135,60 +196,18 @@ function TrainingForm(props) {
 
 
             <Controller
-                name="serial_no"
+                name="submit_date"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
+                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.serial_no}
-                        helperText={errors?.serial_no?.message}
-                        label="Serial No"
-                        id="serial_no"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="certificate_no"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.certificate_no}
-                        helperText={errors?.certificate_no?.message}
-                        label="Certificate No"
-                        id="certificate_no"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="certificate_date"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.certificate_date}
-                        helperText={errors?.certificate_date?.message}
-                        label="Certificate Date"
-                        id="certificate_date"
+                        error={!!errors.submit_date}
+                        helperText={errors?.submit_date?.message}
                         type="date"
+                        label="Submit Date"
+                        id="submit_date"
                         InputLabelProps={{ shrink: true }}
                         fullWidth
                     />)
@@ -197,42 +216,20 @@ function TrainingForm(props) {
 
 
             <Controller
-                name="training_card_status"
+                name="delivery_date"
                 control={control}
                 render={({ field }) => {
                     return (<TextField
                         {...field}
-                        value={field.value || ""}
+                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
                         className="mt-8 mb-16"
-                        error={!!errors.training_card_status}
-                        helperText={errors?.training_card_status?.message}
-                        label="Training Card Status"
-                        id="training_card_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
+                        error={!!errors.delivery_date}
+                        helperText={errors?.delivery_date?.message}
+                        type="date"
+                        label="Delivery Date"
+                        id="delivery_date"
+                        InputLabelProps={{ shrink: true }}
                         fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="batch_number"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.batch_number}
-                        helperText={errors?.batch_number?.message}
-                        label="Batch Number"
-                        id="batch_number"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -271,15 +268,13 @@ function TrainingForm(props) {
 
 
 
-            <div className="flex justify-start -mx-16 flex-col md:flex-row">
-                <Image name="doc1_image" previewImage={previewDoc1Image} setPreviewImage={setpreviewDoc1Image} label="Doc1 Image" />
-                <Image name="certificate_image" previewImage={previewCertificateImage} setPreviewImage={setpreviewCertificateImage} label="Certificate Image" />
+            <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
+                <Image name="smart_card_image" previewImage={previewImage} setPreviewImage={setPreviewImage} label="Smart Card Image" />
             </div>
-
 
 
         </div>
     );
 }
 
-export default TrainingForm
+export default ManPowerForm
