@@ -1,5 +1,6 @@
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -64,17 +65,9 @@ function VisaCancelListForm(props) {
                 name="submission_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.submission_date}
-                        helperText={errors?.submission_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Submission Date"
-                        id="submission_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                         required
                     />)
                 }}

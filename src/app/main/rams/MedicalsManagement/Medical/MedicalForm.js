@@ -2,6 +2,7 @@ import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
 import { setAlert } from 'app/store/alertSlice';
 import { addMonths } from 'date-fns';
@@ -218,18 +219,9 @@ function MedicalForm(props) {
                 name="medical_exam_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.medical_exam_date}
-                        helperText={errors?.medical_exam_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Medical Exam Date"
-                        id="medical_exam_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -239,18 +231,9 @@ function MedicalForm(props) {
                 name="medical_report_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.medical_report_date}
-                        helperText={errors?.medical_report_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Medical Report Date"
-                        id="medical_report_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -260,23 +243,14 @@ function MedicalForm(props) {
                 name="medical_issue_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.medical_issue_date}
-                        helperText={errors?.medical_issue_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Medical Issue Date"
-                        id="medical_issue_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                        onChange={e => {
-                            field.onChange(e.target.value)
-                            const addMonth = addMonths(new Date(e.target.value,), 3,)
-                            setValue('medical_expiry_date', `${addMonth.getFullYear()}-${(addMonth.getMonth() + 1).toString().padStart(2, 0)}-${(addMonth.getDate() - 1).toString().padStart(2, 0)}`);
+                        onChange={value => {
+                            field.onChange(value)
+                            const addMonth = addMonths(new Date(value,), 3,)
+                            setValue('medical_expiry_date', `${addMonth.getFullYear()}-${(addMonth.getMonth() + 1).toString().padStart(2, 0)}-${(addMonth.getDate()).toString().padStart(2, 0)}`);
                         }}
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -286,18 +260,9 @@ function MedicalForm(props) {
                 name="medical_expiry_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.medical_expiry_date}
-                        helperText={errors?.medical_expiry_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Medical Expiry Date"
-                        id="medical_expiry_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -327,7 +292,6 @@ function MedicalForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />

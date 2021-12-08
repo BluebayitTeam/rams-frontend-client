@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,48 +29,11 @@ function ManPowerListForm(props) {
     const { errors } = formState;
     const dispatch = useDispatch()
 
-
     useEffect(() => {
         dispatch(getPassengers());
         dispatch(getAgencys());
         dispatch(getCurrentStatuss())
     }, [])
-
-
-    // function handleSaveManPowerList() {
-    //     dispatch(saveManPowerList(getValues())).then((res) => {
-    //         console.log("saveManPowerListRes", res)
-    //         if (res.payload?.data?.id) {
-    //             localStorage.setItem("manPowerListAlert", "saveManPowerList")
-    //             history.push('/apps/manPowerList-management/manPowerList/new');
-    //             reset({})
-    //         }
-    //     });
-    // }
-
-    // function handleUpdateManPowerList() {
-    //     dispatch(updateManPowerList(getValues())).then((res) => {
-    //         console.log("updateManPowerListRes", res)
-    //         if (res.payload?.data?.id) {
-    //             localStorage.setItem("manPowerListAlert", "updateManPowerList")
-    //             history.push('/apps/manPowerList-management/manPowerList/new');
-    //             reset({})
-    //         }
-    //     });
-    // }
-
-    // const handleSubmitOnKeyDownEnter = (ev) => {
-    //     if (ev.key === 'Enter') {
-    //         if (routeParams.manPowerListId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
-    //             handleSaveManPowerList()
-    //             console.log("saved")
-    //         }
-    //         else if (routeParams.manPowerListId !== "new" && watch('passenger')) {
-    //             handleUpdateManPowerList()
-    //             console.log("updated")
-    //         }
-    //     }
-    // }
 
 
     return (
@@ -129,18 +93,9 @@ function ManPowerListForm(props) {
                 name="man_power_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.man_power_date}
-                        helperText={errors?.man_power_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Man Power Date"
-                        id="man_power_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                        required
                     />)
                 }}
             />
@@ -171,7 +126,6 @@ function ManPowerListForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />

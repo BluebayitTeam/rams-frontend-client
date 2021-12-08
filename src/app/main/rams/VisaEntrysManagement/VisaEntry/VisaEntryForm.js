@@ -2,6 +2,7 @@ import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -247,19 +248,10 @@ function VisaEntryForm(props) {
                 name="visa_issue_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        error={!!errors.visa_issue_date}
-                        helperText={errors?.visa_issue_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Visa Issue Date"
-                        id="visa_issue_date"
-                        required
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                        renderInput={() => (<h1>2021</h1>)}
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
+                    // renderInput={() => (<h1>2021</h1>)}
                     />)
                 }}
             />
@@ -374,18 +366,9 @@ function VisaEntryForm(props) {
                 name="sponsor_dob"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        error={!!errors.sponsor_dob}
-                        helperText={errors?.sponsor_dob?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Sponsor Date Of Birth"
-                        id="sponsor_dob"
-                        required
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />

@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image.jsx';
 import useTextSeparator from 'app/@customHook/useTextSeparator';
 import { genders, maritalStatuses, passportTypes, religions } from 'app/@data/@data';
@@ -440,21 +441,9 @@ function PassengerForm(props) {
                     name="date_of_birth"
                     control={control}
                     render={({ field }) => (
-                        <TextField
-                            {...field}
-                            value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            id="date_of_birth"
-                            label="Birthday"
-                            error={!!errors.date_of_birth}
-                            required
-                            helperText={errors?.date_of_birth?.message}
-                            type="date"
-                            // defaultValue="2017-05-24"
-                            fullWidth
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
+                        <CustomDatePicker
+                            field={field}
+                            label="Date Of Birth"
                         />
                     )}
                 />
@@ -1035,24 +1024,13 @@ function PassengerForm(props) {
                     name="passport_issue_date"
                     control={control}
                     render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.passport_issue_date}
-                            helperText={errors?.passport_issue_date?.message}
+                        return (<CustomDatePicker
+                            field={field}
                             label="Passport Issue Date"
-                            id="passport_issue_date"
-                            type="date"
-                            InputLabelProps={{ shrink: true }}
-                            fullWidth
-                            onChange={e => {
-                                field.onChange(e.target.value)
-                                const addyear = addYears(new Date(e.target.value,), 5,)
-                                console.log()
-                                setValue('passport_expiry_date', `${addyear.getFullYear()}-${(addyear.getMonth() + 1).toString().padStart(2, 0)}-${(addyear.getDate() - 1).toString().padStart(2, 0)}`);
+                            onChange={value => {
+                                const addyear = addYears(new Date(value,), 5,)
+                                setValue('passport_expiry_date', `${addyear.getFullYear()}-${(addyear.getMonth() + 1).toString().padStart(2, 0)}-${(addyear.getDate()).toString().padStart(2, 0)}`);
                             }}
-                        // onKeyDown={handleSubmitOnKeyDownEnter}
                         />)
                     }}
                 />
@@ -1060,21 +1038,10 @@ function PassengerForm(props) {
                     name="passport_expiry_date"
                     control={control}
                     render={({ field }) => {
-                        return (<TextField
-                            {...field}
-                            value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value}
-                            className="mt-8 mb-16 w-full md:w-6/12"
-                            error={!!errors.passport_expiry_date}
-                            helperText={errors?.passport_expiry_date?.message}
+                        return (<CustomDatePicker
+                            field={field}
                             label="Passport Expiry Date"
-                            id="passport_expiry_date"
-                            type="date"
-                            InputLabelProps={{ shrink: true }}
-                            fullWidth
-                            inputProps={
-                                { readOnly: true, }
-                            }
-                        // onKeyDown={handleSubmitOnKeyDownEnter}
+                            readOnly
                         />)
                     }}
                 />

@@ -4,11 +4,10 @@ import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import countryCodes from 'app/@data/@Countrycodes';
 import { genders } from 'app/@data/@data';
 import clsx from 'clsx';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -578,20 +577,9 @@ function AgentForm(props) {
                 name="date_of_birth"
                 control={control}
                 render={({ field }) => (
-                    <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        id="date_of_birth"
+                    <CustomDatePicker
+                        field={field}
                         label="Birthday"
-                        error={!!errors.date_of_birth}
-                        required
-                        helperText={errors?.date_of_birth?.message}
-                        type="date"
-                        // defaultValue="2017-05-24"
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
                     />
                 )}
             />
@@ -874,12 +862,13 @@ function AgentForm(props) {
 
 
 
-            <Controller
+            {/* <Controller
                 name="date_of_birth"
                 control={control}
                 render={({ field }) => (
-                    <TextField
+                    <CustomDatePicker
                         {...field}
+                        field={field}
                         className="mt-8 mb-16"
                         id="date_of_birth"
                         label="Birthday"
@@ -895,6 +884,7 @@ function AgentForm(props) {
                     />
                 )}
             />
+
             <Controller
                 name="date_of_birth"
                 control={control}
@@ -902,10 +892,11 @@ function AgentForm(props) {
                     <KeyboardDatePicker
                         {...field}
                         autoOk
-                        className="w-full"
+                        className="w-full mt-8 mb-16"
                         variant="inline"
                         inputVariant="outlined"
-                        label="With keyboard"
+                        label="label"
+                        defaultValue="dd/mm/yyyy"
                         format="dd/MM/yyyy"
                         error={!!errors.date_of_birth}
                         helperText={errors.date_of_birth?.message || ""}
@@ -913,7 +904,7 @@ function AgentForm(props) {
                         InputAdornmentProps={{ position: "start" }}
                     />
                 )}
-            />
+            /> */}
 
 
         </div>

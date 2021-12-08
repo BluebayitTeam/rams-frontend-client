@@ -9,6 +9,7 @@ import {
 import { orange } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import useRemoveCountryCode from "app/@customHook/@useRemoveCountryCode";
 import countryCodes from 'app/@data/@Countrycodes';
 import { genders } from 'app/@data/@data';
@@ -718,20 +719,9 @@ const EmployeeForm = (props) => {
                 name="date_of_birth"
                 control={control}
                 render={({ field }) => (
-                    <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        id="date_of_birth"
+                    <CustomDatePicker
+                        field={field}
                         label="Birthday"
-                        error={!!errors.date_of_birth}
-                        required
-                        helperText={errors?.date_of_birth?.message}
-                        type="date"
-                        // defaultValue="2017-05-24"
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
                     />
                 )}
             />
@@ -985,20 +975,9 @@ const EmployeeForm = (props) => {
                 name="emp_join_date"
                 control={control}
                 render={({ field }) => (
-                    <TextField
-                        {...field}
-                        className="mt-8 mb-16"
-                        id="date"
+                    <CustomDatePicker
+                        field={field}
                         label="Join Date"
-                        error={!!errors.emp_join_date}
-                        required
-                        helperText={errors?.emp_join_date?.message}
-                        type="date"
-                        defaultValue="2017-05-24"
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
                     />
                 )}
             />

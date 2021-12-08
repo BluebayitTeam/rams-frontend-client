@@ -1,6 +1,7 @@
 import _ from '@lodash';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
@@ -118,17 +119,9 @@ function TrainingForm(props) {
                 name="admission_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.admission_date}
-                        helperText={errors?.admission_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Admission Date"
-                        id="admission_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
@@ -180,17 +173,9 @@ function TrainingForm(props) {
                 name="certificate_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.certificate_date}
-                        helperText={errors?.certificate_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Certificate Date"
-                        id="certificate_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />

@@ -2,6 +2,7 @@ import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
@@ -254,17 +255,9 @@ function MusanedOkalaForm(props) {
                 name="okala_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.okala_date}
-                        helperText={errors?.okala_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Okala Date"
-                        id="okala_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
@@ -274,17 +267,9 @@ function MusanedOkalaForm(props) {
                 name="musaned_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.musaned_date}
-                        helperText={errors?.musaned_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Musaned Date"
-                        id="musaned_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />

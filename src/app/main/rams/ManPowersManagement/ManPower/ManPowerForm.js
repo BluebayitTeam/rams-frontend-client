@@ -1,6 +1,7 @@
 import _ from '@lodash';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
@@ -179,17 +180,9 @@ function ManPowerForm(props) {
                 name="man_power_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.man_power_date}
-                        helperText={errors?.man_power_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Man Power Date"
-                        id="man_power_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
@@ -199,17 +192,9 @@ function ManPowerForm(props) {
                 name="submit_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.submit_date}
-                        helperText={errors?.submit_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Submit Date"
-                        id="submit_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
@@ -219,17 +204,9 @@ function ManPowerForm(props) {
                 name="delivery_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.delivery_date}
-                        helperText={errors?.delivery_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Delivery Date"
-                        id="delivery_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />

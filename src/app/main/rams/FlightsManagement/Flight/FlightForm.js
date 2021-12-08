@@ -2,6 +2,7 @@ import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect, useState } from 'react';
@@ -299,17 +300,9 @@ function FlightForm(props) {
                 name="issue_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.issue_date}
-                        helperText={errors?.issue_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Issue Date"
-                        id="issue_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
@@ -319,17 +312,9 @@ function FlightForm(props) {
                 name="flight_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.flight_date}
-                        helperText={errors?.flight_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Flight Date"
-                        id="flight_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />

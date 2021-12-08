@@ -1,28 +1,17 @@
 import _ from '@lodash';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
 import { setAlert } from 'app/store/alertSlice';
 import { addMonths } from 'date-fns';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { getPassengers, getRecruitingAgencys } from '../../../../store/dataSlice';
 import { saveEmbassy, updateEmbassy } from '../store/embassySlice';
-
-
-const useStyles = makeStyles(theme => ({
-    hidden: {
-        display: "none"
-    },
-    productImageUpload: {
-        transitionProperty: 'box-shadow',
-        transitionDuration: theme.transitions.duration.short,
-        transitionTimingFunction: theme.transitions.easing.easeInOut
-    },
-}));
 
 
 function EmbassyForm(props) {
@@ -129,18 +118,9 @@ function EmbassyForm(props) {
                 name="submit_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.submit_date}
-                        helperText={errors?.submit_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Submit Date"
-                        id="submit_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    // onKeyDown={handleSubmitOnKeyDownEnter}
                     />)
                 }}
             />
@@ -233,21 +213,13 @@ function EmbassyForm(props) {
                 name="stamping_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.stamping_date}
-                        helperText={errors?.stamping_date?.message}
-                        id="stamping_date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Stamping Date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                        onChange={e => {
-                            field.onChange(e.target.value)
-                            const addMonth = addMonths(new Date(e.target.value,), 3,)
-                            setValue('visa_expiry_date', `${addMonth.getFullYear()}-${(addMonth.getMonth() + 1).toString().padStart(2, 0)}-${(addMonth.getDate() - 1).toString().padStart(2, 0)}`);
+                        onChange={value => {
+                            field.onChange(value)
+                            const addMonth = addMonths(new Date(moment(value).format("YYYY-MM-DD"),), 3,)
+                            setValue('visa_expiry_date', `${addMonth.getFullYear()}-${(addMonth.getMonth() + 1).toString().padStart(2, 0)}-${(addMonth.getDate()).toString().padStart(2, 0)}`);
                         }}
                     />)
                 }}
@@ -258,17 +230,9 @@ function EmbassyForm(props) {
                 name="visa_expiry_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.visa_expiry_date}
-                        helperText={errors?.visa_expiry_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="visa Expiry Date"
-                        id="visa_expiry_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
@@ -278,17 +242,9 @@ function EmbassyForm(props) {
                 name="delivery_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.delivery_date}
-                        helperText={errors?.delivery_date?.message}
+                    return (<CustomDatePicker
+                        field={field}
                         label="Delivery Date"
-                        id="delivery_date"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />

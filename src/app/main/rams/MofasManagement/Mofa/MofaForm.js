@@ -2,6 +2,7 @@ import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -162,17 +163,9 @@ function MofaForm(props) {
                 name="mofa_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.mofa_date}
-                        helperText={errors?.mofa_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Mofa Date"
-                        id="mofa_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />
