@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone } from "app/@data/@data";
 import { MANPOWER_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
@@ -60,6 +61,11 @@ const ManPower = () => {
     const classes = useStyles();
 
     const history = useHistory();
+
+
+    useEffect(() => {
+        reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
+    }, [])
 
     useEffect(() => {
         return () => {
@@ -137,11 +143,11 @@ const ManPower = () => {
                                                     }
                                                     else if (res.data?.embassy_exists) {
                                                         history.push(`/apps/manPower-management/manPower/new`)
-                                                        reset({ passenger: newValue?.id, createPermission: true })
+                                                        reset({ passenger: newValue?.id, createPermission: true, man_power_status: doneNotDone.find(data => data.default)?.id })
                                                     }
                                                     else {
                                                         history.push(`/apps/manPower-management/manPower/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, man_power_status: doneNotDone.find(data => data.default)?.id })
                                                         dispatch(setAlert({
                                                             alertType: "warning",
                                                             alertValue: `please check "Embassy" information`
@@ -149,7 +155,7 @@ const ManPower = () => {
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/manPower-management/manPower/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, man_power_status: doneNotDone.find(data => data.default)?.id })
                                                     dispatch(setAlert({
                                                         alertType: "warning",
                                                         alertValue: `please check "Embassy" information`
@@ -157,7 +163,7 @@ const ManPower = () => {
                                                 })
                                             } else {
                                                 history.push(`/apps/manPower-management/manPower/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, man_power_status: doneNotDone.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

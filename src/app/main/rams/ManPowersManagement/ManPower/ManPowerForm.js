@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { saveAlertMsg } from 'app/@data/@data';
+import { doneNotDone, saveAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -47,7 +47,7 @@ function ManPowerForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("manPowerAlert", "saveManPower")
                 history.push('/apps/manPower-management/manPower/new');
-                reset({})
+                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -59,7 +59,7 @@ function ManPowerForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("manPowerAlert", "updateManPower")
                 history.push('/apps/manPower-management/manPower/new');
-                reset({})
+                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -159,21 +159,32 @@ function ManPowerForm(props) {
             <Controller
                 name="man_power_status"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.man_power_status}
-                        helperText={errors?.man_power_status?.message}
-                        label="Man Power Status"
-                        id="man_power_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Man Power Status"
+                                label="Man Power Status"
+                                error={!!errors.man_power_status}
+                                helperText={errors?.man_power_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
             />
 
 

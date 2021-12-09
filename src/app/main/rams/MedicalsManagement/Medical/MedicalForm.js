@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, medicalResults, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import increaseMonth from 'app/@utils/increaseMonth';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect, useState } from 'react';
@@ -63,7 +63,7 @@ function MedicalForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("medicalAlert", "saveMedical")
                 history.push('/apps/medical-management/medical/new');
-                reset({})
+                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -75,7 +75,7 @@ function MedicalForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("medicalAlert", "updateMedical")
                 history.push('/apps/medical-management/medical/new');
-                reset({})
+                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -175,44 +175,63 @@ function MedicalForm(props) {
             <Controller
                 name="medical_result"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.medical_result}
-                        helperText={errors?.medical_result?.message}
-                        label="Medical Result"
-                        id="medical_result"
+                        freeSolo
+                        value={value ? medicalResults.find(data => data.id == value) : null}
+                        options={medicalResults}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
 
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
+                            <TextField
+                                {...params}
+                                placeholder="Select Medical Result"
+                                label="Medical Result"
+                                error={!!errors.medical_result}
+                                helperText={errors?.medical_result?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
             />
 
 
             <Controller
                 name="medical_card"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.medical_card}
-                        helperText={errors?.medical_card?.message}
-                        label="Medical Card"
-                        id="medical_card"
-
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+                            <TextField
+                                {...params}
+                                placeholder="Select medical Card"
+                                label="Medical Card"
+                                error={!!errors.medical_card}
+                                helperText={errors?.medical_card?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
             />
 
 
@@ -248,7 +267,6 @@ function MedicalForm(props) {
                         field={field}
                         label="Medical Issue Date"
                         onChange={value => {
-                            field.onChange(value)
                             setValue('medical_expiry_date', increaseMonth(value, 3));
                         }}
                     />)

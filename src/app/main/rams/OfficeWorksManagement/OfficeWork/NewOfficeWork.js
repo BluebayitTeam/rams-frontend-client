@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone } from "app/@data/@data";
 import { OFFICEWORK_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -15,7 +16,6 @@ import reducer from '../store/index.js';
 import { resetOfficeWork } from '../store/officeWorkSlice';
 import NewOfficeWorkHeader from './NewOfficeWorkHeader.js';
 import OfficeWorkForm from './OfficeWorkForm.js';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -61,6 +61,10 @@ const OfficeWork = () => {
     const classes = useStyles();
 
     const history = useHistory();
+
+    useEffect(() => {
+        reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
+    }, [])
 
     useEffect(() => {
         return () => {
@@ -137,15 +141,15 @@ const OfficeWork = () => {
                                                         history.push(`/apps/officeWork-management/officeWork/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/officeWork-management/officeWork/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/officeWork-management/officeWork/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/officeWork-management/officeWork/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

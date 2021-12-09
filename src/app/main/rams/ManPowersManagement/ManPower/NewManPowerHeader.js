@@ -2,7 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -28,7 +28,7 @@ const NewManPowerHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("manPowerAlert", "saveManPower")
                 history.push('/apps/manPower-management/manPower/new');
-                reset({})
+                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -40,7 +40,7 @@ const NewManPowerHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("manPowerAlert", "updateManPower")
                 history.push('/apps/manPower-management/manPower/new');
-                reset({})
+                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -52,7 +52,7 @@ const NewManPowerHeader = () => {
             if (res.payload) {
                 localStorage.setItem("manPowerAlert", "deleteManPower")
                 history.push('/apps/manPower-management/manPower/new');
-                reset({})
+                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(removeAlertMsg))
             }
         });
@@ -60,7 +60,7 @@ const NewManPowerHeader = () => {
 
     function handleCancel() {
         history.push('/apps/manPower-management/manPower/new')
-        reset({})
+        reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
     }
 
 

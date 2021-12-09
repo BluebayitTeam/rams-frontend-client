@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { activeRetrnCncl, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -64,7 +64,7 @@ function FlightForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("flightAlert", "saveFlight")
                 history.push('/apps/flight-management/flight/new');
-                reset({})
+                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -76,7 +76,7 @@ function FlightForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("flightAlert", "updateFlight")
                 history.push('/apps/flight-management/flight/new');
-                reset({})
+                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -237,21 +237,32 @@ function FlightForm(props) {
             <Controller
                 name="ticket_status"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.ticket_status}
-                        helperText={errors?.ticket_status?.message}
-                        label="Ticket Status"
-                        id="ticket_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
+                        freeSolo
+                        value={value ? activeRetrnCncl.find(data => data.id == value) : null}
+                        options={activeRetrnCncl}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Ticket Status"
+                                label="Ticket Status"
+                                error={!!errors.ticket_status}
+                                helperText={errors?.ticket_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
             />
 
 

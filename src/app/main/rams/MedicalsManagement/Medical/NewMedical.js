@@ -3,12 +3,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone, medicalResults } from "app/@data/@data";
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import { MEDICAL_BY_PASSENGER_ID } from '../../../../constant/constants';
 import reducer from '../store/index.js';
@@ -45,7 +46,6 @@ const schema = yup.object().shape({
 const Medical = () => {
 
     const dispatch = useDispatch();
-    // const medical = useSelector(({ medicalsManagement }) => medicalsManagement.medical);
 
     const passengers = useSelector(state => state.data.passengers)
 
@@ -55,7 +55,6 @@ const Medical = () => {
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -65,6 +64,7 @@ const Medical = () => {
     const history = useHistory();
 
     useEffect(() => {
+
         return () => {
             /**
              * Reset Medical on component unload
@@ -73,6 +73,11 @@ const Medical = () => {
             setNoMedical(false);
         };
     }, [dispatch]);
+
+
+    useEffect(() => {
+        reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
+    }, [])
 
     /**
      * Show Message if the requested products is not exists
@@ -138,15 +143,15 @@ const Medical = () => {
                                                         history.push(`/apps/medical-management/medical/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/medical-management/medical/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/medical-management/medical/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/medical-management/medical/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

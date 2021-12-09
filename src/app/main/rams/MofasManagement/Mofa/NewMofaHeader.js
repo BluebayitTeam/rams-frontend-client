@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -34,7 +34,7 @@ const NewMofaHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("mofaAlert", "saveMofa")
                 history.push('/apps/mofa-management/mofa/new');
-                reset({})
+                reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -46,7 +46,7 @@ const NewMofaHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("mofaAlert", "updateMofa")
                 history.push('/apps/mofa-management/mofa/new');
-                reset({})
+                reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -58,7 +58,7 @@ const NewMofaHeader = () => {
             if (res.payload) {
                 localStorage.setItem("mofaAlert", "deleteMofa")
                 history.push('/apps/mofa-management/mofa/new');
-                reset({})
+                reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(removeAlertMsg))
             }
         });
@@ -66,7 +66,7 @@ const NewMofaHeader = () => {
 
     function handleCancel() {
         history.push('/apps/mofa-management/mofa/new')
-        reset({})
+        reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
     }
 
 

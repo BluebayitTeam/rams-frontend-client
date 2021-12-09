@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { activeRetrnCncl } from "app/@data/@data";
 import { FLIGHT_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -15,7 +16,6 @@ import { resetFlight } from '../store/flightSlice';
 import reducer from '../store/index.js';
 import FlightForm from './FlightForm.js';
 import NewFlightHeader from './NewFlightHeader.js';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -61,6 +61,12 @@ const Flight = () => {
     const classes = useStyles();
 
     const history = useHistory();
+
+
+
+    useEffect(() => {
+        reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
+    }, [])
 
     useEffect(() => {
         return () => {
@@ -137,15 +143,15 @@ const Flight = () => {
                                                         history.push(`/apps/flight-management/flight/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/flight-management/flight/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/flight-management/flight/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/flight-management/flight/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

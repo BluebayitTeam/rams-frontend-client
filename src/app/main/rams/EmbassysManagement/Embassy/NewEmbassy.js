@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone } from "app/@data/@data";
 import { EMBASSY_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
@@ -10,13 +11,12 @@ import axios from "axios";
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import { resetEmbassy } from '../store/embassySlice';
 import reducer from '../store/index.js';
 import EmbassyForm from './EmbassyForm.js';
 import NewEmbassyHeader from './NewEmbassyHeader.js';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -54,7 +54,6 @@ const Embassy = () => {
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -62,6 +61,10 @@ const Embassy = () => {
     const classes = useStyles();
 
     const history = useHistory();
+
+    useEffect(() => {
+        reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
+    }, [])
 
     useEffect(() => {
         return () => {
@@ -122,7 +125,7 @@ const Embassy = () => {
                             <Controller
                                 name="passenger"
                                 control={control}
-                                render={({ field: { onChange, value, name } }) => (
+                                render={({ field: { value } }) => (
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
@@ -172,7 +175,7 @@ const Embassy = () => {
                                                     //no data scope show alert
                                                     else {
                                                         history.push(`/apps/embassy-management/embassy/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, stamping_status: doneNotDone.find(data => data.default)?.id })
 
                                                         const medical = `${res.data?.medical == false ? "medical," : ""}`
                                                         const mofa = `${res.data?.mofa == false ? (medical ? "Mofa," : "Mofa") : ""}`
@@ -184,13 +187,13 @@ const Embassy = () => {
                                                             alertValue: message
                                                         }))
                                                     }
-                                                }).catch((err) => {
+                                                }).catch(() => {
                                                     history.push(`/apps/embassy-management/embassy/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, stamping_status: doneNotDone.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/embassy-management/embassy/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, stamping_status: doneNotDone.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (
@@ -208,7 +211,6 @@ const Embassy = () => {
                                                 InputLabelProps={{
                                                     shrink: true
                                                 }}
-                                            // onKeyDown={handleSubmitOnKeyDownEnter}
                                             />
                                         )}
                                     />

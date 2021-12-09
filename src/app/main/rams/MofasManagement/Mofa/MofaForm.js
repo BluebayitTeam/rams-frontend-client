@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
-import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -196,22 +196,34 @@ function MofaForm(props) {
             <Controller
                 name="re_mofa_status"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.re_mofa_status}
-                        helperText={errors?.re_mofa_status?.message}
-                        label="Re Mofa Status"
-                        id="re_mofa_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Re Mofa Status"
+                                label="Re Mofa Status"
+                                error={!!errors.re_mofa_status}
+                                helperText={errors?.re_mofa_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
             />
+
 
 
             <Controller
@@ -238,23 +250,33 @@ function MofaForm(props) {
             <Controller
                 name="mofa_status"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.mofa_status}
-                        helperText={errors?.mofa_status?.message}
-                        label="Mofa Status"
-                        id="mofa_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
 
+                            <TextField
+                                {...params}
+                                placeholder="Select Mofa Status"
+                                label="Mofa Status"
+                                error={!!errors.mofa_status}
+                                helperText={errors?.mofa_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
+            />
         </div>
     );
 }

@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone } from "app/@data/@data";
 import { MUSANEDOKALA_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -15,7 +16,6 @@ import reducer from '../store/index.js';
 import { resetMusanedOkala } from '../store/musanedOkalaSlice';
 import MusanedOkalaForm from './MusanedOkalaForm.js';
 import NewMusanedOkalaHeader from './NewMusanedOkalaHeader.js';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,14 +63,18 @@ const MusanedOkala = () => {
     const history = useHistory();
 
     useEffect(() => {
-        return () => {
-            /**
-             * Reset MusanedOkala on component unload
-             */
-            dispatch(resetMusanedOkala());
-            setNoMusanedOkala(false);
-        };
-    }, [dispatch]);
+        reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
+    }, []),
+
+        useEffect(() => {
+            return () => {
+                /**
+                 * Reset MusanedOkala on component unload
+                 */
+                dispatch(resetMusanedOkala());
+                setNoMusanedOkala(false);
+            };
+        }, [dispatch]);
 
     /**
      * Show Message if the requested products is not exists
@@ -137,15 +141,15 @@ const MusanedOkala = () => {
                                                         history.push(`/apps/musanedOkala-management/musanedOkala/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/musanedOkala-management/musanedOkala/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/musanedOkala-management/musanedOkala/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/musanedOkala-management/musanedOkala/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

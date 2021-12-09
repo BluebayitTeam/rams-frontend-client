@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import increaseMonth from 'app/@utils/increaseMonth';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect, useState } from 'react';
@@ -45,7 +45,7 @@ function EmbassyForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("embassyAlert", "saveEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
-                reset({})
+                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -57,7 +57,7 @@ function EmbassyForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("embassyAlert", "updateEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
-                reset({})
+                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -192,21 +192,32 @@ function EmbassyForm(props) {
             <Controller
                 name="stamping_status"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.stamping_status}
-                        helperText={errors?.stamping_status?.message}
-                        label="Stamping Status"
-                        id="stamping_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Stamping Status"
+                                label="Stamping Status"
+                                error={!!errors.stamping_status}
+                                helperText={errors?.stamping_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
             />
 
             <Controller
@@ -217,7 +228,6 @@ function EmbassyForm(props) {
                         field={field}
                         label="Stamping Date"
                         onChange={value => {
-                            field.onChange(value)
                             setValue('visa_expiry_date', increaseMonth(value, 3));
                         }}
                     />)

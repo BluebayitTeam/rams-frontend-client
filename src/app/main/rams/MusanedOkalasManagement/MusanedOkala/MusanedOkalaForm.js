@@ -1,17 +1,14 @@
-import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
-import { setAlert } from "app/store/alertSlice";
+import { doneNotDone } from 'app/@data/@data';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getAgents, getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
-import { saveMusanedOkala, updateMusanedOkala } from '../store/musanedOkalaSlice';
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,9 +34,8 @@ function MusanedOkalaForm(props) {
     const methods = useFormContext();
     const routeParams = useParams();
     const { musanedOkalaId } = routeParams;
-    const { control, formState, watch, reset, getValues } = methods;
-    const { errors, isValid, dirtyFields } = formState;
-    const history = useHistory();
+    const { control, formState, watch } = methods;
+    const { errors } = formState;
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -53,43 +49,6 @@ function MusanedOkalaForm(props) {
         watch("doc1_image") || setpreviewdoc1Image("")
         watch("doc2_image") || setpreviewdoc2Image("")
     }, [watch("doc1_image"), watch("doc2_image")])
-
-    function handleSaveMusanedOkala() {
-        dispatch(saveMusanedOkala(getValues())).then((res) => {
-            console.log("saveMusanedOkalaRes", res)
-            if (res.payload?.data?.id) {
-                localStorage.setItem("musanedOkalaAlert", "saveMusanedOkala")
-                history.push('/apps/musanedOkala-management/musanedOkala/new');
-                reset({})
-                dispatch(setAlert(saveAlertMsg))
-            }
-        });
-    }
-
-    function handleUpdateMusanedOkala() {
-        dispatch(updateMusanedOkala(getValues())).then((res) => {
-            console.log("updateMusanedOkalaRes", res)
-            if (res.payload?.data?.id) {
-                localStorage.setItem("musanedOkalaAlert", "updateMusanedOkala")
-                history.push('/apps/musanedOkala-management/musanedOkala/new');
-                reset({})
-                dispatch(setAlert(updateAlertMsg))
-            }
-        });
-    }
-
-    const handleSubmitOnKeyDownEnter = (ev) => {
-        if (ev.key === 'Enter') {
-            if (routeParams.musanedOkalaId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
-                handleSaveMusanedOkala()
-                console.log("saved")
-            }
-            else if (routeParams.musanedOkalaId !== "new" && watch('passenger')) {
-                handleUpdateMusanedOkala()
-                console.log("updated")
-            }
-        }
-    }
 
 
     return (
@@ -175,6 +134,94 @@ function MusanedOkalaForm(props) {
                 )}
             />
 
+
+            <Controller
+                name="okala_status"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
+                        className="mt-8 mb-16"
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Okala Status"
+                                label="Okala Status"
+                                error={!!errors.okala_status}
+                                helperText={errors?.okala_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
+            />
+
+
+            <Controller
+                name="musaned_status"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
+                        className="mt-8 mb-16"
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Musaned Status"
+                                label="Musaned Status"
+                                error={!!errors.musaned_status}
+                                helperText={errors?.musaned_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
+            />
+
+
+            <Controller
+                name="okala_date"
+                control={control}
+                render={({ field }) => {
+                    return (<CustomDatePicker
+                        field={field}
+                        label="Okala Date"
+                    />)
+                }}
+            />
+
+
+            <Controller
+                name="musaned_date"
+                control={control}
+                render={({ field }) => {
+                    return (<CustomDatePicker
+                        field={field}
+                        label="Musaned Date"
+                    />)
+                }}
+            />
+
             <Controller
                 name="current_status"
                 control={control}
@@ -205,76 +252,6 @@ function MusanedOkalaForm(props) {
                     />
                 )}
             />
-
-
-
-
-
-            <Controller
-                name="okala_status"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.okala_status}
-                        helperText={errors?.okala_status?.message}
-                        label="Okala Status"
-                        id="okala_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="musaned_status"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.musaned_status}
-                        helperText={errors?.musaned_status?.message}
-                        label="Musaned Status"
-                        id="musaned_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="okala_date"
-                control={control}
-                render={({ field }) => {
-                    return (<CustomDatePicker
-                        field={field}
-                        label="Okala Date"
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="musaned_date"
-                control={control}
-                render={({ field }) => {
-                    return (<CustomDatePicker
-                        field={field}
-                        label="Musaned Date"
-                    />)
-                }}
-            />
-
 
 
 

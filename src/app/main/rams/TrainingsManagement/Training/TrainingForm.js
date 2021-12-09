@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -48,7 +48,7 @@ function TrainingForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("trainingAlert", "saveTraining")
                 history.push('/apps/training-management/training/new');
-                reset({})
+                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -60,7 +60,7 @@ function TrainingForm(props) {
             if (res.payload?.data?.id) {
                 localStorage.setItem("trainingAlert", "updateTraining")
                 history.push('/apps/training-management/training/new');
-                reset({})
+                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -185,22 +185,34 @@ function TrainingForm(props) {
             <Controller
                 name="training_card_status"
                 control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
                         className="mt-8 mb-16"
-                        error={!!errors.training_card_status}
-                        helperText={errors?.training_card_status?.message}
-                        label="Training Card Status"
-                        id="training_card_status"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
+                        freeSolo
+                        value={value ? doneNotDone.find(data => data.id == value) : null}
+                        options={doneNotDone}
+                        getOptionLabel={(option) => `${option.name}`}
+                        onChange={(event, newValue) => {
+                            onChange(newValue?.id)
+                        }}
+                        renderInput={params => (
+
+                            <TextField
+                                {...params}
+                                placeholder="Select Training Card Status"
+                                label="Training Card Status"
+                                error={!!errors.training_card_status}
+                                helperText={errors?.training_card_status?.message}
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        )}
+                    />
+                )}
             />
+
 
 
             <Controller

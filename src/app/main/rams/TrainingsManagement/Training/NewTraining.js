@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone } from "app/@data/@data";
 import { TRAINING_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -15,7 +16,6 @@ import reducer from '../store/index.js';
 import { resetTraining } from '../store/trainingSlice';
 import NewTrainingHeader from './NewTrainingHeader.js';
 import TrainingForm from './TrainingForm.js';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,6 +60,11 @@ const Training = () => {
     const classes = useStyles();
 
     const history = useHistory();
+
+
+    useEffect(() => {
+        reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
+    }, [])
 
     useEffect(() => {
         return () => {
@@ -136,15 +141,15 @@ const Training = () => {
                                                         history.push(`/apps/training-management/training/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/training-management/training/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, training_card_status: doneNotDone.find(data => data.default)?.id })
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/training-management/training/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, training_card_status: doneNotDone.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/training-management/training/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, training_card_status: doneNotDone.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

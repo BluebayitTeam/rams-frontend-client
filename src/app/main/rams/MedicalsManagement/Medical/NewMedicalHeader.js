@@ -2,7 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, medicalResults, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -28,7 +28,7 @@ const NewMedicalHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("medicalAlert", "saveMedical")
                 history.push('/apps/medical-management/medical/new');
-                reset({})
+                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -40,7 +40,7 @@ const NewMedicalHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("medicalAlert", "updateMedical")
                 history.push('/apps/medical-management/medical/new');
-                reset({})
+                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -52,7 +52,7 @@ const NewMedicalHeader = () => {
             if (res.payload) {
                 localStorage.setItem("medicalAlert", "deleteMedical")
                 history.push('/apps/medical-management/medical/new');
-                reset({})
+                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
                 dispatch(setAlert(removeAlertMsg))
             }
         });
@@ -60,7 +60,7 @@ const NewMedicalHeader = () => {
 
     function handleCancel() {
         history.push('/apps/medical-management/medical/new')
-        reset({})
+        reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
     }
 
     console.log("getValues", getValues())

@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { activeRetrnCncl, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -34,7 +34,7 @@ const NewFlightHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("flightAlert", "saveFlight")
                 history.push('/apps/flight-management/flight/new');
-                reset({})
+                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -46,7 +46,7 @@ const NewFlightHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("flightAlert", "updateFlight")
                 history.push('/apps/flight-management/flight/new');
-                reset({})
+                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -58,7 +58,7 @@ const NewFlightHeader = () => {
             if (res.payload) {
                 localStorage.setItem("flightAlert", "deleteFlight")
                 history.push('/apps/flight-management/flight/new');
-                reset({})
+                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
                 dispatch(setAlert(removeAlertMsg))
             }
         });
@@ -66,7 +66,7 @@ const NewFlightHeader = () => {
 
     function handleCancel() {
         history.push('/apps/flight-management/flight/new')
-        reset({})
+        reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
     }
 
 

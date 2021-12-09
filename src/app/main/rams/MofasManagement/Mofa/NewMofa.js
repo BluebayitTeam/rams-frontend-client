@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone } from "app/@data/@data";
 import { MOFA_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -15,7 +16,6 @@ import reducer from '../store/index.js';
 import { resetMofa } from '../store/mofaSlice';
 import MofaForm from './MofaForm.js';
 import NewMofaHeader from './NewMofaHeader.js';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,14 +63,19 @@ const Mofa = () => {
     const history = useHistory();
 
     useEffect(() => {
-        return () => {
-            /**
-             * Reset Mofa on component unload
-             */
-            dispatch(resetMofa());
-            setNoMofa(false);
-        };
-    }, [dispatch]);
+        reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
+    }, []),
+
+
+        useEffect(() => {
+            return () => {
+                /**
+                 * Reset Mofa on component unload
+                 */
+                dispatch(resetMofa());
+                setNoMofa(false);
+            };
+        }, [dispatch]);
 
     /**
      * Show Message if the requested products is not exists
@@ -137,15 +142,15 @@ const Mofa = () => {
                                                         history.push(`/apps/mofa-management/mofa/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/mofa-management/mofa/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/mofa-management/mofa/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/mofa-management/mofa/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

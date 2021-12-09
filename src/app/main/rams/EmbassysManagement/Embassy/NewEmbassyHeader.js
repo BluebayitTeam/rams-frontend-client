@@ -2,7 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import { removeAlertMsg, saveAlertMsg } from 'app/@data/@data';
+import { doneNotDone, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -28,7 +28,7 @@ const NewEmbassyHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("embassyAlert", "saveEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
-                reset({})
+                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -40,7 +40,7 @@ const NewEmbassyHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("embassyAlert", "updateEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
-                reset({})
+                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -52,7 +52,7 @@ const NewEmbassyHeader = () => {
             if (res.payload) {
                 localStorage.setItem("embassyAlert", "deleteEmbassy")
                 history.push('/apps/embassy-management/embassy/new');
-                reset({})
+                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(removeAlertMsg))
             }
         });
@@ -60,7 +60,7 @@ const NewEmbassyHeader = () => {
 
     function handleCancel() {
         history.push('/apps/embassy-management/embassy/new')
-        reset({})
+        reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
     }
 
 

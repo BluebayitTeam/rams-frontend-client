@@ -2,7 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -29,7 +29,7 @@ const NewTrainingHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("trainingAlert", "saveTraining")
                 history.push('/apps/training-management/training/new');
-                reset({})
+                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
             }
         });
@@ -41,7 +41,7 @@ const NewTrainingHeader = () => {
             if (res.payload?.data?.id) {
                 localStorage.setItem("trainingAlert", "updateTraining")
                 history.push('/apps/training-management/training/new');
-                reset({})
+                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(updateAlertMsg))
             }
         });
@@ -53,7 +53,7 @@ const NewTrainingHeader = () => {
             if (res.payload) {
                 localStorage.setItem("trainingAlert", "deleteTraining")
                 history.push('/apps/training-management/training/new');
-                reset({})
+                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(removeAlertMsg))
             }
         });
@@ -61,7 +61,7 @@ const NewTrainingHeader = () => {
 
     function handleCancel() {
         history.push('/apps/training-management/training/new')
-        reset({})
+        reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
     }
 
 
