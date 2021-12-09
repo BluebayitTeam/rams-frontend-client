@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -31,7 +32,7 @@ const NewMaleCVHeader = () => {
                 localStorage.setItem("maleCVAlert", "saveMaleCV")
                 history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -43,7 +44,7 @@ const NewMaleCVHeader = () => {
                 localStorage.setItem("maleCVAlert", "updateMaleCV")
                 history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }
@@ -55,7 +56,7 @@ const NewMaleCVHeader = () => {
                 localStorage.setItem("maleCVAlert", "deleteMaleCV")
                 history.push('/apps/maleCV-management/maleCV/new');
                 reset({})
-                dispatch(setAlert("remove success"))
+                dispatch(setAlert(removeAlertMsg))
             }
         });
     }

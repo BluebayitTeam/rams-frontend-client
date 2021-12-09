@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
+import { saveAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -47,7 +48,7 @@ function ManPowerForm(props) {
                 localStorage.setItem("manPowerAlert", "saveManPower")
                 history.push('/apps/manPower-management/manPower/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -59,7 +60,7 @@ function ManPowerForm(props) {
                 localStorage.setItem("manPowerAlert", "updateManPower")
                 history.push('/apps/manPower-management/manPower/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }

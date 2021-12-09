@@ -2,6 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
+import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -29,7 +30,7 @@ const NewManPowerListHeader = () => {
                 localStorage.setItem("manPowerListAlert", "saveManPowerList")
                 history.push('/apps/manPowerList-management/manPowerList/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -41,7 +42,7 @@ const NewManPowerListHeader = () => {
                 localStorage.setItem("manPowerListAlert", "updateManPowerList")
                 history.push('/apps/manPowerList-management/manPowerList/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }
@@ -53,7 +54,7 @@ const NewManPowerListHeader = () => {
                 localStorage.setItem("manPowerListAlert", "deleteManPowerList")
                 history.push('/apps/manPowerList-management/manPowerList/new');
                 reset({})
-                dispatch(setAlert("remove success"))
+                dispatch(setAlert(removeAlertMsg))
             }
         });
     }

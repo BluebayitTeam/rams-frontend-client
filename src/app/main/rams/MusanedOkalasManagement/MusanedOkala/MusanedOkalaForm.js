@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
+import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -60,7 +61,7 @@ function MusanedOkalaForm(props) {
                 localStorage.setItem("musanedOkalaAlert", "saveMusanedOkala")
                 history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -72,7 +73,7 @@ function MusanedOkalaForm(props) {
                 localStorage.setItem("musanedOkalaAlert", "updateMusanedOkala")
                 history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }

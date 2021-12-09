@@ -2,6 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
+import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -28,7 +29,7 @@ const NewMusanedOkalaHeader = () => {
                 localStorage.setItem("musanedOkalaAlert", "saveMusanedOkala")
                 history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -40,7 +41,7 @@ const NewMusanedOkalaHeader = () => {
                 localStorage.setItem("musanedOkalaAlert", "updateMusanedOkala")
                 history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }
@@ -52,7 +53,7 @@ const NewMusanedOkalaHeader = () => {
                 localStorage.setItem("musanedOkalaAlert", "deleteMusanedOkala")
                 history.push('/apps/musanedOkala-management/musanedOkala/new');
                 reset({})
-                dispatch(setAlert("remove success"))
+                dispatch(setAlert(removeAlertMsg))
             }
         });
     }

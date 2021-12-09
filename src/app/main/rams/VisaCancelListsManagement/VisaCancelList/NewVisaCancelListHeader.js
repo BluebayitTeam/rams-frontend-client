@@ -2,6 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
+import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -29,7 +30,7 @@ const NewVisaCancelListHeader = () => {
                 localStorage.setItem("visaCancelListAlert", "saveVisaCancelList")
                 history.push('/apps/visaCancelList-management/visaCancelList/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -41,7 +42,7 @@ const NewVisaCancelListHeader = () => {
                 localStorage.setItem("visaCancelListAlert", "updateVisaCancelList")
                 history.push('/apps/visaCancelList-management/visaCancelList/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }
@@ -53,7 +54,7 @@ const NewVisaCancelListHeader = () => {
                 localStorage.setItem("visaCancelListAlert", "deleteVisaCancelList")
                 history.push('/apps/visaCancelList-management/visaCancelList/new');
                 reset({})
-                dispatch(setAlert("remove success"))
+                dispatch(setAlert(removeAlertMsg))
             }
         });
     }

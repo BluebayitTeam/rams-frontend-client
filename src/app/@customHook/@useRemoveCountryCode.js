@@ -1,6 +1,6 @@
 import countryCodes from "../@data/@Countrycodes";
 
-const RemoveCountryCodeFromPgoneNo = (phoneNoPrimary = "", phoneNoSecondary = "") => {
+const RemoveCountryCodeFromPhoneNo = (phoneNoPrimary = "", phoneNoSecondary = "") => {
 
     let phoneNoPrimaryExceptCode = phoneNoPrimary
     let phoneNoSecondaryExceptCode = phoneNoSecondary
@@ -19,10 +19,9 @@ const RemoveCountryCodeFromPgoneNo = (phoneNoPrimary = "", phoneNoSecondary = ""
         if (matchedCodeForSecondaryPhone) {
             phoneNoSecondaryExceptCode = phoneNoSecondary?.replace(matchedCodeForSecondaryPhone, "")
         }
-        return null;
     })
 
     return [phoneNoPrimaryExceptCode, phoneNoSecondaryExceptCode]
 }
 
-export default RemoveCountryCodeFromPgoneNo
+export default RemoveCountryCodeFromPhoneNo

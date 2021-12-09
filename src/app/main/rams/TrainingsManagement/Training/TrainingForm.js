@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
+import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -48,7 +49,7 @@ function TrainingForm(props) {
                 localStorage.setItem("trainingAlert", "saveTraining")
                 history.push('/apps/training-management/training/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -60,7 +61,7 @@ function TrainingForm(props) {
                 localStorage.setItem("trainingAlert", "updateTraining")
                 history.push('/apps/training-management/training/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }

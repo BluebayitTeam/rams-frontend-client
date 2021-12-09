@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import Image from 'app/@components/Image';
+import { saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
@@ -62,7 +63,7 @@ function FemaleCVForm(props) {
                 localStorage.setItem("femaleCVAlert", "saveFemaleCV")
                 history.push('/apps/femaleCV-management/femaleCV/new');
                 reset({})
-                dispatch(setAlert("save success"))
+                dispatch(setAlert(saveAlertMsg))
             }
         });
     }
@@ -74,7 +75,7 @@ function FemaleCVForm(props) {
                 localStorage.setItem("femaleCVAlert", "updateFemaleCV")
                 history.push('/apps/femaleCV-management/femaleCV/new');
                 reset({})
-                dispatch(setAlert("update success"))
+                dispatch(setAlert(updateAlertMsg))
             }
         });
     }

@@ -8,8 +8,9 @@ export const passportTypes = [{ id: "Ordinary", name: "Ordinary" }, { id: "Busin
 
 export const rowsPerPageOptions = [5, 10, 30, 50, 100]
 
-export const successMessage = "Save Success"
+export const saveAlertMsg = "Save Success"
 
-export const updateMessage = "Update Success"
+export const updateAlertMsg = "Update Success"
 
-export const RemoveMessage = "Remove Success"
+export const removeAlertMsg = "Remove Success"
+
