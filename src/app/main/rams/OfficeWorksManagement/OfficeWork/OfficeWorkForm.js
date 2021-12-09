@@ -1,6 +1,7 @@
 import _ from '@lodash';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
 import { setAlert } from "app/store/alertSlice";
 import React, { useEffect, useState } from 'react';
@@ -147,17 +148,9 @@ function OfficeWorkForm(props) {
                 name="finger_date"
                 control={control}
                 render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.finger_date}
-                        helperText={errors?.finger_date?.message}
-                        type="date"
+                    return (<CustomDatePicker
+                        field={field}
                         label="Finger Date"
-                        id="finger_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
                     />)
                 }}
             />

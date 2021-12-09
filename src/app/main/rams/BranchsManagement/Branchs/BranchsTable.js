@@ -58,7 +58,7 @@ const BranchsTable = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        searchText ? getSearchBranch() : setSearchCity([]);
+        searchText ? getSearchBranch() : setSearchBranch([]);
     }, [searchText])
 
     const getSearchBranch = () => {
@@ -68,7 +68,7 @@ const BranchsTable = (props) => {
                 setSearchBranch(data?.branchs);
                 console.log(data)
             })
-            .catch(() => setSearchCity([]))
+            .catch(() => setSearchBranch([]))
     }
 
     function handleRequestSort(branchEvent, property) {

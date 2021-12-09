@@ -4,8 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
+import increaseMonth from 'app/@utils/increaseMonth';
 import { setAlert } from 'app/store/alertSlice';
-import { addMonths } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -248,8 +248,7 @@ function MedicalForm(props) {
                         label="Medical Issue Date"
                         onChange={value => {
                             field.onChange(value)
-                            const addMonth = addMonths(new Date(value,), 3,)
-                            setValue('medical_expiry_date', `${addMonth.getFullYear()}-${(addMonth.getMonth() + 1).toString().padStart(2, 0)}-${(addMonth.getDate()).toString().padStart(2, 0)}`);
+                            setValue('medical_expiry_date', increaseMonth(value, 3));
                         }}
                     />)
                 }}

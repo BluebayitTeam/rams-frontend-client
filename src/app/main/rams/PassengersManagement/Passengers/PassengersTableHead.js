@@ -14,6 +14,13 @@ const rows = [
         sort: true
     },
     {
+        id: 'P_no',
+        align: 'left',
+        disablePadding: false,
+        label: 'P.No',
+        sort: true
+    },
+    {
         id: 'P_name',
         align: 'left',
         disablePadding: false,
@@ -24,7 +31,7 @@ const rows = [
         id: 'pp_no',
         align: 'left',
         disablePadding: false,
-        label: 'PPNo',
+        label: 'PP_No',
         sort: true
     },
     {

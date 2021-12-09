@@ -327,7 +327,7 @@ export const getPassengers = () => (dispatch) => {
     fetch(PASSENGERS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setPassengers(data.passengers)))
-        .catch(() => { });
+        .catch((err) => { console.log({ err }) });
 }
 
 

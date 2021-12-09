@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -35,7 +35,6 @@ function VisaEntryForm(props) {
     const dispatch = useDispatch()
 
 
-    const [issueDate, setissueDate] = useState("2021-12-31")
     useEffect(() => {
         dispatch(getDemands())
         dispatch(getAgents())
@@ -223,27 +222,6 @@ function VisaEntryForm(props) {
             />
 
 
-            {/* <Controller
-                name="visa_issue_date"
-                control={control}
-                render={({ field }) => {
-                    return (
-                        <DatePicker
-                            {...field}
-                            onChange={(value) => {
-                                field.onChange(moment(value, "MM-DD-YYYY"))
-                                console.log("e", value)
-                            }}
-                            className="mt-8 mb-16"
-                            label="Visa Issue Date"
-                            id="visa_issue_date"
-                            format="yyyy/mm/dd"
-                        // onKeyDown={handleSubmitOnKeyDownEnter}
-                        />)
-                }}
-            /> */}
-
-
             <Controller
                 name="visa_issue_date"
                 control={control}
@@ -251,7 +229,8 @@ function VisaEntryForm(props) {
                     return (<CustomDatePicker
                         field={field}
                         label="Visa Issue Date"
-                    // renderInput={() => (<h1>2021</h1>)}
+                        format="yyyy/MM/dd"
+                        placeholder="yyyy/MM/dd"
                     />)
                 }}
             />

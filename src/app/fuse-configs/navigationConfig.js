@@ -250,8 +250,8 @@ const navigationConfig = [
             //recruiting
             {
                 id: 'recruiting',
-                title: 'Recruitings',
-                translate: 'Recruitings',
+                title: 'Recruiting',
+                translate: 'Recruiting',
                 type: 'item',
                 url: '/apps/passenger-management/passengers/recruiting',
                 exact: true
@@ -259,8 +259,8 @@ const navigationConfig = [
             //processing
             {
                 id: 'processing',
-                title: 'Processings',
-                translate: 'Processings',
+                title: 'Processing',
+                translate: 'Processing',
                 type: 'item',
                 url: '/apps/passenger-management/passengers/processing',
                 exact: true
@@ -268,8 +268,8 @@ const navigationConfig = [
             //hajj
             {
                 id: 'hajj',
-                title: 'Hajjs',
-                translate: 'Hajjs',
+                title: 'Hajj',
+                translate: 'Hajj',
                 type: 'item',
                 url: '/apps/passenger-management/passengers/hajj',
                 exact: true
@@ -277,8 +277,8 @@ const navigationConfig = [
             //Umrah
             {
                 id: 'umrah',
-                title: 'Umrahs',
-                translate: 'Umrahs',
+                title: 'Umrah',
+                translate: 'Umrah',
                 type: 'item',
                 url: '/apps/passenger-management/passengers/umrah',
                 exact: true
@@ -286,8 +286,8 @@ const navigationConfig = [
             //travel
             {
                 id: 'travel',
-                title: 'Travels',
-                translate: 'Travels',
+                title: 'Travel',
+                translate: 'Travel',
                 type: 'item',
                 url: '/apps/passenger-management/passengers/travel',
                 exact: true
@@ -295,8 +295,8 @@ const navigationConfig = [
             //studennt
             {
                 id: 'student',
-                title: 'Students',
-                translate: 'Students',
+                title: 'Student',
+                translate: 'Student',
                 type: 'item',
                 url: '/apps/passenger-management/passengers/student',
                 exact: true

@@ -1,4 +1,4 @@
-import { addYears } from 'date-fns';
+import increaseYear from "app/@utils/increaseYear";
 import { useEffect, useState } from 'react';
 
 
@@ -189,8 +189,7 @@ function useTextSeparator(text = "") {
                 setpassportExpDateText(`20${PspExpDMainTxt.substr(0, 2)}-${PspExpDMainTxt.substr(2, 2)}-${PspExpDMainTxt.substr(4, 2)}`)
 
                 const passportExpDateTxt = `20${PspExpDMainTxt.substr(0, 2)}-${PspExpDMainTxt.substr(2, 2)}-${PspExpDMainTxt.substr(4, 2)}`
-                const decreaseYear = addYears(new Date(passportExpDateTxt,), -5,)
-                setpassportIssDateText(`${decreaseYear.getFullYear()}-${(decreaseYear.getMonth() + 1).toString().padStart(2, 0)}-${(decreaseYear.getDate() + 1).toString().padStart(2, 0)}`)
+                setpassportIssDateText(increaseYear(passportExpDateTxt, -5))
 
                 setnidNoText(BGDMainText.slice(BGDIndex + 18))
             }

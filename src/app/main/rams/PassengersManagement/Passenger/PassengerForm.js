@@ -8,9 +8,9 @@ import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image.jsx';
 import useTextSeparator from 'app/@customHook/useTextSeparator';
 import { genders, maritalStatuses, passportTypes, religions } from 'app/@data/@data';
+import increaseYear from 'app/@utils/increaseYear';
 import axios from 'axios';
 import clsx from 'clsx';
-import { addYears } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -444,6 +444,7 @@ function PassengerForm(props) {
                         <CustomDatePicker
                             field={field}
                             label="Date Of Birth"
+                            className="mt-8 mb-16 w-full md:w-6/12"
                         />
                     )}
                 />
@@ -490,7 +491,7 @@ function PassengerForm(props) {
                     control={control}
                     render={({ field: { onChange, value, name } }) => (
                         <Autocomplete
-                            className="mt-8 mb-16 w-full md:w-6/12 "
+                            className="mt-8 mb-16 w-full md:w-6/12"
                             freeSolo
                             value={value ? maritalStatuses.find(data => data.id == value) : null}
                             options={maritalStatuses}
@@ -1027,9 +1028,9 @@ function PassengerForm(props) {
                         return (<CustomDatePicker
                             field={field}
                             label="Passport Issue Date"
+                            className="mt-8 mb-16 w-full md:w-6/12"
                             onChange={value => {
-                                const addyear = addYears(new Date(value,), 5,)
-                                setValue('passport_expiry_date', `${addyear.getFullYear()}-${(addyear.getMonth() + 1).toString().padStart(2, 0)}-${(addyear.getDate()).toString().padStart(2, 0)}`);
+                                setValue('passport_expiry_date', increaseYear(value, 5));
                             }}
                         />)
                     }}
@@ -1041,6 +1042,7 @@ function PassengerForm(props) {
                         return (<CustomDatePicker
                             field={field}
                             label="Passport Expiry Date"
+                            className="mt-8 mb-16 w-full md:w-6/12"
                             readOnly
                         />)
                     }}
