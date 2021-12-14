@@ -1,25 +1,21 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import { Typography } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
+import { createMuiTheme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/@data';
 import { motion } from 'framer-motion';
+import MaterialDatatable from 'material-datatable';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { BASE_URL, SEARCH_AGENT } from '../../../../constant/constants';
 import { getAgents, selectAgents } from '../store/agentsSlice';
-import AgentsTableHead from './AgentsTableHead';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,15 +36,9 @@ const AgentsTable = (props) => {
     const searchText = useSelector(({ agentsManagement }) => agentsManagement.agents.searchText);
     const [searchAgent, setSearchAgent] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selected, setSelected] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(30);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
-
-    const [order, setOrder] = useState({
-        direction: 'asc',
-        id: null
-    });
 
     let serialNumber = 1;
     const totalPages = sessionStorage.getItem('total_agents_pages');
@@ -72,32 +62,6 @@ const AgentsTable = (props) => {
             .catch(() => setSearchAgent([]))
     }
 
-    function handleRequestSort(agentEvent, property) {
-        const id = property;
-        let direction = 'desc';
-
-        if (order.id === property && order.direction === 'desc') {
-            direction = 'asc';
-        }
-
-        setOrder({
-            direction,
-            id
-        });
-    }
-
-    function handleSelectAllClick(agentEvent) {
-        if (agentEvent.target.checked) {
-            setSelected(agents.map(n => n.id));
-            return;
-        }
-        setSelected([]);
-    }
-
-    function handleDeselect() {
-        setSelected([]);
-    }
-
     function handleUpdateAgent(item) {
         localStorage.removeItem('agentEvent')
         props.history.push(`/apps/agent-management/agents/${item.id}/${item.name}`);
@@ -108,22 +72,6 @@ const AgentsTable = (props) => {
         props.history.push(`/apps/agent-management/agents/${item.id}/${item.name}`);
     }
 
-    function handleCheck(agentEvent, id) {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-        }
-
-        setSelected(newSelected);
-    }
 
     //pagination
     const handlePagination = (e, handlePage) => {
@@ -163,176 +111,129 @@ const AgentsTable = (props) => {
         );
     }
 
+
+
+
+
+
+    const columns = [
+        {
+            field: 'id',
+            name: 'SL_NO',
+            options: {
+                headerNoWrap: true,
+                customBodyRender: () => {
+                    const rowCount = searchText !== "" && !_.isEmpty(searchAgent) && _.isArray(searchAgent) ? searchAgent.length : agents.length
+                    return <p>{((pageAndSize.page * pageAndSize.size) - (pageAndSize.size + (rowCount < pageAndSize.size ? rowCount : pageAndSize.size))) + serialNumber++}</p>
+                }
+            },
+        },
+        {
+            field: 'image',
+            name: 'Image',
+            options: {
+                print: false,
+                headerNoWrap: true,
+                customBodyRender: (value) => {
+                    console.log("imgValue", value.image)
+                    return value.image ? (<img
+                        className="h-full block rounded"
+                        style={{
+                            marginTop: "-10px",
+                            marginBottom: "-10px",
+                            height: "60px",
+                            borderRadius: "15px"
+                        }}
+                        src={`${BASE_URL}${value.image}`} />
+                    ) : null
+                }
+            },
+        },
+        {
+            field: 'username',
+            name: 'UserName',
+            options: {
+                headerNoWrap: true,
+            }
+        },
+        {
+            field: 'email',
+            name: 'Email',
+            options: {
+                headerNoWrap: true,
+            }
+        },
+        {
+            field: 'primary_phone',
+            name: 'Phone',
+            options: {
+                headerNoWrap: true,
+            }
+        },
+        {
+            field: 'street_address_one',
+            name: 'Address',
+            options: {
+                headerNoWrap: true,
+            }
+        },
+        {
+            field: 'action',
+            name: 'Action',
+            options: {
+                headerNoWrap: true,
+                print: false,
+                customBodyRender: (value) => {
+                    return (
+                        <div>
+                            <EditIcon onClick={() => handleUpdateAgent(value)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={() => handleDeleteAgent(value, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
+                        </div>
+                    )
+                }
+            }
+        }
+    ];
+
+
+    // const memoizedColumns = useMemo(() => columns, []);
+
+
+    const getMuiTheme = () => createMuiTheme({
+        overrides: {
+            MaterialDatatableBody: {
+                root: {
+
+                },
+
+            }
+        }
+    })
+
+    const options = {
+        filterType: 'checkbox',
+        count: totalElements,
+        page: page,
+        onChangeRowsPerPage: rowsPerPage,
+        fixedHeader: true,
+        // customFooter: () => null,
+        onRowsDelete: (deletedIds) => console.log({ deletedIds })
+    };
+
+
+
     return (
         <div className="w-full flex flex-col">
             <FuseScrollbars className="flex-grow overflow-x-auto">
-                <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <AgentsTableHead
-                        selectedAgentIds={selected}
-                        order={order}
-                        onSelectAllClick={handleSelectAllClick}
-                        onRequestSort={handleRequestSort}
-                        rowCount={agents.length}
-                        onMenuItemClick={handleDeselect}
-                    />
+                {/* <MuiThemeProvider theme={getMuiTheme()}> */}
+                <MaterialDatatable
+                    title={"Agent List"}
+                    data={searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents}
+                    columns={columns}
+                    options={options}
 
-                    <TableBody>
-                        {_.orderBy(
-                            searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents,
-                            [
-                                o => {
-                                    switch (order.id) {
-                                        case 'categories': {
-                                            return o.categories[0];
-                                        }
-                                        default: {
-                                            return o[order.id];
-                                        }
-                                    }
-                                }
-                            ],
-                            [order.direction]
-                        )
-                            .map(n => {
-                                const isSelected = selected.indexOf(n.id) !== -1;
-                                return (
-                                    <TableRow
-                                        className="h-72 cursor-pointer"
-                                        hover
-                                        role="checkbox"
-                                        aria-checked={isSelected}
-                                        tabIndex={-1}
-                                        key={n.id}
-                                        selected={isSelected}
-
-                                    >
-                                        <TableCell className="w-40 md:w-64 text-center" padding="none">
-                                            <Checkbox
-                                                checked={isSelected}
-                                                onClick={agentEvent => agentEvent.stopPropagation()}
-                                                onChange={agentEvent => handleCheck(agentEvent, n.id)}
-                                            />
-                                        </TableCell>
-
-                                        <TableCell className="w-40 md:w-64" component="th" scope="row">
-                                            {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
-                                        </TableCell>
-
-                                        <TableCell
-                                            className="w-52 px-4 md:px-0 h-72"
-                                            component="th"
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            {n.length > 0 && n.featuredImageId ? (
-                                                <img
-                                                    className="h-full block rounded p-8"
-                                                    style={{ borderRadius: '15px' }}
-                                                    src={_.find(n.image, { id: n.featuredImageId }).url}
-                                                    alt={n.name}
-                                                />
-                                            ) : (
-                                                <img
-                                                    className="h-full block rounded p-8"
-                                                    style={{ borderRadius: '15px' }}
-                                                    src={`${BASE_URL}${n.image}`}
-                                                    alt={n.name}
-                                                />
-                                            )}
-                                        </TableCell>
-
-
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.gender}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.role}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.thana}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.city}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.country}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.group}
-                                        </TableCell>
-
-
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.first_name}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.last_name}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.father_name}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.mother_name}
-                                        </TableCell> */}
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.username}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.email}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.primary_phone}
-                                        </TableCell>
-
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.secondary_phone}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.user_type}
-                                        </TableCell> */}
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.street_address_one}
-                                        </TableCell>
-
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.street_address_two}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.postal_code}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.nid}
-                                        </TableCell> */}
-
-
-                                        <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
-                                            <div>
-                                                <EditIcon onClick={agentEvent => handleUpdateAgent(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteAgent(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
-                                            </div>
-                                        </TableCell>
-
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </FuseScrollbars>
+                />
+                {/* </MuiThemeProvider> */}
+            </FuseScrollbars >
 
             <div className={classes.root} id="pagiContainer">
                 <Pagination
@@ -364,7 +265,14 @@ const AgentsTable = (props) => {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </div>
-        </div>
+            <button onClick={() => window.print(<MaterialDatatable
+                title={"Agent List"}
+                data={searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents}
+                columns={columns}
+                options={options}
+
+            />)}>print</button>
+        </div >
     );
 };
 

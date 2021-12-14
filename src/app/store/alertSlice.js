@@ -9,7 +9,7 @@ const dataSlice = createSlice({
     },
     reducers: {
         setAlert: (state, action) => {
-            const payload = action.payload
+            const { payload } = action
             return {
                 alertValue: typeof (payload) === "string" ? payload : payload.alertValue || "",
                 alertType: payload.alertType || "success",

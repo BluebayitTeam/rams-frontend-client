@@ -77,18 +77,6 @@ export const getEmployees = () => (dispatch) => {
         .then(data => dispatch(setEmployees(data.employees)))
         .catch(() => { })
 }
-export const getProducts = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(aLLProductsWithoutPagination, authTOKEN)
-        .then(response => response.json())
-        .then(data => dispatch(setProducts(data.products)))
-        .catch(() => { })
-}
 export const getAttributes = () => (dispatch) => {
     const authTOKEN = {
         headers: {
