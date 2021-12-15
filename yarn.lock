@@ -12490,6 +12490,13 @@ react-to-print@^1.0.10:
     prop-types "^15.6.0"
     react "^16.2.0"
 
+react-to-print@^2.14.2:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.14.2.tgz#99aa1da0b1d0221397c0d380ca96cb34848932c9"
+  integrity sha512-pIfIvuEGBDs8xXtf+0hfjbTUDH1eum18jJX6haZly1nSeIgm+xoMvrY6HPrIIS98TfwUg+RSbW+842reh/+jig==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-transition-group@^2.0.0, react-transition-group@^2.2.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"

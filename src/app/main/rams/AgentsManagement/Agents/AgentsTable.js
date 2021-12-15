@@ -2,19 +2,22 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import { createMuiTheme, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import TablePagination from '@material-ui/core/TablePagination';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import PrintIcon from '@material-ui/icons/Print';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/@data';
 import { motion } from 'framer-motion';
 import MaterialDatatable from 'material-datatable';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
 import { BASE_URL, SEARCH_AGENT } from '../../../../constant/constants';
 import { getAgents, selectAgents } from '../store/agentsSlice';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,7 +29,7 @@ const useStyles = makeStyles(theme => ({
             marginTop: theme.spacing(1),
             // marginBottom: theme.spacing(3),
         }
-    }
+    },
 }))
 
 const AgentsTable = (props) => {
@@ -43,6 +46,23 @@ const AgentsTable = (props) => {
     let serialNumber = 1;
     const totalPages = sessionStorage.getItem('total_agents_pages');
     const totalElements = sessionStorage.getItem('total_agents_elements');
+
+
+    const [print, setPrint] = useState(false)
+
+    const componentRef = useRef(null);
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        pageStyle: '@page { size: auto} @media print { body { -webkit-print-color-adjust: exact; padding: 5px !important} }'
+    });
+
+    useEffect(() => {
+        if (print) {
+            handlePrint()
+            setPrint(false)
+        }
+    }, [print])
 
     useEffect(() => {
         dispatch(getAgents(pageAndSize)).then(() => setLoading(false));
@@ -154,6 +174,13 @@ const AgentsTable = (props) => {
             name: 'UserName',
             options: {
                 headerNoWrap: true,
+                setCellProps: value => {
+                    return {
+                        style: {
+                            fontSize: '25px !important'
+                        }
+                    };
+                }
             }
         },
         {
@@ -181,6 +208,7 @@ const AgentsTable = (props) => {
             field: 'action',
             name: 'Action',
             options: {
+                display: print ? false : true,
                 headerNoWrap: true,
                 print: false,
                 customBodyRender: (value) => {
@@ -200,80 +228,102 @@ const AgentsTable = (props) => {
 
     const getMuiTheme = () => createMuiTheme({
         overrides: {
-            MaterialDatatableBody: {
+            MaterialDatatableHeadCell: {
                 root: {
-
-                },
-
+                    fontsize: 12,
+                }
+            },
+            MaterialDatatableBodyCell: {
+                root: {
+                    fontsize: 10,
+                }
             }
         }
     })
 
+
     const options = {
         filterType: 'checkbox',
-        count: totalElements,
-        page: page,
-        onChangeRowsPerPage: rowsPerPage,
+        customToolbar: () => <PrintIcon className="cursor-pointer mx-8 text-grey-700" onClick={() => setPrint(true)} />,
+        // onRowsDelete: (deletedIds) => console.log({ deletedIds }),
+        responsive: print ? 'stacked' : 'scroll',
         fixedHeader: true,
-        // customFooter: () => null,
-        onRowsDelete: (deletedIds) => console.log({ deletedIds })
+        print: false,
+        toolbar: false,
+        elevation: 1,
+        selectableRows: !print,
+        pagination: false,
+        rowsPerPage: rowsPerPage,
+        tableId: 10,
+        // filterType: 'multiselect',
+        // toolbar: false,
+        // filter: false,
+        // search: false,
+        // download: false,
+        // viewColumns: false,
+        // responsive: 'stacked',
+        // fixedHeader: false,
     };
 
 
 
     return (
-        <div className="w-full flex flex-col">
-            <FuseScrollbars className="flex-grow overflow-x-auto">
-                {/* <MuiThemeProvider theme={getMuiTheme()}> */}
-                <MaterialDatatable
-                    title={"Agent List"}
-                    data={searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents}
-                    columns={columns}
-                    options={options}
+        <>
+            <div className="w-full flex flex-col">
+                <FuseScrollbars className="flex-grow overflow-x-auto">
+                    <MuiThemeProvider theme={print && getMuiTheme()}>
+                        <div
+                            ref={componentRef}
+                            style={{
+                                marginTop: print ? "-45px" : "0px",
+                            }}>
+                            <MaterialDatatable
+                                title='Agent List'
+                                data={searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents}
+                                columns={columns}
+                                options={options}
+                            />
+                        </div>
+                    </MuiThemeProvider>
+                </FuseScrollbars >
 
-                />
-                {/* </MuiThemeProvider> */}
-            </FuseScrollbars >
+                <div className={classes.root} id="pagiContainer">
+                    <Pagination
+                        count={totalPages}
+                        page={page + 1}
+                        defaultPage={1}
+                        color="primary"
+                        showFirstButton
+                        showLastButton
+                        variant="outlined"
+                        shape="rounded"
+                        onChange={handlePagination}
+                    />
 
-            <div className={classes.root} id="pagiContainer">
-                <Pagination
-                    count={totalPages}
-                    page={page + 1}
-                    defaultPage={1}
-                    color="primary"
-                    showFirstButton
-                    showLastButton
-                    variant="outlined"
-                    shape="rounded"
-                    onChange={handlePagination}
-                />
+                    <TablePagination
+                        // className="flex-shrink-0 border-t-1"
+                        rowsPerPageOptions={rowsPerPageOptions}
+                        component="div"
+                        count={totalElements}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        backIconButtonProps={{
+                            'aria-label': 'Previous Page'
+                        }}
+                        nextIconButtonProps={{
+                            'aria-label': 'Next Page'
+                        }}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </div>
 
-                <TablePagination
-                    // className="flex-shrink-0 border-t-1"
-                    rowsPerPageOptions={rowsPerPageOptions}
-                    component="div"
-                    count={totalElements}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page'
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page'
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </div>
-            <button onClick={() => window.print(<MaterialDatatable
-                title={"Agent List"}
-                data={searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents}
-                columns={columns}
-                options={options}
-
-            />)}>print</button>
-        </div >
+            </div >
+        </>
     );
 };
 
 export default withRouter(AgentsTable);
+
+
+
