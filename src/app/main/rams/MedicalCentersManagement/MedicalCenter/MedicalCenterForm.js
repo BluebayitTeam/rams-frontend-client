@@ -1,7 +1,7 @@
 import _ from '@lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import fillSpaceByUnderscore from 'app/@utils/fillSpaceByUnderscore';
+import fillSpaceByUnderscore from 'app/@helpers/fillSpaceByUnderscore';
 import { MEDICALCENTER_WHEN_UPDATE } from 'app/constant/constants';
 import axios from 'axios';
 import React from 'react';

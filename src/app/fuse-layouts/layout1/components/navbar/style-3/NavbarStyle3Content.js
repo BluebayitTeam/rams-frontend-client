@@ -1,14 +1,14 @@
+import FuseNavigation from '@fuse/core/FuseNavigation/FuseNavigation';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { ThemeProvider, makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import clsx from 'clsx';
-import { memo, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import FuseNavigation from '@fuse/core/FuseNavigation/FuseNavigation';
-import { selectNavigation } from 'app/store/fuse/navigationSlice';
 import { navbarCloseMobile } from 'app/store/fuse/navbarSlice';
+import { selectNavigation } from 'app/store/fuse/navigationSlice';
 import { selectContrastMainTheme } from 'app/store/fuse/settingsSlice';
+import clsx from 'clsx';
+import { memo, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -105,7 +105,7 @@ function NavbarStyle3Content(props) {
 
 	return (
 		<ClickAwayListener onClickAway={() => setPanelOpen(false)}>
-			<div className={clsx('flex flex-auto flex h-full', classes.root, props.className)}>
+			<div className={clsx('flex flex-auto h-full', classes.root, props.className)}>
 				<ThemeProvider theme={contrastTheme}>
 					<div
 						id="fuse-navbar-side-panel"

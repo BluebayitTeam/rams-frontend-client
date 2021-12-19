@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
-import { doneNotDone, saveAlertMsg, updateAlertMsg } from 'app/@data/@data';
+import { doneNotDone, saveAlertMsg, updateAlertMsg } from 'app/@data/data';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";

@@ -1,23 +1,42 @@
+import { useEffect, useState } from "react"
+
 function useUserInfo() {
 
-    const userId = localStorage.getItem("user_id")
-
-    const authToken = {
+    const [userId, setUserId] = useState(localStorage.getItem("user_id"))
+    const [authToken, setAuthToken] = useState({
         headers: {
             "Content-type": "application/json",
             Authorization: localStorage.getItem("jwt_access_token"),
-        },
-    };
+        }
+    })
+    const [userName, setUserName] = useState(localStorage.getItem("user_name"))
+    const [userEmail, setUserEmail] = useState(localStorage.getItem("user_email"))
+    const [userRole, setUserRole] = useState(localStorage.getItem("user_role"))
+    const [userImage, setUserImage] = useState(localStorage.getItem("user_image"))
 
-    const displayName = localStorage.getItem("user_name")
 
-    const userEmail = localStorage.getItem("user_email")
+    useEffect(() => {
+        window.addEventListener("storage", () => {
+            setUserId(localStorage.getItem("user_id"))
+            setAuthToken({
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: localStorage.getItem("jwt_access_token"),
+                }
+            })
+            setUserName(localStorage.getItem("user_name"))
+            setUserEmail(localStorage.getItem("user_email"))
+            setUserRole(localStorage.getItem("user_role"))
+            setUserImage(localStorage.getItem("user_image"))
+        })
 
-    const userRole = localStorage.getItem("user_role")
+        return () => {
+            window.removeEventListener('storage', () => null)
+        }
+    }, [])
 
-    const userImage = localStorage.getItem("user_image")
 
-    return { userId, authToken, displayName, userEmail, userRole, userImage }
+    return { userId, authToken, userName, userEmail, userRole, userImage }
 }
 
 export default useUserInfo

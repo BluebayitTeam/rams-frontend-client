@@ -8,7 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PrintIcon from '@material-ui/icons/Print';
 import { Pagination } from '@material-ui/lab';
-import { rowsPerPageOptions } from 'app/@data/@data';
+import { rowsPerPageOptions } from 'app/@data/data';
 import { motion } from 'framer-motion';
 import MaterialDatatable from 'material-datatable';
 import React, { useEffect, useRef, useState } from 'react';

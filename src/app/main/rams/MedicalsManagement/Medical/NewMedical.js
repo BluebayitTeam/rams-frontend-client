@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import { doneNotDone, medicalResults } from "app/@data/@data";
+import { doneNotDone, medicalResults } from "app/@data/data";
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';

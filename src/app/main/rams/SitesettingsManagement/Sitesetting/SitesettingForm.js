@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Autocomplete } from '@material-ui/lab';
-import countryCodes from 'app/@data/@Countrycodes';
+import countryCodes from 'app/@data/countrycodes';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";

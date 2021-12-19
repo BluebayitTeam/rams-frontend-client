@@ -10,9 +10,9 @@ import { orange } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
-import useRemoveCountryCode from "app/@customHook/@useRemoveCountryCode";
-import countryCodes from 'app/@data/@Countrycodes';
-import { genders } from 'app/@data/@data';
+import countryCodes from 'app/@data/countrycodes';
+import { genders } from 'app/@data/data';
+import removeCountryCode from "app/@helpers/removeCountryCode";
 import clsx from 'clsx';
 import { React, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -101,7 +101,7 @@ const EmployeeForm = (props) => {
     const getCountryCode2 = watch('country_code2');
     console.log(getCountryCode1);
     console.log(getValues());
-    const [primaryPhone, secondaryPhone] = useRemoveCountryCode(phoneNoPrimary, phoneNoSecondary);
+    const [primaryPhone, secondaryPhone] = removeCountryCode(phoneNoPrimary, phoneNoSecondary);
     useEffect(() => {
         if (phoneNoPrimary && phoneNoSecondary) {
             console.log(primaryPhone, secondaryPhone);
