@@ -1,105 +1,19 @@
+import _ from '@lodash';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
+import PassengerAllDetails from 'app/main/rams/PassengerSearch/PassengerAllDetails';
+import { selectFlatNavigation } from 'app/store/fuse/navigationSlice';
 import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
-import _ from '@lodash';
-import { memo, useEffect, useReducer, useRef } from 'react';
-import Autosuggest from 'react-autosuggest';
+import { memo, useEffect, useReducer, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { selectFlatNavigation } from 'app/store/fuse/navigationSlice';
 
-function renderInputComponent(inputProps) {
-	const { variant, classes, inputRef = () => {}, ref, ...other } = inputProps;
-	return (
-		<div className="w-full relative">
-			{variant === 'basic' ? (
-				// Outlined
-				<>
-					<TextField
-						fullWidth
-						InputProps={{
-							inputRef: node => {
-								ref(node);
-								inputRef(node);
-							},
-							classes: {
-								input: clsx(classes.input, 'py-0 px-16 h-40 md:h-48 ltr:pr-48 rtl:pl-48'),
-								notchedOutline: 'rounded-8'
-							}
-						}}
-						variant="outlined"
-						{...other}
-					/>
-					<Icon
-						className="absolute top-0 ltr:right-0 rtl:left-0 h-40 md:h-48 w-48 p-12 pointer-events-none"
-						color="action"
-					>
-						search
-					</Icon>
-				</>
-			) : (
-				// Standard
-				<TextField
-					fullWidth
-					InputProps={{
-						disableUnderline: true,
-						inputRef: node => {
-							ref(node);
-							inputRef(node);
-						},
-						classes: {
-							input: clsx(classes.input, 'py-0 px-16 h-48 md:h-64')
-						}
-					}}
-					variant="standard"
-					{...other}
-				/>
-			)}
-		</div>
-	);
-}
-
-function renderSuggestion(suggestion, { query, isHighlighted }) {
-	const matches = match(suggestion.title, query);
-	const parts = parse(suggestion.title, matches);
-
-	return (
-		<MenuItem selected={isHighlighted} component="div">
-			<ListItemIcon className="min-w-40">
-				{suggestion.icon ? (
-					<Icon>{suggestion.icon}</Icon>
-				) : (
-					<span className="text-20 w-24 font-semibold uppercase text-center">{suggestion.title[0]}</span>
-				)}
-			</ListItemIcon>
-			<ListItemText
-				primary={parts.map((part, index) =>
-					part.highlight ? (
-						<span key={String(index)} style={{ fontWeight: 600 }}>
-							{part.text}
-						</span>
-					) : (
-						<strong key={String(index)} style={{ fontWeight: 300 }}>
-							{part.text}
-						</strong>
-					)
-				)}
-			/>
-		</MenuItem>
-	);
-}
 
 function getSuggestions(value, data) {
 	const inputValue = _.deburr(value.trim()).toLowerCase();
@@ -109,18 +23,14 @@ function getSuggestions(value, data) {
 	return inputLength === 0
 		? []
 		: data.filter(suggestion => {
-				const keep = count < 10 && match(suggestion.title, inputValue).length > 0;
+			const keep = count < 10 && match(suggestion.title, inputValue).length > 0;
 
-				if (keep) {
-					count += 1;
-				}
+			if (keep) {
+				count += 1;
+			}
 
-				return keep;
-		  });
-}
-
-function getSuggestionValue(suggestion) {
-	return suggestion.title;
+			return keep;
+		});
 }
 
 const useStyles = makeStyles(theme => ({
@@ -225,6 +135,8 @@ function FuseSearch(props) {
 	const popperNode = useRef(null);
 	const buttonNode = useRef(null);
 
+	const [openModal, setOpenModal] = useState(false)
+
 	useEffect(() => {
 		dispatch({
 			type: 'setNavigation',
@@ -249,27 +161,8 @@ function FuseSearch(props) {
 		}
 	}
 
-	function handleSuggestionsFetchRequested({ value }) {
-		dispatch({
-			type: 'updateSuggestions',
-			value
-		});
-	}
-
-	function handleSuggestionSelected(event, { suggestion }) {
-		event.preventDefault();
-		event.stopPropagation();
-		if (!suggestion.url) {
-			return;
-		}
-		props.history.push(suggestion.url);
-		hideSearch();
-	}
-
-	function handleSuggestionsClearRequested() {
-		dispatch({
-			type: 'clearSuggestions'
-		});
+	const modalAction = (value) => {
+		setOpenModal(value)
 	}
 
 	function handleChange(event) {
@@ -277,6 +170,13 @@ function FuseSearch(props) {
 			type: 'setSearchText',
 			value: event.target.value
 		});
+	}
+
+	const hanleKeyDown = (event) => {
+		console.log("onChangedFired", event)
+		if (event.key === 'Enter' && event.target.value?.length >= 0) {
+			modalAction(true)
+		}
 	}
 
 	function handleClickAway(event) {
@@ -287,132 +187,70 @@ function FuseSearch(props) {
 		);
 	}
 
-	const autosuggestProps = {
-		renderInputComponent,
-		highlightFirstSuggestion: true,
-		suggestions: state.suggestions,
-		onSuggestionsFetchRequested: handleSuggestionsFetchRequested,
-		onSuggestionsClearRequested: handleSuggestionsClearRequested,
-		onSuggestionSelected: handleSuggestionSelected,
-		getSuggestionValue,
-		renderSuggestion
-	};
 
 	switch (props.variant) {
 		case 'basic': {
 			return (
-				<div className={clsx('flex items-center w-full', props.className)} ref={popperNode}>
-					<Autosuggest
-						{...autosuggestProps}
-						inputProps={{
-							variant: props.variant,
-							classes,
-							placeholder: props.placeholder,
-							value: state.searchText,
-							onChange: handleChange,
-							onFocus: showSearch,
-							InputLabelProps: {
-								shrink: true
-							},
-							autoFocus: false
-						}}
-						theme={{
-							container: 'flex flex-1 w-full',
-							suggestionsList: classes.suggestionsList,
-							suggestion: classes.suggestion
-						}}
-						renderSuggestionsContainer={options => (
-							<Popper
-								anchorEl={popperNode.current}
-								open={Boolean(options.children) || state.noSuggestions}
-								popperOptions={{ positionFixed: true }}
-								className="z-9999"
-							>
-								<div ref={suggestionsNode}>
-									<Paper
-										className="shadow-lg rounded-8 overflow-hidden"
-										{...options.containerProps}
-										style={{ width: popperNode.current ? popperNode.current.clientWidth : null }}
-									>
-										{options.children}
-										{state.noSuggestions && (
-											<Typography className="px-16 py-12">{props.noResults}</Typography>
-										)}
-									</Paper>
-								</div>
-							</Popper>
-						)}
-					/>
-				</div>
+				<>
+					<PassengerAllDetails open={openModal} action={modalAction} />
+					<div className={clsx('flex items-center w-full', props.className)} ref={popperNode}>
+						<TextField
+							inputProps={{
+								classes,
+								InputLabelProps: {
+									shrink: true
+								},
+							}}
+							value={state.searchText}
+							autoFocus
+							fullWidth
+							placeholder={props.placeholder}
+							onChange={handleChange}
+							onKeyDown={hanleKeyDown}
+						/>
+
+					</div>
+				</>
 			);
 		}
 		case 'full': {
 			return (
-				<div className={clsx(classes.root, 'flex', props.className)}>
-					<Tooltip title="Click to search" placement="bottom">
-						<div onClick={showSearch} onKeyDown={showSearch} role="button" tabIndex={0} ref={buttonNode}>
-							{props.trigger}
-						</div>
-					</Tooltip>
+				<>
+					<PassengerAllDetails open={openModal} action={modalAction} />
+					<div className={clsx(classes.root, 'flex', props.className)}>
+						<Tooltip title="Click to search" placement="bottom">
+							<div onClick={showSearch} onKeyDown={showSearch} role="button" tabIndex={0} ref={buttonNode}>
+								{props.trigger}
+							</div>
+						</Tooltip>
 
-					{state.opened && (
-						<ClickAwayListener onClickAway={handleClickAway}>
-							<Paper className="absolute left-0 right-0 top-0 h-full z-9999 shadow-0" square>
-								<div className="flex items-center w-full h-full" ref={popperNode}>
-									<Autosuggest
-										{...autosuggestProps}
-										inputProps={{
-											classes,
-											placeholder: props.placeholder,
-											value: state.searchText,
-											onChange: handleChange,
-											InputLabelProps: {
-												shrink: true
-											},
-											autoFocus: true
-										}}
-										theme={{
-											container: 'flex flex-1 w-full',
-											suggestionsList: classes.suggestionsList,
-											suggestion: classes.suggestion
-										}}
-										renderSuggestionsContainer={options => (
-											<Popper
-												anchorEl={popperNode.current}
-												open={Boolean(options.children) || state.noSuggestions}
-												popperOptions={{ positionFixed: true }}
-												className="z-9999"
-											>
-												<div ref={suggestionsNode}>
-													<Paper
-														className="shadow-lg"
-														square
-														{...options.containerProps}
-														style={{
-															width: popperNode.current
-																? popperNode.current.clientWidth
-																: null
-														}}
-													>
-														{options.children}
-														{state.noSuggestions && (
-															<Typography className="px-16 py-12">
-																{props.noResults}
-															</Typography>
-														)}
-													</Paper>
-												</div>
-											</Popper>
-										)}
-									/>
-									<IconButton onClick={hideSearch} className="mx-8">
-										<Icon>close</Icon>
-									</IconButton>
-								</div>
-							</Paper>
-						</ClickAwayListener>
-					)}
-				</div>
+						{state.opened && (
+							<ClickAwayListener onClickAway={handleClickAway}>
+								<Paper className="absolute left-0 right-0 top-0 h-full z-9999 shadow-0" square>
+									<div className="flex items-center w-full h-full" ref={popperNode}>
+										<TextField
+											inputProps={{
+												classes,
+												InputLabelProps: {
+													shrink: true
+												},
+											}}
+											value={state.searchText}
+											autoFocus
+											fullWidth
+											placeholder={props.placeholder}
+											onChange={handleChange}
+											onKeyDown={hanleKeyDown}
+										/>
+										<IconButton onClick={hideSearch} className="mx-8">
+											<Icon>close</Icon>
+										</IconButton>
+									</div>
+								</Paper>
+							</ClickAwayListener>
+						)}
+					</div>
+				</>
 			);
 		}
 		default: {

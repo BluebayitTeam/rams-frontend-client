@@ -1,7 +1,7 @@
 import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import { createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit';
-import userInfoData from 'app/@data/userInfoData';
+import getUserData from 'app/@helpers/getUserData';
 import { MENU_ITEMS } from 'app/constant/constants';
 import navigationConfig from 'app/fuse-configs/navigationConfig';
 import axios from 'axios';
@@ -40,7 +40,7 @@ export const removeNavigationItem = id => (dispatch, getState) => {
 
 export const setMenuItem = () => (dispatch) => {
 
-	const { authToken } = userInfoData()
+	const { authToken } = getUserData()
 
 	if (localStorage.getItem("jwt_access_token")) {
 		console.log("haveauthToken")

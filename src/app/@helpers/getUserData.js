@@ -1,4 +1,4 @@
-function userInfoData() {
+function getUserData() {
 
     const userId = localStorage.getItem("user_id")
 
@@ -20,4 +20,4 @@ function userInfoData() {
     return { userId, authToken, displayName, userEmail, userRole, userImage }
 }
 
-export default userInfoData
+export default getUserData

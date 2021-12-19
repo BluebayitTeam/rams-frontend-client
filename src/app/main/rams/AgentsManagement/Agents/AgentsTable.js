@@ -237,6 +237,9 @@ const AgentsTable = (props) => {
                 root: {
                     fontsize: 10,
                 }
+            },
+            MaterialDatatableToolbar: {
+                display: "none"
             }
         }
     })
@@ -272,17 +275,21 @@ const AgentsTable = (props) => {
             <div className="w-full flex flex-col">
                 <FuseScrollbars className="flex-grow overflow-x-auto">
                     <MuiThemeProvider theme={print && getMuiTheme()}>
-                        <div
-                            ref={componentRef}
-                            style={{
-                                marginTop: print ? "-45px" : "0px",
-                            }}>
-                            <MaterialDatatable
-                                title='Agent List'
-                                data={searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents}
-                                columns={columns}
-                                options={options}
-                            />
+                        <div ref={componentRef}>
+                            <div style={{
+                                display: print ? "block" : "none",
+                            }}>this is custom header</div>
+                            <div
+                                style={{
+                                    marginTop: print ? "-45px" : "0px",
+                                }}>
+                                <MaterialDatatable
+                                    title='Agent List'
+                                    data={searchText !== "" && !_.isEmpty(searchAgent) ? searchAgent : agents}
+                                    columns={columns}
+                                    options={options}
+                                />
+                            </div>
                         </div>
                     </MuiThemeProvider>
                 </FuseScrollbars >
