@@ -271,11 +271,6 @@ const ramsRouteConfig = {
             path: '/apps/passenger-management/:passengerId/:passengerType?',
             component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger'))
         },
-        //medical
-        {
-            path: '/apps/medical-management/medical/:medicalId',
-            component: lazy(() => import('./MedicalsManagement/Medical/NewMedical'))
-        },
         //medicalCenter
         {
             path: '/apps/medicalCenter-management/medicalCenters/:medicalCenterId/:medicalCenterName?',
@@ -289,69 +284,75 @@ const ramsRouteConfig = {
             path: '/apps/medicalCenter-management/:medicalCenterId',
             component: lazy(() => import('./MedicalCentersManagement/MedicalCenter/NewMedicalCenter'))
         },
+
+        //medical
+        {
+            path: '/apps/medical-management/medical/:medicalId/:fromSearch?',
+            component: lazy(() => import('./MedicalsManagement/Medical/NewMedical'))
+        },
         //embassy
         {
-            path: '/apps/embassy-management/embassy/:embassyId',
+            path: '/apps/embassy-management/embassy/:embassyId/:fromSearch?',
             component: lazy(() => import('./EmbassysManagement/Embassy/NewEmbassy'))
         },
         //mofa
         {
-            path: '/apps/mofa-management/mofa/:mofaId',
+            path: '/apps/mofa-management/mofa/:mofaId/:fromSearch?',
             component: lazy(() => import('./MofasManagement/Mofa/NewMofa'))
         },
         //femaleCV
         {
-            path: '/apps/femaleCV-management/femaleCV/:femaleCVId',
+            path: '/apps/femaleCV-management/femaleCV/:femaleCVId/:fromSearch?',
             component: lazy(() => import('./FemaleCVsManagement/FemaleCV/NewFemaleCV'))
         },
         //flight
         {
-            path: '/apps/flight-management/flight/:flightId',
+            path: '/apps/flight-management/flight/:flightId/:fromSearch?',
             component: lazy(() => import('./FlightsManagement/Flight/NewFlight'))
         },
         //maleCV
         {
-            path: '/apps/maleCV-management/maleCV/:maleCVId',
+            path: '/apps/maleCV-management/maleCV/:maleCVId/:fromSearch?',
             component: lazy(() => import('./MaleCVsManagement/MaleCV/NewMaleCV'))
         },
         //manPowerList
         {
-            path: '/apps/manPowerList-management/manPowerList/:manPowerListId',
+            path: '/apps/manPowerList-management/manPowerList/:manPowerListId/:fromSearch?',
             component: lazy(() => import('./ManPowerListsManagement/ManPowerList/NewManPowerList'))
         },
         //musanedOkala
         {
-            path: '/apps/musanedOkala-management/musanedOkala/:musanedOkalaId',
+            path: '/apps/musanedOkala-management/musanedOkala/:musanedOkalaId/:fromSearch?',
             component: lazy(() => import('./MusanedOkalasManagement/MusanedOkala/NewMusanedOkala'))
         },
         //officeWork
         {
-            path: '/apps/officeWork-management/officeWork/:officeWorkId',
+            path: '/apps/officeWork-management/officeWork/:officeWorkId/:fromSearch?',
             component: lazy(() => import('./OfficeWorksManagement/OfficeWork/NewOfficeWork'))
         },
         //training
         {
-            path: '/apps/training-management/training/:trainingId',
+            path: '/apps/training-management/training/:trainingId/:fromSearch?',
             component: lazy(() => import('./TrainingsManagement/Training/NewTraining'))
         },
         //visaCancelList
         {
-            path: '/apps/visaCancelList-management/visaCancelList/:visaCancelListId',
+            path: '/apps/visaCancelList-management/visaCancelList/:visaCancelListId/:fromSearch?',
             component: lazy(() => import('./VisaCancelListsManagement/VisaCancelList/NewVisaCancelList'))
         },
         //visaReissueList
         {
-            path: '/apps/visaReissueList-management/visaReissueList/:visaReissueListId',
+            path: '/apps/visaReissueList-management/visaReissueList/:visaReissueListId/:fromSearch?',
             component: lazy(() => import('./VisaReissueListsManagement/VisaReissueList/NewVisaReissueList'))
         },
         //visaSubmissionList
         {
-            path: '/apps/visaSubmissionList-management/visaSubmissionList/:visaSubmissionListId',
+            path: '/apps/visaSubmissionList-management/visaSubmissionList/:visaSubmissionListId/:fromSearch?',
             component: lazy(() => import('./VisaSubmissionListsManagement/VisaSubmissionList/NewVisaSubmissionList'))
         },
         //manPower
         {
-            path: '/apps/manPower-management/manPower/:manPowerId',
+            path: '/apps/manPower-management/manPower/:manPowerId/:fromSearch?',
             component: lazy(() => import('./ManPowersManagement/ManPower/NewManPower'))
         },
 

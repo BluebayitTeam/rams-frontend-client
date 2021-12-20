@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/core/styles';
-import useUserInfo from 'app/@customHook/useUserInfo';
+import useUserInfo from 'app/@customHooks/useUserInfo';
 import { setUser } from 'app/auth/store/userSlice';
 import { USER_BY_ID } from 'app/constant/constants';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';

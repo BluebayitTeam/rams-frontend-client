@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image.jsx';
-import useTextSeparator from 'app/@customHook/useTextSeparator';
+import useTextSeparator from 'app/@customHooks/useTextSeparator';
 import { genders, maritalStatuses, passportTypes, religions } from 'app/@data/data';
 import increaseYear from 'app/@helpers/increaseYear';
 import axios from 'axios';
