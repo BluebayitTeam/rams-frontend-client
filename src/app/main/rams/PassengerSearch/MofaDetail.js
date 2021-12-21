@@ -2,22 +2,22 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
-function MofaDetail({ classes, data, setData, pid, modalAction }) {
+function MofaDetail({ classes, data, pid }) {
 
     const router = useHistory()
+    const { searchKeyword } = useParams()
 
     const gotoEditpage = () => {
-        setData({ titleName: data.titleName })
-        router.push(`apps/mofa-management/mofa/${pid}/fromSearch`)
-        modalAction(false)
+        sessionStorage.setItem('passenger_search_key', searchKeyword)
+        router.push(`/apps/mofa-management/mofa/${pid}/fromSearch`)
     }
 
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>
-                <div className='blockContentName'>{data.titleName}</div>
+                <div className='blockContentName'>Mofa</div>
 
                 <div className='blockContentHolder'>
 

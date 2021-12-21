@@ -355,6 +355,11 @@ const ramsRouteConfig = {
             path: '/apps/manPower-management/manPower/:manPowerId/:fromSearch?',
             component: lazy(() => import('./ManPowersManagement/ManPower/NewManPower'))
         },
+        //passengerSearch
+        {
+            path: '/apps/passenger/search/:searchKeyword',
+            component: lazy(() => import('./PassengerSearch/PassengerAllDetails'))
+        },
 
 
 

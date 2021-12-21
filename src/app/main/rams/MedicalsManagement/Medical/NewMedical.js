@@ -9,7 +9,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { MEDICAL_BY_PASSENGER_ID } from '../../../../constant/constants';
 import reducer from '../store/index.js';
@@ -56,12 +56,30 @@ const Medical = () => {
         resolver: yupResolver(schema)
     });
 
-    const { reset, control, formState } = methods;
+    const { reset, control, formState, getValues } = methods;
     const { errors } = formState;
 
     const classes = useStyles();
 
     const history = useHistory();
+
+    const { fromSearch, medicalId } = useParams()
+
+
+
+    useEffect(() => {
+        if (fromSearch) {
+            axios.get(`${MEDICAL_BY_PASSENGER_ID}${medicalId}`).then(res => {
+                console.log("Res", res.data)
+                if (res.data?.id) {
+                    reset({ ...res.data, passenger: medicalId })
+                }
+            }).catch(() => { })
+        }
+        else {
+            reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
     useEffect(() => {
 
@@ -75,9 +93,6 @@ const Medical = () => {
     }, [dispatch]);
 
 
-    useEffect(() => {
-        reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
-    }, [])
 
     /**
      * Show Message if the requested products is not exists
@@ -127,10 +142,11 @@ const Medical = () => {
                             <Controller
                                 name="passenger"
                                 control={control}
-                                render={({ field: { onChange, value, name } }) => (
+                                render={({ field: { value } }) => (
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}

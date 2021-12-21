@@ -1,22 +1,22 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
-function Embassy({ classes, data, setData, pid, modalAction }) {
+function Embassy({ classes, data, pid }) {
 
     const router = useHistory()
+    const { searchKeyword } = useParams()
 
     const gotoEditpage = () => {
-        setData({ titleName: data.titleName })
-        router.push(`apps/embassy-management/embassy/${pid}/fromSearch`)
-        modalAction(false)
+        sessionStorage.setItem('passenger_search_key', searchKeyword)
+        router.push(`/apps/embassy-management/embassy/${pid}/fromSearch`)
     }
 
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>
-                <div className='blockContentName'>{data.titleName}</div>
+                <div className='blockContentName'>Embassy</div>
 
                 <div className='blockContentHolder'>
 

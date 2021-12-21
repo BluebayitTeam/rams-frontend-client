@@ -701,7 +701,7 @@ export const DELETE_ROLEMENU = `${BASE_URL}/role_menu/api/v1/role_menu/delete/`;
 
 // export const SEARCH_ROLEMENU = `${BASE_URL}/rolemenu/api/v1/rolemenu/search/`;
 
-//passenger
+//passenger type
 export const CREATE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/create/`;
 
 export const GET_PASSENGERTYPES = `${BASE_URL}/passenger_type/api/v1/passenger_type/all`;
@@ -713,6 +713,7 @@ export const UPDATE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger
 export const DELETE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/delete/`;
 
 export const SEARCH_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/search/`;
+
 
 //current status
 export const CREATE_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/create/`;
@@ -814,6 +815,8 @@ export const SEARCH_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/search/`
 export const CHECK_PASSPORT_NO_WHEN_CREATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_create/`
 
 export const CHECK_PASSPORT_NO_WHEN_UPDATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_update/`
+
+export const SEARCH_PASSENGER_BY = `${BASE_URL}/passenger/api/v1/passenger/search_by_passenger_id_office_serial_passport_no_contact_no/`
 
 
 //medical

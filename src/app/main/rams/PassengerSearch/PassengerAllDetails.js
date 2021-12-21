@@ -1,10 +1,10 @@
-import { Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import getUserData from 'app/@helpers/getUserData';
-import { BASE_URL, EMBASSY_BY_PASSENGER_ID, GET_SITESETTINGS, MEDICAL_BY_PASSENGER_ID, MOFA_BY_PASSENGER_ID } from 'app/constant/constants';
+import { BASE_URL, EMBASSY_BY_PASSENGER_ID, GET_SITESETTINGS, MEDICAL_BY_PASSENGER_ID, MOFA_BY_PASSENGER_ID, SEARCH_PASSENGER_BY } from 'app/constant/constants';
 import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import EmbassyDetail from './EmbassyDetail';
 import MedicalDetail from './MedicalDetail';
 import MofaDetail from './MofaDetail';
@@ -13,15 +13,18 @@ const useStyles = makeStyles(theme => {
     console.log("theme", theme)
     return ({
         container: {
-            background: theme.palette.background.paper,
+            background: theme.palette.background.default,
             color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
-            border: `2px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`
+            // border: `2px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+            height: 'fit-content',
+            paddingTop: '40px',
+            paddingBottom: '40px',
+            overflow: 'hidden',
         },
         logoContainer: {
             display: 'flex',
             justifyContent: 'center',
             height: '70px',
-            marginTop: '40px',
             marginBottom: '10px',
         },
         addressContainer: {
@@ -40,7 +43,7 @@ const useStyles = makeStyles(theme => {
             alignItems: 'center',
             '& .blockContentName': {
                 height: '30px',
-                background: theme.palette.background.paper,
+                background: theme.palette.background.default,
                 color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
                 textAlign: 'center',
                 position: 'absolute',
@@ -100,16 +103,18 @@ const useStyles = makeStyles(theme => {
     )
 });
 
-function PassengerAllDetails({ open, action, searchKey = '' }) {
+function PassengerAllDetails() {
 
     const classes = useStyles();
 
-    const [pId, setpId] = useState(4)
+    const [pId, setpId] = useState(0)
     const [siteSetting, setSiteSetting] = useState({})
 
-    const [medical, setMedical] = useState({ titleName: 'Medical' })
-    const [embassy, setEmbassy] = useState({ titleName: 'Embassy' })
-    const [mofa, setMofa] = useState({ titleName: 'Mofa' })
+    const [medical, setMedical] = useState({})
+    const [embassy, setEmbassy] = useState({})
+    const [mofa, setMofa] = useState({})
+
+    const { searchKeyword } = useParams()
 
     useEffect(() => {
         const { authToken } = getUserData()
@@ -117,22 +122,33 @@ function PassengerAllDetails({ open, action, searchKey = '' }) {
             console.log("GET_SITESETTINGS_Res", res?.data?.general_settings[0] || {})
             setSiteSetting(res?.data?.general_settings[0] || {})
         }).catch(() => { })
+
+        sessionStorage.removeItem('passenger_search_key')
     }, [])
 
     useEffect(() => {
-        if (searchKey) {
-            setpId(4)
+        if (searchKeyword) {
+            console.log("searchKeyword", searchKeyword)
+            axios.get(`${SEARCH_PASSENGER_BY}?keyword=${searchKeyword}`).then(res => {
+                console.log("SEARCH_PASSENGER_BY_RES", res)
+                setpId(res?.data?.passengers[0]?.id || 0)
+            }).catch(() => {
+                setpId(0)
+            })
         }
-    }, [searchKey])
+    }, [searchKeyword])
 
     useEffect(() => {
         if (pId) {
             axios.get(`${MEDICAL_BY_PASSENGER_ID}${pId}`).then(res => {
                 const medicalData = _.isObject(res?.data) ? res.data : {}
-                setMedical({ titleName: 'Medical', ...medicalData })
+                setMedical({ ...medicalData })
             }).catch(() => {
-                setMedical({ titleName: 'Medical' })
+                setMedical({})
             })
+        }
+        else {
+            setMedical({})
         }
     }, [pId])
 
@@ -154,27 +170,17 @@ function PassengerAllDetails({ open, action, searchKey = '' }) {
                         mofa_no_readonly: mofa.mofa_no,
                     }
                 }
-                // else if (res.data?.visa_entry?.id && res.data?.mofa?.id) {
-                //     const visa_entry = res.data?.visa_entry
-                //     const mofa = res.data?.mofa
-                //     embassyData = {
-                //         profession_english: visa_entry.profession_english,
-                //         profession_arabic: visa_entry.profession_arabic,
-                //         visa_number_readonly: visa_entry.visa_number,
-                //         sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-                //         sponsor_name_english_readonly: visa_entry.sponsor_name_english,
-                //         sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
-                //         mofa_no_readonly: mofa.mofa_no,
-                //     }
-                // }
                 else {
                     embassyData.push({})
                 }
 
-                setEmbassy({ titleName: 'Embassy', ...embassyData })
+                setEmbassy({ ...embassyData })
             }).catch(() => {
-                setEmbassy({ titleName: 'Embassy' })
+                setEmbassy({})
             })
+        }
+        else {
+            setEmbassy({})
         }
     }, [pId])
 
@@ -182,31 +188,31 @@ function PassengerAllDetails({ open, action, searchKey = '' }) {
         if (pId) {
             axios.get(`${MOFA_BY_PASSENGER_ID}${pId}`).then(res => {
                 const mofaData = _.isObject(res?.data) ? res.data : {}
-                setMofa({ titleName: 'Embassy', ...mofaData })
+                setMofa({ ...mofaData })
             }).catch(() => {
-                setMofa({ titleName: 'Embassy' })
+                setMofa({})
             })
+        }
+        else {
+            setMofa({})
         }
     }, [pId])
 
     return (
         <div>
-            <Modal open={open} onClose={() => action(false)}>
-                <div className={`m-0 md:m-64 h-screen rounded-4 ${classes.container}`}>
-                    <div className={classes.logoContainer}>
-                        <img src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`} />
-                    </div>
-                    <div className={classes.addressContainer}>
-                        <pre>{siteSetting?.address || "jhknfg8o6trbi7lvyi8u jhgijutyujhl lygfjhjutf"}</pre>
-                    </div>
-
-
-                    <MedicalDetail classes={classes} data={medical} setData={setMedical} pid={pId} modalAction={action} />
-                    <EmbassyDetail classes={classes} data={embassy} setData={setEmbassy} pid={pId} modalAction={action} />
-                    <MofaDetail classes={classes} data={mofa} setData={setMofa} pid={pId} modalAction={action} />
-
+            <div className={`${classes.container}`}>
+                <div className={classes.logoContainer}>
+                    <img src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`} />
                 </div>
-            </Modal >
+                <div className={classes.addressContainer}>
+                    <pre>{siteSetting?.address || ""}</pre>
+                </div>
+
+
+                {_.isEmpty(medical) || <MedicalDetail classes={classes} data={medical} pid={pId} />}
+                {_.isEmpty(embassy) || <EmbassyDetail classes={classes} data={embassy} pid={pId} />}
+                {_.isEmpty(mofa) || <MofaDetail classes={classes} data={mofa} pid={pId} />}
+            </div>
         </div >
     )
 }

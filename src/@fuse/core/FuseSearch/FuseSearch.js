@@ -6,13 +6,12 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import PassengerAllDetails from 'app/main/rams/PassengerSearch/PassengerAllDetails';
 import { selectFlatNavigation } from 'app/store/fuse/navigationSlice';
 import match from 'autosuggest-highlight/match';
 import clsx from 'clsx';
-import { memo, useEffect, useReducer, useRef, useState } from 'react';
+import { memo, useEffect, useReducer, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 
 function getSuggestions(value, data) {
@@ -60,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 		}),
 		'&:focus': {
 			backgroundColor: theme.palette.background.paper
-		}
+		},
 	}
 }));
 
@@ -135,7 +134,7 @@ function FuseSearch(props) {
 	const popperNode = useRef(null);
 	const buttonNode = useRef(null);
 
-	const [openModal, setOpenModal] = useState(false)
+	const router = useHistory()
 
 	useEffect(() => {
 		dispatch({
@@ -161,8 +160,8 @@ function FuseSearch(props) {
 		}
 	}
 
-	const modalAction = (value) => {
-		setOpenModal(value)
+	const searchPassenger = (value) => {
+		router.push(`/apps/passenger/search/${value}`)
 	}
 
 	function handleChange(event) {
@@ -174,8 +173,8 @@ function FuseSearch(props) {
 
 	const hanleKeyDown = (event) => {
 		console.log("onChangedFired", event)
-		if (event.key === 'Enter' && event.target.value?.length >= 0) {
-			modalAction(true)
+		if (event.key === 'Enter' && event.target.value?.length) {
+			searchPassenger(event.target.value)
 		}
 	}
 
@@ -192,7 +191,6 @@ function FuseSearch(props) {
 		case 'basic': {
 			return (
 				<>
-					<PassengerAllDetails open={openModal} action={modalAction} />
 					<div className={clsx('flex items-center w-full', props.className)} ref={popperNode}>
 						<TextField
 							inputProps={{
@@ -216,7 +214,6 @@ function FuseSearch(props) {
 		case 'full': {
 			return (
 				<>
-					<PassengerAllDetails open={openModal} action={modalAction} />
 					<div className={clsx(classes.root, 'flex', props.className)}>
 						<Tooltip title="Click to search" placement="bottom">
 							<div onClick={showSearch} onKeyDown={showSearch} role="button" tabIndex={0} ref={buttonNode}>

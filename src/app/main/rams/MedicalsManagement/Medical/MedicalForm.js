@@ -4,7 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { doneNotDone, medicalResults, saveAlertMsg, updateAlertMsg } from 'app/@data/data';
+import useSessionStorage from 'app/@customHooks/useSessionStorage';
+import { doneNotDone, medicalResults, saveAlertMsg } from 'app/@data/data';
 import increaseMonth from 'app/@helpers/increaseMonth';
 import { setAlert } from 'app/store/alertSlice';
 import React, { useEffect, useState } from 'react';
@@ -40,11 +41,13 @@ function MedicalForm(props) {
 
     const methods = useFormContext();
     const routeParams = useParams();
-    const { medicalId } = routeParams;
+    const { medicalId, fromSearch } = routeParams;
     const { control, formState, setValue, getValues, watch, reset } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
     const dispatch = useDispatch()
+
+    const searchKeyword = useSessionStorage('passenger_search_key')
 
     useEffect(() => {
         dispatch(getPassengers());
@@ -73,10 +76,15 @@ function MedicalForm(props) {
         dispatch(updateMedical(getValues())).then((res) => {
             console.log("updateMedicalRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("medicalAlert", "updateMedical")
-                history.push('/apps/medical-management/medical/new');
-                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.push(`/apps/passenger/search/${searchKeyword}`);
+                }
+                else {
+                    localStorage.setItem("medicalAlert", "updateMedical")
+                    history.push('/apps/medical-management/medical/new');
+                    reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
+
+                }
             }
         });
     }

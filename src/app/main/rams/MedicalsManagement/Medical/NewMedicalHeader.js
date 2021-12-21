@@ -2,6 +2,7 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
+import useSessionStorage from 'app/@customHooks/useSessionStorage';
 import { doneNotDone, medicalResults, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/data';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
@@ -19,8 +20,11 @@ const NewMedicalHeader = () => {
     const history = useHistory();
 
     const routeParams = useParams();
+    const { fromSearch } = useParams()
 
     const passengers = useSelector(state => state.data.passengers)
+
+    const searchKeyword = useSessionStorage('passenger_search_key')
 
     function handleSaveMedical() {
         dispatch(saveMedical(getValues())).then((res) => {
@@ -38,10 +42,15 @@ const NewMedicalHeader = () => {
         dispatch(updateMedical(getValues())).then((res) => {
             console.log("updateMedicalRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("medicalAlert", "updateMedical")
-                history.push('/apps/medical-management/medical/new');
-                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.push(`/apps/passenger/search/${searchKeyword}`);
+                }
+                else {
+                    localStorage.setItem("medicalAlert", "updateMedical")
+                    history.push('/apps/medical-management/medical/new');
+                    reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -50,10 +59,15 @@ const NewMedicalHeader = () => {
         dispatch(removeMedical(getValues())).then((res) => {
             console.log("removeMedicalRes", res)
             if (res.payload) {
-                localStorage.setItem("medicalAlert", "deleteMedical")
-                history.push('/apps/medical-management/medical/new');
-                reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.push(`/apps/passenger/search/${searchKeyword}`);
+                }
+                else {
+                    localStorage.setItem("medicalAlert", "deleteMedical")
+                    history.push('/apps/medical-management/medical/new');
+                    reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
@@ -69,18 +83,6 @@ const NewMedicalHeader = () => {
     return (
         <div className="flex flex-1 w-full items-center justify-between">
             <div className="flex flex-col items-start max-w-full min-w-0">
-                {/* <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
-                    <Typography
-                        className="flex items-center sm:mb-12"
-                        component={Link}
-                        role="button"
-                        to="/apps/medical-management/medical/new"
-                        color="inherit"
-                    >
-                        <Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-                        <span className="hidden sm:flex mx-4 font-medium">Medicals</span>
-                    </Typography>
-                </motion.div> */}
 
                 <div className="flex items-center max-w-full">
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
