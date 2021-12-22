@@ -9,10 +9,9 @@ import withReducer from 'app/store/withReducer';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { resetFlight } from '../store/flightSlice';
 import reducer from '../store/index.js';
 import FlightForm from './FlightForm.js';
 import NewFlightHeader from './NewFlightHeader.js';
@@ -42,18 +41,15 @@ const schema = yup.object().shape({
 })
 
 const Flight = () => {
-
-    const dispatch = useDispatch();
-    // const flight = useSelector(({ flightsManagement }) => flightsManagement.flight);
     const passengers = useSelector(state => state.data.passengers)
 
     const [noFlight, setNoFlight] = useState(false);
+
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -62,48 +58,21 @@ const Flight = () => {
 
     const history = useHistory();
 
-
-
-    useEffect(() => {
-        reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
-    }, [])
+    const { fromSearch, flightId } = useParams()
 
     useEffect(() => {
-        return () => {
-            /**
-             * Reset Flight on component unload
-             */
-            dispatch(resetFlight());
-            setNoFlight(false);
-        };
-    }, [dispatch]);
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noFlight) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such flight!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Flight Page
-                </Button>
-            </motion.div>
-        );
-    }
-
+        if (fromSearch) {
+            axios.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`).then(res => {
+                console.log("Res", res.data)
+                if (res.data.id) {
+                    reset({ ...res.data, passenger: flightId })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
     return (
         <FormProvider {...methods}>
@@ -115,8 +84,6 @@ const Flight = () => {
                 header={<NewFlightHeader />}
                 contentToolbar={
                     <Tabs
-                        // value={tabValue}
-                        // onChange={handleTabChange}
                         indicatorColor="primary"
                         textColor="primary"
                         variant="scrollable"
@@ -127,10 +94,11 @@ const Flight = () => {
                             <Controller
                                 name="passenger"
                                 control={control}
-                                render={({ field: { onChange, value, name } }) => (
+                                render={({ field: { onChange, value } }) => (
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}

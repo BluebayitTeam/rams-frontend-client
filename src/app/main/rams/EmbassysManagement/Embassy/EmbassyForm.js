@@ -28,6 +28,8 @@ function EmbassyForm(props) {
     const history = useHistory();
     const dispatch = useDispatch()
 
+    const { fromSearch } = useParams()
+
     useEffect(() => {
         watch("old_visa_image") || setPreviewOldVisaImage("")
         watch("stamp_visa_image") || setPreviewStampVisaImage("")
@@ -55,10 +57,15 @@ function EmbassyForm(props) {
         dispatch(updateEmbassy(getValues())).then((res) => {
             console.log("updateEmbassyRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("embassyAlert", "updateEmbassy")
-                history.push('/apps/embassy-management/embassy/new');
-                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("embassyAlert", "updateEmbassy")
+                    history.push('/apps/embassy-management/embassy/new');
+                    reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }

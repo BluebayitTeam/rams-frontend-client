@@ -29,6 +29,7 @@ function ManPowerForm(props) {
     const history = useHistory();
     const dispatch = useDispatch()
 
+    const { fromSearch } = useParams()
 
     useEffect(() => {
         dispatch(getPassengers());
@@ -57,10 +58,15 @@ function ManPowerForm(props) {
         dispatch(updateManPower(getValues())).then((res) => {
             console.log("updateManPowerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("manPowerAlert", "updateManPower")
-                history.push('/apps/manPower-management/manPower/new');
-                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.push(`/apps/passenger/search/${searchKeyword}`);
+                }
+                else {
+                    localStorage.setItem("manPowerAlert", "updateManPower")
+                    history.push('/apps/manPower-management/manPower/new');
+                    reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }

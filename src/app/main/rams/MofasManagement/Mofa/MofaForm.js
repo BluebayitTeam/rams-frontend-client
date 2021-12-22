@@ -34,7 +34,7 @@ function MofaForm(props) {
 
     const methods = useFormContext();
     const routeParams = useParams();
-    const { mofaId } = routeParams;
+    const { mofaId, fromSearch } = routeParams;
     const { control, formState, getValues, reset } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
@@ -62,10 +62,15 @@ function MofaForm(props) {
         dispatch(updateMofa(getValues())).then((res) => {
             console.log("updateMofaRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("mofaAlert", "updateMofa")
-                history.push('/apps/mofa-management/mofa/new');
-                reset({})
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("mofaAlert", "updateMofa")
+                    history.push('/apps/mofa-management/mofa/new');
+                    reset({})
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }

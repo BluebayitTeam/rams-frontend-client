@@ -1,7 +1,6 @@
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { doneNotDone, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/data';
 import { setAlert } from 'app/store/alertSlice';
@@ -17,14 +16,11 @@ const NewMofaHeader = () => {
     const methods = useFormContext();
     const { formState, watch, getValues, reset } = methods;
     const { isValid, dirtyFields } = formState;
-    const name = watch('name');
-    const theme = useTheme();
     const history = useHistory();
 
-    const image = watch('image');
-    const featuredImageId = watch('featuredImageId');
-
     const routeParams = useParams();
+
+    const { fromSearch } = useParams()
 
     const passengers = useSelector(state => state.data.passengers)
 
@@ -44,10 +40,15 @@ const NewMofaHeader = () => {
         dispatch(updateMofa(getValues())).then((res) => {
             console.log("updateMofaRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("mofaAlert", "updateMofa")
-                history.push('/apps/mofa-management/mofa/new');
-                reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("mofaAlert", "updateMofa")
+                    history.push('/apps/mofa-management/mofa/new');
+                    reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -56,17 +57,27 @@ const NewMofaHeader = () => {
         dispatch(removeMofa(getValues())).then((res) => {
             console.log("removeMofaRes", res)
             if (res.payload) {
-                localStorage.setItem("mofaAlert", "deleteMofa")
-                history.push('/apps/mofa-management/mofa/new');
-                reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("mofaAlert", "deleteMofa")
+                    history.push('/apps/mofa-management/mofa/new');
+                    reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/mofa-management/mofa/new')
-        reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/mofa-management/mofa/new')
+            reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
+        }
     }
 
 

@@ -6,14 +6,13 @@ import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone, medicalResults } from "app/@data/data";
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { MEDICAL_BY_PASSENGER_ID } from '../../../../constant/constants';
 import reducer from '../store/index.js';
-import { resetMedical } from '../store/medicalSlice';
 import MedicalForm from './MedicalForm.js';
 import NewMedicalHeader from './NewMedicalHeader.js';
 
@@ -45,18 +44,15 @@ const schema = yup.object().shape({
 
 const Medical = () => {
 
-    const dispatch = useDispatch();
-
     const passengers = useSelector(state => state.data.passengers)
 
-    const [noMedical, setNoMedical] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
         resolver: yupResolver(schema)
     });
 
-    const { reset, control, formState, getValues } = methods;
+    const { reset, control, formState } = methods;
     const { errors } = formState;
 
     const classes = useStyles();
@@ -80,45 +76,6 @@ const Medical = () => {
             reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
         }
     }, [fromSearch])
-
-    useEffect(() => {
-
-        return () => {
-            /**
-             * Reset Medical on component unload
-             */
-            dispatch(resetMedical());
-            setNoMedical(false);
-        };
-    }, [dispatch]);
-
-
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noMedical) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such medical!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Medical Page
-                </Button>
-            </motion.div>
-        );
-    }
 
 
     return (

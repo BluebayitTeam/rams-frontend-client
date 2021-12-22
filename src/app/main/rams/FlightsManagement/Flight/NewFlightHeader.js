@@ -28,6 +28,8 @@ const NewFlightHeader = () => {
 
     const passengers = useSelector(state => state.data.passengers)
 
+    const { fromSearch } = useParams()
+
     function handleSaveFlight() {
         dispatch(saveFlight(getValues())).then((res) => {
             console.log("saveFlightRes", res)
@@ -44,10 +46,15 @@ const NewFlightHeader = () => {
         dispatch(updateFlight(getValues())).then((res) => {
             console.log("updateFlightRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("flightAlert", "updateFlight")
-                history.push('/apps/flight-management/flight/new');
-                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("flightAlert", "updateFlight")
+                    history.push('/apps/flight-management/flight/new');
+                    reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -56,17 +63,27 @@ const NewFlightHeader = () => {
         dispatch(removeFlight(getValues())).then((res) => {
             console.log("removeFlightRes", res)
             if (res.payload) {
-                localStorage.setItem("flightAlert", "deleteFlight")
-                history.push('/apps/flight-management/flight/new');
-                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("flightAlert", "deleteFlight")
+                    history.push('/apps/flight-management/flight/new');
+                    reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/flight-management/flight/new')
-        reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/flight-management/flight/new')
+            reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
+        }
     }
 
 

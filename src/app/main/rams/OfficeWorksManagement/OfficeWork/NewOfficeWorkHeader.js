@@ -22,6 +22,8 @@ const NewOfficeWorkHeader = () => {
 
     const passengers = useSelector(state => state.data.passengers)
 
+    const { fromSearch } = useParams()
+
     function handleSaveOfficeWork() {
         dispatch(saveOfficeWork(getValues())).then((res) => {
             console.log("saveOfficeWorkRes", res)
@@ -38,10 +40,15 @@ const NewOfficeWorkHeader = () => {
         dispatch(updateOfficeWork(getValues())).then((res) => {
             console.log("updateOfficeWorkRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("officeWorkAlert", "updateOfficeWork")
-                history.push('/apps/officeWork-management/officeWork/new');
-                reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("officeWorkAlert", "updateOfficeWork")
+                    history.push('/apps/officeWork-management/officeWork/new');
+                    reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -50,17 +57,27 @@ const NewOfficeWorkHeader = () => {
         dispatch(removeOfficeWork(getValues())).then((res) => {
             console.log("removeOfficeWorkRes", res)
             if (res.payload) {
-                localStorage.setItem("officeWorkAlert", "deleteOfficeWork")
-                history.push('/apps/officeWork-management/officeWork/new');
-                reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("officeWorkAlert", "deleteOfficeWork")
+                    history.push('/apps/officeWork-management/officeWork/new');
+                    reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/officeWork-management/officeWork/new')
-        reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/officeWork-management/officeWork/new')
+            reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
+        }
     }
 
 

@@ -44,7 +44,6 @@ const schema = yup.object().shape({
 const MusanedOkala = () => {
 
     const dispatch = useDispatch();
-    // const musanedOkala = useSelector(({ musanedOkalasManagement }) => musanedOkalasManagement.musanedOkala);
     const passengers = useSelector(state => state.data.passengers)
 
     const [noMusanedOkala, setNoMusanedOkala] = useState(false);
@@ -53,7 +52,6 @@ const MusanedOkala = () => {
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -62,19 +60,31 @@ const MusanedOkala = () => {
 
     const history = useHistory();
 
-    useEffect(() => {
-        reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
-    }, []),
+    const { fromSearch, musanedOkalaId } = useParams()
 
-        useEffect(() => {
-            return () => {
-                /**
-                 * Reset MusanedOkala on component unload
-                 */
-                dispatch(resetMusanedOkala());
-                setNoMusanedOkala(false);
-            };
-        }, [dispatch]);
+    useEffect(() => {
+        if (fromSearch) {
+            axios.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${musanedOkalaId}`).then(res => {
+                console.log("Res", res.data)
+                if (res.data.id) {
+                    reset({ ...res.data, passenger: musanedOkalaId })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
+
+    useEffect(() => {
+        return () => {
+            /**
+             * Reset MusanedOkala on component unload
+             */
+            dispatch(resetMusanedOkala());
+            setNoMusanedOkala(false);
+        };
+    }, [dispatch]);
 
     /**
      * Show Message if the requested products is not exists
@@ -129,6 +139,7 @@ const MusanedOkala = () => {
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}

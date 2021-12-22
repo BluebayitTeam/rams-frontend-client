@@ -127,7 +127,6 @@ function reducer(state, action) {
 
 function FuseSearch(props) {
 	const navigation = useSelector(selectFlatNavigation);
-
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const classes = useStyles(props);
 	const suggestionsNode = useRef(null);
@@ -137,6 +136,19 @@ function FuseSearch(props) {
 	const router = useHistory()
 
 	useEffect(() => {
+		window.addEventListener('storage', () => {
+			const searchKeyword = sessionStorage.getItem('passenger_search_key')
+			if (searchKeyword) {
+				dispatch({ type: 'open' });
+				dispatch({
+					type: 'setSearchText',
+					value: searchKeyword
+				});
+			}
+		});
+	}, [])
+
+	useEffect(() => {
 		dispatch({
 			type: 'setNavigation',
 			value: navigation
@@ -144,7 +156,7 @@ function FuseSearch(props) {
 	}, [navigation]);
 
 	function showSearch(ev) {
-		ev.stopPropagation();
+		ev && ev.stopPropagation();
 		dispatch({ type: 'open' });
 		document.addEventListener('keydown', escFunction, false);
 	}
@@ -191,7 +203,7 @@ function FuseSearch(props) {
 		case 'basic': {
 			return (
 				<>
-					<div className={clsx('flex items-center w-full', props.className)} ref={popperNode}>
+					<div className={clsx('flex items-center', props.className)} ref={popperNode}>
 						<TextField
 							inputProps={{
 								classes,
@@ -224,8 +236,10 @@ function FuseSearch(props) {
 						{state.opened && (
 							<ClickAwayListener onClickAway={handleClickAway}>
 								<Paper className="absolute left-0 right-0 top-0 h-full z-9999 shadow-0" square>
-									<div className="flex items-center w-full h-full" ref={popperNode}>
+									<div className="flex items-center max-w-320 mx-auto h-full" ref={popperNode}>
 										<TextField
+											id="passenger_search"
+											name="passenger_search"
 											inputProps={{
 												classes,
 												InputLabelProps: {
@@ -264,7 +278,7 @@ FuseSearch.defaultProps = {
 		</IconButton>
 	),
 	variant: 'full',
-	placeholder: 'Search',
+	placeholder: 'Search Passenger',
 	noResults: 'No results..'
 };
 

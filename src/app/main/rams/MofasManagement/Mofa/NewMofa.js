@@ -7,13 +7,12 @@ import { doneNotDone } from "app/@data/data";
 import { MOFA_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
-import { resetMofa } from '../store/mofaSlice';
 import MofaForm from './MofaForm.js';
 import NewMofaHeader from './NewMofaHeader.js';
 
@@ -43,17 +42,13 @@ const schema = yup.object().shape({
 
 const Mofa = () => {
 
-    const dispatch = useDispatch();
-    // const mofa = useSelector(({ mofasManagement }) => mofasManagement.mofa);
     const passengers = useSelector(state => state.data.passengers)
 
-    const [noMofa, setNoMofa] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -62,46 +57,21 @@ const Mofa = () => {
 
     const history = useHistory();
 
+    const { fromSearch, mofaId } = useParams()
+
     useEffect(() => {
-        reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
-    }, []),
-
-
-        useEffect(() => {
-            return () => {
-                /**
-                 * Reset Mofa on component unload
-                 */
-                dispatch(resetMofa());
-                setNoMofa(false);
-            };
-        }, [dispatch]);
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noMofa) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such mofa!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Mofa Page
-                </Button>
-            </motion.div>
-        );
-    }
+        if (fromSearch) {
+            axios.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`).then(res => {
+                console.log("Res", res.data)
+                if (res.data.id) {
+                    reset({ ...res.data, passenger: mofaId })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ mofa_status: doneNotDone.find(data => data.default)?.id, re_mofa_status: doneNotDone.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
 
     return (

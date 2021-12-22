@@ -34,7 +34,6 @@ function FlightForm(props) {
     const ticketAgencys = useSelector(state => state.data.agents)
     const currentStatuss = useSelector(state => state.data.currentStatuss)
 
-
     const classes = useStyles(props);
 
     const methods = useFormContext();
@@ -45,6 +44,7 @@ function FlightForm(props) {
     const history = useHistory();
     const dispatch = useDispatch()
 
+    const { fromSearch } = useParams()
 
     useEffect(() => {
         dispatch(getPassengers());
@@ -74,10 +74,15 @@ function FlightForm(props) {
         dispatch(updateFlight(getValues())).then((res) => {
             console.log("updateFlightRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("flightAlert", "updateFlight")
-                history.push('/apps/flight-management/flight/new');
-                reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("flightAlert", "updateFlight")
+                    history.push('/apps/flight-management/flight/new');
+                    reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }

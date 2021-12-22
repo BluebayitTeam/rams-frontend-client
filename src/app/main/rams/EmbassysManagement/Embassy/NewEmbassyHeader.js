@@ -21,6 +21,7 @@ const NewEmbassyHeader = () => {
     const passengers = useSelector(state => state.data.passengers)
 
     const routeParams = useParams();
+    const { fromSearch } = useParams()
 
     function handleSaveEmbassy() {
         dispatch(saveEmbassy(getValues())).then((res) => {
@@ -38,10 +39,15 @@ const NewEmbassyHeader = () => {
         dispatch(updateEmbassy(getValues())).then((res) => {
             console.log("updateEmbassyRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("embassyAlert", "updateEmbassy")
-                history.push('/apps/embassy-management/embassy/new');
-                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("embassyAlert", "updateEmbassy")
+                    history.push('/apps/embassy-management/embassy/new');
+                    reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -50,17 +56,27 @@ const NewEmbassyHeader = () => {
         dispatch(removeEmbassy(getValues())).then((res) => {
             console.log("removeEmbassyRes", res)
             if (res.payload) {
-                localStorage.setItem("embassyAlert", "deleteEmbassy")
-                history.push('/apps/embassy-management/embassy/new');
-                reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("embassyAlert", "deleteEmbassy")
+                    history.push('/apps/embassy-management/embassy/new');
+                    reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/embassy-management/embassy/new')
-        reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/embassy-management/embassy/new')
+            reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
+        }
     }
 
 

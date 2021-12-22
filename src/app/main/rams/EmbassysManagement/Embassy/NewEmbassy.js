@@ -8,12 +8,11 @@ import { EMBASSY_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { resetEmbassy } from '../store/embassySlice';
 import reducer from '../store/index.js';
 import EmbassyForm from './EmbassyForm.js';
 import NewEmbassyHeader from './NewEmbassyHeader.js';
@@ -48,7 +47,6 @@ const Embassy = () => {
     // const embassy = useSelector(({ embassysManagement }) => embassysManagement.embassy);
     const passengers = useSelector(state => state.data.passengers)
 
-    const [noEmbassy, setNoEmbassy] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -62,45 +60,35 @@ const Embassy = () => {
 
     const history = useHistory();
 
-    useEffect(() => {
-        reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
-    }, [])
+    const { fromSearch, embassyId } = useParams()
 
     useEffect(() => {
-        return () => {
-            /**
-             * Reset Embassy on component unload
-             */
-            dispatch(resetEmbassy());
-            setNoEmbassy(false);
-        };
-    }, [dispatch]);
+        if (fromSearch) {
+            axios.get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`).then(res => {
+                console.log("Res", res.data)
 
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noEmbassy) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such embassy!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Embassy Page
-                </Button>
-            </motion.div>
-        );
-    }
+                //update scope
+                if (res.data?.visa_entry?.id && res.data?.mofa?.id && res.data?.embassy?.id) {
+                    const visa_entry = res.data?.visa_entry
+                    const mofa = res.data?.mofa
+                    reset({
+                        ...res.data.embassy,
+                        visa_number_readonly: visa_entry.visa_number,
+                        sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+                        sponsor_name_english_readonly: visa_entry.sponsor_name_english,
+                        sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
+                        mofa_no_readonly: mofa.mofa_no,
+                        passenger: embassyId,
+                        updatePermission: true,
+                        createPermission: false,
+                    })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ stamping_status: doneNotDone.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
 
     return (
@@ -129,6 +117,7 @@ const Embassy = () => {
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}

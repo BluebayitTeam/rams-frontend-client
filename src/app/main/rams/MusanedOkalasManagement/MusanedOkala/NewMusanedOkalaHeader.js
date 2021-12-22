@@ -22,6 +22,8 @@ const NewMusanedOkalaHeader = () => {
 
     const passengers = useSelector(state => state.data.passengers)
 
+    const { fromSearch } = useParams()
+
     function handleSaveMusanedOkala() {
         dispatch(saveMusanedOkala(getValues())).then((res) => {
             console.log("saveMusanedOkalaRes", res)
@@ -38,10 +40,15 @@ const NewMusanedOkalaHeader = () => {
         dispatch(updateMusanedOkala(getValues())).then((res) => {
             console.log("updateMusanedOkalaRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("musanedOkalaAlert", "updateMusanedOkala")
-                history.push('/apps/musanedOkala-management/musanedOkala/new');
-                reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("musanedOkalaAlert", "updateMusanedOkala")
+                    history.push('/apps/musanedOkala-management/musanedOkala/new');
+                    reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -50,17 +57,27 @@ const NewMusanedOkalaHeader = () => {
         dispatch(removeMusanedOkala(getValues())).then((res) => {
             console.log("removeMusanedOkalaRes", res)
             if (res.payload) {
-                localStorage.setItem("musanedOkalaAlert", "deleteMusanedOkala")
-                history.push('/apps/musanedOkala-management/musanedOkala/new');
-                reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("musanedOkalaAlert", "deleteMusanedOkala")
+                    history.push('/apps/musanedOkala-management/musanedOkala/new');
+                    reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/musanedOkala-management/musanedOkala/new')
-        reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/musanedOkala-management/musanedOkala/new')
+            reset({ musaned_status: doneNotDone.find(data => data.default)?.id, okala_status: doneNotDone.find(data => data.default)?.id })
+        }
     }
 
 

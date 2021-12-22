@@ -1,13 +1,18 @@
 import { makeStyles } from '@material-ui/core/styles';
 import getUserData from 'app/@helpers/getUserData';
-import { BASE_URL, EMBASSY_BY_PASSENGER_ID, GET_SITESETTINGS, MEDICAL_BY_PASSENGER_ID, MOFA_BY_PASSENGER_ID, SEARCH_PASSENGER_BY } from 'app/constant/constants';
+import { BASE_URL, EMBASSY_BY_PASSENGER_ID, FLIGHT_BY_PASSENGER_ID, GET_SITESETTINGS, MANPOWER_BY_PASSENGER_ID, MEDICAL_BY_PASSENGER_ID, MOFA_BY_PASSENGER_ID, MUSANEDOKALA_BY_PASSENGER_ID, OFFICEWORK_BY_PASSENGER_ID, SEARCH_PASSENGER_BY, TRAINING_BY_PASSENGER_ID } from 'app/constant/constants';
 import axios from 'axios';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import EmbassyDetail from './EmbassyDetail';
+import FlightDetail from './FlightDetail';
+import ManPowerDetail from './ManPowerDetail';
 import MedicalDetail from './MedicalDetail';
 import MofaDetail from './MofaDetail';
+import MusanedOkalaDetail from './MusanedOkalaDetail';
+import OfficeWorkDetail from './OfficeWorkDetail';
+import TrainingDetail from './TrainingDetail';
 
 const useStyles = makeStyles(theme => {
     console.log("theme", theme)
@@ -15,7 +20,6 @@ const useStyles = makeStyles(theme => {
         container: {
             background: theme.palette.background.default,
             color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
-            // border: `2px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
             height: 'fit-content',
             paddingTop: '40px',
             paddingBottom: '40px',
@@ -113,6 +117,11 @@ function PassengerAllDetails() {
     const [medical, setMedical] = useState({})
     const [embassy, setEmbassy] = useState({})
     const [mofa, setMofa] = useState({})
+    const [officeWork, setOfficeWork] = useState({})
+    const [manPower, setManPower] = useState({})
+    const [musanedOkala, setMusanedOkala] = useState({})
+    const [flight, setFlight] = useState({})
+    const [training, setTraining] = useState({})
 
     const { searchKeyword } = useParams()
 
@@ -121,9 +130,9 @@ function PassengerAllDetails() {
         axios.get(GET_SITESETTINGS, authToken).then(res => {
             console.log("GET_SITESETTINGS_Res", res?.data?.general_settings[0] || {})
             setSiteSetting(res?.data?.general_settings[0] || {})
-        }).catch(() => { })
+        }).catch(() => null)
 
-        sessionStorage.removeItem('passenger_search_key')
+        return () => sessionStorage.removeItem('passenger_search_key')
     }, [])
 
     useEffect(() => {
@@ -135,25 +144,50 @@ function PassengerAllDetails() {
             }).catch(() => {
                 setpId(0)
             })
+
+            sessionStorage.setItem('passenger_search_key', searchKeyword)
+            window.dispatchEvent(new Event('storage'))
         }
     }, [searchKeyword])
 
     useEffect(() => {
         if (pId) {
+            //medical data
             axios.get(`${MEDICAL_BY_PASSENGER_ID}${pId}`).then(res => {
-                const medicalData = _.isObject(res?.data) ? res.data : {}
-                setMedical({ ...medicalData })
-            }).catch(() => {
-                setMedical({})
-            })
-        }
-        else {
-            setMedical({})
-        }
-    }, [pId])
+                res?.data?.id && setMedical({ ...res.data })
+            }).catch(() => setMedical({}))
 
-    useEffect(() => {
-        if (pId) {
+            //office work data
+            axios.get(`${OFFICEWORK_BY_PASSENGER_ID}${pId}`).then(res => {
+                res?.data?.id && setOfficeWork({ ...res.data })
+            }).catch(() => setOfficeWork({}))
+
+            //mfa data
+            axios.get(`${MOFA_BY_PASSENGER_ID}${pId}`).then(res => {
+                res?.data?.id && setMofa({ ...res.data })
+            }).catch(() => setMofa({}))
+
+            //manpower data
+            axios.get(`${MANPOWER_BY_PASSENGER_ID}${pId}`).then(res => {
+                res?.data?.id && setManPower({ ...res.data })
+            }).catch(() => setManPower({}))
+
+            //masaned okala data
+            axios.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${pId}`).then(res => {
+                res?.data?.id && setMusanedOkala({ ...res.data })
+            }).catch(() => setMusanedOkala({}))
+
+            //training data
+            axios.get(`${TRAINING_BY_PASSENGER_ID}${pId}`).then(res => {
+                res?.data?.id && setTraining({ ...res.data })
+            }).catch(() => setTraining({}))
+
+            //flight data
+            axios.get(`${FLIGHT_BY_PASSENGER_ID}${pId}`).then(res => {
+                res?.data?.id && setFlight({ ...res.data })
+            }).catch(() => setFlight({}))
+
+            //embassy data
             axios.get(`${EMBASSY_BY_PASSENGER_ID}${pId}`).then(res => {
 
                 let embassyData = {}
@@ -180,23 +214,17 @@ function PassengerAllDetails() {
             })
         }
         else {
+            setMedical({})
+            setOfficeWork({})
             setEmbassy({})
+            setMofa({})
+            setManPower({})
+            setMusanedOkala({})
+            setTraining({})
+            setFlight({})
         }
     }, [pId])
 
-    useEffect(() => {
-        if (pId) {
-            axios.get(`${MOFA_BY_PASSENGER_ID}${pId}`).then(res => {
-                const mofaData = _.isObject(res?.data) ? res.data : {}
-                setMofa({ ...mofaData })
-            }).catch(() => {
-                setMofa({})
-            })
-        }
-        else {
-            setMofa({})
-        }
-    }, [pId])
 
     return (
         <div>
@@ -210,8 +238,15 @@ function PassengerAllDetails() {
 
 
                 {_.isEmpty(medical) || <MedicalDetail classes={classes} data={medical} pid={pId} />}
-                {_.isEmpty(embassy) || <EmbassyDetail classes={classes} data={embassy} pid={pId} />}
+                {_.isEmpty(musanedOkala) || <MusanedOkalaDetail classes={classes} data={musanedOkala} pid={pId} />}
                 {_.isEmpty(mofa) || <MofaDetail classes={classes} data={mofa} pid={pId} />}
+                {_.isEmpty(officeWork) || <OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
+                {_.isEmpty(embassy) || <EmbassyDetail classes={classes} data={embassy} pid={pId} />}
+                {_.isEmpty(training) || <TrainingDetail classes={classes} data={training} pid={pId} />}
+                {_.isEmpty(manPower) || <ManPowerDetail classes={classes} data={manPower} pid={pId} />}
+                {_.isEmpty(flight) || <FlightDetail classes={classes} data={flight} pid={pId} />}
+
+
             </div>
         </div >
     )

@@ -1,16 +1,12 @@
-import _ from '@lodash';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import { doneNotDone, saveAlertMsg, updateAlertMsg } from 'app/@data/data';
-import { setAlert } from "app/store/alertSlice";
+import { doneNotDone } from 'app/@data/data';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
 import { getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
-import { saveOfficeWork, updateOfficeWork } from '../store/officeWorkSlice';
 
 
 function OfficeWorkForm(props) {
@@ -23,12 +19,9 @@ function OfficeWorkForm(props) {
     const currentStatuss = useSelector(state => state.data.currentStatuss)
 
     const methods = useFormContext();
-    const routeParams = useParams();
-    const { control, formState, watch, reset, getValues } = methods;
-    const { errors, isValid, dirtyFields } = formState;
-    const history = useHistory();
+    const { control, formState, watch } = methods;
+    const { errors } = formState;
     const dispatch = useDispatch()
-
 
     useEffect(() => {
         dispatch(getPassengers());
@@ -41,43 +34,6 @@ function OfficeWorkForm(props) {
         watch("doc1_image") || setpreviewDoc1Image("")
         watch("doc2_image") || setpreviewDoc2Image("")
     }, [watch("pc_image"), watch("dl_image"), watch("doc1_image"), watch("doc2_image")])
-
-    function handleSaveOfficeWork() {
-        dispatch(saveOfficeWork(getValues())).then((res) => {
-            console.log("saveOfficeWorkRes", res)
-            if (res.payload?.data?.id) {
-                localStorage.setItem("officeWorkAlert", "saveOfficeWork")
-                history.push('/apps/officeWork-management/officeWork/new');
-                reset({})
-                dispatch(setAlert(saveAlertMsg))
-            }
-        });
-    }
-
-    function handleUpdateOfficeWork() {
-        dispatch(updateOfficeWork(getValues())).then((res) => {
-            console.log("updateOfficeWorkRes", res)
-            if (res.payload?.data?.id) {
-                localStorage.setItem("officeWorkAlert", "updateOfficeWork")
-                history.push('/apps/officeWork-management/officeWork/new');
-                reset({})
-                dispatch(setAlert(updateAlertMsg))
-            }
-        });
-    }
-
-    const handleSubmitOnKeyDownEnter = (ev) => {
-        if (ev.key === 'Enter') {
-            if (routeParams.officeWorkId === "new" && !(_.isEmpty(dirtyFields) || !isValid)) {
-                handleSaveOfficeWork()
-                console.log("saved")
-            }
-            else if (routeParams.officeWorkId !== "new" && watch('passenger')) {
-                handleUpdateOfficeWork()
-                console.log("updated")
-            }
-        }
-    }
 
 
     return (

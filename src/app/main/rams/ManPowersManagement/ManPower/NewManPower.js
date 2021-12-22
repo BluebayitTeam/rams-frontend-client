@@ -8,13 +8,12 @@ import { MANPOWER_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
-import { resetManPower } from '../store/manPowerSlice';
 import ManPowerForm from './ManPowerForm.js';
 import NewManPowerHeader from './NewManPowerHeader.js';
 
@@ -47,8 +46,6 @@ const ManPower = () => {
     const dispatch = useDispatch();
     // const manPower = useSelector(({ manPowersManagement }) => manPowersManagement.manPower);
     const passengers = useSelector(state => state.data.passengers)
-
-    const [noManPower, setNoManPower] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
@@ -62,46 +59,22 @@ const ManPower = () => {
 
     const history = useHistory();
 
+    const { fromSearch, manPowerId } = useParams()
 
     useEffect(() => {
-        reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
-    }, [])
-
-    useEffect(() => {
-        return () => {
-            /**
-             * Reset ManPower on component unload
-             */
-            dispatch(resetManPower());
-            setNoManPower(false);
-        };
-    }, [dispatch]);
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noManPower) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such manPower!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to ManPower Page
-                </Button>
-            </motion.div>
-        );
-    }
+        if (fromSearch) {
+            axios.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`).then(res => {
+                console.log("Res", res.data)
+                //update scope
+                if (res.data.id) {
+                    reset({ ...res.data, passenger: manPowerId })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
 
     return (
@@ -130,6 +103,7 @@ const ManPower = () => {
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
@@ -137,10 +111,12 @@ const ManPower = () => {
                                             if (newValue?.id) {
                                                 axios.get(`${MANPOWER_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
+                                                    //update scope
                                                     if (res.data.id) {
                                                         reset({ ...res.data, passenger: newValue?.id })
                                                         history.push(`/apps/manPower-management/manPower/${newValue?.passenger_id || newValue?.id}`)
                                                     }
+                                                    //create scope
                                                     else if (res.data?.embassy_exists) {
                                                         history.push(`/apps/manPower-management/manPower/new`)
                                                         reset({ passenger: newValue?.id, createPermission: true, man_power_status: doneNotDone.find(data => data.default)?.id })

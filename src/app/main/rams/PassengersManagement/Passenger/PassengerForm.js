@@ -321,6 +321,7 @@ function PassengerForm(props) {
                         <Autocomplete
                             className="mt-8 mb-16 w-full md:w-6/12"
                             freeSolo
+                            disabled={true}
                             value={value ? passengerTypes.find(data => data.id == value) : null}
                             options={passengerTypes}
                             getOptionLabel={(option) => `${option.name}`}

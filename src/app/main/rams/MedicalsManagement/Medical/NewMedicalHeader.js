@@ -2,7 +2,6 @@ import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import useSessionStorage from 'app/@customHooks/useSessionStorage';
 import { doneNotDone, medicalResults, removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/data';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
@@ -24,8 +23,6 @@ const NewMedicalHeader = () => {
 
     const passengers = useSelector(state => state.data.passengers)
 
-    const searchKeyword = useSessionStorage('passenger_search_key')
-
     function handleSaveMedical() {
         dispatch(saveMedical(getValues())).then((res) => {
             console.log("saveMedicalRes", res)
@@ -43,7 +40,7 @@ const NewMedicalHeader = () => {
             console.log("updateMedicalRes", res)
             if (res.payload?.data?.id) {
                 if (fromSearch) {
-                    history.push(`/apps/passenger/search/${searchKeyword}`);
+                    history.goBack()
                 }
                 else {
                     localStorage.setItem("medicalAlert", "updateMedical")
@@ -60,7 +57,7 @@ const NewMedicalHeader = () => {
             console.log("removeMedicalRes", res)
             if (res.payload) {
                 if (fromSearch) {
-                    history.push(`/apps/passenger/search/${searchKeyword}`);
+                    history.goBack()
                 }
                 else {
                     localStorage.setItem("medicalAlert", "deleteMedical")
@@ -73,8 +70,13 @@ const NewMedicalHeader = () => {
     }
 
     function handleCancel() {
-        history.push('/apps/medical-management/medical/new')
-        reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/medical-management/medical/new')
+            reset({ medical_card: doneNotDone.find(data => data.default)?.id, medical_result: medicalResults.find(data => data.default)?.id })
+        }
     }
 
     console.log("getValues", getValues())

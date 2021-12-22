@@ -22,6 +22,8 @@ const NewManPowerHeader = () => {
 
     const passengers = useSelector(state => state.data.passengers)
 
+    const { fromSearch } = useParams()
+
     function handleSaveManPower() {
         dispatch(saveManPower(getValues())).then((res) => {
             console.log("saveManPowerRes", res)
@@ -38,10 +40,15 @@ const NewManPowerHeader = () => {
         dispatch(updateManPower(getValues())).then((res) => {
             console.log("updateManPowerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("manPowerAlert", "updateManPower")
-                history.push('/apps/manPower-management/manPower/new');
-                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("manPowerAlert", "updateManPower")
+                    history.push('/apps/manPower-management/manPower/new');
+                    reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -50,17 +57,27 @@ const NewManPowerHeader = () => {
         dispatch(removeManPower(getValues())).then((res) => {
             console.log("removeManPowerRes", res)
             if (res.payload) {
-                localStorage.setItem("manPowerAlert", "deleteManPower")
-                history.push('/apps/manPower-management/manPower/new');
-                reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("manPowerAlert", "deleteManPower")
+                    history.push('/apps/manPower-management/manPower/new');
+                    reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/manPower-management/manPower/new')
-        reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/manPower-management/manPower/new')
+            reset({ man_power_status: doneNotDone.find(data => data.default)?.id })
+        }
     }
 
 

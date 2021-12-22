@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
 
 const useSessionStorage = (key = '') => {
-    const [state, setstate] = useState(sessionStorage.getItem(key))
+    const [state, setState] = useState(sessionStorage.getItem(key))
 
     useEffect(() => {
-        window.addEventListener('storage', (e) => {
-            if (e.storageArea === sessionStorage) {
-                alert('change');
-            }
-            // else, event is localStorage, ignore it
+        window.addEventListener('storage', () => {
+            setState(sessionStorage.getItem(key))
+            console.log('sessionStorageFire', `${key}`)
         });
 
-        return () => {
-            window.removeEventListener('storage', () => null)
-        }
+        return () => window.removeEventListener('storage', () => null)
     }, [])
 
     return state

@@ -7,13 +7,12 @@ import { doneNotDone } from "app/@data/data";
 import { OFFICEWORK_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
-import { resetOfficeWork } from '../store/officeWorkSlice';
 import NewOfficeWorkHeader from './NewOfficeWorkHeader.js';
 import OfficeWorkForm from './OfficeWorkForm.js';
 
@@ -42,18 +41,13 @@ const schema = yup.object().shape({
 })
 
 const OfficeWork = () => {
-
-    const dispatch = useDispatch();
-    // const officeWork = useSelector(({ officeWorksManagement }) => officeWorksManagement.officeWork);
     const passengers = useSelector(state => state.data.passengers)
 
-    const [noOfficeWork, setNoOfficeWork] = useState(false);
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -62,46 +56,21 @@ const OfficeWork = () => {
 
     const history = useHistory();
 
-    useEffect(() => {
-        reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
-    }, [])
+    const { fromSearch, officeWorkId } = useParams()
 
     useEffect(() => {
-        return () => {
-            /**
-             * Reset OfficeWork on component unload
-             */
-            dispatch(resetOfficeWork());
-            setNoOfficeWork(false);
-        };
-    }, [dispatch]);
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noOfficeWork) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such officeWork!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to OfficeWork Page
-                </Button>
-            </motion.div>
-        );
-    }
-
+        if (fromSearch) {
+            axios.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`).then(res => {
+                console.log("Res", res.data)
+                if (res.data.id) {
+                    reset({ ...res.data, passenger: officeWorkId })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ police_clearance_status: doneNotDone.find(data => data.default)?.id, driving_license_status: doneNotDone.find(data => data.default)?.id, finger_status: doneNotDone.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
     return (
         <FormProvider {...methods}>
@@ -129,6 +98,7 @@ const OfficeWork = () => {
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}

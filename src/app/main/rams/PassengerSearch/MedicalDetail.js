@@ -1,15 +1,13 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 import React from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory } from 'react-router';
 
 function MedicalDetails({ classes, data, pid }) {
 
     const router = useHistory()
-    const { searchKeyword } = useParams()
 
     const gotoEditpage = () => {
-        sessionStorage.setItem('passenger_search_key', searchKeyword)
         router.push(`/apps/medical-management/medical/${pid}/fromSearch`)
     }
     return (

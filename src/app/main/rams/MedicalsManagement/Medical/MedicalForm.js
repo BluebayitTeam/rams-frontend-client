@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
-import useSessionStorage from 'app/@customHooks/useSessionStorage';
 import { doneNotDone, medicalResults, saveAlertMsg } from 'app/@data/data';
 import increaseMonth from 'app/@helpers/increaseMonth';
 import { setAlert } from 'app/store/alertSlice';
@@ -47,8 +46,6 @@ function MedicalForm(props) {
     const history = useHistory();
     const dispatch = useDispatch()
 
-    const searchKeyword = useSessionStorage('passenger_search_key')
-
     useEffect(() => {
         dispatch(getPassengers());
         dispatch(getMedicalCenters());
@@ -77,7 +74,7 @@ function MedicalForm(props) {
             console.log("updateMedicalRes", res)
             if (res.payload?.data?.id) {
                 if (fromSearch) {
-                    history.push(`/apps/passenger/search/${searchKeyword}`);
+                    history.goBack()
                 }
                 else {
                     localStorage.setItem("medicalAlert", "updateMedical")
