@@ -12,6 +12,7 @@ function MofaDetail({ classes, data, pid }) {
         router.push(`/apps/mofa-management/mofa/${pid}/fromSearch`)
     }
 
+    console.log("MofaDetail rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>

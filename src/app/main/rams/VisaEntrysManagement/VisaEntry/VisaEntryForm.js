@@ -34,6 +34,7 @@ function VisaEntryForm(props) {
     const handleDelete = localStorage.getItem('visaEntryEvent');
     const dispatch = useDispatch()
 
+    const { visaEntryName } = useParams()
 
     useEffect(() => {
         dispatch(getDemands())
@@ -55,8 +56,13 @@ function VisaEntryForm(props) {
         dispatch(updateVisaEntry(getValues())).then((res) => {
             console.log("updateVisaEntryRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("visaEntryAlert", "updateVisaEntry")
-                history.push('/apps/visaEntry-management/visaEntrys');
+                if (visaEntryName === 'fromSearch') {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("visaEntryAlert", "updateVisaEntry")
+                    history.push('/apps/visaEntry-management/visaEntrys');
+                }
             }
         });
     }

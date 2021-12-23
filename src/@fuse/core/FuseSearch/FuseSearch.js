@@ -136,14 +136,17 @@ function FuseSearch(props) {
 	const router = useHistory()
 
 	useEffect(() => {
-		window.addEventListener('storage', () => {
-			const searchKeyword = sessionStorage.getItem('passenger_search_key')
-			if (searchKeyword) {
-				dispatch({ type: 'open' });
-				dispatch({
-					type: 'setSearchText',
-					value: searchKeyword
-				});
+		window.addEventListener('storage', (e) => {
+			console.log("storageEvent", e?.detail?.name)
+			if (e?.detail?.name === 'passenger_search_key') {
+				const searchKeyword = sessionStorage.getItem('passenger_search_key')
+				if (searchKeyword) {
+					dispatch({ type: 'open' });
+					dispatch({
+						type: 'setSearchText',
+						value: searchKeyword
+					});
+				}
 			}
 		});
 	}, [])
@@ -156,7 +159,7 @@ function FuseSearch(props) {
 	}, [navigation]);
 
 	function showSearch(ev) {
-		ev && ev.stopPropagation();
+		ev.stopPropagation();
 		dispatch({ type: 'open' });
 		document.addEventListener('keydown', escFunction, false);
 	}

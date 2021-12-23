@@ -11,6 +11,7 @@ function TrainingDetail({ classes, data, pid }) {
         router.push(`/apps/training-management/training/${pid}/fromSearch`)
     }
 
+    console.log("TrainingDetail rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>

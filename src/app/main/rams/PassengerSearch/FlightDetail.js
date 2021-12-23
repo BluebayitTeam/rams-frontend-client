@@ -12,6 +12,7 @@ function FlightDetail({ classes, data, pid }) {
         router.push(`/apps/flight-management/flight/${pid}/fromSearch`)
     }
 
+    console.log("FlightDetail rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>

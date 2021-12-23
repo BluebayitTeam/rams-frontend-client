@@ -795,6 +795,8 @@ export const DELETE_VISAENTRY_MULTIPLE = `${BASE_URL}/visa_entry/api/v1/visa_ent
 
 export const SEARCH_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/search/`;
 
+export const VISAENTRY_BY_PASSENGER_ID = `${BASE_URL}/visa_entry/api/v1/visa_entry/get_a_visa_entry_by_pasenger_id/`
+
 //passenger
 export const CREATE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/create/`;
 
@@ -973,3 +975,12 @@ export const UPDATE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/update/`;
 export const DELETE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/delete/`;
 
 export const MANPOWER_BY_PASSENGER_ID = `${BASE_URL}/man_power/api/v1/man_power/check_embassy_by_passenger_id/`;
+
+//calling_emb_attestation
+export const CREATE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/create/`;
+
+export const UPDATE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/update/`;
+
+export const DELETE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/delete/`;
+
+export const CALLINGEMBATTESTATION_BY_PASSENGER_ID = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/get_by_passenger_id/`;

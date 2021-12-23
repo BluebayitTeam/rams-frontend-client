@@ -10,6 +10,8 @@ function MedicalDetails({ classes, data, pid }) {
     const gotoEditpage = () => {
         router.push(`/apps/medical-management/medical/${pid}/fromSearch`)
     }
+
+    console.log("MedicalDetails rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>

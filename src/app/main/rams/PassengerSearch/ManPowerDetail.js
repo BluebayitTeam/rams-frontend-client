@@ -11,6 +11,7 @@ function ManPowerDetail({ classes, data, pid }) {
         router.push(`/apps/manPower-management/manPower/${pid}/fromSearch`)
     }
 
+    console.log("ManPowerDetail rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>

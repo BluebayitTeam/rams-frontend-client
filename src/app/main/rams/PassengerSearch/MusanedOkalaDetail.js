@@ -11,6 +11,7 @@ function MusanedOkalaDetail({ classes, data, pid }) {
         router.push(`/apps/musanedOkala-management/musanedOkala/${pid}/fromSearch`)
     }
 
+    console.log("MusanedOkalaDetail rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>

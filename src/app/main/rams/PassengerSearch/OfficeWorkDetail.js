@@ -11,6 +11,7 @@ function OfficeWorkDetail({ classes, data, pid }) {
         router.push(`/apps/officeWork-management/officeWork/${pid}/fromSearch`)
     }
 
+    console.log("OfficeWorkDetail rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>

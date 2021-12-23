@@ -439,6 +439,15 @@ const navigationConfig = [
                 url: '/apps/visaSubmissionList-management/visaSubmissionList/new',
                 exact: true
             },
+            //callingEmbAttestation
+            {
+                id: 'callingEmbAttestation',
+                title: 'Calling',
+                translate: 'Calling',
+                type: 'item',
+                url: '/apps/callingEmbAttestation-management/callingEmbAttestation/new',
+                exact: true
+            }
 
         ]
     }

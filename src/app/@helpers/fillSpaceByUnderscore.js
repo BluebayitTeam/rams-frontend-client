@@ -1,7 +1,7 @@
 
 function fillSpaceByUnderscore(txt) {
 
-    const ModiFiedText = txt.replace(" ", "_");
+    const ModiFiedText = txt.toString().replace(" ", "_");
 
     return ModiFiedText
 }

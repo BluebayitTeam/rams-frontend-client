@@ -355,6 +355,11 @@ const ramsRouteConfig = {
             path: '/apps/manPower-management/manPower/:manPowerId/:fromSearch?',
             component: lazy(() => import('./ManPowersManagement/ManPower/NewManPower'))
         },
+        //callingEmbAttestation
+        {
+            path: '/apps/callingEmbAttestation-management/callingEmbAttestation/:callingEmbAttestationId/:fromSearch?',
+            component: lazy(() => import('./CallingEmbAttestationsManagement/CallingEmbAttestation/NewCallingEmbAttestation'))
+        },
         //passengerSearch
         {
             path: '/apps/passenger/search/:searchKeyword',

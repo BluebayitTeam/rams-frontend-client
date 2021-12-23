@@ -24,6 +24,8 @@ const NewVisaEntryHeader = () => {
 
     const handleDelete = localStorage.getItem('visaEntryEvent');
 
+    const { visaEntryName } = useParams()
+
     function handleSaveVisaEntry() {
         dispatch(saveVisaEntry(getValues())).then((res) => {
             console.log("saveVisaEntryRes", res)
@@ -38,8 +40,13 @@ const NewVisaEntryHeader = () => {
         dispatch(updateVisaEntry(getValues())).then((res) => {
             console.log("updateVisaEntryRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("visaEntryAlert", "updateVisaEntry")
-                history.push('/apps/visaEntry-management/visaEntrys');
+                if (visaEntryName === 'fromSearch') {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("visaEntryAlert", "updateVisaEntry")
+                    history.push('/apps/visaEntry-management/visaEntrys');
+                }
             }
         });
     }
@@ -48,15 +55,25 @@ const NewVisaEntryHeader = () => {
         dispatch(removeVisaEntry(getValues())).then((res) => {
             console.log("removeVisaEntryRes", res)
             if (res.payload) {
-                localStorage.removeItem("visaEntryEvent")
-                localStorage.setItem("visaEntryAlert", "deleteVisaEntry")
-                history.push('/apps/visaEntry-management/visaEntrys');
+                if (visaEntryName === 'fromSearch') {
+                    history.goBack()
+                }
+                else {
+                    localStorage.removeItem("visaEntryEvent")
+                    localStorage.setItem("visaEntryAlert", "deleteVisaEntry")
+                    history.push('/apps/visaEntry-management/visaEntrys');
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/visaEntry-management/visaEntrys')
+        if (visaEntryName === 'fromSearch') {
+            history.goBack()
+        }
+        else {
+            history.push('/apps/visaEntry-management/visaEntrys')
+        }
     }
 
 
@@ -111,16 +128,6 @@ const NewVisaEntryHeader = () => {
                         Do you want to remove this VisaEntry?
                     </Typography>
                 }
-                {handleDelete == 'Delete' && routeParams.visaEntryId !== "new" && <Button
-                    className="whitespace-nowrap mx-4"
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleRemoveVisaEntry}
-                    startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-                    style={{ backgroundColor: '#ea5b78', color: 'white' }}
-                >
-                    Remove
-                </Button>}
                 {routeParams.visaEntryId == "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
@@ -138,6 +145,16 @@ const NewVisaEntryHeader = () => {
                     onClick={handleUpdateVisaEntry}
                 >
                     Update
+                </Button>}
+                {(visaEntryName === 'fromSearch' || handleDelete == 'Delete' && routeParams.visaEntryId !== "new") && <Button
+                    className="whitespace-nowrap mx-4"
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleRemoveVisaEntry}
+                    startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+                    style={{ backgroundColor: '#ea5b78', color: 'white' }}
+                >
+                    Remove
                 </Button>}
                 <Button
                     className="whitespace-nowrap mx-4"

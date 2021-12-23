@@ -23,6 +23,8 @@ const NewPassengerHeader = ({ disableUpdate }) => {
 
     const handleDelete = localStorage.getItem('passengerEvent');
 
+    const { passengerName } = useParams()
+
     function handleSavePassenger() {
         dispatch(savePassenger(getValues())).then((res) => {
             console.log("savePassengerRes", res)
@@ -37,8 +39,13 @@ const NewPassengerHeader = ({ disableUpdate }) => {
         dispatch(updatePassenger(getValues())).then((res) => {
             console.log("updatePassengerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("passengerAlert", "updatePassenger")
-                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
+                if (passengerName === 'fromSearch') {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("passengerAlert", "updatePassenger")
+                    history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
+                }
             }
         });
     }
@@ -47,15 +54,25 @@ const NewPassengerHeader = ({ disableUpdate }) => {
         dispatch(removePassenger(getValues())).then((res) => {
             console.log("removePassengerRes", res)
             if (res.payload) {
-                localStorage.removeItem("passengerEvent")
-                localStorage.setItem("passengerAlert", "deletePassenger")
-                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
+                if (passengerName === 'fromSearch') {
+                    history.goBack()
+                }
+                else {
+                    localStorage.removeItem("passengerEvent")
+                    localStorage.setItem("passengerAlert", "deletePassenger")
+                    history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`)
+        if (passengerName === 'fromSearch') {
+            history.goBack()
+        }
+        else {
+            history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`)
+        }
     }
 
 
@@ -76,26 +93,6 @@ const NewPassengerHeader = ({ disableUpdate }) => {
                 </motion.div>
 
                 <div className="flex items-center max-w-full">
-                    {/* <motion.div
-                        className="hidden sm:flex"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1, transition: { delay: 0.3 } }}
-                    >
-                        {image && featuredImageId ? (
-                            <img
-                                className="w-32 sm:w-48 rounded"
-                                src={_.find(image, { id: featuredImageId }).url}
-                                alt={name}
-                            />
-                        ) : (
-                            <img
-                                className="w-32 sm:w-48 rounded"
-                                src={`${BASE_URL}${image}`}
-                                alt={name}
-                            />
-                        )}
-
-                    </motion.div> */}
                     <div className="flex flex-col min-w-0 mx-8 sm:mc-16">
                         <motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
                             <Typography className="text-16 sm:text-20 truncate font-semibold">
@@ -122,16 +119,6 @@ const NewPassengerHeader = ({ disableUpdate }) => {
                         Do you want to remove this Passenger?
                     </Typography>
                 }
-                {handleDelete == 'Delete' && routeParams.passengerId !== "new" && <Button
-                    className="whitespace-nowrap mx-4"
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleRemovePassenger}
-                    startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-                    style={{ backgroundColor: '#ea5b78', color: 'white' }}
-                >
-                    Remove
-                </Button>}
                 {routeParams.passengerId == "new" && <Button
                     className="whitespace-nowrap mx-4"
                     variant="contained"
@@ -150,6 +137,16 @@ const NewPassengerHeader = ({ disableUpdate }) => {
                     onClick={handleUpdatePassenger}
                 >
                     Update
+                </Button>}
+                {(passengerName === 'fromSearch' || handleDelete == 'Delete' && routeParams.passengerId !== "new") && <Button
+                    className="whitespace-nowrap mx-4"
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleRemovePassenger}
+                    startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+                    style={{ backgroundColor: '#ea5b78', color: 'white' }}
+                >
+                    Remove
                 </Button>}
                 <Button
                     className="whitespace-nowrap mx-4"

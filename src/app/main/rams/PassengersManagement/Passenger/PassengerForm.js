@@ -9,6 +9,7 @@ import Image from 'app/@components/Image.jsx';
 import useTextSeparator from 'app/@customHooks/useTextSeparator';
 import { genders, maritalStatuses, passportTypes, religions } from 'app/@data/data';
 import increaseYear from 'app/@helpers/increaseYear';
+import replaceSpaceToUnderscore from 'app/@helpers/replaceSpaceToUnderscore';
 import axios from 'axios';
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
@@ -59,22 +60,26 @@ function PassengerForm(props) {
     const handleDelete = localStorage.getItem('passengerEvent');
     const dispatch = useDispatch()
 
+    const { passengerName } = useParams()
+
     const passportPic = watch('passport_pic');
 
     const [passportText, setPassportText] = useState("");
 
-
     const { passenger_name, father_name, mother_name, spouse_name, passport_no, passport_expiry_date, passport_issue_date, permanentAddress, date_of_birth, nid, village, post_office, police_station, district, gender, marital_status, contact_no } = useTextSeparator(passportText)
-
-    console.log("values", getValues())
-
 
     const childSubmitFunc = useRef(null)
 
-
     useEffect(() => {
-        const passengerType = passengerTypes.find(data => data.name.toLowerCase() == routeParams.passengerType)?.id
-        setValue("passenger_type", passengerType)
+        if (!_.isEmpty(passengerTypes) && routeParams?.passengerType) {
+            const getPassengerType = passengerTypes.find(data => {
+                const passengerTypeName = new RegExp(data.name, 'i');
+                const isMatch = replaceSpaceToUnderscore(routeParams.passengerType).match(passengerTypeName)
+                if (isMatch) return true
+                else return false
+            })?.id
+            setValue("passenger_type", getPassengerType)
+        }
     }, [passengerTypes])
 
     useEffect(() => {
@@ -92,34 +97,22 @@ function PassengerForm(props) {
         const getPlaceOfResidence = districts.find(data => {
             const districtName = new RegExp(data.name, 'i');
             const isMatch = district.match(districtName)
-            if (isMatch) {
-                return true
-            }
-            else {
-                return false
-            }
+            if (isMatch) return true
+            else return
         })?.name
 
         const getDistrict = districts.find(data => {
             const districtName = new RegExp(data.name, 'i');
             const isMatch = district.match(districtName)
-            if (isMatch) {
-                return true
-            }
-            else {
-                return false
-            }
+            if (isMatch) return true
+            else return false
         })?.id
 
         const getPoliceStation = thanas.find(data => {
             const PoliceStationName = new RegExp(data.name, 'i');
             const isMatch = police_station.match(PoliceStationName)
-            if (isMatch) {
-                return true
-            }
-            else {
-                return false
-            }
+            if (isMatch) return true
+            else return
         })?.id
 
 
@@ -191,8 +184,13 @@ function PassengerForm(props) {
         dispatch(updatePassenger(getValues())).then((res) => {
             console.log("updatePassengerRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("passengerAlert", "updatePassenger")
-                history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`)
+                if (passengerName === 'fromSearch') {
+                    history.goBack()
+                }
+                else {
+                    localStorage.setItem("passengerAlert", "updatePassenger")
+                    history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`)
+                }
             }
         });
     }
