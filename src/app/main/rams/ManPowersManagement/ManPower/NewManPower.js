@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { MANPOWER_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
@@ -67,7 +68,7 @@ const ManPower = () => {
                 console.log("Res", res.data)
                 //update scope
                 if (res.data.id) {
-                    reset({ ...res.data, passenger: manPowerId })
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: manPowerId })
                 }
             }).catch(() => null)
         }
@@ -113,7 +114,7 @@ const ManPower = () => {
                                                     console.log("Res", res.data)
                                                     //update scope
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/manPower-management/manPower/${newValue?.passenger_id || newValue?.id}`)
                                                     }
                                                     //create scope

@@ -212,11 +212,11 @@ const PassengersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.agent}
+                                            {`${n.agent?.first_name} ${n.agent?.last_name}`}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.profession}
+                                            {n.profession?.name}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
@@ -224,15 +224,15 @@ const PassengersTable = (props) => {
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.target_country}
+                                            {n.target_country?.name}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.visa_entry}
+                                            {n.visa_entry?.visa_number}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.current_status}
+                                            {n.current_status?.animate}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">

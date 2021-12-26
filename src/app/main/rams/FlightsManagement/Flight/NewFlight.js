@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { activeRetrnCncl } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { FLIGHT_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -65,7 +66,7 @@ const Flight = () => {
             axios.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`).then(res => {
                 console.log("Res", res.data)
                 if (res.data.id) {
-                    reset({ ...res.data, passenger: flightId })
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: flightId })
                 }
             }).catch(() => null)
         }
@@ -107,7 +108,7 @@ const Flight = () => {
                                                 axios.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/flight-management/flight/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/flight-management/flight/new`)

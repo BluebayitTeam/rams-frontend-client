@@ -44,7 +44,7 @@ function PassengerDetail({ classes, data, pid }) {
     const router = useHistory()
 
     const gotoEditpage = () => {
-        router.push(`/apps/passenger-management/passenger/${pid}/fromSearch/${fillSpaceByUnderscore(data.passport_type).toLocaleLowerCase()}`)
+        router.push(`/apps/passenger-management/passenger/${pid}/fromSearch/${fillSpaceByUnderscore(data.passenger_type?.name || "").toLocaleLowerCase()}`)
     }
 
     console.log("PassengerDetail rendered")
@@ -59,14 +59,12 @@ function PassengerDetail({ classes, data, pid }) {
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Agent:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.agent || ""}</b>
+                            <b className='value text-xs md:text-sm'>{`${data?.agent?.first_name || ""} ${data?.agent?.last_name || ""}`}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Passenger Type:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.passenger_type || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.passenger_type?.name || ""}</b>
                         </div>
                     </div>
 
@@ -126,14 +124,12 @@ function PassengerDetail({ classes, data, pid }) {
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>District:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.district || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.district?.name || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Police Station:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.police_station || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.police_station?.name || ""}</b>
                         </div>
                     </div>
 
@@ -146,7 +142,6 @@ function PassengerDetail({ classes, data, pid }) {
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Village:</i>
-                            {/* id_to_object */}
                             <b className='value text-xs md:text-sm'>{data?.village || ""}</b>
                         </div>
                     </div>
@@ -160,7 +155,7 @@ function PassengerDetail({ classes, data, pid }) {
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Place Of Birth:</i>
-                            <b className='value text-xs md:text-sm'>{data?.place_of_birth ? moment(new Date(data.place_of_birth)).format("DD/MM/YYYY") : ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.place_of_birth || ""}</b>
                         </div>
                     </div>
 
@@ -173,8 +168,7 @@ function PassengerDetail({ classes, data, pid }) {
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Profession:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.profession || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.profession?.name || ""}</b>
                         </div>
                     </div>
 
@@ -182,14 +176,12 @@ function PassengerDetail({ classes, data, pid }) {
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Agency:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.agency || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.agency?.name || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Demand:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.demand || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.demand?.company_name || ""}</b>
                         </div>
                     </div>
 
@@ -197,14 +189,12 @@ function PassengerDetail({ classes, data, pid }) {
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Target Country:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.target_country || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.target_country?.name || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Visa Entry:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.visa_entry || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.visa_entry?.visa_number || ""}</b>
                         </div>
                     </div>
 
@@ -228,6 +218,8 @@ function PassengerDetail({ classes, data, pid }) {
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                            <i className='label text-xs md:text-sm'>Place Of Residence:</i>
+                            <b className='value text-xs md:text-sm'>{data?.place_of_residence || ""}</b>
                         </div>
                     </div>
 
@@ -245,7 +237,6 @@ function PassengerDetail({ classes, data, pid }) {
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Passport Type:</i>
-                            {/* id_to_object */}{/* check may be string */}
                             <b className='value text-xs md:text-sm'>{data?.passport_type || ""}</b>
                         </div>
                     </div>
@@ -271,8 +262,7 @@ function PassengerDetail({ classes, data, pid }) {
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Place Of Residence:</i>
-                            <b className='value text-xs md:text-sm'>{data?.place_of_residence || ""}</b>
+
                         </div>
                     </div>
 

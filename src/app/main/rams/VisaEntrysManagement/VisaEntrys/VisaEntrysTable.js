@@ -229,11 +229,11 @@ const VisaEntrysTable = (props) => {
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.country}
+                                            {n.country?.name}
                                         </TableCell>
 
                                         <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.visa_number}
+                                            {`${dn?.first_name || ""} ${n?.last_name || ""}`}
                                         </TableCell>
 
                                         {/* <TableCell className="p-4 md:p-16" component="th" scope="row">

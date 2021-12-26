@@ -442,8 +442,8 @@ const navigationConfig = [
             //callingEmbAttestation
             {
                 id: 'callingEmbAttestation',
-                title: 'Calling',
-                translate: 'Calling',
+                title: 'Calling Emb Attestation',
+                translate: 'Calling Emb Attestation',
                 type: 'item',
                 url: '/apps/callingEmbAttestation-management/callingEmbAttestation/new',
                 exact: true

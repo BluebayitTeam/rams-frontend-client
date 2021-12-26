@@ -38,16 +38,16 @@ function MedicalDetails({ classes, data, pid }) {
                             <b className='value text-xs md:text-sm'>{data?.medical_card || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
-                        <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Medical Exam Date:</i>
-                            <b className='value text-xs md:text-sm'>{data?.medical_exam_datemedical_report_date ? moment(new Date(data.medical_exam_datemedical_report_date)).format("DD/MM/YYYY") : ""}</b>
+                        <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                            <i className='label text-xs md:text-sm'>Medical Center:</i>
+                            <b className='value text-xs md:text-sm'>{data?.medical_center?.name || ""}</b>
                         </div>
                     </div>
 
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>medical Report Date:</i>
-                            <b className='value text-xs md:text-sm'>{data?.medical_report_date ? moment(new Date(data.medical_report_date)).format("DD/MM/YYYY") : ""}</b>
+                            <i className='label text-xs md:text-sm'>Medical Exam Date:</i>
+                            <b className='value text-xs md:text-sm'>{data?.medical_exam_date ? moment(new Date(data.medical_exam_date)).format("DD/MM/YYYY") : ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
@@ -63,10 +63,19 @@ function MedicalDetails({ classes, data, pid }) {
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                            <i className='label text-xs md:text-sm'>medical Report Date:</i>
+                            <b className='value text-xs md:text-sm'>{data?.medical_report_date ? moment(new Date(data.medical_report_date)).format("DD/MM/YYYY") : ""}</b>
+                        </div>
+                    </div>
+
+                    <div className='container flex-col md:flex-row'>
+                        <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Notes:</i>
                             <b className='value text-xs md:text-sm'>{data?.notes || ""}</b>
                         </div>
-
+                        <div className='border hidden md:block'></div>
+                        <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                        </div>
                     </div>
 
 

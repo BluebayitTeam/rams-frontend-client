@@ -25,6 +25,7 @@ function TrainingForm(props) {
 
     const methods = useFormContext();
     const routeParams = useParams();
+    const { fromSearch } = useParams();
     const { control, formState, watch, reset, getValues } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
@@ -46,7 +47,6 @@ function TrainingForm(props) {
         dispatch(saveTraining(getValues())).then((res) => {
             console.log("saveTrainingRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("trainingAlert", "saveTraining")
                 history.push('/apps/training-management/training/new');
                 reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
@@ -58,10 +58,14 @@ function TrainingForm(props) {
         dispatch(updateTraining(getValues())).then((res) => {
             console.log("updateTrainingRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("trainingAlert", "updateTraining")
-                history.push('/apps/training-management/training/new');
-                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack();
+                }
+                else {
+                    history.push('/apps/training-management/training/new');
+                    reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }

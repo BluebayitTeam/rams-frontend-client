@@ -62,8 +62,7 @@ function TrainingDetail({ classes, data, pid }) {
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Recruiting Agency:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.recruiting_agency || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.recruiting_agency?.name || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>

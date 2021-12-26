@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { MUSANEDOKALA_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -67,7 +68,7 @@ const MusanedOkala = () => {
             axios.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${musanedOkalaId}`).then(res => {
                 console.log("Res", res.data)
                 if (res.data.id) {
-                    reset({ ...res.data, passenger: musanedOkalaId })
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: musanedOkalaId })
                 }
             }).catch(() => null)
         }
@@ -148,7 +149,7 @@ const MusanedOkala = () => {
                                                 axios.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/musanedOkala-management/musanedOkala/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/musanedOkala-management/musanedOkala/new`)

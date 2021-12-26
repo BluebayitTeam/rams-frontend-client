@@ -93,17 +93,6 @@ function Embassy({ classes, data, pid }) {
                         </div>
                     </div>
 
-
-                    <div className='container flex-col md:flex-row'>
-                        <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Mofa No:</i>
-                            <b className='value text-xs md:text-sm'>{data?.mofa_no_readonly || ""}</b>
-                        </div>
-                        <div className='border hidden md:block'></div>
-                        <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                        </div>
-                    </div>
-
                 </div>
 
                 <div className='blockContentAction' onClick={() => gotoEditpage()}>

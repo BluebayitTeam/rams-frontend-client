@@ -53,8 +53,19 @@ function ManPowerDetail({ classes, data, pid }) {
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>delivery_date:</i>
+                            <i className='label text-xs md:text-sm'>Delivery Date:</i>
                             <b className='value text-xs md:text-sm'>{data?.delivery_date ? moment(new Date(data.delivery_date)).format("DD/MM/YYYY") : ""}</b>
+                        </div>
+                    </div>
+
+
+                    <div className='container flex-col md:flex-row'>
+                        <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                            <i className='label text-xs md:text-sm'>Recruiting Agency:</i>
+                            <b className='value text-xs md:text-sm'>{data?.recruiting_agency?.name || ""}</b>
+                        </div>
+                        <div className='border hidden md:block'></div>
+                        <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                         </div>
                     </div>
 

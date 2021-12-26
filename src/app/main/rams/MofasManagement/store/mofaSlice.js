@@ -22,7 +22,7 @@ export const removeMofa = createAsyncThunk(
 export const updateMofa = createAsyncThunk(
     'mofaManagement/mofa/updateMofa',
     async (mofaData) => {
-        const mofaDatas = { ...mofaData, created_by: "" }
+        const mofaDatas = { ...mofaData, created_by: "", updated_by: "" }
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
                 Object.keys(data).forEach(key => {
@@ -60,7 +60,7 @@ export const updateMofa = createAsyncThunk(
 export const saveMofa = createAsyncThunk(
     'mofaManagement/mofa/saveMofa',
     async (mofaData) => {
-        const mofaDatas = { ...mofaData, updated_by: "" }
+        const mofaDatas = { ...mofaData, updated_by: "", created_by: "" }
         function buildFormData(formData, data, parentKey) {
             if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
                 Object.keys(data).forEach(key => {

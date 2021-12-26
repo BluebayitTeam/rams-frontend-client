@@ -4,13 +4,14 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { TRAINING_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
 import { resetTraining } from '../store/trainingSlice';
@@ -61,10 +62,21 @@ const Training = () => {
 
     const history = useHistory();
 
+    const { trainingId, fromSearch } = useParams()
 
     useEffect(() => {
-        reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
-    }, [])
+        if (fromSearch) {
+            axios.get(`${TRAINING_BY_PASSENGER_ID}${trainingId}`).then(res => {
+                console.log("Res", res.data)
+                if (res.data.id) {
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: trainingId })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
     useEffect(() => {
         return () => {
@@ -129,6 +141,7 @@ const Training = () => {
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
@@ -137,7 +150,7 @@ const Training = () => {
                                                 axios.get(`${TRAINING_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/training-management/training/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/training-management/training/new`)

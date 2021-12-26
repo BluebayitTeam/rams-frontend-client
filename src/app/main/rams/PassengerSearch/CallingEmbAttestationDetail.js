@@ -3,58 +3,57 @@ import moment from 'moment';
 import React from 'react';
 import { useHistory } from 'react-router';
 
-function MusanedOkalaDetail({ classes, data, pid }) {
+function CallingEmbAttestationDetail({ classes, data, pid }) {
 
     const router = useHistory()
 
     const gotoEditpage = () => {
-        router.push(`/apps/musanedOkala-management/musanedOkala/${pid}/fromSearch`)
+        router.push(`/apps/callingEmbAttestation-management/callingEmbAttestation/${pid}/fromSearch`)
     }
 
-    console.log("MusanedOkalaDetail rendered")
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>
-                <div className='blockContentName'>Musaned Okala</div>
+                <div className='blockContentName'>Calling Emb Attestation</div>
 
                 <div className='blockContentHolder'>
 
 
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Musaned Status:</i>
-                            <b className='value text-xs md:text-sm'>{data?.musaned_status || ""}</b>
+                            <i className='label text-xs md:text-sm'>Ministry Attestation:</i>
+                            <b className='value text-xs md:text-sm'>{data?.ministry_attestation || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Okala Status:</i>
-                            <b className='value text-xs md:text-sm'>{data?.okala_status || ""}</b>
+                            <i className='label text-xs md:text-sm'>Bio Submitted Date:</i>
+                            <b className='value text-xs md:text-sm'>{data?.bio_submitted_date ? moment(new Date(data.bio_submitted_date)).format("DD/MM/YYYY") : ""}</b>
                         </div>
                     </div>
 
 
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Musaned Date:</i>
-                            <b className='value text-xs md:text-sm'>{data?.musaned_date ? moment(new Date(data.musaned_date)).format("DD/MM/YYYY") : ""}</b>
+                            <i className='label text-xs md:text-sm'>Calling Date:</i>
+                            <b className='value text-xs md:text-sm'>{data?.calling_date ? moment(new Date(data.calling_date)).format("DD/MM/YYYY") : ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Okala Date:</i>
-                            <b className='value text-xs md:text-sm'>{data?.okala_date ? moment(new Date(data.okala_date)).format("DD/MM/YYYY") : ""}</b>
+                            <i className='label text-xs md:text-sm'>Emb Attestation Status:</i>
+                            <b className='value text-xs md:text-sm'>{data?.emb_attestation_status || ""}</b>
                         </div>
                     </div>
 
 
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Musaned Given By:</i>
-                            <b className='value text-xs md:text-sm'>{`${data?.musaned_given_by?.first_name || ""} ${data?.musaned_given_by?.last_name || ""}`}</b>
+                            <i className='label text-xs md:text-sm'>Bio Submitted Status:</i>
+                            <b className='value text-xs md:text-sm'>{data?.bio_submitted_status || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            <i className='label text-xs md:text-sm'>Okala Given By:</i>
-                            <b className='value text-xs md:text-sm'>{`${data?.okala_given_by?.first_name || ""} ${data?.okala_given_by?.last_name || ""}`}</b>
+                            <i className='label text-xs md:text-sm'>Calling Status:</i>
+                            <b className='value text-xs md:text-sm'>{data?.calling_status || ""}</b>
                         </div>
                     </div>
 
@@ -68,4 +67,4 @@ function MusanedOkalaDetail({ classes, data, pid }) {
     )
 }
 
-export default MusanedOkalaDetail
+export default CallingEmbAttestationDetail

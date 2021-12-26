@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { EMBASSY_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
@@ -72,7 +73,7 @@ const Embassy = () => {
                     const visa_entry = res.data?.visa_entry
                     const mofa = res.data?.mofa
                     reset({
-                        ...res.data.embassy,
+                        ...setIdIfValueIsObject(res.data.embassy),
                         visa_number_readonly: visa_entry.visa_number,
                         sponsor_id_no_readonly: visa_entry.sponsor_id_no,
                         sponsor_name_english_readonly: visa_entry.sponsor_name_english,
@@ -131,7 +132,7 @@ const Embassy = () => {
                                                         const visa_entry = res.data?.visa_entry
                                                         const mofa = res.data?.mofa
                                                         reset({
-                                                            ...res.data.embassy,
+                                                            ...setIdIfValueIsObject(res.data.embassy),
                                                             visa_number_readonly: visa_entry.visa_number,
                                                             sponsor_id_no_readonly: visa_entry.sponsor_id_no,
                                                             sponsor_name_english_readonly: visa_entry.sponsor_name_english,

@@ -80,9 +80,8 @@ function FlightDetail({ classes, data, pid }) {
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                            {/* id_to_object */}
                             <i className='label text-xs md:text-sm'>Ticket Agency:</i>
-                            <b className='value text-xs md:text-sm'>{data?.ticket_agency || ""}</b>
+                            <b className='value text-xs md:text-sm'>{`${data?.ticket_agency?.first_name || ""} ${data?.ticket_agency?.last_name || ""}`}</b>
                         </div>
                     </div>
 

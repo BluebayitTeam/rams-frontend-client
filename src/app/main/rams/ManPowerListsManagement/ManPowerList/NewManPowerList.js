@@ -3,19 +3,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { MANPOWERLIST_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
 import { resetManPowerList } from '../store/manPowerListSlice';
 import ManPowerListForm from './ManPowerListForm.js';
 import NewManPowerListHeader from './NewManPowerListHeader.js';
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -59,7 +59,6 @@ const ManPowerList = () => {
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -139,7 +138,7 @@ const ManPowerList = () => {
                                                 axios.get(`${MANPOWERLIST_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/manPowerList-management/manPowerList/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/manPowerList-management/manPowerList/new`)

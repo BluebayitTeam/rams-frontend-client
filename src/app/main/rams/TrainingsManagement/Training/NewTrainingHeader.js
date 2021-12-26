@@ -21,13 +21,14 @@ const NewTrainingHeader = () => {
 
     const routeParams = useParams();
 
+    const { fromSearch } = useParams();
+
     const passengers = useSelector(state => state.data.passengers)
 
     function handleSaveTraining() {
         dispatch(saveTraining(getValues())).then((res) => {
             console.log("saveTrainingRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("trainingAlert", "saveTraining")
                 history.push('/apps/training-management/training/new');
                 reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert(saveAlertMsg))
@@ -39,10 +40,14 @@ const NewTrainingHeader = () => {
         dispatch(updateTraining(getValues())).then((res) => {
             console.log("updateTrainingRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("trainingAlert", "updateTraining")
-                history.push('/apps/training-management/training/new');
-                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(updateAlertMsg))
+                if (fromSearch) {
+                    history.goBack();
+                }
+                else {
+                    history.push('/apps/training-management/training/new');
+                    reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(updateAlertMsg))
+                }
             }
         });
     }
@@ -51,17 +56,26 @@ const NewTrainingHeader = () => {
         dispatch(removeTraining(getValues())).then((res) => {
             console.log("removeTrainingRes", res)
             if (res.payload) {
-                localStorage.setItem("trainingAlert", "deleteTraining")
-                history.push('/apps/training-management/training/new');
-                reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
-                dispatch(setAlert(removeAlertMsg))
+                if (fromSearch) {
+                    history.goBack();
+                }
+                else {
+                    history.push('/apps/training-management/training/new');
+                    reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert(removeAlertMsg))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/training-management/training/new')
-        reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
+        if (fromSearch) {
+            history.goBack();
+        }
+        else {
+            history.push('/apps/training-management/training/new')
+            reset({ training_card_status: doneNotDone.find(data => data.default)?.id })
+        }
     }
 
 

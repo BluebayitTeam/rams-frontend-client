@@ -62,8 +62,7 @@ function MofaDetail({ classes, data, pid }) {
                     <div className='container flex-col md:flex-row'>
                         <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                             <i className='label text-xs md:text-sm'>Mofa Agency:</i>
-                            {/* id_to_object */}
-                            <b className='value text-xs md:text-sm'>{data?.mofa_agency || ""}</b>
+                            <b className='value text-xs md:text-sm'>{data?.mofa_agency?.name || ""}</b>
                         </div>
                         <div className='border hidden md:block'></div>
 

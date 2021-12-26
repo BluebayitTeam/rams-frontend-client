@@ -983,4 +983,4 @@ export const UPDATE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation
 
 export const DELETE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/delete/`;
 
-export const CALLINGEMBATTESTATION_BY_PASSENGER_ID = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/get_by_passenger_id/`;
+export const CALLINGEMBATTESTATION_BY_PASSENGER_ID = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/get_a_calling_emb_attestation_by_passenger_id/`;

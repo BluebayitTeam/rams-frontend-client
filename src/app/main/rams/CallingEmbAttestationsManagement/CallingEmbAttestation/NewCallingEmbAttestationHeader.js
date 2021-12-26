@@ -1,8 +1,8 @@
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { doneNotDone } from 'app/@data/data';
 import { setAlert } from "app/store/alertSlice";
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -16,14 +16,10 @@ const NewCallingEmbAttestationHeader = () => {
     const methods = useFormContext();
     const { formState, watch, getValues, reset } = methods;
     const { isValid, dirtyFields } = formState;
-    const name = watch('name');
-    const theme = useTheme();
     const history = useHistory();
 
-    const image = watch('image');
-    const featuredImageId = watch('featuredImageId');
-
     const routeParams = useParams();
+    const { fromSearch } = useParams();
 
     const passengers = useSelector(state => state.data.passengers)
 
@@ -31,9 +27,8 @@ const NewCallingEmbAttestationHeader = () => {
         dispatch(saveCallingEmbAttestation(getValues())).then((res) => {
             console.log("saveCallingEmbAttestationRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("callingEmbAttestationAlert", "saveCallingEmbAttestation")
                 history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
-                reset({})
+                reset({ emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert("save success"))
             }
         });
@@ -43,10 +38,14 @@ const NewCallingEmbAttestationHeader = () => {
         dispatch(updateCallingEmbAttestation(getValues())).then((res) => {
             console.log("updateCallingEmbAttestationRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("callingEmbAttestationAlert", "updateCallingEmbAttestation")
-                history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
-                reset({})
-                dispatch(setAlert("update success"))
+                if (fromSearch) {
+                    history.goBack();
+                }
+                else {
+                    history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
+                    reset({ emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert("update success"))
+                }
             }
         });
     }
@@ -55,17 +54,26 @@ const NewCallingEmbAttestationHeader = () => {
         dispatch(removeCallingEmbAttestation(getValues())).then((res) => {
             console.log("removeCallingEmbAttestationRes", res)
             if (res.payload) {
-                localStorage.setItem("callingEmbAttestationAlert", "deleteCallingEmbAttestation")
-                history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
-                reset({})
-                dispatch(setAlert("remove success"))
+                if (fromSearch) {
+                    history.goBack();
+                }
+                else {
+                    history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
+                    reset({ emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert("remove success"))
+                }
             }
         });
     }
 
     function handleCancel() {
-        history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new')
-        reset({})
+        if (fromSearch) {
+            history.goBack();
+        }
+        else {
+            history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new')
+            reset({ emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
+        }
     }
 
 

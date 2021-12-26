@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { OFFICEWORK_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -63,7 +64,7 @@ const OfficeWork = () => {
             axios.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`).then(res => {
                 console.log("Res", res.data)
                 if (res.data.id) {
-                    reset({ ...res.data, passenger: officeWorkId })
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId })
                 }
             }).catch(() => null)
         }
@@ -107,7 +108,7 @@ const OfficeWork = () => {
                                                 axios.get(`${OFFICEWORK_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/officeWork-management/officeWork/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/officeWork-management/officeWork/new`)

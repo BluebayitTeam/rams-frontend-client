@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
 import { MOFA_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -64,7 +65,7 @@ const Mofa = () => {
             axios.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`).then(res => {
                 console.log("Res", res.data)
                 if (res.data.id) {
-                    reset({ ...res.data, passenger: mofaId })
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId })
                 }
             }).catch(() => null)
         }
@@ -108,7 +109,7 @@ const Mofa = () => {
                                                 axios.get(`${MOFA_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/mofa-management/mofa/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/mofa-management/mofa/new`)

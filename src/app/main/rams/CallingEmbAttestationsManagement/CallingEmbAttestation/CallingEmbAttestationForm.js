@@ -1,8 +1,11 @@
 import _ from '@lodash';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import CustomDatePicker from 'app/@components/CustomDatePicker';
 import Image from 'app/@components/Image';
+import { doneNotDone } from 'app/@data/data';
 import { setAlert } from "app/store/alertSlice";
+import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch } from 'react-redux';
@@ -10,50 +13,41 @@ import { useHistory, useParams } from 'react-router-dom';
 import { saveCallingEmbAttestation, updateCallingEmbAttestation } from '../store/callingEmbAttestationSlice';
 
 
-
-
 function CallingEmbAttestationForm(props) {
 
-    const [previewImage, setPreviewImage] = useState()
+    const [previewdoc1Image, setPreviewdoc1Image] = useState("")
+    const [previewdoc2Image, setPreviewdoc2Image] = useState("")
 
-    // const embAttestationStatuss = useSelector(state => state.data.embAttestationStatuss)
-    // const bioSubmittedStatuss = useSelector(state => state.data.bioSubmittedStatuss)
-    // const callingStatuss = useSelector(state => state.data.callingStatuss)
-    // const currentStatuss = useSelector(state => state.data.currentStatuss)
-
-
-    const embAttestationStatuss = []
-    const bioSubmittedStatuss = []
-    const callingStatuss = []
-    const currentStatuss = []
-
+    const embAttestationStatuss = doneNotDone
+    const bioSubmittedStatuss = doneNotDone
+    const callingStatuss = doneNotDone
+    const currentStatuss = doneNotDone
 
     const methods = useFormContext();
     const routeParams = useParams();
-    const { callingEmbAttestationId } = routeParams;
+    const { callingEmbAttestationId, fromSearch } = routeParams;
     const { control, formState, watch, reset, getValues } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(getPassengers());
+        dispatch(getCurrentStatuss())
+    }, [])
 
     useEffect(() => {
-        // dispatch(getPassengers());
-        // dispatch(getEmbAttestationStatuss());
-        //  dispatch(getBioSubmittedStatuss());
-        //   dispatch(getCallingStatuss());
-        //    dispatch(getCurrentStatuss())
-
-    }, [])
+        setPreviewdoc1Image("")
+        setPreviewdoc2Image("")
+    }, [callingEmbAttestationId])
 
 
     function handleSaveCallingEmbAttestation() {
         dispatch(saveCallingEmbAttestation(getValues())).then((res) => {
             console.log("saveCallingEmbAttestationRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("callingEmbAttestationAlert", "saveCallingEmbAttestation")
                 history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
-                reset({})
+                reset({ emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
                 dispatch(setAlert("save success"))
             }
         });
@@ -63,10 +57,14 @@ function CallingEmbAttestationForm(props) {
         dispatch(updateCallingEmbAttestation(getValues())).then((res) => {
             console.log("updateCallingEmbAttestationRes", res)
             if (res.payload?.data?.id) {
-                localStorage.setItem("callingEmbAttestationAlert", "updateCallingEmbAttestation")
-                history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
-                reset({})
-                dispatch(setAlert("update success"))
+                if (fromSearch) {
+                    history.goBack();
+                }
+                else {
+                    history.push('/apps/callingEmbAttestation-management/callingEmbAttestation/new');
+                    reset({ emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
+                    dispatch(setAlert("update success"))
+                }
             }
         });
     }
@@ -182,6 +180,51 @@ function CallingEmbAttestationForm(props) {
             />
 
             <Controller
+                name="ministry_attestation"
+                control={control}
+                render={({ field }) => {
+                    return (<TextField
+                        {...field}
+                        value={field.value || ""}
+                        className="mt-8 mb-16"
+                        error={!!errors.ministry_attestation}
+                        helperText={errors?.ministry_attestation?.message}
+                        label="Ministry Attestation"
+                        id="ministry_attestation"
+                        variant="outlined"
+                        InputLabelProps={field.value && { shrink: true }}
+                        fullWidth
+                        onKeyDown={handleSubmitOnKeyDownEnter}
+                    />)
+                }}
+            />
+
+
+            <Controller
+                name="bio_submitted_date"
+                control={control}
+                render={({ field }) => {
+                    return (<CustomDatePicker
+                        field={field}
+                        label="Delivery Date"
+                    />)
+                }}
+            />
+
+
+            <Controller
+                name="calling_date"
+                control={control}
+                render={({ field }) => {
+                    return (<CustomDatePicker
+                        field={field}
+                        label="Delivery Date"
+                    />)
+                }}
+            />
+
+
+            <Controller
                 name="current_status"
                 control={control}
                 render={({ field: { onChange, value } }) => (
@@ -214,73 +257,9 @@ function CallingEmbAttestationForm(props) {
 
 
 
-
-
-            <Controller
-                name="ministry_attestation"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.ministry_attestation}
-                        helperText={errors?.ministry_attestation?.message}
-                        label="Ministry Attestation"
-                        id="ministry_attestation"
-                        variant="outlined"
-                        InputLabelProps={field.value && { shrink: true }}
-                        fullWidth
-                        onKeyDown={handleSubmitOnKeyDownEnter}
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="bio_submitted_date"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.bio_submitted_date}
-                        helperText={errors?.bio_submitted_date?.message}
-                        type="date"
-                        label="Bio Submitted Date"
-                        id="bio_submitted_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    />)
-                }}
-            />
-
-
-            <Controller
-                name="calling_date"
-                control={control}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        value={field.value || ""}
-                        className="mt-8 mb-16"
-                        error={!!errors.calling_date}
-                        helperText={errors?.calling_date?.message}
-                        type="date"
-                        label="Calling Date"
-                        id="calling_date"
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                    />)
-                }}
-            />
-
-
-
-
-            <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-                <Image name="image" previewImage={previewImage} setPreviewImage={setPreviewImage} />
+            <div className="flex justify-start -mx-16 flex-col md:flex-row">
+                <Image name="doc1" previewImage={previewdoc1Image} setPreviewImage={setPreviewdoc1Image} label="Document 1" />
+                <Image name="doc2" previewImage={previewdoc2Image} setPreviewImage={setPreviewdoc2Image} label="Document 2" />
             </div>
 
 

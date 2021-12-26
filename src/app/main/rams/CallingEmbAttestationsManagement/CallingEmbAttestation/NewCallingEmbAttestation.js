@@ -3,6 +3,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
+import { doneNotDone } from 'app/@data/data';
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject';
 import { CALLINGEMBATTESTATION_BY_PASSENGER_ID } from 'app/constant/constants.js';
 import withReducer from 'app/store/withReducer';
 import axios from "axios";
@@ -53,7 +55,6 @@ const CallingEmbAttestation = () => {
         defaultValues: {},
         resolver: yupResolver(schema)
     });
-    const routeParams = useParams();
 
     const { reset, control, formState } = methods;
     const { errors } = formState;
@@ -61,6 +62,22 @@ const CallingEmbAttestation = () => {
     const classes = useStyles();
 
     const history = useHistory();
+
+    const { fromSearch, callingEmbAttestationId } = useParams()
+
+    useEffect(() => {
+        if (fromSearch) {
+            axios.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`).then(res => {
+                console.log("Res", res.data)
+                if (res.data.id) {
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId })
+                }
+            }).catch(() => null)
+        }
+        else {
+            reset({ emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
+        }
+    }, [fromSearch])
 
     useEffect(() => {
         return () => {
@@ -125,6 +142,7 @@ const CallingEmbAttestation = () => {
                                     <Autocomplete
                                         className={`w-full max-w-320 h-48 ${classes.container}`}
                                         freeSolo
+                                        disabled={!!fromSearch}
                                         value={value ? passengers.find(data => data.id == value) : null}
                                         options={passengers}
                                         getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
@@ -133,19 +151,19 @@ const CallingEmbAttestation = () => {
                                                 axios.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/callingEmbAttestation-management/callingEmbAttestation/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/callingEmbAttestation-management/callingEmbAttestation/new`)
-                                                        reset({ passenger: newValue?.id })
+                                                        reset({ passenger: newValue?.id, emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
                                                     }
                                                 }).catch(() => {
                                                     history.push(`/apps/callingEmbAttestation-management/callingEmbAttestation/new`)
-                                                    reset({ passenger: newValue?.id })
+                                                    reset({ passenger: newValue?.id, emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
                                                 })
                                             } else {
                                                 history.push(`/apps/callingEmbAttestation-management/callingEmbAttestation/new`)
-                                                reset({ passenger: newValue?.id })
+                                                reset({ passenger: newValue?.id, emb_attestation_status: doneNotDone.find(data => data.default)?.id, calling_status: doneNotDone.find(data => data.default)?.id, bio_submitted_status: doneNotDone.find(data => data.default)?.id })
                                             }
                                         }}
                                         renderInput={params => (

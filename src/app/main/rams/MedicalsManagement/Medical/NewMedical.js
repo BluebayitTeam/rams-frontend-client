@@ -4,6 +4,7 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone, medicalResults } from "app/@data/data";
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject';
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
 import React, { useEffect } from 'react';
@@ -68,7 +69,7 @@ const Medical = () => {
             axios.get(`${MEDICAL_BY_PASSENGER_ID}${medicalId}`).then(res => {
                 console.log("Res", res.data)
                 if (res.data?.id) {
-                    reset({ ...res.data, passenger: medicalId })
+                    reset({ ...setIdIfValueIsObject(res.data), passenger: medicalId })
                 }
             }).catch(() => { })
         }
@@ -112,7 +113,7 @@ const Medical = () => {
                                                 axios.get(`${MEDICAL_BY_PASSENGER_ID}${newValue?.id}`).then(res => {
                                                     console.log("Res", res.data)
                                                     if (res.data.id) {
-                                                        reset({ ...res.data, passenger: newValue?.id })
+                                                        reset({ ...setIdIfValueIsObject(res.data), passenger: newValue?.id })
                                                         history.push(`/apps/medical-management/medical/${newValue?.passenger_id || newValue?.id}`)
                                                     } else {
                                                         history.push(`/apps/medical-management/medical/new`)
