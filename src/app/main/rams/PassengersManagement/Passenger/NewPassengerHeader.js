@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { removePassenger, savePassenger, updatePassenger } from '../store/passengerSlice';
 
@@ -25,8 +25,10 @@ const NewPassengerHeader = ({ disableUpdate }) => {
 
     const { passengerName } = useParams()
 
+    const thanas = useSelector(state => state.data.thanas)
+
     function handleSavePassenger() {
-        dispatch(savePassenger(getValues())).then((res) => {
+        dispatch(savePassenger({ ...getValues(), passport_issue_place: thanas.find(data => data?.id == getValues()?.passport_issue_place)?.name })).then((res) => {
             console.log("savePassengerRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("passengerAlert", "savePassenger")
@@ -36,7 +38,7 @@ const NewPassengerHeader = ({ disableUpdate }) => {
     }
 
     function handleUpdatePassenger() {
-        dispatch(updatePassenger(getValues())).then((res) => {
+        dispatch(updatePassenger({ ...getValues(), passport_issue_place: thanas.find(data => data?.id == getValues()?.passport_issue_place)?.name })).then((res) => {
             console.log("updatePassengerRes", res)
             if (res.payload?.data?.id) {
                 if (passengerName === 'fromSearch') {
@@ -51,7 +53,7 @@ const NewPassengerHeader = ({ disableUpdate }) => {
     }
 
     function handleRemovePassenger() {
-        dispatch(removePassenger(getValues())).then((res) => {
+        dispatch(removePassenger({ ...getValues(), passport_issue_place: thanas.find(data => data?.id == getValues()?.passport_issue_place)?.name })).then((res) => {
             console.log("removePassengerRes", res)
             if (res.payload) {
                 if (passengerName === 'fromSearch') {

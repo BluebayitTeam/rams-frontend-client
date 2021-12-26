@@ -159,6 +159,9 @@ const useStyles = makeStyles(theme => {
                 zIndex: 1,
             }
         },
+        allImgContainer: {
+
+        }
     }
     )
 });
@@ -201,14 +204,22 @@ function PassengerAllDetails() {
     //get paasenger id when searh keyord changed
     useEffect(() => {
         if (searchKeyword) {
+            setLoading(true)
             console.log("searchKeyword", searchKeyword)
             axios.get(`${SEARCH_PASSENGER_BY}?keyword=${searchKeyword}`).then(res => {
                 console.log("SEARCH_PASSENGER_BY_RES", res)
                 setpId(res?.data?.passengers[0]?.id || 0)
-                res?.data?.passengers[0]?.id ? setNoData(false) : setNoData(true)
+                if (res?.data?.passengers[0]?.id) {
+                    setNoData(false)
+                }
+                else {
+                    setNoData(true)
+                    setLoading(false)
+                }
             }).catch(() => {
                 setpId(0)
                 setNoData(true)
+                setLoading(false)
             })
 
             sessionStorage.setItem('passenger_search_key', searchKeyword)
@@ -230,7 +241,6 @@ function PassengerAllDetails() {
             }).catch(() => {
                 setMedical({})
             })
-
 
             //office work data
             axios.get(`${OFFICEWORK_BY_PASSENGER_ID}${pId}`).then(res => {
@@ -413,6 +423,10 @@ function PassengerAllDetails() {
                         {_.isEmpty(training) || <TrainingDetail classes={classes} data={training} pid={pId} />}
                         {_.isEmpty(manPower) || <ManPowerDetail classes={classes} data={manPower} pid={pId} />}
                         {_.isEmpty(flight) || <FlightDetail classes={classes} data={flight} pid={pId} />}
+
+                        <div className={classes.allImgContainer}>
+
+                        </div>
 
                     </>
                 )}

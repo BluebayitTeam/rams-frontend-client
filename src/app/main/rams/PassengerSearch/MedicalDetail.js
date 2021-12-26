@@ -75,6 +75,8 @@ function MedicalDetails({ classes, data, pid }) {
                         </div>
                         <div className='border hidden md:block'></div>
                         <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                            <i className='label text-xs md:text-sm'>Last Update By:</i>
+                            <b className='value text-xs md:text-sm'>{`${data?.updated_by?.username || ""} [DT: ${data.updated_at ? moment(new Date(data.updated_at)).format("DD/MM/YYYY") : ""}]`}</b>
                         </div>
                     </div>
 

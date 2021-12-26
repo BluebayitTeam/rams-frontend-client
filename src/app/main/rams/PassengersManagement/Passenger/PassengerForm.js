@@ -166,7 +166,7 @@ function PassengerForm(props) {
     }
 
     function handleSavePassenger() {
-        dispatch(savePassenger(getValues())).then((res) => {
+        dispatch(savePassenger({ ...getValues(), passport_issue_place: thanas.find(data => data?.id == getValues()?.passport_issue_place)?.name })).then((res) => {
             console.log("savePassengerRes", res)
             if (res.payload?.data?.id) {
                 localStorage.setItem("passengerAlert", "savePassenger")
@@ -181,7 +181,7 @@ function PassengerForm(props) {
 
 
     function handleUpdatePassenger() {
-        dispatch(updatePassenger(getValues())).then((res) => {
+        dispatch(updatePassenger({ ...getValues(), passport_issue_place: thanas.find(data => data?.id == getValues()?.passport_issue_place)?.name })).then((res) => {
             console.log("updatePassengerRes", res)
             if (res.payload?.data?.id) {
                 if (passengerName === 'fromSearch') {
@@ -1057,7 +1057,7 @@ function PassengerForm(props) {
                         <Autocomplete
                             className="mt-8 mb-16 w-full md:w-6/12"
                             freeSolo
-                            value={value ? thanas.find(data => data.id == value) : null}
+                            value={value ? thanas.find(data => (data.id == value || data.name == value)) : null}
                             options={thanas}
                             getOptionLabel={(option) => `${option.name}`}
                             onChange={(event, newValue) => {
