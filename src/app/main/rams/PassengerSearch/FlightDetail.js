@@ -1,7 +1,7 @@
 
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function FlightDetail({ classes, data, pid }) {
@@ -108,4 +108,4 @@ function FlightDetail({ classes, data, pid }) {
     )
 }
 
-export default FlightDetail
+export default memo(FlightDetail)

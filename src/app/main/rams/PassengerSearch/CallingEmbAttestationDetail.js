@@ -1,6 +1,6 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function CallingEmbAttestationDetail({ classes, data, pid }) {
@@ -14,7 +14,7 @@ function CallingEmbAttestationDetail({ classes, data, pid }) {
     return (
         <>
             <div className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>
-                <div className='blockContentName'>Calling Emb Attestation</div>
+                <div className='blockContentName'>Calling</div>
 
                 <div className='blockContentHolder'>
 
@@ -77,4 +77,4 @@ function CallingEmbAttestationDetail({ classes, data, pid }) {
     )
 }
 
-export default CallingEmbAttestationDetail
+export default memo(CallingEmbAttestationDetail)

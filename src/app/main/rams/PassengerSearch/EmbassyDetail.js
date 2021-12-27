@@ -1,6 +1,6 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function Embassy({ classes, data, pid }) {
@@ -114,4 +114,4 @@ function Embassy({ classes, data, pid }) {
     )
 }
 
-export default Embassy
+export default memo(Embassy)

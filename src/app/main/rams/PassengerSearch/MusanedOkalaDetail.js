@@ -1,6 +1,6 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function MusanedOkalaDetail({ classes, data, pid }) {
@@ -79,4 +79,4 @@ function MusanedOkalaDetail({ classes, data, pid }) {
     )
 }
 
-export default MusanedOkalaDetail
+export default memo(MusanedOkalaDetail)

@@ -450,6 +450,37 @@ const navigationConfig = [
             }
 
         ]
+    },
+
+    //Report
+    {
+        id: "report",
+        title: 'Report',
+        translate: 'Report',
+        type: 'collapse',
+        icon: 'people',
+        url: '',
+        exact: true,
+        children: [
+            //aggent list
+            {
+                id: 'agentReport',
+                title: 'Agent List',
+                translate: 'Agent List',
+                type: 'item',
+                url: '',
+                exact: true
+            },
+            //passenger list
+            {
+                id: 'passengerReport',
+                title: 'Passenger List',
+                translate: 'Passenger List',
+                type: 'item',
+                url: '',
+                exact: true
+            },
+        ]
     }
 ];
 

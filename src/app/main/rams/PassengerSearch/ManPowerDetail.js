@@ -1,6 +1,6 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function ManPowerDetail({ classes, data, pid }) {
@@ -81,4 +81,4 @@ function ManPowerDetail({ classes, data, pid }) {
     )
 }
 
-export default ManPowerDetail
+export default memo(ManPowerDetail)

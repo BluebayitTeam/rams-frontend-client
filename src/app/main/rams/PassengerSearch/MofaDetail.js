@@ -1,7 +1,7 @@
 
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function MofaDetail({ classes, data, pid }) {
@@ -84,4 +84,4 @@ function MofaDetail({ classes, data, pid }) {
     )
 }
 
-export default MofaDetail
+export default memo(MofaDetail)

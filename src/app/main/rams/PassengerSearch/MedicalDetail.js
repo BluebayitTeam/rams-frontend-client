@@ -1,6 +1,6 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function MedicalDetails({ classes, data, pid }) {
@@ -91,4 +91,4 @@ function MedicalDetails({ classes, data, pid }) {
     )
 }
 
-export default MedicalDetails
+export default memo(MedicalDetails)

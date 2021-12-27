@@ -1,6 +1,6 @@
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 function TrainingDetail({ classes, data, pid }) {
@@ -81,4 +81,4 @@ function TrainingDetail({ classes, data, pid }) {
     )
 }
 
-export default TrainingDetail
+export default memo(TrainingDetail)

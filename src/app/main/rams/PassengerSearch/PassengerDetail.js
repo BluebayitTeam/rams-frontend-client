@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import fillSpaceByUnderscore from 'app/@helpers/fillSpaceByUnderscore';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles(theme => (
@@ -278,4 +278,4 @@ function PassengerDetail({ classes, data, pid }) {
     )
 }
 
-export default PassengerDetail
+export default memo(PassengerDetail)

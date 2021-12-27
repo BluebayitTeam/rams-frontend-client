@@ -9,6 +9,7 @@ import { useParams } from 'react-router';
 import CallingEmbAttestationDetail from './CallingEmbAttestationDetail';
 import EmbassyDetail from './EmbassyDetail';
 import FlightDetail from './FlightDetail';
+import Images from './Images';
 import ManPowerDetail from './ManPowerDetail';
 import MedicalDetail from './MedicalDetail';
 import MofaDetail from './MofaDetail';
@@ -40,6 +41,21 @@ const useStyles = makeStyles(theme => {
             justifyContent: 'center',
             fontSize: '15px',
             fontStyle: 'italic'
+        },
+        passengerImgContainer: {
+            display: 'flex',
+            alignItems: 'flex-start',
+            '& .passengerImgHolder': {
+                height: 'fit-content',
+                width: 'fit-content',
+                overflow: 'hidden',
+                border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+                '& > img': {
+                    //usesed passport size hight by width
+                    height: '150px',
+                    width: '125px',
+                }
+            }
         },
         noData: {
             marginTop: '60px',
@@ -160,7 +176,42 @@ const useStyles = makeStyles(theme => {
             }
         },
         allImgContainer: {
-
+            border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+            height: 'fit-content',
+            display: 'flex',
+            justifyContent: 'flex-start',
+            flexWrap: 'wrap',
+            padding: '15px',
+            '& .imgContainer': {
+                padding: '15px',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                '& .imgTitle': {
+                    minHeight: '15px',
+                    position: 'relative',
+                    borderTop: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    '& h5': {
+                        top: '-10px',
+                        background: theme.palette.background.default,
+                        color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
+                        padding: '0px 5px',
+                        zIndex: 1,
+                        position: 'absolute'
+                    },
+                },
+                '& .imgHolder': {
+                    border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+                    overflow: 'hidden',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                },
+            }
         }
     }
     )
@@ -169,6 +220,8 @@ const useStyles = makeStyles(theme => {
 function PassengerAllDetails() {
 
     const classes = useStyles();
+
+    const { searchKeyword } = useParams()
 
     const [pId, setpId] = useState(0)
     const [siteSetting, setSiteSetting] = useState({})
@@ -185,7 +238,7 @@ function PassengerAllDetails() {
     const [passenger, setPassenger] = useState({})
     const [callingEmbAttestation, setCallingEmbAttestation] = useState({})
 
-    const { searchKeyword } = useParams()
+    const [images, setImages] = useState([])
 
     const [loading, setLoading] = useState(true)
     const [noData, setNoData] = useState(false)
@@ -209,12 +262,12 @@ function PassengerAllDetails() {
             axios.get(`${SEARCH_PASSENGER_BY}?keyword=${searchKeyword}`).then(res => {
                 console.log("SEARCH_PASSENGER_BY_RES", res)
                 setpId(res?.data?.passengers[0]?.id || 0)
+                setLoading(false)
                 if (res?.data?.passengers[0]?.id) {
                     setNoData(false)
                 }
                 else {
                     setNoData(true)
-                    setLoading(false)
                 }
             }).catch(() => {
                 setpId(0)
@@ -231,75 +284,28 @@ function PassengerAllDetails() {
     useEffect(() => {
         if (pId) {
             setLoading(true)
+            setImages([])
+
+            //passenger data
+            axios.get(`${GET_PASSENGER_BY_ID}${pId}`).then(res => {
+                if (res?.data?.id) {
+                    setPassenger({ ...res.data })
+                    setImages((imgs) => imgs.concat({ order: 1, title: 'Passenger PP Pic', url: res.data.passport_pic }))
+                    setLoading(false)
+                }
+            }).catch(() => {
+                setPassenger({})
+            })
 
             //medical data
             axios.get(`${MEDICAL_BY_PASSENGER_ID}${pId}`).then(res => {
                 if (res?.data?.id) {
                     setMedical({ ...res.data })
+                    setImages((imgs) => imgs.concat({ order: 2, title: 'Medical Slip Pic', url: res.data.slip_pic }, { order: 3, title: 'Medical Card Pic', url: res.data.medical_card_pic }))
                     setLoading(false)
                 }
             }).catch(() => {
                 setMedical({})
-            })
-
-            //office work data
-            axios.get(`${OFFICEWORK_BY_PASSENGER_ID}${pId}`).then(res => {
-                if (res?.data?.id) {
-                    setOfficeWork({ ...res.data })
-                    setLoading(false)
-                }
-            }).catch(() => {
-                setOfficeWork({})
-            })
-
-            //mfa data
-            axios.get(`${MOFA_BY_PASSENGER_ID}${pId}`).then(res => {
-                if (res?.data?.id) {
-                    setMofa({ ...res.data })
-                    setLoading(false)
-                }
-            }).catch(() => {
-                setMofa({})
-            })
-
-            //manpower data
-            axios.get(`${MANPOWER_BY_PASSENGER_ID}${pId}`).then(res => {
-                if (res?.data?.id) {
-                    setManPower({ ...res.data })
-                    setLoading(false)
-                }
-            }).catch(() => {
-                setManPower({})
-            })
-
-            //masaned okala data
-            axios.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${pId}`).then(res => {
-                if (res?.data?.id) {
-                    setMusanedOkala({ ...res.data })
-                    setLoading(false)
-                }
-            }).catch(() => {
-                setMusanedOkala({})
-            })
-
-            //training data
-            axios.get(`${TRAINING_BY_PASSENGER_ID}${pId}`).then(res => {
-                if (res?.data?.id) {
-                    setTraining({ ...res.data })
-                    setLoading(false)
-                }
-            }).catch(() => {
-                setTraining({})
-            })
-
-            //flight data
-            axios.get(`${FLIGHT_BY_PASSENGER_ID}${pId}`).then(res => {
-                if (res?.data?.id) {
-                    setFlight({ ...res.data })
-                    setLoading(false)
-                }
-            }).catch(() => {
-                setFlight({})
             })
 
             //visa entry data
@@ -312,24 +318,56 @@ function PassengerAllDetails() {
                 setVisaEntry({})
             })
 
-            //passenger data
-            axios.get(`${GET_PASSENGER_BY_ID}${pId}`).then(res => {
+            //masaned okala data
+            axios.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${pId}`).then(res => {
                 if (res?.data?.id) {
-                    setPassenger({ ...res.data })
+                    setMusanedOkala({ ...res.data })
+                    setImages((imgs) => imgs.concat({ order: 4, title: 'Masaned Okala Doc1', url: res.data.doc1_image }, { order: 5, title: 'Masaned Okala Doc2', url: res.data.doc2_image }))
                     setLoading(false)
                 }
             }).catch(() => {
-                setPassenger({})
+                setMusanedOkala({})
+            })
+
+            //mfa data
+            axios.get(`${MOFA_BY_PASSENGER_ID}${pId}`).then(res => {
+                if (res?.data?.id) {
+                    setMofa({ ...res.data })
+                    setLoading(false)
+                }
+            }).catch(() => {
+                setMofa({})
             })
 
             //callingEmbAttestation data
             axios.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${pId}`).then(res => {
                 if (res?.data?.id) {
                     setCallingEmbAttestation({ ...res.data })
+                    setImages((imgs) => imgs.concat(
+                        { order: 6, title: 'Calling Doc', url: res.data.calling_doc },
+                        { order: 7, title: 'Calling Doc1', url: res.data.doc1 },
+                        { order: 8, title: 'Calling Doc2', url: res.data.doc2 }
+                    ))
                     setLoading(false)
                 }
             }).catch(() => {
                 setCallingEmbAttestation({})
+            })
+
+            //office work data
+            axios.get(`${OFFICEWORK_BY_PASSENGER_ID}${pId}`).then(res => {
+                if (res?.data?.id) {
+                    setOfficeWork({ ...res.data })
+                    setImages((imgs) => imgs.concat(
+                        { order: 9, title: 'Office Work PC', url: res.data.pc_image },
+                        { order: 10, title: 'Office Work DL', url: res.data.dl_image },
+                        { order: 11, title: 'Office Work Doc1', url: res.data.doc1_image },
+                        { order: 12, title: 'Office Work Doc2', url: res.data.doc2_image },
+                    ))
+                    setLoading(false)
+                }
+            }).catch(() => {
+                setOfficeWork({})
             })
 
             //embassy data
@@ -338,7 +376,11 @@ function PassengerAllDetails() {
                 let embassyData = {}
 
                 if (res.data?.visa_entry?.id && res.data?.mofa?.id && res.data?.embassy?.id) {
+
+                    setImages((imgs) => imgs.concat({ order: 13, title: 'Embassy Old Visa', url: res.data.old_visa_image }, { order: 14, title: 'Embassy Stamp Visa', url: res.data.stamp_visa_image }))
+
                     setLoading(false)
+
                     const visa_entry = res.data?.visa_entry
                     const mofa = res.data?.mofa
                     embassyData = {
@@ -358,6 +400,40 @@ function PassengerAllDetails() {
             }).catch(() => {
                 setEmbassy({})
             })
+
+            //training data
+            axios.get(`${TRAINING_BY_PASSENGER_ID}${pId}`).then(res => {
+                if (res?.data?.id) {
+                    setTraining({ ...res.data })
+                    setImages((imgs) => imgs.concat({ order: 15, title: 'Training Doc1', url: res.data.doc1_image }, { order: 16, title: 'Training Certificate', url: res.data.certificate_image }))
+                    setLoading(false)
+                }
+            }).catch(() => {
+                setTraining({})
+            })
+
+            //manpower data
+            axios.get(`${MANPOWER_BY_PASSENGER_ID}${pId}`).then(res => {
+                if (res?.data?.id) {
+                    setManPower({ ...res.data })
+                    setImages((imgs) => imgs.concat({ order: 17, title: 'Manpower Smart Card', url: res.data.smart_card_image }))
+                    setLoading(false)
+                }
+            }).catch(() => {
+                setManPower({})
+            })
+
+            //flight data
+            axios.get(`${FLIGHT_BY_PASSENGER_ID}${pId}`).then(res => {
+                if (res?.data?.id) {
+                    setFlight({ ...res.data })
+                    setImages((imgs) => imgs.concat({ order: 18, title: 'Flight Ticket', url: res.data.ticket_image }))
+                    setLoading(false)
+                }
+            }).catch(() => {
+                setFlight({})
+            })
+
         }
         else {
             setLoading(false)
@@ -372,24 +448,39 @@ function PassengerAllDetails() {
             setVisaEntry({})
             setPassenger({})
             setCallingEmbAttestation({})
+            setImages([])
         }
     }, [pId])
 
 
+    //show loading when data fething
     if (loading) {
         return (
             <FuseLoading />
         )
     }
 
+    //content
     return (
         <div>
             <div className={`${classes.container}`}>
-                <div className={classes.logoContainer}>
-                    <img src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`} />
-                </div>
-                <div className={classes.addressContainer}>
-                    <pre>{siteSetting?.address || ""}</pre>
+                <div className='flex justify-between items-start flex-col md:flex-row'>
+                    <div className='w-full md:w-1/4'></div>
+
+                    <div className='w-full md:w-1/2'>
+                        <div className={classes.logoContainer}>
+                            <img src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`} />
+                        </div>
+                        <div className={classes.addressContainer}>
+                            <pre>{siteSetting?.address || ""}</pre>
+                        </div>
+                    </div>
+
+                    <div className={`w-full md:w-1/4 justify-center md:justify-start mt-20 md:mt-0 ${classes.passengerImgContainer}`}>
+                        <div className='passengerImgHolder rounded-2'>
+                            <img src={`${BASE_URL}${passenger.passenger_pic}`} />
+                        </div>
+                    </div>
                 </div>
 
                 {noData ? (
@@ -424,9 +515,7 @@ function PassengerAllDetails() {
                         {_.isEmpty(manPower) || <ManPowerDetail classes={classes} data={manPower} pid={pId} />}
                         {_.isEmpty(flight) || <FlightDetail classes={classes} data={flight} pid={pId} />}
 
-                        <div className={classes.allImgContainer}>
-
-                        </div>
+                        {_.isEmpty(images) || <Images classes={classes} images={images} />}
 
                     </>
                 )}
