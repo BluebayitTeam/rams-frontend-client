@@ -20,7 +20,7 @@ function CustomDatePicker(props) {
             variant="inline"
             inputVariant="outlined"
             format={props?.format || "dd/MM/yyyy"}
-            placeholder={props?.placeholder || "dd/MM/year"}
+            placeholder={props?.placeholder || "dd/MM/yyyy"}
             value={props.value || props.field.value || ""}
             error={!!errors[props.field.name]}
             helperText={errors[props.field.name]?.message || ""}

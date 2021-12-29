@@ -754,6 +754,8 @@ export const DELETE_AGENT = `${BASE_URL}/agent/api/v1/agent/delete/`;
 
 export const SEARCH_AGENT = `${BASE_URL}/agent/api/v1/agent/search/`;
 
+export const AGENT_FILTER_BY = `${BASE_URL}/report/api/v1/agent_report/filter/`;
+
 //demand
 export const CREATE_DEMAND = `${BASE_URL}/demand/api/v1/demand/create/`;
 

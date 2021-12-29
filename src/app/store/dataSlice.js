@@ -202,13 +202,7 @@ export const getAllMenuNested = () => (dispatch) => {
 }
 
 export const getGroups = () => (dispatch) => {
-    const authTOKEN = {
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: localStorage.getItem('jwt_access_token'),
-        }
-    }
-    fetch(GROUPS_WITHOUT_PAGINATION, authTOKEN)
+    fetch(GROUPS_WITHOUT_PAGINATION)
         .then(response => response.json())
         .then(data => dispatch(setGroups(data.groups)))
         .catch(() => { });

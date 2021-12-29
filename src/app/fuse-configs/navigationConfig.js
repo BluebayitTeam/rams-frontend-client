@@ -468,7 +468,7 @@ const navigationConfig = [
                 title: 'Agent List',
                 translate: 'Agent List',
                 type: 'item',
-                url: '',
+                url: '/apps/passengers/report',
                 exact: true
             },
             //passenger list
@@ -477,7 +477,7 @@ const navigationConfig = [
                 title: 'Passenger List',
                 translate: 'Passenger List',
                 type: 'item',
-                url: '',
+                url: '/apps/passengers/report',
                 exact: true
             },
         ]

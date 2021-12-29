@@ -365,6 +365,11 @@ const ramsRouteConfig = {
             path: '/apps/passenger/search/:searchKeyword',
             component: lazy(() => import('./PassengerSearch/PassengerAllDetails'))
         },
+        //passengerReport
+        {
+            path: '/apps/passengers/report',
+            component: lazy(() => import('./ReportManagement/PassengerReportManagement/PassengerReport/PassengerReport'))
+        },
 
 
 

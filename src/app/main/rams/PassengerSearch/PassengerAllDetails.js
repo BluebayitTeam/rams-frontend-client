@@ -19,203 +19,199 @@ import PassengerDetail from './PassengerDetail';
 import TrainingDetail from './TrainingDetail';
 import VisaEntryDetail from './VisaEntryDetail';
 
-const useStyles = makeStyles(theme => {
-    console.log("theme", theme)
-    return ({
-        container: {
-            background: theme.palette.background.default,
-            color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
+const useStyles = makeStyles(theme => ({
+    container: {
+        background: theme.palette.background.default,
+        color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
+        height: 'fit-content',
+        paddingTop: '40px',
+        paddingBottom: '40px',
+        overflow: 'hidden',
+    },
+    logoContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        height: '70px',
+        marginBottom: '10px',
+    },
+    addressContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        fontSize: '15px',
+        fontStyle: 'italic'
+    },
+    passengerImgContainer: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        '& .passengerImgHolder': {
             height: 'fit-content',
-            paddingTop: '40px',
-            paddingBottom: '40px',
+            width: 'fit-content',
             overflow: 'hidden',
-        },
-        logoContainer: {
-            display: 'flex',
-            justifyContent: 'center',
-            height: '70px',
-            marginBottom: '10px',
-        },
-        addressContainer: {
-            display: 'flex',
-            justifyContent: 'center',
-            fontSize: '15px',
-            fontStyle: 'italic'
-        },
-        passengerImgContainer: {
-            display: 'flex',
-            alignItems: 'flex-start',
-            '& .passengerImgHolder': {
-                height: 'fit-content',
-                width: 'fit-content',
-                overflow: 'hidden',
-                border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-                '& > img': {
-                    //usesed passport size hight by width
-                    height: '150px',
-                    width: '125px',
-                }
-            }
-        },
-        noData: {
-            marginTop: '60px',
-            display: 'flex',
-            justifyContent: 'center',
-            height: 'fit-content',
-            border: `1px solid red`,
-            alignItems: 'center',
-            '& h1': {
-                color: 'red',
-                textAlign: 'center'
-            }
-        },
-        currentStsContainer: {
-            marginTop: '60px',
-            display: 'flex',
-            justifyContent: 'space-evenly',
-            height: 'fit-content',
             border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-            alignItems: 'center',
-            '& .leftRow, .rightRow': {
-                display: 'flex',
-                justifyContent: 'center',
-                '& .label': {
-                    color: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.main,
-                    fontWeight: 400,
-                    padding: '8px 5px',
-                    borderBottom: `1px solid ${theme.palette.primary.light}`,
-                    fontSize: '17px',
-                },
-                '& .value': {
-                    color: theme.palette.type === "light" ? theme.palette.common.black : theme.palette.common.white,
-                    fontWeight: 500,
-                    padding: '8px 5px',
-                    borderBottom: `1px solid ${theme.palette.primary.light}`,
-                    overflowWrap: 'break-word',
-                    fontSize: '18px',
-                    color: 'green'
-                }
-            },
-            '& .rightRow': {
-                '& .value': {
-                    color: 'red !important'
-                }
-            },
-            '& .border': {
-                borderLeft: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-            }
-        },
-        blockContainer: {
-            height: 'fit-content',
-            position: 'relative',
-            border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            '& .blockContentName': {
-                height: '30px',
-                background: theme.palette.background.default,
-                color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
-                textAlign: 'center',
-                position: 'absolute',
-                top: '-15px',
-                fontSize: '20px',
-                fontStyle: 'italic',
-                padding: '0px 5px',
-                zIndex: 1,
-            },
-            '& .blockContentHolder': {
-                marginTop: '30px',
-                marginBottom: '30px',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-evenly',
-                '& .container': {
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    '& .h-fit': {
-                        height: 'fit-content'
-                    },
-                    '& .leftRow, .rightRow': {
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        '& .label': {
-                            color: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.main,
-                            fontWeight: 400,
-                            minWidth: '50%',
-                            padding: '4px 0px',
-                            borderBottom: `1px solid ${theme.palette.primary.light}`,
-                        },
-                        '& .value': {
-                            color: theme.palette.type === "light" ? theme.palette.common.black : theme.palette.common.white,
-                            fontWeight: 500,
-                            minWidth: '50%',
-                            padding: '4px 0px',
-                            borderBottom: `1px solid ${theme.palette.primary.light}`,
-                            overflowWrap: 'break-word',
-                        }
-                    },
-                    '& .border': {
-                        borderLeft: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-                    }
-                }
-            },
-            '& .blockContentAction': {
-                bottom: '-13px',
-                right: '20px',
-                position: 'absolute',
-                cursor: 'pointer',
-                background: theme.palette.background.paper,
-                color: 'green',
-                border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-                borderRadius: '50%',
-                padding: '3px 5px',
-                zIndex: 1,
-            }
-        },
-        allImgContainer: {
-            border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-            height: 'fit-content',
-            display: 'flex',
-            justifyContent: 'flex-start',
-            flexWrap: 'wrap',
-            padding: '15px',
-            '& .imgContainer': {
-                padding: '15px',
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                '& .imgTitle': {
-                    minHeight: '15px',
-                    position: 'relative',
-                    borderTop: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    '& h5': {
-                        top: '-10px',
-                        background: theme.palette.background.default,
-                        color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
-                        padding: '0px 5px',
-                        zIndex: 1,
-                        position: 'absolute'
-                    },
-                },
-                '& .imgHolder': {
-                    border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
-                    overflow: 'hidden',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                },
+            '& > img': {
+                //usesed passport size hight by width
+                height: '150px',
+                width: '125px',
             }
         }
+    },
+    noData: {
+        marginTop: '60px',
+        display: 'flex',
+        justifyContent: 'center',
+        height: 'fit-content',
+        border: `1px solid red`,
+        alignItems: 'center',
+        '& h1': {
+            color: 'red',
+            textAlign: 'center'
+        }
+    },
+    currentStsContainer: {
+        marginTop: '60px',
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        height: 'fit-content',
+        border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+        alignItems: 'center',
+        '& .leftRow, .rightRow': {
+            display: 'flex',
+            justifyContent: 'center',
+            '& .label': {
+                color: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.main,
+                fontWeight: 400,
+                padding: '8px 5px',
+                borderBottom: `1px solid ${theme.palette.primary.light}`,
+                fontSize: '17px',
+            },
+            '& .value': {
+                color: theme.palette.type === "light" ? theme.palette.common.black : theme.palette.common.white,
+                fontWeight: 500,
+                padding: '8px 5px',
+                borderBottom: `1px solid ${theme.palette.primary.light}`,
+                overflowWrap: 'break-word',
+                fontSize: '18px',
+                color: 'green'
+            }
+        },
+        '& .rightRow': {
+            '& .value': {
+                color: 'red !important'
+            }
+        },
+        '& .border': {
+            borderLeft: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+        }
+    },
+    blockContainer: {
+        height: 'fit-content',
+        position: 'relative',
+        border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '& .blockContentName': {
+            height: '30px',
+            background: theme.palette.background.default,
+            color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
+            textAlign: 'center',
+            position: 'absolute',
+            top: '-15px',
+            fontSize: '20px',
+            fontStyle: 'italic',
+            padding: '0px 5px',
+            zIndex: 1,
+        },
+        '& .blockContentHolder': {
+            marginTop: '30px',
+            marginBottom: '30px',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-evenly',
+            '& .container': {
+                display: 'flex',
+                justifyContent: 'space-between',
+                '& .h-fit': {
+                    height: 'fit-content'
+                },
+                '& .leftRow, .rightRow': {
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    '& .label': {
+                        color: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.main,
+                        fontWeight: 400,
+                        minWidth: '50%',
+                        padding: '4px 0px',
+                        borderBottom: `1px solid ${theme.palette.primary.light}`,
+                    },
+                    '& .value': {
+                        color: theme.palette.type === "light" ? theme.palette.common.black : theme.palette.common.white,
+                        fontWeight: 500,
+                        minWidth: '50%',
+                        padding: '4px 0px',
+                        borderBottom: `1px solid ${theme.palette.primary.light}`,
+                        overflowWrap: 'break-word',
+                    }
+                },
+                '& .border': {
+                    borderLeft: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+                }
+            }
+        },
+        '& .blockContentAction': {
+            bottom: '-13px',
+            right: '20px',
+            position: 'absolute',
+            cursor: 'pointer',
+            background: theme.palette.background.paper,
+            color: 'green',
+            border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+            borderRadius: '50%',
+            padding: '3px 5px',
+            zIndex: 1,
+        }
+    },
+    allImgContainer: {
+        border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+        height: 'fit-content',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexWrap: 'wrap',
+        padding: '15px',
+        '& .imgContainer': {
+            padding: '15px',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            '& .imgTitle': {
+                minHeight: '15px',
+                position: 'relative',
+                borderTop: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+                display: 'flex',
+                justifyContent: 'center',
+                '& h5': {
+                    top: '-10px',
+                    background: theme.palette.background.default,
+                    color: theme.palette.type === "dark" ? theme.palette.common.white : theme.palette.primary.dark,
+                    padding: '0px 5px',
+                    zIndex: 1,
+                    position: 'absolute'
+                },
+            },
+            '& .imgHolder': {
+                border: `1px solid ${theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+                overflow: 'hidden',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            },
+        }
     }
-    )
-});
+}));
 
 function PassengerAllDetails() {
 
