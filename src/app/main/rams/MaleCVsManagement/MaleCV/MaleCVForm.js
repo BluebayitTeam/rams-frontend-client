@@ -50,8 +50,8 @@ function MaleCVForm(props) {
 
 
     useEffect(() => {
-        watch("image") || setPreviewImage("")
-    }, [watch("image")])
+        setPreviewImage("")
+    }, [maleCVId])
 
     function handleSaveMaleCV() {
         dispatch(saveMaleCV(getValues())).then((res) => {

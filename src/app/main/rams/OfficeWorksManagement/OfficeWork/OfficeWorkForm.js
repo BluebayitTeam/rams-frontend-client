@@ -6,10 +6,11 @@ import { doneNotDone } from 'app/@data/data';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
 
 
-function OfficeWorkForm(props) {
+function OfficeWorkForm() {
 
     const [previewPCImage, setpreviewPCImage] = useState("")
     const [previewDLImage, setpreviewDLImage] = useState("")
@@ -19,9 +20,11 @@ function OfficeWorkForm(props) {
     const currentStatuss = useSelector(state => state.data.currentStatuss)
 
     const methods = useFormContext();
-    const { control, formState, watch } = methods;
+    const { control, formState } = methods;
     const { errors } = formState;
     const dispatch = useDispatch()
+
+    const { officeWorkId } = useParams()
 
     useEffect(() => {
         dispatch(getPassengers());
@@ -29,11 +32,11 @@ function OfficeWorkForm(props) {
     }, [])
 
     useEffect(() => {
-        watch("pc_image") || setpreviewPCImage("")
-        watch("dl_image") || setpreviewDLImage("")
-        watch("doc1_image") || setpreviewDoc1Image("")
-        watch("doc2_image") || setpreviewDoc2Image("")
-    }, [watch("pc_image"), watch("dl_image"), watch("doc1_image"), watch("doc2_image")])
+        setpreviewPCImage("")
+        setpreviewDLImage("")
+        setpreviewDoc1Image("")
+        setpreviewDoc2Image("")
+    }, [officeWorkId])
 
 
     return (

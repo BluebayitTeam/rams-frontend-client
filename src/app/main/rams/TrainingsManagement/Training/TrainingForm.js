@@ -25,7 +25,7 @@ function TrainingForm(props) {
 
     const methods = useFormContext();
     const routeParams = useParams();
-    const { fromSearch } = useParams();
+    const { fromSearch, trainingId } = useParams();
     const { control, formState, watch, reset, getValues } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
@@ -38,9 +38,9 @@ function TrainingForm(props) {
     }, [])
 
     useEffect(() => {
-        watch("doc1_image") || setpreviewDoc1Image("")
-        watch("certificate_image") || setpreviewCertificateImage("")
-    }, [watch("doc1_image"), watch("certificate_image")])
+        setpreviewDoc1Image("")
+        setpreviewCertificateImage("")
+    }, [trainingId])
 
 
     function handleSaveTraining() {

@@ -1,5 +1,4 @@
 import _ from '@lodash';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
@@ -13,38 +12,21 @@ import { useHistory, useParams } from 'react-router-dom';
 import { getAgents, getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
 import { saveFlight, updateFlight } from '../store/flightSlice';
 
-
-const useStyles = makeStyles(theme => ({
-    hidden: {
-        display: "none"
-    },
-    productImageUpload: {
-        transitionProperty: 'box-shadow',
-        transitionDuration: theme.transitions.duration.short,
-        transitionTimingFunction: theme.transitions.easing.easeInOut
-    },
-}));
-
-
-function FlightForm(props) {
+function FlightForm() {
 
     const [previewImage, setPreviewImage] = useState()
-    const userID = localStorage.getItem('user_id')
 
     const ticketAgencys = useSelector(state => state.data.agents)
     const currentStatuss = useSelector(state => state.data.currentStatuss)
 
-    const classes = useStyles(props);
-
     const methods = useFormContext();
     const routeParams = useParams();
-    const { flightId } = routeParams;
     const { control, formState, watch, reset, getValues } = methods;
     const { errors, isValid, dirtyFields } = formState;
     const history = useHistory();
     const dispatch = useDispatch()
 
-    const { fromSearch } = useParams()
+    const { fromSearch, flightId } = useParams()
 
     useEffect(() => {
         dispatch(getPassengers());
@@ -52,10 +34,9 @@ function FlightForm(props) {
         dispatch(getCurrentStatuss())
     }, [])
 
-
     useEffect(() => {
-        watch("ticket_image") || setPreviewImage("")
-    }, [watch("ticket_image")])
+        setPreviewImage("")
+    }, [flightId])
 
 
     function handleSaveFlight() {
@@ -105,24 +86,6 @@ function FlightForm(props) {
         <div>
 
             <Controller
-                name={flightId === 'new' ? 'created_by' : 'updated_by'}
-                control={control}
-                defaultValue={userID}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        className={classes.hidden}
-                        label="created by"
-                        id="created_by"
-                        error={false}
-                        helperText=""
-                        variant="outlined"
-                        fullWidth
-                    />)
-                }}
-            />
-
-            <Controller
                 name="ticket_agency"
                 control={control}
                 render={({ field: { onChange, value } }) => (
@@ -147,7 +110,6 @@ function FlightForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />
@@ -362,7 +324,6 @@ function FlightForm(props) {
                                 InputLabelProps={{
                                     shrink: true
                                 }}
-                            // onKeyDown={handleSubmitOnKeyDownEnter}
                             />
                         )}
                     />

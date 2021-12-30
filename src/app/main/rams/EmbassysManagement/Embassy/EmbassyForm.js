@@ -28,12 +28,12 @@ function EmbassyForm(props) {
     const history = useHistory();
     const dispatch = useDispatch()
 
-    const { fromSearch } = useParams()
+    const { fromSearch, embassyId } = useParams()
 
     useEffect(() => {
-        watch("old_visa_image") || setPreviewOldVisaImage("")
-        watch("stamp_visa_image") || setPreviewStampVisaImage("")
-    }, [watch("old_visa_image"), watch("stamp_visa_image")])
+        setPreviewOldVisaImage("")
+        setPreviewStampVisaImage("")
+    }, [embassyId])
 
     useEffect(() => {
         dispatch(getPassengers());

@@ -52,8 +52,8 @@ function FemaleCVForm(props) {
     }, [])
 
     useEffect(() => {
-        watch("image") || setPreviewImage("")
-    }, [watch("image")])
+        setPreviewImage("")
+    }, [femaleCVId])
 
 
     function handleSaveFemaleCV() {

@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
@@ -11,30 +10,19 @@ import { useParams } from 'react-router-dom';
 import { getAgents, getCurrentStatuss, getPassengers } from '../../../../store/dataSlice';
 
 
-const useStyles = makeStyles(theme => ({
-    hidden: {
-        display: "none"
-    }
-}));
-
-
-function MusanedOkalaForm(props) {
+function MusanedOkalaForm() {
 
     const [previewdoc1Image, setpreviewdoc1Image] = useState("")
     const [previewdoc2Image, setpreviewdoc2Image] = useState("")
-
-    const userID = localStorage.getItem('user_id')
 
     const musanedGivenBys = useSelector(state => state.data.agents)
     const okalaGivenBys = useSelector(state => state.data.agents)
     const currentStatuss = useSelector(state => state.data.currentStatuss)
 
-    const classes = useStyles(props);
-
     const methods = useFormContext();
     const routeParams = useParams();
     const { musanedOkalaId } = routeParams;
-    const { control, formState, watch } = methods;
+    const { control, formState } = methods;
     const { errors } = formState;
     const dispatch = useDispatch()
 
@@ -42,35 +30,16 @@ function MusanedOkalaForm(props) {
         dispatch(getPassengers());
         dispatch(getAgents());
         dispatch(getCurrentStatuss())
-
     }, [])
 
     useEffect(() => {
-        watch("doc1_image") || setpreviewdoc1Image("")
-        watch("doc2_image") || setpreviewdoc2Image("")
-    }, [watch("doc1_image"), watch("doc2_image")])
+        setpreviewdoc1Image("")
+        setpreviewdoc2Image("")
+    }, [musanedOkalaId])
 
 
     return (
         <div>
-
-            <Controller
-                name={musanedOkalaId === 'new' ? 'created_by' : 'updated_by'}
-                control={control}
-                defaultValue={userID}
-                render={({ field }) => {
-                    return (<TextField
-                        {...field}
-                        className={classes.hidden}
-                        label="created by"
-                        id="created_by"
-                        error={false}
-                        helperText=""
-                        variant="outlined"
-                        fullWidth
-                    />)
-                }}
-            />
 
             <Controller
                 name="musaned_given_by"

@@ -258,16 +258,10 @@ function CallingEmbAttestationForm(props) {
             />
 
 
-
             <div className="flex justify-start -mx-16 flex-col md:flex-row">
                 <Image name="calling_doc" previewImage={previewcallingdocImage} setPreviewImage={setpreviewcallingdocImage} label="Calling Document" />
                 <Image name="doc1" previewImage={previewdoc1Image} setPreviewImage={setPreviewdoc1Image} label="Document 1" />
                 <Image name="doc2" previewImage={previewdoc2Image} setPreviewImage={setPreviewdoc2Image} label="Document 2" />
-            </div>
-
-            <div className="flex justify-start -mx-16 flex-col md:flex-row">
-
-                <div></div>
             </div>
 
 

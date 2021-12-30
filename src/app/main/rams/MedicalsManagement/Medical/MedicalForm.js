@@ -53,9 +53,9 @@ function MedicalForm(props) {
     }, [])
 
     useEffect(() => {
-        watch("slip_pic") || setPreviewImage("")
-        watch("medical_card_pic") || setPreviewImage2("")
-    }, [watch("slip_pic"), watch("medical_card_pic")])
+        setPreviewImage("")
+        setPreviewImage2("")
+    }, [medicalId])
 
     function handleSaveMedical() {
         dispatch(saveMedical(getValues())).then((res) => {

@@ -29,7 +29,7 @@ function ManPowerForm(props) {
     const history = useHistory();
     const dispatch = useDispatch()
 
-    const { fromSearch } = useParams()
+    const { fromSearch, manPowerId } = useParams()
 
     useEffect(() => {
         dispatch(getPassengers());
@@ -38,8 +38,8 @@ function ManPowerForm(props) {
     }, [])
 
     useEffect(() => {
-        watch("smart_card_image") || setPreviewImage("")
-    }, [watch("smart_card_image")])
+        setPreviewImage("")
+    }, [manPowerId])
 
 
     function handleSaveManPower() {
