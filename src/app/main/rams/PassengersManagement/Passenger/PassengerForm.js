@@ -34,7 +34,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
 function PassengerForm(props) {
 
     const [previewImage1, setPreviewImage1] = useState()
@@ -238,7 +237,6 @@ function PassengerForm(props) {
                     control={control}
                     render={({ field: { onChange, value } }) => (
                         <div className="flex flex-row justify-between w-full items-center">
-                            {/* <Typography className="text-center">Passport Picture</Typography> */}
                             <label
                                 htmlFor="button-file-1"
                                 style={{ boxShadow: "0px 0px 20px -10px}" }}
@@ -306,7 +304,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -473,7 +470,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -511,7 +507,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -528,7 +523,6 @@ function PassengerForm(props) {
                             helperText={errors?.contact_no?.message}
                             label="Contact No"
                             id="contact_no"
-
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
@@ -566,7 +560,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -598,7 +591,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -619,7 +611,6 @@ function PassengerForm(props) {
                             helperText={errors?.post_office?.message}
                             label="Post Office"
                             id="post_office"
-
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
@@ -638,7 +629,6 @@ function PassengerForm(props) {
                             helperText={errors?.village?.message}
                             label="Village"
                             id="village"
-
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
@@ -663,7 +653,6 @@ function PassengerForm(props) {
                             helperText={errors?.nid?.message}
                             label="NID"
                             id="nid"
-
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
@@ -682,7 +671,6 @@ function PassengerForm(props) {
                             helperText={errors?.place_of_birth?.message}
                             label="Place Of Birth"
                             id="place_of_birth"
-
                             variant="outlined"
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
@@ -719,12 +707,12 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
                     )}
                 />
+
                 <Controller
                     name="profession"
                     control={control}
@@ -751,7 +739,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -787,12 +774,12 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
                     )}
                 />
+
                 <Controller
                     name="demand"
                     control={control}
@@ -819,7 +806,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -854,7 +840,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -886,7 +871,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -922,7 +906,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -948,10 +931,6 @@ function PassengerForm(props) {
                     }}
                 />
             </div>
-
-
-
-
 
 
             <div className="flex">
@@ -1010,7 +989,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -1075,7 +1053,6 @@ function PassengerForm(props) {
                                     InputLabelProps={{
                                         shrink: true
                                     }}
-                                // onKeyDown={handleSubmitOnKeyDownEnter}
                                 />
                             )}
                         />
@@ -1141,7 +1118,6 @@ function PassengerForm(props) {
                             rows={3}
                             InputLabelProps={field.value && { shrink: true }}
                             fullWidth
-                        // onKeyDown={handleSubmitOnKeyDownEnter}
                         />)
                     }}
                 />
@@ -1169,10 +1145,6 @@ function PassengerForm(props) {
 
                 </div>
             </div>
-
-
-
-
 
         </div>
     );

@@ -1,20 +1,13 @@
 
-import _ from '@lodash';
 import { makeStyles, TextField } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import { useTheme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import { GetApp } from "@material-ui/icons";
 import ListIcon from '@material-ui/icons/List';
 import PrintIcon from '@material-ui/icons/Print';
 import { Autocomplete } from '@material-ui/lab';
-//import DownloadIcon from '@material-ui/icons/Download';
-import Pagination from '@material-ui/lab/Pagination';
 import { KeyboardDatePicker } from '@material-ui/pickers';
+import useReportData from "app/@customHooks/useReportData";
 import useUserInfo from 'app/@customHooks/useUserInfo';
 import { getCities, getGroups } from 'app/store/dataSlice';
 import moment from 'moment';
@@ -23,23 +16,33 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, withRouter } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
-import {
-    BASE_URL, GET_SITESETTINGS
-} from '../../../../../constant/constants';
+import { GET_SITESETTINGS } from '../../../../../constant/constants';
+import '../../Print.css';
+import Pagination from '../../reportComponents/Pagination';
+import SinglePage from '../../reportComponents/SiglePage';
 import { getAgents, getAllAgents } from '../store/passengerReportSlice';
-import './Print.css';
-
-
-
 
 
 const useStyles = makeStyles(theme => ({
+    pageContainer: {
+        width: '90%',
+        backgroundColor: 'white',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: '20px',
+        paddingTop: '15px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    },
     menubar: {
         backgroundColor: theme.palette.primary.light,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         padding: '10px',
+        position: 'sticky',
+        top: '0px',
         '& .inside': {
             color: theme.palette.primary.main
         }
@@ -48,6 +51,70 @@ const useStyles = makeStyles(theme => ({
         '& button': {
             color: theme.palette.primary.dark,
             borderColor: theme.palette.primary.dark,
+        }
+    },
+    pageHead: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: '10px',
+        '& .logoContainer': {
+            height: '50px',
+            '& img': {
+                height: '100%',
+                with: 'auto'
+            }
+        },
+        '& .title': {
+            width: 'fit-content',
+        }
+    },
+    table: {
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        maxHeight: '',
+        '& .tableRow': {
+            height: '37px',
+            overflow: 'hidden',
+        },
+        '& .tableCell': {
+            padding: '0px',
+            height: '37px',
+            '& div': {
+                height: '37px',
+                padding: '0px 2px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+            }
+        },
+    },
+    pageBottmContainer: {
+        width: '100%',
+        padding: '10px',
+        background: '#e9e9e9',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    pageBottm: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        '& > div': {
+            display: 'flex',
+            flexWrap: 'wrap',
+            '& > h5': {
+                paddingRight: '5px'
+            }
         }
     }
 }))
@@ -59,7 +126,7 @@ const PassengerReportsTable = (props) => {
     const classes = useStyles()
 
     const methods = useForm();
-    const { reset, watch, control, formState, getValues, setValue } = methods;
+    const { reset, control, formState, getValues, setValue } = methods;
     const { errors } = formState;
     const dispatch = useDispatch();
     const [orderInvoice, setOrderInvoice] = useState({});
@@ -79,14 +146,25 @@ const PassengerReportsTable = (props) => {
     const [showPrintBtn, setShowPrintBtn] = useState(true);
     let serialNumber = 1;
 
+    const [modifiedAgentData, setModifiedAgentData] = useReportData()
 
     const { authTOKEN } = useUserInfo()
+
+    console.log("modifiedAgentData", modifiedAgentData)
+
+    //pagination state
+    const [page, setPage] = useState(1)
+    const [size, setSize] = useState(25)
+
+    const totalPages = sessionStorage.getItem('total_report_agents_pages')
+    const totalElements = sessionStorage.getItem('total_report_agents_elements')
 
     useEffect(() => {
         dispatch(getCities());
         dispatch(getGroups())
         getGeneralData();
     }, []);
+
 
     //general setting data
     const getGeneralData = () => {
@@ -102,19 +180,26 @@ const PassengerReportsTable = (props) => {
         content: () => componentRef.current,
     });
 
-    //pagination
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(30);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
-    const totalPages = sessionStorage.getItem('total_products_pages');
-    const totalElements = sessionStorage.getItem('total_products_elements');
 
-    //pagination
-    const handlePagination = (e, handlePage) => {
-        // console.log("handlePage", handlePage);
-        // setPageAndSize({ ...pageAndSize, page: handlePage });
-        // setPage(handlePage - 1);
-        // dispatch(getProducts({ ...pageAndSize, page: handlePage }));
+    //pagination handler
+    const firstPageHandler = (event) => {
+        dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+            setModifiedAgentData(res.payload)
+        });
+    }
+
+    const previousPageHandler = (event) => {
+        dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+            setModifiedAgentData(res.payload)
+        });
+    }
+
+    const nextPageHandler = (event) => {
+
+    }
+
+    const lastPageHandler = (event) => {
+
     }
 
     return (
@@ -157,7 +242,10 @@ const PassengerReportsTable = (props) => {
                                 InputLabelProps={field.value && { shrink: true }}
                                 onChange={(event) => {
                                     field.onChange(event.target.value)
-                                    dispatch(getAgents(getValues(), pageAndSize));
+                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+                                        setModifiedAgentData(res.payload)
+                                        console.log("res.payload", res.payload)
+                                    });
                                 }}
                             />)
                         }}
@@ -177,7 +265,9 @@ const PassengerReportsTable = (props) => {
                                 onChange={(event, newValue) => {
                                     onChange(newValue?.id)
                                     setValue('ditrictName', newValue?.name || "");
-                                    dispatch(getAgents(getValues(), pageAndSize));
+                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+                                        setModifiedAgentData(res.payload)
+                                    });
                                 }}
                                 renderInput={params => (
                                     <TextField
@@ -214,7 +304,9 @@ const PassengerReportsTable = (props) => {
                                 InputLabelProps={field.value && { shrink: true }}
                                 onChange={(event) => {
                                     field.onChange(event.target.value)
-                                    dispatch(getAgents(getValues(), pageAndSize));
+                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+                                        setModifiedAgentData(res.payload)
+                                    });
                                 }}
                             />)
                         }}
@@ -234,7 +326,9 @@ const PassengerReportsTable = (props) => {
                                 onChange={(event, newValue) => {
                                     onChange(newValue?.id);
                                     setValue('groupName', newValue?.name || "");
-                                    dispatch(getAgents(getValues(), pageAndSize));
+                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+                                        setModifiedAgentData(res.payload)
+                                    });
                                 }}
                                 //value={employee && employee.branch}
                                 //defaultValue={{ id: null, name: "Select a branch" }}
@@ -276,7 +370,9 @@ const PassengerReportsTable = (props) => {
                                 placeholder="dd/MM/yyyy"
                                 onChange={(value) => {
                                     value && field.onChange(moment(new Date(value)).format("YYYY-MM-DD"))
-                                    dispatch(getAgents(getValues(), pageAndSize));
+                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+                                        setModifiedAgentData(res.payload)
+                                    });
                                 }}
                                 InputAdornmentProps={{ position: "start" }}
                             />)
@@ -302,7 +398,9 @@ const PassengerReportsTable = (props) => {
                                 placeholder="dd/MM/yyyy"
                                 onChange={(value) => {
                                     value && field.onChange(moment(new Date(value)).format("YYYY-MM-DD"))
-                                    dispatch(getAgents(getValues(), pageAndSize));
+                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
+                                        setModifiedAgentData(res.payload)
+                                    });
                                 }}
                                 InputAdornmentProps={{ position: "start" }}
                             />)
@@ -314,7 +412,9 @@ const PassengerReportsTable = (props) => {
                     variant="outlined"
                     onClick={() => {
                         reset({})
-                        dispatch(getAllAgents(pageAndSize))
+                        dispatch(getAllAgents(getValues())).then(res => {
+                            setModifiedAgentData(res.payload)
+                        });
                     }}
                 >Show All <ListIcon /></Button>
             </div>
@@ -322,290 +422,49 @@ const PassengerReportsTable = (props) => {
                 className={classes.menubar}
             >
                 <Pagination
-                    count={totalPages}
-                    page={page + 1}
-                    defaultPage={1}
-                    showFirstButton
-                    showLastButton
-                    variant="outlined"
-                    shape="rounded"
-                    onChange={handlePagination}
-                    className={classes.pagination}
+                    page={page}
+                    size={size}
+                    totalPages={totalPages || 0}
+                    totalElements={totalElements || 0}
+                    onClickFirstPage={firstPageHandler}
+                    onClickPreviousPage={previousPageHandler}
+                    onClickNextPage={nextPageHandler}
+                    onClickLastPage={lastPageHandler}
                 />
                 <GetApp
-                    className="h-72 cursor-pointer inside inside"
+                    className="cursor-pointer inside inside"
                     style={{
-                        marginLeft: '15px',
-                        marginRight: '15px',
+                        marginLeft: '7px',
+                        marginRight: '7px',
                         height: '30px',
                         width: '30px'
                     }} />
                 <PrintIcon
                     onClick={handlePrint}
-                    className="h-72 cursor-pointer inside"
+                    className="cursor-pointer inside"
                     style={{
+                        marginLeft: '7px',
+                        marginRight: '7px',
                         height: '30px',
                         width: '30px'
                     }} />
-            </div>
-            <div
-                className='printPageContainer'
-                style={{
-                    width: '75%',
-                    backgroundColor: 'white',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    padding: '15px 0px'
-                }}
-                ref={componentRef}
-            >
-                <div >
-                    <img
-                        style={{
-                            height: '100px',
-                            width: '100px',
-                            margin: 'auto',
-                            marginTop: '20px',
-                            marginBottom: '20px',
-                            visibility: generalData.logo ? 'visible' : 'hidden'
-                        }}
-                        src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-                        alt="Not found"
-                    />
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignContent: 'stretch',
-                        marginTop: '10px',
-                        marginBottom: '10px',
-                        visibility: _.isEmpty(generalData) ? 'hidden' : 'visible'
-                    }}>
-                    <div>
-                        <h5><b>Address:</b></h5>
-                        <h5><b>Mobile:</b></h5>
-                        <h5><b>Email:</b></h5>
-                        <h5><b>Website:</b></h5>
-                    </div>
-                    <div style={{
-                        marginLeft: 5
-                    }}>
-                        <h5>{generalData?.address || "_"}</h5>
-                        <h5>{generalData?.phone || "_"}</h5>
-                        <h5>{generalData?.email || "_"}</h5>
-                        <a href={generalData?.site_address || "_"} target='_blank' rel="noreferrer">{generalData?.site_address}</a>
-                    </div>
-                </div>
-                <h2 style={{
-                    textAlign: 'center', marginTop: '15px', marginBottom: '15px'
-                }}>Agent Report</h2>
 
+                <ListIcon
+                    className="cursor-pointer inside"
+                    style={{
+                        height: '30px',
+                        marginLeft: '7px',
+                        marginRight: '7px',
+                        width: '30px'
+                    }} />
             </div>
+
             <div ref={componentRef}>
-                <div
-                    className='printPageContainer'
-                    style={{
-                        width: '75%',
-                        backgroundColor: 'white',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        padding: '15px 0px'
-                    }}
-                >
-                    <div >
-                        <img
-                            style={{
-                                height: '100px',
-                                width: '100px',
-                                margin: 'auto',
-                                marginTop: '20px',
-                                marginBottom: '20px',
-                                visibility: generalData.logo ? 'visible' : 'hidden'
-                            }}
-                            src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-                            alt="Not found"
-                        />
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignContent: 'stretch',
-                            marginTop: '10px',
-                            marginBottom: '10px',
-                            visibility: _.isEmpty(generalData) ? 'hidden' : 'visible'
-                        }}>
-                        <div>
-                            <h5><b>Address:</b></h5>
-                            <h5><b>Mobile:</b></h5>
-                            <h5><b>Email:</b></h5>
-                            <h5><b>Website:</b></h5>
-                        </div>
-                        <div style={{
-                            marginLeft: 5
-                        }}>
-                            <h5>{generalData?.address || "_"}</h5>
-                            <h5>{generalData?.phone || "_"}</h5>
-                            <h5>{generalData?.email || "_"}</h5>
-                            <a href={generalData?.site_address || "_"} target='_blank' rel="noreferrer">{generalData?.site_address}</a>
-                        </div>
-                    </div>
-                    <h2 style={{
-                        textAlign: 'center', marginTop: '15px', marginBottom: '15px'
-                    }}>Agent Report</h2>
-                    <Table
-                        aria-label="simple table"
-                        style={{
-                            width: '90%',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginBottom: '50px',
-                        }}
-                    >
-                        <TableHead style={{ backgroundColor: '#D7DBDD' }}>
-                            <TableRow>
-                                <TableCell align="center">
-                                    Sl_No
-                                </TableCell>
-                                <TableCell align="center">
-                                    Name
-                                </TableCell>
-                                <TableCell align="center">
-                                    Group
-                                </TableCell>
-                                <TableCell align="center">
-                                    District
-                                </TableCell>
-                                <TableCell align="center">
-                                    Mobile
-                                </TableCell>
-                                <TableCell align="center">
-                                    Email
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {agents?.map((agent, idx) => (
-                                <TableRow id={idx}>
-                                    <TableCell align="center">{serialNumber++}</TableCell>
-                                    <TableCell align="center">{`${agent?.first_name || ""} ${agent?.last_name || ""}`}</TableCell>
-                                    <TableCell align="center">{agent?.group?.name}</TableCell>
-                                    <TableCell align="center">{agent?.city?.name}</TableCell>
-                                    <TableCell align="center">{agent?.primary_phone}</TableCell>
-                                    <TableCell align="center">{agent?.email}</TableCell>
-                                </TableRow>
-                            ))
-                            }
-                        </TableBody>
-                        {!_.isEmpty(agents) &&
-                            <TableRow style={{ backgroundColor: '#D7DBDD' }}>
-                                <TableCell align="center" />
-                                <TableCell align="center" />
-                                <TableCell align="center" />
-                                <TableCell align="center" />
-                                <TableCell align="center">Total</TableCell>
-                                <TableCell align="center">{subTotal}</TableCell>
-                            </TableRow>}
-                    </Table>
 
-                </div>
-                <div
-                    className='printPageContainer'
-                    style={{
-                        width: '75%',
-                        backgroundColor: 'white',
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        padding: '15px 0px'
-                    }}
-                >
+                {modifiedAgentData.map(agent => (//{((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
+                    <SinglePage classes={classes} data={agent.data} generalData={generalData} serialNumber={((agent.page * agent.size) - agent.size) + 1} />
+                ))}
 
-                    <div
-                        className='printHeader'
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-around',
-                            alignItems: 'center',
-                            flexDirection: 'row'
-                        }}>
-                        <div >
-                            <img
-                                style={{
-                                    height: '50px',
-                                    width: 'auto',
-                                    overflow: 'hidden',
-                                    visibility: generalData.logo ? 'visible' : 'hidden'
-                                }}
-                                src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-                                alt="Not found"
-                            />
-                        </div>
-                        <h2 style={{
-                            textAlign: 'center',
-                            width: 'fit-content'
-                        }}>Agent Report</h2>
-                    </div>
-
-                    <Table
-                        aria-label="simple table"
-                        style={{
-                            width: '90%',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginBottom: '50px',
-                        }}
-                    >
-                        <TableHead style={{ backgroundColor: '#D7DBDD' }}>
-                            <TableRow>
-                                <TableCell align="center">
-                                    Sl_No
-                                </TableCell>
-                                <TableCell align="center">
-                                    Name
-                                </TableCell>
-                                <TableCell align="center">
-                                    Group
-                                </TableCell>
-                                <TableCell align="center">
-                                    District
-                                </TableCell>
-                                <TableCell align="center">
-                                    Mobile
-                                </TableCell>
-                                <TableCell align="center">
-                                    Email
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {agents?.map((agent, idx) => (
-                                <TableRow id={idx}>
-                                    <TableCell align="center">{serialNumber++}</TableCell>
-                                    <TableCell align="center">{`${agent?.first_name || ""} ${agent?.last_name || ""}`}</TableCell>
-                                    <TableCell align="center">{agent?.group?.name}</TableCell>
-                                    <TableCell align="center">{agent?.city?.name}</TableCell>
-                                    <TableCell align="center">{agent?.primary_phone}</TableCell>
-                                    <TableCell align="center">{agent?.email}</TableCell>
-                                </TableRow>
-                            ))
-                            }
-                            <TableRow style={{
-                                backgroundColor: '#D7DBDD', display: 'flex',
-                                justifyContent: 'space-around',
-                            }}>
-
-                                <h5 style={{ width: 'fit-content' }}><b>Address:</b>{generalData?.address || "_"}</h5>
-                                <h5 style={{ width: 'fit-content' }}><b>Mobile:</b>{generalData?.phone || "_"}</h5>
-                                <h5 style={{ width: 'fit-content' }}><b>Email:</b>{generalData?.email || "_"}</h5>
-                                <h5 style={{ width: 'fit-content' }}><b>Website:</b><a style={{ width: 'fit-content' }} href={generalData?.site_address || "_"} target='_blank' rel="noreferrer">{generalData?.site_address}</a></h5>
-
-                            </TableRow>
-                        </TableBody>
-
-                    </Table>
-
-                </div>
             </div>
         </>
     );

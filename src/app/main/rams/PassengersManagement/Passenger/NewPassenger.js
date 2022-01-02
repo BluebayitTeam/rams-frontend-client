@@ -3,6 +3,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -105,7 +106,7 @@ const Passenger = () => {
         /**
          * Reset the form on passenger state changes
          */
-        reset(setIdIfValueIsObject2(passenger));
+        reset(setIdIfValueIsObject2(_.isObject(passenger) || {}));
     }, [passenger, reset]);
 
     useEffect(() => {
