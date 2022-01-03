@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react'
 
-const useReportData = (orginalData = [], row = 25) => {
+const useReportData = (orginalData = [], row = 5) => {
 
     const [data, setData] = useState([])
 
     const modifyData = (orginalArr, size = row) => {
 
-        console.log("modifyData Called")
-
         let modifiedArr = []
 
-        let totalPage = Math.ceil((orginalArr?.length / size)) || 0
+        const countTotalPage = Math.ceil((orginalArr?.length / size))
+        const totalPage = isNaN(countTotalPage) ? 0 : countTotalPage
 
         console.time('ModifyArry')
         for (let index = 0; index < totalPage; index++) {
             modifiedArr.push({ page: index + 1, size, totalPage, data: orginalArr.slice((index + (index * size) - (index && index)), ((index + (index * size) + size) - (index && index))) })
         }
-        console.timeEnd('ModifyArry')
 
         setData(modifiedArr)
     }

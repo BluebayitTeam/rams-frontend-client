@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 export const getAgents = createAsyncThunk(
-    'agentsReportManagement/agents',
+    'agentsReportManagement/getAgents',
     async ({ values, pageAndSize }) => {
 
         axios.defaults.headers.common['Content-type'] = 'application/json';
@@ -12,19 +12,16 @@ export const getAgents = createAsyncThunk(
 
         const res = await axios.get(`${AGENT_FILTER_BY}?username=${values.username || ""}&email=${values.email || ""}&group=${values.groupName || ""}&agent_code=${values.agent_code || ""}&primary_phone=${values.primary_phone || ""}&district=${values.ditrictName || ""}&date_after=${values.date_after || ""}&date_before=${values.date_before || ""}`, { params: pageAndSize })
 
-        sessionStorage.setItem('total_report_agents_elements', res.data.total_elements);
-        sessionStorage.setItem('total_report_agents_pages', res.data.total_pages);
-
         delete axios.defaults.headers.common['Content-type'];
         delete axios.defaults.headers.common.Authorization;
 
         console.log(res);
-        return res.data.agents || []
+        return res.data
     })
 
 
 export const getAllAgents = createAsyncThunk(
-    'agentsReportManagement/agents',
+    'agentsReportManagement/getAllAgents',
     async (values) => {
 
         axios.defaults.headers.common['Content-type'] = 'application/json';
@@ -32,14 +29,11 @@ export const getAllAgents = createAsyncThunk(
 
         const res = await axios.get(`${AGENT_FILTER_WITHOUT_PG}?username=${values.username || ""}&email=${values.email || ""}&group=${values.groupName || ""}&agent_code=${values.agent_code || ""}&primary_phone=${values.primary_phone || ""}&district=${values.ditrictName || ""}&date_after=${values.date_after || ""}&date_before=${values.date_before || ""}`)
 
-        sessionStorage.setItem('total_report_agents_elements', res.data.total_elements);
-        sessionStorage.setItem('total_report_agents_pages', res.data.total_pages);
-
         delete axios.defaults.headers.common['Content-type'];
         delete axios.defaults.headers.common.Authorization;
 
         console.log(res);
-        return res.data.agents || []
+        return res.data
     })
 
 const agentsReportsAdapter = createEntityAdapter({});
@@ -64,10 +58,10 @@ const passengerReportsSlice = createSlice({
     },
     extraReducers: {
         [getAgents.fulfilled]: (state, action) => {
-            state.agents = action.payload
+            state.agents = action.payload?.agents || []
         },
         [getAllAgents.fulfilled]: (state, action) => {
-            state.agents = action.payload
+            state.agents = action.payload?.agents || []
         }
     }
 });

@@ -1,20 +1,20 @@
 
+import { faBookOpen, faScroll } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, TextField } from "@material-ui/core";
-import Button from '@material-ui/core/Button';
-import { useTheme } from '@material-ui/core/styles';
 import { GetApp } from "@material-ui/icons";
-import ListIcon from '@material-ui/icons/List';
 import PrintIcon from '@material-ui/icons/Print';
 import { Autocomplete } from '@material-ui/lab';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import useReportData from "app/@customHooks/useReportData";
 import useUserInfo from 'app/@customHooks/useUserInfo';
 import { getCities, getGroups } from 'app/store/dataSlice';
+import html2PDF from 'jspdf-html2canvas';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import { GET_SITESETTINGS } from '../../../../../constant/constants';
 import '../../Print.css';
@@ -40,11 +40,21 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '10px',
+        padding: '5px',
         position: 'sticky',
         top: '0px',
         '& .inside': {
             color: theme.palette.primary.main
+        },
+        '& .icon': {
+            margin: '0px 3px',
+            height: '40px',
+            padding: '5px',
+            width: '40px',
+            '&:active': {
+                borderRadius: '50%',
+                border: '1px solid'
+            }
         }
     },
     pagination: {
@@ -62,7 +72,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: 'auto',
         marginBottom: '10px',
         '& .logoContainer': {
-            height: '50px',
+            height: '75px',
             '& img': {
                 height: '100%',
                 with: 'auto'
@@ -78,14 +88,14 @@ const useStyles = makeStyles(theme => ({
         marginRight: 'auto',
         maxHeight: '',
         '& .tableRow': {
-            height: '37px',
+            height: '36px',
             overflow: 'hidden',
         },
         '& .tableCell': {
             padding: '0px',
-            height: '37px',
+            height: '36px',
             '& div': {
-                height: '37px',
+                height: '36px',
                 padding: '0px 2px',
                 display: 'flex',
                 justifyContent: 'center',
@@ -129,42 +139,36 @@ const PassengerReportsTable = (props) => {
     const { reset, control, formState, getValues, setValue } = methods;
     const { errors } = formState;
     const dispatch = useDispatch();
-    const [orderInvoice, setOrderInvoice] = useState({});
-    console.log(orderInvoice);
 
     const districts = useSelector(state => state.data.cities);
     const groups = useSelector(state => state.data.groups);
 
-    const agents = useSelector(({ passengersReportManagement }) => passengersReportManagement.passengerReports.agents);
-    const subTotal = 0
-    const [generalData, setGeneralData] = useState({});
-    const routeParams = useParams();
-    const { orderId } = routeParams;
-    //const classes = useStyles(props);
-    const Theme = useTheme();
-    const PaperColor = Theme.palette.background.paper;
-    const [showPrintBtn, setShowPrintBtn] = useState(true);
-    let serialNumber = 1;
-
-    const [modifiedAgentData, setModifiedAgentData] = useReportData()
-
     const { authTOKEN } = useUserInfo()
 
+    const [generalData, setGeneralData] = useState({});
+
+    const [modifiedAgentData, setModifiedAgentData] = useReportData([], 25)
+
     console.log("modifiedAgentData", modifiedAgentData)
+
+    //tools state
+    const [inPrint, setInPrint] = useState(false)
+    const [inSiglePageMode, setInSiglePageMode] = useState(true)
+    const [inShowAllMode, setInShowAllMode] = useState(false)
 
     //pagination state
     const [page, setPage] = useState(1)
     const [size, setSize] = useState(25)
+    const [totalPages, setTotalPages] = useState(0)
+    const [totalElements, setTotalElements] = useState(0)
 
-    const totalPages = sessionStorage.getItem('total_report_agents_pages')
-    const totalElements = sessionStorage.getItem('total_report_agents_elements')
+    let downloadPage = document.getElementById('downloadPage');
 
     useEffect(() => {
         dispatch(getCities());
         dispatch(getGroups())
         getGeneralData();
     }, []);
-
 
     //general setting data
     const getGeneralData = () => {
@@ -176,30 +180,84 @@ const PassengerReportsTable = (props) => {
 
     //print
     const componentRef = useRef();
+
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
 
+    //print action when show all mode or fecth data to go show all mode
+    useEffect(() => {
+        if (inPrint) {
+            if (inSiglePageMode && (totalPages > 1)) {
+                handleGetAllAgents()
+            }
+            else {
+                handlePrint()
+                setInPrint(false)
+            }
+        }
+    }, [inPrint])
+
+    //print action after show all mode's data fething 
+    useEffect(() => {
+        if (inPrint) {
+            handlePrint()
+            setInPrint(false)
+            handleGetAgents()
+        }
+    }, [modifiedAgentData])
+
+    //download handler
+    const downloadHandler = () => {
+        html2PDF(downloadPage, {
+            jsPDF: {
+                format: 'a4',
+            },
+            imageType: 'image/jpeg',
+            output: './pdf/generate.pdf'
+        });
+    };
 
     //pagination handler
     const firstPageHandler = (event) => {
-        dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-            setModifiedAgentData(res.payload)
-        });
+        handleGetAgents(event.page)
     }
-
     const previousPageHandler = (event) => {
-        dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-            setModifiedAgentData(res.payload)
+        handleGetAgents(event.page)
+    }
+    const nextPageHandler = (event) => {
+        handleGetAgents(event.page)
+    }
+    const lastPageHandler = (event) => {
+        handleGetAgents(event.page)
+    }
+
+    //get agents
+    const handleGetAgents = (pagePram, callBack) => {
+        dispatch(getAgents({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
+            if (res.payload) {
+                callBack && callBack(res.payload)
+                setModifiedAgentData(res.payload.agents || [])
+                setPage(res.payload.page || 1)
+                setSize(res.payload.size || 25)
+                setTotalPages(res.payload.total_pages || 0)
+                setTotalElements(res.payload.total_elements || 0)
+                setInSiglePageMode(true)
+                setInShowAllMode(false)
+            }
         });
     }
 
-    const nextPageHandler = (event) => {
-
-    }
-
-    const lastPageHandler = (event) => {
-
+    const handleGetAllAgents = (callBack) => {
+        dispatch(getAllAgents(getValues())).then(res => {
+            if (res.payload) {
+                callBack && callBack(res.payload)
+                setModifiedAgentData(res.payload.agents)
+                setInSiglePageMode(false)
+                setInShowAllMode(true)
+                //disablepagination
+            }
+        });
     }
 
     return (
@@ -242,10 +300,7 @@ const PassengerReportsTable = (props) => {
                                 InputLabelProps={field.value && { shrink: true }}
                                 onChange={(event) => {
                                     field.onChange(event.target.value)
-                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-                                        setModifiedAgentData(res.payload)
-                                        console.log("res.payload", res.payload)
-                                    });
+                                    handleGetAgents()
                                 }}
                             />)
                         }}
@@ -265,9 +320,7 @@ const PassengerReportsTable = (props) => {
                                 onChange={(event, newValue) => {
                                     onChange(newValue?.id)
                                     setValue('ditrictName', newValue?.name || "");
-                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-                                        setModifiedAgentData(res.payload)
-                                    });
+                                    handleGetAgents()
                                 }}
                                 renderInput={params => (
                                     <TextField
@@ -304,9 +357,7 @@ const PassengerReportsTable = (props) => {
                                 InputLabelProps={field.value && { shrink: true }}
                                 onChange={(event) => {
                                     field.onChange(event.target.value)
-                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-                                        setModifiedAgentData(res.payload)
-                                    });
+                                    handleGetAgents()
                                 }}
                             />)
                         }}
@@ -319,19 +370,14 @@ const PassengerReportsTable = (props) => {
                             <Autocomplete
                                 className="mx-5 mt-8 mb-16"
                                 freeSolo
-                                //value={value ? parentCategories.find(parentCategory => parentCategory.id === value) : null}
                                 options={groups}
                                 getOptionLabel={(option) => `${option.name}`}
                                 InputLabelProps={{ shrink: true }}
                                 onChange={(event, newValue) => {
                                     onChange(newValue?.id);
                                     setValue('groupName', newValue?.name || "");
-                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-                                        setModifiedAgentData(res.payload)
-                                    });
+                                    handleGetAgents()
                                 }}
-                                //value={employee && employee.branch}
-                                //defaultValue={{ id: null, name: "Select a branch" }}
                                 renderInput={params => (
                                     <TextField
                                         {...params}
@@ -370,9 +416,7 @@ const PassengerReportsTable = (props) => {
                                 placeholder="dd/MM/yyyy"
                                 onChange={(value) => {
                                     value && field.onChange(moment(new Date(value)).format("YYYY-MM-DD"))
-                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-                                        setModifiedAgentData(res.payload)
-                                    });
+                                    handleGetAgents()
                                 }}
                                 InputAdornmentProps={{ position: "start" }}
                             />)
@@ -398,9 +442,7 @@ const PassengerReportsTable = (props) => {
                                 placeholder="dd/MM/yyyy"
                                 onChange={(value) => {
                                     value && field.onChange(moment(new Date(value)).format("YYYY-MM-DD"))
-                                    dispatch(getAgents({ values: getValues(), pageAndSize: { page, size } })).then(res => {
-                                        setModifiedAgentData(res.payload)
-                                    });
+                                    handleGetAgents()
                                 }}
                                 InputAdornmentProps={{ position: "start" }}
                             />)
@@ -408,15 +450,6 @@ const PassengerReportsTable = (props) => {
                     />
 
                 </div>
-                <Button
-                    variant="outlined"
-                    onClick={() => {
-                        reset({})
-                        dispatch(getAllAgents(getValues())).then(res => {
-                            setModifiedAgentData(res.payload)
-                        });
-                    }}
-                >Show All <ListIcon /></Button>
             </div>
             <div
                 className={classes.menubar}
@@ -432,37 +465,32 @@ const PassengerReportsTable = (props) => {
                     onClickLastPage={lastPageHandler}
                 />
                 <GetApp
-                    className="cursor-pointer inside inside"
-                    style={{
-                        marginLeft: '7px',
-                        marginRight: '7px',
-                        height: '30px',
-                        width: '30px'
-                    }} />
+                    className="cursor-pointer inside icon"
+                    onClick={() => downloadHandler()}
+                />
                 <PrintIcon
-                    onClick={handlePrint}
-                    className="cursor-pointer inside"
-                    style={{
-                        marginLeft: '7px',
-                        marginRight: '7px',
-                        height: '30px',
-                        width: '30px'
-                    }} />
+                    onClick={() => setInPrint(true)}
+                    className="cursor-pointer inside icon"
+                />
 
-                <ListIcon
-                    className="cursor-pointer inside"
-                    style={{
-                        height: '30px',
-                        marginLeft: '7px',
-                        marginRight: '7px',
-                        width: '30px'
-                    }} />
+                <FontAwesomeIcon
+                    className="cursor-pointer inside icon"
+                    onClick={() => handleGetAgents()}
+                    icon={faBookOpen}
+                />
+
+                <FontAwesomeIcon
+                    className="cursor-pointer inside icon"
+                    onClick={() => handleGetAllAgents()}
+                    icon={faScroll}
+                />
+
             </div>
 
-            <div ref={componentRef}>
+            <div ref={componentRef} id="downloadPage">
 
-                {modifiedAgentData.map(agent => (//{((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
-                    <SinglePage classes={classes} data={agent.data} generalData={generalData} serialNumber={((agent.page * agent.size) - agent.size) + 1} />
+                {modifiedAgentData.map(agent => (
+                    <SinglePage classes={classes} data={agent} generalData={generalData} serialNumber={((agent.page * agent.size) - agent.size) + 1} setPage={setPage} />
                 ))}
 
             </div>

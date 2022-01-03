@@ -10,9 +10,15 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         width: 'fit-content',
         color: theme.palette.primary.main,
-        height: '30px',
-        '& .icon': {
-            // height: '100%'
+        height: '40px',
+        '& .pagIcon': {
+            height: '40px',
+            padding: '5px',
+            width: '40px',
+            '&:active': {
+                borderRadius: '50%',
+                border: '1px solid'
+            }
         },
         '& .pageNumberContainer': {
             margin: '0px 10px',
@@ -50,22 +56,24 @@ function Pagination({
 
     return (
         <div className={classes.paginationContainer}>
-            <FirstPage className='icon cursor-pointer' fontSize='large'
-                onClick={() => onClickFirstPage({ page: 1, size })}
+            <FirstPage className='pagIcon cursor-pointer' fontSize='large'
+                onClick={() => { (page === 1) || onClickFirstPage({ page: 1, size }) }}
             />
-            <NavigateBefore className='icon cursor-pointer' fontSize='large'
-                onClick={() => onClickPreviousPage({ page: page - 1, size })}
+            <NavigateBefore className='pagIcon cursor-pointer' fontSize='large'
+                onClick={() => { (page === 1) || onClickPreviousPage({ page: page - 1, size }) }}
             />
-            <div className='pageNumberContainer'>
-                <h2>{page}</h2>
-                <h4>{page && '/'}</h4>
-                <h2>{totalPages}</h2>
-            </div>
-            <NavigateNext className='icon cursor-pointer' fontSize='large'
-                onClick={() => onClickNextPage({ page: page + 1, size })}
+            {(page && totalPages) ? (
+                <div className='pageNumberContainer'>
+                    <h2>{page}</h2>
+                    <h4>{page && '/'}</h4>
+                    <h2>{totalPages}</h2>
+                </div>
+            ) : null}
+            <NavigateNext className='pagIcon cursor-pointer' fontSize='large'
+                onClick={() => { (page === totalPages) || onClickNextPage({ page: page + 1, size }) }}
             />
-            <LastPage className='icon cursor-pointer' fontSize='large'
-                onClick={() => onClickLastPage({ page, size })}
+            <LastPage className='pagIcon cursor-pointer' fontSize='large'
+                onClick={() => { (page === totalPages) || onClickLastPage({ page: totalPages, size }) }}
             />
         </div>
     )

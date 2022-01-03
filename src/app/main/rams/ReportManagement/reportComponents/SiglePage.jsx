@@ -10,13 +10,17 @@ import {
 } from '../../../../constant/constants';
 import '../Print.css';
 
-function SiglePage({ classes, data, generalData, serialNumber }) {
+function SiglePage({ classes, data, generalData, serialNumber, setPage }) {
 
     let pageBasedSerialNo = serialNumber
 
     return (
         <div
             className={`${classes.pageContainer} printPageContainer`}
+            onMouseOver={() => {
+                setPage(data.page)
+                console.log("onMouseOver", data.page)
+            }}
         >
 
             <div>
@@ -62,7 +66,7 @@ function SiglePage({ classes, data, generalData, serialNumber }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data?.map((agent, idx) => (
+                        {data?.data?.map((agent, idx) => (
                             <TableRow id={idx} className='tableRow'>
                                 <TableCell align="center" className='tableCell'><div>{pageBasedSerialNo++}</div></TableCell>
                                 <TableCell align="center" className='tableCell'><div>{agent?.username}</div></TableCell>
@@ -74,15 +78,6 @@ function SiglePage({ classes, data, generalData, serialNumber }) {
                         ))
                         }
                     </TableBody>
-                    {/* {!_.isEmpty(data) &&
-                                <TableRow style={{ backgroundColor: '#D7DBDD' }}>
-                                    <TableCell align="center" />
-                                    <TableCell align="center" />
-                                    <TableCell align="center" />
-                                    <TableCell align="center" />
-                                    <TableCell align="center">Total</TableCell>
-                                    <TableCell align="center">{subTotal}</TableCell>
-                                </TableRow>} */}
                 </Table>
             </div>
 
