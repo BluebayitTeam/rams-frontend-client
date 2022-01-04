@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const useReportData = (orginalData = [], row = 5) => {
+const useReportData = (orginalData = [], row = 25) => {
 
     const [data, setData] = useState([])
 

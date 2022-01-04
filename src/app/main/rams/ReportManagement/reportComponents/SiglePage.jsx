@@ -1,4 +1,3 @@
-import _ from '@lodash';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,16 +9,18 @@ import {
 } from '../../../../constant/constants';
 import '../Print.css';
 
-function SiglePage({ classes, data, generalData, serialNumber, setPage }) {
+function SiglePage({ classes, data, generalData, serialNumber, setPage, inSiglePageMode }) {
 
     let pageBasedSerialNo = serialNumber
 
     return (
         <div
             className={`${classes.pageContainer} printPageContainer`}
+            style={{
+                // height: '100vh'
+            }}
             onMouseOver={() => {
-                setPage(data.page)
-                console.log("onMouseOver", data.page)
+                inSiglePageMode || setPage(data.page)
             }}
         >
 
@@ -81,32 +82,45 @@ function SiglePage({ classes, data, generalData, serialNumber, setPage }) {
                 </Table>
             </div>
 
-            <div className={classes.pageBottmContainer}>
+
+
+            <table className={classes.pageBottmContainer}>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h5><b>Address: </b>{generalData?.address || ""}</h5>
+                        </td>
+                        <td>
+                            <h5><b>Mobile: </b>{generalData?.phone || ""}</h5>
+                        </td>
+                        <td>
+                            <h5><b>Email: </b>{generalData?.email || ""}</h5>
+                        </td>
+                        <td>
+                            <h5><b>Website:</b><a href={generalData?.site_address || ""} target='_blank' rel="noreferrer">{generalData?.site_address}</a></h5>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {/* <div className={classes.pageBottmContainer}>
                 <div className={classes.pageBottm}
                     style={{
                         visibility: _.isEmpty(generalData) ? 'hidden' : 'visible'
                     }}>
                     <div>
-                        <h5><b>Address:</b></h5>
-                        <h5>{generalData?.address || ""}</h5>
+
                     </div>
 
-                    <div>
-                        <h5><b>Mobile:</b></h5>
-                        <h5>{generalData?.phone || ""}</h5>
-                    </div>
+
 
                     <div>
-                        <h5><b>Email:</b></h5>
-                        <h5>{generalData?.email || ""}</h5>
+
                     </div>
 
-                    <div>
-                        <h5><b>Website:</b></h5>
-                        <a href={generalData?.site_address || ""} target='_blank' rel="noreferrer">{generalData?.site_address}</a>
-                    </div>
+
                 </div>
-            </div>
+            </div> */}
 
         </div>
     )

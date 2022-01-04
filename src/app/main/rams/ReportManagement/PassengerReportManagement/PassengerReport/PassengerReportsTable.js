@@ -1,5 +1,5 @@
 
-import { faBookOpen, faScroll } from '@fortawesome/free-solid-svg-icons';
+import { faBookOpen, faDownload, faFileExcel, faFilePdf, faScroll } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, TextField } from "@material-ui/core";
 import { GetApp } from "@material-ui/icons";
@@ -13,6 +13,7 @@ import html2PDF from 'jspdf-html2canvas';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
@@ -24,6 +25,12 @@ import { getAgents, getAllAgents } from '../store/passengerReportSlice';
 
 
 const useStyles = makeStyles(theme => ({
+    headContainer: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: '40px',
+        width: 'fit-content'
+    },
     pageContainer: {
         width: '90%',
         backgroundColor: 'white',
@@ -47,13 +54,67 @@ const useStyles = makeStyles(theme => ({
             color: theme.palette.primary.main
         },
         '& .icon': {
-            margin: '0px 3px',
+            margin: '0px 5px',
             height: '40px',
             padding: '5px',
             width: '40px',
+            borderRadius: '50%',
             '&:active': {
-                borderRadius: '50%',
-                border: '1px solid'
+                border: '1px solid !important'
+            },
+            '&:hover': {
+                border: '1px solid !important'
+            }
+        },
+        '& .downloadIcon': {
+            position: 'relative',
+            height: 'fit-content',
+            width: 'fit-content',
+            margin: '0px 5px',
+            borderRadius: '50%',
+            textAlign: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            '&:hover .downloadOptionContainer': {
+                display: 'flex !important',
+            },
+            '& .downloadOptionContainer': {
+                display: 'none',
+                position: 'absolute',
+                width: '150px',
+                top: '35px',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingTop: '10px',
+                '&:hover': {
+                    display: 'flex !important',
+                },
+                '& .indicator': {
+                    height: '10px',
+                    width: '10px',
+                    transform: 'rotate(41deg)',
+                    backgroundColor: theme.palette.primary.light,
+                    marginBottom: '-5px',
+                },
+                '& .downloadOptions': {
+                    backgroundColor: theme.palette.primary.light,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    borderRadius: '10px',
+                    '& .downloadContainer': {
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                        width: '80px',
+                        padding: '5px 3px',
+                        background: theme.palette.primary.main,
+                        color: theme.palette.type == "dark" ? 'black' : 'white',
+                        borderRadius: '10px',
+                    }
+                }
             }
         }
     },
@@ -108,9 +169,8 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         padding: '10px',
         background: '#e9e9e9',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
+        height: '40px',
+        textAlign: 'center',
     },
     pageBottm: {
         display: 'flex',
@@ -147,7 +207,7 @@ const PassengerReportsTable = (props) => {
 
     const [generalData, setGeneralData] = useState({});
 
-    const [modifiedAgentData, setModifiedAgentData] = useReportData([], 25)
+    const [modifiedAgentData, setModifiedAgentData] = useReportData([])
 
     console.log("modifiedAgentData", modifiedAgentData)
 
@@ -155,6 +215,10 @@ const PassengerReportsTable = (props) => {
     const [inPrint, setInPrint] = useState(false)
     const [inSiglePageMode, setInSiglePageMode] = useState(true)
     const [inShowAllMode, setInShowAllMode] = useState(false)
+    const [inDownload, setInDownload] = useState(false)
+
+    const [dowloadPdf, setDowloadPdf] = useState(false)
+    const [dowloadExcel, setDowloadExcel] = useState(false)
 
     //pagination state
     const [page, setPage] = useState(1)
@@ -181,6 +245,7 @@ const PassengerReportsTable = (props) => {
     //print
     const componentRef = useRef();
 
+    //print handler
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
@@ -207,16 +272,61 @@ const PassengerReportsTable = (props) => {
         }
     }, [modifiedAgentData])
 
-    //download handler
-    const downloadHandler = () => {
+
+
+
+    //pdf download handler
+    const pdfDownloadHandler = () => {
         html2PDF(downloadPage, {
-            jsPDF: {
-                format: 'a4',
+            margin: [0, 0, 0, 0],
+            filename: 'pdfhtml2.pdf',
+            html2canvas: {
+                dpi: 300,
+                letterRendering: true
             },
-            imageType: 'image/jpeg',
-            output: './pdf/generate.pdf'
+            setTestIsImage: false,
+            useCORS: true,
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+
         });
+        setDowloadPdf(false)
     };
+
+    //download action when show all mode or fecth data to go show all mode
+    useEffect(() => {
+        if (inDownload) {
+            if (inSiglePageMode && (totalPages > 1)) {
+                handleGetAllAgents()
+            }
+            else {
+                if (dowloadPdf) {
+                    pdfDownloadHandler()
+                    setInDownload(false)
+                }
+                else if (dowloadExcel) {
+                    document.getElementById("test-table-xls-button").click()
+                    setInDownload(false)
+                    setDowloadExcel(false)
+                }
+            }
+        }
+    }, [inDownload])
+
+    //download action after show all mode's data fething 
+    useEffect(() => {
+        if (inDownload) {
+            if (dowloadPdf) {
+                pdfDownloadHandler()
+                setInDownload(false)
+            }
+            else if (dowloadExcel) {
+                document.getElementById("test-table-xls-button").click()
+                setInDownload(false)
+                setDowloadExcel(false)
+            }
+            handleGetAgents()
+        }
+    }, [modifiedAgentData])
 
     //pagination handler
     const firstPageHandler = (event) => {
@@ -262,14 +372,7 @@ const PassengerReportsTable = (props) => {
 
     return (
         <>
-            <div
-                style={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginBottom: '40px',
-                    width: 'fit-content'
-                }}
-            >
+            <div className={classes.headContainer}>
                 <h2 style={{
                     marginBottom: '10px',
                     width: 'fit-content'
@@ -454,6 +557,7 @@ const PassengerReportsTable = (props) => {
             <div
                 className={classes.menubar}
             >
+                {/* pagination */}
                 <Pagination
                     page={page}
                     size={size}
@@ -464,36 +568,114 @@ const PassengerReportsTable = (props) => {
                     onClickNextPage={nextPageHandler}
                     onClickLastPage={lastPageHandler}
                 />
-                <GetApp
-                    className="cursor-pointer inside icon"
-                    onClick={() => downloadHandler()}
-                />
+
+                {/* download */}
+                <div className="downloadIcon">
+                    <GetApp
+                        className='cursor-pointer inside icon'
+                        style={{ margin: '0px', border: inDownload && '1px solid' }}
+                    />
+
+                    {/* download options*/}
+                    <div className='downloadOptionContainer'>
+                        <div className='indicator'></div>
+                        <div className='downloadOptions'>
+                            {/* download as Pdf */}
+                            <div
+                                className="cursor-pointer downloadContainer"
+                                style={{
+                                    width: '150px',
+                                    margin: '10px',
+                                }}
+                                onClick={() => {
+                                    setInDownload(true)
+                                    setDowloadPdf(true)
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faFilePdf}
+                                />
+                                <b>Download PDF</b>
+                                <FontAwesomeIcon
+                                    icon={faDownload}
+                                />
+                            </div>
+
+                            {/* download as Excel */}
+                            <div
+                                className="cursor-pointer downloadContainer"
+                                style={{
+                                    width: '160px',
+                                    margin: '0px 10px 10px 10px',
+                                }}
+                                onClick={() => {
+                                    setInDownload(true)
+                                    setDowloadExcel(true)
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faFileExcel}
+                                />
+                                <b>Download Excel</b>
+                                <FontAwesomeIcon
+                                    icon={faDownload}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* print */}
                 <PrintIcon
-                    onClick={() => setInPrint(true)}
                     className="cursor-pointer inside icon"
+                    style={{ padding: '6px' }}
+                    onClick={() => setInPrint(true)}
                 />
 
+                {/* single page */}
                 <FontAwesomeIcon
                     className="cursor-pointer inside icon"
+                    style={{
+                        padding: '8px',
+                        border: inSiglePageMode && '1px solid'
+                    }}
                     onClick={() => handleGetAgents()}
                     icon={faBookOpen}
                 />
 
+                {/* all page */}
                 <FontAwesomeIcon
                     className="cursor-pointer inside icon"
+                    style={{
+                        padding: '8px',
+                        border: inShowAllMode && '1px solid'
+                    }}
                     onClick={() => handleGetAllAgents()}
                     icon={faScroll}
                 />
 
             </div>
 
-            <div ref={componentRef} id="downloadPage">
-
-                {modifiedAgentData.map(agent => (
-                    <SinglePage classes={classes} data={agent} generalData={generalData} serialNumber={((agent.page * agent.size) - agent.size) + 1} setPage={setPage} />
-                ))}
-
+            {/* excel converter */}
+            <div className='hidden'>
+                <ReactHtmlTableToExcel
+                    id="test-table-xls-button"
+                    className="download-table-xls-button"
+                    table="table-to-xls"
+                    filename="tablexls"
+                    sheet="tablexls"
+                    buttonText="Download as XLS" />
             </div>
+
+            <table id="table-to-xls" className='w-full'>
+                <div ref={componentRef} id="downloadPage">
+                    {/* each single page */}
+                    {modifiedAgentData.map(agent => (
+                        <SinglePage classes={classes} data={agent} generalData={generalData} serialNumber={((agent.page * agent.size) - agent.size) + 1} setPage={setPage} inSiglePageMode={inSiglePageMode} />
+                    ))}
+
+                </div>
+            </table>
         </>
     );
 };
