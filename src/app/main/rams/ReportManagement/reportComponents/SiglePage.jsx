@@ -1,24 +1,29 @@
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import React from 'react';
-import {
-    BASE_URL
-} from '../../../../constant/constants';
+import { BASE_URL } from '../../../../constant/constants';
 import '../Print.css';
 
-function SiglePage({ classes, data, generalData, serialNumber, setPage, inSiglePageMode }) {
+function SiglePage({
+    classes,
+    data,
+    generalData,
+    serialNumber,
+    setPage,
+    inSiglePageMode,
+    setSortBy
+}) {
 
     let pageBasedSerialNo = serialNumber
 
     return (
         <div
             className={`${classes.pageContainer} printPageContainer`}
-            style={{
-                // height: '100vh'
-            }}
             onMouseOver={() => {
                 inSiglePageMode || setPage(data.page)
             }}
@@ -49,20 +54,55 @@ function SiglePage({ classes, data, generalData, serialNumber, setPage, inSigleP
                             <TableCell align="center">
                                 Sl_No
                             </TableCell>
-                            <TableCell align="center">
-                                Name
+                            <TableCell align="center" className='tableCellHead'>
+                                <div onClick={() => setSortBy(data.sortBy === 'username' ? '' : 'username')}>
+                                    Name{' '}
+                                    <FontAwesomeIcon
+                                        className='sortIcon'
+                                        style={{ transform: data.sortBy === 'username' ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                        icon={faArrowUp}
+                                    />
+                                </div>
                             </TableCell>
-                            <TableCell align="center">
-                                Group
+                            <TableCell align="center" className='tableCellHead'>
+                                <div onClick={() => setSortBy(data.sortBy === 'group' ? '' : 'group')}>
+                                    Group{' '}
+                                    <FontAwesomeIcon
+                                        className='sortIcon'
+                                        style={{ transform: data.sortBy === 'group' ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                        icon={faArrowUp}
+                                    />
+                                </div>
                             </TableCell>
-                            <TableCell align="center">
-                                District
+                            <TableCell align="center" className='tableCellHead'>
+                                <div onClick={() => setSortBy(data.sortBy === 'city' ? '' : 'city')}>
+                                    District{' '}
+                                    <FontAwesomeIcon
+                                        className='sortIcon'
+                                        style={{ transform: data.sortBy === 'city' ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                        icon={faArrowUp}
+                                    />
+                                </div>
                             </TableCell>
-                            <TableCell align="center">
-                                Mobile
+                            <TableCell align="center" className='tableCellHead'>
+                                <div onClick={() => setSortBy(data.sortBy === 'primary_phone' ? '' : 'primary_phone')}>
+                                    Mobile{' '}
+                                    <FontAwesomeIcon
+                                        className='sortIcon'
+                                        style={{ transform: data.sortBy === 'primary_phone' ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                        icon={faArrowUp}
+                                    />
+                                </div>
                             </TableCell>
-                            <TableCell align="center">
-                                Email
+                            <TableCell align="center" className='tableCellHead'>
+                                <div onClick={() => setSortBy(data.sortBy === 'email' ? '' : 'email')}>
+                                    Email{' '}
+                                    <FontAwesomeIcon
+                                        className='sortIcon'
+                                        style={{ transform: data.sortBy === 'email' ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                        icon={faArrowUp}
+                                    />
+                                </div>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -102,26 +142,6 @@ function SiglePage({ classes, data, generalData, serialNumber, setPage, inSigleP
                     </tr>
                 </tbody>
             </table>
-
-            {/* <div className={classes.pageBottmContainer}>
-                <div className={classes.pageBottm}
-                    style={{
-                        visibility: _.isEmpty(generalData) ? 'hidden' : 'visible'
-                    }}>
-                    <div>
-
-                    </div>
-
-
-
-                    <div>
-
-                    </div>
-
-
-                </div>
-            </div> */}
-
         </div>
     )
 }

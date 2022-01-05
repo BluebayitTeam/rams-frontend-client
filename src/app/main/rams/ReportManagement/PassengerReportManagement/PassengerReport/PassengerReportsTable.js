@@ -22,6 +22,7 @@ import '../../Print.css';
 import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
 import { getAgents, getAllAgents } from '../store/passengerReportSlice';
+import PassengerFilterMenu from './PassengerFilterMenu';
 
 
 const useStyles = makeStyles(theme => ({
@@ -162,8 +163,23 @@ const useStyles = makeStyles(theme => ({
                 justifyContent: 'center',
                 alignItems: 'center',
                 overflow: 'hidden',
-            }
+            },
         },
+        '& .tableCellHead': {
+            '& > div': {
+                '&:active': {
+                    color: 'grey'
+                },
+                '&:hover .sortIcon': {
+                    opacity: '1 !important'
+                },
+                '& .sortIcon': {
+                    transition: '0.3s',
+                    opacity: '0',
+                    color: 'rgb(17, 24, 39)'
+                }
+            }
+        }
     },
     pageBottmContainer: {
         width: '100%',
@@ -207,13 +223,13 @@ const PassengerReportsTable = (props) => {
 
     const [generalData, setGeneralData] = useState({});
 
-    const [modifiedAgentData, setModifiedAgentData] = useReportData([])
+    const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData([], 5)
 
     console.log("modifiedAgentData", modifiedAgentData)
 
     //tools state
     const [inPrint, setInPrint] = useState(false)
-    const [inSiglePageMode, setInSiglePageMode] = useState(true)
+    const [inSiglePageMode, setInSiglePageMode] = useState(false)
     const [inShowAllMode, setInShowAllMode] = useState(false)
     const [inDownload, setInDownload] = useState(false)
 
@@ -222,7 +238,7 @@ const PassengerReportsTable = (props) => {
 
     //pagination state
     const [page, setPage] = useState(1)
-    const [size, setSize] = useState(25)
+    const [size, setSize] = useState(5)
     const [totalPages, setTotalPages] = useState(0)
     const [totalElements, setTotalElements] = useState(0)
 
@@ -370,6 +386,9 @@ const PassengerReportsTable = (props) => {
         });
     }
 
+
+
+    console.log("rendered agent Report")
     return (
         <>
             <div className={classes.headContainer}>
@@ -377,14 +396,17 @@ const PassengerReportsTable = (props) => {
                     marginBottom: '10px',
                     width: 'fit-content'
                 }}>Filter</h2>
+
+                <PassengerFilterMenu />
                 <div
                     style={{
-                        display: 'flex',
+                        display: 'none',
                         justifyContent: 'center',
                         alignItems: 'center',
                         width: 'fit-content'
                     }}
                 >
+
 
                     <Controller
                         name="username"
@@ -409,12 +431,20 @@ const PassengerReportsTable = (props) => {
                         }}
                     />
 
+
+                    <button onClick={() => document.getElementById('district').focus()}>focus</button>
                     <Controller
                         name="district"
                         control={control}
                         render={({ field: { onChange, value } }) => (
                             <Autocomplete
+                                hidden={true}
+                                id='district'
+                                color='primary'
                                 className="mx-5 mt-8 mb-16"
+                                // open={true}
+                                openOnFocus={true}
+                                onClose={(e) => console.log("district onClose")}
                                 freeSolo
                                 //value={value ? parentCategories.find(parentCategory => parentCategory.id === value) : null}
                                 options={districts}
@@ -431,6 +461,7 @@ const PassengerReportsTable = (props) => {
                                         style={{ width: '170px' }}
                                         placeholder="Select District"
                                         label="District"
+                                        id='districtInput'
                                         error={!!errors.district}
                                         required
                                         helperText={errors?.district?.message}
@@ -473,6 +504,7 @@ const PassengerReportsTable = (props) => {
                             <Autocomplete
                                 className="mx-5 mt-8 mb-16"
                                 freeSolo
+                                onClose={(e) => console.log("group closed")}
                                 options={groups}
                                 getOptionLabel={(option) => `${option.name}`}
                                 InputLabelProps={{ shrink: true }}
@@ -632,7 +664,7 @@ const PassengerReportsTable = (props) => {
                     onClick={() => setInPrint(true)}
                 />
 
-                {/* single page */}
+                {/* show single page */}
                 <FontAwesomeIcon
                     className="cursor-pointer inside icon"
                     style={{
@@ -643,7 +675,7 @@ const PassengerReportsTable = (props) => {
                     icon={faBookOpen}
                 />
 
-                {/* all page */}
+                {/* show all page */}
                 <FontAwesomeIcon
                     className="cursor-pointer inside icon"
                     style={{
@@ -671,7 +703,7 @@ const PassengerReportsTable = (props) => {
                 <div ref={componentRef} id="downloadPage">
                     {/* each single page */}
                     {modifiedAgentData.map(agent => (
-                        <SinglePage classes={classes} data={agent} generalData={generalData} serialNumber={((agent.page * agent.size) - agent.size) + 1} setPage={setPage} inSiglePageMode={inSiglePageMode} />
+                        <SinglePage classes={classes} data={agent} generalData={generalData} serialNumber={((agent.page * agent.size) - agent.size) + 1} setPage={setPage} inSiglePageMode={inSiglePageMode} setSortBy={setSortBy} />
                     ))}
 
                 </div>
