@@ -1,22 +1,20 @@
 
 import { faBookOpen, faDownload, faFileExcel, faFilePdf, faScroll } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { makeStyles, TextField } from "@material-ui/core";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { makeStyles } from "@material-ui/core";
 import { GetApp } from "@material-ui/icons";
 import PrintIcon from '@material-ui/icons/Print';
-import { Autocomplete } from '@material-ui/lab';
-import { KeyboardDatePicker } from '@material-ui/pickers';
 import useReportData from "app/@customHooks/useReportData";
 import useUserInfo from 'app/@customHooks/useUserInfo';
-import { getCities, getGroups } from 'app/store/dataSlice';
 import html2PDF from 'jspdf-html2canvas';
-import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
+import * as yup from 'yup';
 import { GET_SITESETTINGS } from '../../../../../constant/constants';
 import '../../Print.css';
 import Pagination from '../../reportComponents/Pagination';
@@ -24,12 +22,10 @@ import SinglePage from '../../reportComponents/SiglePage';
 import { getAgents, getAllAgents } from '../store/passengerReportSlice';
 import PassengerFilterMenu from './PassengerFilterMenu';
 
-
 const useStyles = makeStyles(theme => ({
     headContainer: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginBottom: '40px',
         width: 'fit-content'
     },
     pageContainer: {
@@ -205,19 +201,21 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-
+const schema = yup.object().shape({})
 
 const PassengerReportsTable = (props) => {
 
     const classes = useStyles()
 
-    const methods = useForm();
+    const methods = useForm({
+        mode: 'onChange',
+        defaultValues: {},
+        resolver: yupResolver(schema)
+    });
+
     const { reset, control, formState, getValues, setValue } = methods;
     const { errors } = formState;
     const dispatch = useDispatch();
-
-    const districts = useSelector(state => state.data.cities);
-    const groups = useSelector(state => state.data.groups);
 
     const { authTOKEN } = useUserInfo()
 
@@ -245,8 +243,7 @@ const PassengerReportsTable = (props) => {
     let downloadPage = document.getElementById('downloadPage');
 
     useEffect(() => {
-        dispatch(getCities());
-        dispatch(getGroups())
+
         getGeneralData();
     }, []);
 
@@ -397,7 +394,11 @@ const PassengerReportsTable = (props) => {
                     width: 'fit-content'
                 }}>Filter</h2>
 
-                <PassengerFilterMenu />
+
+                <FormProvider {...methods}>
+                    <PassengerFilterMenu inShowAllMode={inShowAllMode} handleGetAgents={handleGetAgents} handleGetAllAgents={handleGetAllAgents} />
+                </FormProvider>
+
                 <div
                     style={{
                         display: 'none',
@@ -408,7 +409,7 @@ const PassengerReportsTable = (props) => {
                 >
 
 
-                    <Controller
+                    {/* <Controller
                         name="username"
                         control={control}
                         render={({ field }) => {
@@ -429,11 +430,11 @@ const PassengerReportsTable = (props) => {
                                 }}
                             />)
                         }}
-                    />
+                    /> */}
 
 
-                    <button onClick={() => document.getElementById('district').focus()}>focus</button>
-                    <Controller
+                    {/* <button onClick={() => document.getElementById('district').focus()}>focus</button> */}
+                    {/* <Controller
                         name="district"
                         control={control}
                         render={({ field: { onChange, value } }) => (
@@ -473,9 +474,9 @@ const PassengerReportsTable = (props) => {
                                 )}
                             />
                         )}
-                    />
+                    /> */}
 
-                    <Controller
+                    {/* <Controller
                         name="primary_phone"
                         control={control}
                         render={({ field }) => {
@@ -495,9 +496,9 @@ const PassengerReportsTable = (props) => {
                                 }}
                             />)
                         }}
-                    />
+                    /> */}
 
-                    <Controller
+                    {/* <Controller
                         name="group"
                         control={control}
                         render={({ field: { onChange, value } }) => (
@@ -529,10 +530,10 @@ const PassengerReportsTable = (props) => {
                                 )}
                             />
                         )}
-                    />
+                    /> */}
 
 
-                    <Controller
+                    {/* <Controller
                         name="date_after"
                         control={control}
                         render={({ field }) => {
@@ -556,9 +557,9 @@ const PassengerReportsTable = (props) => {
                                 InputAdornmentProps={{ position: "start" }}
                             />)
                         }}
-                    />
+                    /> */}
 
-                    <Controller
+                    {/* <Controller
                         name="date_before"
                         control={control}
                         render={({ field }) => {
@@ -582,7 +583,7 @@ const PassengerReportsTable = (props) => {
                                 InputAdornmentProps={{ position: "start" }}
                             />)
                         }}
-                    />
+                    /> */}
 
                 </div>
             </div>
