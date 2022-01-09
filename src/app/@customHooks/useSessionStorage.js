@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
 
 const useSessionStorage = (key = '') => {
-    const [state, setState] = useState(sessionStorage.getItem(key))
+	const [state, setState] = useState(sessionStorage.getItem(key));
 
-    useEffect(() => {
-        window.addEventListener('storage', (event) => {
-            setState(sessionStorage.getItem(key))
-            console.log('sessionStorageFire', event)
-        });
+	useEffect(() => {
+		const resetSessionStorage = () => {
+			setState(sessionStorage.getItem(key));
+			console.log('sessionStorageFire', key);
+		};
 
-        return () => window.removeEventListener('storage', () => null)
-    }, [])
+		//reset when storage is changed
+		window.addEventListener('storage', resetSessionStorage);
 
-    return state
-}
+		//unsubscribe event listener when this hook unmount
+		return () => window.removeEventListener('storage', resetSessionStorage);
+	}, []);
 
-export default useSessionStorage
+	return state;
+};
+
+export default useSessionStorage;
