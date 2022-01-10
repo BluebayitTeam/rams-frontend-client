@@ -19,8 +19,8 @@ import { GET_SITESETTINGS } from '../../../../../constant/constants';
 import '../../Print.css';
 import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
-import { getAgents, getAllAgents } from '../store/passengerReportSlice';
-import PassengerFilterMenu from './PassengerFilterMenu';
+import { getAgents, getAllAgents } from '../store/agentReportSlice';
+import AgentFilterMenu from './AgentFilterMenu';
 
 const useStyles = makeStyles(theme => ({
 	headContainer: {
@@ -276,7 +276,7 @@ function tableColumnsReducer(state, action) {
 	}
 }
 
-const PassengerReportsTable = props => {
+const AgentReportsTable = props => {
 	const classes = useStyles();
 
 	const methods = useForm({
@@ -406,7 +406,7 @@ const PassengerReportsTable = props => {
 		}
 	}, [modifiedAgentData]);
 
-	//column select handler by window's click event
+	//column select close handler
 	useLayoutEffect(() => {
 		window.addEventListener('click', e => {
 			if (e.target.id !== 'insideClmSelect') setShowClmSelectOption(false);
@@ -474,7 +474,7 @@ const PassengerReportsTable = props => {
 
 				{/* filter */}
 				<FormProvider {...methods}>
-					<PassengerFilterMenu
+					<AgentFilterMenu
 						inShowAllMode={inShowAllMode}
 						handleGetAgents={handleGetAgents}
 						handleGetAllAgents={handleGetAllAgents}
@@ -639,4 +639,4 @@ const PassengerReportsTable = props => {
 		</>
 	);
 };
-export default withRouter(PassengerReportsTable);
+export default withRouter(AgentReportsTable);

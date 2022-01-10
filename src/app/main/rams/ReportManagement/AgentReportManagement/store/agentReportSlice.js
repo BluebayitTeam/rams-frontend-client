@@ -61,7 +61,7 @@ export const { selectAll: selectOrders, selectById: selectOrderById } = agentsRe
 	state => state.agentsReportManagement.agents
 );
 
-const passengerReportsSlice = createSlice({
+const agentReportsSlice = createSlice({
 	name: 'agentsReportManagement/agents',
 	initialState: agentsReportsAdapter.getInitialState({
 		searchText: '',
@@ -91,5 +91,5 @@ const passengerReportsSlice = createSlice({
 	}
 });
 
-export const { setOrdersSearchText } = passengerReportsSlice.actions;
-export default passengerReportsSlice.reducer;
+export const { setOrdersSearchText } = agentReportsSlice.actions;
+export default agentReportsSlice.reducer;

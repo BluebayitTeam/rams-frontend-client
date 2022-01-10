@@ -150,7 +150,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function PassengerFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents }) {
+function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents }) {
 	//element refs
 	const userNameEl = useRef(null);
 	const primaryPhoneEl = useRef(null);
@@ -560,4 +560,4 @@ function PassengerFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgent
 	);
 }
 
-export default PassengerFilterMenu;
+export default AgentFilterMenu;

@@ -406,7 +406,7 @@ const PassengerReportsTable = props => {
 		}
 	}, [modifiedAgentData]);
 
-	//column select handler by window's click event
+	//column select close handler
 	useLayoutEffect(() => {
 		window.addEventListener('click', e => {
 			if (e.target.id !== 'insideClmSelect') setShowClmSelectOption(false);
