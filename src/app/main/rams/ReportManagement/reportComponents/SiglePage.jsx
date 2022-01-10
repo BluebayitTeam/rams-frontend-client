@@ -10,15 +10,17 @@ import { BASE_URL } from '../../../../constant/constants';
 import '../Print.css';
 
 function SiglePage({
+	classes,
+	generalData,
 	reporTitle = 'Report',
 	tableColumns = [],
-	classes,
+	dispatchTableColumns,
 	data,
-	generalData,
 	serialNumber,
 	setPage,
 	inSiglePageMode,
-	setSortBy
+	setSortBy,
+	setSortBySubKey
 }) {
 	let pageBasedSerialNo = serialNumber;
 
@@ -47,44 +49,66 @@ function SiglePage({
 				<Table aria-label="simple table" className={classes.table}>
 					<TableHead style={{ backgroundColor: '#D7DBDD' }}>
 						<TableRow>
-							{tableColumns.map(column => (
-								<TableCell align="center" className="tableCellHead">
-									<div
-										onClick={() => {
-											column.sortAction !== false &&
-												setSortBy(data.sortBy === column.name ? '' : column.name);
-										}}
+							{tableColumns.map(column => {
+								return column.show ? (
+									<TableCell
+										align="center"
+										className="tableCellHead"
+										onDrop={e =>
+											dispatchTableColumns({
+												type: 'dragAndDrop',
+												dragger: e.dataTransfer.getData('draggerLebel'),
+												dropper: column.label
+											})
+										}
+										onDragOver={e => e.preventDefault()}
 									>
-										{`${column.label} `}
-										{column.sortAction !== false && (
-											<FontAwesomeIcon
-												className="sortIcon"
-												style={{
-													transform:
-														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
-												}}
-												icon={faArrowUp}
-											/>
-										)}
-									</div>
-								</TableCell>
-							))}
+										<div
+											draggable={true}
+											onDragStart={e => e.dataTransfer.setData('draggerLebel', column.label)}
+											onClick={() => {
+												if (column.sortAction !== false) {
+													setSortBy(data.sortBy === column.name ? '' : column.name);
+													if (setSortBySubKey && column.subName)
+														setSortBySubKey(column.subName);
+												}
+											}}
+										>
+											{`${column.label} `}
+											{column.sortAction !== false && (
+												<FontAwesomeIcon
+													className="sortIcon"
+													style={{
+														transform:
+															data.sortBy === column.name
+																? 'rotate(180deg)'
+																: 'rotate(0deg)'
+													}}
+													icon={faArrowUp}
+												/>
+											)}
+										</div>
+									</TableCell>
+								) : null;
+							})}
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{data?.data?.map((dataArr, idx) => (
 							<TableRow id={idx} className="tableRow">
-								{tableColumns.map(column => (
-									<TableCell align="center" className="tableCell">
-										<div>
-											{!column?.serialNo
-												? column?.subName
-													? dataArr?.[column.name]?.[column?.subName]
-													: dataArr?.[column.name]
-												: pageBasedSerialNo++}
-										</div>
-									</TableCell>
-								))}
+								{tableColumns.map(column => {
+									return column.show ? (
+										<TableCell align="center" className="tableCell">
+											<div>
+												{!column?.serialNo
+													? column?.subName
+														? dataArr?.[column.name]?.[column?.subName]
+														: dataArr?.[column.name]
+													: pageBasedSerialNo++}
+											</div>
+										</TableCell>
+									) : null;
+								})}
 							</TableRow>
 						))}
 					</TableBody>

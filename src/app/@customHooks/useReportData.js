@@ -1,55 +1,63 @@
-import _ from 'lodash'
-import { useEffect, useState } from 'react'
+import _ from 'lodash';
+import { useEffect, useState } from 'react';
 
 const useReportData = (orginalData = [], row = 25) => {
+	const [orginalArray, setOrginalArray] = useState([]);
+	const [data, setData] = useState([]);
+	const [sortBy, setSortBy] = useState('');
+	const [sortBySubKey, setSortBySubKey] = useState('name');
 
-    const [orginalArray, setOrginalArray] = useState([])
-    const [data, setData] = useState([])
-    const [sortBy, setSortBy] = useState("")
+	const modifyData = (orginalArr, size = row) => {
+		if (_.isArray(orginalArr)) {
+			setOrginalArray(orginalArr);
 
+			let shortedArray = orginalArr;
 
-    useEffect(() => {
-        modifyData(orginalData, row)
-    }, [])
+			//short array if required
+			if (sortBy) {
+				console.log('sortBy', sortBy);
+				console.log('orginalArray', orginalArray);
+				shortedArray = _.sortBy(shortedArray, [
+					o => (_.isObject(o[sortBy]) ? o[sortBy][sortBySubKey] : o[sortBy])
+				]);
+			}
 
-    useEffect(() => {
-        modifyData(orginalArray)
-    }, [sortBy])
+			console.log('shortedArray', shortedArray);
 
+			//modify array
+			let modifiedArr = [];
 
-    const modifyData = (orginalArr, size = row) => {
+			const countTotalPage = Math.ceil(shortedArray?.length / size);
+			const totalPage = isNaN(countTotalPage) ? 0 : countTotalPage;
 
-        if (_.isArray(orginalArr)) {
-            setOrginalArray(orginalArr)
+			console.time('ModifyArry');
+			for (let index = 0; index < totalPage; index++) {
+				modifiedArr.push({
+					page: index + 1,
+					size,
+					totalPage,
+					sortBy,
+					data: shortedArray.slice(
+						index + index * size - (index && index),
+						index + index * size + size - (index && index)
+					)
+				});
+			}
 
-            let shortedArray = orginalArr
+			setData(modifiedArr);
+		}
+	};
 
-            //short array if required
-            if (sortBy) {
-                console.log('sortBy', sortBy)
-                console.log("orginalArray", orginalArray)
-                shortedArray = _.sortBy(shortedArray, [(o) => _.isObject(o[sortBy]) ? o[sortBy]['name'] : o[sortBy]])
-            }
+	useEffect(() => {
+		modifyData(orginalData, row);
+	}, []);
 
-            console.log("shortedArray", shortedArray)
+	useEffect(() => {
+		modifyData(orginalArray);
+	}, [sortBy]);
 
-            //modify array
-            let modifiedArr = []
+	console.log('rendered usereportdata');
+	return [data, modifyData, setSortBy, setSortBySubKey];
+};
 
-            const countTotalPage = Math.ceil((shortedArray?.length / size))
-            const totalPage = isNaN(countTotalPage) ? 0 : countTotalPage
-
-            console.time('ModifyArry')
-            for (let index = 0; index < totalPage; index++) {
-                modifiedArr.push({ page: index + 1, size, totalPage, sortBy, data: shortedArray.slice((index + (index * size) - (index && index)), ((index + (index * size) + size) - (index && index))) })
-            }
-
-            setData(modifiedArr)
-        }
-    }
-
-    console.log("rendered usereportdata")
-    return [data, modifyData, setSortBy]
-}
-
-export default useReportData
+export default useReportData;
