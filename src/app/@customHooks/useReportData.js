@@ -18,7 +18,7 @@ const useReportData = (orginalData = [], row = 25) => {
 				console.log('sortBy', sortBy);
 				console.log('orginalArray', orginalArray);
 				shortedArray = _.sortBy(shortedArray, [
-					o => (_.isObject(o[sortBy]) ? o[sortBy][sortBySubKey] : o[sortBy])
+					o => (_.isObject(o[sortBy]) ? o[sortBy][sortBySubKey] || null : o[sortBy] || null)
 				]);
 			}
 

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AGENT_FILTER_BY, AGENT_FILTER_WITHOUT_PG } from 'app/constant/constants';
 import axios from 'axios';
 
@@ -21,7 +21,6 @@ export const getAgents = createAsyncThunk(
 			delete axios.defaults.headers.common['Content-type'];
 			delete axios.defaults.headers.common.Authorization;
 
-			console.log(res);
 			return res.data || {};
 		} catch (err) {
 			return rejectWithValue({});
@@ -47,7 +46,6 @@ export const getAllAgents = createAsyncThunk(
 			delete axios.defaults.headers.common['Content-type'];
 			delete axios.defaults.headers.common.Authorization;
 
-			console.log(res);
 			return res.data || {};
 		} catch (err) {
 			return rejectWithValue({});
@@ -55,41 +53,25 @@ export const getAllAgents = createAsyncThunk(
 	}
 );
 
-const agentsReportsAdapter = createEntityAdapter({});
-
-export const { selectAll: selectOrders, selectById: selectOrderById } = agentsReportsAdapter.getSelectors(
-	state => state.agentsReportManagement.agents
-);
-
 const agentReportsSlice = createSlice({
 	name: 'agentsReportManagement/agents',
-	initialState: agentsReportsAdapter.getInitialState({
-		searchText: '',
+	initialState: {
 		agents: []
-	}),
-	reducers: {
-		setOrdersSearchText: {
-			reducer: (state, action) => {
-				state.searchText = action.payload;
-			},
-			prepare: event => ({ payload: event?.target?.value || '' })
-		}
 	},
 	extraReducers: {
 		[getAgents.fulfilled]: (state, action) => {
 			state.agents = action.payload?.agents || [];
 		},
-		[getAgents.rejected]: (state, action) => {
+		[getAgents.rejected]: state => {
 			state.agents = [];
 		},
 		[getAllAgents.fulfilled]: (state, action) => {
 			state.agents = action.payload?.agents || [];
 		},
-		[getAllAgents.rejected]: (state, action) => {
+		[getAllAgents.rejected]: state => {
 			state.agents = [];
 		}
 	}
 });
 
-export const { setOrdersSearchText } = agentReportsSlice.actions;
 export default agentReportsSlice.reducer;

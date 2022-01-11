@@ -69,7 +69,8 @@ function SiglePage({
 											onClick={() => {
 												if (column.sortAction !== false) {
 													setSortBy(data.sortBy === column.name ? '' : column.name);
-													if (setSortBySubKey && column.subName)
+													setSortBySubKey &&
+														column.subName &&
 														setSortBySubKey(column.subName);
 												}
 											}}

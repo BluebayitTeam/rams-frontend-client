@@ -12,14 +12,13 @@ import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 
 import { FormProvider, useForm } from 'react-hook-form';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 import { useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import * as yup from 'yup';
 import { GET_SITESETTINGS } from '../../../../../constant/constants';
 import '../../Print.css';
 import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
-import { getAgents, getAllAgents } from '../store/passengerReportSlice';
+import { getAllPassengers, getPassengers } from '../store/passengerReportSlice';
 import PassengerFilterMenu from './PassengerFilterMenu';
 
 const useStyles = makeStyles(theme => ({
@@ -142,7 +141,8 @@ const useStyles = makeStyles(theme => ({
 						padding: '0px 5px 0px 0px'
 					},
 					'& > h5': {
-						fontSize: '14.5px'
+						fontSize: '14.5px',
+						whiteSpace: 'nowrap'
 					}
 				}
 			}
@@ -196,6 +196,8 @@ const useStyles = makeStyles(theme => ({
 		},
 		'& .tableCellHead': {
 			'& > div': {
+				cursor: 'pointer',
+				whiteSpace: 'nowrap',
 				'&:active': {
 					color: 'grey'
 				},
@@ -238,11 +240,21 @@ const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
 	{ label: 'Sl_No', sortAction: false, serialNo: true, show: true },
-	{ label: 'Name', name: 'username', show: true },
-	{ label: 'Group', name: 'group', subName: 'name', show: true },
-	{ label: 'District', name: 'city', subName: 'name', show: true },
-	{ label: 'Mobile', name: 'primary_phone', show: true },
-	{ label: 'Email', name: 'email', show: true }
+	{ label: 'Date', name: 'created_at', show: true },
+	{ label: 'P. Name', name: 'passenger_name', show: true },
+	{ label: 'PP. No', name: 'passport_no', show: true },
+	{ label: 'Profession', name: 'profession', subName: 'name', show: true },
+	{ label: 'Agent Name', name: 'agent', subName: 'username', show: true },
+	{ label: 'Visa No', name: 'visa_entry', subName: 'visa_number', show: true },
+	{ label: 'ID No', name: 'nid', show: true },
+	{ label: 'Gender', name: 'gender', show: true },
+	{ label: 'Country', name: 'target_country', subName: 'name', show: true },
+	// { label: 'Visa Type', name: 'visa_type', subName: 'name', show: true },
+	{ label: 'Medical Status', name: 'medical_status', show: true },
+	{ label: 'Stamping Date', name: 'stamping_date', show: true },
+	{ label: 'Man Power Date', name: 'man_power_date', show: true },
+	{ label: 'Flight Date', name: 'flight_date', show: true },
+	{ label: 'Current Status', name: 'current_status', subName: 'name', show: true }
 ];
 
 function tableColumnsReducer(state, action) {
@@ -261,22 +273,28 @@ function tableColumnsReducer(state, action) {
 		}
 		case 'dragAndDrop': {
 			const newState = [...state];
-			const draggerIndex = newState.findIndex(i => i.label === action.dragger);
+
 			const dropperIndex = newState.findIndex(i => i.label === action.dropper);
+			const draggerIndex = newState.findIndex(i => i.label === action.dragger);
 
-			const cachedDropperData = newState[dropperIndex];
-
-			newState[dropperIndex] = newState[draggerIndex];
-			newState[draggerIndex] = cachedDropperData;
-
-			return newState;
+			if (dropperIndex < draggerIndex) {
+				newState.splice(dropperIndex, 0, newState[draggerIndex]);
+				newState.splice(draggerIndex + 1, 1);
+				return newState;
+			} else if (dropperIndex > draggerIndex) {
+				newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
+				newState.splice(draggerIndex, 1);
+				return newState;
+			} else {
+				return state;
+			}
 		}
 		default:
 			return state;
 	}
 }
 
-const PassengerReportsTable = props => {
+const PassengerReportsTable = () => {
 	const classes = useStyles();
 
 	const methods = useForm({
@@ -293,11 +311,11 @@ const PassengerReportsTable = props => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData([], 5);
+	const [modifiedPassengerData, setModifiedPassengerData, setSortBy, setSortBySubKey] = useReportData([], 5);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
-	console.log('modifiedAgentData', modifiedAgentData);
+	console.log('modifiedPassengerData', modifiedPassengerData);
 
 	//tools state
 	const [inPrint, setInPrint] = useState(false);
@@ -340,7 +358,7 @@ const PassengerReportsTable = props => {
 	useEffect(() => {
 		if (inPrint) {
 			if (inSiglePageMode && totalPages > 1) {
-				handleGetAllAgents();
+				handleGetAllPassengers();
 			} else {
 				handlePrint();
 				setInPrint(false);
@@ -353,9 +371,9 @@ const PassengerReportsTable = props => {
 		if (inPrint) {
 			handlePrint();
 			setInPrint(false);
-			handleGetAgents();
+			handleGetPassengers();
 		}
-	}, [modifiedAgentData]);
+	}, [modifiedPassengerData]);
 
 	//pdf download handler
 	const pdfDownloadHandler = () => {
@@ -377,7 +395,7 @@ const PassengerReportsTable = props => {
 	useEffect(() => {
 		if (inDownload) {
 			if (inSiglePageMode && totalPages > 1) {
-				handleGetAllAgents();
+				handleGetAllPassengers();
 			} else {
 				if (dowloadPdf) {
 					pdfDownloadHandler();
@@ -402,9 +420,9 @@ const PassengerReportsTable = props => {
 				setInDownload(false);
 				setDowloadExcel(false);
 			}
-			handleGetAgents();
+			handleGetPassengers();
 		}
-	}, [modifiedAgentData]);
+	}, [modifiedPassengerData]);
 
 	//column select close handler
 	useLayoutEffect(() => {
@@ -415,23 +433,23 @@ const PassengerReportsTable = props => {
 
 	//pagination handler
 	const firstPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetPassengers(event.page);
 	};
 	const previousPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetPassengers(event.page);
 	};
 	const nextPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetPassengers(event.page);
 	};
 	const lastPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetPassengers(event.page);
 	};
 
-	//get agents
-	const handleGetAgents = (pagePram, callBack) => {
-		dispatch(getAgents({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
+	//get passengers
+	const handleGetPassengers = (pagePram, callBack) => {
+		dispatch(getPassengers({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
 			callBack && callBack(res.payload);
-			setModifiedAgentData(res.payload?.agents || []);
+			setModifiedPassengerData(res.payload?.passengers || []);
 			setPage(res.payload?.page || 1);
 			setSize(res.payload?.size || 5);
 			setTotalPages(res.payload?.total_pages || 0);
@@ -441,17 +459,16 @@ const PassengerReportsTable = props => {
 		});
 	};
 
-	//get all agent without pagination
-	const handleGetAllAgents = callBack => {
-		dispatch(getAllAgents(getValues())).then(res => {
+	//get all passenger without pagination
+	const handleGetAllPassengers = callBack => {
+		dispatch(getAllPassengers(getValues())).then(res => {
 			callBack && callBack(res.payload);
-			setModifiedAgentData(res.payload?.agents || []);
+			setModifiedPassengerData(res.payload?.passengers || []);
 			setInSiglePageMode(false);
 			setInShowAllMode(true);
 
 			//get pagination data
-			const { totalPages, totalElements } = getPaginationData(res.payload?.agents, size, page);
-			//set pagination data
+			const { totalPages, totalElements } = getPaginationData(res.payload?.passengers, size, page);
 			setPage(page || 1);
 			setSize(size || 25);
 			setTotalPages(totalPages);
@@ -459,25 +476,16 @@ const PassengerReportsTable = props => {
 		});
 	};
 
-	console.log('rendered agent Report');
+	console.log('rendered passenger Report');
 	return (
 		<>
 			<div className={classes.headContainer}>
-				<h2
-					style={{
-						marginBottom: '10px',
-						width: 'fit-content'
-					}}
-				>
-					Filter
-				</h2>
-
 				{/* filter */}
 				<FormProvider {...methods}>
 					<PassengerFilterMenu
 						inShowAllMode={inShowAllMode}
-						handleGetAgents={handleGetAgents}
-						handleGetAllAgents={handleGetAllAgents}
+						handleGetPassengers={handleGetPassengers}
+						handleGetAllPassengers={handleGetAllPassengers}
 					/>
 				</FormProvider>
 			</div>
@@ -494,7 +502,7 @@ const PassengerReportsTable = props => {
 					onClickLastPage={lastPageHandler}
 				/>
 
-				{/* download */}
+				{/* download icon*/}
 				<div className="downloadIcon">
 					<GetApp
 						className="cursor-pointer inside icon"
@@ -508,10 +516,7 @@ const PassengerReportsTable = props => {
 							{/* download as Pdf */}
 							<div
 								className="cursor-pointer downloadContainer shadow-4"
-								style={{
-									width: '150px',
-									margin: '10px'
-								}}
+								style={{ width: '150px', margin: '10px' }}
 								onClick={() => {
 									setInDownload(true);
 									setDowloadPdf(true);
@@ -525,10 +530,7 @@ const PassengerReportsTable = props => {
 							{/* download as Excel */}
 							<div
 								className="cursor-pointer downloadContainer shadow-4"
-								style={{
-									width: '160px',
-									margin: '0px 10px 10px 10px'
-								}}
+								style={{ width: '160px', margin: '0px 10px 10px 10px' }}
 								onClick={() => {
 									setInDownload(true);
 									setDowloadExcel(true);
@@ -542,41 +544,35 @@ const PassengerReportsTable = props => {
 					</div>
 				</div>
 
-				{/* print */}
+				{/* print icon*/}
 				<PrintIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '6px' }}
 					onClick={() => setInPrint(true)}
 				/>
 
-				{/* show single page */}
+				{/* show single page icon*/}
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
-					style={{
-						padding: '8px',
-						border: inSiglePageMode && '1px solid'
-					}}
-					onClick={() => handleGetAgents()}
+					style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
+					onClick={() => handleGetPassengers()}
 					icon={faBookOpen}
 				/>
 
-				{/* show all page */}
+				{/* show all page icon*/}
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
-					style={{
-						padding: '8px',
-						border: inShowAllMode && '1px solid'
-					}}
-					onClick={() => handleGetAllAgents()}
+					style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
+					onClick={() => handleGetAllPassengers()}
 					icon={faScroll}
 				/>
 
-				{/* column select options */}
+				{/* column select options icon*/}
 				<div className="columnSelectContainer">
 					<ViewWeek
 						id="insideClmSelect"
 						className="cursor-pointer inside icon"
-						style={{ margin: '0px', border: showClmSelectOption && '1px solid' }}
+						style={{ margin: '0px', padding: '6px', border: showClmSelectOption && '1px solid' }}
 						onClick={() => setTimeout(() => setShowClmSelectOption(true), 0)}
 					/>
 
@@ -620,18 +616,19 @@ const PassengerReportsTable = props => {
 			<table id="table-to-xls" className="w-full">
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
-					{modifiedAgentData.map(agent => (
+					{modifiedPassengerData.map(passenger => (
 						<SinglePage
 							classes={classes}
 							generalData={generalData}
-							reporTitle="Agent Report"
+							reporTitle="Passenger Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={agent}
-							serialNumber={agent.page * agent.size - agent.size + 1}
+							data={passenger}
+							serialNumber={passenger.page * passenger.size - passenger.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
 							setSortBy={setSortBy}
+							// setSortBySubKey={setSortBySubKey}
 						/>
 					))}
 				</div>
@@ -639,4 +636,4 @@ const PassengerReportsTable = props => {
 		</>
 	);
 };
-export default withRouter(PassengerReportsTable);
+export default PassengerReportsTable;

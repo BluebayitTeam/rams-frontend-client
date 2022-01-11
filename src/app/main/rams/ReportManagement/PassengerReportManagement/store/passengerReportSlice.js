@@ -1,19 +1,19 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { AGENT_FILTER_BY, AGENT_FILTER_WITHOUT_PG } from 'app/constant/constants';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PASSENGER_FILTER_BY, PASSENGER_FILTER_WITHOUT_PG } from 'app/constant/constants';
 import axios from 'axios';
 
-export const getAgents = createAsyncThunk(
-	'agentsReportManagement/getAgents',
+export const getPassengers = createAsyncThunk(
+	'passengersReportManagement/getPassengers',
 	async ({ values, pageAndSize }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
 			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
-				`${AGENT_FILTER_BY}?username=${values.username || ''}&email=${values.email || ''}&group=${
-					values.groupName || ''
-				}&agent_code=${values.agent_code || ''}&primary_phone=${values.primary_phone || ''}&district=${
-					values.ditrictName || ''
+				`${PASSENGER_FILTER_BY}?passenger_name=${values.passenger_name || ''}&current_status=${
+					values.currentStatusName || ''
+				}&target_country=${values.countryName || ''}&agent=${values.agentName || ''}&gender=${
+					values.genderName || ''
 				}&date_after=${values.date_after || ''}&date_before=${values.date_before || ''}`,
 				{ params: pageAndSize }
 			);
@@ -29,18 +29,18 @@ export const getAgents = createAsyncThunk(
 	}
 );
 
-export const getAllAgents = createAsyncThunk(
-	'agentsReportManagement/getAllAgents',
+export const getAllPassengers = createAsyncThunk(
+	'passengersReportManagement/getAllPassengers',
 	async (values, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
 			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
-				`${AGENT_FILTER_WITHOUT_PG}?username=${values.username || ''}&email=${values.email || ''}&group=${
-					values.groupName || ''
-				}&agent_code=${values.agent_code || ''}&primary_phone=${values.primary_phone || ''}&district=${
-					values.ditrictName || ''
+				`${PASSENGER_FILTER_WITHOUT_PG}?passenger_name=${values.passenger_name || ''}&current_status=${
+					values.currentStatusName || ''
+				}&target_country=${values.countryName || ''}&agent=${values.agentName || ''}&gender=${
+					values.genderName || ''
 				}&date_after=${values.date_after || ''}&date_before=${values.date_before || ''}`
 			);
 
@@ -55,41 +55,25 @@ export const getAllAgents = createAsyncThunk(
 	}
 );
 
-const agentsReportsAdapter = createEntityAdapter({});
-
-export const { selectAll: selectOrders, selectById: selectOrderById } = agentsReportsAdapter.getSelectors(
-	state => state.agentsReportManagement.agents
-);
-
 const passengerReportsSlice = createSlice({
-	name: 'agentsReportManagement/agents',
-	initialState: agentsReportsAdapter.getInitialState({
-		searchText: '',
-		agents: []
-	}),
-	reducers: {
-		setOrdersSearchText: {
-			reducer: (state, action) => {
-				state.searchText = action.payload;
-			},
-			prepare: event => ({ payload: event?.target?.value || '' })
-		}
+	name: 'passengersReportManagement/passengers',
+	initialState: {
+		passengers: []
 	},
 	extraReducers: {
-		[getAgents.fulfilled]: (state, action) => {
-			state.agents = action.payload?.agents || [];
+		[getPassengers.fulfilled]: (state, action) => {
+			state.passengers = action.payload?.passengers || [];
 		},
-		[getAgents.rejected]: (state, action) => {
-			state.agents = [];
+		[getPassengers.rejected]: state => {
+			state.passengers = [];
 		},
-		[getAllAgents.fulfilled]: (state, action) => {
-			state.agents = action.payload?.agents || [];
+		[getAllPassengers.fulfilled]: (state, action) => {
+			state.passengers = action.payload?.passengers || [];
 		},
-		[getAllAgents.rejected]: (state, action) => {
-			state.agents = [];
+		[getAllPassengers.rejected]: state => {
+			state.passengers = [];
 		}
 	}
 });
 
-export const { setOrdersSearchText } = passengerReportsSlice.actions;
 export default passengerReportsSlice.reducer;

@@ -12,7 +12,6 @@ import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 
 import { FormProvider, useForm } from 'react-hook-form';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 import { useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import * as yup from 'yup';
 import { GET_SITESETTINGS } from '../../../../../constant/constants';
@@ -142,7 +141,8 @@ const useStyles = makeStyles(theme => ({
 						padding: '0px 5px 0px 0px'
 					},
 					'& > h5': {
-						fontSize: '14.5px'
+						fontSize: '14.5px',
+						whiteSpace: 'nowrap'
 					}
 				}
 			}
@@ -196,6 +196,8 @@ const useStyles = makeStyles(theme => ({
 		},
 		'& .tableCellHead': {
 			'& > div': {
+				cursor: 'pointer',
+				whiteSpace: 'nowrap',
 				'&:active': {
 					color: 'grey'
 				},
@@ -261,22 +263,28 @@ function tableColumnsReducer(state, action) {
 		}
 		case 'dragAndDrop': {
 			const newState = [...state];
-			const draggerIndex = newState.findIndex(i => i.label === action.dragger);
+
 			const dropperIndex = newState.findIndex(i => i.label === action.dropper);
+			const draggerIndex = newState.findIndex(i => i.label === action.dragger);
 
-			const cachedDropperData = newState[dropperIndex];
-
-			newState[dropperIndex] = newState[draggerIndex];
-			newState[draggerIndex] = cachedDropperData;
-
-			return newState;
+			if (dropperIndex < draggerIndex) {
+				newState.splice(dropperIndex, 0, newState[draggerIndex]);
+				newState.splice(draggerIndex + 1, 1);
+				return newState;
+			} else if (dropperIndex > draggerIndex) {
+				newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
+				newState.splice(draggerIndex, 1);
+				return newState;
+			} else {
+				return state;
+			}
 		}
 		default:
 			return state;
 	}
 }
 
-const AgentReportsTable = props => {
+const AgentReportsTable = () => {
 	const classes = useStyles();
 
 	const methods = useForm({
@@ -293,11 +301,9 @@ const AgentReportsTable = props => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData([], 5);
+	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData([], 25);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
-
-	console.log('modifiedAgentData', modifiedAgentData);
 
 	//tools state
 	const [inPrint, setInPrint] = useState(false);
@@ -310,7 +316,7 @@ const AgentReportsTable = props => {
 
 	//pagination state
 	const [page, setPage] = useState(1);
-	const [size, setSize] = useState(5);
+	const [size, setSize] = useState(25);
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 
@@ -433,7 +439,7 @@ const AgentReportsTable = props => {
 			callBack && callBack(res.payload);
 			setModifiedAgentData(res.payload?.agents || []);
 			setPage(res.payload?.page || 1);
-			setSize(res.payload?.size || 5);
+			setSize(res.payload?.size || 25);
 			setTotalPages(res.payload?.total_pages || 0);
 			setTotalElements(res.payload?.total_elements || 0);
 			setInSiglePageMode(true);
@@ -451,7 +457,6 @@ const AgentReportsTable = props => {
 
 			//get pagination data
 			const { totalPages, totalElements } = getPaginationData(res.payload?.agents, size, page);
-			//set pagination data
 			setPage(page || 1);
 			setSize(size || 25);
 			setTotalPages(totalPages);
@@ -459,19 +464,9 @@ const AgentReportsTable = props => {
 		});
 	};
 
-	console.log('rendered agent Report');
 	return (
 		<>
 			<div className={classes.headContainer}>
-				<h2
-					style={{
-						marginBottom: '10px',
-						width: 'fit-content'
-					}}
-				>
-					Filter
-				</h2>
-
 				{/* filter */}
 				<FormProvider {...methods}>
 					<AgentFilterMenu
@@ -494,7 +489,7 @@ const AgentReportsTable = props => {
 					onClickLastPage={lastPageHandler}
 				/>
 
-				{/* download */}
+				{/* download icon*/}
 				<div className="downloadIcon">
 					<GetApp
 						className="cursor-pointer inside icon"
@@ -508,10 +503,7 @@ const AgentReportsTable = props => {
 							{/* download as Pdf */}
 							<div
 								className="cursor-pointer downloadContainer shadow-4"
-								style={{
-									width: '150px',
-									margin: '10px'
-								}}
+								style={{ width: '150px', margin: '10px' }}
 								onClick={() => {
 									setInDownload(true);
 									setDowloadPdf(true);
@@ -525,10 +517,7 @@ const AgentReportsTable = props => {
 							{/* download as Excel */}
 							<div
 								className="cursor-pointer downloadContainer shadow-4"
-								style={{
-									width: '160px',
-									margin: '0px 10px 10px 10px'
-								}}
+								style={{ width: '160px', margin: '0px 10px 10px 10px' }}
 								onClick={() => {
 									setInDownload(true);
 									setDowloadExcel(true);
@@ -542,41 +531,35 @@ const AgentReportsTable = props => {
 					</div>
 				</div>
 
-				{/* print */}
+				{/* print icon*/}
 				<PrintIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '6px' }}
 					onClick={() => setInPrint(true)}
 				/>
 
-				{/* show single page */}
+				{/* show single page icon*/}
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
-					style={{
-						padding: '8px',
-						border: inSiglePageMode && '1px solid'
-					}}
+					style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
 					onClick={() => handleGetAgents()}
 					icon={faBookOpen}
 				/>
 
-				{/* show all page */}
+				{/* show all page icon*/}
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
-					style={{
-						padding: '8px',
-						border: inShowAllMode && '1px solid'
-					}}
+					style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
 					onClick={() => handleGetAllAgents()}
 					icon={faScroll}
 				/>
 
-				{/* column select options */}
+				{/* column select option icon*/}
 				<div className="columnSelectContainer">
 					<ViewWeek
 						id="insideClmSelect"
 						className="cursor-pointer inside icon"
-						style={{ margin: '0px', border: showClmSelectOption && '1px solid' }}
+						style={{ margin: '0px', padding: '6px', border: showClmSelectOption && '1px solid' }}
 						onClick={() => setTimeout(() => setShowClmSelectOption(true), 0)}
 					/>
 
@@ -639,4 +622,4 @@ const AgentReportsTable = props => {
 		</>
 	);
 };
-export default withRouter(AgentReportsTable);
+export default AgentReportsTable;

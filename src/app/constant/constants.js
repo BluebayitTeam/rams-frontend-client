@@ -7,12 +7,8 @@ export const BASE_URL = 'http://192.168.0.172:8002';
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
 
-
 //user
-export const USER_BY_ID = `${BASE_URL}/user/api/v1/user/`
-
-
-
+export const USER_BY_ID = `${BASE_URL}/user/api/v1/user/`;
 
 export const RESET_PASSWORD = `${BASE_URL}/auth/user/reset_password/`;
 
@@ -79,7 +75,7 @@ export const aLLProductsWithoutPagination = `${BASE_URL}/product/api/v1/product/
 export const ATTRIBUTES = `${BASE_URL}/attribute/api/v1/attribute/all/`;
 
 // citys
-export const CITIES = `${BASE_URL}/city/api/v1/city/all/`
+export const CITIES = `${BASE_URL}/city/api/v1/city/all/`;
 
 // users
 export const USERS = `${BASE_URL}/user/api/v1/user/all/`;
@@ -106,22 +102,22 @@ export const CUSOTMERTYPES = `${BASE_URL}/customer_type/api/v1/customer_type/all
 export const USERS_PASSWORDCHANGE = `${BASE_URL}/user/api/v1/user/passwordchange/`;
 
 //group
-export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/without_pagination/all/`
+export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/without_pagination/all/`;
 
 //designation
-export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/designation/without_pagination/all/`
+export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/designation/without_pagination/all/`;
 
 //visa egent
-export const AGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/agent/without_pagination/all/`
+export const AGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/agent/without_pagination/all/`;
 
 //visa entry
 export const VISAENTRYS_WITHOUT_PAGINATION = `${BASE_URL}/visa_entry/api/v1/visa_entry/without_pagination/all/`;
 
 //profession
-export const PROFESSIONS_WITHOUT_PAGINATION = `${BASE_URL}/profession/api/v1/profession/all/`
+export const PROFESSIONS_WITHOUT_PAGINATION = `${BASE_URL}/profession/api/v1/profession/all/`;
 
 //demand
-export const DEMANDS_WITHOUT_PAGINATION = `${BASE_URL}/demand/api/v1/demand/all/`
+export const DEMANDS_WITHOUT_PAGINATION = `${BASE_URL}/demand/api/v1/demand/all/`;
 
 export const PASSENGERTYPES_WITHOUT_PAGINATION = `${BASE_URL}/passenger_type/api/v1/passenger_type/all/`;
 
@@ -132,10 +128,6 @@ export const AGENCIES_WITHOUT_PAGINATION = `${BASE_URL}/recruiting_agency/api/v1
 export const MEDICALCENTERS_WITHOUT_PAGINATION = `${BASE_URL}/medical_center/api/v1/medical_center/all/`;
 
 export const PASSENGERS_WITHOUT_PAGINATION = `${BASE_URL}/passenger/api/v1/passenger/all/`;
-
-
-
-
 
 //  employee
 export const CREATE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/create/`;
@@ -322,9 +314,7 @@ export const ATTRIBUTE_SET = `${BASE_URL}/attributeset/api/v1/attributeset/all/`
 
 export const GET_ATTRIBUTE_SET_WITHOUT_PAGINATION = `${BASE_URL}/attributeset/api/v1/attributeset/without_pagination/all/`;
 
-
 export const BRANDS = `${BASE_URL}/brand/api/v1/brand/all/`;
-
 
 export const CATEGORIES = `${BASE_URL}/category/api/v1/category/all/`;
 
@@ -395,7 +385,6 @@ export const DELETE_ATTRIBUTESET = `${BASE_URL}/attributeset/api/v1/attributeset
 
 export const SEARCH_ATTRIBUTESET = `${BASE_URL}/attributeset/api/v1/attributeset/search/`;
 
-
 // attributevalue
 export const CREATE_ATTRIBUTE_VALUE = `${BASE_URL}/attributevalue/api/v1/attributevalue/create/`;
 
@@ -461,7 +450,6 @@ export const DELETE_PURCHASE_REQ_ITEM = `${BASE_URL}/purchase_req_item/api/v1/pu
 
 //  purchase_status
 export const GET_PURCHASESTATUS = `${BASE_URL}/purchase_status/api/v1/purchase_status/all/`;
-
 
 //  purchase_req_item_image
 export const CREATE_PURCHASE_REQ_ITEM_IMAGE = `${BASE_URL}/purchase_req_item_image/api/v1/purchase_req_item_image/create/`;
@@ -539,7 +527,6 @@ export const SEARCH_VENDOR = `${BASE_URL}/vendor/api/v1/vendor/search/`;
 
 // Inventory
 export const GET_INVENTORY_BY_ID = `${BASE_URL}/inventory/api/v1/inventory/`;
-
 
 // Shipping Address
 export const CREATE_SHIPPINGADDRESS = `${BASE_URL}/shippingaddress/api/v1/shippingaddress/create/`;
@@ -668,7 +655,7 @@ export const UPDATE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_ty
 export const DELETE_CUSTOMERTYPE = `${BASE_URL}/customer_type/api/v1/customer_type/delete/`;
 
 //menu item
-export const MENU_ITEMS = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_by_user_role/`
+export const MENU_ITEMS = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_by_user_role/`;
 
 export const CREATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/create/`;
 
@@ -678,11 +665,11 @@ export const GET_MENUS = `${BASE_URL}/menu_item/api/v1/menu_item/`;
 
 export const UPDATE_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/update/`;
 
-export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/all/`
+export const GET_MENUS_ALL = `${BASE_URL}/menu_item/api/v1/menu_item/all/`;
 
-export const GET_MENUS_ALL_NESTED = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_without_pagination/all/`
+export const GET_MENUS_ALL_NESTED = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_without_pagination/all/`;
 
-export const GET_MENUS_BY_ROLE = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_by_role_id/`
+export const GET_MENUS_BY_ROLE = `${BASE_URL}/menu_item/api/v1/menu_item/nested_menu_item_by_role_id/`;
 
 export const SEARCH_MENU = `${BASE_URL}/menu_item/api/v1/menu_item/search/`;
 
@@ -713,7 +700,6 @@ export const UPDATE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger
 export const DELETE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/delete/`;
 
 export const SEARCH_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/search/`;
-
 
 //current status
 export const CREATE_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/create/`;
@@ -799,7 +785,7 @@ export const DELETE_VISAENTRY_MULTIPLE = `${BASE_URL}/visa_entry/api/v1/visa_ent
 
 export const SEARCH_VISAENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/search/`;
 
-export const VISAENTRY_BY_PASSENGER_ID = `${BASE_URL}/visa_entry/api/v1/visa_entry/get_a_visa_entry_by_pasenger_id/`
+export const VISAENTRY_BY_PASSENGER_ID = `${BASE_URL}/visa_entry/api/v1/visa_entry/get_a_visa_entry_by_pasenger_id/`;
 
 //passenger
 export const CREATE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/create/`;
@@ -818,12 +804,15 @@ export const DELETE_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/delete/`
 
 export const SEARCH_PASSENGER = `${BASE_URL}/passenger/api/v1/passenger/search/`;
 
-export const CHECK_PASSPORT_NO_WHEN_CREATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_create/`
+export const CHECK_PASSPORT_NO_WHEN_CREATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_create/`;
 
-export const CHECK_PASSPORT_NO_WHEN_UPDATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_update/`
+export const CHECK_PASSPORT_NO_WHEN_UPDATE = `${BASE_URL}/passenger/api/v1/passenger/check_passport_no_when_update/`;
 
-export const SEARCH_PASSENGER_BY = `${BASE_URL}/passenger/api/v1/passenger/search_by_passenger_id_office_serial_passport_no_contact_no/`
+export const SEARCH_PASSENGER_BY = `${BASE_URL}/passenger/api/v1/passenger/search_by_passenger_id_office_serial_passport_no_contact_no/`;
 
+export const PASSENGER_FILTER_BY = `${BASE_URL}/report/api/v1/passenger_report/filter/`;
+
+export const PASSENGER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/passenger_report/without_pagination/filter/`;
 
 //medical
 export const CREATE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/create/`;
@@ -833,7 +822,6 @@ export const UPDATE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/update/`;
 export const DELETE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/delete/`;
 
 export const MEDICAL_BY_PASSENGER_ID = `${BASE_URL}/medical/api/v1/medical/get_by_passenger_id/`;
-
 
 //medicalCenter
 export const CREATE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/create/`;
@@ -851,7 +839,6 @@ export const DELETE_MEDICALCENTER_MULTIPLE = `${BASE_URL}​/medical_center/api/
 export const SEARCH_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/search/`;
 
 export const MEDICALCENTER_WHEN_UPDATE = `${BASE_URL}/medical_center/api/v1/medical_center/check_when_update/`;
-
 
 //embassy
 export const CREATE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/create/`;
@@ -880,7 +867,6 @@ export const DELETE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/delete/`;
 
 export const FEMALECV_BY_PASSENGER_ID = `${BASE_URL}/female_cv/api/v1/female_cv/get_by_passenger_id/`;
 
-
 //flight
 export const CREATE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/create/`;
 
@@ -889,7 +875,6 @@ export const UPDATE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/update/`;
 export const DELETE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/delete/`;
 
 export const FLIGHT_BY_PASSENGER_ID = `${BASE_URL}/flight/api/v1/flight/get_by_passenger_id/`;
-
 
 //male_cv
 export const CREATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/create/`;
@@ -900,7 +885,6 @@ export const DELETE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/delete/`;
 
 export const MALECV_BY_PASSENGER_ID = `${BASE_URL}/male_cv/api/v1/male_cv/get_by_passenger_id/`;
 
-
 //man_power_list
 export const CREATE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_list/create/`;
 
@@ -909,7 +893,6 @@ export const UPDATE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_
 export const DELETE_MANPOWERLIST = `${BASE_URL}/man_power_list/api/v1/man_power_list/delete/`;
 
 export const MANPOWERLIST_BY_PASSENGER_ID = `${BASE_URL}/man_power_list/api/v1/man_power_list/get_by_passenger_id/`;
-
 
 //musaned_okala
 export const CREATE_MUSANEDOKALA = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/create/`;
@@ -920,7 +903,6 @@ export const DELETE_MUSANEDOKALA = `${BASE_URL}/musaned_okala/api/v1/musaned_oka
 
 export const MUSANEDOKALA_BY_PASSENGER_ID = `${BASE_URL}/musaned_okala/api/v1/musaned_okala/get_by_passenger_id/`;
 
-
 //office_work
 export const CREATE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/create/`;
 
@@ -929,7 +911,6 @@ export const UPDATE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/upd
 export const DELETE_OFFICEWORK = `${BASE_URL}/office_work/api/v1/office_work/delete/`;
 
 export const OFFICEWORK_BY_PASSENGER_ID = `${BASE_URL}/office_work/api/v1/office_work/get_by_passenger_id/`;
-
 
 //training
 export const CREATE_TRAINING = `${BASE_URL}/training/api/v1/training/create/`;
@@ -940,7 +921,6 @@ export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
 
 export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;
 
-
 //visa_cancel_list
 export const CREATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/create/`;
 
@@ -949,7 +929,6 @@ export const UPDATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_c
 export const DELETE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/delete/`;
 
 export const VISACANCELLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/get_by_passenger_id/`;
-
 
 //visa_reissue_list
 export const CREATE_VISAREISSUELIST = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/create/`;
@@ -960,7 +939,6 @@ export const DELETE_VISAREISSUELIST = `${BASE_URL}/visa_reissue_list/api/v1/visa
 
 export const VISAREISSUELIST_BY_PASSENGER_ID = `${BASE_URL}/visa_reissue_list/api/v1/visa_reissue_list/get_by_passenger_id/`;
 
-
 //visa_submission_list
 export const CREATE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/create/`;
 
@@ -969,7 +947,6 @@ export const UPDATE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v
 export const DELETE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/delete/`;
 
 export const VISASUBMISSIONLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/get_by_passenger_id/`;
-
 
 //man_power
 export const CREATE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/create/`;
