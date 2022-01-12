@@ -9,6 +9,7 @@ import useUserInfo from 'app/@customHooks/useUserInfo';
 import getPaginationData from 'app/@helpers/getPaginationData';
 import html2PDF from 'jspdf-html2canvas';
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 import { useDispatch } from 'react-redux';
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 		width: 'fit-content'
 	},
 	pageContainer: {
-		width: '90%',
+		width: '100%',
 		backgroundColor: 'white',
 		marginLeft: 'auto',
 		marginRight: 'auto',
@@ -41,11 +42,11 @@ const useStyles = makeStyles(theme => ({
 	menubar: {
 		backgroundColor: theme.palette.primary.light,
 		display: 'flex',
-		justifyContent: 'center',
 		alignItems: 'center',
 		padding: '5px',
 		position: 'sticky',
 		top: '0px',
+		minWidth: 'fit-content',
 		'& .inside': {
 			color: theme.palette.primary.main
 		},
@@ -85,6 +86,9 @@ const useStyles = makeStyles(theme => ({
 				paddingTop: '10px',
 				'&:hover': {
 					display: 'flex !important'
+				},
+				'&:hover + svg': {
+					border: '1px solid !important'
 				},
 				'& .indicator': {
 					height: '10px',
@@ -158,11 +162,10 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: '90%',
-		marginLeft: 'auto',
-		marginRight: 'auto',
+		width: '100%',
 		marginBottom: '10px',
 		'& .logoContainer': {
+			marginRight: '30px',
 			height: '75px',
 			'& img': {
 				height: '100%',
@@ -170,11 +173,12 @@ const useStyles = makeStyles(theme => ({
 			}
 		},
 		'& .title': {
+			marginLeft: '30px',
 			width: 'fit-content'
 		}
 	},
 	table: {
-		width: '90%',
+		width: '100%',
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		maxHeight: '',
@@ -223,7 +227,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
-		width: '90%',
+		width: '100%',
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		'& > div': {
@@ -321,9 +325,8 @@ const PassengerReportsTable = () => {
 	const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
-	const [inDownload, setInDownload] = useState(false);
-	const [dowloadPdf, setDowloadPdf] = useState(false);
-	const [dowloadExcel, setDowloadExcel] = useState(false);
+	const [inDowloadPdf, setInDowloadPdf] = useState(false);
+	const [inDowloadExcel, setInDowloadExcel] = useState(false);
 	const [showClmSelectOption, setShowClmSelectOption] = useState(false);
 
 	//pagination state
@@ -332,51 +335,41 @@ const PassengerReportsTable = () => {
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 
-	let downloadPage = document.getElementById('downloadPage');
-
+	//get general setting data
 	useEffect(() => {
-		getGeneralData();
-	}, []);
-
-	//general setting data
-	const getGeneralData = () => {
 		fetch(`${GET_SITESETTINGS}`, authTOKEN)
 			.then(response => response.json())
 			.then(data => setGeneralData(data.general_settings[0] || {}))
-			.catch(() => null);
-	};
+			.catch(() => setGeneralData({}));
+	}, []);
 
-	//print
+	//print don ref
 	const componentRef = useRef();
 
-	//print handler
-	const handlePrint = useReactToPrint({
+	//printer action
+	const printAction = useReactToPrint({
 		content: () => componentRef.current
 	});
 
-	//print action when show all mode or fecth data to go show all mode
-	useEffect(() => {
-		if (inPrint) {
-			if (inSiglePageMode && totalPages > 1) {
-				handleGetAllPassengers();
+	//print handler
+	const handlePrint = () => {
+		setInPrint(true);
+		if (!inPrint) {
+			if (!inShowAllMode && totalPages > 1) {
+				handleGetAllPassengers(null, () => {
+					printAction();
+					setInPrint(false);
+					handleGetPassengers();
+				});
 			} else {
-				handlePrint();
+				printAction();
 				setInPrint(false);
 			}
 		}
-	}, [inPrint]);
+	};
 
-	//print action after show all mode's data fething
-	useEffect(() => {
-		if (inPrint) {
-			handlePrint();
-			setInPrint(false);
-			handleGetPassengers();
-		}
-	}, [modifiedPassengerData]);
-
-	//pdf download handler
-	const pdfDownloadHandler = () => {
+	//pdf downloader action
+	const pdfDownloadAction = () => {
 		html2PDF(downloadPage, {
 			margin: [0, 0, 0, 0],
 			filename: 'pdfhtml2.pdf',
@@ -388,41 +381,45 @@ const PassengerReportsTable = () => {
 			useCORS: true,
 			jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
 		});
-		setDowloadPdf(false);
+		setInDowloadPdf(false);
 	};
 
-	//download action when show all mode or fecth data to go show all mode
-	useEffect(() => {
-		if (inDownload) {
-			if (inSiglePageMode && totalPages > 1) {
-				handleGetAllPassengers();
+	//pdf download handler
+	const handlePdfDownload = () => {
+		setInDowloadPdf(true);
+		if (!inDowloadPdf) {
+			if (!inShowAllMode && totalPages > 1) {
+				handleGetAllPassengers(null, () => {
+					pdfDownloadAction();
+					setInDowloadPdf(false);
+					handleGetPassengers();
+				});
 			} else {
-				if (dowloadPdf) {
-					pdfDownloadHandler();
-					setInDownload(false);
-				} else if (dowloadExcel) {
-					document.getElementById('test-table-xls-button').click();
-					setInDownload(false);
-					setDowloadExcel(false);
-				}
+				pdfDownloadAction();
+				setInDowloadPdf(false);
 			}
 		}
-	}, [inDownload]);
+	};
 
-	//download action after show all mode's data fething
-	useEffect(() => {
-		if (inDownload) {
-			if (dowloadPdf) {
-				pdfDownloadHandler();
-				setInDownload(false);
-			} else if (dowloadExcel) {
+	//exel download page dom
+	let downloadPage = document.getElementById('downloadPage');
+
+	//exel download handler
+	const handleExelDownload = () => {
+		setInDowloadExcel(true);
+		if (!inDowloadExcel) {
+			if (!inShowAllMode && totalPages > 1) {
+				handleGetAllPassengers(null, () => {
+					document.getElementById('test-table-xls-button').click();
+					setInDowloadExcel(false);
+					handleGetPassengers();
+				});
+			} else {
 				document.getElementById('test-table-xls-button').click();
-				setInDownload(false);
-				setDowloadExcel(false);
+				setInDowloadExcel(false);
 			}
-			handleGetPassengers();
 		}
-	}, [modifiedPassengerData]);
+	};
 
 	//column select close handler
 	useLayoutEffect(() => {
@@ -448,31 +445,35 @@ const PassengerReportsTable = () => {
 	//get passengers
 	const handleGetPassengers = (pagePram, callBack) => {
 		dispatch(getPassengers({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
-			callBack && callBack(res.payload);
-			setModifiedPassengerData(res.payload?.passengers || []);
-			setPage(res.payload?.page || 1);
-			setSize(res.payload?.size || 5);
-			setTotalPages(res.payload?.total_pages || 0);
-			setTotalElements(res.payload?.total_elements || 0);
-			setInSiglePageMode(true);
-			setInShowAllMode(false);
+			unstable_batchedUpdates(() => {
+				callBack && callBack(res.payload);
+				setModifiedPassengerData(res.payload?.passengers || []);
+				setPage(res.payload?.page || 1);
+				setSize(res.payload?.size || 5);
+				setTotalPages(res.payload?.total_pages || 0);
+				setTotalElements(res.payload?.total_elements || 0);
+				setInSiglePageMode(true);
+				setInShowAllMode(false);
+			});
 		});
 	};
 
 	//get all passenger without pagination
-	const handleGetAllPassengers = callBack => {
+	const handleGetAllPassengers = (callBack, callBackAfterStateUpdated) => {
 		dispatch(getAllPassengers(getValues())).then(res => {
-			callBack && callBack(res.payload);
-			setModifiedPassengerData(res.payload?.passengers || []);
-			setInSiglePageMode(false);
-			setInShowAllMode(true);
-
-			//get pagination data
-			const { totalPages, totalElements } = getPaginationData(res.payload?.passengers, size, page);
-			setPage(page || 1);
-			setSize(size || 25);
-			setTotalPages(totalPages);
-			setTotalElements(totalElements);
+			unstable_batchedUpdates(() => {
+				callBack && callBack(res.payload);
+				setModifiedPassengerData(res.payload?.passengers || []);
+				setInSiglePageMode(false);
+				setInShowAllMode(true);
+				//get pagination data
+				const { totalPages, totalElements } = getPaginationData(res.payload?.passengers, size, page);
+				setPage(page || 1);
+				setSize(size || 25);
+				setTotalPages(totalPages);
+				setTotalElements(totalElements);
+			});
+			callBackAfterStateUpdated && callBackAfterStateUpdated(res.payload);
 		});
 	};
 
@@ -489,7 +490,7 @@ const PassengerReportsTable = () => {
 					/>
 				</FormProvider>
 			</div>
-			<div className={classes.menubar}>
+			<div className={`${classes.menubar} justify-start md:justify-center`}>
 				{/* pagination */}
 				<Pagination
 					page={page}
@@ -502,13 +503,7 @@ const PassengerReportsTable = () => {
 					onClickLastPage={lastPageHandler}
 				/>
 
-				{/* download icon*/}
 				<div className="downloadIcon">
-					<GetApp
-						className="cursor-pointer inside icon"
-						style={{ margin: '0px', border: inDownload && '1px solid' }}
-					/>
-
 					{/* download options*/}
 					<div className="downloadOptionContainer">
 						<div className="indicator"></div>
@@ -517,10 +512,7 @@ const PassengerReportsTable = () => {
 							<div
 								className="cursor-pointer downloadContainer shadow-4"
 								style={{ width: '150px', margin: '10px' }}
-								onClick={() => {
-									setInDownload(true);
-									setDowloadPdf(true);
-								}}
+								onClick={() => handlePdfDownload()}
 							>
 								<FontAwesomeIcon icon={faFilePdf} />
 								<b>Download PDF</b>
@@ -531,10 +523,7 @@ const PassengerReportsTable = () => {
 							<div
 								className="cursor-pointer downloadContainer shadow-4"
 								style={{ width: '160px', margin: '0px 10px 10px 10px' }}
-								onClick={() => {
-									setInDownload(true);
-									setDowloadExcel(true);
-								}}
+								onClick={() => handleExelDownload()}
 							>
 								<FontAwesomeIcon icon={faFileExcel} />
 								<b>Download Excel</b>
@@ -542,13 +531,18 @@ const PassengerReportsTable = () => {
 							</div>
 						</div>
 					</div>
+					{/* download icon*/}
+					<GetApp
+						className="cursor-pointer inside icon"
+						style={{ margin: '0px', border: (inDowloadPdf || inDowloadExcel) && '1px solid' }}
+					/>
 				</div>
 
 				{/* print icon*/}
 				<PrintIcon
 					className="cursor-pointer inside icon"
-					style={{ padding: '6px' }}
-					onClick={() => setInPrint(true)}
+					style={{ padding: '6px', border: inPrint && '1px solid' }}
+					onClick={() => handlePrint()}
 				/>
 
 				{/* show single page icon*/}
@@ -613,7 +607,7 @@ const PassengerReportsTable = () => {
 				/>
 			</div>
 
-			<table id="table-to-xls" className="w-full">
+			<table id="table-to-xls" className="w-full" style={{ minHeight: '50px' }}>
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
 					{modifiedPassengerData.map(passenger => (
@@ -628,7 +622,7 @@ const PassengerReportsTable = () => {
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
 							setSortBy={setSortBy}
-							// setSortBySubKey={setSortBySubKey}
+							setSortBySubKey={setSortBySubKey}
 						/>
 					))}
 				</div>

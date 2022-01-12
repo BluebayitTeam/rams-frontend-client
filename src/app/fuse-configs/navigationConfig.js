@@ -460,7 +460,7 @@ const navigationConfig = [
 		url: '',
 		exact: true,
 		children: [
-			//aggent list
+			//aggent report
 			{
 				id: 'agentReport',
 				title: 'Agent Report',
@@ -469,13 +469,22 @@ const navigationConfig = [
 				url: '/apps/agents/report',
 				exact: true
 			},
-			//passenger list
+			//passenger report
 			{
 				id: 'passengerReport',
 				title: 'Passenger Report',
 				translate: 'Passenger Report',
 				type: 'item',
 				url: '/apps/passengers/report',
+				exact: true
+			},
+			//medical report
+			{
+				id: 'medicalReport',
+				title: 'Medical Report',
+				translate: 'Medical Report',
+				type: 'item',
+				url: '/apps/medicals/report',
 				exact: true
 			}
 		]

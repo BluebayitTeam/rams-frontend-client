@@ -19,8 +19,8 @@ import { GET_SITESETTINGS } from '../../../../../constant/constants';
 import '../../Print.css';
 import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
-import { getAgents, getAllAgents } from '../store/agentReportSlice';
-import AgentFilterMenu from './AgentFilterMenu';
+import { getAllMedicals, getMedicals } from '../store/medicalReportSlice';
+import MedicalFilterMenu from './MedicalFilterMenu';
 
 const useStyles = makeStyles(theme => ({
 	headContainer: {
@@ -288,7 +288,7 @@ function tableColumnsReducer(state, action) {
 	}
 }
 
-const AgentReportsTable = () => {
+const MedicalReportsTable = () => {
 	const classes = useStyles();
 
 	const methods = useForm({
@@ -305,7 +305,7 @@ const AgentReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData([], 25);
+	const [modifiedMedicalData, setModifiedMedicalData, setSortBy] = useReportData([], 25);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -344,10 +344,10 @@ const AgentReportsTable = () => {
 		setInPrint(true);
 		if (!inPrint) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllAgents(null, () => {
+				handleGetAllMedicals(null, () => {
 					printAction();
 					setInPrint(false);
-					handleGetAgents();
+					handleGetMedicals();
 				});
 			} else {
 				printAction();
@@ -377,10 +377,10 @@ const AgentReportsTable = () => {
 		setInDowloadPdf(true);
 		if (!inDowloadPdf) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllAgents(null, () => {
+				handleGetAllMedicals(null, () => {
 					pdfDownloadAction();
 					setInDowloadPdf(false);
-					handleGetAgents();
+					handleGetMedicals();
 				});
 			} else {
 				pdfDownloadAction();
@@ -397,10 +397,10 @@ const AgentReportsTable = () => {
 		setInDowloadExcel(true);
 		if (!inDowloadExcel) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllAgents(null, () => {
+				handleGetAllMedicals(null, () => {
 					document.getElementById('test-table-xls-button').click();
 					setInDowloadExcel(false);
-					handleGetAgents();
+					handleGetMedicals();
 				});
 			} else {
 				document.getElementById('test-table-xls-button').click();
@@ -418,24 +418,24 @@ const AgentReportsTable = () => {
 
 	//pagination handler
 	const firstPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetMedicals(event.page);
 	};
 	const previousPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetMedicals(event.page);
 	};
 	const nextPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetMedicals(event.page);
 	};
 	const lastPageHandler = event => {
-		handleGetAgents(event.page);
+		handleGetMedicals(event.page);
 	};
 
-	//get agents
-	const handleGetAgents = (pagePram, callBack) => {
-		dispatch(getAgents({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
+	//get medicals
+	const handleGetMedicals = (pagePram, callBack) => {
+		dispatch(getMedicals({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedAgentData(res.payload?.agents || []);
+				setModifiedMedicalData(res.payload?.medicals || []);
 				setPage(res.payload?.page || 1);
 				setSize(res.payload?.size || 25);
 				setTotalPages(res.payload?.total_pages || 0);
@@ -446,16 +446,16 @@ const AgentReportsTable = () => {
 		});
 	};
 
-	//get all agent without pagination
-	const handleGetAllAgents = (callBack, callBackAfterStateUpdated) => {
-		dispatch(getAllAgents(getValues())).then(res => {
+	//get all medical without pagination
+	const handleGetAllMedicals = (callBack, callBackAfterStateUpdated) => {
+		dispatch(getAllMedicals(getValues())).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedAgentData(res.payload?.agents || []);
+				setModifiedMedicalData(res.payload?.medicals || []);
 				setInSiglePageMode(false);
 				setInShowAllMode(true);
 				//get pagination data
-				const { totalPages, totalElements } = getPaginationData(res.payload?.agents, size, page);
+				const { totalPages, totalElements } = getPaginationData(res.payload?.medicals, size, page);
 				setPage(page || 1);
 				setSize(size || 25);
 				setTotalPages(totalPages);
@@ -470,10 +470,10 @@ const AgentReportsTable = () => {
 			<div className={classes.headContainer}>
 				{/* filter */}
 				<FormProvider {...methods}>
-					<AgentFilterMenu
+					<MedicalFilterMenu
 						inShowAllMode={inShowAllMode}
-						handleGetAgents={handleGetAgents}
-						handleGetAllAgents={handleGetAllAgents}
+						handleGetMedicals={handleGetMedicals}
+						handleGetAllMedicals={handleGetAllMedicals}
 					/>
 				</FormProvider>
 			</div>
@@ -536,7 +536,7 @@ const AgentReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
-					onClick={() => handleGetAgents()}
+					onClick={() => handleGetMedicals()}
 					icon={faBookOpen}
 				/>
 
@@ -544,7 +544,7 @@ const AgentReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-					onClick={() => handleGetAllAgents()}
+					onClick={() => handleGetAllMedicals()}
 					icon={faScroll}
 				/>
 
@@ -597,15 +597,15 @@ const AgentReportsTable = () => {
 			<table id="table-to-xls" className="w-full" style={{ minHeight: '50px' }}>
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
-					{modifiedAgentData.map(agent => (
+					{modifiedMedicalData.map(medical => (
 						<SinglePage
 							classes={classes}
 							generalData={generalData}
-							reporTitle="Agent Report"
+							reporTitle="Medical Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={agent}
-							serialNumber={agent.page * agent.size - agent.size + 1}
+							data={medical}
+							serialNumber={medical.page * medical.size - medical.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
 							setSortBy={setSortBy}
@@ -616,4 +616,4 @@ const AgentReportsTable = () => {
 		</>
 	);
 };
-export default AgentReportsTable;
+export default MedicalReportsTable;

@@ -3,6 +3,7 @@ import {
 	faChevronDown,
 	faCity,
 	faPhoneAlt,
+	faQrcode,
 	faTimesCircle,
 	faUser,
 	faUsers
@@ -158,6 +159,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 	//element refs
 	const userNameEl = useRef(null);
 	const primaryPhoneEl = useRef(null);
+	const agentCodeEl = useRef(null);
 
 	//select field data
 	const districts = useSelector(state => state.data.cities);
@@ -314,7 +316,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 						className="selectOpenIcon cursor-pointer"
 						style={{
 							width: values.districtFocused ? '0px' : '15px',
-							margin: values.groupFocused ? '0px' : '2px 10px 0px 0px'
+							margin: values.districtFocused ? '0px' : '2px 10px 0px 0px'
 						}}
 						onClick={() => {
 							setValue('districtFocused', true);
@@ -360,6 +362,30 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 								)}
 							/>
 						)}
+					/>
+				</div>
+
+				{/* Agent Code */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon className="icon" icon={faQrcode} />
+
+					<input
+						ref={agentCodeEl}
+						className="textField"
+						style={{ width: '77px' }}
+						placeholder="Agent Code"
+						onKeyDown={e => {
+							if (e.key === 'Enter') {
+								setValue('agent_code', e.target.value);
+								inShowAllMode ? handleGetAllAgents() : handleGetAgents();
+								agentCodeEl.current.blur();
+								agentCodeEl.current.value = '';
+								setReRender(Math.random());
+							}
+						}}
+						onFocus={() =>
+							(agentCodeEl.current.value = agentCodeEl.current.value || values.agent_code || '')
+						}
 					/>
 				</div>
 
@@ -515,6 +541,26 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 								onClick={() => {
 									setValue('ditrictName', '');
 									setValue('district', {});
+									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.agent_code && (
+					<div className="keywordContainer">
+						<b>Agent Code</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faQrcode} />
+							<p>{values.agent_code}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('agent_code', '');
+									agentCodeEl.current.value = '';
 									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
 									setReRender(Math.random());
 								}}

@@ -823,6 +823,10 @@ export const DELETE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/delete/`;
 
 export const MEDICAL_BY_PASSENGER_ID = `${BASE_URL}/medical/api/v1/medical/get_by_passenger_id/`;
 
+export const MEDICAL_FILTER_BY = `${BASE_URL}/report/api/v1/medical_report/filter/`;
+
+export const MEDICAL_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/medical_report/without_pagination/filter/`;
+
 //medicalCenter
 export const CREATE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/create/`;
 

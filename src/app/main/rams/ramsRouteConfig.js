@@ -378,6 +378,11 @@ const ramsRouteConfig = {
 			component: lazy(() =>
 				import('./ReportManagement/PassengerReportManagement/PassengerReport/PassengerReport')
 			)
+		},
+		//medicalReport
+		{
+			path: '/apps/medicals/report',
+			component: lazy(() => import('./ReportManagement/MedicalReportManagement/MedicalReport/MedicalReport'))
 		}
 	]
 };

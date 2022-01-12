@@ -10,11 +10,13 @@ export const getPassengers = createAsyncThunk(
 			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
-				`${PASSENGER_FILTER_BY}?passenger_name=${values.passenger_name || ''}&current_status=${
+				`${PASSENGER_FILTER_BY}?passenger_name=${values.passengerName || ''}&current_status=${
 					values.currentStatusName || ''
-				}&target_country=${values.countryName || ''}&agent=${values.agentName || ''}&gender=${
-					values.genderName || ''
-				}&date_after=${values.date_after || ''}&date_before=${values.date_before || ''}`,
+				}&target_country=${values.countryName || ''}&agent=${values.agentName || ''}&passenger_type=${
+					values.passenger_type || ''
+				}&gender=${values.genderName || ''}&date_after=${values.date_after || ''}&date_before=${
+					values.date_before || ''
+				}`,
 				{ params: pageAndSize }
 			);
 
@@ -37,11 +39,13 @@ export const getAllPassengers = createAsyncThunk(
 			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
-				`${PASSENGER_FILTER_WITHOUT_PG}?passenger_name=${values.passenger_name || ''}&current_status=${
+				`${PASSENGER_FILTER_WITHOUT_PG}?passenger_name=${values.passengerName || ''}&current_status=${
 					values.currentStatusName || ''
-				}&target_country=${values.countryName || ''}&agent=${values.agentName || ''}&gender=${
-					values.genderName || ''
-				}&date_after=${values.date_after || ''}&date_before=${values.date_before || ''}`
+				}&target_country=${values.countryName || ''}&agent=${values.agentName || ''}&passenger_type=${
+					values.passenger_type || ''
+				}&gender=${values.genderName || ''}&date_after=${values.date_after || ''}&date_before=${
+					values.date_before || ''
+				}`
 			);
 
 			delete axios.defaults.headers.common['Content-type'];
