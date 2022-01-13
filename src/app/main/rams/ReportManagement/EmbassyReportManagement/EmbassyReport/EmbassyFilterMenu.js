@@ -12,8 +12,8 @@ import { makeStyles, TextField } from '@material-ui/core';
 import { LocalActivity } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import { DatePicker } from '@material-ui/pickers';
-import { genders } from 'app/@data/data';
-import { getAgents, getCountries, getCurrentStatuss, getPassengers, getPassengerTypes } from 'app/store/dataSlice';
+import { doneNotDone, genders } from 'app/@data/data';
+import { getAgents, getCountries, getPassengers, getPassengerTypes } from 'app/store/dataSlice';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -76,7 +76,8 @@ const useStyles = makeStyles(theme => ({
 					width: 'fit-content',
 					margin: '3px 5px 0px 8px',
 					cursor: 'pointer',
-					color: theme.palette.primary.main
+					color: theme.palette.primary.main,
+					whiteSpace: 'nowrap'
 				},
 				'& .selectOpenIcon': {
 					fontSize: '18px',
@@ -134,7 +135,6 @@ const useStyles = makeStyles(theme => ({
 					flexDirection: 'row',
 					justifyContent: 'center',
 					alignItems: 'center',
-					height: '25px',
 					'& > p': {
 						marginBottom: '-1px'
 					},
@@ -151,7 +151,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllPassengers }) {
+function EmbassyFilterMenu({ inShowAllMode, handleGetEmbassys, handleGetAllEmbassys }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -159,10 +159,9 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 	const [_reRender, setReRender] = useState(0);
 
 	//select field data
-	const currentStatuss = useSelector(state => state.data.currentStatuss);
+	const passengers = useSelector(state => state.data.passengers);
 	const countries = useSelector(state => state.data.countries);
 	const agents = useSelector(state => state.data.agents);
-	const passengers = useSelector(state => state.data.passengers);
 	const passengerTypes = useSelector(state => state.data.passengerTypes);
 
 	const methods = useFormContext();
@@ -170,17 +169,169 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 	const values = getValues();
 
 	useEffect(() => {
-		dispatch(getCountries());
-		dispatch(getCurrentStatuss());
-		dispatch(getAgents());
 		dispatch(getPassengers());
+		dispatch(getCountries());
+		dispatch(getAgents());
 		dispatch(getPassengerTypes());
 	}, []);
 
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
-				{/* date from */}
+				{/* V.Stp From */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('stappingDateAfterEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('stappingDateAfterEl').click()}>
+						V.Stp From
+					</div>
+
+					<Controller
+						name="stapping_date_after"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="stappingDateAfterEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									maxDate={values.stapping_date_before || new Date()}
+									value={field.value || ''}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* V.Stp To */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('stappingDateBeforeEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('stappingDateBeforeEl').click()}>
+						V.Stp To
+					</div>
+
+					<Controller
+						name="stapping_date_before"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="stappingDateBeforeEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									value={field.value || ''}
+									minDate={values.stapping_date_after}
+									maxDate={new Date()}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* V.Exp From */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('expDateAfterEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('expDateAfterEl').click()}>
+						M.Exp From
+					</div>
+
+					<Controller
+						name="expiry_date_after"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="expDateAfterEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									maxDate={values.expiry_date_bofore}
+									value={field.value || ''}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* V.Exp To */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('expDateBeforeEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('expDateBeforeEl').click()}>
+						M.Exp To
+					</div>
+
+					<Controller
+						name="expiry_date_bofore"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="expDateBeforeEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									value={field.value || ''}
+									minDate={values.expiry_date_after}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* V.Ent from */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon
 						className="icon cursor-pointer"
@@ -189,7 +340,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					/>
 
 					<div className="dateLabel" onClick={() => document.getElementById('dateAfterEl').click()}>
-						Date From
+						V.Ent From
 					</div>
 
 					<Controller
@@ -210,7 +361,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+										inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									}}
 								/>
 							);
@@ -218,7 +369,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					/>
 				</div>
 
-				{/* date to */}
+				{/* V.Ent to */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon
 						className="icon cursor-pointer"
@@ -227,7 +378,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					/>
 
 					<div className="dateLabel" onClick={() => document.getElementById('dateBeforeEl').click()}>
-						Date To
+						V.Ent To
 					</div>
 
 					<Controller
@@ -249,11 +400,82 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+										inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									}}
 								/>
 							);
 						}}
+					/>
+				</div>
+
+				{/* V.Stp Status */}
+				<div className="fieldContainer">
+					<LocalActivity style={{ fontSize: '25px' }} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.stpStatusFocused ? '0px' : '78px',
+							margin: values.stpStatusFocused ? '0px' : '2px 5px 0px 10px'
+						}}
+						onClick={() => {
+							setValue('stpStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('stpStatusEl').focus(), 300);
+						}}
+					>
+						V.Stp Status
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.stpStatusFocused ? '0px' : '15px',
+							margin: values.stpStatusFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('stpStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('stpStatusEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="stamping_status"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="stpStatusEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.stpStatusFocused ? '130px' : '0px',
+									margin: values.stpStatusFocused ? '0px 10px' : '0px',
+									display: values.stpStatusFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('stpStatusFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={doneNotDone}
+								value={value ? doneNotDone.find(data => data.id == value) : null}
+								getOptionLabel={option => option.name}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('stpStatusName', newValue?.name || '');
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select Stp Status"
+									/>
+								)}
+							/>
+						)}
 					/>
 				</div>
 
@@ -316,84 +538,13 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('passengerName', newValue?.passenger_name || '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 								}}
 								renderInput={params => (
 									<TextField
 										{...params}
 										className="textFieldUnderSelect"
 										placeholder="Select Passenger"
-									/>
-								)}
-							/>
-						)}
-					/>
-				</div>
-
-				{/* current status */}
-				<div className="fieldContainer">
-					<LocalActivity style={{ fontSize: '25px' }} />
-
-					<div
-						className="selectLabel"
-						style={{
-							width: values.currentStatusFocused ? '0px' : '94px',
-							margin: values.currentStatusFocused ? '0px' : '2px 5px 0px 5px'
-						}}
-						onClick={() => {
-							setValue('currentStatusFocused', true);
-							setReRender(Math.random());
-							setTimeout(() => document.getElementById('currentStatusEl').focus(), 300);
-						}}
-					>
-						Current Status
-					</div>
-					<FontAwesomeIcon
-						className="selectOpenIcon cursor-pointer"
-						style={{
-							width: values.currentStatusFocused ? '0px' : '15px',
-							margin: values.currentStatusFocused ? '0px' : '2px 10px 0px 0px'
-						}}
-						onClick={() => {
-							setValue('currentStatusFocused', true);
-							setReRender(Math.random());
-							setTimeout(() => document.getElementById('currentStatusEl').focus(), 300);
-						}}
-						icon={faChevronDown}
-					/>
-
-					<Controller
-						name="current_status"
-						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								id="currentStatusEl"
-								className="mb-3 selectField"
-								style={{
-									width: values.currentStatusFocused ? '130px' : '0px',
-									margin: values.currentStatusFocused ? '0px 10px' : '0px',
-									display: values.currentStatusFocused ? 'block' : 'none'
-								}}
-								classes={{ endAdornment: 'endAdornment' }}
-								openOnFocus={true}
-								onClose={() => {
-									setValue('currentStatusFocused', false);
-									setReRender(Math.random());
-								}}
-								freeSolo
-								options={currentStatuss}
-								value={value ? currentStatuss.find(data => data.id == value) : null}
-								getOptionLabel={option => `${option.name}`}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-									setValue('currentStatusName', newValue?.name || '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
-								}}
-								renderInput={params => (
-									<TextField
-										{...params}
-										className="textFieldUnderSelect"
-										placeholder="Select current status"
 									/>
 								)}
 							/>
@@ -434,7 +585,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					/>
 
 					<Controller
-						name="target_country"
+						name="country"
 						control={control}
 						render={({ field: { onChange, value } }) => (
 							<Autocomplete
@@ -458,7 +609,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('countryName', newValue?.name || '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 								}}
 								renderInput={params => (
 									<TextField
@@ -529,7 +680,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('agentName', newValue?.username || '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 								}}
 								renderInput={params => (
 									<TextField
@@ -600,7 +751,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('passengerTypeName', newValue?.name || '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 								}}
 								renderInput={params => (
 									<TextField
@@ -671,7 +822,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('genderName', newValue?.id || '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 								}}
 								renderInput={params => (
 									<TextField
@@ -688,9 +839,85 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 
 			{/* keywords */}
 			<div className="allKeyWrdContainer">
+				{values.stapping_date_after && (
+					<div className="keywordContainer">
+						<b>V.Stp From</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.stapping_date_after)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('stapping_date_after', '');
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.stapping_date_before && (
+					<div className="keywordContainer">
+						<b>V.Stp To</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.stapping_date_before)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('stapping_date_before', '');
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.expiry_date_after && (
+					<div className="keywordContainer">
+						<b>V.Exp From</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.expiry_date_after)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('expiry_date_after', '');
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.expiry_date_bofore && (
+					<div className="keywordContainer">
+						<b>V.Exp To</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.expiry_date_bofore)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('expiry_date_bofore', '');
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
 				{values.date_after && (
 					<div className="keywordContainer">
-						<b>Date From</b>
+						<b>V.Ent From</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
 							<p>{moment(new Date(values.date_after)).format('DD-MM-YYYY')}</p>
@@ -699,7 +926,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_after', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
 							/>
@@ -709,7 +936,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 
 				{values.date_before && (
 					<div className="keywordContainer">
-						<b>Date To</b>
+						<b>V.Ent To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
 							<p>{moment(new Date(values.date_before)).format('DD-MM-YYYY')}</p>
@@ -718,7 +945,27 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_before', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.stpStatusName && (
+					<div className="keywordContainer">
+						<b>V.Stp Status</b>
+						<div>
+							<LocalActivity className="iconWithKeyWord" style={{ fontSize: '18px' }} />
+							<p>{values.stpStatusName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('stpStatusName', '');
+									setValue('stamping_status', '');
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
 							/>
@@ -738,27 +985,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onClick={() => {
 									setValue('passengerName', '');
 									setValue('passenger', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.currentStatusName && (
-					<div className="keywordContainer">
-						<b>Current Status</b>
-						<div>
-							<LocalActivity className="iconWithKeyWord" style={{ fontSize: '18px' }} />
-							<p>{values.currentStatusName}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('currentStatusName', '');
-									setValue('current_status', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
 							/>
@@ -777,8 +1004,8 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('countryName', '');
-									setValue('target_country', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									setValue('country', '');
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
 							/>
@@ -798,7 +1025,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onClick={() => {
 									setValue('agentName', '');
 									setValue('agent', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
 							/>
@@ -818,7 +1045,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onClick={() => {
 									setValue('passengerTypeName', '');
 									setValue('passenger_type', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
 							/>
@@ -842,7 +1069,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 								onClick={() => {
 									setValue('genderName', '');
 									setValue('gender', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
 							/>
@@ -854,4 +1081,4 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 	);
 }
 
-export default PassengerFilterMenu;
+export default EmbassyFilterMenu;

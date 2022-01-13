@@ -127,6 +127,8 @@ const useStyles = makeStyles(theme => ({
 			display: 'flex',
 			justifyContent: 'flex-end',
 			'& > .allColumnContainer': {
+				maxHeight: '200px',
+				overflow: 'auto',
 				position: 'absolute',
 				top: '50px',
 				background: theme.palette.primary.light,
@@ -243,13 +245,14 @@ const useStyles = makeStyles(theme => ({
 const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
-	{ label: 'Sl_No', sortAction: false, serialNo: true, show: true },
+	{ label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
 	{ label: 'Passenger Name', name: 'passenger', subName: 'passenger_name', show: true },
 	{ label: 'PP.No', name: 'passenger', subName: 'passport_no', show: true },
 	{ label: 'Agent', name: 'agent', subName: 'username', show: true },
 	{ label: 'M.Serial No', name: 'medical_serial_no', show: true },
 	{ label: 'M.Result', name: 'medical_result', show: true },
 	{ label: 'M.Card', name: 'medical_card', show: true },
+	{ label: 'M.Ent Date', name: 'created_at', show: true, type: 'date' },
 	{ label: 'M.Exam Date', name: 'medical_exam_date', show: true, type: 'date' },
 	{ label: 'M.Rpt Date', name: 'medical_report_date', show: true, type: 'date' },
 	{ label: 'M.Issue Date', name: 'medical_issue_date', show: true, type: 'date' },
@@ -600,7 +603,7 @@ const MedicalReportsTable = () => {
 				/>
 			</div>
 
-			<table id="table-to-xls" className="w-full" style={{ minHeight: '50px' }}>
+			<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
 					{modifiedMedicalData.map(medical => (

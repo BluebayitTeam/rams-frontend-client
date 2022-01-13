@@ -11,14 +11,14 @@ export const getMedicals = createAsyncThunk(
 
 			const res = await axios.get(
 				`${MEDICAL_FILTER_BY}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
-					values.genderName || ''
-				}&passenger_type=${values.passenger_Type}&report_date_after=${
+					values.gender || ''
+				}&passenger_type=${values.passenger_type}&report_date_after=${
 					values.report_date_after || ''
 				}&report_date_bofore=${values.report_date_bofore || ''}&exam_date_after=${
 					values.exam_date_after || ''
 				}&exam_date_bofore=${values.exam_date_bofore || ''}&expiry_date_after=${
 					values.expiry_date_after || ''
-				}&expiry_date_bofore=${values.expiry_date_bofore || ''}`,
+				}&expiry_date_bofore=${values.expiry_date_bofore || ''}&country=${values.country || ''}`,
 				{ params: pageAndSize }
 			);
 
@@ -41,14 +41,14 @@ export const getAllMedicals = createAsyncThunk(
 
 			const res = await axios.get(
 				`${MEDICAL_FILTER_WITHOUT_PG}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
-					values.genderName || ''
-				}&passenger_type=${values.passenger_Type}&report_date_after=${
+					values.gender || ''
+				}&passenger_type=${values.passenger_type}&report_date_after=${
 					values.report_date_after || ''
 				}&report_date_bofore=${values.report_date_bofore || ''}&exam_date_after=${
 					values.exam_date_after || ''
 				}&exam_date_bofore=${values.exam_date_bofore || ''}&expiry_date_after=${
 					values.expiry_date_after || ''
-				}&expiry_date_bofore=${values.expiry_date_bofore || ''}`
+				}&expiry_date_bofore=${values.expiry_date_bofore || ''}&country=${values.country || ''}`
 			);
 
 			delete axios.defaults.headers.common['Content-type'];

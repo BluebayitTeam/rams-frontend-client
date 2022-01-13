@@ -102,7 +102,7 @@ function SiglePage({
 									return column.show ? (
 										<TableCell align="center" className="tableCell">
 											<div>
-												{!column?.serialNo
+												{!column?.isSerialNo
 													? column?.subName
 														? dataArr?.[column.name]?.[column?.subName]
 														: !dataArr?.[column.name]

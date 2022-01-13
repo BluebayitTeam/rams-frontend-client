@@ -277,7 +277,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 									autoOk
 									clearable
 									format={'dd/MM/yyyy'}
-									maxDate={values.expiry_date_bofore || new Date()}
+									maxDate={values.expiry_date_bofore}
 									value={field.value || ''}
 									onChange={value => {
 										value
@@ -317,7 +317,6 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 									format={'dd/MM/yyyy'}
 									value={field.value || ''}
 									minDate={values.expiry_date_after}
-									maxDate={new Date()}
 									onChange={value => {
 										value
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
@@ -514,7 +513,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					/>
 
 					<Controller
-						name="target_country"
+						name="country"
 						control={control}
 						render={({ field: { onChange, value } }) => (
 							<Autocomplete
@@ -750,7 +749,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								getOptionLabel={option => `${option.name}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
-									setValue('genderName', newValue?.name || '');
+									setValue('genderName', newValue?.id || '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 								}}
 								renderInput={params => (
@@ -773,7 +772,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 						<b>M.Rpt From</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.report_date_after}</p>
+							<p>{moment(new Date(values.report_date_after)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
@@ -792,7 +791,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 						<b>M.Rpt To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.report_date_bofore}</p>
+							<p>{moment(new Date(values.report_date_bofore)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
@@ -811,7 +810,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 						<b>M.Exp From</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.expiry_date_after}</p>
+							<p>{}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
@@ -830,7 +829,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 						<b>M.Exp To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.expiry_date_bofore}</p>
+							<p>{moment(new Date(values.expiry_date_bofore)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
@@ -849,7 +848,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 						<b>M.Ent From</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.date_after}</p>
+							<p>{moment(new Date(values.date_after)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
@@ -868,7 +867,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 						<b>M.Ent To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.date_before}</p>
+							<p>{moment(new Date(values.date_before)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
@@ -893,7 +892,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('passengerName', '');
-									setValue('passenger', {});
+									setValue('passenger', '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
@@ -913,7 +912,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('countryName', '');
-									setValue('target_country', {});
+									setValue('country', '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
@@ -933,7 +932,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('agentName', '');
-									setValue('agent', {});
+									setValue('agent', '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
@@ -953,7 +952,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('passengerTypeName', '');
-									setValue('passenger_type', {});
+									setValue('passenger_type', '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
@@ -977,7 +976,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('genderName', '');
-									setValue('gender', {});
+									setValue('gender', '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}

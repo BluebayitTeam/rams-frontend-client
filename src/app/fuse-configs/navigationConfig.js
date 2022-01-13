@@ -486,6 +486,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/medicals/report',
 				exact: true
+			},
+			//embassy report
+			{
+				id: 'embassyReport',
+				title: 'Embassy Report',
+				translate: 'Embassy Report',
+				type: 'item',
+				url: '/apps/embassys/report',
+				exact: true
 			}
 		]
 	}

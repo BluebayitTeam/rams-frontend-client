@@ -44,6 +44,8 @@ export const BRANCHES = `${BASE_URL}/branch/api/v1/branch/all/`;
 // thana
 export const THANAS = `${BASE_URL}/thana/api/v1/thana/all/`;
 
+export const THANAS_BASED_CITY = `${BASE_URL}thana/api/v1/thana/all_thana_by_city_id/`;
+
 // // cities
 // export const CITIES = `${BASE_URL}/city/api/v1/city/all/`;
 
@@ -852,6 +854,10 @@ export const UPDATE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/update/`;
 export const DELETE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/delete/`;
 
 export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/check_visa_entry_medical_mofa_and_get_embassy_by_passenger_id/`;
+
+export const EMBASSY_FILTER_BY = `${BASE_URL}/report/api/v1/embassy_report/filter/`;
+
+export const EMBASSY_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/embassy_report/without_pagination/filter/`;
 
 //mofa
 export const CREATE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/create/`;

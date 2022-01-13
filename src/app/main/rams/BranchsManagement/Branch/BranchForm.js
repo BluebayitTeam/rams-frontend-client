@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import { Controller, useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { getCities, getCountries, getThanas } from '../../../../store/dataSlice';
+import { getCities, getCountries, getThanas, getThanasBasedOnCity } from '../../../../store/dataSlice';
 import { saveBranch, updateBranch } from '../store/branchSlice';
 
 function BranchForm(props) {
@@ -243,6 +243,7 @@ function BranchForm(props) {
                         getOptionLabel={option => `${option?.name}`}
                         onChange={(event, newValue) => {
                             onChange(newValue?.id);
+                            dispatch(getThanasBasedOnCity(newValue?.id))
                         }}
                         renderInput={params => (
                             <TextField

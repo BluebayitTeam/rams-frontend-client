@@ -127,6 +127,8 @@ const useStyles = makeStyles(theme => ({
 			display: 'flex',
 			justifyContent: 'flex-end',
 			'& > .allColumnContainer': {
+				maxHeight: '200px',
+				overflow: 'auto',
 				position: 'absolute',
 				top: '50px',
 				background: theme.palette.primary.light,
@@ -243,7 +245,7 @@ const useStyles = makeStyles(theme => ({
 const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
-	{ label: 'Sl_No', sortAction: false, serialNo: true, show: true },
+	{ label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
 	{ label: 'Name', name: 'username', show: true },
 	{ label: 'Group', name: 'group', subName: 'name', show: true },
 	{ label: 'District', name: 'city', subName: 'name', show: true },
@@ -594,7 +596,7 @@ const AgentReportsTable = () => {
 				/>
 			</div>
 
-			<table id="table-to-xls" className="w-full" style={{ minHeight: '50px' }}>
+			<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
 					{modifiedAgentData.map(agent => (

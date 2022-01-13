@@ -19,8 +19,8 @@ import { GET_SITESETTINGS } from '../../../../../constant/constants';
 import '../../Print.css';
 import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
-import { getAllPassengers, getPassengers } from '../store/passengerReportSlice';
-import PassengerFilterMenu from './PassengerFilterMenu';
+import { getAllEmbassys, getEmbassys } from '../store/embassyReportSlice';
+import EmbassyFilterMenu from './EmbassyFilterMenu';
 
 const useStyles = makeStyles(theme => ({
 	headContainer: {
@@ -246,21 +246,20 @@ const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
 	{ label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-	{ label: 'Date', name: 'created_at', show: true, type: 'date' },
-	{ label: 'P.Name', name: 'passenger_name', show: true },
-	{ label: 'PP.No', name: 'passport_no', show: true },
+	{ label: 'Passenger Name', name: 'passenger', subName: 'passenger_name', show: true },
+	{ label: 'PP.No', name: 'passenger', subName: 'passport_no', show: true },
+	{ label: 'Country', name: 'country', subName: 'name', show: true },
 	{ label: 'Profession', name: 'profession', subName: 'name', show: true },
-	{ label: 'Agent Name', name: 'agent', subName: 'username', show: true },
-	{ label: 'Visa No', name: 'visa_entry', subName: 'visa_number', show: true },
-	{ label: 'ID No', name: 'nid', show: true },
-	{ label: 'Gender', name: 'gender', show: true },
-	{ label: 'Country', name: 'target_country', subName: 'name', show: true },
-	{ label: 'P.Type', name: 'passenger_type', subName: 'name', show: true },
-	{ label: 'Medical Status', name: 'medical_status', show: true },
-	{ label: 'Stamping Date', name: 'stamping_date', show: true, type: 'date' },
-	{ label: 'Man Power Date', name: 'man_power_date', show: true, type: 'date' },
-	{ label: 'Flight Date', name: 'flight_date', show: true, type: 'date' },
-	{ label: 'Current Status', name: 'current_status', subName: 'name', show: true }
+	{ label: 'Submit Date', name: 'submit_date', show: true, type: 'date' },
+	{ label: 'Profession Eng', name: 'profession_english', show: true },
+	{ label: 'Profession Arb', name: 'profession_arabic', show: true },
+	{ label: 'Salary', name: 'salary', show: true },
+	{ label: 'Stamping Status', name: 'stamping_status', show: true },
+	{ label: 'V.Ent Date', name: 'created_at', show: true, type: 'date' },
+	{ label: 'Stp Date', name: 'stamping_date', show: true, type: 'date' },
+	{ label: 'V.Exp Date', name: 'visa_expiry_date', show: true, type: 'date' },
+	{ label: 'Delivery Date', name: 'delivery_date', show: true, type: 'date' },
+	{ label: 'recruiting_agency', name: 'recruiting_agency', subName: 'name', show: true }
 ];
 
 function tableColumnsReducer(state, action) {
@@ -300,7 +299,7 @@ function tableColumnsReducer(state, action) {
 	}
 }
 
-const PassengerReportsTable = () => {
+const EmbassyReportsTable = () => {
 	const classes = useStyles();
 
 	const methods = useForm({
@@ -317,11 +316,9 @@ const PassengerReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedPassengerData, setModifiedPassengerData, setSortBy, setSortBySubKey] = useReportData([]);
+	const [modifiedEmbassyData, setModifiedEmbassyData, setSortBy, setSortBySubKey] = useReportData([]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
-
-	console.log('modifiedPassengerData', modifiedPassengerData);
 
 	//tools state
 	const [inPrint, setInPrint] = useState(false);
@@ -345,7 +342,7 @@ const PassengerReportsTable = () => {
 			.catch(() => setGeneralData({}));
 	}, []);
 
-	//print don ref
+	//print dom ref
 	const componentRef = useRef();
 
 	//printer action
@@ -358,10 +355,10 @@ const PassengerReportsTable = () => {
 		setInPrint(true);
 		if (!inPrint) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllPassengers(null, () => {
+				handleGetAllEmbassys(null, () => {
 					printAction();
 					setInPrint(false);
-					handleGetPassengers();
+					handleGetEmbassys();
 				});
 			} else {
 				printAction();
@@ -391,10 +388,10 @@ const PassengerReportsTable = () => {
 		setInDowloadPdf(true);
 		if (!inDowloadPdf) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllPassengers(null, () => {
+				handleGetAllEmbassys(null, () => {
 					pdfDownloadAction();
 					setInDowloadPdf(false);
-					handleGetPassengers();
+					handleGetEmbassys();
 				});
 			} else {
 				pdfDownloadAction();
@@ -411,10 +408,10 @@ const PassengerReportsTable = () => {
 		setInDowloadExcel(true);
 		if (!inDowloadExcel) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllPassengers(null, () => {
+				handleGetAllEmbassys(null, () => {
 					document.getElementById('test-table-xls-button').click();
 					setInDowloadExcel(false);
-					handleGetPassengers();
+					handleGetEmbassys();
 				});
 			} else {
 				document.getElementById('test-table-xls-button').click();
@@ -432,24 +429,24 @@ const PassengerReportsTable = () => {
 
 	//pagination handler
 	const firstPageHandler = event => {
-		handleGetPassengers(event.page);
+		handleGetEmbassys(event.page);
 	};
 	const previousPageHandler = event => {
-		handleGetPassengers(event.page);
+		handleGetEmbassys(event.page);
 	};
 	const nextPageHandler = event => {
-		handleGetPassengers(event.page);
+		handleGetEmbassys(event.page);
 	};
 	const lastPageHandler = event => {
-		handleGetPassengers(event.page);
+		handleGetEmbassys(event.page);
 	};
 
-	//get passengers
-	const handleGetPassengers = (pagePram, callBack) => {
-		dispatch(getPassengers({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
+	//get embassys
+	const handleGetEmbassys = (pagePram, callBack) => {
+		dispatch(getEmbassys({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedPassengerData(res.payload?.passengers || []);
+				setModifiedEmbassyData(res.payload?.embassies || []);
 				setPage(res.payload?.page || 1);
 				setSize(res.payload?.size || 25);
 				setTotalPages(res.payload?.total_pages || 0);
@@ -460,16 +457,16 @@ const PassengerReportsTable = () => {
 		});
 	};
 
-	//get all passenger without pagination
-	const handleGetAllPassengers = (callBack, callBackAfterStateUpdated) => {
-		dispatch(getAllPassengers(getValues())).then(res => {
+	//get all embassy without pagination
+	const handleGetAllEmbassys = (callBack, callBackAfterStateUpdated) => {
+		dispatch(getAllEmbassys(getValues())).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedPassengerData(res.payload?.passengers || []);
+				setModifiedEmbassyData(res.payload?.embassies || []);
 				setInSiglePageMode(false);
 				setInShowAllMode(true);
 				//get pagination data
-				const { totalPages, totalElements } = getPaginationData(res.payload?.passengers, size, page);
+				const { totalPages, totalElements } = getPaginationData(res.payload?.embassies, size, page);
 				setPage(page || 1);
 				setSize(size || 25);
 				setTotalPages(totalPages);
@@ -479,16 +476,15 @@ const PassengerReportsTable = () => {
 		});
 	};
 
-	console.log('rendered passenger Report');
 	return (
 		<>
 			<div className={classes.headContainer}>
 				{/* filter */}
 				<FormProvider {...methods}>
-					<PassengerFilterMenu
+					<EmbassyFilterMenu
 						inShowAllMode={inShowAllMode}
-						handleGetPassengers={handleGetPassengers}
-						handleGetAllPassengers={handleGetAllPassengers}
+						handleGetEmbassys={handleGetEmbassys}
+						handleGetAllEmbassys={handleGetAllEmbassys}
 					/>
 				</FormProvider>
 			</div>
@@ -551,7 +547,7 @@ const PassengerReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
-					onClick={() => handleGetPassengers()}
+					onClick={() => handleGetEmbassys()}
 					icon={faBookOpen}
 				/>
 
@@ -559,11 +555,11 @@ const PassengerReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-					onClick={() => handleGetAllPassengers()}
+					onClick={() => handleGetAllEmbassys()}
 					icon={faScroll}
 				/>
 
-				{/* column select options icon*/}
+				{/* column select option icon*/}
 				<div className="columnSelectContainer">
 					<ViewWeek
 						id="insideClmSelect"
@@ -612,15 +608,15 @@ const PassengerReportsTable = () => {
 			<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
-					{modifiedPassengerData.map(passenger => (
+					{modifiedEmbassyData.map(embassy => (
 						<SinglePage
 							classes={classes}
 							generalData={generalData}
-							reporTitle="Passenger Report"
+							reporTitle="Embassy Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={passenger}
-							serialNumber={passenger.page * passenger.size - passenger.size + 1}
+							data={embassy}
+							serialNumber={embassy.page * embassy.size - embassy.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
 							setSortBy={setSortBy}
@@ -632,4 +628,4 @@ const PassengerReportsTable = () => {
 		</>
 	);
 };
-export default PassengerReportsTable;
+export default EmbassyReportsTable;

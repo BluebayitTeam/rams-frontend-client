@@ -501,7 +501,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('groupName', '');
-									setValue('group', {});
+									setValue('group', '');
 									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
 									setReRender(Math.random());
 								}}
@@ -541,7 +541,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('ditrictName', '');
-									setValue('district', {});
+									setValue('district', '');
 									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
 									setReRender(Math.random());
 								}}
@@ -575,7 +575,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 						<b>Date From</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.date_after}</p>
+							<p>{moment(new Date(values.date_after)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
@@ -594,7 +594,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 						<b>Date To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{values.date_before}</p>
+							<p>{moment(new Date(values.date_before)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}

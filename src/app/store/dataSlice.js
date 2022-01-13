@@ -28,6 +28,7 @@ import {
 	PASSENGERTYPES_WITHOUT_PAGINATION,
 	PAYMENTMATHODS,
 	PROFESSIONS_WITHOUT_PAGINATION,
+	THANAS_BASED_CITY,
 	VISAENTRYS_WITHOUT_PAGINATION
 } from 'app/constant/constants';
 import axios from 'axios';
@@ -46,7 +47,7 @@ export const getThanas = () => dispatch => {
 		.catch(() => {});
 };
 export const getThanasBasedOnCity = cityId => dispatch => {
-	fetch(GET_THANAS_WITHOUT_PAGINATION, cityId)
+	fetch(THANAS_BASED_CITY, cityId)
 		.then(response => response.json())
 		.then(data => dispatch(setThanas(data.thanas || [])))
 		.catch(() => {});
