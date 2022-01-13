@@ -201,6 +201,7 @@ const useStyles = makeStyles(theme => ({
 			}
 		},
 		'& .tableCellHead': {
+			padding: '0px',
 			'& > div': {
 				cursor: 'pointer',
 				whiteSpace: 'nowrap',

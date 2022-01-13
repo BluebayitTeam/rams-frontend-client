@@ -48,7 +48,7 @@ function SiglePage({
 				</div>
 
 				<Table aria-label="simple table" className={classes.table}>
-					<TableHead style={{ backgroundColor: '#D7DBDD' }}>
+					<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
 						<TableRow>
 							{tableColumns.map(column => {
 								return column.show ? (
@@ -77,18 +77,14 @@ function SiglePage({
 											}}
 										>
 											{`${column.label} `}
-											{column.sortAction !== false && (
-												<FontAwesomeIcon
-													className="sortIcon"
-													style={{
-														transform:
-															data.sortBy === column.name
-																? 'rotate(180deg)'
-																: 'rotate(0deg)'
-													}}
-													icon={faArrowUp}
-												/>
-											)}
+											<FontAwesomeIcon
+												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
+												style={{
+													transform:
+														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
+												}}
+												icon={faArrowUp}
+											/>
 										</div>
 									</TableCell>
 								) : null;
@@ -97,7 +93,7 @@ function SiglePage({
 					</TableHead>
 					<TableBody>
 						{data?.data?.map((dataArr, idx) => (
-							<TableRow id={idx} className="tableRow">
+							<TableRow key={dataArr.id} className="tableRow cursor-pointer" hover>
 								{tableColumns.map(column => {
 									return column.show ? (
 										<TableCell align="center" className="tableCell">

@@ -44,7 +44,7 @@ export const BRANCHES = `${BASE_URL}/branch/api/v1/branch/all/`;
 // thana
 export const THANAS = `${BASE_URL}/thana/api/v1/thana/all/`;
 
-export const THANAS_BASED_CITY = `${BASE_URL}thana/api/v1/thana/all_thana_by_city_id/`;
+export const THANAS_BASED_CITY = `${BASE_URL}/thana/api/v1/thana/all_thana_by_city_id/`;
 
 // // cities
 // export const CITIES = `${BASE_URL}/city/api/v1/city/all/`;

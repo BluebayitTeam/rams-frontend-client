@@ -47,7 +47,8 @@ export const getThanas = () => dispatch => {
 		.catch(() => {});
 };
 export const getThanasBasedOnCity = cityId => dispatch => {
-	fetch(THANAS_BASED_CITY, cityId)
+	console.log('hit getThanasBasedOnCity');
+	fetch(`${THANAS_BASED_CITY}${cityId}`)
 		.then(response => response.json())
 		.then(data => dispatch(setThanas(data.thanas || [])))
 		.catch(() => {});
