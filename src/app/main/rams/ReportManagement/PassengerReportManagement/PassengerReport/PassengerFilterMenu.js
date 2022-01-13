@@ -790,7 +790,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					<div className="keywordContainer">
 						<b>Agent</b>
 						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faFlag} />
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faUser} />
 							<p>{values.agentName}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
@@ -810,7 +810,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					<div className="keywordContainer">
 						<b>Passenger Type</b>
 						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faFlag} />
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faTextHeight} />
 							<p>{values.passengerTypeName}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
@@ -830,7 +830,11 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					<div className="keywordContainer">
 						<b>Gender</b>
 						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faFlag} />
+							<FontAwesomeIcon
+								style={{ fontSize: '20px' }}
+								className="iconWithKeyWord"
+								icon={faGenderless}
+							/>
 							<p>{values.genderName}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"

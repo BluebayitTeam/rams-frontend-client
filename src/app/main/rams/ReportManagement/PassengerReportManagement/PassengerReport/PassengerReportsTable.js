@@ -244,20 +244,20 @@ const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
 	{ label: 'Sl_No', sortAction: false, serialNo: true, show: true },
-	{ label: 'Date', name: 'created_at', show: true },
-	{ label: 'P. Name', name: 'passenger_name', show: true },
-	{ label: 'PP. No', name: 'passport_no', show: true },
+	{ label: 'Date', name: 'created_at', show: true, type: 'date' },
+	{ label: 'P.Name', name: 'passenger_name', show: true },
+	{ label: 'PP.No', name: 'passport_no', show: true },
 	{ label: 'Profession', name: 'profession', subName: 'name', show: true },
 	{ label: 'Agent Name', name: 'agent', subName: 'username', show: true },
 	{ label: 'Visa No', name: 'visa_entry', subName: 'visa_number', show: true },
 	{ label: 'ID No', name: 'nid', show: true },
 	{ label: 'Gender', name: 'gender', show: true },
 	{ label: 'Country', name: 'target_country', subName: 'name', show: true },
-	// { label: 'Visa Type', name: 'visa_type', subName: 'name', show: true },
+	{ label: 'P.Type', name: 'passenger_type', subName: 'name', show: true },
 	{ label: 'Medical Status', name: 'medical_status', show: true },
-	{ label: 'Stamping Date', name: 'stamping_date', show: true },
-	{ label: 'Man Power Date', name: 'man_power_date', show: true },
-	{ label: 'Flight Date', name: 'flight_date', show: true },
+	{ label: 'Stamping Date', name: 'stamping_date', show: true, type: 'date' },
+	{ label: 'Man Power Date', name: 'man_power_date', show: true, type: 'date' },
+	{ label: 'Flight Date', name: 'flight_date', show: true, type: 'date' },
 	{ label: 'Current Status', name: 'current_status', subName: 'name', show: true }
 ];
 
@@ -315,7 +315,7 @@ const PassengerReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedPassengerData, setModifiedPassengerData, setSortBy, setSortBySubKey] = useReportData([], 5);
+	const [modifiedPassengerData, setModifiedPassengerData, setSortBy, setSortBySubKey] = useReportData([]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -331,7 +331,7 @@ const PassengerReportsTable = () => {
 
 	//pagination state
 	const [page, setPage] = useState(1);
-	const [size, setSize] = useState(5);
+	const [size, setSize] = useState(25);
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 
@@ -449,7 +449,7 @@ const PassengerReportsTable = () => {
 				callBack && callBack(res.payload);
 				setModifiedPassengerData(res.payload?.passengers || []);
 				setPage(res.payload?.page || 1);
-				setSize(res.payload?.size || 5);
+				setSize(res.payload?.size || 25);
 				setTotalPages(res.payload?.total_pages || 0);
 				setTotalElements(res.payload?.total_elements || 0);
 				setInSiglePageMode(true);

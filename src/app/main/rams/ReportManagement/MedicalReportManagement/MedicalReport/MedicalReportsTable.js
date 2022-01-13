@@ -244,11 +244,17 @@ const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
 	{ label: 'Sl_No', sortAction: false, serialNo: true, show: true },
-	{ label: 'Name', name: 'username', show: true },
-	{ label: 'Group', name: 'group', subName: 'name', show: true },
-	{ label: 'District', name: 'city', subName: 'name', show: true },
-	{ label: 'Mobile', name: 'primary_phone', show: true },
-	{ label: 'Email', name: 'email', show: true }
+	{ label: 'Passenger Name', name: 'passenger', subName: 'passenger_name', show: true },
+	{ label: 'PP.No', name: 'passenger', subName: 'passport_no', show: true },
+	{ label: 'Agent', name: 'agent', subName: 'username', show: true },
+	{ label: 'M.Serial No', name: 'medical_serial_no', show: true },
+	{ label: 'M.Result', name: 'medical_result', show: true },
+	{ label: 'M.Card', name: 'medical_card', show: true },
+	{ label: 'M.Exam Date', name: 'medical_exam_date', show: true, type: 'date' },
+	{ label: 'M.Rpt Date', name: 'medical_report_date', show: true, type: 'date' },
+	{ label: 'M.Issue Date', name: 'medical_issue_date', show: true, type: 'date' },
+	{ label: 'M.Exp Date', name: 'medical_expiry_date', show: true, type: 'date' },
+	{ label: 'M.Center', name: 'medical_center', subName: 'name', show: true }
 ];
 
 function tableColumnsReducer(state, action) {
@@ -305,7 +311,7 @@ const MedicalReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedMedicalData, setModifiedMedicalData, setSortBy] = useReportData([], 25);
+	const [modifiedMedicalData, setModifiedMedicalData, setSortBy, setSortBySubKey] = useReportData([]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -609,6 +615,7 @@ const MedicalReportsTable = () => {
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
 							setSortBy={setSortBy}
+							setSortBySubKey={setSortBySubKey}
 						/>
 					))}
 				</div>

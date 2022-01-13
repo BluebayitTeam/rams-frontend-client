@@ -11,7 +11,7 @@ export const getMedicals = createAsyncThunk(
 
 			const res = await axios.get(
 				`${MEDICAL_FILTER_BY}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
-					values.gender || ''
+					values.genderName || ''
 				}&passenger_type=${values.passenger_Type}&report_date_after=${
 					values.report_date_after || ''
 				}&report_date_bofore=${values.report_date_bofore || ''}&exam_date_after=${
@@ -41,7 +41,7 @@ export const getAllMedicals = createAsyncThunk(
 
 			const res = await axios.get(
 				`${MEDICAL_FILTER_WITHOUT_PG}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
-					values.gender || ''
+					values.genderName || ''
 				}&passenger_type=${values.passenger_Type}&report_date_after=${
 					values.report_date_after || ''
 				}&report_date_bofore=${values.report_date_bofore || ''}&exam_date_after=${

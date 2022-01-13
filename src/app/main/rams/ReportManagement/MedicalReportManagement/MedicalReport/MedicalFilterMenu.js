@@ -1,11 +1,20 @@
-import { faCalendarAlt, faChevronDown, faTimesCircle, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+	faCalendarAlt,
+	faChevronDown,
+	faFlag,
+	faGenderless,
+	faTextHeight,
+	faTimesCircle,
+	faUser
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { DatePicker } from '@material-ui/pickers';
-import { getCities, getPassengers } from 'app/store/dataSlice';
+import { genders } from 'app/@data/data';
+import { getAgents, getCountries, getPassengers, getPassengerTypes } from 'app/store/dataSlice';
 import moment from 'moment';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -59,7 +68,8 @@ const useStyles = makeStyles(theme => ({
 					cursor: 'pointer',
 					overflow: 'hidden',
 					transition: '0.3s',
-					color: theme.palette.primary.main
+					color: theme.palette.primary.main,
+					whiteSpace: 'nowrap'
 				},
 				'& .dateLabel': {
 					width: 'fit-content',
@@ -147,50 +157,26 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 
 	const [_reRender, setReRender] = useState(0);
 
-	//element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const agentCodeEl = useRef(null);
-
 	//select field data
-	const districts = useSelector(state => state.data.cities);
 	const passengers = useSelector(state => state.data.passengers);
+	const countries = useSelector(state => state.data.countries);
 	const agents = useSelector(state => state.data.agents);
+	const passengerTypes = useSelector(state => state.data.passengerTypes);
 
 	const methods = useFormContext();
 	const { control, getValues, setValue } = methods;
 	const values = getValues();
 
 	useEffect(() => {
-		dispatch(getCities());
 		dispatch(getPassengers());
+		dispatch(getCountries());
+		dispatch(getAgents());
+		dispatch(getPassengerTypes());
 	}, []);
 
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
-				{/* user name */}
-				{/* <div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faUser} />
-
-					<input
-						ref={userNameEl}
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								setValue('username', e.target.value);
-								inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-								userNameEl.current.blur();
-								userNameEl.current.value = '';
-								setReRender(Math.random());
-							}
-						}}
-						onFocus={() => (userNameEl.current.value = userNameEl.current.value || values.username || '')}
-						className="textField"
-						style={{ width: '75px' }}
-						placeholder="User Name"
-					/>
-				</div> */}
-
 				{/* M.Rpt From */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon
@@ -375,7 +361,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									}}
 								/>
 							);
@@ -414,7 +400,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									}}
 								/>
 							);
@@ -495,6 +481,77 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					/>
 				</div>
 
+				{/* country */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon className="icon" icon={faFlag} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.countryFocused ? '0px' : '52px',
+							margin: values.countryFocused ? '0px' : '3px 5px 0px 5px'
+						}}
+						onClick={() => {
+							setValue('countryFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('countryEl').focus(), 300);
+						}}
+					>
+						Country
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.countryFocused ? '0px' : '15px',
+							margin: values.countryFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('countryFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('countryEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="target_country"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="countryEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.countryFocused ? '130px' : '0px',
+									margin: values.countryFocused ? '0px 10px' : '0px',
+									display: values.countryFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('countryFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={countries}
+								value={value ? countries.find(data => data.id == value) : null}
+								getOptionLabel={option => `${option.name}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('countryName', newValue?.name || '');
+									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select country"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
+
 				{/* agent */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon className="icon" icon={faUser} />
@@ -552,7 +609,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('agentName', newValue?.username || '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 								}}
 								renderInput={params => (
 									<TextField
@@ -566,148 +623,151 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					/>
 				</div>
 
-				{/* phone */}
-				{/* <div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faPhoneAlt} />
-
-					<input
-						ref={primaryPhoneEl}
-						className="textField"
-						style={{ width: '45px' }}
-						placeholder="Phone"
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								setValue('primary_phone', e.target.value);
-								inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-								primaryPhoneEl.current.blur();
-								primaryPhoneEl.current.value = '';
-								setReRender(Math.random());
-							}
-						}}
-						onFocus={() =>
-							(primaryPhoneEl.current.value = primaryPhoneEl.current.value || values.primary_phone || '')
-						}
-					/>
-				</div> */}
-
-				{/* district */}
-				{/* <div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faCity} />
+				{/* passenger Type */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon className="icon" icon={faTextHeight} />
 
 					<div
 						className="selectLabel"
 						style={{
-							width: values.districtFocused ? '0px' : '45px',
-							margin: values.districtFocused ? '0px' : '2px 5px 0px 10px'
+							width: values.passengerTypeFocused ? '0px' : '102px',
+							margin: values.passengerTypeFocused ? '0px' : '3px 5px 0px 5px'
 						}}
 						onClick={() => {
-							setValue('districtFocused', true);
+							setValue('passengerTypeFocused', true);
 							setReRender(Math.random());
-							setTimeout(() => document.getElementById('districtEl').focus(), 300);
+							setTimeout(() => document.getElementById('passengerTypeEl').focus(), 300);
 						}}
 					>
-						District
+						Passenger Type
 					</div>
 					<FontAwesomeIcon
 						className="selectOpenIcon cursor-pointer"
 						style={{
-							width: values.districtFocused ? '0px' : '15px',
-							margin: values.districtFocused ? '0px' : '2px 10px 0px 0px'
+							width: values.passengerTypeFocused ? '0px' : '15px',
+							margin: values.passengerTypeFocused ? '0px' : '2px 10px 0px 0px'
 						}}
 						onClick={() => {
-							setValue('districtFocused', true);
+							setValue('passengerTypeFocused', true);
 							setReRender(Math.random());
-							setTimeout(() => document.getElementById('districtEl').focus(), 300);
+							setTimeout(() => document.getElementById('passengerTypeEl').focus(), 300);
 						}}
 						icon={faChevronDown}
 					/>
 
 					<Controller
-						name="district"
+						name="passenger_type"
 						control={control}
 						render={({ field: { onChange, value } }) => (
 							<Autocomplete
-								id="districtEl"
+								id="passengerTypeEl"
 								className="mb-3 selectField"
 								style={{
-									width: values.districtFocused ? '130px' : '0px',
-									margin: values.districtFocused ? '0px 10px' : '0px',
-									display: values.districtFocused ? 'block' : 'none'
+									width: values.passengerTypeFocused ? '130px' : '0px',
+									margin: values.passengerTypeFocused ? '0px 10px' : '0px',
+									display: values.passengerTypeFocused ? 'block' : 'none'
 								}}
 								classes={{ endAdornment: 'endAdornment' }}
 								openOnFocus={true}
 								onClose={() => {
-									setValue('districtFocused', false);
+									setValue('passengerTypeFocused', false);
 									setReRender(Math.random());
 								}}
 								freeSolo
-								options={districts}
-								value={value ? districts.find(data => data.id == value) : null}
+								options={passengerTypes}
+								value={value ? passengerTypes.find(data => data.id == value) : null}
 								getOptionLabel={option => `${option.name}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
-									setValue('ditrictName', newValue?.name || '');
+									setValue('passengerTypeName', newValue?.name || '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 								}}
 								renderInput={params => (
 									<TextField
 										{...params}
 										className="textFieldUnderSelect"
-										placeholder="Select District"
+										placeholder="Select passenger type"
 									/>
 								)}
 							/>
 						)}
 					/>
-				</div> */}
+				</div>
 
-				{/* Agent Code */}
-				{/* <div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faQrcode} />
+				{/* gender */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon style={{ fontSize: '30px' }} icon={faGenderless} />
 
-					<input
-						ref={agentCodeEl}
-						className="textField"
-						style={{ width: '77px' }}
-						placeholder="Agent Code"
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								setValue('agent_code', e.target.value);
-								inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-								agentCodeEl.current.blur();
-								agentCodeEl.current.value = '';
-								setReRender(Math.random());
-							}
+					<div
+						className="selectLabel"
+						style={{
+							width: values.genderFocused ? '0px' : '48px',
+							margin: values.genderFocused ? '0px' : '3px 5px 0px 5px'
 						}}
-						onFocus={() =>
-							(agentCodeEl.current.value = agentCodeEl.current.value || values.agent_code || '')
-						}
+						onClick={() => {
+							setValue('genderFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('genderEl').focus(), 300);
+						}}
+					>
+						Gender
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.genderFocused ? '0px' : '15px',
+							margin: values.genderFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('genderFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('genderEl').focus(), 300);
+						}}
+						icon={faChevronDown}
 					/>
-				</div> */}
+
+					<Controller
+						name="gender"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="genderEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.genderFocused ? '130px' : '0px',
+									margin: values.genderFocused ? '0px 10px' : '0px',
+									display: values.genderFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('genderFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={genders}
+								value={value ? genders.find(data => data.id == value) : null}
+								getOptionLabel={option => `${option.name}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('genderName', newValue?.name || '');
+									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select gender"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
 			</div>
 
 			{/* keywords */}
 			<div className="allKeyWrdContainer">
-				{/* {values.username && (
-					<div className="keywordContainer">
-						<b>User Name</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faUser} />
-							<p>{values.username}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('username', '');
-									userNameEl.current.value = '';
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)} */}
-
 				{values.report_date_after && (
 					<div className="keywordContainer">
 						<b>M.Rpt From</b>
@@ -795,7 +855,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_after', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
 							/>
@@ -814,7 +874,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_before', '');
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
+									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
 							/>
@@ -822,7 +882,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 				)}
 
-				{/* {values.passengerName && (
+				{values.passengerName && (
 					<div className="keywordContainer">
 						<b>Passenger</b>
 						<div>
@@ -842,11 +902,31 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 				)}
 
+				{values.countryName && (
+					<div className="keywordContainer">
+						<b>Country</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faFlag} />
+							<p>{values.countryName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('countryName', '');
+									setValue('target_country', {});
+									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
 				{values.agentName && (
 					<div className="keywordContainer">
 						<b>Agent</b>
 						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faFlag} />
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faUser} />
 							<p>{values.agentName}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
@@ -854,26 +934,6 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onClick={() => {
 									setValue('agentName', '');
 									setValue('agent', {});
-									inShowAllMode ? handleGetAllPassengers() : handleGetPassengers();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.primary_phone && (
-					<div className="keywordContainer">
-						<b>Phone</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faPhoneAlt} />
-							<p>{values.primary_phone}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('primary_phone', '');
-									primaryPhoneEl.current.value = '';
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
@@ -882,18 +942,18 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 				)}
 
-				{values.ditrictName && (
+				{values.passengerTypeName && (
 					<div className="keywordContainer">
-						<b>District</b>
+						<b>Passenger Type</b>
 						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCity} />
-							<p>{values.ditrictName}</p>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faTextHeight} />
+							<p>{values.passengerTypeName}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
 								onClick={() => {
-									setValue('ditrictName', '');
-									setValue('district', {});
+									setValue('passengerTypeName', '');
+									setValue('passenger_type', {});
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
@@ -902,25 +962,29 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 				)}
 
-				{values.agent_code && (
+				{values.genderName && (
 					<div className="keywordContainer">
-						<b>Agent Code</b>
+						<b>Gender</b>
 						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faQrcode} />
-							<p>{values.agent_code}</p>
+							<FontAwesomeIcon
+								style={{ fontSize: '20px' }}
+								className="iconWithKeyWord"
+								icon={faGenderless}
+							/>
+							<p>{values.genderName}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
 								onClick={() => {
-									setValue('agent_code', '');
-									agentCodeEl.current.value = '';
+									setValue('genderName', '');
+									setValue('gender', {});
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
 							/>
 						</div>
 					</div>
-				)} */}
+				)}
 			</div>
 		</div>
 	);

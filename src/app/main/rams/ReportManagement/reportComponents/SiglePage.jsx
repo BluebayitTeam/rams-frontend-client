@@ -5,6 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import moment from 'moment';
 import React from 'react';
 import { BASE_URL } from '../../../../constant/constants';
 import '../Print.css';
@@ -104,6 +105,10 @@ function SiglePage({
 												{!column?.serialNo
 													? column?.subName
 														? dataArr?.[column.name]?.[column?.subName]
+														: !dataArr?.[column.name]
+														? ''
+														: column.type === 'date'
+														? moment(new Date(dataArr?.[column.name])).format('DD-MM-YYYY')
 														: dataArr?.[column.name]
 													: pageBasedSerialNo++}
 											</div>

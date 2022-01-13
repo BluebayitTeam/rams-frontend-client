@@ -305,7 +305,7 @@ const AgentReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData([], 25);
+	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData([]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 

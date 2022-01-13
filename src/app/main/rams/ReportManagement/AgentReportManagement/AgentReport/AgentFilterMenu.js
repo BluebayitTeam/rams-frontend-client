@@ -68,7 +68,8 @@ const useStyles = makeStyles(theme => ({
 					cursor: 'pointer',
 					overflow: 'hidden',
 					transition: '0.3s',
-					color: theme.palette.primary.main
+					color: theme.palette.primary.main,
+					whiteSpace: 'nowrap'
 				},
 				'& .dateLabel': {
 					width: 'fit-content',

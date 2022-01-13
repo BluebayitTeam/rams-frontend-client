@@ -22,15 +22,12 @@ const useReportData = (orginalData = [], row = 25) => {
 				]);
 			}
 
-			console.log('shortedArray', shortedArray);
-
 			//modify array
 			let modifiedArr = [];
 
 			const countTotalPage = Math.ceil(shortedArray?.length / size);
 			const totalPage = isNaN(countTotalPage) ? 0 : countTotalPage;
 
-			console.time('ModifyArry');
 			for (let index = 0; index < totalPage; index++) {
 				modifiedArr.push({
 					page: index + 1,
