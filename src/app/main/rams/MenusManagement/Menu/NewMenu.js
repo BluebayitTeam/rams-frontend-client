@@ -12,137 +12,126 @@ import { getMenu, newMenu, resetMenu } from '../store/menuSlice';
 import MenuForm from './MenuForm.js';
 import NewMenuHeader from './NewMenuHeader.js';
 
-
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
+	translate: yup.string().required('Translate is required'),
 
-    translate: yup.string()
-        .required("Translate is required"),
+	type: yup.string().required('Type is required')
 
-    type: yup.string()
-        .required("Type is required"),
-
-    // url: yup.string()
-    //     .required("Url is required"),
-})
+	// url: yup.string()
+	//     .required("Url is required"),
+});
 
 const Menu = () => {
+	const dispatch = useDispatch();
+	const menu = useSelector(({ menusManagement }) => menusManagement.menu);
 
-    const dispatch = useDispatch();
-    const menu = useSelector(({ menusManagement }) => menusManagement.menu);
+	const [noMenu, setNoMenu] = useState(false);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: yupResolver(schema)
+	});
+	const routeParams = useParams();
 
-    const [noMenu, setNoMenu] = useState(false);
-    const methods = useForm({
-        mode: 'onChange',
-        defaultValues: {},
-        resolver: yupResolver(schema)
-    });
-    const routeParams = useParams();
+	const { reset } = methods;
 
-    const { reset } = methods;
+	useDeepCompareEffect(() => {
+		function updateMenuState() {
+			const { menuId } = routeParams;
 
-    useDeepCompareEffect(() => {
-        function updateMenuState() {
-            const { menuId } = routeParams;
+			if (menuId === 'new') {
+				localStorage.removeItem('event');
+				/**
+				 * Create New User data
+				 */
+				dispatch(newMenu());
+			} else {
+				/**
+				 * Get User data
+				 */
 
-            if (menuId === 'new') {
+				dispatch(getMenu(menuId)).then(action => {
+					console.log(action.payload);
+					/**
+					 * If the requested product is not exist show message
+					 */
+					if (!action.payload) {
+						setNoMenu(true);
+					}
+				});
+			}
+		}
 
-                localStorage.removeItem('event')
-                /**
-                 * Create New User data
-                 */
-                dispatch(newMenu());
-            } else {
-                /**
-                 * Get User data
-                 */
+		updateMenuState();
+	}, [dispatch, routeParams]);
 
-                dispatch(getMenu(menuId)).then(action => {
-                    console.log(action.payload);
-                    /**
-                     * If the requested product is not exist show message
-                     */
-                    if (!action.payload) {
-                        setNoMenu(true);
-                    }
-                });
-            }
-        }
+	useEffect(() => {}, []);
 
-        updateMenuState();
-    }, [dispatch, routeParams]);
+	useEffect(() => {
+		if (!menu) {
+			return;
+		}
+		/**
+		 * Reset the form on menu state changes
+		 */
+		reset(menu);
+	}, [menu, reset]);
 
-    useEffect(() => {
+	useEffect(() => {
+		return () => {
+			/**
+			 * Reset Menu on component unload
+			 */
+			dispatch(resetMenu());
+			setNoMenu(false);
+		};
+	}, [dispatch]);
 
+	/**
+	 * Show Message if the requested products is not exists
+	 */
+	if (noMenu) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There is no such menu!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/e-commerce/products"
+					color="inherit"
+				>
+					Go to Menu Page
+				</Button>
+			</motion.div>
+		);
+	}
 
-    }, [])
-
-
-    useEffect(() => {
-        if (!menu) {
-            return;
-        }
-        /**
-         * Reset the form on menu state changes
-         */
-        reset(menu);
-    }, [menu, reset]);
-
-    useEffect(() => {
-        return () => {
-            /**
-             * Reset Menu on component unload
-             */
-            dispatch(resetMenu());
-            setNoMenu(false);
-        };
-    }, [dispatch]);
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noMenu) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such menu!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Menu Page
-                </Button>
-            </motion.div>
-        );
-    }
-
-
-    return (
-        <FormProvider {...methods}>
-            <FusePageCarded
-                classes={{
-                    toolbar: 'p-0',
-                    header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
-                }}
-                header={<NewMenuHeader />}
-                content={
-                    <div className="p-16 sm:p-24 max-w-2xl">
-                        <MenuForm />
-                    </div>
-                }
-                innerScroll
-            />
-        </FormProvider>
-    );
+	return (
+		<FormProvider {...methods}>
+			<FusePageCarded
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				header={<NewMenuHeader />}
+				content={
+					<div className="p-16 sm:p-24 max-w-2xl">
+						<MenuForm />
+					</div>
+				}
+				innerScroll
+			/>
+		</FormProvider>
+	);
 };
 export default withReducer('menusManagement', reducer)(Menu);

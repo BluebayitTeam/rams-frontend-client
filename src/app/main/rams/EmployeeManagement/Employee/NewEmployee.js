@@ -13,7 +13,7 @@ import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { getEmployee, newEmployee, resetEmployee } from '../store/employeeSlice';
 import reducer from '../store/index';
-import PersonalInfoTab from "../tabs/PersonalInfoTab";
+import PersonalInfoTab from '../tabs/PersonalInfoTab';
 import EmployeeForm from './EmployeeForm';
 import NewEmployeeHeader from './NewEmployeeHeader';
 
@@ -21,207 +21,187 @@ import NewEmployeeHeader from './NewEmployeeHeader';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-    branch: yup.number()
-        .required("Branch is required"),
-    emp_id_no: yup.string().
-        required('Id is required'),
-    first_name: yup.string()
-        .required('First name is required')
-        .min(5, 'First name must be at least 5 characters'),
-    last_name: yup.string()
-        .required('Last name is required'),
-    username: yup.string()
-        .required('User name is required'),
-    email: yup.string()
-        .email('You must enter a valid email address')
-        .required('You must enter a email address'),
-    password: yup.string()
-        .min(6, 'Password must be at least 6 characters')
-        .required('Password is required'),
-    confirmPassword: yup.string()
-        .required('Confirm password is required')
-        .oneOf([yup.ref('password'), null], 'Passwords must match'),
-    primary_phone: yup.string()
-        .required('Primary phone is required'),
-    street_address_one: yup.string()
-        .required('Primary address is required'),
-    // date_of_birth: yup.string()
-    //     .required('Date of Birth is required'),
-    gender: yup.string()
-        .required('Gender is required'),
-    thana: yup.number()
-        .required('Police station is required'),
-    city: yup.number()
-        .required('District is required'),
-    country: yup.number()
-        .required('Country is required'),
-    role: yup.number()
-        .required('Role is required'),
-    department: yup.number()
-        .required('Department is required'),
+	branch: yup.number().required('Branch is required'),
+	emp_id_no: yup.string().required('Id is required'),
+	first_name: yup.string().required('First name is required').min(5, 'First name must be at least 5 characters'),
+	last_name: yup.string().required('Last name is required'),
+	username: yup.string().required('User name is required'),
+	email: yup.string().email('You must enter a valid email address').required('You must enter a email address'),
+	password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+	confirmPassword: yup
+		.string()
+		.required('Confirm password is required')
+		.oneOf([yup.ref('password'), null], 'Passwords must match'),
+	primary_phone: yup.string().required('Primary phone is required'),
+	street_address_one: yup.string().required('Primary address is required'),
+	// date_of_birth: yup.string()
+	//     .required('Date of Birth is required'),
+	gender: yup.string().required('Gender is required'),
+	thana: yup.number().required('Police station is required'),
+	city: yup.number().required('District is required'),
+	country: yup.number().required('Country is required'),
+	role: yup.number().required('Role is required'),
+	department: yup.number().required('Department is required')
 
-    // designation: yup.string()
-    //     .required("Designation is required"),
-    // marital_status: yup.string()
-    //     .required("Marital Status is required"),
-    // father_name: yup.string()
-    //     .required("Father Name is required"),
-    // mother_name: yup.string()
-    //     .required("Mother Name is required"),
-    // spouse_name: yup.string()
-    //     .required("Spouse Name is required"),
-    // marriage_date: yup.string()
-    //     .required("Marriage Date is required"),
+	// designation: yup.string()
+	//     .required("Designation is required"),
+	// marital_status: yup.string()
+	//     .required("Marital Status is required"),
+	// father_name: yup.string()
+	//     .required("Father Name is required"),
+	// mother_name: yup.string()
+	//     .required("Mother Name is required"),
+	// spouse_name: yup.string()
+	//     .required("Spouse Name is required"),
+	// marriage_date: yup.string()
+	//     .required("Marriage Date is required"),
 });
 
-
 const NewEmployee = () => {
-    const dispatch = useDispatch();
-    const employee = useSelector(({ employeesManagement }) => employeesManagement.employee);
-    const routeParams = useParams();
-    const [tabValue, setTabValue] = useState(0);
-    //console.log(routeParams);
-    const [noEmployee, setNoEmployee] = useState(false);
-    const methods = useForm({
-        mode: 'onChange',
-        defaultValues: {},
-        resolver: yupResolver(schema)
-    });
-    const { reset, watch } = methods;
+	const dispatch = useDispatch();
+	const employee = useSelector(({ employeesManagement }) => employeesManagement.employee);
+	const routeParams = useParams();
+	const [tabValue, setTabValue] = useState(0);
+	//console.log(routeParams);
+	const [noEmployee, setNoEmployee] = useState(false);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: yupResolver(schema)
+	});
+	const { reset, watch } = methods;
 
-    useDeepCompareEffect(() => {
-        function updateEmployeeState() {
-            const { employeeId } = routeParams;
-            //console.log(employeeId);
-            if (employeeId === 'new') {
+	useDeepCompareEffect(() => {
+		function updateEmployeeState() {
+			const { employeeId } = routeParams;
+			//console.log(employeeId);
+			if (employeeId === 'new') {
+				localStorage.removeItem('deleteEmployee');
+				localStorage.removeItem('updateEmployee');
+				/**
+				 * Create New User data
+				 */
+				//console.log(employeeId);
+				dispatch(newEmployee());
+			} else {
+				/**
+				 * Get User data
+				 */
+				console.log(routeParams);
+				dispatch(getEmployee(routeParams)).then(action => {
+					console.log(action.payload);
+					/**
+					 * If the requested product is not exist show message
+					 */
+					if (!action.payload) {
+						setNoEmployee(true);
+					}
+				});
+			}
+		}
 
-                localStorage.removeItem('deleteEmployee');
-                localStorage.removeItem('updateEmployee');
-                /**
-                 * Create New User data
-                 */
-                //console.log(employeeId);
-                dispatch(newEmployee());
-            } else {
-                /**
-                 * Get User data
-                 */
-                console.log(routeParams);
-                dispatch(getEmployee(routeParams)).then(action => {
-                    console.log(action.payload);
-                    /**
-                     * If the requested product is not exist show message
-                     */
-                    if (!action.payload) {
-                        setNoEmployee(true);
-                    }
-                });
-            }
-        }
+		updateEmployeeState();
+	}, [dispatch, routeParams]);
 
-        updateEmployeeState();
-    }, [dispatch, routeParams]);
+	useEffect(() => {
+		if (!employee) {
+			return;
+		}
+		/**
+		 * Reset the form on employee state changes
+		 */
+		reset({
+			...employee,
+			country_code1: '+880',
+			country_code2: '+880',
+			show_country_code1: '+880',
+			show_country_code2: '+880'
+		});
+	}, [employee, reset]);
 
+	useEffect(() => {
+		return () => {
+			/**
+			 * Reset Employee on component unload
+			 */
+			dispatch(resetEmployee());
+			setNoEmployee(false);
+		};
+	}, [dispatch]);
 
-    useEffect(() => {
-        if (!employee) {
-            return;
-        }
-        /**
-         * Reset the form on employee state changes
-         */
-        reset({ ...employee, country_code1: "+880", country_code2: "+880", show_country_code1: "+880", show_country_code2: "+880" });
-    }, [employee, reset]);
+	function handleTabChange(event, value) {
+		console.log(value);
+		setTabValue(value);
+	}
 
-    useEffect(() => {
-        return () => {
-            /**
-             * Reset Employee on component unload
-             */
-            dispatch(resetEmployee());
-            setNoEmployee(false);
-        };
-    }, [dispatch]);
+	/**
+	 * Show Message if the requested products is not exists
+	 */
+	if (noEmployee) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There is no such employee!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/e-commerce/products"
+					color="inherit"
+				>
+					Go to Employee Page
+				</Button>
+			</motion.div>
+		);
+	}
 
-
-    function handleTabChange(event, value) {
-        console.log(value);
-        setTabValue(value);
-    }
-
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noEmployee) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such employee!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Employee Page
-                </Button>
-            </motion.div>
-        );
-    }
-
-    /**
-         * Wait while product data is loading and form is setted
-         */
-    //  if (_.isEmpty(form) || (employee && routeParams.employeeId !== employee.id && routeParams.employeeId !== 'new')) {
-    //     return <FuseLoading />;
-    // }
-    return (
-        <FormProvider {...methods}>
-            <FusePageCarded
-                classes={{
-                    root: {},
-                    toolbar: 'p-0'
-                }}
-
-                contentToolbar={
-                    <Tabs
-                        value={tabValue}
-                        onChange={handleTabChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        classes={{ root: 'w-full h-64' }}
-                    >
-                        <Tab className="h-64" label="Basic Info" />
-                        <Tab className="h-64" label="Personal Info" />
-                    </Tabs>
-                }
-
-
-
-
-                header={<NewEmployeeHeader />}
-                content={
-                    <div className="p-16 sm:p-24 max-w-2xl">
-                        <div className={tabValue !== 0 ? 'hidden' : ''}>
-                            <EmployeeForm />
-                        </div>
-                        <div className={tabValue !== 1 ? 'hidden' : ''}>
-                            <PersonalInfoTab />
-                        </div>
-                    </div>
-                }
-                innerScroll
-            />
-        </FormProvider>
-    );
+	/**
+	 * Wait while product data is loading and form is setted
+	 */
+	//  if (_.isEmpty(form) || (employee && routeParams.employeeId !== employee.id && routeParams.employeeId !== 'new')) {
+	//     return <FuseLoading />;
+	// }
+	return (
+		<FormProvider {...methods}>
+			<FusePageCarded
+				classes={{
+					root: {},
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				contentToolbar={
+					<Tabs
+						value={tabValue}
+						onChange={handleTabChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto"
+						classes={{ root: 'w-full h-64' }}
+					>
+						<Tab className="h-64" label="Basic Info" />
+						<Tab className="h-64" label="Personal Info" />
+					</Tabs>
+				}
+				header={<NewEmployeeHeader />}
+				content={
+					<div className="p-16 sm:p-24 max-w-2xl">
+						<div className={tabValue !== 0 ? 'hidden' : ''}>
+							<EmployeeForm />
+						</div>
+						<div className={tabValue !== 1 ? 'hidden' : ''}>
+							<PersonalInfoTab />
+						</div>
+					</div>
+				}
+				innerScroll
+			/>
+		</FormProvider>
+	);
 };
 export default withReducer('employeesManagement', reducer)(NewEmployee);

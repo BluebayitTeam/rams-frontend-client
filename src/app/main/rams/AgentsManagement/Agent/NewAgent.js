@@ -18,161 +18,149 @@ import OpeningBalance from './tabs/OpeningBalanceTab';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-
-    first_name: yup.string()
-        .required("First Name is required"),
-    last_name: yup.string()
-        .required("Last Name is required"),
-    username: yup.string()
-        .required("User Name is required"),
-    email: yup.string()
-        .required("Email is required"),
-    gender: yup.string()
-        .required("Gender is required"),
-    group: yup.string()
-        .required("Group is required"),
-    password: yup.string()
-        .min(6, 'Password must be at least 6 characters')
-        .required('Password is required'),
-    confirmPassword: yup.string()
-        .required('Confirm password is required')
-        .oneOf([yup.ref('password'), null], 'Passwords must match'),
-})
+	first_name: yup.string().required('First Name is required'),
+	last_name: yup.string().required('Last Name is required'),
+	username: yup.string().required('User Name is required'),
+	email: yup.string().required('Email is required'),
+	gender: yup.string().required('Gender is required'),
+	group: yup.string().required('Group is required'),
+	password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+	confirmPassword: yup
+		.string()
+		.required('Confirm password is required')
+		.oneOf([yup.ref('password'), null], 'Passwords must match')
+});
 
 const Agent = () => {
+	const dispatch = useDispatch();
+	const agent = useSelector(({ agentsManagement }) => agentsManagement.agent);
 
-    const dispatch = useDispatch();
-    const agent = useSelector(({ agentsManagement }) => agentsManagement.agent);
+	const [tabValue, setTabValue] = useState(0);
+	const [noAgent, setNoAgent] = useState(false);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: yupResolver(schema)
+	});
+	const routeParams = useParams();
 
-    const [tabValue, setTabValue] = useState(0);
-    const [noAgent, setNoAgent] = useState(false);
-    const methods = useForm({
-        mode: 'onChange',
-        defaultValues: {},
-        resolver: yupResolver(schema)
-    });
-    const routeParams = useParams();
+	const { reset } = methods;
 
-    const { reset } = methods;
+	useDeepCompareEffect(() => {
+		function updateAgentState() {
+			const { agentId } = routeParams;
 
-    useDeepCompareEffect(() => {
-        function updateAgentState() {
-            const { agentId } = routeParams;
+			if (agentId === 'new') {
+				localStorage.removeItem('event');
+				/**
+				 * Create New User data
+				 */
+				dispatch(newAgent());
+			} else {
+				/**
+				 * Get User data
+				 */
 
-            if (agentId === 'new') {
+				dispatch(getAgent(agentId)).then(action => {
+					console.log(action.payload);
+					/**
+					 * If the requested product is not exist show message
+					 */
+					if (!action.payload) {
+						setNoAgent(true);
+					}
+				});
+			}
+		}
 
-                localStorage.removeItem('event')
-                /**
-                 * Create New User data
-                 */
-                dispatch(newAgent());
-            } else {
-                /**
-                 * Get User data
-                 */
+		updateAgentState();
+	}, [dispatch, routeParams]);
 
-                dispatch(getAgent(agentId)).then(action => {
-                    console.log(action.payload);
-                    /**
-                     * If the requested product is not exist show message
-                     */
-                    if (!action.payload) {
-                        setNoAgent(true);
-                    }
-                });
-            }
-        }
+	useEffect(() => {
+		if (!agent) {
+			return;
+		}
+		/**
+		 * Reset the form on agent state changes
+		 */
+		reset(agent);
+	}, [agent, reset]);
 
-        updateAgentState();
-    }, [dispatch, routeParams]);
+	useEffect(() => {
+		return () => {
+			/**
+			 * Reset Agent on component unload
+			 */
+			dispatch(resetAgent());
+			setNoAgent(false);
+		};
+	}, [dispatch]);
 
+	function handleTabChange(event, value) {
+		setTabValue(value);
+	}
 
-    useEffect(() => {
-        if (!agent) {
-            return;
-        }
-        /**
-         * Reset the form on agent state changes
-         */
-        reset(agent);
-    }, [agent, reset]);
+	/**
+	 * Show Message if the requested products is not exists
+	 */
+	if (noAgent) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There is no such agent!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/e-commerce/products"
+					color="inherit"
+				>
+					Go to Agent Page
+				</Button>
+			</motion.div>
+		);
+	}
 
-    useEffect(() => {
-        return () => {
-            /**
-             * Reset Agent on component unload
-             */
-            dispatch(resetAgent());
-            setNoAgent(false);
-        };
-    }, [dispatch]);
-
-    function handleTabChange(event, value) {
-        setTabValue(value);
-    }
-
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noAgent) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such agent!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Agent Page
-                </Button>
-            </motion.div>
-        );
-    }
-
-    return (
-        <FormProvider {...methods}>
-            <FusePageCarded
-                classes={{
-                    toolbar: 'p-0',
-                    header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
-                }}
-                contentToolbar={
-                    <Tabs
-                        value={tabValue}
-                        onChange={handleTabChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        classes={{ root: 'w-full h-64' }}
-                    >
-                        <Tab className="h-64" label="Basic Info" />
-                        <Tab className="h-64" label="Opening Balance" />
-                    </Tabs>
-                }
-
-                header={<NewAgentHeader />}
-                content={
-                    <div className="p-16 sm:p-24 max-w-2xl">
-                        <div className={tabValue !== 0 ? 'hidden' : ''}>
-                            <AgentForm />
-                        </div>
-                        <div className={tabValue !== 1 ? 'hidden' : ''}>
-                            <OpeningBalance />
-                        </div>
-                    </div>
-                }
-                innerScroll
-            />
-        </FormProvider>
-    );
+	return (
+		<FormProvider {...methods}>
+			<FusePageCarded
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				contentToolbar={
+					<Tabs
+						value={tabValue}
+						onChange={handleTabChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto"
+						classes={{ root: 'w-full h-64' }}
+					>
+						<Tab className="h-64" label="Basic Info" />
+						<Tab className="h-64" label="Opening Balance" />
+					</Tabs>
+				}
+				header={<NewAgentHeader />}
+				content={
+					<div className="p-16 sm:p-24 max-w-2xl">
+						<div className={tabValue !== 0 ? 'hidden' : ''}>
+							<AgentForm />
+						</div>
+						<div className={tabValue !== 1 ? 'hidden' : ''}>
+							<OpeningBalance />
+						</div>
+					</div>
+				}
+				innerScroll
+			/>
+		</FormProvider>
+	);
 };
 export default withReducer('agentsManagement', reducer)(Agent);

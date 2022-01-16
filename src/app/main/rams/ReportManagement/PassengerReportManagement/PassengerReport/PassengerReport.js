@@ -11,7 +11,8 @@ const PassengerReport = () => {
 			classes={{
 				content: 'bg-grey-300',
 				contentCard: 'overflow-hidden',
-				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
+				header: 'h min-h-72',
+				topBg: ''
 			}}
 			content={<PassengerReportsTable />}
 			innerScroll

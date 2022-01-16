@@ -5,19 +5,18 @@ import reducer from '../store/index.js';
 import PassengersHeader from './PassengersHeader';
 import PassengersTable from './PassengersTable';
 
-
 const Passengers = () => {
-    return (
-        <FusePageCarded
-            classes={{
-                content: 'flex',
-                contentCard: 'overflow-hidden',
-                header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
-            }}
-            header={<PassengersHeader />}
-            content={<PassengersTable />}
-            innerScroll
-        />
-    );
+	return (
+		<FusePageCarded
+			classes={{
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-60 h-60'
+			}}
+			header={<PassengersHeader />}
+			content={<PassengersTable />}
+			innerScroll
+		/>
+	);
 };
 export default withReducer('passengersManagement', reducer)(Passengers);
