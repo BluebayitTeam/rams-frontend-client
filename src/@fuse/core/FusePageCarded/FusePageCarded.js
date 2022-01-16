@@ -7,7 +7,7 @@ import FusePageCardedHeader from './FusePageCardedHeader';
 import FusePageCardedSidebar from './FusePageCardedSidebar';
 
 const drawerWidth = 240;
-const headerHeight = 100;
+const headerHeight = 144;
 const toolbarHeight = 64;
 const headerContentHeight = headerHeight - toolbarHeight;
 
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 		left: 0,
 		right: 0,
 		top: 0,
-		height: headerHeight,
+		height: props => props.headerBgHeight || headerHeight,
 		background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
 		backgroundSize: 'cover',
 		pointerEvents: 'none'
@@ -113,8 +113,8 @@ const useStyles = makeStyles(theme => ({
 	leftSidebar: {},
 	rightSidebar: {},
 	sidebarHeader: {
-		height: headerHeight,
-		minHeight: headerHeight,
+		height: props => props.headerBgHeight || headerHeight,
+		minHeight: props => props.headerBgHeight || headerHeight,
 		color: theme.palette.primary.contrastText,
 		backgroundColor: theme.palette.primary.dark,
 		'&.permanent': {

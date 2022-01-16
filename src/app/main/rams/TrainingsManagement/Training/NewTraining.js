@@ -116,6 +116,7 @@ const Training = () => {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
+				headerBgHeight="128px"
 				classes={{
 					toolbar: 'p-0',
 					header: 'min-h-64 h-64'

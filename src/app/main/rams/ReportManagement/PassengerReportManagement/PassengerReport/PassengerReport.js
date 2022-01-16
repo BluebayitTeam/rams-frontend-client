@@ -7,12 +7,12 @@ import PassengerReportsTable from './PassengerReportsTable';
 const PassengerReport = () => {
 	return (
 		<FusePageCarded
+			headerBgHeight="102px"
 			className="bg-grey-300"
 			classes={{
 				content: 'bg-grey-300',
 				contentCard: 'overflow-hidden',
-				header: 'h min-h-72',
-				topBg: ''
+				header: 'min-h-52 h-52'
 			}}
 			content={<PassengerReportsTable />}
 			innerScroll
