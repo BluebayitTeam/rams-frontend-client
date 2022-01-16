@@ -22,14 +22,15 @@ import { getEmployees } from '../../../../store/dataSlice';
 import { getQualifications, selectQualifications } from '../store/qualificationsSlice';
 import QualificationsTableHead from './QualificationsTableHead';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		flexWrap: 'wrap',
-		'& > *': {
-			marginTop: theme.spacing(1),
-			// marginBottom: theme.spacing(3)
+		flexWrap: 'nowrap'
+	},
+	toolbar: {
+		'& > div': {
+			minHeight: 'fit-content'
 		}
 	}
 }));
@@ -65,21 +66,20 @@ const QualificationsTable = props => {
 		dispatch(getEmployees());
 	}, []);
 
-
 	//search qualification
 	useEffect(() => {
 		searchText ? getSearchQualificaton() : setSearchQualification([]);
-	}, [searchText])
+	}, [searchText]);
 
 	const getSearchQualificaton = () => {
 		fetch(`${SEARCH_QUALIFICATON}?degree_name=${searchText}`)
 			.then(response => response.json())
 			.then(searchedQualificationData => {
 				setSearchQualification(searchedQualificationData.qualifications);
-				console.log("searchedQualificationData", searchedQualificationData)
+				console.log('searchedQualificationData', searchedQualificationData);
 			})
-			.catch(() => setSearchQualification([]))
-	}
+			.catch(() => setSearchQualification([]));
+	};
 
 	function handleRequestSort(qualificationEvent, property) {
 		const id = property;
@@ -185,7 +185,7 @@ const QualificationsTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && !_.isEmpty(searchQualificaton) ? searchQualificaton : qualifications,
+							searchText !== '' && !_.isEmpty(searchQualificaton) ? searchQualificaton : qualifications,
 							[
 								o => {
 									switch (order.id) {
@@ -288,11 +288,14 @@ const QualificationsTable = props => {
 					count={totalElements}
 					rowsPerPage={rowsPerPage}
 					page={page}
+					className={classes.toolbar}
 					backIconButtonProps={{
-						'aria-label': 'Previous Page'
+						'aria-label': 'Previous Page',
+						className: 'py-0'
 					}}
 					nextIconButtonProps={{
-						'aria-label': 'Next Page'
+						'aria-label': 'Next Page',
+						className: 'py-0'
 					}}
 					onChangePage={handleChangePage}
 					onChangeRowsPerPage={handleChangeRowsPerPage}

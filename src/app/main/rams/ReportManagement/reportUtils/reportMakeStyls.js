@@ -164,14 +164,14 @@ export const getReportMakeStyles = theme => ({
 		marginRight: 'auto',
 		maxHeight: '',
 		'& .tableRow': {
-			height: '36px',
+			height: '37px',
 			overflow: 'hidden'
 		},
 		'& .tableCell': {
 			padding: '0px',
-			height: '36px',
+			height: '37px',
 			'& div': {
-				height: '36px',
+				height: '37px',
 				padding: '0px 2px',
 				display: 'flex',
 				justifyContent: 'center',

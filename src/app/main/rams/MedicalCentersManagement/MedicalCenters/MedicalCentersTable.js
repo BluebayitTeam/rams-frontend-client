@@ -21,284 +21,290 @@ import { SEARCH_MEDICALCENTER } from '../../../../constant/constants';
 import { getMedicalCenters, selectMedicalCenters } from '../store/medicalCentersSlice';
 import MedicalCentersTableHead from './MedicalCentersTableHead';
 
+const useStyles = makeStyles(() => ({
+	root: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		flexWrap: 'nowrap'
+	},
+	toolbar: {
+		'& > div': {
+			minHeight: 'fit-content'
+		}
+	}
+}));
+const MedicalCentersTable = props => {
+	const classes = useStyles();
+	const dispatch = useDispatch();
+	const medicalCenters = useSelector(selectMedicalCenters);
+	const searchText = useSelector(
+		({ medicalCentersManagement }) => medicalCentersManagement.medicalCenters.searchText
+	);
+	const [searchMedicalCenter, setSearchMedicalCenter] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [selected, setSelected] = useState([]);
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(30);
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: "flex",
-        justifyContent: "space-between",
-        flexWrap: "nowrap",
-        '& > *': {
-            marginTop: theme.spacing(1),
-            // marginBottom: theme.spacing(3),
-        }
-    }
-}))
+	const [order, setOrder] = useState({
+		direction: 'asc',
+		id: null
+	});
 
-const MedicalCentersTable = (props) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const medicalCenters = useSelector(selectMedicalCenters);
-    const searchText = useSelector(({ medicalCentersManagement }) => medicalCentersManagement.medicalCenters.searchText);
-    const [searchMedicalCenter, setSearchMedicalCenter] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selected, setSelected] = useState([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(30);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+	let serialNumber = 1;
+	const totalPages = sessionStorage.getItem('total_medicalCenters_pages');
+	const totalElements = sessionStorage.getItem('total_medicalCenters_elements');
 
-    const [order, setOrder] = useState({
-        direction: 'asc',
-        id: null
-    });
+	useEffect(() => {
+		dispatch(getMedicalCenters(pageAndSize)).then(() => setLoading(false));
+	}, [dispatch]);
 
-    let serialNumber = 1;
-    const totalPages = sessionStorage.getItem('total_medicalCenters_pages');
-    const totalElements = sessionStorage.getItem('total_medicalCenters_elements');
+	useEffect(() => {
+		searchText !== '' && getSearchMedicalCenter();
+	}, [searchText]);
 
-    useEffect(() => {
-        dispatch(getMedicalCenters(pageAndSize)).then(() => setLoading(false));
-    }, [dispatch]);
+	const getSearchMedicalCenter = () => {
+		fetch(`${SEARCH_MEDICALCENTER}?name=${searchText}`)
+			.then(response => response.json())
+			.then(searchedMedicalCenterData => {
+				setSearchMedicalCenter(searchedMedicalCenterData?.medical_centers);
+				console.log('searchedMedicalCenterData', searchedMedicalCenterData);
+			})
+			.catch(() => setSearchMedicalCenter([]));
+	};
 
-    useEffect(() => {
-        searchText !== "" && getSearchMedicalCenter();
-    }, [searchText])
+	function handleRequestSort(medicalCenterEvent, property) {
+		const id = property;
+		let direction = 'desc';
 
-    const getSearchMedicalCenter = () => {
-        fetch(`${SEARCH_MEDICALCENTER}?name=${searchText}`)
-            .then(response => response.json())
-            .then(searchedMedicalCenterData => {
-                setSearchMedicalCenter(searchedMedicalCenterData?.medical_centers);
-                console.log("searchedMedicalCenterData", searchedMedicalCenterData)
-            })
-            .catch(() => setSearchMedicalCenter([]))
-    }
+		if (order.id === property && order.direction === 'desc') {
+			direction = 'asc';
+		}
 
-    function handleRequestSort(medicalCenterEvent, property) {
-        const id = property;
-        let direction = 'desc';
+		setOrder({
+			direction,
+			id
+		});
+	}
 
-        if (order.id === property && order.direction === 'desc') {
-            direction = 'asc';
-        }
+	function handleSelectAllClick(medicalCenterEvent) {
+		if (medicalCenterEvent.target.checked) {
+			setSelected(medicalCenters.map(n => n.id));
+			return;
+		}
+		setSelected([]);
+	}
 
-        setOrder({
-            direction,
-            id
-        });
-    }
+	function handleDeselect() {
+		setSelected([]);
+	}
 
-    function handleSelectAllClick(medicalCenterEvent) {
-        if (medicalCenterEvent.target.checked) {
-            setSelected(medicalCenters.map(n => n.id));
-            return;
-        }
-        setSelected([]);
-    }
+	function handleUpdateMedicalCenter(item) {
+		localStorage.removeItem('medicalCenterEvent');
+		props.history.push(`/apps/medicalCenter-management/medicalCenters/${item.id}/${item.name}`);
+	}
+	function handleDeleteMedicalCenter(item, medicalCenterEvent) {
+		localStorage.removeItem('medicalCenterEvent');
+		localStorage.setItem('medicalCenterEvent', medicalCenterEvent);
+		props.history.push(`/apps/medicalCenter-management/medicalCenters/${item.id}/${item.name}`);
+	}
 
-    function handleDeselect() {
-        setSelected([]);
-    }
+	function handleCheck(medicalCenterEvent, id) {
+		const selectedIndex = selected.indexOf(id);
+		let newSelected = [];
 
-    function handleUpdateMedicalCenter(item) {
-        localStorage.removeItem('medicalCenterEvent')
-        props.history.push(`/apps/medicalCenter-management/medicalCenters/${item.id}/${item.name}`);
-    }
-    function handleDeleteMedicalCenter(item, medicalCenterEvent) {
-        localStorage.removeItem('medicalCenterEvent')
-        localStorage.setItem('medicalCenterEvent', medicalCenterEvent);
-        props.history.push(`/apps/medicalCenter-management/medicalCenters/${item.id}/${item.name}`);
-    }
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1));
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1));
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+		}
 
-    function handleCheck(medicalCenterEvent, id) {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
+		setSelected(newSelected);
+	}
 
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-        }
+	//pagination
+	const handlePagination = (e, handlePage) => {
+		setPageAndSize({ ...pageAndSize, page: handlePage });
+		setPage(handlePage - 1);
+		dispatch(getMedicalCenters({ ...pageAndSize, page: handlePage }));
+	};
 
-        setSelected(newSelected);
-    }
+	function handleChangePage(event, value) {
+		setPage(value);
+		setPageAndSize({ ...pageAndSize, page: value + 1 });
+		dispatch(getMedicalCenters({ ...pageAndSize, page: value + 1 }));
+	}
 
-    //pagination
-    const handlePagination = (e, handlePage) => {
-        setPageAndSize({ ...pageAndSize, page: handlePage })
-        setPage(handlePage - 1)
-        dispatch(getMedicalCenters({ ...pageAndSize, page: handlePage }))
-    }
+	function handleChangeRowsPerPage(medicalCenterEvent) {
+		setRowsPerPage(medicalCenterEvent.target.value);
+		setPageAndSize({ ...pageAndSize, size: medicalCenterEvent.target.value });
+		dispatch(getMedicalCenters({ ...pageAndSize, size: medicalCenterEvent.target.value }));
+	}
 
-    function handleChangePage(event, value) {
-        setPage(value);
-        setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getMedicalCenters({ ...pageAndSize, page: value + 1 }))
-    }
+	if (loading) {
+		return <FuseLoading />;
+	}
 
-    function handleChangeRowsPerPage(medicalCenterEvent) {
-        setRowsPerPage(medicalCenterEvent.target.value);
-        setPageAndSize({ ...pageAndSize, size: medicalCenterEvent.target.value })
-        dispatch(getMedicalCenters({ ...pageAndSize, size: medicalCenterEvent.target.value }))
-    }
+	if (medicalCenters?.length === 0) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There are no medical center!
+				</Typography>
+			</motion.div>
+		);
+	}
 
+	return (
+		<div className="w-full flex flex-col">
+			<FuseScrollbars className="flex-grow overflow-x-auto">
+				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+					<MedicalCentersTableHead
+						selectedMedicalCenterIds={selected}
+						order={order}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={medicalCenters.length}
+						onMenuItemClick={handleDeselect}
+						pagination={pageAndSize}
+					/>
 
-    if (loading) {
-        return <FuseLoading />;
-    }
+					<TableBody>
+						{_.orderBy(
+							searchText !== '' && !_.isEmpty(searchMedicalCenter) ? searchMedicalCenter : medicalCenters,
+							[
+								o => {
+									switch (order.id) {
+										case 'categories': {
+											return o.categories[0];
+										}
+										default: {
+											return o[order.id];
+										}
+									}
+								}
+							],
+							[order.direction]
+						).map(n => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-72 cursor-pointer"
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell className="w-40 md:w-64 text-center" padding="none">
+										<Checkbox
+											checked={isSelected}
+											onClick={medicalCenterEvent => medicalCenterEvent.stopPropagation()}
+											onChange={medicalCenterEvent => handleCheck(medicalCenterEvent, n.id)}
+										/>
+									</TableCell>
 
-    if (medicalCenters?.length === 0) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There are no medical center!
-                </Typography>
-            </motion.div>
-        );
-    }
+									<TableCell className="w-40 md:w-64" component="th" scope="row">
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+									</TableCell>
 
-    return (
-        <div className="w-full flex flex-col">
-            <FuseScrollbars className="flex-grow overflow-x-auto">
-                <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <MedicalCentersTableHead
-                        selectedMedicalCenterIds={selected}
-                        order={order}
-                        onSelectAllClick={handleSelectAllClick}
-                        onRequestSort={handleRequestSort}
-                        rowCount={medicalCenters.length}
-                        onMenuItemClick={handleDeselect}
-                        pagination={pageAndSize}
-                    />
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.name}
+									</TableCell>
 
-                    <TableBody>
-                        {_.orderBy(
-                            searchText !== "" && !_.isEmpty(searchMedicalCenter) ? searchMedicalCenter : medicalCenters,
-                            [
-                                o => {
-                                    switch (order.id) {
-                                        case 'categories': {
-                                            return o.categories[0];
-                                        }
-                                        default: {
-                                            return o[order.id];
-                                        }
-                                    }
-                                }
-                            ],
-                            [order.direction]
-                        )
-                            .map(n => {
-                                const isSelected = selected.indexOf(n.id) !== -1;
-                                return (
-                                    <TableRow
-                                        className="h-72 cursor-pointer"
-                                        hover
-                                        role="checkbox"
-                                        aria-checked={isSelected}
-                                        tabIndex={-1}
-                                        key={n.id}
-                                        selected={isSelected}
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.email}
+									</TableCell>
 
-                                    >
-                                        <TableCell className="w-40 md:w-64 text-center" padding="none">
-                                            <Checkbox
-                                                checked={isSelected}
-                                                onClick={medicalCenterEvent => medicalCenterEvent.stopPropagation()}
-                                                onChange={medicalCenterEvent => handleCheck(medicalCenterEvent, n.id)}
-                                            />
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.contact_person}
+									</TableCell>
 
-                                        <TableCell className="w-40 md:w-64" component="th" scope="row">
-                                            {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.mobile}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.name}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.phone_number}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.email}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.web_address}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.contact_person}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.google_map_link}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.mobile}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.address}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.phone_number}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
+										<div>
+											<EditIcon
+												onClick={medicalCenterEvent => handleUpdateMedicalCenter(n)}
+												className="cursor-pointer"
+												style={{ color: 'green' }}
+											/>{' '}
+											<DeleteIcon
+												onClick={event => handleDeleteMedicalCenter(n, 'Delete')}
+												className="cursor-pointer"
+												style={{ color: 'red' }}
+											/>
+										</div>
+									</TableCell>
+								</TableRow>
+							);
+						})}
+					</TableBody>
+				</Table>
+			</FuseScrollbars>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.web_address}
-                                        </TableCell>
+			<div className={classes.root} id="pagiContainer">
+				<Pagination
+					count={totalPages}
+					page={page + 1}
+					defaultPage={1}
+					color="primary"
+					showFirstButton
+					showLastButton
+					variant="outlined"
+					shape="rounded"
+					onChange={handlePagination}
+				/>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.google_map_link}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.address}
-                                        </TableCell>
-
-
-
-                                        <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
-                                            <div>
-                                                <EditIcon onClick={medicalCenterEvent => handleUpdateMedicalCenter(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteMedicalCenter(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
-                                            </div>
-                                        </TableCell>
-
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </FuseScrollbars>
-
-            <div className={classes.root} id="pagiContainer">
-                <Pagination
-                    count={totalPages}
-                    page={page + 1}
-                    defaultPage={1}
-                    color="primary"
-                    showFirstButton
-                    showLastButton
-                    variant="outlined"
-                    shape="rounded"
-                    onChange={handlePagination}
-                />
-
-                <TablePagination
-                    // className="flex-shrink-0 border-t-1"
-                    rowsPerPageOptions={rowsPerPageOptions}
-                    component="div"
-                    count={totalElements}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page'
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page'
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </div>
-        </div>
-    );
+				<TablePagination
+					rowsPerPageOptions={rowsPerPageOptions}
+					component="div"
+					count={totalElements}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					className={classes.toolbar}
+					backIconButtonProps={{
+						'aria-label': 'Previous Page',
+						className: 'py-0'
+					}}
+					nextIconButtonProps={{
+						'aria-label': 'Next Page',
+						className: 'py-0'
+					}}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+				/>
+			</div>
+		</div>
+	);
 };
 
 export default withRouter(MedicalCentersTable);

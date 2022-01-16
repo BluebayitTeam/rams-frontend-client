@@ -21,14 +21,15 @@ import { SEARCH_DEPARTMENT } from '../../../../constant/constants';
 import { getDepartments, selectDepartments } from '../store/departmentsSlice';
 import DepartmentsTableHead from './DepartmentsTableHead';
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
-		display: "flex",
-		justifyContent: "space-between",
-		flexWrap: "nowrap",
-		'& > *': {
-			marginTop: theme.spacing(1),
+		display: 'flex',
+		justifyContent: 'space-between',
+		flexWrap: 'nowrap'
+	},
+	toolbar: {
+		'& > div': {
+			minHeight: 'fit-content'
 		}
 	}
 }));
@@ -48,11 +49,10 @@ const DepartmentsTable = props => {
 	});
 	let serialNumber = 1;
 
-	const [parameter, setParameter] = useState({ page: 1, size: 30 })
-	const totalPages = sessionStorage.getItem("departments_total_pages")
-	const totalElements = sessionStorage.getItem("departments_total_elements")
+	const [parameter, setParameter] = useState({ page: 1, size: 30 });
+	const totalPages = sessionStorage.getItem('departments_total_pages');
+	const totalElements = sessionStorage.getItem('departments_total_elements');
 	const classes = useStyles();
-
 
 	useEffect(() => {
 		dispatch(getDepartments(parameter)).then(() => setLoading(false));
@@ -61,7 +61,7 @@ const DepartmentsTable = props => {
 	//search department
 	useEffect(() => {
 		searchText ? getSearchDepartment() : setSearchDepartment([]);
-	}, [searchText])
+	}, [searchText]);
 
 	const getSearchDepartment = () => {
 		fetch(`${SEARCH_DEPARTMENT}?name=${searchText}`)
@@ -69,8 +69,8 @@ const DepartmentsTable = props => {
 			.then(searchedDepartmentData => {
 				setSearchDepartment(searchedDepartmentData.departments);
 			})
-			.catch(() => setSearchDepartment([]))
-	}
+			.catch(() => setSearchDepartment([]));
+	};
 
 	function handleRequestSort(departmentEvent, property) {
 		const id = property;
@@ -125,23 +125,22 @@ const DepartmentsTable = props => {
 		setSelected(newSelected);
 	}
 
-
 	const handlePagination = (e, handlePage) => {
-		setParameter({ ...parameter, page: handlePage })
-		setPage(handlePage - 1)
-		dispatch(getDepartments({ ...parameter, page: handlePage }))
-	}
+		setParameter({ ...parameter, page: handlePage });
+		setPage(handlePage - 1);
+		dispatch(getDepartments({ ...parameter, page: handlePage }));
+	};
 
 	function handleChangePage(departmentEvent, value) {
 		setPage(value);
-		setParameter({ ...parameter, page: value + 1 })
-		dispatch(getDepartments({ ...parameter, page: value - 1 }))
+		setParameter({ ...parameter, page: value + 1 });
+		dispatch(getDepartments({ ...parameter, page: value - 1 }));
 	}
 
 	function handleChangeRowsPerPage(departmentEvent) {
 		setRowsPerPage(departmentEvent.target.value);
-		setParameter({ ...parameter, size: departmentEvent.target.value })
-		dispatch(getDepartments({ ...parameter, size: departmentEvent.target.value }))
+		setParameter({ ...parameter, size: departmentEvent.target.value });
+		dispatch(getDepartments({ ...parameter, size: departmentEvent.target.value }));
 	}
 
 	if (loading) {
@@ -177,7 +176,7 @@ const DepartmentsTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && !_.isEmpty(searchDepartment) ? searchDepartment : departments,
+							searchText !== '' && !_.isEmpty(searchDepartment) ? searchDepartment : departments,
 							[
 								o => {
 									switch (order.id) {
@@ -191,56 +190,54 @@ const DepartmentsTable = props => {
 								}
 							],
 							[order.direction]
-						)
-							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-72 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-									>
-										<TableCell className="w-40 md:w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={departmentEvent => departmentEvent.stopPropagation()}
-												onChange={departmentEvent => handleCheck(departmentEvent, n.id)}
+						).map(n => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-72 cursor-pointer"
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell className="w-40 md:w-64 text-center" padding="none">
+										<Checkbox
+											checked={isSelected}
+											onClick={departmentEvent => departmentEvent.stopPropagation()}
+											onChange={departmentEvent => handleCheck(departmentEvent, n.id)}
+										/>
+									</TableCell>
+
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{parameter.page * parameter.size - parameter.size + serialNumber++}
+									</TableCell>
+
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.name}
+									</TableCell>
+
+									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
+										<div>
+											<EditIcon
+												onClick={departmentEvent => handleUpdateDepartment(n)}
+												className="cursor-pointer"
+												style={{ color: 'green' }}
+											/>{' '}
+											<DeleteIcon
+												onClick={event => handleDeleteDepartment(n, 'Delete')}
+												className="cursor-pointer"
+												style={{ color: 'red' }}
 											/>
-										</TableCell>
-
-										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{parameter.page * parameter.size - parameter.size + serialNumber++}
-										</TableCell>
-
-										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{n.name}
-										</TableCell>
-
-										<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
-											<div>
-												<EditIcon
-													onClick={departmentEvent => handleUpdateDepartment(n)}
-													className="cursor-pointer"
-													style={{ color: 'green' }}
-												/>{' '}
-												<DeleteIcon
-													onClick={event => handleDeleteDepartment(n, 'Delete')}
-													className="cursor-pointer"
-													style={{ color: 'red' }}
-												/>
-											</div>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+										</div>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>
-
 
 			<div className={classes.root} id="pagiContainer">
 				<Pagination
@@ -262,18 +259,19 @@ const DepartmentsTable = props => {
 					count={totalElements}
 					rowsPerPage={rowsPerPage}
 					page={page}
+					className={classes.toolbar}
 					backIconButtonProps={{
-						'aria-label': 'Previous Page'
+						'aria-label': 'Previous Page',
+						className: 'py-0'
 					}}
 					nextIconButtonProps={{
-						'aria-label': 'Next Page'
+						'aria-label': 'Next Page',
+						className: 'py-0'
 					}}
 					onChangePage={handleChangePage}
 					onChangeRowsPerPage={handleChangeRowsPerPage}
 				/>
 			</div>
-
-
 		</div>
 	);
 };

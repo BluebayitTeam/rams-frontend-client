@@ -21,230 +21,226 @@ import { SEARCH_VISAENTRY } from '../../../../constant/constants';
 import { getVisaEntrys, selectVisaEntrys } from '../store/visaEntrysSlice';
 import VisaEntrysTableHead from './VisaEntrysTableHead';
 
+const useStyles = makeStyles(() => ({
+	root: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		flexWrap: 'nowrap'
+	},
+	toolbar: {
+		'& > div': {
+			minHeight: 'fit-content'
+		}
+	}
+}));
+const VisaEntrysTable = props => {
+	const classes = useStyles();
+	const dispatch = useDispatch();
+	const visaEntrys = useSelector(selectVisaEntrys);
+	const searchText = useSelector(({ visaEntrysManagement }) => visaEntrysManagement.visaEntrys.searchText);
+	const [searchVisaEntry, setSearchVisaEntry] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [selected, setSelected] = useState([]);
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(30);
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: "flex",
-        justifyContent: "space-between",
-        flexWrap: "nowrap",
-        '& > *': {
-            marginTop: theme.spacing(1),
-            // marginBottom: theme.spacing(3),
-        }
-    }
-}))
+	const [order, setOrder] = useState({
+		direction: 'asc',
+		id: null
+	});
 
-const VisaEntrysTable = (props) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const visaEntrys = useSelector(selectVisaEntrys);
-    const searchText = useSelector(({ visaEntrysManagement }) => visaEntrysManagement.visaEntrys.searchText);
-    const [searchVisaEntry, setSearchVisaEntry] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selected, setSelected] = useState([]);
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(30);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+	let serialNumber = 1;
+	const totalPages = sessionStorage.getItem('total_visaEntrys_pages');
+	const totalElements = sessionStorage.getItem('total_visaEntrys_elements');
 
-    const [order, setOrder] = useState({
-        direction: 'asc',
-        id: null
-    });
+	useEffect(() => {
+		dispatch(getVisaEntrys(pageAndSize)).then(() => setLoading(false));
+	}, [dispatch]);
 
-    let serialNumber = 1;
-    const totalPages = sessionStorage.getItem('total_visaEntrys_pages');
-    const totalElements = sessionStorage.getItem('total_visaEntrys_elements');
+	useEffect(() => {
+		searchText ? getSearchVisaEntry() : setSearchVisaEntry([]);
+	}, [searchText]);
 
-    useEffect(() => {
-        dispatch(getVisaEntrys(pageAndSize)).then(() => setLoading(false));
-    }, [dispatch]);
+	const getSearchVisaEntry = () => {
+		fetch(`${SEARCH_VISAENTRY}?visa_number=${searchText}`)
+			.then(response => response.json())
+			.then(searchedVisaEntryData => {
+				setSearchVisaEntry(searchedVisaEntryData?.visa_entries);
+				console.log('searchedVisaEntryData', searchedVisaEntryData);
+			})
+			.catch(() => setSearchVisaEntry([]));
+	};
 
-    useEffect(() => {
-        searchText ? getSearchVisaEntry() : setSearchVisaEntry([]);
-    }, [searchText])
+	function handleRequestSort(visaEntryEvent, property) {
+		const id = property;
+		let direction = 'desc';
 
-    const getSearchVisaEntry = () => {
-        fetch(`${SEARCH_VISAENTRY}?visa_number=${searchText}`)
-            .then(response => response.json())
-            .then(searchedVisaEntryData => {
-                setSearchVisaEntry(searchedVisaEntryData?.visa_entries);
-                console.log("searchedVisaEntryData", searchedVisaEntryData)
-            })
-            .catch(() => setSearchVisaEntry([]))
-    }
+		if (order.id === property && order.direction === 'desc') {
+			direction = 'asc';
+		}
 
-    function handleRequestSort(visaEntryEvent, property) {
-        const id = property;
-        let direction = 'desc';
+		setOrder({
+			direction,
+			id
+		});
+	}
 
-        if (order.id === property && order.direction === 'desc') {
-            direction = 'asc';
-        }
+	function handleSelectAllClick(visaEntryEvent) {
+		if (visaEntryEvent.target.checked) {
+			setSelected(visaEntrys.map(n => n.id));
+			return;
+		}
+		setSelected([]);
+	}
 
-        setOrder({
-            direction,
-            id
-        });
-    }
+	function handleDeselect() {
+		setSelected([]);
+	}
 
-    function handleSelectAllClick(visaEntryEvent) {
-        if (visaEntryEvent.target.checked) {
-            setSelected(visaEntrys.map(n => n.id));
-            return;
-        }
-        setSelected([]);
-    }
+	function handleUpdateVisaEntry(item) {
+		localStorage.removeItem('visaEntryEvent');
+		props.history.push(`/apps/visaEntry-management/visaEntrys/${item.id}/${item.visa_number}`);
+	}
+	function handleDeleteVisaEntry(item, visaEntryEvent) {
+		localStorage.removeItem('visaEntryEvent');
+		localStorage.setItem('visaEntryEvent', visaEntryEvent);
+		props.history.push(`/apps/visaEntry-management/visaEntrys/${item.id}/${item.visa_number}`);
+	}
 
-    function handleDeselect() {
-        setSelected([]);
-    }
+	function handleCheck(visaEntryEvent, id) {
+		const selectedIndex = selected.indexOf(id);
+		let newSelected = [];
 
-    function handleUpdateVisaEntry(item) {
-        localStorage.removeItem('visaEntryEvent')
-        props.history.push(`/apps/visaEntry-management/visaEntrys/${item.id}/${item.visa_number}`);
-    }
-    function handleDeleteVisaEntry(item, visaEntryEvent) {
-        localStorage.removeItem('visaEntryEvent')
-        localStorage.setItem('visaEntryEvent', visaEntryEvent);
-        props.history.push(`/apps/visaEntry-management/visaEntrys/${item.id}/${item.visa_number}`);
-    }
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1));
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1));
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+		}
 
-    function handleCheck(visaEntryEvent, id) {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
+		setSelected(newSelected);
+	}
 
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-        }
+	//pagination
+	const handlePagination = (e, handlePage) => {
+		setPageAndSize({ ...pageAndSize, page: handlePage });
+		setPage(handlePage - 1);
+		dispatch(getVisaEntrys({ ...pageAndSize, page: handlePage }));
+	};
 
-        setSelected(newSelected);
-    }
+	function handleChangePage(event, value) {
+		setPage(value);
+		setPageAndSize({ ...pageAndSize, page: value + 1 });
+		dispatch(getVisaEntrys({ ...pageAndSize, page: value + 1 }));
+	}
 
-    //pagination
-    const handlePagination = (e, handlePage) => {
-        setPageAndSize({ ...pageAndSize, page: handlePage })
-        setPage(handlePage - 1)
-        dispatch(getVisaEntrys({ ...pageAndSize, page: handlePage }))
-    }
+	function handleChangeRowsPerPage(visaEntryEvent) {
+		setRowsPerPage(visaEntryEvent.target.value);
+		setPageAndSize({ ...pageAndSize, size: visaEntryEvent.target.value });
+		dispatch(getVisaEntrys({ ...pageAndSize, size: visaEntryEvent.target.value }));
+	}
 
-    function handleChangePage(event, value) {
-        setPage(value);
-        setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getVisaEntrys({ ...pageAndSize, page: value + 1 }))
-    }
+	if (loading) {
+		return <FuseLoading />;
+	}
 
-    function handleChangeRowsPerPage(visaEntryEvent) {
-        setRowsPerPage(visaEntryEvent.target.value);
-        setPageAndSize({ ...pageAndSize, size: visaEntryEvent.target.value })
-        dispatch(getVisaEntrys({ ...pageAndSize, size: visaEntryEvent.target.value }))
-    }
+	if (visaEntrys?.length === 0) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There are no visaEntry!
+				</Typography>
+			</motion.div>
+		);
+	}
 
+	return (
+		<div className="w-full flex flex-col">
+			<FuseScrollbars className="flex-grow overflow-x-auto">
+				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+					<VisaEntrysTableHead
+						selectedVisaEntryIds={selected}
+						order={order}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={visaEntrys.length}
+						onMenuItemClick={handleDeselect}
+						pagination={pageAndSize}
+					/>
 
-    if (loading) {
-        return <FuseLoading />;
-    }
+					<TableBody>
+						{_.orderBy(
+							searchText !== '' && !_.isEmpty(searchVisaEntry) ? searchVisaEntry : visaEntrys,
+							[
+								o => {
+									switch (order.id) {
+										case 'categories': {
+											return o.categories[0];
+										}
+										default: {
+											return o[order.id];
+										}
+									}
+								}
+							],
+							[order.direction]
+						).map(n => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-72 cursor-pointer"
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell className="w-40 md:w-64 text-center" padding="none">
+										<Checkbox
+											checked={isSelected}
+											onClick={visaEntryEvent => visaEntryEvent.stopPropagation()}
+											onChange={visaEntryEvent => handleCheck(visaEntryEvent, n.id)}
+										/>
+									</TableCell>
 
-    if (visaEntrys?.length === 0) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There are no visaEntry!
-                </Typography>
-            </motion.div>
-        );
-    }
+									<TableCell className="w-40 md:w-64" component="th" scope="row">
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+									</TableCell>
 
-    return (
-        <div className="w-full flex flex-col">
-            <FuseScrollbars className="flex-grow overflow-x-auto">
-                <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <VisaEntrysTableHead
-                        selectedVisaEntryIds={selected}
-                        order={order}
-                        onSelectAllClick={handleSelectAllClick}
-                        onRequestSort={handleRequestSort}
-                        rowCount={visaEntrys.length}
-                        onMenuItemClick={handleDeselect}
-                        pagination={pageAndSize}
-                    />
-
-                    <TableBody>
-                        {_.orderBy(
-                            searchText !== "" && !_.isEmpty(searchVisaEntry) ? searchVisaEntry : visaEntrys,
-                            [
-                                o => {
-                                    switch (order.id) {
-                                        case 'categories': {
-                                            return o.categories[0];
-                                        }
-                                        default: {
-                                            return o[order.id];
-                                        }
-                                    }
-                                }
-                            ],
-                            [order.direction]
-                        )
-                            .map(n => {
-                                const isSelected = selected.indexOf(n.id) !== -1;
-                                return (
-                                    <TableRow
-                                        className="h-72 cursor-pointer"
-                                        hover
-                                        role="checkbox"
-                                        aria-checked={isSelected}
-                                        tabIndex={-1}
-                                        key={n.id}
-                                        selected={isSelected}
-
-                                    >
-                                        <TableCell className="w-40 md:w-64 text-center" padding="none">
-                                            <Checkbox
-                                                checked={isSelected}
-                                                onClick={visaEntryEvent => visaEntryEvent.stopPropagation()}
-                                                onChange={visaEntryEvent => handleCheck(visaEntryEvent, n.id)}
-                                            />
-                                        </TableCell>
-
-                                        <TableCell className="w-40 md:w-64" component="th" scope="row">
-                                            {((pageAndSize.page * pageAndSize.size) - pageAndSize.size) + serialNumber++}
-                                        </TableCell>
-
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+									{/* <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.demand}
                                         </TableCell> */}
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.visa_agent}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.visa_agent}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.country?.name}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.country?.name}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {`${dn?.first_name || ""} ${n?.last_name || ""}`}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{`${dn?.first_name || ''} ${n?.last_name || ''}`}
+									</TableCell>
 
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+									{/* <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.visa_issue_date}
                                         </TableCell> */}
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.profession_english}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.profession_english}
+									</TableCell>
 
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+									{/* <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.profession_arabic}
                                         </TableCell>
 
@@ -256,11 +252,11 @@ const VisaEntrysTable = (props) => {
                                             {n.quantity}
                                         </TableCell> */}
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.sponsor_id_no}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.sponsor_id_no}
+									</TableCell>
 
-                                        {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+									{/* <TableCell className="p-4 md:p-16" component="th" scope="row">
                                             {n.sponsor_dob}
                                         </TableCell>
 
@@ -280,51 +276,61 @@ const VisaEntrysTable = (props) => {
                                             {n.notes}
                                         </TableCell> */}
 
-                                        <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
-                                            <div>
-                                                <EditIcon onClick={visaEntryEvent => handleUpdateVisaEntry(n)} className="cursor-pointer" style={{ color: 'green' }} /> <DeleteIcon onClick={event => handleDeleteVisaEntry(n, "Delete")} className="cursor-pointer" style={{ color: 'red' }} />
-                                            </div>
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
+										<div>
+											<EditIcon
+												onClick={visaEntryEvent => handleUpdateVisaEntry(n)}
+												className="cursor-pointer"
+												style={{ color: 'green' }}
+											/>{' '}
+											<DeleteIcon
+												onClick={event => handleDeleteVisaEntry(n, 'Delete')}
+												className="cursor-pointer"
+												style={{ color: 'red' }}
+											/>
+										</div>
+									</TableCell>
+								</TableRow>
+							);
+						})}
+					</TableBody>
+				</Table>
+			</FuseScrollbars>
 
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </FuseScrollbars>
+			<div className={classes.root} id="pagiContainer">
+				<Pagination
+					count={totalPages}
+					page={page + 1}
+					defaultPage={1}
+					color="primary"
+					showFirstButton
+					showLastButton
+					variant="outlined"
+					shape="rounded"
+					onChange={handlePagination}
+				/>
 
-            <div className={classes.root} id="pagiContainer">
-                <Pagination
-                    count={totalPages}
-                    page={page + 1}
-                    defaultPage={1}
-                    color="primary"
-                    showFirstButton
-                    showLastButton
-                    variant="outlined"
-                    shape="rounded"
-                    onChange={handlePagination}
-                />
-
-                <TablePagination
-                    // className="flex-shrink-0 border-t-1"
-                    rowsPerPageOptions={rowsPerPageOptions}
-                    component="div"
-                    count={totalElements}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page'
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page'
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </div>
-        </div>
-    );
+				<TablePagination
+					rowsPerPageOptions={rowsPerPageOptions}
+					component="div"
+					count={totalElements}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					className={classes.toolbar}
+					backIconButtonProps={{
+						'aria-label': 'Previous Page',
+						className: 'py-0'
+					}}
+					nextIconButtonProps={{
+						'aria-label': 'Next Page',
+						className: 'py-0'
+					}}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+				/>
+			</div>
+		</div>
+	);
 };
 
 export default withRouter(VisaEntrysTable);

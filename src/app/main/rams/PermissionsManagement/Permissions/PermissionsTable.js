@@ -21,14 +21,15 @@ import { SEARCH_PERMISSION } from '../../../../constant/constants';
 import { getPermissions, selectPermissions } from '../store/permissionsSlice';
 import PermissionsTableHead from './PermissionsTableHead';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		flexWrap: 'wrap',
-		'& > *': {
-			marginTop: theme.spacing(1),
-			// marginBottom: theme.spacing(3)
+		flexWrap: 'nowrap'
+	},
+	toolbar: {
+		'& > div': {
+			minHeight: 'fit-content'
 		}
 	}
 }));
@@ -60,15 +61,16 @@ const PermissionsTable = props => {
 	//search qualification
 	useEffect(() => {
 		searchText ? getSearchPermission() : setSearchPermission([]);
-	}, [searchText])
+	}, [searchText]);
 
 	const getSearchPermission = () => {
 		fetch(`${SEARCH_PERMISSION}?name=${searchText}`)
 			.then(response => response.json())
 			.then(searchedPermissionData => {
 				setSearchPermission(searchedPermissionData.permissions);
-			}).catch(() => setSearchPermission([]))
-	}
+			})
+			.catch(() => setSearchPermission([]));
+	};
 
 	function handleRequestSort(permissionEvent, property) {
 		const id = property;
@@ -174,7 +176,7 @@ const PermissionsTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && !_.isEmpty(searchPermission) ? searchPermission : permissions,
+							searchText !== '' && !_.isEmpty(searchPermission) ? searchPermission : permissions,
 							[
 								o => {
 									switch (order.id) {
@@ -256,11 +258,14 @@ const PermissionsTable = props => {
 					count={totalElements}
 					rowsPerPage={rowsPerPage}
 					page={page}
+					className={classes.toolbar}
 					backIconButtonProps={{
-						'aria-label': 'Previous Page'
+						'aria-label': 'Previous Page',
+						className: 'py-0'
 					}}
 					nextIconButtonProps={{
-						'aria-label': 'Next Page'
+						'aria-label': 'Next Page',
+						className: 'py-0'
 					}}
 					onChangePage={handleChangePage}
 					onChangeRowsPerPage={handleChangeRowsPerPage}

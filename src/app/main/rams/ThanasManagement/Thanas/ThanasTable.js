@@ -22,14 +22,15 @@ import { getCities } from '../../../../store/dataSlice';
 import { getThanas, selectThanas } from '../store/thanasSlice';
 import ThanasTableHead from './ThanasTableHead';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		flexWrap: 'wrap',
-		'& > *': {
-			marginTop: theme.spacing(1),
-			// marginBottom: theme.spacing(3)
+		flexWrap: 'nowrap'
+	},
+	toolbar: {
+		'& > div': {
+			minHeight: 'fit-content'
 		}
 	}
 }));
@@ -61,19 +62,19 @@ const ThanasTable = props => {
 		dispatch(getThanas(parameter)).then(() => setLoading(false));
 	}, [dispatch]);
 
-
 	//search thana
 	useEffect(() => {
 		searchText ? getSearchThana() : setSearchThana([]);
-	}, [searchText])
+	}, [searchText]);
 
 	const getSearchThana = () => {
 		fetch(`${SEARCH_THANA}?name=${searchText}`)
 			.then(response => response.json())
 			.then(searchedThanasData => {
 				setSearchThana(searchedThanasData.thanas);
-			}).catch(() => setSearchThana([]))
-	}
+			})
+			.catch(() => setSearchThana([]));
+	};
 
 	useEffect(() => {
 		dispatch(getCities());
@@ -183,7 +184,7 @@ const ThanasTable = props => {
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== "" && !_.isEmpty(searchThana) ? searchThana : thanas,
+							searchText !== '' && !_.isEmpty(searchThana) ? searchThana : thanas,
 							[
 								o => {
 									switch (order.id) {
@@ -269,11 +270,14 @@ const ThanasTable = props => {
 					count={totalElements}
 					rowsPerPage={rowsPerPage}
 					page={page}
+					className={classes.toolbar}
 					backIconButtonProps={{
-						'aria-label': 'Previous Page'
+						'aria-label': 'Previous Page',
+						className: 'py-0'
 					}}
 					nextIconButtonProps={{
-						'aria-label': 'Next Page'
+						'aria-label': 'Next Page',
+						className: 'py-0'
 					}}
 					onChangePage={handleChangePage}
 					onChangeRowsPerPage={handleChangeRowsPerPage}
