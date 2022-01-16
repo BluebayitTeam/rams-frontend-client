@@ -1,35 +1,10 @@
 import { makeStyles } from '@material-ui/core';
 import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@material-ui/icons';
 import React, { useMemo } from 'react';
+import { getReportPaginationMakeStyles } from '../reportUtils/reportMakeStyls';
 
 const useStyles = makeStyles(theme => ({
-	paginationContainer: {
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: 'fit-content',
-		color: theme.palette.primary.main,
-		height: '40px',
-		'& .pagIcon': {
-			height: '40px',
-			padding: '5px',
-			width: '40px',
-			borderRadius: '50%',
-			'&:active': {
-				border: '1px solid'
-			}
-		},
-		'& .pageNumberContainer': {
-			margin: '0px 10px',
-			display: 'flex',
-			flexDirection: 'row',
-			justifyContent: 'space-between',
-			alignItems: 'center',
-			'& h2': {
-				padding: '0px 3px'
-			}
-		}
-	}
+	...getReportPaginationMakeStyles(theme)
 }));
 
 function Pagination({

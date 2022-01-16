@@ -1,7 +1,7 @@
 import { faBookOpen, faDownload, faFileExcel, faFilePdf, faScroll } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Checkbox, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { GetApp, ViewWeek } from '@material-ui/icons';
 import PrintIcon from '@material-ui/icons/Print';
 import useReportData from 'app/@customHooks/useReportData';
@@ -17,279 +17,28 @@ import { useReactToPrint } from 'react-to-print';
 import * as yup from 'yup';
 import { GET_SITESETTINGS } from '../../../../../constant/constants';
 import '../../Print.css';
+import ColumnLabel from '../../reportComponents/ColumnLabel';
 import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
+import { getReportMakeStyles } from '../../reportUtils/reportMakeStyls';
+import tableColumnsReducer from '../../reportUtils/tableColumnsReducer';
 import { getAgents, getAllAgents } from '../store/agentReportSlice';
 import AgentFilterMenu from './AgentFilterMenu';
 
 const useStyles = makeStyles(theme => ({
-	headContainer: {
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		width: 'fit-content'
-	},
-	pageContainer: {
-		width: '100%',
-		backgroundColor: 'white',
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		marginBottom: '20px',
-		paddingTop: '15px',
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between'
-	},
-	menubar: {
-		backgroundColor: theme.palette.primary.light,
-		display: 'flex',
-		alignItems: 'center',
-		padding: '5px',
-		position: 'sticky',
-		top: '0px',
-		minWidth: 'fit-content',
-		'& .inside': {
-			color: theme.palette.primary.main
-		},
-		'& .icon': {
-			margin: '0px 5px',
-			height: '40px',
-			padding: '5px',
-			width: '40px',
-			borderRadius: '50%',
-			'&:active': {
-				border: '1px solid !important'
-			},
-			'&:hover': {
-				border: '1px solid !important'
-			}
-		},
-		'& .downloadIcon': {
-			position: 'relative',
-			height: 'fit-content',
-			width: 'fit-content',
-			margin: '0px 5px',
-			borderRadius: '50%',
-			textAlign: 'center',
-			display: 'flex',
-			justifyContent: 'center',
-			'&:hover .downloadOptionContainer': {
-				display: 'flex !important'
-			},
-			'& .downloadOptionContainer': {
-				display: 'none',
-				position: 'absolute',
-				width: '150px',
-				top: '35px',
-				flexDirection: 'column',
-				justifyContent: 'space-between',
-				alignItems: 'center',
-				paddingTop: '10px',
-				'&:hover': {
-					display: 'flex !important'
-				},
-				'&:hover + svg': {
-					border: '1px solid !important'
-				},
-				'& .indicator': {
-					height: '10px',
-					width: '10px',
-					transform: 'rotate(41deg)',
-					backgroundColor: theme.palette.primary.light,
-					marginBottom: '-5px'
-				},
-				'& .downloadOptions': {
-					backgroundColor: theme.palette.primary.light,
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'space-evenly',
-					alignItems: 'center',
-					borderRadius: '10px',
-					'& .downloadContainer': {
-						display: 'flex',
-						justifyContent: 'space-evenly',
-						alignItems: 'center',
-						width: '80px',
-						padding: '5px 3px',
-						background: theme.palette.primary.main,
-						color: theme.palette.type == 'dark' ? 'black' : 'white',
-						borderRadius: '10px'
-					}
-				}
-			}
-		},
-		'& .columnSelectContainer': {
-			position: 'relative',
-			height: 'fit-content',
-			width: 'fit-content',
-			margin: '0px 5px',
-			borderRadius: '50%',
-			textAlign: 'center',
-			display: 'flex',
-			justifyContent: 'flex-end',
-			'& > .allColumnContainer': {
-				maxHeight: '200px',
-				overflow: 'auto',
-				position: 'absolute',
-				top: '50px',
-				background: theme.palette.primary.light,
-				padding: '10px',
-				color: theme.palette.primary.dark,
-				borderRadius: '5px',
-				'& > .columnContainer': {
-					display: 'flex',
-					flexDirection: 'row',
-					flexWrap: 'nowrap',
-					justifyContent: 'flex-start',
-					alignItems: 'center',
-					padding: '2px 0px',
-					'& > .checkBox': {
-						color: theme.palette.primary.dark,
-						padding: '0px 5px 0px 0px'
-					},
-					'& > h5': {
-						fontSize: '14.5px',
-						whiteSpace: 'nowrap'
-					}
-				}
-			}
-		}
-	},
-	pagination: {
-		'& button': {
-			color: theme.palette.primary.dark,
-			borderColor: theme.palette.primary.dark
-		}
-	},
-	pageHead: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: '100%',
-		marginBottom: '10px',
-		'& .logoContainer': {
-			marginRight: '30px',
-			height: '75px',
-			'& img': {
-				height: '100%',
-				with: 'auto'
-			}
-		},
-		'& .title': {
-			marginLeft: '30px',
-			width: 'fit-content'
-		}
-	},
-	table: {
-		width: '100%',
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		maxHeight: '',
-		'& .tableRow': {
-			height: '36px',
-			overflow: 'hidden'
-		},
-		'& .tableCell': {
-			padding: '0px',
-			height: '36px',
-			'& div': {
-				height: '36px',
-				padding: '0px 2px',
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-				overflow: 'hidden'
-			}
-		},
-		'& .tableCellHead': {
-			padding: '0px',
-			'& > div': {
-				cursor: 'pointer',
-				whiteSpace: 'nowrap',
-				'&:active': {
-					color: 'grey'
-				},
-				'&:hover .sortIcon': {
-					opacity: '1 !important'
-				},
-				'& .sortIcon': {
-					transition: '0.3s',
-					opacity: '0',
-					color: 'rgb(17, 24, 39)'
-				}
-			}
-		}
-	},
-	pageBottmContainer: {
-		width: '100%',
-		padding: '10px',
-		background: '#e9e9e9',
-		height: '40px',
-		textAlign: 'center'
-	},
-	pageBottm: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		alignItems: 'flex-start',
-		width: '100%',
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		'& > div': {
-			display: 'flex',
-			flexWrap: 'wrap',
-			'& > h5': {
-				paddingRight: '5px'
-			}
-		}
-	}
+	...getReportMakeStyles(theme)
 }));
 
 const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
-	{ label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-	{ label: 'Name', name: 'username', show: true },
-	{ label: 'Group', name: 'group', subName: 'name', show: true },
-	{ label: 'District', name: 'city', subName: 'name', show: true },
-	{ label: 'Mobile', name: 'primary_phone', show: true },
-	{ label: 'Email', name: 'email', show: true }
+	{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Name', name: 'username', show: true },
+	{ id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
+	{ id: 4, label: 'District', name: 'city', subName: 'name', show: true },
+	{ id: 5, label: 'Mobile', name: 'primary_phone', show: true },
+	{ id: 6, label: 'Email', name: 'email', show: true }
 ];
-
-function tableColumnsReducer(state, action) {
-	switch (action.type) {
-		case 'show': {
-			const newState = [...state];
-			const targetIndex = newState.findIndex(i => i.label === action.label);
-			newState[targetIndex] = { ...newState[targetIndex], show: true };
-			return newState;
-		}
-		case 'hide': {
-			const newState = [...state];
-			const targetIndex = newState.findIndex(i => i.label === action.label);
-			newState[targetIndex] = { ...newState[targetIndex], show: false };
-			return newState;
-		}
-		case 'dragAndDrop': {
-			const newState = [...state];
-
-			const dropperIndex = newState.findIndex(i => i.label === action.dropper);
-			const draggerIndex = newState.findIndex(i => i.label === action.dragger);
-
-			if (dropperIndex < draggerIndex) {
-				newState.splice(dropperIndex, 0, newState[draggerIndex]);
-				newState.splice(draggerIndex + 1, 1);
-				return newState;
-			} else if (dropperIndex > draggerIndex) {
-				newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
-				newState.splice(draggerIndex, 1);
-				return newState;
-			} else {
-				return state;
-			}
-		}
-		default:
-			return state;
-	}
-}
 
 const AgentReportsTable = () => {
 	const classes = useStyles();
@@ -566,20 +315,11 @@ const AgentReportsTable = () => {
 						className={`allColumnContainer shadow-5 ${showClmSelectOption ? 'block' : 'hidden'}`}
 					>
 						{tableColumns.map(column => (
-							<div id="insideClmSelect" className="columnContainer">
-								<Checkbox
-									id="insideClmSelect"
-									className="checkBox"
-									checked={column.show}
-									onClick={() => {
-										dispatchTableColumns({
-											type: column.show ? 'hide' : 'show',
-											label: column.label
-										});
-									}}
-								/>
-								<h5 id="insideClmSelect">{column.label}</h5>
-							</div>
+							<ColumnLabel
+								key={column.name}
+								column={column}
+								dispatchTableColumns={dispatchTableColumns}
+							/>
 						))}
 					</div>
 				</div>

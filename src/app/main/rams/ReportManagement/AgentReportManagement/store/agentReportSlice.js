@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AGENT_FILTER_BY } from 'app/constant/constants';
+import { AGENT_FILTER_BY, AGENT_FILTER_WITHOUT_PG } from 'app/constant/constants';
 import axios from 'axios';
 
 export const getAgents = createAsyncThunk(
@@ -36,7 +36,7 @@ export const getAllAgents = createAsyncThunk(
 			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
-				`${AGENT_FILTER_BY}?username=${values.username || ''}&email=${values.email || ''}&group=${
+				`${AGENT_FILTER_WITHOUT_PG}?username=${values.username || ''}&email=${values.email || ''}&group=${
 					values.group || ''
 				}&agent_code=${values.agent_code || ''}&primary_phone=${values.primary_phone || ''}&district=${
 					values.district || ''

@@ -53,20 +53,21 @@ function SiglePage({
 							{tableColumns.map(column => {
 								return column.show ? (
 									<TableCell
+										key={column.id}
 										align="center"
 										className="tableCellHead"
 										onDrop={e =>
 											dispatchTableColumns({
 												type: 'dragAndDrop',
 												dragger: e.dataTransfer.getData('draggerLebel'),
-												dropper: column.label
+												dropper: column.id
 											})
 										}
 										onDragOver={e => e.preventDefault()}
 									>
 										<div
 											draggable={true}
-											onDragStart={e => e.dataTransfer.setData('draggerLebel', column.label)}
+											onDragStart={e => e.dataTransfer.setData('draggerLebel', column.id)}
 											onClick={() => {
 												if (column.sortAction !== false) {
 													setSortBy(data.sortBy === column.name ? '' : column.name);
@@ -76,7 +77,7 @@ function SiglePage({
 												}
 											}}
 										>
-											{`${column.label} `}
+											{column.label}
 											<FontAwesomeIcon
 												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
 												style={{
