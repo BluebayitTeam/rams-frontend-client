@@ -9,6 +9,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import setIdIfValueIsObject2 from '../../../../@helpers/setIdIfValueIsObject2';
 import { getCity, newCity, resetCity } from '../store/citySlice';
 import reducer from '../store/index';
 import CityForm from './CityForm';
@@ -34,7 +35,7 @@ const City = () => {
 	});
 	const routeParams = useParams();
 
-	const { reset, watch, control, onChange, formState } = methods;
+	const { reset, watch } = methods;
 	const form = watch();
 
 	useDeepCompareEffect(() => {
@@ -77,7 +78,7 @@ const City = () => {
 		/**
 		 * Reset the form on city state changes
 		 */
-		reset(city);
+		reset(setIdIfValueIsObject2(city));
 	}, [city, reset]);
 
 	useEffect(() => {

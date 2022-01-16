@@ -11,6 +11,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import setIdIfValueIsObject2 from '../../../../@helpers/setIdIfValueIsObject2';
 import { getEmployee, newEmployee, resetEmployee } from '../store/employeeSlice';
 import reducer from '../store/index';
 import PersonalInfoTab from '../tabs/PersonalInfoTab';
@@ -110,13 +111,15 @@ const NewEmployee = () => {
 		/**
 		 * Reset the form on employee state changes
 		 */
-		reset({
-			...employee,
-			country_code1: '+880',
-			country_code2: '+880',
-			show_country_code1: '+880',
-			show_country_code2: '+880'
-		});
+		reset(
+			setIdIfValueIsObject2({
+				...employee,
+				country_code1: '+880',
+				country_code2: '+880',
+				show_country_code1: '+880',
+				show_country_code2: '+880'
+			})
+		);
 	}, [employee, reset]);
 
 	useEffect(() => {

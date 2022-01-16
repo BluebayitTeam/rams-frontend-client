@@ -240,15 +240,15 @@ const DemandsTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.profession}
+										{n.profession?.name}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.country}
+										{n.country?.name}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.visa_agent}
+										{n.visa_agent?.username}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">

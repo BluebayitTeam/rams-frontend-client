@@ -119,7 +119,7 @@ const Branch = () => {
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
+					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<NewBranchHeader />}
 				content={

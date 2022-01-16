@@ -221,7 +221,7 @@ const VisaEntrysTable = props => {
                                         </TableCell> */}
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.visa_agent}
+										{n.visa_agent?.username}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
@@ -229,7 +229,7 @@ const VisaEntrysTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{`${dn?.first_name || ''} ${n?.last_name || ''}`}
+										{`${n?.first_name || ''} ${n?.last_name || ''}`}
 									</TableCell>
 
 									{/* <TableCell className="p-4 md:p-16" component="th" scope="row">

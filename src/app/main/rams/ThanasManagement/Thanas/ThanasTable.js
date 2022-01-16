@@ -18,7 +18,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { SEARCH_THANA } from '../../../../constant/constants';
-import { getCities } from '../../../../store/dataSlice';
 import { getThanas, selectThanas } from '../store/thanasSlice';
 import ThanasTableHead from './ThanasTableHead';
 
@@ -56,8 +55,6 @@ const ThanasTable = props => {
 	const totalElements = sessionStorage.getItem('thanas_total_elements');
 	const classes = useStyles();
 
-	const citys = useSelector(state => state.data.cities);
-
 	useEffect(() => {
 		dispatch(getThanas(parameter)).then(() => setLoading(false));
 	}, [dispatch]);
@@ -75,10 +72,6 @@ const ThanasTable = props => {
 			})
 			.catch(() => setSearchThana([]));
 	};
-
-	useEffect(() => {
-		dispatch(getCities());
-	}, []);
 
 	function handleRequestSort(thanaEvent, property) {
 		const id = property;
@@ -227,7 +220,7 @@ const ThanasTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{_.isEmpty(citys) || citys.find(city => city.id === n.city).name}
+										{n.city.name}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">

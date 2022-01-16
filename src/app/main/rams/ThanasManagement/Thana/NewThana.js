@@ -2,6 +2,7 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -76,7 +77,7 @@ const Thana = () => {
 		/**
 		 * Reset the form on thana state changes
 		 */
-		reset(thana);
+		reset(setIdIfValueIsObject2(thana));
 	}, [thana, reset]);
 
 	useEffect(() => {

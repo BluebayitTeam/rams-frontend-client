@@ -245,7 +245,7 @@ const EmployeesTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.branch}
+										{n.branch?.name}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">

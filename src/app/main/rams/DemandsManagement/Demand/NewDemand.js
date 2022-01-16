@@ -1,6 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -76,7 +77,7 @@ const Demand = () => {
 		/**
 		 * Reset the form on demand state changes
 		 */
-		reset(demand);
+		reset(setIdIfValueIsObject2(demand));
 	}, [demand, reset]);
 
 	useEffect(() => {
