@@ -1,8 +1,8 @@
 import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import { createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit';
-import useUserInfo from 'app/@customHook/@useUserInfo';
-import { MENU_ITEM } from 'app/constant/constants';
+import getUserData from 'app/@helpers/getUserData';
+import { MENU_ITEMS } from 'app/constant/constants';
 import navigationConfig from 'app/fuse-configs/navigationConfig';
 import axios from 'axios';
 import i18next from 'i18next';
@@ -40,12 +40,13 @@ export const removeNavigationItem = id => (dispatch, getState) => {
 
 export const setMenuItem = () => (dispatch) => {
 
-	const { authToken } = useUserInfo()
+	const { authToken } = getUserData()
 
-	if (localStorage.getItem("jwt_token")) {
+	if (localStorage.getItem("jwt_access_token")) {
 		console.log("haveauthToken")
-		axios.get(`${MENU_ITEM}`, authToken).then(data => {
-			dispatch(resetNavigation(navigationAdapter.upsertMany(emptyInitialState, data.data)))
+		axios.get(`${MENU_ITEMS}`, authToken).then(data => {
+			console.log("res", data)
+			dispatch(resetNavigation(navigationAdapter.upsertMany(emptyInitialState, data.data.menu_items)))
 		})
 	}
 	else {

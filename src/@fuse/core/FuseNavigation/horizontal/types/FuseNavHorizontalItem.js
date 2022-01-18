@@ -13,8 +13,8 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		minHeight: 48,
 		'&.active': {
-			backgroundColor: `${theme.palette.secondary.main}!important`,
-			color: `${theme.palette.secondary.contrastText}!important`,
+			color: theme.palette.type === 'light' ? 'black' : 'white',
+			backgroundColor: theme.palette.primary.main,
 			pointerEvents: 'none',
 			'& .fuse-list-item-text-primary': {
 				color: 'inherit'

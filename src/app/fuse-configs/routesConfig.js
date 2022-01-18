@@ -1,10 +1,12 @@
 import FuseUtils from '@fuse/utils';
 import ExampleConfig from 'app/main/example/ExampleConfig';
 import LoginConfig from 'app/main/login/LoginConfig';
+import ramsRouteConfig from 'app/main/rams/ramsRouteConfig';
 
 const routeConfigs = [
 	ExampleConfig,
-	LoginConfig
+	LoginConfig,
+	ramsRouteConfig
 ];
 
 const routes = [

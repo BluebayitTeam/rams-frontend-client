@@ -11,6 +11,7 @@ import rtl from 'jss-rtl';
 import { SnackbarProvider } from 'notistack';
 import Provider from 'react-redux/es/components/Provider';
 import { Router } from 'react-router-dom';
+import Alert from './@components/Alert';
 import AppContext from './AppContext';
 import { Auth } from './auth';
 import routes from './fuse-configs/routesConfig';
@@ -42,6 +43,7 @@ const App = () => {
 		>
 			<StylesProvider jss={jss} generateClassName={generateClassName}>
 				<Provider store={store}>
+					<Alert />
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<Auth>
 							<Router history={history}>

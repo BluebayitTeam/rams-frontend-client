@@ -68,7 +68,7 @@ class JwtService extends FuseUtils.EventEmitter {
 					// if (response) {
 					// this.setSession();
 
-					localStorage.setItem('jwt_token', `Bearer ${response.data.access}`);
+					localStorage.setItem('jwt_access_token', `Bearer ${response.data.access}`);
 					axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
 
 					const user = {
@@ -79,7 +79,7 @@ class JwtService extends FuseUtils.EventEmitter {
 						id: response.data.id,
 					}
 
-					// localStorage.setItem("jwt_token", response.data.access)
+					// localStorage.setItem("jwt_access_token", response.data.access)
 					localStorage.setItem("user_id", response.data.id)
 					// localStorage.setItem("user_email", response.data.email)
 					// localStorage.setItem("user_name", response.data.username)
@@ -129,10 +129,10 @@ class JwtService extends FuseUtils.EventEmitter {
 
 	setSession = access_token => {
 		if (access_token) {
-			localStorage.setItem('jwt_token', access_token);
+			localStorage.setItem('jwt_access_token', access_token);
 			axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
 		} else {
-			localStorage.removeItem('jwt_token');
+			localStorage.removeItem('jwt_access_token');
 			delete axios.defaults.headers.common.Authorization;
 
 			// localStorage.removeItem("user_id")

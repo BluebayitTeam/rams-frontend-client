@@ -1,0 +1,9 @@
+@media print {
+    .printPageContainer {
+        page-break-before: always;
+        height: 100vh;
+        overflow: hidden;
+        width: 100%;
+        margin-bottom: 0px;
+    }
+  }

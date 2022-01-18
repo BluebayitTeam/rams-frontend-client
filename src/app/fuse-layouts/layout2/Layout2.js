@@ -39,7 +39,7 @@ function Layout2(props) {
 	return (
 		<AppContext.Consumer>
 			{({ routes }) => (
-				<div id="fuse-layout" className={clsx(classes.root, config.mode, 'w-full flex flex')}>
+				<div id="fuse-layout" className={clsx(classes.root, config.mode, 'w-full flex')}>
 					{config.leftSidePanel.display && <LeftSideLayout2 />}
 
 					<div className="flex flex-col flex-auto min-w-0">
