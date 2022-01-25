@@ -493,7 +493,16 @@ const navigationConfig = [
 				title: 'Embassy Report',
 				translate: 'Embassy Report',
 				type: 'item',
-				url: '/apps/embassys/report',
+				url: '/apps/embassies/report',
+				exact: true
+			},
+			//mofa report
+			{
+				id: 'mofaReport',
+				title: 'Mofa Report',
+				translate: 'Mofa Report',
+				type: 'item',
+				url: '/apps/mofas/report',
 				exact: true
 			}
 		]

@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedicals }) {
+function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -50,159 +50,6 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
-				{/* M.Rpt From */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('reportDateAfterEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('reportDateAfterEl').click()}>
-						M.Rpt From
-					</div>
-
-					<Controller
-						name="report_date_after"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="reportDateAfterEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									maxDate={values.report_date_before || new Date()}
-									value={field.value || ''}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div>
-
-				{/* M.Rpt To */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('reportDateBeforeEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('reportDateBeforeEl').click()}>
-						M.Rpt To
-					</div>
-
-					<Controller
-						name="report_date_before"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="reportDateBeforeEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									value={field.value || ''}
-									minDate={values.report_date_after}
-									maxDate={new Date()}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div>
-
-				{/* M.Exp From */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('expDateAfterEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('expDateAfterEl').click()}>
-						M.Exp From
-					</div>
-
-					<Controller
-						name="expiry_date_after"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="expDateAfterEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									maxDate={values.expiry_date_before}
-									value={field.value || ''}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div>
-
-				{/* M.Exp To */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('expDateBeforeEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('expDateBeforeEl').click()}>
-						M.Exp To
-					</div>
-
-					<Controller
-						name="expiry_date_before"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="expDateBeforeEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									value={field.value || ''}
-									minDate={values.expiry_date_after}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div>
-
 				{/* M.Ent from */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon
@@ -233,7 +80,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+										inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									}}
 								/>
 							);
@@ -272,7 +119,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+										inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									}}
 								/>
 							);
@@ -339,7 +186,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('passengerName', newValue?.passenger_name || '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 								}}
 								renderInput={params => (
 									<TextField
@@ -410,7 +257,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('countryName', newValue?.name || '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 								}}
 								renderInput={params => (
 									<TextField
@@ -481,7 +328,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('agentName', newValue?.username || '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 								}}
 								renderInput={params => (
 									<TextField
@@ -552,7 +399,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('passengerTypeName', newValue?.name || '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 								}}
 								renderInput={params => (
 									<TextField
@@ -623,7 +470,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('genderName', newValue?.id || '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 								}}
 								renderInput={params => (
 									<TextField
@@ -640,82 +487,6 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 
 			{/* keywords */}
 			<div className="allKeyWrdContainer">
-				{values.report_date_after && (
-					<div className="keywordContainer">
-						<b>M.Rpt From</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.report_date_after)).format('DD-MM-YYYY')}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('report_date_after', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.report_date_before && (
-					<div className="keywordContainer">
-						<b>M.Rpt To</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.report_date_before)).format('DD-MM-YYYY')}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('report_date_before', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.expiry_date_after && (
-					<div className="keywordContainer">
-						<b>M.Exp From</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('expiry_date_after', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.expiry_date_before && (
-					<div className="keywordContainer">
-						<b>M.Exp To</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.expiry_date_before)).format('DD-MM-YYYY')}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('expiry_date_before', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
 				{values.date_after && (
 					<div className="keywordContainer">
 						<b>M.Ent From</b>
@@ -727,7 +498,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_after', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									setReRender(Math.random());
 								}}
 							/>
@@ -746,7 +517,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_before', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									setReRender(Math.random());
 								}}
 							/>
@@ -766,7 +537,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onClick={() => {
 									setValue('passengerName', '');
 									setValue('passenger', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									setReRender(Math.random());
 								}}
 							/>
@@ -786,7 +557,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onClick={() => {
 									setValue('countryName', '');
 									setValue('country', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									setReRender(Math.random());
 								}}
 							/>
@@ -806,7 +577,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onClick={() => {
 									setValue('agentName', '');
 									setValue('agent', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									setReRender(Math.random());
 								}}
 							/>
@@ -826,7 +597,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onClick={() => {
 									setValue('passengerTypeName', '');
 									setValue('passenger_type', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									setReRender(Math.random());
 								}}
 							/>
@@ -850,7 +621,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 								onClick={() => {
 									setValue('genderName', '');
 									setValue('gender', '');
-									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
+									inShowAllMode ? handleGetAllMofas() : handleGetMofas();
 									setReRender(Math.random());
 								}}
 							/>
@@ -862,4 +633,4 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 	);
 }
 
-export default MedicalFilterMenu;
+export default MofaFilterMenu;

@@ -99,15 +99,17 @@ function SiglePage({
 									return column.show ? (
 										<TableCell align="center" className="tableCell">
 											<div>
-												{!column?.isSerialNo
-													? column?.subName
-														? dataArr?.[column.name]?.[column?.subName]
-														: !dataArr?.[column.name]
-														? ''
-														: column.type === 'date'
+												{column?.subName
+													? dataArr?.[column.name]?.[column?.subName]
+													: column.type === 'date'
+													? dataArr?.[column.name]
 														? moment(new Date(dataArr?.[column.name])).format('DD-MM-YYYY')
-														: dataArr?.[column.name]
-													: pageBasedSerialNo++}
+														: ''
+													: column.name
+													? dataArr?.[column.name]
+													: column?.isSerialNo
+													? dataArr.hideSerialNo || pageBasedSerialNo++
+													: ''}
 											</div>
 										</TableCell>
 									) : null;

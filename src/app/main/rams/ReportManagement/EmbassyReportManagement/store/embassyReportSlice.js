@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { EMBASSY_FILTER_BY } from 'app/constant/constants';
+import { EMBASSY_FILTER_BY, EMBASSY_FILTER_WITHOUT_PG } from 'app/constant/constants';
 import axios from 'axios';
 
 export const getEmbassys = createAsyncThunk(
@@ -12,13 +12,13 @@ export const getEmbassys = createAsyncThunk(
 			const res = await axios.get(
 				`${EMBASSY_FILTER_BY}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
 					values.gender || ''
-				}&passenger_type=${values.passenger_type}&stapping_date_after=${
+				}&passenger_type=${values.passenger_type || ''}&stapping_date_after=${
 					values.stapping_date_after || ''
 				}&stapping_date_before=${values.stapping_date_before || ''}&date_after=${
 					values.date_after || ''
 				}&date_before=${values.date_before || ''}&expiry_date_after=${
 					values.expiry_date_after || ''
-				}&expiry_date_bofore=${values.expiry_date_bofore || ''}&country=${
+				}&expiry_date_before=${values.expiry_date_before || ''}&country=${
 					values.country || ''
 				}&stamping_status=${values.stamping_status || ''}`,
 				{ params: pageAndSize }
@@ -42,15 +42,15 @@ export const getAllEmbassys = createAsyncThunk(
 			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
-				`${EMBASSY_FILTER_BY}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
+				`${EMBASSY_FILTER_WITHOUT_PG}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
 					values.gender || ''
-				}&passenger_type=${values.passenger_type}&stapping_date_after=${
+				}&passenger_type=${values.passenger_type || ''}&stapping_date_after=${
 					values.stapping_date_after || ''
 				}&stapping_date_before=${values.stapping_date_before || ''}&date_after=${
 					values.date_after || ''
 				}&date_before=${values.date_before || ''}&expiry_date_after=${
 					values.expiry_date_after || ''
-				}&expiry_date_bofore=${values.expiry_date_bofore || ''}&country=${
+				}&expiry_date_before=${values.expiry_date_before || ''}&country=${
 					values.country || ''
 				}&stamping_status=${values.stamping_status || ''}`
 			);

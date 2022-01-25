@@ -386,8 +386,13 @@ const ramsRouteConfig = {
 		},
 		//embassyReport
 		{
-			path: '/apps/embassys/report',
+			path: '/apps/embassies/report',
 			component: lazy(() => import('./ReportManagement/EmbassyReportManagement/EmbassyReport/EmbassyReport'))
+		},
+		//mofa Report
+		{
+			path: '/apps/mofas/report',
+			component: lazy(() => import('./ReportManagement/MofaReportManagement/MofaReport/MofaReport'))
 		}
 	]
 };

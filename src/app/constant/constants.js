@@ -868,6 +868,10 @@ export const DELETE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/delete/`;
 
 export const MOFA_BY_PASSENGER_ID = `${BASE_URL}/mofa/api/v1/mofa/get_by_passenger_id/`;
 
+export const MOFA_FILTER_BY = `${BASE_URL}/report/api/v1/mofa_report/filter/`;
+
+export const MOFA_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/mofa_report/without_pagination/filter/`;
+
 //female_cv
 export const CREATE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/create/`;
 

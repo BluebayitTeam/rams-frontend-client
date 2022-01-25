@@ -127,7 +127,8 @@ export const getReportMakeStyles = theme => ({
 						whiteSpace: 'nowrap'
 					},
 					'& > input': {
-						position: 'absolute'
+						position: 'absolute',
+						zIndex: 1
 					}
 				}
 			}
@@ -203,7 +204,10 @@ export const getReportMakeStyles = theme => ({
 		padding: '10px',
 		background: '#e9e9e9',
 		height: '40px',
-		textAlign: 'center'
+		textAlign: 'center',
+		'& h5': {
+			whiteSpace: 'nowrap'
+		}
 	},
 	pageBottm: {
 		display: 'flex',

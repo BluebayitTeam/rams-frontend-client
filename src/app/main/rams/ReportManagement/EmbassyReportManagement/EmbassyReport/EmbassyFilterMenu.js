@@ -151,7 +151,7 @@ function EmbassyFilterMenu({ inShowAllMode, handleGetEmbassys, handleGetAllEmbas
 									autoOk
 									clearable
 									format={'dd/MM/yyyy'}
-									maxDate={values.expiry_date_bofore}
+									maxDate={values.expiry_date_before}
 									value={field.value || ''}
 									onChange={value => {
 										value
@@ -179,7 +179,7 @@ function EmbassyFilterMenu({ inShowAllMode, handleGetEmbassys, handleGetAllEmbas
 					</div>
 
 					<Controller
-						name="expiry_date_bofore"
+						name="expiry_date_before"
 						control={control}
 						render={({ field }) => {
 							return (
@@ -769,17 +769,17 @@ function EmbassyFilterMenu({ inShowAllMode, handleGetEmbassys, handleGetAllEmbas
 					</div>
 				)}
 
-				{values.expiry_date_bofore && (
+				{values.expiry_date_before && (
 					<div className="keywordContainer">
 						<b>V.Exp To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.expiry_date_bofore)).format('DD-MM-YYYY')}</p>
+							<p>{moment(new Date(values.expiry_date_before)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
 								onClick={() => {
-									setValue('expiry_date_bofore', '');
+									setValue('expiry_date_before', '');
 									inShowAllMode ? handleGetAllEmbassys() : handleGetEmbassys();
 									setReRender(Math.random());
 								}}
