@@ -975,6 +975,10 @@ export const DELETE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/delete/`;
 
 export const MANPOWER_BY_PASSENGER_ID = `${BASE_URL}/man_power/api/v1/man_power/check_embassy_by_passenger_id/`;
 
+export const MANPOWER_FILTER_BY = `${BASE_URL}/report/api/v1/man_power_report/filter/`;
+
+export const MANPOWER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/man_power_report/without_pagination/filter/`;
+
 //calling_emb_attestation
 export const CREATE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/create/`;
 

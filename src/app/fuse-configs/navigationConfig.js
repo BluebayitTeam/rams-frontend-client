@@ -513,6 +513,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/trainings/report',
 				exact: true
+			},
+			//manPower report
+			{
+				id: 'manPowerReport',
+				title: 'ManPower Report',
+				translate: 'ManPower Report',
+				type: 'item',
+				url: '/apps/man_powers/report',
+				exact: true
 			}
 		]
 	}

@@ -398,6 +398,11 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/trainings/report',
 			component: lazy(() => import('./ReportManagement/TrainingReportManagement/TrainingReport/TrainingReport'))
+		},
+		//man_power Report
+		{
+			path: '/apps/man_powers/report',
+			component: lazy(() => import('./ReportManagement/ManPowerReportManagement/ManPowerReport/ManPowerReport'))
 		}
 	]
 };

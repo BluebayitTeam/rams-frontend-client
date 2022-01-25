@@ -22,8 +22,8 @@ import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
 import { getReportMakeStyles } from '../../reportUtils/reportMakeStyls';
 import tableColumnsReducer from '../../reportUtils/tableColumnsReducer';
-import { getAllTrainings, getTrainings } from '../store/trainingReportSlice';
-import TrainingFilterMenu from './TrainingFilterMenu';
+import { getAllManPowers, getManPowers } from '../store/manPowerReportSlice';
+import ManPowerFilterMenu from './ManPowerFilterMenu';
 
 const useStyles = makeStyles(theme => ({
 	...getReportMakeStyles(theme)
@@ -37,17 +37,17 @@ const initialTableColumnsState = [
 	{ id: 3, label: 'PP.No', name: 'passenger', subName: 'passport_no', show: true },
 	{ id: 4, label: 'Agent', name: 'agent', subName: 'username', show: true },
 	{ id: 5, label: 'Country', name: 'country', subName: 'name', show: true },
-	{ id: 6, label: 'Serial_No', name: 'serial_no', show: true },
-	{ id: 7, label: 'BatchNo', name: 'batch_number', show: true },
-	{ id: 8, label: 'TR.Ent Date', name: 'created_at', show: true, type: 'date' },
-	{ id: 9, label: 'Admission Date', name: 'admission_date', show: true, type: 'date' },
-	{ id: 10, label: 'CertificateNo', name: 'certificate_no', show: true },
-	{ id: 11, label: 'Certificate Date', name: 'certificate_date', show: true, type: 'date' },
-	{ id: 12, label: 'Agency', name: 'recruiting_agency', subName: 'name', show: true },
-	{ id: 13, label: 'TR.Card Status', name: 'training_card_status', show: true }
+	{ id: 6, label: 'New VisaNo', name: 'new_visa_no', show: true },
+	{ id: 7, label: 'Reg.Id', name: 'registration_id', show: true },
+	{ id: 8, label: 'MP.Status', name: 'man_power_status', show: true },
+	{ id: 9, label: 'Agency', name: 'recruiting_agency', subName: 'name', show: true },
+	{ id: 10, label: 'MP.Ent Date', name: 'created_at', show: true, type: 'date' },
+	{ id: 11, label: 'MP.Date', name: 'man_power_date', show: true, type: 'date' },
+	{ id: 12, label: 'MP.Dl Date', name: 'delivery_date', show: true, type: 'date' },
+	{ id: 13, label: 'MP.Submit Date', name: 'submit_date', show: true, type: 'date' }
 ];
 
-const TrainingReportsTable = () => {
+const ManPowerReportsTable = () => {
 	const classes = useStyles();
 
 	const methods = useForm({
@@ -64,7 +64,7 @@ const TrainingReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedTrainingData, setModifiedTrainingData, setSortBy, setSortBySubKey] = useReportData([]);
+	const [modifiedManPowerData, setModifiedManPowerData, setSortBy, setSortBySubKey] = useReportData([]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -103,10 +103,10 @@ const TrainingReportsTable = () => {
 		setInPrint(true);
 		if (!inPrint) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllTrainings(null, () => {
+				handleGetAllManPowers(null, () => {
 					printAction();
 					setInPrint(false);
-					handleGetTrainings();
+					handleGetManPowers();
 				});
 			} else {
 				printAction();
@@ -136,10 +136,10 @@ const TrainingReportsTable = () => {
 		setInDowloadPdf(true);
 		if (!inDowloadPdf) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllTrainings(null, () => {
+				handleGetAllManPowers(null, () => {
 					pdfDownloadAction();
 					setInDowloadPdf(false);
-					handleGetTrainings();
+					handleGetManPowers();
 				});
 			} else {
 				pdfDownloadAction();
@@ -156,10 +156,10 @@ const TrainingReportsTable = () => {
 		setInDowloadExcel(true);
 		if (!inDowloadExcel) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllTrainings(null, () => {
+				handleGetAllManPowers(null, () => {
 					document.getElementById('test-table-xls-button').click();
 					setInDowloadExcel(false);
-					handleGetTrainings();
+					handleGetManPowers();
 				});
 			} else {
 				document.getElementById('test-table-xls-button').click();
@@ -177,24 +177,24 @@ const TrainingReportsTable = () => {
 
 	//pagination handler
 	const firstPageHandler = event => {
-		handleGetTrainings(event.page);
+		handleGetManPowers(event.page);
 	};
 	const previousPageHandler = event => {
-		handleGetTrainings(event.page);
+		handleGetManPowers(event.page);
 	};
 	const nextPageHandler = event => {
-		handleGetTrainings(event.page);
+		handleGetManPowers(event.page);
 	};
 	const lastPageHandler = event => {
-		handleGetTrainings(event.page);
+		handleGetManPowers(event.page);
 	};
 
-	//get trainings
-	const handleGetTrainings = (pagePram, callBack) => {
-		dispatch(getTrainings({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
+	//get manPowers
+	const handleGetManPowers = (pagePram, callBack) => {
+		dispatch(getManPowers({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedTrainingData(res.payload?.trainings || []);
+				setModifiedManPowerData(res.payload?.man_powers || []);
 				setPage(res.payload?.page || 1);
 				setSize(res.payload?.size || 25);
 				setTotalPages(res.payload?.total_pages || 0);
@@ -205,16 +205,16 @@ const TrainingReportsTable = () => {
 		});
 	};
 
-	//get all training without pagination
-	const handleGetAllTrainings = (callBack, callBackAfterStateUpdated) => {
-		dispatch(getAllTrainings(getValues())).then(res => {
+	//get all manPower without pagination
+	const handleGetAllManPowers = (callBack, callBackAfterStateUpdated) => {
+		dispatch(getAllManPowers(getValues())).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedTrainingData(res.payload?.trainings || []);
+				setModifiedManPowerData(res.payload?.man_powers || []);
 				setInSiglePageMode(false);
 				setInShowAllMode(true);
 				//get pagination data
-				const { totalPages, totalElements } = getPaginationData(res.payload?.trainings, size, page);
+				const { totalPages, totalElements } = getPaginationData(res.payload?.man_powers, size, page);
 				setPage(page || 1);
 				setSize(size || 25);
 				setTotalPages(totalPages);
@@ -229,10 +229,10 @@ const TrainingReportsTable = () => {
 			<div className={classes.headContainer}>
 				{/* filter */}
 				<FormProvider {...methods}>
-					<TrainingFilterMenu
+					<ManPowerFilterMenu
 						inShowAllMode={inShowAllMode}
-						handleGetTrainings={handleGetTrainings}
-						handleGetAllTrainings={handleGetAllTrainings}
+						handleGetManPowers={handleGetManPowers}
+						handleGetAllManPowers={handleGetAllManPowers}
 					/>
 				</FormProvider>
 			</div>
@@ -295,7 +295,7 @@ const TrainingReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
-					onClick={() => handleGetTrainings()}
+					onClick={() => handleGetManPowers()}
 					icon={faBookOpen}
 				/>
 
@@ -303,7 +303,7 @@ const TrainingReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-					onClick={() => handleGetAllTrainings()}
+					onClick={() => handleGetAllManPowers()}
 					icon={faScroll}
 				/>
 
@@ -347,15 +347,15 @@ const TrainingReportsTable = () => {
 			<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
-					{modifiedTrainingData.map(training => (
+					{modifiedManPowerData.map(manPower => (
 						<SinglePage
 							classes={classes}
 							generalData={generalData}
-							reporTitle="Training Report"
+							reporTitle="ManPower Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={training}
-							serialNumber={training.page * training.size - training.size + 1}
+							data={manPower}
+							serialNumber={manPower.page * manPower.size - manPower.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
 							setSortBy={setSortBy}
@@ -367,4 +367,4 @@ const TrainingReportsTable = () => {
 		</>
 	);
 };
-export default TrainingReportsTable;
+export default ManPowerReportsTable;

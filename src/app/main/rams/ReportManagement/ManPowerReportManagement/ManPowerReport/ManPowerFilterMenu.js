@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTrainings }) {
+function ManPowerFilterMenu({ inShowAllMode, handleGetManPowers, handleGetAllManPowers }) {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -50,7 +50,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
-				{/* TR.Ent from */}
+				{/* MP.Ent from */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon
 						className="icon cursor-pointer"
@@ -59,7 +59,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 					/>
 
 					<div className="dateLabel" onClick={() => document.getElementById('dateAfterEl').click()}>
-						TR.Ent From
+						MP.Ent From
 					</div>
 
 					<Controller
@@ -80,7 +80,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+										inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									}}
 								/>
 							);
@@ -88,7 +88,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 					/>
 				</div>
 
-				{/* TR.Ent to */}
+				{/* MP.Ent to */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon
 						className="icon cursor-pointer"
@@ -97,7 +97,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 					/>
 
 					<div className="dateLabel" onClick={() => document.getElementById('dateBeforeEl').click()}>
-						TR.Ent To
+						MP.Ent To
 					</div>
 
 					<Controller
@@ -119,7 +119,167 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
 											: field.onChange('');
 										setReRender(Math.random());
-										inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+										inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* MP.from */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('manPowerDateAfterEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('manPowerDateAfterEl').click()}>
+						MP.From
+					</div>
+
+					<Controller
+						name="man_power_date_after"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="manPowerDateAfterEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									maxDate={values.man_power_date_before || new Date()}
+									value={field.value || ''}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* MP.to */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('manPowerDateBeforeEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('manPowerDateBeforeEl').click()}>
+						MP.To
+					</div>
+
+					<Controller
+						name="man_power_date_before"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="manPowerDateBeforeEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									value={field.value || ''}
+									minDate={values.man_power_date_after}
+									maxDate={new Date()}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* MP.Dl from */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('manPowerDeliveryDateAfterEl').click()}
+					/>
+
+					<div
+						className="dateLabel"
+						onClick={() => document.getElementById('manPowerDeliveryDateAfterEl').click()}
+					>
+						MP.Dl From
+					</div>
+
+					<Controller
+						name="delivery_date_after"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="manPowerDeliveryDateAfterEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									maxDate={values.delivery_date_before || new Date()}
+									value={field.value || ''}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* MP.Dl to */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('manPowerDeliveryDateBeforeEl').click()}
+					/>
+
+					<div
+						className="dateLabel"
+						onClick={() => document.getElementById('manPowerDeliveryDateBeforeEl').click()}
+					>
+						MP.Dl To
+					</div>
+
+					<Controller
+						name="delivery_date_before"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="manPowerDeliveryDateBeforeEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									value={field.value || ''}
+									minDate={values.delivery_date_after}
+									maxDate={new Date()}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									}}
 								/>
 							);
@@ -186,7 +346,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('passengerName', newValue?.passenger_name || '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 								}}
 								renderInput={params => (
 									<TextField
@@ -257,7 +417,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('countryName', newValue?.name || '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 								}}
 								renderInput={params => (
 									<TextField
@@ -328,7 +488,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('agentName', newValue?.username || '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 								}}
 								renderInput={params => (
 									<TextField
@@ -399,7 +559,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('passengerTypeName', newValue?.name || '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 								}}
 								renderInput={params => (
 									<TextField
@@ -470,7 +630,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									setValue('genderName', newValue?.id || '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 								}}
 								renderInput={params => (
 									<TextField
@@ -489,7 +649,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 			<div className="allKeyWrdContainer">
 				{values.date_after && (
 					<div className="keywordContainer">
-						<b>TR.Ent From</b>
+						<b>MP.Ent From</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
 							<p>{moment(new Date(values.date_after)).format('DD-MM-YYYY')}</p>
@@ -498,7 +658,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_after', '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									setReRender(Math.random());
 								}}
 							/>
@@ -508,7 +668,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 
 				{values.date_before && (
 					<div className="keywordContainer">
-						<b>TR.Ent To</b>
+						<b>MP.Ent To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
 							<p>{moment(new Date(values.date_before)).format('DD-MM-YYYY')}</p>
@@ -517,7 +677,83 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								icon={faTimesCircle}
 								onClick={() => {
 									setValue('date_before', '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.man_power_date_after && (
+					<div className="keywordContainer">
+						<b>MP.From</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.man_power_date_after)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('man_power_date_after', '');
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.man_power_date_before && (
+					<div className="keywordContainer">
+						<b>MP.To</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.man_power_date_before)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('man_power_date_before', '');
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.delivery_date_after && (
+					<div className="keywordContainer">
+						<b>MP.Dl From</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.delivery_date_after)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('delivery_date_after', '');
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.delivery_date_before && (
+					<div className="keywordContainer">
+						<b>MP.Dl To</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.delivery_date_before)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('delivery_date_before', '');
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									setReRender(Math.random());
 								}}
 							/>
@@ -537,7 +773,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onClick={() => {
 									setValue('passengerName', '');
 									setValue('passenger', '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									setReRender(Math.random());
 								}}
 							/>
@@ -557,7 +793,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onClick={() => {
 									setValue('countryName', '');
 									setValue('country', '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									setReRender(Math.random());
 								}}
 							/>
@@ -577,7 +813,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onClick={() => {
 									setValue('agentName', '');
 									setValue('agent', '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									setReRender(Math.random());
 								}}
 							/>
@@ -597,7 +833,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onClick={() => {
 									setValue('passengerTypeName', '');
 									setValue('passenger_type', '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									setReRender(Math.random());
 								}}
 							/>
@@ -621,7 +857,7 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 								onClick={() => {
 									setValue('genderName', '');
 									setValue('gender', '');
-									inShowAllMode ? handleGetAllTrainings() : handleGetTrainings();
+									inShowAllMode ? handleGetAllManPowers() : handleGetManPowers();
 									setReRender(Math.random());
 								}}
 							/>
@@ -633,4 +869,4 @@ function TrainingFilterMenu({ inShowAllMode, handleGetTrainings, handleGetAllTra
 	);
 }
 
-export default TrainingFilterMenu;
+export default ManPowerFilterMenu;
