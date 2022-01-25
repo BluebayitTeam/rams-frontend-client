@@ -393,6 +393,11 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/mofas/report',
 			component: lazy(() => import('./ReportManagement/MofaReportManagement/MofaReport/MofaReport'))
+		},
+		//training Report
+		{
+			path: '/apps/trainings/report',
+			component: lazy(() => import('./ReportManagement/TrainingReportManagement/TrainingReport/TrainingReport'))
 		}
 	]
 };

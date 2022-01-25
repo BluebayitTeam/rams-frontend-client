@@ -504,6 +504,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/mofas/report',
 				exact: true
+			},
+			//training report
+			{
+				id: 'trainingReport',
+				title: 'Training Report',
+				translate: 'Training Report',
+				type: 'item',
+				url: '/apps/trainings/report',
+				exact: true
 			}
 		]
 	}

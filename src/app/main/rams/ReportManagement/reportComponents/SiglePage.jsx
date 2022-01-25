@@ -5,6 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { Email, Language, LocationOn, PhoneEnabled } from '@material-ui/icons';
 import moment from 'moment';
 import React from 'react';
 import { BASE_URL } from '../../../../constant/constants';
@@ -50,7 +51,7 @@ function SiglePage({
 				<Table aria-label="simple table" className={classes.table}>
 					<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
 						<TableRow>
-							{tableColumns.map(column => {
+							{tableColumns.map((column, indx) => {
 								return column.show ? (
 									<TableCell
 										key={column.id}
@@ -75,6 +76,9 @@ function SiglePage({
 														column.subName &&
 														setSortBySubKey(column.subName);
 												}
+											}}
+											style={{
+												margin: indx === 0 && '0px -5px 0px 5px'
 											}}
 										>
 											{column.label}
@@ -125,26 +129,31 @@ function SiglePage({
 					<tr>
 						<td>
 							<h5>
-								<b>Address: </b>
-								{generalData?.address || ''}
+								<LocationOn fontSize="small" />
+								{` ${generalData?.address}` || ''}
 							</h5>
 						</td>
 						<td>
 							<h5>
-								<b>Mobile: </b>
-								{generalData?.phone || ''}
+								<PhoneEnabled fontSize="small" />
+								{` ${generalData?.phone || ''}`}
 							</h5>
 						</td>
 						<td>
 							<h5>
-								<b>Email: </b>
-								{generalData?.email || ''}
+								<Email fontSize="small" />
+								{` ${generalData?.email || ''}`}
 							</h5>
 						</td>
 						<td>
 							<h5>
-								<b>Website:</b>
-								<a href={generalData?.site_address || ''} target="_blank" rel="noreferrer">
+								<Language fontSize="small" />
+								<a
+									className="ml-2"
+									href={generalData?.site_address || ''}
+									target="_blank"
+									rel="noreferrer"
+								>
 									{generalData?.site_address}
 								</a>
 							</h5>

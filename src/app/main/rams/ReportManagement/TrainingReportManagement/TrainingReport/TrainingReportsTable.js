@@ -22,8 +22,8 @@ import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
 import { getReportMakeStyles } from '../../reportUtils/reportMakeStyls';
 import tableColumnsReducer from '../../reportUtils/tableColumnsReducer';
-import { getAllMofas, getMofas } from '../store/mofaReportSlice';
-import MofaFilterMenu from './MofaFilterMenu';
+import { getAllTrainings, getTrainings } from '../store/trainingReportSlice';
+import TrainingFilterMenu from './TrainingFilterMenu';
 
 const useStyles = makeStyles(theme => ({
 	...getReportMakeStyles(theme)
@@ -37,16 +37,16 @@ const initialTableColumnsState = [
 	{ id: 3, label: 'PP.No', name: 'passenger', subName: 'passport_no', show: true },
 	{ id: 4, label: 'Agent', name: 'agent', subName: 'username', show: true },
 	{ id: 5, label: 'Country', name: 'country', subName: 'name', show: true },
-	{ id: 6, label: 'M.No', name: 'mofa_no', show: true },
-	{ id: 7, label: 'M.Ent Date', name: 'created_at', show: true, type: 'date' },
-	{ id: 8, label: 'M.Agency', name: 'mofa_agency', subName: 'name', show: true },
-	{ id: 9, label: 'M.Status', name: 'mofa_status', show: true },
-	{ id: 10, label: 'Re M.Status', name: 're_mofa_status', show: true },
-	{ id: 11, label: 'Re M.Charge', name: 're_mofa_charge', show: true },
-	{ id: 12, label: 'why ReMofa', name: 'mofa_no', show: true }
+	{ id: 6, label: 'Serial_No', name: 'serial_no', show: true },
+	{ id: 7, label: 'BatchNo', name: 'batch_number', show: true },
+	{ id: 8, label: 'Admission Date', name: 'admission_date', show: true, type: 'date' },
+	{ id: 9, label: 'CertificateNo', name: 'certificate_no', show: true },
+	{ id: 10, label: 'Certificate Date', name: 'certificate_date', show: true, type: 'date' },
+	{ id: 11, label: 'Agency', name: 'recruiting_agency', subName: 'name', show: true },
+	{ id: 12, label: 'Trng Card Status', name: 'training_card_status', show: true }
 ];
 
-const MofaReportsTable = () => {
+const TrainingReportsTable = () => {
 	const classes = useStyles();
 
 	const methods = useForm({
@@ -63,7 +63,7 @@ const MofaReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedMofaData, setModifiedMofaData, setSortBy, setSortBySubKey] = useReportData([]);
+	const [modifiedTrainingData, setModifiedTrainingData, setSortBy, setSortBySubKey] = useReportData([]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -102,10 +102,10 @@ const MofaReportsTable = () => {
 		setInPrint(true);
 		if (!inPrint) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllMofas(null, () => {
+				handleGetAllTrainings(null, () => {
 					printAction();
 					setInPrint(false);
-					handleGetMofas();
+					handleGetTrainings();
 				});
 			} else {
 				printAction();
@@ -135,10 +135,10 @@ const MofaReportsTable = () => {
 		setInDowloadPdf(true);
 		if (!inDowloadPdf) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllMofas(null, () => {
+				handleGetAllTrainings(null, () => {
 					pdfDownloadAction();
 					setInDowloadPdf(false);
-					handleGetMofas();
+					handleGetTrainings();
 				});
 			} else {
 				pdfDownloadAction();
@@ -155,10 +155,10 @@ const MofaReportsTable = () => {
 		setInDowloadExcel(true);
 		if (!inDowloadExcel) {
 			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllMofas(null, () => {
+				handleGetAllTrainings(null, () => {
 					document.getElementById('test-table-xls-button').click();
 					setInDowloadExcel(false);
-					handleGetMofas();
+					handleGetTrainings();
 				});
 			} else {
 				document.getElementById('test-table-xls-button').click();
@@ -176,24 +176,24 @@ const MofaReportsTable = () => {
 
 	//pagination handler
 	const firstPageHandler = event => {
-		handleGetMofas(event.page);
+		handleGetTrainings(event.page);
 	};
 	const previousPageHandler = event => {
-		handleGetMofas(event.page);
+		handleGetTrainings(event.page);
 	};
 	const nextPageHandler = event => {
-		handleGetMofas(event.page);
+		handleGetTrainings(event.page);
 	};
 	const lastPageHandler = event => {
-		handleGetMofas(event.page);
+		handleGetTrainings(event.page);
 	};
 
-	//get mofas
-	const handleGetMofas = (pagePram, callBack) => {
-		dispatch(getMofas({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
+	//get trainings
+	const handleGetTrainings = (pagePram, callBack) => {
+		dispatch(getTrainings({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedMofaData(res.payload?.mofas || []);
+				setModifiedTrainingData(res.payload?.trainings || []);
 				setPage(res.payload?.page || 1);
 				setSize(res.payload?.size || 25);
 				setTotalPages(res.payload?.total_pages || 0);
@@ -204,16 +204,16 @@ const MofaReportsTable = () => {
 		});
 	};
 
-	//get all mofa without pagination
-	const handleGetAllMofas = (callBack, callBackAfterStateUpdated) => {
-		dispatch(getAllMofas(getValues())).then(res => {
+	//get all training without pagination
+	const handleGetAllTrainings = (callBack, callBackAfterStateUpdated) => {
+		dispatch(getAllTrainings(getValues())).then(res => {
 			unstable_batchedUpdates(() => {
 				callBack && callBack(res.payload);
-				setModifiedMofaData(res.payload?.mofas || []);
+				setModifiedTrainingData(res.payload?.trainings || []);
 				setInSiglePageMode(false);
 				setInShowAllMode(true);
 				//get pagination data
-				const { totalPages, totalElements } = getPaginationData(res.payload?.mofas, size, page);
+				const { totalPages, totalElements } = getPaginationData(res.payload?.trainings, size, page);
 				setPage(page || 1);
 				setSize(size || 25);
 				setTotalPages(totalPages);
@@ -228,10 +228,10 @@ const MofaReportsTable = () => {
 			<div className={classes.headContainer}>
 				{/* filter */}
 				<FormProvider {...methods}>
-					<MofaFilterMenu
+					<TrainingFilterMenu
 						inShowAllMode={inShowAllMode}
-						handleGetMofas={handleGetMofas}
-						handleGetAllMofas={handleGetAllMofas}
+						handleGetTrainings={handleGetTrainings}
+						handleGetAllTrainings={handleGetAllTrainings}
 					/>
 				</FormProvider>
 			</div>
@@ -294,7 +294,7 @@ const MofaReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
-					onClick={() => handleGetMofas()}
+					onClick={() => handleGetTrainings()}
 					icon={faBookOpen}
 				/>
 
@@ -302,7 +302,7 @@ const MofaReportsTable = () => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-					onClick={() => handleGetAllMofas()}
+					onClick={() => handleGetAllTrainings()}
 					icon={faScroll}
 				/>
 
@@ -346,15 +346,15 @@ const MofaReportsTable = () => {
 			<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
 				<div ref={componentRef} id="downloadPage">
 					{/* each single page (table) */}
-					{modifiedMofaData.map(mofa => (
+					{modifiedTrainingData.map(training => (
 						<SinglePage
 							classes={classes}
 							generalData={generalData}
-							reporTitle="Mofa Report"
+							reporTitle="Training Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={mofa}
-							serialNumber={mofa.page * mofa.size - mofa.size + 1}
+							data={training}
+							serialNumber={training.page * training.size - training.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
 							setSortBy={setSortBy}
@@ -366,4 +366,4 @@ const MofaReportsTable = () => {
 		</>
 	);
 };
-export default MofaReportsTable;
+export default TrainingReportsTable;

@@ -935,6 +935,10 @@ export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
 
 export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;
 
+export const TRAINING_FILTER_BY = `${BASE_URL}/report/api/v1/training_report/filter/`;
+
+export const TRAINING_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/training_report/without_pagination/filter/`;
+
 //visa_cancel_list
 export const CREATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/create/`;
 
