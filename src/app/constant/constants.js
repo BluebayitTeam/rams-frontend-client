@@ -816,6 +816,10 @@ export const PASSENGER_FILTER_BY = `${BASE_URL}/report/api/v1/passenger_report/f
 
 export const PASSENGER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/passenger_report/without_pagination/filter/`;
 
+export const PASSENGER_SUMMARY_FILTER_BY = `${BASE_URL}/report/api/v1/de_ag_ve_pa_me_mo_ow_mo_em_tr_mp_fl_report/filter/`;
+
+export const PASSENGER_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/de_ag_ve_pa_me_mo_ow_mo_em_tr_mp_fl_report/filter/`;
+
 //medical
 export const CREATE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/create/`;
 
@@ -889,6 +893,10 @@ export const UPDATE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/update/`;
 export const DELETE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/delete/`;
 
 export const FLIGHT_BY_PASSENGER_ID = `${BASE_URL}/flight/api/v1/flight/get_by_passenger_id/`;
+
+export const FLIGHT_FILTER_BY = `${BASE_URL}/report/api/v1/flight_report/filter/`;
+
+export const FLIGHT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/flight_report/without_pagination/filter/`;
 
 //male_cv
 export const CREATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/create/`;

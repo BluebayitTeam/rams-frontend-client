@@ -522,6 +522,24 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/man_powers/report',
 				exact: true
+			},
+			//flight report
+			{
+				id: 'flightReport',
+				title: 'Flight Report',
+				translate: 'Flight Report',
+				type: 'item',
+				url: '/apps/flights/report',
+				exact: true
+			},
+			//passenger_summary report
+			{
+				id: 'passenger_summaryReport',
+				title: 'Passenger Summary Report',
+				translate: 'Passenger Summary Report',
+				type: 'item',
+				url: '/apps/passenger_summarys/report',
+				exact: true
 			}
 		]
 	}

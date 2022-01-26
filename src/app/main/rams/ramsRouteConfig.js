@@ -403,6 +403,20 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/man_powers/report',
 			component: lazy(() => import('./ReportManagement/ManPowerReportManagement/ManPowerReport/ManPowerReport'))
+		},
+		//flight Report
+		{
+			path: '/apps/flights/report',
+			component: lazy(() => import('./ReportManagement/FlightReportManagement/FlightReport/FlightReport'))
+		},
+		//passenger_summary Report
+		{
+			path: '/apps/passenger_summarys/report',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/PassengerSummaryReportManagement/PassengerSummaryReport/PassengerSummaryReport'
+				)
+			)
 		}
 	]
 };
