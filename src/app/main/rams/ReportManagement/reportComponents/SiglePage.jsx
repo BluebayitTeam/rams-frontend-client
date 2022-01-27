@@ -102,7 +102,13 @@ function SiglePage({
 								{tableColumns.map(column => {
 									return column.show ? (
 										<TableCell align="center" className="tableCell">
-											<div>
+											<div
+												style={{
+													whiteSpace: column.type === 'date' && 'nowrap',
+													...column.style,
+													...dataArr.rowStyle
+												}}
+											>
 												{column?.subName
 													? dataArr?.[column.name]?.[column?.subName]
 													: column.type === 'date'
@@ -113,6 +119,10 @@ function SiglePage({
 													? dataArr?.[column.name]
 													: column?.isSerialNo
 													? dataArr.hideSerialNo || pageBasedSerialNo++
+													: dataArr.getterMathod
+													? dataArr.getterMathod(dataArr)
+													: column.getterMathod
+													? column.getterMathod(dataArr)
 													: ''}
 											</div>
 										</TableCell>

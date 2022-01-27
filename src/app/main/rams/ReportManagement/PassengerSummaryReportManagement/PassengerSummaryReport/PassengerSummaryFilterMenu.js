@@ -3,6 +3,7 @@ import {
 	faChevronDown,
 	faFlag,
 	faGenderless,
+	faIdCard,
 	faLandmark,
 	faTextHeight,
 	faTimesCircle,
@@ -12,13 +13,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, TextField } from '@material-ui/core';
-import { LocalActivity } from '@material-ui/icons';
+import { Accessibility, DriveEta, LocalActivity, Report, TouchApp } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import { DatePicker } from '@material-ui/pickers';
 import { doneNotDone, genders, medicalResults } from 'app/@data/data';
 import {
 	getAgents,
 	getCountries,
+	getCurrentStatuss,
 	getDemands,
 	getPassengers,
 	getPassengerTypes,
@@ -51,6 +53,7 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 	const agents = useSelector(state => state.data.agents);
 	const professions = useSelector(state => state.data.professions);
 	const passengerTypes = useSelector(state => state.data.passengerTypes);
+	const currentStatuss = useSelector(state => state.data.currentStatuss);
 
 	const methods = useFormContext();
 	const { control, getValues, setValue } = methods;
@@ -63,88 +66,12 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 		dispatch(getAgents());
 		dispatch(getProfessions());
 		dispatch(getPassengerTypes());
+		dispatch(getCurrentStatuss());
 	}, []);
 
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
-				{/* M.Ent from */}
-				{/* <div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('dateAfterEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('dateAfterEl').click()}>
-						M.Ent From
-					</div>
-
-					<Controller
-						name="date_after"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="dateAfterEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									maxDate={values.date_before || new Date()}
-									value={field.value || ''}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div> */}
-
-				{/* M.Ent to */}
-				{/* <div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('dateBeforeEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('dateBeforeEl').click()}>
-						M.Ent To
-					</div>
-
-					<Controller
-						name="date_before"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="dateBeforeEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									value={field.value || ''}
-									minDate={values.date_after}
-									maxDate={new Date()}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div> */}
-
 				{/* demand */}
 				<div className="fieldContainer">
 					<FontAwesomeIcon className="icon" icon={faUser} />
@@ -224,7 +151,7 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 						className="selectLabel"
 						style={{
 							width: values.passengerAgentFocused ? '0px' : '48px',
-							margin: values.passengerAgentFocused ? '0px' : '2px 5px 0px 10px'
+							margin: values.passengerAgentFocused ? '0px' : '2px 5px 0px 5px'
 						}}
 						onClick={() => {
 							setValue('passengerAgentFocused', true);
@@ -745,7 +672,7 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 						className="selectLabel"
 						style={{
 							width: values.mofaStatusFocused ? '0px' : '77px',
-							margin: values.mofaStatusFocused ? '0px' : '2px 5px 0px 10px'
+							margin: values.mofaStatusFocused ? '0px' : '2px 5px 0px 5px'
 						}}
 						onClick={() => {
 							setValue('mofaStatusFocused', true);
@@ -887,13 +814,13 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 
 				{/* Medical Resul */}
 				<div className="fieldContainer">
-					<LocalActivity style={{ fontSize: '25px' }} />
+					<Report style={{ fontSize: '25px' }} />
 
 					<div
 						className="selectLabel"
 						style={{
-							width: values.medicalResultFocused ? '0px' : '77px',
-							margin: values.medicalResultFocused ? '0px' : '2px 5px 0px 10px'
+							width: values.medicalResultFocused ? '0px' : '93px',
+							margin: values.medicalResultFocused ? '0px' : '2px 5px 0px 5px'
 						}}
 						onClick={() => {
 							setValue('medicalResultFocused', true);
@@ -1044,7 +971,7 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 						className="selectLabel"
 						style={{
 							width: values.pCStatusFocused ? '0px' : '61px',
-							margin: values.pCStatusFocused ? '0px' : '2px 5px 0px 10px'
+							margin: values.pCStatusFocused ? '0px' : '2px 5px 0px 7px'
 						}}
 						onClick={() => {
 							setValue('pCStatusFocused', true);
@@ -1106,48 +1033,513 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 						)}
 					/>
 				</div>
+
+				{/* DL.Status */}
+				<div className="fieldContainer">
+					<DriveEta style={{ fontSize: '25px' }} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.dLStatusFocused ? '0px' : '61px',
+							margin: values.dLStatusFocused ? '0px' : '2px 5px 0px 4px'
+						}}
+						onClick={() => {
+							setValue('dLStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('dLStatusEl').focus(), 300);
+						}}
+					>
+						DL.Status
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.dLStatusFocused ? '0px' : '15px',
+							margin: values.dLStatusFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('dLStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('dLStatusEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="driving_license_status"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="dLStatusEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.dLStatusFocused ? '130px' : '0px',
+									margin: values.dLStatusFocused ? '0px 10px' : '0px',
+									display: values.dLStatusFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('dLStatusFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={doneNotDone}
+								value={value ? doneNotDone.find(data => data.id == value) : null}
+								getOptionLabel={option => option.name}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('dLStatusName', newValue?.name || '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select DL.Status"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
+
+				{/* Fng.Status */}
+				<div className="fieldContainer">
+					<TouchApp style={{ fontSize: '25px' }} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.fngStatusFocused ? '0px' : '68px',
+							margin: values.fngStatusFocused ? '0px' : '3px 5px 0px 5px'
+						}}
+						onClick={() => {
+							setValue('fngStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('fngStatusEl').focus(), 300);
+						}}
+					>
+						Fng.Status
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.fngStatusFocused ? '0px' : '15px',
+							margin: values.fngStatusFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('fngStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('fngStatusEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="finger_status"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="fngStatusEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.fngStatusFocused ? '130px' : '0px',
+									margin: values.fngStatusFocused ? '0px 10px' : '0px',
+									display: values.fngStatusFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('fngStatusFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={doneNotDone}
+								value={value ? doneNotDone.find(data => data.id == value) : null}
+								getOptionLabel={option => option.name}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('fngStatusName', newValue?.name || '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select Fng.Status"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
+
+				{/* Trng.Card Status */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon className="icon" icon={faIdCard} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.trngCrdStatusFocused ? '0px' : '108px',
+							margin: values.trngCrdStatusFocused ? '0px' : '2px 5px 0px 5px'
+						}}
+						onClick={() => {
+							setValue('trngCrdStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('trngCrdStatusEl').focus(), 300);
+						}}
+					>
+						Trng.Card Status
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.trngCrdStatusFocused ? '0px' : '15px',
+							margin: values.trngCrdStatusFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('trngCrdStatusFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('trngCrdStatusEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="training_card_status"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="trngCrdStatusEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.trngCrdStatusFocused ? '130px' : '0px',
+									margin: values.trngCrdStatusFocused ? '0px 10px' : '0px',
+									display: values.trngCrdStatusFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('trngCrdStatusFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={doneNotDone}
+								value={value ? doneNotDone.find(data => data.id == value) : null}
+								getOptionLabel={option => option.name}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('trngCrdStatusName', newValue?.name || '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select Trng.Card Status"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
+
+				{/* ManP.from */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('manPwrDateAfterEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('manPwrDateAfterEl').click()}>
+						ManP.from
+					</div>
+
+					<Controller
+						name="man_power_date_after"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="manPwrDateAfterEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									maxDate={values.man_power_date_before || new Date()}
+									value={field.value || ''}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* ManP.to */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon
+						className="icon cursor-pointer"
+						icon={faCalendarAlt}
+						onClick={() => document.getElementById('manPwrDateBeforeEl').click()}
+					/>
+
+					<div className="dateLabel" onClick={() => document.getElementById('manPwrDateBeforeEl').click()}>
+						ManP.To
+					</div>
+
+					<Controller
+						name="man_power_date_before"
+						control={control}
+						render={({ field }) => {
+							return (
+								<DatePicker
+									id="manPwrDateBeforeEl"
+									className="hidden"
+									autoOk
+									clearable
+									format={'dd/MM/yyyy'}
+									value={field.value || ''}
+									minDate={values.man_power_date_after}
+									maxDate={new Date()}
+									onChange={value => {
+										value
+											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
+											: field.onChange('');
+										setReRender(Math.random());
+										inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				{/* ManP.Status */}
+				<div className="fieldContainer">
+					<Accessibility style={{ fontSize: '25px' }} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.manPowerStsFocused ? '0px' : '80px',
+							margin: values.manPowerStsFocused ? '0px' : '2px 5px 0px 5px'
+						}}
+						onClick={() => {
+							setValue('manPowerStsFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('manPowerStsEl').focus(), 300);
+						}}
+					>
+						ManP.Status
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.manPowerStsFocused ? '0px' : '15px',
+							margin: values.manPowerStsFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('manPowerStsFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('manPowerStsEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="man_power_status"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="manPowerStsEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.manPowerStsFocused ? '130px' : '0px',
+									margin: values.manPowerStsFocused ? '0px 10px' : '0px',
+									display: values.manPowerStsFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('manPowerStsFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={doneNotDone}
+								value={value ? doneNotDone.find(data => data.id == value) : null}
+								getOptionLabel={option => option.name}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('manPowerStsName', newValue?.name || '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select Trng.Card Status"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
+
+				{/* V.agent */}
+				<div className="fieldContainer">
+					<FontAwesomeIcon className="icon" icon={faUniversalAccess} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.visaAgentFocused ? '0px' : '51px',
+							margin: values.visaAgentFocused ? '0px' : '2px 5px 0px 5px'
+						}}
+						onClick={() => {
+							setValue('visaAgentFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('visaAgentEl').focus(), 300);
+						}}
+					>
+						V.Agent
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.visaAgentFocused ? '0px' : '15px',
+							margin: values.visaAgentFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('visaAgentFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('visaAgentEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="visa_agent"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="visaAgentEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.visaAgentFocused ? '130px' : '0px',
+									margin: values.visaAgentFocused ? '0px 10px' : '0px',
+									display: values.visaAgentFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('visaAgentFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={agents}
+								value={value ? agents.find(data => data.id == value) : null}
+								getOptionLabel={option => option.username}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('visaAgentName', newValue?.username || '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select V.Agent"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
+
+				{/* Current Status */}
+				<div className="fieldContainer">
+					<LocalActivity style={{ fontSize: '25px' }} />
+
+					<div
+						className="selectLabel"
+						style={{
+							width: values.currentStsFocused ? '0px' : '93px',
+							margin: values.currentStsFocused ? '0px' : '2px 5px 0px 5px'
+						}}
+						onClick={() => {
+							setValue('currentStsFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('currentStsEl').focus(), 300);
+						}}
+					>
+						Current Status
+					</div>
+					<FontAwesomeIcon
+						className="selectOpenIcon cursor-pointer"
+						style={{
+							width: values.currentStsFocused ? '0px' : '15px',
+							margin: values.currentStsFocused ? '0px' : '2px 10px 0px 0px'
+						}}
+						onClick={() => {
+							setValue('currentStsFocused', true);
+							setReRender(Math.random());
+							setTimeout(() => document.getElementById('currentStsEl').focus(), 300);
+						}}
+						icon={faChevronDown}
+					/>
+
+					<Controller
+						name="current_status"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								id="currentStsEl"
+								className="mb-3 selectField"
+								style={{
+									width: values.currentStsFocused ? '130px' : '0px',
+									margin: values.currentStsFocused ? '0px 10px' : '0px',
+									display: values.currentStsFocused ? 'block' : 'none'
+								}}
+								classes={{ endAdornment: 'endAdornment' }}
+								openOnFocus={true}
+								onClose={() => {
+									setValue('currentStsFocused', false);
+									setReRender(Math.random());
+								}}
+								freeSolo
+								options={currentStatuss}
+								value={value ? currentStatuss.find(data => data.id == value) : null}
+								getOptionLabel={option => option.name}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									setValue('currentStsName', newValue?.name || '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+								}}
+								renderInput={params => (
+									<TextField
+										{...params}
+										className="textFieldUnderSelect"
+										placeholder="Select Current Status"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
 			</div>
 
 			{/* keywords */}
 			<div className="allKeyWrdContainer">
-				{/* {values.date_after && (
-					<div className="keywordContainer">
-						<b>M.Ent From</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.date_after)).format('DD-MM-YYYY')}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('date_after', '');
-									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)} */}
-
-				{/* {values.date_before && (
-					<div className="keywordContainer">
-						<b>M.Ent To</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.date_before)).format('DD-MM-YYYY')}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('date_before', '');
-									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)} */}
-
 				{values.demandName && (
 					<div className="keywordContainer">
 						<b>Demand</b>
@@ -1394,7 +1786,7 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 					<div className="keywordContainer">
 						<b>Medical Result</b>
 						<div>
-							<LocalActivity className="iconWithKeyWord" style={{ fontSize: '18px' }} />
+							<Report className="iconWithKeyWord" style={{ fontSize: '18px' }} />
 							<p>{values.medicalResultName}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
@@ -1460,6 +1852,164 @@ function PassengerSummaryFilterMenu({ inShowAllMode, handleGetPassengerSummarys,
 								onClick={() => {
 									setValue('pCStatusName', '');
 									setValue('police_clearance_status', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.dLStatusName && (
+					<div className="keywordContainer">
+						<b>DL.Status</b>
+						<div>
+							<DriveEta className="iconWithKeyWord" style={{ fontSize: '18px' }} />
+							<p>{values.dLStatusName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('dLStatusName', '');
+									setValue('driving_license_status', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.fngStatusName && (
+					<div className="keywordContainer">
+						<b>Fng.Status</b>
+						<div>
+							<TouchApp className="iconWithKeyWord" style={{ fontSize: '18px' }} />
+							<p>{values.fngStatusName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('fngStatusName', '');
+									setValue('finger_status', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.trngCrdStatusName && (
+					<div className="keywordContainer">
+						<b>Trng.Card Status</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faIdCard} />
+							<p>{values.trngCrdStatusName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('trngCrdStatusName', '');
+									setValue('training_card_status', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.man_power_date_after && (
+					<div className="keywordContainer">
+						<b>ManP.From</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.man_power_date_after)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('man_power_date_after', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.man_power_date_before && (
+					<div className="keywordContainer">
+						<b>ManP.To</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
+							<p>{moment(new Date(values.man_power_date_before)).format('DD-MM-YYYY')}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('man_power_date_before', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.manPowerStsName && (
+					<div className="keywordContainer">
+						<b>Trng.Card Status</b>
+						<div>
+							<Accessibility className="iconWithKeyWord" style={{ fontSize: '18px' }} />
+							<p>{values.manPowerStsName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('manPowerStsName', '');
+									setValue('man_power_status', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.visaAgentName && (
+					<div className="keywordContainer">
+						<b>V.Agent</b>
+						<div>
+							<FontAwesomeIcon className="iconWithKeyWord" icon={faUniversalAccess} />
+							<p>{values.visaAgentName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('visaAgentName', '');
+									setValue('visa_agent', '');
+									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
+									setReRender(Math.random());
+								}}
+							/>
+						</div>
+					</div>
+				)}
+
+				{values.currentStsName && (
+					<div className="keywordContainer">
+						<b>Current Status</b>
+						<div>
+							<LocalActivity className="iconWithKeyWord" style={{ fontSize: '18px' }} />
+							<p>{values.currentStsName}</p>
+							<FontAwesomeIcon
+								className="closeIconWithKeyWord"
+								icon={faTimesCircle}
+								onClick={() => {
+									setValue('currentStsName', '');
+									setValue('current_status', '');
 									inShowAllMode ? handleGetAllPassengerSummarys() : handleGetPassengerSummarys();
 									setReRender(Math.random());
 								}}

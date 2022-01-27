@@ -8,6 +8,7 @@ import useReportData from 'app/@customHooks/useReportData';
 import useUserInfo from 'app/@customHooks/useUserInfo';
 import getPaginationData from 'app/@helpers/getPaginationData';
 import html2PDF from 'jspdf-html2canvas';
+import moment from 'moment';
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -33,17 +34,55 @@ const schema = yup.object().shape({});
 
 const initialTableColumnsState = [
 	{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Passenger Name', name: 'passenger', subName: 'passenger_name', show: true },
-	{ id: 3, label: 'PP.No', name: 'passenger', subName: 'passport_no', show: true },
-	{ id: 4, label: 'Agent', name: 'agent', subName: 'username', show: true },
-	{ id: 5, label: 'Country', name: 'country', subName: 'name', show: true },
-	{ id: 6, label: 'M.No', name: 'mofa_no', show: true },
-	{ id: 7, label: 'M.Ent Date', name: 'created_at', show: true, type: 'date' },
-	{ id: 8, label: 'M.Agency', name: 'mofa_agency', subName: 'name', show: true },
-	{ id: 9, label: 'M.Status', name: 'mofa_status', show: true },
-	{ id: 10, label: 'Re M.Status', name: 're_mofa_status', show: true },
-	{ id: 11, label: 'Re M.Charge', name: 're_mofa_charge', show: true },
-	{ id: 12, label: 'why RePassengerSummary', name: 'mofa_no', show: true }
+	{ id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
+	{ id: 3, label: 'P.Name', name: 'passenger_name', show: true },
+	{ id: 4, label: 'PP.No', name: 'passport_no', show: true },
+	{ id: 5, label: 'Gender', name: 'gender', show: true },
+	{ id: 6, label: 'P.Type', name: 'passenger_type', subName: 'name', show: true },
+	{ id: 7, label: 'Agent', name: 'agent', subName: 'username', show: true },
+	{ id: 8, label: 'V.Agent', getterMathod: data => data?.visa_entry?.visa_agent?.username || '', show: true },
+	{ id: 9, label: 'Country', name: 'target_country', subName: 'name', style: { lineHeight: '12px' }, show: true },
+	{ id: 10, label: 'V.No', name: 'visa_entry', subName: 'visa_number', show: true },
+	{ id: 11, label: 'ID No', name: 'passenger_id', show: true },
+	{ id: 12, label: 'Profession', name: 'profession', subName: 'name', show: true },
+	{ id: 13, label: 'PL', name: 'passenger_office_work', subName: 'police_clearance_status', show: true },
+	{ id: 14, label: 'DL', name: 'passenger_office_work', subName: 'driving_license_status', show: true },
+	{ id: 15, label: 'Medical', getterMathod: data => (data?.passenger_medical ? 'true' : 'false'), show: true },
+	{
+		id: 16,
+		label: 'Med.Exp.Date',
+		getterMathod: data => {
+			const dedicalExpDate = data?.passenger_medical?.medical_expiry_date;
+			return dedicalExpDate ? moment(new Date(dedicalExpDate)).format('DD-MM-YYYY') : '';
+		},
+		style: { whiteSpace: 'nowrap' },
+		show: true
+	},
+	{ id: 17, label: 'Mefa', getterMathod: data => (data?.passenger_mofa ? 'true' : 'false'), show: true },
+	{
+		id: 18,
+		label: 'V.Stamp.Date',
+		getterMathod: data => {
+			const vStampDate = data?.passenger_embassy?.stamping_date;
+			return vStampDate ? moment(new Date(vStampDate)).format('DD-MM-YYYY') : '';
+		},
+		style: { whiteSpace: 'nowrap' },
+		show: true
+	},
+	{ id: 19, label: 'Finger', name: 'passenger_office_work', subName: 'finger_status', show: true },
+	{ id: 20, label: 'Training', getterMathod: data => (data?.passenger_training ? 'true' : 'false'), show: true },
+	{
+		id: 21,
+		label: 'ManP.Date',
+		getterMathod: data => {
+			const manPDate = data?.passenger_man_power?.man_power_date;
+			return manPDate ? moment(new Date(manPDate)).format('DD-MM-YYYY') : '';
+		},
+		style: { whiteSpace: 'nowrap' },
+		show: true
+	},
+	{ id: 22, label: 'Flight', getterMathod: data => (data?.passenger_flight ? 'true' : 'false'), show: true },
+	{ id: 23, label: 'Current Status', name: 'current_status', subName: 'name', show: true }
 ];
 
 const PassengerSummaryReportsTable = () => {
