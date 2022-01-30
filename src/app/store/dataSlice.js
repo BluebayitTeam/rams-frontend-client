@@ -27,6 +27,7 @@ import {
 	PASSENGERS_WITHOUT_PAGINATION,
 	PASSENGERTYPES_WITHOUT_PAGINATION,
 	PAYMENTMATHODS,
+	PRIMARY_GROUPS_WITHOUT_PAGINATION,
 	PROFESSIONS_WITHOUT_PAGINATION,
 	THANAS_BASED_CITY,
 	VISAENTRYS_WITHOUT_PAGINATION
@@ -227,6 +228,13 @@ export const getGroups = () => dispatch => {
 		.catch(() => {});
 };
 
+export const getPrimaryGroups = () => dispatch => {
+	fetch(PRIMARY_GROUPS_WITHOUT_PAGINATION)
+		.then(response => response.json())
+		.then(data => dispatch(setPrimaryGroups(data.primary_groups)))
+		.catch(() => {});
+};
+
 export const getDesignations = () => dispatch => {
 	const authTOKEN = {
 		headers: {
@@ -360,6 +368,7 @@ const dataSlice = createSlice({
 		parentMenus: [],
 		nestedMenus: [],
 		groups: [],
+		primaryGroups: [],
 		designations: [],
 		professions: [],
 		demands: [],
@@ -442,6 +451,9 @@ const dataSlice = createSlice({
 		setGroups: (state, action) => {
 			state.groups = action.payload ? action.payload : [];
 		},
+		setPrimaryGroups: (state, action) => {
+			state.primaryGroups = action.payload ? action.payload : [];
+		},
 		setDesignations: (state, action) => {
 			state.designations = action.payload ? action.payload : [];
 		},
@@ -502,6 +514,7 @@ const {
 	setParentMenus,
 	setAllMenuNested,
 	setGroups,
+	setPrimaryGroups,
 	setDesignations,
 	setProfessions,
 	setDemands,

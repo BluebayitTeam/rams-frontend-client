@@ -459,6 +459,15 @@ const navigationConfig = [
 		url: '',
 		exact: true,
 		children: [
+			//group
+			{
+				id: 'groups',
+				title: 'Groups',
+				translate: 'Groups',
+				type: 'item',
+				url: '/apps/group-management/groups',
+				exact: true
+			},
 			//ledger
 			{
 				id: 'ledgers',

@@ -443,6 +443,19 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/subLedger-management/:subLedgerId',
 			component: lazy(() => import('./AllAccountManagement/SubLedgersManagement/SubLedger/NewSubLedger'))
+		},
+		//group
+		{
+			path: '/apps/group-management/groups/:groupId/:groupName?',
+			component: lazy(() => import('./AllAccountManagement/GroupsManagement/Group/NewGroup'))
+		},
+		{
+			path: '/apps/group-management/groups',
+			component: lazy(() => import('./AllAccountManagement/GroupsManagement/Groups/Groups'))
+		},
+		{
+			path: '/apps/group-management/:groupId',
+			component: lazy(() => import('./AllAccountManagement/GroupsManagement/Group/NewGroup'))
 		}
 	]
 };

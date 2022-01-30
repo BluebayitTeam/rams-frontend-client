@@ -14,12 +14,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/data';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { SEARCH_LEDGER } from '../../../../../constant/constants';
-import { getLedgers, selectLedgers } from '../store/ledgersSlice';
-import LedgersTableHead from './LedgersTableHead';
+import { GROUPS_WITHOUT_PAGINATION, SEARCH_GROUP } from '../../../../../constant/constants';
+import { getGroups, selectGroups } from '../store/groupsSlice';
+import GroupsTableHead from './GroupsTableHead';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -34,12 +34,12 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const LedgersTable = props => {
+const GroupsTable = props => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const ledgers = useSelector(selectLedgers);
-	const searchText = useSelector(({ ledgersManagement }) => ledgersManagement.ledgers.searchText);
-	const [searchLedger, setSearchLedger] = useState([]);
+	const groups = useSelector(selectGroups);
+	const searchText = useSelector(({ groupsManagement }) => groupsManagement.groups.searchText);
+	const [searchGroup, setSearchGroup] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [page, setPage] = useState(0);
@@ -52,28 +52,28 @@ const LedgersTable = props => {
 	});
 
 	let serialNumber = 1;
-	const totalPages = sessionStorage.getItem('total_ledgers_pages');
-	const totalElements = sessionStorage.getItem('total_ledgers_elements');
+	const totalPages = sessionStorage.getItem('total_groups_pages');
+	const totalElements = sessionStorage.getItem('total_groups_elements');
 
 	useEffect(() => {
-		dispatch(getLedgers(pageAndSize)).then(() => setLoading(false));
+		dispatch(getGroups(pageAndSize)).then(() => setLoading(false));
 	}, [dispatch]);
 
 	useEffect(() => {
-		searchText !== '' ? getSearchLedger() : setSearchLedger([]);
+		searchText !== '' ? getSearchGroup() : setSearchGroup([]);
 	}, [searchText]);
 
-	const getSearchLedger = () => {
-		fetch(`${SEARCH_LEDGER}?name=${searchText}`)
+	const getSearchGroup = () => {
+		fetch(`${SEARCH_GROUP}?name=${searchText}`)
 			.then(response => response.json())
-			.then(searchedLedgerData => {
-				setSearchLedger(searchedLedgerData?.ledger_accounts);
-				console.log('searchedLedgerData', searchedLedgerData);
+			.then(searchedGroupData => {
+				setSearchGroup(searchedGroupData?.groups);
+				console.log('searchedGroupData', searchedGroupData);
 			})
-			.catch(() => setSearchLedger([]));
+			.catch(() => setSearchGroup([]));
 	};
 
-	function handleRequestSort(ledgerEvent, property) {
+	function handleRequestSort(groupEvent, property) {
 		const id = property;
 		let direction = 'desc';
 
@@ -87,10 +87,9 @@ const LedgersTable = props => {
 		});
 	}
 
-	function handleSelectAllClick(ledgerEvent) {
-		if (ledgerEvent.target.checked) {
-			setSelected(ledgers.map(n => n.id));
-			setSelected((!_.isEmpty(searchLedger) ? searchLedger : ledgers).map(n => n.id));
+	function handleSelectAllClick(groupEvent) {
+		if (groupEvent.target.checked) {
+			setSelected((!_.isEmpty(searchGroup) ? searchGroup : groups).map(n => n.id));
 			return;
 		}
 		setSelected([]);
@@ -100,17 +99,17 @@ const LedgersTable = props => {
 		setSelected([]);
 	}
 
-	function handleUpdateLedger(item) {
-		localStorage.removeItem('ledgerEvent');
-		props.history.push(`/apps/ledger-management/ledgers/${item.id}/${item.name}`);
+	function handleUpdateGroup(item) {
+		localStorage.removeItem('groupEvent');
+		props.history.push(`/apps/group-management/groups/${item.id}/${item.name}`);
 	}
-	function handleDeleteLedger(item, ledgerEvent) {
-		localStorage.removeItem('ledgerEvent');
-		localStorage.setItem('ledgerEvent', ledgerEvent);
-		props.history.push(`/apps/ledger-management/ledgers/${item.id}/${item.name}`);
+	function handleDeleteGroup(item, groupEvent) {
+		localStorage.removeItem('groupEvent');
+		localStorage.setItem('groupEvent', groupEvent);
+		props.history.push(`/apps/group-management/groups/${item.id}/${item.name}`);
 	}
 
-	function handleCheck(ledgerEvent, id) {
+	function handleCheck(groupEvent, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -131,26 +130,67 @@ const LedgersTable = props => {
 	const handlePagination = (e, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
 		setPage(handlePage - 1);
-		dispatch(getLedgers({ ...pageAndSize, page: handlePage }));
+		dispatch(getGroups({ ...pageAndSize, page: handlePage }));
 	};
 
 	function handleChangePage(event, value) {
 		setPage(value);
 		setPageAndSize({ ...pageAndSize, page: value + 1 });
-		dispatch(getLedgers({ ...pageAndSize, page: value + 1 }));
+		dispatch(getGroups({ ...pageAndSize, page: value + 1 }));
 	}
 
-	function handleChangeRowsPerPage(ledgerEvent) {
-		setRowsPerPage(ledgerEvent.target.value);
-		setPageAndSize({ ...pageAndSize, size: ledgerEvent.target.value });
-		dispatch(getLedgers({ ...pageAndSize, size: ledgerEvent.target.value }));
+	function handleChangeRowsPerPage(groupEvent) {
+		setRowsPerPage(groupEvent.target.value);
+		setPageAndSize({ ...pageAndSize, size: groupEvent.target.value });
+		dispatch(getGroups({ ...pageAndSize, size: groupEvent.target.value }));
 	}
+
+	const [groupsAll, setGroupsAll] = useState([]);
+
+	//get group all data without pagination
+	useEffect(() => {
+		fetch(GROUPS_WITHOUT_PAGINATION)
+			.then(res => res.json())
+			.then(data => setGroupsAll(data.groups));
+	}, []);
+
+	const parentIdRef = useRef(null);
+
+	const getParentGroups = n => {
+		console.log('n', n);
+		if (n.head_group) {
+			parentIdRef.current = n.head_group.id;
+			const parent = [];
+			let parentstr = '';
+			const groupLength = groupsAll.length;
+			for (let i = 0; i < groupLength; i++) {
+				parent.push(
+					`${n.head_group.id ? groupsAll.find(group => group.id === parentIdRef.current)?.name : null}`
+				);
+				parentIdRef.current = n.head_group
+					? groupsAll.find(grp => grp.id === parentIdRef.current)?.head_group?.id
+					: n.head_primarygroup
+					? (i = groupLength) && null
+					: null;
+				parentIdRef.current ? null : (i = groupLength);
+			}
+			parent.reverse();
+
+			for (let i = 0; i < parent.length; i++) {
+				parentstr += `${i !== 0 ? '>>' : ''}${parent[i]} `;
+			}
+			console.log(parentstr);
+			return parentstr;
+		} else if (n.head_primarygroup) {
+			return n.head_primarygroup.name;
+		}
+	};
 
 	if (loading) {
 		return <FuseLoading />;
 	}
 
-	if (ledgers?.length === 0) {
+	if (groups?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -158,7 +198,7 @@ const LedgersTable = props => {
 				className="flex flex-1 items-center justify-center h-full"
 			>
 				<Typography color="textSecondary" variant="h5">
-					There are no ledger!
+					There are no group!
 				</Typography>
 			</motion.div>
 		);
@@ -168,19 +208,19 @@ const LedgersTable = props => {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-					<LedgersTableHead
-						selectedLedgerIds={selected}
+					<GroupsTableHead
+						selectedGroupIds={selected}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={(!_.isEmpty(searchLedger) ? searchLedger : ledgers).length}
+						rowCount={(!_.isEmpty(searchGroup) ? searchGroup : groups).length}
 						onMenuItemClick={handleDeselect}
 						pagination={pageAndSize}
 					/>
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== '' && !_.isEmpty(searchLedger) ? searchLedger : ledgers,
+							searchText !== '' && !_.isEmpty(searchGroup) ? searchGroup : groups,
 							[
 								o => {
 									switch (order.id) {
@@ -209,32 +249,31 @@ const LedgersTable = props => {
 									<TableCell className="w-40 md:w-64 text-center" padding="none">
 										<Checkbox
 											checked={isSelected}
-											onClick={ledgerEvent => ledgerEvent.stopPropagation()}
-											onChange={ledgerEvent => handleCheck(ledgerEvent, n.id)}
+											onClick={groupEvent => groupEvent.stopPropagation()}
+											onChange={groupEvent => handleCheck(groupEvent, n.id)}
 										/>
 									</TableCell>
 
 									<TableCell className="w-40 md:w-64" component="th" scope="row">
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
-
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
 										{n.name}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.head_group?.name}
+										{getParentGroups(n)}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
 										<div>
 											<EditIcon
-												onClick={() => handleUpdateLedger(n)}
+												onClick={() => handleUpdateGroup(n)}
 												className="cursor-pointer"
 												style={{ color: 'green' }}
 											/>{' '}
 											<DeleteIcon
-												onClick={() => handleDeleteLedger(n, 'Delete')}
+												onClick={() => handleDeleteGroup(n, 'Delete')}
 												className="cursor-pointer"
 												style={{ color: 'red' }}
 											/>
@@ -283,4 +322,4 @@ const LedgersTable = props => {
 	);
 };
 
-export default withRouter(LedgersTable);
+export default withRouter(GroupsTable);

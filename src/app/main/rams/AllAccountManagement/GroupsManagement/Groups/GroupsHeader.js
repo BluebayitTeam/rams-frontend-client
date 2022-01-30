@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { setLedgersSearchText } from '../store/ledgersSlice';
+import { setGroupsSearchText } from '../store/groupsSlice';
 
 const useStyles = makeStyles(() => ({
 	alert: props => ({
@@ -31,31 +31,30 @@ const useStyles = makeStyles(() => ({
 	})
 }));
 
-const LedgersHeader = () => {
+const GroupsHeader = () => {
 	const [alerOpen, setAlertOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
-
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem('ledgerAlert');
+		const alert = localStorage.getItem('groupAlert');
 
-		if (alert === 'saveLedger') {
+		if (alert === 'saveGroup') {
 			setAlertOpen(true);
 			setAlertMessage('Add Success...');
-			localStorage.removeItem('ledgerAlert');
+			localStorage.removeItem('groupAlert');
 		}
-		if (alert === 'updateLedger') {
+		if (alert === 'updateGroup') {
 			setAlertOpen(true);
 			setAlertMessage('Update Success...');
-			localStorage.removeItem('ledgerAlert');
+			localStorage.removeItem('groupAlert');
 		}
-		if (alert === 'deleteLedger') {
+		if (alert === 'deleteGroup') {
 			setAlertOpen(true);
 			setAlertMessage('Remove Success...');
-			localStorage.removeItem('ledgerAlert');
+			localStorage.removeItem('groupAlert');
 		}
 
 		setTimeout(() => {
@@ -65,10 +64,11 @@ const LedgersHeader = () => {
 
 	const history = useHistory();
 	useEffect(() => {
-		const goToFormPage = e =>
+		const goToFormPage = e => {
 			e.key === 'Enter' &&
-			isShouldGoToAddPage(e) &&
-			setTimeout(() => history.push('/apps/ledger-management/new'), 0);
+				isShouldGoToAddPage(e) &&
+				setTimeout(() => history.push('/apps/group-management/new'), 0);
+		};
 		window.addEventListener('keydown', goToFormPage);
 		return () => window.removeEventListener('keydown', goToFormPage);
 	}, []);
@@ -91,7 +91,7 @@ const LedgersHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Ledgers
+					Groups
 				</Typography>
 			</div>
 
@@ -115,7 +115,7 @@ const LedgersHeader = () => {
 							}}
 							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setLedgersSearchText(ev));
+									dispatch(setGroupsSearchText(ev));
 								}
 							}}
 						/>
@@ -125,12 +125,12 @@ const LedgersHeader = () => {
 			<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
 				<Button
 					component={Link}
-					to="/apps/ledger-management/new"
+					to="/apps/group-management/new"
 					className="whitespace-nowrap"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Ledger</span>
+					<span className="hidden sm:flex">Add New Group</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
@@ -154,4 +154,4 @@ const LedgersHeader = () => {
 	);
 };
 
-export default LedgersHeader;
+export default GroupsHeader;

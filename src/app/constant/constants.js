@@ -106,6 +106,9 @@ export const USERS_PASSWORDCHANGE = `${BASE_URL}/user/api/v1/user/passwordchange
 //group
 export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/without_pagination/all/`;
 
+//primary group
+export const PRIMARY_GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/primary_group/api/v1/primary_group/all/`;
+
 //designation
 export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/designation/without_pagination/all/`;
 
@@ -560,17 +563,6 @@ export const SEARCH_PAYMENTMETHOD = `${BASE_URL}/paymentmethod/api/v1/paymentmet
 // primary_group
 export const PRIMARY_GROUP = `${BASE_URL}/primary_group/api/v1/primary_group/all/`;
 
-// group
-export const CREATE_GROUP = `${BASE_URL}/group/api/v1/group/create/`;
-
-export const GET_GROUPID = `${BASE_URL}/group/api/v1/group/`;
-
-export const GET_GROUPS = `${BASE_URL}/group/api/v1/group/all/`;
-
-export const UPDATE_GROUP = `${BASE_URL}/group/api/v1/group/update/`;
-
-export const DELETE_GROUP = `${BASE_URL}/group/api/v1/group/delete/`;
-
 // payment-voucher
 export const CREATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/create/`;
 
@@ -1003,3 +995,18 @@ export const DELETE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledge
 export const DELETE_SUBLEDGER_MULTIPLE = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/delete_multiple/`;
 
 export const SEARCH_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/search/`;
+
+//group
+export const CREATE_GROUP = `${BASE_URL}/group/api/v1/group/create/`;
+
+export const GET_GROUPS = `${BASE_URL}/group/api/v1/group/all`;
+
+export const GET_GROUP_BY_ID = `${BASE_URL}/group/api/v1/group/`;
+
+export const UPDATE_GROUP = `${BASE_URL}/group/api/v1/group/update/`;
+
+export const DELETE_GROUP = `${BASE_URL}/group/api/v1/group/delete/`;
+
+export const DELETE_GROUP_MULTIPLE = `${BASE_URL}/group/api/v1/group/delete_multiple/`;
+
+export const SEARCH_GROUP = `${BASE_URL}/group/api/v1/group/search/`;
