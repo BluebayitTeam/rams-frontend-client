@@ -17,9 +17,9 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { SEARCH_LEDGER } from '../../../../../constant/constants';
-import { getLedgers, selectLedgers } from '../store/ledgersSlice';
-import LedgersTableHead from './LedgersTableHead';
+import { SEARCH_SUBLEDGER } from '../../../../../constant/constants';
+import { getSubLedgers, selectSubLedgers } from '../store/subLedgersSlice';
+import SubLedgersTableHead from './SubLedgersTableHead';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -34,12 +34,12 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const LedgersTable = props => {
+const SubLedgersTable = props => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const ledgers = useSelector(selectLedgers);
-	const searchText = useSelector(({ ledgersManagement }) => ledgersManagement.ledgers.searchText);
-	const [searchLedger, setSearchLedger] = useState([]);
+	const subLedgers = useSelector(selectSubLedgers);
+	const searchText = useSelector(({ subLedgersManagement }) => subLedgersManagement.subLedgers.searchText);
+	const [searchSubLedger, setSearchSubLedger] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [page, setPage] = useState(0);
@@ -52,28 +52,28 @@ const LedgersTable = props => {
 	});
 
 	let serialNumber = 1;
-	const totalPages = sessionStorage.getItem('total_ledgers_pages');
-	const totalElements = sessionStorage.getItem('total_ledgers_elements');
+	const totalPages = sessionStorage.getItem('total_subLedgers_pages');
+	const totalElements = sessionStorage.getItem('total_subLedgers_elements');
 
 	useEffect(() => {
-		dispatch(getLedgers(pageAndSize)).then(() => setLoading(false));
+		dispatch(getSubLedgers(pageAndSize)).then(() => setLoading(false));
 	}, [dispatch]);
 
 	useEffect(() => {
-		searchText !== '' ? getSearchLedger() : setSearchLedger([]);
+		searchText !== '' ? getSearchSubLedger() : setSearchSubLedger([]);
 	}, [searchText]);
 
-	const getSearchLedger = () => {
-		fetch(`${SEARCH_LEDGER}?name=${searchText}`)
+	const getSearchSubLedger = () => {
+		fetch(`${SEARCH_SUBLEDGER}?name=${searchText}`)
 			.then(response => response.json())
-			.then(searchedLedgerData => {
-				setSearchLedger(searchedLedgerData?.ledgers);
-				console.log('searchedLedgerData', searchedLedgerData);
+			.then(searchedSubLedgerData => {
+				setSearchSubLedger(searchedSubLedgerData?.sub_ledgers);
+				console.log('searchedSubLedgerData', searchedSubLedgerData);
 			})
-			.catch(() => setSearchLedger([]));
+			.catch(() => setSearchSubLedger([]));
 	};
 
-	function handleRequestSort(ledgerEvent, property) {
+	function handleRequestSort(subLedgerEvent, property) {
 		const id = property;
 		let direction = 'desc';
 
@@ -87,10 +87,9 @@ const LedgersTable = props => {
 		});
 	}
 
-	function handleSelectAllClick(ledgerEvent) {
-		if (ledgerEvent.target.checked) {
-			setSelected(ledgers.map(n => n.id));
-			setSelected((!_.isEmpty(searchLedger) ? searchLedger : ledgers).map(n => n.id));
+	function handleSelectAllClick(subLedgerEvent) {
+		if (subLedgerEvent.target.checked) {
+			setSelected((!_.isEmpty(searchSubLedger) ? searchSubLedger : subLedgers).map(n => n.id));
 			return;
 		}
 		setSelected([]);
@@ -100,17 +99,17 @@ const LedgersTable = props => {
 		setSelected([]);
 	}
 
-	function handleUpdateLedger(item) {
-		localStorage.removeItem('ledgerEvent');
-		props.history.push(`/apps/ledger-management/ledgers/${item.id}/${item.name}`);
+	function handleUpdateSubLedger(item) {
+		localStorage.removeItem('subLedgerEvent');
+		props.history.push(`/apps/subLedger-management/subLedgers/${item.id}/${item.name}`);
 	}
-	function handleDeleteLedger(item, ledgerEvent) {
-		localStorage.removeItem('ledgerEvent');
-		localStorage.setItem('ledgerEvent', ledgerEvent);
-		props.history.push(`/apps/ledger-management/ledgers/${item.id}/${item.name}`);
+	function handleDeleteSubLedger(item, subLedgerEvent) {
+		localStorage.removeItem('subLedgerEvent');
+		localStorage.setItem('subLedgerEvent', subLedgerEvent);
+		props.history.push(`/apps/subLedger-management/subLedgers/${item.id}/${item.name}`);
 	}
 
-	function handleCheck(ledgerEvent, id) {
+	function handleCheck(subLedgerEvent, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -131,26 +130,26 @@ const LedgersTable = props => {
 	const handlePagination = (e, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
 		setPage(handlePage - 1);
-		dispatch(getLedgers({ ...pageAndSize, page: handlePage }));
+		dispatch(getSubLedgers({ ...pageAndSize, page: handlePage }));
 	};
 
 	function handleChangePage(event, value) {
 		setPage(value);
 		setPageAndSize({ ...pageAndSize, page: value + 1 });
-		dispatch(getLedgers({ ...pageAndSize, page: value + 1 }));
+		dispatch(getSubLedgers({ ...pageAndSize, page: value + 1 }));
 	}
 
-	function handleChangeRowsPerPage(ledgerEvent) {
-		setRowsPerPage(ledgerEvent.target.value);
-		setPageAndSize({ ...pageAndSize, size: ledgerEvent.target.value });
-		dispatch(getLedgers({ ...pageAndSize, size: ledgerEvent.target.value }));
+	function handleChangeRowsPerPage(subLedgerEvent) {
+		setRowsPerPage(subLedgerEvent.target.value);
+		setPageAndSize({ ...pageAndSize, size: subLedgerEvent.target.value });
+		dispatch(getSubLedgers({ ...pageAndSize, size: subLedgerEvent.target.value }));
 	}
 
 	if (loading) {
 		return <FuseLoading />;
 	}
 
-	if (ledgers?.length === 0) {
+	if (subLedgers?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -158,7 +157,7 @@ const LedgersTable = props => {
 				className="flex flex-1 items-center justify-center h-full"
 			>
 				<Typography color="textSecondary" variant="h5">
-					There are no ledger!
+					There are no subLedger!
 				</Typography>
 			</motion.div>
 		);
@@ -168,19 +167,19 @@ const LedgersTable = props => {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-					<LedgersTableHead
-						selectedLedgerIds={selected}
+					<SubLedgersTableHead
+						selectedSubLedgerIds={selected}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={(!_.isEmpty(searchLedger) ? searchLedger : ledgers).length}
+						rowCount={(!_.isEmpty(searchSubLedger) ? searchSubLedger : subLedgers).length}
 						onMenuItemClick={handleDeselect}
 						pagination={pageAndSize}
 					/>
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== '' && !_.isEmpty(searchLedger) ? searchLedger : ledgers,
+							searchText !== '' && !_.isEmpty(searchSubLedger) ? searchSubLedger : subLedgers,
 							[
 								o => {
 									switch (order.id) {
@@ -209,8 +208,8 @@ const LedgersTable = props => {
 									<TableCell className="w-40 md:w-64 text-center" padding="none">
 										<Checkbox
 											checked={isSelected}
-											onClick={ledgerEvent => ledgerEvent.stopPropagation()}
-											onChange={ledgerEvent => handleCheck(ledgerEvent, n.id)}
+											onClick={subLedgerEvent => subLedgerEvent.stopPropagation()}
+											onChange={subLedgerEvent => handleCheck(subLedgerEvent, n.id)}
 										/>
 									</TableCell>
 
@@ -222,19 +221,15 @@ const LedgersTable = props => {
 										{n.name}
 									</TableCell>
 
-									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.head_group?.name}
-									</TableCell>
-
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
 										<div>
 											<EditIcon
-												onClick={() => handleUpdateLedger(n)}
+												onClick={() => handleUpdateSubLedger(n)}
 												className="cursor-pointer"
 												style={{ color: 'green' }}
 											/>{' '}
 											<DeleteIcon
-												onClick={() => handleDeleteLedger(n, 'Delete')}
+												onClick={() => handleDeleteSubLedger(n, 'Delete')}
 												className="cursor-pointer"
 												style={{ color: 'red' }}
 											/>
@@ -283,4 +278,4 @@ const LedgersTable = props => {
 	);
 };
 
-export default withRouter(LedgersTable);
+export default withRouter(SubLedgersTable);

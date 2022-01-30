@@ -36,6 +36,7 @@ function LedgerForm(props) {
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
 							required
+							autoFocus
 						/>
 					);
 				}}

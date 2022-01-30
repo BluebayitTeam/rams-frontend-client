@@ -467,6 +467,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/ledger-management/ledgers',
 				exact: true
+			},
+			//subLedger
+			{
+				id: 'subLedgers',
+				title: 'SubLedgers',
+				translate: 'SubLedgers',
+				type: 'item',
+				url: '/apps/subLedger-management/subLedgers',
+				exact: true
 			}
 		]
 	},

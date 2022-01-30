@@ -430,6 +430,19 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/ledger-management/:ledgerId',
 			component: lazy(() => import('./AllAccountManagement/LedgersManagement/Ledger/NewLedger'))
+		},
+		//subLedger
+		{
+			path: '/apps/subLedger-management/subLedgers/:subLedgerId/:subLedgerName?',
+			component: lazy(() => import('./AllAccountManagement/SubLedgersManagement/SubLedger/NewSubLedger'))
+		},
+		{
+			path: '/apps/subLedger-management/subLedgers',
+			component: lazy(() => import('./AllAccountManagement/SubLedgersManagement/SubLedgers/SubLedgers'))
+		},
+		{
+			path: '/apps/subLedger-management/:subLedgerId',
+			component: lazy(() => import('./AllAccountManagement/SubLedgersManagement/SubLedger/NewSubLedger'))
 		}
 	]
 };

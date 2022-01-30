@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { setLedgersSearchText } from '../store/ledgersSlice';
+import { setSubLedgersSearchText } from '../store/subLedgersSlice';
 
 const useStyles = makeStyles(() => ({
 	alert: props => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 	})
 }));
 
-const LedgersHeader = () => {
+const SubLedgersHeader = () => {
 	const [alerOpen, setAlertOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
@@ -40,22 +40,22 @@ const LedgersHeader = () => {
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem('ledgerAlert');
+		const alert = localStorage.getItem('subLedgerAlert');
 
-		if (alert === 'saveLedger') {
+		if (alert === 'saveSubLedger') {
 			setAlertOpen(true);
 			setAlertMessage('Add Success...');
-			localStorage.removeItem('ledgerAlert');
+			localStorage.removeItem('subLedgerAlert');
 		}
-		if (alert === 'updateLedger') {
+		if (alert === 'updateSubLedger') {
 			setAlertOpen(true);
 			setAlertMessage('Update Success...');
-			localStorage.removeItem('ledgerAlert');
+			localStorage.removeItem('subLedgerAlert');
 		}
-		if (alert === 'deleteLedger') {
+		if (alert === 'deleteSubLedger') {
 			setAlertOpen(true);
 			setAlertMessage('Remove Success...');
-			localStorage.removeItem('ledgerAlert');
+			localStorage.removeItem('subLedgerAlert');
 		}
 
 		setTimeout(() => {
@@ -65,10 +65,11 @@ const LedgersHeader = () => {
 
 	const history = useHistory();
 	useEffect(() => {
-		const goToFormPage = e =>
+		const goToFormPage = e => {
 			e.key === 'Enter' &&
-			isShouldGoAddPage(e) &&
-			setTimeout(() => history.push('/apps/ledger-management/new'), 0);
+				isShouldGoAddPage(e) &&
+				setTimeout(() => history.push('/apps/subLedger-management/new'), 0);
+		};
 		window.addEventListener('keydown', goToFormPage);
 		return () => window.removeEventListener('keydown', goToFormPage);
 	}, []);
@@ -91,7 +92,7 @@ const LedgersHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Ledgers
+					SubLedgers
 				</Typography>
 			</div>
 
@@ -115,7 +116,7 @@ const LedgersHeader = () => {
 							}}
 							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setLedgersSearchText(ev));
+									dispatch(setSubLedgersSearchText(ev));
 								}
 							}}
 						/>
@@ -125,12 +126,12 @@ const LedgersHeader = () => {
 			<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
 				<Button
 					component={Link}
-					to="/apps/ledger-management/new"
+					to="/apps/subLedger-management/new"
 					className="whitespace-nowrap"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Ledger</span>
+					<span className="hidden sm:flex">Add New SubLedger</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
@@ -154,4 +155,4 @@ const LedgersHeader = () => {
 	);
 };
 
-export default LedgersHeader;
+export default SubLedgersHeader;

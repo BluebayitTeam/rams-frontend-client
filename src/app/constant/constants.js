@@ -985,6 +985,21 @@ export const UPDATE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/u
 
 export const DELETE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/delete/`;
 
-export const DELETE_LEDGER_MULTIPLE = `${BASE_URL}/ledger_account/api/v1/ledger_account/delete/`;
+export const DELETE_LEDGER_MULTIPLE = `${BASE_URL}/ledger_account/api/v1/ledger_account/delete_multiple/`;
 
 export const SEARCH_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/search/`;
+
+//subLedger
+export const CREATE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/create/`;
+
+export const GET_SUBLEDGERS = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/all`;
+
+export const GET_SUBLEDGER_BY_ID = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/`;
+
+export const UPDATE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/update/`;
+
+export const DELETE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/delete/`;
+
+export const DELETE_SUBLEDGER_MULTIPLE = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/delete_multiple/`;
+
+export const SEARCH_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/search/`;
