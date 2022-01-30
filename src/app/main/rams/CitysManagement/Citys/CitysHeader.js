@@ -13,58 +13,53 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setCitysSearchText } from '../store/citysSlice';
 
-
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "20%",
-		height: "35px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: '20%',
+		height: '35px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
 
 const CitysHeader = () => {
-
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
 
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem("cityAlert")
+		const alert = localStorage.getItem('cityAlert');
 
-		if (alert === "saveCity") {
-			setAlertOpen(true)
-			setAlertMessage("Add Success...")
-			localStorage.removeItem("cityAlert")
+		if (alert === 'saveCity') {
+			setAlertOpen(true);
+			setAlertMessage('Add Success...');
+			localStorage.removeItem('cityAlert');
 		}
-		if (alert === "updateCity") {
-			setAlertOpen(true)
-			setAlertMessage("Update Success...")
-			localStorage.removeItem("cityAlert")
+		if (alert === 'updateCity') {
+			setAlertOpen(true);
+			setAlertMessage('Update Success...');
+			localStorage.removeItem('cityAlert');
 		}
-		if (alert === "deleteCity") {
-			setAlertOpen(true)
-			setAlertMessage("Remove Success...")
-			localStorage.removeItem("cityAlert")
+		if (alert === 'deleteCity') {
+			setAlertOpen(true);
+			setAlertMessage('Remove Success...');
+			localStorage.removeItem('cityAlert');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
-	}, [])
-
+			setAlertOpen(false);
+		}, 3000);
+	}, []);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -107,9 +102,9 @@ const CitysHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setCitysSearchText(ev))
+									dispatch(setCitysSearchText(ev));
 								}
 							}}
 						/>
@@ -129,14 +124,21 @@ const CitysHeader = () => {
 				</Button>
 			</motion.div>
 
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}
 			</Alert>
-
 		</div>
 	);
 };

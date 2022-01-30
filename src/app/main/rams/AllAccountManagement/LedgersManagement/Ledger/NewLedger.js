@@ -2,32 +2,29 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import withReducer from 'app/store/withReducer';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { getDemand, newDemand, resetDemand } from '../store/demandSlice';
 import reducer from '../store/index.js';
-import DemandForm from './DemandForm.js';
-import NewDemandHeader from './NewDemandHeader.js';
+import { getLedger, newLedger, resetLedger } from '../store/ledgerSlice';
+import LedgerForm from './LedgerForm.js';
+import NewLedgerHeader from './NewLedgerHeader.js';
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-	profession: yup.string().required('Profession is required'),
-	country: yup.string().required('Country is required'),
-	visa_agent: yup.string().required('Visa Agent is required'),
-	company_name: yup.string().required('Company Name is required'),
-	quantity: yup.string().required('Quantity is required')
+	name: yup.string().required('Name is required')
 });
 
-const Demand = () => {
+const Ledger = () => {
 	const dispatch = useDispatch();
-	const demand = useSelector(({ demandsManagement }) => demandsManagement.demand);
+	const ledger = useSelector(({ ledgersManagement }) => ledgersManagement.ledger);
 
-	const [noDemand, setNoDemand] = useState(false);
+	const [noLedger, setNoLedger] = useState(false);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -38,61 +35,61 @@ const Demand = () => {
 	const { reset } = methods;
 
 	useDeepCompareEffect(() => {
-		function updateDemandState() {
-			const { demandId } = routeParams;
+		function updateLedgerState() {
+			const { ledgerId } = routeParams;
 
-			if (demandId === 'new') {
+			if (ledgerId === 'new') {
 				localStorage.removeItem('event');
 				/**
 				 * Create New User data
 				 */
-				dispatch(newDemand());
+				dispatch(newLedger());
 			} else {
 				/**
 				 * Get User data
 				 */
 
-				dispatch(getDemand(demandId)).then(action => {
+				dispatch(getLedger(ledgerId)).then(action => {
 					console.log(action.payload);
 					/**
 					 * If the requested product is not exist show message
 					 */
 					if (!action.payload) {
-						setNoDemand(true);
+						setNoLedger(true);
 					}
 				});
 			}
 		}
 
-		updateDemandState();
+		updateLedgerState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {}, []);
 
 	useEffect(() => {
-		if (!demand) {
+		if (!ledger) {
 			return;
 		}
 		/**
-		 * Reset the form on demand state changes
+		 * Reset the form on ledger state changes
 		 */
-		reset(demand);
-	}, [demand, reset]);
+		reset(ledger);
+	}, [ledger, reset]);
 
 	useEffect(() => {
 		return () => {
 			/**
-			 * Reset Demand on component unload
+			 * Reset Ledger on component unload
 			 */
-			dispatch(resetDemand());
-			setNoDemand(false);
+			dispatch(resetLedger());
+			setNoLedger(false);
 		};
 	}, [dispatch]);
 
 	/**
 	 * Show Message if the requested products is not exists
 	 */
-	if (noDemand) {
+	if (noLedger) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -100,7 +97,7 @@ const Demand = () => {
 				className="flex flex-col flex-1 items-center justify-center h-full"
 			>
 				<Typography color="textSecondary" variant="h5">
-					There is no such demand!
+					There is no such ledger!
 				</Typography>
 				<Button
 					className="mt-24"
@@ -109,7 +106,7 @@ const Demand = () => {
 					to="/apps/e-commerce/products"
 					color="inherit"
 				>
-					Go to Demand Page
+					Go to Ledger Page
 				</Button>
 			</motion.div>
 		);
@@ -120,12 +117,12 @@ const Demand = () => {
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
+					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<NewDemandHeader />}
+				header={<NewLedgerHeader />}
 				content={
 					<div className="p-16 sm:p-24 max-w-2xl">
-						<DemandForm />
+						<LedgerForm />
 					</div>
 				}
 				innerScroll
@@ -133,4 +130,4 @@ const Demand = () => {
 		</FormProvider>
 	);
 };
-export default withReducer('demandsManagement', reducer)(Demand);
+export default withReducer('ledgersManagement', reducer)(Ledger);

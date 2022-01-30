@@ -14,20 +14,19 @@ import { Link } from 'react-router-dom';
 import { setRolesSearchText } from '../store/rolesSlice';
 
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "20%",
-		height: "50px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: '20%',
+		height: '50px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
 
 const RolesHeader = () => {
@@ -36,34 +35,33 @@ const RolesHeader = () => {
 	const searchText = useSelector(({ rolesManagement }) => rolesManagement.roles.searchText);
 
 	//alert state
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const classes = useStyles(alerOpen);
 	//alert
 	useEffect(() => {
-		const alert = localStorage.getItem("roleAlertPermission")
+		const alert = localStorage.getItem('roleAlertPermission');
 
-		if (alert === "saveRoleSuccessfully") {
-			setAlertOpen(true)
-			setAlertMessage("Added Successfully...")
-			localStorage.removeItem("roleAlertPermission")
+		if (alert === 'saveRoleSuccessfully') {
+			setAlertOpen(true);
+			setAlertMessage('Added Successfully...');
+			localStorage.removeItem('roleAlertPermission');
 		}
-		if (alert === "updateRoleSuccessfully") {
-			setAlertOpen(true)
-			setAlertMessage("Updated Successfully...")
-			localStorage.removeItem("roleAlertPermission")
+		if (alert === 'updateRoleSuccessfully') {
+			setAlertOpen(true);
+			setAlertMessage('Updated Successfully...');
+			localStorage.removeItem('roleAlertPermission');
 		}
-		if (alert === "removeRoleSuccessfully") {
-			setAlertOpen(true)
-			setAlertMessage("Removed Successfully...")
-			localStorage.removeItem("roleAlertPermission")
+		if (alert === 'removeRoleSuccessfully') {
+			setAlertOpen(true);
+			setAlertMessage('Removed Successfully...');
+			localStorage.removeItem('roleAlertPermission');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
-	}, [])
+			setAlertOpen(false);
+		}, 3000);
+	}, []);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -106,9 +104,9 @@ const RolesHeader = () => {
 								'aria-label': 'Search'
 							}}
 							//onBlur={ev => dispatch(setRolesSearchText(ev))}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setRolesSearchText(ev))
+									dispatch(setRolesSearchText(ev));
 								}
 							}}
 						/>
@@ -127,9 +125,17 @@ const RolesHeader = () => {
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}

@@ -571,28 +571,6 @@ export const UPDATE_GROUP = `${BASE_URL}/group/api/v1/group/update/`;
 
 export const DELETE_GROUP = `${BASE_URL}/group/api/v1/group/delete/`;
 
-// ledger
-export const CREATE_LEDGER = `${BASE_URL}/`;
-
-export const GET_LEDGERID = `${BASE_URL}/`;
-
-export const GET_LEDGERS = `${BASE_URL}/`;
-
-export const UPDATE_LEDGER = `${BASE_URL}/`;
-
-export const DELETE_LEDGER = `${BASE_URL}/`;
-
-// sub-ledger
-export const CREATE_SUBLEDGER = `${BASE_URL}/`;
-
-export const GET_SUBLEDGERID = `${BASE_URL}/`;
-
-export const GET_SUBLEDGERS = `${BASE_URL}/`;
-
-export const UPDATE_SUBLEDGER = `${BASE_URL}/`;
-
-export const DELETE_SUBLEDGER = `${BASE_URL}/`;
-
 // payment-voucher
 export const CREATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/create/`;
 
@@ -995,3 +973,18 @@ export const UPDATE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation
 export const DELETE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/delete/`;
 
 export const CALLINGEMBATTESTATION_BY_PASSENGER_ID = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/get_a_calling_emb_attestation_by_passenger_id/`;
+
+//ledger
+export const CREATE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/create/`;
+
+export const GET_LEDGERS = `${BASE_URL}/ledger_account/api/v1/ledger_account/all`;
+
+export const GET_LEDGER_BY_ID = `${BASE_URL}/ledger_account/api/v1/ledger_account/`;
+
+export const UPDATE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/update/`;
+
+export const DELETE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/delete/`;
+
+export const DELETE_LEDGER_MULTIPLE = `${BASE_URL}/ledger_account/api/v1/ledger_account/delete/`;
+
+export const SEARCH_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/search/`;

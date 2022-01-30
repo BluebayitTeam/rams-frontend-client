@@ -449,7 +449,27 @@ const navigationConfig = [
 			}
 		]
 	},
-
+	//accounts
+	{
+		id: 'accounts',
+		title: 'Acounts',
+		translate: 'Acounts',
+		type: 'collapse',
+		icon: 'people',
+		url: '',
+		exact: true,
+		children: [
+			//ledger
+			{
+				id: 'ledgers',
+				title: 'Ledgers',
+				translate: 'Ledgers',
+				type: 'item',
+				url: '/apps/ledger-management/ledgers',
+				exact: true
+			}
+		]
+	},
 	//Report
 	{
 		id: 'report',

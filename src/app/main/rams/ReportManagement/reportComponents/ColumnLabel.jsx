@@ -1,8 +1,9 @@
 import { Checkbox } from '@material-ui/core';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 const ColumnLabel = ({ column, dispatchTableColumns }) => {
 	const [isEditeMode, setIsEditeMode] = useState(false);
+	console.log('column rendered');
 	return (
 		<div id="insideClmSelect" className="columnContainer">
 			<Checkbox
@@ -40,4 +41,4 @@ const ColumnLabel = ({ column, dispatchTableColumns }) => {
 	);
 };
 
-export default ColumnLabel;
+export default memo(ColumnLabel);

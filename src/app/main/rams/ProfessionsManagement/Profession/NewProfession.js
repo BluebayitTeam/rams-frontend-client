@@ -16,117 +16,114 @@ import ProfessionForm from './ProfessionForm.js';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-    name: yup.string()
-        .required("Name is required"),
-})
+	name: yup.string().required('Name is required')
+});
 
 const Profession = () => {
-    const dispatch = useDispatch();
-    const profession = useSelector(({ professionsManagement }) => professionsManagement.profession);
-    const [noProfession, setNoProfession] = useState(false);
-    const methods = useForm({
-        mode: 'onChange',
-        defaultValues: {},
-        resolver: yupResolver(schema)
-    });
-    const routeParams = useParams();
+	const dispatch = useDispatch();
+	const profession = useSelector(({ professionsManagement }) => professionsManagement.profession);
+	const [noProfession, setNoProfession] = useState(false);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: yupResolver(schema)
+	});
+	const routeParams = useParams();
 
-    const { reset } = methods;
+	const { reset } = methods;
 
-    useDeepCompareEffect(() => {
-        function updateProfessionState() {
-            const { professionId } = routeParams;
+	useDeepCompareEffect(() => {
+		function updateProfessionState() {
+			const { professionId } = routeParams;
 
-            if (professionId === 'new') {
+			if (professionId === 'new') {
+				localStorage.removeItem('event');
+				/**
+				 * Create New User data
+				 */
+				dispatch(newProfession());
+			} else {
+				/**
+				 * Get User data
+				 */
 
-                localStorage.removeItem('event')
-                /**
-                 * Create New User data
-                 */
-                dispatch(newProfession());
-            } else {
-                /**
-                 * Get User data
-                 */
+				dispatch(getProfession(professionId)).then(action => {
+					console.log(action.payload);
+					/**
+					 * If the requested product is not exist show message
+					 */
+					if (!action.payload) {
+						setNoProfession(true);
+					}
+				});
+			}
+		}
 
-                dispatch(getProfession(professionId)).then(action => {
-                    console.log(action.payload);
-                    /**
-                     * If the requested product is not exist show message
-                     */
-                    if (!action.payload) {
-                        setNoProfession(true);
-                    }
-                });
-            }
-        }
+		updateProfessionState();
+	}, [dispatch, routeParams]);
 
-        updateProfessionState();
-    }, [dispatch, routeParams]);
+	useEffect(() => {
+		if (!profession) {
+			return;
+		}
+		/**
+		 * Reset the form on profession state changes
+		 */
+		reset(profession);
+	}, [profession, reset]);
 
-    useEffect(() => {
-        if (!profession) {
-            return;
-        }
-        /**
-         * Reset the form on profession state changes
-         */
-        reset(profession);
-    }, [profession, reset]);
+	useEffect(() => {
+		return () => {
+			/**
+			 * Reset Profession on component unload
+			 */
+			dispatch(resetProfession());
+			setNoProfession(false);
+		};
+	}, [dispatch]);
 
-    useEffect(() => {
-        return () => {
-            /**
-             * Reset Profession on component unload
-             */
-            dispatch(resetProfession());
-            setNoProfession(false);
-        };
-    }, [dispatch]);
+	/**
+	 * Show Message if the requested products is not exists
+	 */
+	if (noProfession) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There is no such profession!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/e-commerce/products"
+					color="inherit"
+				>
+					Go to Profession Page
+				</Button>
+			</motion.div>
+		);
+	}
 
-    /**
-     * Show Message if the requested products is not exists
-     */
-    if (noProfession) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-col flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There is no such profession!
-                </Typography>
-                <Button
-                    className="mt-24"
-                    component={Link}
-                    variant="outlined"
-                    to="/apps/e-commerce/products"
-                    color="inherit"
-                >
-                    Go to Profession Page
-                </Button>
-            </motion.div>
-        );
-    }
-
-
-    return (
-        <FormProvider {...methods}>
-            <FusePageCarded
-                classes={{
-                    toolbar: 'p-0',
-                    header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
-                }}
-                header={<NewProfessionHeader />}
-                content={
-                    <div className="p-16 sm:p-24 max-w-2xl">
-                        <ProfessionForm />
-                    </div>
-                }
-                innerScroll
-            />
-        </FormProvider>
-    );
+	return (
+		<FormProvider {...methods}>
+			<FusePageCarded
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				header={<NewProfessionHeader />}
+				content={
+					<div className="p-16 sm:p-24 max-w-2xl">
+						<ProfessionForm />
+					</div>
+				}
+				innerScroll
+			/>
+		</FormProvider>
+	);
 };
 export default withReducer('professionsManagement', reducer)(Profession);

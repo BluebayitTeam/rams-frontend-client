@@ -417,6 +417,19 @@ const ramsRouteConfig = {
 					'./ReportManagement/PassengerSummaryReportManagement/PassengerSummaryReport/PassengerSummaryReport'
 				)
 			)
+		},
+		//ledger
+		{
+			path: '/apps/ledger-management/ledgers/:ledgerId/:ledgerName?',
+			component: lazy(() => import('./AllAccountManagement/LedgersManagement/Ledger/NewLedger'))
+		},
+		{
+			path: '/apps/ledger-management/ledgers',
+			component: lazy(() => import('./AllAccountManagement/LedgersManagement/Ledgers/Ledgers'))
+		},
+		{
+			path: '/apps/ledger-management/:ledgerId',
+			component: lazy(() => import('./AllAccountManagement/LedgersManagement/Ledger/NewLedger'))
 		}
 	]
 };

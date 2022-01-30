@@ -33,8 +33,7 @@ const Branch = () => {
 	});
 	const routeParams = useParams();
 
-	const { reset, watch, control, onChange, formState } = methods;
-	const form = watch();
+	const { reset, watch } = methods;
 
 	useDeepCompareEffect(() => {
 		function updateBranchState() {
@@ -119,7 +118,7 @@ const Branch = () => {
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
-					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
+					header: 'min-h-80 h-80'
 				}}
 				header={<NewBranchHeader />}
 				content={

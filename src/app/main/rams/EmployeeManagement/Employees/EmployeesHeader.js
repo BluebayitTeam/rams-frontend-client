@@ -14,57 +14,53 @@ import { Link } from 'react-router-dom';
 import { setEmployeesSearchText } from '../store/employeesSlice';
 
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "fit-content",
-		height: "40px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: 'fit-content',
+		height: '40px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
-
 
 const EmployeesHeader = () => {
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
 
 	//alert state
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const classes = useStyles(alerOpen);
 	//alert
 	useEffect(() => {
-		const alert = localStorage.getItem("employeeAlertPermission");
+		const alert = localStorage.getItem('employeeAlertPermission');
 
-		if (alert === "saveEmployeeSuccessfully") {
-			setAlertOpen(true)
-			setAlertMessage("Added Successfully...")
-			localStorage.removeItem("employeeAlertPermission")
+		if (alert === 'saveEmployeeSuccessfully') {
+			setAlertOpen(true);
+			setAlertMessage('Added Successfully...');
+			localStorage.removeItem('employeeAlertPermission');
 		}
-		if (alert === "updateEmployeeSuccessfully") {
-			setAlertOpen(true)
-			setAlertMessage("Updated Successfully...")
-			localStorage.removeItem("employeeAlertPermission")
+		if (alert === 'updateEmployeeSuccessfully') {
+			setAlertOpen(true);
+			setAlertMessage('Updated Successfully...');
+			localStorage.removeItem('employeeAlertPermission');
 		}
-		if (alert === "removeEmployeeSuccessfully") {
-			setAlertOpen(true)
-			setAlertMessage("Removed Successfully...")
-			localStorage.removeItem("employeeAlertPermission")
+		if (alert === 'removeEmployeeSuccessfully') {
+			setAlertOpen(true);
+			setAlertMessage('Removed Successfully...');
+			localStorage.removeItem('employeeAlertPermission');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
-	}, [])
-
+			setAlertOpen(false);
+		}, 3000);
+	}, []);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -106,12 +102,11 @@ const EmployeesHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setEmployeesSearchText(ev))
+									dispatch(setEmployeesSearchText(ev));
 								}
-							}
-							}
+							}}
 						/>
 					</Paper>
 				</ThemeProvider>
@@ -128,9 +123,17 @@ const EmployeesHeader = () => {
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}

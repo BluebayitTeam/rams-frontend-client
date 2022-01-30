@@ -12,47 +12,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUsersSearchText } from '../store/usersSlice';
 
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "20%",
-		height: "50px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: '20%',
+		height: '50px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
-
 
 const UsersListHeader = () => {
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ employeesManagement }) => employeesManagement.usersList.searchText);
 
-
 	//alert state
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const classes = useStyles(alerOpen);
 	//alert
 	useEffect(() => {
-		const alert = localStorage.getItem("userAlertPermission")
+		const alert = localStorage.getItem('userAlertPermission');
 
-		if (alert === "updatePasswordSuccessfully") {
-			setAlertOpen(true)
-			setAlertMessage("Updated Successfully...")
-			localStorage.removeItem("userAlertPermission")
+		if (alert === 'updatePasswordSuccessfully') {
+			setAlertOpen(true);
+			setAlertMessage('Updated Successfully...');
+			localStorage.removeItem('userAlertPermission');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
+			setAlertOpen(false);
+		}, 3000);
 	}, []);
 
 	return (
@@ -96,18 +92,26 @@ const UsersListHeader = () => {
 								'aria-label': 'Search'
 							}}
 							// onBlur={ev => dispatch(setUsersSearchText(ev))}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setUsersSearchText(ev))
+									dispatch(setUsersSearchText(ev));
 								}
 							}}
 						/>
 					</Paper>
 				</ThemeProvider>
 			</div>
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}

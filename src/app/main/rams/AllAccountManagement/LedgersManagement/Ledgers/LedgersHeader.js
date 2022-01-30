@@ -6,17 +6,18 @@ import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
+import isShouldGoAddPage from 'app/@helpers/isShouldGoAddPage';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { setPermissionsSearchText } from '../store/permissionsSlice';
+import { setLedgersSearchText } from '../store/ledgersSlice';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	alert: props => ({
-		width: '20%',
-		minWidth: '250px',
+		width: 'fit-content',
 		height: '35px',
 		position: 'fixed',
 		right: '30px',
@@ -30,37 +31,47 @@ const useStyles = makeStyles(theme => ({
 	})
 }));
 
-const PermissionsHeader = () => {
+const LedgersHeader = () => {
 	const [alerOpen, setAlertOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ permissionsManagement }) => permissionsManagement.permissions.searchText);
+	const searchText = useSelector(({ ledgersManagement }) => ledgersManagement.ledgers.searchText);
 
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem('permissionAlert');
+		const alert = localStorage.getItem('ledgerAlert');
 
-		if (alert === 'savePermission') {
+		if (alert === 'saveLedger') {
 			setAlertOpen(true);
 			setAlertMessage('Add Success...');
-			localStorage.removeItem('permissionAlert');
+			localStorage.removeItem('ledgerAlert');
 		}
-		if (alert === 'updatePermission') {
+		if (alert === 'updateLedger') {
 			setAlertOpen(true);
 			setAlertMessage('Update Success...');
-			localStorage.removeItem('permissionAlert');
+			localStorage.removeItem('ledgerAlert');
 		}
-		if (alert === 'deletePermission') {
+		if (alert === 'deleteLedger') {
 			setAlertOpen(true);
 			setAlertMessage('Remove Success...');
-			localStorage.removeItem('permissionAlert');
+			localStorage.removeItem('ledgerAlert');
 		}
 
 		setTimeout(() => {
 			setAlertOpen(false);
 		}, 3000);
+	}, []);
+
+	const history = useHistory();
+	useEffect(() => {
+		const goToFormPage = e =>
+			e.key === 'Enter' &&
+			isShouldGoAddPage(e) &&
+			setTimeout(() => history.push('/apps/ledger-management/new'), 0);
+		window.addEventListener('keydown', goToFormPage);
+		return () => window.removeEventListener('keydown', goToFormPage);
 	}, []);
 
 	return (
@@ -81,7 +92,7 @@ const PermissionsHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Permissions
+					Ledgers
 				</Typography>
 			</div>
 
@@ -104,10 +115,10 @@ const PermissionsHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							// onBlur={ev => dispatch(setPermissionsSearchText(ev))}
+							//onBlur={ev => dispatch(setLedgersSearchText(ev))}
 							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setPermissionsSearchText(ev));
+									dispatch(setLedgersSearchText(ev));
 								}
 							}}
 						/>
@@ -117,12 +128,12 @@ const PermissionsHeader = () => {
 			<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
 				<Button
 					component={Link}
-					to="/apps/permission-management/new"
+					to="/apps/ledger-management/new"
 					className="whitespace-nowrap"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Permission</span>
+					<span className="hidden sm:flex">Add New Ledger</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
@@ -146,4 +157,4 @@ const PermissionsHeader = () => {
 	);
 };
 
-export default PermissionsHeader;
+export default LedgersHeader;
