@@ -73,6 +73,15 @@ const GroupsHeader = () => {
 		return () => window.removeEventListener('keydown', goToFormPage);
 	}, []);
 
+	useEffect(() => {
+		return () => {
+			/**
+			 * Reset search field on component unload
+			 */
+			dispatch(setGroupsSearchText({ target: { value: '' } }));
+		};
+	}, [dispatch]);
+
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">

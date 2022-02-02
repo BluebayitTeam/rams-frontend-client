@@ -6,14 +6,14 @@ import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
-import isShouldGoToAddPage from 'app/@helpers/isShouldGoToAddPage';
+import isShouldGoAddPage from 'app/@helpers/isShouldGoAddPage';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { setSubLedgersSearchText } from '../store/subLedgersSlice';
+import { setPaymentVouchersSearchText } from '../store/paymentVouchersSlice';
 
 const useStyles = makeStyles(() => ({
 	alert: props => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 	})
 }));
 
-const SubLedgersHeader = () => {
+const PaymentVouchersHeader = () => {
 	const [alerOpen, setAlertOpen] = useState(false);
 	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
@@ -40,22 +40,22 @@ const SubLedgersHeader = () => {
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem('subLedgerAlert');
+		const alert = localStorage.getItem('paymentVoucherAlert');
 
-		if (alert === 'saveSubLedger') {
+		if (alert === 'savePaymentVoucher') {
 			setAlertOpen(true);
 			setAlertMessage('Add Success...');
-			localStorage.removeItem('subLedgerAlert');
+			localStorage.removeItem('paymentVoucherAlert');
 		}
-		if (alert === 'updateSubLedger') {
+		if (alert === 'updatePaymentVoucher') {
 			setAlertOpen(true);
 			setAlertMessage('Update Success...');
-			localStorage.removeItem('subLedgerAlert');
+			localStorage.removeItem('paymentVoucherAlert');
 		}
-		if (alert === 'deleteSubLedger') {
+		if (alert === 'deletePaymentVoucher') {
 			setAlertOpen(true);
 			setAlertMessage('Remove Success...');
-			localStorage.removeItem('subLedgerAlert');
+			localStorage.removeItem('paymentVoucherAlert');
 		}
 
 		setTimeout(() => {
@@ -67,8 +67,8 @@ const SubLedgersHeader = () => {
 	useEffect(() => {
 		const goToFormPage = e => {
 			e.key === 'Enter' &&
-				isShouldGoToAddPage(e) &&
-				setTimeout(() => history.push('/apps/subLedger-management/new'), 0);
+				isShouldGoAddPage(e) &&
+				setTimeout(() => history.push('/apps/paymentVoucher-management/new'), 0);
 		};
 		window.addEventListener('keydown', goToFormPage);
 		return () => window.removeEventListener('keydown', goToFormPage);
@@ -79,7 +79,7 @@ const SubLedgersHeader = () => {
 			/**
 			 * Reset search field on component unload
 			 */
-			dispatch(setSubLedgersSearchText({ target: { value: '' } }));
+			dispatch(setPaymentVouchersSearchText({ target: { value: '' } }));
 		};
 	}, [dispatch]);
 
@@ -101,7 +101,7 @@ const SubLedgersHeader = () => {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					SubLedgers
+					PaymentVouchers
 				</Typography>
 			</div>
 
@@ -125,7 +125,7 @@ const SubLedgersHeader = () => {
 							}}
 							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setSubLedgersSearchText(ev));
+									dispatch(setPaymentVouchersSearchText(ev));
 								}
 							}}
 						/>
@@ -135,12 +135,12 @@ const SubLedgersHeader = () => {
 			<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
 				<Button
 					component={Link}
-					to="/apps/subLedger-management/new"
+					to="/apps/paymentVoucher-management/new"
 					className="whitespace-nowrap"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New SubLedger</span>
+					<span className="hidden sm:flex">Add New PaymentVoucher</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</motion.div>
@@ -164,4 +164,4 @@ const SubLedgersHeader = () => {
 	);
 };
 
-export default SubLedgersHeader;
+export default PaymentVouchersHeader;

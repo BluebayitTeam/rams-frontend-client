@@ -563,18 +563,20 @@ export const SEARCH_PAYMENTMETHOD = `${BASE_URL}/paymentmethod/api/v1/paymentmet
 // primary_group
 export const PRIMARY_GROUP = `${BASE_URL}/primary_group/api/v1/primary_group/all/`;
 
-// payment-voucher
-export const CREATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/create/`;
+//paymentVoucher
+export const CREATE_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/create/`;
 
-export const GET_PAYMENTVOUCHERID = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/`;
+export const GET_PAYMENTVOUCHERS = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/all`;
 
-export const GET_PAYMENTVOUCHERS = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/all/`;
+export const GET_PAYMENTVOUCHER_BY_ID = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/`;
 
-export const UPDATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/update/`;
+export const UPDATE_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/update/`;
 
-export const DELETE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/delete/`;
+export const DELETE_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/delete/`;
 
-export const SEARCH_PAYMENT_VOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/search/`;
+export const DELETE_PAYMENTVOUCHER_MULTIPLE = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/delete_multiple/`;
+
+export const SEARCH_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/search/`;
 
 export const GET_PAYMENT_VOUCHER_BY_INVOICE_NUMBER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
 

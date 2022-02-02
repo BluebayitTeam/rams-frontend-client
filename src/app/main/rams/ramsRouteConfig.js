@@ -456,6 +456,25 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/group-management/:groupId',
 			component: lazy(() => import('./AllAccountManagement/GroupsManagement/Group/NewGroup'))
+		},
+		//paymentVoucher
+		{
+			path: '/apps/paymentVoucher-management/paymentVouchers/:paymentVoucherId/:paymentVoucherName?',
+			component: lazy(() =>
+				import('./AllAccountManagement/PaymentVouchersManagement/PaymentVoucher/NewPaymentVoucher')
+			)
+		},
+		{
+			path: '/apps/paymentVoucher-management/paymentVouchers',
+			component: lazy(() =>
+				import('./AllAccountManagement/PaymentVouchersManagement/PaymentVouchers/PaymentVouchers')
+			)
+		},
+		{
+			path: '/apps/paymentVoucher-management/:paymentVoucherId',
+			component: lazy(() =>
+				import('./AllAccountManagement/PaymentVouchersManagement/PaymentVoucher/NewPaymentVoucher')
+			)
 		}
 	]
 };

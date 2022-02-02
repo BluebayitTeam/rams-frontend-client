@@ -485,6 +485,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/subLedger-management/subLedgers',
 				exact: true
+			},
+			//paymentVoucher
+			{
+				id: 'paymentVouchers',
+				title: 'PaymentVouchers',
+				translate: 'PaymentVouchers',
+				type: 'item',
+				url: '/apps/paymentVoucher-management/paymentVouchers',
+				exact: true
 			}
 		]
 	},
