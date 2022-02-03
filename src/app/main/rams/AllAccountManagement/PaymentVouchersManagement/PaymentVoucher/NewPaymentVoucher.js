@@ -37,7 +37,7 @@ const PaymentVoucher = () => {
 
 	useDeepCompareEffect(() => {
 		function updatePaymentVoucherState() {
-			const { paymentVoucherId } = routeParams;
+			const { paymentVoucherId, paymentVoucherName } = routeParams;
 
 			if (paymentVoucherId === 'new') {
 				localStorage.removeItem('event');
@@ -50,7 +50,7 @@ const PaymentVoucher = () => {
 				 * Get User data
 				 */
 
-				dispatch(getPaymentVoucher(paymentVoucherId)).then(action => {
+				dispatch(getPaymentVoucher(paymentVoucherName)).then(action => {
 					console.log(action.payload);
 					/**
 					 * If the requested product is not exist show message

@@ -564,21 +564,21 @@ export const SEARCH_PAYMENTMETHOD = `${BASE_URL}/paymentmethod/api/v1/paymentmet
 export const PRIMARY_GROUP = `${BASE_URL}/primary_group/api/v1/primary_group/all/`;
 
 //paymentVoucher
-export const CREATE_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/create/`;
+export const CREATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/create/`;
 
-export const GET_PAYMENTVOUCHERS = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/all`;
+export const GET_PAYMENTVOUCHERS = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/all`;
 
-export const GET_PAYMENTVOUCHER_BY_ID = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/`;
+export const GET_PAYMENTVOUCHER_BY_ID = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/`;
 
-export const UPDATE_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/update/`;
+export const UPDATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/update/`;
 
-export const DELETE_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/delete/`;
+export const DELETE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/delete/`;
 
-export const DELETE_PAYMENTVOUCHER_MULTIPLE = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/delete_multiple/`;
+export const DELETE_PAYMENTVOUCHER_MULTIPLE = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/delete_multiple/`;
 
-export const SEARCH_PAYMENTVOUCHER = `${BASE_URL}/paymentVoucher/api/v1/paymentVoucher/search/`;
+export const SEARCH_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/search/`;
 
-export const GET_PAYMENT_VOUCHER_BY_INVOICE_NUMBER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
+export const GET_PAYMENT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
 
 // site_settings
 export const CREATE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_setting/create/`;
@@ -983,6 +983,8 @@ export const DELETE_LEDGER_MULTIPLE = `${BASE_URL}/ledger_account/api/v1/ledger_
 
 export const SEARCH_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/search/`;
 
+export const LEDGERS_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/ledger_account/all`;
+
 //subLedger
 export const CREATE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/create/`;
 
@@ -997,6 +999,8 @@ export const DELETE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledge
 export const DELETE_SUBLEDGER_MULTIPLE = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/delete_multiple/`;
 
 export const SEARCH_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/search/`;
+
+export const SUBLEDGERS_WITHOUT_PAGINATION = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/all`;
 
 //group
 export const CREATE_GROUP = `${BASE_URL}/group/api/v1/group/create/`;

@@ -6,7 +6,7 @@ import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Alert from '@material-ui/lab/Alert';
-import isShouldGoAddPage from 'app/@helpers/isShouldGoAddPage';
+import isShouldGoToAddPage from 'app/@helpers/isShouldGoToAddPage';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -67,7 +67,7 @@ const PaymentVouchersHeader = () => {
 	useEffect(() => {
 		const goToFormPage = e => {
 			e.key === 'Enter' &&
-				isShouldGoAddPage(e) &&
+				isShouldGoToAddPage(e) &&
 				setTimeout(() => history.push('/apps/paymentVoucher-management/new'), 0);
 		};
 		window.addEventListener('keydown', goToFormPage);

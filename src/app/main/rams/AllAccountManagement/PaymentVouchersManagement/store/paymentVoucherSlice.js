@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import moment from 'moment';
 import {
 	CREATE_PAYMENTVOUCHER,
 	DELETE_PAYMENTVOUCHER,
-	GET_PAYMENTVOUCHER_BY_ID,
+	GET_PAYMENT_VOUCHER_BY_INVOICE_NO,
 	UPDATE_PAYMENTVOUCHER
-} from '../../../../constant/constants';
+} from '../../../../../constant/constants';
 
 export const getPaymentVoucher = createAsyncThunk(
 	'paymentVoucherManagement/paymentVoucher/getPaymentVoucher',
@@ -18,7 +19,7 @@ export const getPaymentVoucher = createAsyncThunk(
 		};
 
 		try {
-			const response = await axios.get(`${GET_PAYMENTVOUCHER_BY_ID}${params}`, authTOKEN);
+			const response = await axios.get(`${GET_PAYMENT_VOUCHER_BY_INVOICE_NO}${params}`, authTOKEN);
 			const data = await response.data;
 			return data === undefined ? null : data;
 		} catch (err) {
@@ -45,16 +46,14 @@ export const removePaymentVoucher = createAsyncThunk(
 
 export const updatePaymentVoucher = createAsyncThunk(
 	'paymentVoucherManagement/paymentVoucher/updatePaymentVoucher',
-	async (paymentVoucherData, { dispatch, getState }) => {
-		const { paymentVoucher } = getState().paymentVouchersManagement;
-
+	async paymentVoucherData => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.put(`${UPDATE_PAYMENTVOUCHER}${paymentVoucher.id}`, paymentVoucherData, authTOKEN);
+		const response = await axios.put(`${UPDATE_PAYMENTVOUCHER}`, paymentVoucherData, authTOKEN);
 		return response;
 	}
 );
@@ -81,7 +80,13 @@ const paymentVoucherSlice = createSlice({
 		newPaymentVoucher: {
 			reducer: (_state, action) => action.payload,
 			prepare: () => ({
-				payload: {}
+				payload: {
+					payment_date: moment(new Date()).format('YYYY-MM-DD'),
+					items: [
+						{ ledger: 3, debit_amount: 0, credit_amount: 0 },
+						{ ledger: null, debit_amount: 0, credit_amount: 0 }
+					]
+				}
 			})
 		}
 	},

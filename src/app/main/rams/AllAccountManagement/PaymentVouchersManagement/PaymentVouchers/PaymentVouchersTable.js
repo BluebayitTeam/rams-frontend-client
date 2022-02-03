@@ -75,7 +75,7 @@ const PaymentVouchersTable = props => {
 			.catch(() => setSearchPaymentVoucher([]));
 	};
 
-	function handleRequestSort(paymentVoucherEvent, property) {
+	function handleRequestSort(_e, property) {
 		const id = property;
 		let direction = 'desc';
 
@@ -103,15 +103,15 @@ const PaymentVouchersTable = props => {
 
 	function handleUpdatePaymentVoucher(item) {
 		localStorage.removeItem('paymentVoucherEvent');
-		props.history.push(`/apps/paymentVoucher-management/paymentVouchers/${item.id}/${item.name}`);
+		props.history.push(`/apps/paymentVoucher-management/paymentVouchers/${item.id}/${item.invoice_no}`);
 	}
 	function handleDeletePaymentVoucher(item, paymentVoucherEvent) {
 		localStorage.removeItem('paymentVoucherEvent');
 		localStorage.setItem('paymentVoucherEvent', paymentVoucherEvent);
-		props.history.push(`/apps/paymentVoucher-management/paymentVouchers/${item.id}/${item.name}`);
+		props.history.push(`/apps/paymentVoucher-management/paymentVouchers/${item.id}/${item.invoice_no}`);
 	}
 
-	function handleCheck(paymentVoucherEvent, id) {
+	function handleCheck(_e, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -129,13 +129,13 @@ const PaymentVouchersTable = props => {
 	}
 
 	//pagination
-	const handlePagination = (e, handlePage) => {
+	const handlePagination = (_e, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
 		setPage(handlePage - 1);
 		dispatch(getPaymentVouchers({ ...pageAndSize, page: handlePage }));
 	};
 
-	function handleChangePage(event, value) {
+	function handleChangePage(_e, value) {
 		setPage(value);
 		setPageAndSize({ ...pageAndSize, page: value + 1 });
 		dispatch(getPaymentVouchers({ ...pageAndSize, page: value + 1 }));

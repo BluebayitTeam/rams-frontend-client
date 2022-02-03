@@ -1,6 +1,6 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { DELETE_PAYMENTVOUCHER_MULTIPLE, GET_PAYMENTVOUCHERS } from '../../../../constant/constants';
+import { DELETE_PAYMENTVOUCHER_MULTIPLE, GET_PAYMENTVOUCHERS } from '../../../../../constant/constants';
 
 export const getPaymentVouchers = createAsyncThunk(
 	'paymentVoucherManagement/paymentVouchers/gePaymentVouchers',
