@@ -35,6 +35,8 @@ const PaymentVoucher = () => {
 
 	const { reset } = methods;
 
+	const [letFormSave, setLetFormSave] = useState(false);
+
 	useDeepCompareEffect(() => {
 		function updatePaymentVoucherState() {
 			const { paymentVoucherId, paymentVoucherName } = routeParams;
@@ -120,10 +122,10 @@ const PaymentVoucher = () => {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<NewPaymentVoucherHeader />}
+				header={<NewPaymentVoucherHeader letFormSave={letFormSave} />}
 				content={
 					<div className="p-16 sm:p-24 max-w-2xl">
-						<PaymentVoucherForm />
+						<PaymentVoucherForm setLetFormSave={setLetFormSave} />
 					</div>
 				}
 				innerScroll

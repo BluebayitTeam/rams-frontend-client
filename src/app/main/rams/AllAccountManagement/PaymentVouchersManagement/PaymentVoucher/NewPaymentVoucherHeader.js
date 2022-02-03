@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { removePaymentVoucher, savePaymentVoucher, updatePaymentVoucher } from '../store/paymentVoucherSlice';
 
-const NewPaymentVoucherHeader = () => {
+const NewPaymentVoucherHeader = ({ letFormSave }) => {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
@@ -134,7 +134,7 @@ const NewPaymentVoucherHeader = () => {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
+						disabled={_.isEmpty(dirtyFields) || !isValid || !letFormSave}
 						onClick={handleSavePaymentVoucher}
 					>
 						Save

@@ -73,10 +73,11 @@ const useStyles = makeStyles(theme => {
 	};
 });
 
-function PaymentVoucherForm() {
+function PaymentVoucherForm({ setLetFormSave }) {
 	const classes = useStyles();
-	const methods = useFormContext();
+	const paymentVoucher = useSelector(({ paymentVouchersManagement }) => paymentVouchersManagement.paymentVoucher);
 	const { paymentVoucherId } = useParams();
+	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset } = methods;
 	const { errors } = formState;
 	const dispatch = useDispatch();
@@ -85,9 +86,11 @@ function PaymentVoucherForm() {
 	const subLedgers = useSelector(state => state.data.subLedgers);
 	const ledgers = useSelector(state => state.data.ledgers);
 
+	const [showMessage, setShowMessage] = useState(true);
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
-	// const [debitCreditMessage, setDebitCreditMessage] = useState('');
+	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
+	const [ledgerMessage, setLedgerMessage] = useState('');
 
 	const values = getValues();
 
@@ -104,10 +107,46 @@ function PaymentVoucherForm() {
 		dispatch(getLedgers());
 	}, []);
 
-	const cheackEquality = items => {
-		const totalDebitAmount = getTotalAmount(items, 'debit_amount');
-		const totalCreditAmount = getTotalAmount(items, 'credit_amount');
+	const cheackDbCdEquality = () => {
+		setShowMessage(true);
+		const items = getValues()?.items || [];
+		const totalDebitAmount = getTotalAmount(items || [], 'debit_amount');
+		const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
+		if (totalDebitAmount == totalCreditAmount) {
+			setIsDebitCreditMatched(true);
+			setDebitCreditMessage('Congratulations, Debit & Credit match...');
+			haveEmptyLedger || setLetFormSave(true);
+		} else {
+			setIsDebitCreditMatched(false);
+			setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
+			setLetFormSave(false);
+		}
 	};
+
+	const checkEmptyLedger = itms => {
+		const items = itms || getValues()?.items || [];
+
+		let isLedgerEmpty = false;
+		items.map(itm => {
+			if (!itm.ledger) {
+				isLedgerEmpty = true;
+			}
+		});
+
+		if (isLedgerEmpty) {
+			setHaveEmptyLedger(true);
+			setLedgerMessage('Account type is required');
+			setLetFormSave(false);
+		} else {
+			setHaveEmptyLedger(false);
+			setLedgerMessage('');
+			isDebitCreditMatched && setLetFormSave(true);
+		}
+	};
+
+	useEffect(() => {
+		checkEmptyLedger(paymentVoucher?.items || []);
+	}, [paymentVoucher]);
 
 	console.log('values', values);
 
@@ -122,7 +161,7 @@ function PaymentVoucherForm() {
 						freeSolo
 						value={value ? passengers.find(data => data.id == value) : null}
 						options={passengers}
-						getOptionLabel={option => `${option.name}`}
+						getOptionLabel={option => `${option.passenger_name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -260,20 +299,6 @@ function PaymentVoucherForm() {
 							</TableHead>
 
 							<TableBody>
-								{/* {fields.map((item, idx) => {
-									return (
-										<li key={item.id}>
-											<Controller
-												render={({ field }) => <input {...field} />}
-												name={`test.${idx}.lastName`}
-												control={control}
-											/>
-											<button type="button" onClick={() => remove(idx)}>
-												Delete
-											</button>
-										</li>
-									);
-								})} */}
 								{fields.map((item, idx) => {
 									console.log('item', item);
 									return (
@@ -298,7 +323,10 @@ function PaymentVoucherForm() {
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
-																onChange(newValue?.id);
+																setTimeout(() => {
+																	onChange(newValue?.id);
+																	checkEmptyLedger();
+																}, 0);
 															}}
 															renderInput={params => (
 																<TextField
@@ -332,7 +360,17 @@ function PaymentVoucherForm() {
 																id="debit"
 																required
 																onChange={e => {
-																	field.onChange(e);
+																	const value = e.target.value;
+																	if (!isNaN(value)) {
+																		setValue(
+																			`items.${idx}.debit_amount`,
+																			value?.slice(-1) == '.'
+																				? value
+																				: Number(value)
+																		);
+																		setValue(`items.${idx}.credit_amount`, 0);
+																		cheackDbCdEquality();
+																	}
 																}}
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
@@ -355,6 +393,19 @@ function PaymentVoucherForm() {
 																label="Credit"
 																id="credit"
 																required
+																onChange={e => {
+																	const value = e.target.value;
+																	if (!isNaN(value)) {
+																		setValue(
+																			`items.${idx}.credit_amount`,
+																			value?.slice(-1) == '.'
+																				? value
+																				: Number(value)
+																		);
+																		setValue(`items.${idx}.debit_amount`, 0);
+																		cheackDbCdEquality();
+																	}
+																}}
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
@@ -375,13 +426,20 @@ function PaymentVoucherForm() {
 														<div
 															variant="outlined"
 															className={classes.btnContainer}
-															onClick={() =>
-																append({
-																	ledger: null,
-																	debit_amount: 0,
-																	credit_amount: 0
-																})
-															}
+															onClick={() => {
+																reset({
+																	...getValues(),
+																	items: [
+																		...getValues()?.items,
+																		{
+																			ledger: null,
+																			debit_amount: 0,
+																			credit_amount: 0
+																		}
+																	]
+																});
+																checkEmptyLedger();
+															}}
 														>
 															<AddIcon />
 														</div>
@@ -398,7 +456,10 @@ function PaymentVoucherForm() {
 												>
 													<div>
 														<DeleteIcon
-															onClick={() => remove(idx)}
+															onClick={() => {
+																remove(idx);
+																cheackDbCdEquality();
+															}}
 															className="h-72 cursor-pointer"
 															style={{ color: 'red' }}
 														/>
@@ -413,10 +474,10 @@ function PaymentVoucherForm() {
 					</TableContainer>
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-					{'ledgerError' && <Typography style={{ color: 'red' }}>{'ledgerError'}</Typography>}
-					{'debitCreditErrorMessage' && (
-						<Typography style={{ color: 'debitAndCreditMatched' ? 'green' : 'red' }}>
-							{'debitCreditErrorMessage'}
+					{<Typography style={{ color: 'red' }}>{ledgerMessage}</Typography>}
+					{showMessage && (
+						<Typography style={{ color: isDebitCreditMatched ? 'green' : 'red' }}>
+							{debitCreditMessage}
 						</Typography>
 					)}
 				</div>
