@@ -87,7 +87,7 @@ function PaymentVoucherForm() {
 
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
-	const [debitCreditMessage, setDebitCreditMessage] = useState('');
+	// const [debitCreditMessage, setDebitCreditMessage] = useState('');
 
 	const values = getValues();
 
