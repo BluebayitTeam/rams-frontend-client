@@ -11,13 +11,15 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import PrintIcon from '@material-ui/icons/Print';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/data';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { SEARCH_PAYMENTVOUCHER } from '../../../../../constant/constants';
+import PrintVoucher from '../../AccountComponents/PrintVoucher';
 import { getPaymentVouchers, selectPaymentVouchers } from '../store/paymentVouchersSlice';
 import PaymentVouchersTableHead from './PaymentVouchersTableHead';
 
@@ -57,6 +59,8 @@ const PaymentVouchersTable = props => {
 	const totalPages = sessionStorage.getItem('total_paymentVouchers_pages');
 	const totalElements = sessionStorage.getItem('total_paymentVouchers_elements');
 
+	const printVoucherRef = useRef();
+
 	useEffect(() => {
 		dispatch(getPaymentVouchers(pageAndSize)).then(() => setLoading(false));
 	}, [dispatch]);
@@ -66,10 +70,10 @@ const PaymentVouchersTable = props => {
 	}, [searchText]);
 
 	const getSearchPaymentVoucher = () => {
-		fetch(`${SEARCH_PAYMENTVOUCHER}?name=${searchText}`)
+		fetch(`${SEARCH_PAYMENTVOUCHER}?invoice_no=${searchText}`)
 			.then(response => response.json())
 			.then(searchedPaymentVoucherData => {
-				setSearchPaymentVoucher(searchedPaymentVoucherData?.paymentVouchers);
+				setSearchPaymentVoucher(searchedPaymentVoucherData?.payment_vouchers);
 				console.log('searchedPaymentVoucherData', searchedPaymentVoucherData);
 			})
 			.catch(() => setSearchPaymentVoucher([]));
@@ -168,6 +172,7 @@ const PaymentVouchersTable = props => {
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
+				<PrintVoucher ref={printVoucherRef} title="Payment Voucher" type="payment" />
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
 					<PaymentVouchersTableHead
 						selectedPaymentVoucherIds={selected}
@@ -222,11 +227,14 @@ const PaymentVouchersTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.passenger?.name}
+										{n.branch?.name}
+									</TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.invoice_no}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.branch?.name}
+										{n?.related_ledgers?.toString()}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
@@ -234,19 +242,20 @@ const PaymentVouchersTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.ledger?.name}
+										{`${n.details || ''}, ${n.ledger?.name || ''}`}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.payment_date}
-									</TableCell>
-
-									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.details}
+										{n.amount}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
 										<div>
+											<PrintIcon
+												className="cursor-pointer mr-3"
+												style={{ color: 'blue' }}
+												onClick={() => printVoucherRef.current.doPrint(n)}
+											/>
 											<EditIcon
 												onClick={() => handleUpdatePaymentVoucher(n)}
 												className="cursor-pointer"

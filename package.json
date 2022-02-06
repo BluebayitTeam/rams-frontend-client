@@ -92,6 +92,7 @@
         "redux-logger": "4.0.0",
         "styled-components": "5.3.0",
         "tesseract.js": "^2.1.5",
+        "to-words": "^3.0.3",
         "typeface-poppins": "1.1.13",
         "velocity-animate": "1.5.2",
         "velocity-react": "1.4.3",

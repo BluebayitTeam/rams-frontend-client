@@ -14,6 +14,7 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
+import File from 'app/@components/File';
 import getTotalAmount from 'app/@helpers/getTotalAmount';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
@@ -86,7 +87,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 	const subLedgers = useSelector(state => state.data.subLedgers);
 	const ledgers = useSelector(state => state.data.ledgers);
 
-	const [showMessage, setShowMessage] = useState(true);
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
@@ -94,7 +94,9 @@ function PaymentVoucherForm({ setLetFormSave }) {
 
 	const values = getValues();
 
-	const { fields, append, remove } = useFieldArray({
+	const [previewFile, setPreviewFile] = useState('');
+
+	const { fields, remove } = useFieldArray({
 		control,
 		name: 'items',
 		keyName: 'key'
@@ -107,8 +109,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 		dispatch(getLedgers());
 	}, []);
 
-	const cheackDbCdEquality = () => {
-		setShowMessage(true);
+	const cheackDbCdEquality = async () => {
 		const items = getValues()?.items || [];
 		const totalDebitAmount = getTotalAmount(items || [], 'debit_amount');
 		const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
@@ -123,7 +124,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 		}
 	};
 
-	const checkEmptyLedger = itms => {
+	const checkEmptyLedger = async itms => {
 		const items = itms || getValues()?.items || [];
 
 		let isLedgerEmpty = false;
@@ -275,6 +276,8 @@ function PaymentVoucherForm({ setLetFormSave }) {
 					);
 				}}
 			/>
+
+			<File name="file" previewFile={previewFile} setPreviewFile={setPreviewFile} label="File" />
 			<br />
 			<Grid xs={12}>
 				<div className={classes.mainContainer}>
@@ -300,7 +303,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 
 							<TableBody>
 								{fields.map((item, idx) => {
-									console.log('item', item);
 									return (
 										<TableRow key={item.key}>
 											<TableCell className={classes.tableCellInBody} component="th" scope="row">
@@ -323,19 +325,15 @@ function PaymentVoucherForm({ setLetFormSave }) {
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
-																setTimeout(() => {
-																	onChange(newValue?.id);
-																	checkEmptyLedger();
-																}, 0);
+																setValue(`items.${idx}.ledger`, newValue?.id);
+																checkEmptyLedger();
 															}}
 															renderInput={params => (
 																<TextField
 																	{...params}
 																	placeholder="Select a account"
 																	label="Account"
-																	error={!!errors.ledger}
 																	required
-																	helperText={errors?.ledger?.message}
 																	variant="outlined"
 																	autoFocus
 																	InputLabelProps={{
@@ -459,6 +457,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 															onClick={() => {
 																remove(idx);
 																cheackDbCdEquality();
+																checkEmptyLedger();
 															}}
 															className="h-72 cursor-pointer"
 															style={{ color: 'red' }}
@@ -475,7 +474,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 					{<Typography style={{ color: 'red' }}>{ledgerMessage}</Typography>}
-					{showMessage && (
+					{debitCreditMessage && (
 						<Typography style={{ color: isDebitCreditMatched ? 'green' : 'red' }}>
 							{debitCreditMessage}
 						</Typography>

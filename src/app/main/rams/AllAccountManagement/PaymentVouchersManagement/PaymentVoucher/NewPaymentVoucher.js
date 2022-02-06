@@ -16,10 +16,13 @@ import PaymentVoucherForm from './PaymentVoucherForm.js';
 /**
  * Form Validation Schema
  */
-const schema = yup.object().shape({
-	passenger: yup.string().required('Passenger is required'),
+const schemaObj = {
+	passenger: yup.number().required('Passenger is required'),
 	branch: yup.string().required('Branch is required'),
 	sub_ledger: yup.string().required('Sub Ledger is required')
+};
+const schema = yup.object().shape({
+	...schemaObj
 });
 
 const PaymentVoucher = () => {
@@ -31,9 +34,20 @@ const PaymentVoucher = () => {
 		defaultValues: {},
 		resolver: yupResolver(schema)
 	});
+
 	const routeParams = useParams();
 
-	const { reset } = methods;
+	const { reset, setError } = methods;
+
+	useEffect(() => {
+		setTimeout(() => {
+			for (let key in schemaObj) {
+				setError(key, {
+					type: 'manual'
+				});
+			}
+		}, 0);
+	}, []);
 
 	const [letFormSave, setLetFormSave] = useState(false);
 

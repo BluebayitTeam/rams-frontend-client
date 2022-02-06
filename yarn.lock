@@ -14495,6 +14495,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+to-words@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/to-words/-/to-words-3.0.3.tgz#8b102de80124656aa40aa35fca8a99f7a5b58970"
+  integrity sha512-f9JuVhDnMkv1bnzo2MNsyDD/uFGeKknRrl/Lo8C0A0AEZE8y5/8V2vvkRcYpEo1uITJKvGNkZ5qDFFz6AX4dAg==
+
 toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"

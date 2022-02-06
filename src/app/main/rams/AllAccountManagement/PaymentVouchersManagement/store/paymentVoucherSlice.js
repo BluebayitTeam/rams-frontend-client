@@ -30,7 +30,7 @@ export const getPaymentVoucher = createAsyncThunk(
 
 export const removePaymentVoucher = createAsyncThunk(
 	'paymentVoucherManagement/paymentVoucher/removePaymentVoucher',
-	async val => {
+	async paymentVoucherId => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -38,7 +38,6 @@ export const removePaymentVoucher = createAsyncThunk(
 			}
 		};
 
-		const paymentVoucherId = val.id;
 		const response = await axios.delete(`${DELETE_PAYMENTVOUCHER}${paymentVoucherId}`, authTOKEN);
 		return response;
 	}

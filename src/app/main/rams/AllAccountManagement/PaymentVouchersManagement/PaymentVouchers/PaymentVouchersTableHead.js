@@ -24,13 +24,6 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'passenger',
-		align: 'left',
-		disablePadding: false,
-		label: 'Passenger',
-		sort: true
-	},
-	{
 		id: 'branch',
 		align: 'left',
 		disablePadding: false,
@@ -38,10 +31,10 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'sub_ledger',
+		id: 'invoice_no',
 		align: 'left',
 		disablePadding: false,
-		label: 'Sub Ledger',
+		label: 'Invoice No',
 		sort: true
 	},
 	{
@@ -51,12 +44,11 @@ const rows = [
 		label: 'Ledger',
 		sort: true
 	},
-
 	{
-		id: 'payment_date',
+		id: 'sub-ledger',
 		align: 'left',
 		disablePadding: false,
-		label: 'Payment Date',
+		label: 'Sub Ledger',
 		sort: true
 	},
 	{
@@ -66,7 +58,13 @@ const rows = [
 		label: 'Details',
 		sort: true
 	},
-
+	{
+		id: 'total_amount',
+		align: 'left',
+		disablePadding: false,
+		label: 'Total Amount',
+		sort: true
+	},
 	{
 		id: 'action',
 		align: 'center',

@@ -22,13 +22,14 @@ const NewPaymentVoucherHeader = ({ letFormSave }) => {
 	const history = useHistory();
 
 	const routeParams = useParams();
+	const { paymentVoucherId } = routeParams;
 
 	const handleDelete = localStorage.getItem('paymentVoucherEvent');
 
 	function handleSavePaymentVoucher() {
 		dispatch(savePaymentVoucher(getValues())).then(res => {
 			console.log('savePaymentVoucherRes', res);
-			if (res.payload?.data?.id) {
+			if (res.payload?.data?.account_logs && res.payload?.data?.payment_vouchers) {
 				localStorage.setItem('paymentVoucherAlert', 'savePaymentVoucher');
 				history.push('/apps/paymentVoucher-management/paymentVouchers');
 			}
@@ -38,7 +39,7 @@ const NewPaymentVoucherHeader = ({ letFormSave }) => {
 	function handleUpdatePaymentVoucher() {
 		dispatch(updatePaymentVoucher(getValues())).then(res => {
 			console.log('updatePaymentVoucherRes', res);
-			if (res.payload?.data?.id) {
+			if (res.payload?.data?.data?.account_logs && res.payload?.data?.data?.payment_vouchers) {
 				localStorage.setItem('paymentVoucherAlert', 'updatePaymentVoucher');
 				history.push('/apps/paymentVoucher-management/paymentVouchers');
 			}
@@ -46,7 +47,7 @@ const NewPaymentVoucherHeader = ({ letFormSave }) => {
 	}
 
 	function handleRemovePaymentVoucher() {
-		dispatch(removePaymentVoucher(getValues())).then(res => {
+		dispatch(removePaymentVoucher(paymentVoucherId)).then(res => {
 			console.log('removePaymentVoucherRes', res);
 			if (res.payload) {
 				localStorage.removeItem('paymentVoucherEvent');
