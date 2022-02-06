@@ -29,17 +29,19 @@ const useStyles = makeStyles(theme => ({
 	...getAccountFormStyles(theme)
 }));
 
-function PaymentVoucherForm({ setLetFormSave }) {
+function ReceiptVoucherForm({ setLetFormSave }) {
 	const classes = useStyles();
-	const paymentVoucher = useSelector(({ paymentVouchersManagement }) => paymentVouchersManagement.paymentVoucher);
-	const { paymentVoucherId } = useParams();
+	const receiptVoucher = useSelector(({ receiptVouchersManagement }) => receiptVouchersManagement.receiptVoucher);
+	const { receiptVoucherId } = useParams();
 	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset } = methods;
 	const { errors } = formState;
 	const dispatch = useDispatch();
 	const passengers = useSelector(state => state.data.passengers);
+
 	const branchs = useSelector(state => state.data.branches);
 	const subLedgers = useSelector(state => state.data.subLedgers);
+
 	const ledgers = useSelector(state => state.data.ledgers);
 
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
@@ -99,8 +101,8 @@ function PaymentVoucherForm({ setLetFormSave }) {
 	};
 
 	useEffect(() => {
-		checkEmptyLedger(paymentVoucher?.items || []);
-	}, [paymentVoucher]);
+		checkEmptyLedger(receiptVoucher?.items || []);
+	}, [receiptVoucher]);
 
 	console.log('values', values);
 
@@ -233,10 +235,10 @@ function PaymentVoucherForm({ setLetFormSave }) {
 			/>
 
 			<Controller
-				name="payment_date"
+				name="receipt_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Payment Date" />;
+					return <CustomDatePicker field={field} label="Receipt Date" />;
 				}}
 			/>
 
@@ -302,6 +304,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 														<Autocomplete
 															className="mt-8 mb-16"
 															freeSolo
+															autoHighlight={true}
 															value={
 																value
 																	? ledgers.find(ledger => ledger.id === value)
@@ -360,7 +363,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
-																disabled={!!(paymentVoucherId === 'new' && idx === 0)}
 															/>
 														);
 													}}
@@ -394,6 +396,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
+																disabled={!!(receiptVoucherId === 'new' && idx === 0)}
 															/>
 														);
 													}}
@@ -472,4 +475,4 @@ function PaymentVoucherForm({ setLetFormSave }) {
 	);
 }
 
-export default PaymentVoucherForm;
+export default ReceiptVoucherForm;

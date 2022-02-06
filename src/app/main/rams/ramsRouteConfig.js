@@ -475,6 +475,44 @@ const ramsRouteConfig = {
 			component: lazy(() =>
 				import('./AllAccountManagement/PaymentVouchersManagement/PaymentVoucher/NewPaymentVoucher')
 			)
+		},
+		//receiptVoucher
+		{
+			path: '/apps/receiptVoucher-management/receiptVouchers/:receiptVoucherId/:receiptVoucherName?',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceiptVouchersManagement/ReceiptVoucher/NewReceiptVoucher')
+			)
+		},
+		{
+			path: '/apps/receiptVoucher-management/receiptVouchers',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceiptVouchersManagement/ReceiptVouchers/ReceiptVouchers')
+			)
+		},
+		{
+			path: '/apps/receiptVoucher-management/:receiptVoucherId',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceiptVouchersManagement/ReceiptVoucher/NewReceiptVoucher')
+			)
+		},
+		//receivableBill
+		{
+			path: '/apps/receivableBill-management/receivableBills/:receivableBillId/:receivableBillName?',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceivableBillsManagement/ReceivableBill/NewReceivableBill')
+			)
+		},
+		{
+			path: '/apps/receivableBill-management/receivableBills',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceivableBillsManagement/ReceivableBills/ReceivableBills')
+			)
+		},
+		{
+			path: '/apps/receivableBill-management/:receivableBillId',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceivableBillsManagement/ReceivableBill/NewReceivableBill')
+			)
 		}
 	]
 };

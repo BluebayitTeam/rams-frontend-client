@@ -1,17 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ledgerCashId } from 'app/@data/data';
 import axios from 'axios';
 import moment from 'moment';
 import {
 	BRANCH_BY_USER_ID,
-	CREATE_PAYMENTVOUCHER,
-	DELETE_PAYMENTVOUCHER,
-	GET_PAYMENT_VOUCHER_BY_INVOICE_NO,
-	UPDATE_PAYMENTVOUCHER
+	CREATE_RECEIVABLEBILL,
+	DELETE_RECEIVABLEBILL,
+	GET_RECEIVABLEBILL_BY_INVOICE_NO,
+	UPDATE_RECEIVABLEBILL
 } from '../../../../../constant/constants';
 
-export const getPaymentVoucher = createAsyncThunk(
-	'paymentVoucherManagement/paymentVoucher/getPaymentVoucher',
+export const getReceivableBill = createAsyncThunk(
+	'receivableBillManagement/receivableBill/getReceivableBill',
 	async (params, { rejectWithValue }) => {
 		const authTOKEN = {
 			headers: {
@@ -21,7 +20,7 @@ export const getPaymentVoucher = createAsyncThunk(
 		};
 
 		try {
-			const response = await axios.get(`${GET_PAYMENT_VOUCHER_BY_INVOICE_NO}${params}`, authTOKEN);
+			const response = await axios.get(`${GET_RECEIVABLEBILL_BY_INVOICE_NO}${params}`, authTOKEN);
 			const data = await response.data;
 			return data === undefined ? null : data;
 		} catch (err) {
@@ -30,9 +29,9 @@ export const getPaymentVoucher = createAsyncThunk(
 	}
 );
 
-export const removePaymentVoucher = createAsyncThunk(
-	'paymentVoucherManagement/paymentVoucher/removePaymentVoucher',
-	async paymentVoucherId => {
+export const removeReceivableBill = createAsyncThunk(
+	'receivableBillManagement/receivableBill/removeReceivableBill',
+	async receivableBillId => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -40,35 +39,35 @@ export const removePaymentVoucher = createAsyncThunk(
 			}
 		};
 
-		const response = await axios.delete(`${DELETE_PAYMENTVOUCHER}${paymentVoucherId}`, authTOKEN);
+		const response = await axios.delete(`${DELETE_RECEIVABLEBILL}${receivableBillId}`, authTOKEN);
 		return response;
 	}
 );
 
-export const updatePaymentVoucher = createAsyncThunk(
-	'paymentVoucherManagement/paymentVoucher/updatePaymentVoucher',
-	async paymentVoucherData => {
+export const updateReceivableBill = createAsyncThunk(
+	'receivableBillManagement/receivableBill/updateReceivableBill',
+	async receivableBillData => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.put(`${UPDATE_PAYMENTVOUCHER}`, paymentVoucherData, authTOKEN);
+		const response = await axios.put(`${UPDATE_RECEIVABLEBILL}`, receivableBillData, authTOKEN);
 		return response;
 	}
 );
 
-export const savePaymentVoucher = createAsyncThunk(
-	'paymentVoucherManagement/paymentVoucher/savePaymentVoucher',
-	async paymentVoucherData => {
+export const saveReceivableBill = createAsyncThunk(
+	'receivableBillManagement/receivableBill/saveReceivableBill',
+	async receivableBillData => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.post(`${CREATE_PAYMENTVOUCHER}`, paymentVoucherData, authTOKEN);
+		const response = await axios.post(`${CREATE_RECEIVABLEBILL}`, receivableBillData, authTOKEN);
 		return response;
 	}
 );
@@ -87,18 +86,18 @@ export const setUserBasedBranch = createAsyncThunk(
 	}
 );
 
-const paymentVoucherSlice = createSlice({
-	name: 'paymentVoucherManagement/paymentVoucher',
+const receivableBillSlice = createSlice({
+	name: 'receivableBillManagement/receivableBill',
 	initialState: null,
 	reducers: {
-		resetPaymentVoucher: () => null,
-		newPaymentVoucher: {
+		resetReceivableBill: () => null,
+		newReceivableBill: {
 			reducer: (_state, action) => action.payload,
 			prepare: () => ({
 				payload: {
-					payment_date: moment(new Date()).format('YYYY-MM-DD'),
+					date: moment(new Date()).format('YYYY-MM-DD'),
 					items: [
-						{ ledger: ledgerCashId, debit_amount: 0, credit_amount: 0 },
+						{ ledger: 3, debit_amount: 0, credit_amount: 0 },
 						{ ledger: null, debit_amount: 0, credit_amount: 0 }
 					]
 				}
@@ -106,10 +105,10 @@ const paymentVoucherSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getPaymentVoucher.fulfilled]: (_state, action) => action.payload,
-		[savePaymentVoucher.fulfilled]: (_state, action) => action.payload,
-		[removePaymentVoucher.fulfilled]: (_state, action) => action.payload,
-		[updatePaymentVoucher.fulfilled]: (_state, action) => action.payloHea,
+		[getReceivableBill.fulfilled]: (_state, action) => action.payload,
+		[saveReceivableBill.fulfilled]: (_state, action) => action.payload,
+		[removeReceivableBill.fulfilled]: (_state, action) => action.payload,
+		[updateReceivableBill.fulfilled]: (_state, action) => action.payloHea,
 		[setUserBasedBranch.fulfilled]: (state, action) => {
 			return {
 				...state,
@@ -119,6 +118,6 @@ const paymentVoucherSlice = createSlice({
 	}
 });
 
-export const { newPaymentVoucher, resetPaymentVoucher } = paymentVoucherSlice.actions;
+export const { newReceivableBill, resetReceivableBill } = receivableBillSlice.actions;
 
-export default paymentVoucherSlice.reducer;
+export default receivableBillSlice.reducer;

@@ -14,10 +14,7 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
-import File from 'app/@components/File';
 import getTotalAmount from 'app/@helpers/getTotalAmount';
-import { SEARCH_PASSENGER_BY } from 'app/constant/constants';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,10 +26,10 @@ const useStyles = makeStyles(theme => ({
 	...getAccountFormStyles(theme)
 }));
 
-function PaymentVoucherForm({ setLetFormSave }) {
+function ReceivableBillForm({ setLetFormSave }) {
 	const classes = useStyles();
-	const paymentVoucher = useSelector(({ paymentVouchersManagement }) => paymentVouchersManagement.paymentVoucher);
-	const { paymentVoucherId } = useParams();
+	const receivableBill = useSelector(({ receivableBillsManagement }) => receivableBillsManagement.receivableBill);
+	const { receivableBillId } = useParams();
 	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset } = methods;
 	const { errors } = formState;
@@ -99,8 +96,8 @@ function PaymentVoucherForm({ setLetFormSave }) {
 	};
 
 	useEffect(() => {
-		checkEmptyLedger(paymentVoucher?.items || []);
-	}, [paymentVoucher]);
+		checkEmptyLedger(receivableBill?.items || []);
+	}, [receivableBill]);
 
 	console.log('values', values);
 
@@ -136,38 +133,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 						)}
 					/>
 				)}
-			/>
-
-			<Controller
-				name="passengerSearchText"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							error={!!errors.passengerSearchText || !field.value}
-							helperText={errors?.passengerSearchText?.message}
-							label="Passenger"
-							id="passengerSearchText"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							onBlur={e => {
-								axios
-									.get(`${SEARCH_PASSENGER_BY}?keyword=${e.target.value}`)
-									.then(res => {
-										console.log('passenger_search_res', res);
-										setValue('passenger', res?.data?.passengers[0]?.id);
-									})
-									.catch(error => {
-										console.log({ error });
-									});
-							}}
-						/>
-					);
-				}}
 			/>
 
 			{/* <Controller
@@ -233,10 +198,10 @@ function PaymentVoucherForm({ setLetFormSave }) {
 			/>
 
 			<Controller
-				name="payment_date"
+				name="date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Payment Date" />;
+					return <CustomDatePicker field={field} label="Date" />;
 				}}
 			/>
 
@@ -263,7 +228,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 				}}
 			/>
 
-			<File name="file" label="File" />
 			<br />
 			<Grid xs={12}>
 				<div className={classes.mainContainer}>
@@ -360,7 +324,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
-																disabled={!!(paymentVoucherId === 'new' && idx === 0)}
 															/>
 														);
 													}}
@@ -394,6 +357,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
+																disabled={!!(receivableBillId === 'new' && idx === 0)}
 															/>
 														);
 													}}
@@ -472,4 +436,4 @@ function PaymentVoucherForm({ setLetFormSave }) {
 	);
 }
 
-export default PaymentVoucherForm;
+export default ReceivableBillForm;

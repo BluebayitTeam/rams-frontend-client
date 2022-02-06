@@ -489,10 +489,28 @@ const navigationConfig = [
 			//paymentVoucher
 			{
 				id: 'paymentVouchers',
-				title: 'PaymentVouchers',
-				translate: 'PaymentVouchers',
+				title: 'Payment Vouchers',
+				translate: 'Payment Vouchers',
 				type: 'item',
 				url: '/apps/paymentVoucher-management/paymentVouchers',
+				exact: true
+			},
+			//receiptVoucher
+			{
+				id: 'receiptVouchers',
+				title: 'Receipt Vouchers',
+				translate: 'Receipt Vouchers',
+				type: 'item',
+				url: '/apps/receiptVoucher-management/receiptVouchers',
+				exact: true
+			},
+			//receivableBill
+			{
+				id: 'receivableBills',
+				title: 'Receivable Bills',
+				translate: 'Receivable Bills',
+				type: 'item',
+				url: '/apps/receivableBill-management/receivableBills',
 				exact: true
 			}
 		]

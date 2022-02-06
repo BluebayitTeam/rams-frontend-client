@@ -2,7 +2,7 @@
 //http://192.168.0.172:8001
 
 //base url
-export const BASE_URL = 'http://192.168.0.172:8002';
+export const BASE_URL = 'http://api.cashconnectbd.com';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -120,6 +120,8 @@ export const VISAENTRYS_WITHOUT_PAGINATION = `${BASE_URL}/visa_entry/api/v1/visa
 
 //profession
 export const PROFESSIONS_WITHOUT_PAGINATION = `${BASE_URL}/profession/api/v1/profession/all/`;
+
+export const BRANCH_BY_USER_ID = `${BASE_URL}/branch/api/v1/branch/get_a_branch_by_user_id/`;
 
 //demand
 export const DEMANDS_WITHOUT_PAGINATION = `${BASE_URL}/demand/api/v1/demand/all/`;
@@ -579,7 +581,40 @@ export const DELETE_PAYMENTVOUCHER_MULTIPLE = `${BASE_URL}/payment_voucher/api/v
 export const SEARCH_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/search/`;
 
 export const GET_PAYMENT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
-export const GET_RECEIPT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
+
+//receiptVoucher
+export const CREATE_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/create/`;
+
+export const GET_RECEIPTVOUCHERS = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/all`;
+
+export const GET_RECEIPTVOUCHER_BY_ID = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/`;
+
+export const UPDATE_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/update/`;
+
+export const DELETE_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/delete/`;
+
+export const DELETE_RECEIPTVOUCHER_MULTIPLE = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/delete_multiple/`;
+
+export const SEARCH_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/search/`;
+
+export const GET_RECEIPT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/receipt_voucher_by_invoice_no/`;
+
+//sales
+export const CREATE_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/create/`;
+
+export const GET_RECEIVABLEBILLS = `${BASE_URL}/sale/api/v1/sale/all`;
+
+export const GET_RECEIVABLEBILL_BY_ID = `${BASE_URL}/sale/api/v1/sale/`;
+
+export const UPDATE_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/update/`;
+
+export const DELETE_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/delete/`;
+
+export const DELETE_RECEIVABLEBILL_MULTIPLE = `${BASE_URL}/sale/api/v1/sale/delete_multiple/`;
+
+export const SEARCH_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/search/`;
+
+export const GET_RECEIVABLEBILL_BY_INVOICE_NO = `${BASE_URL}/sale/api/v1/sale/sale_by_invoice_no/`;
 
 // site_settings
 export const CREATE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_setting/create/`;

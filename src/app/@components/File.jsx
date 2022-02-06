@@ -1,8 +1,10 @@
 import { Typography } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
+import { PictureAsPdf } from '@material-ui/icons';
+import { BASE_URL } from 'app/constant/constants';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 const useStyles = makeStyles(theme => ({
@@ -16,14 +18,16 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Image({ name, label, previewFile, setPreviewFile }) {
+function Image({ name, label }) {
 	const classes = useStyles();
 	const methods = useFormContext();
 	const { control, watch } = methods;
 	const file = watch(`${name}`) || '';
 
-	console.log('file', file);
-	console.log('previewFile', previewFile);
+	const [previewFile, setPreviewFile] = useState('');
+
+	// console.log('file', file);
+	// console.log('previewFile', previewFile);
 
 	return (
 		<>
@@ -66,32 +70,36 @@ function Image({ name, label, previewFile, setPreviewFile }) {
 								</Icon>
 							</label>
 						</div>
-						{/* {!previewFile && file && (file?.name || file)?.match(/.(jpg|jpeg|png|gif)$/i) ? (
-							<div style={{ width: '100px', height: '100px' }}>
-								<img src={`${BASE_URL}${file}`} />
+						{!previewFile && file && (
+							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+								{(file?.name || file)?.match(/.(pdf)/i) ? (
+									<PictureAsPdf
+										style={{
+											color: 'red',
+											cursor: 'pointer',
+											display: 'block'
+										}}
+										onClick={() => window.open(`${BASE_URL}${file}`)}
+									/>
+								) : (
+									<img src={`${BASE_URL}${file}`} />
+								)}
 							</div>
-						) : (
-							''
-						)} */}
+						)}
 
 						{previewFile && (
-							<div style={{ width: '100px', height: '100px' }}>
-								{/* <img src={previewFile} /> */}
-								{/* <button
-									onClick={() => {
-										window.open(previewFile);
-									}}
-								>
-									show in new tab
-								</button> */}
-								<embed src={previewFile} width="100px" height="100px" />
-								{/* <iframe
-									src={previewFile}
-									frameBorder="0"
-									scrolling="auto"
-									height="100px"
-									width="auto"
-								></iframe> */}
+							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+								{previewFile?.match(/.(pdf)/i) ? (
+									<iframe
+										src={previewFile}
+										frameBorder="0"
+										scrolling="auto"
+										height="150px"
+										width="150px"
+									></iframe>
+								) : (
+									<img src={previewFile} style={{ height: '150px' }} />
+								)}
 							</div>
 						)}
 					</div>

@@ -86,7 +86,7 @@ function GroupForm() {
 						options={groups}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
-							onChange(newValue?.id);
+							onChange(newValue?.id || null);
 						}}
 						renderInput={params => (
 							<TextField
@@ -116,7 +116,7 @@ function GroupForm() {
 						options={primaryGroups}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
-							onChange(newValue?.id);
+							onChange(newValue?.id || null);
 						}}
 						renderInput={params => (
 							<TextField

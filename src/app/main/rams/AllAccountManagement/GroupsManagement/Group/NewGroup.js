@@ -17,6 +17,9 @@ import NewGroupHeader from './NewGroupHeader.js';
 /**
  * Form Validation Schema
  */
+const schemaObj = {
+	name: yup.string().required('Name is required')
+};
 const schema = yup.object().shape({
 	name: yup.string().required('Name is required')
 });
@@ -33,7 +36,17 @@ const Group = () => {
 	});
 	const routeParams = useParams();
 
-	const { reset } = methods;
+	const { reset, setError } = methods;
+
+	useEffect(() => {
+		setTimeout(() => {
+			for (let key in schemaObj) {
+				setError(key, {
+					type: 'manual'
+				});
+			}
+		}, 0);
+	}, []);
 
 	useDeepCompareEffect(() => {
 		function updateGroupState() {

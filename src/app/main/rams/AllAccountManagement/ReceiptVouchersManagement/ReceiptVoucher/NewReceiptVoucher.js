@@ -1,38 +1,31 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { setUserBasedBranch } from '../../PaymentVouchersManagement/store/paymentVoucherSlice.js';
 import reducer from '../store/index.js';
-import {
-	getPaymentVoucher,
-	newPaymentVoucher,
-	resetPaymentVoucher,
-	setUserBasedBranch
-} from '../store/paymentVoucherSlice';
-import NewPaymentVoucherHeader from './NewPaymentVoucherHeader.js';
-import PaymentVoucherForm from './PaymentVoucherForm.js';
+import { getReceiptVoucher, newReceiptVoucher, resetReceiptVoucher } from '../store/receiptVoucherSlice';
+import NewReceiptVoucherHeader from './NewReceiptVoucherHeader.js';
+import ReceiptVoucherForm from './ReceiptVoucherForm.js';
 
-/**
- * Form Validation Schema
- */
 const schema = yup.object().shape({
-	passenger: yup.number().nullable().required('Passenger is required'),
+	passenger: yup.string().nullable().required('Passenger is required'),
 	branch: yup.string().nullable().required('Branch is required'),
 	sub_ledger: yup.string().nullable().required('Sub Ledger is required')
 });
 
-const PaymentVoucher = () => {
+const ReceiptVoucher = () => {
 	const dispatch = useDispatch();
-	const paymentVoucher = useSelector(({ paymentVouchersManagement }) => paymentVouchersManagement.paymentVoucher);
-	const [noPaymentVoucher, setNoPaymentVoucher] = useState(false);
+	const receiptVoucher = useSelector(({ receiptVouchersManagement }) => receiptVouchersManagement.receiptVoucher);
+	const [noReceiptVoucher, setNoReceiptVoucher] = useState(false);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -48,62 +41,62 @@ const PaymentVoucher = () => {
 	const { userId } = useUserInfo();
 
 	useDeepCompareEffect(() => {
-		function updatePaymentVoucherState() {
-			const { paymentVoucherId, paymentVoucherName } = routeParams;
+		function updateReceiptVoucherState() {
+			const { receiptVoucherId, receiptVoucherName } = routeParams;
 
-			if (paymentVoucherId === 'new') {
+			if (receiptVoucherId === 'new') {
 				localStorage.removeItem('event');
 				/**
 				 * Create New User data
 				 */
-				dispatch(newPaymentVoucher());
+				dispatch(newReceiptVoucher());
 				dispatch(setUserBasedBranch(userId));
 			} else {
 				/**
 				 * Get User data
 				 */
 
-				dispatch(getPaymentVoucher(paymentVoucherName)).then(action => {
+				dispatch(getReceiptVoucher(receiptVoucherName)).then(action => {
 					console.log(action.payload);
 					/**
 					 * If the requested product is not exist show message
 					 */
 					if (!action.payload) {
-						setNoPaymentVoucher(true);
+						setNoReceiptVoucher(true);
 					}
 				});
 			}
 		}
 
-		updatePaymentVoucherState();
+		updateReceiptVoucherState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {}, []);
 
 	useEffect(() => {
-		if (!paymentVoucher) {
+		if (!receiptVoucher) {
 			return;
 		}
 		/**
-		 * Reset the form on paymentVoucher state changes
+		 * Reset the form on receiptVoucher state changes
 		 */
-		reset(paymentVoucher);
-	}, [paymentVoucher, reset]);
+		reset(receiptVoucher);
+	}, [receiptVoucher, reset]);
 
 	useEffect(() => {
 		return () => {
 			/**
-			 * Reset PaymentVoucher on component unload
+			 * Reset ReceiptVoucher on component unload
 			 */
-			dispatch(resetPaymentVoucher());
-			setNoPaymentVoucher(false);
+			dispatch(resetReceiptVoucher());
+			setNoReceiptVoucher(false);
 		};
 	}, [dispatch]);
 
 	/**
 	 * Show Message if the requested products is not exists
 	 */
-	if (noPaymentVoucher) {
+	if (noReceiptVoucher) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -111,7 +104,7 @@ const PaymentVoucher = () => {
 				className="flex flex-col flex-1 items-center justify-center h-full"
 			>
 				<Typography color="textSecondary" variant="h5">
-					There is no such paymentVoucher!
+					There is no such receiptVoucher!
 				</Typography>
 				<Button
 					className="mt-24"
@@ -120,7 +113,7 @@ const PaymentVoucher = () => {
 					to="/apps/e-commerce/products"
 					color="inherit"
 				>
-					Go to PaymentVoucher Page
+					Go to ReceiptVoucher Page
 				</Button>
 			</motion.div>
 		);
@@ -133,10 +126,10 @@ const PaymentVoucher = () => {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<NewPaymentVoucherHeader letFormSave={letFormSave} />}
+				header={<NewReceiptVoucherHeader letFormSave={letFormSave} />}
 				content={
 					<div className="p-16 sm:p-24 max-w-2xl">
-						<PaymentVoucherForm setLetFormSave={setLetFormSave} />
+						<ReceiptVoucherForm setLetFormSave={setLetFormSave} />
 					</div>
 				}
 				innerScroll
@@ -144,4 +137,4 @@ const PaymentVoucher = () => {
 		</FormProvider>
 	);
 };
-export default withReducer('paymentVouchersManagement', reducer)(PaymentVoucher);
+export default withReducer('receiptVouchersManagement', reducer)(ReceiptVoucher);

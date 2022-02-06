@@ -86,8 +86,6 @@ const Medical = () => {
 				}}
 				contentToolbar={
 					<Tabs
-						// value={tabValue}
-						// onChange={handleTabChange}
 						indicatorColor="primary"
 						textColor="primary"
 						variant="scrollable"
@@ -102,6 +100,9 @@ const Medical = () => {
 									<Autocomplete
 										className={`w-full max-w-320 h-48 ${classes.container}`}
 										freeSolo
+										autoComplete={true}
+										autoSelect={true}
+										autoHighlight={true}
 										disabled={!!fromSearch}
 										value={value ? passengers.find(data => data.id == value) : null}
 										options={passengers}
@@ -168,7 +169,6 @@ const Medical = () => {
 												InputLabelProps={{
 													shrink: true
 												}}
-												// onKeyDown={handleSubmitOnKeyDownEnter}
 											/>
 										)}
 									/>

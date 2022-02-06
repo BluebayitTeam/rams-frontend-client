@@ -16,8 +16,11 @@ import NewLedgerHeader from './NewLedgerHeader.js';
 /**
  * Form Validation Schema
  */
-const schema = yup.object().shape({
+const schemaObj = {
 	name: yup.string().required('Name is required')
+};
+const schema = yup.object().shape({
+	...schemaObj
 });
 
 const Ledger = () => {
@@ -32,7 +35,17 @@ const Ledger = () => {
 	});
 	const routeParams = useParams();
 
-	const { reset } = methods;
+	const { reset, setError } = methods;
+
+	useEffect(() => {
+		setTimeout(() => {
+			for (let key in schemaObj) {
+				setError(key, {
+					type: 'manual'
+				});
+			}
+		}, 0);
+	}, []);
 
 	useDeepCompareEffect(() => {
 		function updateLedgerState() {

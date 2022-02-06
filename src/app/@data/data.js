@@ -46,3 +46,8 @@ export const updateAlertMsg = 'Update Success';
 export const removeAlertMsg = 'Remove Success';
 
 export const imgExtensionsArr = ['.jpg', '.jpeg', '.png'];
+
+export const ledgerCashId = 2;
+export const ledgerBankId = 1;
+export const ledgerCashName = 'Cash';
+export const ledgerBankName = 'Bank';
