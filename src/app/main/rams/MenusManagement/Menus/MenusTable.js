@@ -25,7 +25,9 @@ const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		flexWrap: 'nowrap'
+		flexWrap: 'nowrap',
+		overflow: 'auto',
+		minHeight: '35px'
 	},
 	toolbar: {
 		'& > div': {
@@ -263,6 +265,7 @@ const MenusTable = props => {
 
 			<div className={classes.root} id="pagiContainer">
 				<Pagination
+					classes={{ ul: 'flex-nowrap' }}
 					count={totalPages}
 					page={page + 1}
 					defaultPage={1}
@@ -275,6 +278,7 @@ const MenusTable = props => {
 				/>
 
 				<TablePagination
+					classes={{ root: 'overflow-visible' }}
 					rowsPerPageOptions={rowsPerPageOptions}
 					component="div"
 					count={totalElements}

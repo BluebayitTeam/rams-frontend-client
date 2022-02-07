@@ -27,7 +27,9 @@ const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		flexWrap: 'nowrap'
+		flexWrap: 'nowrap',
+		overflow: 'auto',
+		minHeight: '35px'
 	},
 	toolbar: {
 		'& > div': {
@@ -250,7 +252,7 @@ const PaymentVouchersTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
-										<div>
+										<div className="flex flex-nowrap">
 											<PrintIcon
 												className="cursor-pointer mr-3"
 												style={{ color: 'blue' }}
@@ -277,6 +279,7 @@ const PaymentVouchersTable = props => {
 
 			<div className={classes.root} id="pagiContainer">
 				<Pagination
+					classes={{ ul: 'flex-nowrap' }}
 					count={totalPages}
 					page={page + 1}
 					defaultPage={1}
@@ -289,6 +292,7 @@ const PaymentVouchersTable = props => {
 				/>
 
 				<TablePagination
+					classes={{ root: 'overflow-visible' }}
 					rowsPerPageOptions={rowsPerPageOptions}
 					component="div"
 					count={totalElements}
