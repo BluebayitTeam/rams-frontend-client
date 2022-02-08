@@ -18,7 +18,6 @@ import getTotalAmount from 'app/@helpers/getTotalAmount';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
 import { getBranches, getLedgers, getPassengers, getSubLedgers } from '../../../../../store/dataSlice';
 import { getAccountFormStyles } from '../../AccountUtils/accountMakeStyles';
 
@@ -29,12 +28,10 @@ const useStyles = makeStyles(theme => ({
 function ContraForm({ setLetFormSave }) {
 	const classes = useStyles();
 	const contra = useSelector(({ contrasManagement }) => contrasManagement.contra);
-	const { contraId } = useParams();
 	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset } = methods;
 	const { errors } = formState;
 	const dispatch = useDispatch();
-	const passengers = useSelector(state => state.data.passengers);
 	const branchs = useSelector(state => state.data.branches);
 	const subLedgers = useSelector(state => state.data.subLedgers);
 	const ledgers = useSelector(state => state.data.ledgers);
@@ -293,7 +290,6 @@ function ContraForm({ setLetFormSave }) {
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
-																disabled={!!(contraId === 'new' && idx === 0)}
 															/>
 														);
 													}}
@@ -345,10 +341,11 @@ function ContraForm({ setLetFormSave }) {
 															variant="outlined"
 															className={classes.btnContainer}
 															onClick={() => {
+																const values = getValues();
 																reset({
-																	...getValues(),
+																	...values,
 																	items: [
-																		...getValues()?.items,
+																		...values?.items,
 																		{
 																			ledger: null,
 																			debit_amount: 0,

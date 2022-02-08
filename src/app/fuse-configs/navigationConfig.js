@@ -521,6 +521,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/payableBill-management/payableBills',
 				exact: true
+			},
+			//contra
+			{
+				id: 'contras',
+				title: 'Contras',
+				translate: 'Contras',
+				type: 'item',
+				url: '/apps/contra-management/contras',
+				exact: true
 			}
 		]
 	},

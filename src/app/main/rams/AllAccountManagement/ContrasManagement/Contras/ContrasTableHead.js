@@ -59,13 +59,6 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'total_amount',
-		align: 'left',
-		disablePadding: false,
-		label: 'Total Amount',
-		sort: true
-	},
-	{
 		id: 'action',
 		align: 'center',
 		disablePadding: false,

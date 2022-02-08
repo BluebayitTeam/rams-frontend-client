@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ledgerCashId } from 'app/@data/data';
 import axios from 'axios';
 import moment from 'moment';
 import {
@@ -83,7 +82,7 @@ const contraSlice = createSlice({
 				payload: {
 					contra_date: moment(new Date()).format('YYYY-MM-DD'),
 					items: [
-						{ ledger: ledgerCashId, debit_amount: 0, credit_amount: 0 },
+						{ ledger: null, debit_amount: 0, credit_amount: 0 },
 						{ ledger: null, debit_amount: 0, credit_amount: 0 }
 					]
 				}

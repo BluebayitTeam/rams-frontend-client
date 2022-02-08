@@ -633,6 +633,40 @@ export const SEARCH_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/search/`
 
 export const GET_PAYABLEBILL_BY_INVOICE_NO = `${BASE_URL}/purchase/api/v1/purchase/purchase_by_invoice_no/`;
 
+//contras
+export const CREATE_CONTRA = `${BASE_URL}/contra/api/v1/contra/create/`;
+
+export const GET_CONTRAS = `${BASE_URL}/contra/api/v1/contra/all`;
+
+export const GET_CONTRA_BY_ID = `${BASE_URL}/contra/api/v1/contra/`;
+
+export const UPDATE_CONTRA = `${BASE_URL}/contra/api/v1/contra/update/`;
+
+export const DELETE_CONTRA = `${BASE_URL}/contra/api/v1/contra/delete/`;
+
+export const DELETE_CONTRA_MULTIPLE = `${BASE_URL}/contra/api/v1/contra/delete_multiple/`;
+
+export const SEARCH_CONTRA = `${BASE_URL}/contra/api/v1/contra/search/`;
+
+export const GET_CONTRA_BY_INVOICE_NO = `${BASE_URL}/contra/api/v1/contra/contra_by_invoice_no/`;
+
+//journals
+export const CREATE_JOURNAL = `${BASE_URL}/journal/api/v1/journal/create/`;
+
+export const GET_JOURNALS = `${BASE_URL}/journal/api/v1/journal/all`;
+
+export const GET_JOURNAL_BY_ID = `${BASE_URL}/journal/api/v1/journal/`;
+
+export const UPDATE_JOURNAL = `${BASE_URL}/journal/api/v1/journal/update/`;
+
+export const DELETE_JOURNAL = `${BASE_URL}/journal/api/v1/journal/delete/`;
+
+export const DELETE_JOURNAL_MULTIPLE = `${BASE_URL}/journal/api/v1/journal/delete_multiple/`;
+
+export const SEARCH_JOURNAL = `${BASE_URL}/journal/api/v1/journal/search/`;
+
+export const GET_JOURNAL_BY_INVOICE_NO = `${BASE_URL}/journal/api/v1/journal/journal_by_invoice_no/`;
+
 // site_settings
 export const CREATE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_setting/create/`;
 

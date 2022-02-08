@@ -21,7 +21,6 @@ import NewContraHeader from './NewContraHeader.js';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-	passenger: yup.number().nullable().required('Passenger is required'),
 	branch: yup.string().nullable().required('Branch is required'),
 	sub_ledger: yup.string().nullable().required('Sub Ledger is required')
 });

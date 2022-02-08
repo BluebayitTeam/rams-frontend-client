@@ -415,10 +415,11 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 															variant="outlined"
 															className={classes.btnContainer}
 															onClick={() => {
+																const values = getValues();
 																reset({
-																	...getValues(),
+																	...values,
 																	items: [
-																		...getValues()?.items,
+																		...values?.items,
 																		{
 																			ledger: null,
 																			debit_amount: 0,

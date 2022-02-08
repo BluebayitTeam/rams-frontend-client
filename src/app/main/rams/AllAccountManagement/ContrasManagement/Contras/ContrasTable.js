@@ -227,7 +227,7 @@ const ContrasTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n?.related_ledgers?.toString()}
+										{n.ledger?.name}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
@@ -235,11 +235,7 @@ const ContrasTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{`${n.details || ''}, ${n.ledger?.name || ''}`}
-									</TableCell>
-
-									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.amount}
+										{n.details}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">

@@ -526,6 +526,19 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/payableBill-management/:payableBillId',
 			component: lazy(() => import('./AllAccountManagement/PayableBillsManagement/PayableBill/NewPayableBill'))
+		},
+		//contra
+		{
+			path: '/apps/contra-management/contras/:contraId/:contraName?',
+			component: lazy(() => import('./AllAccountManagement/ContrasManagement/Contra/NewContra'))
+		},
+		{
+			path: '/apps/contra-management/contras',
+			component: lazy(() => import('./AllAccountManagement/ContrasManagement/Contras/Contras'))
+		},
+		{
+			path: '/apps/contra-management/:contraId',
+			component: lazy(() => import('./AllAccountManagement/ContrasManagement/Contra/NewContra'))
 		}
 	]
 };
