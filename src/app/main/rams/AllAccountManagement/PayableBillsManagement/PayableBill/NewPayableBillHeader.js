@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { removePayableBill, savePayableBill, updatePayableBill } from '../store/payableBillSlice';
 
-const NewPayableBillHeader = ({ letFormSave }) => {
+const NewPayableBillHeader = ({ letFormSave, extraItem }) => {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
@@ -27,7 +27,8 @@ const NewPayableBillHeader = ({ letFormSave }) => {
 	const handleDelete = localStorage.getItem('payableBillEvent');
 
 	function handleSavePayableBill() {
-		dispatch(savePayableBill(getValues())).then(res => {
+		const values = getValues();
+		dispatch(savePayableBill({ ...values, items: [...values?.items, extraItem] })).then(res => {
 			console.log('savePayableBillRes', res);
 			if (res.payload?.data?.account_logs && res.payload?.data?.purchases) {
 				localStorage.setItem('payableBillAlert', 'savePayableBill');
@@ -37,7 +38,8 @@ const NewPayableBillHeader = ({ letFormSave }) => {
 	}
 
 	function handleUpdatePayableBill() {
-		dispatch(updatePayableBill(getValues())).then(res => {
+		const values = getValues();
+		dispatch(updatePayableBill({ ...values, items: [...values?.items, extraItem] })).then(res => {
 			console.log('updatePayableBillRes', res);
 			if (res.payload?.data?.data?.account_logs && res.payload?.data?.data?.purchases) {
 				localStorage.setItem('payableBillAlert', 'updatePayableBill');

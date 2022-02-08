@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { removeReceivableBill, saveReceivableBill, updateReceivableBill } from '../store/receivableBillSlice';
 
-const NewReceivableBillHeader = ({ letFormSave }) => {
+const NewReceivableBillHeader = ({ letFormSave, extraItem }) => {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
@@ -27,7 +27,8 @@ const NewReceivableBillHeader = ({ letFormSave }) => {
 	const handleDelete = localStorage.getItem('receivableBillEvent');
 
 	function handleSaveReceivableBill() {
-		dispatch(saveReceivableBill(getValues())).then(res => {
+		const values = getValues();
+		dispatch(saveReceivableBill({ ...values, items: [...values?.items, extraItem] })).then(res => {
 			console.log('saveReceivableBillRes', res);
 			if (res.payload?.data?.account_logs && res.payload?.data?.sales) {
 				localStorage.setItem('receivableBillAlert', 'saveReceivableBill');
@@ -37,7 +38,8 @@ const NewReceivableBillHeader = ({ letFormSave }) => {
 	}
 
 	function handleUpdateReceivableBill() {
-		dispatch(updateReceivableBill(getValues())).then(res => {
+		const values = getValues();
+		dispatch(updateReceivableBill({ ...values, items: [...values?.items, extraItem] })).then(res => {
 			console.log('updateReceivableBillRes', res);
 			if (res.payload?.data?.data?.account_logs && res.payload?.data?.data?.sales) {
 				localStorage.setItem('receivableBillAlert', 'updateReceivableBill');

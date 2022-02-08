@@ -1,6 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -50,7 +51,7 @@ const Passenger = () => {
 	});
 	const routeParams = useParams();
 
-	const { reset } = methods;
+	const { reset, getValues } = methods;
 
 	useDeepCompareEffect(() => {
 		function updatePassengerState() {
@@ -89,9 +90,10 @@ const Passenger = () => {
 		/**
 		 * Reset the form on passenger state changes
 		 */
-		reset(passenger);
+		reset(setIdIfValueIsObject2(passenger));
 	}, [passenger, reset]);
 
+	console.log('values', getValues());
 	useEffect(() => {
 		return () => {
 			/**

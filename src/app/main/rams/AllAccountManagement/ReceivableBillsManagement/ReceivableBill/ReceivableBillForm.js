@@ -14,11 +14,11 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
+import File from 'app/@components/File';
 import getTotalAmount from 'app/@helpers/getTotalAmount';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
 import { getBranches, getLedgers, getPassengers, getSubLedgers } from '../../../../../store/dataSlice';
 import { getAccountFormStyles } from '../../AccountUtils/accountMakeStyles';
 
@@ -26,10 +26,9 @@ const useStyles = makeStyles(theme => ({
 	...getAccountFormStyles(theme)
 }));
 
-function ReceivableBillForm({ setLetFormSave }) {
+function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 	const classes = useStyles();
 	const receivableBill = useSelector(({ receivableBillsManagement }) => receivableBillsManagement.receivableBill);
-	const { receivableBillId } = useParams();
 	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset } = methods;
 	const { errors } = formState;
@@ -39,9 +38,6 @@ function ReceivableBillForm({ setLetFormSave }) {
 	const subLedgers = useSelector(state => state.data.subLedgers);
 	const ledgers = useSelector(state => state.data.ledgers);
 
-	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
-	const [debitCreditMessage, setDebitCreditMessage] = useState('');
-	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
 	const [ledgerMessage, setLedgerMessage] = useState('');
 
 	const values = getValues();
@@ -59,19 +55,15 @@ function ReceivableBillForm({ setLetFormSave }) {
 		dispatch(getLedgers());
 	}, []);
 
-	const cheackDbCdEquality = async () => {
+	useEffect(() => {
+		const ledgerCompanyPurchaseId = ledgers?.find(data => data?.name === 'Company Purchase')?.id;
+		setExtraItem(item => ({ ...item, ledger: ledgerCompanyPurchaseId }));
+	}, [ledgers]);
+
+	const setExtraItemState = async () => {
 		const items = getValues()?.items || [];
 		const totalDebitAmount = getTotalAmount(items || [], 'debit_amount');
-		const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
-		if (totalDebitAmount == totalCreditAmount) {
-			setIsDebitCreditMatched(true);
-			setDebitCreditMessage('Congratulations, Debit & Credit match...');
-			haveEmptyLedger || setLetFormSave(true);
-		} else {
-			setIsDebitCreditMatched(false);
-			setDebitCreditMessage("Sorry, Debit and Credit doesn't match...");
-			setLetFormSave(false);
-		}
+		setExtraItem(item => ({ ...item, credit_amount: totalDebitAmount }));
 	};
 
 	const checkEmptyLedger = async itms => {
@@ -85,13 +77,11 @@ function ReceivableBillForm({ setLetFormSave }) {
 		});
 
 		if (isLedgerEmpty) {
-			setHaveEmptyLedger(true);
 			setLedgerMessage('Account type is required');
 			setLetFormSave(false);
 		} else {
-			setHaveEmptyLedger(false);
 			setLedgerMessage('');
-			isDebitCreditMatched && setLetFormSave(true);
+			setLetFormSave(true);
 		}
 	};
 
@@ -135,13 +125,14 @@ function ReceivableBillForm({ setLetFormSave }) {
 				)}
 			/>
 
-			{/* <Controller
+			<Controller
 				name="passenger"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
+						autoHighlight
 						value={value ? passengers.find(data => data.id == value) : null}
 						options={passengers}
 						getOptionLabel={option => `${option.passenger_name}`}
@@ -164,7 +155,7 @@ function ReceivableBillForm({ setLetFormSave }) {
 						)}
 					/>
 				)}
-			/> */}
+			/>
 
 			<Controller
 				name="sub_ledger"
@@ -198,7 +189,7 @@ function ReceivableBillForm({ setLetFormSave }) {
 			/>
 
 			<Controller
-				name="date"
+				name="sales_date"
 				control={control}
 				render={({ field }) => {
 					return <CustomDatePicker field={field} label="Date" />;
@@ -228,6 +219,7 @@ function ReceivableBillForm({ setLetFormSave }) {
 				}}
 			/>
 
+			<File name="file" label="File" />
 			<br />
 			<Grid xs={12}>
 				<div className={classes.mainContainer}>
@@ -317,8 +309,7 @@ function ReceivableBillForm({ setLetFormSave }) {
 																				? value
 																				: Number(value)
 																		);
-																		setValue(`items.${idx}.credit_amount`, 0);
-																		cheackDbCdEquality();
+																		setExtraItemState();
 																	}
 																}}
 																variant="outlined"
@@ -341,29 +332,16 @@ function ReceivableBillForm({ setLetFormSave }) {
 																label="Credit"
 																id="credit"
 																required
-																onChange={e => {
-																	const value = e.target.value;
-																	if (!isNaN(value)) {
-																		setValue(
-																			`items.${idx}.credit_amount`,
-																			value?.slice(-1) == '.'
-																				? value
-																				: Number(value)
-																		);
-																		setValue(`items.${idx}.debit_amount`, 0);
-																		cheackDbCdEquality();
-																	}
-																}}
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
-																disabled={!!(receivableBillId === 'new' && idx === 0)}
+																disabled
 															/>
 														);
 													}}
 												/>
 											</TableCell>
-											{idx === 0 && (
+											{idx === 0 ? (
 												<TableCell
 													className="p-0 md:p-0"
 													align="center"
@@ -394,8 +372,7 @@ function ReceivableBillForm({ setLetFormSave }) {
 														</div>
 													</div>
 												</TableCell>
-											)}
-											{idx !== 0 && idx !== 1 && (
+											) : (
 												<TableCell
 													className="p-0 md:p-0"
 													align="center"
@@ -407,7 +384,7 @@ function ReceivableBillForm({ setLetFormSave }) {
 														<DeleteIcon
 															onClick={() => {
 																remove(idx);
-																cheackDbCdEquality();
+																setExtraItemState();
 																checkEmptyLedger();
 															}}
 															className="h-72 cursor-pointer"
@@ -425,11 +402,6 @@ function ReceivableBillForm({ setLetFormSave }) {
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 					{<Typography style={{ color: 'red' }}>{ledgerMessage}</Typography>}
-					{debitCreditMessage && (
-						<Typography style={{ color: isDebitCreditMatched ? 'green' : 'red' }}>
-							{debitCreditMessage}
-						</Typography>
-					)}
 				</div>
 			</Grid>
 		</div>

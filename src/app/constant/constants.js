@@ -600,21 +600,21 @@ export const SEARCH_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt
 export const GET_RECEIPT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/receipt_voucher_by_invoice_no/`;
 
 //sales
-export const CREATE_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/create/`;
+export const CREATE_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/create/`;
 
-export const GET_RECEIVABLEBILLS = `${BASE_URL}/sale/api/v1/sale/all`;
+export const GET_RECEIVABLEBILLS = `${BASE_URL}/sales/api/v1/sales/all`;
 
-export const GET_RECEIVABLEBILL_BY_ID = `${BASE_URL}/sale/api/v1/sale/`;
+export const GET_RECEIVABLEBILL_BY_ID = `${BASE_URL}/sales/api/v1/sales/`;
 
-export const UPDATE_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/update/`;
+export const UPDATE_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/update/`;
 
-export const DELETE_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/delete/`;
+export const DELETE_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/delete/`;
 
-export const DELETE_RECEIVABLEBILL_MULTIPLE = `${BASE_URL}/sale/api/v1/sale/delete_multiple/`;
+export const DELETE_RECEIVABLEBILL_MULTIPLE = `${BASE_URL}/sales/api/v1/sales/delete_multiple/`;
 
-export const SEARCH_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/search/`;
+export const SEARCH_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/search/`;
 
-export const GET_RECEIVABLEBILL_BY_INVOICE_NO = `${BASE_URL}/sale/api/v1/sale/sale_by_invoice_no/`;
+export const GET_RECEIVABLEBILL_BY_INVOICE_NO = `${BASE_URL}/sales/api/v1/sales/receipt_voucher_by_invoice_no/`;
 
 //purchases
 export const CREATE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/create/`;

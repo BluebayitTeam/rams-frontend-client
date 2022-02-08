@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
 import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -38,6 +39,7 @@ const ReceivableBill = () => {
 	const { reset } = methods;
 
 	const [letFormSave, setLetFormSave] = useState(false);
+	const [extraItem, setExtraItem] = useState({ ledger: null, debit_amount: 0, credit_amount: 0 });
 
 	const { userId } = useUserInfo();
 
@@ -81,7 +83,9 @@ const ReceivableBill = () => {
 		/**
 		 * Reset the form on receivableBill state changes
 		 */
-		reset({ ...receivableBill, items: setIdIfValueIsObjArryData(receivableBill?.items) });
+		const convertedReceivableBillItems = setIdIfValueIsObjArryData(receivableBill?.items);
+		const convertedReceivableBill = setIdIfValueIsObject2(receivableBill);
+		reset({ ...convertedReceivableBill, items: convertedReceivableBillItems });
 	}, [receivableBill, reset]);
 
 	useEffect(() => {
@@ -127,10 +131,10 @@ const ReceivableBill = () => {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<NewReceivableBillHeader letFormSave={letFormSave} />}
+				header={<NewReceivableBillHeader letFormSave={letFormSave} extraItem={extraItem} />}
 				content={
 					<div className="p-16 sm:p-24 max-w-2xl">
-						<ReceivableBillForm setLetFormSave={setLetFormSave} />
+						<ReceivableBillForm setLetFormSave={setLetFormSave} setExtraItem={setExtraItem} />
 					</div>
 				}
 				innerScroll

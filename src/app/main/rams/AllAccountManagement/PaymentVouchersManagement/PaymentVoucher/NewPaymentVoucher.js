@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
 import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -88,7 +89,9 @@ const PaymentVoucher = () => {
 		/**
 		 * Reset the form on paymentVoucher state changes
 		 */
-		reset({ ...paymentVoucher, items: setIdIfValueIsObjArryData(paymentVoucher?.items) });
+		const convertedPaymentVoucherItems = setIdIfValueIsObjArryData(paymentVoucher?.items);
+		const convertedPaymentVoucher = setIdIfValueIsObject2(paymentVoucher);
+		reset({ ...convertedPaymentVoucher, items: convertedPaymentVoucherItems });
 	}, [paymentVoucher, reset]);
 
 	useEffect(() => {

@@ -2,6 +2,7 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Tab, Tabs } from '@material-ui/core';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -83,7 +84,7 @@ const Agent = () => {
 		/**
 		 * Reset the form on agent state changes
 		 */
-		reset(agent);
+		reset(setIdIfValueIsObject2(agent));
 	}, [agent, reset]);
 
 	useEffect(() => {

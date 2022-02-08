@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
 import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -35,9 +36,10 @@ const PayableBill = () => {
 
 	const routeParams = useParams();
 
-	const { reset, setError } = methods;
+	const { reset } = methods;
 
 	const [letFormSave, setLetFormSave] = useState(false);
+	const [extraItem, setExtraItem] = useState({ ledger: null, debit_amount: 0, credit_amount: 0 });
 
 	const { userId } = useUserInfo();
 
@@ -81,7 +83,9 @@ const PayableBill = () => {
 		/**
 		 * Reset the form on payableBill state changes
 		 */
-		reset({ ...payableBill, items: setIdIfValueIsObjArryData(payableBill?.items) });
+		const convertedPayableBillItems = setIdIfValueIsObjArryData(payableBill?.items);
+		const convertedPayableBill = setIdIfValueIsObject2(payableBill);
+		reset({ ...convertedPayableBill, items: convertedPayableBillItems });
 	}, [payableBill, reset]);
 
 	useEffect(() => {
@@ -127,10 +131,10 @@ const PayableBill = () => {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<NewPayableBillHeader letFormSave={letFormSave} />}
+				header={<NewPayableBillHeader letFormSave={letFormSave} extraItem={extraItem} />}
 				content={
 					<div className="p-16 sm:p-24 max-w-2xl">
-						<PayableBillForm setLetFormSave={setLetFormSave} />
+						<PayableBillForm setLetFormSave={setLetFormSave} setExtraItem={setExtraItem} />
 					</div>
 				}
 				innerScroll

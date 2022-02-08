@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
 import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -81,7 +82,9 @@ const ReceiptVoucher = () => {
 		/**
 		 * Reset the form on receiptVoucher state changes
 		 */
-		reset({ ...receiptVoucher, items: setIdIfValueIsObjArryData(receiptVoucher?.items) });
+		const convertedReceiptVoucherItems = setIdIfValueIsObjArryData(receiptVoucher?.items);
+		const convertedReceiptVoucher = setIdIfValueIsObject2(receiptVoucher);
+		reset({ ...convertedReceiptVoucher, items: convertedReceiptVoucherItems });
 	}, [receiptVoucher, reset]);
 
 	useEffect(() => {

@@ -95,11 +95,8 @@ const receivableBillSlice = createSlice({
 			reducer: (_state, action) => action.payload,
 			prepare: () => ({
 				payload: {
-					date: moment(new Date()).format('YYYY-MM-DD'),
-					items: [
-						{ ledger: 3, debit_amount: 0, credit_amount: 0 },
-						{ ledger: null, debit_amount: 0, credit_amount: 0 }
-					]
+					sales_date: moment(new Date()).format('YYYY-MM-DD'),
+					items: [{ ledger: null, debit_amount: 0, credit_amount: 0 }]
 				}
 			})
 		}

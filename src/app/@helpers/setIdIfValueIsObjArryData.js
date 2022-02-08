@@ -21,7 +21,7 @@ const setIdIfValueIsObjArryData = array => {
 		console.log({ err });
 	}
 
-	console.log({ conVertedArray: conVertedArray });
+	console.log('conVertedArray', conVertedArray);
 
 	return conVertedArray;
 };
