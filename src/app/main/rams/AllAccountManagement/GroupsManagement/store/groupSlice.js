@@ -75,7 +75,7 @@ const groupSlice = createSlice({
 		[getGroup.fulfilled]: (_state, action) => action.payload,
 		[saveGroup.fulfilled]: (_state, action) => action.payload,
 		[removeGroup.fulfilled]: (_state, action) => action.payload,
-		[updateGroup.fulfilled]: (_state, action) => action.payloHea
+		[updateGroup.fulfilled]: (_state, action) => action.payload
 	}
 });
 

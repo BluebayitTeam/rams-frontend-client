@@ -130,7 +130,7 @@ const passengerSlice = createSlice({
 		[getPassenger.fulfilled]: (state, action) => action.payload,
 		[savePassenger.fulfilled]: (state, action) => action.payload,
 		[removePassenger.fulfilled]: (state, action) => action.payload,
-		[updatePassenger.fulfilled]: (state, action) => action.payloHea
+		[updatePassenger.fulfilled]: (state, action) => action.payload
 	}
 });
 

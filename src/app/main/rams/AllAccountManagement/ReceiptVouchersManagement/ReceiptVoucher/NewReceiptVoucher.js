@@ -3,7 +3,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
+import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -81,7 +81,7 @@ const ReceiptVoucher = () => {
 		/**
 		 * Reset the form on receiptVoucher state changes
 		 */
-		reset({ ...receiptVoucher, items: setIdIfValueIsObject2(receiptVoucher?.items) });
+		reset({ ...receiptVoucher, items: setIdIfValueIsObjArryData(receiptVoucher?.items) });
 	}, [receiptVoucher, reset]);
 
 	useEffect(() => {

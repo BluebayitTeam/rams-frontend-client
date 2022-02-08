@@ -75,7 +75,7 @@ const ledgerSlice = createSlice({
 		[getLedger.fulfilled]: (_state, action) => action.payload,
 		[saveLedger.fulfilled]: (_state, action) => action.payload,
 		[removeLedger.fulfilled]: (_state, action) => action.payload,
-		[updateLedger.fulfilled]: (_state, action) => action.payloHea
+		[updateLedger.fulfilled]: (_state, action) => action.payload
 	}
 });
 

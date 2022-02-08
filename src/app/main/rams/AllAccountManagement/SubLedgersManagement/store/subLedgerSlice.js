@@ -83,7 +83,7 @@ const subLedgerSlice = createSlice({
 		[getSubLedger.fulfilled]: (_state, action) => action.payload,
 		[saveSubLedger.fulfilled]: (_state, action) => action.payload,
 		[removeSubLedger.fulfilled]: (_state, action) => action.payload,
-		[updateSubLedger.fulfilled]: (_state, action) => action.payloHea
+		[updateSubLedger.fulfilled]: (_state, action) => action.payload
 	}
 });
 

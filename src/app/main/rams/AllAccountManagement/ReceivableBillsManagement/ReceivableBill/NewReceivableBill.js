@@ -3,7 +3,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
+import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -81,7 +81,7 @@ const ReceivableBill = () => {
 		/**
 		 * Reset the form on receivableBill state changes
 		 */
-		reset({ ...receivableBill, items: setIdIfValueIsObject2(receivableBill?.items) });
+		reset({ ...receivableBill, items: setIdIfValueIsObjArryData(receivableBill?.items) });
 	}, [receivableBill, reset]);
 
 	useEffect(() => {

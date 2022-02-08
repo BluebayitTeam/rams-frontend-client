@@ -109,7 +109,7 @@ const paymentVoucherSlice = createSlice({
 		[getPaymentVoucher.fulfilled]: (_state, action) => action.payload,
 		[savePaymentVoucher.fulfilled]: (_state, action) => action.payload,
 		[removePaymentVoucher.fulfilled]: (_state, action) => action.payload,
-		[updatePaymentVoucher.fulfilled]: (_state, action) => action.payloHea,
+		[updatePaymentVoucher.fulfilled]: (_state, action) => action.payload,
 		[setUserBasedBranch.fulfilled]: (state, action) => {
 			return {
 				...state,

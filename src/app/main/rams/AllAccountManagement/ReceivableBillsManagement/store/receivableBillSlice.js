@@ -108,7 +108,7 @@ const receivableBillSlice = createSlice({
 		[getReceivableBill.fulfilled]: (_state, action) => action.payload,
 		[saveReceivableBill.fulfilled]: (_state, action) => action.payload,
 		[removeReceivableBill.fulfilled]: (_state, action) => action.payload,
-		[updateReceivableBill.fulfilled]: (_state, action) => action.payloHea,
+		[updateReceivableBill.fulfilled]: (_state, action) => action.payload,
 		[setUserBasedBranch.fulfilled]: (state, action) => {
 			return {
 				...state,

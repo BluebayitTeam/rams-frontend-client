@@ -82,7 +82,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 
 		let isLedgerEmpty = false;
 		items.map(itm => {
-			if (!itm.ledger) {
+			if (!itm?.ledger) {
 				isLedgerEmpty = true;
 			}
 		});
@@ -170,12 +170,12 @@ function PaymentVoucherForm({ setLetFormSave }) {
 				}}
 			/>
 
-			{/* <Controller
+			<Controller
 				name="passenger"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
-						className="mt-8 mb-16"
+						className="mt-8 mb-16 hidden"
 						freeSolo
 						value={value ? passengers.find(data => data.id == value) : null}
 						options={passengers}
@@ -199,7 +199,7 @@ function PaymentVoucherForm({ setLetFormSave }) {
 						)}
 					/>
 				)}
-			/> */}
+			/>
 
 			<Controller
 				name="sub_ledger"

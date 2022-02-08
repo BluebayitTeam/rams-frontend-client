@@ -109,7 +109,7 @@ const receiptVoucherSlice = createSlice({
 		[getReceiptVoucher.fulfilled]: (_state, action) => action.payload,
 		[saveReceiptVoucher.fulfilled]: (_state, action) => action.payload,
 		[removeReceiptVoucher.fulfilled]: (_state, action) => action.payload,
-		[updateReceiptVoucher.fulfilled]: (_state, action) => action.payloHea,
+		[updateReceiptVoucher.fulfilled]: (_state, action) => action.payload,
 		[setUserBasedBranch.fulfilled]: (state, action) => {
 			return {
 				...state,
