@@ -2,7 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import axios from 'axios';
 import { DELETE_LEDGER_MULTIPLE, GET_LEDGERS } from '../../../../../constant/constants';
 
-export const getLedgers = createAsyncThunk('ledgerManagement/ledgers/geLedgers', async pageAndSize => {
+export const getLedgers = createAsyncThunk('ledgerManagement/ledgers/getLedgers', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
 	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DELETE_RECEIPTVOUCHER_MULTIPLE, GET_RECEIPTVOUCHERS } from '../../../../../constant/constants';
 
 export const getReceiptVouchers = createAsyncThunk(
-	'receiptVoucherManagement/receiptVouchers/geReceiptVouchers',
+	'receiptVoucherManagement/receiptVouchers/getReceiptVouchers',
 	async pageAndSize => {
 		axios.defaults.headers.common['Content-type'] = 'application/json';
 		axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');

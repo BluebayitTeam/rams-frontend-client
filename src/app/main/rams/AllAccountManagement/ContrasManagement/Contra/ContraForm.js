@@ -14,10 +14,7 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
-import File from 'app/@components/File';
 import getTotalAmount from 'app/@helpers/getTotalAmount';
-import { SEARCH_PASSENGER_BY } from 'app/constant/constants';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,19 +26,17 @@ const useStyles = makeStyles(theme => ({
 	...getAccountFormStyles(theme)
 }));
 
-function ReceiptVoucherForm({ setLetFormSave }) {
+function ContraForm({ setLetFormSave }) {
 	const classes = useStyles();
-	const receiptVoucher = useSelector(({ receiptVouchersManagement }) => receiptVouchersManagement.receiptVoucher);
-	const { receiptVoucherId } = useParams();
+	const contra = useSelector(({ contrasManagement }) => contrasManagement.contra);
+	const { contraId } = useParams();
 	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset } = methods;
 	const { errors } = formState;
 	const dispatch = useDispatch();
 	const passengers = useSelector(state => state.data.passengers);
-
 	const branchs = useSelector(state => state.data.branches);
 	const subLedgers = useSelector(state => state.data.subLedgers);
-
 	const ledgers = useSelector(state => state.data.ledgers);
 
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
@@ -84,7 +79,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 
 		let isLedgerEmpty = false;
 		items.map(itm => {
-			if (!itm.ledger) {
+			if (!itm?.ledger) {
 				isLedgerEmpty = true;
 			}
 		});
@@ -101,8 +96,8 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 	};
 
 	useEffect(() => {
-		checkEmptyLedger(receiptVoucher?.items || []);
-	}, [receiptVoucher]);
+		checkEmptyLedger(contra?.items || []);
+	}, [contra]);
 
 	console.log('values', values);
 
@@ -141,69 +136,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 			/>
 
 			<Controller
-				name="passengerSearchText"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							error={!!errors.passengerSearchText || !field.value}
-							helperText={errors?.passengerSearchText?.message}
-							label="Passenger"
-							id="passengerSearchText"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							onBlur={e => {
-								axios
-									.get(`${SEARCH_PASSENGER_BY}?keyword=${e.target.value}`)
-									.then(res => {
-										console.log('passenger_search_res', res);
-										setValue('passenger', res?.data?.passengers[0]?.id);
-									})
-									.catch(error => {
-										console.log({ error });
-									});
-							}}
-						/>
-					);
-				}}
-			/>
-
-			{/* <Controller
-				name="passenger"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? passengers.find(data => data.id == value) : null}
-						options={passengers}
-						getOptionLabel={option => `${option.passenger_name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={params => (
-							<TextField
-								{...params}
-								placeholder="Select Passenger"
-								label="Passenger"
-								error={!!errors.passenger || !value}
-								helperText={errors?.passenger?.message}
-								variant="outlined"
-								required
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/> */}
-
-			<Controller
 				name="sub_ledger"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -235,10 +167,10 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 			/>
 
 			<Controller
-				name="sales_date"
+				name="contra_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Sale Date" />;
+					return <CustomDatePicker field={field} label="Contra Date" />;
 				}}
 			/>
 
@@ -265,7 +197,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 				}}
 			/>
 
-			<File name="file" label="File" />
 			<br />
 			<Grid xs={12}>
 				<div className={classes.mainContainer}>
@@ -300,11 +231,10 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 												<Controller
 													name={`items.${idx}.ledger`}
 													control={control}
-													render={({ field: { onChange, value } }) => (
+													render={({ field: { value } }) => (
 														<Autocomplete
 															className="mt-8 mb-16"
 															freeSolo
-															autoHighlight={true}
 															value={
 																value
 																	? ledgers.find(ledger => ledger.id === value)
@@ -363,6 +293,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
+																disabled={!!(contraId === 'new' && idx === 0)}
 															/>
 														);
 													}}
@@ -396,7 +327,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 																variant="outlined"
 																InputLabelProps={{ shrink: true }}
 																fullWidth
-																disabled={!!(receiptVoucherId === 'new' && idx === 0)}
 															/>
 														);
 													}}
@@ -475,4 +405,4 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 	);
 }
 
-export default ReceiptVoucherForm;
+export default ContraForm;

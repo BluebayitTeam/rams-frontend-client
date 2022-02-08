@@ -192,7 +192,7 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 				name="purchase_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Date" />;
+					return <CustomDatePicker field={field} label="Purchase Date" />;
 				}}
 			/>
 

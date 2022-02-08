@@ -74,7 +74,7 @@ export const saveReceiptVoucher = createAsyncThunk(
 );
 
 export const setUserBasedBranch = createAsyncThunk(
-	'paymentvoucherManagement/paymentvoucher/setUserBasedBranch',
+	'receiptVoucherManagement/receiptVoucher/setUserBasedBranch',
 	async userId => {
 		const authTOKEN = {
 			headers: {

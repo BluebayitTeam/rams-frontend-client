@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DELETE_RECEIVABLEBILL_MULTIPLE, GET_RECEIVABLEBILLS } from '../../../../../constant/constants';
 
 export const getReceivableBills = createAsyncThunk(
-	'receivableBillManagement/receivableBills/geReceivableBills',
+	'receivableBillManagement/receivableBills/getReceivableBills',
 	async pageAndSize => {
 		axios.defaults.headers.common['Content-type'] = 'application/json';
 		axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');

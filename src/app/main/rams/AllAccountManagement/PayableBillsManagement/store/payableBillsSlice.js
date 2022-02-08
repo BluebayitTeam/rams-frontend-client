@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DELETE_PAYABLEBILL_MULTIPLE, GET_PAYABLEBILLS } from '../../../../../constant/constants';
 
 export const getPayableBills = createAsyncThunk(
-	'payableBillManagement/payableBills/gePayableBills',
+	'payableBillManagement/payableBills/getPayableBills',
 	async pageAndSize => {
 		axios.defaults.headers.common['Content-type'] = 'application/json';
 		axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');

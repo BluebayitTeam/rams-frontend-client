@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DELETE_PAYMENTVOUCHER_MULTIPLE, GET_PAYMENTVOUCHERS } from '../../../../../constant/constants';
 
 export const getPaymentVouchers = createAsyncThunk(
-	'paymentVoucherManagement/paymentVouchers/gePaymentVouchers',
+	'paymentVoucherManagement/paymentVouchers/getPaymentVouchers',
 	async pageAndSize => {
 		axios.defaults.headers.common['Content-type'] = 'application/json';
 		axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');

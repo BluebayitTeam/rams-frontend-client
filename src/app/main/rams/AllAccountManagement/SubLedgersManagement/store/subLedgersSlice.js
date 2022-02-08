@@ -2,7 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import axios from 'axios';
 import { DELETE_SUBLEDGER_MULTIPLE, GET_SUBLEDGERS } from '../../../../../constant/constants';
 
-export const getSubLedgers = createAsyncThunk('subLedgerManagement/subLedgers/geSubLedgers', async pageAndSize => {
+export const getSubLedgers = createAsyncThunk('subLedgerManagement/subLedgers/getSubLedgers', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
 	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 

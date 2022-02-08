@@ -2,61 +2,58 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import axios from 'axios';
 import { DELETE_ROLEMENU, GET_ROLEMENUS } from '../../../../constant/constants';
 
-export const getRoleMenus = createAsyncThunk('roleMenuManagement/roleMenus/geRoleMenus', async (pageAndSize) => {
+export const getRoleMenus = createAsyncThunk('roleMenuManagement/roleMenus/getRoleMenus', async pageAndSize => {
+	axios.defaults.headers.common['Content-type'] = 'application/json';
+	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
-    axios.defaults.headers.common['Content-type'] = 'application/json';
-    axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+	const response = axios.get(GET_ROLEMENUS, { params: pageAndSize });
+	const data = await response;
 
-    const response = axios.get(GET_ROLEMENUS, { params: pageAndSize });
-    const data = await response;
+	sessionStorage.setItem('total_roleMenus_elements', data.data.total_elements);
+	sessionStorage.setItem('total_roleMenus_pages', data.data.total_pages);
+	delete axios.defaults.headers.common['Content-type'];
+	delete axios.defaults.headers.common.Authorization;
 
-    sessionStorage.setItem('total_roleMenus_elements', data.data.total_elements);
-    sessionStorage.setItem('total_roleMenus_pages', data.data.total_pages);
-    delete axios.defaults.headers.common['Content-type'];
-    delete axios.defaults.headers.common.Authorization;
-
-    return data.data.role_menus
+	return data.data.role_menus;
 });
 
-
 export const removeRoleMenus = createAsyncThunk(
-    'roleMenuManagement/roleMenus/removeRoleMenus',
-    async (roleMenuIds, { dispatch, getState }) => {
-        const authTOKEN = {
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: localStorage.getItem('jwt_access_token'),
-            }
-        }
-        await axios.delete(`${DELETE_ROLEMENU}`, { roleMenuIds }, authTOKEN);
+	'roleMenuManagement/roleMenus/removeRoleMenus',
+	async (roleMenuIds, { dispatch, getState }) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		await axios.delete(`${DELETE_ROLEMENU}`, { roleMenuIds }, authTOKEN);
 
-        return roleMenuIds;
-    }
+		return roleMenuIds;
+	}
 );
-
 
 const roleMenusAdapter = createEntityAdapter({});
 
 export const { selectAll: selectRoleMenus, selectById: selectRoleMenuById } = roleMenusAdapter.getSelectors(
-    state => state.roleMenusManagement.roleMenus
+	state => state.roleMenusManagement.roleMenus
 );
 
 const roleMenusSlice = createSlice({
-    name: 'roleMenuManagement/roleMenus',
-    initialState: roleMenusAdapter.getInitialState({
-        searchText: ''
-    }),
-    reducers: {
-        setRoleMenusSearchText: {
-            reducer: (state, action) => {
-                state.searchText = action.payload;
-            },
-            prepare: event => ({ payload: event.target.value || '' })
-        }
-    },
-    extraReducers: {
-        [getRoleMenus.fulfilled]: roleMenusAdapter.setAll
-    }
+	name: 'roleMenuManagement/roleMenus',
+	initialState: roleMenusAdapter.getInitialState({
+		searchText: ''
+	}),
+	reducers: {
+		setRoleMenusSearchText: {
+			reducer: (state, action) => {
+				state.searchText = action.payload;
+			},
+			prepare: event => ({ payload: event.target.value || '' })
+		}
+	},
+	extraReducers: {
+		[getRoleMenus.fulfilled]: roleMenusAdapter.setAll
+	}
 });
 
 export const { setData, setRoleMenusSearchText } = roleMenusSlice.actions;
