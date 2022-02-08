@@ -512,6 +512,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/receivableBill-management/receivableBills',
 				exact: true
+			},
+			//payableBill
+			{
+				id: 'payableBills',
+				title: 'Rayable Bills',
+				translate: 'Rayable Bills',
+				type: 'item',
+				url: '/apps/payableBill-management/payableBills',
+				exact: true
 			}
 		]
 	},

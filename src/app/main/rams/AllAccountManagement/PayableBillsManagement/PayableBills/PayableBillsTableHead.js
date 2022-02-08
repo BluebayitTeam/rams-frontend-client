@@ -13,7 +13,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getMedicalCenters, removeMedicalCenters } from '../store/medicalCentersSlice';
+import { getPayableBills, removePayableBills } from '../store/payableBillsSlice';
 
 const rows = [
 	{
@@ -23,64 +23,48 @@ const rows = [
 		label: 'SL_NO',
 		sort: true
 	},
-
 	{
-		id: 'name',
+		id: 'branch',
 		align: 'left',
 		disablePadding: false,
-		label: 'Name',
+		label: 'Branch',
 		sort: true
 	},
 	{
-		id: 'email',
+		id: 'invoice_no',
 		align: 'left',
 		disablePadding: false,
-		label: 'Email',
+		label: 'Invoice No',
 		sort: true
 	},
 	{
-		id: 'contact_person',
+		id: 'ledger',
 		align: 'left',
 		disablePadding: false,
-		label: 'Contact Person',
+		label: 'Ledger',
 		sort: true
 	},
 	{
-		id: 'mobile',
+		id: 'sub-ledger',
 		align: 'left',
 		disablePadding: false,
-		label: 'Mobile',
+		label: 'Sub Ledger',
 		sort: true
 	},
 	{
-		id: 'phone_number',
+		id: 'details',
 		align: 'left',
 		disablePadding: false,
-		label: 'Phone Number',
+		label: 'Details',
 		sort: true
 	},
 	{
-		id: 'web_address',
+		id: 'total_amount',
 		align: 'left',
 		disablePadding: false,
-		label: 'Web Address',
+		label: 'Total Amount',
 		sort: true
 	},
-	{
-		id: 'google_map_link',
-		align: 'left',
-		disablePadding: false,
-		label: 'google Map Link',
-		sort: true
-	},
-	{
-		id: 'address',
-		align: 'left',
-		disablePadding: false,
-		label: 'Address',
-		sort: true
-	},
-
 	{
 		id: 'action',
 		align: 'center',
@@ -90,12 +74,12 @@ const rows = [
 	}
 ];
 
-const MedicalCentersTableHead = props => {
-	const { selectedMedicalCenterIds } = props;
+const PayableBillsTableHead = props => {
+	const { selectedPayableBillIds } = props;
 
-	const numSelected = selectedMedicalCenterIds.length;
+	const numSelected = selectedPayableBillIds.length;
 
-	const [selectedMedicalCentersMenu, setselectedMedicalCentersMenu] = useState(null);
+	const [selectedPayableBillsMenu, setselectedPayableBillsMenu] = useState(null);
 
 	const dispatch = useDispatch();
 
@@ -103,42 +87,42 @@ const MedicalCentersTableHead = props => {
 		props.onRequestSort(event, property);
 	};
 
-	function openselectedMedicalCentersMenu(event) {
-		setselectedMedicalCentersMenu(event.currentTarget);
+	function openselectedPayableBillsMenu(event) {
+		setselectedPayableBillsMenu(event.currentTarget);
 	}
 
-	function closeselectedMedicalCentersMenu() {
-		setselectedMedicalCentersMenu(null);
+	function closeselectedPayableBillsMenu() {
+		setselectedPayableBillsMenu(null);
 	}
 
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
 				<TableCell padding="none" className="w-40 md:w-64 text-center z-99">
-					{props.rowCount !== 0 && !_.isEmpty(selectedMedicalCenterIds) ? (
+					{props.rowCount !== 0 && !_.isEmpty(selectedPayableBillIds) ? (
 						<div className="pt-2">
 							<IconButton
 								className="p-0"
-								aria-owns={selectedMedicalCentersMenu ? 'selectedMedicalCentersMenu' : null}
+								aria-owns={selectedPayableBillsMenu ? 'selectedPayableBillsMenu' : null}
 								aria-haspopup="true"
-								onClick={openselectedMedicalCentersMenu}
+								onClick={openselectedPayableBillsMenu}
 							>
 								<Icon>more_horiz</Icon>
 							</IconButton>
 							<Menu
-								id="selectedMedicalCentersMenu"
-								anchorEl={selectedMedicalCentersMenu}
-								open={Boolean(selectedMedicalCentersMenu)}
-								onClose={closeselectedMedicalCentersMenu}
+								id="selectedPayableBillsMenu"
+								anchorEl={selectedPayableBillsMenu}
+								open={Boolean(selectedPayableBillsMenu)}
+								onClose={closeselectedPayableBillsMenu}
 							>
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											dispatch(removeMedicalCenters(selectedMedicalCenterIds)).then(res => {
-												res.payload && dispatch(getMedicalCenters(props.pagination));
+											dispatch(removePayableBills(selectedPayableBillIds)).then(res => {
+												res.payload && dispatch(getPayableBills(props.pagination));
 											});
 											props.onMenuItemClick();
-											closeselectedMedicalCentersMenu();
+											closeselectedPayableBillsMenu();
 										}}
 									>
 										<ListItemIcon className="min-w-40">
@@ -163,7 +147,6 @@ const MedicalCentersTableHead = props => {
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
-							//sortDirection={props.order.id === row.id ? props.order.direction : false}
 						>
 							{row.sort && (
 								<Tooltip
@@ -189,4 +172,4 @@ const MedicalCentersTableHead = props => {
 	);
 };
 
-export default MedicalCentersTableHead;
+export default PayableBillsTableHead;

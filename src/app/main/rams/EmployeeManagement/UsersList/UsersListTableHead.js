@@ -8,81 +8,81 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const rows = [
-    {
-        id: 'sl_no',
-        align: 'left',
-        disablePadding: false,
-        label: 'Sl_No',
-        sort: true
-    },
-    {
-        id: 'image',
-        align: 'left',
-        disablePadding: false,
-        label: 'Image',
-        sort: true
-    },
-    {
-        id: 'username',
-        align: 'left',
-        disablePadding: false,
-        label: 'Username',
-        sort: true
-    },
-    {
-        id: 'email',
-        align: 'left',
-        disablePadding: false,
-        label: 'Email',
-        sort: true
-    },
-    {
-        id: 'mobile',
-        align: 'left',
-        disablePadding: false,
-        label: 'Mobile',
-        sort: true
-    },
-    {
-        id: 'action',
-        align: 'left',
-        disablePadding: false,
-        label: 'Action',
-        sort: true
-    }
+	{
+		id: 'sl_no',
+		align: 'left',
+		disablePadding: false,
+		label: 'Sl_No',
+		sort: true
+	},
+	{
+		id: 'image',
+		align: 'left',
+		disablePadding: false,
+		label: 'Image',
+		sort: true
+	},
+	{
+		id: 'username',
+		align: 'left',
+		disablePadding: false,
+		label: 'Username',
+		sort: true
+	},
+	{
+		id: 'email',
+		align: 'left',
+		disablePadding: false,
+		label: 'Email',
+		sort: true
+	},
+	{
+		id: 'mobile',
+		align: 'left',
+		disablePadding: false,
+		label: 'Mobile',
+		sort: true
+	},
+	{
+		id: 'action',
+		align: 'left',
+		disablePadding: false,
+		label: 'Action',
+		sort: true
+	}
 ];
 const useStyles = makeStyles(theme => ({
-    actionsButtonWrapper: {
-        background: theme.palette.background.paper
-    }
+	actionsButtonWrapper: {
+		background: theme.palette.background.paper
+	}
 }));
 
-const UsersListTableHead = (props) => {
-    const classes = useStyles(props);
-    const { selectedUserIds } = props;
-    //console.log(selectedUserIds);
-    const numSelected = selectedUserIds.length;
+const UsersListTableHead = props => {
+	const classes = useStyles(props);
+	const { selectedUserIds } = props;
+	//console.log(selectedUserIds);
+	const numSelected = selectedUserIds.length;
 
-    const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    const createSortHandler = property => event => {
-        props.onRequestSort(event, property);
-    };
+	const createSortHandler = property => event => {
+		props.onRequestSort(event, property);
+	};
 
-    function openSelectedProductsMenu(event) {
-        setSelectedProductsMenu(event.currentTarget);
-    }
+	function openSelectedProductsMenu(event) {
+		setSelectedProductsMenu(event.currentTarget);
+	}
 
-    function closeSelectedProductsMenu() {
-        setSelectedProductsMenu(null);
-    }
+	function closeSelectedProductsMenu() {
+		setSelectedProductsMenu(null);
+	}
 
-    return (
-        <TableHead>
-            <TableRow className="h-48 sm:h-64">
-                {/* <TableCell padding="none" className="w-40 md:w-64 text-center z-99">
+	return (
+		<TableHead>
+			<TableRow className="h-48 sm:h-64">
+				{/* <TableCell padding="none" className="w-40 md:w-64 text-center z-99">
                     <Checkbox
                         indeterminate={numSelected > 0 && numSelected < props.rowCount}
                         checked={props.rowCount !== 0 && numSelected === props.rowCount}
@@ -126,37 +126,37 @@ const UsersListTableHead = (props) => {
                         </div>
                     )}
                 </TableCell> */}
-                {rows.map(row => {
-                    return (
-                        <TableCell
-                            className="p-4 md:p-16"
-                            key={row.id}
-                            align={row.align}
-                            padding={row.disablePadding ? 'none' : 'default'}
-                        //sortDirection={props.order.id === row.id ? props.order.direction : false}
-                        >
-                            {row.sort && (
-                                <Tooltip
-                                    title="Sort"
-                                    placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
-                                    enterDelay={300}
-                                >
-                                    <TableSortLabel
-                                        active={props.order.id === row.id}
-                                        direction={props.order.direction}
-                                        onClick={createSortHandler(row.id)}
-                                        className="font-semibold"
-                                    >
-                                        {row.label}
-                                    </TableSortLabel>
-                                </Tooltip>
-                            )}
-                        </TableCell>
-                    );
-                }, this)}
-            </TableRow >
-        </TableHead >
-    );
+				{rows.map(row => {
+					return (
+						<TableCell
+							className="p-4 md:p-16 whitespace-nowrap"
+							key={row.id}
+							align={row.align}
+							padding={row.disablePadding ? 'none' : 'default'}
+							//sortDirection={props.order.id === row.id ? props.order.direction : false}
+						>
+							{row.sort && (
+								<Tooltip
+									title="Sort"
+									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+									enterDelay={300}
+								>
+									<TableSortLabel
+										active={props.order.id === row.id}
+										direction={props.order.direction}
+										onClick={createSortHandler(row.id)}
+										className="font-semibold"
+									>
+										{row.label}
+									</TableSortLabel>
+								</Tooltip>
+							)}
+						</TableCell>
+					);
+				}, this)}
+			</TableRow>
+		</TableHead>
+	);
 };
 
 export default UsersListTableHead;

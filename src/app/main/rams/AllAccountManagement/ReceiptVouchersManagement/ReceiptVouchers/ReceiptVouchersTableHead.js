@@ -143,7 +143,7 @@ const ReceiptVouchersTableHead = props => {
 				{rows.map(row => {
 					return (
 						<TableCell
-							className="p-4 md:p-16"
+							className="p-4 md:p-16 whitespace-nowrap"
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}

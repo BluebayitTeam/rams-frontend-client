@@ -25,6 +25,7 @@ function Image({ name, label }) {
 	const file = watch(`${name}`) || '';
 
 	const [previewFile, setPreviewFile] = useState('');
+	const [fileExtName, setFileExtName] = useState('');
 
 	// console.log('file', file);
 	// console.log('previewFile', previewFile);
@@ -61,6 +62,8 @@ function Image({ name, label }) {
 
 										const file = e.target.files[0];
 
+										setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+
 										console.log({ reader, file });
 										onChange(file);
 									}}
@@ -72,7 +75,7 @@ function Image({ name, label }) {
 						</div>
 						{!previewFile && file && (
 							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-								{(file?.name || file)?.match(/.(pdf)/i) ? (
+								{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
 									<PictureAsPdf
 										style={{
 											color: 'red',
@@ -89,7 +92,7 @@ function Image({ name, label }) {
 
 						{previewFile && (
 							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-								{previewFile?.match(/.(pdf)/i) ? (
+								{fileExtName === 'pdf' ? (
 									<iframe
 										src={previewFile}
 										frameBorder="0"

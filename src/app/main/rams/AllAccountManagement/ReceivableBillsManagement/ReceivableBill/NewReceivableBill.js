@@ -3,6 +3,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -16,7 +17,6 @@ import { getReceivableBill, newReceivableBill, resetReceivableBill } from '../st
 import NewReceivableBillHeader from './NewReceivableBillHeader.js';
 import ReceivableBillForm from './ReceivableBillForm.js';
 
-const schemaObj = {};
 const schema = yup.object().shape({
 	passenger: yup.string().required('Passenger is required'),
 	branch: yup.string().required('Branch is required'),
@@ -35,7 +35,7 @@ const ReceivableBill = () => {
 
 	const routeParams = useParams();
 
-	const { reset, setError } = methods;
+	const { reset } = methods;
 
 	const [letFormSave, setLetFormSave] = useState(false);
 
@@ -81,7 +81,7 @@ const ReceivableBill = () => {
 		/**
 		 * Reset the form on receivableBill state changes
 		 */
-		reset(receivableBill);
+		reset({ ...receivableBill, items: setIdIfValueIsObject2(receivableBill?.items) });
 	}, [receivableBill, reset]);
 
 	useEffect(() => {

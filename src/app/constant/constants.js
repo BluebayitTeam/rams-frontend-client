@@ -1,8 +1,8 @@
 //http://api.cashconnectbd.com
-//http://192.168.0.172:8001
+//http://192.168.0.8:8002
 
 //base url
-export const BASE_URL = 'http://api.cashconnectbd.com';
+export const BASE_URL = 'http://192.168.0.8:8002';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -615,6 +615,23 @@ export const DELETE_RECEIVABLEBILL_MULTIPLE = `${BASE_URL}/sale/api/v1/sale/dele
 export const SEARCH_RECEIVABLEBILL = `${BASE_URL}/sale/api/v1/sale/search/`;
 
 export const GET_RECEIVABLEBILL_BY_INVOICE_NO = `${BASE_URL}/sale/api/v1/sale/sale_by_invoice_no/`;
+
+//purchases
+export const CREATE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/create/`;
+
+export const GET_PAYABLEBILLS = `${BASE_URL}/purchase/api/v1/purchase/all`;
+
+export const GET_PAYABLEBILL_BY_ID = `${BASE_URL}/purchase/api/v1/purchase/`;
+
+export const UPDATE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/update/`;
+
+export const DELETE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/delete/`;
+
+export const DELETE_PAYABLEBILL_MULTIPLE = `${BASE_URL}/purchase/api/v1/purchase/delete_multiple/`;
+
+export const SEARCH_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/search/`;
+
+export const GET_PAYABLEBILL_BY_INVOICE_NO = `${BASE_URL}/purchase/api/v1/purchase/purchase_by_invoice_no/`;
 
 // site_settings
 export const CREATE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_setting/create/`;

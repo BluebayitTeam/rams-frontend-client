@@ -513,6 +513,19 @@ const ramsRouteConfig = {
 			component: lazy(() =>
 				import('./AllAccountManagement/ReceivableBillsManagement/ReceivableBill/NewReceivableBill')
 			)
+		},
+		//payableBill
+		{
+			path: '/apps/payableBill-management/payableBills/:payableBillId/:payableBillName?',
+			component: lazy(() => import('./AllAccountManagement/PayableBillsManagement/PayableBill/NewPayableBill'))
+		},
+		{
+			path: '/apps/payableBill-management/payableBills',
+			component: lazy(() => import('./AllAccountManagement/PayableBillsManagement/PayableBills/PayableBills'))
+		},
+		{
+			path: '/apps/payableBill-management/:payableBillId',
+			component: lazy(() => import('./AllAccountManagement/PayableBillsManagement/PayableBill/NewPayableBill'))
 		}
 	]
 };
