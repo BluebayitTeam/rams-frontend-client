@@ -99,6 +99,7 @@ const Flight = () => {
 									<Autocomplete
 										className={`w-full max-w-320 h-48 ${classes.container}`}
 										freeSolo
+										autoHighlight
 										disabled={!!fromSearch}
 										value={value ? passengers.find(data => data.id == value) : null}
 										options={passengers}

@@ -16,8 +16,6 @@ import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import File from 'app/@components/File';
 import getTotalAmount from 'app/@helpers/getTotalAmount';
-import { SEARCH_PASSENGER_BY } from 'app/constant/constants';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -139,44 +137,13 @@ function PaymentVoucherForm({ setLetFormSave }) {
 			/>
 
 			<Controller
-				name="passengerSearchText"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							error={!!errors.passengerSearchText || !field.value}
-							helperText={errors?.passengerSearchText?.message}
-							label="Passenger"
-							id="passengerSearchText"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							onBlur={e => {
-								axios
-									.get(`${SEARCH_PASSENGER_BY}?keyword=${e.target.value}`)
-									.then(res => {
-										console.log('passenger_search_res', res);
-										setValue('passenger', res?.data?.passengers[0]?.id);
-									})
-									.catch(error => {
-										console.log({ error });
-									});
-							}}
-						/>
-					);
-				}}
-			/>
-
-			<Controller
 				name="passenger"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
-						className="mt-8 mb-16 hidden"
+						className="mt-8 mb-16"
 						freeSolo
+						autoHighlight
 						value={value ? passengers.find(data => data.id == value) : null}
 						options={passengers}
 						getOptionLabel={option => `${option.passenger_name}`}

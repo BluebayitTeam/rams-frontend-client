@@ -12,6 +12,7 @@ const setIdIfValueIsObject = object => {
 		console.log({ err });
 	}
 
+	console.log('conVertedObject', conVertedObject);
 	return conVertedObject;
 };
 

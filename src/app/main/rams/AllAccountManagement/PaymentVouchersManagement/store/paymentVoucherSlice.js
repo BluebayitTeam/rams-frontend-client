@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ledgerCashId } from 'app/@data/data';
+import jsonToFormData from 'app/@helpers/jsonToFormData';
 import axios from 'axios';
 import moment from 'moment';
 import {
@@ -54,7 +55,8 @@ export const updatePaymentVoucher = createAsyncThunk(
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.put(`${UPDATE_PAYMENTVOUCHER}`, paymentVoucherData, authTOKEN);
+		const formdata = jsonToFormData(paymentVoucherData);
+		const response = await axios.put(`${UPDATE_PAYMENTVOUCHER}`, formdata, authTOKEN);
 		return response;
 	}
 );
@@ -64,11 +66,12 @@ export const savePaymentVoucher = createAsyncThunk(
 	async paymentVoucherData => {
 		const authTOKEN = {
 			headers: {
-				'Content-type': 'application/json',
+				'Content-type': 'multipart/form-data',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.post(`${CREATE_PAYMENTVOUCHER}`, paymentVoucherData, authTOKEN);
+		const formdata = jsonToFormData(paymentVoucherData);
+		const response = await axios.post(`${CREATE_PAYMENTVOUCHER}`, formdata, authTOKEN);
 		return response;
 	}
 );

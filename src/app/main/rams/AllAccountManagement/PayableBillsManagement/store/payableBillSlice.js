@@ -53,7 +53,8 @@ export const updatePayableBill = createAsyncThunk(
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.put(`${UPDATE_PAYABLEBILL}`, payableBillData, authTOKEN);
+		const formdata = jsonToFormData(payableBillData);
+		const response = await axios.put(`${UPDATE_PAYABLEBILL}`, formdata, authTOKEN);
 		return response;
 	}
 );
@@ -67,7 +68,8 @@ export const savePayableBill = createAsyncThunk(
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.post(`${CREATE_PAYABLEBILL}`, payableBillData, authTOKEN);
+		const formdata = jsonToFormData(payableBillData);
+		const response = await axios.post(`${CREATE_PAYABLEBILL}`, formdata, authTOKEN);
 		return response;
 	}
 );

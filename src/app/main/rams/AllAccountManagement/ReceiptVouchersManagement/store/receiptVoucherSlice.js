@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ledgerCashId } from 'app/@data/data';
+import jsonToFormData from 'app/@helpers/jsonToFormData';
 import axios from 'axios';
 import moment from 'moment';
 import {
@@ -54,7 +55,8 @@ export const updateReceiptVoucher = createAsyncThunk(
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.put(`${UPDATE_RECEIPTVOUCHER}`, receiptVoucherData, authTOKEN);
+		const formdata = jsonToFormData(receiptVoucherData);
+		const response = await axios.put(`${UPDATE_RECEIPTVOUCHER}`, formdata, authTOKEN);
 		return response;
 	}
 );
@@ -68,7 +70,8 @@ export const saveReceiptVoucher = createAsyncThunk(
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.post(`${CREATE_RECEIPTVOUCHER}`, receiptVoucherData, authTOKEN);
+		const formdata = jsonToFormData(receiptVoucherData);
+		const response = await axios.post(`${CREATE_RECEIPTVOUCHER}`, formdata, authTOKEN);
 		return response;
 	}
 );

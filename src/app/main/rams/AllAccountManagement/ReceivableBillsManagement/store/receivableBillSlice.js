@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import jsonToFormData from 'app/@helpers/jsonToFormData';
 import axios from 'axios';
 import moment from 'moment';
 import {
@@ -53,7 +54,8 @@ export const updateReceivableBill = createAsyncThunk(
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.put(`${UPDATE_RECEIVABLEBILL}`, receivableBillData, authTOKEN);
+		const formdata = jsonToFormData(receivableBillData);
+		const response = await axios.put(`${UPDATE_RECEIVABLEBILL}`, formdata, authTOKEN);
 		return response;
 	}
 );
@@ -67,7 +69,8 @@ export const saveReceivableBill = createAsyncThunk(
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		const response = await axios.post(`${CREATE_RECEIVABLEBILL}`, receivableBillData, authTOKEN);
+		const formdata = jsonToFormData(receivableBillData);
+		const response = await axios.post(`${CREATE_RECEIVABLEBILL}`, formdata, authTOKEN);
 		return response;
 	}
 );
