@@ -539,6 +539,19 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/contra-management/:contraId',
 			component: lazy(() => import('./AllAccountManagement/ContrasManagement/Contra/NewContra'))
+		},
+		//journal
+		{
+			path: '/apps/journal-management/journals/:journalId/:journalName?',
+			component: lazy(() => import('./AllAccountManagement/JournalsManagement/Journal/NewJournal'))
+		},
+		{
+			path: '/apps/journal-management/journals',
+			component: lazy(() => import('./AllAccountManagement/JournalsManagement/Journals/Journals'))
+		},
+		{
+			path: '/apps/journal-management/:journalId',
+			component: lazy(() => import('./AllAccountManagement/JournalsManagement/Journal/NewJournal'))
 		}
 	]
 };

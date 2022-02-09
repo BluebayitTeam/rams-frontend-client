@@ -8,7 +8,7 @@ import useReportData from 'app/@customHooks/useReportData';
 import useUserInfo from 'app/@customHooks/useUserInfo';
 import getPaginationData from 'app/@helpers/getPaginationData';
 import html2PDF from 'jspdf-html2canvas';
-import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import React, { memo, useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
@@ -63,7 +63,7 @@ const MofaReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedMofaData, setModifiedMofaData, setSortBy, setSortBySubKey] = useReportData([]);
+	const [modifiedMofaData, setModifiedMofaData, setSortBy, setSortBySubKey] = useReportData();
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -366,4 +366,4 @@ const MofaReportsTable = () => {
 		</>
 	);
 };
-export default MofaReportsTable;
+export default memo(MofaReportsTable, (prProps, nxProps) => prProps.inShowAllMode === nxProps.inShowAllMode);

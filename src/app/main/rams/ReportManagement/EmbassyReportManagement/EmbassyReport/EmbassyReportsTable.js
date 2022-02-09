@@ -66,7 +66,7 @@ const EmbassyReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedEmbassyData, setModifiedEmbassyData, setSortBy, setSortBySubKey] = useReportData([]);
+	const [modifiedEmbassyData, setModifiedEmbassyData, setSortBy, setSortBySubKey] = useReportData();
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 

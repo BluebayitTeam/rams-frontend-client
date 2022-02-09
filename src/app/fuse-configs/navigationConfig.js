@@ -530,6 +530,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/contra-management/contras',
 				exact: true
+			},
+			//journal
+			{
+				id: 'journals',
+				title: 'Journals',
+				translate: 'Journals',
+				type: 'item',
+				url: '/apps/journal-management/journals',
+				exact: true
 			}
 		]
 	},

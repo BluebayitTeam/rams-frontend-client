@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 
-const useReportData = (orginalData = [], row = 25) => {
+const useReportData = ({ initialData = [], row = 25 } = {}) => {
 	const [orginalArray, setOrginalArray] = useState([]);
 	const [data, setData] = useState([]);
 	const [sortBy, setSortBy] = useState('');
@@ -46,7 +46,7 @@ const useReportData = (orginalData = [], row = 25) => {
 	};
 
 	useEffect(() => {
-		modifyData(orginalData, row);
+		modifyData(initialData, row);
 	}, []);
 
 	useEffect(() => {

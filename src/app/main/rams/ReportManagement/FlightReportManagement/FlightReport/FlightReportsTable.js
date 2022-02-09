@@ -67,7 +67,7 @@ const FlightReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedFlightData, setModifiedFlightData, setSortBy, setSortBySubKey] = useReportData([]);
+	const [modifiedFlightData, setModifiedFlightData, setSortBy, setSortBySubKey] = useReportData();
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
