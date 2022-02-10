@@ -25,8 +25,6 @@ export const removeVisaSubmissionList = createAsyncThunk(
 export const updateVisaSubmissionList = createAsyncThunk(
 	'visaSubmissionListManagement/visaSubmissionList/updateVisaSubmissionList',
 	async visaSubmissionListData => {
-		const visaSubmissionListDatas = { ...visaSubmissionListData, created_by: '', updated_by: '' };
-
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -45,8 +43,6 @@ export const updateVisaSubmissionList = createAsyncThunk(
 export const saveVisaSubmissionList = createAsyncThunk(
 	'visaSubmissionListManagement/visaSubmissionList/saveVisaSubmissionList',
 	async visaSubmissionListData => {
-		const visaSubmissionListDatas = { ...visaSubmissionListData, updated_by: '', created_by: '' };
-
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',

@@ -4,7 +4,7 @@ const buildFormData = (formData, data, parentKey) => {
 			buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
 		});
 	} else {
-		const value = data === null ? '' : data;
+		const value = data === null ? '' : data === undefined ? '' : data;
 
 		formData.append(parentKey, value);
 	}

@@ -379,7 +379,7 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Agent"
 									label="Agent"
-									error={!!errors.agent}
+									error={!!errors.agent || !value}
 									required
 									helperText={errors?.agent?.message}
 									variant="outlined"
@@ -410,7 +410,7 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Passenger Type"
 									label="Passenger Type"
-									error={!!errors.passenger_type}
+									error={!!errors.passenger_type || !value}
 									required
 									helperText={errors?.passenger_type?.message}
 									variant="outlined"
@@ -434,7 +434,7 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.passenger_name}
+								error={!!errors.passenger_name || !field.value}
 								helperText={errors?.passenger_name?.message}
 								label="Passenger Name"
 								id="passenger_name"
@@ -456,8 +456,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.father_name}
-								helperText={errors?.father_name?.message}
 								label="Father Name"
 								id="father_name"
 								variant="outlined"
@@ -479,8 +477,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.mother_name}
-								helperText={errors?.mother_name?.message}
 								label="Mother Name"
 								id="mother_name"
 								variant="outlined"
@@ -499,8 +495,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.spouse_name}
-								helperText={errors?.spouse_name?.message}
 								label="Spouse Name"
 								id="spouse_name"
 								variant="outlined"
@@ -518,13 +512,18 @@ function PassengerForm(props) {
 					name="date_of_birth"
 					control={control}
 					render={({ field }) => (
-						<CustomDatePicker field={field} label="Date Of Birth" className="mt-8 mb-16 w-full md:w-6/12" />
+						<CustomDatePicker
+							field={field}
+							label="Date Of Birth"
+							className="mt-8 mb-16 w-full md:w-6/12"
+							required
+						/>
 					)}
 				/>
 				<Controller
 					name="gender"
 					control={control}
-					render={({ field: { onChange, value, name } }) => (
+					render={({ field: { onChange, value } }) => (
 						<Autocomplete
 							className="mt-8 mb-16 w-full md:w-6/12"
 							freeSolo
@@ -539,7 +538,7 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Gender"
 									label="Gender"
-									error={!!errors.gender}
+									error={!!errors.gender || !value}
 									required
 									helperText={errors?.gender?.message}
 									variant="outlined"
@@ -572,8 +571,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Marital Status"
 									label="Marital Status"
-									error={!!errors.marital_status}
-									helperText={errors?.marital_status?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -591,8 +588,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.contact_no}
-								helperText={errors?.contact_no?.message}
 								label="Contact No"
 								id="contact_no"
 								variant="outlined"
@@ -625,8 +620,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select District"
 									label="District"
-									error={!!errors.district}
-									helperText={errors?.district?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -654,8 +647,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Police Station"
 									label="Police Station"
-									error={!!errors.police_station}
-									helperText={errors?.police_station?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -676,8 +667,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.post_office}
-								helperText={errors?.post_office?.message}
 								label="Post Office"
 								id="post_office"
 								variant="outlined"
@@ -696,8 +685,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.village}
-								helperText={errors?.village?.message}
 								label="Village"
 								id="village"
 								variant="outlined"
@@ -719,8 +706,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.nid}
-								helperText={errors?.nid?.message}
 								label="NID"
 								id="nid"
 								variant="outlined"
@@ -739,8 +724,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.place_of_birth}
-								helperText={errors?.place_of_birth?.message}
 								label="Place Of Birth"
 								id="place_of_birth"
 								variant="outlined"
@@ -772,8 +755,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Religion"
 									label="Religion"
-									error={!!errors.religion}
-									helperText={errors?.religion?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -802,7 +783,7 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Profession"
 									label="Profession"
-									error={!!errors.profession}
+									error={!!errors.profession || !value}
 									required
 									helperText={errors?.profession?.message}
 									variant="outlined"
@@ -835,7 +816,7 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Agency"
 									label="Agency"
-									error={!!errors.agency}
+									error={!!errors.agency || !value}
 									required
 									helperText={errors?.agency?.message}
 									variant="outlined"
@@ -866,7 +847,7 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Demand"
 									label="Demand"
-									error={!!errors.demand}
+									error={!!errors.demand || !value}
 									required
 									helperText={errors?.demand?.message}
 									variant="outlined"
@@ -899,7 +880,7 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Target Country"
 									label="Target Country"
-									error={!!errors.target_country}
+									error={!!errors.target_country || !value}
 									required
 									helperText={errors?.target_country?.message}
 									variant="outlined"
@@ -929,8 +910,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Visa Entry"
 									label="Visa Entry"
-									error={!!errors.visa_entry}
-									helperText={errors?.visa_entry?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -961,8 +940,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Current Status"
 									label="Current Status"
-									error={!!errors.current_status}
-									helperText={errors?.current_status?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -980,8 +957,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.emergency_contact_no}
-								helperText={errors?.emergency_contact_no?.message}
 								label="Emergency Contact No"
 								id="emergency_contact_no"
 								variant="outlined"
@@ -1009,7 +984,7 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.passport_no}
+								error={!!errors.passport_no || !field.value}
 								helperText={errors?.passport_no?.message}
 								label="Passport No"
 								id="passport_no"
@@ -1045,8 +1020,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Passport Type"
 									label="Passport Type"
-									error={!!errors.passport_type}
-									helperText={errors?.passport_type?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -1110,8 +1083,6 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Passport Issue Place"
 									label="Passport Issue Place"
-									error={!!errors.passport_issue_place}
-									helperText={errors?.passport_issue_place?.message}
 									variant="outlined"
 									InputLabelProps={{
 										shrink: true
@@ -1130,8 +1101,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full md:w-6/12"
-								error={!!errors.place_of_residence}
-								helperText={errors?.place_of_residence?.message}
 								label="Place Of Residence"
 								id="place_of_residence"
 								variant="outlined"
@@ -1152,8 +1121,6 @@ function PassengerForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16 w-full"
-							error={!!errors.office_serial}
-							helperText={errors?.office_serial?.message}
 							label="Office Serial"
 							id="office_serial"
 							variant="outlined"
@@ -1174,8 +1141,6 @@ function PassengerForm(props) {
 							<TextField
 								{...field}
 								className="mt-8 mb-16 w-full"
-								error={!!errors.notes}
-								helperText={errors?.notes?.message}
 								label="Notes"
 								id="notes"
 								variant="outlined"

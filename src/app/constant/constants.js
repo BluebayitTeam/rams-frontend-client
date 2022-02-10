@@ -582,6 +582,8 @@ export const SEARCH_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment
 
 export const GET_PAYMENT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
 
+export const GET_PAYMENT_VOUCHER_ID_NAME_BY = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_with_id_name_dict_by_invoice_no/`;
+
 //receiptVoucher
 export const CREATE_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/create/`;
 
@@ -598,6 +600,8 @@ export const DELETE_RECEIPTVOUCHER_MULTIPLE = `${BASE_URL}/receipt_voucher/api/v
 export const SEARCH_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/search/`;
 
 export const GET_RECEIPT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/receipt_voucher_by_invoice_no/`;
+
+export const GET_RECEIPT_VOUCHER_ID_NAME_BY = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/receipt_voucher_by_invoice_no/`;
 
 //sales
 export const CREATE_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/create/`;
@@ -1032,6 +1036,10 @@ export const UPDATE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v
 export const DELETE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/delete/`;
 
 export const VISASUBMISSIONLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/get_by_passenger_id/`;
+
+export const VISASBLISTS = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/all/`;
+
+export const VISASBLISTS_WITHOUT_PG = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/all/`;
 
 //man_power
 export const CREATE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/create/`;

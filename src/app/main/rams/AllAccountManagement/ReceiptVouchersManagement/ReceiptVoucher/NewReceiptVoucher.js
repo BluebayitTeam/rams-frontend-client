@@ -3,8 +3,6 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -19,9 +17,7 @@ import NewReceiptVoucherHeader from './NewReceiptVoucherHeader.js';
 import ReceiptVoucherForm from './ReceiptVoucherForm.js';
 
 const schema = yup.object().shape({
-	passenger: yup.string().nullable().required('Passenger is required'),
-	branch: yup.string().nullable().required('Branch is required'),
-	sub_ledger: yup.string().nullable().required('Sub Ledger is required')
+	receipt_date: yup.date().required('Receipt Date is required')
 });
 
 const ReceiptVoucher = () => {
@@ -82,9 +78,7 @@ const ReceiptVoucher = () => {
 		/**
 		 * Reset the form on receiptVoucher state changes
 		 */
-		const convertedReceiptVoucherItems = setIdIfValueIsObjArryData(receiptVoucher?.items);
-		const convertedReceiptVoucher = setIdIfValueIsObject2(receiptVoucher);
-		reset({ ...convertedReceiptVoucher, items: convertedReceiptVoucherItems });
+		reset(receiptVoucher);
 	}, [receiptVoucher, reset]);
 
 	useEffect(() => {

@@ -3,8 +3,6 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -21,8 +19,7 @@ import NewJournalHeader from './NewJournalHeader.js';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-	branch: yup.string().nullable().required('Branch is required'),
-	sub_ledger: yup.string().nullable().required('Sub Ledger is required')
+	journal_date: yup.date().required('Journal Date is required')
 });
 
 const Journal = () => {
@@ -83,9 +80,7 @@ const Journal = () => {
 		/**
 		 * Reset the form on journal state changes
 		 */
-		const convertedJournalItems = setIdIfValueIsObjArryData(journal?.items);
-		const convertedJournal = setIdIfValueIsObject2(journal);
-		reset({ ...convertedJournal, items: convertedJournalItems });
+		reset(journal);
 	}, [journal, reset]);
 
 	useEffect(() => {

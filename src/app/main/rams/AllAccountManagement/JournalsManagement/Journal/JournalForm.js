@@ -29,7 +29,7 @@ function JournalForm({ setLetFormSave }) {
 	const classes = useStyles();
 	const journal = useSelector(({ journalsManagement }) => journalsManagement.journal);
 	const methods = useFormContext();
-	const { control, formState, getValues, setValue, reset } = methods;
+	const { control, formState, getValues, setValue, reset, watch } = methods;
 	const { errors } = formState;
 	const dispatch = useDispatch();
 	const branchs = useSelector(state => state.data.branches);
@@ -72,29 +72,36 @@ function JournalForm({ setLetFormSave }) {
 	};
 
 	const checkEmptyLedger = async itms => {
-		const items = itms || getValues()?.items || [];
+		setTimeout(() => {
+			const items = itms || getValues()?.items || [];
 
-		let isLedgerEmpty = false;
-		items.map(itm => {
-			if (!itm?.ledger) {
-				isLedgerEmpty = true;
+			let isLedgerEmpty = false;
+			items.map(itm => {
+				if (!itm?.ledger) {
+					isLedgerEmpty = true;
+				}
+			});
+
+			if (isLedgerEmpty) {
+				setHaveEmptyLedger(true);
+				setLedgerMessage('Account type is required');
+				setLetFormSave(false);
+			} else {
+				setHaveEmptyLedger(false);
+				setLedgerMessage('');
+				isDebitCreditMatched && setLetFormSave(true);
 			}
-		});
-
-		if (isLedgerEmpty) {
-			setHaveEmptyLedger(true);
-			setLedgerMessage('Account type is required');
-			setLetFormSave(false);
-		} else {
-			setHaveEmptyLedger(false);
-			setLedgerMessage('');
-			isDebitCreditMatched && setLetFormSave(true);
-		}
+		}, 0);
 	};
 
 	useEffect(() => {
 		checkEmptyLedger(journal?.items || []);
 	}, [journal]);
+
+	//rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
+	useEffect(() => {
+		reset({ ...getValues(), items: watch('items') });
+	}, [ledgers]);
 
 	console.log('values', values);
 
@@ -119,8 +126,6 @@ function JournalForm({ setLetFormSave }) {
 								{...params}
 								placeholder="Select Branch"
 								label="Branch"
-								error={!!errors.branch || !value}
-								helperText={errors?.branch?.message}
 								variant="outlined"
 								required
 								InputLabelProps={{
@@ -150,8 +155,6 @@ function JournalForm({ setLetFormSave }) {
 								{...params}
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
-								error={!!errors.sub_ledger || !value}
-								helperText={errors?.sub_ledger?.message}
 								variant="outlined"
 								required
 								InputLabelProps={{
@@ -167,7 +170,7 @@ function JournalForm({ setLetFormSave }) {
 				name="journal_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Journal Date" />;
+					return <CustomDatePicker field={field} label="Journal Date" requred />;
 				}}
 			/>
 
@@ -180,8 +183,6 @@ function JournalForm({ setLetFormSave }) {
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							error={!!errors.details}
-							helperText={errors?.details?.message}
 							label="Details"
 							id="details"
 							variant="outlined"
@@ -228,7 +229,7 @@ function JournalForm({ setLetFormSave }) {
 												<Controller
 													name={`items.${idx}.ledger`}
 													control={control}
-													render={({ field: { value } }) => (
+													render={({ field: { value, onChange } }) => (
 														<Autocomplete
 															className="mt-8 mb-16"
 															freeSolo
@@ -241,7 +242,7 @@ function JournalForm({ setLetFormSave }) {
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
-																setValue(`items.${idx}.ledger`, newValue?.id);
+																onChange(newValue?.id);
 																checkEmptyLedger();
 															}}
 															renderInput={params => (

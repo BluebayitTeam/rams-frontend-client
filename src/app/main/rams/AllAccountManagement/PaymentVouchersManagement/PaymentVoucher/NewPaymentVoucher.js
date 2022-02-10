@@ -3,8 +3,6 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -26,9 +24,7 @@ import PaymentVoucherForm from './PaymentVoucherForm.js';
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-	passenger: yup.number().nullable().required('Passenger is required'),
-	branch: yup.string().nullable().required('Branch is required'),
-	sub_ledger: yup.string().nullable().required('Sub Ledger is required')
+	payment_date: yup.date().required('Payment Date is required')
 });
 
 const PaymentVoucher = () => {
@@ -89,9 +85,7 @@ const PaymentVoucher = () => {
 		/**
 		 * Reset the form on paymentVoucher state changes
 		 */
-		const convertedPaymentVoucherItems = setIdIfValueIsObjArryData(paymentVoucher?.items);
-		const convertedPaymentVoucher = setIdIfValueIsObject2(paymentVoucher);
-		reset({ ...convertedPaymentVoucher, items: convertedPaymentVoucherItems });
+		reset(paymentVoucher);
 	}, [paymentVoucher, reset]);
 
 	useEffect(() => {

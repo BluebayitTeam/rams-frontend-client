@@ -3,8 +3,6 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -19,9 +17,7 @@ import NewPayableBillHeader from './NewPayableBillHeader';
 import PayableBillForm from './PayableBillForm.js';
 
 const schema = yup.object().shape({
-	passenger: yup.string().required('Passenger is required'),
-	branch: yup.string().required('Branch is required'),
-	sub_ledger: yup.string().required('Sub Ledger is required')
+	purchase_date: yup.date().required('Purchase Date is required')
 });
 
 const PayableBill = () => {
@@ -83,9 +79,7 @@ const PayableBill = () => {
 		/**
 		 * Reset the form on payableBill state changes
 		 */
-		const convertedPayableBillItems = setIdIfValueIsObjArryData(payableBill?.items);
-		const convertedPayableBill = setIdIfValueIsObject2(payableBill);
-		reset({ ...convertedPayableBill, items: convertedPayableBillItems });
+		reset(payableBill);
 	}, [payableBill, reset]);
 
 	useEffect(() => {

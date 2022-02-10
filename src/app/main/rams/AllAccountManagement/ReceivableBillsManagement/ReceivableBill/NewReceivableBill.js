@@ -3,8 +3,6 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -19,9 +17,7 @@ import NewReceivableBillHeader from './NewReceivableBillHeader.js';
 import ReceivableBillForm from './ReceivableBillForm.js';
 
 const schema = yup.object().shape({
-	passenger: yup.string().required('Passenger is required'),
-	branch: yup.string().required('Branch is required'),
-	sub_ledger: yup.string().required('Sub Ledger is required')
+	sales_date: yup.date().required('Sales Date is required')
 });
 
 const ReceivableBill = () => {
@@ -83,9 +79,7 @@ const ReceivableBill = () => {
 		/**
 		 * Reset the form on receivableBill state changes
 		 */
-		const convertedReceivableBillItems = setIdIfValueIsObjArryData(receivableBill?.items);
-		const convertedReceivableBill = setIdIfValueIsObject2(receivableBill);
-		reset({ ...convertedReceivableBill, items: convertedReceivableBillItems });
+		reset(receivableBill);
 	}, [receivableBill, reset]);
 
 	useEffect(() => {

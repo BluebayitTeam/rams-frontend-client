@@ -24,14 +24,18 @@ function tableColumnsReducer(state, action) {
 			const dropperIndex = newState.findIndex(i => i.id == action.dropper);
 			const draggerIndex = newState.findIndex(i => i.id == action.dragger);
 
-			if (dropperIndex < draggerIndex) {
-				newState.splice(dropperIndex, 0, newState[draggerIndex]);
-				newState.splice(draggerIndex + 1, 1);
-				return newState;
-			} else if (dropperIndex > draggerIndex) {
-				newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
-				newState.splice(draggerIndex, 1);
-				return newState;
+			if ((action.dropper === 0 || action.dropper) && (action.dragger === 0 || action.dragger)) {
+				if (dropperIndex < draggerIndex) {
+					newState.splice(dropperIndex, 0, newState[draggerIndex]);
+					newState.splice(draggerIndex + 1, 1);
+					return newState;
+				} else if (dropperIndex > draggerIndex) {
+					newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
+					newState.splice(draggerIndex, 1);
+					return newState;
+				} else {
+					return state;
+				}
 			} else {
 				return state;
 			}

@@ -10,8 +10,8 @@ import { useReactToPrint } from 'react-to-print';
 import { ToWords } from 'to-words';
 import {
 	BASE_URL,
-	GET_PAYMENT_VOUCHER_BY_INVOICE_NO,
-	GET_RECEIPT_VOUCHER_BY_INVOICE_NO,
+	GET_PAYMENT_VOUCHER_ID_NAME_BY,
+	GET_RECEIPT_VOUCHER_ID_NAME_BY,
 	GET_SITESETTINGS
 } from '../../../../constant/constants';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 			overflow: 'hidden',
 			'& > img': {
 				height: '100%',
-				width: 'auto'
+				width: 'fit-content'
 			}
 		},
 		'& .companyName': {
@@ -144,9 +144,7 @@ const PrintVoucher = forwardRef(({ title, type }, ref) => {
 	const getVoucerData = async invoice_no => {
 		try {
 			const response = await axios.get(
-				`${
-					type === 'payment' ? GET_PAYMENT_VOUCHER_BY_INVOICE_NO : GET_RECEIPT_VOUCHER_BY_INVOICE_NO
-				}${invoice_no}`,
+				`${type === 'payment' ? GET_PAYMENT_VOUCHER_ID_NAME_BY : GET_RECEIPT_VOUCHER_ID_NAME_BY}${invoice_no}`,
 				authToken
 			);
 			return response?.data || {};
@@ -163,9 +161,9 @@ const PrintVoucher = forwardRef(({ title, type }, ref) => {
 						setDataItems(res?.items || []);
 						setData({ ...res, date: type === 'payment' ? res.payment_date : res.receipt_date } || {});
 						const totalDbAmnt = getTotalAmount(res?.items || [], 'debit_amount');
-						setTotalDbAmount(totalDbAmnt);
+						setTotalDbAmount(totalDbAmnt.toFixed(2));
 						const totalCDAmnt = getTotalAmount(res?.items || [], 'credit_amount');
-						setTotalCDAmount(totalCDAmnt);
+						setTotalCDAmount(totalCDAmnt.toFixed(2));
 						setAmountInWord(
 							toWords
 								.convert(type === 'payment' ? Number(totalCDAmnt) : Number(totalDbAmnt))
@@ -196,8 +194,11 @@ const PrintVoucher = forwardRef(({ title, type }, ref) => {
 
 	return (
 		<div ref={componentRef} className={`${classes.printableContainer} hidden print:block`}>
-			<div className="companyLogo">
-				<img src={BASE_URL ? `${BASE_URL}${generalData.logo}` : null} />
+			<div className="companyLogo" style={{ height: !generalData?.logo && 'fit-content' }}>
+				<img
+					style={{ width: generalData?.logo && 'auto' }}
+					src={BASE_URL ? `${BASE_URL}${generalData?.logo}` : null}
+				/>
 			</div>
 			<div className="companyName">
 				<h1>{generalData.site_name}</h1>

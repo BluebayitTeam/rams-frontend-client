@@ -74,18 +74,20 @@ function Image({ name, label }) {
 							</label>
 						</div>
 						{!previewFile && file && (
-							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+							<div style={{ width: 'auto', height: '150px', overflow: 'hidden', display: 'flex' }}>
 								{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
 									<PictureAsPdf
 										style={{
 											color: 'red',
 											cursor: 'pointer',
-											display: 'block'
+											display: 'block',
+											fontSize: '35px',
+											margin: 'auto'
 										}}
 										onClick={() => window.open(`${BASE_URL}${file}`)}
 									/>
 								) : (
-									<img src={`${BASE_URL}${file}`} />
+									<img src={`${BASE_URL}${file}`} style={{ height: '150px' }} />
 								)}
 							</div>
 						)}

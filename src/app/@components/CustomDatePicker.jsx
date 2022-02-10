@@ -14,12 +14,13 @@ function CustomDatePicker(props) {
 			{...props}
 			className={props?.className || 'mt-8 mb-16 w-full'}
 			autoOk
+			required={!!props.required}
 			variant="inline"
 			inputVariant="outlined"
 			format={props?.format || 'dd/MM/yyyy'}
 			placeholder={props?.placeholder || 'dd/MM/yyyy'}
 			value={props.value || props.field.value || null}
-			error={!!errors[props.field.name]}
+			error={!!errors[props.field.name] || props.required ? !(props.value || props.field.value) : false}
 			helperText={errors[props.field.name]?.message || ''}
 			onChange={value => {
 				value ? props.field.onChange(moment(new Date(value)).format('YYYY-MM-DD')) : props.field.onChange('');

@@ -17,12 +17,11 @@ const NewReceivableBillHeader = ({ letFormSave, extraItem }) => {
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
-	const name = watch('name');
 	const theme = useTheme();
 	const history = useHistory();
 
 	const routeParams = useParams();
-	const { receivableBillId } = routeParams;
+	const { receivableBillId, receivableBillName } = routeParams;
 
 	const handleDelete = localStorage.getItem('receivableBillEvent');
 
@@ -101,7 +100,7 @@ const NewReceivableBillHeader = ({ letFormSave, extraItem }) => {
 					<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 						<motion.div initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }}>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{name || 'Create New Receivable Bill'}
+								{receivableBillName || 'Create New Receivable Bill'}
 							</Typography>
 							<Typography variant="caption" className="font-medium">
 								Receivable Bill Detail
@@ -147,8 +146,12 @@ const NewReceivableBillHeader = ({ letFormSave, extraItem }) => {
 					<Button
 						className="whitespace-nowrap mx-4"
 						color="secondary"
+						disabled={!letFormSave}
 						variant="contained"
-						style={{ backgroundColor: '#4dc08e', color: 'white' }}
+						style={{
+							backgroundColor: letFormSave ? '#4dc08e' : 'rgba(255 255 255 / 12%)',
+							color: 'white'
+						}}
 						onClick={handleUpdateReceivableBill}
 					>
 						Update

@@ -32,7 +32,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 	const receiptVoucher = useSelector(({ receiptVouchersManagement }) => receiptVouchersManagement.receiptVoucher);
 	const { receiptVoucherId } = useParams();
 	const methods = useFormContext();
-	const { control, formState, getValues, setValue, reset } = methods;
+	const { control, formState, getValues, setValue, reset, watch } = methods;
 	const { errors } = formState;
 	const dispatch = useDispatch();
 	const passengers = useSelector(state => state.data.passengers);
@@ -78,29 +78,36 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 	};
 
 	const checkEmptyLedger = async itms => {
-		const items = itms || getValues()?.items || [];
+		setTimeout(() => {
+			const items = itms || getValues()?.items || [];
 
-		let isLedgerEmpty = false;
-		items.map(itm => {
-			if (!itm.ledger) {
-				isLedgerEmpty = true;
+			let isLedgerEmpty = false;
+			items.map(itm => {
+				if (!itm.ledger) {
+					isLedgerEmpty = true;
+				}
+			});
+
+			if (isLedgerEmpty) {
+				setHaveEmptyLedger(true);
+				setLedgerMessage('Account type is required');
+				setLetFormSave(false);
+			} else {
+				setHaveEmptyLedger(false);
+				setLedgerMessage('');
+				isDebitCreditMatched && setLetFormSave(true);
 			}
-		});
-
-		if (isLedgerEmpty) {
-			setHaveEmptyLedger(true);
-			setLedgerMessage('Account type is required');
-			setLetFormSave(false);
-		} else {
-			setHaveEmptyLedger(false);
-			setLedgerMessage('');
-			isDebitCreditMatched && setLetFormSave(true);
-		}
+		}, 0);
 	};
 
 	useEffect(() => {
 		checkEmptyLedger(receiptVoucher?.items || []);
 	}, [receiptVoucher]);
+
+	//rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
+	useEffect(() => {
+		reset({ ...getValues(), items: watch('items') });
+	}, [ledgers]);
 
 	console.log('values', values);
 
@@ -125,8 +132,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 								{...params}
 								placeholder="Select Branch"
 								label="Branch"
-								error={!!errors.branch || !value}
-								helperText={errors?.branch?.message}
 								variant="outlined"
 								required
 								InputLabelProps={{
@@ -148,7 +153,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 						autoHighlight
 						value={value ? passengers.find(data => data.id == value) : null}
 						options={passengers}
-						getOptionLabel={option => `${option.passenger_name}`}
+						getOptionLabel={option =>
+							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+						}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -157,8 +164,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 								{...params}
 								placeholder="Select Passenger"
 								label="Passenger"
-								error={!!errors.passenger || !value}
-								helperText={errors?.passenger?.message}
 								variant="outlined"
 								required
 								InputLabelProps={{
@@ -188,8 +193,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 								{...params}
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
-								error={!!errors.sub_ledger || !value}
-								helperText={errors?.sub_ledger?.message}
 								variant="outlined"
 								required
 								InputLabelProps={{
@@ -202,10 +205,10 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 			/>
 
 			<Controller
-				name="sales_date"
+				name="receipt_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Sale Date" />;
+					return <CustomDatePicker field={field} label="Receipt Date" required />;
 				}}
 			/>
 
@@ -218,8 +221,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							error={!!errors.details}
-							helperText={errors?.details?.message}
 							label="Details"
 							id="details"
 							variant="outlined"
@@ -281,7 +282,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
-																setValue(`items.${idx}.ledger`, newValue?.id);
+																onChange(newValue?.id);
 																checkEmptyLedger();
 															}}
 															renderInput={params => (
