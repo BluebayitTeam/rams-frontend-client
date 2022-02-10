@@ -14,7 +14,7 @@ import {
 	updateVisaSubmissionList
 } from '../store/visaSubmissionListSlice';
 
-const NewVisaSubmissionListHeader = () => {
+const NewVisaSubmissionListHeader = ({ setReFechListData }) => {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
@@ -33,6 +33,7 @@ const NewVisaSubmissionListHeader = () => {
 				history.push('/apps/visaSubmissionList-management/visaSubmissionList/new');
 				reset({});
 				dispatch(setAlert(saveAlertMsg));
+				setReFechListData(Math.random());
 			}
 		});
 	}
@@ -45,6 +46,7 @@ const NewVisaSubmissionListHeader = () => {
 				history.push('/apps/visaSubmissionList-management/visaSubmissionList/new');
 				reset({});
 				dispatch(setAlert(updateAlertMsg));
+				setReFechListData(Math.random());
 			}
 		});
 	}
@@ -57,6 +59,7 @@ const NewVisaSubmissionListHeader = () => {
 				history.push('/apps/visaSubmissionList-management/visaSubmissionList/new');
 				reset({});
 				dispatch(setAlert(removeAlertMsg));
+				setReFechListData(Math.random());
 			}
 		});
 	}

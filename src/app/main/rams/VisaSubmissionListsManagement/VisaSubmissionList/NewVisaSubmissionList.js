@@ -25,6 +25,8 @@ const schema = yup.object().shape({
 const VisaSubmissionList = () => {
 	const dispatch = useDispatch();
 
+	const [reFechListData, setReFechListData] = useState(0);
+
 	const [noVisaSubmissionList, setNoVisaSubmissionList] = useState(false);
 	const methods = useForm({
 		mode: 'onChange',
@@ -76,14 +78,14 @@ const VisaSubmissionList = () => {
 					toolbar: 'p-0',
 					header: 'min-h-64 h-64'
 				}}
-				header={<NewVisaSubmissionListHeader />}
+				header={<NewVisaSubmissionListHeader setReFechListData={setReFechListData} />}
 				content={
 					<div className="p-16 sm:p-24 max-w-2xl">
 						<VisaSubmissionListForm />
 						<br />
 						<br />
 						<br />
-						<VisaSubmissionLists />
+						<VisaSubmissionLists reFechListData={reFechListData} />
 					</div>
 				}
 				innerScroll

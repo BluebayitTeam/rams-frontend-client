@@ -31,7 +31,7 @@ const initialTableColumnsState = [
 	{ id: 4, label: 'passenger', name: 'passenger', subName: 'passenger_name', show: true }
 ];
 
-const VisaSubmissionLists = () => {
+const VisaSubmissionLists = ({ reFechListData }) => {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -200,6 +200,10 @@ const VisaSubmissionLists = () => {
 			callBackAfterStateUpdated && callBackAfterStateUpdated(res.payload);
 		});
 	};
+
+	useEffect(() => {
+		inShowAllMode ? handleGetAllVisaSbLists() : handleGetVisaSbLists();
+	}, [reFechListData]);
 
 	return (
 		<>
