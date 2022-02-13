@@ -387,3 +387,147 @@ export const getReportPaginationMakeStyles = theme => ({
 		}
 	}
 });
+
+export const getReportTextFieldMakeStyles = theme => ({
+	fieldContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		color: theme.palette.primary.main,
+		height: '30px',
+		width: 'fit-content',
+		margin: '10px 5px',
+		'& .textField': {
+			height: '100%',
+			margin: '0px 10px',
+			background: 'inherit',
+			border: 'none',
+			outline: 'none',
+			borderBottom: `1px solid ${theme.palette.primary.light}`,
+			color: theme.palette.primary.main,
+			width: '100%',
+			transition: '0.3s',
+			'&:focus': {
+				borderBottom: `1px solid ${theme.palette.primary.main}`,
+				width: '100px !important'
+			},
+			'&::placeholder': {
+				color: theme.palette.primary.main
+			},
+			'&::-ms-input-placeholder': {
+				color: theme.palette.primary.main
+			},
+			'&:-ms-input-placeholder': {
+				color: theme.palette.primary.main
+			}
+		},
+		'& .icon': {
+			fontSize: '20px'
+		}
+	}
+});
+
+export const getReportSelectMakeStyles = theme => ({
+	fieldContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		color: theme.palette.primary.main,
+		height: '30px',
+		width: 'fit-content',
+		margin: '10px 5px',
+		'& .selectLabel': {
+			cursor: 'pointer',
+			overflow: 'hidden',
+			transition: '0.3s',
+			color: theme.palette.primary.main,
+			whiteSpace: 'nowrap'
+		},
+		'& .selectOpenIcon': {
+			fontSize: '18px',
+			overflow: 'hidden'
+		},
+		'& .selectField': {
+			overflow: 'hidden',
+			transition: '0.3s',
+			'& .endAdornment': {
+				'& > button': {
+					color: theme.palette.primary.main
+				}
+			},
+			'& .textFieldUnderSelect': {
+				'& > div': {
+					color: theme.palette.primary.main,
+					'&::before': {
+						borderColor: theme.palette.primary.main
+					}
+				}
+			}
+		},
+		'& .icon': {
+			fontSize: '20px'
+		}
+	}
+});
+
+export const getReportDateMakeStyles = theme => ({
+	fieldContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		color: theme.palette.primary.main,
+		height: '30px',
+		width: 'fit-content',
+		margin: '10px 5px',
+		'& .dateLabel': {
+			width: 'fit-content',
+			padding: '3px 5px 0px 8px',
+			cursor: 'pointer',
+			color: theme.palette.primary.main
+		},
+		'& .icon': {
+			fontSize: '20px'
+		}
+	}
+});
+
+export const getReportKeywordMakeStyles = theme => ({
+	keywordContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		width: 'fit-content',
+		margin: '2px 5px',
+		'& > b': {
+			color: theme.palette.primary.main,
+			opacity: 0.6,
+			fontWeight: 600
+		},
+		'& > div': {
+			padding: '3px 8px',
+			fontSize: '14px',
+			background: theme.palette.primary.light,
+			color: theme.palette.primary.dark,
+			margin: '3px 5px',
+			borderRadius: '15px',
+			display: 'flex',
+			flexDirection: 'row',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: '25px',
+			'& > p': {
+				marginBottom: '-1px'
+			},
+			'& .iconWithKeyWord': {
+				marginRight: '5px'
+			},
+			'& .closeIconWithKeyWord': {
+				marginLeft: '5px',
+				cursor: 'pointer'
+			}
+		}
+	}
+});

@@ -11,11 +11,16 @@ const useStyles = makeStyles(() => ({
 		'& .row': {
 			marginRight: '-15px',
 			marginLeft: '-15px'
+		},
+		'& .ppBrcodeWraper': {
+			'& svg': {
+				margin: 'auto'
+			}
 		}
 	}
 }));
 
-const barecodeConfig = {
+const barcodeConfig = {
 	width: 1,
 	height: 30,
 	margin: 0,
@@ -26,7 +31,7 @@ const barecodeConfig = {
 	format: 'CODE128',
 	displayValue: false
 };
-const barecodeConfig2 = {
+const barcodeConfig2 = {
 	width: 1,
 	height: 50,
 	marginTop: 15,
@@ -51,19 +56,6 @@ function KsaVisaForm() {
 			<div className="row">
 				<div className="md:w-full">
 					<div>
-						{/* <asp:Panel ID="pnlContents" runat="server"> */}
-
-						{/* <style>
-          
-            @page {
-                
-                margin-top:0.03in;
-                margin-left:0.40in;
-                margin-bottom:0.03in;
-                
-            }
-
-        </style> */}
 						<table style={{ height: '600px', width: '100%' }}>
 							<tr>
 								<td style={{ textAlign: 'center' }}>
@@ -117,7 +109,7 @@ function KsaVisaForm() {
 													</tr>
 													<tr>
 														<td align="right">
-															<Barcode value={barcodeByVisa} {...barecodeConfig} />
+															<Barcode value={barcodeByVisa} {...barcodeConfig} />
 														</td>
 													</tr>
 													<tr>
@@ -949,8 +941,12 @@ function KsaVisaForm() {
 														>
 															&emsp;Consul General
 														</td>
-														<td align="right" style={{ width: '70%' }}>
-															<Barcode value="123456789" {...barecodeConfig2} />
+														<td
+															align="right"
+															style={{ width: '70%' }}
+															className="ppBrcodeWraper"
+														>
+															<Barcode value="123456789" {...barcodeConfig2} />
 														</td>
 														<td
 															style={{
