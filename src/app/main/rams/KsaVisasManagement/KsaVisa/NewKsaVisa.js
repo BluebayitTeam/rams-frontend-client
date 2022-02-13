@@ -9,21 +9,21 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { getBmet, newBmet, resetBmet } from '../store/bmetSlice';
 import reducer from '../store/index.js';
-import BmetForm from './BmetForm.js';
-import NewBmetHeader from './NewBmetHeader.js';
+import { getKsaVisa, newKsaVisa, resetKsaVisa } from '../store/ksaVisaSlice';
+import KsaVisaForm from './KsaVisaForm';
+import NewKsaVisaHeader from './NewKsaVisaHeader';
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({});
 
-const Bmet = () => {
+const KsaVisa = () => {
 	const dispatch = useDispatch();
-	const bmet = useSelector(({ bmetsManagement }) => bmetsManagement.bmet);
+	const ksaVisa = useSelector(({ ksaVisasManagement }) => ksaVisasManagement.ksaVisa);
 
-	const [noBmet, setNoBmet] = useState(false);
+	const [noKsaVisa, setNoKsaVisa] = useState(false);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -34,61 +34,61 @@ const Bmet = () => {
 	const { reset } = methods;
 
 	useDeepCompareEffect(() => {
-		function updateBmetState() {
-			const { bmetId } = routeParams;
+		function updateKsaVisaState() {
+			const { ksaVisaId } = routeParams;
 
-			if (bmetId === 'new') {
+			if (ksaVisaId === 'new') {
 				localStorage.removeItem('event');
 				/**
 				 * Create New User data
 				 */
-				dispatch(newBmet());
+				dispatch(newKsaVisa());
 			} else {
 				/**
 				 * Get User data
 				 */
 
-				dispatch(getBmet(bmetId)).then(action => {
+				dispatch(getKsaVisa(ksaVisaId)).then(action => {
 					console.log(action.payload);
 					/**
 					 * If the requested product is not exist show message
 					 */
 					if (!action.payload) {
-						setNoBmet(true);
+						setNoKsaVisa(true);
 					}
 				});
 			}
 		}
 
-		updateBmetState();
+		updateKsaVisaState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {}, []);
 
 	useEffect(() => {
-		if (!bmet) {
+		if (!ksaVisa) {
 			return;
 		}
 		/**
-		 * Reset the form on bmet state changes
+		 * Reset the form on ksaVisa state changes
 		 */
-		reset(bmet);
-	}, [bmet, reset]);
+		reset(ksaVisa);
+	}, [ksaVisa, reset]);
 
 	useEffect(() => {
 		return () => {
 			/**
-			 * Reset Bmet on component unload
+			 * Reset KsaVisa on component unload
 			 */
-			dispatch(resetBmet());
-			setNoBmet(false);
+			dispatch(resetKsaVisa());
+			setNoKsaVisa(false);
 		};
 	}, [dispatch]);
 
 	/**
 	 * Show Message if the requested products is not exists
 	 */
-	if (noBmet) {
+	if (noKsaVisa) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -96,7 +96,7 @@ const Bmet = () => {
 				className="flex flex-col flex-1 items-center justify-center h-full"
 			>
 				<Typography color="textSecondary" variant="h5">
-					There is no such bmet!
+					There is no such ksaVisa!
 				</Typography>
 				<Button
 					className="mt-24"
@@ -105,7 +105,7 @@ const Bmet = () => {
 					to="/apps/e-commerce/products"
 					color="inherit"
 				>
-					Go to Bmet Page
+					Go to KsaVisa Page
 				</Button>
 			</motion.div>
 		);
@@ -118,10 +118,10 @@ const Bmet = () => {
 					toolbar: 'p-0',
 					header: 'min-h-40 h-40'
 				}}
-				header={<NewBmetHeader />}
+				header={<NewKsaVisaHeader />}
 				content={
-					<div className="p-16 sm:p-24 max-w-2xl border bg-grey-200 border-grey-600 rounded-xl  mx-auto md:mt-2">
-						<BmetForm />
+					<div className="p-16 sm:p-24 max-w-2xl border bg-grey-200 border-grey-600 rounded-xl mx-auto md:mt-2">
+						<KsaVisaForm />
 					</div>
 				}
 				innerScroll
@@ -129,4 +129,4 @@ const Bmet = () => {
 		</FormProvider>
 	);
 };
-export default withReducer('bmetsManagement', reducer)(Bmet);
+export default withReducer('ksaVisasManagement', reducer)(KsaVisa);

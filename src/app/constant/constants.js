@@ -1126,3 +1126,18 @@ export const DELETE_BMET = `${BASE_URL}/bmet/api/v1/bmet/delete/`;
 export const DELETE_BMET_MULTIPLE = `${BASE_URL}/bmet/api/v1/bmet/delete_multiple/`;
 
 export const SEARCH_BMET = `${BASE_URL}/bmet/api/v1/bmet/search/`;
+
+//ksa_visa
+export const CREATE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/create/`;
+
+export const GET_KSAVISAS = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/all`;
+
+export const GET_KSAVISA_BY_ID = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/`;
+
+export const UPDATE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/update/`;
+
+export const DELETE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete/`;
+
+export const DELETE_KSAVISA_MULTIPLE = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete_multiple/`;
+
+export const SEARCH_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/search/`;

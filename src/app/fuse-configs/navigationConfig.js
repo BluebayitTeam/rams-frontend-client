@@ -653,6 +653,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/bmet-management/bmet-form',
 				exact: true
+			},
+			//ksa_visa
+			{
+				id: 'ksa_visa',
+				title: 'Visa Form',
+				translate: 'Visa Form',
+				type: 'item',
+				url: '/apps/ksa-visa-management/ksa-visa-form',
+				exact: true
 			}
 		]
 	}

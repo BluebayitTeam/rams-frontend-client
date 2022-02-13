@@ -555,12 +555,13 @@ const ramsRouteConfig = {
 		},
 		//bmet
 		{
-			path: '/apps/bmet-management/bmets/:bmetId/:bmetName?',
-			component: lazy(() => import('./BmetsManagement/Bmet/NewBmet'))
-		},
-		{
 			path: '/apps/bmet-management/:bmetId',
 			component: lazy(() => import('./BmetsManagement/Bmet/NewBmet'))
+		},
+		//ksaVisa
+		{
+			path: '/apps/ksa-visa-management/:ksaVisaId',
+			component: lazy(() => import('./KsaVisasManagement/KsaVisa/NewKsaVisa'))
 		}
 	]
 };
