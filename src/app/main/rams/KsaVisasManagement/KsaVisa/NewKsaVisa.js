@@ -1,5 +1,4 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@material-ui/core';
 import withReducer from 'app/store/withReducer';
@@ -10,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
-import { getKsaVisa, newKsaVisa, resetKsaVisa } from '../store/ksaVisaSlice';
+import { resetKsaVisa } from '../store/ksaVisaSlice';
 import KsaVisaForm from './KsaVisaForm';
 import NewKsaVisaHeader from './NewKsaVisaHeader';
 
@@ -33,35 +32,35 @@ const KsaVisa = () => {
 
 	const { reset } = methods;
 
-	useDeepCompareEffect(() => {
-		function updateKsaVisaState() {
-			const { ksaVisaId } = routeParams;
+	// useDeepCompareEffect(() => {
+	// 	function updateKsaVisaState() {
+	// 		const { ksaVisaId } = routeParams;
 
-			if (ksaVisaId === 'new') {
-				localStorage.removeItem('event');
-				/**
-				 * Create New User data
-				 */
-				dispatch(newKsaVisa());
-			} else {
-				/**
-				 * Get User data
-				 */
+	// 		if (ksaVisaId === 'new') {
+	// 			localStorage.removeItem('event');
+	// 			/**
+	// 			 * Create New User data
+	// 			 */
+	// 			dispatch(newKsaVisa());
+	// 		} else {
+	// 			/**
+	// 			 * Get User data
+	// 			 */
 
-				dispatch(getKsaVisa(ksaVisaId)).then(action => {
-					console.log(action.payload);
-					/**
-					 * If the requested product is not exist show message
-					 */
-					if (!action.payload) {
-						setNoKsaVisa(true);
-					}
-				});
-			}
-		}
+	// 			dispatch(getKsaVisa(ksaVisaId)).then(action => {
+	// 				console.log(action.payload);
+	// 				/**
+	// 				 * If the requested product is not exist show message
+	// 				 */
+	// 				if (!action.payload) {
+	// 					setNoKsaVisa(true);
+	// 				}
+	// 			});
+	// 		}
+	// 	}
 
-		updateKsaVisaState();
-	}, [dispatch, routeParams]);
+	// 	updateKsaVisaState();
+	// }, [dispatch, routeParams]);
 
 	useEffect(() => {}, []);
 

@@ -562,6 +562,67 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/ksa-visa-management/:ksaVisaId',
 			component: lazy(() => import('./KsaVisasManagement/KsaVisa/NewKsaVisa'))
+		},
+		//receiptReport
+		{
+			path: '/apps/report-management/receipt-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/ReceiptReportManagement/ReceiptReport/ReceiptReport'
+				)
+			)
+		},
+		//receipt Summary Report
+		{
+			path: '/apps/report-management/receipt-summary-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/ReceiptSummaryReportManagement/ReceiptSummaryReport/ReceiptSummaryReport'
+				)
+			)
+		},
+		//paymentReport
+		{
+			path: '/apps/report-management/payment-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/PaymentReportManagement/PaymentReport/PaymentReport'
+				)
+			)
+		},
+		//payment Summary Report
+		{
+			path: '/apps/report-management/payment-summary-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/PaymentSummaryReportManagement/PaymentSummaryReport/PaymentSummaryReport'
+				)
+			)
+		},
+		//ledgerReport
+		{
+			path: '/apps/report-management/ledger-reports',
+			component: lazy(() =>
+				import('./ReportManagement/accountsReportManagement/LedgerReportManagement/LedgerReport/LedgerReport')
+			)
+		},
+		//account statement Report
+		{
+			path: '/apps/report-management/account-statement-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/AccountStatementReportManagement/AccountStatementReport/AccountStatementReport'
+				)
+			)
+		},
+		//ledgerReport
+		{
+			path: '/apps/report-management/account-statement-summary-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/AccountSummaryReportManagement/AccountSummaryReport/AccountSummaryReport'
+				)
+			)
 		}
 	]
 };

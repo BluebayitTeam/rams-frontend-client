@@ -2,6 +2,8 @@ import { makeStyles, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import Barcode from 'react-barcode';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { getKsaVisa } from '../store/ksaVisaSlice';
 
 const useStyles = makeStyles(() => ({
 	container: {
@@ -42,10 +44,11 @@ const barcodeConfig2 = {
 };
 function KsaVisaForm() {
 	const methods = useFormContext();
-	const { control, formState } = methods;
-	const { errors } = formState;
+	const { control, watch } = methods;
 
 	const classes = useStyles();
+
+	const dispatch = useDispatch();
 
 	const [data, setData] = useState({});
 	const [barcodeByVisa, setBarcodeByVisa] = useState(0);
@@ -77,9 +80,10 @@ function KsaVisaForm() {
 																	id="name"
 																	variant="outlined"
 																	fullWidth
-																	onChange={e => {
-																		field.onChange(e);
-																		setBarcodeByVisa(e.target.value);
+																	onKeyDown={ev => {
+																		if (ev.key === 'Enter') {
+																			dispatch(getKsaVisa(ev.target.value));
+																		}
 																	}}
 																/>
 															)}
@@ -92,6 +96,7 @@ function KsaVisaForm() {
 																padding: '0px 5px',
 																height: '37px'
 															}}
+															onClick={() => dispatch(getKsaVisa(watch('name')))}
 														>
 															Show
 														</button>

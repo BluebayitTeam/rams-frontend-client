@@ -82,7 +82,6 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 				<ReportTextField
 					{...commonFieldProps}
 					name="agent_code"
-					label="Agent Code"
 					domEl={agentCodeEl}
 					icon={faQrcode}
 					width="77px"
@@ -126,14 +125,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 					icon={faPhoneAlt}
 				/>
 				<Keyword {...commonKewordProps} type="select" name="district" icon={faCity} />
-				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="agent_code"
-					label="Agent Code"
-					domEl={agentCodeEl}
-					icon={faQrcode}
-				/>
+				<Keyword {...commonKewordProps} type="text" name="agent_code" domEl={agentCodeEl} icon={faQrcode} />
 				<Keyword {...commonKewordProps} type="date" name="date_after" label="Date From" />
 				<Keyword {...commonKewordProps} type="date" name="date_before" label="Date To" />
 			</div>

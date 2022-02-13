@@ -1,5 +1,4 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@material-ui/core';
 import withReducer from 'app/store/withReducer';
@@ -9,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { getBmet, newBmet, resetBmet } from '../store/bmetSlice';
+import { resetBmet } from '../store/bmetSlice';
 import reducer from '../store/index.js';
 import BmetForm from './BmetForm.js';
 import NewBmetHeader from './NewBmetHeader.js';
@@ -33,35 +32,35 @@ const Bmet = () => {
 
 	const { reset } = methods;
 
-	useDeepCompareEffect(() => {
-		function updateBmetState() {
-			const { bmetId } = routeParams;
+	// useDeepCompareEffect(() => {
+	// 	function updateBmetState() {
+	// 		const { bmetId } = routeParams;
 
-			if (bmetId === 'new') {
-				localStorage.removeItem('event');
-				/**
-				 * Create New User data
-				 */
-				dispatch(newBmet());
-			} else {
-				/**
-				 * Get User data
-				 */
+	// 		if (bmetId === 'new') {
+	// 			localStorage.removeItem('event');
+	// 			/**
+	// 			 * Create New User data
+	// 			 */
+	// 			dispatch(newBmet());
+	// 		} else {
+	// 			/**
+	// 			 * Get User data
+	// 			 */
 
-				dispatch(getBmet(bmetId)).then(action => {
-					console.log(action.payload);
-					/**
-					 * If the requested product is not exist show message
-					 */
-					if (!action.payload) {
-						setNoBmet(true);
-					}
-				});
-			}
-		}
+	// 			dispatch(getBmet(bmetId)).then(action => {
+	// 				console.log(action.payload);
+	// 				/**
+	// 				 * If the requested product is not exist show message
+	// 				 */
+	// 				if (!action.payload) {
+	// 					setNoBmet(true);
+	// 				}
+	// 			});
+	// 		}
+	// 	}
 
-		updateBmetState();
-	}, [dispatch, routeParams]);
+	// 	updateBmetState();
+	// }, [dispatch, routeParams]);
 
 	useEffect(() => {}, []);
 

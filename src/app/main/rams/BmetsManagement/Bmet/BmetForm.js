@@ -1,10 +1,11 @@
 import { makeStyles, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { getBmet } from '../store/bmetSlice';
 
 const useStyles = makeStyles(() => ({
 	container: {
-		// background: 'grey',
 		'& *': {
 			boxSizing: 'border-box'
 		},
@@ -34,10 +35,11 @@ const useStyles = makeStyles(() => ({
 
 function BmetForm() {
 	const methods = useFormContext();
-	const { control, formState } = methods;
-	const { errors } = formState;
+	const { control, watch } = methods;
 
 	const classes = useStyles();
+
+	const dispatch = useDispatch();
 
 	const [bmet, setBmet] = useState({});
 
@@ -57,12 +59,11 @@ function BmetForm() {
 									render={({ field }) => (
 										<TextField
 											{...field}
-											// className="mt-8 mb-16"
-											// error={!!errors.name}
-											// required
-											// InputLabelProps={field.value && { shrink: true }}
-											// helperText={errors?.name?.message}
-											// label="Name"
+											onKeyDown={ev => {
+												if (ev.key === 'Enter') {
+													dispatch(getBmet(ev.target.value));
+												}
+											}}
 											autoFocus
 											id="name"
 											variant="outlined"
@@ -78,6 +79,7 @@ function BmetForm() {
 										padding: '0px 5px',
 										height: '37px'
 									}}
+									onClick={() => dispatch(getBmet(watch('name')))}
 								>
 									Show
 								</button>

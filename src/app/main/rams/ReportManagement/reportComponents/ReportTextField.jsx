@@ -1,10 +1,47 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles } from '@material-ui/core';
+import fillUnderscoreBySpace from 'app/@helpers/fillUnderscoreBySpace';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { getReportTextFieldMakeStyles } from '../reportUtils/reportMakeStyls';
 
 const useStyles = makeStyles(theme => ({
-	...getReportTextFieldMakeStyles(theme)
+	fieldContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		color: theme.palette.primary.main,
+		height: '30px',
+		width: 'fit-content',
+		margin: '10px 5px',
+		'& .textField': {
+			height: '100%',
+			margin: '0px 10px',
+			background: 'inherit',
+			border: 'none',
+			outline: 'none',
+			borderBottom: `1px solid ${theme.palette.primary.light}`,
+			color: theme.palette.primary.main,
+			width: '100%',
+			transition: '0.3s',
+			'&:focus': {
+				borderBottom: `1px solid ${theme.palette.primary.main}`,
+				width: '100px !important'
+			},
+			'&::placeholder': {
+				color: theme.palette.primary.main
+			},
+			'&::-ms-input-placeholder': {
+				color: theme.palette.primary.main
+			},
+			'&:-ms-input-placeholder': {
+				color: theme.palette.primary.main
+			}
+		},
+		'& .icon': {
+			fontSize: '20px'
+		}
+	}
 }));
 
 const ReportTextField = ({ name, label, domEl, icon, width, setReRender, onEnter = () => null } = {}) => {
@@ -13,6 +50,8 @@ const ReportTextField = ({ name, label, domEl, icon, width, setReRender, onEnter
 	const methods = useFormContext();
 	const { getValues, setValue } = methods;
 	const values = getValues();
+
+	const [Label] = useState(label || fillUnderscoreBySpace(name));
 
 	return (
 		<div className={classes.fieldContainer}>
@@ -32,7 +71,7 @@ const ReportTextField = ({ name, label, domEl, icon, width, setReRender, onEnter
 				onFocus={() => (domEl.current.value = domEl.current.value || values[`${name}`] || '')}
 				className="textField"
 				style={{ width }}
-				placeholder={label || name?.charAt(0)?.toUpperCase() + name?.slice(1)}
+				placeholder={Label}
 			/>
 		</div>
 	);

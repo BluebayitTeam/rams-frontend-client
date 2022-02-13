@@ -1117,7 +1117,7 @@ export const CREATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/create/`;
 
 export const GET_BMETS = `${BASE_URL}/bmet/api/v1/bmet/all`;
 
-export const GET_BMET_BY_ID = `${BASE_URL}/bmet/api/v1/bmet/`;
+export const GET_BMET_BY_ID = `${BASE_URL}/form/api/v1/form/get_bmet_form_data_by_passenger_id/`;
 
 export const UPDATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/update/`;
 
@@ -1141,3 +1141,40 @@ export const DELETE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete/`;
 export const DELETE_KSAVISA_MULTIPLE = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete_multiple/`;
 
 export const SEARCH_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/search/`;
+
+//reports
+
+//account statement
+export const ACCOUNTSTATEMENT_FILTER_BY = `${BASE_URL}/account_log_report/api/v1/account_log_report/by_ledger_type/`;
+
+export const ACCOUNTSTATEMENT_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/api/v1/account_log_report/by_ledger_type/`;
+
+//account statement summary
+export const ACCOUNTSUMMARY_FILTER_BY = `${BASE_URL}/account_log_report/api/v1/account_log_report/get_total_cash_dr_cr_bank_dr_cr/`;
+
+export const ACCOUNTSUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/api/v1/account_log_report/get_total_cash_dr_cr_bank_dr_cr/`;
+
+//ledger
+export const LEDGER_FILTER_BY = `${BASE_URL}/account_log_report/api/v1/account_log_report/general/`;
+
+export const LEDGER_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/api/v1/account_log_report/general/`;
+
+//sub ledger
+export const PAYMENT_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/report_for_payment_voucher/`;
+
+export const PAYMENT_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/report_for_payment_voucher/`;
+
+// payment-summary
+export const PAYMENT_SUMMARY_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/summary_for_payment_voucher/`;
+
+export const PAYMENT_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/summary_for_payment_voucher/`;
+
+//receipt voucher
+export const RECEIPT_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/report_for_receipt_voucher/`;
+
+export const RECEIPT_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/report_for_receipt_voucher/`;
+
+// receipt-summary
+export const RECEIPT_SUMMARY_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/summary_for_receipt_voucher/`;
+
+export const RECEIPT_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/summary_for_receipt_voucher/`;

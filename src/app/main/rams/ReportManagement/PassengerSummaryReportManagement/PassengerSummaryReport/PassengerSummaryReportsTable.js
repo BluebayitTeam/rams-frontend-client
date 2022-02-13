@@ -40,29 +40,29 @@ const initialTableColumnsState = [
 	{ id: 5, label: 'Gender', name: 'gender', show: true },
 	{ id: 6, label: 'P.Type', name: 'passenger_type', subName: 'name', show: true },
 	{ id: 7, label: 'Agent', name: 'agent', subName: 'username', show: true },
-	{ id: 8, label: 'V.Agent', getterMathod: data => data?.visa_entry?.visa_agent?.username || '', show: true },
+	{ id: 8, label: 'V.Agent', getterMethod: data => data?.visa_entry?.visa_agent?.username || '', show: true },
 	{ id: 9, label: 'Country', name: 'target_country', subName: 'name', style: { lineHeight: '12px' }, show: true },
 	{ id: 10, label: 'V.No', name: 'visa_entry', subName: 'visa_number', show: true },
 	{ id: 11, label: 'ID No', name: 'passenger_id', show: true },
 	{ id: 12, label: 'Profession', name: 'profession', subName: 'name', show: true },
 	{ id: 13, label: 'PL', name: 'passenger_office_work', subName: 'police_clearance_status', show: true },
 	{ id: 14, label: 'DL', name: 'passenger_office_work', subName: 'driving_license_status', show: true },
-	{ id: 15, label: 'Medical', getterMathod: data => (data?.passenger_medical ? 'true' : 'false'), show: true },
+	{ id: 15, label: 'Medical', getterMethod: data => (data?.passenger_medical ? 'true' : 'false'), show: true },
 	{
 		id: 16,
 		label: 'Med.Exp.Date',
-		getterMathod: data => {
+		getterMethod: data => {
 			const dedicalExpDate = data?.passenger_medical?.medical_expiry_date;
 			return dedicalExpDate ? moment(new Date(dedicalExpDate)).format('DD-MM-YYYY') : '';
 		},
 		style: { whiteSpace: 'nowrap' },
 		show: true
 	},
-	{ id: 17, label: 'Mefa', getterMathod: data => (data?.passenger_mofa ? 'true' : 'false'), show: true },
+	{ id: 17, label: 'Mefa', getterMethod: data => (data?.passenger_mofa ? 'true' : 'false'), show: true },
 	{
 		id: 18,
 		label: 'V.Stamp.Date',
-		getterMathod: data => {
+		getterMethod: data => {
 			const vStampDate = data?.passenger_embassy?.stamping_date;
 			return vStampDate ? moment(new Date(vStampDate)).format('DD-MM-YYYY') : '';
 		},
@@ -70,18 +70,18 @@ const initialTableColumnsState = [
 		show: true
 	},
 	{ id: 19, label: 'Finger', name: 'passenger_office_work', subName: 'finger_status', show: true },
-	{ id: 20, label: 'Training', getterMathod: data => (data?.passenger_training ? 'true' : 'false'), show: true },
+	{ id: 20, label: 'Training', getterMethod: data => (data?.passenger_training ? 'true' : 'false'), show: true },
 	{
 		id: 21,
 		label: 'ManP.Date',
-		getterMathod: data => {
+		getterMethod: data => {
 			const manPDate = data?.passenger_man_power?.man_power_date;
 			return manPDate ? moment(new Date(manPDate)).format('DD-MM-YYYY') : '';
 		},
 		style: { whiteSpace: 'nowrap' },
 		show: true
 	},
-	{ id: 22, label: 'Flight', getterMathod: data => (data?.passenger_flight ? 'true' : 'false'), show: true },
+	{ id: 22, label: 'Flight', getterMethod: data => (data?.passenger_flight ? 'true' : 'false'), show: true },
 	{ id: 23, label: 'Current Status', name: 'current_status', subName: 'name', show: true }
 ];
 

@@ -552,6 +552,81 @@ const navigationConfig = [
 		url: '',
 		exact: true,
 		children: [
+			//acount reports
+			{
+				id: 'accountReport',
+				title: 'Account Reports',
+				translate: 'Account Reports',
+				type: 'collapse',
+				icon: 'report',
+				url: '',
+				exact: true,
+				children: [
+					// receipt
+					{
+						id: 'receiptreport',
+						title: 'Receipt Report',
+						translate: 'Receipt Report',
+						type: 'item',
+						url: '/apps/report-management/receipt-reports',
+						exact: true
+					},
+					// receipt summary
+					{
+						id: 'receiptsummaryreport',
+						title: 'Receipt Summary Report',
+						translate: 'Receipt Summary Report',
+						type: 'item',
+						url: '/apps/report-management/receipt-summary-reports',
+						exact: true
+					},
+					// payment
+					{
+						id: 'paymentreport',
+						title: 'Payment Report',
+						translate: 'Payment Report',
+						type: 'item',
+						url: '/apps/report-management/payment-reports',
+						exact: true
+					},
+					// payment summary
+					{
+						id: 'paymentsummaryreport',
+						title: 'Payment Summary Report',
+						translate: 'Payment Summary Report',
+						type: 'item',
+						url: '/apps/report-management/payment-summary-reports',
+						exact: true
+					},
+					// ledger
+					{
+						id: 'ledgerreport',
+						title: 'Ledger Report',
+						translate: 'Ledger Report',
+						type: 'item',
+						url: '/apps/report-management/ledger-reports',
+						exact: true
+					},
+					// account statement
+					{
+						id: 'accountstatementreport',
+						title: 'Account Statement Report',
+						translate: 'Account Statement Report',
+						type: 'item',
+						url: '/apps/report-management/account-statement-reports',
+						exact: true
+					},
+					// account statement summary
+					{
+						id: 'accountSummaryReport',
+						title: 'Account Summary Report',
+						translate: 'Account Summary Report',
+						type: 'item',
+						url: '/apps/report-management/account-statement-summary-reports',
+						exact: true
+					}
+				]
+			},
 			//aggent report
 			{
 				id: 'agentReport',

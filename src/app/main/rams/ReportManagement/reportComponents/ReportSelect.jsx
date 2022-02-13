@@ -2,11 +2,52 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import fillUnderscoreBySpace from 'app/@helpers/fillUnderscoreBySpace';
+import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { getReportSelectMakeStyles } from '../reportUtils/reportMakeStyls';
 
 const useStyles = makeStyles(theme => ({
-	...getReportSelectMakeStyles(theme)
+	fieldContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		color: theme.palette.primary.main,
+		height: '30px',
+		width: 'fit-content',
+		margin: '10px 5px',
+		'& .selectLabel': {
+			cursor: 'pointer',
+			overflow: 'hidden',
+			transition: '0.3s',
+			color: theme.palette.primary.main,
+			whiteSpace: 'nowrap'
+		},
+		'& .selectOpenIcon': {
+			fontSize: '18px',
+			overflow: 'hidden'
+		},
+		'& .selectField': {
+			overflow: 'hidden',
+			transition: '0.3s',
+			'& .endAdornment': {
+				'& > button': {
+					color: theme.palette.primary.main
+				}
+			},
+			'& .textFieldUnderSelect': {
+				'& > div': {
+					color: theme.palette.primary.main,
+					'&::before': {
+						borderColor: theme.palette.primary.main
+					}
+				}
+			}
+		},
+		'& .icon': {
+			fontSize: '20px'
+		}
+	}
 }));
 
 const ReportSelect = ({ name, label, options = [], icon, width, setReRender, onEnter = () => null } = {}) => {
@@ -17,6 +58,8 @@ const ReportSelect = ({ name, label, options = [], icon, width, setReRender, onE
 	const values = getValues();
 
 	const isFocused = values[`${name}Focused`];
+
+	const [Label] = useState(label || fillUnderscoreBySpace(name));
 
 	return (
 		<div className={classes.fieldContainer}>
@@ -34,7 +77,7 @@ const ReportSelect = ({ name, label, options = [], icon, width, setReRender, onE
 					setTimeout(() => document.getElementById(`${name}groupEl`).focus(), 300);
 				}}
 			>
-				{label || name?.charAt(0)?.toUpperCase() + name?.slice(1)}
+				{Label}
 			</div>
 			<FontAwesomeIcon
 				className="selectOpenIcon cursor-pointer"
@@ -78,11 +121,7 @@ const ReportSelect = ({ name, label, options = [], icon, width, setReRender, onE
 							setValue(`${name}Name`, newValue?.name || '');
 						}}
 						renderInput={params => (
-							<TextField
-								{...params}
-								className="textFieldUnderSelect"
-								placeholder={`Select ${label || name?.charAt(0)?.toUpperCase() + name?.slice(1)}`}
-							/>
+							<TextField {...params} className="textFieldUnderSelect" placeholder={`Select ${Label}`} />
 						)}
 					/>
 				)}

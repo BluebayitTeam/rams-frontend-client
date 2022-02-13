@@ -119,10 +119,10 @@ function SiglePage({
 													? dataArr?.[column.name]
 													: column?.isSerialNo
 													? dataArr.hideSerialNo || pageBasedSerialNo++
-													: dataArr.getterMathod
-													? dataArr.getterMathod(dataArr)
-													: column.getterMathod
-													? column.getterMathod(dataArr)
+													: dataArr.getterMethod
+													? dataArr.getterMethod(dataArr)
+													: column.getterMethod
+													? column.getterMethod(dataArr)
 													: ''}
 											</div>
 										</TableCell>
