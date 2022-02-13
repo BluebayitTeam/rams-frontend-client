@@ -1,7 +1,8 @@
 import { makeStyles, TextField } from '@material-ui/core';
-import React, { useState } from 'react';
+import moment from 'moment';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getBmet } from '../store/bmetSlice';
 
 const useStyles = makeStyles(() => ({
@@ -41,7 +42,7 @@ function BmetForm() {
 
 	const dispatch = useDispatch();
 
-	const [bmet, setBmet] = useState({});
+	const bmet = useSelector(({ bmetsManagement }) => bmetsManagement.bmet);
 
 	return (
 		<div className={classes.container}>
@@ -454,7 +455,7 @@ function BmetForm() {
 									<p className="western">
 										<span face="Calibri, sans-serif">
 											<span size="2" style={{ fontSize: '11pt' }}>
-												1. Block visa No.:&nbsp; &nbsp; {bmet.visa_no}
+												1. Block visa No.:&nbsp; &nbsp; {bmet?.visa_entry?.[0]?.visa_number}
 											</span>
 										</span>
 									</p>
@@ -463,7 +464,11 @@ function BmetForm() {
 									<p className="western">
 										<span face="Calibri, sans-serif">
 											<span size="2" style={{ fontSize: '11pt' }}>
-												2. Visa issue Date : &nbsp; &nbsp; {bmet.visa_iss_date}
+												2. Visa issue Date : &nbsp; &nbsp;{' '}
+												{bmet?.visa_entry?.[0]?.visa_issue_date &&
+													moment(new Date(bmet?.visa_entry?.[0]?.visa_issue_date)).format(
+														'DD-MM-YYYY'
+													)}
 											</span>
 										</span>
 									</p>
@@ -474,7 +479,8 @@ function BmetForm() {
 									<p className="western">
 										<span face="Calibri, sans-serif">
 											<span size="2" style={{ fontSize: '9pt' }}>
-												3. Visa issuing country :&nbsp; &nbsp; {bmet.visa_iss_country}
+												3. Visa issuing country :&nbsp; &nbsp;{' '}
+												{bmet?.visa_entry?.[0]?.country?.name}
 											</span>
 										</span>
 									</p>
@@ -499,7 +505,7 @@ function BmetForm() {
 										</span>
 										&nbsp; &nbsp;
 										<span style={{ fontSize: '12pt' }}>
-											<b>{bmet.rl_no}</b>
+											<b>{bmet?.unknown}</b>
 										</span>
 									</p>
 								</td>
@@ -513,7 +519,7 @@ function BmetForm() {
 										&nbsp; &nbsp;
 										<span style={{ fontSize: '12pt' }}>
 											{' '}
-											<b>{bmet.ra_name} </b>
+											<b>{bmet?.unknown} </b>
 										</span>
 									</p>
 								</td>
@@ -544,7 +550,7 @@ function BmetForm() {
 										<span color="#000000">
 											<span face="Calibri-Bold, sans-serif">
 												<span size="2" style={{ fontSize: '9pt' }}>
-													Yes/NO &nbsp; &nbsp; {bmet.foreign}
+													Yes/NO &nbsp; &nbsp; {bmet?.unknown}
 												</span>
 											</span>
 										</span>
@@ -696,7 +702,7 @@ function BmetForm() {
 									<p className="western">
 										<span size="2" style={{ fontSize: '9pt' }}>
 											{' '}
-											&nbsp; {bmet.job_name}{' '}
+											&nbsp; {bmet?.passenger?.[0]?.profession?.name}{' '}
 										</span>
 									</p>
 								</td>
@@ -726,7 +732,7 @@ function BmetForm() {
 									<p className="western">
 										<span size="2" style={{ fontSize: '9pt' }}>
 											{' '}
-											&nbsp; {bmet.salary}{' '}
+											&nbsp; {bmet?.embassy?.[0]?.salary}{' '}
 										</span>
 									</p>
 								</td>
@@ -1080,7 +1086,9 @@ function BmetForm() {
 									<p className="western">
 										<span size="2" style={{ fontSize: '9pt' }}>
 											&nbsp;
-											<p style={{ fontSize: '11pt' }}>{bmet.visa_no}</p>{' '}
+											<p style={{ fontSize: '11pt' }}>
+												{bmet?.visa_entry?.[0]?.visa_number}
+											</p>{' '}
 										</span>
 									</p>
 								</td>
@@ -1113,7 +1121,12 @@ function BmetForm() {
 										<span face="Calibri, sans-serif">
 											<span size="1" style={{ fontSize: '8pt' }}>
 												&nbsp;
-												<p style={{ fontSize: '11pt' }}>{bmet.visa_iss_date}</p>{' '}
+												<p style={{ fontSize: '11pt' }}>
+													{bmet?.visa_entry?.[0]?.visa_issue_date &&
+														moment(new Date(bmet?.visa_entry?.[0]?.visa_issue_date)).format(
+															'DD-MM-YYYY'
+														)}
+												</p>{' '}
 											</span>
 										</span>
 									</p>
@@ -1144,7 +1157,7 @@ function BmetForm() {
 										<span face="Calibri, sans-serif">
 											<span size="1" style={{ fontSize: '8pt' }}>
 												&nbsp;
-												<p style={{ fontSize: '11pt' }}>{bmet.exp_date}</p>
+												<p style={{ fontSize: '11pt' }}>{bmet?.unknown}</p>
 											</span>
 										</span>
 									</p>
@@ -1349,7 +1362,7 @@ function BmetForm() {
 								<td width="186">
 									<p className="western">
 										&nbsp;
-										<p style={{ fontSize: '11pt' }}>{bmet.passpoprt_no}</p>
+										<p style={{ fontSize: '11pt' }}>{bmet?.passenger?.[0]?.passport_no}</p>
 									</p>
 								</td>
 								<td width="175">
@@ -1376,7 +1389,13 @@ function BmetForm() {
 								<td width="186">
 									<p className="western">
 										<span size="1" style={{ fontSize: '8pt' }}>
-											&nbsp; <p style={{ fontSize: '11pt' }}>{bmet.passport_iss_date}</p>
+											&nbsp;{' '}
+											<p style={{ fontSize: '11pt' }}>
+												{bmet?.passenger?.[0]?.passport_issue_date &&
+													moment(new Date(bmet?.passenger?.[0]?.passport_issue_date)).format(
+														'DD-MM-YYYY'
+													)}
+											</p>
 										</span>
 									</p>
 								</td>
@@ -1404,7 +1423,13 @@ function BmetForm() {
 								<td width="186">
 									<p className="western">
 										<span size="1" style={{ fontSize: '8pt' }}>
-											&nbsp; <p style={{ fontSize: '11pt' }}>{bmet.passport_exp_date}</p>
+											&nbsp;{' '}
+											<p style={{ fontSize: '11pt' }}>
+												{bmet?.passenger?.[0]?.passport_expiry_date &&
+													moment(new Date(bmet?.passenger?.[0]?.passport_expiry_date)).format(
+														'DD-MM-YYYY'
+													)}
+											</p>
 										</span>
 									</p>
 								</td>
@@ -1432,7 +1457,13 @@ function BmetForm() {
 								<td width="186">
 									<p className="western">
 										<span size="1" style={{ fontSize: '8pt' }}>
-											&nbsp; <p style={{ fontSize: '11pt' }}>{bmet.passport_date_of_birth}</p>
+											&nbsp;{' '}
+											<p style={{ fontSize: '11pt' }}>
+												{bmet?.passenger?.[0]?.date_of_birth &&
+													moment(new Date(bmet?.passenger?.[0]?.date_of_birth)).format(
+														'DD-MM-YYYY'
+													)}
+											</p>
 										</span>
 									</p>
 								</td>
@@ -1460,7 +1491,10 @@ function BmetForm() {
 								<td width="186">
 									<p className="western">
 										<span size="1" style={{ fontSize: '9pt' }}>
-											&nbsp; <p style={{ fontSize: '11pt' }}>{bmet.passport_iss_place}</p>
+											&nbsp;{' '}
+											<p style={{ fontSize: '11pt' }}>
+												{bmet?.passenger?.[0]?.passport_issue_place}
+											</p>
 										</span>
 									</p>
 								</td>
