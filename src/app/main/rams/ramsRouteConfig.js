@@ -552,6 +552,15 @@ const ramsRouteConfig = {
 		{
 			path: '/apps/journal-management/:journalId',
 			component: lazy(() => import('./AllAccountManagement/JournalsManagement/Journal/NewJournal'))
+		},
+		//bmet
+		{
+			path: '/apps/bmet-management/bmets/:bmetId/:bmetName?',
+			component: lazy(() => import('./BmetsManagement/Bmet/NewBmet'))
+		},
+		{
+			path: '/apps/bmet-management/:bmetId',
+			component: lazy(() => import('./BmetsManagement/Bmet/NewBmet'))
 		}
 	]
 };

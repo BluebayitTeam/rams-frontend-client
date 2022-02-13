@@ -634,6 +634,27 @@ const navigationConfig = [
 				exact: true
 			}
 		]
+	},
+	//rorm
+	{
+		id: 'form',
+		title: 'Form',
+		translate: 'Form',
+		type: 'collapse',
+		icon: 'people',
+		url: '',
+		exact: true,
+		children: [
+			//bmet
+			{
+				id: 'bmet',
+				title: 'Bmet Form',
+				translate: 'Bmet Form',
+				type: 'item',
+				url: '/apps/bmet-management/bmet-form',
+				exact: true
+			}
+		]
 	}
 ];
 

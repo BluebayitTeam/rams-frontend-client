@@ -2,7 +2,7 @@
 //http://192.168.0.8:8002
 
 //base url
-export const BASE_URL = 'http://192.168.0.8:8002';
+export const BASE_URL = 'http://192.168.0.9:8002';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -1111,3 +1111,18 @@ export const DELETE_GROUP = `${BASE_URL}/group/api/v1/group/delete/`;
 export const DELETE_GROUP_MULTIPLE = `${BASE_URL}/group/api/v1/group/delete_multiple/`;
 
 export const SEARCH_GROUP = `${BASE_URL}/group/api/v1/group/search/`;
+
+//bmet
+export const CREATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/create/`;
+
+export const GET_BMETS = `${BASE_URL}/bmet/api/v1/bmet/all`;
+
+export const GET_BMET_BY_ID = `${BASE_URL}/bmet/api/v1/bmet/`;
+
+export const UPDATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/update/`;
+
+export const DELETE_BMET = `${BASE_URL}/bmet/api/v1/bmet/delete/`;
+
+export const DELETE_BMET_MULTIPLE = `${BASE_URL}/bmet/api/v1/bmet/delete_multiple/`;
+
+export const SEARCH_BMET = `${BASE_URL}/bmet/api/v1/bmet/search/`;
