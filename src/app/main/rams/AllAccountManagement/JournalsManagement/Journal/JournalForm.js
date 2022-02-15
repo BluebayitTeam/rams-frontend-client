@@ -127,7 +127,6 @@ function JournalForm({ setLetFormSave }) {
 								placeholder="Select Branch"
 								label="Branch"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -156,7 +155,6 @@ function JournalForm({ setLetFormSave }) {
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -170,7 +168,7 @@ function JournalForm({ setLetFormSave }) {
 				name="journal_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Journal Date" requred />;
+					return <CustomDatePicker field={field} label="Journal Date" required />;
 				}}
 			/>
 

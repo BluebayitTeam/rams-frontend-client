@@ -1,7 +1,8 @@
 import { makeStyles, TextField } from '@material-ui/core';
 import { Print } from '@material-ui/icons';
+import _ from 'lodash';
 import moment from 'moment';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Barcode from 'react-barcode';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +17,7 @@ const useStyles = makeStyles(() => ({
 	},
 	container: {
 		padding: '0px 25px',
+		minWidth: '900px',
 		'& *': {
 			boxSizing: 'border-box'
 		},
@@ -45,10 +47,11 @@ const barcodeConfig = {
 const barcodeConfig2 = {
 	width: 1,
 	height: 50,
-	marginTop: 15,
-	marginBottom: 15,
-	marginLeft: 15,
-	marginRight: 15,
+	margin: 0,
+	marginTop: 5,
+	marginBottom: 10,
+	marginLeft: 20,
+	marginRight: 20,
 	format: 'CODE128'
 };
 function KsaVisaForm() {
@@ -60,6 +63,11 @@ function KsaVisaForm() {
 	const dispatch = useDispatch();
 
 	const data = useSelector(({ ksaVisasManagement }) => ksaVisasManagement.ksaVisa);
+
+	const [showPrint, setShowPrint] = useState(false);
+	useEffect(() => {
+		_.isEmpty(data) ? setShowPrint(false) : setShowPrint(true);
+	}, [data]);
 
 	//print dom ref
 	const componentRef = useRef();
@@ -107,18 +115,20 @@ function KsaVisaForm() {
 					>
 						Show
 					</button>
-					<button
-						style={{
-							background: 'white',
-							border: '1px solid grey',
-							borderRadius: '4px',
-							padding: '0px 5px',
-							height: '35px'
-						}}
-						onClick={() => printAction()}
-					>
-						<Print />
-					</button>
+					{showPrint && (
+						<button
+							style={{
+								background: 'white',
+								border: '1px solid grey',
+								borderRadius: '4px',
+								padding: '0px 5px',
+								height: '35px'
+							}}
+							onClick={() => printAction()}
+						>
+							<Print />
+						</button>
+					)}
 				</div>
 				<div style={{ minWidth: '250px' }}>
 					<h4>(Please use Chrome browser only to Print)</h4>
@@ -216,12 +226,12 @@ function KsaVisaForm() {
 																	<table
 																		style={{ width: '100%', textAlign: 'center' }}
 																	>
-																		<tr>
-																			<td>
-																				{/* <asp:Label ID="lblInternetNo"  runat="server" Font-Bold="true" fontSize="16pt}} ></asp:Label><br />
+																		{/* <tr>
+																			<td> */}
+																		{/* <asp:Label ID="lblInternetNo"  runat="server" Font-Bold="true" fontSize="16pt}} ></asp:Label><br />
                                                                                     <asp:Label ID="lbloldmofa" Visible="false"  runat="server" Font-Bold="true" fontSize="Medium" ></asp:Label> */}
-																			</td>
-																		</tr>
+																		{/* </td>
+																		</tr> */}
 																		<tr>
 																			<td
 																				style={{
@@ -229,7 +239,7 @@ function KsaVisaForm() {
 																					fontWeight: 'bold'
 																				}}
 																			>
-																				{data?.[0]?.mofa?.mofa_no}&nbsp;
+																				E{data?.[0]?.mofa?.mofa_no}&nbsp;
 																			</td>
 																		</tr>
 																		<tr>
@@ -295,7 +305,18 @@ function KsaVisaForm() {
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																Full
 																name:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-																{data?.[0]?.passenger?.passenger_name}
+																<b>
+																	{data?.[0]?.passenger?.passenger_name &&
+																		`${data?.[0]?.passenger?.passenger_name} ${
+																			data?.[0]?.passenger?.gender
+																				? data?.[0]?.passenger?.gender?.match(
+																						/female/i
+																				  )
+																					? 'D/O'
+																					: 'S/O'
+																				: ''
+																		} ${data?.[0]?.passenger?.father_name || ''}`}
+																</b>
 															</td>
 															<td style={{ textAlign: 'right', fontSize: '9.5pt' }}>
 																:&nbsp;الاسم الكامل{' '}
@@ -366,14 +387,24 @@ function KsaVisaForm() {
 												<td colspan="3">
 													<table width="100%">
 														<tr>
-															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
-																Sex:&emsp;&emsp;{' '}
-																{data?.[0]?.passenger?.gender &&
-																	data?.[0]?.passenger?.passenger_name}{' '}
-																$
-																{data?.[0]?.passenger?.gender?.match(/male/i)
-																	? '&nbsp;&nbsp;Male&nbsp;'
-																	: 'Female&nbsp;أنثي'}
+															<td
+																style={{
+																	textAlign: 'left',
+																	fontSize: '9.5pt',
+																	display: 'flex',
+																	height: '20px'
+																}}
+															>
+																Sex:&emsp;&emsp;&emsp;
+																<span
+																	style={{ border: '1px solid', padding: '0px 3px' }}
+																>
+																	{data?.[0]?.passenger?.gender
+																		? data?.[0]?.passenger?.gender?.match(/female/i)
+																			? 'Female أنثي'
+																			: 'Male ذكر'
+																		: ''}
+																</span>
 															</td>
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																:&nbsp;الجنس&emsp;&emsp;Marital Status:
@@ -806,16 +837,7 @@ function KsaVisaForm() {
 																	border: '1px solid black',
 																	textAlign: 'center'
 																}}
-															>
-																<b>
-																	{data?.[0]?.passenger?.passenger_name &&
-																		`${data?.[0]?.passenger?.passenger_name} ${
-																			data?.[0]?.passenger?.gender?.match(/male/i)
-																				? 'S/O'
-																				: 'D/O'
-																		} ${data?.[0]?.passenger?.father_name || ''}`}
-																</b>
-															</td>
+															></td>
 															<td style={{ border: '1px solid black' }}>&nbsp;</td>
 															<td style={{ border: '1px solid black' }}>&nbsp;</td>
 															<td style={{ border: '1px solid black' }}>&nbsp;</td>
@@ -943,11 +965,14 @@ function KsaVisaForm() {
 											<tr style={{ borderBottom: '1px solid black' }}>
 												<td style={{ textAlign: 'left' }}>
 													Date:&emsp;&emsp;&emsp;
-													<b>{data?.[0]?.unknown}</b>
+													{data?.[0]?.visa_entry?.visa_issue_date &&
+														moment(new Date(data?.[0]?.visa_entry?.visa_issue_date)).format(
+															'DD-MM-YYYY'
+														)}
 												</td>
 												<td style={{ textAlign: 'left' }}>
 													:&nbsp;تاريخه&emsp;&emsp;Authorization:&emsp;&emsp;&emsp;
-													<b>{data?.[0]?.unknown}</b>
+													<b>{data?.[0]?.visa_entry?.visa_number}</b>
 												</td>
 												<td style={{ textAlign: 'right' }}>
 													:&nbsp;رقم الامر المعتمد عليه في إعطاء التأشيرة
@@ -967,7 +992,9 @@ function KsaVisaForm() {
 																	fontFamily: 'Arial'
 																}}
 															>
-																<b style={{ fontSize: '13pt' }}>{data?.[0]?.unknown}</b>
+																<span style={{ fontSize: '13pt' }}>
+																	{data?.[0]?.visa_entry?.sponsor_name_arabic}
+																</span>
 																<span style={{ color: 'white', fontSize: '1px' }}>
 																	a
 																</span>
@@ -989,7 +1016,7 @@ function KsaVisaForm() {
 												<td style={{ textAlign: 'left' }}>Date:&emsp;&emsp;&emsp;</td>
 												<td style={{ textAlign: 'left' }}>
 													:&nbsp;وتاريخ&emsp;&emsp;Visa No.:&emsp;
-													{/* <asp:Label ID="lblVisaNo" Font-Bold="true" fontSize="12pt}}  runat="server"></asp:Label> */}
+													{data?.[0]?.visa_entry?.sponsor_id_no}
 												</td>
 												<td style={{ textAlign: 'right' }}>:&nbsp;أشر له برقم</td>
 											</tr>
@@ -1088,8 +1115,14 @@ function KsaVisaForm() {
 							</table>
 
 							<br />
+							<br />
+							<br />
+							<br />
+							<br />
+							<br />
+							<br />
 
-							<div style={{ display: 'block' }}>
+							<div style={{ display: 'block' }} className="print:mt-96">
 								{/* <asp:GridView ID="GridView2" Visible="false" runat="server" DataKeyNames="copil_name,visa_no,visa_iss_date,passenger_name,passenger_pp_no,passenger_pp_exp_date,job_title,religion,destination,comment"></asp:GridView> */}
 							</div>
 							<div
@@ -1106,17 +1139,6 @@ function KsaVisaForm() {
 											<table width="93%">
 												<tr>
 													<td className="auto-style1" align="justify">
-														<br />
-														<br />
-														<br />
-														<br />
-														<br />
-														<br />
-														<br />
-														<br />
-														<br />
-														<br />
-														<br />
 														To,
 														<br />
 														<br />
@@ -1163,7 +1185,7 @@ function KsaVisaForm() {
 																	style={{ width: '55%' }}
 																>
 																	:&nbsp;&nbsp;
-																	<b>{data?.[0]?.unknown}</b>
+																	{data?.[0]?.visa_entry?.sponsor_name_arabic}
 																</td>
 															</tr>
 															<tr>
@@ -1184,10 +1206,15 @@ function KsaVisaForm() {
 																<td align="left">VISA NO. AND DATE</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	<b>{data?.[0]?.visa_entry?.visa_number}</b>
-																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>DATE:</b>
-																	&nbsp;
-																	<b>{data?.[0]?.unknown}</b>&nbsp;<b>H</b>
+																	{data?.[0]?.visa_entry?.visa_number}
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATE: &nbsp;
+																	{data?.[0]?.visa_entry?.visa_issue_date &&
+																		moment(
+																			new Date(
+																				data?.[0]?.visa_entry?.visa_issue_date
+																			)
+																		).format('DD-MM-YYYY')}
+																	&nbsp;H
 																</td>
 															</tr>
 															<tr>
@@ -1210,7 +1237,7 @@ function KsaVisaForm() {
 																</td>
 																<td align="left" className="auto-style3">
 																	:&nbsp;&nbsp;
-																	<b>{data?.[0]?.unknown}</b>
+																	{data?.[0]?.passenger?.passenger_name}
 																</td>
 															</tr>
 															<tr>
@@ -1232,10 +1259,14 @@ function KsaVisaForm() {
 																<td align="left">PASSPORT NO. WITH DATE</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	<b>{data?.[0]?.passenger?.passport_no}</b>
-																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>DATE:</b>
-																	&nbsp;
-																	<b>{data?.[0]?.unknown}</b>
+																	{data?.[0]?.passenger?.passport_no}
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATE: &nbsp;
+																	{data?.[0]?.passenger?.passport_expiry_date &&
+																		moment(
+																			new Date(
+																				data?.[0]?.passenger?.passport_expiry_date
+																			)
+																		).format('DD-MM-YYYY')}
 																</td>
 															</tr>
 															<tr>
@@ -1256,7 +1287,7 @@ function KsaVisaForm() {
 																<td align="left">PROFESSION</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	<b>{data?.[0]?.passenger?.profession?.name}</b>
+																	{data?.[0]?.passenger?.profession?.name}
 																</td>
 															</tr>
 															<tr>
@@ -1277,7 +1308,7 @@ function KsaVisaForm() {
 																<td align="left">RELIGION</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	<b>{data?.[0]?.passenger?.religion}</b>
+																	{data?.[0]?.passenger?.religion}
 																</td>
 															</tr>
 														</table>
@@ -1311,16 +1342,6 @@ function KsaVisaForm() {
 									</tr>
 								</table>
 							</div>
-
-							<br />
-							<br />
-
-							<br />
-							<br />
-							<br />
-							<br />
-							<br />
-							<br />
 							<div className="col-sm-4">
 								{/* <asp:SqlDataSource ID="SqlPassMedical" runat="server" ConnectionString="<%$ ConnectionStrings:travelConnectionString %>" ProviderName="<%$ ConnectionStrings:travelConnectionString.ProviderName %>" SelectCommand="SELECT UPPER(tbl_visa_details.copil_name) AS copil_name, UPPER(tbl_country.country_name) AS sector_name_country, UPPER(tbl_passenger_details.passenger_name) AS passenger_name, UPPER(tbl_passenger_pp_details.passenger_pp_no) AS passenger_pp_no, UPPER(tbl_visa_details.destination) AS visa_comment, UPPER(tbl_visa_details.group_name) AS job_title FROM tbl_passenger_details INNER JOIN tbl_passenger_pp_details ON tbl_passenger_details.passenger_id = tbl_passenger_pp_details.passenger_id INNER JOIN tbl_visa_details ON tbl_passenger_details.passenger_id = tbl_visa_details.passenger_id INNER JOIN tbl_country ON tbl_passenger_details.country_id = tbl_country.country_id WHERE (CONVERT (varchar(50), tbl_passenger_details.passenger_id) = @search) OR (tbl_passenger_pp_details.passenger_pp_no = @search)">
                         <SelectParameters>
@@ -1329,7 +1350,7 @@ function KsaVisaForm() {
                     </asp:SqlDataSource> */}
 							</div>
 
-							<table width="100%">
+							<table width="100%" className="print:mt-200">
 								<tr>
 									<td valign="top" align="center">
 										<table width="95%">
@@ -1341,9 +1362,6 @@ function KsaVisaForm() {
 														textAlign: 'center'
 													}}
 												>
-													<br />
-													<br />
-													<br />
 													<h3>
 														<u>EMPLOYEMENT AGREEMENT</u>
 													</h3>

@@ -73,7 +73,7 @@ const Bmet = () => {
 				}}
 				header={<NewBmetHeader />}
 				content={
-					<div className="max-w-2xl border bg-grey-200 border-grey-600 rounded-xl  mx-auto md:mt-2">
+					<div className="max-w-2xl border bg-grey-200 border-grey-600 rounded-xl  mx-auto md:mt-2 min-w-fit">
 						<BmetForm />
 					</div>
 				}

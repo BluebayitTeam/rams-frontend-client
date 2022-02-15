@@ -72,7 +72,7 @@ const bmetSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getBmet.fulfilled]: (_state, action) => action.payload,
+		[getBmet.fulfilled]: (_state, action) => (_.isArray(action.payload) ? action.payload : []),
 		[getBmet.rejected]: () => []
 	}
 });

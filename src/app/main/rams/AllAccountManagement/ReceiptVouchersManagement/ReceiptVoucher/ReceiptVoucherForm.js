@@ -133,7 +133,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 								placeholder="Select Branch"
 								label="Branch"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -165,7 +164,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 								placeholder="Select Passenger"
 								label="Passenger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -194,7 +192,6 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}

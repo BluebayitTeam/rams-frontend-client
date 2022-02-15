@@ -58,12 +58,14 @@ export const saveVisaSubmissionList = createAsyncThunk(
 
 export const getVisaSubmissionList = createAsyncThunk(
 	'visaSubmissionListManagement/getVisaSubmissionList',
-	async ({ submission_date }, { rejectWithValue }) => {
+	async ({ submission_date, passenger }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
 			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
-			const res = await axios.get(`${VISASBLISTS_BY_DATE}?submission_date=${submission_date}`);
+			const res = await axios.get(
+				`${VISASBLISTS_BY_DATE}?submission_date=${submission_date || ''}&passenger=${passenger || ''}`
+			);
 
 			delete axios.defaults.headers.common['Content-type'];
 			delete axios.defaults.headers.common.Authorization;

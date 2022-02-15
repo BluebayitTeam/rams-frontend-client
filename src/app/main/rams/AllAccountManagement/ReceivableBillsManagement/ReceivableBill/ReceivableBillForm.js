@@ -31,7 +31,6 @@ function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 	const receivableBill = useSelector(({ receivableBillsManagement }) => receivableBillsManagement.receivableBill);
 	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset, watch } = methods;
-	const { errors } = formState;
 	const dispatch = useDispatch();
 	const passengers = useSelector(state => state.data.passengers);
 	const branchs = useSelector(state => state.data.branches);
@@ -56,7 +55,7 @@ function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 	}, []);
 
 	useEffect(() => {
-		const ledgerCompanyPurchaseId = ledgers?.find(data => data?.name === 'Company Purchase')?.id;
+		const ledgerCompanyPurchaseId = ledgers?.find(data => data?.name === 'Company Sales')?.id;
 		setExtraItem(item => ({ ...item, ledger: ledgerCompanyPurchaseId }));
 	}, [ledgers]);
 
@@ -65,6 +64,14 @@ function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 		const totalDebitAmount = getTotalAmount(items || [], 'debit_amount');
 		setExtraItem(item => ({ ...item, credit_amount: totalDebitAmount }));
 	};
+
+	useEffect(() => {
+		_.isEmpty(receivableBill) ||
+			setExtraItem(item => ({
+				...item,
+				credit_amount: getTotalAmount(receivableBill?.items || [], 'debit_amount')
+			}));
+	}, [receivableBill]);
 
 	const checkEmptyLedger = async itms => {
 		setTimeout(() => {
@@ -124,7 +131,6 @@ function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 								placeholder="Select Branch"
 								label="Branch"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -156,7 +162,6 @@ function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 								placeholder="Select Passenger"
 								label="Passenger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -185,7 +190,6 @@ function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -199,7 +203,7 @@ function ReceivableBillForm({ setLetFormSave, setExtraItem }) {
 				name="sales_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Sales Date" />;
+					return <CustomDatePicker field={field} label="Sales Date" required />;
 				}}
 			/>
 

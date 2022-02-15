@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import _ from 'lodash';
 import { CREATE_KSAVISA, DELETE_KSAVISA, GET_KSAVISA_BY_ID, UPDATE_KSAVISA } from '../../../../constant/constants';
 
 export const getKsaVisa = createAsyncThunk(
@@ -75,7 +76,7 @@ const ksaVisaSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getKsaVisa.fulfilled]: (_state, action) => action.payload,
+		[getKsaVisa.fulfilled]: (_state, action) => (_.isArray(action.payload) ? action.payload : []),
 		[getKsaVisa.rejected]: () => []
 	}
 });

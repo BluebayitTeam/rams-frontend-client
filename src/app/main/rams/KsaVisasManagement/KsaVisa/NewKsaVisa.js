@@ -5,8 +5,7 @@ import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
 import { resetKsaVisa } from '../store/ksaVisaSlice';
@@ -20,7 +19,6 @@ const schema = yup.object().shape({});
 
 const KsaVisa = () => {
 	const dispatch = useDispatch();
-	const ksaVisa = useSelector(({ ksaVisasManagement }) => ksaVisasManagement.ksaVisa);
 
 	const [noKsaVisa, setNoKsaVisa] = useState(false);
 	const methods = useForm({
@@ -28,9 +26,6 @@ const KsaVisa = () => {
 		defaultValues: {},
 		resolver: yupResolver(schema)
 	});
-	const routeParams = useParams();
-
-	const { reset } = methods;
 
 	useEffect(() => {
 		return () => {
@@ -77,7 +72,7 @@ const KsaVisa = () => {
 				}}
 				header={<NewKsaVisaHeader />}
 				content={
-					<div className="max-w-2xl border bg-grey-200 border-grey-600 rounded-xl mx-auto md:mt-2">
+					<div className="max-w-2xl border bg-grey-200 border-grey-600 rounded-xl mx-auto md:mt-2 min-w-fit">
 						<KsaVisaForm />
 					</div>
 				}

@@ -31,7 +31,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 	const payableBill = useSelector(({ payableBillsManagement }) => payableBillsManagement.payableBill);
 	const methods = useFormContext();
 	const { control, formState, getValues, setValue, reset, watch } = methods;
-	const { errors } = formState;
 	const dispatch = useDispatch();
 	const passengers = useSelector(state => state.data.passengers);
 	const branchs = useSelector(state => state.data.branches);
@@ -56,7 +55,7 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 	}, []);
 
 	useEffect(() => {
-		const ledgerCompanySaleId = ledgers?.find(data => data?.name === 'Company Sales')?.id;
+		const ledgerCompanySaleId = ledgers?.find(data => data?.name === 'Company Purchase')?.id;
 		setExtraItem(item => ({ ...item, ledger: ledgerCompanySaleId }));
 	}, [ledgers]);
 
@@ -65,6 +64,14 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 		const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
 		setExtraItem(item => ({ ...item, debit_amount: totalCreditAmount }));
 	};
+
+	useEffect(() => {
+		_.isEmpty(payableBill) ||
+			setExtraItem(item => ({
+				...item,
+				debit_amount: getTotalAmount(payableBill?.items || [], 'credit_amount')
+			}));
+	}, [payableBill]);
 
 	const checkEmptyLedger = async itms => {
 		setTimeout(() => {
@@ -120,7 +127,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 								placeholder="Select Branch"
 								label="Branch"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -152,7 +158,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 								placeholder="Select Passenger"
 								label="Passenger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -181,7 +186,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}

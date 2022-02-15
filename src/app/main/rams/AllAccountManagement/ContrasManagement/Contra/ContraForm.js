@@ -127,7 +127,6 @@ function ContraForm({ setLetFormSave }) {
 								placeholder="Select Branch"
 								label="Branch"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -156,7 +155,6 @@ function ContraForm({ setLetFormSave }) {
 								placeholder="Select Sub Ledger"
 								label="Sub Ledger"
 								variant="outlined"
-								required
 								InputLabelProps={{
 									shrink: true
 								}}

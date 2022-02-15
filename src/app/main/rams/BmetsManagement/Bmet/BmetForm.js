@@ -1,7 +1,7 @@
 import { makeStyles, TextField } from '@material-ui/core';
 import { Print } from '@material-ui/icons';
 import moment from 'moment';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
@@ -15,6 +15,7 @@ const useStyles = makeStyles(() => ({
 	},
 	container: {
 		padding: '0px 25px',
+		minWidth: '1000px',
 		'& *': {
 			boxSizing: 'border-box'
 		},
@@ -23,7 +24,7 @@ const useStyles = makeStyles(() => ({
 			marginLeft: '-15px'
 		},
 		'& .western': {
-			marginBottom: '0px'
+			marginBottom: '5px'
 		},
 		'& .borderedTable': {
 			'& table, th, td': {
@@ -51,6 +52,11 @@ function BmetForm() {
 	const dispatch = useDispatch();
 
 	const bmet = useSelector(({ bmetsManagement }) => bmetsManagement.bmet);
+
+	const [showPrint, setShowPrint] = useState(false);
+	useEffect(() => {
+		_.isEmpty(bmet) ? setShowPrint(false) : setShowPrint(true);
+	}, [bmet]);
 
 	//print dom ref
 	const componentRef = useRef();
@@ -100,18 +106,20 @@ function BmetForm() {
 					>
 						Show
 					</button>
-					<button
-						style={{
-							background: 'white',
-							border: '1px solid grey',
-							borderRadius: '4px',
-							padding: '0px 5px',
-							height: '35px'
-						}}
-						onClick={() => printAction()}
-					>
-						<Print />
-					</button>
+					{showPrint && (
+						<button
+							style={{
+								background: 'white',
+								border: '1px solid grey',
+								borderRadius: '4px',
+								padding: '0px 5px',
+								height: '35px'
+							}}
+							onClick={() => printAction()}
+						>
+							<Print />
+						</button>
+					)}
 				</div>
 
 				<div style={{ minWidth: '250px' }}>
@@ -128,8 +136,8 @@ function BmetForm() {
 										<img
 											src="assets/images/logos/bmetLogo.png"
 											align="LEFT"
-											width="60"
-											height="60"
+											width="70"
+											height="70"
 										/>
 									</td>
 									<td valign="middle" style={{ width: '70%' }}>
@@ -178,7 +186,7 @@ function BmetForm() {
 							<table width="100%" cellpadding="7" cellspacing="1">
 								<tr valign="middle">
 									<td colspan="3" width="130" height="1" style={{ border: 'none', padding: '0in' }}>
-										<p className="western" style={{ marginTop: '-13px' }}>
+										<p className="western">
 											<span face="Calibri-Bold, sans-serif">
 												<span size="2" style={{ fontSize: '9pt' }}>
 													<b>Serial Number:</b>
@@ -477,7 +485,7 @@ function BmetForm() {
 							<table width="100%" cellpadding="7" cellspacing="1">
 								<tr valign="middle">
 									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western" style={{ marginTop: '-8px' }}>
+										<p className="western">
 											<span color="#000000">
 												<span face="Calibri-Bold, sans-serif">
 													<span size="2" style={{ fontSize: '9pt' }}>
@@ -1184,8 +1192,8 @@ function BmetForm() {
 										<p className="western">
 											<span face="Calibri, sans-serif">
 												<span size="1" style={{ fontSize: '8pt' }}>
-													&nbsp;
 													<p style={{ fontSize: '11pt' }}>
+														&nbsp;
 														{bmet?.[0]?.embassy?.visa_expiry_date &&
 															moment(
 																new Date(bmet?.[0]?.embassy?.visa_expiry_date)
@@ -1569,6 +1577,14 @@ function BmetForm() {
 								</tr>
 							</table>
 							<table border="0" cellspacing="0" width="100%" cellpadding="0">
+								<tr valign="middle">
+									<td style={{ border: 'none', padding: '0in' }}>
+										<p className="western">&nbsp;</p>
+									</td>
+									<td style={{ border: 'none', padding: '0in' }}>
+										<p className="western">&nbsp;</p>
+									</td>
+								</tr>
 								<tr valign="middle">
 									<td style={{ border: 'none', padding: '0in' }}>
 										<p className="western">&nbsp;</p>
