@@ -32,48 +32,6 @@ const KsaVisa = () => {
 
 	const { reset } = methods;
 
-	// useDeepCompareEffect(() => {
-	// 	function updateKsaVisaState() {
-	// 		const { ksaVisaId } = routeParams;
-
-	// 		if (ksaVisaId === 'new') {
-	// 			localStorage.removeItem('event');
-	// 			/**
-	// 			 * Create New User data
-	// 			 */
-	// 			dispatch(newKsaVisa());
-	// 		} else {
-	// 			/**
-	// 			 * Get User data
-	// 			 */
-
-	// 			dispatch(getKsaVisa(ksaVisaId)).then(action => {
-	// 				console.log(action.payload);
-	// 				/**
-	// 				 * If the requested product is not exist show message
-	// 				 */
-	// 				if (!action.payload) {
-	// 					setNoKsaVisa(true);
-	// 				}
-	// 			});
-	// 		}
-	// 	}
-
-	// 	updateKsaVisaState();
-	// }, [dispatch, routeParams]);
-
-	useEffect(() => {}, []);
-
-	useEffect(() => {
-		if (!ksaVisa) {
-			return;
-		}
-		/**
-		 * Reset the form on ksaVisa state changes
-		 */
-		reset(ksaVisa);
-	}, [ksaVisa, reset]);
-
 	useEffect(() => {
 		return () => {
 			/**
@@ -119,7 +77,7 @@ const KsaVisa = () => {
 				}}
 				header={<NewKsaVisaHeader />}
 				content={
-					<div className="p-16 sm:p-24 max-w-2xl border bg-grey-200 border-grey-600 rounded-xl mx-auto md:mt-2">
+					<div className="max-w-2xl border bg-grey-200 border-grey-600 rounded-xl mx-auto md:mt-2">
 						<KsaVisaForm />
 					</div>
 				}

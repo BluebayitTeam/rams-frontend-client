@@ -1,20 +1,17 @@
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { removeAlertMsg, saveAlertMsg, updateAlertMsg } from 'app/@data/data';
+import { saveAlertMsg } from 'app/@data/data';
+import isShouldFormSave from 'app/@helpers/isShouldFormSave';
 import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-	removeVisaSubmissionList,
-	saveVisaSubmissionList,
-	updateVisaSubmissionList
-} from '../store/visaSubmissionListSlice';
+import { getVisaSubmissionList, saveVisaSubmissionList } from '../store/visaSubmissionListSlice';
 
-const NewVisaSubmissionListHeader = ({ setReFechListData }) => {
+const NewVisaSubmissionListHeader = () => {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
@@ -31,38 +28,24 @@ const NewVisaSubmissionListHeader = ({ setReFechListData }) => {
 			if (res.payload?.data?.id) {
 				localStorage.setItem('visaSubmissionListAlert', 'saveVisaSubmissionList');
 				history.push('/apps/visaSubmissionList-management/visaSubmissionList/new');
-				reset({});
 				dispatch(setAlert(saveAlertMsg));
-				setReFechListData(Math.random());
+				dispatch(getVisaSubmissionList({ submission_date: getValues().submission_date }));
 			}
 		});
 	}
 
-	function handleUpdateVisaSubmissionList() {
-		dispatch(updateVisaSubmissionList(getValues())).then(res => {
-			console.log('updateVisaSubmissionListRes', res);
-			if (res.payload?.data?.id) {
-				localStorage.setItem('visaSubmissionListAlert', 'updateVisaSubmissionList');
-				history.push('/apps/visaSubmissionList-management/visaSubmissionList/new');
-				reset({});
-				dispatch(setAlert(updateAlertMsg));
-				setReFechListData(Math.random());
-			}
-		});
-	}
-
-	function handleRemoveVisaSubmissionList() {
-		dispatch(removeVisaSubmissionList(getValues())).then(res => {
-			console.log('removeVisaSubmissionListRes', res);
-			if (res.payload) {
-				localStorage.setItem('visaSubmissionListAlert', 'deleteVisaSubmissionList');
-				history.push('/apps/visaSubmissionList-management/visaSubmissionList/new');
-				reset({});
-				dispatch(setAlert(removeAlertMsg));
-				setReFechListData(Math.random());
-			}
-		});
-	}
+	useEffect(() => {
+		const handleSaveAndUpdate = e => {
+			if (
+				e.key === 'Enter' &&
+				routeParams.visaSubmissionListId === 'new' &&
+				!(_.isEmpty(dirtyFields) || !isValid)
+			)
+				isShouldFormSave(e) && handleSaveVisaSubmissionList();
+		};
+		window.addEventListener('keydown', handleSaveAndUpdate);
+		return () => window.removeEventListener('keydown', handleSaveAndUpdate);
+	}, [dirtyFields, isValid]);
 
 	function handleCancel() {
 		history.push('/apps/visaSubmissionList-management/visaSubmissionList/new');

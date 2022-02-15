@@ -5,19 +5,16 @@ import { GetApp, ViewWeek } from '@material-ui/icons';
 import PrintIcon from '@material-ui/icons/Print';
 import useReportData3 from 'app/@customHooks/useReportData3';
 import useUserInfo from 'app/@customHooks/useUserInfo';
-import getPaginationData from 'app/@helpers/getPaginationData';
 import { GET_SITESETTINGS } from 'app/constant/constants';
 import html2PDF from 'jspdf-html2canvas';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ColumnLabel from '../../ReportManagement/reportComponents/ColumnLabel';
 import Pagination from '../../ReportManagement/reportComponents/Pagination';
 import { getReportMakeStyles } from '../../ReportManagement/reportUtils/reportMakeStyls';
 import tableColumnsReducer from '../../ReportManagement/reportUtils/tableColumnsReducer';
-import { getAllVisaSbLists, getVisaSbLists } from '../store/visaSubmissionListsSlice';
 import VisaSubmissionListTable from './VisaSubmissionListsTable';
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +28,7 @@ const initialTableColumnsState = [
 	{ id: 4, label: 'passenger', name: 'passenger', subName: 'passenger_name', show: true }
 ];
 
-const VisaSubmissionLists = ({ reFechListData }) => {
+const VisaSubmissionLists = () => {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
@@ -40,8 +37,16 @@ const VisaSubmissionLists = ({ reFechListData }) => {
 
 	const [generalData, setGeneralData] = useState({});
 
+	const visaSbLists = useSelector(
+		({ visaSubmissionListManagement }) => visaSubmissionListManagement.visaSubmissionList
+	);
+
 	const [modifiedVisaSbListData, setModifiedVisaSbListData, setSortBy, setSortBySubKey, dragAndDropRow] =
 		useReportData3();
+
+	useEffect(() => {
+		setModifiedVisaSbListData(visaSbLists);
+	}, [visaSbLists]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -76,21 +81,7 @@ const VisaSubmissionLists = ({ reFechListData }) => {
 	});
 
 	//print handler
-	const handlePrint = () => {
-		setInPrint(true);
-		if (!inPrint) {
-			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllVisaSbLists(null, () => {
-					printAction();
-					setInPrint(false);
-					handleGetVisaSbLists();
-				});
-			} else {
-				printAction();
-				setInPrint(false);
-			}
-		}
-	};
+	const handlePrint = () => printAction();
 
 	//pdf downloader action
 	const pdfDownloadAction = () => {
@@ -109,41 +100,13 @@ const VisaSubmissionLists = ({ reFechListData }) => {
 	};
 
 	//pdf download handler
-	const handlePdfDownload = () => {
-		setInDowloadPdf(true);
-		if (!inDowloadPdf) {
-			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllVisaSbLists(null, () => {
-					pdfDownloadAction();
-					setInDowloadPdf(false);
-					handleGetVisaSbLists();
-				});
-			} else {
-				pdfDownloadAction();
-				setInDowloadPdf(false);
-			}
-		}
-	};
+	const handlePdfDownload = () => pdfDownloadAction();
 
 	//exel download page dom
 	let downloadPage = document.getElementById('downloadPage');
 
 	//exel download handler
-	const handleExelDownload = () => {
-		setInDowloadExcel(true);
-		if (!inDowloadExcel) {
-			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllVisaSbLists(null, () => {
-					document.getElementById('test-table-xls-button').click();
-					setInDowloadExcel(false);
-					handleGetVisaSbLists();
-				});
-			} else {
-				document.getElementById('test-table-xls-button').click();
-				setInDowloadExcel(false);
-			}
-		}
-	};
+	const handleExelDownload = () => document.getElementById('test-table-xls-button').click();
 
 	//column select close handler
 	useLayoutEffect(() => {
@@ -154,56 +117,17 @@ const VisaSubmissionLists = ({ reFechListData }) => {
 
 	//pagination handler
 	const firstPageHandler = event => {
-		handleGetVisaSbLists(event.page);
+		// handleGetVisaSubmissionList(event.page);
 	};
 	const previousPageHandler = event => {
-		handleGetVisaSbLists(event.page);
+		// handleGetVisaSubmissionList(event.page);
 	};
 	const nextPageHandler = event => {
-		handleGetVisaSbLists(event.page);
+		// handleGetVisaSubmissionList(event.page);
 	};
 	const lastPageHandler = event => {
-		handleGetVisaSbLists(event.page);
+		// handleGetVisaSubmissionList(event.page);
 	};
-
-	//get visaSbLists
-	const handleGetVisaSbLists = (pagePram, callBack) => {
-		dispatch(getVisaSbLists({ pageAndSize: { page: pagePram || page, size } })).then(res => {
-			unstable_batchedUpdates(() => {
-				callBack && callBack(res.payload);
-				setModifiedVisaSbListData(res.payload?.visa_submission_lists || []);
-				setPage(res.payload?.page || 1);
-				setSize(res.payload?.size || 25);
-				setTotalPages(res.payload?.total_pages || 0);
-				setTotalElements(res.payload?.total_elements || 0);
-				setInSiglePageMode(true);
-				setInShowAllMode(false);
-			});
-		});
-	};
-
-	//get all visaSbList without pagination
-	const handleGetAllVisaSbLists = (callBack, callBackAfterStateUpdated) => {
-		dispatch(getAllVisaSbLists()).then(res => {
-			unstable_batchedUpdates(() => {
-				callBack && callBack(res.payload);
-				setModifiedVisaSbListData(res.payload?.visa_submission_lists || []);
-				setInSiglePageMode(false);
-				setInShowAllMode(true);
-				//get pagination data
-				const { totalPages, totalElements } = getPaginationData(res.payload?.visa_submission_lists, size, page);
-				setPage(page || 1);
-				setSize(size || 25);
-				setTotalPages(totalPages);
-				setTotalElements(totalElements);
-			});
-			callBackAfterStateUpdated && callBackAfterStateUpdated(res.payload);
-		});
-	};
-
-	useEffect(() => {
-		inShowAllMode ? handleGetAllVisaSbLists() : handleGetVisaSbLists();
-	}, [reFechListData]);
 
 	return (
 		<>
@@ -266,7 +190,7 @@ const VisaSubmissionLists = ({ reFechListData }) => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
-					onClick={() => handleGetVisaSbLists()}
+					// onClick={() => handleGetVisaSubmissionList()}
 					icon={faBookOpen}
 				/>
 
@@ -274,7 +198,7 @@ const VisaSubmissionLists = ({ reFechListData }) => {
 				<FontAwesomeIcon
 					className="cursor-pointer inside icon"
 					style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-					onClick={() => handleGetAllVisaSbLists()}
+					// onClick={() => handleGetAllVisaSubmissionList()}
 					icon={faScroll}
 				/>
 

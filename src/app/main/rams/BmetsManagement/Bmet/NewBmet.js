@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { resetBmet } from '../store/bmetSlice';
 import reducer from '../store/index.js';
@@ -28,51 +27,6 @@ const Bmet = () => {
 		defaultValues: {},
 		resolver: yupResolver(schema)
 	});
-	const routeParams = useParams();
-
-	const { reset } = methods;
-
-	// useDeepCompareEffect(() => {
-	// 	function updateBmetState() {
-	// 		const { bmetId } = routeParams;
-
-	// 		if (bmetId === 'new') {
-	// 			localStorage.removeItem('event');
-	// 			/**
-	// 			 * Create New User data
-	// 			 */
-	// 			dispatch(newBmet());
-	// 		} else {
-	// 			/**
-	// 			 * Get User data
-	// 			 */
-
-	// 			dispatch(getBmet(bmetId)).then(action => {
-	// 				console.log(action.payload);
-	// 				/**
-	// 				 * If the requested product is not exist show message
-	// 				 */
-	// 				if (!action.payload) {
-	// 					setNoBmet(true);
-	// 				}
-	// 			});
-	// 		}
-	// 	}
-
-	// 	updateBmetState();
-	// }, [dispatch, routeParams]);
-
-	useEffect(() => {}, []);
-
-	useEffect(() => {
-		if (!bmet) {
-			return;
-		}
-		/**
-		 * Reset the form on bmet state changes
-		 */
-		reset(bmet);
-	}, [bmet, reset]);
 
 	useEffect(() => {
 		return () => {
@@ -119,7 +73,7 @@ const Bmet = () => {
 				}}
 				header={<NewBmetHeader />}
 				content={
-					<div className="p-16 sm:p-24 max-w-2xl border bg-grey-200 border-grey-600 rounded-xl  mx-auto md:mt-2">
+					<div className="max-w-2xl border bg-grey-200 border-grey-600 rounded-xl  mx-auto md:mt-2">
 						<BmetForm />
 					</div>
 				}

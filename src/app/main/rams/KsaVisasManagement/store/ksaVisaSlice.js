@@ -15,7 +15,7 @@ export const getKsaVisa = createAsyncThunk(
 		try {
 			const response = await axios.get(`${GET_KSAVISA_BY_ID}${params}`, authTOKEN);
 			const data = await response.data;
-			return data === undefined ? null : data;
+			return data || {};
 		} catch (err) {
 			return rejectWithValue(params);
 		}
@@ -76,9 +76,7 @@ const ksaVisaSlice = createSlice({
 	},
 	extraReducers: {
 		[getKsaVisa.fulfilled]: (_state, action) => action.payload,
-		[saveKsaVisa.fulfilled]: (_state, action) => action.payload,
-		[removeKsaVisa.fulfilled]: (_state, action) => action.payload,
-		[updateKsaVisa.fulfilled]: (_state, action) => action.payload
+		[getKsaVisa.rejected]: () => []
 	}
 });
 

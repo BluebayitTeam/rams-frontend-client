@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index.js';
-import { resetVisaSubmissionList } from '../store/visaSubmissionListSlice';
+import { newVisaSubmissionList, resetVisaSubmissionList } from '../store/visaSubmissionListSlice';
 import VisaSubmissionLists from '../VisaSubmissionLists/VisaSubmissionLists.js';
 import NewVisaSubmissionListHeader from './NewVisaSubmissionListHeader.js';
 import VisaSubmissionListForm from './VisaSubmissionListForm.js';
@@ -25,8 +25,6 @@ const schema = yup.object().shape({
 const VisaSubmissionList = () => {
 	const dispatch = useDispatch();
 
-	const [reFechListData, setReFechListData] = useState(0);
-
 	const [noVisaSubmissionList, setNoVisaSubmissionList] = useState(false);
 	const methods = useForm({
 		mode: 'onChange',
@@ -35,6 +33,7 @@ const VisaSubmissionList = () => {
 	});
 
 	useEffect(() => {
+		dispatch(newVisaSubmissionList());
 		return () => {
 			/**
 			 * Reset VisaSubmissionList on component unload
@@ -78,14 +77,14 @@ const VisaSubmissionList = () => {
 					toolbar: 'p-0',
 					header: 'min-h-64 h-64'
 				}}
-				header={<NewVisaSubmissionListHeader setReFechListData={setReFechListData} />}
+				header={<NewVisaSubmissionListHeader />}
 				content={
 					<div className="p-16 sm:p-24 max-w-2xl">
 						<VisaSubmissionListForm />
 						<br />
 						<br />
 						<br />
-						<VisaSubmissionLists reFechListData={reFechListData} />
+						<VisaSubmissionLists />
 					</div>
 				}
 				innerScroll
@@ -93,4 +92,4 @@ const VisaSubmissionList = () => {
 		</FormProvider>
 	);
 };
-export default withReducer('visaSubmissionListsManagement', reducer)(VisaSubmissionList);
+export default withReducer('visaSubmissionListManagement', reducer)(VisaSubmissionList);

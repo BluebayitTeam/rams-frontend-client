@@ -13,7 +13,7 @@ export const getBmet = createAsyncThunk('bmetManagement/bmet/getBmet', async (pa
 	try {
 		const response = await axios.get(`${GET_BMET_BY_ID}${params}`, authTOKEN);
 		const data = await response.data;
-		return data === undefined ? null : data;
+		return data || [];
 	} catch (err) {
 		return rejectWithValue(params);
 	}
@@ -73,9 +73,7 @@ const bmetSlice = createSlice({
 	},
 	extraReducers: {
 		[getBmet.fulfilled]: (_state, action) => action.payload,
-		[saveBmet.fulfilled]: (_state, action) => action.payload,
-		[removeBmet.fulfilled]: (_state, action) => action.payload,
-		[updateBmet.fulfilled]: (_state, action) => action.payload
+		[getBmet.rejected]: () => []
 	}
 });
 

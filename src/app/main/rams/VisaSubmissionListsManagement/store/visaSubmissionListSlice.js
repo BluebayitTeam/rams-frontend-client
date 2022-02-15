@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import _ from 'lodash';
 import {
 	CREATE_VISASUBMISSIONLIST,
 	DELETE_VISASUBMISSIONLIST,
-	UPDATE_VISASUBMISSIONLIST
+	UPDATE_VISASUBMISSIONLIST,
+	VISASBLISTS_BY_DATE
 } from '../../../../constant/constants';
 
 export const removeVisaSubmissionList = createAsyncThunk(
@@ -54,22 +56,43 @@ export const saveVisaSubmissionList = createAsyncThunk(
 	}
 );
 
+export const getVisaSubmissionList = createAsyncThunk(
+	'visaSubmissionListManagement/getVisaSubmissionList',
+	async ({ submission_date }, { rejectWithValue }) => {
+		try {
+			axios.defaults.headers.common['Content-type'] = 'application/json';
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+
+			const res = await axios.get(`${VISASBLISTS_BY_DATE}?submission_date=${submission_date}`);
+
+			delete axios.defaults.headers.common['Content-type'];
+			delete axios.defaults.headers.common.Authorization;
+
+			return res.data || {};
+		} catch (err) {
+			return rejectWithValue([]);
+		}
+	}
+);
+
 const visaSubmissionListSlice = createSlice({
 	name: 'visaSubmissionListManagement/visaSubmissionList',
-	initialState: null,
+	initialState: [],
 	reducers: {
 		resetVisaSubmissionList: () => null,
 		newVisaSubmissionList: {
 			reducer: (state, action) => action.payload,
 			prepare: event => ({
-				payload: {}
+				payload: []
 			})
 		}
 	},
 	extraReducers: {
-		[saveVisaSubmissionList.fulfilled]: (state, action) => action.payload,
-		[removeVisaSubmissionList.fulfilled]: (state, action) => action.payload,
-		[updateVisaSubmissionList.fulfilled]: (state, action) => action.payload
+		[getVisaSubmissionList.fulfilled]: (_state, action) => (_.isArray(action.payload) ? action.payload : []),
+		[getVisaSubmissionList.rejected]: () => (_.isArray(action.payload) ? action.payload : []),
+		[saveVisaSubmissionList.fulfilled]: state => state,
+		[removeVisaSubmissionList.fulfilled]: state => state,
+		[updateVisaSubmissionList.fulfilled]: state => state
 	}
 });
 

@@ -11,26 +11,14 @@
 // import { useDispatch } from 'react-redux';
 // import { Link, useHistory, useParams } from 'react-router-dom';
 // import { removeBmet, saveBmet, updateBmet } from '../store/bmetSlice';
-import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const NewBmetHeader = () => {
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const name = watch('name');
-	const theme = useTheme();
-	const history = useHistory();
-
-	const routeParams = useParams();
-
-	const handleDelete = localStorage.getItem('bmetEvent');
+	const bmet = useSelector(({ bmetsManagement }) => bmetsManagement.bmet);
+	const name = bmet?.passenger?.[0]?.passenger_name;
 
 	// function handleSaveBmet() {
 	// 	dispatch(saveBmet(getValues())).then(res => {

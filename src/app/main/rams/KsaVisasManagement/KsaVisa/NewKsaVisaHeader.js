@@ -1,12 +1,11 @@
 import Typography from '@material-ui/core/Typography';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 const NewKsaVisaHeader = () => {
-	const methods = useFormContext();
-	const { watch } = methods;
-	const name = watch('name');
+	const data = useSelector(({ ksaVisasManagement }) => ksaVisasManagement.ksaVisa);
+	const name = data?.passenger?.[0]?.passenger_name;
 
 	// function handleSaveKsaVisa() {
 	// 	dispatch(saveKsaVisa(getValues())).then(res => {

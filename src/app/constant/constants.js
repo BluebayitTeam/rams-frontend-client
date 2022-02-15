@@ -1039,6 +1039,8 @@ export const VISASUBMISSIONLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_submission_l
 
 export const VISASBLISTS = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/all/`;
 
+export const VISASBLISTS_BY_DATE = `${BASE_URL}/form/api/v1/form/get_visa_submission_list_data_by_date_or_passenger_id/`;
+
 export const VISASBLISTS_WITHOUT_PG = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/all/`;
 
 //man_power
@@ -1117,7 +1119,7 @@ export const CREATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/create/`;
 
 export const GET_BMETS = `${BASE_URL}/bmet/api/v1/bmet/all`;
 
-export const GET_BMET_BY_ID = `${BASE_URL}/form/api/v1/form/get_bmet_form_data_by_passenger_id/`;
+export const GET_BMET_BY_ID = `${BASE_URL}/form/api/v1/form/get_bmet_form_data_by_passenger_id_or_passport_no_or_office_serial/`;
 
 export const UPDATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/update/`;
 
@@ -1132,7 +1134,7 @@ export const CREATE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/create/`;
 
 export const GET_KSAVISAS = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/all`;
 
-export const GET_KSAVISA_BY_ID = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/`;
+export const GET_KSAVISA_BY_ID = `${BASE_URL}/form/api/v1/form/get_ksa_visa_form_data_by_passenger_id_or_passport_no_or_office_serial/`;
 
 export const UPDATE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/update/`;
 
