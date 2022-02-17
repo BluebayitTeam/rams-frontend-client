@@ -79,7 +79,18 @@ const ReceivableBill = () => {
 		/**
 		 * Reset the form on receivableBill state changes
 		 */
-		reset(receivableBill);
+
+		let receivableExceptComSale = {};
+
+		receivableBill?.items?.map(itm => {
+			if (itm.ledger === 'Company Sales') {
+				setExtraItem(itm);
+			} else {
+				receivableExceptComSale = { ...receivableBill };
+			}
+		});
+
+		reset(receivableExceptComSale);
 	}, [receivableBill, reset]);
 
 	useEffect(() => {

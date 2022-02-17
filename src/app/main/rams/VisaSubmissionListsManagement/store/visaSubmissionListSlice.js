@@ -91,7 +91,7 @@ const visaSubmissionListSlice = createSlice({
 	},
 	extraReducers: {
 		[getVisaSubmissionList.fulfilled]: (_state, action) => (_.isArray(action.payload) ? action.payload : []),
-		[getVisaSubmissionList.rejected]: () => (_.isArray(action.payload) ? action.payload : []),
+		[getVisaSubmissionList.rejected]: (_state, action) => (_.isArray(action.payload) ? action.payload : []),
 		[saveVisaSubmissionList.fulfilled]: state => state,
 		[removeVisaSubmissionList.fulfilled]: state => state,
 		[updateVisaSubmissionList.fulfilled]: state => state

@@ -65,14 +65,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 		setExtraItem(item => ({ ...item, debit_amount: totalCreditAmount }));
 	};
 
-	useEffect(() => {
-		_.isEmpty(payableBill) ||
-			setExtraItem(item => ({
-				...item,
-				debit_amount: getTotalAmount(payableBill?.items || [], 'credit_amount')
-			}));
-	}, [payableBill]);
-
 	const checkEmptyLedger = async itms => {
 		setTimeout(() => {
 			const items = itms || getValues()?.items || [];
@@ -114,7 +106,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? branchs.find(data => data.id == value) : null}
 						options={branchs}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -144,7 +135,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 						className="mt-8 mb-16"
 						freeSolo
 						autoHighlight
-						value={value ? passengers.find(data => data.id == value) : null}
 						options={passengers}
 						getOptionLabel={option =>
 							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
@@ -174,7 +164,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? subLedgers.find(data => data.id == value) : null}
 						options={subLedgers}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -263,11 +252,6 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 														<Autocomplete
 															className="mt-8 mb-16"
 															freeSolo
-															value={
-																value
-																	? ledgers.find(ledger => ledger.id === value)
-																	: null
-															}
 															options={ledgers}
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}

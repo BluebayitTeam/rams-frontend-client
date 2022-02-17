@@ -106,9 +106,6 @@ const payableBillSlice = createSlice({
 	},
 	extraReducers: {
 		[getPayableBill.fulfilled]: (_state, action) => action.payload,
-		[savePayableBill.fulfilled]: (_state, action) => action.payload,
-		[removePayableBill.fulfilled]: (_state, action) => action.payload,
-		[updatePayableBill.fulfilled]: (_state, action) => action.payload,
 		[setUserBasedBranch.fulfilled]: (state, action) => {
 			return {
 				...state,

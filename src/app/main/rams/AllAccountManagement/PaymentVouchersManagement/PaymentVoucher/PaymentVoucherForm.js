@@ -118,7 +118,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? branchs.find(data => data.id == value) : null}
 						options={branchs}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -148,7 +147,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 						className="mt-8 mb-16"
 						freeSolo
 						autoHighlight
-						value={value ? passengers.find(data => data.id == value) : null}
 						options={passengers}
 						getOptionLabel={option =>
 							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
@@ -178,7 +176,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? subLedgers.find(data => data.id == value) : null}
 						options={subLedgers}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -267,11 +264,6 @@ function PaymentVoucherForm({ setLetFormSave }) {
 														<Autocomplete
 															className="mt-8 mb-16"
 															freeSolo
-															value={
-																value
-																	? ledgers.find(ledger => ledger.id === value)
-																	: null
-															}
 															options={ledgers}
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}

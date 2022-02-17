@@ -79,7 +79,18 @@ const PayableBill = () => {
 		/**
 		 * Reset the form on payableBill state changes
 		 */
-		reset(payableBill);
+
+		let payableExceptComPurc = {};
+
+		payableBill?.items?.map(itm => {
+			if (itm.ledger === 'Company Purchase') {
+				setExtraItem(itm);
+			} else {
+				payableExceptComPurc = { ...payableBill };
+			}
+		});
+
+		reset(payableExceptComPurc);
 	}, [payableBill, reset]);
 
 	useEffect(() => {

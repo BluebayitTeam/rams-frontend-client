@@ -9,7 +9,7 @@ import { GET_SITESETTINGS } from 'app/constant/constants';
 import html2PDF from 'jspdf-html2canvas';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ColumnLabel from '../../ReportManagement/reportComponents/ColumnLabel';
 import Pagination from '../../ReportManagement/reportComponents/Pagination';
@@ -22,16 +22,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Sb.Date', name: 'submission_date', type: 'date', show: true },
-	{ id: 3, label: 'Agency', name: 'agency', subName: 'name', show: true },
-	{ id: 4, label: 'passenger', name: 'passenger', subName: 'passenger_name', show: true }
+	{ id: 1, label: 'Profession', name: 'profession', show: true },
+	{ id: 2, label: 'Sponsor ID', name: 'sponsor_id', show: true },
+	{ id: 3, label: 'Visa No', name: 'visa_no', show: true },
+	{ id: 4, label: 'Sponsor Name', name: 'sponsor_name', show: true },
+	{ id: 5, label: 'Possport No', name: 'passport_no', show: true },
+	{ id: 6, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
+	{ id: 7, label: 'Office SL', name: 'office_sl', show: true },
+	{ id: 8, label: 'Passenger Name', name: 'passenger_name', show: true },
+	{ id: 9, label: 'Reference', name: 'reference', show: true }
 ];
 
 const VisaSubmissionLists = () => {
 	const classes = useStyles();
-
-	const dispatch = useDispatch();
 
 	const { authTOKEN } = useUserInfo();
 
@@ -45,7 +48,21 @@ const VisaSubmissionLists = () => {
 		useReportData3();
 
 	useEffect(() => {
-		setModifiedVisaSbListData(visaSbLists);
+		const visaSubLsts = visaSbLists;
+		const modifiedData = [];
+		visaSubLsts?.map(visaSub => {
+			modifiedData.push({
+				profession: visaSub?.embassy?.profession_arabic,
+				visa_no: visaSub?.visa_entry?.visa_number,
+				sponsor_id: visaSub?.visa_entry?.sponsor_id_no,
+				sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic,
+				passport_no: visaSub?.passenger?.passport_no,
+				office_sl: visaSub?.passenger?.office_serial,
+				passenger_name: visaSub?.passenger?.passenger_name,
+				reference: visaSub?.passenger?.passenger_name
+			});
+		});
+		setModifiedVisaSbListData(modifiedData);
 	}, [visaSbLists]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
