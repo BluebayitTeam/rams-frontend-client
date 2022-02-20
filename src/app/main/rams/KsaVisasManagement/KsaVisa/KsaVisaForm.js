@@ -1385,7 +1385,7 @@ function KsaVisaForm() {
 															<td>NAME OF COMPANY: M/S</td>
 															<td>
 																:&nbsp;
-																{/* <asp:Label ID="lblcopilename" Font-Bold="true" runat="server"></asp:Label> */}
+																{data?.[0]?.visa_entry?.sponsor_name_arabic}
 															</td>
 														</tr>
 
@@ -1393,21 +1393,21 @@ function KsaVisaForm() {
 															<td>HERE BY APPOINTED MR/MRS</td>
 															<td>
 																:&nbsp;
-																{/* <asp:Label ID="lblpname" Font-Bold="true" runat="server" ></asp:Label> */}
+																{data?.[0]?.passenger?.passenger_name}
 															</td>
 														</tr>
 														<tr>
 															<td>HOLDER OF BANGLADESH PASSPORT NO</td>
 															<td>
 																:&nbsp;
-																{/* <asp:Label ID="lblPassPPno" Font-Bold="true" runat="server" ></asp:Label> &nbsp;&nbsp;&nbsp;<asp:Label ID="lblPpIssueDate" Visible="False" runat="server"></asp:Label>   */}
+																{data?.[0]?.passenger?.passport_no}
 															</td>
 														</tr>
 
 														<tr>
 															<td>
 																AS A/AN &nbsp;&emsp;&emsp;
-																{/* <asp:Label ID="lblProfession" Font-Bold="true" runat="server"></asp:Label> */}
+																{data?.[0]?.embassy?.profession_english}
 																&nbsp;&nbsp;
 															</td>
 															<td></td>
@@ -1436,8 +1436,7 @@ function KsaVisaForm() {
 																MONTHLY SALARY
 																{/*<asp:Label ID="lblVisaComment" runat="server"></asp:Label>*/}
 																&nbsp;to the 2nd party as his monthly salary to serve
-																him as a
-																{/* <asp:Label ID="lblProfession" runat="server"></asp:Label> */}
+																him as a{data?.[0]?.embassy?.profession_english}
 																&nbsp;
 															</td>
 															<td>:SR 1000/-</td>

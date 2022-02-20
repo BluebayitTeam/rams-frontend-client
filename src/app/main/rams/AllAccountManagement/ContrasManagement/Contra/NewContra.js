@@ -3,6 +3,8 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
+import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -80,7 +82,9 @@ const Contra = () => {
 		/**
 		 * Reset the form on contra state changes
 		 */
-		reset(contra);
+		const convertedContraItems = setIdIfValueIsObjArryData(contra?.items);
+		const convertedContra = setIdIfValueIsObject2(contra);
+		reset({ ...convertedContra, items: convertedContraItems });
 	}, [contra, reset]);
 
 	useEffect(() => {

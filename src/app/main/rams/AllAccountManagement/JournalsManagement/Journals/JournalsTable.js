@@ -231,11 +231,11 @@ const JournalsTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.sub_ledger?.name}
+										{n.details}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.details}
+										{n.amount}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">

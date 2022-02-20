@@ -1,6 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -73,7 +74,7 @@ const Ledger = () => {
 		/**
 		 * Reset the form on ledger state changes
 		 */
-		reset(ledger);
+		reset(setIdIfValueIsObject2(ledger));
 	}, [ledger, reset]);
 
 	useEffect(() => {

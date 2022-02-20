@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const setIdIfValueIsObject2 = object => {
-	const conVertedObject = object;
+	const conVertedObject = JSON.parse(JSON.stringify(object));
 
 	try {
 		for (let x in conVertedObject) {

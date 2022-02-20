@@ -3,6 +3,8 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
+import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -80,17 +82,15 @@ const ReceivableBill = () => {
 		 * Reset the form on receivableBill state changes
 		 */
 
-		let receivableExceptComSale = {};
-
-		receivableBill?.items?.map(itm => {
-			if (itm.ledger === 'Company Sales') {
-				setExtraItem(itm);
-			} else {
-				receivableExceptComSale = { ...receivableBill };
+		const convertedReceivableBillItems = setIdIfValueIsObjArryData(receivableBill?.items || []);
+		receivableBill?.items?.map((itm, indx) => {
+			if (itm?.ledger?.name === 'Company Sales') {
+				const extraItm = convertedReceivableBillItems.splice(indx, 1);
+				setExtraItem(itm => ({ ...itm, ...extraItm?.[0] }));
 			}
 		});
-
-		reset(receivableExceptComSale);
+		const convertedReceicableBill = setIdIfValueIsObject2(receivableBill);
+		reset({ ...convertedReceicableBill, items: convertedReceivableBillItems });
 	}, [receivableBill, reset]);
 
 	useEffect(() => {

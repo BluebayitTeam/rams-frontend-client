@@ -3,6 +3,8 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
 import useUserInfo from 'app/@customHooks/useUserInfo.js';
+import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -79,18 +81,15 @@ const PayableBill = () => {
 		/**
 		 * Reset the form on payableBill state changes
 		 */
-
-		let payableExceptComPurc = {};
-
-		payableBill?.items?.map(itm => {
-			if (itm.ledger === 'Company Purchase') {
-				setExtraItem(itm);
-			} else {
-				payableExceptComPurc = { ...payableBill };
+		const convertedPayableBillItems = setIdIfValueIsObjArryData(payableBill?.items);
+		payableBill?.items?.map((itm, indx) => {
+			if (itm?.ledger?.name === 'Company Purchase') {
+				const extraItm = convertedPayableBillItems.splice(indx, 1);
+				setExtraItem(itm => ({ ...itm, ...extraItm?.[0] }));
 			}
 		});
-
-		reset(payableExceptComPurc);
+		const convertedPayableBill = setIdIfValueIsObject2(payableBill);
+		reset({ ...convertedPayableBill, items: convertedPayableBillItems });
 	}, [payableBill, reset]);
 
 	useEffect(() => {

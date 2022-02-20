@@ -107,6 +107,7 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 						className="mt-8 mb-16"
 						freeSolo
 						options={branchs}
+						value={value ? branchs.find(data => data.id == value) : null}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -136,6 +137,7 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 						freeSolo
 						autoHighlight
 						options={passengers}
+						value={value ? passengers.find(data => data.id == value) : null}
 						getOptionLabel={option =>
 							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
 						}
@@ -165,6 +167,7 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 						className="mt-8 mb-16"
 						freeSolo
 						options={subLedgers}
+						value={value ? subLedgers.find(data => data.id == value) : null}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -253,6 +256,9 @@ function PayableBillForm({ setLetFormSave, setExtraItem }) {
 															className="mt-8 mb-16"
 															freeSolo
 															options={ledgers}
+															value={
+																value ? ledgers.find(data => data.id == value) : null
+															}
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {

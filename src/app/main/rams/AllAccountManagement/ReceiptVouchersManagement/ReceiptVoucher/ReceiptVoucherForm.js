@@ -121,6 +121,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 						className="mt-8 mb-16"
 						freeSolo
 						options={branchs}
+						value={value ? branchs.find(data => data.id == value) : null}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -144,31 +145,35 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 			<Controller
 				name="passenger"
 				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						autoHighlight
-						options={passengers}
-						getOptionLabel={option =>
-							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-						}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={params => (
-							<TextField
-								{...params}
-								placeholder="Select Passenger"
-								label="Passenger"
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
+				render={({ field: { onChange, value } }) => {
+					console.log('value', value);
+					return (
+						<Autocomplete
+							className="mt-8 mb-16"
+							freeSolo
+							autoHighlight
+							options={passengers}
+							getOptionLabel={option =>
+								`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+							}
+							value={value ? passengers.find(data => data.id == value) : null}
+							onChange={(event, newValue) => {
+								onChange(newValue?.id);
+							}}
+							renderInput={params => (
+								<TextField
+									{...params}
+									placeholder="Select Passenger"
+									label="Passenger"
+									variant="outlined"
+									InputLabelProps={{
+										shrink: true
+									}}
+								/>
+							)}
+						/>
+					);
+				}}
 			/>
 
 			<Controller
@@ -179,6 +184,7 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 						className="mt-8 mb-16"
 						freeSolo
 						options={subLedgers}
+						value={value ? subLedgers.find(data => data.id == value) : null}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -268,6 +274,9 @@ function ReceiptVoucherForm({ setLetFormSave }) {
 															freeSolo
 															autoHighlight
 															options={ledgers}
+															value={
+																value ? ledgers.find(data => data.id == value) : null
+															}
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {

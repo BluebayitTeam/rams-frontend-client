@@ -45,17 +45,17 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'sub-ledger',
-		align: 'left',
-		disablePadding: false,
-		label: 'Sub Ledger',
-		sort: true
-	},
-	{
 		id: 'details',
 		align: 'left',
 		disablePadding: false,
 		label: 'Details',
+		sort: true
+	},
+	{
+		id: 'total_amount',
+		align: 'left',
+		disablePadding: false,
+		label: 'Total Amount',
 		sort: true
 	},
 	{

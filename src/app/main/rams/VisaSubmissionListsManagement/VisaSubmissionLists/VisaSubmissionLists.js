@@ -59,7 +59,7 @@ const VisaSubmissionLists = () => {
 				passport_no: visaSub?.passenger?.passport_no,
 				office_sl: visaSub?.passenger?.office_serial,
 				passenger_name: visaSub?.passenger?.passenger_name,
-				reference: visaSub?.passenger?.passenger_name
+				reference: visaSub?.agent?.username
 			});
 		});
 		setModifiedVisaSbListData(modifiedData);

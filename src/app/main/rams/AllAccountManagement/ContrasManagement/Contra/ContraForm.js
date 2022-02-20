@@ -33,7 +33,6 @@ function ContraForm({ setLetFormSave }) {
 	const { errors } = formState;
 	const dispatch = useDispatch();
 	const branchs = useSelector(state => state.data.branches);
-	const subLedgers = useSelector(state => state.data.subLedgers);
 	const ledgers = useSelector(state => state.data.ledgers);
 
 	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
@@ -115,6 +114,7 @@ function ContraForm({ setLetFormSave }) {
 						className="mt-8 mb-16"
 						freeSolo
 						options={branchs}
+						value={value ? branchs.find(data => data.id == value) : null}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -125,33 +125,6 @@ function ContraForm({ setLetFormSave }) {
 								{...params}
 								placeholder="Select Branch"
 								label="Branch"
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="sub_ledger"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						options={subLedgers}
-						getOptionLabel={option => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={params => (
-							<TextField
-								{...params}
-								placeholder="Select Sub Ledger"
-								label="Sub Ledger"
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -230,6 +203,9 @@ function ContraForm({ setLetFormSave }) {
 															className="mt-8 mb-16"
 															freeSolo
 															options={ledgers}
+															value={
+																value ? ledgers.find(data => data.id == value) : null
+															}
 															getOptionLabel={option => `${option.name}`}
 															InputLabelProps={{ shrink: true }}
 															onChange={(_event, newValue) => {
