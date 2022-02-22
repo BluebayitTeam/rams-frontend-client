@@ -707,10 +707,19 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/passenger_summarys/report',
 				exact: true
+			},
+			//Make A List report
+			{
+				id: 'makeAListReport',
+				title: 'Make A List',
+				translate: 'Make A List',
+				type: 'item',
+				url: '/apps/report-management/make-a-list-report',
+				exact: true
 			}
 		]
 	},
-	//rorm
+	//form
 	{
 		id: 'form',
 		title: 'Form',

@@ -623,6 +623,13 @@ const ramsRouteConfig = {
 					'./ReportManagement/accountsReportManagement/AccountSummaryReportManagement/AccountSummaryReport/AccountSummaryReport'
 				)
 			)
+		},
+		//makeAListReport
+		{
+			path: '/apps/report-management/make-a-list-report',
+			component: lazy(() =>
+				import('./ReportManagement/MakeAListReportManagement/MakeAListReport/MakeAListReport')
+			)
 		}
 	]
 };

@@ -1180,3 +1180,6 @@ export const RECEIPT_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/acco
 export const RECEIPT_SUMMARY_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/summary_for_receipt_voucher/`;
 
 export const RECEIPT_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/summary_for_receipt_voucher/`;
+
+//make a list
+export const MAKE_A_LIST_CLMS = `${BASE_URL}/make_list_column/api/v1/make_list_column/all/`;
