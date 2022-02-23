@@ -633,16 +633,28 @@ const ramsRouteConfig = {
 		},
 		//makeAList
 		{
+			path: '/apps/makeAList-management/columns/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAListColumn/NewMakeAListClm'))
+		},
+		{
+			path: '/apps/makeAList-management/rows/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAListRow/NewMakeAListRow'))
+		},
+		{
+			path: '/apps/makeAList-management/report/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAListReport/NewMakeAListReport'))
+		},
+		{
 			path: '/apps/makeAList-management/makeALists/:makeAListId/:makeAListName?',
-			component: lazy(() => import('./MakeAListsManagement/MakeAList/NewMakeAList'))
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAList/NewMakeAList'))
 		},
 		{
 			path: '/apps/makeAList-management/makeALists',
-			component: lazy(() => import('./MakeAListsManagement/MakeALists/MakeALists'))
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeALists/MakeALists'))
 		},
 		{
 			path: '/apps/makeAList-management/:makeAListId',
-			component: lazy(() => import('./MakeAListsManagement/MakeAList/NewMakeAList'))
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAList/NewMakeAList'))
 		}
 	]
 };

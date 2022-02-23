@@ -17,7 +17,7 @@ const NewMakeAListHeader = () => {
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
-	const name = watch('name');
+	const name = watch('title');
 	const theme = useTheme();
 	const history = useHistory();
 
@@ -83,7 +83,7 @@ const NewMakeAListHeader = () => {
 			<div className="flex flex-col items-start max-w-full min-w-0">
 				<motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}>
 					<Typography
-						className="flex items-center sm:mb-12"
+						className="flex items-center"
 						component={Link}
 						role="button"
 						to="/apps/makeAList-management/makeALists"

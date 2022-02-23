@@ -1,6 +1,6 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { DELETE_MAKEALIST_MULTIPLE, GET_MAKEALISTS } from '../../../../constant/constants';
+import { DELETE_MAKEALIST_MULTIPLE, GET_MAKEALISTS } from '../../../../../constant/constants';
 
 export const getMakeALists = createAsyncThunk('makeAListManagement/makeALists/getMakeALists', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';

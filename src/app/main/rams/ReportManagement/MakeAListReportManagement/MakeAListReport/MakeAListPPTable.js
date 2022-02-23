@@ -45,7 +45,6 @@ const MakeAListPPTable = () => {
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<Autocomplete
-							// className="mt-8 mb-16"
 							freeSolo
 							autoHighlight
 							options={passengers}

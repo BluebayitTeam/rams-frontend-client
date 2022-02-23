@@ -9,6 +9,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { ViewDay, ViewWeek, Visibility } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
@@ -17,7 +18,7 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { SEARCH_MAKEALIST } from '../../../../constant/constants';
+import { SEARCH_MAKEALIST } from '../../../../../constant/constants';
 import { getMakeALists, selectMakeALists } from '../store/makeAListsSlice';
 import MakeAListsTableHead from './MakeAListsTableHead';
 
@@ -101,14 +102,26 @@ const MakeAListsTable = props => {
 		setSelected([]);
 	}
 
+	function handleMakeAListColumn(item) {
+		localStorage.removeItem('makeAListEvent');
+		props.history.push(`/apps/makeAList-management/columns/${item.id}/${item.title}`);
+	}
+	function handleMakeAListRow(item) {
+		localStorage.removeItem('makeAListEvent');
+		props.history.push(`/apps/makeAList-management/rows/${item.id}/${item.title}`);
+	}
+	function handleMakeAListReport(item) {
+		localStorage.removeItem('makeAListEvent');
+		props.history.push(`/apps/makeAList-management/report/${item.id}/${item.title}`);
+	}
 	function handleUpdateMakeAList(item) {
 		localStorage.removeItem('makeAListEvent');
-		props.history.push(`/apps/makeAList-management/makeALists/${item.id}/${item.name}`);
+		props.history.push(`/apps/makeAList-management/makeALists/${item.id}/${item.title}`);
 	}
 	function handleDeleteMakeAList(item, makeAListEvent) {
 		localStorage.removeItem('makeAListEvent');
 		localStorage.setItem('makeAListEvent', makeAListEvent);
-		props.history.push(`/apps/makeAList-management/makeALists/${item.id}/${item.name}`);
+		props.history.push(`/apps/makeAList-management/makeALists/${item.id}/${item.title}`);
 	}
 
 	function handleCheck(makeAListEvent, id) {
@@ -233,6 +246,21 @@ const MakeAListsTable = props => {
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
 										<div>
+											<ViewWeek
+												onClick={() => handleMakeAListColumn(n)}
+												className="cursor-pointer"
+												style={{ color: 'orange' }}
+											/>{' '}
+											<ViewDay
+												onClick={() => handleMakeAListRow(n)}
+												className="cursor-pointer"
+												style={{ color: 'yellow' }}
+											/>{' '}
+											<Visibility
+												onClick={() => handleMakeAListReport(n)}
+												className="cursor-pointer"
+												style={{ color: 'blue' }}
+											/>{' '}
 											<EditIcon
 												onClick={() => handleUpdateMakeAList(n)}
 												className="cursor-pointer"

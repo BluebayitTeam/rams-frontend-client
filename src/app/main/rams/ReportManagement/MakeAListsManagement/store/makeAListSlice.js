@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import moment from 'moment';
 import {
 	CREATE_MAKEALIST,
 	DELETE_MAKEALIST,
 	GET_MAKEALIST_BY_ID,
 	UPDATE_MAKEALIST
-} from '../../../../constant/constants';
+} from '../../../../../constant/constants';
 
 export const getMakeAList = createAsyncThunk(
 	'makeAListManagement/makeAList/getMakeAList',
@@ -75,7 +76,9 @@ const makeAListSlice = createSlice({
 		newMakeAList: {
 			reducer: (_state, action) => action.payload,
 			prepare: () => ({
-				payload: {}
+				payload: {
+					make_date: moment(new Date()).format('YYYY-MM-DD')
+				}
 			})
 		}
 	},

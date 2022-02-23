@@ -71,6 +71,10 @@ function MakeAListColumns() {
 		return <FuseLoading />;
 	}
 
+	const columdatas = _.sortBy(columns, [o => o.label]).filter(clm => {
+		return clm.key != 'updated_at' && clm.key != 'updated_by' && clm.key != 'created_at' && clm.key != 'created_by';
+	});
+
 	return (
 		<>
 			<div className={classes.titleNameContainer}>
@@ -119,6 +123,16 @@ function MakeAListColumns() {
 				))}
 			</div>
 			<MakeAListPPTable />
+			{columdatas.map((clm, idx) => (
+				<div>
+					{'{'}
+					<h5>id: {`${idx + 1},`}</h5>
+					<h5>key: {`'${clm.key}',`}</h5>
+					<h5>label: {`'${clm.label}',`}</h5>
+					<h5>isChecked: {`false`}</h5>
+					{'},'}
+				</div>
+			))}
 		</>
 	);
 }

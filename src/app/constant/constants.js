@@ -1196,5 +1196,9 @@ export const DELETE_MAKEALIST_MULTIPLE = `${BASE_URL}/make_list/api/v1/make_list
 
 export const SEARCH_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/search/`;
 
-//make a list
+//make a list clm
 export const MAKE_A_LIST_CLMS = `${BASE_URL}/make_list_column/api/v1/make_list_column/all/`;
+
+export const UPDATE_MAKEALIST_CLM = `${BASE_URL}/make_list_column/api/v1/make_list_column/update/`;
+
+export const GET_MAKEALIST_CLM_BY_ID = `${BASE_URL}/make_list_column/api/v1/make_list_column/`;
