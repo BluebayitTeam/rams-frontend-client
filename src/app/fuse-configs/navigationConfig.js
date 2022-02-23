@@ -716,6 +716,15 @@ const navigationConfig = [
 				type: 'item',
 				url: '/apps/report-management/make-a-list-report',
 				exact: true
+			},
+			//makeAList
+			{
+				id: 'makeALists',
+				title: 'MakeALists',
+				translate: 'MakeALists',
+				type: 'item',
+				url: '/apps/makeAList-management/makeALists',
+				exact: true
 			}
 		]
 	},

@@ -1181,5 +1181,20 @@ export const RECEIPT_SUMMARY_FILTER_BY = `${BASE_URL}/account_report/api/v1/acco
 
 export const RECEIPT_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/summary_for_receipt_voucher/`;
 
+//make_list
+export const CREATE_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/create/`;
+
+export const GET_MAKEALISTS = `${BASE_URL}/make_list/api/v1/make_list/all`;
+
+export const GET_MAKEALIST_BY_ID = `${BASE_URL}/make_list/api/v1/make_list/`;
+
+export const UPDATE_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/update/`;
+
+export const DELETE_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/delete/`;
+
+export const DELETE_MAKEALIST_MULTIPLE = `${BASE_URL}/make_list/api/v1/make_list/delete_multiple/`;
+
+export const SEARCH_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/search/`;
+
 //make a list
 export const MAKE_A_LIST_CLMS = `${BASE_URL}/make_list_column/api/v1/make_list_column/all/`;

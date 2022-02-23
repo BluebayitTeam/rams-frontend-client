@@ -630,6 +630,19 @@ const ramsRouteConfig = {
 			component: lazy(() =>
 				import('./ReportManagement/MakeAListReportManagement/MakeAListReport/MakeAListReport')
 			)
+		},
+		//makeAList
+		{
+			path: '/apps/makeAList-management/makeALists/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./MakeAListsManagement/MakeAList/NewMakeAList'))
+		},
+		{
+			path: '/apps/makeAList-management/makeALists',
+			component: lazy(() => import('./MakeAListsManagement/MakeALists/MakeALists'))
+		},
+		{
+			path: '/apps/makeAList-management/:makeAListId',
+			component: lazy(() => import('./MakeAListsManagement/MakeAList/NewMakeAList'))
 		}
 	]
 };

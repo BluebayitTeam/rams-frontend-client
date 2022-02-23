@@ -6,10 +6,7 @@ import { GetApp, ViewWeek } from '@material-ui/icons';
 import PrintIcon from '@material-ui/icons/Print';
 import useReportData from 'app/@customHooks/useReportData';
 import useUserInfo from 'app/@customHooks/useUserInfo';
-import getPaginationData from 'app/@helpers/getPaginationData';
-import html2PDF from 'jspdf-html2canvas';
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 import { useDispatch } from 'react-redux';
@@ -22,8 +19,7 @@ import Pagination from '../../reportComponents/Pagination';
 import SinglePage from '../../reportComponents/SiglePage';
 import { getReportMakeStyles } from '../../reportUtils/reportMakeStyls';
 import tableColumnsReducer from '../../reportUtils/tableColumnsReducer';
-import { getAllMakeALists, getMakeALists } from '../store/makeAListReportSlice';
-import MakeAListFilterMenu from './MakeAListFilterMenu';
+import MakeAListColumns from './MakeAListColumns';
 
 const useStyles = makeStyles(theme => ({
 	...getReportMakeStyles(theme)
@@ -92,74 +88,19 @@ const MakeAListReportsTable = () => {
 	});
 
 	//print handler
-	const handlePrint = () => {
-		setInPrint(true);
-		if (!inPrint) {
-			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllMakeALists(null, () => {
-					printAction();
-					setInPrint(false);
-					handleGetMakeALists();
-				});
-			} else {
-				printAction();
-				setInPrint(false);
-			}
-		}
-	};
+	const handlePrint = () => {};
 
 	//pdf downloader action
-	const pdfDownloadAction = () => {
-		html2PDF(downloadPage, {
-			margin: [0, 0, 0, 0],
-			filename: 'pdfhtml2.pdf',
-			html2canvas: {
-				dpi: 300,
-				letterRendering: true
-			},
-			setTestIsImage: false,
-			useCORS: true,
-			jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-		});
-		setInDowloadPdf(false);
-	};
+	const pdfDownloadAction = () => {};
 
 	//pdf download handler
-	const handlePdfDownload = () => {
-		setInDowloadPdf(true);
-		if (!inDowloadPdf) {
-			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllMakeALists(null, () => {
-					pdfDownloadAction();
-					setInDowloadPdf(false);
-					handleGetMakeALists();
-				});
-			} else {
-				pdfDownloadAction();
-				setInDowloadPdf(false);
-			}
-		}
-	};
+	const handlePdfDownload = () => {};
 
 	//exel download page dom
 	let downloadPage = document.getElementById('downloadPage');
 
 	//exel download handler
-	const handleExelDownload = () => {
-		setInDowloadExcel(true);
-		if (!inDowloadExcel) {
-			if (!inShowAllMode && totalPages > 1) {
-				handleGetAllMakeALists(null, () => {
-					document.getElementById('test-table-xls-button').click();
-					setInDowloadExcel(false);
-					handleGetMakeALists();
-				});
-			} else {
-				document.getElementById('test-table-xls-button').click();
-				setInDowloadExcel(false);
-			}
-		}
-	};
+	const handleExelDownload = () => {};
 
 	//column select close handler
 	useLayoutEffect(() => {
@@ -183,46 +124,17 @@ const MakeAListReportsTable = () => {
 	};
 
 	//get makeALists
-	const handleGetMakeALists = (pagePram, callBack) => {
-		dispatch(getMakeALists({ values: getValues(), pageAndSize: { page: pagePram || page, size } })).then(res => {
-			unstable_batchedUpdates(() => {
-				callBack && callBack(res.payload);
-				setModifiedMakeAListData(res.payload?.makeALists || []);
-				setPage(res.payload?.page || 1);
-				setSize(res.payload?.size || 25);
-				setTotalPages(res.payload?.total_pages || 0);
-				setTotalElements(res.payload?.total_elements || 0);
-				setInSiglePageMode(true);
-				setInShowAllMode(false);
-			});
-		});
-	};
+	const handleGetMakeALists = (pagePram, callBack) => {};
 
 	//get all makeAList without pagination
-	const handleGetAllMakeALists = (callBack, callBackAfterStateUpdated) => {
-		dispatch(getAllMakeALists(getValues())).then(res => {
-			unstable_batchedUpdates(() => {
-				callBack && callBack(res.payload);
-				setModifiedMakeAListData(res.payload?.makeALists || []);
-				setInSiglePageMode(false);
-				setInShowAllMode(true);
-				//get pagination data
-				const { totalPages, totalElements } = getPaginationData(res.payload?.makeALists, size, page);
-				setPage(page || 1);
-				setSize(size || 25);
-				setTotalPages(totalPages);
-				setTotalElements(totalElements);
-			});
-			callBackAfterStateUpdated && callBackAfterStateUpdated(res.payload);
-		});
-	};
+	const handleGetAllMakeALists = (callBack, callBackAfterStateUpdated) => {};
 
 	return (
 		<>
 			<div>
 				{/* filter */}
 				<FormProvider {...methods}>
-					<MakeAListFilterMenu
+					<MakeAListColumns
 						inShowAllMode={inShowAllMode}
 						handleGetMakeALists={handleGetMakeALists}
 						handleGetAllMakeALists={handleGetAllMakeALists}
