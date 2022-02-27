@@ -522,7 +522,7 @@ function KsaVisaForm() {
 															<td
 																style={{
 																	textAlign: 'left',
-																	textAlign: 'Center',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
@@ -534,7 +534,7 @@ function KsaVisaForm() {
 															<td
 																style={{
 																	textAlign: 'left',
-																	textAlign: 'Center',
+																	//textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
@@ -546,7 +546,7 @@ function KsaVisaForm() {
 															<td
 																style={{
 																	textAlign: 'left',
-																	textAlign: 'Center',
+																	//textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
@@ -558,7 +558,7 @@ function KsaVisaForm() {
 															<td
 																style={{
 																	textAlign: 'left',
-																	textAlign: 'Center',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
@@ -570,7 +570,7 @@ function KsaVisaForm() {
 															<td
 																style={{
 																	textAlign: 'left',
-																	textAlign: 'Center',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '12%',
 																	fontSize: '9.5pt'
@@ -582,7 +582,7 @@ function KsaVisaForm() {
 															<td
 																style={{
 																	textAlign: 'left',
-																	textAlign: 'Center',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9%',
 																	fontSize: '9.5pt'
@@ -594,7 +594,7 @@ function KsaVisaForm() {
 															<td
 																style={{
 																	textAlign: 'left',
-																	textAlign: 'Center',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '13%',
 																	fontSize: '9.5pt'

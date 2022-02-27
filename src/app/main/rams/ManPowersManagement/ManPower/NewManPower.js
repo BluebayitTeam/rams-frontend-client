@@ -4,8 +4,8 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from 'app/@data/data';
-import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
-import { MANPOWER_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject';
+import { MANPOWER_BY_PASSENGER_ID } from 'app/constant/constants';
 import { setAlert } from 'app/store/alertSlice';
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
@@ -14,9 +14,9 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
-import ManPowerForm from './ManPowerForm.js';
-import NewManPowerHeader from './NewManPowerHeader.js';
+import reducer from '../store/index';
+import ManPowerForm from './ManPowerForm';
+import NewManPowerHeader from './NewManPowerHeader';
 
 const useStyles = makeStyles(theme => ({
 	container: {

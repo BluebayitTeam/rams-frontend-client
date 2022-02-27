@@ -9,7 +9,7 @@ import {
 } from '../../../../../constant/constants';
 
 export const getMakeAList = createAsyncThunk(
-	'makeAListManagement/makeAList/getMakeAList',
+	'makeAListsManagement/makeAList/getMakeAList',
 	async (params, { rejectWithValue }) => {
 		const authTOKEN = {
 			headers: {
@@ -28,7 +28,7 @@ export const getMakeAList = createAsyncThunk(
 	}
 );
 
-export const removeMakeAList = createAsyncThunk('makeAListManagement/makeAList/removeMakeAList', async val => {
+export const removeMakeAList = createAsyncThunk('makeAListsManagement/makeAList/removeMakeAList', async val => {
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
@@ -42,7 +42,7 @@ export const removeMakeAList = createAsyncThunk('makeAListManagement/makeAList/r
 });
 
 export const updateMakeAList = createAsyncThunk(
-	'makeAListManagement/makeAList/updateMakeAList',
+	'makeAListsManagement/makeAList/updateMakeAList',
 	async (makeAListData, { dispatch, getState }) => {
 		const { makeAList } = getState().makeAListsManagement;
 
@@ -57,7 +57,7 @@ export const updateMakeAList = createAsyncThunk(
 	}
 );
 
-export const saveMakeAList = createAsyncThunk('makeAListManagement/makeAList/saveMakeAList', async makeAListData => {
+export const saveMakeAList = createAsyncThunk('makeAListsManagement/makeAList/saveMakeAList', async makeAListData => {
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
@@ -69,7 +69,7 @@ export const saveMakeAList = createAsyncThunk('makeAListManagement/makeAList/sav
 });
 
 const makeAListSlice = createSlice({
-	name: 'makeAListManagement/makeAList',
+	name: 'makeAListsManagement/makeAList',
 	initialState: null,
 	reducers: {
 		resetMakeAList: () => null,

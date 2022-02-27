@@ -370,7 +370,7 @@ const ReceiptSummaryReportsTable = () => {
 								reporTitle="Receipt Summary Report"
 								tableColumns={tableColumns}
 								dispatchTableColumns={dispatchTableColumns}
-								data={receiptSummary}
+								// data={receiptSummary}
 								data={
 									receiptSummary.isLastPage
 										? {

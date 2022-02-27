@@ -2,7 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import axios from 'axios';
 import { DELETE_MAKEALIST_MULTIPLE, GET_MAKEALISTS } from '../../../../../constant/constants';
 
-export const getMakeALists = createAsyncThunk('makeAListManagement/makeALists/getMakeALists', async pageAndSize => {
+export const getMakeALists = createAsyncThunk('makeAListsManagement/makeALists/getMakeALists', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
 	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
@@ -18,7 +18,7 @@ export const getMakeALists = createAsyncThunk('makeAListManagement/makeALists/ge
 });
 
 export const removeMakeALists = createAsyncThunk(
-	'makeAListManagement/makeALists/removeMakeALists',
+	'makeAListsManagement/makeALists/removeMakeALists',
 	async makeAListIds => {
 		const headers = {
 			'Content-type': 'application/json',
@@ -41,7 +41,7 @@ export const { selectAll: selectMakeALists, selectById: selectMakeAListById } = 
 );
 
 const makeAListsSlice = createSlice({
-	name: 'makeAListManagement/makeALists',
+	name: 'makeAListsManagement/makeALists',
 	initialState: makeAListsAdapter.getInitialState({
 		searchText: ''
 	}),

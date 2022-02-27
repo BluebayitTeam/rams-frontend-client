@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { GET_MAKEALIST_CLM_BY_ID, UPDATE_MAKEALIST_CLM } from '../../../../../constant/constants';
+import { GET_MAKEALIST_CLM_BY_LIST_ID, UPDATE_MAKEALIST_CLM } from '../../../../../constant/constants';
 import { columns } from '../data/column';
 
 export const getMakeAListClms = createAsyncThunk(
-	'makeAListClmsManagement/makeAListClms/getMakeAListClms',
-	async (params, { rejectWithValue, getState }) => {
-		const { makeAListClm } = getState().makeAListClmsManagement;
+	'makeAListsManagement/makeAListClms/getMakeAListClms',
+	async (listId, { rejectWithValue, getState }) => {
+		const { makeAListClm } = getState().makeAListsManagement;
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -15,21 +15,21 @@ export const getMakeAListClms = createAsyncThunk(
 		};
 
 		try {
-			const response = await axios.get(`${GET_MAKEALIST_CLM_BY_ID}${1}`, authTOKEN);
+			const response = await axios.get(`${GET_MAKEALIST_CLM_BY_LIST_ID}${listId}`, authTOKEN);
 			const data = await response.data;
 			const updatedClmsData = makeAListClm.map(clm => ({ ...clm, isChecked: data[clm.key] }));
 			console.log('updatedClmsData', updatedClmsData);
 			return updatedClmsData;
 		} catch (err) {
-			return rejectWithValue(params);
+			return rejectWithValue();
 		}
 	}
 );
 
 export const updateMakeAListClms = createAsyncThunk(
-	'makeAListClmsManagement/makeAListClms/updateMakeAListClms',
+	'makeAListsManagement/makeAListClms/updateMakeAListClms',
 	async (listId, { getState }) => {
-		const { makeAListClm } = getState().makeAListClmsManagement;
+		const { makeAListClm } = getState().makeAListsManagement;
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -38,13 +38,13 @@ export const updateMakeAListClms = createAsyncThunk(
 		};
 		const columnsData = {};
 		makeAListClm.map(clm => (columnsData[clm.key] = clm.isChecked));
-		const response = await axios.put(`${UPDATE_MAKEALIST_CLM}${1}`, columnsData, authTOKEN);
+		const response = await axios.put(`${UPDATE_MAKEALIST_CLM}${listId}`, columnsData, authTOKEN);
 		return response;
 	}
 );
 
 const makeAListClmsSlice = createSlice({
-	name: 'makeAListClmsManagement/makeAListClms',
+	name: 'makeAListsManagement/makeAListClms',
 	initialState: columns,
 	reducers: {
 		resetMakeAListClms: () => columns,

@@ -1,16 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import moment from 'moment';
-import {
-	CREATE_MAKEALIST,
-	DELETE_MAKEALIST,
-	GET_MAKEALIST_BY_ID,
-	UPDATE_MAKEALIST
-} from '../../../../../constant/constants';
+import { GET_MAKEALIST_CLM_BY_LIST_ID, UPDATE_MAKEALIST_CLM } from '../../../../../constant/constants';
+import { columns } from '../data/column';
 
-export const getMakeAListRow = createAsyncThunk(
-	'makeAListRowManagement/makeAListRow/getMakeAListRow',
-	async (params, { rejectWithValue }) => {
+export const getMakeAListRows = createAsyncThunk(
+	'makeAListsManagement/makeAListRows/getMakeAListRows',
+	async (listId, { rejectWithValue, getState }) => {
+		const { makeAListRow } = getState().makeAListsManagement;
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -19,83 +15,53 @@ export const getMakeAListRow = createAsyncThunk(
 		};
 
 		try {
-			const response = await axios.get(`${GET_MAKEALIST_BY_ID}${params}`, authTOKEN);
+			const response = await axios.get(`${GET_MAKEALIST_CLM_BY_LIST_ID}${listId}`, authTOKEN);
 			const data = await response.data;
-			return data === undefined ? null : data;
+			const updatedClmsData = makeAListRow.map(clm => ({ ...clm, isChecked: data[clm.key] }));
+			console.log('updatedClmsData', updatedClmsData);
+			return updatedClmsData;
 		} catch (err) {
-			return rejectWithValue(params);
+			return rejectWithValue();
 		}
 	}
 );
 
-export const removeMakeAListRow = createAsyncThunk(
-	'makeAListRowManagement/makeAListRow/removeMakeAListRow',
-	async val => {
+export const updateMakeAListRows = createAsyncThunk(
+	'makeAListsManagement/makeAListRows/updateMakeAListRows',
+	async (listId, { getState }) => {
+		const { makeAListRow } = getState().makeAListsManagement;
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-
-		const makeAListRowId = val.id;
-		const response = await axios.delete(`${DELETE_MAKEALIST}${makeAListRowId}`, authTOKEN);
+		const columnsData = {};
+		makeAListRow.map(clm => (columnsData[clm.key] = clm.isChecked));
+		const response = await axios.put(`${UPDATE_MAKEALIST_CLM}${listId}`, columnsData, authTOKEN);
 		return response;
 	}
 );
 
-export const updateMakeAListRow = createAsyncThunk(
-	'makeAListRowManagement/makeAListRow/updateMakeAListRow',
-	async (makeAListRowData, { dispatch, getState }) => {
-		const { makeAListRow } = getState().makeAListRowsManagement;
-
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		const response = await axios.put(`${UPDATE_MAKEALIST}${makeAListRow.id}`, makeAListRowData, authTOKEN);
-		return response;
-	}
-);
-
-export const saveMakeAListRow = createAsyncThunk(
-	'makeAListRowManagement/makeAListRow/saveMakeAListRow',
-	async makeAListRowData => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		const response = await axios.post(`${CREATE_MAKEALIST}`, makeAListRowData, authTOKEN);
-		return response;
-	}
-);
-
-const makeAListRowSlice = createSlice({
-	name: 'makeAListRowManagement/makeAListRow',
-	initialState: null,
+const makeAListRowsSlice = createSlice({
+	name: 'makeAListsManagement/makeAListRows',
+	initialState: columns,
 	reducers: {
-		resetMakeAListRow: () => null,
-		newMakeAListRow: {
-			reducer: (_state, action) => action.payload,
-			prepare: () => ({
-				payload: {
-					make_date: moment(new Date()).format('YYYY-MM-DD')
-				}
-			})
+		resetMakeAListRows: () => columns,
+		checkOrUnCheck: (state, action) => {
+			const payload = action.payload;
+			const newState = [...state];
+			const targetIndx = newState.findIndex(clm => clm.key === payload.key);
+			if (targetIndx >= 0) {
+				state[targetIndx] = { ...newState[targetIndx], isChecked: payload.value };
+			}
 		}
 	},
 	extraReducers: {
-		[getMakeAListRow.fulfilled]: (_state, action) => action.payload,
-		[saveMakeAListRow.fulfilled]: (_state, action) => action.payload,
-		[removeMakeAListRow.fulfilled]: (_state, action) => action.payload,
-		[updateMakeAListRow.fulfilled]: (_state, action) => action.payload
+		[getMakeAListRows.fulfilled]: (_state, action) => action.payload
 	}
 });
 
-export const { newMakeAListRow, resetMakeAListRow } = makeAListRowSlice.actions;
+export const { checkOrUnCheck, resetMakeAListRows } = makeAListRowsSlice.actions;
 
-export default makeAListRowSlice.reducer;
+export default makeAListRowsSlice.reducer;

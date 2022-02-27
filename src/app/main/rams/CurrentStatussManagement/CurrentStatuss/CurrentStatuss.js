@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import withReducer from 'app/store/withReducer';
 import React from 'react';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import CurrentStatussHeader from './CurrentStatussHeader';
 import CurrentStatussTable from './CurrentStatussTable';
 

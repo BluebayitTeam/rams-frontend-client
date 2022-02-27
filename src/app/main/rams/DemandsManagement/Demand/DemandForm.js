@@ -43,8 +43,8 @@ function DemandForm(props) {
     const image = watch('image');
 
     useEffect(() => {
-        dispatch(getProfessions()),
-            dispatch(getCountries()),
+        dispatch(getProfessions());
+            dispatch(getCountries());
             dispatch(getAgents())
     }, [])
 

@@ -13,9 +13,9 @@ import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { MEDICAL_BY_PASSENGER_ID } from '../../../../constant/constants';
-import reducer from '../store/index.js';
-import MedicalForm from './MedicalForm.js';
-import NewMedicalHeader from './NewMedicalHeader.js';
+import reducer from '../store/index';
+import MedicalForm from './MedicalForm';
+import NewMedicalHeader from './NewMedicalHeader';
 
 const useStyles = makeStyles(theme => ({
 	container: {

@@ -907,7 +907,7 @@ export const UPDATE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_c
 
 export const DELETE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/delete/`;
 
-export const DELETE_MEDICALCENTER_MULTIPLE = `${BASE_URL}​/medical_center/api/v1/medical_center/delete_multiple/`;
+export const DELETE_MEDICALCENTER_MULTIPLE = `${BASE_URL}/medical_center/api/v1/medical_center/delete_multiple/`;
 
 export const SEARCH_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/search/`;
 
@@ -1201,4 +1201,4 @@ export const MAKE_A_LIST_CLMS = `${BASE_URL}/make_list_column/api/v1/make_list_c
 
 export const UPDATE_MAKEALIST_CLM = `${BASE_URL}/make_list_column/api/v1/make_list_column/update/`;
 
-export const GET_MAKEALIST_CLM_BY_ID = `${BASE_URL}/make_list_column/api/v1/make_list_column/`;
+export const GET_MAKEALIST_CLM_BY_LIST_ID = `${BASE_URL}/make_list_column/api/v1/make_list_column/get_by_make_list_id/`;

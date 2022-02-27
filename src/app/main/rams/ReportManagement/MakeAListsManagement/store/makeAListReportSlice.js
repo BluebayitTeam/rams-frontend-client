@@ -9,7 +9,7 @@ import {
 } from '../../../../../constant/constants';
 
 export const getMakeAListReport = createAsyncThunk(
-	'makeAListReportManagement/makeAListReport/getMakeAListReport',
+	'makeAListsManagement/makeAListReport/getMakeAListReport',
 	async (params, { rejectWithValue }) => {
 		const authTOKEN = {
 			headers: {
@@ -29,7 +29,7 @@ export const getMakeAListReport = createAsyncThunk(
 );
 
 export const removeMakeAListReport = createAsyncThunk(
-	'makeAListReportManagement/makeAListReport/removeMakeAListReport',
+	'makeAListsManagement/makeAListReport/removeMakeAListReport',
 	async val => {
 		const authTOKEN = {
 			headers: {
@@ -45,7 +45,7 @@ export const removeMakeAListReport = createAsyncThunk(
 );
 
 export const updateMakeAListReport = createAsyncThunk(
-	'makeAListReportManagement/makeAListReport/updateMakeAListReport',
+	'makeAListsManagement/makeAListReport/updateMakeAListReport',
 	async (makeAListReportData, { dispatch, getState }) => {
 		const { makeAListReport } = getState().makeAListReportsManagement;
 
@@ -61,7 +61,7 @@ export const updateMakeAListReport = createAsyncThunk(
 );
 
 export const saveMakeAListReport = createAsyncThunk(
-	'makeAListReportManagement/makeAListReport/saveMakeAListReport',
+	'makeAListsManagement/makeAListReport/saveMakeAListReport',
 	async makeAListReportData => {
 		const authTOKEN = {
 			headers: {
@@ -75,7 +75,7 @@ export const saveMakeAListReport = createAsyncThunk(
 );
 
 const makeAListReportSlice = createSlice({
-	name: 'makeAListReportManagement/makeAListReport',
+	name: 'makeAListsManagement/makeAListReport',
 	initialState: null,
 	reducers: {
 		resetMakeAListReport: () => null,

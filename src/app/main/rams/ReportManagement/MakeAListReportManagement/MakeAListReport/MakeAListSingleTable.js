@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { Email, Language, LocationOn, PhoneEnabled } from '@material-ui/icons';
 import moment from 'moment';
 import React from 'react';
-import { BASE_URL } from '../../../../constant/constants';
+import { BASE_URL } from '../../../../../constant/constants';
 import '../Print.css';
 
 function MakeAListSigleTable({

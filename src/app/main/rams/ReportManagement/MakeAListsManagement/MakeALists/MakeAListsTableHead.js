@@ -11,6 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import _ from 'lodash';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getMakeALists, removeMakeALists } from '../store/makeAListsSlice';
@@ -31,7 +32,6 @@ const rows = [
 		label: 'Title',
 		sort: true
 	},
-	,
 	{
 		id: 'make_date',
 		align: 'left',
@@ -39,7 +39,6 @@ const rows = [
 		label: 'Make Date',
 		sort: true
 	},
-	,
 	{
 		id: 'note',
 		align: 'left',

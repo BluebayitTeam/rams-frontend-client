@@ -1,18 +1,19 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Typography } from '@material-ui/core';
 import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { getGroup, newGroup, resetGroup } from '../store/groupSlice';
-import reducer from '../store/index.js';
-import GroupForm from './GroupForm.js';
-import NewGroupHeader from './NewGroupHeader.js';
+import reducer from '../store/index';
+import GroupForm from './GroupForm';
+import NewGroupHeader from './NewGroupHeader';
 
 /**
  * Form Validation Schema

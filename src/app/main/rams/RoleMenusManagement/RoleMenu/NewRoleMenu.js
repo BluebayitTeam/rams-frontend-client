@@ -1,16 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Typography } from '@material-ui/core';
 import withReducer from 'app/store/withReducer';
-import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import { getRoleMenu, newRoleMenu, resetRoleMenu } from '../store/roleMenuSlice';
-import NewRoleMenuHeader from './NewRoleMenuHeader.js';
-import RoleMenuForm from './RoleMenuForm.js';
+import NewRoleMenuHeader from './NewRoleMenuHeader';
+import RoleMenuForm from './RoleMenuForm';
 
 /**
  * Form Validation Schema

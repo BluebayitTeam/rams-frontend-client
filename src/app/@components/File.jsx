@@ -101,7 +101,7 @@ function Image({ name, label }) {
 										scrolling="auto"
 										height="150px"
 										width="150px"
-									></iframe>
+									/>
 								) : (
 									<img src={previewFile} style={{ height: '150px' }} />
 								)}

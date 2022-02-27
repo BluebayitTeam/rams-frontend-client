@@ -1,69 +1,27 @@
-import TextField from '@material-ui/core/TextField';
-import CustomDatePicker from 'app/@components/CustomDatePicker';
+import { makeStyles } from '@material-ui/core';
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import {} from '../../../../../store/dataSlice';
+import { useFormContext } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
-function MakeAListForm() {
+const useStyles = makeStyles(theme => ({
+	pageContainer: {
+		display: 'flex',
+		marginTop: 'auto',
+		marginBottom: 'auto'
+	}
+}));
+
+function MakeAListRowForm() {
+	const classes = useStyles();
 	const methods = useFormContext();
 	const { control, formState } = methods;
-	const { errors } = formState;
 
-	console.log('row');
-	return (
-		<div>
-			<Controller
-				name="title"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							error={!!errors.title || !field.value}
-							helperText={errors?.title?.message}
-							label="Title"
-							id="title"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							required
-						/>
-					);
-				}}
-			/>
+	const dispatch = useDispatch();
 
-			<Controller
-				name="make_date"
-				control={control}
-				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Make Date" />;
-				}}
-			/>
+	const columns = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListRow);
 
-			<Controller
-				name="note"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							label="Note"
-							id="note"
-							variant="outlined"
-							multiline
-							rows={4}
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-		</div>
-	);
+	console.log('columns', columns);
+	return <div className={classes.pageContainer}></div>;
 }
 
-export default MakeAListForm;
+export default MakeAListRowForm;

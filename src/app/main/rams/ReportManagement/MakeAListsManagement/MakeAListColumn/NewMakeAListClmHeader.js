@@ -19,7 +19,7 @@ const NewMakeAListClmHeader = () => {
 	function handleUpdateMakeAListClm() {
 		dispatch(updateMakeAListClms(routeParams.makeAListId)).then(res => {
 			console.log('updateMakeAListClmRes', res);
-			if (!res.payload.make_list) {
+			if (!res.payload.detail) {
 				localStorage.setItem('makeAListClmAlert', 'updateMakeAListClm');
 				history.push('/apps/makeAList-management/makeALists');
 			}

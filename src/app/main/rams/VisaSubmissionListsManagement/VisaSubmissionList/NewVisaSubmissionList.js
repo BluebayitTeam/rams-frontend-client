@@ -1,17 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Typography } from '@material-ui/core';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import { newVisaSubmissionList, resetVisaSubmissionList } from '../store/visaSubmissionListSlice';
-import VisaSubmissionLists from '../VisaSubmissionLists/VisaSubmissionLists.js';
-import NewVisaSubmissionListHeader from './NewVisaSubmissionListHeader.js';
-import VisaSubmissionListForm from './VisaSubmissionListForm.js';
+import VisaSubmissionLists from '../VisaSubmissionLists/VisaSubmissionLists';
+import NewVisaSubmissionListHeader from './NewVisaSubmissionListHeader';
+import VisaSubmissionListForm from './VisaSubmissionListForm';
 
 /**
  * Form Validation Schema

@@ -22,7 +22,7 @@ const rows = [
 		label: 'Name',
 		sort: true
 	},
-	,
+
 	{
 		id: 'address',
 		align: 'left',
@@ -30,7 +30,7 @@ const rows = [
 		label: 'Address',
 		sort: true
 	},
-	,
+
 	{
 		id: 'rl_no',
 		align: 'left',

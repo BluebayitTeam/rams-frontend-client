@@ -2,9 +2,9 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Typography } from '@material-ui/core';
-import useUserInfo from 'app/@customHooks/useUserInfo.js';
-import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData.js';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
+import useUserInfo from 'app/@customHooks/useUserInfo';
+import setIdIfValueIsObjArryData from 'app/@helpers/setIdIfValueIsObjArryData';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
@@ -12,11 +12,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { setUserBasedBranch } from '../../PaymentVouchersManagement/store/paymentVoucherSlice.js';
-import reducer from '../store/index.js';
+import { setUserBasedBranch } from '../../PaymentVouchersManagement/store/paymentVoucherSlice';
+import reducer from '../store/index';
 import { getReceivableBill, newReceivableBill, resetReceivableBill } from '../store/receivableBillSlice';
-import NewReceivableBillHeader from './NewReceivableBillHeader.js';
-import ReceivableBillForm from './ReceivableBillForm.js';
+import NewReceivableBillHeader from './NewReceivableBillHeader';
+import ReceivableBillForm from './ReceivableBillForm';
 
 const schema = yup.object().shape({
 	sales_date: yup.date().required('Sales Date is required')

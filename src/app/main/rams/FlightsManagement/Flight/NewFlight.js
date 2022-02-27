@@ -4,8 +4,8 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { activeRetrnCncl } from 'app/@data/data';
-import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
-import { FLIGHT_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject';
+import { FLIGHT_BY_PASSENGER_ID } from 'app/constant/constants';
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -13,9 +13,9 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
-import FlightForm from './FlightForm.js';
-import NewFlightHeader from './NewFlightHeader.js';
+import reducer from '../store/index';
+import FlightForm from './FlightForm';
+import NewFlightHeader from './NewFlightHeader';
 
 const useStyles = makeStyles(theme => ({
 	container: {

@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Autocomplete } from '@material-ui/lab';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
-import Image from 'app/@components/Image.jsx';
+import Image from 'app/@components/Image';
 import useTextSeparator from 'app/@customHooks/useTextSeparator';
 import { genders, maritalStatuses, passportTypes, religions } from 'app/@data/data';
 import increaseYear from 'app/@helpers/increaseYear';

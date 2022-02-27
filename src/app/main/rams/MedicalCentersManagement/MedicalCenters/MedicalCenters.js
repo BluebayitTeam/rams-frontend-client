@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import withReducer from 'app/store/withReducer';
 import React from 'react';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import MedicalCentersHeader from './MedicalCentersHeader';
 import MedicalCentersTable from './MedicalCentersTable';
 

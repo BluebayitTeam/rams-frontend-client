@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const setIdIfValueIsObjArryData = (array = []) => {
-	const conVertedArray = JSON.parse(JSON.stringify(array));
+	let conVertedArray = JSON.parse(JSON.stringify(array));
 
 	try {
 		if (_.isArray(conVertedArray)) {

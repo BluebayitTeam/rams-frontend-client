@@ -24,22 +24,6 @@ export const getPassengers = createAsyncThunk(
 	}
 );
 
-// export const removePassengers = createAsyncThunk(
-//     'passengerManagement/passengers/removePassengers',
-//     async (passengerIds) => {
-//         const headers = {
-//             'Content-type': 'application/json',
-//             Authorization: localStorage.getItem('jwt_access_token'),
-//         }
-//         const data = {
-//             ids: passengerIds
-//         }
-
-//         const response = await axios.delete(`${DELETE_PASSENGER_MULTIPLE}`, { headers, data });
-//         return response;
-//     }
-// );
-
 const passengersAdapter = createEntityAdapter({});
 
 export const { selectAll: selectPassengers, selectById: selectPassengerById } = passengersAdapter.getSelectors(

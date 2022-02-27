@@ -234,7 +234,7 @@ const SitesettingsTable = props => {
 
 			<TablePagination
 				classes={{ root: 'overflow-visible' }}
-				className="flex-shrink-0 border-t-1"
+				// className="flex-shrink-0 border-t-1"
 				rowsPerPageOptions={[5, 10, 25]}
 				component="div"
 				count={data.length}

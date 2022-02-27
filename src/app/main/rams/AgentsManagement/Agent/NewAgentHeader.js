@@ -127,12 +127,12 @@ const NewAgentHeader = () => {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete == 'Delete' && (
+				{handleDelete === 'Delete' && (
 					<Typography className="mt-6" variant="subtitle2">
 						Do you want to remove this Agent?
 					</Typography>
 				)}
-				{handleDelete == 'Delete' && routeParams.agentId !== 'new' && (
+				{handleDelete === 'Delete' && routeParams.agentId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
@@ -144,7 +144,7 @@ const NewAgentHeader = () => {
 						Remove
 					</Button>
 				)}
-				{routeParams.agentId == 'new' && (
+				{routeParams.agentId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"

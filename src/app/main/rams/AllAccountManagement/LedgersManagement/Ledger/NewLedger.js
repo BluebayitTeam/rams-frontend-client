@@ -1,18 +1,19 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
+import { Button, Typography } from '@material-ui/core';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import { getLedger, newLedger, resetLedger } from '../store/ledgerSlice';
-import LedgerForm from './LedgerForm.js';
-import NewLedgerHeader from './NewLedgerHeader.js';
+import LedgerForm from './LedgerForm';
+import NewLedgerHeader from './NewLedgerHeader';
 
 /**
  * Form Validation Schema

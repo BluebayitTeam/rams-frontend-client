@@ -17,7 +17,8 @@ function GroupForm() {
 	const primaryGroups = useSelector(state => state.data.primaryGroups);
 
 	useEffect(() => {
-		dispatch(getGroups()), dispatch(getPrimaryGroups());
+		dispatch(getGroups());
+		dispatch(getPrimaryGroups());
 	}, []);
 
 	console.log({ values });

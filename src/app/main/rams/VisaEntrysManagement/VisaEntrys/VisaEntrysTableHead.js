@@ -5,6 +5,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import _ from 'lodash';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getVisaEntrys, removeVisaEntrys } from '../store/visaEntrysSlice';
@@ -17,14 +18,6 @@ const rows = [
 		label: 'SL_NO',
 		sort: true
 	},
-
-	// {
-	//     id: 'demand',
-	//     align: 'left',
-	//     disablePadding: false,
-	//     label: 'Demand',
-	//     sort: true
-	// },
 	{
 		id: 'visa_agent',
 		align: 'left',

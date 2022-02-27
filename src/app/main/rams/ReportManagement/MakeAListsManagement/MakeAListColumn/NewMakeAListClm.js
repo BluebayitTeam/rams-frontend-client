@@ -7,10 +7,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import { getMakeAListClms, resetMakeAListClms } from '../store/makeAListClmSlice';
-import MakeAListClmForm from './MakeAListClmForm.js';
-import NewMakeAListClmHeader from './NewMakeAListClmHeader.js';
+import MakeAListClmForm from './MakeAListClmForm';
+import NewMakeAListClmHeader from './NewMakeAListClmHeader';
 
 /**
  * Form Validation Schema
@@ -20,7 +20,7 @@ const schema = yup.object().shape({});
 
 const MakeAListClm = () => {
 	const dispatch = useDispatch();
-	const makeAListClm = useSelector(({ makeAListClmsManagement }) => makeAListClmsManagement.makeAListClm);
+	const makeAListClm = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListClm);
 
 	const methods = useForm({
 		mode: 'onChange',
@@ -33,8 +33,8 @@ const MakeAListClm = () => {
 
 	useDeepCompareEffect(() => {
 		function updateMakeAListClmState() {
-			const { makeAListClmId } = routeParams;
-			dispatch(getMakeAListClms(makeAListClmId));
+			const { makeAListId } = routeParams;
+			dispatch(getMakeAListClms(makeAListId));
 		}
 		updateMakeAListClmState();
 		return () => dispatch(resetMakeAListClms());
@@ -62,7 +62,7 @@ const MakeAListClm = () => {
 				}}
 				header={<NewMakeAListClmHeader />}
 				content={
-					<div className="p-16 sm:p-24 max-w-2xl">
+					<div className="px-16 sm:px-24 max-w-2xl min-h-full">
 						<MakeAListClmForm />
 					</div>
 				}
@@ -71,4 +71,4 @@ const MakeAListClm = () => {
 		</FormProvider>
 	);
 };
-export default withReducer('makeAListClmsManagement', reducer)(MakeAListClm);
+export default withReducer('makeAListsManagement', reducer)(MakeAListClm);

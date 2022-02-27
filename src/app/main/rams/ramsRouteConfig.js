@@ -141,7 +141,7 @@ const ramsRouteConfig = {
 		//menu
 		{
 			path: '/apps/menu-management/menus/:menuId/:menuName?',
-			component: lazy(() => import('./MenusManagement/Menu/NewMenu.js'))
+			component: lazy(() => import('./MenusManagement/Menu/NewMenu'))
 		},
 		{
 			path: '/apps/menu-management/menus',
@@ -155,7 +155,7 @@ const ramsRouteConfig = {
 		//roleMenu
 		{
 			path: '/apps/roleMenu-management/roleMenus/:roleMenuId/:roleMenuName?',
-			component: lazy(() => import('./RoleMenusManagement/RoleMenu/NewRoleMenu.js'))
+			component: lazy(() => import('./RoleMenusManagement/RoleMenu/NewRoleMenu'))
 		},
 		{
 			path: '/apps/roleMenu-management/roleMenus',
@@ -169,7 +169,7 @@ const ramsRouteConfig = {
 		//passengerType
 		{
 			path: '/apps/passengerType-management/passengerTypes/:passengerTypeId/:passengerTypeName?',
-			component: lazy(() => import('./PassengerTypesManagement/PassengerType/NewPassengerType.js'))
+			component: lazy(() => import('./PassengerTypesManagement/PassengerType/NewPassengerType'))
 		},
 		{
 			path: '/apps/passengerType-management/passengerTypes',
@@ -183,7 +183,7 @@ const ramsRouteConfig = {
 		//currentStatus
 		{
 			path: '/apps/currentStatus-management/currentStatuss/:currentStatusId/:currentStatusName?',
-			component: lazy(() => import('./CurrentStatussManagement/CurrentStatus/NewCurrentStatus.js'))
+			component: lazy(() => import('./CurrentStatussManagement/CurrentStatus/NewCurrentStatus'))
 		},
 		{
 			path: '/apps/currentStatus-management/currentStatuss',
@@ -209,7 +209,7 @@ const ramsRouteConfig = {
 		//agent
 		{
 			path: '/apps/agent-management/agents/:agentId/:agentName?',
-			component: lazy(() => import('./AgentsManagement/Agent/NewAgent.js'))
+			component: lazy(() => import('./AgentsManagement/Agent/NewAgent'))
 		},
 		{
 			path: '/apps/agent-management/agents',
@@ -222,7 +222,7 @@ const ramsRouteConfig = {
 		//demand
 		{
 			path: '/apps/demand-management/demands/:demandId/:demandName?',
-			component: lazy(() => import('./DemandsManagement/Demand/NewDemand.js'))
+			component: lazy(() => import('./DemandsManagement/Demand/NewDemand'))
 		},
 		{
 			path: '/apps/demand-management/demands',
@@ -235,7 +235,7 @@ const ramsRouteConfig = {
 		//recruitingAgency
 		{
 			path: '/apps/recruitingAgency-management/recruitingAgencys/:recruitingAgencyId/:recruitingAgencyName?',
-			component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgency/NewRecruitingAgency.js'))
+			component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgency/NewRecruitingAgency'))
 		},
 		{
 			path: '/apps/recruitingAgency-management/recruitingAgencys',
@@ -248,7 +248,7 @@ const ramsRouteConfig = {
 		//visaEntry
 		{
 			path: '/apps/visaEntry-management/visaEntrys/:visaEntryId/:visaEntryName?',
-			component: lazy(() => import('./VisaEntrysManagement/VisaEntry/NewVisaEntry.js'))
+			component: lazy(() => import('./VisaEntrysManagement/VisaEntry/NewVisaEntry'))
 		},
 		{
 			path: '/apps/visaEntry-management/visaEntrys',
@@ -261,7 +261,7 @@ const ramsRouteConfig = {
 		//passenger
 		{
 			path: '/apps/passenger-management/passenger/:passengerId/:passengerName?/:passengerType?',
-			component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger.js'))
+			component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger'))
 		},
 		{
 			path: '/apps/passenger-management/passengers/:passengerType?',

@@ -23,7 +23,7 @@ const useReportData = ({ initialData = [], row = 25, extraRowCount = 0 } = {}) =
 			}
 
 			//modify array
-			let modifiedArr = [];
+			const modifiedArr = [];
 
 			const lotalElements = shortedArray?.length;
 
