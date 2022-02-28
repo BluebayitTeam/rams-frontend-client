@@ -31,6 +31,7 @@ export const getReportMakeStyles = theme => ({
 			height: '40px',
 			padding: '5px',
 			width: '40px',
+			boxSizing: 'border-box !important',
 			borderRadius: '50%',
 			'&:active': {
 				border: '1px solid !important'

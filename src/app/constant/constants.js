@@ -1202,3 +1202,8 @@ export const MAKE_A_LIST_CLMS = `${BASE_URL}/make_list_column/api/v1/make_list_c
 export const UPDATE_MAKEALIST_CLM = `${BASE_URL}/make_list_column/api/v1/make_list_column/update/`;
 
 export const GET_MAKEALIST_CLM_BY_LIST_ID = `${BASE_URL}/make_list_column/api/v1/make_list_column/get_by_make_list_id/`;
+
+//make a list row
+export const UPDATE_MAKEALIST_ROW = `${BASE_URL}/make_list_item/api/v1/make_list_item/update/`;
+
+export const GET_MAKEALIST_ROW_BY_LIST_ID = `${BASE_URL}/make_list_item/api/v1/make_list_item/get_by_make_list_id/`;

@@ -20,7 +20,7 @@ const NewMakeAListRowHeader = () => {
 		dispatch(updateMakeAListRows(routeParams.makeAListId)).then(res => {
 			console.log('updateMakeAListRowRes', res);
 			if (!res.payload.detail) {
-				localStorage.setItem('makeAListRowAlert', 'updateMakeAListRow');
+				localStorage.setItem('makeAListRowslert', 'updateMakeAListRow');
 				history.push('/apps/makeAList-management/makeALists');
 			}
 		});
@@ -46,7 +46,7 @@ const NewMakeAListRowHeader = () => {
 						className="flex items-center"
 						component={Link}
 						role="button"
-						to="/apps/makeAListRow-management/makeAListRows"
+						to="/apps/makeAListRowsmanagement/makeAListRows"
 						color="inherit"
 					>
 						<Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
@@ -79,7 +79,7 @@ const NewMakeAListRowHeader = () => {
 					style={{ backgroundColor: '#4dc08e', color: 'white' }}
 					onClick={handleUpdateMakeAListRow}
 				>
-					Update
+					Submit
 				</Button>
 				<Button
 					className="whitespace-nowrap mx-4"

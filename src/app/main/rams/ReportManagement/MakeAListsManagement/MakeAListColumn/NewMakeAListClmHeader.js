@@ -20,7 +20,7 @@ const NewMakeAListClmHeader = () => {
 		dispatch(updateMakeAListClms(routeParams.makeAListId)).then(res => {
 			console.log('updateMakeAListClmRes', res);
 			if (!res.payload.detail) {
-				localStorage.setItem('makeAListClmAlert', 'updateMakeAListClm');
+				localStorage.setItem('makeAListClmsAlert', 'updateMakeAListClm');
 				history.push('/apps/makeAList-management/makeALists');
 			}
 		});
@@ -79,7 +79,7 @@ const NewMakeAListClmHeader = () => {
 					style={{ backgroundColor: '#4dc08e', color: 'white' }}
 					onClick={handleUpdateMakeAListClm}
 				>
-					Update
+					Submit
 				</Button>
 				<Button
 					className="whitespace-nowrap mx-4"

@@ -9,19 +9,17 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { ViewDay, ViewWeek, Visibility } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/data';
 import { motion } from 'framer-motion';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { SEARCH_MAKEALIST } from '../../../../../constant/constants';
-import { getMakeALists, selectMakeALists } from '../store/makeAListsSlice';
-import MakeAListsTableHead from './MakeAListsTableHead';
+import { getMakeAListRows, removeMakeAListRow } from '../store/makeAListRowSlice';
+import { getMakeALists } from '../store/makeAListsSlice';
+import MakeAListRowTableHead from './MakeAListRowTableHead';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -38,12 +36,10 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const MakeAListsTable = props => {
+const MakeAListRowsTable = props => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const makeALists = useSelector(selectMakeALists);
-	const searchText = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeALists.searchText);
-	const [searchMakeAList, setSearchMakeAList] = useState([]);
+	const makeAListRowsTable = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListRows);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [page, setPage] = useState(0);
@@ -55,27 +51,15 @@ const MakeAListsTable = props => {
 		id: null
 	});
 
+	const { makeAListId } = useParams();
+
 	let serialNumber = 1;
-	const totalPages = sessionStorage.getItem('total_makeALists_pages');
-	const totalElements = sessionStorage.getItem('total_makeALists_elements');
+	const totalPages = sessionStorage.getItem('total_makeAListRowsTable_pages');
+	const totalElements = sessionStorage.getItem('total_makeAListRowsTable_elements');
 
 	useEffect(() => {
 		dispatch(getMakeALists(pageAndSize)).then(() => setLoading(false));
 	}, [dispatch]);
-
-	useEffect(() => {
-		searchText !== '' ? getSearchMakeAList() : setSearchMakeAList([]);
-	}, [searchText]);
-
-	const getSearchMakeAList = () => {
-		fetch(`${SEARCH_MAKEALIST}?name=${searchText}`)
-			.then(response => response.json())
-			.then(searchedMakeAListData => {
-				setSearchMakeAList(searchedMakeAListData?.makeALists);
-				console.log('searchedMakeAListData', searchedMakeAListData);
-			})
-			.catch(() => setSearchMakeAList([]));
-	};
 
 	function handleRequestSort(makeAListEvent, property) {
 		const id = property;
@@ -93,7 +77,7 @@ const MakeAListsTable = props => {
 
 	function handleSelectAllClick(makeAListEvent) {
 		if (makeAListEvent.target.checked) {
-			setSelected((!_.isEmpty(searchMakeAList) ? searchMakeAList : makeALists).map(n => n.id));
+			setSelected(makeAListRowsTable.map(n => n.id));
 			return;
 		}
 		setSelected([]);
@@ -101,28 +85,6 @@ const MakeAListsTable = props => {
 
 	function handleDeselect() {
 		setSelected([]);
-	}
-
-	function handleMakeAListColumn(item) {
-		localStorage.removeItem('makeAListEvent');
-		props.history.push(`/apps/makeAList-management/columns/${item.id}/${item.title}`);
-	}
-	function handleMakeAListRow(item) {
-		localStorage.removeItem('makeAListEvent');
-		props.history.push(`/apps/makeAList-management/rows/${item.id}/${item.title}`);
-	}
-	function handleMakeAListReport(item) {
-		localStorage.removeItem('makeAListEvent');
-		props.history.push(`/apps/makeAList-management/report/${item.id}/${item.title}`);
-	}
-	function handleUpdateMakeAList(item) {
-		localStorage.removeItem('makeAListEvent');
-		props.history.push(`/apps/makeAList-management/makeALists/${item.id}/${item.title}`);
-	}
-	function handleDeleteMakeAList(item, makeAListEvent) {
-		localStorage.removeItem('makeAListEvent');
-		localStorage.setItem('makeAListEvent', makeAListEvent);
-		props.history.push(`/apps/makeAList-management/makeALists/${item.id}/${item.title}`);
 	}
 
 	function handleCheck(makeAListEvent, id) {
@@ -146,26 +108,26 @@ const MakeAListsTable = props => {
 	const handlePagination = (e, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
 		setPage(handlePage - 1);
-		dispatch(getMakeALists({ ...pageAndSize, page: handlePage }));
+		dispatch(getMakeAListRows({ listId: makeAListId, ...pageAndSize, page: handlePage }));
 	};
 
 	function handleChangePage(event, value) {
 		setPage(value);
 		setPageAndSize({ ...pageAndSize, page: value + 1 });
-		dispatch(getMakeALists({ ...pageAndSize, page: value + 1 }));
+		dispatch(getMakeAListRows({ listId: makeAListId, ...pageAndSize, page: value + 1 }));
 	}
 
 	function handleChangeRowsPerPage(makeAListEvent) {
 		setRowsPerPage(makeAListEvent.target.value);
 		setPageAndSize({ ...pageAndSize, size: makeAListEvent.target.value });
-		dispatch(getMakeALists({ ...pageAndSize, size: makeAListEvent.target.value }));
+		dispatch(getMakeAListRows({ listId: makeAListId, ...pageAndSize, size: makeAListEvent.target.value }));
 	}
 
 	if (loading) {
 		return <FuseLoading />;
 	}
 
-	if (makeALists?.length === 0) {
+	if (makeAListRowsTable?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -173,7 +135,7 @@ const MakeAListsTable = props => {
 				className="flex flex-1 items-center justify-center h-full"
 			>
 				<Typography color="textSecondary" variant="h5">
-					There are no makeAList!
+					Row is Empty!
 				</Typography>
 			</motion.div>
 		);
@@ -183,19 +145,19 @@ const MakeAListsTable = props => {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-					<MakeAListsTableHead
+					<MakeAListRowTableHead
 						selectedMakeAListIds={selected}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={(!_.isEmpty(searchMakeAList) ? searchMakeAList : makeALists).length}
+						rowCount={makeAListRowsTable.length}
 						onMenuItemClick={handleDeselect}
 						pagination={pageAndSize}
 					/>
 
 					<TableBody>
 						{_.orderBy(
-							searchText !== '' && !_.isEmpty(searchMakeAList) ? searchMakeAList : makeALists,
+							makeAListRowsTable,
 							[
 								o => {
 									switch (order.id) {
@@ -234,42 +196,26 @@ const MakeAListsTable = props => {
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.make_date && moment(new Date(n.make_date)).format('DD-MM-YYYY')}
+										{n.passenger_id}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.title}
+										{n.passenger_name}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" component="th" scope="row">
-										{n.note}
+										{n.passport_no}
+									</TableCell>
+
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.agent?.username}
 									</TableCell>
 
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
 										<div>
-											<ViewWeek
-												onClick={() => handleMakeAListColumn(n)}
-												className="cursor-pointer mr-10"
-												style={{ color: 'blue' }}
-											/>
-											<ViewDay
-												onClick={() => handleMakeAListRow(n)}
-												className="cursor-pointer mr-10"
-												style={{ color: 'orange' }}
-											/>
-											<Visibility
-												onClick={() => handleMakeAListReport(n)}
-												className="cursor-pointer mr-10"
-												style={{ color: '#00c7f3' }}
-											/>
-											<EditIcon
-												onClick={() => handleUpdateMakeAList(n)}
-												className="cursor-pointer mr-10"
-												style={{ color: 'green' }}
-											/>
 											<DeleteIcon
-												onClick={() => handleDeleteMakeAList(n, 'Delete')}
-												className="cursor-pointer mr-10"
+												onClick={() => dispatch(removeMakeAListRow(n.id))}
+												className="cursor-pointer"
 												style={{ color: 'red' }}
 											/>
 										</div>
@@ -318,4 +264,4 @@ const MakeAListsTable = props => {
 	);
 };
 
-export default withRouter(MakeAListsTable);
+export default withRouter(MakeAListRowsTable);

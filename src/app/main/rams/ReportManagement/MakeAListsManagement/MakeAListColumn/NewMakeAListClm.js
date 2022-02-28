@@ -20,7 +20,7 @@ const schema = yup.object().shape({});
 
 const MakeAListClm = () => {
 	const dispatch = useDispatch();
-	const makeAListClm = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListClm);
+	const makeAListClms = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListClms);
 
 	const methods = useForm({
 		mode: 'onChange',

@@ -36,7 +36,7 @@ function MakeAListClmForm() {
 
 	const dispatch = useDispatch();
 
-	const columns = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListClm);
+	const columns = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListClms);
 
 	console.log('columns', columns);
 	return (

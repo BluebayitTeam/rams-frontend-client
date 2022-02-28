@@ -26,28 +26,33 @@ const rows = [
 	},
 
 	{
-		id: 'make_date',
+		id: 'id',
 		align: 'left',
 		disablePadding: false,
-		label: 'Date',
-		sort: true
-	},
-
-	{
-		id: 'title',
-		align: 'left',
-		disablePadding: false,
-		label: 'Title',
+		label: 'ID',
 		sort: true
 	},
 	{
-		id: 'note',
+		id: 'name',
 		align: 'left',
 		disablePadding: false,
-		label: 'Note',
+		label: 'Name',
 		sort: true
 	},
-
+	{
+		id: 'passport',
+		align: 'left',
+		disablePadding: false,
+		label: 'Passport',
+		sort: true
+	},
+	{
+		id: 'agent',
+		align: 'left',
+		disablePadding: false,
+		label: 'Agent',
+		sort: true
+	},
 	{
 		id: 'action',
 		align: 'center',
@@ -57,7 +62,7 @@ const rows = [
 	}
 ];
 
-const MakeAListsTableHead = props => {
+const MakeAListRowTableHead = props => {
 	const { selectedMakeAListIds } = props;
 
 	const numSelected = selectedMakeAListIds.length;
@@ -156,4 +161,4 @@ const MakeAListsTableHead = props => {
 	);
 };
 
-export default MakeAListsTableHead;
+export default MakeAListRowTableHead;

@@ -6,7 +6,7 @@ import { columns } from '../data/column';
 export const getMakeAListClms = createAsyncThunk(
 	'makeAListsManagement/makeAListClms/getMakeAListClms',
 	async (listId, { rejectWithValue, getState }) => {
-		const { makeAListClm } = getState().makeAListsManagement;
+		const { makeAListClms } = getState().makeAListsManagement;
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -17,7 +17,7 @@ export const getMakeAListClms = createAsyncThunk(
 		try {
 			const response = await axios.get(`${GET_MAKEALIST_CLM_BY_LIST_ID}${listId}`, authTOKEN);
 			const data = await response.data;
-			const updatedClmsData = makeAListClm.map(clm => ({ ...clm, isChecked: data[clm.key] }));
+			const updatedClmsData = makeAListClms.map(clm => ({ ...clm, isChecked: data[clm.key] }));
 			console.log('updatedClmsData', updatedClmsData);
 			return updatedClmsData;
 		} catch (err) {
@@ -29,7 +29,7 @@ export const getMakeAListClms = createAsyncThunk(
 export const updateMakeAListClms = createAsyncThunk(
 	'makeAListsManagement/makeAListClms/updateMakeAListClms',
 	async (listId, { getState }) => {
-		const { makeAListClm } = getState().makeAListsManagement;
+		const { makeAListClms } = getState().makeAListsManagement;
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
@@ -37,7 +37,7 @@ export const updateMakeAListClms = createAsyncThunk(
 			}
 		};
 		const columnsData = {};
-		makeAListClm.map(clm => (columnsData[clm.key] = clm.isChecked));
+		makeAListClms.map(clm => (columnsData[clm.key] = clm.isChecked));
 		const response = await axios.put(`${UPDATE_MAKEALIST_CLM}${listId}`, columnsData, authTOKEN);
 		return response;
 	}

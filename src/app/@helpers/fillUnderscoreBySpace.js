@@ -2,12 +2,25 @@ function fillUnderscoreBySpace(txt) {
 	let ModiFiedText = txt;
 	try {
 		let str = txt;
-		const arr = [0];
+		const upperCaseArr = [0];
+		const underScoreArr = [];
 		const underScoreIndx = str.indexOf('_');
-		underScoreIndx > 0 && arr.push(underScoreIndx + 1);
+
+		const getMoreIndx = after => {
+			const underScoreIndxMore = str.indexOf('_', after + 1);
+			if (underScoreIndxMore >= 0) {
+				upperCaseArr.push(underScoreIndxMore + 1);
+				getMoreIndx(underScoreIndx);
+			}
+		};
+
+		if (underScoreIndx >= 0) {
+			upperCaseArr.push(underScoreIndx + 1);
+			getMoreIndx(underScoreIndx);
+		}
 
 		str = str.split('');
-		arr.map(id => (str[id] = str[id].toUpperCase()));
+		upperCaseArr.map(id => (str[id] = str[id].toUpperCase()));
 		ModiFiedText = str.join('').replace('_', ' ');
 	} catch (err) {
 		ModiFiedText = txt;
