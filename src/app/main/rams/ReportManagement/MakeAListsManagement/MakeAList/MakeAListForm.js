@@ -28,6 +28,7 @@ function MakeAListForm() {
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
 							required
+							autoFocus
 						/>
 					);
 				}}
@@ -37,7 +38,7 @@ function MakeAListForm() {
 				name="make_date"
 				control={control}
 				render={({ field }) => {
-					return <CustomDatePicker field={field} label="Make Date" />;
+					return <CustomDatePicker field={field} label="Make Date" required />;
 				}}
 			/>
 

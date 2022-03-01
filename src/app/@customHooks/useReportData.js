@@ -36,6 +36,7 @@ const useReportData = ({ initialData = [], row = 25, extraRowCount = 0 } = {}) =
 					size,
 					totalPage,
 					sortBy,
+					sortBySubKey,
 					data: shortedArray.slice(
 						index + index * size - (index && index),
 						index + index * size + size - (index && index)

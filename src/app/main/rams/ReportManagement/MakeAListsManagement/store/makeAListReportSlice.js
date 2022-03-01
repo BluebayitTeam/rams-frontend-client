@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { GET_MAKEALIST_REPORT_BY_ID } from '../../../../../constant/constants';
+import { GET_MAKEALIST_REPORT_BY_ID, GET_MAKEALIST_REPORT_BY_ID_NO_PG } from '../../../../../constant/constants';
 import { columns } from '../data/column';
 
 export const getMakeAListReports = createAsyncThunk(
@@ -14,9 +14,8 @@ export const getMakeAListReports = createAsyncThunk(
 			const tableColumns = [{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true }];
 			for (let mainkey in oneList) {
 				for (let subKey in oneList[mainkey]) {
-					const targetedClmIndx = columns.findIndex(clm => clm.key === `${subKey}_${mainkey}`);
-					if (targetedClmIndx >= 0) {
-						const targetedClmData = columns?.[targetedClmIndx];
+					const targetedClmData = columns.find(clm => clm.key === `${subKey}_${mainkey}`);
+					if (targetedClmData) {
 						tableColumns.push({
 							id: targetedClmData?.id,
 							label: targetedClmData?.label,
@@ -41,16 +40,15 @@ export const getAllMakeAListReports = createAsyncThunk(
 	'makeAListsManagement/makeAListTableClms/getAllMakeAListReports',
 	async ({ listId }, { rejectWithValue, dispatch }) => {
 		try {
-			const response = await axios.get(`${GET_MAKEALIST_REPORT_BY_ID}${listId}`);
+			const response = await axios.get(`${GET_MAKEALIST_REPORT_BY_ID_NO_PG}${listId}`);
 			const data = (await response.data?.make_list_items) || [];
 
 			const oneList = data?.[0];
 			const tableColumns = [{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true }];
 			for (let mainkey in oneList) {
 				for (let subKey in oneList[mainkey]) {
-					const targetedClmIndx = columns.findIndex(clm => clm.key === `${subKey}_${mainkey}`);
-					if (targetedClmIndx >= 0) {
-						const targetedClmData = columns?.[targetedClmIndx];
+					const targetedClmData = columns.find(clm => clm.key === `${subKey}_${mainkey}`);
+					if (targetedClmData) {
 						tableColumns.push({
 							id: targetedClmData?.id,
 							label: targetedClmData?.label,

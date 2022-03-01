@@ -1212,3 +1212,5 @@ export const GET_MAKEALIST_ROW_BY_LIST_ID = `${BASE_URL}/make_list_item/api/v1/m
 
 //make a list report
 export const GET_MAKEALIST_REPORT_BY_ID = `${BASE_URL}/make_list/api/v1/make_list/get_make_list_with_make_list_item_and_make_list_columns/`;
+
+export const GET_MAKEALIST_REPORT_BY_ID_NO_PG = `${BASE_URL}/make_list/api/v1/make_list/get_make_list_with_make_list_item_and_make_list_columns_without_pagination/`;

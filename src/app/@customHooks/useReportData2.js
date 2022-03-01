@@ -38,6 +38,7 @@ const useReportData2 = ({ initialData = [], row = 25, extraRowCount = 0, type } 
 					size,
 					totalPage,
 					sortBy,
+					sortBySubKey,
 					openingBlnc,
 					isFirsPage: index === 0 || false,
 					isLastPage: index + 1 === totalPage || false,

@@ -19,7 +19,8 @@ import NewMakeAListHeader from './NewMakeAListHeader';
  */
 
 const schema = yup.object().shape({
-	title: yup.string().required('Title is required')
+	title: yup.string().required('Title is required'),
+	make_date: yup.date().required('Title is required')
 });
 
 const MakeAList = () => {
