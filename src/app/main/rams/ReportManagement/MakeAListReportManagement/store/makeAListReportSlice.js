@@ -18,7 +18,7 @@ export const getColumns = createAsyncThunk('makeAListsManagement/getColumns', as
 		x !== 'id' &&
 			modifiedData.push({
 				key: x,
-				label: fillUnderscoreBySpace(x.slice(0, x.lastIndexOf('_'))),
+				label: fillUnderscoreBySpace(x.slice(x.lastIndexOf('_') + 1) + '_' + x.slice(0, x.lastIndexOf('_'))),
 				isChecked: columns[x]
 			});
 	}

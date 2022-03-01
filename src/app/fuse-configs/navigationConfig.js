@@ -709,19 +709,19 @@ const navigationConfig = [
 				exact: true
 			},
 			//Make A List report
-			{
-				id: 'makeAListReport',
-				title: 'Make A List',
-				translate: 'Make A List',
-				type: 'item',
-				url: '/apps/report-management/make-a-list-report',
-				exact: true
-			},
+			// {
+			// 	id: 'makeAListReport',
+			// 	title: 'Make A List',
+			// 	translate: 'Make A List',
+			// 	type: 'item',
+			// 	url: '/apps/report-management/make-a-list-report',
+			// 	exact: true
+			// },
 			//makeAList
 			{
 				id: 'makeALists',
-				title: 'MakeALists',
-				translate: 'MakeALists',
+				title: 'Make A List',
+				translate: 'Make A List',
 				type: 'item',
 				url: '/apps/makeAList-management/makeALists',
 				exact: true

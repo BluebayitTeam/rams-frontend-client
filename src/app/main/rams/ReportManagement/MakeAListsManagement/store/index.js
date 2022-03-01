@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import makeAListClms from './makeAListClmSlice';
-import makeAListReport from './makeAListReportSlice';
+import makeAListTableClms from './makeAListReportSlice';
 import makeAListRows from './makeAListRowSlice';
 import makeAList from './makeAListSlice';
 import makeALists from './makeAListsSlice';
@@ -10,7 +10,7 @@ const reducer = combineReducers({
 	makeALists,
 	makeAListClms,
 	makeAListRows,
-	makeAListReport
+	makeAListTableClms
 });
 
 export default reducer;

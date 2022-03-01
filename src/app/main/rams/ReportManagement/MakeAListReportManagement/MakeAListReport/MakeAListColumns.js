@@ -129,6 +129,7 @@ function MakeAListColumns() {
 					<h5>id: {`${idx + 1},`}</h5>
 					<h5>key: {`'${clm.key}',`}</h5>
 					<h5>label: {`'${clm.label}',`}</h5>
+					<h5>type: {`'${clm.key.match(/date/) ? 'date' : 'text'}',`}</h5>
 					<h5>isChecked: {`false`}</h5>
 					{'},'}
 				</div>

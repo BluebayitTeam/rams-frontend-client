@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import { getMakeAListRows, removeMakeAListRow } from '../store/makeAListRowSlice';
-import { getMakeALists } from '../store/makeAListsSlice';
 import MakeAListRowTableHead from './MakeAListRowTableHead';
 
 const useStyles = makeStyles(() => ({
@@ -36,7 +35,7 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const MakeAListRowsTable = props => {
+const MakeAListRowsTable = ({ pageAndSize, setPageAndSize }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const makeAListRowsTable = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListRows);
@@ -44,7 +43,6 @@ const MakeAListRowsTable = props => {
 	const [selected, setSelected] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(30);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -58,7 +56,7 @@ const MakeAListRowsTable = props => {
 	const totalElements = sessionStorage.getItem('total_makeAListRowsTable_elements');
 
 	useEffect(() => {
-		dispatch(getMakeALists(pageAndSize)).then(() => setLoading(false));
+		dispatch(getMakeAListRows({ listId: makeAListId, pageAndSize })).then(() => setLoading(false));
 	}, [dispatch]);
 
 	function handleRequestSort(makeAListEvent, property) {
@@ -214,7 +212,11 @@ const MakeAListRowsTable = props => {
 									<TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
 										<div>
 											<DeleteIcon
-												onClick={() => dispatch(removeMakeAListRow(n.id))}
+												onClick={() =>
+													dispatch(removeMakeAListRow(n.id)).then(() =>
+														dispatch(getMakeAListRows({ listId: makeAListId, pageAndSize }))
+													)
+												}
 												className="cursor-pointer"
 												style={{ color: 'red' }}
 											/>

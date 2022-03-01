@@ -46,7 +46,7 @@ const NewMakeAListClmHeader = () => {
 						className="flex items-center"
 						component={Link}
 						role="button"
-						to="/apps/makeAListClm-management/makeAListClms"
+						to="/apps/makeAList-management/makeALists"
 						color="inherit"
 					>
 						<Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>

@@ -1,956 +1,1123 @@
 export const columns = [
 	{
 		id: 1,
-		key: 'agency_passenger',
-		label: 'Agency',
+		key: 'agent_code_agent',
+		label: 'Agent Code',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 2,
-		key: 'agent_passenger',
-		label: 'Agent',
+		key: 'balance_amount_agent',
+		label: 'Agent Balance Amount',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 3,
-		key: 'agent_code_agent',
-		label: 'Agent Code',
+		key: 'balance_date_agent',
+		label: 'Agent Balance Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 4,
-		key: 'arabic_skill_femalecv',
-		label: 'Arabic Skill',
+		key: 'balance_note_agent',
+		label: 'Agent Balance Note',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 5,
-		key: 'arrival_time_flight',
-		label: 'Arrival Time',
+		key: 'balance_type_agent',
+		label: 'Agent Balance Type',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 6,
-		key: 'balance_amount_agent',
-		label: 'Balance Amount',
+		key: 'city_agent',
+		label: 'Agent City',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 7,
-		key: 'balance_date_agent',
-		label: 'Balance Date',
+		key: 'country_agent',
+		label: 'Agent Country',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 8,
-		key: 'balance_note_agent',
-		label: 'Balance Note',
+		key: 'date_of_birth_agent',
+		label: 'Agent Date Of Birth',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 9,
-		key: 'balance_type_agent',
-		label: 'Balance Type',
+		key: 'email_agent',
+		label: 'Agent Email',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 10,
-		key: 'bio_submitted_date_callingemb',
-		label: 'Bio Submitted_date',
+		key: 'father_name_agent',
+		label: 'Agent Father Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 11,
-		key: 'bio_submitted_status_callingemb',
-		label: 'Bio Submitted_status',
+		key: 'first_name_agent',
+		label: 'Agent First Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 12,
-		key: 'calling_date_callingemb',
-		label: 'Calling Date',
+		key: 'gender_agent',
+		label: 'Agent Gender',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 13,
-		key: 'calling_status_callingemb',
-		label: 'Calling Status',
+		key: 'group_agent_agent',
+		label: 'Agent Group Agent',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 14,
-		key: 'carrier_air_way_flight',
-		label: 'Carrier Air_way',
+		key: 'last_name_agent',
+		label: 'Agent Last Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 15,
-		key: 'city_agent',
-		label: 'City',
+		key: 'mother_name_agent',
+		label: 'Agent Mother Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 16,
-		key: 'complexion_femalecv',
-		label: 'Complexion',
+		key: 'nid_agent',
+		label: 'Agent Nid',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 17,
-		key: 'contact_no_passenger',
-		label: 'Contact No',
+		key: 'postal_code_agent',
+		label: 'Agent Postal Code',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 18,
-		key: 'country_agent',
-		label: 'Country',
+		key: 'primary_phone_agent',
+		label: 'Agent Primary Phone',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 19,
-		key: 'country_femalecv',
-		label: 'Country',
+		key: 'secondary_phone_agent',
+		label: 'Agent Secondary Phone',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 20,
-		key: 'country_visa_entry_visaentry',
-		label: 'Country Visa_entry',
+		key: 'street_address_one_agent',
+		label: 'Agent Street Address One',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 21,
-		key: 'current_status_passenger',
-		label: 'Current Status',
+		key: 'street_address_two_agent',
+		label: 'Agent Street Address Two',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 22,
-		key: 'date_of_birth_agent',
-		label: 'Date Of_birth',
+		key: 'thana_agent',
+		label: 'Agent Thana',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 23,
-		key: 'date_of_birth_passenger',
-		label: 'Date Of_birth',
+		key: 'username_agent',
+		label: 'Agent Username',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 24,
-		key: 'delivery_date_embassy',
-		label: 'Delivery Date',
+		key: 'bio_submitted_date_callingemb',
+		label: 'CallingEmb Bio Submitted Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 25,
-		key: 'delivery_date_manpower',
-		label: 'Delivery Date',
+		key: 'bio_submitted_status_callingemb',
+		label: 'CallingEmb Bio Submitted Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 26,
-		key: 'demand_passenger',
-		label: 'Demand',
+		key: 'calling_date_callingemb',
+		label: 'CallingEmb Calling Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 27,
-		key: 'demand_visa_entry_visaentry',
-		label: 'Demand Visa_entry',
+		key: 'calling_status_callingemb',
+		label: 'CallingEmb Calling Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 28,
-		key: 'district_passenger',
-		label: 'District',
+		key: 'emb_attestation_status_callingemb',
+		label: 'CallingEmb Emb Attestation Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 29,
-		key: 'driving_license_status_officework',
-		label: 'Driving License_status',
+		key: 'ministry_attestation_callingemb',
+		label: 'CallingEmb Ministry Attestation',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 30,
-		key: 'education_femalecv',
-		label: 'Education',
+		key: 'passenger_callingemb',
+		label: 'CallingEmb Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 31,
-		key: 'email_agent',
-		label: 'Email',
+		key: 'delivery_date_embassy',
+		label: 'Embassy Delivery Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 32,
-		key: 'emb_attestation_status_callingemb',
-		label: 'Emb Attestation_status',
+		key: 'passenger_embassy',
+		label: 'Embassy Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 33,
-		key: 'emergency_contact_no_passenger',
-		label: 'Emergency Contact_no',
+		key: 'profession_arabic_embassy',
+		label: 'Embassy Profession Arabic',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 34,
-		key: 'english_skill_femalecv',
-		label: 'English Skill',
+		key: 'profession_english_embassy',
+		label: 'Embassy Profession English',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 35,
-		key: 'experience_malecv',
-		label: 'Experience',
+		key: 'recruiting_agency_embassy',
+		label: 'Embassy Recruiting Agency',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 36,
-		key: 'experience_period_femalecv',
-		label: 'Experience Period',
+		key: 'salary_embassy',
+		label: 'Embassy Salary',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 37,
-		key: 'experience_task_femalecv',
-		label: 'Experience Task',
+		key: 'stamping_date_embassy',
+		label: 'Embassy Stamping Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 38,
-		key: 'father_name_agent',
-		label: 'Father Name',
+		key: 'stamping_status_embassy',
+		label: 'Embassy Stamping Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 39,
-		key: 'father_name_passenger',
-		label: 'Father Name',
+		key: 'submit_date_embassy',
+		label: 'Embassy Submit Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 40,
-		key: 'finger_date_officework',
-		label: 'Finger Date',
+		key: 'visa_expiry_date_embassy',
+		label: 'Embassy Visa Expiry Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 41,
-		key: 'finger_status_officework',
-		label: 'Finger Status',
+		key: 'arabic_skill_femalecv',
+		label: 'FemaleCV Arabic Skill',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 42,
-		key: 'first_name_agent',
-		label: 'First Name',
+		key: 'complexion_femalecv',
+		label: 'FemaleCV Complexion',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 43,
-		key: 'flight_date_flight',
-		label: 'Flight Date',
+		key: 'country_femalecv',
+		label: 'FemaleCV Country',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 44,
-		key: 'flight_no_flight',
-		label: 'Flight No',
+		key: 'education_femalecv',
+		label: 'FemaleCV Education',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 45,
-		key: 'flight_time_flight',
-		label: 'Flight Time',
+		key: 'english_skill_femalecv',
+		label: 'FemaleCV English Skill',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 46,
-		key: 'gender_agent',
-		label: 'Gender',
+		key: 'experience_period_femalecv',
+		label: 'FemaleCV Experience Period',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 47,
-		key: 'gender_passenger',
-		label: 'Gender',
+		key: 'experience_task_femalecv',
+		label: 'FemaleCV Experience Task',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 48,
-		key: 'group_agent_agent',
-		label: 'Group Agent',
+		key: 'height_femalecv',
+		label: 'FemaleCV Height',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 49,
-		key: 'group_no_visaentry',
-		label: 'Group No',
+		key: 'number_of_children_femalecv',
+		label: 'FemaleCV Number Of Children',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 50,
-		key: 'height_femalecv',
-		label: 'Height',
+		key: 'passenger_femalecv',
+		label: 'FemaleCV Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 51,
-		key: 'issue_date_flight',
-		label: 'Issue Date',
+		key: 'place_of_birth_femalecv',
+		label: 'FemaleCV Place Of Birth',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 52,
-		key: 'language_skill_malecv',
-		label: 'Language Skill',
+		key: 'place_of_residence_femalecv',
+		label: 'FemaleCV Place Of Residence',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 53,
-		key: 'last_name_agent',
-		label: 'Last Name',
+		key: 'profession_femalecv',
+		label: 'FemaleCV Profession',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 54,
-		key: 'make_list',
-		label: 'Make',
+		key: 'remarks_femalecv',
+		label: 'FemaleCV Remarks',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 55,
-		key: 'man_power_date_manpower',
-		label: 'Man Power_date',
+		key: 'salary_femalecv',
+		label: 'FemaleCV Salary',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 56,
-		key: 'man_power_status_manpower',
-		label: 'Man Power_status',
+		key: 'weight_femalecv',
+		label: 'FemaleCV Weight',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 57,
-		key: 'marital_status_passenger',
-		label: 'Marital Status',
+		key: 'arrival_time_flight',
+		label: 'Flight Arrival Time',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 58,
-		key: 'medical_card_medical',
-		label: 'Medical Card',
+		key: 'carrier_air_way_flight',
+		label: 'Flight Carrier Air Way',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 59,
-		key: 'medical_center_medical',
-		label: 'Medical Center',
+		key: 'flight_date_flight',
+		label: 'Flight Flight Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 60,
-		key: 'medical_exam_date_medical',
-		label: 'Medical Exam_date',
+		key: 'flight_no_flight',
+		label: 'Flight Flight No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 61,
-		key: 'medical_expiry_date_medical',
-		label: 'Medical Expiry_date',
+		key: 'flight_time_flight',
+		label: 'Flight Flight Time',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 62,
-		key: 'medical_issue_date_medical',
-		label: 'Medical Issue_date',
+		key: 'issue_date_flight',
+		label: 'Flight Issue Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 63,
-		key: 'medical_report_date_medical',
-		label: 'Medical Report_date',
+		key: 'passenger_flight',
+		label: 'Flight Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 64,
-		key: 'medical_result_medical',
-		label: 'Medical Result',
+		key: 'sector_name_flight',
+		label: 'Flight Sector Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 65,
-		key: 'medical_serial_no_medical',
-		label: 'Medical Serial_no',
+		key: 'ticket_agency_flight',
+		label: 'Flight Ticket Agency',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 66,
-		key: 'ministry_attestation_callingemb',
-		label: 'Ministry Attestation',
+		key: 'ticket_no_flight',
+		label: 'Flight Ticket No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 67,
-		key: 'mofa_agency_mofa',
-		label: 'Mofa Agency',
+		key: 'ticket_status_flight',
+		label: 'Flight Ticket Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 68,
-		key: 'mofa_date_mofa',
-		label: 'Mofa Date',
+		key: 'make_list',
+		label: 'List Make',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 69,
-		key: 'mofa_no_mofa',
-		label: 'Mofa No',
+		key: 'experience_malecv',
+		label: 'MaleCV Experience',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 70,
-		key: 'mofa_status_mofa',
-		label: 'Mofa Status',
+		key: 'language_skill_malecv',
+		label: 'MaleCV Language Skill',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 71,
-		key: 'mother_name_agent',
-		label: 'Mother Name',
+		key: 'passenger_malecv',
+		label: 'MaleCV Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 72,
-		key: 'mother_name_passenger',
-		label: 'Mother Name',
+		key: 'profession_malecv',
+		label: 'MaleCV Profession',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 73,
-		key: 'musaned_date_musanedokala',
-		label: 'Musaned Date',
+		key: 'qualification_malecv',
+		label: 'MaleCV Qualification',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 74,
-		key: 'musaned_given_by_musanedokala',
-		label: 'Musaned Given_by',
+		key: 'weight_malecv',
+		label: 'MaleCV Weight',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 75,
-		key: 'musaned_status_musanedokala',
-		label: 'Musaned Status',
+		key: 'year_of_experience_malecv',
+		label: 'MaleCV Year Of Experience',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 76,
-		key: 'new_visa_no_manpower',
-		label: 'New Visa_no',
+		key: 'delivery_date_manpower',
+		label: 'ManPower Delivery Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 77,
-		key: 'nid_agent',
-		label: 'Nid',
+		key: 'man_power_date_manpower',
+		label: 'ManPower Man Power Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 78,
-		key: 'nid_passenger',
-		label: 'Nid',
+		key: 'man_power_status_manpower',
+		label: 'ManPower Man Power Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 79,
-		key: 'number_of_children_femalecv',
-		label: 'Number Of_children',
+		key: 'new_visa_no_manpower',
+		label: 'ManPower New Visa No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 80,
-		key: 'office_serial_passenger',
-		label: 'Office Serial',
+		key: 'passenger_manpower',
+		label: 'ManPower Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 81,
-		key: 'okala_date_musanedokala',
-		label: 'Okala Date',
+		key: 'recruiting_agency_manpower',
+		label: 'ManPower Recruiting Agency',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 82,
-		key: 'okala_given_by_musanedokala',
-		label: 'Okala Given_by',
+		key: 'registration_id_manpower',
+		label: 'ManPower Registration Id',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 83,
-		key: 'okala_status_musanedokala',
-		label: 'Okala Status',
+		key: 'submit_date_manpower',
+		label: 'ManPower Submit Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 84,
-		key: 'passenger_medical',
-		label: 'Passenger',
+		key: 'medical_card_medical',
+		label: 'Medical Medical Card',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 85,
-		key: 'passenger_mofa',
-		label: 'Passenger',
+		key: 'medical_center_medical',
+		label: 'Medical Medical Center',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 86,
-		key: 'passenger_officework',
-		label: 'Passenger',
+		key: 'medical_exam_date_medical',
+		label: 'Medical Medical Exam Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 87,
-		key: 'passenger_musanedokala',
-		label: 'Passenger',
+		key: 'medical_expiry_date_medical',
+		label: 'Medical Medical Expiry Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 88,
-		key: 'passenger_embassy',
-		label: 'Passenger',
+		key: 'medical_issue_date_medical',
+		label: 'Medical Medical Issue Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 89,
-		key: 'passenger_manpower',
-		label: 'Passenger',
+		key: 'medical_report_date_medical',
+		label: 'Medical Medical Report Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 90,
-		key: 'passenger_flight',
-		label: 'Passenger',
+		key: 'medical_result_medical',
+		label: 'Medical Medical Result',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 91,
-		key: 'passenger_femalecv',
-		label: 'Passenger',
+		key: 'medical_serial_no_medical',
+		label: 'Medical Medical Serial No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 92,
-		key: 'passenger_malecv',
-		label: 'Passenger',
+		key: 'passenger_medical',
+		label: 'Medical Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 93,
-		key: 'passenger_callingemb',
-		label: 'Passenger',
+		key: 'mofa_agency_mofa',
+		label: 'Mofa Mofa Agency',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 94,
-		key: 'passenger_id_passenger',
-		label: 'Passenger Id',
+		key: 'mofa_date_mofa',
+		label: 'Mofa Mofa Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 95,
-		key: 'passenger_name_passenger',
-		label: 'Passenger Name',
+		key: 'mofa_no_mofa',
+		label: 'Mofa Mofa No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 96,
-		key: 'passenger_type_passenger',
-		label: 'Passenger Type',
+		key: 'mofa_status_mofa',
+		label: 'Mofa Mofa Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 97,
-		key: 'passport_expiry_date_passenger',
-		label: 'Passport Expiry_date',
+		key: 'passenger_mofa',
+		label: 'Mofa Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 98,
-		key: 'passport_issue_date_passenger',
-		label: 'Passport Issue_date',
+		key: 're_mofa_charge_mofa',
+		label: 'Mofa Re Mofa Charge',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 99,
-		key: 'passport_issue_place_passenger',
-		label: 'Passport Issue_place',
+		key: 're_mofa_status_mofa',
+		label: 'Mofa Re Mofa Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 100,
-		key: 'passport_no_passenger',
-		label: 'Passport No',
+		key: 'why_re_mofa_mofa',
+		label: 'Mofa Why Re Mofa',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 101,
-		key: 'passport_type_passenger',
-		label: 'Passport Type',
+		key: 'musaned_date_musanedokala',
+		label: 'MusanedOkala Musaned Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 102,
-		key: 'place_of_birth_passenger',
-		label: 'Place Of_birth',
+		key: 'musaned_given_by_musanedokala',
+		label: 'MusanedOkala Musaned Given By',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 103,
-		key: 'place_of_birth_femalecv',
-		label: 'Place Of_birth',
+		key: 'musaned_status_musanedokala',
+		label: 'MusanedOkala Musaned Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 104,
-		key: 'place_of_residence_passenger',
-		label: 'Place Of_residence',
+		key: 'okala_date_musanedokala',
+		label: 'MusanedOkala Okala Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 105,
-		key: 'place_of_residence_femalecv',
-		label: 'Place Of_residence',
+		key: 'okala_given_by_musanedokala',
+		label: 'MusanedOkala Okala Given By',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 106,
-		key: 'police_clearance_status_officework',
-		label: 'Police Clearance_status',
+		key: 'okala_status_musanedokala',
+		label: 'MusanedOkala Okala Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 107,
-		key: 'police_station_passenger',
-		label: 'Police Station',
+		key: 'passenger_musanedokala',
+		label: 'MusanedOkala Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 108,
-		key: 'post_office_passenger',
-		label: 'Post Office',
+		key: 'driving_license_status_officework',
+		label: 'OfficeWork Driving License Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 109,
-		key: 'postal_code_agent',
-		label: 'Postal Code',
+		key: 'finger_date_officework',
+		label: 'OfficeWork Finger Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 110,
-		key: 'primary_phone_agent',
-		label: 'Primary Phone',
+		key: 'finger_status_officework',
+		label: 'OfficeWork Finger Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 111,
-		key: 'profession_passenger',
-		label: 'Profession',
+		key: 'passenger_officework',
+		label: 'OfficeWork Passenger',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 112,
-		key: 'profession_femalecv',
-		label: 'Profession',
+		key: 'police_clearance_status_officework',
+		label: 'OfficeWork Police Clearance Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 113,
-		key: 'profession_malecv',
-		label: 'Profession',
+		key: 'agency_passenger',
+		label: 'Passenger Agency',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 114,
-		key: 'profession_arabic_visaentry',
-		label: 'Profession Arabic',
+		key: 'agent_passenger',
+		label: 'Passenger Agent',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 115,
-		key: 'profession_arabic_embassy',
-		label: 'Profession Arabic',
+		key: 'contact_no_passenger',
+		label: 'Passenger Contact No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 116,
-		key: 'profession_english_visaentry',
-		label: 'Profession English',
+		key: 'current_status_passenger',
+		label: 'Passenger Current Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 117,
-		key: 'profession_english_embassy',
-		label: 'Profession English',
+		key: 'date_of_birth_passenger',
+		label: 'Passenger Date Of Birth',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 118,
-		key: 'qualification_malecv',
-		label: 'Qualification',
+		key: 'demand_passenger',
+		label: 'Passenger Demand',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 119,
-		key: 'quantity_visaentry',
-		label: 'Quantity',
+		key: 'district_passenger',
+		label: 'Passenger District',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 120,
-		key: 're_mofa_charge_mofa',
-		label: 'Re Mofa_charge',
+		key: 'emergency_contact_no_passenger',
+		label: 'Passenger Emergency Contact No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 121,
-		key: 're_mofa_status_mofa',
-		label: 'Re Mofa_status',
+		key: 'father_name_passenger',
+		label: 'Passenger Father Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 122,
-		key: 'recruiting_agency_embassy',
-		label: 'Recruiting Agency',
+		key: 'gender_passenger',
+		label: 'Passenger Gender',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 123,
-		key: 'recruiting_agency_manpower',
-		label: 'Recruiting Agency',
+		key: 'marital_status_passenger',
+		label: 'Passenger Marital Status',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 124,
-		key: 'registration_id_manpower',
-		label: 'Registration Id',
+		key: 'mother_name_passenger',
+		label: 'Passenger Mother Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 125,
-		key: 'religion_passenger',
-		label: 'Religion',
+		key: 'nid_passenger',
+		label: 'Passenger Nid',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 126,
-		key: 'remarks_femalecv',
-		label: 'Remarks',
+		key: 'office_serial_passenger',
+		label: 'Passenger Office Serial',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 127,
-		key: 'salary_embassy',
-		label: 'Salary',
+		key: 'passenger_id_passenger',
+		label: 'Passenger Passenger Id',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 128,
-		key: 'salary_femalecv',
-		label: 'Salary',
+		key: 'passenger_name_passenger',
+		label: 'Passenger Passenger Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 129,
-		key: 'secondary_phone_agent',
-		label: 'Secondary Phone',
+		key: 'passenger_type_passenger',
+		label: 'Passenger Passenger Type',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 130,
-		key: 'sector_name_flight',
-		label: 'Sector Name',
+		key: 'passport_expiry_date_passenger',
+		label: 'Passenger Passport Expiry Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 131,
-		key: 'sponsor_address_visaentry',
-		label: 'Sponsor Address',
+		key: 'passport_issue_date_passenger',
+		label: 'Passenger Passport Issue Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 132,
-		key: 'sponsor_dob_visaentry',
-		label: 'Sponsor Dob',
+		key: 'passport_issue_place_passenger',
+		label: 'Passenger Passport Issue Place',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 133,
-		key: 'sponsor_id_no_visaentry',
-		label: 'Sponsor Id_no',
+		key: 'passport_no_passenger',
+		label: 'Passenger Passport No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 134,
-		key: 'sponsor_mobile_visaentry',
-		label: 'Sponsor Mobile',
+		key: 'passport_type_passenger',
+		label: 'Passenger Passport Type',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 135,
-		key: 'sponsor_name_arabic_visaentry',
-		label: 'Sponsor Name_arabic',
+		key: 'place_of_birth_passenger',
+		label: 'Passenger Place Of Birth',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 136,
-		key: 'sponsor_name_english_visaentry',
-		label: 'Sponsor Name_english',
+		key: 'place_of_residence_passenger',
+		label: 'Passenger Place Of Residence',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 137,
-		key: 'spouse_name_passenger',
-		label: 'Spouse Name',
+		key: 'police_station_passenger',
+		label: 'Passenger Police Station',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 138,
-		key: 'stamping_date_embassy',
-		label: 'Stamping Date',
+		key: 'post_office_passenger',
+		label: 'Passenger Post Office',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 139,
-		key: 'stamping_status_embassy',
-		label: 'Stamping Status',
+		key: 'profession_passenger',
+		label: 'Passenger Profession',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 140,
-		key: 'street_address_one_agent',
-		label: 'Street Address_one',
+		key: 'religion_passenger',
+		label: 'Passenger Religion',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 141,
-		key: 'street_address_two_agent',
-		label: 'Street Address_two',
+		key: 'spouse_name_passenger',
+		label: 'Passenger Spouse Name',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 142,
-		key: 'submit_date_embassy',
-		label: 'Submit Date',
+		key: 'target_country_passenger',
+		label: 'Passenger Target Country',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 143,
-		key: 'submit_date_manpower',
-		label: 'Submit Date',
+		key: 'village_passenger',
+		label: 'Passenger Village',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 144,
-		key: 'target_country_passenger',
-		label: 'Target Country',
+		key: 'visa_entry_passenger',
+		label: 'Passenger Visa Entry',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 145,
-		key: 'thana_agent',
-		label: 'Thana',
+		key: 'country_visa_entry_visaentry',
+		label: 'VisaEntry Country Visa Entry',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 146,
-		key: 'ticket_agency_flight',
-		label: 'Ticket Agency',
+		key: 'demand_visa_entry_visaentry',
+		label: 'VisaEntry Demand Visa Entry',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 147,
-		key: 'ticket_no_flight',
-		label: 'Ticket No',
+		key: 'group_no_visaentry',
+		label: 'VisaEntry Group No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 148,
-		key: 'ticket_status_flight',
-		label: 'Ticket Status',
+		key: 'profession_arabic_visaentry',
+		label: 'VisaEntry Profession Arabic',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 149,
-		key: 'username_agent',
-		label: 'Username',
+		key: 'profession_english_visaentry',
+		label: 'VisaEntry Profession English',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 150,
-		key: 'village_passenger',
-		label: 'Village',
+		key: 'quantity_visaentry',
+		label: 'VisaEntry Quantity',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 151,
-		key: 'visa_agent_visa_entry_visaentry',
-		label: 'Visa Agent_visa_entry',
+		key: 'sponsor_address_visaentry',
+		label: 'VisaEntry Sponsor Address',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 152,
-		key: 'visa_entry_passenger',
-		label: 'Visa Entry',
+		key: 'sponsor_dob_visaentry',
+		label: 'VisaEntry Sponsor Dob',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 153,
-		key: 'visa_expiry_date_embassy',
-		label: 'Visa Expiry_date',
+		key: 'sponsor_id_no_visaentry',
+		label: 'VisaEntry Sponsor Id No',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 154,
-		key: 'visa_issue_date_visaentry',
-		label: 'Visa Issue_date',
+		key: 'sponsor_mobile_visaentry',
+		label: 'VisaEntry Sponsor Mobile',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 155,
-		key: 'visa_number_visaentry',
-		label: 'Visa Number',
+		key: 'sponsor_name_arabic_visaentry',
+		label: 'VisaEntry Sponsor Name Arabic',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 156,
-		key: 'weight_femalecv',
-		label: 'Weight',
+		key: 'sponsor_name_english_visaentry',
+		label: 'VisaEntry Sponsor Name English',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 157,
-		key: 'weight_malecv',
-		label: 'Weight',
+		key: 'visa_agent_visa_entry_visaentry',
+		label: 'VisaEntry Visa Agent Visa Entry',
+		type: 'text',
 		isChecked: false
 	},
 	{
 		id: 158,
-		key: 'why_re_mofa_mofa',
-		label: 'Why Re_mofa',
+		key: 'visa_issue_date_visaentry',
+		label: 'VisaEntry Visa Issue Date',
+		type: 'date',
 		isChecked: false
 	},
 	{
 		id: 159,
-		key: 'year_of_experience_malecv',
-		label: 'Year Of_experience',
+		key: 'visa_number_visaentry',
+		label: 'VisaEntry Visa Number',
+		type: 'text',
 		isChecked: false
 	}
 ];
+
+//CallingEmb
+//FemaleCV
+//MaleCV
+//ManPower
+//MusanedOkala
+//OfficeWork
+//VisaEntry

@@ -1,32 +1,26 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Typography } from '@material-ui/core';
 import withReducer from 'app/store/withReducer';
-import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import reducer from '../store/index';
-import { getMakeAList, newMakeAList, resetMakeAList } from '../store/makeAListSlice';
-import MakeAListForm from './MakeAListReportForm';
-import NewMakeAListHeader from './NewMakeAListReportHeader';
+import { resetMakeAListReports } from '../store/makeAListReportSlice';
+import MakeAListReport from './MakeAListReport';
+import NewMakeAListReportHeader from './NewMakeAListReportHeader';
 
 /**
  * Form Validation Schema
  */
 
-const schema = yup.object().shape({
-	title: yup.string().required('Title is required')
-});
+const schema = yup.object().shape({});
 
-const MakeAList = () => {
+const NewMakeAListReport = () => {
 	const dispatch = useDispatch();
-	const makeAList = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAList);
 
-	const [noMakeAList, setNoMakeAList] = useState(false);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -34,102 +28,29 @@ const MakeAList = () => {
 	});
 	const routeParams = useParams();
 
-	const { reset } = methods;
-
 	useDeepCompareEffect(() => {
-		function updateMakeAListState() {
-			const { makeAListId } = routeParams;
-
-			if (makeAListId === 'new') {
-				localStorage.removeItem('event');
-				/**
-				 * Create New User data
-				 */
-				dispatch(newMakeAList());
-			} else {
-				/**
-				 * Get User data
-				 */
-
-				dispatch(getMakeAList(makeAListId)).then(action => {
-					console.log(action.payload);
-					/**
-					 * If the requested product is not exist show message
-					 */
-					if (!action.payload) {
-						setNoMakeAList(true);
-					}
-				});
-			}
-		}
-
-		updateMakeAListState();
+		return () => dispatch(resetMakeAListReports());
 	}, [dispatch, routeParams]);
-
-	useEffect(() => {}, []);
-
-	useEffect(() => {
-		if (!makeAList) {
-			return;
-		}
-		/**
-		 * Reset the form on makeAList state changes
-		 */
-		reset(makeAList);
-	}, [makeAList, reset]);
-
-	useEffect(() => {
-		return () => {
-			/**
-			 * Reset MakeAList on component unload
-			 */
-			dispatch(resetMakeAList());
-			setNoMakeAList(false);
-		};
-	}, [dispatch]);
 
 	/**
 	 * Show Message if the requested products is not exists
 	 */
-	if (noMakeAList) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography color="textSecondary" variant="h5">
-					There is no such makeAList!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/e-commerce/products"
-					color="inherit"
-				>
-					Go to MakeAList Page
-				</Button>
-			</motion.div>
-		);
-	}
 
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
+				headerBgHeight="102px"
+				className="bg-grey-300"
 				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
+					content: 'bg-grey-300',
+					contentCard: 'overflow-hidden',
+					header: 'min-h-52 h-52'
 				}}
-				header={<NewMakeAListHeader />}
-				content={
-					<div className="p-16 sm:p-24 max-w-2xl">
-						<MakeAListForm />
-					</div>
-				}
+				header={<NewMakeAListReportHeader />}
+				content={<MakeAListReport />}
 				innerScroll
 			/>
 		</FormProvider>
 	);
 };
-export default withReducer('makeAListsManagement', reducer)(MakeAList);
+export default withReducer('makeAListsManagement', reducer)(NewMakeAListReport);

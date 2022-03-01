@@ -1,101 +1,85 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import moment from 'moment';
-import {
-	CREATE_MAKEALIST,
-	DELETE_MAKEALIST,
-	GET_MAKEALIST_BY_ID,
-	UPDATE_MAKEALIST
-} from '../../../../../constant/constants';
+import { GET_MAKEALIST_REPORT_BY_ID } from '../../../../../constant/constants';
+import { columns } from '../data/column';
 
-export const getMakeAListReport = createAsyncThunk(
-	'makeAListsManagement/makeAListReport/getMakeAListReport',
-	async (params, { rejectWithValue }) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-
+export const getMakeAListReports = createAsyncThunk(
+	'makeAListsManagement/makeAListTableClms/getMakeAListReports',
+	async ({ listId, pageAndSize }, { rejectWithValue, dispatch }) => {
 		try {
-			const response = await axios.get(`${GET_MAKEALIST_BY_ID}${params}`, authTOKEN);
-			const data = await response.data;
-			return data === undefined ? null : data;
-		} catch (err) {
-			return rejectWithValue(params);
-		}
-	}
-);
+			const response = await axios.get(`${GET_MAKEALIST_REPORT_BY_ID}${listId}`, { params: pageAndSize });
+			const data = (await response.data) || {};
 
-export const removeMakeAListReport = createAsyncThunk(
-	'makeAListsManagement/makeAListReport/removeMakeAListReport',
-	async val => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-
-		const makeAListReportId = val.id;
-		const response = await axios.delete(`${DELETE_MAKEALIST}${makeAListReportId}`, authTOKEN);
-		return response;
-	}
-);
-
-export const updateMakeAListReport = createAsyncThunk(
-	'makeAListsManagement/makeAListReport/updateMakeAListReport',
-	async (makeAListReportData, { dispatch, getState }) => {
-		const { makeAListReport } = getState().makeAListReportsManagement;
-
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		const response = await axios.put(`${UPDATE_MAKEALIST}${makeAListReport.id}`, makeAListReportData, authTOKEN);
-		return response;
-	}
-);
-
-export const saveMakeAListReport = createAsyncThunk(
-	'makeAListsManagement/makeAListReport/saveMakeAListReport',
-	async makeAListReportData => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		const response = await axios.post(`${CREATE_MAKEALIST}`, makeAListReportData, authTOKEN);
-		return response;
-	}
-);
-
-const makeAListReportSlice = createSlice({
-	name: 'makeAListsManagement/makeAListReport',
-	initialState: null,
-	reducers: {
-		resetMakeAListReport: () => null,
-		newMakeAListReport: {
-			reducer: (_state, action) => action.payload,
-			prepare: () => ({
-				payload: {
-					make_date: moment(new Date()).format('YYYY-MM-DD')
+			const oneList = data?.make_list_items?.[0];
+			const tableColumns = [{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true }];
+			for (let mainkey in oneList) {
+				for (let subKey in oneList[mainkey]) {
+					const targetedClmIndx = columns.findIndex(clm => clm.key === `${subKey}_${mainkey}`);
+					if (targetedClmIndx >= 0) {
+						const targetedClmData = columns?.[targetedClmIndx];
+						tableColumns.push({
+							id: targetedClmData?.id,
+							label: targetedClmData?.label,
+							name: mainkey,
+							subName: subKey,
+							type: targetedClmData.type,
+							show: true
+						});
+					}
 				}
-			})
+			}
+			dispatch(setColums(tableColumns));
+
+			return data;
+		} catch (err) {
+			return rejectWithValue();
 		}
-	},
-	extraReducers: {
-		[getMakeAListReport.fulfilled]: (_state, action) => action.payload,
-		[saveMakeAListReport.fulfilled]: (_state, action) => action.payload,
-		[removeMakeAListReport.fulfilled]: (_state, action) => action.payload,
-		[updateMakeAListReport.fulfilled]: (_state, action) => action.payload
+	}
+);
+
+export const getAllMakeAListReports = createAsyncThunk(
+	'makeAListsManagement/makeAListTableClms/getAllMakeAListReports',
+	async ({ listId }, { rejectWithValue, dispatch }) => {
+		try {
+			const response = await axios.get(`${GET_MAKEALIST_REPORT_BY_ID}${listId}`);
+			const data = (await response.data?.make_list_items) || [];
+
+			const oneList = data?.[0];
+			const tableColumns = [{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true }];
+			for (let mainkey in oneList) {
+				for (let subKey in oneList[mainkey]) {
+					const targetedClmIndx = columns.findIndex(clm => clm.key === `${subKey}_${mainkey}`);
+					if (targetedClmIndx >= 0) {
+						const targetedClmData = columns?.[targetedClmIndx];
+						tableColumns.push({
+							id: targetedClmData?.id,
+							label: targetedClmData?.label,
+							name: mainkey,
+							subName: subKey,
+							type: targetedClmData.type,
+							show: true
+						});
+					}
+				}
+			}
+			dispatch(setColums(tableColumns));
+
+			return data;
+		} catch (err) {
+			return rejectWithValue();
+		}
+	}
+);
+
+const makeAListReportsSlice = createSlice({
+	name: 'makeAListsManagement/makeAListTableClms',
+	initialState: [{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true }],
+	reducers: {
+		resetMakeAListReports: () => [{ id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true }],
+		setColums: (state, action) => action.payload
 	}
 });
 
-export const { newMakeAListReport, resetMakeAListReport } = makeAListReportSlice.actions;
+export const { setColums, resetMakeAListReports } = makeAListReportsSlice.actions;
 
-export default makeAListReportSlice.reducer;
+export default makeAListReportsSlice.reducer;

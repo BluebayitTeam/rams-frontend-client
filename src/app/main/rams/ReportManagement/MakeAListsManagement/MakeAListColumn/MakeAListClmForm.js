@@ -1,7 +1,6 @@
 import { Checkbox, FormControl, FormControlLabel, makeStyles } from '@material-ui/core';
 import _ from 'lodash';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkOrUnCheck } from '../store/makeAListClmSlice';
 
@@ -22,23 +21,18 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: '5px'
 	},
 	checkboxLabel: {
-		color: theme.palette.primary.main
+		color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.main
 	},
 	checkbox: {
-		color: theme.palette.primary.main
+		color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.main
 	}
 }));
 
 function MakeAListClmForm() {
 	const classes = useStyles();
-	const methods = useFormContext();
-	const { control, formState } = methods;
-
 	const dispatch = useDispatch();
-
 	const columns = useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListClms);
 
-	console.log('columns', columns);
 	return (
 		<div className={classes.pageContainer}>
 			<div className={classes.clmsContainer}>

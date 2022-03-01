@@ -1204,6 +1204,11 @@ export const UPDATE_MAKEALIST_CLM = `${BASE_URL}/make_list_column/api/v1/make_li
 export const GET_MAKEALIST_CLM_BY_LIST_ID = `${BASE_URL}/make_list_column/api/v1/make_list_column/get_by_make_list_id/`;
 
 //make a list row
-export const UPDATE_MAKEALIST_ROW = `${BASE_URL}/make_list_item/api/v1/make_list_item/update/`;
+export const CREATE_MAKEALIST_ROW = `${BASE_URL}/make_list_item/api/v1/make_list_item/create/`;
+
+export const DELETE_MAKEALIST_ROW = `${BASE_URL}/make_list_item/api/v1/make_list_item/delete/`;
 
 export const GET_MAKEALIST_ROW_BY_LIST_ID = `${BASE_URL}/make_list_item/api/v1/make_list_item/get_by_make_list_id/`;
+
+//make a list report
+export const GET_MAKEALIST_REPORT_BY_ID = `${BASE_URL}/make_list/api/v1/make_list/get_make_list_with_make_list_item_and_make_list_columns/`;

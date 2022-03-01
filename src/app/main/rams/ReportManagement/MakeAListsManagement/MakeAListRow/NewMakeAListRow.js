@@ -5,7 +5,7 @@ import { makeStyles, Tabs, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import { getPassengers } from 'app/store/dataSlice';
 import withReducer from 'app/store/withReducer';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -39,7 +39,7 @@ const schema = yup.object().shape({});
 const MakeAListRow = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	// const makeAListRows= useSelector(({ makeAListsManagement }) => makeAListsManagement.makeAListRows;
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 	const passengers = useSelector(state => state.data.passengers);
 
 	const methods = useForm({
@@ -48,6 +48,7 @@ const MakeAListRow = () => {
 		resolver: yupResolver(schema)
 	});
 	const routeParams = useParams();
+	const { makeAListId } = routeParams;
 
 	const { control } = methods;
 
@@ -56,11 +57,6 @@ const MakeAListRow = () => {
 	}, []);
 
 	useDeepCompareEffect(() => {
-		function updateMakeAListRowState() {
-			const { makeAListId } = routeParams;
-			dispatch(getMakeAListRows({ listId: makeAListId, pageAndSize: { page: 1, size: 30 } }));
-		}
-		updateMakeAListRowState();
 		return () => dispatch(resetMakeAListRows());
 	}, [dispatch, routeParams]);
 
@@ -73,7 +69,7 @@ const MakeAListRow = () => {
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
-					header: 'min-h-80 h-80',
+					header: 'min-h-52 h-52',
 					content: 'flex',
 					contentCard: 'overflow-hidden'
 				}}
@@ -102,7 +98,15 @@ const MakeAListRow = () => {
 										}
 										onChange={(event, newValue) => {
 											onChange(newValue?.id);
-											newValue?.id && dispatch(addMakeAListRow(newValue?.id));
+											newValue?.id &&
+												dispatch(
+													addMakeAListRow({
+														passenger: newValue?.id,
+														make_list: makeAListId
+													})
+												).then(() =>
+													dispatch(getMakeAListRows({ listId: makeAListId, pageAndSize }))
+												);
 										}}
 										renderInput={params => (
 											<TextField
@@ -123,7 +127,7 @@ const MakeAListRow = () => {
 						</div>
 					</Tabs>
 				}
-				content={<MakeAListRowsTable />}
+				content={<MakeAListRowsTable pageAndSize={pageAndSize} setPageAndSize={setPageAndSize} />}
 				innerScroll
 			/>
 		</FormProvider>
