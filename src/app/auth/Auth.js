@@ -1,13 +1,13 @@
 import FuseSplashScreen from '@fuse/core/FuseSplashScreen';
+import history from '@history';
+import { bindActionCreators } from '@reduxjs/toolkit';
 import auth0Service from 'app/services/auth0Service';
 import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
+import { hideMessage, showMessage } from 'app/store/fuse/messageSlice';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from '@reduxjs/toolkit';
-import { hideMessage, showMessage } from 'app/store/fuse/messageSlice';
-
-import { setUserDataFirebase, setUserDataAuth0, setUserData, logoutUser } from './store/userSlice';
+import { logoutUser, setUserData, setUserDataAuth0, setUserDataFirebase } from './store/userSlice';
 
 class Auth extends Component {
 	state = {
@@ -19,7 +19,7 @@ class Auth extends Component {
 			// Comment the lines which you do not use
 			// this.firebaseCheck(),
 			// this.auth0Check(),
-			// this.jwtCheck()
+			this.jwtCheck()
 		]).then(() => {
 			this.setState({ waitAuthCheck: false });
 		});
@@ -54,7 +54,14 @@ class Auth extends Component {
 					this.props.showMessage({ message });
 				}
 
-				this.props.logout();
+				localStorage.removeItem('user_id');
+				localStorage.removeItem('jwt_access_token');
+				// localStorage.removeItem('user_email');
+				// localStorage.removeItem("user_name")
+				// localStorage.removeItem("user_role")
+				// localStorage.removeItem("user_image")
+				window.dispatchEvent(new CustomEvent('storage', { detail: { name: 'login_event' } }));
+				history.push('/login');
 
 				resolve();
 			});

@@ -28,25 +28,14 @@ function FuseTheme(props) {
 	useEffect(() => {
 		//note: dispatch a custom event after session changed
 		//like this:
-		//sessionStorage.setItem('jwt_access_token')
+		//localStorage.setItem('jwt_access_token')
 		//window.dispatchEvent(new CustomEvent('storage', { detail: { name: 'login_event' } }));
 		if (!isLogin) {
 			history.push('/login');
 		}
-
-		let prevPath = history.location.pathname;
-		history.listen(location => {
-			if (prevPath !== location.pathname) {
-				prevPath = location.pathname;
-				if (!sessionStorage.getItem('jwt_access_token')) {
-					window.dispatchEvent(new CustomEvent('storage', { detail: { name: 'login_event' } }));
-					history.push('/login');
-				}
-			}
-		});
 	}, [isLogin]);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		fetch(`${USER_BY_ID}${userId}`)
 			.then(res => res.json())
 			.then(user => {

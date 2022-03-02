@@ -13,7 +13,7 @@ export const getPermission = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -31,7 +31,7 @@ export const removePermission = createAsyncThunk('permissionManagement/permissio
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -48,7 +48,7 @@ export const updatePermission = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_PERMISSION}${permission.id}`, permissionData, authTOKEN);
@@ -63,7 +63,7 @@ export const savePermission = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_PERMISSION}`, permissionData, authTOKEN);

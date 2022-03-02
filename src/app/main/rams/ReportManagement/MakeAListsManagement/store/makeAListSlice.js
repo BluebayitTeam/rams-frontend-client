@@ -14,7 +14,7 @@ export const getMakeAList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -32,7 +32,7 @@ export const removeMakeAList = createAsyncThunk('makeAListsManagement/makeAList/
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -49,7 +49,7 @@ export const updateMakeAList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_MAKEALIST}${makeAList.id}`, makeAListData, authTOKEN);
@@ -61,7 +61,7 @@ export const saveMakeAList = createAsyncThunk('makeAListsManagement/makeAList/sa
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_MAKEALIST}`, makeAListData, authTOKEN);

@@ -13,7 +13,7 @@ export const getQualification = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -33,7 +33,7 @@ export const removeQualification = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -79,7 +79,7 @@ export const updateQualification = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(
@@ -125,7 +125,7 @@ export const saveQualification = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_QUALIFICATION}`, getFormDateFJ, authTOKEN);

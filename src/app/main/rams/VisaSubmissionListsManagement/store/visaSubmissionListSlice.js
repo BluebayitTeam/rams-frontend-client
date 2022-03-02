@@ -14,7 +14,7 @@ export const removeVisaSubmissionList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -30,7 +30,7 @@ export const updateVisaSubmissionList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(
@@ -48,7 +48,7 @@ export const saveVisaSubmissionList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_VISASUBMISSIONLIST}`, visaSubmissionListData, authTOKEN);
@@ -61,7 +61,7 @@ export const getVisaSubmissionList = createAsyncThunk(
 	async ({ submission_date, passenger }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${VISASBLISTS_BY_DATE}?submission_date=${submission_date || ''}&passenger=${passenger || ''}`

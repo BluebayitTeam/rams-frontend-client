@@ -3,6 +3,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { makeStyles, Tabs, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import { setAlert } from 'app/store/alertSlice';
 import { getPassengers } from 'app/store/dataSlice';
 import withReducer from 'app/store/withReducer';
 import React, { useEffect, useState } from 'react';
@@ -98,15 +99,34 @@ const MakeAListRow = () => {
 										}
 										onChange={(event, newValue) => {
 											onChange(newValue?.id);
-											newValue?.id &&
+											if (newValue?.id) {
 												dispatch(
 													addMakeAListRow({
 														passenger: newValue?.id,
 														make_list: makeAListId
 													})
-												).then(() =>
-													dispatch(getMakeAListRows({ listId: makeAListId, pageAndSize }))
-												);
+												).then(action => {
+													console.log('action', action);
+													if (action.payload?.data?.id) {
+														dispatch(
+															setAlert({
+																alertType: 'success',
+																alertValue: `${newValue.passenger_name} added successfully`
+															})
+														);
+														dispatch(
+															getMakeAListRows({ listId: makeAListId, pageAndSize })
+														);
+													} else if (action.payload?.data?.detail) {
+														dispatch(
+															setAlert({
+																alertType: 'warning',
+																alertValue: action.payload?.data?.detail
+															})
+														);
+													}
+												});
+											}
 										}}
 										renderInput={params => (
 											<TextField

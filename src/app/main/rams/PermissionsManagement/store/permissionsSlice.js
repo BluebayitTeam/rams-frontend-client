@@ -4,7 +4,7 @@ import { DELETE_PERMISSION, GET_PERMISSIONS } from '../../../../constant/constan
 
 export const getPermissions = createAsyncThunk('permissionManagement/permissions/getPermissions', async parameter => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 	const { page, size } = parameter;
 	const response = axios.get(GET_PERMISSIONS, { params: { page, size } });
@@ -24,7 +24,7 @@ export const removePermissions = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		await axios.delete(`${DELETE_PERMISSION}`, { permissionIds }, authTOKEN);

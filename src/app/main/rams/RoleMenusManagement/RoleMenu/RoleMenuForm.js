@@ -63,7 +63,7 @@ function RoleMenuForm(props) {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		axios.get(`${GET_MENUS_BY_ROLE}${roleId}`, authTOKEN).then(res => {

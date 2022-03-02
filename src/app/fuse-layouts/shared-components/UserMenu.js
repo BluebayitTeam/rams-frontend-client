@@ -96,8 +96,8 @@ function UserMenu(props) {
 						</MenuItem>
 						<MenuItem
 							onClick={() => {
-								sessionStorage.removeItem('user_id');
-								sessionStorage.removeItem('jwt_access_token');
+								localStorage.removeItem('user_id');
+								localStorage.removeItem('jwt_access_token');
 								// localStorage.removeItem("user_email")
 								// localStorage.removeItem("user_name")
 								// localStorage.removeItem("user_role")
@@ -105,6 +105,7 @@ function UserMenu(props) {
 								window.dispatchEvent(new CustomEvent('storage', { detail: { name: 'login_event' } }));
 								dispatch(logoutUser());
 								userMenuClose();
+								// history.push('/login');
 							}}
 						>
 							<ListItemIcon className="min-w-40">

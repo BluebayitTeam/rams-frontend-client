@@ -10,7 +10,7 @@ export const getMakeAListRows = createAsyncThunk(
 	'makeAListsManagement/makeAListRows/getMakeAListRows',
 	async ({ listId, pageAndSize }) => {
 		axios.defaults.headers.common['Content-type'] = 'application/json';
-		axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+		axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 		const response = await axios.get(`${GET_MAKEALIST_ROW_BY_LIST_ID}${listId}`, { params: pageAndSize });
 		const data = await response.data;
@@ -35,7 +35,7 @@ export const updateMakeAListRows = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const passengerIds = makeAListRows.map(row => row.id);
@@ -49,7 +49,7 @@ export const addMakeAListRow = createAsyncThunk('makeAListsManagement/makeAListR
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_MAKEALIST_ROW}`, data, authTOKEN);
@@ -63,7 +63,7 @@ export const removeMakeAListRow = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 

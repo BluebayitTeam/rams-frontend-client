@@ -6,7 +6,7 @@ export const getMenu = createAsyncThunk('menuManagement/menu/getMenu', async (pa
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -23,7 +23,7 @@ export const removeMenu = createAsyncThunk('menuManagement/menu/removeMenu', asy
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -40,7 +40,7 @@ export const updateMenu = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_MENU}${menu.id}`, menuData, authTOKEN);
@@ -52,7 +52,7 @@ export const saveMenu = createAsyncThunk('menuManagement/menu/saveMenu', async (
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_MENU}`, menuData, authTOKEN);

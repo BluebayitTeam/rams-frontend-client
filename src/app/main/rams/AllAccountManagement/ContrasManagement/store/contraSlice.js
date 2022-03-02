@@ -13,7 +13,7 @@ export const getContra = createAsyncThunk('contraManagement/contra/getContra', a
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -30,7 +30,7 @@ export const removeContra = createAsyncThunk('contraManagement/contra/removeCont
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -42,7 +42,7 @@ export const updateContra = createAsyncThunk('contraManagement/contra/updateCont
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_CONTRA}`, contraData, authTOKEN);
@@ -53,7 +53,7 @@ export const saveContra = createAsyncThunk('contraManagement/contra/saveContra',
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_CONTRA}`, contraData, authTOKEN);
@@ -64,7 +64,7 @@ export const setUserBasedBranch = createAsyncThunk('contraManagement/contra/setU
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.get(`${BRANCH_BY_USER_ID}${userId}`, authTOKEN);

@@ -624,13 +624,6 @@ const ramsRouteConfig = {
 				)
 			)
 		},
-		//makeAListReport
-		{
-			path: '/apps/report-management/make-a-list-report',
-			component: lazy(() =>
-				import('./ReportManagement/MakeAListReportManagement/MakeAListReport/MakeAListReport')
-			)
-		},
 		//makeAList
 		{
 			path: '/apps/makeAList-management/columns/:makeAListId/:makeAListName?',

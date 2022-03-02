@@ -8,7 +8,7 @@ export const removeManPowerList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -26,7 +26,7 @@ export const updateManPowerList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_MANPOWERLIST}${manPowerListData.id}`, manPowerListData, authTOKEN);
@@ -42,7 +42,7 @@ export const saveManPowerList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_MANPOWERLIST}`, manPowerListData, authTOKEN);

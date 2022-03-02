@@ -6,7 +6,7 @@ export const getRole = createAsyncThunk('roleManagement/role/getRole', async par
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.get(`${GET_ROLE}${params.roleId}`, authTOKEN);
@@ -18,7 +18,7 @@ export const removeRole = createAsyncThunk('roleManagement/role/removeRole', asy
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const roleId = val.id;
@@ -32,7 +32,7 @@ export const updateRole = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const { role } = getState().rolesManagement;
@@ -46,7 +46,7 @@ export const saveRole = createAsyncThunk('roleManagement/role/saveRole', async r
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_ROLE}`, roleData, authTOKEN);

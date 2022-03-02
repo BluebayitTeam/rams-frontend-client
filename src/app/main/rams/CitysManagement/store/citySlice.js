@@ -6,7 +6,7 @@ export const getCity = createAsyncThunk('cityManagement/city/getCity', async (pa
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -23,7 +23,7 @@ export const removeCity = createAsyncThunk('cityManagement/city/removeCity', asy
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -40,7 +40,7 @@ export const updateCity = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_CITY}${city.id}`, cityData, authTOKEN);
@@ -52,7 +52,7 @@ export const saveCity = createAsyncThunk('cityManagement/city/saveCity', async c
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_CITY}`, cityData, authTOKEN);

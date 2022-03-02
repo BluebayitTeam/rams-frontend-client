@@ -6,7 +6,7 @@ export const getSitesettings = createAsyncThunk('sitesettingManagement/sitesetti
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -23,7 +23,7 @@ export const removeSitesettings = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		await axios.delete(`${DELETE_SITESETTING}`, { sitesettingIds }, authTOKEN);

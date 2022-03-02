@@ -6,7 +6,7 @@ export const getThana = createAsyncThunk('thanaManagement/thana/getThana', async
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -23,7 +23,7 @@ export const removeThana = createAsyncThunk('thanaManagement/thana/removeThana',
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -40,7 +40,7 @@ export const updateThana = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_THANA}${thana.id}`, thanaData, authTOKEN);
@@ -52,7 +52,7 @@ export const saveThana = createAsyncThunk('thanaManagement/thana/saveThana', asy
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_THANA}`, thanaData, authTOKEN);

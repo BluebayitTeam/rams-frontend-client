@@ -8,7 +8,7 @@ export const removeMusanedOkala = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -47,7 +47,7 @@ export const updateMusanedOkala = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_MUSANEDOKALA}${musanedOkalaData.id}`, getFormDateFJ, authTOKEN);
@@ -84,7 +84,7 @@ export const saveMusanedOkala = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_MUSANEDOKALA}`, getFormDateFJ, authTOKEN);

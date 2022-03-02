@@ -156,7 +156,7 @@ const EmployeesTable = props => {
 	if (loading) {
 		return <FuseLoading />;
 	}
-	//console.log("token", sessionStorage.getItem('jwt_access_token'));
+	//console.log("token", localStorage.getItem('jwt_access_token'));
 	if (employees.length === 0) {
 		return (
 			<motion.div

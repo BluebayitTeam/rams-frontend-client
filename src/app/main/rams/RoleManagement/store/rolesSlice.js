@@ -4,7 +4,7 @@ import { GET_ROLES } from '../../../../constant/constants';
 
 export const getRoles = createAsyncThunk('roleManagement/roles/getRoles', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_ROLES, { params: pageAndSize });
 	const data = await response;

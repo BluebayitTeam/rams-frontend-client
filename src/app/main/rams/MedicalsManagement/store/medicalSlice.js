@@ -6,7 +6,7 @@ export const removeMedical = createAsyncThunk('medicalManagement/medical/removeM
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -43,7 +43,7 @@ export const updateMedical = createAsyncThunk('medicalManagement/medical/updateM
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_MEDICAL}${medicalData.id}`, getFormDateFJ, authTOKEN);
@@ -78,7 +78,7 @@ export const saveMedical = createAsyncThunk('medicalManagement/medical/saveMedic
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_MEDICAL}`, getFormDateFJ, authTOKEN);

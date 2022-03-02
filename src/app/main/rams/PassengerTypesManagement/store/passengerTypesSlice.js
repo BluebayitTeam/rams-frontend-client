@@ -6,7 +6,7 @@ export const getPassengerTypes = createAsyncThunk(
 	'passengerTypeManagement/passengerTypes/getPassengerTypes',
 	async pageAndSize => {
 		axios.defaults.headers.common['Content-type'] = 'application/json';
-		axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+		axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 		const response = axios.get(GET_PASSENGERTYPES, { params: pageAndSize });
 		const data = await response;
@@ -26,7 +26,7 @@ export const removePassengerTypes = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		await axios.delete(`${DELETE_PASSENGERTYPE}`, { passengerTypeIds }, authTOKEN);

@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Pagination } from '@material-ui/lab';
 import { rowsPerPageOptions } from 'app/@data/data';
+import { setAlert } from 'app/store/alertSlice';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -213,9 +214,19 @@ const MakeAListRowsTable = ({ pageAndSize, setPageAndSize }) => {
 										<div>
 											<DeleteIcon
 												onClick={() =>
-													dispatch(removeMakeAListRow(n.id)).then(() =>
-														dispatch(getMakeAListRows({ listId: makeAListId, pageAndSize }))
-													)
+													dispatch(removeMakeAListRow(n.id)).then(action => {
+														if (action.payload?.data?.detail) {
+															dispatch(
+																setAlert({
+																	alertType: 'success',
+																	alertValue: action.payload?.data?.detail
+																})
+															);
+														}
+														dispatch(
+															getMakeAListRows({ listId: makeAListId, pageAndSize })
+														);
+													})
 												}
 												className="cursor-pointer"
 												style={{ color: 'red' }}

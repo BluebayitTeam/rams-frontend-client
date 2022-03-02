@@ -6,7 +6,7 @@ export const getLedger = createAsyncThunk('ledgerManagement/ledger/getLedger', a
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -23,7 +23,7 @@ export const removeLedger = createAsyncThunk('ledgerManagement/ledger/removeLedg
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -40,7 +40,7 @@ export const updateLedger = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_LEDGER}${ledger.id}`, ledgerData, authTOKEN);
@@ -52,7 +52,7 @@ export const saveLedger = createAsyncThunk('ledgerManagement/ledger/saveLedger',
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_LEDGER}`, ledgerData, authTOKEN);

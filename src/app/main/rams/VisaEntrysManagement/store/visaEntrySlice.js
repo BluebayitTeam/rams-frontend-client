@@ -13,7 +13,7 @@ export const getVisaEntry = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -31,7 +31,7 @@ export const removeVisaEntry = createAsyncThunk('visaEntryManagement/visaEntry/r
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -48,7 +48,7 @@ export const updateVisaEntry = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_VISAENTRY}${visaEntry.id}`, visaEntryData, authTOKEN);
@@ -60,7 +60,7 @@ export const saveVisaEntry = createAsyncThunk('visaEntryManagement/visaEntry/sav
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_VISAENTRY}`, visaEntryData, authTOKEN);

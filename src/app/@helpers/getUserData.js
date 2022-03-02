@@ -1,23 +1,22 @@
 function getUserData() {
+	const userId = localStorage.getItem('user_id');
 
-    const userId = localStorage.getItem("user_id")
+	const authToken = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
 
-    const authToken = {
-        headers: {
-            "Content-type": "application/json",
-            Authorization: localStorage.getItem("jwt_access_token"),
-        },
-    };
+	const displayName = localStorage.getItem('user_name');
 
-    const displayName = localStorage.getItem("user_name")
+	const userEmail = localStorage.getItem('user_email');
 
-    const userEmail = localStorage.getItem("user_email")
+	const userRole = localStorage.getItem('user_role');
 
-    const userRole = localStorage.getItem("user_role")
+	const userImage = localStorage.getItem('user_image');
 
-    const userImage = localStorage.getItem("user_image")
-
-    return { userId, authToken, displayName, userEmail, userRole, userImage }
+	return { userId, authToken, displayName, userEmail, userRole, userImage };
 }
 
-export default getUserData
+export default getUserData;

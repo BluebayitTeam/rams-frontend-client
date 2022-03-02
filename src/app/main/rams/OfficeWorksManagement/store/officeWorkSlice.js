@@ -6,7 +6,7 @@ export const removeOfficeWork = createAsyncThunk('officeWorkManagement/officeWor
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -44,7 +44,7 @@ export const updateOfficeWork = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_OFFICEWORK}${officeWorkData.id}`, getFormDateFJ, authTOKEN);
@@ -81,7 +81,7 @@ export const saveOfficeWork = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_OFFICEWORK}`, getFormDateFJ, authTOKEN);

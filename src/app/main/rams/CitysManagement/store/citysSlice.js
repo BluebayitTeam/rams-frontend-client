@@ -6,7 +6,7 @@ export const getCitys = createAsyncThunk('cityManagement/citys/getCitys', async 
 	const { page, size } = parameter;
 
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_CITYS, { params: { page, size } });
 	const data = await response;
@@ -25,7 +25,7 @@ export const removeCitys = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		await axios.delete(`${DELETE_CITY}`, { cityIds }, authTOKEN);

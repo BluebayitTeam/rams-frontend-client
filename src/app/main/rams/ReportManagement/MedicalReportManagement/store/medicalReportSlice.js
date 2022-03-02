@@ -7,7 +7,7 @@ export const getMedicals = createAsyncThunk(
 	async ({ values, pageAndSize }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${MEDICAL_FILTER_BY}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${
@@ -37,7 +37,7 @@ export const getAllMedicals = createAsyncThunk(
 	async (values, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${MEDICAL_FILTER_WITHOUT_PG}?agent=${values.agent || ''}&passenger=${values.passenger || ''}&gender=${

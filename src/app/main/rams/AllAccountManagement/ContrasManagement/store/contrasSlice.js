@@ -4,7 +4,7 @@ import { DELETE_CONTRA_MULTIPLE, GET_CONTRAS } from '../../../../../constant/con
 
 export const getContras = createAsyncThunk('contraManagement/contras/getContras', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_CONTRAS, { params: pageAndSize });
 	const data = await response;
@@ -20,7 +20,7 @@ export const getContras = createAsyncThunk('contraManagement/contras/getContras'
 export const removeContras = createAsyncThunk('contraManagement/contras/removeContras', async contraIds => {
 	const headers = {
 		'Content-type': 'application/json',
-		Authorization: sessionStorage.getItem('jwt_access_token')
+		Authorization: localStorage.getItem('jwt_access_token')
 	};
 	const data = {
 		ids: contraIds

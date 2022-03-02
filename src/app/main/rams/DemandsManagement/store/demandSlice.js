@@ -6,7 +6,7 @@ export const getDemand = createAsyncThunk('demandManagement/demand/getDemand', a
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -23,7 +23,7 @@ export const removeDemand = createAsyncThunk('demandManagement/demand/removeDema
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -64,7 +64,7 @@ export const updateDemand = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_DEMAND}${demand.id}`, getFormDateFJ, authTOKEN);
@@ -99,7 +99,7 @@ export const saveDemand = createAsyncThunk('demandManagement/demand/saveDemand',
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_DEMAND}`, getFormDateFJ, authTOKEN);

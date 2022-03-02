@@ -6,7 +6,7 @@ export const getAgent = createAsyncThunk('agentManagement/agent/getAgent', async
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -23,7 +23,7 @@ export const removeAgent = createAsyncThunk('agentManagement/agent/removeAgent',
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -62,7 +62,7 @@ export const updateAgent = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_AGENT}${agent.id}`, getFormDateFJ, authTOKEN);
@@ -113,7 +113,7 @@ export const saveAgent = createAsyncThunk('agentManagement/agent/saveAgent', asy
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_AGENT}`, getFormDateFJ, authTOKEN);

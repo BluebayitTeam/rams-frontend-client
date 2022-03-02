@@ -2,29 +2,29 @@ import { useEffect, useState } from 'react';
 
 //note: dispatch a custom event after session changed otherwise state will not change in same component
 //like this:
-//sessionStorage.setItem('jwt_access_token')
+//localStorage.setItem('jwt_access_token')
 //window.dispatchEvent(new CustomEvent('storage', { detail: { name: 'login_event' } }));
 function useUserInfo() {
-	const [userId, setUserId] = useState(sessionStorage.getItem('user_id'));
-	const [authToken, setAuthToken] = useState(sessionStorage.getItem('jwt_access_token'));
-	const [userName, setUserName] = useState(sessionStorage.getItem('user_name'));
-	const [userEmail, setUserEmail] = useState(sessionStorage.getItem('user_email'));
-	const [userRole, setUserRole] = useState(sessionStorage.getItem('user_role'));
-	const [userImage, setUserImage] = useState(sessionStorage.getItem('user_image'));
-	const [isLogin, setIsLogin] = useState(sessionStorage.getItem('jwt_access_token') ? true : false);
+	const [userId, setUserId] = useState(localStorage.getItem('user_id'));
+	const [authToken, setAuthToken] = useState(localStorage.getItem('jwt_access_token'));
+	const [userName, setUserName] = useState(localStorage.getItem('user_name'));
+	const [userEmail, setUserEmail] = useState(localStorage.getItem('user_email'));
+	const [userRole, setUserRole] = useState(localStorage.getItem('user_role'));
+	const [userImage, setUserImage] = useState(localStorage.getItem('user_image'));
+	const [isLogin, setIsLogin] = useState(localStorage.getItem('jwt_access_token') ? true : false);
 
 	useEffect(() => {
 		const resetUserData = () => {
-			setUserId(sessionStorage.getItem('user_id'));
-			setAuthToken(sessionStorage.getItem('jwt_access_token'));
-			setUserName(sessionStorage.getItem('user_name'));
-			setUserEmail(sessionStorage.getItem('user_email'));
-			setUserRole(sessionStorage.getItem('user_role'));
-			setUserImage(sessionStorage.getItem('user_image'));
-			setIsLogin(sessionStorage.getItem('jwt_access_token') ? true : false);
+			setUserId(localStorage.getItem('user_id'));
+			setAuthToken(localStorage.getItem('jwt_access_token'));
+			setUserName(localStorage.getItem('user_name'));
+			setUserEmail(localStorage.getItem('user_email'));
+			setUserRole(localStorage.getItem('user_role'));
+			setUserImage(localStorage.getItem('user_image'));
+			setIsLogin(localStorage.getItem('jwt_access_token') ? true : false);
 		};
 
-		//reset state whene sessionStorage changed
+		//reset state whene localStorage changed
 		window.addEventListener('storage', resetUserData);
 
 		//unsibscibe event listener when this hook unmount

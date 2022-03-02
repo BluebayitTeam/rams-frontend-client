@@ -4,7 +4,7 @@ import { DELETE_ROLEMENU, GET_ROLEMENUS } from '../../../../constant/constants';
 
 export const getRoleMenus = createAsyncThunk('roleMenuManagement/roleMenus/getRoleMenus', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_ROLEMENUS, { params: pageAndSize });
 	const data = await response;
@@ -23,7 +23,7 @@ export const removeRoleMenus = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		await axios.delete(`${DELETE_ROLEMENU}`, { roleMenuIds }, authTOKEN);

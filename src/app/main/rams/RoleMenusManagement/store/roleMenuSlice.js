@@ -8,7 +8,7 @@ export const getRoleMenu = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -26,7 +26,7 @@ export const removeRoleMenu = createAsyncThunk('roleMenuManagement/roleMenu/remo
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -40,7 +40,7 @@ export const updateRoleMenu = createAsyncThunk('roleMenuManagement/roleMenu/upda
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_ROLEMENU}`, roleMenuData, authTOKEN);
@@ -53,7 +53,7 @@ export const saveRoleMenu = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_ROLEMENU}`, roleMenuData, authTOKEN);

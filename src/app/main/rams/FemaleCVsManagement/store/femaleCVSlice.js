@@ -6,7 +6,7 @@ export const removeFemaleCV = createAsyncThunk('femaleCVManagement/femaleCV/remo
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -42,7 +42,7 @@ export const updateFemaleCV = createAsyncThunk('femaleCVManagement/femaleCV/upda
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_FEMALECV}${femaleCVData.id}`, getFormDateFJ, authTOKEN);
@@ -76,7 +76,7 @@ export const saveFemaleCV = createAsyncThunk('femaleCVManagement/femaleCV/saveFe
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: sessionStorage.getItem('jwt_access_token')
+			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_FEMALECV}`, getFormDateFJ, authTOKEN);

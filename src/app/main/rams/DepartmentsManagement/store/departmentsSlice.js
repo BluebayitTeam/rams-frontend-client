@@ -6,7 +6,7 @@ export const getDepartments = createAsyncThunk('departmentManagement/departments
 	const { page, size } = parameter;
 
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_DEPARTMENTS, { params: { page, size } });
 
@@ -26,7 +26,7 @@ export const removeDepartments = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: sessionStorage.getItem('jwt_access_token')
+				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
 		await axios.delete(`${DELETE_DEPARTMENT}`, { departmentIds }, authTOKEN);

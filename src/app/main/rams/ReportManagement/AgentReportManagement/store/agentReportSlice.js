@@ -7,7 +7,7 @@ export const getAgents = createAsyncThunk(
 	async ({ values, pageAndSize }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${AGENT_FILTER_BY}?username=${values.username || ''}&email=${values.email || ''}&group=${
@@ -33,7 +33,7 @@ export const getAllAgents = createAsyncThunk(
 	async (values, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${AGENT_FILTER_WITHOUT_PG}?username=${values.username || ''}&email=${values.email || ''}&group=${

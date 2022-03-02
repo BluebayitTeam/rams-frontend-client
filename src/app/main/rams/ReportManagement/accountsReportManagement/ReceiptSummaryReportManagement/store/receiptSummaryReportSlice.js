@@ -7,7 +7,7 @@ export const getReceiptSummarys = createAsyncThunk(
 	async ({ values, pageAndSize }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${RECEIPT_SUMMARY_FILTER_BY}?ledger=${values.ledger || ''}&sub_ledger=${
@@ -31,7 +31,7 @@ export const getAllReceiptSummarys = createAsyncThunk(
 	async (values, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${RECEIPT_SUMMARY_FILTER_WITHOUT_PG}?ledger=${values.ledger || ''}&sub_ledger=${

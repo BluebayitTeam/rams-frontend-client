@@ -1,8 +1,8 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
-import { LOGIN_URL } from 'app/constant/constants';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 /* eslint-disable camelcase */
+import { LOGIN_URL } from '../../constant/constants';
 
 class JwtService extends FuseUtils.EventEmitter {
 	init() {
@@ -17,7 +17,7 @@ class JwtService extends FuseUtils.EventEmitter {
 			},
 			err => {
 				return new Promise((resolve, reject) => {
-					if (err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
+					if (err.response?.status === 401 && err.config && !err.config.__isRetryRequest) {
 						// if you ever get an unauthorized response, logout the user
 						this.emit('onAutoLogout', 'Invalid access_token');
 						this.setSession(null);
@@ -67,7 +67,7 @@ class JwtService extends FuseUtils.EventEmitter {
 					// if (response) {
 					// this.setSession();
 
-					sessionStorage.setItem('jwt_access_token', `Bearer ${response.data.access}`);
+					localStorage.setItem('jwt_access_token', `Bearer ${response.data.access}`);
 					axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
 
 					const user = {
@@ -79,7 +79,7 @@ class JwtService extends FuseUtils.EventEmitter {
 					};
 
 					// localStorage.setItem("jwt_access_token", response.data.access)
-					sessionStorage.setItem('user_id', response.data.id);
+					localStorage.setItem('user_id', response.data.id);
 					// localStorage.setItem("user_email", response.data.email)
 					// localStorage.setItem("user_name", response.data.username)
 					// localStorage.setItem("user_role", response.data.role)
@@ -134,13 +134,8 @@ class JwtService extends FuseUtils.EventEmitter {
 			axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
 		} else {
 			localStorage.removeItem('jwt_access_token');
+			localStorage.removeItem('UserId');
 			delete axios.defaults.headers.common.Authorization;
-
-			// localStorage.removeItem("user_id")
-			// localStorage.removeItem("user_email")
-			// localStorage.removeItem("user_name")
-			// localStorage.removeItem("user_role")
-			// localStorage.removeItem("user_image")
 		}
 	};
 
@@ -163,7 +158,7 @@ class JwtService extends FuseUtils.EventEmitter {
 	};
 
 	getAccessToken = () => {
-		return window.sessionStorage.getItem('jwt_access_token');
+		return window.localStorage.getItem('jwt_access_token');
 	};
 }
 
