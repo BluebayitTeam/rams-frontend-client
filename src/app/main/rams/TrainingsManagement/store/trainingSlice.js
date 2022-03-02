@@ -6,7 +6,7 @@ export const removeTraining = createAsyncThunk('trainingManagement/training/remo
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -42,7 +42,7 @@ export const updateTraining = createAsyncThunk('trainingManagement/training/upda
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_TRAINING}${trainingData.id}`, getFormDateFJ, authTOKEN);
@@ -76,7 +76,7 @@ export const saveTraining = createAsyncThunk('trainingManagement/training/saveTr
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_TRAINING}`, getFormDateFJ, authTOKEN);

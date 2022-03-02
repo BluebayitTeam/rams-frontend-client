@@ -8,7 +8,7 @@ export const removeVisaReissueList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -26,7 +26,7 @@ export const updateVisaReissueList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(
@@ -46,7 +46,7 @@ export const saveVisaReissueList = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.post(`${CREATE_VISAREISSUELIST}`, visaReissueListData, authTOKEN);

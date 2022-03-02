@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export const getColumns = createAsyncThunk('makeAListsManagement/getColumns', async () => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 	const res = await axios.get(MAKE_A_LIST_CLMS);
 

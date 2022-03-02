@@ -6,7 +6,7 @@ export const removeMofa = createAsyncThunk('mofaManagement/mofa/removeMofa', asy
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -42,7 +42,7 @@ export const updateMofa = createAsyncThunk('mofaManagement/mofa/updateMofa', asy
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_MOFA}${mofaData.id}`, getFormDateFJ, authTOKEN);
@@ -76,7 +76,7 @@ export const saveMofa = createAsyncThunk('mofaManagement/mofa/saveMofa', async m
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_MOFA}`, getFormDateFJ, authTOKEN);

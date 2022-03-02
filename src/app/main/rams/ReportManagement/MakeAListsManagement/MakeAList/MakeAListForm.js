@@ -2,12 +2,14 @@ import TextField from '@material-ui/core/TextField';
 import CustomDatePicker from 'app/@components/CustomDatePicker';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import {} from '../../../../../store/dataSlice';
+import { useHistory } from 'react-router';
 
 function MakeAListForm() {
 	const methods = useFormContext();
 	const { control, formState } = methods;
 	const { errors } = formState;
+
+	const history = useHistory();
 
 	return (
 		<div>
@@ -62,6 +64,10 @@ function MakeAListForm() {
 					);
 				}}
 			/>
+
+			<button onClick={() => history.push(`/apps/makeAList-management/${Math.random()}`)}>
+				click to chage route
+			</button>
 		</div>
 	);
 }

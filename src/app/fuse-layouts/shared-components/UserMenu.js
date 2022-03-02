@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
+import useUserInfo from 'app/@customHooks/useUserInfo';
 import { logoutUser } from 'app/auth/store/userSlice';
 import { BASE_URL } from 'app/constant/constants';
 import { useState } from 'react';
@@ -17,6 +18,8 @@ function UserMenu(props) {
 	const user = useSelector(({ auth }) => auth.user);
 
 	const [userMenu, setUserMenu] = useState(null);
+
+	const { isLogin } = useUserInfo();
 
 	const userMenuClick = event => {
 		setUserMenu(event.currentTarget);
@@ -62,7 +65,7 @@ function UserMenu(props) {
 					paper: 'py-8'
 				}}
 			>
-				{!user?.role || user?.role.length === 0 ? (
+				{!isLogin ? (
 					<>
 						<MenuItem component={Link} to="/login" role="button">
 							<ListItemIcon className="min-w-40">
@@ -93,11 +96,13 @@ function UserMenu(props) {
 						</MenuItem>
 						<MenuItem
 							onClick={() => {
-								localStorage.removeItem("user_id")
+								sessionStorage.removeItem('user_id');
+								sessionStorage.removeItem('jwt_access_token');
 								// localStorage.removeItem("user_email")
 								// localStorage.removeItem("user_name")
 								// localStorage.removeItem("user_role")
 								// localStorage.removeItem("user_image")
+								window.dispatchEvent(new CustomEvent('storage', { detail: { name: 'login_event' } }));
 								dispatch(logoutUser());
 								userMenuClose();
 							}}

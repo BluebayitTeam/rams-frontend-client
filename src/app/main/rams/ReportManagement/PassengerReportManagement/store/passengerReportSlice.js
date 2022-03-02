@@ -7,7 +7,7 @@ export const getPassengers = createAsyncThunk(
 	async ({ values, pageAndSize }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${PASSENGER_FILTER_BY}?passenger=${values.passenger || ''}&current_status=${
@@ -36,7 +36,7 @@ export const getAllPassengers = createAsyncThunk(
 	async (values, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${PASSENGER_FILTER_WITHOUT_PG}?passenger=${values.passenger || ''}&current_status=${

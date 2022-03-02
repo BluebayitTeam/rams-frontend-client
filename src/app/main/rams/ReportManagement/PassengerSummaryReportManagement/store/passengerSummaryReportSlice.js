@@ -7,7 +7,7 @@ export const getPassengerSummarys = createAsyncThunk(
 	async ({ values, pageAndSize }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${PASSENGER_SUMMARY_FILTER_BY}?p=1${values.passenger ? `&passenger=${values.passenger}` : ''}${
@@ -59,7 +59,7 @@ export const getAllPassengerSummarys = createAsyncThunk(
 	async (values, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${PASSENGER_SUMMARY_FILTER_WITHOUT_PG}?p=1${values.passenger ? `&passenger=${values.passenger}` : ''}${

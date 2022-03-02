@@ -6,7 +6,7 @@ export const removeFlight = createAsyncThunk('flightManagement/flight/removeFlig
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -42,7 +42,7 @@ export const updateFlight = createAsyncThunk('flightManagement/flight/updateFlig
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_FLIGHT}${flightData.id}`, getFormDateFJ, authTOKEN);
@@ -76,7 +76,7 @@ export const saveFlight = createAsyncThunk('flightManagement/flight/saveFlight',
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_FLIGHT}`, getFormDateFJ, authTOKEN);

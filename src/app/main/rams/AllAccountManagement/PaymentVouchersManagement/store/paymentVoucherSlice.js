@@ -17,7 +17,7 @@ export const getPaymentVoucher = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -37,7 +37,7 @@ export const removePaymentVoucher = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -52,7 +52,7 @@ export const updatePaymentVoucher = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 		const formdata = jsonToFormData(paymentVoucherData);
@@ -67,7 +67,7 @@ export const savePaymentVoucher = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 		const formdata = jsonToFormData(paymentVoucherData);
@@ -82,7 +82,7 @@ export const setUserBasedBranch = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.get(`${BRANCH_BY_USER_ID}${userId}`, authTOKEN);

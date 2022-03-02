@@ -13,7 +13,7 @@ export const getPassenger = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -31,7 +31,7 @@ export const removePassenger = createAsyncThunk('passengerManagement/passenger/r
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -70,7 +70,7 @@ export const updatePassenger = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'multipart/form-data',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_PASSENGER}${passenger.id}`, getFormDateFJ, authTOKEN);
@@ -104,7 +104,7 @@ export const savePassenger = createAsyncThunk('passengerManagement/passenger/sav
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_PASSENGER}`, getFormDateFJ, authTOKEN);

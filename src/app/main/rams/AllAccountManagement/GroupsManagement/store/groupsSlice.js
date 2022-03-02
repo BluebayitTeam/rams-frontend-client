@@ -4,7 +4,7 @@ import { DELETE_GROUP_MULTIPLE, GET_GROUPS } from '../../../../../constant/const
 
 export const getGroups = createAsyncThunk('groupManagement/groups/getGroups', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_GROUPS, { params: pageAndSize });
 	const data = await response;
@@ -20,7 +20,7 @@ export const getGroups = createAsyncThunk('groupManagement/groups/getGroups', as
 export const removeGroups = createAsyncThunk('groupManagement/groups/removeGroups', async groupIds => {
 	const headers = {
 		'Content-type': 'application/json',
-		Authorization: localStorage.getItem('jwt_access_token')
+		Authorization: sessionStorage.getItem('jwt_access_token')
 	};
 	const data = {
 		ids: groupIds

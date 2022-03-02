@@ -6,7 +6,7 @@ export const getPassengers = createAsyncThunk(
 	'passengerManagement/passengers/getPassengers',
 	async ({ page, size, passengerType }) => {
 		axios.defaults.headers.common['Content-type'] = 'application/json';
-		axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+		axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 		console.log('passengerType', passengerType);
 

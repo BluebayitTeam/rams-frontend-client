@@ -4,7 +4,7 @@ import { DELETE_AGENT, GET_AGENTS } from '../../../../constant/constants';
 
 export const getAgents = createAsyncThunk('agentManagement/agents/getAgents', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_AGENTS, { params: pageAndSize });
 	const data = await response;
@@ -23,7 +23,7 @@ export const removeAgents = createAsyncThunk('agentManagement/agents/removeAgent
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	await axios.delete(`${DELETE_AGENT}`, { agentIds }, authTOKEN);

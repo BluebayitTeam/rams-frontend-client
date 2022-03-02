@@ -13,7 +13,7 @@ export const getSubLedger = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -31,7 +31,7 @@ export const removeSubLedger = createAsyncThunk('subLedgerManagement/subLedger/r
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -48,7 +48,7 @@ export const updateSubLedger = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 		const response = await axios.put(`${UPDATE_SUBLEDGER}${subLedger.id}`, subLedgerData, authTOKEN);
@@ -60,7 +60,7 @@ export const saveSubLedger = createAsyncThunk('subLedgerManagement/subLedger/sav
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_SUBLEDGER}`, subLedgerData, authTOKEN);

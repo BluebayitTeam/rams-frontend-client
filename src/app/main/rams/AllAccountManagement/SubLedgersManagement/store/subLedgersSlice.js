@@ -4,7 +4,7 @@ import { DELETE_SUBLEDGER_MULTIPLE, GET_SUBLEDGERS } from '../../../../../consta
 
 export const getSubLedgers = createAsyncThunk('subLedgerManagement/subLedgers/getSubLedgers', async pageAndSize => {
 	axios.defaults.headers.common['Content-type'] = 'application/json';
-	axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+	axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 	const response = axios.get(GET_SUBLEDGERS, { params: pageAndSize });
 	const data = await response;
@@ -22,7 +22,7 @@ export const removeSubLedgers = createAsyncThunk(
 	async subLedgerIds => {
 		const headers = {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		};
 		const data = {
 			ids: subLedgerIds

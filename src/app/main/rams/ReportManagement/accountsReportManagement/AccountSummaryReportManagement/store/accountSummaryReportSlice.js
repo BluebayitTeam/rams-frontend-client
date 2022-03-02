@@ -7,7 +7,7 @@ export const getAccountSummarys = createAsyncThunk(
 	async ({ values, pageAndSize }, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${ACCOUNTSUMMARY_FILTER_BY}?start_date=${values.date_after || ''}&end_date=${
@@ -31,7 +31,7 @@ export const getAllAccountSummarys = createAsyncThunk(
 	async (values, { rejectWithValue }) => {
 		try {
 			axios.defaults.headers.common['Content-type'] = 'application/json';
-			axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
+			axios.defaults.headers.common.Authorization = sessionStorage.getItem('jwt_access_token');
 
 			const res = await axios.get(
 				`${ACCOUNTSUMMARY_FILTER_WITHOUT_PG}?start_date=${values.date_after || ''}&end_date=${

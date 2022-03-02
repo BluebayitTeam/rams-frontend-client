@@ -6,7 +6,7 @@ export const removeEmbassy = createAsyncThunk('embassyManagement/embassy/removeE
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -42,7 +42,7 @@ export const updateEmbassy = createAsyncThunk('embassyManagement/embassy/updateE
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_EMBASSY}${embassyData.id}`, getFormDateFJ, authTOKEN);
@@ -76,7 +76,7 @@ export const saveEmbassy = createAsyncThunk('embassyManagement/embassy/saveEmbas
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'multipart/form-data',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_EMBASSY}`, getFormDateFJ, authTOKEN);

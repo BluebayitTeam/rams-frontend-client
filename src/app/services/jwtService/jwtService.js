@@ -1,11 +1,10 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
-import { LOGIN_URL } from "app/constant/constants";
+import { LOGIN_URL } from 'app/constant/constants';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 /* eslint-disable camelcase */
 
 class JwtService extends FuseUtils.EventEmitter {
-
 	init() {
 		this.setInterceptors();
 		this.handleAuthentication();
@@ -68,7 +67,7 @@ class JwtService extends FuseUtils.EventEmitter {
 					// if (response) {
 					// this.setSession();
 
-					localStorage.setItem('jwt_access_token', `Bearer ${response.data.access}`);
+					sessionStorage.setItem('jwt_access_token', `Bearer ${response.data.access}`);
 					axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
 
 					const user = {
@@ -76,24 +75,26 @@ class JwtService extends FuseUtils.EventEmitter {
 						displayName: response.data.username,
 						photoURL: response.data.image,
 						role: response.data.role,
-						id: response.data.id,
-					}
+						id: response.data.id
+					};
 
 					// localStorage.setItem("jwt_access_token", response.data.access)
-					localStorage.setItem("user_id", response.data.id)
+					sessionStorage.setItem('user_id', response.data.id);
 					// localStorage.setItem("user_email", response.data.email)
 					// localStorage.setItem("user_name", response.data.username)
 					// localStorage.setItem("user_role", response.data.role)
 					// localStorage.setItem("user_image", `${BASE_URL}${response.data.image}`)
+					window.dispatchEvent(new CustomEvent('storage', { detail: { name: 'login_event' } }));
 
 					resolve(user);
 
 					// } else {
 					// 	reject(response);
 					// }
-				}).catch((err) => {
-					reject(err);
 				})
+				.catch(err => {
+					reject(err);
+				});
 		});
 	};
 
@@ -162,7 +163,7 @@ class JwtService extends FuseUtils.EventEmitter {
 	};
 
 	getAccessToken = () => {
-		return window.localStorage.getItem('jwt_access_token');
+		return window.sessionStorage.getItem('jwt_access_token');
 	};
 }
 

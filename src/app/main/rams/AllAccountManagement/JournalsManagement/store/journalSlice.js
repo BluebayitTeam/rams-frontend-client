@@ -15,7 +15,7 @@ export const getJournal = createAsyncThunk(
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+				Authorization: sessionStorage.getItem('jwt_access_token')
 			}
 		};
 
@@ -33,7 +33,7 @@ export const removeJournal = createAsyncThunk('journalManagement/journal/removeJ
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 
@@ -45,7 +45,7 @@ export const updateJournal = createAsyncThunk('journalManagement/journal/updateJ
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.put(`${UPDATE_JOURNAL}`, journalData, authTOKEN);
@@ -56,7 +56,7 @@ export const saveJournal = createAsyncThunk('journalManagement/journal/saveJourn
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.post(`${CREATE_JOURNAL}`, journalData, authTOKEN);
@@ -67,7 +67,7 @@ export const setUserBasedBranch = createAsyncThunk('journalManagement/journal/se
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
+			Authorization: sessionStorage.getItem('jwt_access_token')
 		}
 	};
 	const response = await axios.get(`${BRANCH_BY_USER_ID}${userId}`, authTOKEN);
