@@ -26,14 +26,13 @@ const jss = create({
 const generateClassName = createGenerateClassName({ disableGlobal: true });
 
 const App = () => {
-
 	// const [_reRender, setreRender] = useState(0)
 
 	// useEffect(() => {
 	// 	setreRender(Math.random())
 	// }, [userId, authToken])
 
-	console.log("renderApp")
+	console.log('renderApp');
 
 	return (
 		<AppContext.Provider

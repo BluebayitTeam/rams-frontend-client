@@ -57,10 +57,16 @@ function FuseTheme(props) {
 		document.body.dir = direction;
 	}, [direction]);
 
+	const errorHandler = () => {
+		history.push('/pages/errors/error-404');
+	};
+
 	// console.warn('FuseTheme:: rendered',mainTheme);
 	return (
 		<>
+			{/* <ErrorBoundary FallbackComponent={<>huh</>} onError={() => errorHandler()}> */}
 			<ThemeProvider theme={mainTheme}>{props.children}</ThemeProvider>
+			{/* </ErrorBoundary> */}
 		</>
 	);
 }
