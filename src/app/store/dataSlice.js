@@ -22,12 +22,15 @@ import {
 	GET_USERS_WITHOUT_PAGINATION,
 	GET_VENDORS_WITHOUT_PAGINATION,
 	GROUPS_WITHOUT_PAGINATION,
+	LEDGERS_WITHOUT_PAGINATION,
 	MEDICALCENTERS_WITHOUT_PAGINATION,
 	ORDERSTATUS,
 	PASSENGERS_WITHOUT_PAGINATION,
 	PASSENGERTYPES_WITHOUT_PAGINATION,
 	PAYMENTMATHODS,
+	PRIMARY_GROUPS_WITHOUT_PAGINATION,
 	PROFESSIONS_WITHOUT_PAGINATION,
+	SUBLEDGERS_WITHOUT_PAGINATION,
 	THANAS_BASED_CITY,
 	VISAENTRYS_WITHOUT_PAGINATION
 } from 'app/constant/constants';
@@ -227,6 +230,13 @@ export const getGroups = () => dispatch => {
 		.catch(() => {});
 };
 
+export const getPrimaryGroups = () => dispatch => {
+	fetch(PRIMARY_GROUPS_WITHOUT_PAGINATION)
+		.then(response => response.json())
+		.then(data => dispatch(setPrimaryGroups(data.primary_groups)))
+		.catch(() => {});
+};
+
 export const getDesignations = () => dispatch => {
 	const authTOKEN = {
 		headers: {
@@ -333,6 +343,20 @@ export const getPassengers = () => dispatch => {
 		});
 };
 
+export const getLedgers = () => dispatch => {
+	fetch(LEDGERS_WITHOUT_PAGINATION)
+		.then(response => response.json())
+		.then(data => dispatch(setLedgers(data.ledger_accounts)))
+		.catch(() => {});
+};
+
+export const getSubLedgers = () => dispatch => {
+	fetch(SUBLEDGERS_WITHOUT_PAGINATION)
+		.then(response => response.json())
+		.then(data => dispatch(setSubLedgers(data.sub_ledgers)))
+		.catch(() => {});
+};
+
 const dataSlice = createSlice({
 	name: 'employeeManagement/data',
 	initialState: {
@@ -360,6 +384,7 @@ const dataSlice = createSlice({
 		parentMenus: [],
 		nestedMenus: [],
 		groups: [],
+		primaryGroups: [],
 		designations: [],
 		professions: [],
 		demands: [],
@@ -370,7 +395,9 @@ const dataSlice = createSlice({
 		currentStatuss: [],
 		visaEntries: [],
 		medicalCenters: [],
-		passengers: []
+		passengers: [],
+		ledgers: [],
+		subLedgers: []
 	},
 	reducers: {
 		setBranches: (state, action) => {
@@ -442,6 +469,9 @@ const dataSlice = createSlice({
 		setGroups: (state, action) => {
 			state.groups = action.payload ? action.payload : [];
 		},
+		setPrimaryGroups: (state, action) => {
+			state.primaryGroups = action.payload ? action.payload : [];
+		},
 		setDesignations: (state, action) => {
 			state.designations = action.payload ? action.payload : [];
 		},
@@ -474,6 +504,12 @@ const dataSlice = createSlice({
 		},
 		setPassengers: (state, action) => {
 			state.passengers = action.payload ? action.payload : [];
+		},
+		setLedgers: (state, action) => {
+			state.ledgers = action.payload ? action.payload : [];
+		},
+		setSubLedgers: (state, action) => {
+			state.subLedgers = action.payload ? action.payload : [];
 		}
 	}
 });
@@ -481,16 +517,13 @@ const dataSlice = createSlice({
 const {
 	setBranches,
 	setVendors,
-	setGenders,
 	setThanas,
 	setRoles,
 	setDepartments,
 	setCities,
 	setCountries,
 	setPermissions,
-	setAttributeset,
 	setEmployees,
-	setProducts,
 	setAttributes,
 	// setCitys,
 	setUsers,
@@ -502,6 +535,7 @@ const {
 	setParentMenus,
 	setAllMenuNested,
 	setGroups,
+	setPrimaryGroups,
 	setDesignations,
 	setProfessions,
 	setDemands,
@@ -512,6 +546,8 @@ const {
 	setCurrentStatuses,
 	setVisaEntries,
 	setMedicalCenters,
-	setPassengers
+	setPassengers,
+	setLedgers,
+	setSubLedgers
 } = dataSlice.actions;
 export default dataSlice.reducer;

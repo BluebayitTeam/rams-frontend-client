@@ -1,21 +1,22 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { makeStyles, Tabs } from '@material-ui/core';
+import { Button, makeStyles, Tabs, Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject';
-import { FEMALECV_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import { FEMALECV_BY_PASSENGER_ID } from 'app/constant/constants';
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { resetFemaleCV } from '../store/femaleCVSlice';
-import reducer from '../store/index.js';
-import FemaleCVForm from './FemaleCVForm.js';
-import NewFemaleCVHeader from './NewFemaleCVHeader.js';
+import reducer from '../store/index';
+import FemaleCVForm from './FemaleCVForm';
+import NewFemaleCVHeader from './NewFemaleCVHeader';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -122,6 +123,7 @@ const FemaleCV = () => {
 									<Autocomplete
 										className={`w-full max-w-320 h-48 ${classes.container}`}
 										freeSolo
+										autoHighlight
 										value={value ? passengers.find(data => data.id == value) : null}
 										options={passengers}
 										getOptionLabel={option =>

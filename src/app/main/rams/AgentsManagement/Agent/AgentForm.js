@@ -143,7 +143,7 @@ function AgentForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? groups.find(data => data.id == value) : null}
+						value={value ? groups.find(data => data.id === value) : null}
 						options={groups}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -375,7 +375,7 @@ function AgentForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? genders.find(data => data.id == value) : null}
+						value={value ? genders.find(data => data.id === value) : null}
 						options={genders}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -642,7 +642,7 @@ function AgentForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? thanas.find(data => data.id == value) : null}
+						value={value ? thanas.find(data => data.id === value) : null}
 						options={thanas}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -675,7 +675,7 @@ function AgentForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? cities.find(data => data.id == value) : null}
+						value={value ? cities.find(data => data.id === value) : null}
 						options={cities}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -709,7 +709,7 @@ function AgentForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? countries.find(data => data.id == value) : null}
+						value={value ? countries.find(data => data.id === value) : null}
 						options={countries}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -840,56 +840,9 @@ function AgentForm(props) {
 				{image && !previewImage && <img src={`${BASE_URL}${image}`} />}
 
 				<div style={{ width: '100px', height: '100px' }}>
-					<img
-						src={previewImage}
-						//alt="no image found"
-					/>
+					<img src={previewImage} />
 				</div>
 			</div>
-
-			{/* <Controller
-                name="date_of_birth"
-                control={control}
-                render={({ field }) => (
-                    <CustomDatePicker
-                        {...field}
-                        field={field}
-                        className="mt-8 mb-16"
-                        id="date_of_birth"
-                        label="Birthday"
-                        error={!!errors.date_of_birth}
-                        required
-                        helperText={errors?.date_of_birth?.message}
-                        type="date"
-                        // defaultValue="2017-05-24"
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                )}
-            />
-
-            <Controller
-                name="date_of_birth"
-                control={control}
-                render={({ field }) => (
-                    <KeyboardDatePicker
-                        {...field}
-                        autoOk
-                        className="w-full mt-8 mb-16"
-                        variant="inline"
-                        inputVariant="outlined"
-                        label="label"
-                        defaultValue="dd/mm/yyyy"
-                        format="dd/MM/yyyy"
-                        error={!!errors.date_of_birth}
-                        helperText={errors.date_of_birth?.message || ""}
-                        onChange={value => field.onChange(moment(value).format("YYYY-MM-DD"))}
-                        InputAdornmentProps={{ position: "start" }}
-                    />
-                )}
-            /> */}
 		</div>
 	);
 }

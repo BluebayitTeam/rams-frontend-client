@@ -1,5 +1,5 @@
 import { Checkbox } from '@material-ui/core';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 const ColumnLabel = ({ column, dispatchTableColumns }) => {
 	const [isEditeMode, setIsEditeMode] = useState(false);
@@ -40,4 +40,4 @@ const ColumnLabel = ({ column, dispatchTableColumns }) => {
 	);
 };
 
-export default ColumnLabel;
+export default memo(ColumnLabel);

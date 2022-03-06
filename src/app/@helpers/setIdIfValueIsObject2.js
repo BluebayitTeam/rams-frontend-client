@@ -1,14 +1,21 @@
 import _ from 'lodash';
 
-const setIdIfValueIsObject2 = (object = {}) => {
+const setIdIfValueIsObject2 = object => {
+	const conVertedObject = JSON.parse(JSON.stringify(object));
 
-    const conVertedObject = object
+	try {
+		for (let x in conVertedObject) {
+			if (_.isObject(conVertedObject[x])) {
+				conVertedObject[x] = conVertedObject[x]?.id;
+			}
+		}
+	} catch (err) {
+		console.log({ err });
+	}
 
-    for (let x in conVertedObject) {
-        if (_.isObject(conVertedObject[x])) conVertedObject[x] = conVertedObject[x]?.id
-    }
+	console.log('conVertedObject', conVertedObject);
 
-    return conVertedObject
-}
+	return conVertedObject;
+};
 
-export default setIdIfValueIsObject2
+export default setIdIfValueIsObject2;

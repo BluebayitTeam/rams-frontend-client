@@ -1,76 +1,85 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
-    },
-    "parser": "babel-eslint",
-    "extends": [
-        "react-app",
-        "airbnb",
-        "plugin:prettier/recommended",
-    ],
-    "plugins": [
-        "prettier"
-    ],
-    "settings": {
-        "import/resolver": {
-            "node": {
-                "paths": [
-                    "src"
-                ]
-            }
-        }
-    },
-    "rules": {
-        "prettier/prettier": [
-            "warn",
-            {
-                "endOfLine": "auto"
-            }
-        ],
-        "react/jsx-filename-extension": [
-            "warn",
-            {
-                "extensions": [
-                    ".js",
-                    ".jsx"
-                ]
-            }
-        ],
-        "import/no-extraneous-dependencies": [
-            "error",
-            {
-                "devDependencies": true
-            }
-        ],
-        "no-unused-expressions": "off",
-        "spaced-comment": [
-            "warn",
-            "always"
-        ],
-        "no-unreachable": "warn",
-        "no-unused-vars": "off",
-        "no-param-reassign": "off",
-        "no-console": "off",
-        "no-use-before-define": "off",
-        "no-nested-ternary": "off",
-        "no-underscore-dangle": "off",
-        "import/no-unresolved": "off",
-        "no-constant-condition": "off",
-        "global-require": "off",
-        "react/no-array-index-key": "off",
-        "react/no-unescaped-entities": "off",
-        "react/destructuring-assignment": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/state-in-constructor": "off",
-        "react/no-danger": "off",
-        "react/prop-types": "off",
-        "react/forbid-prop-types": "off",
-        "react/require-default-props": "off",
-        "react/default-props-match-prop-types": "off",
-        "react/no-unused-prop-types": "off",
-        "react/react-in-jsx-scope": "off",
-        "react/jsx-uses-react": "off"
-    }
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"parser": "babel-eslint",
+	"extends": ["react-app", "airbnb", "plugin:prettier/recommended"],
+	"plugins": ["prettier"],
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"paths": ["src"]
+			}
+		}
+	},
+	"rules": {
+		"eqeqeq": "off",
+		"no-shadow": "off",
+		"camelcase": [0],
+		"jsx-a11y/iframe-has-title": "off",
+		"no-return-assign": "off",
+		"jsx-a11y/mouse-events-have-key-events": "off",
+		"jsx-a11y/click-events-have-key-events": "off",
+		"jsx-a11y/no-static-element-interactions": "off",
+		"react/jsx-boolean-value": "off",
+		"prettier/prettier": "off",
+		"array-callback-return": "off",
+		"react-hooks/exhaustive-deps": "off",
+		"no-useless-escape": "off",
+		"jsx-a11y/no-noninteractive-element-interactions": "off",
+		"react/jsx-filename-extension": "off",
+		"no-restricted-syntax": "off",
+		"guard-for-in":"off",
+		"prefer-const": "off",
+		"no-unneeded-ternary":"off",
+		"no-useless-catch": "off",
+		"react/no-unknown-property": "off",
+		"no-restricted-globals":"off",
+		"operator-assignment": "off",
+		"prefer-template": "off",
+		"default-case":"off",
+		"jsx-a11y/alt-text": [0],
+		"jsx-a11y/no-autofocus": "off",
+		"no-debugger": "off",
+		"react/jsx-curly-brace-presence" : [0],
+		"react/self-closing-comp": "off",
+		"use-isnan" : "off",
+		"import/prefer-default-export": "off",
+		"prefer-destructuring":"off",
+		"consistent-return":"off",
+		"no-else-return": "off",
+		"react/button-has-type": "off",
+		"radix": "off",
+		"no-useless-return": "off",
+		"import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+		"no-unused-expressions": "off",
+		"spaced-comment": "off",
+		"no-unreachable": "off",
+		"no-unused-vars": "off",
+		"no-param-reassign": "off",
+		"no-console": "off",
+		"no-plusplus": "off",
+		"no-use-before-define": "off",
+		"no-nested-ternary": "off",
+		"no-underscore-dangle": "off",
+		"import/no-unresolved": "off",
+		"no-constant-condition": "off",
+		"global-require": "off",
+		"react/no-array-index-key": "off",
+		"react/no-unescaped-entities": "off",
+		"react/destructuring-assignment": "off",
+		"react/jsx-props-no-spreading": "off",
+		"react/state-in-constructor": "off",
+		"react/no-danger": "off",
+		"react/prop-types": "off",
+		"react/forbid-prop-types": "off",
+		"react/require-default-props": "off",
+		"react/default-props-match-prop-types": "off",
+		"react/no-unused-prop-types": "off",
+		"react/react-in-jsx-scope": "off",
+		"react/jsx-uses-react": "off"
+	}
 }
+

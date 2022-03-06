@@ -2,122 +2,107 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { CREATE_MEDICAL, DELETE_MEDICAL, UPDATE_MEDICAL } from '../../../../constant/constants';
 
+export const removeMedical = createAsyncThunk('medicalManagement/medical/removeMedical', async val => {
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
 
-export const removeMedical = createAsyncThunk(
-    'medicalManagement/medical/removeMedical',
-    async (val) => {
+	const medicalId = val.id;
+	const response = await axios.delete(`${DELETE_MEDICAL}${medicalId}`, authTOKEN);
+	return response;
+});
 
-        const authTOKEN = {
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: localStorage.getItem('jwt_access_token'),
-            }
-        };
+export const updateMedical = createAsyncThunk('medicalManagement/medical/updateMedical', async medicalData => {
+	const madicalDatas = { ...medicalData, created_by: '' };
 
-        const medicalId = val.id;
-        const response = await axios.delete(`${DELETE_MEDICAL}${medicalId}`, authTOKEN);
-        return response
-    }
-);
+	function buildFormData(formData, data, parentKey) {
+		if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+			Object.keys(data).forEach(key => {
+				buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+			});
+		} else {
+			const value = data == null ? '' : data;
 
-export const updateMedical = createAsyncThunk(
-    'medicalManagement/medical/updateMedical',
-    async (medicalData) => {
+			formData.append(parentKey, value);
+		}
+	}
 
-        const madicalDatas = { ...medicalData, created_by: "" }
+	function jsonToFormData(data) {
+		const formData = new FormData();
 
-        function buildFormData(formData, data, parentKey) {
-            if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-                Object.keys(data).forEach(key => {
-                    buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-                });
-            } else {
-                const value = data == null ? '' : data;
+		buildFormData(formData, data);
 
-                formData.append(parentKey, value);
-            }
-        }
+		return formData;
+	}
 
-        function jsonToFormData(data) {
-            const formData = new FormData();
+	const getFormDateFJ = jsonToFormData(madicalDatas);
 
-            buildFormData(formData, data);
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'multipart/form-data',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	const response = await axios.put(`${UPDATE_MEDICAL}${medicalData.id}`, getFormDateFJ, authTOKEN);
+	return response;
+});
 
-            return formData;
-        }
+export const saveMedical = createAsyncThunk('medicalManagement/medical/saveMedical', async medicalData => {
+	const madicalDatas = { ...medicalData, updated_by: '' };
 
-        const getFormDateFJ = jsonToFormData(madicalDatas)
+	function buildFormData(formData, data, parentKey) {
+		if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+			Object.keys(data).forEach(key => {
+				buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+			});
+		} else {
+			const value = data == null ? '' : data;
 
-        const authTOKEN = {
-            headers: {
-                'Content-type': 'multipart/form-data',
-                Authorization: localStorage.getItem('jwt_access_token'),
-            }
-        };
-        const response = await axios.put(`${UPDATE_MEDICAL}${medicalData.id}`, getFormDateFJ, authTOKEN);
-        return response
-    }
+			formData.append(parentKey, value);
+		}
+	}
 
-)
+	function jsonToFormData(data) {
+		const formData = new FormData();
 
-export const saveMedical = createAsyncThunk(
-    'medicalManagement/medical/saveMedical',
-    async (medicalData) => {
+		buildFormData(formData, data);
 
-        const madicalDatas = { ...medicalData, updated_by: "" }
+		return formData;
+	}
 
-        function buildFormData(formData, data, parentKey) {
-            if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-                Object.keys(data).forEach(key => {
-                    buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-                });
-            } else {
-                const value = data == null ? '' : data;
+	const getFormDateFJ = jsonToFormData(madicalDatas);
 
-                formData.append(parentKey, value);
-            }
-        }
-
-        function jsonToFormData(data) {
-            const formData = new FormData();
-
-            buildFormData(formData, data);
-
-            return formData;
-        }
-
-        const getFormDateFJ = jsonToFormData(madicalDatas)
-
-        const authTOKEN = {
-            headers: {
-                'Content-type': 'multipart/form-data',
-                Authorization: localStorage.getItem('jwt_access_token'),
-            }
-        };
-        const response = await axios.post(`${CREATE_MEDICAL}`, getFormDateFJ, authTOKEN)
-        return response
-    }
-)
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'multipart/form-data',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	const response = await axios.post(`${CREATE_MEDICAL}`, getFormDateFJ, authTOKEN);
+	return response;
+});
 
 const medicalSlice = createSlice({
-    name: 'medicalManagement/medical',
-    initialState: null,
-    reducers: {
-        resetMedical: () => null,
-        newMedical: {
-            reducer: (state, action) => action.payload,
-            prepare: event => ({
-                payload: {}
-            })
-        }
-    },
-    extraReducers: {
-        [saveMedical.fulfilled]: (state, action) => action.payload,
-        [removeMedical.fulfilled]: (state, action) => action.payload,
-        [updateMedical.fulfilled]: (state, action) => action.payloHea
-    }
-})
-
+	name: 'medicalManagement/medical',
+	initialState: null,
+	reducers: {
+		resetMedical: () => null,
+		newMedical: {
+			reducer: (state, action) => action.payload,
+			prepare: event => ({
+				payload: {}
+			})
+		}
+	},
+	extraReducers: {
+		[saveMedical.fulfilled]: (state, action) => action.payload,
+		[removeMedical.fulfilled]: (state, action) => action.payload,
+		[updateMedical.fulfilled]: (state, action) => action.payload
+	}
+});
 
 export const { newMedical, resetMedical } = medicalSlice.actions;
 

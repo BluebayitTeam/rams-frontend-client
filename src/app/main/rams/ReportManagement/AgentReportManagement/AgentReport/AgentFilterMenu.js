@@ -1,22 +1,13 @@
-import {
-	faCalendarAlt,
-	faChevronDown,
-	faCity,
-	faPhoneAlt,
-	faQrcode,
-	faTimesCircle,
-	faUser,
-	faUsers
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { makeStyles, TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
-import { DatePicker } from '@material-ui/pickers';
+import { faCity, faPhoneAlt, faQrcode, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { makeStyles } from '@material-ui/core';
 import { getCities, getGroups } from 'app/store/dataSlice';
-import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import Keyword from '../../reportComponents/Keyword';
+import ReportDatePicker from '../../reportComponents/ReportDatePicker';
+import ReportSelect from '../../reportComponents/ReportSelect';
+import ReportTextField from '../../reportComponents/ReportTextField';
 import { getReportFilterMakeStyles } from '../../reportUtils/reportMakeStyls';
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +31,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 	const groups = useSelector(state => state.data.groups);
 
 	const methods = useFormContext();
-	const { control, getValues, setValue } = methods;
+	const { getValues } = methods;
 	const values = getValues();
 
 	useEffect(() => {
@@ -48,438 +39,95 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 		dispatch(getGroups());
 	}, []);
 
+	const commonFieldProps = {
+		setReRender,
+		onEnter: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+	};
+
+	const commonKewordProps = {
+		setReRender,
+		onClick: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+	};
+
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
 				{/* user name */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faUser} />
-
-					<input
-						ref={userNameEl}
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								setValue('username', e.target.value);
-								inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-								userNameEl.current.blur();
-								userNameEl.current.value = '';
-								setReRender(Math.random());
-							}
-						}}
-						onFocus={() => (userNameEl.current.value = userNameEl.current.value || values.username || '')}
-						className="textField"
-						style={{ width: '75px' }}
-						placeholder="User Name"
-					/>
-				</div>
+				<ReportTextField
+					{...commonFieldProps}
+					name="username"
+					label="User Name"
+					domEl={userNameEl}
+					icon={faUser}
+					width="75px"
+				/>
 
 				{/* group */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faUsers} />
-
-					<div
-						className="selectLabel"
-						style={{
-							width: values.groupFocused ? '0px' : '40px',
-							margin: values.groupFocused ? '0px' : '2px 5px 0px 10px'
-						}}
-						onClick={() => {
-							setValue('groupFocused', true);
-							setReRender(Math.random());
-							setTimeout(() => document.getElementById('groupEl').focus(), 300);
-						}}
-					>
-						Group
-					</div>
-					<FontAwesomeIcon
-						className="selectOpenIcon cursor-pointer"
-						style={{
-							width: values.groupFocused ? '0px' : '15px',
-							margin: values.groupFocused ? '0px' : '2px 10px 0px 0px'
-						}}
-						onClick={() => {
-							setValue('groupFocused', true);
-							setReRender(Math.random());
-							setTimeout(() => document.getElementById('groupEl').focus(), 300);
-						}}
-						icon={faChevronDown}
-					/>
-
-					<Controller
-						name="group"
-						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								id="groupEl"
-								className="mb-3 selectField"
-								style={{
-									width: values.groupFocused ? '130px' : '0px',
-									margin: values.groupFocused ? '0px 10px' : '0px',
-									display: values.groupFocused ? 'block' : 'none'
-								}}
-								classes={{ endAdornment: 'endAdornment' }}
-								openOnFocus={true}
-								onClose={() => {
-									setValue('groupFocused', false);
-									setReRender(Math.random());
-								}}
-								freeSolo
-								options={groups}
-								value={value ? groups.find(data => data.id == value) : null}
-								getOptionLabel={option => `${option.name}`}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-									setValue('groupName', newValue?.name || '');
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-								}}
-								renderInput={params => (
-									<TextField
-										{...params}
-										className="textFieldUnderSelect"
-										placeholder="Select group"
-									/>
-								)}
-							/>
-						)}
-					/>
-				</div>
+				<ReportSelect {...commonFieldProps} name="group" options={groups} icon={faUsers} width="40px" />
 
 				{/* phone */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faPhoneAlt} />
-
-					<input
-						ref={primaryPhoneEl}
-						className="textField"
-						style={{ width: '45px' }}
-						placeholder="Phone"
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								setValue('primary_phone', e.target.value);
-								inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-								primaryPhoneEl.current.blur();
-								primaryPhoneEl.current.value = '';
-								setReRender(Math.random());
-							}
-						}}
-						onFocus={() =>
-							(primaryPhoneEl.current.value = primaryPhoneEl.current.value || values.primary_phone || '')
-						}
-					/>
-				</div>
+				<ReportTextField
+					{...commonFieldProps}
+					name="primary_phone"
+					label="Phone"
+					domEl={primaryPhoneEl}
+					icon={faPhoneAlt}
+					width="45px"
+				/>
 
 				{/* district */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faCity} />
-
-					<div
-						className="selectLabel"
-						style={{
-							width: values.districtFocused ? '0px' : '45px',
-							margin: values.districtFocused ? '0px' : '2px 5px 0px 10px'
-						}}
-						onClick={() => {
-							setValue('districtFocused', true);
-							setReRender(Math.random());
-							setTimeout(() => document.getElementById('districtEl').focus(), 300);
-						}}
-					>
-						District
-					</div>
-					<FontAwesomeIcon
-						className="selectOpenIcon cursor-pointer"
-						style={{
-							width: values.districtFocused ? '0px' : '15px',
-							margin: values.districtFocused ? '0px' : '2px 10px 0px 0px'
-						}}
-						onClick={() => {
-							setValue('districtFocused', true);
-							setReRender(Math.random());
-							setTimeout(() => document.getElementById('districtEl').focus(), 300);
-						}}
-						icon={faChevronDown}
-					/>
-
-					<Controller
-						name="district"
-						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								id="districtEl"
-								className="mb-3 selectField"
-								style={{
-									width: values.districtFocused ? '130px' : '0px',
-									margin: values.districtFocused ? '0px 10px' : '0px',
-									display: values.districtFocused ? 'block' : 'none'
-								}}
-								classes={{ endAdornment: 'endAdornment' }}
-								openOnFocus={true}
-								onClose={() => {
-									setValue('districtFocused', false);
-									setReRender(Math.random());
-								}}
-								freeSolo
-								options={districts}
-								value={value ? districts.find(data => data.id == value) : null}
-								getOptionLabel={option => `${option.name}`}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-									setValue('ditrictName', newValue?.name || '');
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-								}}
-								renderInput={params => (
-									<TextField
-										{...params}
-										className="textFieldUnderSelect"
-										placeholder="Select District"
-									/>
-								)}
-							/>
-						)}
-					/>
-				</div>
+				<ReportSelect {...commonFieldProps} name="district" options={districts} icon={faCity} width="45px" />
 
 				{/* Agent Code */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon className="icon" icon={faQrcode} />
-
-					<input
-						ref={agentCodeEl}
-						className="textField"
-						style={{ width: '77px' }}
-						placeholder="Agent Code"
-						onKeyDown={e => {
-							if (e.key === 'Enter') {
-								setValue('agent_code', e.target.value);
-								inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-								agentCodeEl.current.blur();
-								agentCodeEl.current.value = '';
-								setReRender(Math.random());
-							}
-						}}
-						onFocus={() =>
-							(agentCodeEl.current.value = agentCodeEl.current.value || values.agent_code || '')
-						}
-					/>
-				</div>
+				<ReportTextField
+					{...commonFieldProps}
+					name="agent_code"
+					domEl={agentCodeEl}
+					icon={faQrcode}
+					width="77px"
+				/>
 
 				{/* date from */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('dateAfterEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('dateAfterEl').click()}>
-						Date From
-					</div>
-
-					<Controller
-						name="date_after"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="dateAfterEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									maxDate={values.date_before || new Date()}
-									value={field.value || ''}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div>
+				<ReportDatePicker
+					{...commonFieldProps}
+					name="date_after"
+					label="Date From"
+					maxDate={values.date_before || new Date()}
+				/>
 
 				{/* date to */}
-				<div className="fieldContainer">
-					<FontAwesomeIcon
-						className="icon cursor-pointer"
-						icon={faCalendarAlt}
-						onClick={() => document.getElementById('dateBeforeEl').click()}
-					/>
-
-					<div className="dateLabel" onClick={() => document.getElementById('dateBeforeEl').click()}>
-						Date To
-					</div>
-
-					<Controller
-						name="date_before"
-						control={control}
-						render={({ field }) => {
-							return (
-								<DatePicker
-									id="dateBeforeEl"
-									className="hidden"
-									autoOk
-									clearable
-									format={'dd/MM/yyyy'}
-									value={field.value || ''}
-									minDate={values.date_after}
-									maxDate={new Date()}
-									onChange={value => {
-										value
-											? field.onChange(moment(new Date(value)).format('YYYY-MM-DD'))
-											: field.onChange('');
-										setReRender(Math.random());
-										inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									}}
-								/>
-							);
-						}}
-					/>
-				</div>
+				<ReportDatePicker
+					{...commonFieldProps}
+					name="date_before"
+					label="Date To"
+					minDate={values.date_after}
+					maxDate={new Date()}
+				/>
 			</div>
 
 			{/* keywords */}
 			<div className="allKeyWrdContainer">
-				{values.username && (
-					<div className="keywordContainer">
-						<b>User Name</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faUser} />
-							<p>{values.username}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('username', '');
-									userNameEl.current.value = '';
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.groupName && (
-					<div className="keywordContainer">
-						<b>Group</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faUsers} />
-							<p>{values.groupName}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('groupName', '');
-									setValue('group', '');
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.primary_phone && (
-					<div className="keywordContainer">
-						<b>Phone</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faPhoneAlt} />
-							<p>{values.primary_phone}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('primary_phone', '');
-									primaryPhoneEl.current.value = '';
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.ditrictName && (
-					<div className="keywordContainer">
-						<b>District</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCity} />
-							<p>{values.ditrictName}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('ditrictName', '');
-									setValue('district', '');
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.agent_code && (
-					<div className="keywordContainer">
-						<b>Agent Code</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faQrcode} />
-							<p>{values.agent_code}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('agent_code', '');
-									agentCodeEl.current.value = '';
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.date_after && (
-					<div className="keywordContainer">
-						<b>Date From</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.date_after)).format('DD-MM-YYYY')}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('date_after', '');
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
-
-				{values.date_before && (
-					<div className="keywordContainer">
-						<b>Date To</b>
-						<div>
-							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.date_before)).format('DD-MM-YYYY')}</p>
-							<FontAwesomeIcon
-								className="closeIconWithKeyWord"
-								icon={faTimesCircle}
-								onClick={() => {
-									setValue('date_before', '');
-									inShowAllMode ? handleGetAllAgents() : handleGetAgents();
-									setReRender(Math.random());
-								}}
-							/>
-						</div>
-					</div>
-				)}
+				<Keyword
+					{...commonKewordProps}
+					type="text"
+					name="username"
+					label="User Name"
+					domEl={userNameEl}
+					icon={faUser}
+				/>
+				<Keyword {...commonKewordProps} type="select" name="group" icon={faUsers} />
+				<Keyword
+					{...commonKewordProps}
+					type="text"
+					name="primary_phone"
+					label="Phone"
+					domEl={primaryPhoneEl}
+					icon={faPhoneAlt}
+				/>
+				<Keyword {...commonKewordProps} type="select" name="district" icon={faCity} />
+				<Keyword {...commonKewordProps} type="text" name="agent_code" domEl={agentCodeEl} icon={faQrcode} />
+				<Keyword {...commonKewordProps} type="date" name="date_after" label="Date From" />
+				<Keyword {...commonKewordProps} type="date" name="date_before" label="Date To" />
 			</div>
 		</div>
 	);

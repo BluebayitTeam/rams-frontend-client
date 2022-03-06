@@ -449,7 +449,99 @@ const navigationConfig = [
 			}
 		]
 	},
-
+	//accounts
+	{
+		id: 'accounts',
+		title: 'Acounts',
+		translate: 'Acounts',
+		type: 'collapse',
+		icon: 'people',
+		url: '',
+		exact: true,
+		children: [
+			//group
+			{
+				id: 'groups',
+				title: 'Groups',
+				translate: 'Groups',
+				type: 'item',
+				url: '/apps/group-management/groups',
+				exact: true
+			},
+			//ledger
+			{
+				id: 'ledgers',
+				title: 'Ledgers',
+				translate: 'Ledgers',
+				type: 'item',
+				url: '/apps/ledger-management/ledgers',
+				exact: true
+			},
+			//subLedger
+			{
+				id: 'subLedgers',
+				title: 'SubLedgers',
+				translate: 'SubLedgers',
+				type: 'item',
+				url: '/apps/subLedger-management/subLedgers',
+				exact: true
+			},
+			//paymentVoucher
+			{
+				id: 'paymentVouchers',
+				title: 'Payment Vouchers',
+				translate: 'Payment Vouchers',
+				type: 'item',
+				url: '/apps/paymentVoucher-management/paymentVouchers',
+				exact: true
+			},
+			//receiptVoucher
+			{
+				id: 'receiptVouchers',
+				title: 'Receipt Vouchers',
+				translate: 'Receipt Vouchers',
+				type: 'item',
+				url: '/apps/receiptVoucher-management/receiptVouchers',
+				exact: true
+			},
+			//receivableBill
+			{
+				id: 'receivableBills',
+				title: 'Receivable Bills',
+				translate: 'Receivable Bills',
+				type: 'item',
+				url: '/apps/receivableBill-management/receivableBills',
+				exact: true
+			},
+			//payableBill
+			{
+				id: 'payableBills',
+				title: 'Rayable Bills',
+				translate: 'Rayable Bills',
+				type: 'item',
+				url: '/apps/payableBill-management/payableBills',
+				exact: true
+			},
+			//contra
+			{
+				id: 'contras',
+				title: 'Contras',
+				translate: 'Contras',
+				type: 'item',
+				url: '/apps/contra-management/contras',
+				exact: true
+			},
+			//journal
+			{
+				id: 'journals',
+				title: 'Journals',
+				translate: 'Journals',
+				type: 'item',
+				url: '/apps/journal-management/journals',
+				exact: true
+			}
+		]
+	},
 	//Report
 	{
 		id: 'report',
@@ -460,6 +552,81 @@ const navigationConfig = [
 		url: '',
 		exact: true,
 		children: [
+			//acount reports
+			{
+				id: 'accountReport',
+				title: 'Account Reports',
+				translate: 'Account Reports',
+				type: 'collapse',
+				icon: 'report',
+				url: '',
+				exact: true,
+				children: [
+					// receipt
+					{
+						id: 'receiptreport',
+						title: 'Receipt Report',
+						translate: 'Receipt Report',
+						type: 'item',
+						url: '/apps/report-management/receipt-reports',
+						exact: true
+					},
+					// receipt summary
+					{
+						id: 'receiptsummaryreport',
+						title: 'Receipt Summary Report',
+						translate: 'Receipt Summary Report',
+						type: 'item',
+						url: '/apps/report-management/receipt-summary-reports',
+						exact: true
+					},
+					// payment
+					{
+						id: 'paymentreport',
+						title: 'Payment Report',
+						translate: 'Payment Report',
+						type: 'item',
+						url: '/apps/report-management/payment-reports',
+						exact: true
+					},
+					// payment summary
+					{
+						id: 'paymentsummaryreport',
+						title: 'Payment Summary Report',
+						translate: 'Payment Summary Report',
+						type: 'item',
+						url: '/apps/report-management/payment-summary-reports',
+						exact: true
+					},
+					// ledger
+					{
+						id: 'ledgerreport',
+						title: 'Ledger Report',
+						translate: 'Ledger Report',
+						type: 'item',
+						url: '/apps/report-management/ledger-reports',
+						exact: true
+					},
+					// account statement
+					{
+						id: 'accountstatementreport',
+						title: 'Account Statement Report',
+						translate: 'Account Statement Report',
+						type: 'item',
+						url: '/apps/report-management/account-statement-reports',
+						exact: true
+					},
+					// account statement summary
+					{
+						id: 'accountSummaryReport',
+						title: 'Account Summary Report',
+						translate: 'Account Summary Report',
+						type: 'item',
+						url: '/apps/report-management/account-statement-summary-reports',
+						exact: true
+					}
+				]
+			},
 			//aggent report
 			{
 				id: 'agentReport',
@@ -493,7 +660,100 @@ const navigationConfig = [
 				title: 'Embassy Report',
 				translate: 'Embassy Report',
 				type: 'item',
-				url: '/apps/embassys/report',
+				url: '/apps/embassies/report',
+				exact: true
+			},
+			//mofa report
+			{
+				id: 'mofaReport',
+				title: 'Mofa Report',
+				translate: 'Mofa Report',
+				type: 'item',
+				url: '/apps/mofas/report',
+				exact: true
+			},
+			//training report
+			{
+				id: 'trainingReport',
+				title: 'Training Report',
+				translate: 'Training Report',
+				type: 'item',
+				url: '/apps/trainings/report',
+				exact: true
+			},
+			//manPower report
+			{
+				id: 'manPowerReport',
+				title: 'ManPower Report',
+				translate: 'ManPower Report',
+				type: 'item',
+				url: '/apps/man_powers/report',
+				exact: true
+			},
+			//flight report
+			{
+				id: 'flightReport',
+				title: 'Flight Report',
+				translate: 'Flight Report',
+				type: 'item',
+				url: '/apps/flights/report',
+				exact: true
+			},
+			//passenger_summary report
+			{
+				id: 'passenger_summaryReport',
+				title: 'Passenger Summary Report',
+				translate: 'Passenger Summary Report',
+				type: 'item',
+				url: '/apps/passenger_summarys/report',
+				exact: true
+			},
+			//Make A List report
+			// {
+			// 	id: 'makeAListReport',
+			// 	title: 'Make A List',
+			// 	translate: 'Make A List',
+			// 	type: 'item',
+			// 	url: '/apps/report-management/make-a-list-report',
+			// 	exact: true
+			// },
+			//makeAList
+			{
+				id: 'makeALists',
+				title: 'Make A List',
+				translate: 'Make A List',
+				type: 'item',
+				url: '/apps/makeAList-management/makeALists',
+				exact: true
+			}
+		]
+	},
+	//form
+	{
+		id: 'form',
+		title: 'Form',
+		translate: 'Form',
+		type: 'collapse',
+		icon: 'people',
+		url: '',
+		exact: true,
+		children: [
+			//bmet
+			{
+				id: 'bmet',
+				title: 'Bmet Form',
+				translate: 'Bmet Form',
+				type: 'item',
+				url: '/apps/bmet-management/bmet-form',
+				exact: true
+			},
+			//ksa_visa
+			{
+				id: 'ksa_visa',
+				title: 'Visa Form',
+				translate: 'Visa Form',
+				type: 'item',
+				url: '/apps/ksa-visa-management/ksa-visa-form',
 				exact: true
 			}
 		]

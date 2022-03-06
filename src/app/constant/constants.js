@@ -1,8 +1,8 @@
 //http://api.cashconnectbd.com
-//http://192.168.0.172:8001
+//http://192.168.0.8:8002
 
 //base url
-export const BASE_URL = 'http://192.168.0.172:8002';
+export const BASE_URL = 'http://192.168.0.9:8002';
 
 //login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -106,6 +106,9 @@ export const USERS_PASSWORDCHANGE = `${BASE_URL}/user/api/v1/user/passwordchange
 //group
 export const GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/group/api/v1/group/without_pagination/all/`;
 
+//primary group
+export const PRIMARY_GROUPS_WITHOUT_PAGINATION = `${BASE_URL}/primary_group/api/v1/primary_group/all/`;
+
 //designation
 export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/designation/without_pagination/all/`;
 
@@ -117,6 +120,8 @@ export const VISAENTRYS_WITHOUT_PAGINATION = `${BASE_URL}/visa_entry/api/v1/visa
 
 //profession
 export const PROFESSIONS_WITHOUT_PAGINATION = `${BASE_URL}/profession/api/v1/profession/all/`;
+
+export const BRANCH_BY_USER_ID = `${BASE_URL}/branch/api/v1/branch/get_a_branch_by_user_id/`;
 
 //demand
 export const DEMANDS_WITHOUT_PAGINATION = `${BASE_URL}/demand/api/v1/demand/all/`;
@@ -560,53 +565,111 @@ export const SEARCH_PAYMENTMETHOD = `${BASE_URL}/paymentmethod/api/v1/paymentmet
 // primary_group
 export const PRIMARY_GROUP = `${BASE_URL}/primary_group/api/v1/primary_group/all/`;
 
-// group
-export const CREATE_GROUP = `${BASE_URL}/group/api/v1/group/create/`;
-
-export const GET_GROUPID = `${BASE_URL}/group/api/v1/group/`;
-
-export const GET_GROUPS = `${BASE_URL}/group/api/v1/group/all/`;
-
-export const UPDATE_GROUP = `${BASE_URL}/group/api/v1/group/update/`;
-
-export const DELETE_GROUP = `${BASE_URL}/group/api/v1/group/delete/`;
-
-// ledger
-export const CREATE_LEDGER = `${BASE_URL}/`;
-
-export const GET_LEDGERID = `${BASE_URL}/`;
-
-export const GET_LEDGERS = `${BASE_URL}/`;
-
-export const UPDATE_LEDGER = `${BASE_URL}/`;
-
-export const DELETE_LEDGER = `${BASE_URL}/`;
-
-// sub-ledger
-export const CREATE_SUBLEDGER = `${BASE_URL}/`;
-
-export const GET_SUBLEDGERID = `${BASE_URL}/`;
-
-export const GET_SUBLEDGERS = `${BASE_URL}/`;
-
-export const UPDATE_SUBLEDGER = `${BASE_URL}/`;
-
-export const DELETE_SUBLEDGER = `${BASE_URL}/`;
-
-// payment-voucher
+//paymentVoucher
 export const CREATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/create/`;
 
-export const GET_PAYMENTVOUCHERID = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/`;
+export const GET_PAYMENTVOUCHERS = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/all`;
 
-export const GET_PAYMENTVOUCHERS = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/all/`;
+export const GET_PAYMENTVOUCHER_BY_ID = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/`;
 
 export const UPDATE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/update/`;
 
 export const DELETE_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/delete/`;
 
-export const SEARCH_PAYMENT_VOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/search/`;
+export const DELETE_PAYMENTVOUCHER_MULTIPLE = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/delete_multiple/`;
 
-export const GET_PAYMENT_VOUCHER_BY_INVOICE_NUMBER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
+export const SEARCH_PAYMENTVOUCHER = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/search/`;
+
+export const GET_PAYMENT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_by_invoice_no/`;
+
+export const GET_PAYMENT_VOUCHER_ID_NAME_BY = `${BASE_URL}/payment_voucher/api/v1/payment_voucher/payment_voucher_with_id_name_dict_by_invoice_no/`;
+
+//receiptVoucher
+export const CREATE_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/create/`;
+
+export const GET_RECEIPTVOUCHERS = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/all`;
+
+export const GET_RECEIPTVOUCHER_BY_ID = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/`;
+
+export const UPDATE_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/update/`;
+
+export const DELETE_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/delete/`;
+
+export const DELETE_RECEIPTVOUCHER_MULTIPLE = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/delete_multiple/`;
+
+export const SEARCH_RECEIPTVOUCHER = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/search/`;
+
+export const GET_RECEIPT_VOUCHER_BY_INVOICE_NO = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/receipt_voucher_by_invoice_no/`;
+
+export const GET_RECEIPT_VOUCHER_ID_NAME_BY = `${BASE_URL}/receipt_voucher/api/v1/receipt_voucher/receipt_voucher_by_invoice_no/`;
+
+//sales
+export const CREATE_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/create/`;
+
+export const GET_RECEIVABLEBILLS = `${BASE_URL}/sales/api/v1/sales/all`;
+
+export const GET_RECEIVABLEBILL_BY_ID = `${BASE_URL}/sales/api/v1/sales/`;
+
+export const UPDATE_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/update/`;
+
+export const DELETE_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/delete/`;
+
+export const DELETE_RECEIVABLEBILL_MULTIPLE = `${BASE_URL}/sales/api/v1/sales/delete_multiple/`;
+
+export const SEARCH_RECEIVABLEBILL = `${BASE_URL}/sales/api/v1/sales/search/`;
+
+export const GET_RECEIVABLEBILL_BY_INVOICE_NO = `${BASE_URL}/sales/api/v1/sales/receipt_voucher_by_invoice_no/`;
+
+//purchases
+export const CREATE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/create/`;
+
+export const GET_PAYABLEBILLS = `${BASE_URL}/purchase/api/v1/purchase/all`;
+
+export const GET_PAYABLEBILL_BY_ID = `${BASE_URL}/purchase/api/v1/purchase/`;
+
+export const UPDATE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/update/`;
+
+export const DELETE_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/delete/`;
+
+export const DELETE_PAYABLEBILL_MULTIPLE = `${BASE_URL}/purchase/api/v1/purchase/delete_multiple/`;
+
+export const SEARCH_PAYABLEBILL = `${BASE_URL}/purchase/api/v1/purchase/search/`;
+
+export const GET_PAYABLEBILL_BY_INVOICE_NO = `${BASE_URL}/purchase/api/v1/purchase/purchase_by_invoice_no/`;
+
+//contras
+export const CREATE_CONTRA = `${BASE_URL}/contra/api/v1/contra/create/`;
+
+export const GET_CONTRAS = `${BASE_URL}/contra/api/v1/contra/all`;
+
+export const GET_CONTRA_BY_ID = `${BASE_URL}/contra/api/v1/contra/`;
+
+export const UPDATE_CONTRA = `${BASE_URL}/contra/api/v1/contra/update/`;
+
+export const DELETE_CONTRA = `${BASE_URL}/contra/api/v1/contra/delete/`;
+
+export const DELETE_CONTRA_MULTIPLE = `${BASE_URL}/contra/api/v1/contra/delete_multiple/`;
+
+export const SEARCH_CONTRA = `${BASE_URL}/contra/api/v1/contra/search/`;
+
+export const GET_CONTRA_BY_INVOICE_NO = `${BASE_URL}/contra/api/v1/contra/contra_by_invoice_no/`;
+
+//journals
+export const CREATE_JOURNAL = `${BASE_URL}/journal/api/v1/journal/create/`;
+
+export const GET_JOURNALS = `${BASE_URL}/journal/api/v1/journal/all`;
+
+export const GET_JOURNAL_BY_ID = `${BASE_URL}/journal/api/v1/journal/`;
+
+export const UPDATE_JOURNAL = `${BASE_URL}/journal/api/v1/journal/update/`;
+
+export const DELETE_JOURNAL = `${BASE_URL}/journal/api/v1/journal/delete/`;
+
+export const DELETE_JOURNAL_MULTIPLE = `${BASE_URL}/journal/api/v1/journal/delete_multiple/`;
+
+export const SEARCH_JOURNAL = `${BASE_URL}/journal/api/v1/journal/search/`;
+
+export const GET_JOURNAL_BY_INVOICE_NO = `${BASE_URL}/journal/api/v1/journal/journal_by_invoice_no/`;
 
 // site_settings
 export const CREATE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_setting/create/`;
@@ -816,6 +879,10 @@ export const PASSENGER_FILTER_BY = `${BASE_URL}/report/api/v1/passenger_report/f
 
 export const PASSENGER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/passenger_report/without_pagination/filter/`;
 
+export const PASSENGER_SUMMARY_FILTER_BY = `${BASE_URL}/report/api/v1/de_ag_ve_pa_me_mo_ow_mo_em_tr_mp_fl_report/filter/`;
+
+export const PASSENGER_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/de_ag_ve_pa_me_mo_ow_mo_em_tr_mp_fl_report/filter/`;
+
 //medical
 export const CREATE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/create/`;
 
@@ -840,7 +907,7 @@ export const UPDATE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_c
 
 export const DELETE_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/delete/`;
 
-export const DELETE_MEDICALCENTER_MULTIPLE = `${BASE_URL}​/medical_center/api/v1/medical_center/delete_multiple/`;
+export const DELETE_MEDICALCENTER_MULTIPLE = `${BASE_URL}/medical_center/api/v1/medical_center/delete_multiple/`;
 
 export const SEARCH_MEDICALCENTER = `${BASE_URL}/medical_center/api/v1/medical_center/search/`;
 
@@ -868,6 +935,10 @@ export const DELETE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/delete/`;
 
 export const MOFA_BY_PASSENGER_ID = `${BASE_URL}/mofa/api/v1/mofa/get_by_passenger_id/`;
 
+export const MOFA_FILTER_BY = `${BASE_URL}/report/api/v1/mofa_report/filter/`;
+
+export const MOFA_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/mofa_report/without_pagination/filter/`;
+
 //female_cv
 export const CREATE_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/create/`;
 
@@ -885,6 +956,10 @@ export const UPDATE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/update/`;
 export const DELETE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/delete/`;
 
 export const FLIGHT_BY_PASSENGER_ID = `${BASE_URL}/flight/api/v1/flight/get_by_passenger_id/`;
+
+export const FLIGHT_FILTER_BY = `${BASE_URL}/report/api/v1/flight_report/filter/`;
+
+export const FLIGHT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/flight_report/without_pagination/filter/`;
 
 //male_cv
 export const CREATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/create/`;
@@ -931,6 +1006,10 @@ export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
 
 export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;
 
+export const TRAINING_FILTER_BY = `${BASE_URL}/report/api/v1/training_report/filter/`;
+
+export const TRAINING_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/training_report/without_pagination/filter/`;
+
 //visa_cancel_list
 export const CREATE_VISACANCELLIST = `${BASE_URL}/visa_cancel_list/api/v1/visa_cancel_list/create/`;
 
@@ -958,6 +1037,12 @@ export const DELETE_VISASUBMISSIONLIST = `${BASE_URL}/visa_submission_list/api/v
 
 export const VISASUBMISSIONLIST_BY_PASSENGER_ID = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/get_by_passenger_id/`;
 
+export const VISASBLISTS = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/all/`;
+
+export const VISASBLISTS_BY_DATE = `${BASE_URL}/form/api/v1/form/get_visa_submission_list_data_by_date_or_passenger_id/`;
+
+export const VISASBLISTS_WITHOUT_PG = `${BASE_URL}/visa_submission_list/api/v1/visa_submission_list/all/`;
+
 //man_power
 export const CREATE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/create/`;
 
@@ -967,6 +1052,10 @@ export const DELETE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/delete/`;
 
 export const MANPOWER_BY_PASSENGER_ID = `${BASE_URL}/man_power/api/v1/man_power/check_embassy_by_passenger_id/`;
 
+export const MANPOWER_FILTER_BY = `${BASE_URL}/report/api/v1/man_power_report/filter/`;
+
+export const MANPOWER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/man_power_report/without_pagination/filter/`;
+
 //calling_emb_attestation
 export const CREATE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/create/`;
 
@@ -975,3 +1064,153 @@ export const UPDATE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation
 export const DELETE_CALLINGEMBATTESTATION = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/delete/`;
 
 export const CALLINGEMBATTESTATION_BY_PASSENGER_ID = `${BASE_URL}/calling_emb_attestation/api/v1/calling_emb_attestation/get_a_calling_emb_attestation_by_passenger_id/`;
+
+//ledger
+export const CREATE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/create/`;
+
+export const GET_LEDGERS = `${BASE_URL}/ledger_account/api/v1/ledger_account/all`;
+
+export const GET_LEDGER_BY_ID = `${BASE_URL}/ledger_account/api/v1/ledger_account/`;
+
+export const UPDATE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/update/`;
+
+export const DELETE_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/delete/`;
+
+export const DELETE_LEDGER_MULTIPLE = `${BASE_URL}/ledger_account/api/v1/ledger_account/delete_multiple/`;
+
+export const SEARCH_LEDGER = `${BASE_URL}/ledger_account/api/v1/ledger_account/search/`;
+
+export const LEDGERS_WITHOUT_PAGINATION = `${BASE_URL}/ledger_account/api/v1/ledger_account/all`;
+
+//subLedger
+export const CREATE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/create/`;
+
+export const GET_SUBLEDGERS = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/all`;
+
+export const GET_SUBLEDGER_BY_ID = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/`;
+
+export const UPDATE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/update/`;
+
+export const DELETE_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/delete/`;
+
+export const DELETE_SUBLEDGER_MULTIPLE = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/delete_multiple/`;
+
+export const SEARCH_SUBLEDGER = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/search/`;
+
+export const SUBLEDGERS_WITHOUT_PAGINATION = `${BASE_URL}/sub_ledger_account/api/v1/sub_ledger_account/all`;
+
+//group
+export const CREATE_GROUP = `${BASE_URL}/group/api/v1/group/create/`;
+
+export const GET_GROUPS = `${BASE_URL}/group/api/v1/group/all`;
+
+export const GET_GROUP_BY_ID = `${BASE_URL}/group/api/v1/group/`;
+
+export const UPDATE_GROUP = `${BASE_URL}/group/api/v1/group/update/`;
+
+export const DELETE_GROUP = `${BASE_URL}/group/api/v1/group/delete/`;
+
+export const DELETE_GROUP_MULTIPLE = `${BASE_URL}/group/api/v1/group/delete_multiple/`;
+
+export const SEARCH_GROUP = `${BASE_URL}/group/api/v1/group/search/`;
+
+//bmet
+export const CREATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/create/`;
+
+export const GET_BMETS = `${BASE_URL}/bmet/api/v1/bmet/all`;
+
+export const GET_BMET_BY_ID = `${BASE_URL}/form/api/v1/form/get_bmet_form_data_by_passenger_id_or_passport_no_or_office_serial/`;
+
+export const UPDATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/update/`;
+
+export const DELETE_BMET = `${BASE_URL}/bmet/api/v1/bmet/delete/`;
+
+export const DELETE_BMET_MULTIPLE = `${BASE_URL}/bmet/api/v1/bmet/delete_multiple/`;
+
+export const SEARCH_BMET = `${BASE_URL}/bmet/api/v1/bmet/search/`;
+
+//ksa_visa
+export const CREATE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/create/`;
+
+export const GET_KSAVISAS = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/all`;
+
+export const GET_KSAVISA_BY_ID = `${BASE_URL}/form/api/v1/form/get_ksa_visa_form_data_by_passenger_id_or_passport_no_or_office_serial/`;
+
+export const UPDATE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/update/`;
+
+export const DELETE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete/`;
+
+export const DELETE_KSAVISA_MULTIPLE = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete_multiple/`;
+
+export const SEARCH_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/search/`;
+
+//reports
+
+//account statement
+export const ACCOUNTSTATEMENT_FILTER_BY = `${BASE_URL}/account_log_report/api/v1/account_log_report/by_ledger_type/`;
+
+export const ACCOUNTSTATEMENT_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/api/v1/account_log_report/by_ledger_type/`;
+
+//account statement summary
+export const ACCOUNTSUMMARY_FILTER_BY = `${BASE_URL}/account_log_report/api/v1/account_log_report/get_total_cash_dr_cr_bank_dr_cr/`;
+
+export const ACCOUNTSUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/api/v1/account_log_report/get_total_cash_dr_cr_bank_dr_cr/`;
+
+//ledger
+export const LEDGER_FILTER_BY = `${BASE_URL}/account_log_report/api/v1/account_log_report/general/`;
+
+export const LEDGER_FILTER_WITHOUT_PG = `${BASE_URL}/account_log_report/api/v1/account_log_report/general/`;
+
+//sub ledger
+export const PAYMENT_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/report_for_payment_voucher/`;
+
+export const PAYMENT_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/report_for_payment_voucher/`;
+
+// payment-summary
+export const PAYMENT_SUMMARY_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/summary_for_payment_voucher/`;
+
+export const PAYMENT_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/summary_for_payment_voucher/`;
+
+//receipt voucher
+export const RECEIPT_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/report_for_receipt_voucher/`;
+
+export const RECEIPT_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/report_for_receipt_voucher/`;
+
+// receipt-summary
+export const RECEIPT_SUMMARY_FILTER_BY = `${BASE_URL}/account_report/api/v1/account_report/summary_for_receipt_voucher/`;
+
+export const RECEIPT_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/account_report/summary_for_receipt_voucher/`;
+
+//make_list
+export const CREATE_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/create/`;
+
+export const GET_MAKEALISTS = `${BASE_URL}/make_list/api/v1/make_list/all`;
+
+export const GET_MAKEALIST_BY_ID = `${BASE_URL}/make_list/api/v1/make_list/`;
+
+export const UPDATE_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/update/`;
+
+export const DELETE_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/delete/`;
+
+export const DELETE_MAKEALIST_MULTIPLE = `${BASE_URL}/make_list/api/v1/make_list/delete_multiple/`;
+
+export const SEARCH_MAKEALIST = `${BASE_URL}/make_list/api/v1/make_list/search/`;
+
+//make a list clm
+export const MAKE_A_LIST_CLMS = `${BASE_URL}/make_list_column/api/v1/make_list_column/all/`;
+
+export const UPDATE_MAKEALIST_CLM = `${BASE_URL}/make_list_column/api/v1/make_list_column/update/`;
+
+export const GET_MAKEALIST_CLM_BY_LIST_ID = `${BASE_URL}/make_list_column/api/v1/make_list_column/get_by_make_list_id/`;
+
+//make a list row
+export const CREATE_MAKEALIST_ROW = `${BASE_URL}/make_list_item/api/v1/make_list_item/create/`;
+
+export const DELETE_MAKEALIST_ROW = `${BASE_URL}/make_list_item/api/v1/make_list_item/delete/`;
+
+export const GET_MAKEALIST_ROW_BY_LIST_ID = `${BASE_URL}/make_list_item/api/v1/make_list_item/get_by_make_list_id/`;
+
+//make a list report
+export const GET_MAKEALIST_REPORT_BY_ID = `${BASE_URL}/make_list/api/v1/make_list/get_make_list_with_make_list_item_and_make_list_columns/`;
+
+export const GET_MAKEALIST_REPORT_BY_ID_NO_PG = `${BASE_URL}/make_list/api/v1/make_list/get_make_list_with_make_list_item_and_make_list_columns_without_pagination/`;

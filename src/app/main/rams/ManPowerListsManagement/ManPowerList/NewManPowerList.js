@@ -1,21 +1,22 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { makeStyles, Tabs } from '@material-ui/core';
+import { Button, makeStyles, Tabs, Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
-import { MANPOWERLIST_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject';
+import { MANPOWERLIST_BY_PASSENGER_ID } from 'app/constant/constants';
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import { resetManPowerList } from '../store/manPowerListSlice';
-import ManPowerListForm from './ManPowerListForm.js';
-import NewManPowerListHeader from './NewManPowerListHeader.js';
+import ManPowerListForm from './ManPowerListForm';
+import NewManPowerListHeader from './NewManPowerListHeader';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -125,6 +126,7 @@ const ManPowerList = () => {
 									<Autocomplete
 										className={`w-full max-w-320 h-48 ${classes.container}`}
 										freeSolo
+										autoHighlight
 										value={value ? passengers.find(data => data.id == value) : null}
 										options={passengers}
 										getOptionLabel={option =>

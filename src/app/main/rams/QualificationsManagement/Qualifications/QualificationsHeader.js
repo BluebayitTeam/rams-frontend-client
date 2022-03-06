@@ -13,60 +13,57 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setQualificationsSearchText } from '../store/qualificationsSlice';
 
-
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "20%",
-		minWidth: "250px",
-		height: "35px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: '20%',
+		minWidth: '250px',
+		height: '35px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
 
 const QualificationsHeader = () => {
-
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ qualificationsManagement }) => qualificationsManagement.qualifications.searchText);
+	const searchText = useSelector(
+		({ qualificationsManagement }) => qualificationsManagement.qualifications.searchText
+	);
 
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem("qualificationAlert")
+		const alert = localStorage.getItem('qualificationAlert');
 
-		if (alert === "saveQualification") {
-			setAlertOpen(true)
-			setAlertMessage("Add Success...")
-			localStorage.removeItem("qualificationAlert")
+		if (alert === 'saveQualification') {
+			setAlertOpen(true);
+			setAlertMessage('Add Success...');
+			localStorage.removeItem('qualificationAlert');
 		}
-		if (alert === "updateQualification") {
-			setAlertOpen(true)
-			setAlertMessage("Update Success...")
-			localStorage.removeItem("qualificationAlert")
+		if (alert === 'updateQualification') {
+			setAlertOpen(true);
+			setAlertMessage('Update Success...');
+			localStorage.removeItem('qualificationAlert');
 		}
-		if (alert === "deleteQualification") {
-			setAlertOpen(true)
-			setAlertMessage("Remove Success...")
-			localStorage.removeItem("qualificationAlert")
+		if (alert === 'deleteQualification') {
+			setAlertOpen(true);
+			setAlertMessage('Remove Success...');
+			localStorage.removeItem('qualificationAlert');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
-	}, [])
-
+			setAlertOpen(false);
+		}, 3000);
+	}, []);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -110,9 +107,9 @@ const QualificationsHeader = () => {
 								'aria-label': 'Search'
 							}}
 							// onBlur={ev => dispatch(setQualificationsSearchText(ev))}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setQualificationsSearchText(ev))
+									dispatch(setQualificationsSearchText(ev));
 								}
 							}}
 						/>
@@ -132,14 +129,21 @@ const QualificationsHeader = () => {
 				</Button>
 			</motion.div>
 
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}
 			</Alert>
-
 		</div>
 	);
 };

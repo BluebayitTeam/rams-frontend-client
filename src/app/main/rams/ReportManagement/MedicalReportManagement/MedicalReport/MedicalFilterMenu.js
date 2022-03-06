@@ -73,7 +73,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 									autoOk
 									clearable
 									format={'dd/MM/yyyy'}
-									maxDate={values.report_date_bofore || new Date()}
+									maxDate={values.report_date_before || new Date()}
 									value={field.value || ''}
 									onChange={value => {
 										value
@@ -101,7 +101,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 
 					<Controller
-						name="report_date_bofore"
+						name="report_date_before"
 						control={control}
 						render={({ field }) => {
 							return (
@@ -150,7 +150,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 									autoOk
 									clearable
 									format={'dd/MM/yyyy'}
-									maxDate={values.expiry_date_bofore}
+									maxDate={values.expiry_date_before}
 									value={field.value || ''}
 									onChange={value => {
 										value
@@ -178,7 +178,7 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 
 					<Controller
-						name="expiry_date_bofore"
+						name="expiry_date_before"
 						control={control}
 						render={({ field }) => {
 							return (
@@ -659,17 +659,17 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 				)}
 
-				{values.report_date_bofore && (
+				{values.report_date_before && (
 					<div className="keywordContainer">
 						<b>M.Rpt To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.report_date_bofore)).format('DD-MM-YYYY')}</p>
+							<p>{moment(new Date(values.report_date_before)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
 								onClick={() => {
-									setValue('report_date_bofore', '');
+									setValue('report_date_before', '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}
@@ -697,17 +697,17 @@ function MedicalFilterMenu({ inShowAllMode, handleGetMedicals, handleGetAllMedic
 					</div>
 				)}
 
-				{values.expiry_date_bofore && (
+				{values.expiry_date_before && (
 					<div className="keywordContainer">
 						<b>M.Exp To</b>
 						<div>
 							<FontAwesomeIcon className="iconWithKeyWord" icon={faCalendarAlt} />
-							<p>{moment(new Date(values.expiry_date_bofore)).format('DD-MM-YYYY')}</p>
+							<p>{moment(new Date(values.expiry_date_before)).format('DD-MM-YYYY')}</p>
 							<FontAwesomeIcon
 								className="closeIconWithKeyWord"
 								icon={faTimesCircle}
 								onClick={() => {
-									setValue('expiry_date_bofore', '');
+									setValue('expiry_date_before', '');
 									inShowAllMode ? handleGetAllMedicals() : handleGetMedicals();
 									setReRender(Math.random());
 								}}

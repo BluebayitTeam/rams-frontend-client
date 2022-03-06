@@ -4,8 +4,8 @@ import { makeStyles, Tabs } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
 import { doneNotDone } from 'app/@data/data';
-import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject.js';
-import { OFFICEWORK_BY_PASSENGER_ID } from 'app/constant/constants.js';
+import setIdIfValueIsObject from 'app/@helpers/setIdIfValueIsObject';
+import { OFFICEWORK_BY_PASSENGER_ID } from 'app/constant/constants';
 import withReducer from 'app/store/withReducer';
 import axios from 'axios';
 import React, { useEffect } from 'react';
@@ -13,9 +13,9 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
-import NewOfficeWorkHeader from './NewOfficeWorkHeader.js';
-import OfficeWorkForm from './OfficeWorkForm.js';
+import reducer from '../store/index';
+import NewOfficeWorkHeader from './NewOfficeWorkHeader';
+import OfficeWorkForm from './OfficeWorkForm';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -104,6 +104,7 @@ const OfficeWork = () => {
 									<Autocomplete
 										className={`w-full max-w-320 h-48 ${classes.container}`}
 										freeSolo
+										autoHighlight
 										disabled={!!fromSearch}
 										value={value ? passengers.find(data => data.id == value) : null}
 										options={passengers}

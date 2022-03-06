@@ -1,17 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
-import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2.js';
+import { Button, Typography } from '@material-ui/core';
 import withReducer from 'app/store/withReducer';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import reducer from '../store/index.js';
+import reducer from '../store/index';
 import { getVisaEntry, newVisaEntry, resetVisaEntry } from '../store/visaEntrySlice';
-import NewVisaEntryHeader from './NewVisaEntryHeader.js';
-import VisaEntryForm from './VisaEntryForm.js';
+import NewVisaEntryHeader from './NewVisaEntryHeader';
+import VisaEntryForm from './VisaEntryForm';
 
 /**
  * Form Validation Schema
@@ -83,7 +84,7 @@ const VisaEntry = () => {
 		/**
 		 * Reset the form on visaEntry state changes
 		 */
-		reset(setIdIfValueIsObject2(visaEntry));
+		reset(visaEntry);
 	}, [visaEntry, reset]);
 
 	useEffect(() => {

@@ -21,249 +21,240 @@ import { getUsers, selectUsers } from '../store/usersSlice';
 import UsersListTableHead from './UsersListTableHead';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: "flex",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        '& > *': {
-            marginTop: theme.spacing(1),
-            // marginBottom: theme.spacing(3),
-        }
-    }
-}))
+	root: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		flexWrap: 'wrap',
+		'& > *': {
+			marginTop: theme.spacing(1)
+			// marginBottom: theme.spacing(3),
+		}
+	}
+}));
 
-const UsersListTable = (props) => {
+const UsersListTable = props => {
+	const classes = useStyles();
+	const dispatch = useDispatch();
+	const users = useSelector(selectUsers);
+	const searchText = useSelector(({ employeesManagement }) => employeesManagement.usersList.searchText);
+	const [searchUser, setSearchUser] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [selected, setSelected] = useState([]);
 
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const users = useSelector(selectUsers);
-    const searchText = useSelector(({ employeesManagement }) => employeesManagement.usersList.searchText);
-    const [searchUser, setSearchUser] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selected, setSelected] = useState([]);
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(30);
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(30);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+	const totalPages = sessionStorage.getItem('total_userlist_pages');
+	const totalElements = sessionStorage.getItem('total_userlist_elements');
 
-    const totalPages = sessionStorage.getItem('total_userlist_pages');
-    const totalElements = sessionStorage.getItem('total_userlist_elements');
+	const [order, setOrder] = useState({
+		direction: 'asc',
+		id: null
+	});
+	let serialNumber = 1;
 
-    const [order, setOrder] = useState({
-        direction: 'asc',
-        id: null
-    });
-    let serialNumber = 1;
+	useEffect(() => {
+		dispatch(getUsers(pageAndSize)).then(() => setLoading(false));
+	}, [dispatch]);
 
-    useEffect(() => {
-        dispatch(getUsers(pageAndSize)).then(() => setLoading(false));
-    }, [dispatch]);
+	//searchCustomer
+	useEffect(() => {
+		searchText ? getSearchUser() : setSearchUser([]);
+	}, [searchText]);
 
+	const getSearchUser = () => {
+		fetch(`${SEARCH_USER}?username=${searchText}`)
+			.then(response => response.json())
+			.then(userData => {
+				setSearchUser(userData.users);
+			})
+			.catch(() => setSearchUser([]));
+	};
 
-    //searchCustomer
-    useEffect(() => {
-        searchText ? getSearchUser() : setSearchUser([]);
-    }, [searchText])
+	function handleRequestSort(event, property) {
+		const id = property;
+		let direction = 'desc';
 
-    const getSearchUser = () => {
-        fetch(`${SEARCH_USER}?username=${searchText}`)
-            .then(response => response.json())
-            .then(userData => {
-                setSearchUser(userData.users);
-            }).catch(() => setSearchUser([]))
-    }
+		if (order.id === property && order.direction === 'desc') {
+			direction = 'asc';
+		}
 
-    function handleRequestSort(event, property) {
-        const id = property;
-        let direction = 'desc';
+		setOrder({
+			direction,
+			id
+		});
+	}
 
-        if (order.id === property && order.direction === 'desc') {
-            direction = 'asc';
-        }
+	function handleSelectAllClick(event) {
+		if (event.target.checked) {
+			setSelected(users.map(n => n.id));
+			return;
+		}
+		setSelected([]);
+	}
 
-        setOrder({
-            direction,
-            id
-        });
-    }
+	function handleDeselect() {
+		setSelected([]);
+	}
 
-    function handleSelectAllClick(event) {
-        if (event.target.checked) {
-            setSelected(users.map(n => n.id));
-            return;
-        }
-        setSelected([]);
-    }
+	//pagination
+	const handlePagination = (e, handlePage) => {
+		setPageAndSize({ ...pageAndSize, page: handlePage });
+		setPage(handlePage - 1);
+		dispatch(getUsers({ ...pageAndSize, page: handlePage }));
+	};
 
-    function handleDeselect() {
-        setSelected([]);
-    }
+	function handleChangePage(event, value) {
+		setPage(value);
+		setPageAndSize({ ...pageAndSize, page: value + 1 });
+		dispatch(getUsers({ ...pageAndSize, page: value + 1 }));
+	}
 
-    //pagination
-    const handlePagination = (e, handlePage) => {
-        setPageAndSize({ ...pageAndSize, page: handlePage })
-        setPage(handlePage - 1)
-        dispatch(getUsers({ ...pageAndSize, page: handlePage }))
-    }
+	function handleChangeRowsPerPage(event) {
+		setRowsPerPage(event.target.value);
+		setPageAndSize({ ...pageAndSize, size: event.target.value });
+		dispatch(getUsers({ ...pageAndSize, size: event.target.value }));
+	}
 
-    function handleChangePage(event, value) {
-        setPage(value);
-        setPageAndSize({ ...pageAndSize, page: value + 1 })
-        dispatch(getUsers({ ...pageAndSize, page: value + 1 }))
-    }
+	if (loading) {
+		return <FuseLoading />;
+	}
 
-    function handleChangeRowsPerPage(event) {
-        setRowsPerPage(event.target.value);
-        setPageAndSize({ ...pageAndSize, size: event.target.value })
-        dispatch(getUsers({ ...pageAndSize, size: event.target.value }))
-    }
+	if (users?.length === 0) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There are no user!
+				</Typography>
+			</motion.div>
+		);
+	}
 
-    if (loading) {
-        return <FuseLoading />;
-    }
+	return (
+		<div className="w-full flex flex-col">
+			<FuseScrollbars className="flex-grow overflow-x-auto">
+				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+					<UsersListTableHead
+						selectedUserIds={selected}
+						order={order}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={users.length}
+						onMenuItemClick={handleDeselect}
+					/>
 
-    if (users?.length === 0) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                className="flex flex-1 items-center justify-center h-full"
-            >
-                <Typography color="textSecondary" variant="h5">
-                    There are no user!
-                </Typography>
-            </motion.div>
-        );
-    }
+					<TableBody>
+						{_.orderBy(
+							searchText !== '' && searchUser ? searchUser : users,
+							[
+								o => {
+									switch (order.id) {
+										case 'categories': {
+											return o.categories[0];
+										}
+										default: {
+											return o[order.id];
+										}
+									}
+								}
+							],
+							[order.direction]
+						).map(n => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-72 cursor-pointer"
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{serialNumber++}
+									</TableCell>
 
-    return (
-        <div className="w-full flex flex-col">
-            <FuseScrollbars className="flex-grow overflow-x-auto">
-                <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-                    <UsersListTableHead
-                        selectedUserIds={selected}
-                        order={order}
-                        onSelectAllClick={handleSelectAllClick}
-                        onRequestSort={handleRequestSort}
-                        rowCount={users.length}
-                        onMenuItemClick={handleDeselect}
-                    />
+									<TableCell className="h-52 px-4 md:px-0" component="th" scope="row" padding="none">
+										{n.image && n.featuredImageId ? (
+											<img
+												className="h-full block rounded"
+												style={{ borderRadius: '15' }}
+												src={_.find(n.image, { id: n.featuredImageId }).url}
+												alt={n.name}
+											/>
+										) : (
+											<img
+												className="h-full block rounded"
+												style={{ borderRadius: '15' }}
+												src={`${BASE_URL}${n.image}`}
+												alt={n.first_name}
+											/>
+										)}
+									</TableCell>
 
-                    <TableBody>
-                        {_.orderBy(
-                            searchText !== "" && searchUser ? searchUser : users,
-                            [
-                                o => {
-                                    switch (order.id) {
-                                        case 'categories': {
-                                            return o.categories[0];
-                                        }
-                                        default: {
-                                            return o[order.id];
-                                        }
-                                    }
-                                }
-                            ],
-                            [order.direction]
-                        )
-                            .map(n => {
-                                const isSelected = selected.indexOf(n.id) !== -1;
-                                return (
-                                    <TableRow
-                                        className="h-72 cursor-pointer"
-                                        hover
-                                        role="checkbox"
-                                        aria-checked={isSelected}
-                                        tabIndex={-1}
-                                        key={n.id}
-                                        selected={isSelected}
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.username}
+									</TableCell>
 
-                                    >
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.email}
+									</TableCell>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {serialNumber++}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										{n.secondary_phone}
+									</TableCell>
 
-                                        <TableCell
-                                            className="h-52 px-4 md:px-0"
-                                            component="th"
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            {n.image && n.featuredImageId ? (
-                                                <img
-                                                    className="h-full block rounded"
-                                                    style={{ borderRadius: '15' }}
-                                                    src={_.find(n.image, { id: n.featuredImageId }).url}
-                                                    alt={n.name}
-                                                />
-                                            ) : (
-                                                <img
-                                                    className="h-full block rounded"
-                                                    style={{ borderRadius: '15' }}
-                                                    src={`${BASE_URL}${n.image}`}
-                                                    alt={n.first_name}
-                                                />
-                                            )}
-                                        </TableCell>
+									<TableCell className="p-4 md:p-16" component="th" scope="row">
+										<Box component={Link} to={`/apps/users-management/forgot-password/${n.id}`}>
+											<VpnKeyIcon className="cursor-pointer" style={{ color: 'green' }} />
+										</Box>
+									</TableCell>
+								</TableRow>
+							);
+						})}
+					</TableBody>
+				</Table>
+			</FuseScrollbars>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.username}
-                                        </TableCell>
+			<div className={classes.root} id="pagiContainer">
+				<Pagination
+					classes={{ ul: 'flex-nowrap' }}
+					count={totalPages}
+					page={page + 1}
+					defaultPage={1}
+					color="primary"
+					showFirstButton
+					showLastButton
+					variant="outlined"
+					shape="rounded"
+					onChange={handlePagination}
+				/>
 
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.email}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            {n.secondary_phone}
-                                        </TableCell>
-
-                                        <TableCell className="p-4 md:p-16" component="th" scope="row">
-                                            <Box component={Link} to={`/apps/users-management/forgot-password/${n.id}`}>
-                                                <VpnKeyIcon className="cursor-pointer" style={{ color: 'green' }} />
-                                            </Box>
-                                        </TableCell>
-
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </FuseScrollbars>
-
-            <div className={classes.root} id="pagiContainer">
-                <Pagination
-                    count={totalPages}
-                    page={page + 1}
-                    defaultPage={1}
-                    color="primary"
-                    showFirstButton
-                    showLastButton
-                    variant="outlined"
-                    shape="rounded"
-                    onChange={handlePagination}
-                />
-
-                <TablePagination
-                    className="flex-shrink-0 border-t-1"
-                    rowsPerPageOptions={rowsPerPageOptions}
-                    component="div"
-                    count={totalElements}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page'
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page'
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </div>
-        </div>
-    );
+				<TablePagination
+					classes={{ root: 'overflow-visible' }}
+					rowsPerPageOptions={rowsPerPageOptions}
+					component="div"
+					count={totalElements}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					backIconButtonProps={{
+						'aria-label': 'Previous Page'
+					}}
+					nextIconButtonProps={{
+						'aria-label': 'Next Page'
+					}}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+				/>
+			</div>
+		</div>
+	);
 };
 
 export default withRouter(UsersListTable);

@@ -14,55 +14,52 @@ import { Link } from 'react-router-dom';
 import { setSitesettingsSearchText } from '../store/sitesettingsSlice';
 
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "20%",
-		height: "35px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: '20%',
+		height: '35px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
 
 const SitesettingsHeader = () => {
-
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ sitesettingsManagement }) => sitesettingsManagement.sitesettings.searchText);
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem("sitesettingAlert")
+		const alert = localStorage.getItem('sitesettingAlert');
 
-		if (alert === "saveSitesetting") {
-			setAlertOpen(true)
-			setAlertMessage("Add Success...")
-			localStorage.removeItem("sitesettingAlert")
+		if (alert === 'saveSitesetting') {
+			setAlertOpen(true);
+			setAlertMessage('Add Success...');
+			localStorage.removeItem('sitesettingAlert');
 		}
-		if (alert === "updateSitesetting") {
-			setAlertOpen(true)
-			setAlertMessage("Update Success...")
-			localStorage.removeItem("sitesettingAlert")
+		if (alert === 'updateSitesetting') {
+			setAlertOpen(true);
+			setAlertMessage('Update Success...');
+			localStorage.removeItem('sitesettingAlert');
 		}
-		if (alert === "deleteSitesetting") {
-			setAlertOpen(true)
-			setAlertMessage("Remove Success...")
-			localStorage.removeItem("sitesettingAlert")
+		if (alert === 'deleteSitesetting') {
+			setAlertOpen(true);
+			setAlertMessage('Remove Success...');
+			localStorage.removeItem('sitesettingAlert');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
-	}, [])
+			setAlertOpen(false);
+		}, 3000);
+	}, []);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -106,9 +103,9 @@ const SitesettingsHeader = () => {
 								'aria-label': 'Search'
 							}}
 							//onBlur={ev => dispatch(setSitesettingsSearchText(ev))}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setSitesettingsSearchText(ev))
+									dispatch(setSitesettingsSearchText(ev));
 								}
 							}}
 						/>
@@ -128,14 +125,21 @@ const SitesettingsHeader = () => {
 				</Button>
 			</motion.div>
 
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}
 			</Alert>
-
 		</div>
 	);
 };

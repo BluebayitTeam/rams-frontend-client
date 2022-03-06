@@ -13,29 +13,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setPermissionsSearchText } from '../store/permissionsSlice';
 
-
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "20%",
-		minWidth: "250px",
-		height: "35px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: '20%',
+		minWidth: '250px',
+		height: '35px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
 
 const PermissionsHeader = () => {
-
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ permissionsManagement }) => permissionsManagement.permissions.searchText);
@@ -43,30 +40,28 @@ const PermissionsHeader = () => {
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem("permissionAlert")
+		const alert = localStorage.getItem('permissionAlert');
 
-		if (alert === "savePermission") {
-			setAlertOpen(true)
-			setAlertMessage("Add Success...")
-			localStorage.removeItem("permissionAlert")
+		if (alert === 'savePermission') {
+			setAlertOpen(true);
+			setAlertMessage('Add Success...');
+			localStorage.removeItem('permissionAlert');
 		}
-		if (alert === "updatePermission") {
-			setAlertOpen(true)
-			setAlertMessage("Update Success...")
-			localStorage.removeItem("permissionAlert")
+		if (alert === 'updatePermission') {
+			setAlertOpen(true);
+			setAlertMessage('Update Success...');
+			localStorage.removeItem('permissionAlert');
 		}
-		if (alert === "deletePermission") {
-			setAlertOpen(true)
-			setAlertMessage("Remove Success...")
-			localStorage.removeItem("permissionAlert")
+		if (alert === 'deletePermission') {
+			setAlertOpen(true);
+			setAlertMessage('Remove Success...');
+			localStorage.removeItem('permissionAlert');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
-	}, [])
-
+			setAlertOpen(false);
+		}, 3000);
+	}, []);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -110,9 +105,9 @@ const PermissionsHeader = () => {
 								'aria-label': 'Search'
 							}}
 							// onBlur={ev => dispatch(setPermissionsSearchText(ev))}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setPermissionsSearchText(ev))
+									dispatch(setPermissionsSearchText(ev));
 								}
 							}}
 						/>
@@ -132,14 +127,21 @@ const PermissionsHeader = () => {
 				</Button>
 			</motion.div>
 
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}
 			</Alert>
-
 		</div>
 	);
 };

@@ -11,7 +11,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import setIdIfValueIsObject2 from '../../../../@helpers/setIdIfValueIsObject2';
 import { getEmployee, newEmployee, resetEmployee } from '../store/employeeSlice';
 import reducer from '../store/index';
 import PersonalInfoTab from '../tabs/PersonalInfoTab';
@@ -35,27 +34,12 @@ const schema = yup.object().shape({
 		.oneOf([yup.ref('password'), null], 'Passwords must match'),
 	primary_phone: yup.string().required('Primary phone is required'),
 	street_address_one: yup.string().required('Primary address is required'),
-	// date_of_birth: yup.string()
-	//     .required('Date of Birth is required'),
 	gender: yup.string().required('Gender is required'),
 	thana: yup.number().required('Police station is required'),
 	city: yup.number().required('District is required'),
 	country: yup.number().required('Country is required'),
 	role: yup.number().required('Role is required'),
 	department: yup.number().required('Department is required')
-
-	// designation: yup.string()
-	//     .required("Designation is required"),
-	// marital_status: yup.string()
-	//     .required("Marital Status is required"),
-	// father_name: yup.string()
-	//     .required("Father Name is required"),
-	// mother_name: yup.string()
-	//     .required("Mother Name is required"),
-	// spouse_name: yup.string()
-	//     .required("Spouse Name is required"),
-	// marriage_date: yup.string()
-	//     .required("Marriage Date is required"),
 });
 
 const NewEmployee = () => {
@@ -63,7 +47,6 @@ const NewEmployee = () => {
 	const employee = useSelector(({ employeesManagement }) => employeesManagement.employee);
 	const routeParams = useParams();
 	const [tabValue, setTabValue] = useState(0);
-	//console.log(routeParams);
 	const [noEmployee, setNoEmployee] = useState(false);
 	const methods = useForm({
 		mode: 'onChange',
@@ -75,7 +58,6 @@ const NewEmployee = () => {
 	useDeepCompareEffect(() => {
 		function updateEmployeeState() {
 			const { employeeId } = routeParams;
-			//console.log(employeeId);
 			if (employeeId === 'new') {
 				localStorage.removeItem('deleteEmployee');
 				localStorage.removeItem('updateEmployee');
@@ -111,15 +93,13 @@ const NewEmployee = () => {
 		/**
 		 * Reset the form on employee state changes
 		 */
-		reset(
-			setIdIfValueIsObject2({
-				...employee,
-				country_code1: '+880',
-				country_code2: '+880',
-				show_country_code1: '+880',
-				show_country_code2: '+880'
-			})
-		);
+		reset({
+			...employee,
+			country_code1: '+880',
+			country_code2: '+880',
+			show_country_code1: '+880',
+			show_country_code2: '+880'
+		});
 	}, [employee, reset]);
 
 	useEffect(() => {
@@ -163,12 +143,6 @@ const NewEmployee = () => {
 		);
 	}
 
-	/**
-	 * Wait while product data is loading and form is setted
-	 */
-	//  if (_.isEmpty(form) || (employee && routeParams.employeeId !== employee.id && routeParams.employeeId !== 'new')) {
-	//     return <FuseLoading />;
-	// }
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded

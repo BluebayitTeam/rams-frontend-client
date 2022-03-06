@@ -1,0 +1,86 @@
+import FusePageCarded from '@fuse/core/FusePageCarded';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Typography } from '@material-ui/core';
+import withReducer from 'app/store/withReducer';
+import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import * as yup from 'yup';
+import { resetBmet } from '../store/bmetSlice';
+import reducer from '../store/index';
+import BmetForm from './BmetForm';
+import NewBmetHeader from './NewBmetHeader';
+
+/**
+ * Form Validation Schema
+ */
+const schema = yup.object().shape({});
+
+const Bmet = () => {
+	const dispatch = useDispatch();
+	const bmet = useSelector(({ bmetsManagement }) => bmetsManagement.bmet);
+
+	const [noBmet, setNoBmet] = useState(false);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: yupResolver(schema)
+	});
+
+	useEffect(() => {
+		return () => {
+			/**
+			 * Reset Bmet on component unload
+			 */
+			dispatch(resetBmet());
+			setNoBmet(false);
+		};
+	}, [dispatch]);
+
+	/**
+	 * Show Message if the requested products is not exists
+	 */
+	if (noBmet) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography color="textSecondary" variant="h5">
+					There is no such bmet!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/e-commerce/products"
+					color="inherit"
+				>
+					Go to Bmet Page
+				</Button>
+			</motion.div>
+		);
+	}
+
+	return (
+		<FormProvider {...methods}>
+			<FusePageCarded
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-40 h-40'
+				}}
+				header={<NewBmetHeader />}
+				content={
+					<div className="max-w-2xl border bg-grey-200 border-grey-600 rounded-xl  mx-auto md:mt-2 min-w-fit">
+						<BmetForm />
+					</div>
+				}
+				innerScroll
+			/>
+		</FormProvider>
+	);
+};
+export default withReducer('bmetsManagement', reducer)(Bmet);

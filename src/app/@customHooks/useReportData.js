@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 
-const useReportData = (orginalData = [], row = 25) => {
+const useReportData = ({ initialData = [], row = 25, extraRowCount = 0 } = {}) => {
 	const [orginalArray, setOrginalArray] = useState([]);
 	const [data, setData] = useState([]);
 	const [sortBy, setSortBy] = useState('');
@@ -23,9 +23,11 @@ const useReportData = (orginalData = [], row = 25) => {
 			}
 
 			//modify array
-			let modifiedArr = [];
+			const modifiedArr = [];
 
-			const countTotalPage = Math.ceil(shortedArray?.length / size);
+			const lotalElements = shortedArray?.length;
+
+			const countTotalPage = Math.ceil((lotalElements ? lotalElements + extraRowCount : 0) / size);
 			const totalPage = isNaN(countTotalPage) ? 0 : countTotalPage;
 
 			for (let index = 0; index < totalPage; index++) {
@@ -34,6 +36,7 @@ const useReportData = (orginalData = [], row = 25) => {
 					size,
 					totalPage,
 					sortBy,
+					sortBySubKey,
 					data: shortedArray.slice(
 						index + index * size - (index && index),
 						index + index * size + size - (index && index)
@@ -46,7 +49,7 @@ const useReportData = (orginalData = [], row = 25) => {
 	};
 
 	useEffect(() => {
-		modifyData(orginalData, row);
+		modifyData(initialData, row);
 	}, []);
 
 	useEffect(() => {

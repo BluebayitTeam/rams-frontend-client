@@ -1,17 +1,19 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Tab, Tabs } from '@material-ui/core';
+import { Button, Tab, Tabs, Typography } from '@material-ui/core';
+import setIdIfValueIsObject2 from 'app/@helpers/setIdIfValueIsObject2';
 import withReducer from 'app/store/withReducer';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { getAgent, newAgent, resetAgent } from '../store/agentSlice';
-import reducer from '../store/index.js';
-import AgentForm from './AgentForm.js';
-import NewAgentHeader from './NewAgentHeader.js';
+import reducer from '../store/index';
+import AgentForm from './AgentForm';
+import NewAgentHeader from './NewAgentHeader';
 import OpeningBalance from './tabs/OpeningBalanceTab';
 
 /**
@@ -83,7 +85,7 @@ const Agent = () => {
 		/**
 		 * Reset the form on agent state changes
 		 */
-		reset(agent);
+		reset(setIdIfValueIsObject2(agent));
 	}, [agent, reset]);
 
 	useEffect(() => {

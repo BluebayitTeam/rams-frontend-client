@@ -21,7 +21,9 @@ const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		flexWrap: 'nowrap'
+		flexWrap: 'nowrap',
+		overflow: 'auto',
+		minHeight: '35px'
 	},
 	toolbar: {
 		'& > div': {
@@ -231,7 +233,8 @@ const SitesettingsTable = props => {
 			</FuseScrollbars>
 
 			<TablePagination
-				className="flex-shrink-0 border-t-1"
+				classes={{ root: 'overflow-visible' }}
+				// className="flex-shrink-0 border-t-1"
 				rowsPerPageOptions={[5, 10, 25]}
 				component="div"
 				count={data.length}

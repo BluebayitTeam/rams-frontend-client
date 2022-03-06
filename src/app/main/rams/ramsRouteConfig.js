@@ -141,7 +141,7 @@ const ramsRouteConfig = {
 		//menu
 		{
 			path: '/apps/menu-management/menus/:menuId/:menuName?',
-			component: lazy(() => import('./MenusManagement/Menu/NewMenu.js'))
+			component: lazy(() => import('./MenusManagement/Menu/NewMenu'))
 		},
 		{
 			path: '/apps/menu-management/menus',
@@ -155,7 +155,7 @@ const ramsRouteConfig = {
 		//roleMenu
 		{
 			path: '/apps/roleMenu-management/roleMenus/:roleMenuId/:roleMenuName?',
-			component: lazy(() => import('./RoleMenusManagement/RoleMenu/NewRoleMenu.js'))
+			component: lazy(() => import('./RoleMenusManagement/RoleMenu/NewRoleMenu'))
 		},
 		{
 			path: '/apps/roleMenu-management/roleMenus',
@@ -169,7 +169,7 @@ const ramsRouteConfig = {
 		//passengerType
 		{
 			path: '/apps/passengerType-management/passengerTypes/:passengerTypeId/:passengerTypeName?',
-			component: lazy(() => import('./PassengerTypesManagement/PassengerType/NewPassengerType.js'))
+			component: lazy(() => import('./PassengerTypesManagement/PassengerType/NewPassengerType'))
 		},
 		{
 			path: '/apps/passengerType-management/passengerTypes',
@@ -183,7 +183,7 @@ const ramsRouteConfig = {
 		//currentStatus
 		{
 			path: '/apps/currentStatus-management/currentStatuss/:currentStatusId/:currentStatusName?',
-			component: lazy(() => import('./CurrentStatussManagement/CurrentStatus/NewCurrentStatus.js'))
+			component: lazy(() => import('./CurrentStatussManagement/CurrentStatus/NewCurrentStatus'))
 		},
 		{
 			path: '/apps/currentStatus-management/currentStatuss',
@@ -209,7 +209,7 @@ const ramsRouteConfig = {
 		//agent
 		{
 			path: '/apps/agent-management/agents/:agentId/:agentName?',
-			component: lazy(() => import('./AgentsManagement/Agent/NewAgent.js'))
+			component: lazy(() => import('./AgentsManagement/Agent/NewAgent'))
 		},
 		{
 			path: '/apps/agent-management/agents',
@@ -222,7 +222,7 @@ const ramsRouteConfig = {
 		//demand
 		{
 			path: '/apps/demand-management/demands/:demandId/:demandName?',
-			component: lazy(() => import('./DemandsManagement/Demand/NewDemand.js'))
+			component: lazy(() => import('./DemandsManagement/Demand/NewDemand'))
 		},
 		{
 			path: '/apps/demand-management/demands',
@@ -235,7 +235,7 @@ const ramsRouteConfig = {
 		//recruitingAgency
 		{
 			path: '/apps/recruitingAgency-management/recruitingAgencys/:recruitingAgencyId/:recruitingAgencyName?',
-			component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgency/NewRecruitingAgency.js'))
+			component: lazy(() => import('./RecruitingAgencysManagement/RecruitingAgency/NewRecruitingAgency'))
 		},
 		{
 			path: '/apps/recruitingAgency-management/recruitingAgencys',
@@ -248,7 +248,7 @@ const ramsRouteConfig = {
 		//visaEntry
 		{
 			path: '/apps/visaEntry-management/visaEntrys/:visaEntryId/:visaEntryName?',
-			component: lazy(() => import('./VisaEntrysManagement/VisaEntry/NewVisaEntry.js'))
+			component: lazy(() => import('./VisaEntrysManagement/VisaEntry/NewVisaEntry'))
 		},
 		{
 			path: '/apps/visaEntry-management/visaEntrys',
@@ -261,7 +261,7 @@ const ramsRouteConfig = {
 		//passenger
 		{
 			path: '/apps/passenger-management/passenger/:passengerId/:passengerName?/:passengerType?',
-			component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger.js'))
+			component: lazy(() => import('./PassengersManagement/Passenger/NewPassenger'))
 		},
 		{
 			path: '/apps/passenger-management/passengers/:passengerType?',
@@ -386,8 +386,268 @@ const ramsRouteConfig = {
 		},
 		//embassyReport
 		{
-			path: '/apps/embassys/report',
+			path: '/apps/embassies/report',
 			component: lazy(() => import('./ReportManagement/EmbassyReportManagement/EmbassyReport/EmbassyReport'))
+		},
+		//mofa Report
+		{
+			path: '/apps/mofas/report',
+			component: lazy(() => import('./ReportManagement/MofaReportManagement/MofaReport/MofaReport'))
+		},
+		//training Report
+		{
+			path: '/apps/trainings/report',
+			component: lazy(() => import('./ReportManagement/TrainingReportManagement/TrainingReport/TrainingReport'))
+		},
+		//man_power Report
+		{
+			path: '/apps/man_powers/report',
+			component: lazy(() => import('./ReportManagement/ManPowerReportManagement/ManPowerReport/ManPowerReport'))
+		},
+		//flight Report
+		{
+			path: '/apps/flights/report',
+			component: lazy(() => import('./ReportManagement/FlightReportManagement/FlightReport/FlightReport'))
+		},
+		//passenger_summary Report
+		{
+			path: '/apps/passenger_summarys/report',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/PassengerSummaryReportManagement/PassengerSummaryReport/PassengerSummaryReport'
+				)
+			)
+		},
+		//ledger
+		{
+			path: '/apps/ledger-management/ledgers/:ledgerId/:ledgerName?',
+			component: lazy(() => import('./AllAccountManagement/LedgersManagement/Ledger/NewLedger'))
+		},
+		{
+			path: '/apps/ledger-management/ledgers',
+			component: lazy(() => import('./AllAccountManagement/LedgersManagement/Ledgers/Ledgers'))
+		},
+		{
+			path: '/apps/ledger-management/:ledgerId',
+			component: lazy(() => import('./AllAccountManagement/LedgersManagement/Ledger/NewLedger'))
+		},
+		//subLedger
+		{
+			path: '/apps/subLedger-management/subLedgers/:subLedgerId/:subLedgerName?',
+			component: lazy(() => import('./AllAccountManagement/SubLedgersManagement/SubLedger/NewSubLedger'))
+		},
+		{
+			path: '/apps/subLedger-management/subLedgers',
+			component: lazy(() => import('./AllAccountManagement/SubLedgersManagement/SubLedgers/SubLedgers'))
+		},
+		{
+			path: '/apps/subLedger-management/:subLedgerId',
+			component: lazy(() => import('./AllAccountManagement/SubLedgersManagement/SubLedger/NewSubLedger'))
+		},
+		//group
+		{
+			path: '/apps/group-management/groups/:groupId/:groupName?',
+			component: lazy(() => import('./AllAccountManagement/GroupsManagement/Group/NewGroup'))
+		},
+		{
+			path: '/apps/group-management/groups',
+			component: lazy(() => import('./AllAccountManagement/GroupsManagement/Groups/Groups'))
+		},
+		{
+			path: '/apps/group-management/:groupId',
+			component: lazy(() => import('./AllAccountManagement/GroupsManagement/Group/NewGroup'))
+		},
+		//paymentVoucher
+		{
+			path: '/apps/paymentVoucher-management/paymentVouchers/:paymentVoucherId/:paymentVoucherName?',
+			component: lazy(() =>
+				import('./AllAccountManagement/PaymentVouchersManagement/PaymentVoucher/NewPaymentVoucher')
+			)
+		},
+		{
+			path: '/apps/paymentVoucher-management/paymentVouchers',
+			component: lazy(() =>
+				import('./AllAccountManagement/PaymentVouchersManagement/PaymentVouchers/PaymentVouchers')
+			)
+		},
+		{
+			path: '/apps/paymentVoucher-management/:paymentVoucherId',
+			component: lazy(() =>
+				import('./AllAccountManagement/PaymentVouchersManagement/PaymentVoucher/NewPaymentVoucher')
+			)
+		},
+		//receiptVoucher
+		{
+			path: '/apps/receiptVoucher-management/receiptVouchers/:receiptVoucherId/:receiptVoucherName?',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceiptVouchersManagement/ReceiptVoucher/NewReceiptVoucher')
+			)
+		},
+		{
+			path: '/apps/receiptVoucher-management/receiptVouchers',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceiptVouchersManagement/ReceiptVouchers/ReceiptVouchers')
+			)
+		},
+		{
+			path: '/apps/receiptVoucher-management/:receiptVoucherId',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceiptVouchersManagement/ReceiptVoucher/NewReceiptVoucher')
+			)
+		},
+		//receivableBill
+		{
+			path: '/apps/receivableBill-management/receivableBills/:receivableBillId/:receivableBillName?',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceivableBillsManagement/ReceivableBill/NewReceivableBill')
+			)
+		},
+		{
+			path: '/apps/receivableBill-management/receivableBills',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceivableBillsManagement/ReceivableBills/ReceivableBills')
+			)
+		},
+		{
+			path: '/apps/receivableBill-management/:receivableBillId',
+			component: lazy(() =>
+				import('./AllAccountManagement/ReceivableBillsManagement/ReceivableBill/NewReceivableBill')
+			)
+		},
+		//payableBill
+		{
+			path: '/apps/payableBill-management/payableBills/:payableBillId/:payableBillName?',
+			component: lazy(() => import('./AllAccountManagement/PayableBillsManagement/PayableBill/NewPayableBill'))
+		},
+		{
+			path: '/apps/payableBill-management/payableBills',
+			component: lazy(() => import('./AllAccountManagement/PayableBillsManagement/PayableBills/PayableBills'))
+		},
+		{
+			path: '/apps/payableBill-management/:payableBillId',
+			component: lazy(() => import('./AllAccountManagement/PayableBillsManagement/PayableBill/NewPayableBill'))
+		},
+		//contra
+		{
+			path: '/apps/contra-management/contras/:contraId/:contraName?',
+			component: lazy(() => import('./AllAccountManagement/ContrasManagement/Contra/NewContra'))
+		},
+		{
+			path: '/apps/contra-management/contras',
+			component: lazy(() => import('./AllAccountManagement/ContrasManagement/Contras/Contras'))
+		},
+		{
+			path: '/apps/contra-management/:contraId',
+			component: lazy(() => import('./AllAccountManagement/ContrasManagement/Contra/NewContra'))
+		},
+		//journal
+		{
+			path: '/apps/journal-management/journals/:journalId/:journalName?',
+			component: lazy(() => import('./AllAccountManagement/JournalsManagement/Journal/NewJournal'))
+		},
+		{
+			path: '/apps/journal-management/journals',
+			component: lazy(() => import('./AllAccountManagement/JournalsManagement/Journals/Journals'))
+		},
+		{
+			path: '/apps/journal-management/:journalId',
+			component: lazy(() => import('./AllAccountManagement/JournalsManagement/Journal/NewJournal'))
+		},
+		//bmet
+		{
+			path: '/apps/bmet-management/:bmetId',
+			component: lazy(() => import('./BmetsManagement/Bmet/NewBmet'))
+		},
+		//ksaVisa
+		{
+			path: '/apps/ksa-visa-management/:ksaVisaId',
+			component: lazy(() => import('./KsaVisasManagement/KsaVisa/NewKsaVisa'))
+		},
+		//receiptReport
+		{
+			path: '/apps/report-management/receipt-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/ReceiptReportManagement/ReceiptReport/ReceiptReport'
+				)
+			)
+		},
+		//receipt Summary Report
+		{
+			path: '/apps/report-management/receipt-summary-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/ReceiptSummaryReportManagement/ReceiptSummaryReport/ReceiptSummaryReport'
+				)
+			)
+		},
+		//paymentReport
+		{
+			path: '/apps/report-management/payment-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/PaymentReportManagement/PaymentReport/PaymentReport'
+				)
+			)
+		},
+		//payment Summary Report
+		{
+			path: '/apps/report-management/payment-summary-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/PaymentSummaryReportManagement/PaymentSummaryReport/PaymentSummaryReport'
+				)
+			)
+		},
+		//ledgerReport
+		{
+			path: '/apps/report-management/ledger-reports',
+			component: lazy(() =>
+				import('./ReportManagement/accountsReportManagement/LedgerReportManagement/LedgerReport/LedgerReport')
+			)
+		},
+		//account statement Report
+		{
+			path: '/apps/report-management/account-statement-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/AccountStatementReportManagement/AccountStatementReport/AccountStatementReport'
+				)
+			)
+		},
+		//ledgerReport
+		{
+			path: '/apps/report-management/account-statement-summary-reports',
+			component: lazy(() =>
+				import(
+					'./ReportManagement/accountsReportManagement/AccountSummaryReportManagement/AccountSummaryReport/AccountSummaryReport'
+				)
+			)
+		},
+		//makeAList
+		{
+			path: '/apps/makeAList-management/columns/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAListColumn/NewMakeAListClm'))
+		},
+		{
+			path: '/apps/makeAList-management/rows/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAListRow/NewMakeAListRow'))
+		},
+		{
+			path: '/apps/makeAList-management/report/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAListReport/NewMakeAListReport'))
+		},
+		{
+			path: '/apps/makeAList-management/makeALists/:makeAListId/:makeAListName?',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAList/NewMakeAList'))
+		},
+		{
+			path: '/apps/makeAList-management/makeALists',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeALists/MakeALists'))
+		},
+		{
+			path: '/apps/makeAList-management/:makeAListId',
+			component: lazy(() => import('./ReportManagement/MakeAListsManagement/MakeAList/NewMakeAList'))
 		}
 	]
 };

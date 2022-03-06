@@ -13,9 +13,9 @@ import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { MEDICAL_BY_PASSENGER_ID } from '../../../../constant/constants';
-import reducer from '../store/index.js';
-import MedicalForm from './MedicalForm.js';
-import NewMedicalHeader from './NewMedicalHeader.js';
+import reducer from '../store/index';
+import MedicalForm from './MedicalForm';
+import NewMedicalHeader from './NewMedicalHeader';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -86,8 +86,6 @@ const Medical = () => {
 				}}
 				contentToolbar={
 					<Tabs
-						// value={tabValue}
-						// onChange={handleTabChange}
 						indicatorColor="primary"
 						textColor="primary"
 						variant="scrollable"
@@ -102,6 +100,7 @@ const Medical = () => {
 									<Autocomplete
 										className={`w-full max-w-320 h-48 ${classes.container}`}
 										freeSolo
+										autoHighlight
 										disabled={!!fromSearch}
 										value={value ? passengers.find(data => data.id == value) : null}
 										options={passengers}
@@ -168,7 +167,6 @@ const Medical = () => {
 												InputLabelProps={{
 													shrink: true
 												}}
-												// onKeyDown={handleSubmitOnKeyDownEnter}
 											/>
 										)}
 									/>

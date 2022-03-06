@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@material-ui/icons';
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { getReportPaginationMakeStyles } from '../reportUtils/reportMakeStyls';
 
 const useStyles = makeStyles(theme => ({
@@ -36,6 +36,7 @@ function Pagination({
 		return isIctive;
 	}, [page, totalPages]);
 
+	console.log('rendered pagination');
 	return (
 		<div className={classes.paginationContainer}>
 			<FirstPage
@@ -97,4 +98,11 @@ function Pagination({
 	);
 }
 
-export default Pagination;
+export default memo(Pagination, (prevProps, nextProps) => {
+	const isEqual =
+		prevProps.page === nextProps.page &&
+		prevProps.size === nextProps.size &&
+		prevProps.totalPages === nextProps.totalPages &&
+		prevProps.totalElements === nextProps.totalElements;
+	return isEqual;
+});

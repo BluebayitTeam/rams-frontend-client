@@ -14,26 +14,24 @@ import { Link } from 'react-router-dom';
 import { setBranchsSearchText } from '../store/branchsSlice';
 
 const useStyles = makeStyles(theme => ({
-	alert: (props) => ({
-		width: "20%",
-		height: "35px",
-		position: "fixed",
-		right: "30px",
-		marginTop: "-85px",
-		paddingTop: "0px",
-		fontSize: "15px",
-		borderRadius: "15px",
-		transitionTimingFunction: "ease-out",
-		zIndex: props ? "1" : "-1",
-		transition: props ? "0s" : "1s",
-		opacity: props ? 1 : 0,
-	}),
+	alert: props => ({
+		width: '20%',
+		height: '35px',
+		position: 'fixed',
+		right: '30px',
+		paddingTop: '0px',
+		fontSize: '15px',
+		borderRadius: '15px',
+		transitionTimingFunction: 'ease-out',
+		zIndex: props ? '1' : '-1',
+		transition: props ? '0s' : '1s',
+		opacity: props ? 1 : 0
+	})
 }));
 
 const BranchsHeader = () => {
-
-	const [alerOpen, setAlertOpen] = useState(false)
-	const [alertMessage, setAlertMessage] = useState("")
+	const [alerOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ branchsManagement }) => branchsManagement.branchs.searchText);
@@ -41,30 +39,28 @@ const BranchsHeader = () => {
 	const classes = useStyles(alerOpen);
 
 	useEffect(() => {
-		const alert = localStorage.getItem("branchAlert")
+		const alert = localStorage.getItem('branchAlert');
 
-		if (alert === "saveBranch") {
-			setAlertOpen(true)
-			setAlertMessage("Add Success...")
-			localStorage.removeItem("branchAlert")
+		if (alert === 'saveBranch') {
+			setAlertOpen(true);
+			setAlertMessage('Add Success...');
+			localStorage.removeItem('branchAlert');
 		}
-		if (alert === "updateBranch") {
-			setAlertOpen(true)
-			setAlertMessage("Update Success...")
-			localStorage.removeItem("branchAlert")
+		if (alert === 'updateBranch') {
+			setAlertOpen(true);
+			setAlertMessage('Update Success...');
+			localStorage.removeItem('branchAlert');
 		}
-		if (alert === "deleteBranch") {
-			setAlertOpen(true)
-			setAlertMessage("Remove Success...")
-			localStorage.removeItem("branchAlert")
+		if (alert === 'deleteBranch') {
+			setAlertOpen(true);
+			setAlertMessage('Remove Success...');
+			localStorage.removeItem('branchAlert');
 		}
 
 		setTimeout(() => {
-			setAlertOpen(false)
-		}, 3000)
-
-	}, [])
-
+			setAlertOpen(false);
+		}, 3000);
+	}, []);
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -106,9 +102,9 @@ const BranchsHeader = () => {
 							inputProps={{
 								'aria-label': 'Search'
 							}}
-							onKeyDown={(ev) => {
+							onKeyDown={ev => {
 								if (ev.key === 'Enter') {
-									dispatch(setBranchsSearchText(ev))
+									dispatch(setBranchsSearchText(ev));
 								}
 							}}
 						/>
@@ -128,14 +124,21 @@ const BranchsHeader = () => {
 				</Button>
 			</motion.div>
 
-			<Alert variant="filled" severity="success" className={classes.alert}
+			<Alert
+				variant="filled"
+				severity="success"
+				className={classes.alert}
 				action={
-					<CancelIcon onClick={() => { setAlertOpen(false) }} style={{ marginTop: "8px" }} />
+					<CancelIcon
+						onClick={() => {
+							setAlertOpen(false);
+						}}
+						style={{ marginTop: '8px' }}
+					/>
 				}
 			>
 				{alertMessage}
 			</Alert>
-
 		</div>
 	);
 };

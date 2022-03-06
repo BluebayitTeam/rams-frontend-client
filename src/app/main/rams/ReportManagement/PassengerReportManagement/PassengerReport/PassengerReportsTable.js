@@ -67,7 +67,7 @@ const PassengerReportsTable = () => {
 
 	const [generalData, setGeneralData] = useState({});
 
-	const [modifiedPassengerData, setModifiedPassengerData, setSortBy, setSortBySubKey] = useReportData([]);
+	const [modifiedPassengerData, setModifiedPassengerData, setSortBy, setSortBySubKey] = useReportData();
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
