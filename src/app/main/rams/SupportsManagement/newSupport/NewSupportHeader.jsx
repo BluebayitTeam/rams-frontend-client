@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ADMIN_LOGIN_EMAIL, ADMIN_LOGIN_PASSWORD, GET_TICKET_BY_ID } from 'src/app/constant/constants';
-import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useCreateNewSupportMutation, useDeleteSupportMutation, useUpdateSupportMutation } from '../SupportsApi';
 
 /**
@@ -58,9 +57,7 @@ function NewSupportHeader(props) {
 			.unwrap()
 
 			.then((data) => {
-				AddedSuccessfully();
-				console.log('test', data);
-				navigate(`/apps/support/supports`);
+				navigate(`/apps/newSupport/supports`);
 			});
 	}
 
