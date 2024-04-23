@@ -7,8 +7,6 @@ const getPaginationData = (dataArr = [], size = 25, page = 1) => {
 		totalElements = dataArr.length || 0;
 	}
 
-	console.log({ page, size, totalPages, totalElements });
-
 	return { page, size, totalPages, totalElements };
 };
 

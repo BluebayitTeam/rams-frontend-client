@@ -1,6 +1,5 @@
 /**
  * Component classes registered by plugins.
- *
  */
 
 @import 'print.css';
@@ -9,4 +8,4 @@
 
 @import 'prism.css';
 
-@import 'tailwindcss/components';
+@tailwind components;

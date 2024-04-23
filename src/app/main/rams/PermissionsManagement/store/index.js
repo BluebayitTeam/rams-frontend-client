@@ -1,11 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import permission from './permissionSlice';
-import permissions from './permissionsSlice';
-
+import searchText from './searchTextSlice';
 
 const reducer = combineReducers({
-	permission,
-	permissions,
+	searchText
 });
-
 export default reducer;

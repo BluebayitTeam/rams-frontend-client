@@ -27,9 +27,6 @@ function Image({ name, label }) {
 	const [previewFile, setPreviewFile] = useState('');
 	const [fileExtName, setFileExtName] = useState('');
 
-	// console.log('file', file);
-	// console.log('previewFile', previewFile);
-
 	return (
 		<>
 			<Controller
@@ -61,10 +58,7 @@ function Image({ name, label }) {
 										reader.readAsDataURL(e.target.files[0]);
 
 										const file = e.target.files[0];
-
 										setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
-
-										console.log({ reader, file });
 										onChange(file);
 									}}
 								/>

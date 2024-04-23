@@ -1,10 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import roleMenu from './roleMenuSlice';
-import roleMenus from './roleMenusSlice';
+import searchText from './searchTextSlice';
 
 const reducer = combineReducers({
-    roleMenu,
-    roleMenus,
+	searchText
 });
-
 export default reducer;

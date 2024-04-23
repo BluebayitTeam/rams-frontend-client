@@ -1,10 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import menu from './menuSlice';
-import menus from './menusSlice';
+import searchText from './searchTextSlice';
 
 const reducer = combineReducers({
-    menu,
-    menus,
+	searchText
 });
-
 export default reducer;

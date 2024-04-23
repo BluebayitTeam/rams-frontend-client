@@ -10,10 +10,8 @@ const setIdIfValueIsObject2 = object => {
 			}
 		}
 	} catch (err) {
-		console.log({ err });
+		console.log(`clicked`);
 	}
-
-	console.log('conVertedObject', conVertedObject);
 
 	return conVertedObject;
 };

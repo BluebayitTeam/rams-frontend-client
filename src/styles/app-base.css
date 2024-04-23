@@ -1,31 +1,98 @@
-/**
- * Normalize.css and sTailwind's base styles.
- */
 
-@import-normalize;
-
-@import 'tailwindcss/base';
+/*@tailwind base;*/
 
 /**
- * Custom base styles, applied after the tailwind-base classes
+ * Custom base styles
  */
+
+* {
+    /* Text rendering */
+    text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -webkit-text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+}
+
+* :focus {
+     outline: none !important;
+}
 
 html {
     font-size: 62.5%;
-    font-family: Poppins, Roboto, Helvetica Neue, Arial, sans-serif;
+    font-family: 'Inter var', Roboto, Helvetica Neue, Arial, sans-serif;
     background-color: #121212;
 }
-
-body {
-    font-size: 13px;
-    line-height: 1.4;
-    overflow-x: hidden;
+.custom-edit-icon-style {
+	border: 1px solid #c5e1c5; /* Sets the border width, style and color (green) of the element */
+	color: green; /* Sets the text or icon color to white */
+	border-radius: 20%;
+	padding: 1px;
+	margin: 1px;
+	font-size: 24px;
 }
 
-html, body, #root {
+/* Add a hover state that changes the background-color and text color when hovered over element */
+.custom-edit-icon-style:hover {
+	background-color: green; /* Sets the background-color (green) of the element on hover */
+	color: #ffffff; /* Sets the text or icon color to white on hover */
+}
+.custom-delete-icon-style {
+	border: 1px solid #dfcece; /* Sets the border width, style and color (green) of the element */
+	color: red; /* Sets the text or icon color to white */
+	border-radius: 20%;
+	padding: 1px;
+	margin: 1px;
+	font-size: 24px;
+}
+
+/* Add a hover state that changes the background-color and text color when hovered over element */
+.custom-delete-icon-style:hover {
+	background-color: red; /* Sets the background-color (green) of the element on hover */
+	color: #ffffff; /* Sets the text or icon color to white on hover */
+}
+.custom-print-icon-style {
+	border: 1px solid #dfcece; /* Sets the border width, style and color (green) of the element */
+	color: blue; /* Sets the text or icon color to white */
+	border-radius: 20%;
+	padding: 1px;
+	margin: 1px;
+	font-size: 24px;
+}
+
+/* Add a hover state that changes the background-color and text color when hovered over element */
+.custom-print-icon-style:hover {
+	background-color: blue; /* Sets the background-color (green) of the element on hover */
+	color: #ffffff; /* Sets the text or icon color to white on hover */
+}
+body {
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-x: hidden;
+    font-feature-settings: "salt";
+}
+
+html, body {
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+
+html, body {
+    display: flex;
+    flex-direction: column;
     position: relative;
     margin: 0;
-    min-height: 100vh;
+    min-height: 100%;
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+#root {
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
 }
 
 h1, .h1 {
@@ -62,6 +129,10 @@ a[role=button] {
 }
 
 [role="tooltip"] {
+    z-index: 9999;
+}
+
+.MuiModal-root {
     z-index: 9999;
 }
 
@@ -104,17 +175,14 @@ button:focus {
     outline: none;
 }
 
-@keyframes autofill {
-    0%,100% {
-        background: transparent;
-    }
-}
-
-input:-webkit-autofill {
-    animation-delay: 1s;
-    animation-name: autofill!important;
-    animation-fill-mode: both;
-    -webkit-box-shadow:0 0 0 100px transparent inset!important;
+/* Removes webkit's autofill backgorund color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active
+{
+    transitionDelay: 9999s;
+    transitionProperty: background-color, color;
 }
 
 :focus {

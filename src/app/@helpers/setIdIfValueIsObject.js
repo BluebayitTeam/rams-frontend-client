@@ -9,10 +9,9 @@ const setIdIfValueIsObject = object => {
 			else if (_.isObject(conVertedObject[x])) conVertedObject[x] = conVertedObject[x]?.id;
 		}
 	} catch (err) {
-		console.log({ err });
+		console.log('error');
 	}
 
-	console.log('conVertedObject', conVertedObject);
 	return conVertedObject;
 };
 
