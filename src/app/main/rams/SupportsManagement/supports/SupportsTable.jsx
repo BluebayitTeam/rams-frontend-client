@@ -429,7 +429,7 @@ function SupportsTable(props) {
 												component="div"
 												style={{ marginRight: '5px' }}
 											>
-												{`${support?.user?.first_name} ${support?.user?.last_name}`}
+												{`${support?.user?.first_name} ${support?.user?.last_name} (${support?.user?.email})${support?.rl_no ? `-${support?.rl_no}` : ''}`}
 											</Typography>
 											<Typography
 												variant="p"
@@ -437,7 +437,7 @@ function SupportsTable(props) {
 												component="div"
 												style={{ marginRight: '5px' }}
 											>
-												<span style={{ fontWeight: 700 }}>Subject: </span>
+												<span style={{ fontWeight: 700, marginLeft: '40px' }}>Subject: </span>
 												{` ${support?.subject}`}
 											</Typography>
 										</div>

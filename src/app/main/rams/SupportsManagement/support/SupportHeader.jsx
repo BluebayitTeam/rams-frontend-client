@@ -111,7 +111,7 @@ function SupportHeader(props) {
 						</Typography>
 						<Typography className="text-12 sm:text-12 truncate font-semibold mb-5">
 							{ticketDetail?.user?.first_name}&nbsp;
-							{ticketDetail?.user?.last_name}({ticketDetail?.user?.email})
+							{ticketDetail?.user?.last_name}({ticketDetail?.user?.email}) - {ticketDetail?.rl_no}
 						</Typography>
 						<div className="flex ">
 							<Typography

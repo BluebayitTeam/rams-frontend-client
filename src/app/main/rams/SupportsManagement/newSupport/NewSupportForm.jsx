@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, Avatar, Box, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { getTicketDepartments, getTicketPriority, getTicketStatuss } from 'app/store/dataSlice';
@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { allowedExtensions } from 'src/app/@data/data';
+import { allowedExtensions, ticketfileExtension } from 'src/app/@data/data';
 import { useCreateSupportMutation, useGetSupportQuery } from '../SupportsApi';
 
 const useStyles = makeStyles((theme) => ({
@@ -157,24 +157,6 @@ function NewSupportForm(props) {
 					/>
 				)}
 			/>
-			<Controller
-				name="rl_no"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="rl_no"
-						autoFocus
-						id="name"
-						variant="outlined"
-						fullWidth
-						error={!!errors.rl_no}
-						helperText={errors?.rl_no?.message}
-					/>
-				)}
-			/>
 
 			<Controller
 				name="ticket_department"
@@ -236,36 +218,6 @@ function NewSupportForm(props) {
 					/>
 				)}
 			/>
-			<Controller
-				name="ticket_status"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? ticketStatus.find((ticketStatu) => ticketStatu.id === value) : null}
-						options={ticketStatus}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-							// dispatch(getThanasBasedOnCity(newValue?.id));
-						}}
-						// defaultValue={{ id: null, name: "Select a city" }}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select a ticket Status"
-								label="ticket_status"
-								variant="outlined"
-								//
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
 
 			<Controller
 				name="message"
@@ -287,6 +239,103 @@ function NewSupportForm(props) {
 					/>
 				)}
 			/>
+
+			<div>
+				<input
+					multiple
+					onChange={async (e) => {
+						const reader = new FileReader();
+						reader.onload = () => {
+							if (reader.readyState === 2) {
+								const newImg = [...previewImage];
+								newImg.push(reader.result);
+								setPreviewImage(newImg);
+							}
+						};
+						reader.readAsDataURL(e.target.files[0]);
+						const file = e.target.files[0];
+						const newImgFile = [...images];
+						newImgFile.push(file);
+						setImages(newImgFile);
+					}}
+					ref={inputFileRef}
+					id="profile-image"
+					accept={ticketfileExtension}
+					type="file"
+				/>
+			</div>
+			{errorText && (
+				<Typography
+					mt="5px"
+					mb="5px"
+					style={{ color: 'red' }}
+				>
+					{errorText}
+				</Typography>
+			)}
+			<Box
+				width="80%"
+				mt="25px"
+				display="flex"
+				style={{ gap: '20px' }}
+				justifyContent="center"
+				flexWrap="wrap"
+			>
+				{previewImage?.map((src, id) => {
+					// Get the file extension
+					const extension = images[id]?.name?.split('.')?.pop()?.toLowerCase();
+					// Define the icons for different file types
+					let icon = null;
+					switch (extension) {
+						case 'pdf':
+							icon = 'pdf-file';
+							break;
+						case 'doc':
+						case 'docx':
+							icon = 'word-file';
+							break;
+						case 'txt':
+							icon = 'txt-file';
+							break;
+						case 'xls':
+						case 'xlsx':
+							icon = 'xls-file';
+							break;
+						// Add more cases for other file types
+						default:
+							icon = 'word-file';
+							break;
+					}
+
+					return (
+						<Box
+							display="flex"
+							width="fit-content"
+							position="relative"
+						>
+							{extension === 'pdf' ||
+							extension === 'doc' ||
+							extension === 'docx' ||
+							extension === 'txt' ||
+							extension === 'xls' ||
+							extension === 'xlsx' ? (
+								<Avatar
+									size={50}
+									variant="square"
+									src={`assets/icons/${icon}.svg`}
+								/>
+							) : (
+								<Avatar
+									float="left"
+									variant="square"
+									src={src}
+									size={50}
+								/>
+							)}
+						</Box>
+					);
+				})}
+			</Box>
 		</div>
 	);
 }
