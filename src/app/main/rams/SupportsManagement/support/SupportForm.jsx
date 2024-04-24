@@ -8,7 +8,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { ADMIN_LOGIN_EMAIL, ADMIN_LOGIN_PASSWORD, BASE_URL } from 'src/app/constant/constants';
+import { ADMIN_LOGIN_EMAIL, ADMIN_LOGIN_PASSWORD, ADMIN_URL } from 'src/app/constant/constants';
 import { allowedExtensions, ticketfileExtension } from 'src/app/@data/data';
 import { useParams } from 'react-router';
 import { useCreateSupportMutation, useGetSupportQuery } from '../SupportsApi';
@@ -207,9 +207,9 @@ function SupportForm(props) {
 												<Avatar
 													variant="square"
 													onClick={() => {
-														showFile(`${BASE_URL}${e.image}`);
+														showFile(`${ADMIN_URL}${e.image}`);
 													}}
-													src={`${BASE_URL}${e.image}`}
+													src={`${ADMIN_URL}${e.image}`}
 													size={50}
 												/>
 											</Box>
@@ -249,7 +249,7 @@ function SupportForm(props) {
 													key={file.file}
 												>
 													<a
-														href={`${BASE_URL}${file.file}`}
+														href={`${ADMIN_URL}${file.file}`}
 														target="_blank"
 														download
 														rel="noopener noreferrer"
@@ -283,9 +283,9 @@ function SupportForm(props) {
 									className="w-full block rounded"
 									src={`${
 										item?.customer_image
-											? `${BASE_URL}${item?.customer_image}`
+											? `${ADMIN_URL}${item?.customer_image}`
 											: item?.admin_image
-												? `${BASE_URL}${item?.admin_image}`
+												? `${ADMIN_URL}${item?.admin_image}`
 												: '/profile.jpg'
 									}`}
 									alt="Not found"
@@ -330,9 +330,9 @@ function SupportForm(props) {
 									className="w-full block rounded"
 									src={`${
 										item?.customer_image
-											? `${BASE_URL}${item?.customer_image}`
+											? `${ADMIN_URL}${item?.customer_image}`
 											: item?.admin_image
-												? `${BASE_URL}${item?.admin_image}`
+												? `${ADMIN_URL}${item?.admin_image}`
 												: '/profile.jpg'
 									}`}
 									alt="Notfound"
@@ -388,9 +388,9 @@ function SupportForm(props) {
 												<Avatar
 													variant="square"
 													onClick={() => {
-														showFile(`${BASE_URL}${e.image}`);
+														showFile(`${ADMIN_URL}${e.image}`);
 													}}
-													src={`${BASE_URL}${e.image}`}
+													src={`${ADMIN_URL}${e.image}`}
 													size={50}
 												/>
 											</Box>
@@ -430,7 +430,7 @@ function SupportForm(props) {
 													key={file.file}
 												>
 													<a
-														href={`${BASE_URL}${file.file}`}
+														href={`${ADMIN_URL}${file.file}`}
 														target="_blank"
 														download
 														rel="noopener noreferrer"
