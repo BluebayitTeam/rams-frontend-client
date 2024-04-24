@@ -8,7 +8,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { BASE_URL } from 'src/app/constant/constants';
+import { ADMIN_LOGIN_EMAIL, ADMIN_LOGIN_PASSWORD, BASE_URL } from 'src/app/constant/constants';
 import { allowedExtensions, ticketfileExtension } from 'src/app/@data/data';
 import { useParams } from 'react-router';
 import { useCreateSupportMutation, useGetSupportQuery } from '../SupportsApi';
@@ -111,7 +111,9 @@ function SupportForm(props) {
 			message: formData.message,
 			ticket: supportId,
 			customer: adminId,
-			file: images
+			file: images,
+			email: ADMIN_LOGIN_EMAIL,
+			password: ADMIN_LOGIN_PASSWORD
 		};
 
 		dispatch(createSupport(messageData)).then(() => {
@@ -155,147 +157,9 @@ function SupportForm(props) {
 						display: 'flex',
 						marginBottom: '5px',
 						paddingBottom: '5px',
-						justifyContent: item?.customer ? 'flex-start ' : 'flex-end'
+						justifyContent: item?.customer ? 'flex-end ' : 'flex-start'
 					}}
 				>
-					{item?.customer && (
-						<>
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center',
-									justifyContent: 'center'
-								}}
-							>
-								<img
-									style={{
-										borderRadius: '50%',
-										width: '50px',
-										height: '50px',
-										margin: '10px'
-									}}
-									className="w-full block rounded"
-									src={`${
-										item?.customer_image
-											? `${BASE_URL}${item?.customer_image}`
-											: item?.admin_image
-												? `${BASE_URL}${item?.admin_image}`
-												: '/profile.jpg'
-									}`}
-									alt="Notfound"
-								/>
-								<Typography
-									variant="p"
-									className="mt-8"
-									gutterBottom
-									mr="10px"
-									component="div"
-									style={{
-										color: 'grey',
-										display: !item?.customer ? 'flex' : 'block',
-										justifyContent: !item?.customer ? 'flex-end' : 'flex-start',
-										direction: !item?.customer ? 'ltr' : 'ltr',
-										fontSize: '10px'
-									}}
-								>
-									{item?.created_at && moment(new Date(item?.created_at)).format('DD-MM-YYYY')}
-									{item?.created_at && moment(new Date(item?.created_at)).format(' h:m a')}
-								</Typography>
-							</div>
-							<Box>
-								<Typography
-									variant="h6"
-									gutterBottom
-									component="div"
-								>
-									{item?.customer
-										? `${item?.customer?.first_name} ${item?.customer?.last_name}`
-										: `${item?.admin?.first_name} ${item?.admin?.last_name}`}
-								</Typography>
-
-								<Typography
-									variant="p"
-									gutterBottom
-									component="div"
-								>
-									{item?.message}
-								</Typography>
-
-								<Box
-									display="flex"
-									justifyContent="flex-start"
-									mt="10px"
-								>
-									{item?.images &&
-										item?.images.map((e) => (
-											<Box
-												mr="10px"
-												key={e.image}
-											>
-												<Avatar
-													variant="square"
-													onClick={() => {
-														showFile(`${BASE_URL}${e.image}`);
-													}}
-													src={`${BASE_URL}${e.image}`}
-													size={50}
-												/>
-											</Box>
-										))}
-								</Box>
-								<Box
-									mt="10px"
-									display="flex"
-									justifyContent="flex-start"
-								>
-									{item?.files &&
-										item.files.map((file) => {
-											const extension = file.file.split('.').pop().toLowerCase();
-											let icon = '';
-											switch (extension) {
-												case 'pdf':
-													icon = 'pdf-file';
-													break;
-												case 'doc':
-												case 'docx':
-													icon = 'word-file';
-													break;
-												case 'txt':
-													icon = 'txt-file';
-													break;
-												case 'xls':
-												case 'xlsx':
-													icon = 'xls-file';
-													break;
-												default:
-													icon = 'word-file';
-													break;
-											}
-											return (
-												<Box
-													mr="10px"
-													key={file.file}
-												>
-													<a
-														href={`${BASE_URL}${file.file}`}
-														target="_blank"
-														download
-														rel="noopener noreferrer"
-													>
-														<Avatar
-															size={50}
-															variant="square"
-															src={`assets/icons/${icon}.svg`}
-														/>
-													</a>
-												</Box>
-											);
-										})}
-								</Box>
-							</Box>
-						</>
-					)}
 					{!item?.customer && (
 						<>
 							<Box
@@ -444,6 +308,144 @@ function SupportForm(props) {
 									{item?.created_at && moment(new Date(item?.created_at)).format(' h:m a')}
 								</Typography>
 							</div>
+						</>
+					)}
+					{item?.customer && (
+						<>
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									alignItems: 'center',
+									justifyContent: 'center'
+								}}
+							>
+								<img
+									style={{
+										borderRadius: '50%',
+										width: '50px',
+										height: '50px',
+										margin: '10px'
+									}}
+									className="w-full block rounded"
+									src={`${
+										item?.customer_image
+											? `${BASE_URL}${item?.customer_image}`
+											: item?.admin_image
+												? `${BASE_URL}${item?.admin_image}`
+												: '/profile.jpg'
+									}`}
+									alt="Notfound"
+								/>
+								<Typography
+									variant="p"
+									className="mt-8"
+									gutterBottom
+									mr="10px"
+									component="div"
+									style={{
+										color: 'grey',
+										display: !item?.customer ? 'flex' : 'block',
+										justifyContent: !item?.customer ? 'flex-end' : 'flex-start',
+										direction: !item?.customer ? 'ltr' : 'ltr',
+										fontSize: '10px'
+									}}
+								>
+									{item?.created_at && moment(new Date(item?.created_at)).format('DD-MM-YYYY')}
+									{item?.created_at && moment(new Date(item?.created_at)).format(' h:m a')}
+								</Typography>
+							</div>
+							<Box>
+								<Typography
+									variant="h6"
+									gutterBottom
+									component="div"
+								>
+									{item?.customer
+										? `${item?.customer?.first_name} ${item?.customer?.last_name}`
+										: `${item?.admin?.first_name} ${item?.admin?.last_name}`}
+								</Typography>
+
+								<Typography
+									variant="p"
+									gutterBottom
+									component="div"
+								>
+									{item?.message}
+								</Typography>
+
+								<Box
+									display="flex"
+									justifyContent="flex-start"
+									mt="10px"
+								>
+									{item?.images &&
+										item?.images.map((e) => (
+											<Box
+												mr="10px"
+												key={e.image}
+											>
+												<Avatar
+													variant="square"
+													onClick={() => {
+														showFile(`${BASE_URL}${e.image}`);
+													}}
+													src={`${BASE_URL}${e.image}`}
+													size={50}
+												/>
+											</Box>
+										))}
+								</Box>
+								<Box
+									mt="10px"
+									display="flex"
+									justifyContent="flex-start"
+								>
+									{item?.files &&
+										item.files.map((file) => {
+											const extension = file.file.split('.').pop().toLowerCase();
+											let icon = '';
+											switch (extension) {
+												case 'pdf':
+													icon = 'pdf-file';
+													break;
+												case 'doc':
+												case 'docx':
+													icon = 'word-file';
+													break;
+												case 'txt':
+													icon = 'txt-file';
+													break;
+												case 'xls':
+												case 'xlsx':
+													icon = 'xls-file';
+													break;
+												default:
+													icon = 'word-file';
+													break;
+											}
+											return (
+												<Box
+													mr="10px"
+													key={file.file}
+												>
+													<a
+														href={`${BASE_URL}${file.file}`}
+														target="_blank"
+														download
+														rel="noopener noreferrer"
+													>
+														<Avatar
+															size={50}
+															variant="square"
+															src={`assets/icons/${icon}.svg`}
+														/>
+													</a>
+												</Box>
+											);
+										})}
+								</Box>
+							</Box>
 						</>
 					)}
 				</Box>

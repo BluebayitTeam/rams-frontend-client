@@ -2,7 +2,6 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
@@ -533,14 +532,14 @@ function SupportsTable(props) {
 									// to="/apps/support-management/"
 									color="inherit"
 								>
-									<EditIcon
+									{/* <EditIcon
 										className="h-52 cursor-pointer"
 										style={{ color: 'green' }}
 										onClick={(event) => {
 											handleOpen(support.id, support);
 											setValue('ticket_status', support?.ticket_status?.name);
 										}}
-									/>
+									/> */}
 
 									{/* <DeleteIcon
 										className="h-52 cursor-pointer"

@@ -3,7 +3,8 @@
 const isProduction = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.169:8005';
-export const CLIENT_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.11:3000';
+export const CLIENT_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.112:3000';
+
 export const ADMIN_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.169:8008';
 
 export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
@@ -2112,7 +2113,7 @@ export const PAYORDER_FILTER_WITHOUT_PG = `${BASE_URL}/account_report/api/v1/acc
 
 // tudo
 // ticket
-export const CREATE_TICKET_DETAIL = `${ADMIN_URL}/ticket_detail/api/v1/ticket_detail/create/`;
+export const CREATE_TICKET_DETAIL = `${ADMIN_URL}/ticket_detail/api/v1/ticket_detail/create_from_client/`;
 
 export const CREATE_TICKET = `${ADMIN_URL}/ticket/api/v1/ticket/create/`;
 
