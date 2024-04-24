@@ -53,11 +53,11 @@ function NewSupportHeader(props) {
 	};
 
 	function handleCreateNewSupport() {
-		createNewSupport({ ...getValues(), email: ADMIN_LOGIN_EMAIL, password: ADMIN_LOGIN_PASSWORD })
+		createNewSupport({ ...getValues(), email: ADMIN_LOGIN_EMAIL, password: ADMIN_LOGIN_PASSWORD, id: '' })
 			.unwrap()
 
 			.then((data) => {
-				navigate(`/apps/newSupport/supports`);
+				navigate(`/apps/support/supports`);
 			});
 	}
 
