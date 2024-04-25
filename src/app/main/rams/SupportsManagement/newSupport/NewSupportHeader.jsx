@@ -53,7 +53,12 @@ function NewSupportHeader(props) {
 	};
 
 	function handleCreateNewSupport() {
-		createNewSupport({ ...getValues(), email: ADMIN_LOGIN_EMAIL, password: ADMIN_LOGIN_PASSWORD, id: '' })
+		createNewSupport({
+			...getValues()?.messageData,
+			email: ADMIN_LOGIN_EMAIL,
+			password: ADMIN_LOGIN_PASSWORD,
+			id: ''
+		})
 			.unwrap()
 
 			.then((data) => {

@@ -7,7 +7,7 @@ import {
 	CREATE_TICKET,
 	CREATE_TICKET_DETAIL,
 	DELETE_DEPARTMENT,
-	GET_TICKETS,
+	GET_TICKETS_FOR_CLIENTS,
 	GET_TICKET_DETAILS_BY_ID,
 	UPDATE_DEPARTMENT
 } from 'src/app/constant/constants';
@@ -22,7 +22,7 @@ const SupportApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getSupports: build.query({
-				query: (searchKey) => ({ url: `${GET_TICKETS}?key=${searchKey || ''}` }),
+				query: (searchKey) => ({ url: `${GET_TICKETS_FOR_CLIENTS}?key=${searchKey || ''}` }),
 				providesTags: ['supports']
 			}),
 			deleteSupports: build.mutation({

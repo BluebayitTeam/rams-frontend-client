@@ -3,6 +3,7 @@
 import { Autocomplete, Avatar, Box, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { getTicketDepartments, getTicketPriority, getTicketStatuss } from 'app/store/dataSlice';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -103,6 +104,32 @@ function NewSupportForm(props) {
 		setImages(newImages);
 		setReRender(Math.random());
 	};
+
+	useEffect(() => {
+		const invalidFiles = images.filter((file) => {
+			const extension = file.name.split('.').pop();
+			return !allowedExtensions.includes(`.${extension}`);
+		});
+
+		if (invalidFiles.length > 0) {
+			setErrorText(`Invalid file(s): ${invalidFiles.map((file) => file.name).join(', ')}`);
+			return;
+		}
+
+		const adminId = localStorage.getItem('id');
+		const formData = getValues();
+		const messageData = {
+			message: formData?.message,
+			subject: formData?.subject,
+			ticket_department: formData?.ticket_department,
+			ticket_priority: formData?.ticket_department,
+			ticket: supportId,
+			customer_email: adminId,
+			file: images
+		};
+
+		setValue('messageData', messageData);
+	}, [getValues(), images]);
 
 	const handlePostMessage = async (event) => {
 		const invalidFiles = images.filter((file) => {
@@ -225,7 +252,7 @@ function NewSupportForm(props) {
 				render={({ field }) => (
 					<TextField
 						{...field}
-						className="mt-8 mb-16"
+						className="mt-8 mb-16 "
 						required
 						label="Message"
 						autoFocus
@@ -313,6 +340,25 @@ function NewSupportForm(props) {
 							width="fit-content"
 							position="relative"
 						>
+							<div
+								id="cancelIcon"
+								style={{
+									position: 'absolute',
+									top: '-10px',
+									right: '-10px',
+									zIndex: 1,
+									color: 'red'
+								}}
+							>
+								<HighlightOffIcon
+									onClick={() => {
+										cancelAImage(id);
+									}}
+								>
+									cancel
+								</HighlightOffIcon>
+							</div>
+
 							{extension === 'pdf' ||
 							extension === 'doc' ||
 							extension === 'docx' ||

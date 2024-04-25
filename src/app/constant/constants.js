@@ -2124,6 +2124,7 @@ export const GET_TICKET_DETAILS_BY_ID = `${ADMIN_URL}/ticket_detail/api/v1/ticke
 export const GET_TICKET_BY_ID = `${ADMIN_URL}/ticket/api/v1/ticket/`;
 
 export const GET_TICKETS = `${ADMIN_URL}/ticket/api/v1/ticket/all/`;
+export const GET_TICKETS_FOR_CLIENTS = `${ADMIN_URL}/ticket/api/v1/ticket_for_client/all/`;
 
 export const DELETE_TICKET = `${ADMIN_URL}/ticket/api/v1/ticket/delete/`;
 

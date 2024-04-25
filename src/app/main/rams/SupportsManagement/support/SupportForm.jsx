@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SupportForm(props) {
 	const classes = useStyles();
-	const { data, isLoading } = useGetSupportQuery();
+	const { data, isLoading, refetch } = useGetSupportQuery();
 
 	const [errorText, setErrorText] = useState('');
 	const [supports, setSupports] = useState([]);
@@ -69,7 +69,7 @@ function SupportForm(props) {
 	const routeParams = useParams();
 	const { supportId } = routeParams;
 
-	const { control, formState, watch, getValues, setValue } = methods;
+	const { control, formState, watch, getValues, setValue, reset } = methods;
 	const [file, setFile] = useState();
 	const [previewImage, setPreviewImage] = useState([]);
 	const [images, setImages] = useState([]);
@@ -83,6 +83,10 @@ function SupportForm(props) {
 			setErrorText('');
 		}, 5000);
 	}, [errorText]);
+
+	useEffect(() => {
+		refetch();
+	}, []);
 
 	const cancelAImage = (imgId) => {
 		const newPreImgs = [...previewImage];
@@ -116,8 +120,11 @@ function SupportForm(props) {
 			password: ADMIN_LOGIN_PASSWORD
 		};
 
-		dispatch(createSupport(messageData)).then(() => {
+		dispatch(createSupport(messageData)).then((data) => {
+			debugger;
+			console.log(`bjkgfdg`, data);
 			setValue('message', '');
+			reset({});
 
 			if (inputFileRef.current) {
 				inputFileRef.current.value = '';
@@ -581,7 +588,7 @@ function SupportForm(props) {
 										float="left"
 										variant="square"
 										src={src}
-										size={50}
+										size={500}
 									/>
 								)}
 							</Box>
