@@ -547,7 +547,7 @@ function SupportsTable(props) {
 									/> */}
 
 									<ArrowForwardIcon
-										className="h-52 cursor-pointer"
+										className="h-52 cursor-pointer "
 										onClick={(event) => getTickets(support)}
 									/>
 								</div>
