@@ -196,7 +196,7 @@ function NewSupportForm(props) {
 							value ? ticketDepartments.find((ticketDepartment) => ticketDepartment.id === value) : null
 						}
 						options={ticketDepartments}
-						getOptionLabel={(option) => `${option.name}`}
+						getOptionLabel={(option) => `${option.name.charAt(0).toUpperCase()}${option.name.slice(1)}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 							// dispatch(getThanasBasedOnCity(newValue?.id));
@@ -206,7 +206,7 @@ function NewSupportForm(props) {
 							<TextField
 								{...params}
 								placeholder="Select a ticket department"
-								label="ticket_department"
+								label="Ticket Department"
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -225,7 +225,7 @@ function NewSupportForm(props) {
 						freeSolo
 						value={value ? ticketPrioritys.find((ticketPriority) => ticketPriority.id === value) : null}
 						options={ticketPrioritys}
-						getOptionLabel={(option) => `${option.name}`}
+						getOptionLabel={(option) => `${option.name.charAt(0).toUpperCase()}${option.name.slice(1)}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 							// dispatch(getThanasBasedOnCity(newValue?.id));
@@ -235,7 +235,7 @@ function NewSupportForm(props) {
 							<TextField
 								{...params}
 								placeholder="Select a ticket priority"
-								label="ticket_priority"
+								label="Ticket Priority"
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
