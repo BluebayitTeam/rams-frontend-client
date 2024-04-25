@@ -351,7 +351,7 @@ function SupportForm(props) {
 									mr="10px"
 									component="div"
 									style={{
-										color: 'grey',
+										color: 'red',
 										display: !item?.customer ? 'flex' : 'block',
 										justifyContent: !item?.customer ? 'flex-end' : 'flex-start',
 										direction: !item?.customer ? 'ltr' : 'ltr',
@@ -394,6 +394,7 @@ function SupportForm(props) {
 											>
 												<Avatar
 													variant="square"
+													className="border-solid border-2 border-blue-600"
 													onClick={() => {
 														showFile(`${ADMIN_URL}${e.image}`);
 													}}
@@ -443,7 +444,7 @@ function SupportForm(props) {
 														rel="noopener noreferrer"
 													>
 														<Avatar
-															size={50}
+															size={500}
 															variant="square"
 															src={`assets/icons/${icon}.svg`}
 														/>

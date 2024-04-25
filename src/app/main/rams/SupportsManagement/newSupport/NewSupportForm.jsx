@@ -122,7 +122,7 @@ function NewSupportForm(props) {
 			message: formData?.message,
 			subject: formData?.subject,
 			ticket_department: formData?.ticket_department,
-			ticket_priority: formData?.ticket_department,
+			ticket_priority: formData?.ticket_priority,
 			ticket: supportId,
 			customer_email: adminId,
 			file: images
