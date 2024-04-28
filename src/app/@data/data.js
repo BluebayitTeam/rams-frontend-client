@@ -114,6 +114,7 @@ export const activeCncl = [
 ];
 
 export const rowsPerPageOptions = [25, 50, 100, 200, 500];
+export const rowsPerPageSupports = [10, 20, 30, 40, 50];
 
 export const saveAlertMsg = 'Save Success';
 

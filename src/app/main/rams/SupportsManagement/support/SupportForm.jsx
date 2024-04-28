@@ -293,7 +293,7 @@ function SupportForm(props) {
 											? `${ADMIN_URL}${item?.customer_image}`
 											: item?.admin_image
 												? `${ADMIN_URL}${item?.admin_image}`
-												: '/profile.jpg'
+												: 'assets/logos/user.jpg'
 									}`}
 									alt="Not found"
 								/>
@@ -340,7 +340,7 @@ function SupportForm(props) {
 											? `${ADMIN_URL}${item?.customer_image}`
 											: item?.admin_image
 												? `${ADMIN_URL}${item?.admin_image}`
-												: '/profile.jpg'
+												: 'assets/logos/user.jpg'
 									}`}
 									alt="Notfound"
 								/>

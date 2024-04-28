@@ -14,6 +14,7 @@ import {
 	FormControlLabel,
 	Grid,
 	Modal,
+	Pagination,
 	Paper,
 	Radio,
 	RadioGroup,
@@ -26,6 +27,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { BASE_URL, UPDATE_TICKET } from 'src/app/constant/constants';
 import clsx from 'clsx';
+import { rowsPerPageSupports } from 'src/app/@data/data';
 import { selectFilteredSupports, useGetSupportsQuery } from '../SupportsApi';
 
 const style = {
@@ -131,12 +133,21 @@ const useStyles = makeStyles((theme) => ({
 
 function SupportsTable(props) {
 	const dispatch = useDispatch();
-	const { navigate } = props;
-	const { data, isLoading, refetch } = useGetSupportsQuery(props?.searchKey);
+	const { navigate, searchKey } = props;
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+
+	const { data, isLoading, refetch } = useGetSupportsQuery({ ...pageAndSize, searchKey });
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(25);
+	const [rows, setRows] = useState([]);
+
 	const [ticketId, setTicketId] = useState('');
 	const [customerId, setCustomerId] = useState('');
 	const classes = useStyles();
-
+	useEffect(() => {
+		// Fetch data with specific page and size when component mounts or when page and size change
+		refetch({ page, rowsPerPage });
+	}, [page, rowsPerPage]);
 	const [open, setOpen] = useState(false);
 	const handleOpen = (ticketIdx, customerId) => {
 		setTicketId(ticketIdx);
@@ -159,7 +170,9 @@ function SupportsTable(props) {
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const support = useSelector((state) => state.data.supports);
+
 	console.log('supportsss', totalData);
+	// const serialNumber = 1;
 
 	useEffect(() => {
 		dispatch(getBranches());
@@ -173,8 +186,6 @@ function SupportsTable(props) {
 		refetch(props?.searchKey);
 	}, [props?.searchKey]);
 	const [selected, setSelected] = useState([]);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
 
 	const [tableOrder, setTableOrder] = useState({
 		direction: 'asc',
@@ -272,12 +283,19 @@ function SupportsTable(props) {
 		setSelected(newSelected);
 	}
 
-	function handleChangePage(event, page) {
-		setPage(+page);
+	const handlePagination = (e, handlePage) => {
+		setPageAndSize({ ...pageAndSize, page: handlePage });
+		setPage(handlePage - 1);
+	};
+
+	function handleChangePage(event, value) {
+		setPage(value);
+		setPageAndSize({ ...pageAndSize, page: value + 1 });
 	}
 
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(+event.target.value);
+		setPageAndSize({ ...pageAndSize, size: event.target.value });
 	}
 
 	if (isLoading) {
@@ -412,7 +430,7 @@ function SupportsTable(props) {
 											src={
 												support?.user?.image
 													? `${BASE_URL}${support?.user?.image}`
-													: 'assets/images/logos/default.png'
+													: 'assets/logos/user.jpg'
 											}
 											style={{
 												height: '50px',
@@ -555,24 +573,41 @@ function SupportsTable(props) {
 						</Grid>
 					</Box>
 				))}
+				<div
+					id="pagiContainer"
+					className="flex justify-between	"
+				>
+					<Pagination
+						// classes={{ ul: 'flex-nowrap' }}
+						className="shrink-0 border-t-0 mt-8"
+						count={totalData?.total_pages}
+						page={page + 1}
+						defaultPage={1}
+						color="primary"
+						showFirstButton
+						showLastButton
+						variant="outlined"
+						shape="rounded"
+						onChange={handlePagination}
+					/>
+					<TablePagination
+						className="shrink-0 border-t-0"
+						component="div"
+						rowsPerPageOptions={rowsPerPageSupports}
+						count={totalData?.total_pages}
+						rowsPerPage={rowsPerPage}
+						page={page}
+						backIconButtonProps={{
+							'aria-label': 'Previous Page'
+						}}
+						nextIconButtonProps={{
+							'aria-label': 'Next Page'
+						}}
+						onPageChange={handleChangePage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
+					/>
+				</div>
 			</FuseScrollbars>
-
-			<TablePagination
-				className="flex-shrink-0 border-t-1"
-				rowsPerPageOptions={[5, 10, 25]}
-				component="div"
-				count={data.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				backIconButtonProps={{
-					'aria-label': 'Previous Page'
-				}}
-				nextIconButtonProps={{
-					'aria-label': 'Next Page'
-				}}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-			/>
 		</div>
 	);
 }

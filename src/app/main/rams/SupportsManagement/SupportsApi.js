@@ -22,7 +22,10 @@ const SupportApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getSupports: build.query({
-				query: (searchKey) => ({ url: `${GET_TICKETS_FOR_CLIENTS}?key=${searchKey || ''}` }),
+				query: ({ page, size, searchKey }) => ({
+					url: `${GET_TICKETS_FOR_CLIENTS}?key=${searchKey || ''}`,
+					params: { page, size, searchKey }
+				}),
 				providesTags: ['supports']
 			}),
 			deleteSupports: build.mutation({
