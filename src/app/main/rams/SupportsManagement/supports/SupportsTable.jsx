@@ -594,7 +594,7 @@ function SupportsTable(props) {
 						className="shrink-0 border-t-0"
 						component="div"
 						rowsPerPageOptions={rowsPerPageSupports}
-						count={totalData?.total_pages}
+						count={totalData?.total_elements}
 						rowsPerPage={rowsPerPage}
 						page={page}
 						backIconButtonProps={{
