@@ -147,7 +147,7 @@ function PaymentDetailsTable(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col min-h-full px-10">
+		<div className="w-full flex flex-col">
 			<FuseScrollbars className="grow overflow-x-auto">
 				<Table
 					stickyHeader
@@ -310,7 +310,7 @@ function PaymentDetailsTable(props) {
 					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{

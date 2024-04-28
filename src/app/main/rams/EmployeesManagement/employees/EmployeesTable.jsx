@@ -76,6 +76,7 @@ function EmployeesTable(props) {
 			];
 
 			Object.entries(totalData.employees[0])
+
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.forEach(([key, value]) => {
 					modifiedRow.push({
