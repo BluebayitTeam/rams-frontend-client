@@ -2,12 +2,10 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
-import CloseIcon from '@mui/icons-material/Close';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import PaidIcon from '@mui/icons-material/Paid';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
@@ -23,33 +21,14 @@ import {
 	getRoles,
 	getThanas
 } from 'app/store/dataSlice';
-import {
-	Autocomplete,
-	Card,
-	CardContent,
-	FormControlLabel,
-	Pagination,
-	Radio,
-	RadioGroup,
-	TableCell,
-	TextField
-} from '@mui/material';
+import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import {
-	BASE_URL,
-	CLIENT_URL,
-	CREATE_SSL_COMMERZ,
-	GET_CLIENT_BY_ID,
-	PAYMENT_SUCCESS
-} from 'src/app/constant/constants';
-import moment from 'moment';
-import { rowsPerPageOptions, years, months } from 'src/app/@data/data';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
-import Modal from '@mui/material/Modal';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@mui/base';
 import { useParams } from 'react-router';
-import Swal from 'sweetalert2';
+import { BASE_URL } from 'src/app/constant/constants';
+import moment from 'moment';
 import AgentsTableHead from './AgentsTableHead';
 import { selectFilteredAgents, useGetAgentsQuery } from '../AgentsApi';
 
@@ -75,7 +54,6 @@ function AgentsTable(props) {
 	const [openModal, setOpenModal] = useState(false);
 	const { data, isLoading, refetch } = useGetAgentsQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
-	const packages = useSelector((state) => state.data.packages);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredAgents(data));
 	const agents = useSelector(selectFilteredAgents(data?.agents));
@@ -87,43 +65,13 @@ function AgentsTable(props) {
 	const countries = useSelector((state) => state.data.countries);
 	const employee = useSelector((state) => state.data.employees);
 	const [singleAgentDetails, setSingleAgentDetails] = useState({});
-	const [clientPackagePrice, setAgentPackagePrice] = useState(0);
+	const [agentPackagePrice, setAgentPackagePrice] = useState(0);
 
 	const routeParams = useParams();
 	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		console.log(`paymentStaus`, paymentStaus);
-
-		if (paymentStaus === 'success') {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-
-			fetch(`${PAYMENT_SUCCESS}`, authTOKEN)
-				.then((response) => response.json())
-				.then((data) => {
-					refetch({ page, rowsPerPage });
-					Swal.fire({
-						position: 'top-center',
-						icon: 'success',
-						title: 'Payment Successfully',
-						showConfirmButton: false,
-						timer: 3000
-					});
-				})
-				.catch(() => {});
-		}
-	}, []);
-
-	console.log('paymentStaus', paymentStaus);
-
-	console.log('singleAgentDetails', singleAgentDetails);
 
 	let serialNumber = 1;
 
@@ -144,7 +92,7 @@ function AgentsTable(props) {
 				}
 			];
 
-			Object.entries(totalData.agents[0])
+			Object.entries(totalData?.agents[0])
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({
@@ -160,13 +108,6 @@ function AgentsTable(props) {
 					});
 				});
 
-			// modifiedRow.push({
-			// 	id: 'payemnt',
-			// 	align: 'left',
-			// 	disablePadding: false,
-			// 	label: 'Payment',
-			// 	sort: true
-			// });
 			modifiedRow.push({
 				id: 'action',
 				align: 'left',
@@ -198,61 +139,6 @@ function AgentsTable(props) {
 		dispatch(getEmployees());
 	}, []);
 
-	const handleGetAgentInformation = (n) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-
-		fetch(`${GET_CLIENT_BY_ID}${n?.id}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) => {
-				setAgentPackagePrice(data?.package_price);
-				reset({
-					...data,
-					month_or_year: 'month',
-					no_of_month: '1',
-					total_price: data?.package_price,
-					success_url: `${CLIENT_URL}/apps/agent/agents`
-				});
-			})
-			.catch(() => {});
-	};
-	const handlePayment = (e) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-
-		fetch(`${CREATE_SSL_COMMERZ}`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			},
-			// Optionally, you can pass any data in the body if required
-			body: JSON.stringify({
-				package_type: getValues()?.package_type,
-				id: getValues()?.id,
-				no_of_month: Number(getValues()?.no_of_month)
-			})
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				debugger;
-				// reset({ ...data, total_price: data?.package_price });
-				console.log(`jfsdkjsdbf`, data?.payment_url);
-				// window.location.replace(data?.payment_url);
-				window.open(data?.payment_url);
-			})
-			.catch(() => {
-				// Handle errors here
-			});
-	};
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({
@@ -398,7 +284,7 @@ function AgentsTable(props) {
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 										</TableCell>
-										{Object.entries(n).map(
+										{Object?.entries(n)?.map(
 											([key, value]) =>
 												key !== 'id' && (
 													<TableCell
@@ -407,7 +293,7 @@ function AgentsTable(props) {
 														scope="row"
 														key={key}
 													>
-														{key === 'logo' && n[key] ? (
+														{key === 'image' && n[key] ? (
 															<img
 																className="h-full block rounded"
 																style={{ borderRadius: '30px' }}
@@ -439,14 +325,6 @@ function AgentsTable(props) {
 											align="right"
 											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 										>
-											<PaidIcon
-												onClick={() => {
-													handleGetAgentInformation(n);
-													handleOpen();
-												}}
-												className="cursor-pointer"
-												style={{ color: 'green', marginLeft: '5%', fontSize: '30px' }}
-											/>
 											<Edit
 												onClick={(event) => handleUpdateAgent(n, 'updateAgent')}
 												className="cursor-pointer custom-edit-icon-style"
@@ -494,243 +372,6 @@ function AgentsTable(props) {
 					onPageChange={handleChangePage}
 					onRowsPerPageChange={handleChangeRowsPerPage}
 				/>
-			</div>
-			<div>
-				<Modal
-					open={open}
-					onClose={() => {
-						setSingleAgentDetails({});
-						handleClose();
-					}}
-					aria-labelledby="modal-modal-title"
-					aria-describedby="modal-modal-description"
-				>
-					<Card
-						style={{ marginTop: '100px' }}
-						sx={style}
-					>
-						<CardContent>
-							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-								<Typography
-									className="text-center m-10"
-									variant="h5"
-									component="div"
-								>
-									Payment Details
-								</Typography>
-								<CloseIcon
-									onClick={(event) => {
-										setSingleAgentDetails({});
-										setOpen(false);
-									}}
-									className="cursor-pointer custom-delete-icon-style"
-									// style={{ color: 'red' }}
-								/>
-							</div>
-							<FormProvider {...methods}>
-								<Controller
-									name="first_name"
-									control={control}
-									render={({ field }) => (
-										<TextField
-											{...field}
-											className="mt-8 mb-16 w-1/2 px-4"
-											InputProps={{
-												readOnly: true
-											}}
-											label="First Name"
-											autoFocus
-											id="first_name"
-											variant="outlined"
-											fullWidth
-										/>
-									)}
-								/>
-								<Controller
-									name="last_name"
-									control={control}
-									render={({ field }) => (
-										<TextField
-											{...field}
-											className="mt-8 mb-16 w-1/2 px-4"
-											InputProps={{
-												readOnly: true
-											}}
-											label="Last Name"
-											autoFocus
-											id="last_name"
-											variant="outlined"
-											fullWidth
-										/>
-									)}
-								/>{' '}
-								<Controller
-									name="rl_no"
-									control={control}
-									render={({ field }) => (
-										<TextField
-											{...field}
-											className="mt-8 mb-16 w-1/2 px-4"
-											InputProps={{
-												readOnly: true
-											}}
-											label="RL No"
-											autoFocus
-											id="rl_no"
-											variant="outlined"
-											fullWidth
-										/>
-									)}
-								/>
-								<Controller
-									name="email"
-									control={control}
-									render={({ field }) => (
-										<TextField
-											{...field}
-											className="mt-8 mb-16 w-1/2 px-4"
-											type="text"
-											InputLabelProps={
-												field.value ? { shrink: true } : { style: { color: 'red' } }
-											}
-											InputProps={{
-												readOnly: true
-											}}
-											label="Email"
-											variant="outlined"
-											fullWidth
-										/>
-									)}
-								/>
-								<Controller
-									name="package_type"
-									control={control}
-									render={({ field: { onChange, value } }) => (
-										<Autocomplete
-											className="mt-8 mb-16"
-											freeSolo
-											disabled
-											value={value ? packages.find((packag) => packag.id === value) : null}
-											options={packages}
-											getOptionLabel={(option) =>
-												`${option.name}-${option.price} Taka(Per Month)`
-											}
-											onChange={(event, newValue) => {
-												onChange(newValue?.id);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													placeholder="Select a Package"
-													label="Selected Package"
-													variant="outlined"
-													InputLabelProps={{
-														shrink: true
-													}}
-													InputProps={{
-														readOnly: true
-													}}
-												/>
-											)}
-										/>
-									)}
-								/>
-								<Controller
-									name="month_or_year"
-									control={control}
-									defaultValue="" // Set the default value here
-									render={({ field }) => (
-										<RadioGroup
-											{...field}
-											value={field.value}
-											onChange={(e) => field.onChange(e.target.value)}
-											style={{ display: 'flex', flexDirection: 'row' }}
-										>
-											<FormControlLabel
-												value="month"
-												control={<Radio />}
-												label="Month"
-											/>
-											<FormControlLabel
-												value="year"
-												control={<Radio />}
-												label="Year"
-											/>
-										</RadioGroup>
-									)}
-								/>
-								<Controller
-									name="no_of_month"
-									control={control}
-									render={({ field: { onChange, value } }) => (
-										<Autocomplete
-											className="mt-8 mb-16 w-1/2 px-4"
-											freeSolo
-											value={
-												value
-													? watch('month_or_year') === 'year'
-														? years.find((year) => year.id === value)
-														: months.find((month) => month.id === value)
-													: null
-											}
-											options={watch('month_or_year') === 'year' ? years : months}
-											getOptionLabel={(option) => option.name}
-											onChange={(event, newValue) => {
-												onChange(newValue?.id);
-												setValue(
-													'total_price',
-													parseInt(newValue?.id) * parseInt(clientPackagePrice)
-												);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													placeholder={`Select ${watch('month_or_year') === 'year' ? 'Year' : 'Month'}`}
-													label={`Select ${watch('month_or_year') === 'year' ? 'Year' : 'Month'}`}
-													variant="outlined"
-													InputLabelProps={{
-														shrink: true
-													}}
-												/>
-											)}
-										/>
-									)}
-								/>
-								<Controller
-									name="total_price"
-									control={control}
-									render={({ field }) => (
-										<TextField
-											{...field}
-											className="mt-8 mb-16 w-1/2 px-4"
-											InputProps={{
-												readOnly: true
-											}}
-											label="Total Price"
-											autoFocus
-											id="total_price"
-											variant="outlined"
-											fullWidth
-										/>
-									)}
-								/>
-								<div className="text-center ">
-									<div className=" items-center  mr-32">
-										<Button
-											className="whitespace-nowrap px-10 rounded"
-											variant="contained"
-											color="secondary"
-											style={{ backgroundColor: '#22d3ee', height: '35px' }}
-											onClick={handlePayment}
-										>
-											Payment
-										</Button>
-									</div>
-								</div>
-							</FormProvider>
-						</CardContent>
-					</Card>
-				</Modal>
 			</div>
 		</div>
 	);

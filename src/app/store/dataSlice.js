@@ -187,6 +187,7 @@ export const getClientTypes = () => (dispatch) => {
 		.then((data) => dispatch(setClientTypes(data.client_types)))
 		.catch(() => {});
 };
+
 export const getGDSs = () => (dispatch) => {
 	const authTOKEN = {
 		headers: {
@@ -321,6 +322,18 @@ export const getClients = () => (dispatch) => {
 		}
 	};
 	fetch(`${GET_CLIENTS_WITHOUT_PAGINATION}`, authTOKEN)
+		.then((response) => response.json())
+		.then((data) => dispatch(setClients(data.clients)))
+		.catch(() => {});
+};
+export const getAgents = () => (dispatch) => {
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	fetch(`${AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
 		.then((response) => response.json())
 		.then((data) => dispatch(setClients(data.clients)))
 		.catch(() => {});
@@ -617,18 +630,18 @@ export const getDemandCallingEntrys = () => (dispatch) => {
 		.catch(() => {});
 };
 
-export const getAgents = () => (dispatch) => {
-	const authTOKEN = {
-		headers: {
-			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
-		}
-	};
-	fetch(AGENTS_WITHOUT_PAGINATION, authTOKEN)
-		.then((response) => response.json())
-		.then((data) => dispatch(setAgents(data.agents)))
-		.catch(() => {});
-};
+// export const getAgents = () => (dispatch) => {
+// 	const authTOKEN = {
+// 		headers: {
+// 			'Content-type': 'application/json',
+// 			Authorization: localStorage.getItem('jwt_access_token')
+// 		}
+// 	};
+// 	fetch(AGENTS_WITHOUT_PAGINATION, authTOKEN)
+// 		.then((response) => response.json())
+// 		.then((data) => dispatch(setAgents(data.agents)))
+// 		.catch(() => {});
+// };
 
 export const getAgencys = () => (dispatch) => {
 	const authTOKEN = {

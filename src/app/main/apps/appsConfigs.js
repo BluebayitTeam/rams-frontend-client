@@ -27,6 +27,7 @@ import PackageTypeAppConfig from '../rams/PackageTypesManagement/PackageTypeAppC
 import FeatureDetailAppConfig from '../rams/FeatureDetailsManagement/FeatureDetailAppConfig';
 import PackageDetailAppConfig from '../rams/PackageDetailsManagement/PackageDetailAppConfig';
 import ClientTypeAppConfig from '../rams/ClientTypesManagement/ClientTypeAppConfig';
+import AgentAppConfig from '../rams/AgentsManagement/AgentAppConfig';
 /**
  * The list of application configurations.
  */
@@ -45,6 +46,7 @@ const appsConfigs = [
 	NotificationsAppConfig,
 	UserAppConfig,
 	ClientAppConfig,
+	AgentAppConfig,
 	ColumnAppConfig,
 	PackageDetailAppConfig,
 	EmployeeAppConfig,

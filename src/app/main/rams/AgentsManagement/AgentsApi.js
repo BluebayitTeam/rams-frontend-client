@@ -5,13 +5,13 @@ import {
 	ALL_USERS,
 	CREATE_CLIENT,
 	DELETE_CLIENT,
-	GET_CLIENTS,
-	GET_CLIENT_BY_ID,
-	UPDATE_CLIENT
+	GET_AGENTS,
+	UPDATE_CLIENT,
+	GET_AGENT_BY_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import AgentModel from './client/models/AgentModel';
+import AgentModel from './agent/models/AgentModel';
 
 export const addTagTypes = ['agents'];
 const AgentApi = api
@@ -21,20 +21,20 @@ const AgentApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getAgents: build.query({
-				query: ({ page, size, searchKey }) => ({ url: GET_CLIENTS, params: { page, size, searchKey } }),
+				query: ({ page, size, searchKey }) => ({ url: GET_AGENTS, params: { page, size, searchKey } }),
 				providesTags: ['agents']
 			}),
 			deleteAgents: build.mutation({
-				query: (clientIds) => ({
+				query: (agentIds) => ({
 					url: ALL_USERS,
 					method: 'DELETE',
-					data: clientIds
+					data: agentIds
 				}),
 				invalidatesTags: ['agents']
 			}),
 			getAgent: build.query({
-				query: (clientId) => ({
-					url: `${GET_CLIENT_BY_ID}${clientId}`
+				query: (agentId) => ({
+					url: `${GET_AGENT_BY_ID}${agentId}`
 				}),
 				providesTags: ['agents']
 			}),
@@ -55,8 +55,8 @@ const AgentApi = api
 				invalidatesTags: ['agents']
 			}),
 			deleteAgent: build.mutation({
-				query: (clientId) => ({
-					url: `${DELETE_CLIENT}${clientId}`,
+				query: (agentId) => ({
+					url: `${DELETE_CLIENT}${agentId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['agents']

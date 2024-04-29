@@ -23,12 +23,9 @@ const AgentAppConfig = {
 					path: 'agents',
 					element: <Agents />
 				},
+
 				{
-					path: 'agents/success',
-					element: <Agents />
-				},
-				{
-					path: 'agents/:clientId/*',
+					path: 'agents/:agentId/*',
 					element: <Agent />
 				}
 			]

@@ -14,23 +14,17 @@ import {
 	tooltipClasses
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import {
-	getBranches,
-	getCities,
-	getAgentTypes,
-	getCountries,
-	getDepartments,
-	getEmployees,
-	getPackages,
-	getRoles,
-	getThanas
-} from 'app/store/dataSlice';
+import { getCities, getCountries, getThanas, getThanasBasedOnCity } from 'app/store/dataSlice';
 import clsx from 'clsx';
+import { makeStyles } from '@mui/styles';
+
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import countryCodes from 'src/app/@data/countrycodes';
 import { BASE_URL } from 'src/app/constant/constants';
+import { genders } from 'src/app/@data/data';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -41,65 +35,63 @@ const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 		border: '1px solid #dadde9'
 	}
 }));
+const useStyles = makeStyles((theme) => ({
+	hidden: {
+		display: 'none'
+	},
+	productImageUpload: {
+		transitionProperty: 'box-shadow',
+		transitionDuration: theme.transitions.duration.short,
+		transitionTimingFunction: theme.transitions.easing.easeInOut
+	}
+}));
 
 function AgentForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
 	const { errors } = formState;
-	const thanas = useSelector((state) => state.data.thanas);
-	const agentTypes = useSelector((state) => state.data.agentTypes);
 	const routeParams = useParams();
+	const { agentId } = routeParams;
+	const classes = useStyles(props);
 
-	console.log('agentTypes', agentTypes);
-
-	const packages = useSelector((state) => state.data.packages);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
+	const thanas = useSelector((state) => state.data.thanas);
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
-	const [showPassword, setShowPassword] = useState(false);
+	const groups = useSelector((state) => state.data.groups);
 	const getCountryCode1 = watch('country_code1');
 	const getCountryCode2 = watch('country_code2');
-	const logo = watch('logo');
+	const image = watch('image');
 
-	console.log('logo', logo);
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-	const [previewLogo, setPreviewLogo] = useState();
+	const [previewImage, setPreviewImage] = useState();
 	useEffect(() => {
-		dispatch(getBranches());
 		dispatch(getThanas());
-		dispatch(getPackages());
-		dispatch(getAgentTypes());
-		dispatch(getRoles());
-		dispatch(getDepartments());
 		dispatch(getCities());
 		dispatch(getCountries());
-		dispatch(getEmployees());
-
-		if (props?.agentId === 'new') {
-			const countryID = countries.find((data) => data.name == 'Bangladesh')?.id;
-			setValue('country', countryID);
-		}
+		// dispatch(getGroups());
 	}, []);
 
+	useEffect(() => {}, [watch('date_of_birth')]);
+
 	const handleChnageCountry = (selectedCountry) => {
-		const countryID = countries.find((data) => data.name == selectedCountry)?.id;
+		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
 	};
 
 	return (
 		<div>
 			<Controller
-				name="agent_type"
+				name="group"
 				control={control}
-				render={({ field: { onChange, value } }) => (
+				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? agentTypes.find((agentType) => agentType.id === value) : null}
-						options={agentTypes}
+						value={value ? groups.find((data) => data.id === value) : null}
+						options={groups}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -107,119 +99,137 @@ function AgentForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								className=""
-								placeholder="Select a Agent Type"
-								label="Selected Agent Type"
+								placeholder="Select Group"
+								label="Group"
+								helperText={errors?.group?.message}
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								autoFocus
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
+								//
 							/>
 						)}
 					/>
 				)}
 			/>
+
 			<Controller
 				name="first_name"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="First Name"
-						autoFocus
-						id="first_name"
-						variant="outlined"
-						fullWidth
-						error={!!errors.first_name}
-						helperText={errors?.first_name?.message}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.first_name?.message}
+							label="Agent Name"
+							id="first_name"
+							variant="outlined"
+							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+							fullWidth
+						/>
+					);
+				}}
 			/>
+			{/* 
 			<Controller
 				name="last_name"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="Last Name"
-						autoFocus
-						id="last_name"
-						variant="outlined"
-						fullWidth
-						error={!!errors.last_name}
-						helperText={errors?.last_name?.message}
-					/>
-				)}
-			/>{' '}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							//error={!!errors.last_name}
+							helperText={errors?.last_name?.message}
+							label="Last Name"
+							id="last_name"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							 
+						/>
+					);
+				}}
+			/> */}
+
 			<Controller
-				name="rl_no"
+				name="father_name"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="RL No"
-						autoFocus
-						id="rl_no"
-						variant="outlined"
-						fullWidth
-						error={!!errors.rl_no}
-						helperText={errors?.rl_no?.message}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.father_name?.message}
+							label="Father Name"
+							id="father_name"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
 			/>
+
+			<Controller
+				name="mother_name"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.mother_name?.message}
+							label="Mother Name"
+							id="mother_name"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
 			<Controller
 				name="username"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="Username"
-						autoFocus
-						id="username"
-						variant="outlined"
-						fullWidth
-						error={!!errors.username}
-						helperText={errors?.username?.message}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.username?.message}
+							label="User Name"
+							id="username"
+							variant="outlined"
+							InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
+							fullWidth
+						/>
+					);
+				}}
 			/>
+
 			<Controller
 				name="email"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						type="text"
-						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						helperText={errors?.email?.message}
-						label="Email"
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<Icon
-										className="text-20"
-										color="action"
-									>
-										agent
-									</Icon>
-								</InputAdornment>
-							)
-						}}
-						variant="outlined"
-						fullWidth
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.email?.message}
+							label="Email"
+							id="email"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
 			/>
-			{props?.agentId === 'new' && (
+
+			{agentId === 'new' && (
 				<>
 					<Controller
 						name="password"
@@ -249,7 +259,7 @@ function AgentForm(props) {
 										</InputAdornment>
 									)
 								}}
-								InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+								InputLabelProps={field.value && { shrink: true }}
 							/>
 						)}
 					/>
@@ -262,32 +272,62 @@ function AgentForm(props) {
 								className="mt-8 mb-16"
 								label="Confirm Password"
 								type="password"
-								// error={!!errors.confirmPassword || !field.value}
 								helperText={errors?.confirmPassword?.message}
 								variant="outlined"
 								fullWidth
 								InputProps={{
 									className: 'pr-2',
-									type: showPassword ? 'text' : 'password',
+									type: showConfirmPassword ? 'text' : 'password',
 									endAdornment: (
 										<InputAdornment position="end">
-											<IconButton onClick={() => setShowPassword(!showPassword)}>
+											<IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
 												<Icon
 													className="text-20"
 													color="action"
 												>
-													{showPassword ? 'visibility' : 'visibility_off'}
+													{showConfirmPassword ? 'visibility' : 'visibility_off'}
 												</Icon>
 											</IconButton>
 										</InputAdornment>
 									)
 								}}
-								InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+								InputLabelProps={field.value && { shrink: true }}
 							/>
 						)}
 					/>
 				</>
 			)}
+
+			<Controller
+				name="gender"
+				control={control}
+				render={({ field: { onChange, value, name } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? genders.find((data) => data.id === value) : null}
+						options={genders}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Gender"
+								label="Gender"
+								helperText={errors?.gender?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+								//
+							/>
+						)}
+					/>
+				)}
+			/>
+
 			<Box style={{ display: 'flex' }}>
 				<Controller
 					name="country_code1"
@@ -363,7 +403,7 @@ function AgentForm(props) {
 							{...field}
 							className="mt-8 mb-16"
 							// error={!!errors.primary_phone || !field.value}
-							label="Phone"
+							label="Primary Phone"
 							id="primary_phone"
 							variant="outlined"
 							fullWidth
@@ -372,217 +412,250 @@ function AgentForm(props) {
 					)}
 				/>
 			</Box>
-			{/* <Controller
-				name="package_type"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? packages.find((packag) => packag.id === value) : null}
-						options={packages}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						// defaultValue={{ id: null, name: "Select a country" }}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select a Package"
-								label="Selected Package"
-								variant="outlined"
-								//
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/> */}
+
+			{/* Secondary Phone Start */}
+			{/* <Box style={{ display: 'flex' }}>
+				<Controller
+					name="country_code2"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<Autocomplete
+							className="mt-8 mb-16 "
+							id="country-select-demo"
+							sx={{ width: 300 }}
+							value={value ? countryCodes.find((country) => country.value === value) : null}
+							options={countryCodes}
+							autoHighlight
+							error={!value}
+							getOptionLabel={(option) => option.label}
+							renderOption={(prop, option) => {
+								console.log('pasasrop', option);
+
+								return (
+									<Box
+										component="li"
+										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+										{...prop}
+									>
+										<img
+											loading="lazy"
+											width="20"
+											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
+											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
+											alt=""
+										/>
+										{option.label} ({option.code}) +{option.value}
+									</Box>
+								);
+							}}
+							onChange={(event, newValue) => {
+								onChange(newValue?.value);
+								handleChnageCountry(newValue?.label);
+								setValue('secondary_phone', newValue?.value);
+							}}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Choose a country"
+									variant="outlined"
+									error={!value}
+									style={{ width: '250px' }}
+									inputProps={{
+										...params.inputProps,
+										autoComplete: 'new-password' // disable autocomplete and autofill
+									}}
+								/>
+							)}
+						/>
+					)}
+				/>
+				<TextField
+					name="show_country_code2"
+					id="filled-read-only-input"
+					label="Country Code"
+					style={{ width: '150px' }}
+					value={getCountryCode2 || ''}
+					className="mt-8 mb-16"
+					InputLabelProps={{ shrink: true }}
+					InputProps={{
+						readOnly: true
+					}}
+					variant="outlined"
+				/>
+				<Controller
+					name="secondary_phone"
+					control={control}
+					render={({ field }) => (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							// error={!!errors.primary_phone || !field.value}
+							label="Secondary Phone"
+							id="secondary_phone"
+							variant="outlined"
+							fullWidth
+							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+						/>
+					)}
+				/>
+			</Box> */}
+			{/* Secondary Phone End */}
+
 			<Controller
-				name="package_type"
+				name="user_type"
 				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? packages.find((packag) => packag.id === value) : null}
-						options={packages}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								className="w-1/2"
-								placeholder="Select a Package"
-								label="Selected Package"
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-						renderOption={(props, option) => (
-							<HtmlTooltip
-								title={
-									<div>
-										<h2 className="text-yellow-900 text-center  mb-5 ">Package:{option?.name}</h2>{' '}
-										<h3 className="text-yellow-600   mb-5 ">Price:{option?.price}(Per Month)</h3>{' '}
-										<h4 className="text-gray-100 text-center border-b-1 mb-5 border-white">
-											Some Feature List
-										</h4>{' '}
-										<ol className="list-decimal ml-10">
-											{option?.feature_customizations?.slice(0, 8)?.map((data, index) => (
-												<li key={index}>
-													<h5>
-														{data?.feature?.label}-{data?.custom_value}
-													</h5>
-												</li>
-											))}
-										</ol>
-									</div>
-								}
-								placement="right-end"
-							>
-								<li {...props}>
-									<div>{`${option.name}`}</div>
-								</li>
-							</HtmlTooltip>
-						)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.user_type?.message}
+							label="User Type"
+							id="user_type"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="date_of_birth"
+				control={control}
+				render={({ field }) => (
+					<CustomDatePicker
+						field={field}
+						label="Birthday"
 					/>
 				)}
 			/>
+
+			<Controller
+				name="is_active"
+				control={control}
+				render={({ field }) => (
+					<FormControl>
+						<FormControlLabel
+							label="Is active"
+							control={
+								<Checkbox
+									{...field}
+									color="primary"
+									checked={field.value || false}
+								/>
+							}
+						/>
+					</FormControl>
+				)}
+			/>
+
 			<Controller
 				name="street_address_one"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="Address"
-						autoFocus
-						id="street_address_one"
-						variant="outlined"
-						fullWidth
-						error={!!errors.street_address_one}
-						helperText={errors?.street_address_one?.message}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.street_address_one?.message}
+							label="Street Address One"
+							id="street_address_one"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
 			/>
-			{/* <Controller
+
+			<Controller
 				name="street_address_two"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.street_address_two}
-						helperText={errors?.street_address_two?.message}
-						label="Secondary address"
-						id="address2"
-						variant="outlined"
-						fullWidth
-						InputLabelProps={field.value && { shrink: true }}
-					/>
-				)}
-			/> */}
-			{/* <Controller
-				name="gender"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? genders.find((gender) => gender.id === value) : null}
-						options={genders}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select a gender"
-								label="Gender"
-								variant="outlined"
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-							/>
-						)}
-					/>
-				)}
-			/> */}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.street_address_two?.message}
+							label="Street Address Two"
+							id="street_address_two"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
 			<Controller
 				name="country"
 				control={control}
-				render={({ field: { onChange, value } }) => (
+				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? countries.find((country) => country.id === value) : null}
+						value={value ? countries.find((data) => data.id === value) : null}
 						options={countries}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						// defaultValue={{ id: null, name: "Select a country" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select a country"
+								placeholder="Select Country"
 								label="Country"
+								helperText={errors?.country?.message}
 								variant="outlined"
-								//
 								InputLabelProps={{
 									shrink: true
 								}}
+								//
 							/>
 						)}
 					/>
 				)}
 			/>
-			{/* <Controller
+
+			<Controller
 				name="city"
 				control={control}
-				render={({ field: { onChange, value } }) => (
+				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? cities.find((city) => city.id === value) : null}
+						value={value ? cities.find((data) => data.id === value) : null}
 						options={cities}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
-							// dispatch(getThanasBasedOnCity(newValue?.id));
+							dispatch(getThanasBasedOnCity(newValue?.id));
 						}}
-						// defaultValue={{ id: null, name: "Select a city" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select a city"
+								placeholder="Select District"
 								label="District"
+								helperText={errors?.city?.message}
 								variant="outlined"
-								//
 								InputLabelProps={{
 									shrink: true
 								}}
+								//
 							/>
 						)}
 					/>
 				)}
-			/> */}
-			{/* <Controller
+			/>
+
+			<Controller
 				name="thana"
 				control={control}
-				render={({ field: { onChange, value } }) => (
+				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? thanas.find((thana) => thana.id === value) : null}
+						value={value ? thanas.find((data) => data.id === value) : null}
 						options={thanas}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -591,63 +664,88 @@ function AgentForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select a police station"
+								placeholder="Select Police Station"
 								label="Police Station"
+								helperText={errors?.thana?.message}
 								variant="outlined"
-								//
 								InputLabelProps={{
 									shrink: true
 								}}
-								InputProps={{ ...params.InputProps, type: 'search' }}
+								//
 							/>
 						)}
 					/>
 				)}
-			/> */}
-			{/* <Controller
+			/>
+
+			<Controller
 				name="postal_code"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.postal_code}
-						helperText={errors?.postal_code?.message}
-						label="Postal Code"
-						id="postal_code"
-						variant="outlined"
-						fullWidth
-						InputLabelProps={field.value && { shrink: true }}
-					/>
-				)}
-			/> */}
-			<Controller
-				name="is_agent_active"
-				control={control}
-				render={({ field }) => (
-					<FormControl>
-						<FormControlLabel
-							//
-							label="Is active"
-							control={
-								<Checkbox
-									{...field}
-									checked={field.value ? field.value : false}
-								/>
-							}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.postal_code?.message}
+							label="Postal Code"
+							id="postal_code"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
 						/>
-					</FormControl>
-				)}
+					);
+				}}
 			/>
-			{/* image upload */}
+
+			<Controller
+				name="nid"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors?.nid?.message}
+							label="NID"
+							id="nid"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="notes"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							helperText={errors.notes?.message}
+							label="Notes*"
+							id="notes"
+							multiline
+							rows={4}
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Controller
-					name="logo"
+					name="image"
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<label
 							htmlFor="button-file"
 							className={clsx(
+								classes.productImageUpload,
 								'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
 							)}
 						>
@@ -656,60 +754,33 @@ function AgentForm(props) {
 								className="hidden"
 								id="button-file"
 								type="file"
-								label="Employee Picture"
-								// onChange={handlePreviewImage}
 								onChange={async (e) => {
 									const reader = new FileReader();
 									reader.onload = () => {
 										if (reader.readyState === 2) {
-											setPreviewLogo(reader.result);
+											setPreviewImage(reader.result);
 										}
 									};
 									reader.readAsDataURL(e.target.files[0]);
 
 									const file = e.target.files[0];
-
 									onChange(file);
 								}}
 							/>
 							<Icon
 								fontSize="large"
 								color="action"
+								label="Agent Image"
 							>
 								cloud_upload
 							</Icon>
 						</label>
 					)}
 				/>
-				{/* {image && !previewImage && (
-					<img src={`${BASE_URL}${image}`} style={{ width: '100px', height: '100px' }} alt="Not found" />
-				)}
+				{image && !previewImage && <img src={`${BASE_URL}${image}`} />}
 
 				<div style={{ width: '100px', height: '100px' }}>
-					<img src={previewImage} alt="Not found" />
-				</div> */}
-				{logo && !previewLogo && (
-					<img
-						src={`${BASE_URL}${logo}`}
-						alt=""
-						className={clsx(
-							'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-						)}
-					/>
-				)}
-
-				<div style={{ width: '100px', height: '100px' }}>
-					{previewLogo && (
-						<img
-							label="Employee Picture"
-							alt=""
-							src={previewLogo}
-							className={clsx(
-								'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-							)}
-							// alt="no image found"
-						/>
-					)}
+					<img src={previewImage} />
 				</div>
 			</div>
 		</div>

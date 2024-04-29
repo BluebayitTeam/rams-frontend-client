@@ -47,6 +47,10 @@ function ColumnHeader() {
 				navigate(`/apps/client/clients`);
 			}
 
+			if (columnId === 'agent') {
+				navigate(`/apps/agent/agents`);
+			}
+
 			if (columnId === 'Employees') {
 				navigate(`/apps/employee/employees`);
 			}
@@ -60,6 +64,10 @@ function ColumnHeader() {
 	function handleCancel() {
 		if (columnId === 'Clients') {
 			navigate(`/apps/client/clients`);
+		}
+
+		if (columnId === 'agent') {
+			navigate(`/apps/agent/agents`);
 		}
 
 		if (columnId === 'Employees') {
