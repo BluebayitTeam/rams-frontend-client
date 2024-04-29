@@ -11,74 +11,74 @@ import {
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import ClientModel from './client/models/ClientModel';
+import AgentModel from './client/models/AgentModel';
 
-export const addTagTypes = ['clients'];
-const ClientApi = api
+export const addTagTypes = ['agents'];
+const AgentApi = api
 	.enhanceEndpoints({
 		addTagTypes
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			getClients: build.query({
+			getAgents: build.query({
 				query: ({ page, size, searchKey }) => ({ url: GET_CLIENTS, params: { page, size, searchKey } }),
-				providesTags: ['clients']
+				providesTags: ['agents']
 			}),
-			deleteClients: build.mutation({
+			deleteAgents: build.mutation({
 				query: (clientIds) => ({
 					url: ALL_USERS,
 					method: 'DELETE',
 					data: clientIds
 				}),
-				invalidatesTags: ['clients']
+				invalidatesTags: ['agents']
 			}),
-			getClient: build.query({
+			getAgent: build.query({
 				query: (clientId) => ({
 					url: `${GET_CLIENT_BY_ID}${clientId}`
 				}),
-				providesTags: ['clients']
+				providesTags: ['agents']
 			}),
-			createClient: build.mutation({
-				query: (newClient) => ({
+			createAgent: build.mutation({
+				query: (newAgent) => ({
 					url: CREATE_CLIENT,
 					method: 'POST',
-					data: jsonToFormData(ClientModel(newClient))
+					data: jsonToFormData(AgentModel(newAgent))
 				}),
-				invalidatesTags: ['clients']
+				invalidatesTags: ['agents']
 			}),
-			updateClient: build.mutation({
+			updateAgent: build.mutation({
 				query: (client) => ({
 					url: `${UPDATE_CLIENT}${client.id}`,
 					method: 'PUT',
 					data: jsonToFormData(client)
 				}),
-				invalidatesTags: ['clients']
+				invalidatesTags: ['agents']
 			}),
-			deleteClient: build.mutation({
+			deleteAgent: build.mutation({
 				query: (clientId) => ({
 					url: `${DELETE_CLIENT}${clientId}`,
 					method: 'DELETE'
 				}),
-				invalidatesTags: ['clients']
+				invalidatesTags: ['agents']
 			})
 		}),
 		overrideExisting: false
 	});
-export default ClientApi;
+export default AgentApi;
 export const {
-	useGetClientsQuery,
-	useDeleteClientsMutation,
-	useGetClientQuery,
-	useUpdateClientMutation,
-	useDeleteClientMutation,
-	useCreateClientMutation
-} = ClientApi;
+	useGetAgentsQuery,
+	useDeleteAgentsMutation,
+	useGetAgentQuery,
+	useUpdateAgentMutation,
+	useDeleteAgentMutation,
+	useCreateAgentMutation
+} = AgentApi;
 
-export const selectFilteredClients = (clients) =>
+export const selectFilteredAgents = (agents) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (searchText?.length === 0) {
-			return clients;
+			return agents;
 		}
 
-		return FuseUtils.filterArrayByString(clients, searchText);
+		return FuseUtils.filterArrayByString(agents, searchText);
 	});
