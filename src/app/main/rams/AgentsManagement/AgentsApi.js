@@ -3,11 +3,11 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	ALL_USERS,
-	CREATE_CLIENT,
 	DELETE_CLIENT,
 	GET_AGENTS,
 	UPDATE_CLIENT,
-	GET_AGENT_BY_ID
+	GET_AGENT_BY_ID,
+	CREATE_AGENT
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -40,7 +40,7 @@ const AgentApi = api
 			}),
 			createAgent: build.mutation({
 				query: (newAgent) => ({
-					url: CREATE_CLIENT,
+					url: CREATE_AGENT,
 					method: 'POST',
 					data: jsonToFormData(AgentModel(newAgent))
 				}),

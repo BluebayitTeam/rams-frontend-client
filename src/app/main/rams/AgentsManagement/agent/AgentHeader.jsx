@@ -16,7 +16,7 @@ import { useCreateAgentMutation, useDeleteAgentMutation, useUpdateAgentMutation 
  */
 function AgentHeader() {
 	const routeParams = useParams();
-	const { clientId } = routeParams;
+	const { agentId } = routeParams;
 	const [createAgent] = useCreateAgentMutation();
 	const [saveAgent] = useUpdateAgentMutation();
 	const [removeAgent] = useDeleteAgentMutation();
@@ -48,7 +48,7 @@ function AgentHeader() {
 	}
 
 	function handleRemoveAgent(dispatch) {
-		removeAgent(clientId);
+		removeAgent(agentId);
 		DeletedSuccessfully();
 		navigate('/apps/agent/agents');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
@@ -124,7 +124,7 @@ function AgentHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteAgent' && clientId !== 'new' && (
+				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
@@ -132,7 +132,7 @@ function AgentHeader() {
 						Do you want to remove this agent?
 					</Typography>
 				)}
-				{handleDelete === 'deleteAgent' && clientId !== 'new' && (
+				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
@@ -144,7 +144,7 @@ function AgentHeader() {
 						Remove
 					</Button>
 				)}
-				{clientId === 'new' && (
+				{agentId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
@@ -155,7 +155,7 @@ function AgentHeader() {
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteAgent' && handleUpdate === 'updateAgent' && clientId !== 'new' && (
+				{handleDelete !== 'deleteAgent' && handleUpdate === 'updateAgent' && agentId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						color="secondary"

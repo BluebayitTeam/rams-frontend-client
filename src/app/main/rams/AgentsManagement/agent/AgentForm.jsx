@@ -14,7 +14,7 @@ import {
 	tooltipClasses
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getCities, getCountries, getThanas, getThanasBasedOnCity } from 'app/store/dataSlice';
+import { getCities, getCountries, getGroups, getThanas, getThanasBasedOnCity } from 'app/store/dataSlice';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
 
@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import countryCodes from 'src/app/@data/countrycodes';
 import { BASE_URL } from 'src/app/constant/constants';
 import { genders } from 'src/app/@data/data';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -71,7 +71,7 @@ function AgentForm(props) {
 		dispatch(getThanas());
 		dispatch(getCities());
 		dispatch(getCountries());
-		// dispatch(getGroups());
+		dispatch(getGroups());
 	}, []);
 
 	useEffect(() => {}, [watch('date_of_birth')]);
@@ -402,7 +402,6 @@ function AgentForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							// error={!!errors.primary_phone || !field.value}
 							label="Primary Phone"
 							id="primary_phone"
 							variant="outlined"
@@ -520,13 +519,43 @@ function AgentForm(props) {
 				}}
 			/>
 
-			<Controller
+			{/* <Controller
 				name="date_of_birth"
 				control={control}
 				render={({ field }) => (
 					<CustomDatePicker
 						field={field}
 						label="Birthday"
+					/>
+				)}
+			/> */}
+
+			<Controller
+				control={control}
+				name="date_of_birth"
+				render={({ field: { value, onChange } }) => (
+					<DatePicker
+						value={new Date(value)}
+						onChange={(val) => {
+							onChange(val?.toString());
+						}}
+						className="mt-32 mb-16 w-full"
+						slotProps={{
+							textField: {
+								id: 'date_of_birth',
+								label: 'Birthday Date',
+								InputLabelProps: {
+									shrink: true
+								},
+								fullWidth: true,
+								variant: 'outlined',
+								error: !!errors.loan_end_date,
+								helperText: errors?.loan_end_date?.message
+							},
+							actionBar: {
+								actions: ['clear', 'today']
+							}
+						}}
 					/>
 				)}
 			/>
@@ -655,9 +684,9 @@ function AgentForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? thanas.find((data) => data.id === value) : null}
+						value={value ? thanas.find((data) => data?.id === value) : null}
 						options={thanas}
-						getOptionLabel={(option) => `${option.name}`}
+						getOptionLabel={(option) => `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
