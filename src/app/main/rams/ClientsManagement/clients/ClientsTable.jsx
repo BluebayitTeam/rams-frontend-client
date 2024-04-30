@@ -299,6 +299,8 @@ function ClientsTable(props) {
 		navigate(`/apps/client/clients/${item.id}/${item.handle}`);
 	}
 
+	// console.log('testDelete', handleDeleteClient);
+
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];

@@ -185,6 +185,8 @@ function AgentsTable(props) {
 		navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
 	}
 
+	// console.log('testDelete', handleDeleteAgent);
+
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
@@ -360,7 +362,7 @@ function AgentsTable(props) {
 					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{

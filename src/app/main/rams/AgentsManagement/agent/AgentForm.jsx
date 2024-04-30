@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { FormControl } from '@mui/base';
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
@@ -530,6 +531,8 @@ function AgentForm(props) {
 				)}
 			/> */}
 
+			{/* Birthday date */}
+
 			<Controller
 				control={control}
 				name="date_of_birth"
@@ -543,14 +546,14 @@ function AgentForm(props) {
 						slotProps={{
 							textField: {
 								id: 'date_of_birth',
-								label: 'Birthday Date',
+								label: 'BirthDay',
 								InputLabelProps: {
 									shrink: true
 								},
 								fullWidth: true,
 								variant: 'outlined',
-								error: !!errors.loan_end_date,
-								helperText: errors?.loan_end_date?.message
+								error: !!errors.date_of_birth,
+								helperText: errors?.date_of_birth?.message
 							},
 							actionBar: {
 								actions: ['clear', 'today']

@@ -26,16 +26,16 @@ const schema = z.object({
 function Agent() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { clientId } = routeParams;
+	const { agentId } = routeParams;
 
 	const {
 		data: agent,
 		isLoading,
 		isError
-	} = useGetAgentQuery(clientId, {
-		skip: !clientId || clientId === 'new'
+	} = useGetAgentQuery(agentId, {
+		skip: !agentId || agentId === 'new'
 	});
-	console.log('clientId', agent, clientId);
+	console.log('agentId', agent, agentId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -46,10 +46,10 @@ function Agent() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (clientId === 'new') {
+		if (agentId === 'new') {
 			reset(AgentModel({}));
 		}
-	}, [clientId, reset]);
+	}, [agentId, reset]);
 
 	useEffect(() => {
 		if (agent) {
@@ -68,7 +68,7 @@ function Agent() {
 	/**
 	 * Show Message if the requested agent is not exists
 	 */
-	if (isError && clientId !== 'new') {
+	if (isError && agentId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -101,7 +101,7 @@ function Agent() {
 				content={
 					<div className="p-16 ">
 						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<AgentForm clientId={clientId} />
+							<AgentForm agentId={agentId} />
 						</div>
 					</div>
 				}

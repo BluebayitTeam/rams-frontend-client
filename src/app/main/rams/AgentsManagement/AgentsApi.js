@@ -3,11 +3,11 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	ALL_USERS,
-	DELETE_CLIENT,
 	GET_AGENTS,
-	UPDATE_CLIENT,
 	GET_AGENT_BY_ID,
-	CREATE_AGENT
+	CREATE_AGENT,
+	DELETE_AGENT,
+	UPDATE_AGENT
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -48,7 +48,7 @@ const AgentApi = api
 			}),
 			updateAgent: build.mutation({
 				query: (client) => ({
-					url: `${UPDATE_CLIENT}${client.id}`,
+					url: `${UPDATE_AGENT}${client.id}`,
 					method: 'PUT',
 					data: jsonToFormData(client)
 				}),
@@ -56,7 +56,7 @@ const AgentApi = api
 			}),
 			deleteAgent: build.mutation({
 				query: (agentId) => ({
-					url: `${DELETE_CLIENT}${agentId}`,
+					url: `${DELETE_AGENT}${agentId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['agents']
