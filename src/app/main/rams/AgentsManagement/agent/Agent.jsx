@@ -9,10 +9,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import AgentHeader from './AgentHeader';
 import AgentModel from './models/AgentModel';
 import { useGetAgentQuery } from '../AgentsApi';
 import AgentForm from './AgentForm';
+import OpeningBalance from './tabs/OpeningBalance';
 /**
  * Form Validation Schema
  */
@@ -38,6 +41,9 @@ function Agent() {
 	console.log('agentId', agent, agentId);
 
 	const [tabValue, setTabValue] = useState(0);
+
+	console.log('tabValue', tabValue);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -97,15 +103,75 @@ function Agent() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				contentToolbar={
+					<Tabs
+						value={tabValue}
+						onChange={handleTabChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto"
+						classes={{ root: 'w-full h-64' }}
+					>
+						<Tab
+							className="h-64"
+							label="Basic Info"
+						/>
+						<Tab
+							className="h-64"
+							label="Opening Balance"
+						/>
+					</Tabs>
+				}
 				header={<AgentHeader />}
 				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<AgentForm agentId={agentId} />
+					<>
+						<Tabs
+							value={tabValue}
+							onChange={handleTabChange}
+							indicatorColor="secondary"
+							textColor="secondary"
+							variant="scrollable"
+							scrollButtons="auto"
+							classes={{ root: 'w-full h-64 border-b-1' }}
+						>
+							<Tab
+								className="h-64"
+								label="Basic Info"
+							/>
+							<Tab
+								className="h-64"
+								label="Opening Balance"
+							/>
+						</Tabs>
+						<div className="p-16 sm:p-24 max-w-3xl">
+							<div className={tabValue !== 0 ? 'hidden' : ''}>
+								<AgentForm agentId={agentId} />
+							</div>
+
+							<div className={tabValue !== 1 ? 'hidden' : ''}>
+								<OpeningBalance />
+								{/* Opening Balance */}
+							</div>
 						</div>
-					</div>
+					</>
+					// <div className="p-16  ">
+					// 	<div className="p-16 ">
+					// 		<div className={tabValue !== 0 ? 'hidden' : ''}>
+					// 			<AgentForm agentId={agentId} />
+					// 		</div>
+					// 		<div className={tabValue !== 1 ? 'hidden' : ''}>
+					// 			{/* <OpeningBalance /> */}
+					// 			dsfsdsf
+					// 		</div>
+					// 	</div>
+					// </div>
 				}
-				scroll={isMobile ? 'normal' : 'content'}
+				innerScroll
 			/>
 		</FormProvider>
 	);

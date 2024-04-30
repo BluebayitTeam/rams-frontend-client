@@ -1000,6 +1000,9 @@ const dataSlice = createSlice({
 		setDemands: (state, action) => {
 			state.demands = action.payload ? action.payload : [];
 		},
+		setThanas: (state, action) => {
+			state.thanas = action.payload ? action.payload : [];
+		},
 		setDemandVisaEntrys: (state, action) => {
 			state.demandVisaEntrys = action.payload ? action.payload : [];
 		},

@@ -57,11 +57,14 @@ function AgentForm(props) {
 	const classes = useStyles(props);
 
 	const thanas = useSelector((state) => state.data.thanas);
+
+	console.log('thanas', thanas);
+
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const groups = useSelector((state) => state.data.groups);
 	const getCountryCode1 = watch('country_code1');
-	const getCountryCode2 = watch('country_code2');
+	// const getCountryCode2 = watch('country_code2');
 	const image = watch('image');
 
 	const [showPassword, setShowPassword] = useState(false);
@@ -73,6 +76,7 @@ function AgentForm(props) {
 		dispatch(getCities());
 		dispatch(getCountries());
 		dispatch(getGroups());
+		// dispatch(getThanasBasedOnCity());
 	}, []);
 
 	useEffect(() => {}, [watch('date_of_birth')]);
@@ -658,7 +662,7 @@ function AgentForm(props) {
 						freeSolo
 						value={value ? cities.find((data) => data.id === value) : null}
 						options={cities}
-						getOptionLabel={(option) => `${option.name}`}
+						getOptionLabel={(option) => `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 							dispatch(getThanasBasedOnCity(newValue?.id));
