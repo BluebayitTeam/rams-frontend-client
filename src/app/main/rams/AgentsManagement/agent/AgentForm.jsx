@@ -25,7 +25,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import countryCodes from 'src/app/@data/countrycodes';
 import { BASE_URL } from 'src/app/constant/constants';
 import { genders } from 'src/app/@data/data';
-import { DatePicker } from '@mui/x-date-pickers';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -538,33 +537,24 @@ function AgentForm(props) {
 			{/* Birthday date */}
 
 			<Controller
-				control={control}
 				name="date_of_birth"
-				render={({ field: { value, onChange } }) => (
-					<DatePicker
-						value={new Date(value)}
-						onChange={(val) => {
-							onChange(val?.toString());
-						}}
-						className="mt-32 mb-16 w-full"
-						slotProps={{
-							textField: {
-								id: 'date_of_birth',
-								label: 'BirthDay',
-								InputLabelProps: {
-									shrink: true
-								},
-								fullWidth: true,
-								variant: 'outlined',
-								error: !!errors.date_of_birth,
-								helperText: errors?.date_of_birth?.message
-							},
-							actionBar: {
-								actions: ['clear', 'today']
-							}
-						}}
-					/>
-				)}
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.date_of_birth}
+							helperText={errors?.date_of_birth?.message}
+							label="Date of Birth"
+							id="date_of_birth"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
 			/>
 
 			<Controller

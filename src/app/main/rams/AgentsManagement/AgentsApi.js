@@ -10,6 +10,7 @@ import {
 	UPDATE_AGENT
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import AgentModel from './agent/models/AgentModel';
 
@@ -42,15 +43,25 @@ const AgentApi = api
 				query: (newAgent) => ({
 					url: CREATE_AGENT,
 					method: 'POST',
-					data: jsonToFormData(AgentModel(newAgent))
+					data: jsonToFormData(
+						AgentModel({
+							...newAgent,
+							date_of_birth: moment(new Date(newAgent?.date_of_birth)).format('YYYY-MM-DD'),
+							balance_date: moment(new Date(newAgent?.balance_date)).format('YYYY-MM-DD')
+						})
+					)
 				}),
 				invalidatesTags: ['agents']
 			}),
 			updateAgent: build.mutation({
-				query: (client) => ({
-					url: `${UPDATE_AGENT}${client.id}`,
+				query: (agent) => ({
+					url: `${UPDATE_AGENT}${agent.id}`,
 					method: 'PUT',
-					data: jsonToFormData(client)
+					data: jsonToFormData({
+						...agent,
+						date_of_birth: moment(new Date(agent?.date_of_birth)).format('YYYY-MM-DD'),
+						balance_date: moment(new Date(agent?.balance_date)).format('YYYY-MM-DD')
+					})
 				}),
 				invalidatesTags: ['agents']
 			}),
