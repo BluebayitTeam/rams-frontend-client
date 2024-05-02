@@ -82,9 +82,9 @@ export const navigationSlice = createSlice({
 		setNavigation(state, action) {
 			return navigationAdapter.setAll(state, FuseNavigationHelper.flattenNavigation(action.payload));
 		},
-		// resetNavigation: (state, action) => action.payload
+		resetNavigation: (state, action) => action.payload
 		// Dynamic Sidebar
-		resetNavigation: () => initialState
+		// resetNavigation: () => initialState
 	}
 });
 export const { setNavigation, resetNavigation } = navigationSlice.actions;
