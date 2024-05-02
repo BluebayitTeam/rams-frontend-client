@@ -80,34 +80,7 @@ const navigationConfig = [
 			}
 		]
 	},
-	{
-		id: 'apps.client',
-		title: 'Client',
-		type: 'collapse',
-		icon: 'heroicons-outline:home',
-		translate: 'Client',
-		children: [
-			{
-				id: 'clientType',
-				title: 'Client Type',
-				type: 'item',
-				url: '/apps/clientType/clientTypes'
-			},
-			{
-				id: 'country',
-				title: 'Country',
-				type: 'item',
-				url: '/apps/country/countrys'
-			},
-			{
-				id: 'client',
-				title: 'Client',
-				type: 'item',
-				url: '/apps/client/clients',
-				end: true
-			}
-		]
-	},
+
 	{
 		id: 'apps.agent',
 		title: 'Agent',
@@ -152,27 +125,6 @@ const navigationConfig = [
 		type: 'item',
 		icon: 'heroicons-outline:clipboard-check',
 		url: '/apps/support/supports'
-	},
-	{
-		id: 'apps.package',
-		title: 'Package',
-		type: 'collapse',
-		icon: 'heroicons-outline:home',
-		translate: 'Package',
-		children: [
-			{
-				id: 'packageType',
-				title: 'Package',
-				type: 'item',
-				url: '/apps/packageType/packageTypes'
-			},
-			{
-				id: 'featureDetail',
-				title: 'Feature List',
-				type: 'item',
-				url: '/apps/featureDetail/featureDetails'
-			}
-		]
 	}
 ];
 export default navigationConfig;
