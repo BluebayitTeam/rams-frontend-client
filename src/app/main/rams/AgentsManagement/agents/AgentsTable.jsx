@@ -246,11 +246,11 @@ function AgentsTable(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
+		<div className="w-full flex flex-col min-h-full px-10 ">
+			<FuseScrollbars className="grow overflow-x-auto ">
 				<Table
 					stickyHeader
-					className="min-w-xl"
+					className="min-w-xl "
 					aria-labelledby="tableTitle"
 				>
 					<AgentsTableHead
@@ -270,7 +270,7 @@ function AgentsTable(props) {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
-										className="h-20 cursor-pointer "
+										className="h-20 cursor-pointer border-t-1  border-gray-200"
 										hover
 										role="checkbox"
 										aria-checked={isSelected}
@@ -279,7 +279,7 @@ function AgentsTable(props) {
 										selected={isSelected}
 									>
 										<TableCell
-											className="w-40 md:w-64"
+											className="w-40 md:w-64 border-t-1  border-gray-200"
 											component="th"
 											scope="row"
 											style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
@@ -290,7 +290,7 @@ function AgentsTable(props) {
 											([key, value]) =>
 												key !== 'id' && (
 													<TableCell
-														className="p-4 md:p-16"
+														className="p-4 md:p-16 border-t-1  border-gray-200 "
 														component="th"
 														scope="row"
 														key={key}
@@ -330,7 +330,7 @@ function AgentsTable(props) {
 										)}
 
 										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap"
+											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
 											component="th"
 											scope="row"
 											align="right"
@@ -358,7 +358,6 @@ function AgentsTable(props) {
 				className="flex justify-between mb-6"
 			>
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
