@@ -134,19 +134,19 @@ function AgentHeader() {
 				)}
 				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-1 "
 						variant="contained"
 						color="secondary"
 						onClick={handleRemoveAgent}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						style={{ backgroundColor: '#ea5b78', color: 'white' }}
+						// style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
 				{agentId === 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-4 "
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields) || !isValid}
