@@ -295,13 +295,22 @@ function AgentsTable(props) {
 														scope="row"
 														key={key}
 													>
-														{key === 'image' && n[key] ? (
+														{key === 'image' ? (
 															<img
 																className="h-full block rounded"
-																style={{ borderRadius: '30px' }}
-																width="60px"
-																height="60px"
-																src={`${BASE_URL}${n[key]}`}
+																style={{
+																	height: '50px',
+																	width: '50px',
+																	borderRadius: '50%',
+																	marginRight: '15px'
+																}}
+																// src={`${BASE_URL}${n[key]}`}
+
+																src={
+																	n[key]
+																		? `${BASE_URL}${n[key]}`
+																		: 'assets/logos/user.jpg'
+																}
 																alt={n.first_name}
 															/>
 														) : key === 'payment_valid_until' && n[key] ? (
@@ -344,7 +353,10 @@ function AgentsTable(props) {
 				</Table>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
+			<div
+				id="pagiContainer"
+				className="flex justify-between mb-6"
+			>
 				<Pagination
 					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
@@ -359,7 +371,7 @@ function AgentsTable(props) {
 				/>
 
 				<TablePagination
-					className="shrink-0 border-t-1"
+					className="shrink-0 mb-2"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
 					count={totalData?.total_elements}

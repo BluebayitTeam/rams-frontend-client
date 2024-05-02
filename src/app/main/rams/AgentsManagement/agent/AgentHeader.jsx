@@ -122,7 +122,7 @@ function AgentHeader() {
 			<motion.div
 				className="flex"
 				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
 				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
 					<Typography
@@ -167,9 +167,9 @@ function AgentHeader() {
 					</Button>
 				)}
 				<Button
-					className="whitespace-nowrap mx-4"
+					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
+					// style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel
