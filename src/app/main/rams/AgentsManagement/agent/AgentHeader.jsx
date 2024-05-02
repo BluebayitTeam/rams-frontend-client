@@ -157,10 +157,10 @@ function AgentHeader() {
 				)}
 				{handleDelete !== 'deleteAgent' && handleUpdate === 'updateAgent' && agentId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 						color="secondary"
 						variant="contained"
-						style={{ backgroundColor: '#4dc08e', color: 'white' }}
+						// style={{ backgroundColor: '#4dc08e', color: 'white' }}
 						onClick={handleUpdateAgent}
 					>
 						Update
