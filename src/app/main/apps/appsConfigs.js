@@ -24,6 +24,7 @@ import PaymentDetailAppConfig from '../rams/PaymentDetailsManagement/PaymentDeta
 import SubscriptionLoanAppConfig from '../rams/SubscriptionLoansManagement/SubscriptionLoanAppConfig';
 import FeatureDetailAppConfig from '../rams/FeatureDetailsManagement/FeatureDetailAppConfig';
 import AgentAppConfig from '../rams/AgentsManagement/AgentAppConfig';
+import PassengerAppConfig from '../rams/PassengersManagement/PassengerAppConfig';
 /**
  * The list of application configurations.
  */
@@ -56,6 +57,7 @@ const appsConfigs = [
 	MenuAppConfig,
 	PermissionAppConfig,
 	RoleAppConfig,
+	PassengerAppConfig,
 
 	FeatureDetailAppConfig
 ];
