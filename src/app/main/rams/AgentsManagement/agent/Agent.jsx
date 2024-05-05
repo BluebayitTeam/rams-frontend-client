@@ -127,7 +127,9 @@ function Agent() {
               scrollButtons='auto'
               classes={{ root: 'w-full h-64 border-b-1' }}>
               <Tab className='h-64' label='Basic Info' />
-              <Tab className='h-64' label='Opening Balance' />
+              {agentId !== 'new' && (
+                <Tab className='h-64' label='Opening Balance' />
+              )}
             </Tabs>
             <div className='p-16'>
               <div className={tabValue !== 0 ? 'hidden' : ''}>
