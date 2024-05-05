@@ -11,7 +11,6 @@ import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TasksAppConfig from './tasks/TasksAppConfig';
 import NotificationsAppConfig from './notifications/NotificationsAppConfig';
 import UserAppConfig from '../rams/UsersManagement/UserAppConfig';
-import ClientAppConfig from '../rams/ClientsManagement/ClientAppConfig';
 import EmployeeAppConfig from '../rams/EmployeesManagement/EmployeeAppConfig';
 import ColumnAppConfig from '../rams/ColumnsManagement/ColumnAppConfig';
 import DepartmentAppConfig from '../rams/DepartmentsManagement/DepartmentAppConfig';
@@ -23,11 +22,9 @@ import RoleMenuAppConfig from '../rams/RoleMenusManagement/RoleMenuAppConfig';
 import SupportAppConfig from '../rams/SupportsManagement/SupportAppConfig';
 import PaymentDetailAppConfig from '../rams/PaymentDetailsManagement/PaymentDetailAppConfig';
 import SubscriptionLoanAppConfig from '../rams/SubscriptionLoansManagement/SubscriptionLoanAppConfig';
-import PackageTypeAppConfig from '../rams/PackageTypesManagement/PackageTypeAppConfig';
 import FeatureDetailAppConfig from '../rams/FeatureDetailsManagement/FeatureDetailAppConfig';
-import PackageDetailAppConfig from '../rams/PackageDetailsManagement/PackageDetailAppConfig';
-import ClientTypeAppConfig from '../rams/ClientTypesManagement/ClientTypeAppConfig';
 import AgentAppConfig from '../rams/AgentsManagement/AgentAppConfig';
+import PassengerAppConfig from '../rams/PassengersManagement/PassengerAppConfig';
 /**
  * The list of application configurations.
  */
@@ -45,10 +42,10 @@ const appsConfigs = [
   TasksAppConfig,
   NotificationsAppConfig,
   UserAppConfig,
-  ClientAppConfig,
+
   AgentAppConfig,
   ColumnAppConfig,
-  PackageDetailAppConfig,
+
   EmployeeAppConfig,
   SubscriptionLoanAppConfig,
   DepartmentAppConfig,
@@ -56,11 +53,12 @@ const appsConfigs = [
   SupportAppConfig,
   RoleMenuAppConfig,
   DesignationAppConfig,
-  ClientTypeAppConfig,
+
   MenuAppConfig,
   PermissionAppConfig,
   RoleAppConfig,
-  PackageTypeAppConfig,
+  PassengerAppConfig,
+
   FeatureDetailAppConfig,
 ];
 export default appsConfigs;

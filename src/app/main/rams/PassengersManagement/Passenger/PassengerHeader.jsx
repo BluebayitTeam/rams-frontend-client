@@ -9,53 +9,53 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateAgentMutation, useDeleteAgentMutation, useUpdateAgentMutation } from '../AgentsApi';
+import { useCreatePassengerMutation, useDeletePassengerMutation, useUpdatePassengerMutation } from '../PassengersApi';
 
 /**
- * The agent header.
+ * The passenger header.
  */
-function AgentHeader() {
+function PassengerHeader() {
 	const routeParams = useParams();
-	const { agentId } = routeParams;
-	const [createAgent] = useCreateAgentMutation();
-	const [saveAgent] = useUpdateAgentMutation();
-	const [removeAgent] = useDeleteAgentMutation();
+	const { menuId } = routeParams;
+	const [createPassenger] = useCreatePassengerMutation();
+	const [savePassenger] = useUpdatePassengerMutation();
+	const [removePassenger] = useDeletePassengerMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteAgent');
-	const handleUpdate = localStorage.getItem('updateAgent');
+	const handleDelete = localStorage.getItem('deletePassenger');
+	const handleUpdate = localStorage.getItem('updatePassenger');
 
-	function handleUpdateAgent() {
-		saveAgent(getValues()).then((data) => {
+	function handleUpdatePassenger() {
+		savePassenger(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/agent/agents`);
+			navigate(`/apps/passenger/passengers`);
 		});
 	}
 
-	function handleCreateAgent() {
-		createAgent(getValues())
+	function handleCreatePassenger() {
+		createPassenger(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/agent/agents`);
+				navigate(`/apps/passenger/passengers`);
 			});
 	}
 
-	function handleRemoveAgent(dispatch) {
-		removeAgent(agentId);
+	function handleRemovePassenger(dispatch) {
+		removePassenger(menuId);
 		DeletedSuccessfully();
-		navigate('/apps/agent/agents');
+		navigate('/apps/passenger/passengers');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/agent/agents`);
+		navigate(`/apps/passenger/passengers`);
 	}
 
 	return (
@@ -69,7 +69,7 @@ function AgentHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/agent/agents"
+						to="/apps/passenger/passengers"
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>
@@ -77,7 +77,7 @@ function AgentHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Agents</span>
+						<span className="flex mx-4 font-medium">Passengers</span>
 					</Typography>
 				</motion.div>
 
@@ -96,7 +96,7 @@ function AgentHeader() {
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/agent-image-placeholder.png"
+								src="assets/images/apps/ecommerce/passenger-image-placeholder.png"
 								alt={name}
 							/>
 						)}
@@ -107,13 +107,13 @@ function AgentHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'New Agent'}
+							{name || 'New Passenger'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							Agent Detail
+							Passenger Detail
 						</Typography>
 					</motion.div>
 				</div>
@@ -122,54 +122,54 @@ function AgentHeader() {
 			<motion.div
 				className="flex"
 				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
+				{handleDelete === 'deletePassenger' && menuId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this agent?
+						Do you want to remove this passenger?
 					</Typography>
 				)}
-				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
+				{handleDelete === 'deletePassenger' && menuId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-1 "
+						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveAgent}
+						onClick={handleRemovePassenger}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						// style={{ backgroundColor: '#ea5b78', color: 'white' }}
+						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{agentId === 'new' && (
+				{menuId === 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4 "
+						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateAgent}
+						// disabled={_.isEmpty(dirtyFields) || !isValid}
+						onClick={handleCreatePassenger}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteAgent' && handleUpdate === 'updateAgent' && agentId !== 'new' && (
+				{handleDelete !== 'deletePassenger' && handleUpdate === 'updatePassenger' && menuId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
+						className="whitespace-nowrap mx-4"
 						color="secondary"
 						variant="contained"
-						// style={{ backgroundColor: '#4dc08e', color: 'white' }}
-						onClick={handleUpdateAgent}
+						style={{ backgroundColor: '#4dc08e', color: 'white' }}
+						onClick={handleUpdatePassenger}
 					>
 						Update
 					</Button>
 				)}
 				<Button
-					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
+					className="whitespace-nowrap mx-4"
 					variant="contained"
-					// style={{ backgroundColor: '#FFAA4C', color: 'white' }}
+					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel
@@ -179,4 +179,4 @@ function AgentHeader() {
 	);
 }
 
-export default AgentHeader;
+export default PassengerHeader;

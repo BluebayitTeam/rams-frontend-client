@@ -1099,7 +1099,7 @@ const {
 	setPaymentMathods,
 	setCusotmerTypes,
 	setBrands,
-	setFormcontent_heads,
+	// setFormcontent_heads,
 	setCategories,
 	setParentMenus,
 	setAllMenuNested,

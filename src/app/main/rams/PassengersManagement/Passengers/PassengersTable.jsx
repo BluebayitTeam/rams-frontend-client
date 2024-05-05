@@ -3,6 +3,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
@@ -11,134 +12,52 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-	getBranches,
-	getCities,
-	getCountries,
-	getDepartments,
-	getEmployees,
-	getPackages,
-	getRoles,
-	getThanas
-} from 'app/store/dataSlice';
-import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
+import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router';
-import { BASE_URL } from 'src/app/constant/constants';
-import moment from 'moment';
-import AgentsTableHead from './AgentsTableHead';
-import { selectFilteredAgents, useGetAgentsQuery } from '../AgentsApi';
+import { Pagination } from '@mui/material';
+import PassengersTableHead from './PassengersTableHead';
+import { selectFilteredPassengers, useGetPassengersQuery } from '../PassengersApi';
 
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
-
-function AgentsTable(props) {
+/**
+ * The passengers table.
+ */
+function PassengersTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
-	const { reset, formState, watch, control, getValues, setValue } = useForm({
-		mode: 'onChange',
-		resolver: zodResolver()
-	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [openModal, setOpenModal] = useState(false);
-	const { data, isLoading, refetch } = useGetAgentsQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const totalData = useSelector(selectFilteredAgents(data));
-	const agents = useSelector(selectFilteredAgents(data?.agents));
+	const { data, isLoading, refetch } = useGetPassengersQuery({ ...pageAndSize, searchKey });
+
+	console.log('sdsdsds', data);
+
+	const totalData = useSelector(selectFilteredPassengers(data));
+	const passengers = useSelector(selectFilteredPassengers(data?.menu_items));
 	const thanas = useSelector((state) => state.data.thanas);
 	const branches = useSelector((state) => state.data.branches);
 	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	const [singleAgentDetails, setSingleAgentDetails] = useState({});
-	const [agentPackagePrice, setAgentPackagePrice] = useState(0);
-
-	const routeParams = useParams();
-	const { paymentStaus } = routeParams;
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
-
+	const menu = useSelector((state) => state.data.passengers);
+	console.log('menusss', totalData);
 	let serialNumber = 1;
 
-	const [rows, setRows] = useState([]);
 	useEffect(() => {
 		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
+
 	useEffect(() => {
-		if (totalData?.agents) {
-			const modifiedRow = [
-				{
-					id: 'sl',
-					align: 'left',
-					disablePadding: false,
-					label: 'SL',
-					sort: true
-				}
-			];
-
-			Object.entries(totalData?.agents[0])
-				.filter(([key]) => key !== 'id') // Filter out the 'id' field
-				.map(([key, value]) => {
-					modifiedRow.push({
-						id: key,
-						label: key
-							.split('_')
-							.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-							.join(' '),
-						align: 'left',
-						disablePadding: false,
-						sort: true,
-						style: { whiteSpace: 'nowrap' }
-					});
-				});
-
-			modifiedRow.push({
-				id: 'action',
-				align: 'left',
-				disablePadding: false,
-				label: 'Action',
-				sort: true
-			});
-
-			setRows(modifiedRow);
-		}
-	}, [totalData?.agents]);
-	const [open, setOpen] = useState(false);
-
-	console.log('open', open);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
+		refetch(searchKey);
+	}, [searchKey]);
 	useEffect(() => {
 		dispatch(getBranches());
 		dispatch(getThanas());
 		dispatch(getRoles());
-		dispatch(getPackages());
-		dispatch(getDepartments());
 		dispatch(getCities());
 		dispatch(getCountries());
-		dispatch(getEmployees());
 	}, []);
-
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({
@@ -158,7 +77,7 @@ function AgentsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(agents.map((n) => n.id));
+			setSelected(passengers.map((n) => n.id));
 			return;
 		}
 
@@ -170,22 +89,20 @@ function AgentsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+		navigate(`/apps/menu/passengers/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateAgent(item, event) {
-		localStorage.removeItem('deleteAgent');
-		localStorage.setItem('updateAgent', event);
-		navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+	function handleUpdateMenu(item, event) {
+		localStorage.removeItem('deleteMenu');
+		localStorage.setItem('updateMenu', event);
+		navigate(`/apps/menu/passengers/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteAgent(item, event) {
-		localStorage.removeItem('updateAgent');
-		localStorage.setItem('deleteAgent', event);
-		navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+	function handleDeleteMenu(item, event) {
+		localStorage.removeItem('updateMenu');
+		localStorage.setItem('deleteMenu', event);
+		navigate(`/apps/menu/passengers/${item.id}/${item.handle}`);
 	}
-
-	// console.log('testDelete', handleDeleteAgent);
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -228,7 +145,7 @@ function AgentsTable(props) {
 		);
 	}
 
-	if (agents?.length === 0) {
+	if (passengers?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -239,38 +156,37 @@ function AgentsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no agents!
+					There are no passengers!
 				</Typography>
 			</motion.div>
 		);
 	}
 
 	return (
-		<div className="w-full flex flex-col min-h-full px-10 ">
-			<FuseScrollbars className="grow overflow-x-auto ">
+		<div className="w-full flex flex-col min-h-full px-10">
+			<FuseScrollbars className="grow overflow-x-auto">
 				<Table
 					stickyHeader
-					className="min-w-xl "
+					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<AgentsTableHead
-						selectedAgentIds={selected}
+					<PassengersTableHead
+						selectedMenuIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={agents?.length}
+						rowCount={passengers?.length}
 						onMenuItemClick={handleDeselect}
-						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(agents, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
-										className="h-20 cursor-pointer border-t-1  border-gray-200"
+										className="h-20 cursor-pointer "
 										hover
 										role="checkbox"
 										aria-checked={isSelected}
@@ -279,70 +195,74 @@ function AgentsTable(props) {
 										selected={isSelected}
 									>
 										<TableCell
-											className="w-40 md:w-64 border-t-1  border-gray-200"
+											className="w-40 md:w-64"
 											component="th"
 											scope="row"
 											style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 										</TableCell>
-										{Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'image' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
-
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'payment_valid_until' && n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
-														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)}
+										<TableCell
+											className=""
+											component="th"
+											scope="row"
+										>
+											{n?.parent?.title}
+										</TableCell>
 
 										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+											className="p-4 md:p-12 whitespace-nowrap"
+											component="th"
+											scope="row"
+										>
+											{n.menu_id}
+										</TableCell>
+										<TableCell
+											className="p-4 md:p-12 whitespace-nowrap"
+											component="th"
+											scope="row"
+										>
+											{n.display_order}
+										</TableCell>
+
+										<TableCell
+											className=""
+											component="th"
+											scope="row"
+										>
+											{n.title}
+										</TableCell>
+
+										<TableCell
+											className="p-4 md:p-12 whitespace-nowrap"
+											component="th"
+											scope="row"
+										>
+											{n.type}
+										</TableCell>
+
+										<TableCell
+											className="p-4 md:p-12 whitespace-nowrap"
+											component="th"
+											scope="row"
+										>
+											{n.url}
+										</TableCell>
+
+										<TableCell
+											className="p-4 md:p-16"
 											component="th"
 											scope="row"
 											align="right"
 											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 										>
 											<Edit
-												onClick={(event) => handleUpdateAgent(n, 'updateAgent')}
+												onClick={(event) => handleUpdateMenu(n, 'updateMenu')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={(event) => handleDeleteAgent(n, 'deleteAgent')}
+												onClick={(event) => handleDeleteMenu(n, 'deleteMenu')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>
@@ -353,11 +273,9 @@ function AgentsTable(props) {
 				</Table>
 			</FuseScrollbars>
 
-			<div
-				id="pagiContainer"
-				className="flex justify-between mb-6"
-			>
+			<div id="pagiContainer">
 				<Pagination
+					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -370,10 +288,10 @@ function AgentsTable(props) {
 				/>
 
 				<TablePagination
-					className="shrink-0 mb-2"
+					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_elements}
+					count={totalData?.total_pages}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
@@ -390,4 +308,4 @@ function AgentsTable(props) {
 	);
 }
 
-export default withRouter(AgentsTable);
+export default withRouter(PassengersTable);
