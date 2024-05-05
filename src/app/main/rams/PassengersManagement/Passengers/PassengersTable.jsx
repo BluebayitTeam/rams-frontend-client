@@ -3,309 +3,404 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  getBranches,
+  getCities,
+  getCountries,
+  getDepartments,
+  getEmployees,
+  getPackages,
+  getRoles,
+  getThanas,
+} from 'app/store/dataSlice';
+import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { BASE_URL } from 'src/app/constant/constants';
+import moment from 'moment';
 import PassengersTableHead from './PassengersTableHead';
-import { selectFilteredPassengers, useGetPassengersQuery } from '../PassengersApi';
+import {
+  selectFilteredPassengers,
+  useGetPassengersQuery,
+} from '../PassengersApi';
 
-/**
- * The passengers table.
- */
+const style = {
+  margin: 'auto',
+  backgroundColor: 'white',
+  width: '1400px',
+  height: 'fit-content',
+  maxWidth: '940px',
+  maxHeight: 'fit-content',
+  borderRadius: '20px',
+  overflow: 'hidden',
+};
+
 function PassengersTable(props) {
-	const dispatch = useDispatch();
-	const { navigate, searchKey } = props;
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const { data, isLoading, refetch } = useGetPassengersQuery({ ...pageAndSize, searchKey });
+  const dispatch = useDispatch();
+  const routeParams = useParams();
+  const { passengerType } = routeParams;
 
-	console.log('sdsdsds', data);
+  const { navigate, searchKey } = props;
+  const { reset, formState, watch, control, getValues, setValue } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(),
+  });
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const [openModal, setOpenModal] = useState(false);
+  const { data, isLoading, refetch } = useGetPassengersQuery({
+    ...pageAndSize,
+    searchKey,
+    name: passengerType,
+  });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const totalData = useSelector(selectFilteredPassengers(data));
+  const passengers = useSelector(selectFilteredPassengers(data?.passengers));
+  const thanas = useSelector((state) => state.data.thanas);
+  const branches = useSelector((state) => state.data.branches);
+  const roles = useSelector((state) => state.data.roles);
+  const departments = useSelector((state) => state.data.departments);
+  const cities = useSelector((state) => state.data.cities);
+  const countries = useSelector((state) => state.data.countries);
+  const employee = useSelector((state) => state.data.employees);
+  const [singlePassengerDetails, setSinglePassengerDetails] = useState({});
+  const [passengerPackagePrice, setPassengerPackagePrice] = useState(0);
 
-	const totalData = useSelector(selectFilteredPassengers(data));
-	const passengers = useSelector(selectFilteredPassengers(data?.menu_items));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const menu = useSelector((state) => state.data.passengers);
-	console.log('menusss', totalData);
-	let serialNumber = 1;
+  const { paymentStaus } = routeParams;
+  useEffect(() => {
+    refetch({ searchKey });
+  }, [searchKey]);
 
-	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
+  let serialNumber = 1;
 
-	useEffect(() => {
-		refetch(searchKey);
-	}, [searchKey]);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getCities());
-		dispatch(getCountries());
-	}, []);
-	const [selected, setSelected] = useState([]);
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    // Fetch data with specific page and size when component mounts or when page and size change
+    refetch({ page, rowsPerPage, name: passengerType });
+  }, [page, rowsPerPage]);
+  useEffect(() => {
+    if (totalData?.passengers) {
+      const modifiedRow = [
+        {
+          id: 'sl',
+          align: 'left',
+          disablePadding: false,
+          label: 'SL',
+          sort: true,
+        },
+      ];
 
-	const [tableOrder, setTableOrder] = useState({
-		direction: 'asc',
-		id: ''
-	});
+      Object.entries(totalData?.passengers[0])
+        .filter(([key]) => key !== 'id') // Filter out the 'id' field
+        .map(([key, value]) => {
+          modifiedRow.push({
+            id: key,
+            label: key
+              .split('_')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' '),
+            align: 'left',
+            disablePadding: false,
+            sort: true,
+            style: { whiteSpace: 'nowrap' },
+          });
+        });
 
-	function handleRequestSort(event, property) {
-		const newOrder = { id: property, direction: 'desc' };
+      modifiedRow.push({
+        id: 'action',
+        align: 'left',
+        disablePadding: false,
+        label: 'Action',
+        sort: true,
+      });
 
-		if (tableOrder.id === property && tableOrder.direction === 'desc') {
-			newOrder.direction = 'asc';
-		}
+      setRows(modifiedRow);
+    }
+  }, [totalData?.passengers]);
+  const [open, setOpen] = useState(false);
 
-		setTableOrder(newOrder);
-	}
+  console.log('open', open);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+  });
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    dispatch(getBranches());
+    dispatch(getThanas());
+    dispatch(getRoles());
+    dispatch(getPackages());
+    dispatch(getDepartments());
+    dispatch(getCities());
+    dispatch(getCountries());
+    dispatch(getEmployees());
+  }, []);
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(passengers.map((n) => n.id));
-			return;
-		}
+  const [selected, setSelected] = useState([]);
 
-		setSelected([]);
-	}
+  const [tableOrder, setTableOrder] = useState({
+    direction: 'asc',
+    id: '',
+  });
 
-	function handleDeselect() {
-		setSelected([]);
-	}
+  function handleRequestSort(event, property) {
+    const newOrder = { id: property, direction: 'desc' };
 
-	function handleClick(item) {
-		navigate(`/apps/menu/passengers/${item.id}/${item.handle}`);
-	}
+    if (tableOrder.id === property && tableOrder.direction === 'desc') {
+      newOrder.direction = 'asc';
+    }
 
-	function handleUpdateMenu(item, event) {
-		localStorage.removeItem('deleteMenu');
-		localStorage.setItem('updateMenu', event);
-		navigate(`/apps/menu/passengers/${item.id}/${item.handle}`);
-	}
+    setTableOrder(newOrder);
+  }
 
-	function handleDeleteMenu(item, event) {
-		localStorage.removeItem('updateMenu');
-		localStorage.setItem('deleteMenu', event);
-		navigate(`/apps/menu/passengers/${item.id}/${item.handle}`);
-	}
+  function handleSelectAllClick(event) {
+    if (event.target.checked) {
+      setSelected(passengers.map((n) => n.id));
+      return;
+    }
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+    setSelected([]);
+  }
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+  function handleDeselect() {
+    setSelected([]);
+  }
 
-		setSelected(newSelected);
-	}
+  function handleClick(item) {
+    navigate(`/apps/passenger/passengers/${item.id}/${item.handle}`);
+  }
 
-	// pagination
-	const handlePagination = (e, handlePage) => {
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
-	};
+  function handleUpdatePassenger(item, event) {
+    localStorage.removeItem('deletePassenger');
+    localStorage.setItem('updatePassenger', event);
+    navigate(`/apps/passenger/passengers/${item.id}/${item.handle}`);
+  }
 
-	function handleChangePage(event, value) {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
-	}
+  function handleDeletePassenger(item, event) {
+    localStorage.removeItem('updatePassenger');
+    localStorage.setItem('deletePassenger', event);
+    navigate(`/apps/passenger/passengers/${item.id}/${item.handle}`);
+  }
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(+event.target.value);
-		setPageAndSize({ ...pageAndSize, size: event.target.value });
-	}
+  // console.log('testDelete', handleDeletePassenger);
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+  function handleCheck(event, id) {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
 
-	if (passengers?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no passengers!
-				</Typography>
-			</motion.div>
-		);
-	}
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
 
-	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
-				>
-					<PassengersTableHead
-						selectedMenuIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={passengers?.length}
-						onMenuItemClick={handleDeselect}
-					/>
+    setSelected(newSelected);
+  }
 
-					<TableBody>
-						{_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-20 cursor-pointer "
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-									>
-										<TableCell
-											className="w-40 md:w-64"
-											component="th"
-											scope="row"
-											style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-										</TableCell>
-										<TableCell
-											className=""
-											component="th"
-											scope="row"
-										>
-											{n?.parent?.title}
-										</TableCell>
+  // pagination
+  const handlePagination = (e, handlePage) => {
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
+  };
 
-										<TableCell
-											className="p-4 md:p-12 whitespace-nowrap"
-											component="th"
-											scope="row"
-										>
-											{n.menu_id}
-										</TableCell>
-										<TableCell
-											className="p-4 md:p-12 whitespace-nowrap"
-											component="th"
-											scope="row"
-										>
-											{n.display_order}
-										</TableCell>
+  function handleChangePage(event, value) {
+    setPage(value);
+    setPageAndSize({ ...pageAndSize, page: value + 1 });
+  }
 
-										<TableCell
-											className=""
-											component="th"
-											scope="row"
-										>
-											{n.title}
-										</TableCell>
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPageAndSize({ ...pageAndSize, size: event.target.value });
+  }
 
-										<TableCell
-											className="p-4 md:p-12 whitespace-nowrap"
-											component="th"
-											scope="row"
-										>
-											{n.type}
-										</TableCell>
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
-										<TableCell
-											className="p-4 md:p-12 whitespace-nowrap"
-											component="th"
-											scope="row"
-										>
-											{n.url}
-										</TableCell>
+  if (passengers?.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There are no passengers!
+        </Typography>
+      </motion.div>
+    );
+  }
 
-										<TableCell
-											className="p-4 md:p-16"
-											component="th"
-											scope="row"
-											align="right"
-											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											<Edit
-												onClick={(event) => handleUpdateMenu(n, 'updateMenu')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+  return (
+    <div className='w-full flex flex-col min-h-full px-10 '>
+      <FuseScrollbars className='grow overflow-x-auto '>
+        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
+          <PassengersTableHead
+            selectedPassengerIds={selected}
+            tableOrder={tableOrder}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={passengers?.length}
+            onMenuItemClick={handleDeselect}
+            rows={rows}
+          />
 
-											<Delete
-												onClick={(event) => handleDeleteMenu(n, 'deleteMenu')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
+          <TableBody>
+            {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((n) => {
+                const isSelected = selected.indexOf(n.id) !== -1;
+                return (
+                  <TableRow
+                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    hover
+                    role='checkbox'
+                    aria-checked={isSelected}
+                    tabIndex={-1}
+                    key={n.id}
+                    selected={isSelected}>
+                    <TableCell
+                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      {pageAndSize.page * pageAndSize.size -
+                        pageAndSize.size +
+                        serialNumber++}
+                    </TableCell>
+                    {Object?.entries(n)?.map(
+                      ([key, value]) =>
+                        key !== 'id' && (
+                          <TableCell
+                            className='p-4 md:p-16 border-t-1  border-gray-200 '
+                            component='th'
+                            scope='row'
+                            key={key}>
+                            {key === 'image' ? (
+                              <img
+                                className='h-full block rounded'
+                                style={{
+                                  height: '50px',
+                                  width: '50px',
+                                  borderRadius: '50%',
+                                  marginRight: '15px',
+                                }}
+                                // src={`${BASE_URL}${n[key]}`}
 
-			<div id="pagiContainer">
-				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
+                                src={
+                                  n[key]
+                                    ? `${BASE_URL}${n[key]}`
+                                    : 'assets/logos/user.jpg'
+                                }
+                                alt={n.first_name}
+                              />
+                            ) : key === 'payment_valid_until' && n[key] ? (
+                              moment(new Date(n[key])).format('DD-MM-YYYY')
+                            ) : (key === 'is_debtor' || key === 'is_paid') &&
+                              n[key] !== undefined ? (
+                              n[key] ? (
+                                'Yes'
+                              ) : (
+                                'No'
+                              )
+                            ) : (
+                              value
+                            )}
+                          </TableCell>
+                        )
+                    )}
 
-				<TablePagination
-					className="shrink-0 border-t-1"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</div>
-		</div>
-	);
+                    <TableCell
+                      className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      align='right'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      <Edit
+                        onClick={(event) =>
+                          handleUpdatePassenger(n, 'updatePassenger')
+                        }
+                        className='cursor-pointer custom-edit-icon-style'
+                      />
+
+                      <Delete
+                        onClick={(event) =>
+                          handleDeletePassenger(n, 'deletePassenger')
+                        }
+                        className='cursor-pointer custom-delete-icon-style'
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </FuseScrollbars>
+
+      <div id='pagiContainer' className='flex justify-between mb-6'>
+        <Pagination
+          count={totalData?.total_pages}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
+
+        <TablePagination
+          className='shrink-0 mb-2'
+          component='div'
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalData?.total_elements}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(PassengersTable);

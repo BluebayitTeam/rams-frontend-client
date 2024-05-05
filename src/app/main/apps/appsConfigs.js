@@ -53,12 +53,10 @@ const appsConfigs = [
   SupportAppConfig,
   RoleMenuAppConfig,
   DesignationAppConfig,
-
   MenuAppConfig,
   PermissionAppConfig,
   RoleAppConfig,
   PassengerAppConfig,
-
   FeatureDetailAppConfig,
 ];
 export default appsConfigs;
