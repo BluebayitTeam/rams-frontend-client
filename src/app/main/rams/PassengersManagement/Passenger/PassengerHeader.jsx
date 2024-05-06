@@ -16,7 +16,7 @@ import { useCreatePassengerMutation, useDeletePassengerMutation, useUpdatePassen
  */
 function PassengerHeader() {
 	const routeParams = useParams();
-	const { menuId } = routeParams;
+	const { passengerId } = routeParams;
 	const [createPassenger] = useCreatePassengerMutation();
 	const [savePassenger] = useUpdatePassengerMutation();
 	const [removePassenger] = useDeletePassengerMutation();
@@ -48,7 +48,7 @@ function PassengerHeader() {
 	}
 
 	function handleRemovePassenger(dispatch) {
-		removePassenger(menuId);
+		removePassenger(passengerId);
 		DeletedSuccessfully();
 		navigate('/apps/passenger/passengers');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
@@ -124,7 +124,7 @@ function PassengerHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deletePassenger' && menuId !== 'new' && (
+				{handleDelete === 'deletePassenger' && passengerId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
@@ -132,7 +132,7 @@ function PassengerHeader() {
 						Do you want to remove this passenger?
 					</Typography>
 				)}
-				{handleDelete === 'deletePassenger' && menuId !== 'new' && (
+				{handleDelete === 'deletePassenger' && passengerId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
@@ -144,7 +144,7 @@ function PassengerHeader() {
 						Remove
 					</Button>
 				)}
-				{menuId === 'new' && (
+				{passengerId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
@@ -155,7 +155,7 @@ function PassengerHeader() {
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deletePassenger' && handleUpdate === 'updatePassenger' && menuId !== 'new' && (
+				{handleDelete !== 'deletePassenger' && handleUpdate === 'updatePassenger' && passengerId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						color="secondary"

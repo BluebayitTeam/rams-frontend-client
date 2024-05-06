@@ -306,48 +306,6 @@ function PassengersTable(props) {
 														scope="row"
 														key={key}
 													>
-														{key === 'passport_pic' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
-
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/passport.png'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'passport_expiry_date' && n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
-														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)}
-										{Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
-														component="th"
-														scope="row"
-														key={key}
-													>
 														{key === 'passenger_pic' ? (
 															<img
 																className="h-full block rounded"
@@ -362,11 +320,11 @@ function PassengersTable(props) {
 																src={
 																	n[key]
 																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/passport.png'
+																		: 'assets/logos/user.jpg'
 																}
 																alt={n.first_name}
 															/>
-														) : key === 'passenger_pic' ? (
+														) : key === 'passport_pic' ? (
 															<img
 																className="h-full block rounded"
 																style={{
@@ -380,7 +338,7 @@ function PassengersTable(props) {
 																src={
 																	n[key]
 																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
+																		: 'assets/logos/passport.png'
 																}
 																alt={n.first_name}
 															/>

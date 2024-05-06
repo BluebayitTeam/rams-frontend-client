@@ -78,6 +78,7 @@ function PassengerForm(props) {
 	// const history = useHistory();
 	const handleDelete = localStorage.getItem('passengerEvent');
 	const dispatch = useDispatch();
+	const cities = useSelector((state) => state.data.cities);
 	const [previewImage1, setPreviewImage1] = useState();
 	const [imagesrc, setImagesrc] = useState('');
 	const [crop, setCrop] = useState({ aspect: 11 / 9 });
@@ -161,30 +162,30 @@ function PassengerForm(props) {
 		}
 	}, [targetCountrys]);
 
-	useEffect(() => {
-		const getPlaceOfResidence = districts.find((data) => {
-			const districtName = new RegExp(data.name, 'i');
-			const isMatch = district.match(districtName);
+	// useEffect(() => {
+	// 	const getPlaceOfResidence = districts.find((data) => {
+	// 		const districtName = new RegExp(data.name, 'i');
+	// 		const isMatch = district.match(districtName);
 
-			if (isMatch) return true;
-		})?.name;
+	// 		if (isMatch) return true;
+	// 	})?.name;
 
-		const getDistrict = districts.find((data) => {
-			const districtName = new RegExp(data.name, 'i');
-			const isMatch = district.match(districtName);
+	// const getDistrict = districts.find((data) => {
+	// 	const districtName = new RegExp(data.name, 'i');
+	// 	const isMatch = district.match(districtName);
 
-			if (isMatch) return true;
+	// 	if (isMatch) return true;
 
-			return false;
-		})?.id;
+	// 	return false;
+	// })?.id;
 
-		const getPoliceStation = thanas.find((data) => {
-			const PoliceStationName = new RegExp(data.name, 'i');
-			const isMatch = police_station.match(PoliceStationName);
+	// 	const getPoliceStation = thanas.find((data) => {
+	// 		const PoliceStationName = new RegExp(data.name, 'i');
+	// 		const isMatch = police_station.match(PoliceStationName);
 
-			if (isMatch) return true;
-		})?.id;
-	}, []);
+	// 		if (isMatch) return true;
+	// 	})?.id;
+	// }, []);
 
 	useEffect(() => {
 		dispatch(getAgents());
@@ -399,7 +400,7 @@ function PassengerForm(props) {
 					/>
 				</div>
 				<p
-					className="mb-5 text-red-700	"
+					className="mb-5 text-red-700"
 					id="passportPicSizeValidation"
 				/>
 			</div>
@@ -740,15 +741,15 @@ function PassengerForm(props) {
 			/>
 
 			<Controller
-				name="district"
+				name="city"
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
-						className="mt-8 mb-16 w-full  "
+						className="mt-8 mb-16"
 						freeSolo
-						value={value ? districts.find((data) => data.id === value) : null}
-						options={districts}
-						getOptionLabel={(option) => `${option.name}`}
+						value={value ? cities.find((data) => data.id === value) : null}
+						options={cities}
+						getOptionLabel={(option) => `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 							dispatch(getThanasBasedOnCity(newValue?.id));
@@ -758,11 +759,12 @@ function PassengerForm(props) {
 								{...params}
 								placeholder="Select District"
 								label="District"
-								// error={!!errors.district}
+								helperText={errors?.city?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
 								}}
+								//
 							/>
 						)}
 					/>
@@ -1239,7 +1241,7 @@ function PassengerForm(props) {
 
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Controller
-					name="image"
+					name="passport_pic"
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<label
@@ -1280,7 +1282,7 @@ function PassengerForm(props) {
 				{image && !previewImage1 && (
 					<img
 						src={`${BASE_URL}${image}`}
-						alt="test"
+						alt=""
 					/>
 				)}
 
