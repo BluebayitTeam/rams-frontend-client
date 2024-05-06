@@ -16,7 +16,7 @@ import { useCreatePassengerMutation, useDeletePassengerMutation, useUpdatePassen
  */
 function PassengerHeader() {
 	const routeParams = useParams();
-	const { passengerId } = routeParams;
+	const { passengerId, passengerType } = routeParams;
 	const [createPassenger] = useCreatePassengerMutation();
 	const [savePassenger] = useUpdatePassengerMutation();
 	const [removePassenger] = useDeletePassengerMutation();
@@ -38,6 +38,7 @@ function PassengerHeader() {
 	}
 
 	function handleCreatePassenger() {
+		console.log(`getValues()`, getValues());
 		createPassenger(getValues())
 			.unwrap()
 			.then((data) => {
@@ -55,7 +56,7 @@ function PassengerHeader() {
 	}
 
 	function handleCancel() {
-		navigate(`/apps/passenger/passengers`);
+		navigate(`/apps/passenger/passengers/recruiting`);
 	}
 
 	return (
@@ -69,7 +70,7 @@ function PassengerHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/passenger/passengers"
+						to="/apps/passenger/passengers/recruiting"
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>

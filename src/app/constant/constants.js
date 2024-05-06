@@ -145,6 +145,7 @@ export const DEMANDS_WITHOUT_PAGINATION_CALLING_ENTRY = `${BASE_URL}/demand/api/
 
 export const PASSENGERTYPES_WITHOUT_PAGINATION = `${BASE_URL}/passenger_type/api/v1/passenger_type/all/`;
 
+export const PASSENGER_COLUMN = `${BASE_URL}/table_column_passenger/api/v1/table_column_passenger/`;
 export const CURRENTSTATUSS_WITHOUT_PAGINATION = `${BASE_URL}/current_status/api/v1/current_status/without_pagination/all/`;
 
 export const AGENCIES_WITHOUT_PAGINATION = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/without_pagination/all/`;

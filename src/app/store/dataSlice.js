@@ -335,7 +335,7 @@ export const getAgents = () => (dispatch) => {
 	};
 	fetch(`${AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
 		.then((response) => response.json())
-		.then((data) => dispatch(setClients(data.clients)))
+		.then((data) => dispatch(setAgents(data.agents)))
 		.catch(() => {});
 };
 export const getEmployees = () => (dispatch) => {
@@ -937,6 +937,9 @@ const dataSlice = createSlice({
 		setClients: (state, action) => {
 			state.clients = action.payload;
 		},
+		setAgents: (state, action) => {
+			state.agents = action.payload;
+		},
 		setEmployees: (state, action) => {
 			state.employees = action.payload ? action.payload : [];
 		},
@@ -1009,9 +1012,7 @@ const dataSlice = createSlice({
 		setDemandCallingEntrys: (state, action) => {
 			state.demandCallingEntrys = action.payload ? action.payload : [];
 		},
-		setAgents: (state, action) => {
-			state.agents = action.payload ? action.payload : [];
-		},
+
 		setAgencies: (state, action) => {
 			state.agencies = action.payload ? action.payload : [];
 		},
@@ -1083,6 +1084,7 @@ const {
 	setAutoStatusUpdates,
 	setDepartments,
 	setClients,
+	setAgents,
 	setCities,
 	setCountries,
 	setPermissions,
@@ -1110,7 +1112,7 @@ const {
 	setDemands,
 	setDemandVisaEntrys,
 	setDemandCallingEntrys,
-	setAgents,
+
 	setAgencies,
 	setAirways,
 	setRecruitingAgencys,

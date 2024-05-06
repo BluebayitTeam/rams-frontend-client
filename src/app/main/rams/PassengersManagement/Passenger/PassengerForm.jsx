@@ -35,11 +35,15 @@ import {
 import replaceSpaceToUnderscore from 'src/app/@helpers/replaceSpaceToUnderscore';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { maritalStatuses, passportTypes, religions } from 'src/app/@data/data';
+import Image from 'src/app/@components/Image';
+import { DatePicker } from '@mui/x-date-pickers';
 import {
+	BASE_URL,
 	CHECK_PASSPORT_NO_WHEN_CREATE,
 	CHECK_PASSPORT_NO_WHEN_UPDATE,
 	CHECK_VISA_NO_WHEN_CREATE
 } from '../../../../constant/constants';
+import { useCreatePassengerImageMutation } from '../PassengersApi';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -56,6 +60,10 @@ function PassengerForm(props) {
 	const [previewImage2, setPreviewImage2] = useState();
 	const [passportImg, setPassportImg] = useState();
 	const userID = localStorage.getItem('user_id');
+	const [createPassengerImage, data] = useCreatePassengerImageMutation();
+
+	console.log('data', data);
+
 	const agents = useSelector((state) => state.data.agents);
 	const demands = useSelector((state) => state.data.demands);
 	const professions = useSelector((state) => state.data.professions);
@@ -90,7 +98,14 @@ function PassengerForm(props) {
 
 	const passportPic = watch('passport_pic');
 
+	console.log('passportPic', passportPic);
+
 	const [passportText, setPassportText] = useState('');
+
+	useEffect(() => {
+		console.log(`bsdsfm`, data?.passenger_info);
+		reset(data?.data?.passenger_info);
+	}, [data?.data?.passenger_info]);
 
 	const genders = [
 		{ id: 'male', name: 'Male' },
@@ -257,12 +272,32 @@ function PassengerForm(props) {
 		setImagesrc(ImageData);
 	};
 
+	const handleGetPassportImageData = async (passengerImageData) => {
+		try {
+			const getFormData = jsonToFormData({ image: passengerImageData });
+
+			const authTOKEN = {
+				headers: {
+					'Content-type': 'multipart/form-data',
+					Authorization: localStorage.getItem('jwt_access_token')
+				}
+			};
+
+			const response = await axios.post(`${CREATE_PASSENGER_DATA_FROM_IMAGE}`, getFormData, authTOKEN);
+
+			reset(response.data.passenger_info);
+		} catch (error) {
+			console.error('Error occurred:', error);
+			// Handle error as per your requirement
+		}
+	};
+
 	function handleSavePassenger() {
 		dispatch(
 			savePassenger({
 				...getValues(),
 				passport_issue_place: thanas.find((data) => data?.id === getValues()?.passport_issue_place)?.name,
-				passport_pic: passportImg
+				passport_pic: passportPic
 			})
 		).then((res) => {
 			if (res.payload?.data?.id) {
@@ -305,13 +340,13 @@ function PassengerForm(props) {
 		}
 	};
 
-	useEffect(() => {
-		if (getValues().passport_expiry_date) {
-			setValue('passport_issue_date', decreaseYear(getValues().passport_expiry_date, 10));
-			const getPspIssPlace = districts.find((data) => data.name === 'Dhaka' || data.name === 'dhaka')?.id;
-			setValue('passport_issue_place', getPspIssPlace);
-		}
-	}, [getValues().passport_expiry_date]);
+	// useEffect(() => {
+	// 	if (getValues().passport_expiry_date) {
+	// 		setValue('passport_issue_date', decreaseYear(getValues().passport_expiry_date, 10));
+	// 		const getPspIssPlace = districts.find((data) => data.name === 'Dhaka' || data.name === 'dhaka')?.id;
+	// 		setValue('passport_issue_place', getPspIssPlace);
+	// 	}
+	// }, [getValues().passport_expiry_date]);
 	return (
 		<div>
 			<Controller
@@ -378,7 +413,16 @@ function PassengerForm(props) {
 												document.getElementById('passportPicSizeValidation').innerText = '';
 
 												if (routeParams.passengerId === 'new') {
-													dispatch(savePassengerImage(file));
+													try {
+														const res = await dispatch(createPassengerImage(file));
+														console.log(`knfdsf`, res);
+													} catch (error) {
+														console.error(
+															'Error occurred while creating passenger image:',
+															error
+														);
+														// Handle error as needed
+													}
 												}
 
 												reader.readAsDataURL(e.target.files[0]);
@@ -400,7 +444,7 @@ function PassengerForm(props) {
 					/>
 				</div>
 				<p
-					className="mb-5 text-red-700"
+					className="mb-5 text-red-700	"
 					id="passportPicSizeValidation"
 				/>
 			</div>
@@ -542,24 +586,22 @@ function PassengerForm(props) {
 			<Controller
 				name="date_of_birth"
 				control={control}
-				render={({ field }) => (
-					<CustomDatePicker
-						field={field}
-						label="Date Of Birth"
-						className="mt-8 mb-16 w-full  "
-						// error={!field.value}
-						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						onChange={(value) => {
-							if (
-								differenceInYears(new Date(), new Date(value)) < 22 ||
-								differenceInYears(new Date(), new Date(value)) > 35
-							) {
-								alert(`Age Must be Between 22-35`);
-								setValue('date_of_birth', '');
-							}
-						}}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.date_of_birth}
+							helperText={errors?.date_of_birth?.message}
+							label="Date of Birth"
+							id="date_of_birth"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
 			/>
 
 			<Controller
@@ -643,7 +685,67 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
+
 			<Controller
+				control={control}
+				name="passport_issue_date"
+				render={({ field: { value, onChange } }) => (
+					<DatePicker
+						value={new Date(value)}
+						onChange={(val) => {
+							onChange(val?.toString());
+						}}
+						className="mt-32 mb-16 w-full"
+						slotProps={{
+							textField: {
+								id: 'passport_issue_date',
+								label: 'passport_issue_date',
+								InputLabelProps: {
+									shrink: true
+								},
+								fullWidth: true,
+								variant: 'outlined',
+								error: !!errors.passport_issue_date,
+								helperText: errors?.passport_issue_date?.message
+							},
+							actionBar: {
+								actions: ['clear', 'today']
+							}
+						}}
+					/>
+				)}
+			/>
+			<Controller
+				control={control}
+				name="passport_expiry_date"
+				render={({ field: { value, onChange } }) => (
+					<DatePicker
+						value={new Date(value)}
+						onChange={(value) => {
+							onChange(val?.toString());
+						}}
+						className="mt-32 mb-16 w-full"
+						slotProps={{
+							textField: {
+								id: 'passport_expiry_date',
+								label: 'passport_expiry_date',
+								InputLabelProps: {
+									shrink: true
+								},
+								fullWidth: true,
+								variant: 'outlined',
+								error: !!errors.passport_expiry_date,
+								helperText: errors?.passport_expiry_date?.message
+							},
+							actionBar: {
+								actions: ['clear', 'today']
+							}
+						}}
+					/>
+				)}
+			/>
+
+			{/* <Controller
 				name="passport_issue_date"
 				control={control}
 				render={({ field }) => {
@@ -660,8 +762,9 @@ function PassengerForm(props) {
 						/>
 					);
 				}}
-			/>
-			<Controller
+			/> */}
+
+			{/* <Controller
 				name="passport_expiry_date"
 				control={control}
 				render={({ field }) => {
@@ -674,7 +777,7 @@ function PassengerForm(props) {
 						/>
 					);
 				}}
-			/>
+			/> */}
 			<div
 				style={{
 					display: routeParams.passengerType === 'hajj' ? 'block' : 'none'
@@ -1239,57 +1342,29 @@ function PassengerForm(props) {
 				}}
 			/>
 
-			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-				<Controller
-					name="passport_pic"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<label
-							htmlFor="button-file"
-							className={clsx(
-								classes.productImageUpload,
-								'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-							)}
-						>
-							<input
-								accept="image/*"
-								className="hidden"
-								id="button-file"
-								type="file"
-								onChange={async (e) => {
-									const reader = new FileReader();
-									reader.onload = () => {
-										if (reader.readyState === 2) {
-											setPreviewImage(reader.result);
-										}
-									};
-									reader.readAsDataURL(e.target.files[0]);
-
-									const file = e.target.files[0];
-									onChange(file);
-								}}
-							/>
-							<Icon
-								fontSize="large"
-								color="action"
-								label="Agent Image"
-							>
-								cloud_upload
-							</Icon>
-						</label>
+			<div className="flex md:space-x-12 flex-col md:flex-row">
+				<div className="flex flex-wrap w-full   my-2 justify-evenly items-center">
+					{passportPic && !previewImage1 && (
+						<div style={{ width: '100px', height: '100px' }}>
+							<img src={`${BASE_URL}${passportPic}`} />
+						</div>
 					)}
-				/>
-				{image && !previewImage1 && (
-					<img
-						src={`${BASE_URL}${image}`}
-						alt=""
-					/>
-				)}
 
-				<div style={{ width: '100px', height: '100px' }}>
-					<img
-						src={previewImage1}
-						alt="testImage"
+					<div style={{ width: '100px', height: '100px' }}>
+						<img
+							label="Passport Picture"
+							src={previewImage1}
+							alt="no image found"
+						/>
+					</div>
+				</div>
+
+				<div className="flex flex-wrap w-full   my-2 justify-evenly">
+					<Image
+						name="passenger_pic"
+						label="Passenger Picture"
+						previewImage={previewImage2}
+						setPreviewImage={setPreviewImage2}
 					/>
 				</div>
 			</div>
