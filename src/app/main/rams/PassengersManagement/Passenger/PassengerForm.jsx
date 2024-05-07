@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-console */
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
@@ -846,7 +850,7 @@ function PassengerForm(props) {
 			/>
 
 			<Controller
-				name="city"
+				name="district"
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
@@ -1359,7 +1363,7 @@ function PassengerForm(props) {
 						<img
 							label="Passport Picture"
 							src={previewImage1}
-							alt="no image found"
+							alt=""
 						/>
 						{/* <Image
 							name="passport_pic"

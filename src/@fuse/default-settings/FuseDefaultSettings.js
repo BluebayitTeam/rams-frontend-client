@@ -24,7 +24,7 @@ const defaultTheme = {
 			contrastDefaultColor: 'light'
 		},
 		secondary: {
-			light: '#bdf2fa',
+			light: '#ea5b78',
 			main: '#22d3ee',
 			dark: '#0cb7e2'
 		},
