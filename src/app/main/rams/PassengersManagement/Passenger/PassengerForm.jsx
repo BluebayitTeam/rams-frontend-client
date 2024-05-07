@@ -444,7 +444,7 @@ function PassengerForm(props) {
 					/>
 				</div>
 				<p
-					className="mb-5 text-red-700	"
+					className="mb-5 text-red-700"
 					id="passportPicSizeValidation"
 				/>
 			</div>
@@ -722,7 +722,7 @@ function PassengerForm(props) {
 					<DatePicker
 						value={new Date(value)}
 						onChange={(value) => {
-							onChange(val?.toString());
+							onChange(value?.toString());
 						}}
 						className="mt-32 mb-16 w-full"
 						slotProps={{

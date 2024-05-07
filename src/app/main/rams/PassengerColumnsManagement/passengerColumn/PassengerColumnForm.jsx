@@ -10,25 +10,28 @@ function PassengerColumnForm(props) {
 		getValues,
 		reset
 	} = useFormContext();
-	console.log(`props`, props?.columns);
+	console.log(`props`, props?.passengerColumns);
 	useEffect(() => {
-		reset({ ...getValues(), items: props?.columns });
-		// Set default values when columns prop change
-		props?.columns.forEach((column) => {
-			setValue(`columns.${column.id}.isChecked`, column.isChecked);
-			setValue(`columns.${column.id}.serial`, column.isChecked ? column.serial : null);
-			setValue(`columns.${column.id}.key`, column.key);
+		reset({ ...getValues(), items: props?.passengerColumns });
+		// Set default values when passengerColumns prop change
+		props?.passengerColumns.forEach((passengerColumn) => {
+			setValue(`passengerColumns.${passengerColumn.id}.isChecked`, passengerColumn.isChecked);
+			setValue(
+				`passengerColumns.${passengerColumn.id}.serial`,
+				passengerColumn.isChecked ? passengerColumn.serial : null
+			);
+			setValue(`passengerColumns.${passengerColumn.id}.key`, passengerColumn.key);
 		});
-	}, [props?.columns, setValue]);
+	}, [props?.passengerColumns, setValue]);
 	return (
 		<div style={{ display: 'flex', flexWrap: 'wrap' }}>
-			{props?.columns.map((clm) => (
+			{props?.passengerColumns.map((clm) => (
 				<div
 					key={clm.id}
 					style={{ flex: '1 0 30%', display: 'flex', padding: '10px' }}
 				>
 					<Controller
-						name={`columns.${clm.id}.serial`}
+						name={`passengerColumns.${clm.id}.serial`}
 						control={control}
 						render={({ field }) => (
 							<TextField
@@ -44,7 +47,7 @@ function PassengerColumnForm(props) {
 					<FormControlLabel
 						control={
 							<Controller
-								name={`columns.${clm.id}.isChecked`}
+								name={`passengerColumns.${clm.id}.isChecked`}
 								control={control}
 								render={({ field }) => (
 									<Checkbox

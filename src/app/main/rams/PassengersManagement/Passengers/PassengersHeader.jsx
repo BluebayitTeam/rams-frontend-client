@@ -62,7 +62,7 @@ function PassengersHeader(props) {
 				</Paper>
 
 				<ViewWeek
-					onClick={() => navigate(`/apps/passengerColumn/passengerColumns/recruiting`)}
+					onClick={() => navigate(`/apps/passengerColumn/passengerColumns/passenger`)}
 					className="cursor-pointer mr-10 "
 					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
 				/>

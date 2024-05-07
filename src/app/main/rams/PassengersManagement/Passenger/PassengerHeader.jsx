@@ -33,7 +33,7 @@ function PassengerHeader() {
 		savePassenger(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/passenger/passengers`);
+			navigate(`/apps/passenger/passengers/recruiting`);
 		});
 	}
 
@@ -44,14 +44,14 @@ function PassengerHeader() {
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/passenger/passengers`);
+				navigate(`/apps/passenger/passengers/recruiting`);
 			});
 	}
 
 	function handleRemovePassenger(dispatch) {
 		removePassenger(passengerId);
 		DeletedSuccessfully();
-		navigate('/apps/passenger/passengers');
+		navigate('/apps/passenger/passengers/recruiting');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
@@ -158,19 +158,17 @@ function PassengerHeader() {
 				)}
 				{handleDelete !== 'deletePassenger' && handleUpdate === 'updatePassenger' && passengerId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 						color="secondary"
 						variant="contained"
-						style={{ backgroundColor: '#4dc08e', color: 'white' }}
 						onClick={handleUpdatePassenger}
 					>
 						Update
 					</Button>
 				)}
 				<Button
-					className="whitespace-nowrap mx-4"
+					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel
