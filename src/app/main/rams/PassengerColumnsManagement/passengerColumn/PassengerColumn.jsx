@@ -10,33 +10,33 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { PASSENGER_COLUMN } from 'src/app/constant/constants';
-import ColumnHeader from './ColumnHeader';
-import ColumnModel from './models/ColumnModel';
-import { useGetColumnQuery } from '../ColumnsApi';
-import ColumnForm from './ColumnForm';
+import PassengerColumnHeader from './PassengerColumnHeader';
+import PassengerColumnModel from './models/PassengerColumnModel';
+import { useGetPassengerColumnQuery } from '../PassengerColumnsApi';
+import PassengerColumnForm from './PassengerColumnForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a column name')
-		.min(5, 'The column name must be at least 5 characters')
+		.nonempty('You must enter a passengerColumn name')
+		.min(5, 'The passengerColumn name must be at least 5 characters')
 });
 
-function Column() {
+function PassengerColumn() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { columnId } = routeParams;
 
 	const {
-		data: column,
+		data: passengerColumn,
 		isLoading,
 		isError
-	} = useGetColumnQuery(columnId, {
+	} = useGetPassengerColumnQuery(columnId, {
 		skip: !columnId || columnId === 'new'
 	});
-	console.log('columnId', column, columnId);
+	console.log('columnId', passengerColumn, columnId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -47,7 +47,7 @@ function Column() {
 	const { reset, watch } = methods;
 	const form = watch();
 
-	const [columns, setColumns] = useState([]);
+	const [columns, setPassengerColumns] = useState([]);
 	useEffect(() => {
 		reset(columns);
 		const authTOKEN = {
@@ -59,22 +59,22 @@ function Column() {
 		fetch(`${PASSENGER_COLUMN}${columnId}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => {
-				setColumns(data || []);
+				setPassengerColumns(data || []);
 				reset(data || []);
 			})
 			.catch(() => {});
 	}, []);
 	useEffect(() => {
 		if (columnId === 'new') {
-			reset(ColumnModel({}));
+			reset(PassengerColumnModel({}));
 		}
 	}, [columnId, reset]);
 
 	useEffect(() => {
-		if (column) {
-			reset({ ...column });
+		if (passengerColumn) {
+			reset({ ...passengerColumn });
 		}
-	}, [column, reset, column?.id]);
+	}, [passengerColumn, reset, passengerColumn?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -98,16 +98,16 @@ function Column() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such column!
+					There is no such passengerColumn!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/column/columns"
+					to="/apps/passengerColumn/columns"
 					color="inherit"
 				>
-					Go to Columns Page
+					Go to PassengerColumns Page
 				</Button>
 			</motion.div>
 		);
@@ -116,11 +116,11 @@ function Column() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<ColumnHeader />}
+				header={<PassengerColumnHeader />}
 				content={
 					<div className="p-16 ">
 						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<ColumnForm columns={columns} />
+							<PassengerColumnForm columns={columns} />
 						</div>
 					</div>
 				}
@@ -130,4 +130,4 @@ function Column() {
 	);
 }
 
-export default Column;
+export default PassengerColumn;

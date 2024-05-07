@@ -1,8 +1,8 @@
 import _ from '@lodash';
 
-const ColumnModel = (data) =>
+const PassengerColumnModel = (data) =>
 	_.defaults(data || {}, {
-		id: _.uniqueId('client-'),
+		id: _.uniqueId('passenger-'),
 		first_name: '',
 		logo: '',
 		country_code1: '+880',
@@ -11,4 +11,4 @@ const ColumnModel = (data) =>
 		show_country_code2: '+880',
 		is_client_active: true
 	});
-export default ColumnModel;
+export default PassengerColumnModel;

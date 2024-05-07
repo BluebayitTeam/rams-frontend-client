@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 
-function ColumnForm(props) {
+function PassengerColumnForm(props) {
 	const {
 		control,
 		formState: { errors },
@@ -62,4 +62,4 @@ function ColumnForm(props) {
 	);
 }
 
-export default ColumnForm;
+export default PassengerColumnForm;

@@ -4,12 +4,12 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useUpdateColumnMutation } from '../ColumnsApi';
+import { useUpdateColumnMutation } from '../PassengerColumnsApi';
 
 /**
- * The column header.
+ * The passengerColumn header.
  */
-function ColumnHeader() {
+function PassengerColumnHeader() {
 	const routeParams = useParams();
 	const { columnId } = routeParams;
 
@@ -89,13 +89,13 @@ function ColumnHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{columnId} Table Column Serial
+							{columnId} Table passengerColumn Serial
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							Column Detail for {columnId} Table
+							passengerColumn Detail for {columnId} Table
 						</Typography>
 					</motion.div>
 				</div>
@@ -129,4 +129,4 @@ function ColumnHeader() {
 	);
 }
 
-export default ColumnHeader;
+export default PassengerColumnHeader;

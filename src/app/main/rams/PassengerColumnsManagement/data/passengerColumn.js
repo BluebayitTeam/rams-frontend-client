@@ -1,4 +1,4 @@
-export const columns = [
+export const passengerColumns = [
 	{
 		id: 1,
 		key: 'name',
