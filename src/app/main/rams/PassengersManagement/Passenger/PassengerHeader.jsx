@@ -135,19 +135,17 @@ function PassengerHeader() {
 				)}
 				{handleDelete === 'deletePassenger' && passengerId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 						variant="contained"
-						color="secondary"
 						onClick={handleRemovePassenger}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
 				{passengerId === 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-2"
 						variant="contained"
 						color="secondary"
 						// disabled={_.isEmpty(dirtyFields) || !isValid}
@@ -158,7 +156,7 @@ function PassengerHeader() {
 				)}
 				{handleDelete !== 'deletePassenger' && handleUpdate === 'updatePassenger' && passengerId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
+						className="whitespace-nowrap mx-2 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 						color="secondary"
 						variant="contained"
 						onClick={handleUpdatePassenger}
@@ -167,7 +165,7 @@ function PassengerHeader() {
 					</Button>
 				)}
 				<Button
-					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
+					className="whitespace-nowrap mx-2 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
 					onClick={handleCancel}
 				>
