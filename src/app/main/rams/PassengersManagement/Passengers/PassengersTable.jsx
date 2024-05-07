@@ -344,13 +344,10 @@ function PassengersTable(props) {
 															/>
 														) : key === 'passport_expiry_date' && n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
+														) : key === 'passport_issue_date' && n[key] ? (
+															moment(new Date(n[key])).format('DD-MM-YYYY')
+														) : key === 'date_of_birth' && n[key] ? (
+															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (
 															value
 														)}
