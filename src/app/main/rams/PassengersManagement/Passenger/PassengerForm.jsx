@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable no-alert */
 
@@ -98,6 +99,7 @@ function PassengerForm(props) {
 
 	const passportPic = watch('passport_pic');
 
+	// eslint-disable-next-line no-console
 	console.log('passportPic', passportPic);
 
 	const [passportText, setPassportText] = useState('');
@@ -324,7 +326,7 @@ function PassengerForm(props) {
 					history.goBack();
 				} else {
 					localStorage.setItem('passengerAlert', 'updatePassenger');
-					history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
+					history.push(`/apps/passenger-management/passengers/${routeParams?.passengerType}`);
 				}
 			}
 		});
@@ -1346,7 +1348,10 @@ function PassengerForm(props) {
 				<div className="flex flex-wrap w-full   my-2 justify-evenly items-center">
 					{passportPic && !previewImage1 && (
 						<div style={{ width: '100px', height: '100px' }}>
-							<img src={`${BASE_URL}${passportPic}`} />
+							<img
+								src={`${BASE_URL}${passportPic}`}
+								alt="not_found"
+							/>
 						</div>
 					)}
 
@@ -1356,6 +1361,12 @@ function PassengerForm(props) {
 							src={previewImage1}
 							alt="no image found"
 						/>
+						{/* <Image
+							name="passport_pic"
+							label="Passport Picture"
+							previewImage={passportImg}
+							setPreviewImage={setPassportImg}
+						/> */}
 					</div>
 				</div>
 

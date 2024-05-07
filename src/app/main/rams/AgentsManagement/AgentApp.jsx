@@ -6,4 +6,4 @@ function AgentApp() {
 	return <Outlet />;
 }
 
-export default withReducer('clientApp', reducer)(AgentApp);
+export default withReducer('agentApp', reducer)(AgentApp);
