@@ -3,7 +3,7 @@ import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useEffect } from 'react';
@@ -13,13 +13,11 @@ import { ViewWeek } from '@mui/icons-material';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The passengers header.
+ * The visaEntrys header.
  */
-function PassengersHeader(props) {
+function VisaEntrysHeader(props) {
 	const dispatch = useAppDispatch();
 	const searchText = useSelector(selectSearchText);
-	const routeParams = useParams();
-	const { passengerType } = routeParams;
 	useEffect(() => {
 		return () => {
 			dispatch(resetSearchText());
@@ -33,7 +31,7 @@ function PassengersHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Passengers</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">VisaEntrys</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -46,23 +44,30 @@ function PassengersHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search By Name or Username or Email or Phone"
+						placeholder="Search by profession or company name"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
 						inputProps={{
 							'aria-label': 'Search'
 						}}
+						// onKeyDown={(ev) => {
+						//   if (ev.key === 'Enter') {
+						//     props?.setSearchKey(ev?.target?.value);
+						//   }
+						// }}
 						onKeyDown={(ev) => {
 							if (ev.key === 'Enter') {
-								props?.setSearchKey(ev?.target?.value);
+								props?.setSearchKey(ev?.target.value);
+							} else if (ev.key === 'Backspace' && ev.target.value?.length === 1) {
+								props?.setSearchKey('');
 							}
 						}}
 					/>
 				</Paper>
 
 				<ViewWeek
-					onClick={() => navigate(`/apps/column/columns/recruiting`)}
+					onClick={() => navigate(`/apps/column/columns/visa_entry`)}
 					className="cursor-pointer mr-10 "
 					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
 				/>
@@ -76,7 +81,7 @@ function PassengersHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to={`/apps/passenger/passengers/new/${routeParams.passengerType}`}
+						to="/apps/visaEntry/visaEntrys/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -87,4 +92,4 @@ function PassengersHeader(props) {
 	);
 }
 
-export default PassengersHeader;
+export default VisaEntrysHeader;

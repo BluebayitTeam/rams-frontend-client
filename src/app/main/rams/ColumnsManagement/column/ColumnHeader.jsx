@@ -66,6 +66,10 @@ function ColumnHeader() {
 			if (columnId === 'demand') {
 				navigate(`/apps/demand/demands`);
 			}
+
+			if (columnId === 'visa_entry') {
+				navigate(`/apps/visaEntry/visaEntrys`);
+			}
 		});
 	}
 
@@ -92,6 +96,10 @@ function ColumnHeader() {
 
 		if (columnId === 'demand') {
 			navigate(`/apps/demand/demands`);
+		}
+
+		if (columnId === 'visa_entry') {
+			navigate(`/apps/visaEntry/visaEntrys`);
 		}
 	}
 
