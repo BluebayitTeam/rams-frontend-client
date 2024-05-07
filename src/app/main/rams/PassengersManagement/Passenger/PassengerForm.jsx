@@ -574,8 +574,8 @@ function PassengerForm(props) {
 								{...params}
 								placeholder="Select Recruiting Agency"
 								label="Recruiting Agency"
-								error={!!errors.recruiting_agency}
-								helperText={errors?.recruiting_agency?.message}
+								error={!!errors.agency}
+								helperText={errors?.agency?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true

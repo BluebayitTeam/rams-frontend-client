@@ -9,6 +9,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import moment from 'moment';
 import PassengerHeader from './PassengerHeader';
 import PassengerModel from './models/PassengerModel';
 import { useGetPassengerQuery } from '../PassengersApi';
@@ -57,17 +58,15 @@ function Passenger() {
 				...passenger,
 				agent: passenger?.agent?.id,
 				profession: passenger?.profession?.id,
-				date_of_birth: passenger?.date_of_birth?.id,
 				target_country: passenger?.target_country?.id,
-				passport_issue_place: passenger?.passport_issue_place?.id,
 				district: passenger?.district?.id,
 				demand: passenger?.demand?.id,
 				visa_entry: passenger?.visa_entry?.id,
 				police_station: passenger?.police_station?.id,
-				recruiting_agencies: passenger?.recruiting_agencies?.id,
-				passport_pic: passenger?.passport_pic?.id,
-				religion: passenger?.religion?.id,
-				office_serial: passenger?.office_serial?.id
+				agency: passenger?.agency?.id,
+				passport_issue_date: moment(new Date(passenger?.passport_issue_date))?.format('YYYY-MM-DD'),
+				passport_expiry_date: moment(new Date(passenger?.passport_expiry_date)).format('YYYY-MM-DD'),
+				date_of_birth: moment(new Date(passenger?.date_of_birth)).format('YYYY-MM-DD')
 			});
 		}
 	}, [passenger, reset, passenger?.id]);
