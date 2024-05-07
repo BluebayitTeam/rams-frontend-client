@@ -26,8 +26,8 @@ const PassengerColumnApi = api
 				invalidatesTags: ['passengerColumn']
 			}),
 			getPassengerColumn: build.query({
-				query: (columnId) => ({
-					url: `${GET_COLUMN_BY_ID}${columnId}`
+				query: (passengerColumnId) => ({
+					url: `${GET_COLUMN_BY_ID}${passengerColumnId}`
 				}),
 				providesTags: ['passengerColumn']
 			}),

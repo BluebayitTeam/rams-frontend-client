@@ -27,16 +27,16 @@ const schema = z.object({
 function PassengerColumn() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { columnId } = routeParams;
+	const { passengerColumnId } = routeParams;
 
 	const {
 		data: passengerColumn,
 		isLoading,
 		isError
-	} = useGetPassengerColumnQuery(columnId, {
-		skip: !columnId || columnId === 'new'
+	} = useGetPassengerColumnQuery(passengerColumnId, {
+		skip: !passengerColumnId || passengerColumnId === 'new'
 	});
-	console.log('columnId', passengerColumn, columnId);
+	console.log('passengerColumnId', passengerColumn, passengerColumnId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -56,7 +56,7 @@ function PassengerColumn() {
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		fetch(`${PASSENGER_COLUMN}${columnId}`, authTOKEN)
+		fetch(`${PASSENGER_COLUMN}${passengerColumnId}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => {
 				setPassengerColumns(data || []);
@@ -65,10 +65,10 @@ function PassengerColumn() {
 			.catch(() => {});
 	}, []);
 	useEffect(() => {
-		if (columnId === 'new') {
+		if (passengerColumnId === 'new') {
 			reset(PassengerColumnModel({}));
 		}
-	}, [columnId, reset]);
+	}, [passengerColumnId, reset]);
 
 	useEffect(() => {
 		if (passengerColumn) {
@@ -87,7 +87,7 @@ function PassengerColumn() {
 	/**
 	 * Show Message if the requested columns is not exists
 	 */
-	if (isError && columnId !== 'new') {
+	if (isError && passengerColumnId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}

@@ -4,18 +4,18 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useUpdateColumnMutation } from '../PassengerColumnsApi';
+import { useUpdatePassengerColumnMutation } from '../PassengerColumnsApi';
 
 /**
  * The passengerColumn header.
  */
 function PassengerColumnHeader() {
 	const routeParams = useParams();
-	const { columnId } = routeParams;
+	const { passengerColumnId } = routeParams;
 
-	console.log('columnId', columnId);
+	console.log('passengerColumnId', passengerColumnId);
 
-	const [saveColumn] = useUpdateColumnMutation();
+	const [saveColumn] = useUpdatePassengerColumnMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
@@ -38,43 +38,43 @@ function PassengerColumnHeader() {
 		const outputData = {
 			columns_data: columnsData,
 			columns_serial: columnsSerial,
-			type: columnId
+			type: passengerColumnId
 		};
 
 		console.log(`outputData`, outputData);
 		saveColumn(outputData).then((data) => {
-			if (columnId === 'Clients') {
+			if (passengerColumnId === 'Clients') {
 				navigate(`/apps/client/clients`);
 			}
 
-			if (columnId === 'agent') {
+			if (passengerColumnId === 'agent') {
 				navigate(`/apps/agent/agents`);
 			}
 
-			if (columnId === 'Employees') {
+			if (passengerColumnId === 'Employees') {
 				navigate(`/apps/employee/employees`);
 			}
 
-			if (columnId === 'Departments') {
+			if (passengerColumnId === 'Departments') {
 				navigate(`/apps/department/departments`);
 			}
 		});
 	}
 
 	function handleCancel() {
-		if (columnId === 'Clients') {
+		if (passengerColumnId === 'Clients') {
 			navigate(`/apps/client/clients`);
 		}
 
-		if (columnId === 'agent') {
+		if (passengerColumnId === 'agent') {
 			navigate(`/apps/agent/agents`);
 		}
 
-		if (columnId === 'Employees') {
+		if (passengerColumnId === 'Employees') {
 			navigate(`/apps/employee/employees`);
 		}
 
-		if (columnId === 'Departments') {
+		if (passengerColumnId === 'Departments') {
 			navigate(`/apps/department/departments`);
 		}
 	}
@@ -89,13 +89,13 @@ function PassengerColumnHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{columnId} Table passengerColumn Serial
+							{passengerColumnId} Table passengerColumn Serial
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							passengerColumn Detail for {columnId} Table
+							passengerColumn Detail for {passengerColumnId} Table
 						</Typography>
 					</motion.div>
 				</div>

@@ -25,38 +25,38 @@ import SubscriptionLoanAppConfig from '../rams/SubscriptionLoansManagement/Subsc
 import FeatureDetailAppConfig from '../rams/FeatureDetailsManagement/FeatureDetailAppConfig';
 import AgentAppConfig from '../rams/AgentsManagement/AgentAppConfig';
 import PassengerAppConfig from '../rams/PassengersManagement/PassengerAppConfig';
+import PassengerColumnAppConfig from '../rams/PassengerColumnsManagement/PassengerColumnAppConfig';
 /**
  * The list of application configurations.
  */
 const appsConfigs = [
-  CalendarAppConfig,
-  MessengerAppConfig,
-  ContactsAppConfig,
-  ECommerceAppConfig,
-  FileManagerAppConfig,
-  HelpCenterAppConfig,
-  MailboxAppConfig,
-  NotesAppConfig,
-  ProfileAppConfig,
-  ScrumboardAppConfig,
-  TasksAppConfig,
-  NotificationsAppConfig,
-  UserAppConfig,
-
-  AgentAppConfig,
-  ColumnAppConfig,
-
-  EmployeeAppConfig,
-  SubscriptionLoanAppConfig,
-  DepartmentAppConfig,
-  PaymentDetailAppConfig,
-  SupportAppConfig,
-  RoleMenuAppConfig,
-  DesignationAppConfig,
-  MenuAppConfig,
-  PermissionAppConfig,
-  RoleAppConfig,
-  PassengerAppConfig,
-  FeatureDetailAppConfig,
+	CalendarAppConfig,
+	MessengerAppConfig,
+	ContactsAppConfig,
+	ECommerceAppConfig,
+	FileManagerAppConfig,
+	HelpCenterAppConfig,
+	MailboxAppConfig,
+	NotesAppConfig,
+	ProfileAppConfig,
+	ScrumboardAppConfig,
+	TasksAppConfig,
+	NotificationsAppConfig,
+	UserAppConfig,
+	AgentAppConfig,
+	ColumnAppConfig,
+	PassengerColumnAppConfig,
+	EmployeeAppConfig,
+	SubscriptionLoanAppConfig,
+	DepartmentAppConfig,
+	PaymentDetailAppConfig,
+	SupportAppConfig,
+	RoleMenuAppConfig,
+	DesignationAppConfig,
+	MenuAppConfig,
+	PermissionAppConfig,
+	RoleAppConfig,
+	PassengerAppConfig,
+	FeatureDetailAppConfig
 ];
 export default appsConfigs;
