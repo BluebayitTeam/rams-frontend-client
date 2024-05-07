@@ -31,7 +31,7 @@ function VisaEntrysHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">VisaEntrys</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Visa Entry</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -44,7 +44,7 @@ function VisaEntrysHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search by profession or company name"
+						placeholder="Search by P.No or Passport or Name"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth

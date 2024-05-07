@@ -22,7 +22,7 @@ import {
 	getThanas
 } from 'app/store/dataSlice';
 import { Pagination, TableCell } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -84,7 +84,7 @@ function VisaEntrysTable(props) {
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 	useEffect(() => {
-		if (totalData?.visaEntrys) {
+		if (totalData?.visa_entries) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -95,7 +95,7 @@ function VisaEntrysTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.visaEntrys[0])
+			Object.entries(totalData?.visa_entries[0])
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({
@@ -303,25 +303,32 @@ function VisaEntrysTable(props) {
 														scope="row"
 														key={key}
 													>
-														{key === 'image' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
-
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'payment_valid_until' && n[key] ? (
+														{key === 'file' ? (
+															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+																<PictureAsPdf
+																	style={{
+																		color: 'red',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px',
+																		margin: 'auto'
+																	}}
+																	// onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : (
+																<img
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n[key]}`)
+																	}
+																	src={`${BASE_URL}${n[key]}`}
+																	style={{ height: '70px' }}
+																/>
+															)
+														) : (key === 'calling_date' ||
+																key === 'calling_exp_date' ||
+																key === 'visa_issue_date') &&
+														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (key === 'is_debtor' || key === 'is_paid') &&
 														  n[key] !== undefined ? (
