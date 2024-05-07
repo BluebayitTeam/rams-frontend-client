@@ -58,6 +58,14 @@ function ColumnHeader() {
 			if (columnId === 'Departments') {
 				navigate(`/apps/department/departments`);
 			}
+
+			if (columnId === 'recruiting') {
+				navigate(`/apps/passenger/passengers/recruiting`);
+			}
+
+			if (columnId === 'demand') {
+				navigate(`/apps/demand/demands`);
+			}
 		});
 	}
 
@@ -76,6 +84,14 @@ function ColumnHeader() {
 
 		if (columnId === 'Departments') {
 			navigate(`/apps/department/departments`);
+		}
+
+		if (columnId === 'recruiting') {
+			navigate(`/apps/passenger/passengers/recruiting`);
+		}
+
+		if (columnId === 'demand') {
+			navigate(`/apps/demand/demands`);
 		}
 	}
 

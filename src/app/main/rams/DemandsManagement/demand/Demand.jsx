@@ -9,36 +9,38 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { GET_CLIENT_BY_ID } from 'src/app/constant/constants';
-import ColumnHeader from './ColumnHeader';
-import ColumnModel from './models/ColumnModel';
-import { useGetColumnQuery } from '../ColumnsApi';
-import ColumnForm from './ColumnForm';
+import DemandHeader from './DemandHeader';
+import DemandModel from './models/DemandModel';
+import { useGetDemandQuery } from '../DemandsApi';
+import DemandForm from './DemandForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a column name')
-		.min(5, 'The column name must be at least 5 characters')
+		.nonempty('You must enter a demand name')
+		.min(5, 'The demand name must be at least 5 characters')
 });
 
-function Column() {
+function Demand() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { columnId } = routeParams;
+	const { demandId } = routeParams;
 
 	const {
-		data: column,
+		data: demand,
 		isLoading,
 		isError
-	} = useGetColumnQuery(columnId, {
-		skip: !columnId || columnId === 'new'
+	} = useGetDemandQuery(demandId, {
+		skip: !demandId || demandId === 'new'
 	});
-	console.log('columnIdsdsdds', column, columnId);
+	console.log('demandId', demand, demandId);
 
 	const [tabValue, setTabValue] = useState(0);
+
+	console.log('tabValue', tabValue);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -46,35 +48,17 @@ function Column() {
 	});
 	const { reset, watch } = methods;
 	const form = watch();
-
-	const [columns, setColumns] = useState([]);
 	useEffect(() => {
-		reset(columns);
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		fetch(`${GET_CLIENT_BY_ID}${columnId}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) => {
-				setColumns(data || []);
-				reset(data || []);
-			})
-			.catch(() => {});
-	}, []);
-	useEffect(() => {
-		if (columnId === 'new') {
-			reset(ColumnModel({}));
+		if (demandId === 'new') {
+			reset(DemandModel({}));
 		}
-	}, [columnId, reset]);
+	}, [demandId, reset]);
 
 	useEffect(() => {
-		if (column) {
-			reset({ ...column });
+		if (demand) {
+			reset({ ...demand });
 		}
-	}, [columns, reset, column?.id]);
+	}, [demand, reset, demand?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -85,9 +69,9 @@ function Column() {
 	}
 
 	/**
-	 * Show Message if the requested columns is not exists
+	 * Show Message if the requested demand is not exists
 	 */
-	if (isError && columnId !== 'new') {
+	if (isError && demandId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -98,16 +82,16 @@ function Column() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such column!
+					There is no such demand!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/column/columns"
+					to="/apps/demand/demand"
 					color="inherit"
 				>
-					Go to Columns Page
+					Go to Demands Page
 				</Button>
 			</motion.div>
 		);
@@ -116,18 +100,20 @@ function Column() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<ColumnHeader />}
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				header={<DemandHeader />}
 				content={
 					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<ColumnForm columns={column} />
-						</div>
+						<DemandForm demandId={demandId} />
 					</div>
 				}
-				scroll={isMobile ? 'normal' : 'content'}
+				innerScroll
 			/>
 		</FormProvider>
 	);
 }
 
-export default Column;
+export default Demand;
