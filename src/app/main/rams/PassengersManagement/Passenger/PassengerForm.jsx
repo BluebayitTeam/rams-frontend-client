@@ -751,39 +751,6 @@ function PassengerForm(props) {
 				)}
 			/>
 
-			{/* <Controller
-				name="passport_issue_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Passport Issue Date"
-							className="mt-8 mb-16 w-full  "
-							// error={!field.value}
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							onChange={(value) => {
-								setValue('passport_expiry_date', increaseYear(value, 10));
-							}}
-						/>
-					);
-				}}
-			/> */}
-
-			{/* <Controller
-				name="passport_expiry_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Passport Expiry Date"
-							className="mt-8 mb-16 w-full  "
-							readOnly
-						/>
-					);
-				}}
-			/> */}
 			<div
 				style={{
 					display: routeParams.passengerType === 'hajj' ? 'block' : 'none'
@@ -898,7 +865,6 @@ function PassengerForm(props) {
 								{...params}
 								placeholder="Select Police Station"
 								label="Police Station"
-								// error={!!errors.police_station}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -951,12 +917,9 @@ function PassengerForm(props) {
 									{...params}
 									placeholder="Select Passenger Type"
 									label="Passenger Type"
-									// error={!!errors.passenger_type || !value}
 									helperText={errors?.passenger_type?.message}
 									variant="outlined"
 									InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-									// onKeyDown={handleSubmitOnKeyDownEnter}
 								/>
 							)}
 						/>
@@ -1365,12 +1328,6 @@ function PassengerForm(props) {
 							src={previewImage1}
 							alt=""
 						/>
-						{/* <Image
-							name="passport_pic"
-							label="Passport Picture"
-							previewImage={passportImg}
-							setPreviewImage={setPassportImg}
-						/> */}
 					</div>
 				</div>
 

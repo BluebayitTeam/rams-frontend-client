@@ -25,21 +25,22 @@ function ColumnHeader() {
 
 	function handleUpdateColumn() {
 		console.log(`sabdkjsa`, getValues()?.columns);
-		const columnsData = Object.keys(getValues()?.columns).reduce((acc, key) => {
-			acc[key] = getValues()?.columns[key].isChecked;
-			return acc;
-		}, {});
+		const outputData = getValues()?.columns;
+		// const columnsData = Object.keys(getValues()?.columns).reduce((acc, key) => {
+		// 	acc[key] = getValues()?.columns[key].isChecked;
+		// 	return acc;
+		// }, {});
 
-		const columnsSerial = Object.keys(getValues()?.columns).reduce((acc, key) => {
-			acc[key] = getValues()?.columns[key].serial;
-			return acc;
-		}, {});
+		// const columnsSerial = Object.keys(getValues()?.columns).reduce((acc, key) => {
+		// 	acc[key] = getValues()?.columns[key].serial;
+		// 	return acc;
+		// }, {});
 
-		const outputData = {
-			columns_data: columnsData,
-			columns_serial: columnsSerial,
-			type: columnId
-		};
+		// const outputData = {
+		// 	columns_data: columnsData,
+		// 	columns_serial: columnsSerial,
+		// 	type: columnId
+		// };
 
 		console.log(`outputData`, outputData);
 		saveColumn(outputData).then((data) => {
