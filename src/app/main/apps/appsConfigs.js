@@ -25,7 +25,6 @@ import SubscriptionLoanAppConfig from '../rams/SubscriptionLoansManagement/Subsc
 import FeatureDetailAppConfig from '../rams/FeatureDetailsManagement/FeatureDetailAppConfig';
 import AgentAppConfig from '../rams/AgentsManagement/AgentAppConfig';
 import PassengerAppConfig from '../rams/PassengersManagement/PassengerAppConfig';
-import PassengerColumnAppConfig from '../rams/PassengerColumnsManagement/PassengerColumnAppConfig';
 import DemandAppConfig from '../rams/DemandsManagement/DemandAppConfig';
 import VisaEntryAppConfig from '../rams/VisaEntrysManagement/VisaEntryAppConfig';
 import CallingEntryAppConfig from '../rams/CallingEntrysManagement/CallingEntryAppConfig';
@@ -51,7 +50,7 @@ const appsConfigs = [
 	VisaEntryAppConfig,
 	CallingEntryAppConfig,
 	ColumnAppConfig,
-	PassengerColumnAppConfig,
+
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
 	DepartmentAppConfig,
