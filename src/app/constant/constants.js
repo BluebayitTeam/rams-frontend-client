@@ -2187,7 +2187,7 @@ export const GET_COLUMNS = `${BASE_URL}/table_column/api/v1/table_column/all/`;
 
 export const GET_COLUMN_BY_ID = `${BASE_URL}/table_column_settings/api/v1/table_column_settings/`;
 
-export const UPDATE_COLUMN = `${BASE_URL}/table_column/api/v1/table_column/update/`;
+export const UPDATE_COLUMN = `${BASE_URL}/table_column_settings/api/v1/table_column_settings/update/`;
 
 export const DELETE_COLUMN = `${BASE_URL}/table_column/api/v1/table_column/delete/`;
 

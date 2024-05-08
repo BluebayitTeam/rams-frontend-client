@@ -9,7 +9,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { GET_CLIENT_BY_ID } from 'src/app/constant/constants';
 import ColumnHeader from './ColumnHeader';
 import ColumnModel from './models/ColumnModel';
 import { useGetColumnQuery } from '../ColumnsApi';
@@ -32,7 +31,8 @@ function Column() {
 	const {
 		data: column,
 		isLoading,
-		isError
+		isError,
+		refetch
 	} = useGetColumnQuery(columnId, {
 		skip: !columnId || columnId === 'new'
 	});
@@ -47,23 +47,10 @@ function Column() {
 	const { reset, watch } = methods;
 	const form = watch();
 
-	const [columns, setColumns] = useState([]);
 	useEffect(() => {
-		reset(columns);
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		fetch(`${GET_CLIENT_BY_ID}${columnId}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) => {
-				setColumns(data || []);
-				reset(data || []);
-			})
-			.catch(() => {});
-	}, []);
+		refetch();
+	}, [columnId]);
+
 	useEffect(() => {
 		if (columnId === 'new') {
 			reset(ColumnModel({}));
@@ -71,10 +58,12 @@ function Column() {
 	}, [columnId, reset]);
 
 	useEffect(() => {
+		refetch();
+
 		if (column) {
-			reset({ ...column });
+			reset(column);
 		}
-	}, [columns, reset, column?.id]);
+	}, [reset, column?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);

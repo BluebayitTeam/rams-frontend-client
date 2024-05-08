@@ -32,10 +32,10 @@ const ColumnApi = api
 				providesTags: ['columns']
 			}),
 			updateColumn: build.mutation({
-				query: (column) => ({
-					url: `${UPDATE_COLUMN}${column?.type}`,
+				query: (data) => ({
+					url: `${UPDATE_COLUMN}${data?.type}/`,
 					method: 'PUT',
-					data: column
+					data
 				}),
 				invalidatesTags: ['columns']
 			}),
@@ -57,7 +57,6 @@ export const {
 	useGetColumnQuery,
 	useUpdateColumnMutation,
 	useDeleteColumnMutation,
-
 	useCreateColumnMutation
 } = ColumnApi;
 

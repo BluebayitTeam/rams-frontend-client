@@ -24,26 +24,15 @@ function ColumnHeader() {
 	const { name, images, featuredImageId } = watch();
 
 	function handleUpdateColumn() {
-		console.log(`sabdkjsa`, getValues()?.columns);
-		const outputData = getValues()?.columns;
-		// const columnsData = Object.keys(getValues()?.columns).reduce((acc, key) => {
-		// 	acc[key] = getValues()?.columns[key].isChecked;
-		// 	return acc;
-		// }, {});
+		const filteredData = Object.values(getValues()?.columns).map((item) => {
+			return {
+				serial: item.isChecked ? item.serial.toString() : null,
+				isChecked: item.isChecked,
+				id: item.key
+			};
+		});
 
-		// const columnsSerial = Object.keys(getValues()?.columns).reduce((acc, key) => {
-		// 	acc[key] = getValues()?.columns[key].serial;
-		// 	return acc;
-		// }, {});
-
-		// const outputData = {
-		// 	columns_data: columnsData,
-		// 	columns_serial: columnsSerial,
-		// 	type: columnId
-		// };
-
-		console.log(`outputData`, outputData);
-		saveColumn(outputData).then((data) => {
+		saveColumn({ columns: filteredData, type: columnId }).then((data) => {
 			if (columnId === 'Clients') {
 				navigate(`/apps/client/clients`);
 			}
