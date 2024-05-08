@@ -169,7 +169,7 @@ function PassengersTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(passengers.map((n) => n.id));
+			setSelected(passengers?.map((n) => n.id));
 			return;
 		}
 
@@ -181,19 +181,19 @@ function PassengersTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/passenger/passengers/${item.id}/${item.handle}`);
+		navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
 	}
 
 	function handleUpdatePassenger(item, event) {
 		localStorage.removeItem('deletePassenger');
 		localStorage.setItem('updatePassenger', event);
-		navigate(`/apps/passenger/passengers/${item.id}/${item.handle}`);
+		navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
 	}
 
 	function handleDeletePassenger(item, event) {
 		localStorage.removeItem('updatePassenger');
 		localStorage.setItem('deletePassenger', event);
-		navigate(`/apps/passenger/passengers/${item.id}/${item.handle}`);
+		navigate(`/apps/passenger/passengers/${item.id}/${passengerType}`);
 	}
 
 	// console.log('testDelete', handleDeletePassenger);
