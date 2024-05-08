@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -19,8 +20,6 @@ function PassengerHeader() {
 	// const history = useHistory();
 
 	const { passengerId, passengerType } = routeParams;
-
-	console.log('passengerType', passengerType);
 
 	const [createPassenger] = useCreatePassengerMutation();
 	const [savePassenger] = useUpdatePassengerMutation();

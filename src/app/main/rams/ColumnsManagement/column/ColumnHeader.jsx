@@ -49,7 +49,7 @@ function ColumnHeader() {
 				navigate(`/apps/department/departments`);
 			}
 
-			if (columnId === 'recruiting_passenger') {
+			if (columnId === 'recruiting') {
 				navigate(`/apps/passenger/passengers/recruiting`);
 			}
 
@@ -84,7 +84,7 @@ function ColumnHeader() {
 			navigate(`/apps/department/departments`);
 		}
 
-		if (columnId === 'recruiting_passenger') {
+		if (columnId === 'recruiting') {
 			navigate(`/apps/passenger/passengers/recruiting`);
 		}
 
@@ -110,7 +110,7 @@ function ColumnHeader() {
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">
+						<Typography className="text-16 sm:text-20 truncate font-semibold capitalize ">
 							{columnId} Table Column Serial
 						</Typography>
 						<Typography

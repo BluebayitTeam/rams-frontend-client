@@ -15,9 +15,9 @@ function ColumnForm(props) {
 		reset({ ...getValues(), items: props?.columns });
 		// Set default values when columns prop change
 		props?.columns.forEach((column) => {
-			setValue(`columns.${column.id}.isChecked`, column.isChecked);
-			setValue(`columns.${column.id}.serial`, column.isChecked ? column.serial : null);
-			setValue(`columns.${column.id}.key`, column.key);
+			setValue(`columns.${column?.id}.isChecked`, column.isChecked);
+			setValue(`columns.${column?.id}.serial`, column.isChecked ? column.serial : null);
+			setValue(`columns.${column?.id}.key`, column.key);
 		});
 	}, [props?.columns, setValue]);
 	return (
