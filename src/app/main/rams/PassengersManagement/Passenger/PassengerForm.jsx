@@ -308,7 +308,7 @@ function PassengerForm(props) {
 		).then((res) => {
 			if (res.payload?.data?.id) {
 				localStorage.setItem('passengerAlert', 'savePassenger');
-				history.push(`/apps/passenger-management/passengers/${routeParams.passengerType}`);
+				history.push(`/apps/passenger/passengers/${routeParams.passengerType}`);
 			}
 		});
 	}
@@ -330,7 +330,7 @@ function PassengerForm(props) {
 					history.goBack();
 				} else {
 					localStorage.setItem('passengerAlert', 'updatePassenger');
-					history.push(`/apps/passenger-management/passengers/${routeParams?.passengerType}`);
+					history.push(`/apps/passenger/passengers/${routeParams?.passengerType}`);
 				}
 			}
 		});

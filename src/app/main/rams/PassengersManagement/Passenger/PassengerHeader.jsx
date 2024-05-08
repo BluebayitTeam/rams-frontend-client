@@ -16,7 +16,12 @@ import { useCreatePassengerMutation, useDeletePassengerMutation, useUpdatePassen
  */
 function PassengerHeader() {
 	const routeParams = useParams();
+	// const history = useHistory();
+
 	const { passengerId, passengerType } = routeParams;
+
+	console.log('passengerType', passengerType);
+
 	const [createPassenger] = useCreatePassengerMutation();
 	const [savePassenger] = useUpdatePassengerMutation();
 	const [removePassenger] = useDeletePassengerMutation();
@@ -29,11 +34,13 @@ function PassengerHeader() {
 	const handleDelete = localStorage.getItem('deletePassenger');
 	const handleUpdate = localStorage.getItem('updatePassenger');
 
+	const { passengerName } = useParams();
+
 	function handleUpdatePassenger() {
 		savePassenger(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/passenger/passengers/recruiting`);
+			navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
 		});
 	}
 
@@ -44,21 +51,22 @@ function PassengerHeader() {
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/passenger/passengers/recruiting`);
+				navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
 			});
 	}
 
 	function handleRemovePassenger(dispatch) {
 		removePassenger(passengerId);
 		DeletedSuccessfully();
-		navigate('/apps/passenger/passengers/recruiting');
+		navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/passenger/passengers/recruiting`);
+		navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
 	}
 
+	console.log('hendelcancel', handleCancel);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
@@ -70,7 +78,7 @@ function PassengerHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/passenger/passengers/recruiting"
+						to={`/apps/passenger/passengers/${routeParams.passengerType}`}
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>
