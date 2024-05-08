@@ -22,7 +22,7 @@ function ColumnForm(props) {
 	}, [props?.columns, setValue]);
 	return (
 		<div style={{ display: 'flex', flexWrap: 'wrap' }}>
-			{props?.columns.map((clm) => (
+			{props?.columns?.map((clm) => (
 				<div
 					key={clm.id}
 					style={{ flex: '1 0 30%', display: 'flex', padding: '10px' }}

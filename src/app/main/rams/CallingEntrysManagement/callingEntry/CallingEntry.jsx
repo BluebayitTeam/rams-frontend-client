@@ -9,36 +9,38 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import ColumnHeader from './ColumnHeader';
-import ColumnModel from './models/ColumnModel';
-import { useGetColumnQuery } from '../ColumnsApi';
-import ColumnForm from './ColumnForm';
+import CallingEntryHeader from './CallingEntryHeader';
+import CallingEntryModel from './models/CallingEntryModel';
+import { useGetCallingEntryQuery } from '../CallingEntrysApi';
+import CallingEntryForm from './CallingEntryForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a column name')
-		.min(5, 'The column name must be at least 5 characters')
+		.nonempty('You must enter a callingEntry name')
+		.min(5, 'The callingEntry name must be at least 5 characters')
 });
 
-function Column() {
+function CallingEntry() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { columnId } = routeParams;
+	const { callingEntryId } = routeParams;
 
 	const {
-		data: column,
+		data: callingEntry,
 		isLoading,
-		isError,
-		refetch
-	} = useGetColumnQuery(columnId, {
-		skip: !columnId || columnId === 'new'
+		isError
+	} = useGetCallingEntryQuery(callingEntryId, {
+		skip: !callingEntryId || callingEntryId === 'new'
 	});
-	console.log('columnIdsdsdds', column, columnId);
+	console.log('callingEntryId', callingEntry, callingEntryId);
 
 	const [tabValue, setTabValue] = useState(0);
+
+	console.log('tabValue', tabValue);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -46,24 +48,17 @@ function Column() {
 	});
 	const { reset, watch } = methods;
 	const form = watch();
-
 	useEffect(() => {
-		refetch();
-	}, []);
-
-	useEffect(() => {
-		if (columnId === 'new') {
-			reset(ColumnModel({}));
+		if (callingEntryId === 'new') {
+			reset(CallingEntryModel({}));
 		}
-	}, [columnId, reset]);
+	}, [callingEntryId, reset]);
 
 	useEffect(() => {
-		refetch();
-
-		if (column) {
-			reset(column);
+		if (callingEntry) {
+			reset({ ...callingEntry });
 		}
-	}, [reset, column?.id]);
+	}, [callingEntry, reset, callingEntry?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -74,9 +69,9 @@ function Column() {
 	}
 
 	/**
-	 * Show Message if the requested columns is not exists
+	 * Show Message if the requested callingEntry is not exists
 	 */
-	if (isError && columnId !== 'new') {
+	if (isError && callingEntryId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -87,16 +82,16 @@ function Column() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such column!
+					There is no such callingEntry!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/column/columns"
+					to="/apps/callingEntry/callingEntry"
 					color="inherit"
 				>
-					Go to Columns Page
+					Go to CallingEntrys Page
 				</Button>
 			</motion.div>
 		);
@@ -105,18 +100,20 @@ function Column() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<ColumnHeader />}
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				header={<CallingEntryHeader />}
 				content={
 					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<ColumnForm columns={column} />
-						</div>
+						<CallingEntryForm callingEntryId={callingEntryId} />
 					</div>
 				}
-				scroll={isMobile ? 'normal' : 'content'}
+				innerScroll
 			/>
 		</FormProvider>
 	);
 }
 
-export default Column;
+export default CallingEntry;

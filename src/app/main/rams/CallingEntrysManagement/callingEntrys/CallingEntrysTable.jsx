@@ -29,8 +29,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
-import VisaEntrysTableHead from './VisaEntrysTableHead';
-import { selectFilteredVisaEntrys, useGetVisaEntrysQuery } from '../VisaEntrysApi';
+import CallingEntrysTableHead from './CallingEntrysTableHead';
+import { selectFilteredCallingEntrys, useGetCallingEntrysQuery } from '../CallingEntrysApi';
 
 const style = {
 	margin: 'auto',
@@ -43,7 +43,7 @@ const style = {
 	overflow: 'hidden'
 };
 
-function VisaEntrysTable(props) {
+function CallingEntrysTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const { reset, formState, watch, control, getValues, setValue } = useForm({
@@ -52,14 +52,14 @@ function VisaEntrysTable(props) {
 	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const [openModal, setOpenModal] = useState(false);
-	const { data, isLoading, refetch } = useGetVisaEntrysQuery({
+	const { data, isLoading, refetch } = useGetCallingEntrysQuery({
 		...pageAndSize,
 		searchKey
 	});
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const totalData = useSelector(selectFilteredVisaEntrys(data));
-	const visaEntrys = useSelector(selectFilteredVisaEntrys(data?.visa_entries));
+	const totalData = useSelector(selectFilteredCallingEntrys(data));
+	const callingEntrys = useSelector(selectFilteredCallingEntrys(data?.malaysia_visa_entries));
 	const thanas = useSelector((state) => state.data.thanas);
 	const branches = useSelector((state) => state.data.branches);
 	const roles = useSelector((state) => state.data.roles);
@@ -67,8 +67,8 @@ function VisaEntrysTable(props) {
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const employee = useSelector((state) => state.data.employees);
-	const [singleVisaEntryDetails, setSingleVisaEntryDetails] = useState({});
-	const [visaEntryPackagePrice, setVisaEntryPackagePrice] = useState(0);
+	const [singleCallingEntryDetails, setSingleCallingEntryDetails] = useState({});
+	const [callingEntryPackagePrice, setCallingEntryPackagePrice] = useState(0);
 
 	const routeParams = useParams();
 	const { paymentStaus } = routeParams;
@@ -85,13 +85,8 @@ function VisaEntrysTable(props) {
 		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
-
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
-		refetch({ page, rowsPerPage });
-	}, []);
-	useEffect(() => {
-		if (totalData?.visa_entries) {
+		if (totalData?.malaysia_visa_entries) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -102,7 +97,7 @@ function VisaEntrysTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.visa_entries[0])
+			Object.entries(totalData?.malaysia_visa_entries[0])
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({
@@ -128,7 +123,7 @@ function VisaEntrysTable(props) {
 
 			setRows(modifiedRow);
 		}
-	}, [totalData?.visaEntrys]);
+	}, [totalData?.callingEntrys, callingEntrys]);
 	const [open, setOpen] = useState(false);
 
 	console.log('open', open);
@@ -168,7 +163,7 @@ function VisaEntrysTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(visaEntrys.map((n) => n.id));
+			setSelected(callingEntrys.map((n) => n.id));
 			return;
 		}
 
@@ -180,22 +175,22 @@ function VisaEntrysTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/visaEntry/visaEntrys/${item.id}/${item.handle}`);
+		navigate(`/apps/callingEntry/callingEntrys/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateVisaEntry(item, event) {
-		localStorage.removeItem('deleteVisaEntry');
-		localStorage.setItem('updateVisaEntry', event);
-		navigate(`/apps/visaEntry/visaEntrys/${item.id}/${item.handle}`);
+	function handleUpdateCallingEntry(item, event) {
+		localStorage.removeItem('deleteCallingEntry');
+		localStorage.setItem('updateCallingEntry', event);
+		navigate(`/apps/callingEntry/callingEntrys/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteVisaEntry(item, event) {
-		localStorage.removeItem('updateVisaEntry');
-		localStorage.setItem('deleteVisaEntry', event);
-		navigate(`/apps/visaEntry/visaEntrys/${item.id}/${item.handle}`);
+	function handleDeleteCallingEntry(item, event) {
+		localStorage.removeItem('updateCallingEntry');
+		localStorage.setItem('deleteCallingEntry', event);
+		navigate(`/apps/callingEntry/callingEntrys/${item.id}/${item.handle}`);
 	}
 
-	// console.log('testDelete', handleDeleteVisaEntry);
+	// console.log('testDelete', handleDeleteCallingEntry);
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -238,7 +233,7 @@ function VisaEntrysTable(props) {
 		);
 	}
 
-	if (visaEntrys?.length === 0) {
+	if (callingEntrys?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -249,7 +244,7 @@ function VisaEntrysTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no visaEntrys!
+					There are no callingEntrys!
 				</Typography>
 			</motion.div>
 		);
@@ -263,18 +258,18 @@ function VisaEntrysTable(props) {
 					className="min-w-xl "
 					aria-labelledby="tableTitle"
 				>
-					<VisaEntrysTableHead
-						selectedVisaEntryIds={selected}
+					<CallingEntrysTableHead
+						selectedCallingEntryIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={visaEntrys?.length}
+						rowCount={callingEntrys?.length}
 						onMenuItemClick={handleDeselect}
 						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(visaEntrys, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(callingEntrys, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
@@ -364,12 +359,12 @@ function VisaEntrysTable(props) {
 											}}
 										>
 											<Edit
-												onClick={(event) => handleUpdateVisaEntry(n, 'updateVisaEntry')}
+												onClick={(event) => handleUpdateCallingEntry(n, 'updateCallingEntry')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={(event) => handleDeleteVisaEntry(n, 'deleteVisaEntry')}
+												onClick={(event) => handleDeleteCallingEntry(n, 'deleteCallingEntry')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>
@@ -417,4 +412,4 @@ function VisaEntrysTable(props) {
 	);
 }
 
-export default withRouter(VisaEntrysTable);
+export default withRouter(CallingEntrysTable);

@@ -49,7 +49,7 @@ function ColumnHeader() {
 				navigate(`/apps/department/departments`);
 			}
 
-			if (columnId === 'recruiting') {
+			if (columnId === 'recruiting_passenger') {
 				navigate(`/apps/passenger/passengers/recruiting`);
 			}
 
@@ -59,6 +59,10 @@ function ColumnHeader() {
 
 			if (columnId === 'visa_entry') {
 				navigate(`/apps/visaEntry/visaEntrys`);
+			}
+
+			if (columnId === 'calling_entry') {
+				navigate(`/apps/callingEntry/callingEntrys`);
 			}
 		});
 	}
@@ -80,7 +84,7 @@ function ColumnHeader() {
 			navigate(`/apps/department/departments`);
 		}
 
-		if (columnId === 'recruiting') {
+		if (columnId === 'recruiting_passenger') {
 			navigate(`/apps/passenger/passengers/recruiting`);
 		}
 
@@ -90,6 +94,10 @@ function ColumnHeader() {
 
 		if (columnId === 'visa_entry') {
 			navigate(`/apps/visaEntry/visaEntrys`);
+		}
+
+		if (columnId === 'calling_entry') {
+			navigate(`/apps/callingEntry/callingEntrys`);
 		}
 	}
 
