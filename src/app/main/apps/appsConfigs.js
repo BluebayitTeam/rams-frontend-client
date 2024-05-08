@@ -28,6 +28,7 @@ import PassengerAppConfig from '../rams/PassengersManagement/PassengerAppConfig'
 import DemandAppConfig from '../rams/DemandsManagement/DemandAppConfig';
 import VisaEntryAppConfig from '../rams/VisaEntrysManagement/VisaEntryAppConfig';
 import CallingEntryAppConfig from '../rams/CallingEntrysManagement/CallingEntryAppConfig';
+import EvisaEntryAppConfig from '../rams/EvisaEntrysManagement/EvisaEntryAppConfig';
 /**
  * The list of application configurations.
  */
@@ -47,6 +48,7 @@ const appsConfigs = [
 	UserAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
+	EvisaEntryAppConfig,
 	VisaEntryAppConfig,
 	CallingEntryAppConfig,
 	ColumnAppConfig,
