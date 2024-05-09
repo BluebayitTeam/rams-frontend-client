@@ -33,7 +33,7 @@ function MedicalHeader() {
 		saveMedical(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/medical/medicals`);
+			navigate(`/apps/medical/medicals/new`);
 		});
 	}
 
@@ -43,7 +43,7 @@ function MedicalHeader() {
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/medical/medicals`);
+				navigate(`/apps/medical/medicals/new`);
 			});
 	}
 
@@ -55,7 +55,7 @@ function MedicalHeader() {
 	}
 
 	function handleCancel() {
-		navigate(`/apps/medical/medicals`);
+		navigate(`/apps/medical/medicals/new`);
 	}
 
 	return (

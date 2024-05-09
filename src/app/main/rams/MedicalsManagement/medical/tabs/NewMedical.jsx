@@ -41,7 +41,7 @@ function NewMedical(props) {
 	return (
 		<FormProvider>
 			<div className="flex justify-center w-full px-16 ">
-				<Controller
+				{/* <Controller
 					name="passenger"
 					control={control}
 					render={({ field: { value } }) => (
@@ -66,6 +66,38 @@ function NewMedical(props) {
 									variant="outlined"
 									autoFocus
 									InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+								/>
+							)}
+						/>
+					)}
+				/> */}
+
+				<Controller
+					name="passenger"
+					control={control}
+					render={({ field: { onChange, value, name } }) => (
+						<Autocomplete
+							className={`w-full max-w-320 h-48 ${classes.container}`}
+							freeSolo
+							value={value ? passengers.find((data) => data.id === value) : null}
+							options={passengers}
+							getOptionLabel={(option) =>
+								`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+							}
+							onChange={(event, newValue) => {
+								onChange(newValue?.id);
+							}}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									placeholder="Select passengers"
+									label="passengers"
+									// error={!!errors.country || !value}
+									helperText={errors?.passengers?.message}
+									variant="outlined"
+									InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
+									// onKeyDown={handleSubmitOnKeyDownEnter}
 								/>
 							)}
 						/>
