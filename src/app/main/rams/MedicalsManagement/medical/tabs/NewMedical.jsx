@@ -6,7 +6,7 @@ import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material'
 import { makeStyles } from '@mui/styles';
 
 import { Controller, FormProvider, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -29,22 +29,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewMedical(props) {
-	const userID = localStorage.getItem('user_id');
 	const classes = useStyles(props);
 	const methods = useFormContext();
-	const routeParams = useParams();
-	const { agentId } = routeParams;
+	// const routeParams = useParams();
 	const { control, formState, getValues, setError } = methods;
-	const { errors, isValid, dirtyFields } = formState;
-	const handleDelete = localStorage.getItem('agentEvent');
+	const { errors } = formState;
+
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 
-	const dispatch = useDispatch();
-
 	return (
 		<FormProvider>
-			<div className="flex justify-center w-full px-16">
+			<div className="flex justify-center w-full px-16 ">
 				<Controller
 					name="passenger"
 					control={control}
@@ -59,9 +55,6 @@ function NewMedical(props) {
 							getOptionLabel={(option) =>
 								`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
 							}
-							// onChange={(event, newValue) => {
-							// 	updateCurrentStatus(newValue?.id);
-							// }}
 							renderInput={(params) => (
 								<TextField
 									{...params}
