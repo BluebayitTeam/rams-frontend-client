@@ -160,17 +160,6 @@ function Agent() {
 							</div>
 						</div>
 					</>
-					// <div className="p-16  ">
-					// 	<div className="p-16 ">
-					// 		<div className={tabValue !== 0 ? 'hidden' : ''}>
-					// 			<AgentForm agentId={agentId} />
-					// 		</div>
-					// 		<div className={tabValue !== 1 ? 'hidden' : ''}>
-					// 			{/* <OpeningBalance /> */}
-					// 			dsfsdsf
-					// 		</div>
-					// 	</div>
-					// </div>
 				}
 				innerScroll
 			/>
