@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
@@ -14,15 +13,15 @@ import increaseMonth from 'src/app/@helpers/increaseMonth';
 import Image from 'src/app/@components/Image';
 // import Image from 'app/@components/Image';
 
-const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		maxWidth: 220,
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9'
-	}
-}));
+// const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
+// 	[`& .${tooltipClasses.tooltip}`]: {
+// 		backgroundColor: '#f5f5f9',
+// 		color: 'rgba(0, 0, 0, 0.87)',
+// 		maxWidth: 220,
+// 		fontSize: theme.typography.pxToRem(12),
+// 		border: '1px solid #dadde9'
+// 	}
+// }));
 const useStyles = makeStyles((theme) => ({
 	hidden: {
 		display: 'none'
@@ -47,11 +46,12 @@ function MedicalForm(props) {
 	const classes = useStyles(props);
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const image = watch('image');
+	// const image = watch('image');
 
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getMedicalCenters());
+
 		dispatch(getCurrentStatuss());
 	}, []);
 
@@ -69,9 +69,9 @@ function MedicalForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalCenters.find((data) => data.id === value) : null}
+						value={value ? medicalCenters?.find((data) => data.id === value) : null}
 						options={medicalCenters}
-						getOptionLabel={(option) => `${option.name}`}
+						getOptionLabel={(option) => `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -80,11 +80,13 @@ function MedicalForm(props) {
 								{...params}
 								placeholder="Select Medical Center"
 								label="Medical Center"
+								id="medical_center"
+								// error={!!errors.current_status}
 								helperText={errors?.medical_center?.message}
 								variant="outlined"
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-								// onKeyDown={handleSubmitOnKeyDownEnter}
+								InputLabelProps={{
+									shrink: true
+								}}
 							/>
 						)}
 					/>
