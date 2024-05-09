@@ -119,6 +119,20 @@ function MedicalHeader() {
 						Save
 					</Button>
 				)}
+
+				{/* {(routeParams.medicalId === 'new' ||
+					(sessionStorage?.getItem('operation') === 'save' && watch('passenger'))) && (
+					<Button
+						className="whitespace-nowrap mx-4"
+						variant="contained"
+						color="secondary"
+						disabled={_.isEmpty(dirtyFields) || !isValid}
+						onClick={handleCreateMedical}
+					>
+						Save
+					</Button>
+				)} */}
+
 				{handleDelete !== 'deleteMedical' && handleUpdate === 'updateMedical' && medicalId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
