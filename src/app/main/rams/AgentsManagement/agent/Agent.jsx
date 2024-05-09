@@ -157,7 +157,6 @@ function Agent() {
 
 							<div className={tabValue !== 1 ? 'hidden' : ''}>
 								<OpeningBalance />
-								{/* Opening Balance */}
 							</div>
 						</div>
 					</>
