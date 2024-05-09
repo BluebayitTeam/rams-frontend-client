@@ -13,6 +13,7 @@ import MedicalHeader from './MedicalHeader';
 import MedicalModel from './models/MedicalModel';
 import { useGetMedicalQuery } from '../MedicalsApi';
 import MedicalForm from './MedicalForm';
+import NewMedical from './tabs/NewMedical';
 // import MedicalForm from './MedicalForm';
 /**
  * Form Validation Schema
@@ -107,6 +108,7 @@ function Medical() {
 				header={<MedicalHeader />}
 				content={
 					<div className="p-16 ">
+						<NewMedical />
 						<MedicalForm medicalId={medicalId} />
 					</div>
 				}
