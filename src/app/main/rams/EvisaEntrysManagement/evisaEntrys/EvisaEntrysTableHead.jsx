@@ -33,7 +33,7 @@ function EvisaEntrysTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
-				{props?.rows.map((row, index, array) => {
+				{props?.rows?.map((row, index, array) => {
 					return (
 						<TableCell
 							sx={{
@@ -52,21 +52,21 @@ function EvisaEntrysTableHead(props) {
 								right: index === array.length - 1 ? 0 : undefined,
 								zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto'
 							}}
-							sortDirection={tableOrder.id === row.id ? tableOrder.direction : false}
+							sortDirection={tableOrder?.id === row.id ? tableOrder?.direction : false}
 						>
-							{row.sort && (
+							{row?.sort && (
 								<Tooltip
 									title="Sort"
 									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
 									enterDelay={300}
 								>
 									<TableSortLabel
-										active={tableOrder.id === row.id}
-										direction={tableOrder.direction}
+										active={tableOrder?.id === row.id}
+										direction={tableOrder?.direction}
 										onClick={(ev) => createSortHandler(ev, row.id)}
 										className="font-semibold"
 									>
-										{row.label}
+										{row?.label}
 									</TableSortLabel>
 								</Tooltip>
 							)}

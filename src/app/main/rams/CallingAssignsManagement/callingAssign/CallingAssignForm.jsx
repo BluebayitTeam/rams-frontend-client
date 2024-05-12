@@ -2,28 +2,20 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
-import {
-	Autocomplete,
-	Checkbox,
-	FormControlLabel,
-	Icon,
-	TextField,
-	Tooltip,
-	Typography,
-	tooltipClasses
-} from '@mui/material';
-import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { getCallingAssigns, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormControl } from '@mui/base';
-import { activeCncl } from 'src/app/@data/data';
-import { PictureAsPdf } from '@mui/icons-material';
-import { BASE_URL } from 'src/app/constant/constants';
-import clsx from 'clsx';
+import {
+	CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN,
+	CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER
+} from 'src/app/constant/constants';
+import Swal from 'sweetalert2';
 import MultiplePassengersTable from './MultiplePassengersTable';
+import { useCreateCallingAssignMutation } from '../CallingAssignsApi';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -49,18 +41,20 @@ function CallingAssignForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
+	const [createCallingAssign] = useCreateCallingAssignMutation();
+
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { callingAssignId } = routeParams;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const file = watch('file') || '';
+	const callingAssigns = useSelector((state) => state.data.callingAssigns);
 	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
-	const [previewFile, setPreviewFile] = useState('');
-	const [fileExtName, setFileExtName] = useState('');
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
+	const [showError, setShowError] = useState(false);
+	const [availableVisa, setAvailableVisa] = useState(null);
 
 	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
 
@@ -72,66 +66,87 @@ function CallingAssignForm(props) {
 	}, [mltPassengerDeletedId]);
 
 	useEffect(() => {
-		setFileExtName('');
-		setPreviewFile('');
-	}, [watch('demand')]);
-	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
+		dispatch(getCallingAssigns());
 	}, []);
+
+	const handleCheckAvailableVisa = (id, qty) => {
+		setShowError(true);
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		fetch(`${CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN}${id}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
+			.catch((err) => {});
+	};
+
+	function handleSaveMultipleStatusUpdate(id) {
+		if (mltPassengerList?.length >= availableVisa) {
+			Swal.fire({
+				position: 'top-center',
+				icon: 'warning',
+				title: `Number of Pax Full for this Calling No`,
+				showConfirmButton: false,
+				timer: 5000
+			});
+		} else {
+			fetch(`${CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER}/${id}/${watch('visa_entry')}`)
+				.then((response) => response.json())
+				.then((data) => {
+					if (data?.same_visa_entry) {
+						Swal.fire({
+							position: 'top-center',
+							icon: 'warning',
+							title: `This Passenger Has Already Been Assigned the same Calling Visa`,
+							showConfirmButton: false,
+							timer: 5000
+						});
+					} else if (data?.visa_entry_exist) {
+						Swal.fire({
+							title: 'Calling Visa Already Assigned for This Passenger',
+							text: 'Please Remove the Previous Calling Visa.',
+							icon: 'error',
+							showConfirmButton: false,
+							timer: 5000
+						});
+					} else {
+						setMltPassengerList((prevList) => [...prevList, passengers.find((data) => data?.id === id)]);
+					}
+				})
+				.catch(() => {});
+		}
+	}
 
 	return (
 		<div>
-			{callingAssignId === 'new' && (
-				<Controller
-					name="is_multi_entry"
-					control={control}
-					render={({ field }) => (
-						<FormControl>
-							<FormControlLabel
-								//
-								label="Multi Entry"
-								control={
-									<Checkbox
-										{...field}
-										checked={field.value ? field.value : false}
-									/>
-								}
-							/>
-						</FormControl>
-					)}
-				/>
-			)}
-
 			<Controller
-				name="passenger"
+				name="visa_entry"
 				control={control}
 				render={({ field: { value, onChange } }) => (
 					<Autocomplete
 						className="mt-8 mb-16 w-full "
 						freeSolo
-						value={value ? passengers.find((data) => data.id === value) : null}
-						options={passengers}
-						getOptionLabel={(option) => `${option.passenger_name} - ${option.passport_no}`}
+						value={value ? callingAssigns.find((data) => data.id === value) : null}
+						options={callingAssigns}
+						getOptionLabel={(option) =>
+							`${option.visa_number}-${option.profession_english} - Qty:${option.quantity}-${option.demand?.company_name}`
+						}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
-							setSelectedValueDisable(true);
-
-							// Update mltPassengerList state with the selected passenger
-							if (newValue && callingAssignId === 'new' && watch('is_multi_entry')) {
-								setMltPassengerList((prevList) => [
-									...prevList,
-									passengers.find((data) => data?.id === newValue?.id)
-								]);
-							}
+							handleCheckAvailableVisa(newValue?.id, newValue?.quantity);
 						}}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Passenger"
-								label="Passenger"
+								placeholder="Select Calling Visa"
+								label="Calling Visa"
 								error={!value}
-								helperText={errors?.agency?.message}
+								helperText={errors?.visa_entry?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -142,105 +157,12 @@ function CallingAssignForm(props) {
 				)}
 			/>
 
-			{callingAssignId === 'new' && watch('is_multi_entry') && (
-				<div>
-					<MultiplePassengersTable
-						passengers={mltPassengerList}
-						setMltPassengerList={setMltPassengerList}
-					/>
-				</div>
+			{watch('visa_entry') && (
+				<h6 className={`pb-10 ps-5 text-${availableVisa > 0 ? 'green' : 'red'}`}>
+					{availableVisa > 0 ? `Available Calling: ${availableVisa}` : 'Calling Not Available'}
+				</h6>
 			)}
 
-			<Controller
-				name="visa_number"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.visa_number?.message}
-							label="Visa No"
-							id="visa_number"
-							variant="outlined"
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="issue_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.issue_date}
-							helperText={errors?.issue_date?.message}
-							label="Issue Date"
-							id="issue_date"
-							type="date"
-							InputLabelProps={{ shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="exp_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.exp_date}
-							helperText={errors?.exp_date?.message}
-							label="Exp Date"
-							id="exp_date"
-							type="date"
-							InputLabelProps={{ shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="status"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16 w-full  "
-						freeSolo
-						value={value ? activeCncl.find((data) => data.id === value) : null}
-						options={activeCncl}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Status"
-								label="Status"
-								id="status"
-								helperText={errors?.status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
 			<Controller
 				name="current_status"
 				control={control}
@@ -248,7 +170,7 @@ function CallingAssignForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find((data) => data.id === value) : null}
+						value={value ? currentStatuss.find((data) => data.id == value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -270,100 +192,54 @@ function CallingAssignForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
-				name="file"
+				name="passenger"
 				control={control}
-				render={({ field: { onChange, value } }) => (
-					<div className="flex w-full flex-row items-center justify-evenly">
-						<div className="flex-col">
-							<Typography className="text-center">File</Typography>
-							<label
-								htmlFor={`${name}-button-file`}
-								className={clsx(
-									classes.productImageUpload,
-									'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-								)}
-							>
-								<input
-									accept="image/x-png,image/gif,image/jpeg,application/pdf"
-									className="hidden"
-									id={`${name}-button-file`}
-									type="file"
-									onChange={async (e) => {
-										const reader = new FileReader();
-										reader.onload = () => {
-											if (reader.readyState === 2) {
-												setPreviewFile(reader.result);
-											}
-										};
-										reader.readAsDataURL(e.target.files[0]);
+				render={({ field: { value, onChange } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full "
+						freeSolo
+						value={value ? passengers.find((data) => data.id === value) : null}
+						options={passengers}
+						getOptionLabel={(option) => `${option.passenger_name} - ${option.passport_no}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+							setSelectedValueDisable(true);
 
-										const file = e.target.files[0];
-
-										setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
-
-										onChange(file);
-									}}
-								/>
-								<Icon
-									fontSize="large"
-									color="action"
-								>
-									cloud_upload
-								</Icon>
-							</label>
-						</div>
-						{!previewFile && file && (
-							<div
-								style={{
-									width: 'auto',
-									height: '150px',
-									overflow: 'hidden',
-									display: 'flex'
+							// Update mltPassengerList state with the selected passenger
+							if (newValue) {
+								handleSaveMultipleStatusUpdate(newValue?.id);
+							}
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Passenger"
+								label="Passenger"
+								error={!value}
+								helperText={errors?.agency?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
 								}}
-							>
-								{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-									<PictureAsPdf
-										style={{
-											color: 'red',
-											cursor: 'pointer',
-											display: 'block',
-											fontSize: '35px',
-											margin: 'auto'
-										}}
-										onClick={() => window.open(`${BASE_URL}${file}`)}
-									/>
-								) : (
-									<img
-										src={`${BASE_URL}${file}`}
-										style={{ height: '150px' }}
-									/>
-								)}
-							</div>
+							/>
 						)}
-
-						{previewFile && (
-							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-								{fileExtName === 'pdf' ? (
-									<iframe
-										src={previewFile}
-										frameBorder="0"
-										scrolling="auto"
-										height="150px"
-										width="150px"
-									/>
-								) : (
-									<img
-										src={previewFile}
-										style={{ height: '150px' }}
-									/>
-								)}
-							</div>
-						)}
-					</div>
+					/>
 				)}
 			/>
+
+			{mltPassengerList?.length > 0 && (
+				<div>
+					<MultiplePassengersTable
+						passengers={mltPassengerList}
+						setMltPassengerList={setMltPassengerList}
+					/>
+				</div>
+			)}
+
+			{showError && mltPassengerList?.length >= availableVisa && (
+				<h4 style={{ color: 'red' }}>Number of Pax Full for this Calling No</h4>
+			)}
 		</div>
 	);
 }

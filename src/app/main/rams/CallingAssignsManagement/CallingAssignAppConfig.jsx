@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import CallingAssignApp from './CallingAssignApp';
-import CallingAssigns from './callingAssigns/CallingAssigns';
 import CallingAssign from './callingAssign/CallingAssign';
 
 /**
@@ -18,10 +17,6 @@ const CallingAssignAppConfig = {
 				{
 					path: '',
 					element: <Navigate to="callingAssigns" />
-				},
-				{
-					path: 'callingAssigns',
-					element: <CallingAssigns />
 				},
 
 				{

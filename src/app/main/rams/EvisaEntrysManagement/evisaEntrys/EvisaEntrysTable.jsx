@@ -87,7 +87,7 @@ function EvisaEntrysTable(props) {
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 	useEffect(() => {
-		if (totalData?.evisa_entries) {
+		if (totalData && totalData.evisa_entries) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -98,7 +98,7 @@ function EvisaEntrysTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.evisa_entries[0])
+			Object.entries(totalData?.evisa_entries[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({
@@ -164,7 +164,7 @@ function EvisaEntrysTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(evisaEntrys.map((n) => n.id));
+			setSelected(evisaEntrys?.map((n) => n?.id));
 			return;
 		}
 
@@ -273,7 +273,7 @@ function EvisaEntrysTable(props) {
 						{_.orderBy(evisaEntrys, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
+								const isSelected = selected.indexOf(n?.id) !== -1;
 								return (
 									<TableRow
 										className="h-20 cursor-pointer border-t-1  border-gray-200"
