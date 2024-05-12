@@ -3,10 +3,10 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	ALL_USERS,
-	CREATE_MEDICAL,
-	MEDICAL_BY_PASSENGER_ID,
-	UPDATE_MEDICAL,
-	DELETE_MEDICAL
+	OFFICEWORK_BY_PASSENGER_ID,
+	CREATE_OFFICEWORK,
+	UPDATE_OFFICEWORK,
+	DELETE_OFFICEWORK
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -36,13 +36,13 @@ const OfficeWorkApi = api
 			}),
 			getOfficeWork: build.query({
 				query: (officeWorkId) => ({
-					url: `${MEDICAL_BY_PASSENGER_ID}${officeWorkId}`
+					url: `${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`
 				}),
 				providesTags: ['officeWorks']
 			}),
 			createOfficeWork: build.mutation({
 				query: (newOfficeWork) => ({
-					url: CREATE_MEDICAL,
+					url: CREATE_OFFICEWORK,
 					method: 'POST',
 					data: jsonToFormData(OfficeWorkModel(newOfficeWork))
 				}),
@@ -50,7 +50,7 @@ const OfficeWorkApi = api
 			}),
 			updateOfficeWork: build.mutation({
 				query: (officeWork) => ({
-					url: `${UPDATE_MEDICAL}${officeWork.id}`,
+					url: `${UPDATE_OFFICEWORK}${officeWork.id}`,
 					method: 'PUT',
 					data: jsonToFormData(officeWork)
 				}),
@@ -58,7 +58,7 @@ const OfficeWorkApi = api
 			}),
 			deleteOfficeWork: build.mutation({
 				query: (officeWorkId) => ({
-					url: `${DELETE_MEDICAL}${officeWorkId}`,
+					url: `${DELETE_OFFICEWORK}${officeWorkId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['officeWorks']
