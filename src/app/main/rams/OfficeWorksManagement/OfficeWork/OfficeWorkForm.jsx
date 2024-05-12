@@ -75,14 +75,23 @@ function OfficeWorkForm(props) {
 					);
 				}}
 			/>
+
 			<Controller
 				name="police_clearance_date"
 				control={control}
 				render={({ field }) => {
 					return (
-						<CustomDatePicker
-							field={field}
-							label="Police Clearance Date"
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.police_clearance_date}
+							helperText={errors?.police_clearance_date?.message}
+							label="Police Clearance date"
+							id="police_clearance_date"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -93,9 +102,9 @@ function OfficeWorkForm(props) {
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
-						className="mt-8 mb-16"
+						className="mt-16 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find((data) => data.id == value) : null}
+						value={value ? doneNotDone.find((data) => data.id === value) : null}
 						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -150,6 +159,28 @@ function OfficeWorkForm(props) {
 					);
 				}}
 			/>
+
+			<Controller
+				name="driving_license_date"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.driving_license_date}
+							helperText={errors?.driving_license_date?.message}
+							label="Driving License Date"
+							id="driving_license_date"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
+
 			<Controller
 				name="driving_license_status"
 				control={control}
@@ -236,9 +267,17 @@ function OfficeWorkForm(props) {
 				control={control}
 				render={({ field }) => {
 					return (
-						<CustomDatePicker
-							field={field}
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.finger_date}
+							helperText={errors?.finger_date?.message}
 							label="Finger Date"
+							id="finger_date"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
