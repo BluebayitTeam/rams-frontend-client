@@ -45,13 +45,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function EvisaEntryForm(props) {
+function CallingAssignForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { evisaEntryId } = routeParams;
+	const { callingAssignId } = routeParams;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
@@ -82,7 +82,7 @@ function EvisaEntryForm(props) {
 
 	return (
 		<div>
-			{evisaEntryId === 'new' && (
+			{callingAssignId === 'new' && (
 				<Controller
 					name="is_multi_entry"
 					control={control}
@@ -118,7 +118,7 @@ function EvisaEntryForm(props) {
 							setSelectedValueDisable(true);
 
 							// Update mltPassengerList state with the selected passenger
-							if (newValue && evisaEntryId === 'new' && watch('is_multi_entry')) {
+							if (newValue && callingAssignId === 'new' && watch('is_multi_entry')) {
 								setMltPassengerList((prevList) => [
 									...prevList,
 									passengers.find((data) => data?.id === newValue?.id)
@@ -142,7 +142,7 @@ function EvisaEntryForm(props) {
 				)}
 			/>
 
-			{evisaEntryId === 'new' && watch('is_multi_entry') && (
+			{callingAssignId === 'new' && watch('is_multi_entry') && (
 				<div>
 					<MultiplePassengersTable
 						passengers={mltPassengerList}
@@ -368,4 +368,4 @@ function EvisaEntryForm(props) {
 	);
 }
 
-export default EvisaEntryForm;
+export default CallingAssignForm;
