@@ -744,6 +744,18 @@ export const getMedicalCenters = () => (dispatch) => {
 		.then((data) => dispatch(setMedicalCenters(data.medical_centers)))
 		.catch(() => {});
 };
+export const getMedicals = () => (dispatch) => {
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	fetch(MEDICALCENTERS_WITHOUT_PAGINATION, authTOKEN)
+		.then((response) => response.json())
+		.then((data) => dispatch(setMedicals(data.medicals)))
+		.catch(() => {});
+};
 
 export const getPassengers = () => (dispatch) => {
 	const authTOKEN = {
@@ -1041,6 +1053,9 @@ const dataSlice = createSlice({
 		setMedicalCenters: (state, action) => {
 			state.medicalCenters = action.payload ? action.payload : [];
 		},
+		setMedicals: (state, action) => {
+			state.medicals = action.payload ? action.payload : [];
+		},
 		setPassengers: (state, action) => {
 			state.passengers = action.payload ? action.payload : [];
 		},
@@ -1070,7 +1085,6 @@ const {
 	setBranches,
 	setSiteSettings,
 	setEmployeeUsers,
-
 	setUserPermissions,
 	setVendors,
 	setThanas,
@@ -1123,6 +1137,7 @@ const {
 	setVisaEntries,
 	setCallingAssigns,
 	setMedicalCenters,
+	setMedicals,
 	setPassengers,
 	setPassengersWithVisaEntry,
 	setLedgers,
