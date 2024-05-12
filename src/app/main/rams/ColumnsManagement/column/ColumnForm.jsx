@@ -10,7 +10,7 @@ function ColumnForm(props) {
 		getValues,
 		reset
 	} = useFormContext();
-	console.log(`props`, props?.columns);
+	console.log('props', props);
 	useEffect(() => {
 		reset({ ...getValues(), items: props?.columns });
 		// Set default values when columns prop change
@@ -18,6 +18,7 @@ function ColumnForm(props) {
 			setValue(`columns.${column?.id}.isChecked`, column.isChecked);
 			setValue(`columns.${column?.id}.serial`, column.isChecked ? column.serial : null);
 			setValue(`columns.${column?.id}.key`, column.key);
+			// console.log('setValue', setValue);
 		});
 	}, [props?.columns, setValue]);
 	return (

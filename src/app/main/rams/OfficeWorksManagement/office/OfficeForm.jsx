@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/alt-text */
 
 import { Autocomplete, TextField } from '@mui/material';
-import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss, getOfficeCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone, officeResults } from 'src/app/@data/data';
 import increaseMonth from 'src/app/@helpers/increaseMonth';
 import Image from 'src/app/@components/Image';
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function MedicalForm(props) {
+function OfficeForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues } = methods;
@@ -31,15 +31,15 @@ function MedicalForm(props) {
 
 	const { errors } = formState;
 	// const routeParams = useParams();
-	// const { medicalId } = routeParams;
+	// const { officeId } = routeParams;
 	// const classes = useStyles(props);
-	const medicalCenters = useSelector((state) => state.data.medicalCenters);
+	const officeCenters = useSelector((state) => state.data.officeCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	// const image = watch('image');
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getMedicalCenters());
+		dispatch(getOfficeCenters());
 
 		dispatch(getCurrentStatuss());
 	}, []);
@@ -47,19 +47,19 @@ function MedicalForm(props) {
 	useEffect(() => {
 		setPreviewImage('');
 		setPreviewImage2('');
-	}, [getValues('medical_center')]);
+	}, [getValues('office_center')]);
 
 	return (
 		<div>
 			<Controller
-				name="medical_center"
+				name="office_center"
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalCenters?.find((data) => data.id === value) : null}
-						options={medicalCenters}
+						value={value ? officeCenters?.find((data) => data.id === value) : null}
+						options={officeCenters}
 						getOptionLabel={(option) => `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -67,10 +67,10 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Medical Center"
-								label="Medical Center"
-								id="medical_center"
-								helperText={errors?.medical_center?.message}
+								placeholder="Select Office Center"
+								label="Office Center"
+								id="office_center"
+								helperText={errors?.office_center?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -82,7 +82,7 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_serial_no"
+				name="office_serial_no"
 				control={control}
 				render={({ field }) => {
 					return (
@@ -90,9 +90,9 @@ function MedicalForm(props) {
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							helperText={errors?.medical_serial_no?.message}
-							label="Medical Serial No"
-							id="medical_serial_no"
+							helperText={errors?.office_serial_no?.message}
+							label="Office Serial No"
+							id="office_serial_no"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
@@ -102,14 +102,14 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_result"
+				name="office_result"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalResults.find((data) => data.id === value) : null}
-						options={medicalResults}
+						value={value ? officeResults.find((data) => data.id === value) : null}
+						options={officeResults}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -117,10 +117,10 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Medical Result"
-								label="Medical Result"
-								// error={!!errors.medical_result || !value}
-								helperText={errors?.medical_result?.message}
+								placeholder="Select Office Result"
+								label="Office Result"
+								// error={!!errors.office_result || !value}
+								helperText={errors?.office_result?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -132,7 +132,7 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_card"
+				name="office_card"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
@@ -147,10 +147,10 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select medical Card"
-								label="Medical Card"
-								// error={!!errors.medical_card}
-								helperText={errors?.medical_card?.message}
+								placeholder="Select office Card"
+								label="Office Card"
+								// error={!!errors.office_card}
+								helperText={errors?.office_card?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -162,17 +162,17 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_exam_date"
+				name="office_exam_date"
 				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							error={!!errors.medical_exam_date}
-							helperText={errors?.medical_exam_date?.message}
-							label="Medical Exam Date"
-							id="medical_exam_date"
+							error={!!errors.office_exam_date}
+							helperText={errors?.office_exam_date?.message}
+							label="Office Exam Date"
+							id="office_exam_date"
 							type="date"
 							InputLabelProps={{ shrink: true }}
 							fullWidth
@@ -183,17 +183,17 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_report_date"
+				name="office_report_date"
 				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							error={!!errors.medical_report_date}
-							helperText={errors?.medical_report_date?.message}
-							label="Medical Report Date"
-							id="medical_report_date"
+							error={!!errors.office_report_date}
+							helperText={errors?.office_report_date?.message}
+							label="Office Report Date"
+							id="office_report_date"
 							type="date"
 							InputLabelProps={{ shrink: true }}
 							fullWidth
@@ -204,21 +204,21 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_issue_date"
+				name="office_issue_date"
 				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							error={!!errors.medical_issue_date}
-							helperText={errors?.medical_issue_date?.message}
-							label="Medical Issue Date"
-							id="medical_issue_date"
+							error={!!errors.office_issue_date}
+							helperText={errors?.office_issue_date?.message}
+							label="Office Issue Date"
+							id="office_issue_date"
 							type="date"
 							InputLabelProps={{ shrink: true }}
 							onChange={(value) => {
-								setValue('medical_expiry_date', increaseMonth(value, 3));
+								setValue('office_expiry_date', increaseMonth(value, 3));
 							}}
 							fullWidth
 							// onKeyDown={handleSubmitOnKeyDownEnter}
@@ -228,17 +228,17 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_expiry_date"
+				name="office_expiry_date"
 				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							error={!!errors.medical_expiry_date}
-							helperText={errors?.medical_expiry_date?.message}
-							label="Medical Expiry Date"
-							id="medical_expiry_date"
+							error={!!errors.office_expiry_date}
+							helperText={errors?.office_expiry_date?.message}
+							label="Office Expiry Date"
+							id="office_expiry_date"
 							type="date"
 							InputLabelProps={{ shrink: true }}
 							fullWidth
@@ -311,14 +311,14 @@ function MedicalForm(props) {
 					label="Slip Picture"
 				/>
 				<Image
-					name="medical_card_pic"
+					name="office_card_pic"
 					previewImage={previewImage2}
 					setPreviewImage={setPreviewImage2}
-					label="Medical Card Picture"
+					label="Office Card Picture"
 				/>
 			</div>
 		</div>
 	);
 }
 
-export default MedicalForm;
+export default OfficeForm;

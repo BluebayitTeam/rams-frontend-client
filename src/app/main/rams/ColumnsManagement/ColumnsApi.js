@@ -17,6 +17,7 @@ const ColumnApi = api
 				query: () => ({ url: GET_CLIENTS }),
 				providesTags: ['columns']
 			}),
+
 			deleteColumns: build.mutation({
 				query: (columnIds) => ({
 					url: ALL_USERS,
@@ -25,6 +26,7 @@ const ColumnApi = api
 				}),
 				invalidatesTags: ['columns']
 			}),
+
 			getColumn: build.query({
 				query: (columnId) => ({
 					url: `${GET_COLUMN_BY_ID}${columnId}`
@@ -37,6 +39,7 @@ const ColumnApi = api
 					method: 'PUT',
 					data
 				}),
+
 				invalidatesTags: ['columns']
 			}),
 			createColumn: build.mutation({

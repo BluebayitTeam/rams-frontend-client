@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function NewMedical(props) {
+function NewOffice(props) {
 	const classes = useStyles(props);
 	const methods = useFormContext();
 	// const routeParams = useParams();
@@ -90,10 +90,10 @@ function NewMedical(props) {
 													passenger: newValue?.id
 												});
 												history.push(
-													`/apps/medical/medicals/${newValue?.passenger.id || newValue?.id}`
+													`/apps/office/offices/${newValue?.passenger.id || newValue?.id}`
 												);
 											} else {
-												history.push(`/apps/medical/medicals/new`);
+												history.push(`/apps/office/offices/new`);
 												reset({
 													passenger: newValue?.id,
 													medical_card: doneNotDone.find((data) => data.default)?.id,
@@ -102,7 +102,7 @@ function NewMedical(props) {
 											}
 										})
 										.catch(() => {
-											history.push(`/apps/medical/medicals/new`);
+											history.push(`/apps/office/offices/new`);
 											reset({
 												passenger: newValue?.id,
 												medical_card: doneNotDone.find((data) => data.default)?.id,
@@ -110,7 +110,7 @@ function NewMedical(props) {
 											});
 										});
 								} else {
-									history.push(`/apps/medical/medicals/new`);
+									history.push(`/apps/office/offices/new`);
 									reset({
 										passenger: newValue?.id,
 										medical_card: doneNotDone.find((data) => data.default)?.id,
@@ -139,4 +139,4 @@ function NewMedical(props) {
 	);
 }
 
-export default NewMedical;
+export default NewOffice;
