@@ -1,6 +1,6 @@
 import _ from '@lodash';
 
-const OfficeModel = (data) =>
+const OfficeWorkModel = (data) =>
 	_.defaults(data || {}, {
 		profession: '',
 		country: '',
@@ -9,4 +9,4 @@ const OfficeModel = (data) =>
 		quantity: '',
 		salary: ''
 	});
-export default OfficeModel;
+export default OfficeWorkModel;
