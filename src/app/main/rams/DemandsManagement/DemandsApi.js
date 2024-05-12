@@ -27,6 +27,13 @@ const DemandApi = api
 				}),
 				providesTags: ['demands']
 			}),
+			getMultiplePassengers: build.query({
+				query: ({ page, size, searchKey }) => ({
+					url: GET_DEMANDS,
+					params: { page, size, searchKey }
+				}),
+				providesTags: ['demands']
+			}),
 			deleteDemands: build.mutation({
 				query: (demandIds) => ({
 					url: ALL_USERS,

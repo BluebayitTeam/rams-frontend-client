@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
-
 import {
 	Autocomplete,
 	Checkbox,
@@ -23,6 +22,7 @@ import { activeCncl } from 'src/app/@data/data';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
 import clsx from 'clsx';
+import MultiplePassengersTable from './MultiplePassengersTable';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -58,6 +58,18 @@ function EvisaEntryForm(props) {
 	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const [previewFile, setPreviewFile] = useState('');
 	const [fileExtName, setFileExtName] = useState('');
+	const [mltPassengerList, setMltPassengerList] = useState([]);
+	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
+
+	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
+
+	useEffect(() => {
+		if (mltPassengerDeletedId) {
+			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
+			setMltPassengerDeletedId(null);
+		}
+	}, [mltPassengerDeletedId]);
+
 	useEffect(() => {
 		setFileExtName('');
 		setPreviewFile('');
@@ -66,27 +78,6 @@ function EvisaEntryForm(props) {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
 	}, []);
-
-	function handleSaveMultipleStatusUpdate(id) {
-		//   dispatch(
-		//     addMultiplePassengerUpdateTable(
-		//       passengers.find((data) => data?.id == id)
-		//     )
-		//   );
-	}
-
-	function handleUpdateEVisaEntry() {
-		// dispatch(updateEVisaEntry(getValues())).then((res) => {
-		//   if (res.payload?.data?.id) {
-		//     if (visaEntryName === 'fromSearch') {
-		//       history.goBack();
-		//     } else {
-		//       localStorage.setItem('visaEntryAlert', 'updateEVisaEntry');
-		//       history.push('/apps/visaEntry-management/visaEntrys');
-		//     }
-		//   }
-		// });
-	}
 
 	return (
 		<div>
@@ -125,9 +116,13 @@ function EvisaEntryForm(props) {
 							onChange(newValue?.id);
 							setSelectedValueDisable(true);
 
-							// routeParams?.eVisaEntryId === 'new' &&
-							// 	watch('is_multi_entry') &&
-							// 	handleSaveMultipleStatusUpdate(newValue?.id);
+							// Update mltPassengerList state with the selected passenger
+							if (newValue && evisaEntryId === 'new' && watch('is_multi_entry')) {
+								setMltPassengerList((prevList) => [
+									...prevList,
+									passengers.find((data) => data?.id === newValue?.id)
+								]);
+							}
 						}}
 						renderInput={(params) => (
 							<TextField
@@ -146,7 +141,14 @@ function EvisaEntryForm(props) {
 				)}
 			/>
 
-			<div>{/* <MultiplePassengerUpdateFormTable /> */}</div>
+			{evisaEntryId === 'new' && watch('is_multi_entry') && (
+				<div>
+					<MultiplePassengersTable
+						passengers={mltPassengerList}
+						setMltPassengerList={setMltPassengerList}
+					/>
+				</div>
+			)}
 
 			<Controller
 				name="visa_number"
