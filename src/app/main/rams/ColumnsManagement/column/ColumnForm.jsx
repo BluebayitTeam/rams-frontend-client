@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 
@@ -10,17 +10,21 @@ function ColumnForm(props) {
 		getValues,
 		reset
 	} = useFormContext();
-	console.log('props', props);
+	const [columnValue, setColumnValue] = useState(false);
+	console.log('propsShuva', props);
 	useEffect(() => {
-		reset({ ...getValues(), items: props?.columns });
-		// Set default values when columns prop change
-		props?.columns.forEach((column) => {
-			setValue(`columns.${column?.id}.isChecked`, column.isChecked);
-			setValue(`columns.${column?.id}.serial`, column.isChecked ? column.serial : null);
-			setValue(`columns.${column?.id}.key`, column.key);
-			// console.log('setValue', setValue);
-		});
-	}, [props?.columns, setValue]);
+		if (!columnValue) {
+			reset({ ...getValues(), items: props?.columns });
+			// Set default values when columns prop change
+			props?.columns.forEach((column) => {
+				setValue(`columns.${column?.id}.isChecked`, column.isChecked);
+				setValue(`columns.${column?.id}.serial`, column.isChecked ? column.serial : null);
+				setValue(`columns.${column?.id}.key`, column.key);
+				// console.log('setValue', setValue);
+			});
+			setColumnValue(true);
+		}
+	}, [props?.columns, setValue, getValues(), columnValue]);
 	return (
 		<div style={{ display: 'flex', flexWrap: 'wrap' }}>
 			{props?.columns?.map((clm) => (

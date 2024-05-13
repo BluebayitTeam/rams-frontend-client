@@ -3,10 +3,11 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	ALL_USERS,
+	GET_DEMANDS,
 	CREATE_MEDICAL,
-	MEDICAL_BY_PASSENGER_ID,
 	UPDATE_MEDICAL,
-	DELETE_MEDICAL
+	DELETE_MEDICAL,
+	MEDICAL_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -19,13 +20,20 @@ const MedicalApi = api
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			// getMedicals: build.query({
-			// 	query: ({ page, size, searchKey }) => ({
-			// 		url: GET_DEMANDS,
-			// 		params: { page, size, searchKey }
-			// 	}),
-			// 	providesTags: ['medicals']
-			// }),
+			getMedicals: build.query({
+				query: ({ page, size, searchKey }) => ({
+					url: GET_DEMANDS,
+					params: { page, size, searchKey }
+				}),
+				providesTags: ['medicals']
+			}),
+			getMultiplePassengers: build.query({
+				query: ({ page, size, searchKey }) => ({
+					url: GET_DEMANDS,
+					params: { page, size, searchKey }
+				}),
+				providesTags: ['medicals']
+			}),
 			deleteMedicals: build.mutation({
 				query: (medicalIds) => ({
 					url: ALL_USERS,
