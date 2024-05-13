@@ -45,7 +45,17 @@ const EvisaEntryApi = api
 				query: (newEvisaEntry) => ({
 					url: CREATE_E_VISAENTRY,
 					method: 'POST',
-					data: jsonToFormData(EvisaEntryModel(newEvisaEntry))
+					data: jsonToFormData(
+						EvisaEntryModel({
+							issue_date: newEvisaEntry?.issue_date,
+							exp_date: newEvisaEntry?.exp_date,
+							visa_number: newEvisaEntry?.visa_number,
+							current_status: newEvisaEntry?.current_status,
+							status: newEvisaEntry?.status,
+							file: newEvisaEntry?.file,
+							passenger: newEvisaEntry?.passenger_list
+						})
+					)
 				}),
 				invalidatesTags: ['evisaEntrys']
 			}),

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
@@ -64,6 +65,21 @@ function EvisaEntryForm(props) {
 	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
 
 	useEffect(() => {
+		if (mltPassengerList) {
+			setValue(
+				'passenger_list',
+				mltPassengerList?.map((data) => data.id)
+			);
+			setMltPassengerDeletedId(null);
+		}
+	}, [mltPassengerList]);
+
+	useEffect(() => {
+		if (mltPassengerList) {
+			mltPassengerList?.length > 1 ? setValue('is_multi_entry', true) : setValue('is_multi_entry', false);
+		}
+	}, [mltPassengerList]);
+	useEffect(() => {
 		if (mltPassengerDeletedId) {
 			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
 			setMltPassengerDeletedId(null);
@@ -117,7 +133,7 @@ function EvisaEntryForm(props) {
 							setSelectedValueDisable(true);
 
 							// Update mltPassengerList state with the selected passenger
-							if (newValue && evisaEntryId === 'new' && watch('is_multi_entry')) {
+							if (newValue && evisaEntryId === 'new') {
 								setMltPassengerList((prevList) => [
 									...prevList,
 									passengers.find((data) => data?.id === newValue?.id)
