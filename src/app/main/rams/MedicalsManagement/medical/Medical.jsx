@@ -21,8 +21,8 @@ import { makeStyles } from '@mui/styles';
 import history from '@history';
 import { useParams } from 'react-router';
 import MedicalForm from './MedicalForm';
-import NewMedical from './tabs/NewMedical';
 import PagenotFound from '../../Pagenotfound/PagenotFound';
+import MedicalHeader from './MedicalHeader';
 
 // import MedicalForm from './MedicalForm';
 /**
@@ -177,7 +177,7 @@ function Medical() {
 																	}`
 																);
 															} else {
-																history.push(`/apps/medical-management/medical/new`);
+																history.push(`/apps/medical/medicals/new`);
 																reset({
 																	passenger: newValue?.id,
 																	medical_card: doneNotDone.find(
@@ -190,7 +190,7 @@ function Medical() {
 															}
 														})
 														.catch(() => {
-															history.push(`/apps/medical-management/medical/new`);
+															history.push(`/apps/medical/medicals/new`);
 															reset({
 																passenger: newValue?.id,
 																medical_card: doneNotDone.find((data) => data.default)
@@ -201,7 +201,7 @@ function Medical() {
 															});
 														});
 												} else {
-													history.push(`/apps/medical-management/medical/new`);
+													history.push(`/apps/medical/medicals/new`);
 													reset({
 														passenger: newValue?.id,
 														medical_card: doneNotDone.find((data) => data.default)?.id,
@@ -235,7 +235,7 @@ function Medical() {
 						(UserPermissions?.includes(MEDICAL_CREATE) ||
 							UserPermissions?.includes(MEDICAL_UPDATE) ||
 							UserPermissions?.includes(MEDICAL_DELETE) ||
-							UserPermissions?.includes(MEDICAL_DETAILS)) && <NewMedical />
+							UserPermissions?.includes(MEDICAL_DETAILS)) && <MedicalHeader />
 					}
 					content={
 						UserPermissions?.includes(MEDICAL_CREATE) ||

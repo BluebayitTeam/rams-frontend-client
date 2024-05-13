@@ -7,6 +7,7 @@ import { Icon } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import history from '@history';
+import _ from 'lodash';
 import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MedicalsApi';
 
 /**
@@ -115,7 +116,7 @@ function MedicalHeader() {
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
 								{routeParams.medicalId === 'new'
 									? 'Create New Medical'
-									: passengers?.find(({ id }) => id == watch('passenger'))?.passenger_name || ''}
+									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
