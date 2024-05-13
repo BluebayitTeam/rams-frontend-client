@@ -44,7 +44,7 @@ function EvisaEntrysHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search by Passenger Id or Passport No"
+						placeholder="Search by passenger id or passenger name or visa no"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -64,7 +64,7 @@ function EvisaEntrysHeader(props) {
 				<ViewWeek
 					onClick={() => navigate(`/apps/column/columns/evisa_entry`)}
 					className="cursor-pointer mr-10 "
-					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
+					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>
 				<motion.div
 					className="flex flex-grow-0"

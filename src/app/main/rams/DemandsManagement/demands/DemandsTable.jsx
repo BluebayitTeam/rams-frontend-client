@@ -98,7 +98,7 @@ function DemandsTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.demands[0])
+			Object.entries(totalData?.demands[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({

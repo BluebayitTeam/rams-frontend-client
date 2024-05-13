@@ -102,7 +102,7 @@ function VisaEntrysTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.visa_entries[0])
+			Object.entries(totalData?.visa_entries[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({

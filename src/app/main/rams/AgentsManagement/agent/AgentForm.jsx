@@ -124,8 +124,8 @@ function AgentForm(props) {
 					return (
 						<TextField
 							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.first_name?.message}
+							className="mt-8 mb-16  "
+							helperText={<span style={{ color: 'red' }}>{errors?.first_name?.message}</span>}
 							label="Agent Name"
 							id="first_name"
 							variant="outlined"

@@ -103,7 +103,7 @@ function PassengersTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.passengers[0])
+			Object.entries(totalData?.passengers[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({

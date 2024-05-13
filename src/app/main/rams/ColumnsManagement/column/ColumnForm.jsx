@@ -13,8 +13,9 @@ function ColumnForm(props) {
 	const [columnValue, setColumnValue] = useState(false);
 	console.log('propsShuva', props);
 	useEffect(() => {
+		reset({ ...getValues(), items: props?.columns });
+
 		if (!columnValue) {
-			reset({ ...getValues(), items: props?.columns });
 			// Set default values when columns prop change
 			props?.columns.forEach((column) => {
 				setValue(`columns.${column?.id}.isChecked`, column.isChecked);

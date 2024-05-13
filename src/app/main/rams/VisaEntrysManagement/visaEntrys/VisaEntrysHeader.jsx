@@ -44,7 +44,7 @@ function VisaEntrysHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search by P.No or Passport or Name"
+						placeholder="Search by profession(english) or visa number"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -69,7 +69,7 @@ function VisaEntrysHeader(props) {
 				<ViewWeek
 					onClick={() => navigate(`/apps/column/columns/visa_entry`)}
 					className="cursor-pointer mr-10 "
-					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
+					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>
 				<motion.div
 					className="flex flex-grow-0"

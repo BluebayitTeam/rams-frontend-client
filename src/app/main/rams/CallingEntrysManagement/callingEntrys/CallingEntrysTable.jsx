@@ -76,8 +76,10 @@ function CallingEntrysTable(props) {
 		refetch({ searchKey });
 	}, [searchKey]);
 	useEffect(() => {
-		refetch({ searchKey });
-	}, []);
+		refetch();
+		console.log('Callingdata', data);
+	}, [data]);
+
 	let serialNumber = 1;
 
 	const [rows, setRows] = useState([]);
@@ -97,7 +99,7 @@ function CallingEntrysTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.malaysia_visa_entries[0])
+			Object.entries(totalData?.malaysia_visa_entries[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({
