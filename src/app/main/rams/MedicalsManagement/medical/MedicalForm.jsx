@@ -3,13 +3,14 @@
 import { Autocomplete, TextField } from '@mui/material';
 import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
-
+import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import increaseMonth from 'src/app/@helpers/increaseMonth';
 import Image from 'src/app/@components/Image';
+import history from '@history';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -23,24 +24,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MedicalForm(props) {
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues } = methods;
 	const [previewImage, setPreviewImage] = useState();
 	const [previewImage2, setPreviewImage2] = useState();
+	const userID = localStorage.getItem('user_id');
 
-	const { errors } = formState;
-	// const routeParams = useParams();
-	// const { medicalId } = routeParams;
-	// const classes = useStyles(props);
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	// const image = watch('image');
+
+	const classes = useStyles(props);
+
+	const methods = useFormContext();
+	const routeParams = useParams();
+	const { medicalId, fromSearch } = routeParams;
+	const { control, formState, setValue, getValues, watch, reset } = methods;
+	const { errors, isValid, dirtyFields } = formState;
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getMedicalCenters());
-
 		dispatch(getCurrentStatuss());
 	}, []);
 
@@ -49,8 +52,69 @@ function MedicalForm(props) {
 		setPreviewImage2('');
 	}, [getValues('medical_center')]);
 
+	function handleSaveMedical() {
+		dispatch(saveMedical(getValues())).then((res) => {
+			if (res.payload?.data?.id) {
+				localStorage.setItem('medicalAlert', 'saveMedical');
+				history.push('/apps/medical-management/medical/new');
+				reset({
+					medical_card: doneNotDone.find((data) => data.default)?.id,
+					medical_result: medicalResults.find((data) => data.default)?.id
+				});
+				// dispatch(setAlert(saveAlertMsg));
+			}
+		});
+	}
+
+	function handleUpdateMedical() {
+		dispatch(updateMedical(getValues())).then((res) => {
+			if (res.payload?.data?.id) {
+				if (fromSearch) {
+					history.goBack();
+				} else {
+					localStorage.setItem('medicalAlert', 'updateMedical');
+					history.push('/apps/medical-management/medical/new');
+					reset({
+						medical_card: doneNotDone.find((data) => data.default)?.id,
+						medical_result: medicalResults.find((data) => data.default)?.id
+					});
+				}
+			}
+		});
+	}
+
+	const handleSubmitOnKeyDownEnter = (ev) => {
+		if (ev.key === 'Enter') {
+			if (routeParams.medicalId === 'new' && !(_.isEmpty(dirtyFields) || !isValid)) {
+				handleSaveMedical();
+			} else if (routeParams.medicalId !== 'new' && watch('passenger')) {
+				handleUpdateMedical();
+			}
+		}
+	};
+
 	return (
 		<div>
+			<Controller
+				name={medicalId === 'new' ? 'created_by' : 'updated_by'}
+				control={control}
+				defaultValue={userID}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className={classes.hidden}
+							label="created by"
+							id="created_by"
+							error={false}
+							helperText=""
+							variant="outlined"
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
 			<Controller
 				name="medical_center"
 				control={control}
@@ -58,9 +122,9 @@ function MedicalForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalCenters?.find((data) => data.id === value) : null}
+						value={value ? medicalCenters.find((data) => data.id == value) : null}
 						options={medicalCenters}
-						getOptionLabel={(option) => `${option?.name}`}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -69,12 +133,12 @@ function MedicalForm(props) {
 								{...params}
 								placeholder="Select Medical Center"
 								label="Medical Center"
-								id="medical_center"
+								// error={!!errors.medical_center || !value}
 								helperText={errors?.medical_center?.message}
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
+								// onKeyDown={handleSubmitOnKeyDownEnter}
 							/>
 						)}
 					/>
@@ -90,12 +154,14 @@ function MedicalForm(props) {
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
+							// error={!!errors.medical_serial_no}
 							helperText={errors?.medical_serial_no?.message}
 							label="Medical Serial No"
 							id="medical_serial_no"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
+							onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -108,7 +174,7 @@ function MedicalForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalResults.find((data) => data.id === value) : null}
+						value={value ? medicalResults.find((data) => data.id == value) : null}
 						options={medicalResults}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -138,7 +204,7 @@ function MedicalForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find((data) => data.id === value) : null}
+						value={value ? doneNotDone.find((data) => data.id == value) : null}
 						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {

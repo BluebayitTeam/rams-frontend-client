@@ -1,65 +1,110 @@
 import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import history from '@history';
 import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MedicalsApi';
 
 /**
  * The medical header.
  */
 function MedicalHeader() {
-	const routeParams = useParams();
-	const { medicalId } = routeParams;
-	const [createMedical] = useCreateMedicalMutation();
-	const [saveMedical] = useUpdateMedicalMutation();
-	const [removeMedical] = useDeleteMedicalMutation();
+	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
+	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMedical');
-	const handleUpdate = localStorage.getItem('updateMedical');
+
+	const routeParams = useParams();
+	const { fromSearch } = useParams();
+
 	const passengers = useSelector((state) => state.data.passengers);
+	const [saveMedical] = useCreateMedicalMutation();
+	const [removeMedical] = useDeleteMedicalMutation();
 
-	function handleUpdateMedical() {
-		saveMedical(getValues()).then((data) => {
-			UpdatedSuccessfully();
+	const [updateMedical] = useUpdateMedicalMutation();
 
-			navigate(`/apps/medical/medicals/new`);
+	function handleSaveMedical() {
+		saveMedical(getValues()).then((res) => {
+			if (res.payload?.data?.id) {
+				if (fromSearch) {
+					history.goBack();
+				} else {
+					localStorage.setItem('medicalAlert', 'saveMedical');
+					history.push('/apps/medical/medicals/new');
+					reset({
+						medical_card: doneNotDone.find((data) => data.default)?.id,
+						medical_result: medicalResults.find((data) => data.default)?.id
+					});
+					// dispatch(setAlert(saveAlertMsg));
+				}
+			}
 		});
 	}
 
-	function handleCreateMedical() {
-		createMedical(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
-
-				navigate(`/apps/medical/medicals/new`);
-			});
+	function handleUpdateMedical() {
+		updateMedical(getValues()).then((res) => {
+			if (res.payload?.data?.id) {
+				if (fromSearch) {
+					history.goBack();
+				} else {
+					localStorage.setItem('medicalAlert', 'updateMedical');
+					history.push('/apps/medical/medicals/new');
+					reset({
+						medical_card: doneNotDone.find((data) => data.default)?.id,
+						medical_result: medicalResults.find((data) => data.default)?.id
+					});
+					// dispatch(setAlert(updateAlertMsg));
+				}
+			}
+		});
 	}
 
-	function handleRemoveMedical(dispatch) {
-		removeMedical(medicalId);
-		DeletedSuccessfully();
-		navigate('/apps/medical/medicals');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+	// function handleUpdateMedical() {
+	// 	updateMedical(getValues()).then((data) => {
+	// 		UpdatedSuccessfully();
+
+	// 		navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+	// 	});
+	// }
+
+	function handleRemoveMedical() {
+		removeMedical(getValues()).then((res) => {
+			if (res.payload) {
+				if (fromSearch) {
+					history.goBack();
+				} else {
+					localStorage.setItem('medicalAlert', 'deleteMedical');
+					history.push('/apps/medical/medicals/new');
+					reset({
+						medical_card: doneNotDone.find((data) => data.default)?.id,
+						medical_result: medicalResults.find((data) => data.default)?.id
+					});
+					// dispatch(setAlert(removeAlertMsg));
+				}
+			}
+		});
 	}
 
 	function handleCancel() {
-		navigate(`/apps/medical/medicals/new`);
+		if (fromSearch) {
+			history.goBack();
+		} else {
+			history.push('/apps/medical/medicals/new');
+			reset({
+				medical_card: doneNotDone.find((data) => data.default)?.id,
+				medical_result: medicalResults.find((data) => data.default)?.id
+			});
+		}
 	}
 
+	const userRole = localStorage.getItem('userRole');
+
 	return (
-		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
+		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex flex-col items-start max-w-full min-w-0">
 				<div className="flex items-center max-w-full">
 					<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
@@ -70,7 +115,7 @@ function MedicalHeader() {
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
 								{routeParams.medicalId === 'new'
 									? 'Create New Medical'
-									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
+									: passengers?.find(({ id }) => id == watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
@@ -82,76 +127,67 @@ function MedicalHeader() {
 					</div>
 				</div>
 			</div>
-
 			<motion.div
 				className="flex"
 				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteMedical' && medicalId !== 'new' && (
-					<Typography
-						className="mt-6"
-						variant="subtitle2"
-					>
-						Do you want to remove this medical?
-					</Typography>
-				)}
-				{handleDelete === 'deleteMedical' && medicalId !== 'new' && (
-					<Button
-						className="whitespace-nowrap mx-1 "
-						variant="contained"
-						color="secondary"
-						onClick={handleRemoveMedical}
-						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						// style={{ backgroundColor: '#ea5b78', color: 'white' }}
-					>
-						Remove
-					</Button>
-				)}
-				{medicalId === 'new' && (
-					<Button
-						className="whitespace-nowrap mx-4 "
-						variant="contained"
-						color="secondary"
-						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateMedical}
-					>
-						Save
-					</Button>
-				)}
-
-				{/* {(routeParams.medicalId === 'new' ||
-					(sessionStorage?.getItem('operation') === 'save' && watch('passenger'))) && (
+				{(routeParams.medicalId === 'new' ||
+					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateMedical}
+						onClick={handleSaveMedical}
 					>
 						Save
 					</Button>
-				)} */}
+				)}
 
-				{handleDelete !== 'deleteMedical' && handleUpdate === 'updateMedical' && medicalId !== 'new' && (
+				{routeParams?.medicalId !== 'new' &&
+					watch('passenger') &&
+					sessionStorage.getItem('operation') !== 'save' && (
+						<Button
+							className="whitespace-nowrap mx-4"
+							color="secondary"
+							variant="contained"
+							style={{ backgroundColor: '#4dc08e', color: 'white' }}
+							onClick={handleUpdateMedical}
+						>
+							Update
+						</Button>
+					)}
+
+				{routeParams?.medicalId !== 'new' &&
+					watch('passenger') &&
+					sessionStorage.getItem('operation') !== 'save' && (
+						<Button
+							className="whitespace-nowrap mx-4"
+							variant="contained"
+							color="secondary"
+							onClick={handleRemoveMedical}
+							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+							style={{
+								backgroundColor: '#ea5b78',
+								color: 'white',
+								display: userRole === 'ADMIN' || userRole === 'admin' ? 'flex' : 'none'
+							}}
+						>
+							Remove
+						</Button>
+					)}
+
+				{watch('passenger') && (
 					<Button
-						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
-						color="secondary"
+						className="whitespace-nowrap mx-4"
 						variant="contained"
-						// style={{ backgroundColor: '#4dc08e', color: 'white' }}
-						onClick={handleUpdateMedical}
+						style={{ backgroundColor: '#FFAA4C', color: 'white' }}
+						onClick={handleCancel}
 					>
-						Update
+						Cancel
 					</Button>
 				)}
-				<Button
-					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
-					variant="contained"
-					// style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-					onClick={handleCancel}
-				>
-					Cancel
-				</Button>
 			</motion.div>
 		</div>
 	);
