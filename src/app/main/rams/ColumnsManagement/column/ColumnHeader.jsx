@@ -53,6 +53,30 @@ function ColumnHeader() {
 				navigate(`/apps/passenger/passengers/recruiting`);
 			}
 
+			if (columnId === 'processing') {
+				navigate(`/apps/passenger/passengers/processing`);
+			}
+
+			if (columnId === 'female') {
+				navigate(`/apps/passenger/passengers/female`);
+			}
+
+			if (columnId === 'hajj') {
+				navigate(`/apps/passenger/passengers/hajj`);
+			}
+
+			if (columnId === 'umrah') {
+				navigate(`/apps/passenger/passengers/umrah`);
+			}
+
+			if (columnId === 'travel') {
+				navigate(`/apps/passenger/passengers/travel`);
+			}
+
+			if (columnId === 'student') {
+				navigate(`/apps/passenger/passengers/student`);
+			}
+
 			if (columnId === 'demand') {
 				navigate(`/apps/demand/demands`);
 			}
