@@ -27,11 +27,11 @@ function ColumnForm(props) {
 		}
 	}, [props?.columns, setValue, getValues(), columnValue]);
 	return (
-		<div style={{ display: 'flex', flexWrap: 'wrap' }}>
+		<div className="grid grid-cols-3 grid-flow-row gap-4">
 			{props?.columns?.map((clm) => (
 				<div
 					key={clm.id}
-					style={{ flex: '1 0 30%', display: 'flex', padding: '10px' }}
+					style={{ flex: '1 0 30%', display: 'flex', padding: '5px' }}
 				>
 					<Controller
 						name={`columns.${clm.id}.serial`}
