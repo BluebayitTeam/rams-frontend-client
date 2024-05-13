@@ -9,7 +9,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -35,7 +34,7 @@ function OfficeWorkForm(props) {
 	// const routeParams = useParams();
 	// const { officeWorkId } = routeParams;
 	// const classes = useStyles(props);
-	const officeWorkCenters = useSelector((state) => state.data.officeWorkCenters);
+	// const officeWorkCenters = useSelector((state) => state.data.officeWorkCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	// const image = watch('image');
 
@@ -84,12 +83,14 @@ function OfficeWorkForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
+							value={field.value || ''}
 							error={!!errors.police_clearance_date}
 							helperText={errors?.police_clearance_date?.message}
 							label="Police Clearance date"
 							id="police_clearance_date"
 							type="date"
-							InputLabelProps={{ shrink: true }}
+							InputLabelProps={field.value && { shrink: true }}
+							
 							fullWidth
 							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
@@ -143,18 +144,6 @@ function OfficeWorkForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-						/>
-					);
-				}}
-			/>
-			<Controller
-				name="driving_license_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Driving License Date"
 						/>
 					);
 				}}
