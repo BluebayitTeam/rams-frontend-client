@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
+import Image from 'src/app/@components/Image';
+import { doneNotDone, medicalResults } from 'src/app/@data/data';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -180,7 +182,7 @@ function MedicalForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalResults.find((data) => data.id == value) : null}
+						value={value ? medicalResults.find((data) => data.id === value) : null}
 						options={medicalResults}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -210,7 +212,7 @@ function MedicalForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find((data) => data.id == value) : null}
+						value={value ? doneNotDone.find((data) => data.id === value) : null}
 						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -238,9 +240,17 @@ function MedicalForm(props) {
 				control={control}
 				render={({ field }) => {
 					return (
-						<CustomDatePicker
-							field={field}
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.medical_exam_date}
+							helperText={errors?.medical_exam_date?.message}
 							label="Medical Exam Date"
+							id="medical_exam_date"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -251,9 +261,17 @@ function MedicalForm(props) {
 				control={control}
 				render={({ field }) => {
 					return (
-						<CustomDatePicker
-							field={field}
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.medical_report_date}
+							helperText={errors?.medical_report_date?.message}
 							label="Medical Report Date"
+							id="medical_report_date"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -264,12 +282,20 @@ function MedicalForm(props) {
 				control={control}
 				render={({ field }) => {
 					return (
-						<CustomDatePicker
-							field={field}
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.medical_issue_date}
+							helperText={errors?.medical_issue_date?.message}
 							label="Medical Issue Date"
+							id="medical_issue_date"
+							type="date"
+							InputLabelProps={{ shrink: true }}
 							onChange={(value) => {
 								setValue('medical_expiry_date', increaseMonth(value, 3));
 							}}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -280,9 +306,17 @@ function MedicalForm(props) {
 				control={control}
 				render={({ field }) => {
 					return (
-						<CustomDatePicker
-							field={field}
+						<TextField
+							{...field}
+							className="mt-8 mb-16"
+							error={!!errors.medical_expiry_date}
+							helperText={errors?.medical_expiry_date?.message}
 							label="Medical Expiry Date"
+							id="medical_expiry_date"
+							type="date"
+							InputLabelProps={{ shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
