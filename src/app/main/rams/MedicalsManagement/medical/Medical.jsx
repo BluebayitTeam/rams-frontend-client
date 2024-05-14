@@ -70,7 +70,8 @@ function Medical() {
 		reset,
 		watch,
 		control,
-		formState: { errors }
+		formState: { errors },
+		setValue
 	} = methods;
 
 	useEffect(() => {
