@@ -32,6 +32,7 @@ import EvisaEntryAppConfig from '../rams/EvisaEntrysManagement/EvisaEntryAppConf
 
 import CallingAssignAppConfig from '../rams/CallingAssignsManagement/CallingAssignAppConfig';
 import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConfig';
+import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
 
 /**
  * The list of application configurations.
@@ -58,7 +59,7 @@ const appsConfigs = [
 	VisaEntryAppConfig,
 	CallingEntryAppConfig,
 	ColumnAppConfig,
-
+	MedicalAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
 	DepartmentAppConfig,
