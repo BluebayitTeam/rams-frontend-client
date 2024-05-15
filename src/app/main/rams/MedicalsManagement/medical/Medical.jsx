@@ -1,10 +1,7 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,8 +13,8 @@ import axios from 'axios';
 import { GET_PASSENGER_BY_ID, MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import moment from 'moment';
 import MedicalHeader from './MedicalHeader';
-import MedicalModel from './models/MedicalModel';
 import { useGetMedicalQuery } from '../MedicalsApi';
 import MedicalForm from './MedicalForm';
 
@@ -75,17 +72,17 @@ function Medical() {
 		setValue
 	} = methods;
 
-	useEffect(() => {
-		if (medicalId === 'new') {
-			reset(MedicalModel({}));
-		}
-	}, [medicalId, reset]);
+	// useEffect(() => {
+	// 	if (medicalId === 'new') {
+	// 		reset(MedicalModel({}));
+	// 	}
+	// }, [medicalId, reset]);
 
-	useEffect(() => {
-		if (medical) {
-			reset({ ...medical });
-		}
-	}, [medical, reset]);
+	// useEffect(() => {
+	// 	if (medical) {
+	// 		reset({ ...medical });
+	// 	}
+	// }, [medical, reset]);
 
 	useEffect(() => {
 		if (fromSearch) {
@@ -124,7 +121,7 @@ function Medical() {
 				medical_result: medicalResults.find((data) => data.default)?.id
 			});
 		}
-	}, [fromSearch, medicalId, reset]);
+	}, [fromSearch]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -134,31 +131,31 @@ function Medical() {
 		return <FuseLoading />;
 	}
 
-	if (isError && medicalId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such medical!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/medical/medical"
-					color="inherit"
-				>
-					Go to Medicals Page
-				</Button>
-			</motion.div>
-		);
-	}
+	// if (isError && medicalId !== 'new') {
+	// 	return (
+	// 		<motion.div
+	// 			initial={{ opacity: 0 }}
+	// 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
+	// 			className="flex flex-col flex-1 items-center justify-center h-full"
+	// 		>
+	// 			<Typography
+	// 				color="text.secondary"
+	// 				variant="h5"
+	// 			>
+	// 				There is no such medical!
+	// 			</Typography>
+	// 			<Button
+	// 				className="mt-24"
+	// 				component={Link}
+	// 				variant="outlined"
+	// 				to="/apps/medical/medical"
+	// 				color="inherit"
+	// 			>
+	// 				Go to Medicals Page
+	// 			</Button>
+	// 		</motion.div>
+	// 	);
+	// }
 
 	const updateCurrentStatus = (id) => {
 		const authTOKEN = {
@@ -211,7 +208,7 @@ function Medical() {
 												value={value ? passengers.find((data) => data.id === value) : null}
 												options={passengers}
 												getOptionLabel={(option) =>
-													`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
 													updateCurrentStatus(newValue?.id);
@@ -231,7 +228,19 @@ function Medical() {
 																		...setIdIfValueIsObject({
 																			...res?.data,
 																			medical_center:
-																				res?.data?.medical_center?.id
+																				res?.data?.medical_center?.id,
+																			medical_exam_date: moment(
+																				new Date(res?.data?.medical_exam_date)
+																			).format('YYYY-MM-DD'),
+																			medical_report_date: moment(
+																				new Date(res?.data?.medical_report_date)
+																			).format('YYYY-MM-DD'),
+																			medical_issue_date: moment(
+																				new Date(res?.data?.medical_issue_date)
+																			).format('YYYY-MM-DD'),
+																			medical_expiry_date: moment(
+																				new Date(res?.data?.medical_expiry_date)
+																			).format('YYYY-MM-DD')
 																		}),
 																		passenger: newValue?.id
 																	});

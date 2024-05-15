@@ -44,8 +44,8 @@ const MedicalApi = api
 							...newMedical,
 							medical_exam_date: moment(new Date(newMedical?.medical_exam_date)).format('YYYY-MM-DD'),
 							medical_report_date: moment(new Date(newMedical?.medical_report_date)).format('YYYY-MM-DD'),
-							medical_issue_date: moment(new Date(newMedical?.medical_issue_date)).format('YYYY-MM-DD')
-							// medical_expiry_date: moment(new Date(newMedical?.medical_expiry_date)).format('YYYY-MM-DD')
+							medical_issue_date: moment(new Date(newMedical?.medical_issue_date)).format('YYYY-MM-DD'),
+							medical_expiry_date: moment(new Date(newMedical?.medical_expiry_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),
@@ -59,8 +59,8 @@ const MedicalApi = api
 						...medical,
 						medical_exam_date: moment(new Date(medical?.medical_exam_date)).format('YYYY-MM-DD'),
 						medical_report_date: moment(new Date(medical?.medical_report_date)).format('YYYY-MM-DD'),
-						medical_issue_date: moment(new Date(medical?.medical_issue_date)).format('YYYY-MM-DD')
-						// medical_expiry_date: moment(new Date(medical?.medical_expiry_date)).format('YYYY-MM-DD')
+						medical_issue_date: moment(new Date(medical?.medical_issue_date)).format('YYYY-MM-DD'),
+						medical_expiry_date: moment(new Date(medical?.medical_expiry_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['medicals']

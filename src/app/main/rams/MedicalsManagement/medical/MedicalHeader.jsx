@@ -7,7 +7,6 @@ import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { AddedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import _ from '@lodash';
 import { useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import history from '@history';
@@ -153,7 +152,7 @@ function MedicalHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
+						// disabled={_.isEmpty(dirtyFields) || !isValid}
 						onClick={handleCreateMedical}
 					>
 						Save
