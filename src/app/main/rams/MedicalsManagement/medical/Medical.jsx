@@ -4,17 +4,18 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Autocomplete, Tabs, Tab, TextField } from '@mui/material';
+import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID, MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import MedicalHeader from './MedicalHeader';
 import MedicalModel from './models/MedicalModel';
 import { useGetMedicalQuery } from '../MedicalsApi';
@@ -48,6 +49,7 @@ function Medical() {
 	const { medicalId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const classes = useStyles();
+	const navigate = useNavigate();
 
 	const methods = useForm({
 		mode: 'onChange',
@@ -64,7 +66,6 @@ function Medical() {
 	});
 
 	const [tabValue, setTabValue] = useState(0);
-	console.log('fromSearch', fromSearch, medicalId);
 
 	const {
 		reset,
@@ -85,14 +86,6 @@ function Medical() {
 			reset({ ...medical });
 		}
 	}, [medical, reset]);
-
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
-
-	if (isLoading) {
-		return <FuseLoading />;
-	}
 
 	useEffect(() => {
 		if (fromSearch) {
@@ -133,9 +126,14 @@ function Medical() {
 		}
 	}, [fromSearch, medicalId, reset]);
 
-	/**
-	 * Show Message if the requested medical does not exist
-	 */
+	function handleTabChange(event, value) {
+		setTabValue(value);
+	}
+
+	if (isLoading) {
+		return <FuseLoading />;
+	}
+
 	if (isError && medicalId !== 'new') {
 		return (
 			<motion.div
@@ -161,6 +159,18 @@ function Medical() {
 			</motion.div>
 		);
 	}
+
+	const updateCurrentStatus = (id) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 
 	return (
 		<FormProvider {...methods}>
@@ -197,15 +207,74 @@ function Medical() {
 												className={`w-full max-w-320 h-48 ${classes.container}`}
 												freeSolo
 												autoHighlight
-												// disabled={!!fromSearch}
+												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
 												options={passengers}
 												getOptionLabel={(option) =>
 													`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
 												}
-												onChange={(event, newValue) =>
-													setValue('passenger', newValue?.id || '')
-												}
+												onChange={(event, newValue) => {
+													updateCurrentStatus(newValue?.id);
+
+													if (newValue?.id) {
+														const authTOKEN = {
+															headers: {
+																'Content-type': 'application/json',
+																Authorization: localStorage.getItem('jwt_access_token')
+															}
+														};
+														axios
+															.get(`${MEDICAL_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
+															.then((res) => {
+																if (res.data.id) {
+																	reset({
+																		...setIdIfValueIsObject({
+																			...res?.data,
+																			medical_center:
+																				res?.data?.medical_center?.id
+																		}),
+																		passenger: newValue?.id
+																	});
+																	navigate(
+																		`/apps/medical/medicals/${
+																			newValue?.newValue?.id || newValue?.id
+																		}`
+																	);
+																} else {
+																	navigate(`/apps/medical/medicals/new`);
+																	reset({
+																		passenger: newValue?.id,
+																		medical_card: doneNotDone.find(
+																			(data) => data.default
+																		)?.id,
+																		medical_result: medicalResults.find(
+																			(data) => data.default
+																		)?.id
+																	});
+																}
+															})
+															.catch(() => {
+																navigate(`/apps/medical/medicals/new`);
+																reset({
+																	passenger: newValue?.id,
+																	medical_card: doneNotDone.find(
+																		(data) => data.default
+																	)?.id,
+																	medical_result: medicalResults.find(
+																		(data) => data.default
+																	)?.id
+																});
+															});
+													} else {
+														navigate(`/apps/medical/medicals/new`);
+														reset({
+															passenger: newValue?.id,
+															medical_card: doneNotDone.find((data) => data.default)?.id,
+															medical_result: medicalResults.find((data) => data.default)
+																?.id
+														});
+													}
+												}}
 												renderInput={(params) => (
 													<TextField
 														{...params}
