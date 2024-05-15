@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
-import { useParams } from 'react-router-dom';
 
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
 import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
@@ -38,21 +37,21 @@ function MedicalForm(props) {
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues } = methods;
 	const { errors } = formState;
-	const routeParams = useParams();
-	const { medicalId } = routeParams;
+	// const routeParams = useParams();
+	// const { medicalId } = routeParams;
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState();
 	const [previewImage2, setPreviewImage2] = useState();
 
-	const file = watch('file') || '';
+	// const file = watch('file') || '';
 
-	const [previewFile, setPreviewFile] = useState('');
-	const [fileExtName, setFileExtName] = useState('');
-	useEffect(() => {
-		setFileExtName('');
-		setPreviewFile('');
-	}, [watch('demand')]);
+	// const [previewFile, setPreviewFile] = useState('');
+	// const [fileExtName, setFileExtName] = useState('');
+	// useEffect(() => {
+	// 	setFileExtName('');
+	// 	setPreviewFile('');
+	// }, [watch('demand')]);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getMedicalCenters());
