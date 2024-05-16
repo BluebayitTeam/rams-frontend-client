@@ -10,6 +10,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
+import { useParams } from 'react-router';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -34,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
 function MedicalForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues } = methods;
+	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
-	// const routeParams = useParams();
-	// const { medicalId } = routeParams;
+	const routeParams = useParams();
+	const { medicalId } = routeParams;
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState();
@@ -56,7 +57,14 @@ function MedicalForm(props) {
 		dispatch(getMedicalCenters());
 		dispatch(getCurrentStatuss());
 	}, []);
-
+	useEffect(() => {
+		if (medicalId === 'new') {
+			reset({
+				medical_card: doneNotDone.find((data) => data.default)?.id || '',
+				medical_result: medicalResults.find((data) => data.default)?.id || ''
+			});
+		}
+	}, [medicalId, reset]);
 	useEffect(() => {
 		setPreviewImage('');
 		setPreviewImage2('');
@@ -236,9 +244,6 @@ function MedicalForm(props) {
 							id="medical_issue_date"
 							type="date"
 							InputLabelProps={{ shrink: true }}
-							onChange={(e) => {
-								setValue('medical_expiry_date', increaseMonth(e?.target?.value, 3));
-							}}
 							fullWidth
 							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
