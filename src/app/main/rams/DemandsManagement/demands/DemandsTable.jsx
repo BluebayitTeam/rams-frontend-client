@@ -87,44 +87,44 @@ function DemandsTable(props) {
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 	useEffect(() => {
-		if (totalData?.demands) {
-			const modifiedRow = [
-				{
-					id: 'sl',
-					align: 'left',
-					disablePadding: false,
-					label: 'SL',
-					sort: true
-				}
-			];
+    if (totalData?.demands) {
+      const modifiedRow = [
+        {
+          id: 'sl',
+          align: 'left',
+          disablePadding: false,
+          label: 'SL',
+          sort: true,
+        },
+      ];
 
-			Object.entries(totalData?.demands[0])
-				.filter(([key]) => key !== 'id') // Filter out the 'id' field
-				.map(([key, value]) => {
-					modifiedRow.push({
-						id: key,
-						label: key
-							.split('_')
-							.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-							.join(' '),
-						align: 'left',
-						disablePadding: false,
-						sort: true,
-						style: { whiteSpace: 'nowrap' }
-					});
-				});
+      Object.entries(totalData?.demands[0])
+        .filter(([key]) => key !== 'id') // Filter out the 'id' field
+        .map(([key, value]) => {
+          modifiedRow.push({
+            id: key,
+            label: key
+              .split('_')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' '),
+            align: 'left',
+            disablePadding: false,
+            sort: true,
+            style: { whiteSpace: 'nowrap' },
+          });
+        });
 
-			modifiedRow.push({
-				id: 'action',
-				align: 'left',
-				disablePadding: false,
-				label: 'Action',
-				sort: true
-			});
+      modifiedRow.push({
+        id: 'action',
+        align: 'left',
+        disablePadding: false,
+        label: 'Action',
+        sort: true,
+      });
 
-			setRows(modifiedRow);
-		}
-	}, [totalData?.demands]);
+      setRows(modifiedRow);
+    }
+  }, [totalData?.demands, refetch]);
 	const [open, setOpen] = useState(false);
 
 	console.log('open', open);
