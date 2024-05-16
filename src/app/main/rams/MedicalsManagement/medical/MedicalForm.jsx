@@ -1,10 +1,7 @@
-/* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
-
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
 import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
-
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +18,7 @@ const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 		border: '1px solid #dadde9'
 	}
 }));
+
 const useStyles = makeStyles((theme) => ({
 	hidden: {
 		display: 'none'
@@ -44,27 +42,34 @@ function MedicalForm(props) {
 	const [previewImage, setPreviewImage] = useState();
 	const [previewImage2, setPreviewImage2] = useState();
 
-	// const file = watch('file') || '';
-
-	// const [previewFile, setPreviewFile] = useState('');
-	// const [fileExtName, setFileExtName] = useState('');
-	// useEffect(() => {
-	// 	setFileExtName('');
-	// 	setPreviewFile('');
-	// }, [watch('demand')]);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getMedicalCenters());
 		dispatch(getCurrentStatuss());
-	}, []);
+	}, [dispatch]);
+	console.log('wbkjwb', getValues());
 	useEffect(() => {
 		if (medicalId === 'new') {
 			reset({
+				medical_serial_no: '',
+				medical_result: medicalResults.find((data) => data.default)?.id || '',
 				medical_card: doneNotDone.find((data) => data.default)?.id || '',
-				medical_result: medicalResults.find((data) => data.default)?.id || ''
+				medical_exam_date: '',
+				medical_report_date: '',
+				medical_issue_date: '',
+				medical_expiry_date: '',
+				notes: '',
+				slip_pic: '',
+				medical_card_pic: ''
 			});
+			setPreviewImage('');
+			setPreviewImage2('');
+		} else {
+			// Fetch and set data based on medicalId if needed
+			// reset(formData);
 		}
-	}, [medicalId, reset]);
+	}, [medicalId, reset, medicalCenters, currentStatuss]);
+
 	useEffect(() => {
 		setPreviewImage('');
 		setPreviewImage2('');
@@ -111,21 +116,19 @@ function MedicalForm(props) {
 			<Controller
 				name="medical_serial_no"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							helperText={errors?.medical_serial_no?.message}
-							label="Medical Serial No"
-							id="medical_serial_no"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						value={field.value || ''}
+						className="mt-8 mb-16"
+						helperText={errors?.medical_serial_no?.message}
+						label="Medical Serial No"
+						id="medical_serial_no"
+						variant="outlined"
+						InputLabelProps={field.value && { shrink: true }}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<Controller
@@ -146,7 +149,6 @@ function MedicalForm(props) {
 								{...params}
 								placeholder="Select Medical Result"
 								label="Medical Result"
-								// error={!!errors.medical_result || !value}
 								helperText={errors?.medical_result?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -176,7 +178,6 @@ function MedicalForm(props) {
 								{...params}
 								placeholder="Select medical Card"
 								label="Medical Card"
-								// error={!!errors.medical_card}
 								helperText={errors?.medical_card?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -191,85 +192,73 @@ function MedicalForm(props) {
 			<Controller
 				name="medical_exam_date"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.medical_exam_date}
-							helperText={errors?.medical_exam_date?.message}
-							label="Medical Exam Date"
-							id="medical_exam_date"
-							type="date"
-							InputLabelProps={{ shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.medical_exam_date}
+						helperText={errors?.medical_exam_date?.message}
+						label="Medical Exam Date"
+						id="medical_exam_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<Controller
 				name="medical_report_date"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.medical_report_date}
-							helperText={errors?.medical_report_date?.message}
-							label="Medical Report Date"
-							id="medical_report_date"
-							type="date"
-							InputLabelProps={{ shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.medical_report_date}
+						helperText={errors?.medical_report_date?.message}
+						label="Medical Report Date"
+						id="medical_report_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<Controller
 				name="medical_issue_date"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.medical_issue_date}
-							helperText={errors?.medical_issue_date?.message}
-							label="Medical Issue Date"
-							id="medical_issue_date"
-							type="date"
-							InputLabelProps={{ shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.medical_issue_date}
+						helperText={errors?.medical_issue_date?.message}
+						label="Medical Issue Date"
+						id="medical_issue_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<Controller
 				name="medical_expiry_date"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.medical_expiry_date}
-							helperText={errors?.medical_expiry_date?.message}
-							label="Medical Expiry Date"
-							id="medical_expiry_date"
-							type="date"
-							InputLabelProps={{ shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.medical_expiry_date}
+						helperText={errors?.medical_expiry_date?.message}
+						label="Medical Expiry Date"
+						id="medical_expiry_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<Controller
@@ -291,7 +280,6 @@ function MedicalForm(props) {
 								placeholder="Select current status"
 								label="Current Status"
 								id="current_status"
-								// error={!!errors.current_status}
 								helperText={errors?.current_status?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -306,25 +294,21 @@ function MedicalForm(props) {
 			<Controller
 				name="notes"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							value={field.value || ''}
-							// error={!!errors.notes}
-							helperText={errors?.notes?.message}
-							label="Notes"
-							id="notes"
-							variant="outlined"
-							multiline
-							rows={4}
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						value={field.value || ''}
+						helperText={errors?.notes?.message}
+						label="Notes"
+						id="notes"
+						variant="outlined"
+						multiline
+						rows={4}
+						InputLabelProps={field.value && { shrink: true }}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<div className="flex justify-start mx-16 flex-col md:flex-row">
