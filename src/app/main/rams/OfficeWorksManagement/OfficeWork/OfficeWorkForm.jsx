@@ -1,14 +1,23 @@
-/* eslint-disable jsx-a11y/alt-text */
+import { styled } from '@mui/system';
+import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
 
-import { Autocomplete, TextField } from '@mui/material';
-import { getCurrentStatuss, getOfficeWorkCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
-
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
+import { getCurrentStatuss, getOfficeWorkCenters, getPassengers } from 'app/store/dataSlice';
+
+const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+		backgroundColor: '#f5f5f9',
+		color: 'rgba(0, 0, 0, 0.87)',
+		maxWidth: 220,
+		fontSize: theme.typography.pxToRem(12),
+		border: '1px solid #dadde9'
+	}
+}));
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -24,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 function OfficeWorkForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues } = methods;
+	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const [previewPCImage, setpreviewPCImage] = useState('');
 	const [previewDLImage, setpreviewDLImage] = useState('');
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
@@ -52,6 +61,40 @@ function OfficeWorkForm(props) {
 		setpreviewDoc2Image('');
 	}, [getValues('police_clearance_no')]);
 
+	console.log('wbkjwb', getValues());
+	// useEffect(() => {
+	// 	if (medicalId === 'new') {
+	// 		reset({
+	// 			medical_serial_no: '',
+	// 			medical_result: medicalResults.find((data) => data.default)?.id || '',
+	// 			medical_card: doneNotDone.find((data) => data.default)?.id || '',
+	// 			medical_exam_date: '',
+	// 			medical_report_date: '',
+	// 			medical_issue_date: '',
+	// 			medical_expiry_date: '',
+	// 			notes: '',
+	// 			slip_pic: '',
+	// 			medical_card_pic: ''
+	// 		});
+	// 		setPreviewImage('');
+	// 		setPreviewImage2('');
+	// 	} else {
+	// 		// Fetch and set data based on medicalId if needed
+	// 		// reset(formData);
+	// 	}
+	// }, [medicalId, reset, medicalCenters, currentStatuss]);
+
+	// useEffect(() => {
+	// 	setPreviewImage('');
+	// 	setPreviewImage2('');
+	// }, [getValues('medical_center')]);
+
+	const increaseMonth = (dateString, months) =>
+		new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
+			.toISOString()
+			.slice(0, 10)
+			.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
+
 	return (
 		<div>
 			<Controller
@@ -74,7 +117,6 @@ function OfficeWorkForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="police_clearance_date"
 				control={control}
@@ -90,7 +132,6 @@ function OfficeWorkForm(props) {
 							id="police_clearance_date"
 							type="date"
 							InputLabelProps={field.value && { shrink: true }}
-							
 							fullWidth
 							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>

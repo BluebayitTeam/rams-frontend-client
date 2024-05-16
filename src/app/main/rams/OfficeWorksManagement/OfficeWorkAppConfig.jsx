@@ -20,7 +20,7 @@ const OfficeWorkAppConfig = {
 				},
 
 				{
-					path: 'officeWorks/:officeWorkId/*',
+					path: 'officeWorks/:officeWorkId/:fromSearch?',
 					element: <OfficeWork />
 				}
 			]
