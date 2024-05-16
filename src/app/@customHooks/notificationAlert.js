@@ -18,6 +18,15 @@ export const DeletedSuccessfully = () => {
 		timer: 2000
 	});
 };
+export const RemoveSuccessfully = () => {
+	Swal.fire({
+		position: 'top-center',
+		icon: 'success',
+		title: 'Remove Successfully',
+		showConfirmButton: false,
+		timer: 2000
+	});
+};
 export const UpdatedSuccessfully = () => {
 	Swal.fire({
 		position: 'top-center',

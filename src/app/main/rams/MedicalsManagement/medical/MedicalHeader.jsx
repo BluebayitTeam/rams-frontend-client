@@ -6,11 +6,13 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
+import _ from 'lodash';
+import { useEffect } from 'react';
 import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MedicalsApi';
 
 /**
@@ -32,27 +34,35 @@ function MedicalHeader() {
 	const handleUpdate = localStorage.getItem('updateMedical');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
-	const user_role = localStorage.getItem('user_role');
+	// const user_role = localStorage.getItem('user_role');
 
 	function handleUpdateMedical() {
-		saveMedical(getValues()).then((res) => {
-			if (res.payload?.data?.id) {
-				if (fromSearch) {
-					history.goBack();
+		saveMedical(getValues())
+			.then((res) => {
+				if (res.data?.id) {
+					if (fromSearch) {
+						history.goBack();
+					} else {
+						localStorage.setItem('medicalAlert', 'updateMedical');
+
+						reset({
+							medical_card: doneNotDone.find((data) => data.default)?.id || '',
+							medical_result: medicalResults.find((data) => data.default)?.id || ''
+						});
+
+						UpdatedSuccessfully();
+						navigate('/apps/medical/medicals/new');
+					}
 				} else {
-					localStorage.setItem('medicalAlert', 'updateMedical');
-					navigate('/apps/medical/medicals/new');
-					reset({
-						medical_card: doneNotDone.find((data) => data.default)?.id,
-						medical_result: medicalResults.find((data) => data.default)?.id
-					});
+					// Handle cases where res.data.id is not present
+					console.error('Update failed: No id in response data');
 				}
-			}
-
-			UpdatedSuccessfully();
-
-			// navigate(`/apps/medical/medicals/new`);
-		});
+			})
+			.catch((error) => {
+				// Handle error
+				console.error('Error updating medical', error);
+				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
+			});
 	}
 
 	function handleCreateMedical() {
@@ -76,13 +86,8 @@ function MedicalHeader() {
 			});
 	}
 
-	function handleRemoveMedical(dispatch) {
-		// removeMedical(medicalId);
-		// DeletedSuccessfully();
-		// navigate('/apps/medical/medicals/new');
-		// dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-
-		removeMedical(getValues())
+	function handleRemoveMedical() {
+		removeMedical(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res.payload?.data?.id) {
@@ -95,28 +100,44 @@ function MedicalHeader() {
 							medical_card: doneNotDone.find((data) => data.default)?.id,
 							medical_result: medicalResults.find((data) => data.default)?.id
 						});
-						dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
 
-				AddedSuccessfully();
+				RemoveSuccessfully();
+			})
+			.catch((error) => {
+				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCancel() {
-		if (fromSearch) {
-			history.goBack();
-		} else {
-			navigate('/apps/medical/medicals/new');
+	// function handleCancel() {
+	// 	if (fromSearch) {
+	// 		history.goBack();
+	// 	} else {
+	// 		navigate('/apps/medical/medicals/new');
+	// 		reset({
+	// 			medical_card: doneNotDone.find((data) => data.default)?.id,
+	// 			medical_result: medicalResults.find((data) => data.default)?.id
+	// 		});
+	// 	}
+	// }
+	const handleCancel = () => {
+		navigate('/apps/medical/medicals/new');
+		reset({
+			medical_card: doneNotDone.find((data) => data.default)?.id,
+			medical_result: medicalResults.find((data) => data.default)?.id
+		});
+	};
+
+	useEffect(() => {
+		if (medicalId === 'new') {
 			reset({
-				medical_card: doneNotDone.find((data) => data.default)?.id,
-				medical_result: medicalResults.find((data) => data.default)?.id
+				medical_card: doneNotDone.find((data) => data.default)?.id || '',
+				medical_result: medicalResults.find((data) => data.default)?.id || ''
 			});
 		}
-
-		navigate(`/apps/medical/medicals/new`);
-	}
-
+	}, [medicalId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -152,7 +173,7 @@ function MedicalHeader() {
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						// disabled={_.isEmpty(dirtyFields) || !isValid}
+						disabled={_.isEmpty(dirtyFields)}
 						onClick={handleCreateMedical}
 					>
 						Save
