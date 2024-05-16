@@ -2,38 +2,22 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-	ALL_USERS,
-	OFFICEWORK_BY_PASSENGER_ID,
 	CREATE_OFFICEWORK,
 	UPDATE_OFFICEWORK,
-	DELETE_OFFICEWORK
+	DELETE_OFFICEWORK,
+	OFFICEWORK_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import OfficeWorkModel from './officeWork/models/OfficeWorkModel';
+import officeWorkModel from './officeWork/models/OfficeWorkModel';
 
-export const addTagTypes = ['officeWorks'];
+export const addTagTypes = ['medicals'];
 const OfficeWorkApi = api
 	.enhanceEndpoints({
 		addTagTypes
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			// getOfficeWorks: build.query({
-			// 	query: ({ page, size, searchKey }) => ({
-			// 		url: GET_DEMANDS,
-			// 		params: { page, size, searchKey }
-			// 	}),
-			// 	providesTags: ['officeWorks']
-			// }),
-			deleteOfficeWorks: build.mutation({
-				query: (officeWorkIds) => ({
-					url: ALL_USERS,
-					method: 'DELETE',
-					data: officeWorkIds
-				}),
-				invalidatesTags: ['officeWorks']
-			}),
 			getOfficeWork: build.query({
 				query: (officeWorkId) => ({
 					url: `${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`
@@ -44,7 +28,7 @@ const OfficeWorkApi = api
 				query: (newOfficeWork) => ({
 					url: CREATE_OFFICEWORK,
 					method: 'POST',
-					data: jsonToFormData(OfficeWorkModel(newOfficeWork))
+					data: jsonToFormData(officeWorkModel(newOfficeWork))
 				}),
 				invalidatesTags: ['officeWorks']
 			}),
@@ -54,14 +38,14 @@ const OfficeWorkApi = api
 					method: 'PUT',
 					data: jsonToFormData(officeWork)
 				}),
-				invalidatesTags: ['officeWorks']
+				invalidatesTags: ['medicals']
 			}),
 			deleteOfficeWork: build.mutation({
-				query: (officeWorkId) => ({
-					url: `${DELETE_OFFICEWORK}${officeWorkId}`,
+				query: (medicalId) => ({
+					url: `${DELETE_OFFICEWORK}${medicalId}`,
 					method: 'DELETE'
 				}),
-				invalidatesTags: ['officeWorks']
+				invalidatesTags: ['medicals']
 			})
 		}),
 		overrideExisting: false
@@ -76,11 +60,11 @@ export const {
 	useCreateOfficeWorkMutation
 } = OfficeWorkApi;
 
-export const selectFilteredOfficeWorks = (officeWorks) =>
+export const selectFilteredOfficeWorks = (medicals) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (searchText?.length === 0) {
-			return officeWorks;
+			return medicals;
 		}
 
-		return FuseUtils.filterArrayByString(officeWorks, searchText);
+		return FuseUtils.filterArrayByString(medicals, searchText);
 	});
