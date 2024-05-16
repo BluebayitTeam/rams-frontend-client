@@ -8,54 +8,58 @@ import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { useCreateOfficeMutation, useDeleteOfficeMutation, useUpdateOfficeMutation } from '../OfficesApi';
+import {
+	useCreateOfficeWorkMutation,
+	useDeleteOfficeWorkMutation,
+	useUpdateOfficeWorkMutation
+} from '../OfficeWorksApi';
 
 /**
- * The office header.
+ * The officeWork header.
  */
-function OfficeHeader() {
+function OfficeWorkHeader() {
 	const routeParams = useParams();
-	const { officeId } = routeParams;
-	const [createOffice] = useCreateOfficeMutation();
-	const [saveOffice] = useUpdateOfficeMutation();
-	const [removeOffice] = useDeleteOfficeMutation();
+	const { officeWorkId } = routeParams;
+	const [createOfficeWork] = useCreateOfficeWorkMutation();
+	const [saveOfficeWork] = useUpdateOfficeWorkMutation();
+	const [removeOfficeWork] = useDeleteOfficeWorkMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteOffice');
-	const handleUpdate = localStorage.getItem('updateOffice');
+	const handleDelete = localStorage.getItem('deleteOfficeWork');
+	const handleUpdate = localStorage.getItem('updateOfficeWork');
 	const passengers = useSelector((state) => state.data.passengers);
 
-	function handleUpdateOffice() {
-		saveOffice(getValues()).then((data) => {
+	function handleUpdateOfficeWork() {
+		saveOfficeWork(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/office/offices/new`);
+			navigate(`/apps/officeWork/officeWorks/new`);
 		});
 	}
 
-	function handleCreateOffice() {
-		createOffice(getValues())
+	function handleCreateOfficeWork() {
+		createOfficeWork(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/office/offices/new`);
+				navigate(`/apps/officeWork/officeWorks/new`);
 			});
 	}
 
-	function handleRemoveOffice(dispatch) {
-		removeOffice(officeId);
+	function handleRemoveOfficeWork(dispatch) {
+		removeOfficeWork(officeWorkId);
 		DeletedSuccessfully();
-		navigate('/apps/office/offices');
+		navigate('/apps/officeWork/officeWorks');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/office/offices/new`);
+		navigate(`/apps/officeWork/officeWorks/new`);
 	}
 
 	return (
@@ -68,15 +72,15 @@ function OfficeHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.officeId === 'new'
-									? 'Create New Office'
+								{routeParams.officeWorkId === 'new'
+									? 'Create New OfficeWork'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.officeId !== 'new' && 'Offices Detail'}
+								{routeParams.officeWorkId !== 'new' && 'OfficeWorks Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -88,62 +92,64 @@ function OfficeHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
-				{handleDelete === 'deleteOffice' && officeId !== 'new' && (
+				{handleDelete === 'deleteOfficeWork' && officeWorkId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this office?
+						Do you want to remove this officeWork?
 					</Typography>
 				)}
-				{handleDelete === 'deleteOffice' && officeId !== 'new' && (
+				{handleDelete === 'deleteOfficeWork' && officeWorkId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-1 "
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveOffice}
+						onClick={handleRemoveOfficeWork}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						// style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{officeId === 'new' && (
+				{officeWorkId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4 "
 						variant="contained"
 						color="secondary"
 						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateOffice}
+						onClick={handleCreateOfficeWork}
 					>
 						Save
 					</Button>
 				)}
 
-				{/* {(routeParams.officeId === 'new' ||
+				{/* {(routeParams.officeWorkId === 'new' ||
 					(sessionStorage?.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateOffice}
+						onClick={handleCreateOfficeWork}
 					>
 						Save
 					</Button>
 				)} */}
 
-				{handleDelete !== 'deleteOffice' && handleUpdate === 'updateOffice' && officeId !== 'new' && (
-					<Button
-						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
-						color="secondary"
-						variant="contained"
-						// style={{ backgroundColor: '#4dc08e', color: 'white' }}
-						onClick={handleUpdateOffice}
-					>
-						Update
-					</Button>
-				)}
+				{handleDelete !== 'deleteOfficeWork' &&
+					handleUpdate === 'updateOfficeWork' &&
+					officeWorkId !== 'new' && (
+						<Button
+							className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
+							color="secondary"
+							variant="contained"
+							// style={{ backgroundColor: '#4dc08e', color: 'white' }}
+							onClick={handleUpdateOfficeWork}
+						>
+							Update
+						</Button>
+					)}
 				<Button
 					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
@@ -157,4 +163,4 @@ function OfficeHeader() {
 	);
 }
 
-export default OfficeHeader;
+export default OfficeWorkHeader;

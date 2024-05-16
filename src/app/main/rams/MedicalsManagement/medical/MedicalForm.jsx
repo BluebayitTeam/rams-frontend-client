@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
+import { styled } from '@mui/system';
 
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
 import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
@@ -8,9 +9,17 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
-import increaseMonth from 'src/app/@helpers/increaseMonth';
 import Image from 'src/app/@components/Image';
 
+const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+		backgroundColor: '#f5f5f9',
+		color: 'rgba(0, 0, 0, 0.87)',
+		maxWidth: 220,
+		fontSize: theme.typography.pxToRem(12),
+		border: '1px solid #dadde9'
+	}
+}));
 const useStyles = makeStyles((theme) => ({
 	hidden: {
 		display: 'none'
@@ -26,21 +35,25 @@ function MedicalForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues } = methods;
-	const [previewImage, setPreviewImage] = useState();
-	const [previewImage2, setPreviewImage2] = useState();
-
 	const { errors } = formState;
 	// const routeParams = useParams();
 	// const { medicalId } = routeParams;
-	// const classes = useStyles(props);
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	// const image = watch('image');
+	const [previewImage, setPreviewImage] = useState();
+	const [previewImage2, setPreviewImage2] = useState();
 
+	// const file = watch('file') || '';
+
+	// const [previewFile, setPreviewFile] = useState('');
+	// const [fileExtName, setFileExtName] = useState('');
+	// useEffect(() => {
+	// 	setFileExtName('');
+	// 	setPreviewFile('');
+	// }, [watch('demand')]);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getMedicalCenters());
-
 		dispatch(getCurrentStatuss());
 	}, []);
 
@@ -48,6 +61,12 @@ function MedicalForm(props) {
 		setPreviewImage('');
 		setPreviewImage2('');
 	}, [getValues('medical_center')]);
+
+	const increaseMonth = (dateString, months) =>
+		new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
+			.toISOString()
+			.slice(0, 10)
+			.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
 
 	return (
 		<div>
@@ -217,8 +236,8 @@ function MedicalForm(props) {
 							id="medical_issue_date"
 							type="date"
 							InputLabelProps={{ shrink: true }}
-							onChange={(value) => {
-								setValue('medical_expiry_date', increaseMonth(value, 3));
+							onChange={(e) => {
+								setValue('medical_expiry_date', increaseMonth(e?.target?.value, 3));
 							}}
 							fullWidth
 							// onKeyDown={handleSubmitOnKeyDownEnter}

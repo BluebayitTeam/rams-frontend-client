@@ -53,6 +53,30 @@ function ColumnHeader() {
 				navigate(`/apps/passenger/passengers/recruiting`);
 			}
 
+			if (columnId === 'processing') {
+				navigate(`/apps/passenger/passengers/processing`);
+			}
+
+			if (columnId === 'female') {
+				navigate(`/apps/passenger/passengers/female`);
+			}
+
+			if (columnId === 'hajj') {
+				navigate(`/apps/passenger/passengers/hajj`);
+			}
+
+			if (columnId === 'umrah') {
+				navigate(`/apps/passenger/passengers/umrah`);
+			}
+
+			if (columnId === 'travel') {
+				navigate(`/apps/passenger/passengers/travel`);
+			}
+
+			if (columnId === 'student') {
+				navigate(`/apps/passenger/passengers/student`);
+			}
+
 			if (columnId === 'demand') {
 				navigate(`/apps/demand/demands`);
 			}
@@ -92,6 +116,30 @@ function ColumnHeader() {
 			navigate(`/apps/passenger/passengers/recruiting`);
 		}
 
+		if (columnId === 'processing') {
+			navigate(`/apps/passenger/passengers/processing`);
+		}
+
+		if (columnId === 'female') {
+			navigate(`/apps/passenger/passengers/female`);
+		}
+
+		if (columnId === 'hajj') {
+			navigate(`/apps/passenger/passengers/hajj`);
+		}
+
+		if (columnId === 'umrah') {
+			navigate(`/apps/passenger/passengers/umrah`);
+		}
+
+		if (columnId === 'travel') {
+			navigate(`/apps/passenger/passengers/travel`);
+		}
+
+		if (columnId === 'student') {
+			navigate(`/apps/passenger/passengers/student`);
+		}
+
 		if (columnId === 'demand') {
 			navigate(`/apps/demand/demands`);
 		}
@@ -119,7 +167,7 @@ function ColumnHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold capitalize ">
-							{columnId.replace(/_/g, ' ')}Table Column Serial
+							{columnId.replace(/_/g, ' ')} Table Column Serial
 						</Typography>
 						<Typography
 							variant="caption"
@@ -137,19 +185,17 @@ function ColumnHeader() {
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
 				<Button
-					className="whitespace-nowrap mx-4"
+					className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 					color="secondary"
 					variant="contained"
-					style={{ backgroundColor: '#4dc08e', color: 'white' }}
 					onClick={handleUpdateColumn}
 				>
 					Update
 				</Button>
 
 				<Button
-					className="whitespace-nowrap mx-4"
+					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel

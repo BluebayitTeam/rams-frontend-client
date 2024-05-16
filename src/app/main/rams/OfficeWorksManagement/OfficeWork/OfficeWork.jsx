@@ -9,35 +9,35 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import OfficeHeader from './OfficeHeader';
-import OfficeModel from './models/OfficeModel';
-import { useGetOfficeQuery } from '../OfficesApi';
-import OfficeForm from './OfficeForm';
-import NewOffice from './tabs/NewOffice';
-// import OfficeForm from './OfficeForm';
+import OfficeWorkHeader from './OfficeWorkHeader';
+import OfficeWorkModel from './models/OfficeWorkModel';
+import { useGetOfficeWorkQuery } from '../OfficeWorksApi';
+import OfficeWorkForm from './OfficeWorkForm';
+import NewOfficeWork from './tabs/NewOfficeWork';
+// import OfficeWorkForm from './OfficeWorkForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a Office name')
-		.min(5, 'The Office name must be at least 5 characters')
+		.nonempty('You must enter a officeWork name')
+		.min(5, 'The officeWork name must be at least 5 characters')
 });
 
-function Office() {
+function OfficeWork() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { officeId } = routeParams;
+	const { officeWorkId } = routeParams;
 
 	const {
-		data: Office,
+		data: officeWork,
 		isLoading,
 		isError
-	} = useGetOfficeQuery(officeId, {
-		skip: !officeId || officeId === 'new'
+	} = useGetOfficeWorkQuery(officeWorkId, {
+		skip: !officeWorkId || officeWorkId === 'new'
 	});
-	// console.log('officeId', Office, officeId);
+	// console.log('officeWorkId', officeWork, officeWorkId);
 
 	const [tabValue, setTabValue] = useState(0);
 
@@ -50,16 +50,16 @@ function Office() {
 	// eslint-disable-next-line unused-imports/no-unused-vars
 	const form = watch();
 	useEffect(() => {
-		if (officeId === 'new') {
-			reset(OfficeModel({}));
+		if (officeWorkId === 'new') {
+			reset(OfficeWorkModel({}));
 		}
-	}, [officeId, reset]);
+	}, [officeWorkId, reset]);
 
 	useEffect(() => {
-		if (Office) {
-			reset({ ...Office });
+		if (officeWork) {
+			reset({ ...officeWork });
 		}
-	}, [Office, reset, Office?.id]);
+	}, [officeWork, reset, officeWork?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -70,9 +70,9 @@ function Office() {
 	}
 
 	/**
-	 * Show Message if the requested Office is not exists
+	 * Show Message if the requested officeWork is not exists
 	 */
-	if (isError && officeId !== 'new') {
+	if (isError && officeWorkId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -83,16 +83,16 @@ function Office() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such Office!
+					There is no such officeWork!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/Office/Office"
+					to="/apps/officeWork/officeWork"
 					color="inherit"
 				>
-					Go to offices Page
+					Go to OfficeWorks Page
 				</Button>
 			</motion.div>
 		);
@@ -105,11 +105,11 @@ function Office() {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<OfficeHeader />}
+				header={<OfficeWorkHeader />}
 				content={
 					<div className="p-16 ">
-						<NewOffice />
-						<OfficeForm officeId={officeId} />
+						<NewOfficeWork />
+						<OfficeWorkForm officeWorkId={officeWorkId} />
 					</div>
 				}
 				innerScroll
@@ -118,4 +118,4 @@ function Office() {
 	);
 }
 
-export default Office;
+export default OfficeWork;

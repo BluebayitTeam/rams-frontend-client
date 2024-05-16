@@ -69,7 +69,7 @@ function DemandsHeader(props) {
 				<ViewWeek
 					onClick={() => navigate(`/apps/column/columns/demand`)}
 					className="cursor-pointer mr-10 "
-					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
+					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>
 				<motion.div
 					className="flex flex-grow-0"

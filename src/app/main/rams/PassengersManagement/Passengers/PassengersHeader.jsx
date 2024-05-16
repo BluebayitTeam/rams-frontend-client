@@ -41,12 +41,12 @@ function PassengersHeader(props) {
 					component={motion.div}
 					initial={{ y: -20, opacity: 0 }}
 					animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-					className="flex items-center w-full sm:max-w-556 mx-24  space-x-8 px-16 rounded-full border-1 shadow-0"
+					className="flex items-center w-full sm:max-w-556 mx-24  space-x-8 px-6 rounded-full border-1 shadow-0"
 				>
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search By Name or Username or Email or Phone"
+						placeholder="Search by P.No or Passport No or Name"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -56,6 +56,8 @@ function PassengersHeader(props) {
 						onKeyDown={(ev) => {
 							if (ev.key === 'Enter') {
 								props?.setSearchKey(ev?.target?.value);
+							} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
+								props?.setSearchKey('');
 							}
 						}}
 					/>
@@ -64,7 +66,7 @@ function PassengersHeader(props) {
 				<ViewWeek
 					onClick={() => navigate(`/apps/column/columns/${routeParams.passengerType}`)}
 					className="cursor-pointer mr-10 "
-					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
+					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>
 				<motion.div
 					className="flex flex-grow-0"

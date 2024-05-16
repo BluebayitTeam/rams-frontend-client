@@ -20,7 +20,7 @@ const MedicalAppConfig = {
 				},
 
 				{
-					path: 'medicals/:medicalId/*',
+					path: 'medicals/:medicalId/:fromSearch?',
 					element: <Medical />
 				}
 			]

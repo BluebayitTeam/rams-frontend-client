@@ -102,8 +102,8 @@ function VisaEntrysTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.visa_entries[0])
-				.filter(([key]) => key !== 'id') // Filter out the 'id' field
+			Object.entries(totalData?.visa_entries[0] || {})
+				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({
 						id: key,
@@ -303,7 +303,8 @@ function VisaEntrysTable(props) {
 										</TableCell>
 										{Object?.entries(n)?.map(
 											([key, value]) =>
-												key !== 'id' && (
+												key !== 'id' &&
+												key !== 'random_number' && (
 													<TableCell
 														className="p-4 md:p-16 border-t-1  border-gray-200 "
 														component="th"

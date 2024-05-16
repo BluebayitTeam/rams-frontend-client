@@ -29,8 +29,11 @@ import DemandAppConfig from '../rams/DemandsManagement/DemandAppConfig';
 import VisaEntryAppConfig from '../rams/VisaEntrysManagement/VisaEntryAppConfig';
 import CallingEntryAppConfig from '../rams/CallingEntrysManagement/CallingEntryAppConfig';
 import EvisaEntryAppConfig from '../rams/EvisaEntrysManagement/EvisaEntryAppConfig';
-import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
+
 import CallingAssignAppConfig from '../rams/CallingAssignsManagement/CallingAssignAppConfig';
+import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConfig';
+import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
+
 /**
  * The list of application configurations.
  */
@@ -50,13 +53,13 @@ const appsConfigs = [
 	UserAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
-	MedicalAppConfig,
+	OfficeWorkAppConfig,
 	EvisaEntryAppConfig,
 	CallingAssignAppConfig,
 	VisaEntryAppConfig,
 	CallingEntryAppConfig,
 	ColumnAppConfig,
-
+	MedicalAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
 	DepartmentAppConfig,

@@ -54,6 +54,8 @@ function AgentsHeader(props) {
 						onKeyDown={(ev) => {
 							if (ev.key === 'Enter') {
 								props?.setSearchKey(ev?.target?.value);
+							} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
+								props?.setSearchKey('');
 							}
 						}}
 					/>
@@ -62,7 +64,7 @@ function AgentsHeader(props) {
 				<ViewWeek
 					onClick={() => navigate(`/apps/column/columns/agent`)}
 					className="cursor-pointer mr-10 "
-					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
+					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>
 				<motion.div
 					className="flex flex-grow-0"

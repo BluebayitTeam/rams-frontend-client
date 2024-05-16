@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function NewOffice(props) {
+function NewOfficeWork(props) {
 	const classes = useStyles(props);
 	const methods = useFormContext();
 	// const routeParams = useParams();
@@ -90,10 +90,10 @@ function NewOffice(props) {
 													passenger: newValue?.id
 												});
 												history.push(
-													`/apps/office/offices/${newValue?.passenger.id || newValue?.id}`
+													`/apps/officeWork/officeWorks/${newValue?.passenger.id || newValue?.id}`
 												);
 											} else {
-												history.push(`/apps/office/offices/new`);
+												history.push(`/apps/officeWork/officeWorks/new`);
 												reset({
 													passenger: newValue?.id,
 													medical_card: doneNotDone.find((data) => data.default)?.id,
@@ -102,7 +102,7 @@ function NewOffice(props) {
 											}
 										})
 										.catch(() => {
-											history.push(`/apps/office/offices/new`);
+											history.push(`/apps/officeWork/officeWorks/new`);
 											reset({
 												passenger: newValue?.id,
 												medical_card: doneNotDone.find((data) => data.default)?.id,
@@ -110,7 +110,7 @@ function NewOffice(props) {
 											});
 										});
 								} else {
-									history.push(`/apps/office/offices/new`);
+									history.push(`/apps/officeWork/officeWorks/new`);
 									reset({
 										passenger: newValue?.id,
 										medical_card: doneNotDone.find((data) => data.default)?.id,
@@ -139,4 +139,4 @@ function NewOffice(props) {
 	);
 }
 
-export default NewOffice;
+export default NewOfficeWork;

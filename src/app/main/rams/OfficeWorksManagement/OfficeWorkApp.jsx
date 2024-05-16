@@ -2,8 +2,8 @@ import { Outlet } from 'react-router';
 import withReducer from 'app/store/withReducer';
 import reducer from './store';
 
-function OfficeApp() {
+function OfficeWorkApp() {
 	return <Outlet />;
 }
 
-export default withReducer('officeApp', reducer)(OfficeApp);
+export default withReducer('officeWorkApp', reducer)(OfficeWorkApp);

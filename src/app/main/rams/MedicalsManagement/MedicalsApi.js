@@ -1,14 +1,9 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import {
-	ALL_USERS,
-	CREATE_MEDICAL,
-	MEDICAL_BY_PASSENGER_ID,
-	UPDATE_MEDICAL,
-	DELETE_MEDICAL
-} from 'src/app/constant/constants';
+import { MEDICAL_BY_PASSENGER_ID, CREATE_MEDICAL, UPDATE_MEDICAL, DELETE_MEDICAL } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import MedicalModel from './medical/models/MedicalModel';
 
@@ -21,19 +16,19 @@ const MedicalApi = api
 		endpoints: (build) => ({
 			// getMedicals: build.query({
 			// 	query: ({ page, size, searchKey }) => ({
-			// 		url: GET_DEMANDS,
+			// 		url: GET_VISAENTRYS,
 			// 		params: { page, size, searchKey }
 			// 	}),
 			// 	providesTags: ['medicals']
 			// }),
-			deleteMedicals: build.mutation({
-				query: (medicalIds) => ({
-					url: ALL_USERS,
-					method: 'DELETE',
-					data: medicalIds
-				}),
-				invalidatesTags: ['medicals']
-			}),
+			// deleteMedicals: build.mutation({
+			// 	query: (medicalIds) => ({
+			// 		url: ALL_USERS,
+			// 		method: 'DELETE',
+			// 		data: medicalIds
+			// 	}),
+			// 	invalidatesTags: ['medicals']
+			// }),
 			getMedical: build.query({
 				query: (medicalId) => ({
 					url: `${MEDICAL_BY_PASSENGER_ID}${medicalId}`
@@ -44,7 +39,15 @@ const MedicalApi = api
 				query: (newMedical) => ({
 					url: CREATE_MEDICAL,
 					method: 'POST',
-					data: jsonToFormData(MedicalModel(newMedical))
+					data: jsonToFormData(
+						MedicalModel({
+							...newMedical,
+							medical_exam_date: moment(new Date(newMedical?.medical_exam_date)).format('YYYY-MM-DD'),
+							medical_report_date: moment(new Date(newMedical?.medical_report_date)).format('YYYY-MM-DD'),
+							medical_issue_date: moment(new Date(newMedical?.medical_issue_date)).format('YYYY-MM-DD'),
+							medical_expiry_date: moment(new Date(newMedical?.medical_expiry_date)).format('YYYY-MM-DD')
+						})
+					)
 				}),
 				invalidatesTags: ['medicals']
 			}),
@@ -52,7 +55,13 @@ const MedicalApi = api
 				query: (medical) => ({
 					url: `${UPDATE_MEDICAL}${medical.id}`,
 					method: 'PUT',
-					data: jsonToFormData(medical)
+					data: jsonToFormData({
+						...medical,
+						medical_exam_date: moment(new Date(medical?.medical_exam_date)).format('YYYY-MM-DD'),
+						medical_report_date: moment(new Date(medical?.medical_report_date)).format('YYYY-MM-DD'),
+						medical_issue_date: moment(new Date(medical?.medical_issue_date)).format('YYYY-MM-DD'),
+						medical_expiry_date: moment(new Date(medical?.medical_expiry_date)).format('YYYY-MM-DD')
+					})
 				}),
 				invalidatesTags: ['medicals']
 			}),
