@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import history from '@history';
@@ -67,66 +67,52 @@ function MedicalHeader() {
 
 	function handleCreateMedical() {
 		createMedical(getValues())
-			.unwrap()
+			// .unwrap()
 			.then((res) => {
-				if (res.payload?.data?.id) {
+				debugger;
+
+				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMedical');
-						navigate('/apps/medical/medicals/new');
+
 						reset({
-							medical_card: doneNotDone.find((data) => data.default)?.id,
-							medical_result: medicalResults.find((data) => data.default)?.id
+							medical_center: 'all',
+							passenger: 'all',
+							medical_serial_no: '',
+							medical_result: medicalResults.find((data) => data.default)?.id || '',
+							medical_card: doneNotDone.find((data) => data.default)?.id || '',
+							medical_exam_date: '',
+							medical_report_date: '',
+							medical_issue_date: '',
+							medical_expiry_date: '',
+							notes: '',
+							slip_pic: '',
+							medical_card_pic: '',
+							current_status: 'all'
 						});
+						navigate('/apps/medical/medicals/new');
 					}
 				}
 
 				AddedSuccessfully();
 			});
-
-		// createMedical(getValues())
-		// 	.then((res) => {
-		// 		if (res.data?.id) {
-		// 			if (fromSearch) {
-		// 				history.goBack();
-		// 			} else {
-		// 				localStorage.setItem('medicalAlert', 'updateMedical');
-
-		// 				reset({
-		// 					medical_card: doneNotDone.find((data) => data.default)?.id || '',
-		// 					medical_result: medicalResults.find((data) => data.default)?.id || ''
-		// 				});
-
-		// 				AddedSuccessfully();
-
-		// 				navigate('/apps/medical/medicals/new');
-		// 			}
-		// 		} else {
-		// 			// Handle cases where res.data.id is not present
-		// 			console.error('Update failed: No id in response data');
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		// Handle error
-		// 		console.error('Error updating medical', error);
-		// 		dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-		// 	});
 	}
 
 	function handleRemoveMedical() {
 		removeMedical(getValues()?.id)
 			.unwrap()
 			.then((res) => {
-				if (res.payload?.data?.id) {
+				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMedical');
 						navigate('/apps/medical/medicals/new');
 						reset({
-							medical_card: doneNotDone.find((data) => data.default)?.id,
-							medical_result: medicalResults.find((data) => data.default)?.id
+							medical_card: doneNotDone.find((data) => data.default)?.id || '',
+							medical_result: medicalResults.find((data) => data.default)?.id || ''
 						});
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
@@ -139,17 +125,6 @@ function MedicalHeader() {
 			});
 	}
 
-	// function handleCancel() {
-	// 	if (fromSearch) {
-	// 		history.goBack();
-	// 	} else {
-	// 		navigate('/apps/medical/medicals/new');
-	// 		reset({
-	// 			medical_card: doneNotDone.find((data) => data.default)?.id,
-	// 			medical_result: medicalResults.find((data) => data.default)?.id
-	// 		});
-	// 	}
-	// }
 	const handleCancel = () => {
 		navigate('/apps/medical/medicals/new');
 		reset({

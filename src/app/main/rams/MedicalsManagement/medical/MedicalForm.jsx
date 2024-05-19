@@ -78,25 +78,25 @@ function MedicalForm(props) {
 		setPreviewImage2('');
 	}, [getValues('medical_center')]);
 
-	const increaseMonth = (dateString, months) =>
-		new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
-			.toISOString()
-			.slice(0, 10)
-			.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
+	// const increaseMonth = (dateString, months) =>
+	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
+	// 		.toISOString()
+	// 		.slice(0, 10)
+	// 		.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
 
 	return (
 		<div>
 			<Controller
 				name="medical_center"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? medicalCenters?.find((data) => data.id === value) : null}
 						// options={medicalCenters}
 						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
-						getOptionLabel={(option) => `${option?.name}`}
+						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -273,7 +273,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
+						options={[{ id: 'all', name: 'Select Medical Center' }, ...currentStatuss]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
