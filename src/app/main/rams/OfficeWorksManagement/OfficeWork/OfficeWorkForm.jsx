@@ -64,6 +64,7 @@ function OfficeWorkForm(props) {
 	useEffect(() => {
 		if (officeWorkId === 'new') {
 			reset({
+				passenger: 'all',
 				police_clearance_no: '',
 				police_clearance_date: '',
 				police_clearance_status: '',
@@ -108,6 +109,7 @@ function OfficeWorkForm(props) {
 					);
 				}}
 			/>
+
 			<Controller
 				name="police_clearance_date"
 				control={control}
@@ -116,13 +118,12 @@ function OfficeWorkForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							value={field.value || ''}
 							error={!!errors.police_clearance_date}
 							helperText={errors?.police_clearance_date?.message}
 							label="Police Clearance date"
 							id="police_clearance_date"
 							type="date"
-							InputLabelProps={field.value && { shrink: true }}
+							InputLabelProps={{ shrink: true }}
 							fullWidth
 							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>

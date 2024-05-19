@@ -131,32 +131,6 @@ function Medical() {
 		return <FuseLoading />;
 	}
 
-	// if (isError && medicalId !== 'new') {
-	// 	return (
-	// 		<motion.div
-	// 			initial={{ opacity: 0 }}
-	// 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
-	// 			className="flex flex-col flex-1 items-center justify-center h-full"
-	// 		>
-	// 			<Typography
-	// 				color="text.secondary"
-	// 				variant="h5"
-	// 			>
-	// 				There is no such medical!
-	// 			</Typography>
-	// 			<Button
-	// 				className="mt-24"
-	// 				component={Link}
-	// 				variant="outlined"
-	// 				to="/apps/medical/medical"
-	// 				color="inherit"
-	// 			>
-	// 				Go to Medicals Page
-	// 			</Button>
-	// 		</motion.div>
-	// 	);
-	// }
-
 	const updateCurrentStatus = (id) => {
 		const authTOKEN = {
 			headers: {
