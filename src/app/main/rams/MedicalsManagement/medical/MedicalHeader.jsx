@@ -84,6 +84,34 @@ function MedicalHeader() {
 
 				AddedSuccessfully();
 			});
+
+		// createMedical(getValues())
+		// 	.then((res) => {
+		// 		if (res.data?.id) {
+		// 			if (fromSearch) {
+		// 				history.goBack();
+		// 			} else {
+		// 				localStorage.setItem('medicalAlert', 'updateMedical');
+
+		// 				reset({
+		// 					medical_card: doneNotDone.find((data) => data.default)?.id || '',
+		// 					medical_result: medicalResults.find((data) => data.default)?.id || ''
+		// 				});
+
+		// 				AddedSuccessfully();
+
+		// 				navigate('/apps/medical/medicals/new');
+		// 			}
+		// 		} else {
+		// 			// Handle cases where res.data.id is not present
+		// 			console.error('Update failed: No id in response data');
+		// 		}
+		// 	})
+		// 	.catch((error) => {
+		// 		// Handle error
+		// 		console.error('Error updating medical', error);
+		// 		dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
+		// 	});
 	}
 
 	function handleRemoveMedical() {

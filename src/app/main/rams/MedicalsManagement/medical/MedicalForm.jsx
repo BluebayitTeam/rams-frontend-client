@@ -51,6 +51,8 @@ function MedicalForm(props) {
 	useEffect(() => {
 		if (medicalId === 'new') {
 			reset({
+				medical_center: 'all',
+				passenger: 'all',
 				medical_serial_no: '',
 				medical_result: medicalResults.find((data) => data.default)?.id || '',
 				medical_card: doneNotDone.find((data) => data.default)?.id || '',
@@ -60,7 +62,8 @@ function MedicalForm(props) {
 				medical_expiry_date: '',
 				notes: '',
 				slip_pic: '',
-				medical_card_pic: ''
+				medical_card_pic: '',
+				current_status: 'all'
 			});
 			setPreviewImage('');
 			setPreviewImage2('');
@@ -91,7 +94,8 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? medicalCenters?.find((data) => data.id === value) : null}
-						options={medicalCenters}
+						// options={medicalCenters}
+						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
 						getOptionLabel={(option) => `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -269,7 +273,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={currentStatuss}
+						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);

@@ -71,6 +71,23 @@ function OfficeWorkHeader() {
 	}
 
 	function handleCreateOfficeWork() {
+		// createOfficeWork(getValues())
+		// 	.unwrap()
+		// 	.then((res) => {
+		// 		if (res.payload?.data?.id) {
+		// 			if (fromSearch) {
+		// 				history.goBack();
+		// 			} else {
+		// 				localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
+		// 				navigate('/apps/officeWork/officeWorks/new');
+		// 				reset({
+		// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+		// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
+		// 					finger_status: doneNotDone.find((data) => data.default)?.id
+		// 				});
+		// 			}
+		// 		}
+
 		createOfficeWork(getValues())
 			.unwrap()
 			.then((res) => {
@@ -214,8 +231,8 @@ function OfficeWorkHeader() {
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 							style={{
 								backgroundColor: '#ea5b78',
-								color: 'white',
-								display: user_role === 'ADMIN' || user_role === 'admin' ? 'flex' : 'none'
+								color: 'white'
+								// display: user_role === 'ADMIN' || user_role === 'admin' ? 'flex' : 'none'
 							}}
 						>
 							Remove

@@ -7,7 +7,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
-import { getCurrentStatuss, getOfficeWorkCenters, getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { useParams } from 'react-router';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -40,8 +41,8 @@ function OfficeWorkForm(props) {
 	const [previewDoc2Image, setpreviewDoc2Image] = useState('');
 
 	const { errors } = formState;
-	// const routeParams = useParams();
-	// const { officeWorkId } = routeParams;
+	const routeParams = useParams();
+	const { officeWorkId } = routeParams;
 	// const classes = useStyles(props);
 	// const officeWorkCenters = useSelector((state) => state.data.officeWorkCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
@@ -49,8 +50,6 @@ function OfficeWorkForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getOfficeWorkCenters());
-
 		dispatch(getCurrentStatuss());
 	}, []);
 
@@ -61,39 +60,31 @@ function OfficeWorkForm(props) {
 		setpreviewDoc2Image('');
 	}, [getValues('police_clearance_no')]);
 
-	console.log('wbkjwb', getValues());
-	// useEffect(() => {
-	// 	if (medicalId === 'new') {
-	// 		reset({
-	// 			medical_serial_no: '',
-	// 			medical_result: medicalResults.find((data) => data.default)?.id || '',
-	// 			medical_card: doneNotDone.find((data) => data.default)?.id || '',
-	// 			medical_exam_date: '',
-	// 			medical_report_date: '',
-	// 			medical_issue_date: '',
-	// 			medical_expiry_date: '',
-	// 			notes: '',
-	// 			slip_pic: '',
-	// 			medical_card_pic: ''
-	// 		});
-	// 		setPreviewImage('');
-	// 		setPreviewImage2('');
-	// 	} else {
-	// 		// Fetch and set data based on medicalId if needed
-	// 		// reset(formData);
-	// 	}
-	// }, [medicalId, reset, medicalCenters, currentStatuss]);
-
-	// useEffect(() => {
-	// 	setPreviewImage('');
-	// 	setPreviewImage2('');
-	// }, [getValues('medical_center')]);
-
-	const increaseMonth = (dateString, months) =>
-		new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
-			.toISOString()
-			.slice(0, 10)
-			.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
+	// console.log('wbkjwb', getValues());
+	useEffect(() => {
+		if (officeWorkId === 'new') {
+			reset({
+				police_clearance_no: '',
+				police_clearance_date: '',
+				police_clearance_status: '',
+				driving_license_no: '',
+				driving_license_date: '',
+				driving_license_status: '',
+				finger_no: '',
+				finger_status: '',
+				finger_date: '',
+				certificate_experience: '',
+				current_status: ''
+			});
+			setpreviewPCImage('');
+			setpreviewDLImage('');
+			setpreviewDoc1Image('');
+			setpreviewDoc2Image('');
+		} else {
+			// Fetch and set data based on medicalId if needed
+			// reset(formData);
+		}
+	}, [officeWorkId, reset, currentStatuss]);
 
 	return (
 		<div>

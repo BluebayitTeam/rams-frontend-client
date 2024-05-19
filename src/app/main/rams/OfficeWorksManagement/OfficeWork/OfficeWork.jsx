@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({
-	first_name: z
+	police_clearance_no: z
 		.string()
 		.nonempty('You must enter a officeWork name')
 		.min(5, 'The officeWork name must be at least 5 characters')
@@ -82,9 +84,112 @@ function OfficeWork() {
 	// 	}
 	// }, [officeWork, reset]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+	// useEffect(() => {
+	// 	if (fromSearch) {
+	// 		const authTOKEN = {
+	// 			headers: {
+	// 				'Content-type': 'application/json',
+	// 				Authorization: localStorage.getItem('jwt_access_token')
+	// 			}
+	// 		};
+	// 		axios
+	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
+	// 			.then((res) => {
+	// 				if (res.data.id) {
+	// 					reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
+	// 				}
+	// 			})
+	// 			.catch(() => null);
+	// 	} else {
+	// 		reset({
+	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 			finger_status: doneNotDone.find((data) => data.default)?.id
+	// 		});
+	// 	}
+	// }, [fromSearch]);
+
+	// useEffect(() => {
+	// 	if (fromSearch) {
+	// 		const authTOKEN = {
+	// 			headers: {
+	// 				'Content-type': 'application/json',
+	// 				Authorization: localStorage.getItem('jwt_access_token')
+	// 			}
+	// 		};
+	// 		axios
+	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
+	// 			.then((res) => {
+	// 				if (res.data.id) {
+	// 					// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
+	// 				} else {
+	// 					reset({
+	// 						passenger: officeWorkId,
+	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 						finger_status: doneNotDone.find((data) => data.default)?.id
+	// 					});
+	// 					sessionStorage.setItem('operation', 'save');
+	// 				}
+	// 			})
+	// 			.catch(() => {
+	// 				reset({
+	// 					passenger: officeWorkId,
+	// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 					finger_status: doneNotDone.find((data) => data.default)?.id
+	// 				});
+	// 				sessionStorage.setItem('operation', 'save');
+	// 			});
+	// 	} else {
+	// 		reset({
+	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 			finger_status: doneNotDone.find((data) => data.default)?.id
+	// 		});
+	// 	}
+	// }, [fromSearch]);
+
+	// useEffect(() => {
+	// 	if (fromSearch) {
+	// 		const authTOKEN = {
+	// 			headers: {
+	// 				'Content-type': 'application/json',
+	// 				Authorization: localStorage.getItem('jwt_access_token')
+	// 			}
+	// 		};
+	// 		axios
+	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
+	// 			.then((res) => {
+	// 				if (res.data.id) {
+	// 					// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
+	// 				} else {
+	// 					reset({
+	// 						passenger: officeWorkId,
+	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 						finger_status: doneNotDone.find((data) => data.default)?.id
+	// 					});
+	// 					sessionStorage.setItem('operation', 'save');
+	// 				}
+	// 			})
+	// 			.catch(() => {
+	// 				reset({
+	// 					passenger: officeWorkId,
+	// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 					finger_status: doneNotDone.find((data) => data.default)?.id
+	// 				});
+	// 				sessionStorage.setItem('operation', 'save');
+	// 			});
+	// 	} else {
+	// 		reset({
+	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 			finger_status: doneNotDone.find((data) => data.default)?.id
+	// 		});
+	// 	}
+	// }, [fromSearch]);
 
 	useEffect(() => {
 		if (fromSearch) {
@@ -98,7 +203,7 @@ function OfficeWork() {
 				.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
 					}
 				})
 				.catch(() => null);
@@ -123,7 +228,7 @@ function OfficeWork() {
 				.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
 					} else {
 						reset({
 							passenger: officeWorkId,
@@ -152,6 +257,26 @@ function OfficeWork() {
 		}
 	}, [fromSearch]);
 
+	function handleTabChange(event, value) {
+		setTabValue(value);
+	}
+
+	if (isLoading) {
+		return <FuseLoading />;
+	}
+
+	const updateCurrentStatus = (id) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
+			// setValue(`current_status`, res.data?.current_status?.id);
+			sessionStorage.setItem('passengerCurrentStatus', res.data?.current_status?.name);
+		});
+	};
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
@@ -182,33 +307,29 @@ function OfficeWork() {
 									<Controller
 										name="passenger"
 										control={control}
-										render={({ field: { onChange, value, name } }) => (
+										render={({ field: { value } }) => (
 											<Autocomplete
 												className={`w-full max-w-320 h-48 ${classes.container}`}
 												freeSolo
 												autoHighlight
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
-												options={passengers}
+												// options={passengers}
+												options={[
+													{
+														id: 'all',
+														passenger_id: '',
+														office_serial: '',
+														passport_no: '',
+														passenger_name: 'Select Passenger'
+													},
+													...passengers
+												]}
 												getOptionLabel={(option) =>
-													`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															// setValue(`current_status`, res.data?.current_status?.id);
-															sessionStorage.setItem(
-																'passengerCurrentStatus',
-																res.data?.current_status?.name
-															);
-														});
+													updateCurrentStatus(newValue?.id);
 
 													if (newValue?.id) {
 														const authTOKEN = {
@@ -284,10 +405,10 @@ function OfficeWork() {
 														className={classes.textField}
 														placeholder="Select Passenger"
 														label="Passenger"
-														// error={!!errors.passenger || !value}
-														autoFocus
+														required
 														helperText={errors?.passenger?.message}
 														variant="outlined"
+														autoFocus
 														InputLabelProps={
 															value ? { shrink: true } : { style: { color: 'red' } }
 														}

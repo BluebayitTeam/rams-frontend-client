@@ -206,7 +206,17 @@ function Medical() {
 												autoHighlight
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
-												options={passengers}
+												// options={passengers}
+												options={[
+													{
+														id: 'all',
+														passenger_id: '',
+														office_serial: '',
+														passport_no: '',
+														passenger_name: 'Select Passenger'
+													},
+													...passengers
+												]}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
