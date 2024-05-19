@@ -74,7 +74,7 @@ function OfficeWorkForm(props) {
 				finger_status: '',
 				finger_date: '',
 				certificate_experience: '',
-				current_status: ''
+				current_status: 'all'
 			});
 			setpreviewPCImage('');
 			setpreviewDLImage('');
@@ -332,8 +332,9 @@ function OfficeWorkForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find((data) => data.id == value) : null}
-						options={currentStatuss}
+						value={value ? currentStatuss.find((data) => data.id === value) : null}
+						// options={currentStatuss}
+						options={[{ id: 'all', name: 'Select current status' }, ...currentStatuss]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
