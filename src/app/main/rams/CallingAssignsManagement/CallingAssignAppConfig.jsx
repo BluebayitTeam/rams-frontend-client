@@ -20,7 +20,7 @@ const CallingAssignAppConfig = {
 				},
 
 				{
-					path: 'callingAssigns/:callingAssignId/*',
+					path: 'callingAssigns/:callingAssignId?/*',
 					element: <CallingAssign />
 				}
 			]

@@ -71,6 +71,13 @@ function CallingAssignForm(props) {
 		dispatch(getCallingAssigns());
 	}, []);
 
+	useEffect(() => {
+		setValue(
+			'passengers',
+			mltPassengerList?.map((data) => data.id)
+		);
+	}, [mltPassengerList]);
+
 	const handleCheckAvailableVisa = (id, qty) => {
 		setShowError(true);
 		const authTOKEN = {

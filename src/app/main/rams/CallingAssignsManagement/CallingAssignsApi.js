@@ -1,8 +1,7 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import { CREATE_E_VISAENTRY } from 'src/app/constant/constants';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { UPDATE_CALLING_ASSIGN } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 import CallingAssignModel from './callingAssign/models/CallingAssignModel';
 
@@ -15,9 +14,13 @@ const CallingAssignApi = api
 		endpoints: (build) => ({
 			createCallingAssign: build.mutation({
 				query: (newCallingAssign) => ({
-					url: CREATE_E_VISAENTRY,
-					method: 'POST',
-					data: jsonToFormData(CallingAssignModel(newCallingAssign))
+					url: UPDATE_CALLING_ASSIGN,
+					method: 'PUT',
+					data: CallingAssignModel({
+						visa_entry: newCallingAssign?.visa_entry,
+						status: newCallingAssign?.current_status,
+						passengers: newCallingAssign?.passengers
+					})
 				}),
 				invalidatesTags: ['callingAssigns']
 			})
