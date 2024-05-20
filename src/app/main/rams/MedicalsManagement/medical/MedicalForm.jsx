@@ -47,7 +47,7 @@ function MedicalForm(props) {
 		dispatch(getMedicalCenters());
 		dispatch(getCurrentStatuss());
 	}, [dispatch]);
-	console.log('wbkjwb', getValues());
+	// console.log('wbkjwb', getValues());
 	useEffect(() => {
 		if (medicalId === 'new') {
 			reset({
