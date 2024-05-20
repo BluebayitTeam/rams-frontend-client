@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss, getMofaCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -30,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function MedicalForm(props) {
+function MofaForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { medicalId } = routeParams;
+	const { mofaId } = routeParams;
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState();
@@ -44,12 +44,12 @@ function MedicalForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getMedicalCenters());
+		dispatch(getMofaCenters());
 		dispatch(getCurrentStatuss());
 	}, [dispatch]);
 	console.log('wbkjwb', getValues());
 	useEffect(() => {
-		if (medicalId === 'new') {
+		if (mofaId === 'new') {
 			// reset({
 			// 	medical_center: 'all',
 			// 	// passenger: 'all',
@@ -68,10 +68,10 @@ function MedicalForm(props) {
 			setPreviewImage('');
 			setPreviewImage2('');
 		} else {
-			// Fetch and set data based on medicalId if needed
+			// Fetch and set data based on mofaId if needed
 			// reset(formData);
 		}
-	}, [medicalId, reset, medicalCenters, currentStatuss]);
+	}, [mofaId, reset, medicalCenters, currentStatuss]);
 
 	useEffect(() => {
 		setPreviewImage('');
@@ -95,7 +95,7 @@ function MedicalForm(props) {
 						freeSolo
 						value={value ? medicalCenters?.find((data) => data.id === value) : null}
 						// options={medicalCenters}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
+						options={[{ id: 'all', name: 'Select Mofa Center' }, ...medicalCenters]}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -103,8 +103,8 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Medical Center"
-								label="Medical Center"
+								placeholder="Select Mofa Center"
+								label="Mofa Center"
 								id="medical_center"
 								helperText={errors?.medical_center?.message}
 								variant="outlined"
@@ -126,7 +126,7 @@ function MedicalForm(props) {
 						value={field.value || ''}
 						className="mt-8 mb-16"
 						helperText={errors?.medical_serial_no?.message}
-						label="Medical Serial No"
+						label="Mofa Serial No"
 						id="medical_serial_no"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
@@ -151,8 +151,8 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Medical Result"
-								label="Medical Result"
+								placeholder="Select Mofa Result"
+								label="Mofa Result"
 								helperText={errors?.medical_result?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -180,8 +180,8 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select medical Card"
-								label="Medical Card"
+								placeholder="Select mofa Card"
+								label="Mofa Card"
 								helperText={errors?.medical_card?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -202,7 +202,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.medical_exam_date}
 						helperText={errors?.medical_exam_date?.message}
-						label="Medical Exam Date"
+						label="Mofa Exam Date"
 						id="medical_exam_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -220,7 +220,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.medical_report_date}
 						helperText={errors?.medical_report_date?.message}
-						label="Medical Report Date"
+						label="Mofa Report Date"
 						id="medical_report_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -238,7 +238,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.medical_issue_date}
 						helperText={errors?.medical_issue_date?.message}
-						label="Medical Issue Date"
+						label="Mofa Issue Date"
 						id="medical_issue_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -256,7 +256,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.medical_expiry_date}
 						helperText={errors?.medical_expiry_date?.message}
-						label="Medical Expiry Date"
+						label="Mofa Expiry Date"
 						id="medical_expiry_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -273,7 +273,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...currentStatuss]}
+						options={[{ id: 'all', name: 'Select Mofa Center' }, ...currentStatuss]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -326,11 +326,11 @@ function MedicalForm(props) {
 					name="medical_card_pic"
 					previewImage={previewImage2}
 					setPreviewImage={setPreviewImage2}
-					label="Medical Card Picture"
+					label="Mofa Card Picture"
 				/>
 			</div>
 		</div>
 	);
 }
 
-export default MedicalForm;
+export default MofaForm;

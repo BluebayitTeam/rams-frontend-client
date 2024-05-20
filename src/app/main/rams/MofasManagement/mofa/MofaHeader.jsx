@@ -13,7 +13,7 @@ import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MedicalsApi';
+import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MofasApi';
 
 /**
  * The medical header.

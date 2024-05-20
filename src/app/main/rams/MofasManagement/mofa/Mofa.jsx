@@ -14,9 +14,9 @@ import { GET_PASSENGER_BY_ID, MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/c
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import moment from 'moment';
-import MedicalHeader from './MedicalHeader';
-import { useGetMedicalQuery } from '../MedicalsApi';
-import MedicalForm from './MedicalForm';
+import MofaHeader from './MofaHeader';
+import { useGetMofaQuery } from '../MofasApi';
+import MofaForm from './MofaForm';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -34,16 +34,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a medical name')
-		.min(5, 'The medical name must be at least 5 characters')
+	first_name: z.string().nonempty('You must enter a mofa name').min(5, 'The mofa name must be at least 5 characters')
 });
 
-function Medical() {
+function Mofa() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { medicalId, fromSearch } = routeParams;
+	const { mofaId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const classes = useStyles();
 	const navigate = useNavigate();
@@ -55,11 +52,11 @@ function Medical() {
 	});
 
 	const {
-		data: medical,
+		data: mofa,
 		isLoading,
 		isError
-	} = useGetMedicalQuery(medicalId, {
-		skip: !medicalId || medicalId === 'new'
+	} = useGetMofaQuery(mofaId, {
+		skip: !mofaId || mofaId === 'new'
 	});
 
 	const [tabValue, setTabValue] = useState(0);
@@ -73,16 +70,16 @@ function Medical() {
 	} = methods;
 
 	// useEffect(() => {
-	// 	if (medicalId === 'new') {
-	// 		reset(MedicalModel({}));
+	// 	if (mofaId === 'new') {
+	// 		reset(MofaModel({}));
 	// 	}
-	// }, [medicalId, reset]);
+	// }, [mofaId, reset]);
 
 	// useEffect(() => {
-	// 	if (medical) {
-	// 		reset({ ...medical });
+	// 	if (mofa) {
+	// 		reset({ ...mofa });
 	// 	}
-	// }, [medical, reset]);
+	// }, [mofa, reset]);
 
 	useEffect(() => {
 		if (fromSearch) {
@@ -94,13 +91,13 @@ function Medical() {
 			};
 
 			axios
-				.get(`${MEDICAL_BY_PASSENGER_ID}${medicalId}`, authTOKEN)
+				.get(`${MEDICAL_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: medicalId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
 					} else {
 						reset({
-							passenger: medicalId,
+							passenger: mofaId,
 							medical_card: doneNotDone.find((data) => data.default)?.id,
 							medical_result: medicalResults.find((data) => data.default)?.id
 						});
@@ -109,7 +106,7 @@ function Medical() {
 				})
 				.catch(() => {
 					reset({
-						passenger: medicalId,
+						passenger: mofaId,
 						medical_card: doneNotDone.find((data) => data.default)?.id,
 						medical_result: medicalResults.find((data) => data.default)?.id
 					});
@@ -161,10 +158,10 @@ function Medical() {
 						classes={{ root: 'w-full h-64' }}
 					>
 						<Tab label="Passenger Details" />
-						<Tab label="Medical Information" />
+						<Tab label="Mofa Information" />
 					</Tabs>
 				}
-				header={<MedicalHeader />}
+				header={<MofaHeader />}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -229,12 +226,12 @@ function Medical() {
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/medical/medicals/${
+																		`/apps/mofa/mofas/${
 																			newValue?.newValue?.id || newValue?.id
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/medical/medicals/new`);
+																	navigate(`/apps/mofa/mofas/new`);
 																	reset({
 																		medical_center: 'all',
 																		passenger: newValue?.id,
@@ -257,7 +254,7 @@ function Medical() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/medical/medicals/new`);
+																navigate(`/apps/mofa/mofas/new`);
 																reset({
 																	passenger: newValue?.id,
 																	medical_center: 'all',
@@ -279,7 +276,7 @@ function Medical() {
 																});
 															});
 													} else {
-														navigate(`/apps/medical/medicals/new`);
+														navigate(`/apps/mofa/mofas/new`);
 														reset({
 															passenger: 'all',
 															medical_center: 'all',
@@ -318,10 +315,10 @@ function Medical() {
 										)}
 									/>
 								</div>
-								<MedicalForm />
+								<MofaForm />
 							</div>
 						)}
-						{tabValue === 1 && <MedicalForm medicalId={medicalId} />}
+						{tabValue === 1 && <MofaForm mofaId={mofaId} />}
 					</div>
 				}
 				innerScroll
@@ -330,4 +327,4 @@ function Medical() {
 	);
 }
 
-export default Medical;
+export default Mofa;
