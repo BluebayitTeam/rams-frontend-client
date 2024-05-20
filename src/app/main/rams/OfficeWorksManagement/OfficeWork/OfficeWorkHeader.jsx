@@ -91,16 +91,28 @@ function OfficeWorkHeader() {
 		createOfficeWork(getValues())
 			.unwrap()
 			.then((res) => {
-				if (res.payload?.data?.id) {
+				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
 						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
 						navigate('/apps/officeWork/officeWorks/new');
 						reset({
-							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id
+							// police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+							// driving_license_status: doneNotDone.find((data) => data.default)?.id,
+							// finger_status: doneNotDone.find((data) => data.default)?.id
+							passenger: 'all',
+							police_clearance_no: '',
+							police_clearance_date: '',
+							police_clearance_status: '',
+							driving_license_no: '',
+							driving_license_date: '',
+							driving_license_status: '',
+							finger_no: '',
+							finger_status: '',
+							finger_date: '',
+							certificate_experience: '',
+							current_status: 'all'
 						});
 					}
 				}
@@ -113,12 +125,13 @@ function OfficeWorkHeader() {
 		removeOfficeWork(getValues()?.id)
 			.unwrap()
 			.then((res) => {
-				if (res.payload?.data?.id) {
+				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
 						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
 						navigate('/apps/officeWork/officeWorks/new');
+						RemoveSuccessfully();
 						reset({
 							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							driving_license_status: doneNotDone.find((data) => data.default)?.id,
@@ -127,8 +140,6 @@ function OfficeWorkHeader() {
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
-
-				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));

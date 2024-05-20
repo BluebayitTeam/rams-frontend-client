@@ -69,7 +69,7 @@ function MedicalHeader() {
 		createMedical(getValues())
 			// .unwrap()
 			.then((res) => {
-				debugger;
+				// debugger;
 
 				if (res) {
 					if (fromSearch) {
