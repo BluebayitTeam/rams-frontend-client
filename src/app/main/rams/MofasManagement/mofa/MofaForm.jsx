@@ -1,13 +1,12 @@
 import { styled } from '@mui/system';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCurrentStatuss, getMofaCenters, getPassengers } from 'app/store/dataSlice';
+import { getAgencys, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
-import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
+import { doneNotDone } from 'src/app/@data/data';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -37,46 +36,26 @@ function MofaForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { mofaId } = routeParams;
-	const medicalCenters = useSelector((state) => state.data.medicalCenters);
-	const currentStatuss = useSelector((state) => state.data.currentStatuss);
+	const mofaAgencys = useSelector((state) => state.data.agencies);
+	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState();
 	const [previewImage2, setPreviewImage2] = useState();
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getMofaCenters());
-		dispatch(getCurrentStatuss());
-	}, [dispatch]);
-	console.log('wbkjwb', getValues());
-	useEffect(() => {
-		if (mofaId === 'new') {
-			// reset({
-			// 	medical_center: 'all',
-			// 	// passenger: 'all',
-			// 	medical_serial_no: '',
-			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
-			// 	medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			// 	medical_exam_date: '',
-			// 	medical_report_date: '',
-			// 	medical_issue_date: '',
-			// 	medical_expiry_date: '',
-			// 	notes: '',
-			// 	slip_pic: '',
-			// 	medical_card_pic: '',
-			// 	current_status: 'all'
-			// });
-			setPreviewImage('');
-			setPreviewImage2('');
-		} else {
-			// Fetch and set data based on mofaId if needed
-			// reset(formData);
-		}
-	}, [mofaId, reset, medicalCenters, currentStatuss]);
+		dispatch(getAgencys());
+	}, []);
 
 	useEffect(() => {
-		setPreviewImage('');
-		setPreviewImage2('');
-	}, [getValues('medical_center')]);
+		if (getValues().mofa_no === undefined) {
+			setValue('mofa_no', 'E');
+		}
+	}, [getValues()]);
+
+	// useEffect(() => {
+	// 	setPreviewImage('');
+	// 	setPreviewImage2('');
+	// }, [getValues('mofa_agency')]);
 
 	// const increaseMonth = (dateString, months) =>
 	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
@@ -87,15 +66,15 @@ function MofaForm(props) {
 	return (
 		<div>
 			<Controller
-				name="medical_center"
+				name="mofa_agency"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalCenters?.find((data) => data.id === value) : null}
-						// options={medicalCenters}
-						options={[{ id: 'all', name: 'Select Mofa Center' }, ...medicalCenters]}
+						value={value ? mofaAgencys?.find((data) => data.id === value) : null}
+						// options={mofaAgencys}
+						options={[{ id: 'all', name: 'Select Mofa Agency' }, ...mofaAgencys]}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -103,10 +82,10 @@ function MofaForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Mofa Center"
-								label="Mofa Center"
-								id="medical_center"
-								helperText={errors?.medical_center?.message}
+								placeholder="Select Mofa Agency"
+								label="Mofa Agency"
+								id="mofa_agency"
+								helperText={errors?.mofa_agency?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -118,16 +97,16 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="medical_serial_no"
+				name="mofa_no"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						value={field.value || ''}
 						className="mt-8 mb-16"
-						helperText={errors?.medical_serial_no?.message}
-						label="Mofa Serial No"
-						id="medical_serial_no"
+						helperText={errors?.mofa_no?.message}
+						label="Mofa No"
+						id="mofa_no"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
@@ -136,74 +115,16 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="medical_result"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? medicalResults.find((data) => data.id === value) : null}
-						options={medicalResults}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Mofa Result"
-								label="Mofa Result"
-								helperText={errors?.medical_result?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="medical_card"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={doneNotDone}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select mofa Card"
-								label="Mofa Card"
-								helperText={errors?.medical_card?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="medical_exam_date"
+				name="mofa_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.medical_exam_date}
-						helperText={errors?.medical_exam_date?.message}
-						label="Mofa Exam Date"
-						id="medical_exam_date"
+						error={!!errors.mofa_date}
+						helperText={errors?.mofa_date?.message}
+						label="Mofa Date"
+						id="mofa_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -212,68 +133,33 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="medical_report_date"
+				name="why_remofa"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.medical_report_date}
-						helperText={errors?.medical_report_date?.message}
-						label="Mofa Report Date"
-						id="medical_report_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
+						value={field.value || ''}
+						helperText={errors?.why_remofa?.message}
+						label="Re Mofa Charge"
+						id="why_remofa"
+						variant="outlined"
+						multiline
+						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
 					/>
 				)}
 			/>
 
 			<Controller
-				name="medical_issue_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.medical_issue_date}
-						helperText={errors?.medical_issue_date?.message}
-						label="Mofa Issue Date"
-						id="medical_issue_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
-
-			<Controller
-				name="medical_expiry_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.medical_expiry_date}
-						helperText={errors?.medical_expiry_date?.message}
-						label="Mofa Expiry Date"
-						id="medical_expiry_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
-
-			<Controller
-				name="current_status"
+				name="remofa_status"
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Mofa Center' }, ...currentStatuss]}
+						value={value ? doneNotDone.find((data) => data.id === value) : null}
+						options={[{ id: 'all', name: 'Select Re Mofa Status' }, ...doneNotDone]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -281,10 +167,10 @@ function MofaForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select current status"
-								label="Current Status"
-								id="current_status"
-								helperText={errors?.current_status?.message}
+								placeholder="Select Re Mofa Status"
+								label="Re Mofa Status"
+								id="remofa_status"
+								helperText={errors?.remofa_status?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -294,41 +180,54 @@ function MofaForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
-				name="notes"
+				name="why_remofa"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
 						value={field.value || ''}
-						helperText={errors?.notes?.message}
-						label="Notes"
-						id="notes"
+						helperText={errors?.why_remofa?.message}
+						label="Why Re Mofa"
+						id="why_remofa"
 						variant="outlined"
 						multiline
-						rows={4}
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
 					/>
 				)}
 			/>
 
-			<div className="flex justify-start mx-16 flex-col md:flex-row">
-				<Image
-					name="slip_pic"
-					previewImage={previewImage}
-					setPreviewImage={setPreviewImage}
-					label="Slip Picture"
-				/>
-				<Image
-					name="medical_card_pic"
-					previewImage={previewImage2}
-					setPreviewImage={setPreviewImage2}
-					label="Mofa Card Picture"
-				/>
-			</div>
+			<Controller
+				name="mofa_status"
+				control={control}
+				render={({ field: { onChange, value, name } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? doneNotDone.find((data) => data.id === value) : null}
+						options={[{ id: 'all', name: 'Select Mofa Status' }, ...doneNotDone]}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Mofa Status"
+								label="Mofa Status"
+								id="mofa_status"
+								helperText={errors?.mofa_status?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
 		</div>
 	);
 }

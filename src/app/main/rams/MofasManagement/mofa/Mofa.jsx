@@ -10,7 +10,7 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import MofaHeader from './MofaHeader';
@@ -41,6 +41,7 @@ function Mofa() {
 	const routeParams = useParams();
 	const { mofaId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
+
 	const classes = useStyles();
 	const navigate = useNavigate();
 
@@ -127,17 +128,17 @@ function Mofa() {
 		return <FuseLoading />;
 	}
 
-	const updateCurrentStatus = (id) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
+	// const updateCurrentStatus = (id) => {
+	// 	const authTOKEN = {
+	// 		headers: {
+	// 			'Content-type': 'application/json',
+	// 			Authorization: localStorage.getItem('jwt_access_token')
+	// 		}
+	// 	};
+	// 	axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
+	// 		setValue('current_status', res.data?.current_status?.id);
+	// 	});
+	// };
 
 	return (
 		<FormProvider {...methods}>
@@ -212,7 +213,7 @@ function Mofa() {
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/mofa/mofas/new`);
+																	navigate(`/apps/mofa-management/mofas/new`);
 																	reset({
 																		passenger: newValue?.id,
 																		mofa_status: doneNotDone.find(
@@ -225,7 +226,7 @@ function Mofa() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/mofa/mofas/new`);
+																navigate(`/apps/mofa-management/mofas/new`);
 																reset({
 																	passenger: newValue?.id,
 																	mofa_status: doneNotDone.find(
@@ -237,7 +238,7 @@ function Mofa() {
 																});
 															});
 													} else {
-														navigate(`/apps/mofa/mofas/new`);
+														navigate(`/apps/mofa-management/mofas/new`);
 														reset({
 															passenger: newValue?.id,
 															mofa_status: doneNotDone.find((data) => data.default)?.id,

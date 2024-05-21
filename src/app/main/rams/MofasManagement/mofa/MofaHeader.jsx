@@ -51,7 +51,7 @@ function MofaHeader() {
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/mofa/mofas/new');
+						navigate('/apps/mofa-management/mofas/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -90,7 +90,7 @@ function MofaHeader() {
 							// medical_card_pic: '',
 							// current_status: 'all'
 						});
-						navigate('/apps/mofa/mofas/new');
+						navigate('/apps/mofa-management/mofas/new');
 					}
 				}
 
@@ -107,7 +107,7 @@ function MofaHeader() {
 						history.goBack();
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMofa');
-						navigate('/apps/mofa/mofas/new');
+						navigate('/apps/mofa-management/mofas/new');
 						reset({
 							passenger: 'all',
 							medical_center: 'all',
@@ -135,7 +135,7 @@ function MofaHeader() {
 	}
 
 	const handleCancel = () => {
-		navigate('/apps/mofa/mofas/new');
+		navigate('/apps/mofa-management/mofas/new');
 		reset({
 			passenger: 'all',
 			medical_center: 'all',
