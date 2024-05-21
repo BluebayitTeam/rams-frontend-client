@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import MofaHeader from './MofaHeader';
 import { useGetMofaQuery } from '../MofasApi';
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({
-	first_name: z.string().nonempty('You must enter a mofa name').min(5, 'The mofa name must be at least 5 characters')
+	passenger: z.string().nonempty('You must enter a mofa name').min(5, 'The mofa name must be at least 5 characters')
 });
 
 function Mofa() {
@@ -89,17 +89,16 @@ function Mofa() {
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
-
 			axios
 				.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
+						reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
 					} else {
 						reset({
 							passenger: mofaId,
-							medical_card: doneNotDone.find((data) => data.default)?.id,
-							medical_result: medicalResults.find((data) => data.default)?.id
+							mofa_status: doneNotDone.find((data) => data.default)?.id,
+							remofa_status: doneNotDone.find((data) => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
 					}
@@ -107,15 +106,15 @@ function Mofa() {
 				.catch(() => {
 					reset({
 						passenger: mofaId,
-						medical_card: doneNotDone.find((data) => data.default)?.id,
-						medical_result: medicalResults.find((data) => data.default)?.id
+						mofa_status: doneNotDone.find((data) => data.default)?.id,
+						remofa_status: doneNotDone.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
 			reset({
-				medical_card: doneNotDone.find((data) => data.default)?.id,
-				medical_result: medicalResults.find((data) => data.default)?.id
+				mofa_status: doneNotDone.find((data) => data.default)?.id,
+				remofa_status: doneNotDone.find((data) => data.default)?.id
 			});
 		}
 	}, [fromSearch]);
@@ -208,7 +207,7 @@ function Mofa() {
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/mofa/mofas/${
+																		`/apps/mofa-management/mofas/${
 																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);

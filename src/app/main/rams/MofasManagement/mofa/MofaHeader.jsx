@@ -233,7 +233,7 @@ function MofaHeader() {
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveOfficeWork}
+							onClick={handleRemoveMofa}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
