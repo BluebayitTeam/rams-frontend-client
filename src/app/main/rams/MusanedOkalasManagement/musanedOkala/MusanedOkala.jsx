@@ -10,12 +10,13 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID, MUSANEDOKALA_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import MofaHeader from './MofaHeader';
-import { useGetMofaQuery } from '../MusanedOkalasApi';
-import MofaForm from './MofaForm';
+import MusanedOkalaHeader from './MusanedOkalaHeader';
+// import { useGetMusanedOkalaQuery } from '../MusanedOkalasApi';
+import MusanedOkalaForm from './MusanedOkalaForm';
+import { useGetMusanedOkalaQuery } from '../MusanedOkalasApi';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -33,13 +34,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({
-	passenger: z.string().nonempty('You must enter a mofa name').min(5, 'The mofa name must be at least 5 characters')
+	passenger: z
+		.string()
+		.nonempty('You must enter a musanedOkala name')
+		.min(5, 'The musanedOkala name must be at least 5 characters')
 });
 
-function Mofa() {
+function MusanedOkala() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { mofaId, fromSearch } = routeParams;
+	const { musanedOkalaId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 
 	const classes = useStyles();
@@ -52,11 +56,11 @@ function Mofa() {
 	});
 
 	const {
-		data: mofa,
+		data: musanedOkala,
 		isLoading,
 		isError
-	} = useGetMofaQuery(mofaId, {
-		skip: !mofaId || mofaId === 'new'
+	} = useGetMusanedOkalaQuery(musanedOkalaId, {
+		skip: !musanedOkalaId || musanedOkalaId === 'new'
 	});
 
 	const [tabValue, setTabValue] = useState(0);
@@ -70,16 +74,16 @@ function Mofa() {
 	} = methods;
 
 	// useEffect(() => {
-	// 	if (mofaId === 'new') {
-	// 		reset(MofaModel({}));
+	// 	if (musanedOkalaId === 'new') {
+	// 		reset(MusanedOkalaModel({}));
 	// 	}
-	// }, [mofaId, reset]);
+	// }, [musanedOkalaId, reset]);
 
 	// useEffect(() => {
-	// 	if (mofa) {
-	// 		reset({ ...mofa });
+	// 	if (musanedOkala) {
+	// 		reset({ ...musanedOkala });
 	// 	}
-	// }, [mofa, reset]);
+	// }, [musanedOkala, reset]);
 
 	useEffect(() => {
 		if (fromSearch) {
@@ -90,31 +94,31 @@ function Mofa() {
 				}
 			};
 			axios
-				.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
+				.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${musanedOkalaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
+						reset({ ...setIdIfValueIsObject(res.data), passenger: musanedOkalaId });
 					} else {
 						reset({
-							passenger: mofaId,
-							mofa_status: doneNotDone.find((data) => data.default)?.id,
-							remofa_status: doneNotDone.find((data) => data.default)?.id
+							passenger: musanedOkalaId,
+							musaned_status: doneNotDone.find((data) => data.default)?.id,
+							okala_status: doneNotDone.find((data) => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
 					}
 				})
 				.catch(() => {
 					reset({
-						passenger: mofaId,
-						mofa_status: doneNotDone.find((data) => data.default)?.id,
-						remofa_status: doneNotDone.find((data) => data.default)?.id
+						passenger: musanedOkalaId,
+						musaned_status: doneNotDone.find((data) => data.default)?.id,
+						okala_status: doneNotDone.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
 			reset({
-				mofa_status: doneNotDone.find((data) => data.default)?.id,
-				remofa_status: doneNotDone.find((data) => data.default)?.id
+				musaned_status: doneNotDone.find((data) => data.default)?.id,
+				okala_status: doneNotDone.find((data) => data.default)?.id
 			});
 		}
 	}, [fromSearch]);
@@ -157,10 +161,10 @@ function Mofa() {
 						classes={{ root: 'w-full h-64' }}
 					>
 						<Tab label="Passenger Details" />
-						<Tab label="Mofa Information" />
+						<Tab label="MusanedOkala Information" />
 					</Tabs>
 				}
-				header={<MofaHeader />}
+				header={<MusanedOkalaHeader />}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -191,6 +195,18 @@ function Mofa() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
+													const authTOKEN = {
+														headers: {
+															'Content-type': 'application/json',
+															Authorization: localStorage.getItem('jwt_access_token')
+														}
+													};
+													axios
+														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+														.then((res) => {
+															setValue('current_status', res.data?.current_status?.id);
+														});
+
 													if (newValue?.id) {
 														const authTOKEN = {
 															headers: {
@@ -199,7 +215,10 @@ function Mofa() {
 															}
 														};
 														axios
-															.get(`${MOFA_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
+															.get(
+																`${MUSANEDOKALA_BY_PASSENGER_ID}${newValue?.id}`,
+																authTOKEN
+															)
 															.then((res) => {
 																if (res.data.id) {
 																	reset({
@@ -207,41 +226,46 @@ function Mofa() {
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/mofa-management/mofas/${
-																			newValue?.passenger?.id || newValue?.id
+																		`/apps/musanedOkala-management/musanedOkalas/${
+																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/mofa-management/mofas/new`);
+																	navigate(
+																		`/apps/musanedOkala-management/musanedOkala/new`
+																	);
 																	reset({
 																		passenger: newValue?.id,
-																		mofa_status: doneNotDone.find(
+																		musaned_status: doneNotDone.find(
 																			(data) => data.default
 																		)?.id,
-																		remofa_status: doneNotDone.find(
+																		okala_status: doneNotDone.find(
 																			(data) => data.default
 																		)?.id
 																	});
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/mofa-management/mofas/new`);
+																navigate(
+																	`/apps/musanedOkala-management/musanedOkalas/new`
+																);
 																reset({
 																	passenger: newValue?.id,
-																	mofa_status: doneNotDone.find(
+																	musaned_status: doneNotDone.find(
 																		(data) => data.default
 																	)?.id,
-																	remofa_status: doneNotDone.find(
+																	okala_status: doneNotDone.find(
 																		(data) => data.default
 																	)?.id
 																});
 															});
 													} else {
-														navigate(`/apps/mofa-management/mofas/new`);
+														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 														reset({
 															passenger: newValue?.id,
-															mofa_status: doneNotDone.find((data) => data.default)?.id,
-															remofa_status: doneNotDone.find((data) => data.default)?.id
+															musaned_status: doneNotDone.find((data) => data.default)
+																?.id,
+															okala_status: doneNotDone.find((data) => data.default)?.id
 														});
 													}
 												}}
@@ -264,10 +288,10 @@ function Mofa() {
 										)}
 									/>
 								</div>
-								<MofaForm />
+								<MusanedOkalaForm />
 							</div>
 						)}
-						{tabValue === 1 && <MofaForm mofaId={mofaId} />}
+						{tabValue === 1 && <MusanedOkalaForm musanedOkalaId={musanedOkalaId} />}
 					</div>
 				}
 				innerScroll
@@ -276,4 +300,4 @@ function Mofa() {
 	);
 }
 
-export default Mofa;
+export default MusanedOkala;

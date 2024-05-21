@@ -9,7 +9,7 @@ import {
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import MusanedOkalaModel from './musanedOkala/models/MusanedOkalaModel';
+// import MusanedOkalaModel from './musanedOkala/models/MusanedOkalaModel';
 
 export const addTagTypes = ['musanedOkalas'];
 const MusanedOkalaApi = api
@@ -31,10 +31,6 @@ const MusanedOkalaApi = api
 					data: jsonToFormData(
 						MusanedOkalaModel({
 							...newMusanedOkala
-							// medical_exam_date: moment(new Date(newMusanedOkala?.medical_exam_date)).format('YYYY-MM-DD'),
-							// medical_report_date: moment(new Date(newMusanedOkala?.medical_report_date)).format('YYYY-MM-DD'),
-							// medical_issue_date: moment(new Date(newMusanedOkala?.medical_issue_date)).format('YYYY-MM-DD'),
-							// medical_expiry_date: moment(new Date(newMusanedOkala?.medical_expiry_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),
@@ -46,10 +42,6 @@ const MusanedOkalaApi = api
 					method: 'PUT',
 					data: jsonToFormData({
 						...musanedOkala
-						// medical_exam_date: moment(new Date(medical?.medical_exam_date)).format('YYYY-MM-DD'),
-						// medical_report_date: moment(new Date(medical?.medical_report_date)).format('YYYY-MM-DD'),
-						// medical_issue_date: moment(new Date(medical?.medical_issue_date)).format('YYYY-MM-DD'),
-						// medical_expiry_date: moment(new Date(medical?.medical_expiry_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['musanedOkalas']

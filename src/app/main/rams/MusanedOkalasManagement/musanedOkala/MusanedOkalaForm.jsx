@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function MofaForm(props) {
+function MusanedOkalaForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { mofaId } = routeParams;
-	const mofaAgencys = useSelector((state) => state.data.agencies);
+	const { musanedOkalaId } = routeParams;
+	const musanedOkalaAgencys = useSelector((state) => state.data.agencies);
 	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState();
 	const [previewImage2, setPreviewImage2] = useState();
@@ -47,15 +47,15 @@ function MofaForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (getValues().mofa_no === undefined) {
-			setValue('mofa_no', 'E');
+		if (getValues().musanedOkala_no === undefined) {
+			setValue('musanedOkala_no', 'E');
 		}
 	}, [getValues()]);
 
 	// useEffect(() => {
 	// 	setPreviewImage('');
 	// 	setPreviewImage2('');
-	// }, [getValues('mofa_agency')]);
+	// }, [getValues('musanedOkala_agency')]);
 
 	// const increaseMonth = (dateString, months) =>
 	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
@@ -66,15 +66,15 @@ function MofaForm(props) {
 	return (
 		<div>
 			<Controller
-				name="mofa_agency"
+				name="musanedOkala_agency"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? mofaAgencys?.find((data) => data.id === value) : null}
-						// options={mofaAgencys}
-						options={[{ id: 'all', name: 'Select Mofa Agency' }, ...mofaAgencys]}
+						value={value ? musanedOkalaAgencys?.find((data) => data.id === value) : null}
+						// options={musanedOkalaAgencys}
+						options={[{ id: 'all', name: 'Select MusanedOkala Agency' }, ...musanedOkalaAgencys]}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -82,10 +82,10 @@ function MofaForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Mofa Agency"
-								label="Mofa Agency"
-								id="mofa_agency"
-								helperText={errors?.mofa_agency?.message}
+								placeholder="Select MusanedOkala Agency"
+								label="MusanedOkala Agency"
+								id="musanedOkala_agency"
+								helperText={errors?.musanedOkala_agency?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -97,16 +97,16 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="mofa_no"
+				name="musanedOkala_no"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						value={field.value || ''}
 						className="mt-8 mb-16"
-						helperText={errors?.mofa_no?.message}
-						label="Mofa No"
-						id="mofa_no"
+						helperText={errors?.musanedOkala_no?.message}
+						label="MusanedOkala No"
+						id="musanedOkala_no"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
@@ -115,16 +115,16 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="mofa_date"
+				name="musanedOkala_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.mofa_date}
-						helperText={errors?.mofa_date?.message}
-						label="Mofa Date"
-						id="mofa_date"
+						error={!!errors.musanedOkala_date}
+						helperText={errors?.musanedOkala_date?.message}
+						label="MusanedOkala Date"
+						id="musanedOkala_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -133,16 +133,16 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="remofa_charge"
+				name="remusanedOkala_charge"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
 						value={field.value || ''}
-						helperText={errors?.remofa_charge?.message}
-						label="Re Mofa Charge"
-						id="remofa_charge"
+						helperText={errors?.remusanedOkala_charge?.message}
+						label="Re MusanedOkala Charge"
+						id="remusanedOkala_charge"
 						variant="outlined"
 						multiline
 						InputLabelProps={field.value && { shrink: true }}
@@ -152,14 +152,14 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="remofa_status"
+				name="remusanedOkala_status"
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Re Mofa Status' }, ...doneNotDone]}
+						options={[{ id: 'all', name: 'Select Re MusanedOkala Status' }, ...doneNotDone]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -167,10 +167,10 @@ function MofaForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Re Mofa Status"
-								label="Re Mofa Status"
-								id="remofa_status"
-								helperText={errors?.remofa_status?.message}
+								placeholder="Select Re MusanedOkala Status"
+								label="Re MusanedOkala Status"
+								id="remusanedOkala_status"
+								helperText={errors?.remusanedOkala_status?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -181,16 +181,16 @@ function MofaForm(props) {
 				)}
 			/>
 			<Controller
-				name="why_remofa"
+				name="why_remusanedOkala"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
 						value={field.value || ''}
-						helperText={errors?.why_remofa?.message}
-						label="Why Re Mofa"
-						id="why_remofa"
+						helperText={errors?.why_remusanedOkala?.message}
+						label="Why Re MusanedOkala"
+						id="why_remusanedOkala"
 						variant="outlined"
 						multiline
 						InputLabelProps={field.value && { shrink: true }}
@@ -200,14 +200,14 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="mofa_status"
+				name="musanedOkala_status"
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Mofa Status' }, ...doneNotDone]}
+						options={[{ id: 'all', name: 'Select MusanedOkala Status' }, ...doneNotDone]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -215,10 +215,10 @@ function MofaForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Mofa Status"
-								label="Mofa Status"
-								id="mofa_status"
-								helperText={errors?.mofa_status?.message}
+								placeholder="Select MusanedOkala Status"
+								label="MusanedOkala Status"
+								id="musanedOkala_status"
+								helperText={errors?.musanedOkala_status?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -232,4 +232,4 @@ function MofaForm(props) {
 	);
 }
 
-export default MofaForm;
+export default MusanedOkalaForm;

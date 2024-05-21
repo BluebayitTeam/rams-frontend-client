@@ -1,6 +1,6 @@
 import _ from '@lodash';
 
-const MofaModel = (data) =>
+const MusanedOkalaModel = (data) =>
 	_.defaults(data || {}, {
 		// profession: '',
 		// country: '',
@@ -9,4 +9,4 @@ const MofaModel = (data) =>
 		// quantity: '',
 		// salary: ''
 	});
-export default MofaModel;
+export default MusanedOkalaModel;

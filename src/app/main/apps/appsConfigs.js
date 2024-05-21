@@ -34,6 +34,7 @@ import CallingAssignAppConfig from '../rams/CallingAssignsManagement/CallingAssi
 import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConfig';
 import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
 import MofaAppConfig from '../rams/MofasManagement/MofaAppConfig';
+import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaAppConfig';
 
 /**
  * The list of application configurations.
@@ -56,6 +57,7 @@ const appsConfigs = [
 	DemandAppConfig,
 	OfficeWorkAppConfig,
 	MofaAppConfig,
+	MusanedOkalaAppConfig,
 	EvisaEntryAppConfig,
 	CallingAssignAppConfig,
 	VisaEntryAppConfig,
