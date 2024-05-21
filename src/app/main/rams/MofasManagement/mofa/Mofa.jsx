@@ -208,7 +208,7 @@ function Mofa() {
 																	});
 																	navigate(
 																		`/apps/mofa-management/mofas/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {

@@ -20,7 +20,7 @@ import { useCreateMofaMutation, useDeleteMofaMutation, useUpdateMofaMutation } f
  */
 function MofaHeader() {
 	const routeParams = useParams();
-	const { medicalId } = routeParams;
+	const { mofaId } = routeParams;
 	const [createMofa] = useCreateMofaMutation();
 	const [saveMofa] = useUpdateMofaMutation();
 	const [removeMofa] = useDeleteMofaMutation();
@@ -76,25 +76,21 @@ function MofaHeader() {
 						localStorage.setItem('medicalAlert', 'saveMofa');
 
 						reset({
-							// medical_center: 'all',
 							passenger: 'all',
-							// medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || ''
-							// medical_exam_date: '',
-							// medical_report_date: '',
-							// medical_issue_date: '',
-							// medical_expiry_date: '',
-							// notes: '',
-							// slip_pic: '',
-							// medical_card_pic: '',
-							// current_status: 'all'
-						});
-						navigate('/apps/mofa-management/mofas/new');
-					}
-				}
+							mofa_agency: 'all',
+							mofa_no: '',
+							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
-				AddedSuccessfully();
+							why_remofa: '',
+							mofa_date: '',
+							remofa_charge: ''
+						});
+					}
+
+					navigate('/apps/mofa-management/mofas/new');
+					AddedSuccessfully();
+				}
 			});
 	}
 
@@ -108,26 +104,21 @@ function MofaHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMofa');
 						navigate('/apps/mofa-management/mofas/new');
+						RemoveSuccessfully();
 						reset({
 							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+							mofa_agency: 'all',
+							mofa_no: '',
+							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+
+							why_remofa: '',
+							mofa_date: '',
+							remofa_charge: ''
 						});
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
-
-				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
@@ -138,40 +129,32 @@ function MofaHeader() {
 		navigate('/apps/mofa-management/mofas/new');
 		reset({
 			passenger: 'all',
-			medical_center: 'all',
-			medical_serial_no: '',
-			medical_result: medicalResults.find((data) => data.default)?.id || '',
-			medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			medical_exam_date: '',
-			medical_report_date: '',
-			medical_issue_date: '',
-			medical_expiry_date: '',
-			notes: '',
-			slip_pic: '',
-			medical_card_pic: '',
-			current_status: 'all'
+			mofa_agency: 'all',
+			mofa_no: '',
+			remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+			mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+
+			why_remofa: '',
+			mofa_date: '',
+			remofa_charge: ''
 		});
 	};
 
 	useEffect(() => {
-		if (medicalId === 'new') {
+		if (mofaId === 'new') {
 			reset({
 				passenger: 'all',
-				medical_center: 'all',
-				medical_serial_no: '',
-				medical_result: medicalResults.find((data) => data.default)?.id || '',
-				medical_card: doneNotDone.find((data) => data.default)?.id || '',
-				medical_exam_date: '',
-				medical_report_date: '',
-				medical_issue_date: '',
-				medical_expiry_date: '',
-				notes: '',
-				slip_pic: '',
-				medical_card_pic: '',
-				current_status: 'all'
+				mofa_agency: 'all',
+				mofa_no: '',
+				remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+				mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+
+				why_remofa: '',
+				mofa_date: '',
+				remofa_charge: ''
 			});
 		}
-	}, [medicalId, reset]);
+	}, [mofaId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -182,7 +165,7 @@ function MofaHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.medicalId === 'new'
+								{routeParams.mofaId === 'new'
 									? 'Create New Mofa'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
@@ -190,7 +173,7 @@ function MofaHeader() {
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.medicalId !== 'new' && 'Mofas Detail'}
+								{routeParams.mofaId !== 'new' && 'Mofas Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -201,7 +184,7 @@ function MofaHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.medicalId === 'new' ||
+				{(routeParams.mofaId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
@@ -214,7 +197,7 @@ function MofaHeader() {
 					</Button>
 				)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.mofaId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
@@ -227,7 +210,7 @@ function MofaHeader() {
 						</Button>
 					)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.mofaId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button

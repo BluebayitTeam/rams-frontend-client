@@ -133,16 +133,16 @@ function MofaForm(props) {
 			/>
 
 			<Controller
-				name="why_remofa"
+				name="remofa_charge"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
 						value={field.value || ''}
-						helperText={errors?.why_remofa?.message}
+						helperText={errors?.remofa_charge?.message}
 						label="Re Mofa Charge"
-						id="why_remofa"
+						id="remofa_charge"
 						variant="outlined"
 						multiline
 						InputLabelProps={field.value && { shrink: true }}
