@@ -76,25 +76,21 @@ function MofaHeader() {
 						localStorage.setItem('medicalAlert', 'saveMofa');
 
 						reset({
-							// medical_center: 'all',
 							passenger: 'all',
-							// medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || ''
-							// medical_exam_date: '',
-							// medical_report_date: '',
-							// medical_issue_date: '',
-							// medical_expiry_date: '',
-							// notes: '',
-							// slip_pic: '',
-							// medical_card_pic: '',
-							// current_status: 'all'
-						});
-						navigate('/apps/mofa-management/mofas/new');
-					}
-				}
+							mofa_agency: 'all',
+							mofa_no: '',
+							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
-				AddedSuccessfully();
+							why_remofa: '',
+							mofa_date: '',
+							remofa_charge: ''
+						});
+					}
+
+					navigate('/apps/mofa-management/mofas/new');
+					AddedSuccessfully();
+				}
 			});
 	}
 
@@ -108,26 +104,21 @@ function MofaHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMofa');
 						navigate('/apps/mofa-management/mofas/new');
+						RemoveSuccessfully();
 						reset({
 							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+							mofa_agency: 'all',
+							mofa_no: '',
+							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+
+							why_remofa: '',
+							mofa_date: '',
+							remofa_charge: ''
 						});
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
-
-				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
@@ -138,18 +129,14 @@ function MofaHeader() {
 		navigate('/apps/mofa-management/mofas/new');
 		reset({
 			passenger: 'all',
-			medical_center: 'all',
-			medical_serial_no: '',
-			medical_result: medicalResults.find((data) => data.default)?.id || '',
-			medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			medical_exam_date: '',
-			medical_report_date: '',
-			medical_issue_date: '',
-			medical_expiry_date: '',
-			notes: '',
-			slip_pic: '',
-			medical_card_pic: '',
-			current_status: 'all'
+			mofa_agency: 'all',
+			mofa_no: '',
+			remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+			mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+
+			why_remofa: '',
+			mofa_date: '',
+			remofa_charge: ''
 		});
 	};
 
@@ -157,18 +144,14 @@ function MofaHeader() {
 		if (mofaId === 'new') {
 			reset({
 				passenger: 'all',
-				medical_center: 'all',
-				medical_serial_no: '',
-				medical_result: medicalResults.find((data) => data.default)?.id || '',
-				medical_card: doneNotDone.find((data) => data.default)?.id || '',
-				medical_exam_date: '',
-				medical_report_date: '',
-				medical_issue_date: '',
-				medical_expiry_date: '',
-				notes: '',
-				slip_pic: '',
-				medical_card_pic: '',
-				current_status: 'all'
+				mofa_agency: 'all',
+				mofa_no: '',
+				remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+				mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+
+				why_remofa: '',
+				mofa_date: '',
+				remofa_charge: ''
 			});
 		}
 	}, [mofaId, reset]);
@@ -233,7 +216,7 @@ function MofaHeader() {
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveOfficeWork}
+							onClick={handleRemoveMofa}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove

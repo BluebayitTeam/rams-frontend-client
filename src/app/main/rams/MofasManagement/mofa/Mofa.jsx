@@ -10,8 +10,8 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import MofaHeader from './MofaHeader';
 import { useGetMofaQuery } from '../MofasApi';
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({
-	first_name: z.string().nonempty('You must enter a mofa name').min(5, 'The mofa name must be at least 5 characters')
+	passenger: z.string().nonempty('You must enter a mofa name').min(5, 'The mofa name must be at least 5 characters')
 });
 
 function Mofa() {
@@ -41,6 +41,7 @@ function Mofa() {
 	const routeParams = useParams();
 	const { mofaId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
+
 	const classes = useStyles();
 	const navigate = useNavigate();
 
@@ -88,17 +89,16 @@ function Mofa() {
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
-
 			axios
 				.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
+						reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
 					} else {
 						reset({
 							passenger: mofaId,
-							medical_card: doneNotDone.find((data) => data.default)?.id,
-							medical_result: medicalResults.find((data) => data.default)?.id
+							mofa_status: doneNotDone.find((data) => data.default)?.id,
+							remofa_status: doneNotDone.find((data) => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
 					}
@@ -106,15 +106,15 @@ function Mofa() {
 				.catch(() => {
 					reset({
 						passenger: mofaId,
-						medical_card: doneNotDone.find((data) => data.default)?.id,
-						medical_result: medicalResults.find((data) => data.default)?.id
+						mofa_status: doneNotDone.find((data) => data.default)?.id,
+						remofa_status: doneNotDone.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
 			reset({
-				medical_card: doneNotDone.find((data) => data.default)?.id,
-				medical_result: medicalResults.find((data) => data.default)?.id
+				mofa_status: doneNotDone.find((data) => data.default)?.id,
+				remofa_status: doneNotDone.find((data) => data.default)?.id
 			});
 		}
 	}, [fromSearch]);
@@ -127,17 +127,17 @@ function Mofa() {
 		return <FuseLoading />;
 	}
 
-	const updateCurrentStatus = (id) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
+	// const updateCurrentStatus = (id) => {
+	// 	const authTOKEN = {
+	// 		headers: {
+	// 			'Content-type': 'application/json',
+	// 			Authorization: localStorage.getItem('jwt_access_token')
+	// 		}
+	// 	};
+	// 	axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
+	// 		setValue('current_status', res.data?.current_status?.id);
+	// 	});
+	// };
 
 	return (
 		<FormProvider {...methods}>
@@ -207,8 +207,8 @@ function Mofa() {
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/mofa-management/mofa/${
-																			newValue?.passenger_id || newValue?.id
+																		`/apps/mofa-management/mofas/${
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {

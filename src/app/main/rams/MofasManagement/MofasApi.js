@@ -36,11 +36,11 @@ const MofaApi = api
 				invalidatesTags: ['mofas']
 			}),
 			updateMofa: build.mutation({
-				query: (medical) => ({
-					url: `${UPDATE_MOFA}${medical.id}`,
+				query: (mofa) => ({
+					url: `${UPDATE_MOFA}${mofa.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...medical
+						...mofa
 						// medical_exam_date: moment(new Date(medical?.medical_exam_date)).format('YYYY-MM-DD'),
 						// medical_report_date: moment(new Date(medical?.medical_report_date)).format('YYYY-MM-DD'),
 						// medical_issue_date: moment(new Date(medical?.medical_issue_date)).format('YYYY-MM-DD'),
