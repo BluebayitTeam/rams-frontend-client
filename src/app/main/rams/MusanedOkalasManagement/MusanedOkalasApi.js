@@ -9,6 +9,7 @@ import {
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
+import MusanedOkalaModel from './musanedOkala/models/MusanedOkalaModel';
 // import MusanedOkalaModel from './musanedOkala/models/MusanedOkalaModel';
 
 export const addTagTypes = ['musanedOkalas'];

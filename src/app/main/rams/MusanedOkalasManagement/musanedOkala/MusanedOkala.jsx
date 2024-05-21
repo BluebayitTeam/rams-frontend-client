@@ -131,18 +131,6 @@ function MusanedOkala() {
 		return <FuseLoading />;
 	}
 
-	// const updateCurrentStatus = (id) => {
-	// 	const authTOKEN = {
-	// 		headers: {
-	// 			'Content-type': 'application/json',
-	// 			Authorization: localStorage.getItem('jwt_access_token')
-	// 		}
-	// 	};
-	// 	axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
-	// 		setValue('current_status', res.data?.current_status?.id);
-	// 	});
-	// };
-
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
@@ -227,7 +215,7 @@ function MusanedOkala() {
 																	});
 																	navigate(
 																		`/apps/musanedOkala-management/musanedOkalas/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {

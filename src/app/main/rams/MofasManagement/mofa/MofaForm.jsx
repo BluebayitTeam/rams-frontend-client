@@ -47,11 +47,10 @@ function MofaForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (getValues().mofa_no === undefined) {
+		if (getValues().mofa_no == undefined) {
 			setValue('mofa_no', 'E');
 		}
 	}, [getValues()]);
-
 	// useEffect(() => {
 	// 	setPreviewImage('');
 	// 	setPreviewImage2('');

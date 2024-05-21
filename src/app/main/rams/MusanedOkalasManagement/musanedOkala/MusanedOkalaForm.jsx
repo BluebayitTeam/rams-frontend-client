@@ -1,5 +1,4 @@
-import { styled } from '@mui/system';
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { getAgents, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
@@ -8,16 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
-
-const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		maxWidth: 220,
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9'
-	}
-}));
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -48,12 +37,6 @@ function MusanedOkalaForm(props) {
 		dispatch(getAgents());
 		dispatch(getCurrentStatuss());
 	}, []);
-
-	useEffect(() => {
-		if (getValues().musanedOkala_no === undefined) {
-			setValue('musanedOkala_no', 'E');
-		}
-	}, [getValues()]);
 
 	useEffect(() => {
 		setpreviewdoc1Image('');
@@ -108,9 +91,10 @@ function MusanedOkalaForm(props) {
 						freeSolo
 						value={value ? musanedGivenBys?.find((data) => data.id === value) : null}
 						// options={musanedOkalaAgencys}
-						options={musanedGivenBys}
+						// options={musanedGivenBys}
+						options={[{ id: 'all', first_name: 'Select First Name', last_name: '' }, ...musanedGivenBys]}
+						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-						// getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}

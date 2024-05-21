@@ -78,7 +78,7 @@ function MofaHeader() {
 						reset({
 							passenger: 'all',
 							mofa_agency: 'all',
-							mofa_no: '',
+
 							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
@@ -108,7 +108,7 @@ function MofaHeader() {
 						reset({
 							passenger: 'all',
 							mofa_agency: 'all',
-							mofa_no: '',
+
 							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
@@ -130,7 +130,7 @@ function MofaHeader() {
 		reset({
 			passenger: 'all',
 			mofa_agency: 'all',
-			mofa_no: '',
+
 			remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 			mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
@@ -145,7 +145,7 @@ function MofaHeader() {
 			reset({
 				passenger: 'all',
 				mofa_agency: 'all',
-				mofa_no: '',
+
 				remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 				mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 

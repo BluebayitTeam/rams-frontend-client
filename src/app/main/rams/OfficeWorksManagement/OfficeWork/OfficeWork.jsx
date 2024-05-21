@@ -366,7 +366,19 @@ function OfficeWork() {
 																		)?.id,
 																		finger_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+
+																		police_clearance_no: '',
+																		police_clearance_date: '',
+
+																		driving_license_no: '',
+																		driving_license_date: '',
+
+																		finger_no: '',
+
+																		finger_date: '',
+																		certificate_experience: '',
+																		current_status: 'all'
 																	});
 																}
 															})
@@ -382,20 +394,44 @@ function OfficeWork() {
 																	)?.id,
 																	finger_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id
+																	)?.id,
+
+																	police_clearance_no: '',
+																	police_clearance_date: '',
+
+																	driving_license_no: '',
+																	driving_license_date: '',
+
+																	finger_no: '',
+
+																	finger_date: '',
+																	certificate_experience: '',
+																	current_status: 'all'
 																});
 															});
 													} else {
 														navigate(`/apps/officeWork/officeWorks/new`);
 														reset({
-															passenger: newValue?.id,
+															passenger: 'all',
 															police_clearance_status: doneNotDone.find(
 																(data) => data.default
 															)?.id,
 															driving_license_status: doneNotDone.find(
 																(data) => data.default
 															)?.id,
-															finger_status: doneNotDone.find((data) => data.default)?.id
+															finger_status: doneNotDone.find((data) => data.default)?.id,
+
+															police_clearance_no: '',
+															police_clearance_date: '',
+
+															driving_license_no: '',
+															driving_license_date: '',
+
+															finger_no: '',
+
+															finger_date: '',
+															certificate_experience: '',
+															current_status: 'all'
 														});
 													}
 												}}

@@ -215,12 +215,19 @@ function Mofa() {
 																	navigate(`/apps/mofa-management/mofas/new`);
 																	reset({
 																		passenger: newValue?.id,
-																		mofa_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		remofa_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id
+
+																		mofa_agency: 'all',
+
+																		remofa_status:
+																			doneNotDone.find((data) => data.default)
+																				?.id || '',
+																		mofa_status:
+																			doneNotDone.find((data) => data.default)
+																				?.id || '',
+
+																		why_remofa: '',
+																		mofa_date: '',
+																		remofa_charge: ''
 																	});
 																}
 															})
@@ -228,20 +235,35 @@ function Mofa() {
 																navigate(`/apps/mofa-management/mofas/new`);
 																reset({
 																	passenger: newValue?.id,
-																	mofa_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	remofa_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id
+
+																	mofa_agency: 'all',
+
+																	remofa_status:
+																		doneNotDone.find((data) => data.default)?.id ||
+																		'',
+																	mofa_status:
+																		doneNotDone.find((data) => data.default)?.id ||
+																		'',
+
+																	why_remofa: '',
+																	mofa_date: '',
+																	remofa_charge: ''
 																});
 															});
 													} else {
 														navigate(`/apps/mofa-management/mofas/new`);
 														reset({
-															passenger: newValue?.id,
-															mofa_status: doneNotDone.find((data) => data.default)?.id,
-															remofa_status: doneNotDone.find((data) => data.default)?.id
+															passenger: 'all',
+															mofa_agency: 'all',
+
+															remofa_status:
+																doneNotDone.find((data) => data.default)?.id || '',
+															mofa_status:
+																doneNotDone.find((data) => data.default)?.id || '',
+
+															why_remofa: '',
+															mofa_date: '',
+															remofa_charge: ''
 														});
 													}
 												}}

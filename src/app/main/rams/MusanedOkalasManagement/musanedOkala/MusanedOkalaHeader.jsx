@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
@@ -20,11 +20,11 @@ import {
 } from '../MusanedOkalasApi';
 
 /**
- * The mofa header.
+ * The musanedOkala header.
  */
 function MusanedOkalaHeader() {
 	const routeParams = useParams();
-	const { mofaId } = routeParams;
+	const { musanedOkalaId } = routeParams;
 	const [createMusanedOkala] = useCreateMusanedOkalaMutation();
 	const [saveMusanedOkala] = useUpdateMusanedOkalaMutation();
 	const [removeMusanedOkala] = useDeleteMusanedOkalaMutation();
@@ -50,12 +50,21 @@ function MusanedOkalaHeader() {
 						localStorage.setItem('medicalAlert', 'updateMusanedOkala');
 
 						reset({
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_result: medicalResults.find((data) => data.default)?.id || ''
+							passenger: 'all',
+							musaned_no: '',
+							musaned_date: '',
+							musaned_status: doneNotDone.find((data) => data.default)?.id,
+							okala_status: doneNotDone.find((data) => data.default)?.id,
+
+							musaned_given_by: '',
+							okala_no: '',
+							okala_date: '',
+							okala_given_by: '',
+							current_status: ''
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/mofa-management/mofas/new');
+						navigate('/apps/musanedOkala-management/musanedOkalas/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -64,7 +73,7 @@ function MusanedOkalaHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating mofa', error);
+				console.error('Error updating musanedOkala', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
@@ -81,18 +90,20 @@ function MusanedOkalaHeader() {
 
 						reset({
 							passenger: 'all',
-							mofa_agency: 'all',
-							mofa_no: '',
-							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+							musaned_no: '',
+							musaned_date: '',
+							musaned_status: doneNotDone.find((data) => data.default)?.id,
+							okala_status: doneNotDone.find((data) => data.default)?.id,
 
-							why_remofa: '',
-							mofa_date: '',
-							remofa_charge: ''
+							musaned_given_by: '',
+							okala_no: '',
+							okala_date: '',
+							okala_given_by: '',
+							current_status: ''
 						});
 					}
 
-					navigate('/apps/mofa-management/mofas/new');
+					navigate('/apps/musanedOkala-management/musanedOkalas/new');
 					AddedSuccessfully();
 				}
 			});
@@ -107,18 +118,20 @@ function MusanedOkalaHeader() {
 						history.goBack();
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
-						navigate('/apps/mofa-management/mofas/new');
+						navigate('/apps/musanedOkala-management/musanedOkalas/new');
 						RemoveSuccessfully();
 						reset({
 							passenger: 'all',
-							mofa_agency: 'all',
-							mofa_no: '',
-							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+							musaned_no: '',
+							musaned_date: '',
+							musaned_status: doneNotDone.find((data) => data.default)?.id,
+							okala_status: doneNotDone.find((data) => data.default)?.id,
 
-							why_remofa: '',
-							mofa_date: '',
-							remofa_charge: ''
+							musaned_given_by: '',
+							okala_no: '',
+							okala_date: '',
+							okala_given_by: '',
+							current_status: ''
 						});
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
@@ -130,35 +143,39 @@ function MusanedOkalaHeader() {
 	}
 
 	const handleCancel = () => {
-		navigate('/apps/mofa-management/mofas/new');
+		navigate('/apps/musanedOkala-management/musanedOkalas/new');
 		reset({
 			passenger: 'all',
-			mofa_agency: 'all',
-			mofa_no: '',
-			remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-			mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+			musaned_no: '',
+			musaned_date: '',
+			musaned_status: doneNotDone.find((data) => data.default)?.id,
+			okala_status: doneNotDone.find((data) => data.default)?.id,
 
-			why_remofa: '',
-			mofa_date: '',
-			remofa_charge: ''
+			musaned_given_by: '',
+			okala_no: '',
+			okala_date: '',
+			okala_given_by: '',
+			current_status: ''
 		});
 	};
 
 	useEffect(() => {
-		if (mofaId === 'new') {
+		if (musanedOkalaId === 'new') {
 			reset({
 				passenger: 'all',
-				mofa_agency: 'all',
-				mofa_no: '',
-				remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-				mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+				musaned_no: '',
+				musaned_date: '',
+				musaned_status: doneNotDone.find((data) => data.default)?.id,
+				okala_status: doneNotDone.find((data) => data.default)?.id,
 
-				why_remofa: '',
-				mofa_date: '',
-				remofa_charge: ''
+				musaned_given_by: '',
+				okala_no: '',
+				okala_date: '',
+				okala_given_by: '',
+				current_status: ''
 			});
 		}
-	}, [mofaId, reset]);
+	}, [musanedOkalaId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -169,7 +186,7 @@ function MusanedOkalaHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.mofaId === 'new'
+								{routeParams.musanedOkalaId === 'new'
 									? 'Create New MusanedOkala'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
@@ -177,7 +194,7 @@ function MusanedOkalaHeader() {
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.mofaId !== 'new' && 'MusanedOkalas Detail'}
+								{routeParams.musanedOkalaId !== 'new' && 'MusanedOkalas Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -188,7 +205,7 @@ function MusanedOkalaHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.mofaId === 'new' ||
+				{(routeParams.musanedOkalaId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
@@ -201,7 +218,7 @@ function MusanedOkalaHeader() {
 					</Button>
 				)}
 
-				{routeParams?.mofaId !== 'new' &&
+				{routeParams?.musanedOkalaId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
@@ -214,7 +231,7 @@ function MusanedOkalaHeader() {
 						</Button>
 					)}
 
-				{routeParams?.mofaId !== 'new' &&
+				{routeParams?.musanedOkalaId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
