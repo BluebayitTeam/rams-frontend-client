@@ -20,7 +20,7 @@ import { useCreateMofaMutation, useDeleteMofaMutation, useUpdateMofaMutation } f
  */
 function MofaHeader() {
 	const routeParams = useParams();
-	const { mofaId } = routeParams;
+	const { medicalId } = routeParams;
 	const [createMofa] = useCreateMofaMutation();
 	const [saveMofa] = useUpdateMofaMutation();
 	const [removeMofa] = useDeleteMofaMutation();
@@ -51,7 +51,7 @@ function MofaHeader() {
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/mofa-management/mofas/new');
+						navigate('/apps/mofa/mofas/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -90,7 +90,7 @@ function MofaHeader() {
 							// medical_card_pic: '',
 							// current_status: 'all'
 						});
-						navigate('/apps/mofa-management/mofas/new');
+						navigate('/apps/mofa/mofas/new');
 					}
 				}
 
@@ -107,7 +107,7 @@ function MofaHeader() {
 						history.goBack();
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMofa');
-						navigate('/apps/mofa-management/mofas/new');
+						navigate('/apps/mofa/mofas/new');
 						reset({
 							passenger: 'all',
 							medical_center: 'all',
@@ -135,7 +135,7 @@ function MofaHeader() {
 	}
 
 	const handleCancel = () => {
-		navigate('/apps/mofa-management/mofas/new');
+		navigate('/apps/mofa/mofas/new');
 		reset({
 			passenger: 'all',
 			medical_center: 'all',
@@ -154,7 +154,7 @@ function MofaHeader() {
 	};
 
 	useEffect(() => {
-		if (mofaId === 'new') {
+		if (medicalId === 'new') {
 			reset({
 				passenger: 'all',
 				medical_center: 'all',
@@ -171,7 +171,7 @@ function MofaHeader() {
 				current_status: 'all'
 			});
 		}
-	}, [mofaId, reset]);
+	}, [medicalId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -182,7 +182,7 @@ function MofaHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.mofaId === 'new'
+								{routeParams.medicalId === 'new'
 									? 'Create New Mofa'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
@@ -190,7 +190,7 @@ function MofaHeader() {
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.mofaId !== 'new' && 'Mofas Detail'}
+								{routeParams.medicalId !== 'new' && 'Mofas Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -201,7 +201,7 @@ function MofaHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.mofaId === 'new' ||
+				{(routeParams.medicalId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
@@ -214,7 +214,7 @@ function MofaHeader() {
 					</Button>
 				)}
 
-				{routeParams?.mofaId !== 'new' &&
+				{routeParams?.medicalId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
@@ -227,7 +227,7 @@ function MofaHeader() {
 						</Button>
 					)}
 
-				{routeParams?.mofaId !== 'new' &&
+				{routeParams?.medicalId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button

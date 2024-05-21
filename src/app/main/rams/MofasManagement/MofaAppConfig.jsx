@@ -11,7 +11,7 @@ const MofaAppConfig = {
 	},
 	routes: [
 		{
-			path: 'apps/mofa-management',
+			path: 'apps/mofa',
 			element: <MofaApp />,
 			children: [
 				{

@@ -207,12 +207,12 @@ function Mofa() {
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/mofa-management/mofa/${
+																		`/apps/mofa/mofas/${
 																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/mofa-management/mofas/new`);
+																	navigate(`/apps/mofa/mofas/new`);
 																	reset({
 																		passenger: newValue?.id,
 																		mofa_status: doneNotDone.find(
@@ -225,7 +225,7 @@ function Mofa() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/mofa-management/mofas/new`);
+																navigate(`/apps/mofa/mofas/new`);
 																reset({
 																	passenger: newValue?.id,
 																	mofa_status: doneNotDone.find(
@@ -237,7 +237,7 @@ function Mofa() {
 																});
 															});
 													} else {
-														navigate(`/apps/mofa-management/mofas/new`);
+														navigate(`/apps/mofa/mofas/new`);
 														reset({
 															passenger: newValue?.id,
 															mofa_status: doneNotDone.find((data) => data.default)?.id,
