@@ -10,10 +10,9 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID, MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import moment from 'moment';
 import MofaHeader from './MofaHeader';
 import { useGetMofaQuery } from '../MofasApi';
 import MofaForm from './MofaForm';
@@ -91,7 +90,7 @@ function Mofa() {
 			};
 
 			axios
-				.get(`${MEDICAL_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
+				.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
 						// reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
@@ -192,8 +191,6 @@ function Mofa() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													updateCurrentStatus(newValue?.id);
-
 													if (newValue?.id) {
 														const authTOKEN = {
 															headers: {
@@ -202,97 +199,49 @@ function Mofa() {
 															}
 														};
 														axios
-															.get(`${MEDICAL_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
+															.get(`${MOFA_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
 																if (res.data.id) {
 																	reset({
-																		...setIdIfValueIsObject({
-																			...res?.data,
-																			medical_center:
-																				res?.data?.medical_center?.id,
-																			medical_exam_date: moment(
-																				new Date(res?.data?.medical_exam_date)
-																			).format('YYYY-MM-DD'),
-																			medical_report_date: moment(
-																				new Date(res?.data?.medical_report_date)
-																			).format('YYYY-MM-DD'),
-																			medical_issue_date: moment(
-																				new Date(res?.data?.medical_issue_date)
-																			).format('YYYY-MM-DD'),
-																			medical_expiry_date: moment(
-																				new Date(res?.data?.medical_expiry_date)
-																			).format('YYYY-MM-DD')
-																		}),
+																		...setIdIfValueIsObject(res.data),
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/mofa/mofas/${
-																			newValue?.newValue?.id || newValue?.id
+																		`/apps/mofa-management/mofa/${
+																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/mofa/mofas/new`);
+																	navigate(`/apps/mofa-management/mofas/new`);
 																	reset({
-																		medical_center: 'all',
 																		passenger: newValue?.id,
-																		medical_serial_no: '',
-																		medical_result:
-																			medicalResults.find((data) => data.default)
-																				?.id || '',
-																		medical_card:
-																			doneNotDone.find((data) => data.default)
-																				?.id || '',
-																		medical_exam_date: '',
-																		medical_report_date: '',
-																		medical_issue_date: '',
-																		medical_expiry_date: '',
-																		notes: '',
-																		slip_pic: '',
-																		medical_card_pic: '',
-																		current_status: 'all'
+																		mofa_status: doneNotDone.find(
+																			(data) => data.default
+																		)?.id,
+																		remofa_status: doneNotDone.find(
+																			(data) => data.default
+																		)?.id
 																	});
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/mofa/mofas/new`);
+																navigate(`/apps/mofa-management/mofas/new`);
 																reset({
 																	passenger: newValue?.id,
-																	medical_center: 'all',
-																	medical_serial_no: '',
-																	medical_result:
-																		medicalResults.find((data) => data.default)
-																			?.id || '',
-																	medical_card:
-																		doneNotDone.find((data) => data.default)?.id ||
-																		'',
-																	medical_exam_date: '',
-																	medical_report_date: '',
-																	medical_issue_date: '',
-																	medical_expiry_date: '',
-																	notes: '',
-																	slip_pic: '',
-																	medical_card_pic: '',
-																	current_status: 'all'
+																	mofa_status: doneNotDone.find(
+																		(data) => data.default
+																	)?.id,
+																	remofa_status: doneNotDone.find(
+																		(data) => data.default
+																	)?.id
 																});
 															});
 													} else {
-														navigate(`/apps/mofa/mofas/new`);
+														navigate(`/apps/mofa-management/mofas/new`);
 														reset({
-															passenger: 'all',
-															medical_center: 'all',
-															medical_serial_no: '',
-															medical_result:
-																medicalResults.find((data) => data.default)?.id || '',
-															medical_card:
-																doneNotDone.find((data) => data.default)?.id || '',
-															medical_exam_date: '',
-															medical_report_date: '',
-															medical_issue_date: '',
-															medical_expiry_date: '',
-															notes: '',
-															slip_pic: '',
-															medical_card_pic: '',
-															current_status: 'all'
+															passenger: newValue?.id,
+															mofa_status: doneNotDone.find((data) => data.default)?.id,
+															remofa_status: doneNotDone.find((data) => data.default)?.id
 														});
 													}
 												}}

@@ -11,16 +11,16 @@ const MofaAppConfig = {
 	},
 	routes: [
 		{
-			path: 'apps/Mofa',
+			path: 'apps/mofa-management',
 			element: <MofaApp />,
 			children: [
 				{
 					path: '',
-					element: <Navigate to="Mofas" />
+					element: <Navigate to="mofas" />
 				},
 
 				{
-					path: 'Mofas/:MofaId/:fromSearch?',
+					path: 'mofas/:mofaId/:fromSearch?',
 					element: <Mofa />
 				}
 			]

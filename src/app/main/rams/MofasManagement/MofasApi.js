@@ -1,9 +1,8 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import { MEDICAL_BY_PASSENGER_ID, CREATE_MEDICAL, UPDATE_MEDICAL, DELETE_MEDICAL } from 'src/app/constant/constants';
+import { CREATE_MOFA, UPDATE_MOFA, DELETE_MOFA, MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import MofaModel from './mofa/models/MofaModel';
 
@@ -16,21 +15,21 @@ const MofaApi = api
 		endpoints: (build) => ({
 			getMofa: build.query({
 				query: (mofaId) => ({
-					url: `${MEDICAL_BY_PASSENGER_ID}${mofaId}`
+					url: `${MOFA_BY_PASSENGER_ID}${mofaId}`
 				}),
 				providesTags: ['mofas']
 			}),
 			createMofa: build.mutation({
 				query: (newMofa) => ({
-					url: CREATE_MEDICAL,
+					url: CREATE_MOFA,
 					method: 'POST',
 					data: jsonToFormData(
 						MofaModel({
-							...newMofa,
-							medical_exam_date: moment(new Date(newMofa?.medical_exam_date)).format('YYYY-MM-DD'),
-							medical_report_date: moment(new Date(newMofa?.medical_report_date)).format('YYYY-MM-DD'),
-							medical_issue_date: moment(new Date(newMofa?.medical_issue_date)).format('YYYY-MM-DD'),
-							medical_expiry_date: moment(new Date(newMofa?.medical_expiry_date)).format('YYYY-MM-DD')
+							...newMofa
+							// medical_exam_date: moment(new Date(newMofa?.medical_exam_date)).format('YYYY-MM-DD'),
+							// medical_report_date: moment(new Date(newMofa?.medical_report_date)).format('YYYY-MM-DD'),
+							// medical_issue_date: moment(new Date(newMofa?.medical_issue_date)).format('YYYY-MM-DD'),
+							// medical_expiry_date: moment(new Date(newMofa?.medical_expiry_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),
@@ -38,21 +37,21 @@ const MofaApi = api
 			}),
 			updateMofa: build.mutation({
 				query: (medical) => ({
-					url: `${UPDATE_MEDICAL}${medical.id}`,
+					url: `${UPDATE_MOFA}${medical.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...medical,
-						medical_exam_date: moment(new Date(medical?.medical_exam_date)).format('YYYY-MM-DD'),
-						medical_report_date: moment(new Date(medical?.medical_report_date)).format('YYYY-MM-DD'),
-						medical_issue_date: moment(new Date(medical?.medical_issue_date)).format('YYYY-MM-DD'),
-						medical_expiry_date: moment(new Date(medical?.medical_expiry_date)).format('YYYY-MM-DD')
+						...medical
+						// medical_exam_date: moment(new Date(medical?.medical_exam_date)).format('YYYY-MM-DD'),
+						// medical_report_date: moment(new Date(medical?.medical_report_date)).format('YYYY-MM-DD'),
+						// medical_issue_date: moment(new Date(medical?.medical_issue_date)).format('YYYY-MM-DD'),
+						// medical_expiry_date: moment(new Date(medical?.medical_expiry_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['mofas']
 			}),
 			deleteMofa: build.mutation({
 				query: (mofaId) => ({
-					url: `${DELETE_MEDICAL}${mofaId}`,
+					url: `${DELETE_MOFA}${mofaId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['mofas']

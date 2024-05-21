@@ -13,37 +13,37 @@ import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MofasApi';
+import { useCreateMofaMutation, useDeleteMofaMutation, useUpdateMofaMutation } from '../MofasApi';
 
 /**
- * The medical header.
+ * The mofa header.
  */
-function MedicalHeader() {
+function MofaHeader() {
 	const routeParams = useParams();
-	const { medicalId } = routeParams;
-	const [createMedical] = useCreateMedicalMutation();
-	const [saveMedical] = useUpdateMedicalMutation();
-	const [removeMedical] = useDeleteMedicalMutation();
+	const { mofaId } = routeParams;
+	const [createMofa] = useCreateMofaMutation();
+	const [saveMofa] = useUpdateMofaMutation();
+	const [removeMofa] = useDeleteMofaMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMedical');
-	const handleUpdate = localStorage.getItem('updateMedical');
+	const handleDelete = localStorage.getItem('deleteMofa');
+	const handleUpdate = localStorage.getItem('updateMofa');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMedical() {
-		saveMedical(getValues())
+	function handleUpdateMofa() {
+		saveMofa(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateMedical');
+						localStorage.setItem('medicalAlert', 'updateMofa');
 
 						reset({
 							medical_card: doneNotDone.find((data) => data.default)?.id || '',
@@ -51,7 +51,7 @@ function MedicalHeader() {
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/medical/medicals/new');
+						navigate('/apps/mofa-management/mofas/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -60,20 +60,20 @@ function MedicalHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating medical', error);
+				console.error('Error updating mofa', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateMedical() {
-		createMedical(getValues())
+	function handleCreateMofa() {
+		createMofa(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMedical');
+						localStorage.setItem('medicalAlert', 'saveMofa');
 
 						reset({
 							// medical_center: 'all',
@@ -90,7 +90,7 @@ function MedicalHeader() {
 							// medical_card_pic: '',
 							// current_status: 'all'
 						});
-						navigate('/apps/medical/medicals/new');
+						navigate('/apps/mofa-management/mofas/new');
 					}
 				}
 
@@ -98,16 +98,16 @@ function MedicalHeader() {
 			});
 	}
 
-	function handleRemoveMedical() {
-		removeMedical(getValues()?.id)
+	function handleRemoveMofa() {
+		removeMofa(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMedical');
-						navigate('/apps/medical/medicals/new');
+						localStorage.setItem('medicalAlert', 'saveMofa');
+						navigate('/apps/mofa-management/mofas/new');
 						reset({
 							passenger: 'all',
 							medical_center: 'all',
@@ -135,7 +135,7 @@ function MedicalHeader() {
 	}
 
 	const handleCancel = () => {
-		navigate('/apps/medical/medicals/new');
+		navigate('/apps/mofa-management/mofas/new');
 		reset({
 			passenger: 'all',
 			medical_center: 'all',
@@ -154,7 +154,7 @@ function MedicalHeader() {
 	};
 
 	useEffect(() => {
-		if (medicalId === 'new') {
+		if (mofaId === 'new') {
 			reset({
 				passenger: 'all',
 				medical_center: 'all',
@@ -171,7 +171,7 @@ function MedicalHeader() {
 				current_status: 'all'
 			});
 		}
-	}, [medicalId, reset]);
+	}, [mofaId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -182,15 +182,15 @@ function MedicalHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.medicalId === 'new'
-									? 'Create New Medical'
+								{routeParams.mofaId === 'new'
+									? 'Create New Mofa'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.medicalId !== 'new' && 'Medicals Detail'}
+								{routeParams.mofaId !== 'new' && 'Mofas Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -201,47 +201,40 @@ function MedicalHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.medicalId === 'new' ||
+				{(routeParams.mofaId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateMedical}
+						onClick={handleCreateMofa}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.mofaId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
-							className="whitespace-nowrap mx-4"
-							color="secondary"
+							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							style={{ backgroundColor: '#4dc08e', color: 'white' }}
-							onClick={handleUpdateMedical}
+							onClick={handleUpdateMofa}
+							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.mofaId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
-							className="whitespace-nowrap mx-4"
+							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							color="secondary"
-							onClick={handleRemoveMedical}
+							onClick={handleRemoveOfficeWork}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-							style={{
-								backgroundColor: '#ea5b78',
-								color: 'white'
-								// display: user_role === 'ADMIN' || user_role === 'admin' ? 'flex' : 'none'
-							}}
 						>
 							Remove
 						</Button>
@@ -249,9 +242,8 @@ function MedicalHeader() {
 
 				{watch('passenger') && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-2 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 						variant="contained"
-						style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 						onClick={handleCancel}
 					>
 						Cancel
@@ -262,4 +254,4 @@ function MedicalHeader() {
 	);
 }
 
-export default MedicalHeader;
+export default MofaHeader;
