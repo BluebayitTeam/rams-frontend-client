@@ -221,11 +221,10 @@ function OfficeWorkHeader() {
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
-							className="whitespace-nowrap mx-4"
-							color="secondary"
+							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							style={{ backgroundColor: '#4dc08e', color: 'white' }}
 							onClick={handleUpdateOfficeWork}
+							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
@@ -235,25 +234,18 @@ function OfficeWorkHeader() {
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
-							className="whitespace-nowrap mx-4"
+							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							color="secondary"
 							onClick={handleRemoveOfficeWork}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-							style={{
-								backgroundColor: '#ea5b78',
-								color: 'white'
-								// display: user_role === 'ADMIN' || user_role === 'admin' ? 'flex' : 'none'
-							}}
 						>
 							Remove
 						</Button>
 					)}
 				{watch('passenger') && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-2 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 						variant="contained"
-						style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 						onClick={handleCancel}
 					>
 						Cancel
