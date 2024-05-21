@@ -15,7 +15,7 @@ function CallingAssignHeader() {
 	const { callingAssignId } = routeParams;
 	const [createCallingAssign] = useCreateCallingAssignMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
+	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
@@ -28,13 +28,14 @@ function CallingAssignHeader() {
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
-
+				reset();
 				navigate(`/apps/callingAssign/callingAssigns`);
 			});
 	}
 
 	function handleCancel() {
 		navigate(`/apps/callingAssign/callingAssigns`);
+		reset();
 	}
 
 	return (
