@@ -13,7 +13,7 @@ import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useCreateMofaMutation, useDeleteMofaMutation, useUpdateMofaMutation } from '../MofasApi';
+import { useCreateMofaMutation, useDeleteMofaMutation, useUpdateMofaMutation } from '../MusanedOkalasApi';
 
 /**
  * The mofa header.

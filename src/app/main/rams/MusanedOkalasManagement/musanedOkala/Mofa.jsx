@@ -14,7 +14,7 @@ import { MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import MofaHeader from './MofaHeader';
-import { useGetMofaQuery } from '../MofasApi';
+import { useGetMofaQuery } from '../MusanedOkalasApi';
 import MofaForm from './MofaForm';
 
 const useStyles = makeStyles((theme) => ({
