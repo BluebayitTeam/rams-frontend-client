@@ -86,11 +86,11 @@ function MofaHeader() {
 							mofa_date: '',
 							remofa_charge: ''
 						});
+						navigate('/apps/mofa-management/mofas/new');
 					}
-
-					navigate('/apps/mofa-management/mofas/new');
-					AddedSuccessfully();
 				}
+
+				AddedSuccessfully();
 			});
 	}
 
