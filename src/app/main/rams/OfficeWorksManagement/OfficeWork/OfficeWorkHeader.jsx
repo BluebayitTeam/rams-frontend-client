@@ -71,23 +71,6 @@ function OfficeWorkHeader() {
 	}
 
 	function handleCreateOfficeWork() {
-		// createOfficeWork(getValues())
-		// 	.unwrap()
-		// 	.then((res) => {
-		// 		if (res.payload?.data?.id) {
-		// 			if (fromSearch) {
-		// 				history.goBack();
-		// 			} else {
-		// 				localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
-		// 				navigate('/apps/officeWork/officeWorks/new');
-		// 				reset({
-		// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-		// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
-		// 					finger_status: doneNotDone.find((data) => data.default)?.id
-		// 				});
-		// 			}
-		// 		}
-
 		createOfficeWork(getValues())
 			.unwrap()
 			.then((res) => {
@@ -96,7 +79,6 @@ function OfficeWorkHeader() {
 						history.goBack();
 					} else {
 						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
-						navigate('/apps/officeWork/officeWorks/new');
 						reset({
 							// police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							// driving_license_status: doneNotDone.find((data) => data.default)?.id,
@@ -114,10 +96,10 @@ function OfficeWorkHeader() {
 							certificate_experience: '',
 							current_status: 'all'
 						});
+						navigate('/apps/officeWork/officeWorks/new');
+						AddedSuccessfully();
 					}
 				}
-
-				AddedSuccessfully();
 			});
 	}
 
@@ -129,46 +111,40 @@ function OfficeWorkHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
-						navigate('/apps/officeWork/officeWorks/new');
-						RemoveSuccessfully();
 						reset({
+							passenger: 'all',
 							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							driving_license_status: doneNotDone.find((data) => data.default)?.id,
 							finger_status: doneNotDone.find((data) => data.default)?.id
 						});
+						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
+						navigate('/apps/officeWork/officeWorks/new');
+
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
+
+				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	// function handleCancel() {
-	// 	if (fromSearch) {
-	// 		history.goBack();
-	// 	} else {
-	// 		navigate('/apps/officeWork/officeWorks/new');
-	// 		reset({
-	// 			officeWork_card: doneNotDone.find((data) => data.default)?.id,
-	// 			officeWork_result: officeWorkResults.find((data) => data.default)?.id
-	// 		});
-	// 	}
-	// }
 	const handleCancel = () => {
-		navigate('/apps/officeWork/officeWorks/new');
 		reset({
+			passenger: 'all',
 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
 			finger_status: doneNotDone.find((data) => data.default)?.id
 		});
+		navigate('/apps/officeWork/officeWorks/new');
 	};
 
 	useEffect(() => {
 		if (officeWorkId === 'new') {
 			reset({
+				passenger: 'all',
 				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 				driving_license_status: doneNotDone.find((data) => data.default)?.id,
 				finger_status: doneNotDone.find((data) => data.default)?.id

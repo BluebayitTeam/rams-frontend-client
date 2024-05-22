@@ -351,7 +351,7 @@ function OfficeWork() {
 																	});
 																	navigate(
 																		`/apps/officeWork/officeWorks/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {
