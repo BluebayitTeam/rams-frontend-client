@@ -73,18 +73,6 @@ function MusanedOkala() {
 		setValue
 	} = methods;
 
-	// useEffect(() => {
-	// 	if (musanedOkalaId === 'new') {
-	// 		reset(MusanedOkalaModel({}));
-	// 	}
-	// }, [musanedOkalaId, reset]);
-
-	// useEffect(() => {
-	// 	if (musanedOkala) {
-	// 		reset({ ...musanedOkala });
-	// 	}
-	// }, [musanedOkala, reset]);
-
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -234,9 +222,6 @@ function MusanedOkala() {
 																}
 															})
 															.catch(() => {
-																navigate(
-																	`/apps/musanedOkala-management/musanedOkalas/new`
-																);
 																reset({
 																	passenger: newValue?.id,
 																	musaned_status: doneNotDone.find(
@@ -246,11 +231,14 @@ function MusanedOkala() {
 																		(data) => data.default
 																	)?.id
 																});
+																navigate(
+																	`/apps/musanedOkala-management/musanedOkalas/new`
+																);
 															});
 													} else {
 														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 														reset({
-															passenger: newValue?.id,
+															passenger: 'all',
 															musaned_status: doneNotDone.find((data) => data.default)
 																?.id,
 															okala_status: doneNotDone.find((data) => data.default)?.id
