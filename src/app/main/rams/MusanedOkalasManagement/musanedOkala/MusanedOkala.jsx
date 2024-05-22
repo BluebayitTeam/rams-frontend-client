@@ -238,7 +238,7 @@ function MusanedOkala() {
 													} else {
 														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 														reset({
-															passenger: 'all',
+															passenger: newValue?.id,
 															musaned_status: doneNotDone.find((data) => data.default)
 																?.id,
 															okala_status: doneNotDone.find((data) => data.default)?.id

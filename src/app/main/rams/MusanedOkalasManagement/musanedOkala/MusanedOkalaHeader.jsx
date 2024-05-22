@@ -56,11 +56,11 @@ function MusanedOkalaHeader() {
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
 							okala_status: doneNotDone.find((data) => data.default)?.id,
 
-							musaned_given_by: '',
+							musaned_given_by: 'all',
 							okala_no: '',
 							okala_date: '',
-							okala_given_by: '',
-							current_status: ''
+							okala_given_by: 'all',
+							current_status: 'all'
 						});
 
 						UpdatedSuccessfully();
@@ -95,11 +95,11 @@ function MusanedOkalaHeader() {
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
 							okala_status: doneNotDone.find((data) => data.default)?.id,
 
-							musaned_given_by: '',
+							musaned_given_by: 'all',
 							okala_no: '',
 							okala_date: '',
-							okala_given_by: '',
-							current_status: ''
+							okala_given_by: 'all',
+							current_status: 'all'
 						});
 					}
 
@@ -124,11 +124,11 @@ function MusanedOkalaHeader() {
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
 							okala_status: doneNotDone.find((data) => data.default)?.id,
 
-							musaned_given_by: '',
+							musaned_given_by: 'all',
 							okala_no: '',
 							okala_date: '',
-							okala_given_by: '',
-							current_status: ''
+							okala_given_by: 'all',
+							current_status: 'all'
 						});
 						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
 						navigate('/apps/musanedOkala-management/musanedOkalas/new');
@@ -152,11 +152,11 @@ function MusanedOkalaHeader() {
 			musaned_status: doneNotDone.find((data) => data.default)?.id,
 			okala_status: doneNotDone.find((data) => data.default)?.id,
 
-			musaned_given_by: '',
+			musaned_given_by: 'all',
 			okala_no: '',
 			okala_date: '',
-			okala_given_by: '',
-			current_status: ''
+			okala_given_by: 'all',
+			current_status: 'all'
 		});
 		navigate('/apps/musanedOkala-management/musanedOkalas/new');
 	};
@@ -174,7 +174,9 @@ function MusanedOkalaHeader() {
 				okala_no: '',
 				okala_date: '',
 				okala_given_by: '',
-				current_status: ''
+				current_status: '',
+				doc1_image: '',
+				doc2_image: ''
 			});
 		}
 	}, [musanedOkalaId, reset]);

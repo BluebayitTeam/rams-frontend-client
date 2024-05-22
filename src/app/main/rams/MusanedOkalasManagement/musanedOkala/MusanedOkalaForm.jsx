@@ -116,25 +116,6 @@ function MusanedOkalaForm(props) {
 				)}
 			/>
 
-			{/* <Controller
-				name="remusanedOkala_charge"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						value={field.value || ''}
-						helperText={errors?.remusanedOkala_charge?.message}
-						label="Re MusanedOkala Charge"
-						id="remusanedOkala_charge"
-						variant="outlined"
-						multiline
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
-					/>
-				)}
-			/> */}
-
 			<Controller
 				name="musaned_status"
 				control={control}
@@ -262,7 +243,7 @@ function MusanedOkalaForm(props) {
 				)}
 			/>
 
-			<Controller
+			{/* <Controller
 				name="current_status"
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
@@ -290,7 +271,48 @@ function MusanedOkalaForm(props) {
 						)}
 					/>
 				)}
+			/> */}
+
+			<Controller
+				name="current_status"
+				control={control}
+				render={({ field: { onChange, value, name } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? currentStatuss.find((data) => data.id === value) : null}
+						// options={currentStatuss}
+						// getOptionLabel={(option) => `${option.name}`}
+						// onChange={(event, newValue) => {
+						// 	onChange(newValue?.id);
+						// }}
+						// value={value ? currentStatuss?.find((data) => data.id === value) : null}
+						// options={musanedOkalaAgencys}
+						// options={musanedGivenBys}
+						options={[{ id: 'all', name: 'Select current_status' }, ...currentStatuss]}
+						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Current Status"
+								label="Current Status"
+								id="current_status"
+								error={!!errors.current_status}
+								helperText={errors?.current_status?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
 			/>
+
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
 				<Image
 					name="doc1_image"
