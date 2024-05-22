@@ -383,7 +383,6 @@ function OfficeWork() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/officeWork/officeWorks/new`);
 																reset({
 																	passenger: newValue?.id,
 																	police_clearance_status: doneNotDone.find(
@@ -408,6 +407,7 @@ function OfficeWork() {
 																	certificate_experience: '',
 																	current_status: 'all'
 																});
+																navigate(`/apps/officeWork/officeWorks/new`);
 															});
 													} else {
 														navigate(`/apps/officeWork/officeWorks/new`);

@@ -232,7 +232,6 @@ function Mofa() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/mofa-management/mofas/new`);
 																reset({
 																	passenger: newValue?.id,
 
@@ -249,6 +248,7 @@ function Mofa() {
 																	mofa_date: '',
 																	remofa_charge: ''
 																});
+																navigate(`/apps/mofa-management/mofas/new`);
 															});
 													} else {
 														navigate(`/apps/mofa-management/mofas/new`);

@@ -257,7 +257,6 @@ function Medical() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/medical/medicals/new`);
 																reset({
 																	passenger: newValue?.id,
 																	medical_center: 'all',
@@ -277,6 +276,7 @@ function Medical() {
 																	medical_card_pic: '',
 																	current_status: 'all'
 																});
+																navigate(`/apps/medical/medicals/new`);
 															});
 													} else {
 														navigate(`/apps/medical/medicals/new`);
