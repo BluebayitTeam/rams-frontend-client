@@ -35,6 +35,7 @@ import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConf
 import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
 import MofaAppConfig from '../rams/MofasManagement/MofaAppConfig';
 import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaAppConfig';
+import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
 
 /**
  * The list of application configurations.
@@ -66,6 +67,7 @@ const appsConfigs = [
 	MedicalAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
+	CallingEmbAttestationAppConfig,
 	DepartmentAppConfig,
 	PaymentDetailAppConfig,
 	SupportAppConfig,
