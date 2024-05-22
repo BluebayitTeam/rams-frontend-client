@@ -117,9 +117,6 @@ function MusanedOkalaHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
-						navigate('/apps/musanedOkala-management/musanedOkalas/new');
-						RemoveSuccessfully();
 						reset({
 							passenger: 'all',
 							musaned_no: '',
@@ -133,9 +130,14 @@ function MusanedOkalaHeader() {
 							okala_given_by: '',
 							current_status: ''
 						});
+						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
+						navigate('/apps/musanedOkala-management/musanedOkalas/new');
+
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
+
+				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
@@ -143,7 +145,6 @@ function MusanedOkalaHeader() {
 	}
 
 	const handleCancel = () => {
-		navigate('/apps/musanedOkala-management/musanedOkalas/new');
 		reset({
 			passenger: 'all',
 			musaned_no: '',
@@ -157,6 +158,7 @@ function MusanedOkalaHeader() {
 			okala_given_by: '',
 			current_status: ''
 		});
+		navigate('/apps/musanedOkala-management/musanedOkalas/new');
 	};
 
 	useEffect(() => {
