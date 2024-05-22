@@ -76,19 +76,19 @@ function MedicalHeader() {
 						localStorage.setItem('medicalAlert', 'saveMedical');
 
 						reset({
-							// medical_center: 'all',
 							passenger: 'all',
-							// medical_serial_no: '',
+							medical_center: 'all',
+							medical_serial_no: '',
 							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || ''
-							// medical_exam_date: '',
-							// medical_report_date: '',
-							// medical_issue_date: '',
-							// medical_expiry_date: '',
-							// notes: '',
-							// slip_pic: '',
-							// medical_card_pic: '',
-							// current_status: 'all'
+							medical_card: doneNotDone.find((data) => data.default)?.id || '',
+							medical_exam_date: '',
+							medical_report_date: '',
+							medical_issue_date: '',
+							medical_expiry_date: '',
+							notes: '',
+							slip_pic: '',
+							medical_card_pic: '',
+							current_status: 'all'
 						});
 						navigate('/apps/medical/medicals/new');
 						AddedSuccessfully();
