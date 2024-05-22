@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
@@ -11,9 +10,10 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { CALLINGEMBATTESTATION_BY_PASSENGER_ID } from 'src/app/constant/constants';
-import { doneNotDone } from 'src/app/@data/data';
+import { GET_PASSENGER_BY_ID, MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import moment from 'moment';
 import CallingEmbAttestationHeader from './CallingEmbAttestationHeader';
 import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
 import CallingEmbAttestationForm from './CallingEmbAttestationForm';
@@ -72,70 +72,53 @@ function CallingEmbAttestation() {
 		setValue
 	} = methods;
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
-					}
-				})
-				.catch(() => null);
-		} else {
-			reset({
-				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-				calling_status: doneNotDone.find((data) => data.default)?.id,
-				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	}, [fromSearch]);
+	// useEffect(() => {
+	// 	if (callingEmbAttestationId === 'new') {
+	// 		reset(CallingEmbAttestationModel({}));
+	// 	}
+	// }, [callingEmbAttestationId, reset]);
+
+	// useEffect(() => {
+	// 	if (callingEmbAttestation) {
+	// 		reset({ ...callingEmbAttestation });
+	// 	}
+	// }, [callingEmbAttestation, reset]);
 
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
 				headers: {
 					'Content-type': 'application/json',
-					// eslint-disable-next-line no-undef
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
+
 			axios
-				.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
+				.get(`${MEDICAL_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
 					} else {
 						reset({
 							passenger: callingEmbAttestationId,
-							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
+							medical_card: doneNotDone.find((data) => data.default)?.id,
+							medical_result: medicalResults.find((data) => data.default)?.id
 						});
-
 						sessionStorage.setItem('operation', 'save');
 					}
 				})
 				.catch(() => {
 					reset({
 						passenger: callingEmbAttestationId,
-						emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-						calling_status: doneNotDone.find((data) => data.default)?.id,
-						bio_submitted_status: doneNotDone.find((data) => data.default)?.id
+						medical_card: doneNotDone.find((data) => data.default)?.id,
+						medical_result: medicalResults.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
 			reset({
-				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-				calling_status: doneNotDone.find((data) => data.default)?.id,
-				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
+				medical_card: doneNotDone.find((data) => data.default)?.id,
+				medical_result: medicalResults.find((data) => data.default)?.id
 			});
 		}
 	}, [fromSearch]);
@@ -147,6 +130,18 @@ function CallingEmbAttestation() {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
+
+	const updateCurrentStatus = (id) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 
 	return (
 		<FormProvider {...methods}>
@@ -200,20 +195,7 @@ function CallingEmbAttestation() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															sessionStorage.setItem(
-																'passengerCurrentStatus',
-																res.data?.current_status?.name
-															);
-														});
+													updateCurrentStatus(newValue?.id);
 
 													if (newValue?.id) {
 														const authTOKEN = {
@@ -222,72 +204,102 @@ function CallingEmbAttestation() {
 																Authorization: localStorage.getItem('jwt_access_token')
 															}
 														};
-
 														axios
-															.get(
-																`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${newValue?.id}`,
-																authTOKEN
-															)
+															.get(`${MEDICAL_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
 																if (res.data.id) {
 																	reset({
-																		...setIdIfValueIsObject(res.data),
+																		...setIdIfValueIsObject({
+																			...res?.data,
+																			medical_center:
+																				res?.data?.medical_center?.id,
+																			medical_exam_date: moment(
+																				new Date(res?.data?.medical_exam_date)
+																			).format('YYYY-MM-DD'),
+																			medical_report_date: moment(
+																				new Date(res?.data?.medical_report_date)
+																			).format('YYYY-MM-DD'),
+																			medical_issue_date: moment(
+																				new Date(res?.data?.medical_issue_date)
+																			).format('YYYY-MM-DD'),
+																			medical_expiry_date: moment(
+																				new Date(res?.data?.medical_expiry_date)
+																			).format('YYYY-MM-DD')
+																		}),
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/callingEmbAttestation-management/callingEmbAttestations/${
-																			newValue?.passenger_id || newValue?.id
+																		`apps/malaysiaStatus-management/malaysiaStatus/${
+																			newValue?.newValue?.id || newValue?.id
 																		}`
 																	);
 																} else {
 																	navigate(
-																		`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
+																		`/apps/malaysiaStatus-management/malaysiaStatus/new`
 																	);
 																	reset({
+																		medical_center: 'all',
 																		passenger: newValue?.id,
-																		emb_attestation_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		calling_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		bio_submitted_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id
+																		medical_serial_no: '',
+																		medical_result:
+																			medicalResults.find((data) => data.default)
+																				?.id || '',
+																		medical_card:
+																			doneNotDone.find((data) => data.default)
+																				?.id || '',
+																		medical_exam_date: '',
+																		medical_report_date: '',
+																		medical_issue_date: '',
+																		medical_expiry_date: '',
+																		notes: '',
+																		slip_pic: '',
+																		medical_card_pic: '',
+																		current_status: 'all'
 																	});
 																}
 															})
 															.catch(() => {
-																navigate(
-																	`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
-																);
 																reset({
 																	passenger: newValue?.id,
-																	emb_attestation_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	calling_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	bio_submitted_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id
+																	medical_center: 'all',
+																	medical_serial_no: '',
+																	medical_result:
+																		medicalResults.find((data) => data.default)
+																			?.id || '',
+																	medical_card:
+																		doneNotDone.find((data) => data.default)?.id ||
+																		'',
+																	medical_exam_date: '',
+																	medical_report_date: '',
+																	medical_issue_date: '',
+																	medical_expiry_date: '',
+																	notes: '',
+																	slip_pic: '',
+																	medical_card_pic: '',
+																	current_status: 'all'
 																});
+																navigate(
+																	`/apps/malaysiaStatus-management/malaysiaStatus/new`
+																);
 															});
 													} else {
-														navigate(
-															`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
-														);
+														navigate(`/apps/malaysiaStatus-management/malaysiaStatus/new`);
 														reset({
-															passenger: newValue?.id,
-															emb_attestation_status: doneNotDone.find(
-																(data) => data.default
-															)?.id,
-															calling_status: doneNotDone.find((data) => data.default)
-																?.id,
-															bio_submitted_status: doneNotDone.find(
-																(data) => data.default
-															)?.id
+															passenger: 'all',
+															medical_center: 'all',
+															medical_serial_no: '',
+															medical_result:
+																medicalResults.find((data) => data.default)?.id || '',
+															medical_card:
+																doneNotDone.find((data) => data.default)?.id || '',
+															medical_exam_date: '',
+															medical_report_date: '',
+															medical_issue_date: '',
+															medical_expiry_date: '',
+															notes: '',
+															slip_pic: '',
+															medical_card_pic: '',
+															current_status: 'all'
 														});
 													}
 												}}

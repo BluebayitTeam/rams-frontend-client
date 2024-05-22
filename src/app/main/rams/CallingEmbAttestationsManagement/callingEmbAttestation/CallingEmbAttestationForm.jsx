@@ -1,12 +1,10 @@
 import { styled } from '@mui/system';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
-import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import increaseMonth from 'src/app/@helpers/increaseMonth';
 
@@ -31,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function MedicalForm(props) {
+function CallingEmbAttestationForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { medicalId } = routeParams;
+	const { callingEmbAttestationId } = routeParams;
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState();
@@ -45,49 +43,32 @@ function MedicalForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getMedicalCenters());
 		dispatch(getCurrentStatuss());
-	}, [dispatch]);
-	console.log('wbkjwb', getValues());
-	useEffect(() => {
-		if (medicalId === 'new') {
-			// reset({
-			// 	medical_center: 'all',
-			// 	// passenger: 'all',
-			// 	medical_serial_no: '',
-			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
-			// 	medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			// 	medical_exam_date: '',
-			// 	medical_report_date: '',
-			// 	medical_issue_date: '',
-			// 	medical_expiry_date: '',
-			// 	notes: '',
-			// 	slip_pic: '',
-			// 	medical_card_pic: '',
-			// 	current_status: 'all'
-			// });
-			setPreviewImage('');
-			setPreviewImage2('');
-		} else {
-			// Fetch and set data based on medicalId if needed
-			// reset(formData);
+
+		if (routeParams.callingEmbAttestationId === 'new') {
+			reset({
+				interviewed: 'not_done',
+				submitted_for_sev: 'not_done',
+				sev_received: 'not_done',
+				submitted_for_permission_immigration_clearance: 'not_done',
+				immigration_clearance: 'not_done',
+				accounts_cleared: 'not_done',
+				handover_passport_ticket: 'not_done',
+				dispatched: 'not_done',
+				repatriation: 'not_done'
+			});
 		}
-	}, [medicalId, reset, medicalCenters, currentStatuss]);
+	}, []);
 
-	useEffect(() => {
-		setPreviewImage('');
-		setPreviewImage2('');
-	}, [getValues('medical_center')]);
-
-	// const increaseMonth = (dateString, months) =>
-	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
-	// 		.toISOString()
-	// 		.slice(0, 10)
-	// 		.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
+	// useEffect(() => {
+	// 	setpreviewcallingdocImage('');
+	// 	setPreviewdoc1Image('');
+	// 	setPreviewdoc2Image('');
+	// }, [getValues('emb_attestation_status')]);
 
 	return (
 		<div>
-			<Controller
+			{/* <Controller
 				name="medical_center"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -96,7 +77,7 @@ function MedicalForm(props) {
 						freeSolo
 						value={value ? medicalCenters?.find((data) => data.id === value) : null}
 						// options={medicalCenters}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
+						options={[{ id: 'all', name: 'Select CallingEmbAttestation Center' }, ...medicalCenters]}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -104,8 +85,8 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Medical Center"
-								label="Medical Center"
+								placeholder="Select CallingEmbAttestation Center"
+								label="CallingEmbAttestation Center"
 								id="medical_center"
 								helperText={errors?.medical_center?.message}
 								variant="outlined"
@@ -116,9 +97,9 @@ function MedicalForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
 
-			<Controller
+			{/* <Controller
 				name="medical_serial_no"
 				control={control}
 				render={({ field }) => (
@@ -127,16 +108,16 @@ function MedicalForm(props) {
 						value={field.value || ''}
 						className="mt-8 mb-16"
 						helperText={errors?.medical_serial_no?.message}
-						label="Medical Serial No"
+						label="CallingEmbAttestation Serial No"
 						id="medical_serial_no"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
 					/>
 				)}
-			/>
+			/> */}
 
-			<Controller
+			{/* <Controller
 				name="medical_result"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -152,8 +133,8 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Medical Result"
-								label="Medical Result"
+								placeholder="Select CallingEmbAttestation Result"
+								label="CallingEmbAttestation Result"
 								helperText={errors?.medical_result?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -163,9 +144,9 @@ function MedicalForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
 
-			<Controller
+			{/* <Controller
 				name="medical_card"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -181,8 +162,8 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select medical Card"
-								label="Medical Card"
+								placeholder="Select callingEmbAttestation Card"
+								label="CallingEmbAttestation Card"
 								helperText={errors?.medical_card?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -192,19 +173,19 @@ function MedicalForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
 
 			<Controller
-				name="medical_exam_date"
+				name="interviewed_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.medical_exam_date}
-						helperText={errors?.medical_exam_date?.message}
-						label="Medical Exam Date"
-						id="medical_exam_date"
+						error={!!errors.interviewed_date}
+						helperText={errors?.interviewed_date?.message}
+						label="interviewed date"
+						id="interviewed_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -221,7 +202,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.medical_report_date}
 						helperText={errors?.medical_report_date?.message}
-						label="Medical Report Date"
+						label="CallingEmbAttestation Report Date"
 						id="medical_report_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -239,7 +220,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.medical_issue_date}
 						helperText={errors?.medical_issue_date?.message}
-						label="Medical Issue Date"
+						label="CallingEmbAttestation Issue Date"
 						onChange={(event) => {
 							const { value } = event.target;
 							field.onChange(value);
@@ -262,7 +243,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.medical_expiry_date}
 						helperText={errors?.medical_expiry_date?.message}
-						label="Medical Expiry Date"
+						label="CallingEmbAttestation Expiry Date"
 						id="medical_expiry_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -278,7 +259,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...currentStatuss]}
+						options={[{ id: 'all', name: 'Select CallingEmbAttestation Center' }, ...currentStatuss]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -320,7 +301,7 @@ function MedicalForm(props) {
 				)}
 			/>
 
-			<div className="flex justify-start mx-16 flex-col md:flex-row">
+			{/* <div className="flex justify-start mx-16 flex-col md:flex-row">
 				<Image
 					name="slip_pic"
 					previewImage={previewImage}
@@ -331,11 +312,11 @@ function MedicalForm(props) {
 					name="medical_card_pic"
 					previewImage={previewImage2}
 					setPreviewImage={setPreviewImage2}
-					label="Medical Card Picture"
+					label="CallingEmbAttestation Card Picture"
 				/>
-			</div>
+			</div> */}
 		</div>
 	);
 }
 
-export default MedicalForm;
+export default CallingEmbAttestationForm;

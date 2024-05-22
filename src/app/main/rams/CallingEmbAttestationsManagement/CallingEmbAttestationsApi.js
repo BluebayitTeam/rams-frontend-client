@@ -8,10 +8,11 @@ import {
 	CALLINGEMBATTESTATION_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import CallingEmbAttestationModel from './callingEmbAttestation/models/CallingEmbAttestationModel';
 
-export const addTagTypes = ['callingEmbAttestation'];
+export const addTagTypes = ['medicals'];
 const CallingEmbAttestationApi = api
 	.enhanceEndpoints({
 		addTagTypes
@@ -22,7 +23,7 @@ const CallingEmbAttestationApi = api
 				query: (callingEmbAttestationId) => ({
 					url: `${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`
 				}),
-				providesTags: ['callingEmbAttestation']
+				providesTags: ['medicals']
 			}),
 			createCallingEmbAttestation: build.mutation({
 				query: (newCallingEmbAttestation) => ({
@@ -30,28 +31,52 @@ const CallingEmbAttestationApi = api
 					method: 'POST',
 					data: jsonToFormData(
 						CallingEmbAttestationModel({
-							...newCallingEmbAttestation
+							...newCallingEmbAttestation,
+							medical_exam_date: moment(new Date(newCallingEmbAttestation?.medical_exam_date)).format(
+								'YYYY-MM-DD'
+							),
+							medical_report_date: moment(new Date(newCallingEmbAttestation?.medical_report_date)).format(
+								'YYYY-MM-DD'
+							),
+							medical_issue_date: moment(new Date(newCallingEmbAttestation?.medical_issue_date)).format(
+								'YYYY-MM-DD'
+							),
+							medical_expiry_date: moment(new Date(newCallingEmbAttestation?.medical_expiry_date)).format(
+								'YYYY-MM-DD'
+							)
 						})
 					)
 				}),
-				invalidatesTags: ['callingEmbAttestation']
+				invalidatesTags: ['medicals']
 			}),
 			updateCallingEmbAttestation: build.mutation({
 				query: (callingEmbAttestation) => ({
 					url: `${UPDATE_CALLINGEMBATTESTATION}${callingEmbAttestation.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...callingEmbAttestation
+						...callingEmbAttestation,
+						medical_exam_date: moment(new Date(callingEmbAttestation?.medical_exam_date)).format(
+							'YYYY-MM-DD'
+						),
+						medical_report_date: moment(new Date(callingEmbAttestation?.medical_report_date)).format(
+							'YYYY-MM-DD'
+						),
+						medical_issue_date: moment(new Date(callingEmbAttestation?.medical_issue_date)).format(
+							'YYYY-MM-DD'
+						),
+						medical_expiry_date: moment(new Date(callingEmbAttestation?.medical_expiry_date)).format(
+							'YYYY-MM-DD'
+						)
 					})
 				}),
-				invalidatesTags: ['callingEmbAttestation']
+				invalidatesTags: ['medicals']
 			}),
 			deleteCallingEmbAttestation: build.mutation({
 				query: (callingEmbAttestationId) => ({
 					url: `${DELETE_CALLINGEMBATTESTATION}${callingEmbAttestationId}`,
 					method: 'DELETE'
 				}),
-				invalidatesTags: ['callingEmbAttestation']
+				invalidatesTags: ['medicals']
 			})
 		}),
 		overrideExisting: false
@@ -66,11 +91,11 @@ export const {
 	useCreateCallingEmbAttestationMutation
 } = CallingEmbAttestationApi;
 
-export const selectFilteredCallingEmbAttestations = (callingEmbAttestation) =>
+export const selectFilteredCallingEmbAttestations = (medicals) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (searchText?.length === 0) {
-			return callingEmbAttestation;
+			return medicals;
 		}
 
-		return FuseUtils.filterArrayByString(callingEmbAttestation, searchText);
+		return FuseUtils.filterArrayByString(medicals, searchText);
 	});

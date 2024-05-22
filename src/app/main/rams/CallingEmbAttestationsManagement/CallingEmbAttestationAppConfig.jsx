@@ -11,16 +11,16 @@ const CallingEmbAttestationAppConfig = {
 	},
 	routes: [
 		{
-			path: 'apps/callingEmbAttestation',
+			path: 'apps/malaysiaStatus-management',
 			element: <CallingEmbAttestationApp />,
 			children: [
 				{
 					path: '',
-					element: <Navigate to="callingEmbAttestations" />
+					element: <Navigate to="malaysiaStatus" />
 				},
 
 				{
-					path: 'callingEmbAttestations/:callingEmbAttestationId/:fromSearch?',
+					path: 'malaysiaStatus/:callingEmbAttestationId/:fromSearch?',
 					element: <CallingEmbAttestation />
 				}
 			]

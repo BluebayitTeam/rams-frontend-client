@@ -8,50 +8,55 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../CallingEmbAttestationsApi';
+import {
+	useCreateCallingEmbAttestationMutation,
+	useDeleteCallingEmbAttestationMutation,
+	useUpdateCallingEmbAttestationMutation
+} from '../CallingEmbAttestationsApi';
 
 /**
- * The medical header.
+ * The callingEmbAttestation header.
  */
-function MedicalHeader() {
+function CallingEmbAttestationHeader() {
 	const routeParams = useParams();
-	const { medicalId } = routeParams;
-	const [createMedical] = useCreateMedicalMutation();
-	const [saveMedical] = useUpdateMedicalMutation();
-	const [removeMedical] = useDeleteMedicalMutation();
+	const { callingEmbAttestationId } = routeParams;
+	const [createCallingEmbAttestation] = useCreateCallingEmbAttestationMutation();
+	const [saveCallingEmbAttestation] = useUpdateCallingEmbAttestationMutation();
+	const [removeCallingEmbAttestation] = useDeleteCallingEmbAttestationMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMedical');
-	const handleUpdate = localStorage.getItem('updateMedical');
+	const handleDelete = localStorage.getItem('deleteCallingEmbAttestation');
+	const handleUpdate = localStorage.getItem('updateCallingEmbAttestation');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMedical() {
-		saveMedical(getValues())
+	function handleUpdateCallingEmbAttestation() {
+		saveCallingEmbAttestation(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateMedical');
+						localStorage.setItem('callingEmbAttestationAlert', 'updateCallingEmbAttestation');
 
 						reset({
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_result: medicalResults.find((data) => data.default)?.id || ''
+							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+							calling_status: doneNotDone.find((data) => data.default)?.id,
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/medical/medicals/new');
+						navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -60,45 +65,35 @@ function MedicalHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating medical', error);
+				console.error('Error updating callingEmbAttestation', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateMedical() {
-		createMedical(getValues())
+	function handleCreateCallingEmbAttestation() {
+		createCallingEmbAttestation(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMedical');
+						localStorage.setItem('callingEmbAttestationAlert', 'saveCallingEmbAttestation');
 
 						reset({
-							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+							calling_status: doneNotDone.find((data) => data.default)?.id,
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 						});
-						navigate('/apps/medical/medicals/new');
+						navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
 						AddedSuccessfully();
 					}
 				}
 			});
 	}
 
-	function handleRemoveMedical() {
-		removeMedical(getValues()?.id)
+	function handleRemoveCallingEmbAttestation() {
+		removeCallingEmbAttestation(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
@@ -106,22 +101,12 @@ function MedicalHeader() {
 						history.goBack();
 					} else {
 						reset({
-							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+							calling_status: doneNotDone.find((data) => data.default)?.id,
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 						});
-						localStorage.setItem('medicalAlert', 'saveMedical');
-						navigate('/apps/medical/medicals/new');
+						localStorage.setItem('callingEmbAttestationAlert', 'saveCallingEmbAttestation');
+						navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
@@ -135,42 +120,22 @@ function MedicalHeader() {
 
 	const handleCancel = () => {
 		reset({
-			passenger: 'all',
-			medical_center: 'all',
-			medical_serial_no: '',
-			medical_result: medicalResults.find((data) => data.default)?.id || '',
-			medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			medical_exam_date: '',
-			medical_report_date: '',
-			medical_issue_date: '',
-			medical_expiry_date: '',
-			notes: '',
-			slip_pic: '',
-			medical_card_pic: '',
-			current_status: 'all'
+			emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+			calling_status: doneNotDone.find((data) => data.default)?.id,
+			bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 		});
-		navigate('/apps/medical/medicals/new');
+		navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
 	};
 
 	useEffect(() => {
-		if (medicalId === 'new') {
+		if (callingEmbAttestationId === 'new') {
 			reset({
-				passenger: 'all',
-				medical_center: 'all',
-				medical_serial_no: '',
-				medical_result: medicalResults.find((data) => data.default)?.id || '',
-				medical_card: doneNotDone.find((data) => data.default)?.id || '',
-				medical_exam_date: '',
-				medical_report_date: '',
-				medical_issue_date: '',
-				medical_expiry_date: '',
-				notes: '',
-				slip_pic: '',
-				medical_card_pic: '',
-				current_status: 'all'
+				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+				calling_status: doneNotDone.find((data) => data.default)?.id,
+				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 			});
 		}
-	}, [medicalId, reset]);
+	}, [callingEmbAttestationId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -181,15 +146,15 @@ function MedicalHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.medicalId === 'new'
-									? 'Create New Medical'
+								{routeParams.callingEmbAttestationId === 'new'
+									? 'Create New Malaysia Status'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.medicalId !== 'new' && 'Medicals Detail'}
+								{routeParams.callingEmbAttestationId !== 'new' && 'CallingEmbAttestations Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -200,39 +165,39 @@ function MedicalHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.medicalId === 'new' ||
+				{(routeParams.callingEmbAttestationId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateMedical}
+						onClick={handleCreateCallingEmbAttestation}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.callingEmbAttestationId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							onClick={handleUpdateMedical}
+							onClick={handleUpdateCallingEmbAttestation}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.callingEmbAttestationId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveMedical}
+							onClick={handleRemoveCallingEmbAttestation}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
@@ -253,4 +218,4 @@ function MedicalHeader() {
 	);
 }
 
-export default MedicalHeader;
+export default CallingEmbAttestationHeader;
