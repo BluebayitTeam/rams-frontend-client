@@ -50,9 +50,28 @@ function CallingEmbAttestationHeader() {
 						localStorage.setItem('callingEmbAttestationAlert', 'updateCallingEmbAttestation');
 
 						reset({
+							passengers: 'all',
 							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+							interviewed_date: '',
+							interviewed: '',
+							submitted_for_sev_date: '',
+							submitted_for_sev: '',
+							sev_received_date: '',
+							sev_received: '',
+							submitted_for_permission_immigration_clearance_date: '',
+							submitted_for_permission_immigration_clearance: '',
+							immigration_clearance_date: '',
+							immigration_clearance: '',
+							handover_passport_ticket_date: '',
+							handover_passport_ticket: '',
+							accounts_cleared_date: '',
+							accounts_cleared: '',
+							dispatched_date: '',
+							dispatched: '',
+							repatriation_date: '',
+							repatriation: ''
 						});
 
 						UpdatedSuccessfully();
@@ -81,9 +100,28 @@ function CallingEmbAttestationHeader() {
 						localStorage.setItem('callingEmbAttestationAlert', 'saveCallingEmbAttestation');
 
 						reset({
+							passengers: 'all',
 							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+							interviewed_date: '',
+							interviewed: '',
+							submitted_for_sev_date: '',
+							submitted_for_sev: '',
+							sev_received_date: '',
+							sev_received: '',
+							submitted_for_permission_immigration_clearance_date: '',
+							submitted_for_permission_immigration_clearance: '',
+							immigration_clearance_date: '',
+							immigration_clearance: '',
+							handover_passport_ticket_date: '',
+							handover_passport_ticket: '',
+							accounts_cleared_date: '',
+							accounts_cleared: '',
+							dispatched_date: '',
+							dispatched: '',
+							repatriation_date: '',
+							repatriation: ''
 						});
 						navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
 						AddedSuccessfully();
@@ -101,9 +139,28 @@ function CallingEmbAttestationHeader() {
 						history.goBack();
 					} else {
 						reset({
+							passengers: 'all',
 							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+							interviewed_date: '',
+							interviewed: '',
+							submitted_for_sev_date: '',
+							submitted_for_sev: '',
+							sev_received_date: '',
+							sev_received: '',
+							submitted_for_permission_immigration_clearance_date: '',
+							submitted_for_permission_immigration_clearance: '',
+							immigration_clearance_date: '',
+							immigration_clearance: '',
+							handover_passport_ticket_date: '',
+							handover_passport_ticket: '',
+							accounts_cleared_date: '',
+							accounts_cleared: '',
+							dispatched_date: '',
+							dispatched: '',
+							repatriation_date: '',
+							repatriation: ''
 						});
 						localStorage.setItem('callingEmbAttestationAlert', 'saveCallingEmbAttestation');
 						navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
@@ -120,6 +177,7 @@ function CallingEmbAttestationHeader() {
 
 	const handleCancel = () => {
 		reset({
+			passenger: 'all',
 			emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 			calling_status: doneNotDone.find((data) => data.default)?.id,
 			bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
