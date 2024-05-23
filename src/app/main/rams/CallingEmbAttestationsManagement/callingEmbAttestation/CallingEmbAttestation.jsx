@@ -79,16 +79,14 @@ function CallingEmbAttestation() {
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
-			axios
-				.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
-					}
-				})
-				.catch(() => null);
+			axios.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN).then((res) => {
+				if (res.data.id) {
+					// reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
+				}
+			});
 		} else {
 			reset({
+				passenger: callingEmbAttestationId,
 				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 				calling_status: doneNotDone.find((data) => data.default)?.id,
 				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
@@ -108,7 +106,7 @@ function CallingEmbAttestation() {
 				.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
 					} else {
 						reset({
 							passenger: callingEmbAttestationId,

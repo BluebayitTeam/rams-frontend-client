@@ -64,12 +64,6 @@ function CallingEmbAttestationForm(props) {
 		}
 	}, []);
 
-	// useEffect(() => {
-	// 	setpreviewcallingdocImage('');
-	// 	setPreviewdoc1Image('');
-	// 	setPreviewdoc2Image('');
-	// }, [getValues('emb_attestation_status')]);
-
 	return (
 		<div>
 			<Controller
@@ -396,23 +390,7 @@ function CallingEmbAttestationForm(props) {
 					/>
 				)}
 			/>
-			<Controller
-				name="dispatched_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.dispatched_date}
-						helperText={errors?.dispatched_date?.message}
-						label="Dispatched Date"
-						id="dispatched_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
+
 			<Controller
 				name="dispatched"
 				control={control}
@@ -459,35 +437,7 @@ function CallingEmbAttestationForm(props) {
 					/>
 				)}
 			/>
-			<Controller
-				name="dispatched"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? dispatcheds.find((data) => data.id === value) : null}
-						options={dispatcheds}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Dispatched Status"
-								label="Dispatched Status"
-								error={!!errors.dispatched}
-								helperText={errors?.dispatched?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
+
 			<Controller
 				name="repatriation_date"
 				control={control}

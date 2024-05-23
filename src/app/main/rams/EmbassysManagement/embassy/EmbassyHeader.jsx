@@ -45,7 +45,28 @@ function EmbassyHeader() {
 					} else {
 						localStorage.setItem('embassyAlert', 'updateEmbassy');
 
-						reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+						reset({
+							passengers: 'all',
+							recruiting_agency: 'all',
+							stamping_status: doneNotDone.find((data) => data.default)?.id,
+							submit_date: '',
+							profession_english: '',
+							profession_arabic: '',
+							salary: '',
+							stamping_date: '',
+							visa_expiry_date: '',
+							delivery_date: '',
+							visa_number_readonly: '',
+							sponsor_id_no_readonly: '',
+							sponsor_name_english_readonly: '',
+							sponsor_name_arabic_readonly: '',
+							mofa_no_readonly: '',
+							police_clearance_no_readonly: '',
+							oakala_no_readonly: '',
+							driving_license_no_readonly: '',
+							musaned_okala_no_readonly: '',
+							certificate_experience_no_readonly: ''
+						});
 
 						UpdatedSuccessfully();
 						navigate('/apps/embassy/embassys/new');
@@ -72,7 +93,28 @@ function EmbassyHeader() {
 					} else {
 						localStorage.setItem('embassyAlert', 'saveEmbassy');
 
-						reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+						reset({
+							passengers: 'all',
+							recruiting_agency: 'all',
+							stamping_status: doneNotDone.find((data) => data.default)?.id,
+							submit_date: '',
+							profession_english: '',
+							profession_arabic: '',
+							salary: '',
+							stamping_date: '',
+							visa_expiry_date: '',
+							delivery_date: '',
+							visa_number_readonly: '',
+							sponsor_id_no_readonly: '',
+							sponsor_name_english_readonly: '',
+							sponsor_name_arabic_readonly: '',
+							mofa_no_readonly: '',
+							police_clearance_no_readonly: '',
+							oakala_no_readonly: '',
+							driving_license_no_readonly: '',
+							musaned_okala_no_readonly: '',
+							certificate_experience_no_readonly: ''
+						});
 						navigate('/apps/embassy/embassys/new');
 						AddedSuccessfully();
 					}
@@ -88,7 +130,28 @@ function EmbassyHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+						reset({
+							passengers: 'all',
+							recruiting_agency: 'all',
+							stamping_status: doneNotDone.find((data) => data.default)?.id,
+							submit_date: '',
+							profession_english: '',
+							profession_arabic: '',
+							salary: '',
+							stamping_date: '',
+							visa_expiry_date: '',
+							delivery_date: '',
+							visa_number_readonly: '',
+							sponsor_id_no_readonly: '',
+							sponsor_name_english_readonly: '',
+							sponsor_name_arabic_readonly: '',
+							mofa_no_readonly: '',
+							police_clearance_no_readonly: '',
+							oakala_no_readonly: '',
+							driving_license_no_readonly: '',
+							musaned_okala_no_readonly: '',
+							certificate_experience_no_readonly: ''
+						});
 						localStorage.setItem('medicalAlert', 'saveEmbassy');
 						navigate('/apps/embassy/embassys/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
@@ -103,13 +166,55 @@ function EmbassyHeader() {
 	}
 
 	const handleCancel = () => {
-		reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+		reset({
+			passengers: 'all',
+			recruiting_agency: 'all',
+			stamping_status: doneNotDone.find((data) => data.default)?.id,
+			submit_date: '',
+			profession_english: '',
+			profession_arabic: '',
+			salary: '',
+			stamping_date: '',
+			visa_expiry_date: '',
+			delivery_date: '',
+			visa_number_readonly: '',
+			sponsor_id_no_readonly: '',
+			sponsor_name_english_readonly: '',
+			sponsor_name_arabic_readonly: '',
+			mofa_no_readonly: '',
+			police_clearance_no_readonly: '',
+			oakala_no_readonly: '',
+			driving_license_no_readonly: '',
+			musaned_okala_no_readonly: '',
+			certificate_experience_no_readonly: ''
+		});
 		navigate('/apps/embassy/embassys/new');
 	};
 
 	useEffect(() => {
 		if (embassyId === 'new') {
-			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+			reset({
+				passengers: 'all',
+				recruiting_agency: 'all',
+				stamping_status: doneNotDone.find((data) => data.default)?.id,
+				submit_date: '',
+				profession_english: '',
+				profession_arabic: '',
+				salary: '',
+				stamping_date: '',
+				visa_expiry_date: '',
+				delivery_date: '',
+				visa_number_readonly: '',
+				sponsor_id_no_readonly: '',
+				sponsor_name_english_readonly: '',
+				sponsor_name_arabic_readonly: '',
+				mofa_no_readonly: '',
+				police_clearance_no_readonly: '',
+				oakala_no_readonly: '',
+				driving_license_no_readonly: '',
+				musaned_okala_no_readonly: '',
+				certificate_experience_no_readonly: ''
+			});
 		}
 	}, [embassyId, reset]);
 	return (
