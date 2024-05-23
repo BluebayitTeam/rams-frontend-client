@@ -233,7 +233,7 @@ function CallingEmbAttestation() {
 																	});
 																	navigate(
 																		`/apps/malaysiaStatus-management/malaysiaStatus/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger.id || newValue?.id
 																		}`
 																	);
 																} else {
@@ -250,7 +250,27 @@ function CallingEmbAttestation() {
 																		)?.id,
 																		bio_submitted_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+																		interviewed_date: '',
+																		interviewed: '',
+																		submitted_for_sev_date: '',
+																		submitted_for_sev: '',
+																		sev_received_date: '',
+																		sev_received: '',
+																		submitted_for_permission_immigration_clearance_date:
+																			'',
+																		submitted_for_permission_immigration_clearance:
+																			'',
+																		immigration_clearance_date: '',
+																		immigration_clearance: '',
+																		handover_passport_ticket_date: '',
+																		handover_passport_ticket: '',
+																		accounts_cleared_date: '',
+																		accounts_cleared: '',
+																		dispatched_date: '',
+																		dispatched: '',
+																		repatriation_date: '',
+																		repatriation: ''
 																	});
 																}
 															})
@@ -268,7 +288,26 @@ function CallingEmbAttestation() {
 																	)?.id,
 																	bio_submitted_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id
+																	)?.id,
+																	interviewed_date: '',
+																	interviewed: '',
+																	submitted_for_sev_date: '',
+																	submitted_for_sev: '',
+																	sev_received_date: '',
+																	sev_received: '',
+																	submitted_for_permission_immigration_clearance_date:
+																		'',
+																	submitted_for_permission_immigration_clearance: '',
+																	immigration_clearance_date: '',
+																	immigration_clearance: '',
+																	handover_passport_ticket_date: '',
+																	handover_passport_ticket: '',
+																	accounts_cleared_date: '',
+																	accounts_cleared: '',
+																	dispatched_date: '',
+																	dispatched: '',
+																	repatriation_date: '',
+																	repatriation: ''
 																});
 															});
 													} else {
@@ -282,7 +321,25 @@ function CallingEmbAttestation() {
 																?.id,
 															bio_submitted_status: doneNotDone.find(
 																(data) => data.default
-															)?.id
+															)?.id,
+															interviewed_date: '',
+															interviewed: '',
+															submitted_for_sev_date: '',
+															submitted_for_sev: '',
+															sev_received_date: '',
+															sev_received: '',
+															submitted_for_permission_immigration_clearance_date: '',
+															submitted_for_permission_immigration_clearance: '',
+															immigration_clearance_date: '',
+															immigration_clearance: '',
+															handover_passport_ticket_date: '',
+															handover_passport_ticket: '',
+															accounts_cleared_date: '',
+															accounts_cleared: '',
+															dispatched_date: '',
+															dispatched: '',
+															repatriation_date: '',
+															repatriation: ''
 														});
 													}
 												}}
