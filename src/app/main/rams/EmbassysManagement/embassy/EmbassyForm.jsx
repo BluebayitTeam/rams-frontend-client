@@ -38,11 +38,11 @@ function MedicalForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
-	const medicalCenters = useSelector((state) => state.data.medicalCenters);
+	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
-	const embassyData = useSelector(({ embassysManagement }) => embassysManagement.embassy);
+	// const embassyData = useSelector(({ embassysManagement }) => embassysManagement.embassy);
 
 	useEffect(() => {
 		setPreviewOldVisaImage('');
@@ -57,30 +57,29 @@ function MedicalForm(props) {
 	return (
 		<div>
 			<Controller
-				name="medical_center"
+				name="recruiting_agency"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalCenters?.find((data) => data.id === value) : null}
-						// options={medicalCenters}
-						options={[{ id: 'all', name: 'Select Embassy Center' }, ...medicalCenters]}
-						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
+						value={value ? recruitingAgencys?.find((data) => data.id === value) : null}
+						// options={recruitingAgencys}
+						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...recruitingAgencys]}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Embassy Center"
-								label="Embassy Center"
-								id="medical_center"
-								helperText={errors?.medical_center?.message}
+								placeholder="Select Recruiting Agency"
+								label="Recruiting Agency"
+								id="recruiting_agency"
+								required
+								helperText={errors?.recruiting_agency?.message}
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
@@ -247,7 +246,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Embassy Center' }, ...currentStatuss]}
+						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...currentStatuss]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);

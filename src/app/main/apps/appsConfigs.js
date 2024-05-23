@@ -36,6 +36,7 @@ import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
 import MofaAppConfig from '../rams/MofasManagement/MofaAppConfig';
 import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaAppConfig';
 import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
+import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
 
 /**
  * The list of application configurations.
@@ -73,6 +74,7 @@ const appsConfigs = [
 	SupportAppConfig,
 	RoleMenuAppConfig,
 	DesignationAppConfig,
+	EmbassyAppConfig,
 	MenuAppConfig,
 	PermissionAppConfig,
 	RoleAppConfig,

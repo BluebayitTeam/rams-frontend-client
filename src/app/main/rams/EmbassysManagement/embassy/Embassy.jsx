@@ -351,12 +351,12 @@ function Embassy() {
 																						/\s\s+/g,
 																						' '
 																					);
-																				dispatch(
-																					setAlert({
-																						alertType: 'warning',
-																						alertValue: message
-																					})
-																				);
+																				// dispatch(
+																				// 	setAlert({
+																				// 		alertType: 'warning',
+																				// 		alertValue: message
+																				// 	})
+																				// );
 																			}
 																		})
 																		.catch(() => {});
