@@ -212,24 +212,40 @@ function MusanedOkala() {
 																	);
 																	reset({
 																		passenger: newValue?.id,
+																		musaned_no: '',
+																		musaned_date: '',
 																		musaned_status: doneNotDone.find(
 																			(data) => data.default
 																		)?.id,
 																		okala_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+
+																		musaned_given_by: 'all',
+																		okala_no: '',
+																		okala_date: '',
+																		okala_given_by: 'all',
+																		current_status: 'all'
 																	});
 																}
 															})
 															.catch(() => {
 																reset({
 																	passenger: newValue?.id,
+																	musaned_no: '',
+																	musaned_date: '',
 																	musaned_status: doneNotDone.find(
 																		(data) => data.default
 																	)?.id,
 																	okala_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id
+																	)?.id,
+
+																	musaned_given_by: 'all',
+																	okala_no: '',
+																	okala_date: '',
+																	okala_given_by: 'all',
+																	current_status: 'all'
 																});
 																navigate(
 																	`/apps/musanedOkala-management/musanedOkalas/new`
@@ -238,10 +254,18 @@ function MusanedOkala() {
 													} else {
 														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 														reset({
-															passenger: newValue?.id,
+															passenger: 'all',
+															musaned_no: '',
+															musaned_date: '',
 															musaned_status: doneNotDone.find((data) => data.default)
 																?.id,
-															okala_status: doneNotDone.find((data) => data.default)?.id
+															okala_status: doneNotDone.find((data) => data.default)?.id,
+
+															musaned_given_by: 'all',
+															okala_no: '',
+															okala_date: '',
+															okala_given_by: 'all',
+															current_status: 'all'
 														});
 													}
 												}}

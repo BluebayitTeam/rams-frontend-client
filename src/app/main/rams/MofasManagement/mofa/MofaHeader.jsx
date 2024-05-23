@@ -110,7 +110,8 @@ function MofaHeader() {
 
 							why_remofa: '',
 							mofa_date: '',
-							remofa_charge: ''
+							remofa_charge: '',
+							mofa_no: ''
 						});
 						localStorage.setItem('medicalAlert', 'saveMofa');
 						navigate('/apps/mofa-management/mofas/new');

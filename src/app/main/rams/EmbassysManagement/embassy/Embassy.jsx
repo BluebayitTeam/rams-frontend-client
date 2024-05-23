@@ -245,6 +245,7 @@ function Embassy() {
 																	const musanedokala = res.data?.musanedokala;
 																	reset({
 																		...setIdIfValueIsObject(res.data.embassy),
+																		passenger: newValue?.id,
 																		visa_number_readonly: visa_entry.visa_number,
 																		sponsor_id_no_readonly:
 																			visa_entry.sponsor_id_no,
@@ -268,7 +269,7 @@ function Embassy() {
 																	});
 																	navigate(
 																		`/apps/embassy/embassys/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																}
@@ -304,7 +305,17 @@ function Embassy() {
 																			office_work.certificate_experience,
 																		passenger: newValue?.id,
 																		createPermission: true,
-																		updatePermission: false
+																		updatePermission: false,
+																		recruiting_agency: 'all',
+																		stamping_status: doneNotDone.find(
+																			(data) => data.default
+																		)?.id,
+																		submit_date: '',
+
+																		salary: '',
+																		stamping_date: '',
+																		visa_expiry_date: '',
+																		delivery_date: ''
 																	});
 																	navigate(`/apps/embassy/embassys/new`);
 																}
@@ -313,10 +324,39 @@ function Embassy() {
 																	navigate(`/apps/embassy/embassys/new`);
 
 																	reset({
+																		profession_english:
+																			visa_entry.profession_english,
+																		profession_arabic: visa_entry.profession_arabic,
+																		visa_number_readonly: visa_entry.visa_number,
+																		sponsor_id_no_readonly:
+																			visa_entry.sponsor_id_no,
+																		sponsor_name_english_readonly:
+																			visa_entry.sponsor_name_english,
+																		sponsor_name_arabic_readonly:
+																			visa_entry.sponsor_name_arabic,
+																		mofa_no_readonly: mofa.mofa_no,
+																		police_clearance_no_readonly:
+																			office_work.police_clearance_no,
+																		oakala_no_readonly: musanedokala.okala_no,
+																		driving_license_no_readonly:
+																			office_work.driving_license_no,
+																		musaned_okala_no_readonly:
+																			musanedokala.musaned_no,
+																		certificate_experience_no_readonly:
+																			office_work.certificate_experience,
 																		passenger: newValue?.id,
+																		createPermission: true,
+																		updatePermission: false,
+																		recruiting_agency: 'all',
 																		stamping_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+																		submit_date: '',
+
+																		salary: '',
+																		stamping_date: '',
+																		visa_expiry_date: '',
+																		delivery_date: ''
 																	});
 
 																	const medical = `${
@@ -359,61 +399,76 @@ function Embassy() {
 																				// 	})
 																				// );
 																			}
-																		})
-																		.catch(() => {});
+																		});
 																}
 															})
 															.catch(() => {
 																navigate(`/apps/embassy/embassys/new`);
 																reset({
+																	profession_english: visa_entry.profession_english,
+																	profession_arabic: visa_entry.profession_arabic,
+																	visa_number_readonly: visa_entry.visa_number,
+																	sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+																	sponsor_name_english_readonly:
+																		visa_entry.sponsor_name_english,
+																	sponsor_name_arabic_readonly:
+																		visa_entry.sponsor_name_arabic,
+																	mofa_no_readonly: mofa.mofa_no,
+																	police_clearance_no_readonly:
+																		office_work.police_clearance_no,
+																	oakala_no_readonly: musanedokala.okala_no,
+																	driving_license_no_readonly:
+																		office_work.driving_license_no,
+																	musaned_okala_no_readonly: musanedokala.musaned_no,
+																	certificate_experience_no_readonly:
+																		office_work.certificate_experience,
 																	passenger: newValue?.id,
+																	createPermission: true,
+																	updatePermission: false,
 																	recruiting_agency: 'all',
 																	stamping_status: doneNotDone.find(
 																		(data) => data.default
 																	)?.id,
 																	submit_date: '',
-																	profession_english: '',
-																	profession_arabic: '',
+
 																	salary: '',
 																	stamping_date: '',
 																	visa_expiry_date: '',
-																	delivery_date: '',
-																	visa_number_readonly: '',
-																	sponsor_id_no_readonly: '',
-																	sponsor_name_english_readonly: '',
-																	sponsor_name_arabic_readonly: '',
-																	mofa_no_readonly: '',
-																	police_clearance_no_readonly: '',
-																	oakala_no_readonly: '',
-																	driving_license_no_readonly: '',
-																	musaned_okala_no_readonly: '',
-																	certificate_experience_no_readonly: ''
+																	delivery_date: ''
 																});
 															});
 													} else {
 														navigate(`/apps/embassy/embassys/new`);
 														reset({
 															passenger: 'all',
+															profession_english: visa_entry.profession_english,
+															profession_arabic: visa_entry.profession_arabic,
+															visa_number_readonly: visa_entry.visa_number,
+															sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+															sponsor_name_english_readonly:
+																visa_entry.sponsor_name_english,
+															sponsor_name_arabic_readonly:
+																visa_entry.sponsor_name_arabic,
+															mofa_no_readonly: mofa.mofa_no,
+															police_clearance_no_readonly:
+																office_work.police_clearance_no,
+															oakala_no_readonly: musanedokala.okala_no,
+															driving_license_no_readonly: office_work.driving_license_no,
+															musaned_okala_no_readonly: musanedokala.musaned_no,
+															certificate_experience_no_readonly:
+																office_work.certificate_experience,
+
+															createPermission: true,
+															updatePermission: false,
 															recruiting_agency: 'all',
 															stamping_status: doneNotDone.find((data) => data.default)
 																?.id,
 															submit_date: '',
-															profession_english: '',
-															profession_arabic: '',
+
 															salary: '',
 															stamping_date: '',
 															visa_expiry_date: '',
-															delivery_date: '',
-															visa_number_readonly: '',
-															sponsor_id_no_readonly: '',
-															sponsor_name_english_readonly: '',
-															sponsor_name_arabic_readonly: '',
-															mofa_no_readonly: '',
-															police_clearance_no_readonly: '',
-															oakala_no_readonly: '',
-															driving_license_no_readonly: '',
-															musaned_okala_no_readonly: '',
-															certificate_experience_no_readonly: ''
+															delivery_date: ''
 														});
 													}
 												}}
