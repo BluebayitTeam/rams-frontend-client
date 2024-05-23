@@ -69,18 +69,6 @@ function Mofa() {
 		setValue
 	} = methods;
 
-	// useEffect(() => {
-	// 	if (mofaId === 'new') {
-	// 		reset(MofaModel({}));
-	// 	}
-	// }, [mofaId, reset]);
-
-	// useEffect(() => {
-	// 	if (mofa) {
-	// 		reset({ ...mofa });
-	// 	}
-	// }, [mofa, reset]);
-
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -126,18 +114,6 @@ function Mofa() {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
-
-	// const updateCurrentStatus = (id) => {
-	// 	const authTOKEN = {
-	// 		headers: {
-	// 			'Content-type': 'application/json',
-	// 			Authorization: localStorage.getItem('jwt_access_token')
-	// 		}
-	// 	};
-	// 	axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
-	// 		setValue('current_status', res.data?.current_status?.id);
-	// 	});
-	// };
 
 	return (
 		<FormProvider {...methods}>

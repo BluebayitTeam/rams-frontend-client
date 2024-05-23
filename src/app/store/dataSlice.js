@@ -90,6 +90,18 @@ export const getEmployeeUsers = () => (dispatch) => {
 		.then((data) => dispatch(setEmployeeUsers(data.employee_users)))
 		.catch(() => {});
 };
+// export const getEmbassy = () => (dispatch) => {
+// 	const authTOKEN = {
+// 		headers: {
+// 			'Content-type': 'application/json',
+// 			Authorization: localStorage.getItem('jwt_access_token')
+// 		}
+// 	};
+// 	fetch(GET_EMPLOYEE_USERS_WITHOUT_PAGINATION, authTOKEN)
+// 		.then((response) => response.json())
+// 		.then((data) => dispatch(setEmbassy(data.employee_users)))
+// 		.catch(() => {});
+// };
 
 export const getPermissionGroups = () => (dispatch) => {
 	const authTOKEN = {

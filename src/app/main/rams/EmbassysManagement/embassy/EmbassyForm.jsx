@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
+import { getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -40,50 +40,19 @@ function MedicalForm(props) {
 	const { embassyId } = routeParams;
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewImage, setPreviewImage] = useState();
-	const [previewImage2, setPreviewImage2] = useState();
+	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
+	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
+	const embassyData = useSelector(({ embassysManagement }) => embassysManagement.embassy);
+
+	useEffect(() => {
+		setPreviewOldVisaImage('');
+		setPreviewStampVisaImage('');
+	}, [getValues('recruiting_agency')]);
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getMedicalCenters());
-		dispatch(getCurrentStatuss());
-	}, [dispatch]);
-	console.log('wbkjwb', getValues());
-	useEffect(() => {
-		if (embassyId === 'new') {
-			// reset({
-			// 	medical_center: 'all',
-			// 	// passenger: 'all',
-			// 	medical_serial_no: '',
-			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
-			// 	medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			// 	medical_exam_date: '',
-			// 	medical_report_date: '',
-			// 	medical_issue_date: '',
-			// 	medical_expiry_date: '',
-			// 	notes: '',
-			// 	slip_pic: '',
-			// 	medical_card_pic: '',
-			// 	current_status: 'all'
-			// });
-			setPreviewImage('');
-			setPreviewImage2('');
-		} else {
-			// Fetch and set data based on embassyId if needed
-			// reset(formData);
-		}
-	}, [embassyId, reset, medicalCenters, currentStatuss]);
-
-	useEffect(() => {
-		setPreviewImage('');
-		setPreviewImage2('');
-	}, [getValues('medical_center')]);
-
-	// const increaseMonth = (dateString, months) =>
-	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
-	// 		.toISOString()
-	// 		.slice(0, 10)
-	// 		.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
+		dispatch(getRecruitingAgencys());
+	}, []);
 
 	return (
 		<div>
@@ -322,16 +291,17 @@ function MedicalForm(props) {
 
 			<div className="flex justify-start mx-16 flex-col md:flex-row">
 				<Image
-					name="slip_pic"
-					previewImage={previewImage}
-					setPreviewImage={setPreviewImage}
-					label="Slip Picture"
+					name="old_visa_image"
+					previewImage={previewOldVisaImage}
+					setPreviewImage={setPreviewOldVisaImage}
+					label="Old Visa Image"
 				/>
+
 				<Image
 					name="medical_card_pic"
-					previewImage={previewImage2}
-					setPreviewImage={setPreviewImage2}
-					label="Embassy Card Picture"
+					previewImage={previewStampVisaImage}
+					setPreviewImage={setPreviewStampVisaImage}
+					label="Stamp Visa Image"
 				/>
 			</div>
 		</div>
