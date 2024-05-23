@@ -13,6 +13,7 @@ import axios from 'axios';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { EMBASSY_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
+import { getEmbassy } from 'app/store/dataSlice';
 import EmbassyHeader from './EmbassyHeader';
 import { useGetEmbassyQuery } from '../EmbassysApi';
 import EmbassyForm from './EmbassyForm';
@@ -221,7 +222,7 @@ function Embassy() {
 												}
 												onChange={(event, newValue) => {
 													if (newValue?.id) {
-														// newValue?.id;
+														getEmbassy(newValue?.id);
 														const authTOKEN = {
 															headers: {
 																'Content-type': 'application/json',

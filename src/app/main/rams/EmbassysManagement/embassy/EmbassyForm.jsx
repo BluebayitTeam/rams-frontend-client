@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import increaseMonth from 'src/app/@helpers/increaseMonth';
@@ -39,7 +39,8 @@ function MedicalForm(props) {
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
-	const currentStatuss = useSelector((state) => state.data.currentStatuss);
+	// const embassyData = useSelector(({ embassysManagement }) => embassysManagement.embassy);
+
 	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
 	// const embassyData = useSelector(({ embassysManagement }) => embassysManagement.embassy);
@@ -87,16 +88,34 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_serial_no"
+				name="submit_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.submit_date}
+						helperText={errors?.submit_date?.message}
+						label="Submit Date"
+						id="submit_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+
+			<Controller
+				name="profession_english"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						value={field.value || ''}
 						className="mt-8 mb-16"
-						helperText={errors?.medical_serial_no?.message}
-						label="Embassy Serial No"
-						id="medical_serial_no"
+						helperText={errors?.profession_english?.message}
+						label="Profession English"
+						id="profession_english"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
@@ -105,14 +124,49 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_result"
+				name="profession_arabic"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						value={field.value || ''}
+						className="mt-8 mb-16"
+						helperText={errors?.profession_arabic?.message}
+						label="Profession Arabic"
+						id="profession_arabic"
+						variant="outlined"
+						InputLabelProps={field.value && { shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+			<Controller
+				name="salary"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						value={field.value || ''}
+						className="mt-8 mb-16"
+						helperText={errors?.salary?.message}
+						label="Salary"
+						id="salary"
+						variant="outlined"
+						InputLabelProps={field.value && { shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+
+			<Controller
+				name="stamping_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalResults.find((data) => data.id === value) : null}
-						options={medicalResults}
+						value={value ? doneNotDone.find((data) => data.id === value) : null}
+						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -120,9 +174,9 @@ function MedicalForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Embassy Result"
-								label="Embassy Result"
-								helperText={errors?.medical_result?.message}
+								placeholder="Select Stamping Status"
+								label="Stamping Status"
+								helperText={errors?.stamping_status?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -163,57 +217,21 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_exam_date"
+				name="stamping_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.medical_exam_date}
-						helperText={errors?.medical_exam_date?.message}
-						label="Embassy Exam Date"
-						id="medical_exam_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
-
-			<Controller
-				name="medical_report_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.medical_report_date}
-						helperText={errors?.medical_report_date?.message}
-						label="Embassy Report Date"
-						id="medical_report_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
-
-			<Controller
-				name="medical_issue_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.medical_issue_date}
-						helperText={errors?.medical_issue_date?.message}
-						label="Embassy Issue Date"
+						error={!!errors.stamping_date}
+						helperText={errors?.stamping_date?.message}
+						label="Stamping Date"
 						onChange={(event) => {
 							const { value } = event.target;
 							field.onChange(value);
-							setValue('medical_expiry_date', increaseMonth(value, 3));
+							setValue('visa_expiry_date', increaseMonth(value, 3));
 						}}
-						id="medical_issue_date"
+						id="stamping_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -222,18 +240,54 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_expiry_date"
+				name="visa_expiry_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.medical_expiry_date}
-						helperText={errors?.medical_expiry_date?.message}
-						label="Embassy Expiry Date"
-						id="medical_expiry_date"
+						error={!!errors.visa_expiry_date}
+						helperText={errors?.visa_expiry_date?.message}
+						label="visa Expiry Date"
+						id="visa_expiry_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+			<Controller
+				name="delivery_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.delivery_date}
+						helperText={errors?.delivery_date?.message}
+						label="Delivery Date"
+						id="delivery_date"
+						type="date"
+						style={{ display: embassyData?.embassy?.delivery_date ? 'flex' : 'none' }}
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+
+			<Controller
+				name="visa_number_readonly"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						value={field.value || ''}
+						className="mt-8 mb-16"
+						helperText={errors?.visa_number_readonly?.message}
+						label="Visa No"
+						id="visa_number_readonly"
+						variant="outlined"
+						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
 					/>
 				)}
