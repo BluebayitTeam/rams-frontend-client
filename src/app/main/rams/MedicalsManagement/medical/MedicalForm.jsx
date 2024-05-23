@@ -109,9 +109,8 @@ function MedicalForm(props) {
 								id="medical_center"
 								helperText={errors?.medical_center?.message}
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								required
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
