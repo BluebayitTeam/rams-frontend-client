@@ -367,17 +367,53 @@ function Embassy() {
 																navigate(`/apps/embassy/embassys/new`);
 																reset({
 																	passenger: newValue?.id,
+																	recruiting_agency: 'all',
 																	stamping_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id
+																	)?.id,
+																	submit_date: '',
+																	profession_english: '',
+																	profession_arabic: '',
+																	salary: '',
+																	stamping_date: '',
+																	visa_expiry_date: '',
+																	delivery_date: '',
+																	visa_number_readonly: '',
+																	sponsor_id_no_readonly: '',
+																	sponsor_name_english_readonly: '',
+																	sponsor_name_arabic_readonly: '',
+																	mofa_no_readonly: '',
+																	police_clearance_no_readonly: '',
+																	oakala_no_readonly: '',
+																	driving_license_no_readonly: '',
+																	musaned_okala_no_readonly: '',
+																	certificate_experience_no_readonly: ''
 																});
 															});
 													} else {
 														navigate(`/apps/embassy/embassys/new`);
 														reset({
-															passenger: newValue?.id,
+															passenger: 'all',
+															recruiting_agency: 'all',
 															stamping_status: doneNotDone.find((data) => data.default)
-																?.id
+																?.id,
+															submit_date: '',
+															profession_english: '',
+															profession_arabic: '',
+															salary: '',
+															stamping_date: '',
+															visa_expiry_date: '',
+															delivery_date: '',
+															visa_number_readonly: '',
+															sponsor_id_no_readonly: '',
+															sponsor_name_english_readonly: '',
+															sponsor_name_arabic_readonly: '',
+															mofa_no_readonly: '',
+															police_clearance_no_readonly: '',
+															oakala_no_readonly: '',
+															driving_license_no_readonly: '',
+															musaned_okala_no_readonly: '',
+															certificate_experience_no_readonly: ''
 														});
 													}
 												}}
