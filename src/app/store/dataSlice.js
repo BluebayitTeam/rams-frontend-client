@@ -100,7 +100,7 @@ export const getEmbassy = () => (dispatch) => {
 	};
 	fetch(EMBASSY_BY_PASSENGER_ID, authTOKEN)
 		.then((response) => response.json())
-		.then((data) => dispatch(setEmbassy(data.employee_users)))
+		.then((data) => dispatch(setEmbassy(data)))
 		.catch(() => {});
 };
 

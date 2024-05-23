@@ -39,11 +39,10 @@ function MedicalForm(props) {
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
-	// const embassyData = useSelector(({ embassysManagement }) => embassysManagement.embassy);
+	const embassyData = useSelector((state) => state.data.embassys);
 
 	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
-	// const embassyData = useSelector(({ embassysManagement }) => embassysManagement.embassy);
 
 	useEffect(() => {
 		setPreviewOldVisaImage('');
@@ -188,35 +187,6 @@ function MedicalForm(props) {
 			/>
 
 			<Controller
-				name="medical_card"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={doneNotDone}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Embassy Card"
-								label="Embassy Card"
-								helperText={errors?.medical_card?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
 				name="stamping_date"
 				control={control}
 				render={({ field }) => (
@@ -268,7 +238,7 @@ function MedicalForm(props) {
 						label="Delivery Date"
 						id="delivery_date"
 						type="date"
-						style={{ display: embassyData?.embassy?.delivery_date ? 'flex' : 'none' }}
+						style={{ display: embassyData?.embassys?.delivery_date ? 'flex' : 'none' }}
 						InputLabelProps={{ shrink: true }}
 						fullWidth
 					/>
@@ -292,54 +262,216 @@ function MedicalForm(props) {
 					/>
 				)}
 			/>
+
 			<Controller
-				name="current_status"
+				name="sponsor_id_no_readonly"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...currentStatuss]}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select current status"
-								label="Current Status"
-								id="current_status"
-								helperText={errors?.current_status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.sponsor_id_no_readonly}
+							helperText={errors?.sponsor_id_no_readonly?.message}
+							label="Sponsor ID No"
+							id="sponsor_id_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
 			/>
 
 			<Controller
-				name="notes"
+				name="sponsor_name_english_readonly"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						value={field.value || ''}
-						helperText={errors?.notes?.message}
-						label="Notes"
-						id="notes"
-						variant="outlined"
-						multiline
-						rows={4}
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.sponsor_name_english_readonly}
+							helperText={errors?.sponsor_name_english_readonly?.message}
+							label="Sponsor Name English"
+							id="sponsor_name_english_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="sponsor_name_arabic_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.sponsor_name_arabic_readonly}
+							helperText={errors?.sponsor_name_arabic_readonly?.message}
+							label="Sponsor Name Arabic"
+							id="sponsor_name_arabic_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="mofa_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.mofa_no_readonly}
+							helperText={errors?.mofa_no_readonly?.message}
+							label="Mofa No"
+							id="mofa_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="police_clearance_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.police_clearance_no_readonly}
+							helperText={errors?.police_clearance_no_readonly?.message}
+							label="Police Clearance No"
+							id="police_clearance_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="oakala_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.oakala_no_readonly}
+							helperText={errors?.oakala_no_readonly?.message}
+							label="Okala No"
+							id="oakala_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="driving_license_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.driving_license_no_readonly}
+							helperText={errors?.driving_license_no_readonly?.message}
+							label="Driving license No"
+							id="driving_license_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="musaned_okala_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.musaned_okala_no_readonly}
+							helperText={errors?.musaned_okala_no_readonly?.message}
+							label="Musaned Okala No"
+							id="musaned_okala_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="certificate_experience_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.certificate_experience_no_readonly}
+							helperText={errors?.certificate_experience_no_readonly?.message}
+							label="Certificate & Experience No"
+							id="certificate_experience_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
 			/>
 
 			<div className="flex justify-start mx-16 flex-col md:flex-row">
