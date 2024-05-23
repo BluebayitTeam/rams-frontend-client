@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
+import increaseMonth from 'src/app/@helpers/increaseMonth';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -195,11 +196,11 @@ function MedicalForm(props) {
 						error={!!errors.stamping_date}
 						helperText={errors?.stamping_date?.message}
 						label="Stamping Date"
-						// onChange={(event) => {
-						// 	const { value } = event.target;
-						// 	field.onChange(value);
-						// 	setValue('visa_expiry_date', increaseMonth(value, 3));
-						// }}
+						onChange={(event) => {
+							const { value } = event.target;
+							field.onChange(value);
+							setValue('visa_expiry_date', increaseMonth(value, 3));
+						}}
 						id="stamping_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
