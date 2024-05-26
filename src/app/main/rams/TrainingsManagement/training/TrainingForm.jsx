@@ -40,8 +40,8 @@ function TrainingForm(props) {
 	const { trainingId } = routeParams;
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewImage, setPreviewImage] = useState();
-	const [previewImage2, setPreviewImage2] = useState();
+	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
+	const [previewCertificateImage, setpreviewCertificateImage] = useState('');
 
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -49,6 +49,10 @@ function TrainingForm(props) {
 		dispatch(getCurrentStatuss());
 	}, []);
 
+	useEffect(() => {
+		setpreviewDoc1Image('');
+		setpreviewCertificateImage('');
+	}, [getValues('recruiting_agency')]);
 	useEffect(() => {
 		if (trainingId === 'new') {
 			// reset({
@@ -66,8 +70,8 @@ function TrainingForm(props) {
 			// 	medical_card_pic: '',
 			// 	current_status: 'all'
 			// });
-			setPreviewImage('');
-			setPreviewImage2('');
+			// setPreviewImage('');
+			// setPreviewImage2('');
 		} else {
 			// Fetch and set data based on trainingId if needed
 			// reset(formData);
@@ -310,16 +314,16 @@ function TrainingForm(props) {
 
 			<div className="flex justify-start mx-16 flex-col md:flex-row">
 				<Image
-					name="slip_pic"
-					previewImage={previewImage}
-					setPreviewImage={setPreviewImage}
-					label="Slip Picture"
+					name="doc1_image"
+					previewImage={previewDoc1Image}
+					setPreviewImage={setpreviewDoc1Image}
+					label="Doc1 Image"
 				/>
 				<Image
-					name="medical_card_pic"
-					previewImage={previewImage2}
-					setPreviewImage={setPreviewImage2}
-					label="Training Card Picture"
+					name="certificate_image"
+					previewImage={previewCertificateImage}
+					setPreviewImage={setpreviewCertificateImage}
+					label="Certificate Image"
 				/>
 			</div>
 		</div>
