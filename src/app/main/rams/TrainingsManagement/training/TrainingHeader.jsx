@@ -13,37 +13,37 @@ import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../TrainingsApi';
+import { useCreateTrainingMutation, useDeleteTrainingMutation, useUpdateTrainingMutation } from '../TrainingsApi';
 
 /**
- * The medical header.
+ * The training header.
  */
-function MedicalHeader() {
+function TrainingHeader() {
 	const routeParams = useParams();
-	const { medicalId } = routeParams;
-	const [createMedical] = useCreateMedicalMutation();
-	const [saveMedical] = useUpdateMedicalMutation();
-	const [removeMedical] = useDeleteMedicalMutation();
+	const { trainingId } = routeParams;
+	const [createTraining] = useCreateTrainingMutation();
+	const [saveTraining] = useUpdateTrainingMutation();
+	const [removeTraining] = useDeleteTrainingMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMedical');
-	const handleUpdate = localStorage.getItem('updateMedical');
+	const handleDelete = localStorage.getItem('deleteTraining');
+	const handleUpdate = localStorage.getItem('updateTraining');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMedical() {
-		saveMedical(getValues())
+	function handleUpdateTraining() {
+		saveTraining(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateMedical');
+						localStorage.setItem('medicalAlert', 'updateTraining');
 
 						reset({
 							medical_card: doneNotDone.find((data) => data.default)?.id || '',
@@ -51,7 +51,7 @@ function MedicalHeader() {
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/medical/medicals/new');
+						navigate('/apps/training/trainings/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -60,20 +60,20 @@ function MedicalHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating medical', error);
+				console.error('Error updating training', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateMedical() {
-		createMedical(getValues())
+	function handleCreateTraining() {
+		createTraining(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMedical');
+						localStorage.setItem('medicalAlert', 'saveTraining');
 
 						reset({
 							passenger: 'all',
@@ -90,15 +90,15 @@ function MedicalHeader() {
 							medical_card_pic: '',
 							current_status: 'all'
 						});
-						navigate('/apps/medical/medicals/new');
+						navigate('/apps/training/trainings/new');
 						AddedSuccessfully();
 					}
 				}
 			});
 	}
 
-	function handleRemoveMedical() {
-		removeMedical(getValues()?.id)
+	function handleRemoveTraining() {
+		removeTraining(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
@@ -120,8 +120,8 @@ function MedicalHeader() {
 							medical_card_pic: '',
 							current_status: 'all'
 						});
-						localStorage.setItem('medicalAlert', 'saveMedical');
-						navigate('/apps/medical/medicals/new');
+						localStorage.setItem('medicalAlert', 'saveTraining');
+						navigate('/apps/training/trainings/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
@@ -149,11 +149,11 @@ function MedicalHeader() {
 			medical_card_pic: '',
 			current_status: 'all'
 		});
-		navigate('/apps/medical/medicals/new');
+		navigate('/apps/training/trainings/new');
 	};
 
 	useEffect(() => {
-		if (medicalId === 'new') {
+		if (trainingId === 'new') {
 			reset({
 				passenger: 'all',
 				medical_center: 'all',
@@ -170,7 +170,7 @@ function MedicalHeader() {
 				current_status: 'all'
 			});
 		}
-	}, [medicalId, reset]);
+	}, [trainingId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -181,15 +181,15 @@ function MedicalHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.medicalId === 'new'
-									? 'Create New Medical'
+								{routeParams.trainingId === 'new'
+									? 'Create New Training'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.medicalId !== 'new' && 'Medicals Detail'}
+								{routeParams.trainingId !== 'new' && 'Trainings Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -200,39 +200,39 @@ function MedicalHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.medicalId === 'new' ||
+				{(routeParams.trainingId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateMedical}
+						onClick={handleCreateTraining}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.trainingId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							onClick={handleUpdateMedical}
+							onClick={handleUpdateTraining}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.trainingId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveMedical}
+							onClick={handleRemoveTraining}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
@@ -253,4 +253,4 @@ function MedicalHeader() {
 	);
 }
 
-export default MedicalHeader;
+export default TrainingHeader;
