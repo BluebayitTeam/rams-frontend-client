@@ -20,7 +20,7 @@ import { useCreateTrainingMutation, useDeleteTrainingMutation, useUpdateTraining
  */
 function TrainingHeader() {
 	const routeParams = useParams();
-	const { trainingId } = routeParams;
+	const { medicalId } = routeParams;
 	const [createTraining] = useCreateTrainingMutation();
 	const [saveTraining] = useUpdateTrainingMutation();
 	const [removeTraining] = useDeleteTrainingMutation();
@@ -51,7 +51,7 @@ function TrainingHeader() {
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/training/trainings/new');
+						navigate('/apps/training-management/trainings/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -90,7 +90,7 @@ function TrainingHeader() {
 							medical_card_pic: '',
 							current_status: 'all'
 						});
-						navigate('/apps/training/trainings/new');
+						navigate('/apps/training-management/trainings/new');
 						AddedSuccessfully();
 					}
 				}
@@ -121,7 +121,7 @@ function TrainingHeader() {
 							current_status: 'all'
 						});
 						localStorage.setItem('medicalAlert', 'saveTraining');
-						navigate('/apps/training/trainings/new');
+						navigate('/apps/training-management/trainings/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
@@ -149,11 +149,11 @@ function TrainingHeader() {
 			medical_card_pic: '',
 			current_status: 'all'
 		});
-		navigate('/apps/training/trainings/new');
+		navigate('/apps/training-management/trainings/new');
 	};
 
 	useEffect(() => {
-		if (trainingId === 'new') {
+		if (medicalId === 'new') {
 			reset({
 				passenger: 'all',
 				medical_center: 'all',
@@ -170,7 +170,7 @@ function TrainingHeader() {
 				current_status: 'all'
 			});
 		}
-	}, [trainingId, reset]);
+	}, [medicalId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -181,7 +181,7 @@ function TrainingHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.trainingId === 'new'
+								{routeParams.medicalId === 'new'
 									? 'Create New Training'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
@@ -189,7 +189,7 @@ function TrainingHeader() {
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.trainingId !== 'new' && 'Trainings Detail'}
+								{routeParams.medicalId !== 'new' && 'Trainings Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -200,7 +200,7 @@ function TrainingHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.trainingId === 'new' ||
+				{(routeParams.medicalId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
@@ -213,7 +213,7 @@ function TrainingHeader() {
 					</Button>
 				)}
 
-				{routeParams?.trainingId !== 'new' &&
+				{routeParams?.medicalId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
@@ -226,7 +226,7 @@ function TrainingHeader() {
 						</Button>
 					)}
 
-				{routeParams?.trainingId !== 'new' &&
+				{routeParams?.medicalId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button

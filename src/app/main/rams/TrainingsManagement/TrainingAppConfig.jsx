@@ -11,7 +11,7 @@ const TrainingAppConfig = {
 	},
 	routes: [
 		{
-			path: 'apps/training',
+			path: 'apps/training-management',
 			element: <TrainingApp />,
 			children: [
 				{
@@ -21,6 +21,7 @@ const TrainingAppConfig = {
 
 				{
 					path: 'trainings/:trainingId/:fromSearch?',
+					// console.log('path',path),
 					element: <Training />
 				}
 			]

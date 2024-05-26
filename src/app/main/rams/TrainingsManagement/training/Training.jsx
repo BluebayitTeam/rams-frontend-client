@@ -198,12 +198,12 @@ function Training() {
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/training-management/training/${
+																		`/apps/training-management/trainings/${
 																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/training-management/training/new`);
+																	navigate(`/apps/training-management/trainings/new`);
 																	reset({
 																		passenger: newValue?.id,
 																		training_card_status: doneNotDone.find(
@@ -213,7 +213,7 @@ function Training() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/training-management/training/new`);
+																navigate(`/apps/training-management/trainings/new`);
 																reset({
 																	passenger: newValue?.id,
 																	training_card_status: doneNotDone.find(
@@ -222,7 +222,7 @@ function Training() {
 																});
 															});
 													} else {
-														navigate(`/apps/training-management/training/new`);
+														navigate(`/apps/training-management/trainings/new`);
 														reset({
 															passenger: newValue?.id,
 															training_card_status: doneNotDone.find(
