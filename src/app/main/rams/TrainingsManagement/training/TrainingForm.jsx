@@ -38,8 +38,9 @@ function TrainingForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { trainingId } = routeParams;
-	const medicalCenters = useSelector((state) => state.data.medicalCenters);
+	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
+	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
 	const [previewCertificateImage, setpreviewCertificateImage] = useState('');
 
@@ -56,7 +57,7 @@ function TrainingForm(props) {
 	useEffect(() => {
 		if (trainingId === 'new') {
 			// reset({
-			// 	medical_center: 'all',
+			// 	recruiting_agency: 'all',
 			// 	// passenger: 'all',
 			// 	medical_serial_no: '',
 			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
@@ -76,20 +77,20 @@ function TrainingForm(props) {
 			// Fetch and set data based on trainingId if needed
 			// reset(formData);
 		}
-	}, [trainingId, reset, medicalCenters, currentStatuss]);
+	}, [trainingId, reset, recruitingAgencys, currentStatuss]);
 
 	return (
 		<div>
 			<Controller
-				name="medical_center"
+				name="recruiting_agency"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? medicalCenters?.find((data) => data.id === value) : null}
-						// options={medicalCenters}
-						options={[{ id: 'all', name: 'Select Training Center' }, ...medicalCenters]}
+						value={value ? recruitingAgencys?.find((data) => data.id === value) : null}
+						// options={recruitingAgencys}
+						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...recruitingAgencys]}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -99,8 +100,8 @@ function TrainingForm(props) {
 								{...params}
 								placeholder="Select Training Center"
 								label="Training Center"
-								id="medical_center"
-								helperText={errors?.medical_center?.message}
+								id="recruiting_agency"
+								helperText={errors?.recruiting_agency?.message}
 								variant="outlined"
 								required
 								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
