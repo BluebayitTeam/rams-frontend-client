@@ -1,6 +1,6 @@
 import _ from '@lodash';
 
-const MedicalModel = (data) =>
+const TrainingModel = (data) =>
 	_.defaults(data || {}, {
 		// profession: '',
 		// country: '',
@@ -9,4 +9,4 @@ const MedicalModel = (data) =>
 		// quantity: '',
 		// salary: ''
 	});
-export default MedicalModel;
+export default TrainingModel;
