@@ -35,7 +35,7 @@ const CallingEmbAttestationApi = api
 							interviewed_date: newCallingEmbAttestation?.interviewed_date
 								? moment(new Date(newCallingEmbAttestation?.interviewed_date)).format('YYYY-MM-DD')
 								: null,
-							submitted_for_sev_date: callingEmbAttestation?.submitted_for_sev_date
+							submitted_for_sev_date: newCallingEmbAttestation?.submitted_for_sev_date
 								? moment(new Date(newCallingEmbAttestation?.submitted_for_sev_date)).format(
 										'YYYY-MM-DD'
 									)

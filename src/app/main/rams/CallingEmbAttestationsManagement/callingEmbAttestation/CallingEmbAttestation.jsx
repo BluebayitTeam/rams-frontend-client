@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
@@ -319,14 +320,12 @@ function CallingEmbAttestation() {
 														navigate(`/apps/malaysiaStatus-management/malaysiaStatus/new`);
 														reset({
 															passenger: 'all',
-															emb_attestation_status: doneNotDone.find(
-																(data) => data.default
-															)?.id,
-															calling_status: doneNotDone.find((data) => data.default)
-																?.id,
-															bio_submitted_status: doneNotDone.find(
-																(data) => data.default
-															)?.id,
+															emb_attestation_status:
+																doneNotDone.find((data) => data.default)?.id || '',
+															calling_status:
+																doneNotDone.find((data) => data.default)?.id || '',
+															bio_submitted_status:
+																doneNotDone.find((data) => data.default)?.id || '',
 															interviewed_date: '',
 															interviewed: '',
 															submitted_for_sev_date: '',

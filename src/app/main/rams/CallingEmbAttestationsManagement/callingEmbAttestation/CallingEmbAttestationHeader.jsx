@@ -12,7 +12,6 @@ import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import {
 	useCreateCallingEmbAttestationMutation,
 	useDeleteCallingEmbAttestationMutation,
@@ -41,8 +40,6 @@ function CallingEmbAttestationHeader() {
 	function handleUpdateCallingEmbAttestation() {
 		saveCallingEmbAttestation(getValues())
 			.then((res) => {
-				// debugger;
-
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
@@ -79,9 +76,9 @@ function CallingEmbAttestationHeader() {
 
 						reset({
 							passenger: 'all',
-							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+							emb_attestation_status: doneNotDone.find((data) => data.default)?.id || '',
+							calling_status: doneNotDone.find((data) => data.default)?.id || '',
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id || '',
 							interviewed_date: '',
 							interviewed: '',
 							submitted_for_sev_date: '',
@@ -121,9 +118,9 @@ function CallingEmbAttestationHeader() {
 					} else {
 						reset({
 							passenger: 'all',
-							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+							emb_attestation_status: doneNotDone.find((data) => data.default)?.id || '',
+							calling_status: doneNotDone.find((data) => data.default)?.id || '',
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id || '',
 							interviewed_date: '',
 							interviewed: '',
 							submitted_for_sev_date: '',
@@ -159,9 +156,9 @@ function CallingEmbAttestationHeader() {
 	const handleCancel = () => {
 		reset({
 			passenger: 'all',
-			emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-			calling_status: doneNotDone.find((data) => data.default)?.id,
-			bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+			emb_attestation_status: doneNotDone.find((data) => data.default)?.id || '',
+			calling_status: doneNotDone.find((data) => data.default)?.id || '',
+			bio_submitted_status: doneNotDone.find((data) => data.default)?.id || '',
 			interviewed_date: '',
 			interviewed: '',
 			submitted_for_sev_date: '',
@@ -183,34 +180,34 @@ function CallingEmbAttestationHeader() {
 		});
 		navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
 	};
-	useEffect(() => {
-		if (callingEmbAttestationId === 'new') {
-			reset({
-				passenger: 'all',
-				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-				calling_status: doneNotDone.find((data) => data.default)?.id,
-				bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
-				interviewed_date: '',
-				interviewed: '',
-				submitted_for_sev_date: '',
-				submitted_for_sev: '',
-				sev_received_date: '',
-				sev_received: '',
-				submitted_for_permission_immigration_clearance_date: '',
-				submitted_for_permission_immigration_clearance: '',
-				immigration_clearance_date: '',
-				immigration_clearance: '',
-				handover_passport_ticket_date: '',
-				handover_passport_ticket: '',
-				accounts_cleared_date: '',
-				accounts_cleared: '',
-				dispatched_date: '',
-				dispatched: '',
-				repatriation_date: '',
-				repatriation: ''
-			});
-		}
-	}, [callingEmbAttestationId, reset]);
+	// useEffect(() => {
+	// 	if (callingEmbAttestationId === 'new') {
+	// 		reset({
+	// 			passenger: 'all',
+	// 			emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+	// 			calling_status: doneNotDone.find((data) => data.default)?.id,
+	// 			bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+	// 			interviewed_date: '',
+	// 			interviewed: '',
+	// 			submitted_for_sev_date: '',
+	// 			submitted_for_sev: '',
+	// 			sev_received_date: '',
+	// 			sev_received: '',
+	// 			submitted_for_permission_immigration_clearance_date: '',
+	// 			submitted_for_permission_immigration_clearance: '',
+	// 			immigration_clearance_date: '',
+	// 			immigration_clearance: '',
+	// 			handover_passport_ticket_date: '',
+	// 			handover_passport_ticket: '',
+	// 			accounts_cleared_date: '',
+	// 			accounts_cleared: '',
+	// 			dispatched_date: '',
+	// 			dispatched: '',
+	// 			repatriation_date: '',
+	// 			repatriation: ''
+	// 		});
+	// 	}
+	// }, [callingEmbAttestationId, reset]);
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
