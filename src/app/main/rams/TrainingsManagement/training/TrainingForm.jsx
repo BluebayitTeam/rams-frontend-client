@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCurrentStatuss, getTrainingCenters, getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss, getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -45,9 +45,9 @@ function TrainingForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getTrainingCenters());
+		dispatch(getRecruitingAgencys());
 		dispatch(getCurrentStatuss());
-	}, [dispatch]);
+	}, []);
 	console.log('wbkjwb', getValues());
 	useEffect(() => {
 		if (trainingId === 'new') {
