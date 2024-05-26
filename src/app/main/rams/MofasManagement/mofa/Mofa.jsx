@@ -81,7 +81,7 @@ function Mofa() {
 				.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
 					} else {
 						reset({
 							passenger: mofaId,

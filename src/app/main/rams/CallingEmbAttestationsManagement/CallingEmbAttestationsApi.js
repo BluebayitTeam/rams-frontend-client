@@ -8,10 +8,11 @@ import {
 	CALLINGEMBATTESTATION_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import CallingEmbAttestationModel from './callingEmbAttestation/models/CallingEmbAttestationModel';
 
-export const addTagTypes = ['medicals'];
+export const addTagTypes = ['CallingEmbAttestations'];
 const CallingEmbAttestationApi = api
 	.enhanceEndpoints({
 		addTagTypes
@@ -22,7 +23,7 @@ const CallingEmbAttestationApi = api
 				query: (callingEmbAttestationId) => ({
 					url: `${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`
 				}),
-				providesTags: ['medicals']
+				providesTags: ['CallingEmbAttestations']
 			}),
 			createCallingEmbAttestation: build.mutation({
 				query: (newCallingEmbAttestation) => ({
@@ -30,28 +31,100 @@ const CallingEmbAttestationApi = api
 					method: 'POST',
 					data: jsonToFormData(
 						CallingEmbAttestationModel({
-							...newCallingEmbAttestation
+							...newCallingEmbAttestation,
+							interviewed_date: newCallingEmbAttestation?.interviewed_date
+								? moment(new Date(newCallingEmbAttestation?.interviewed_date)).format('YYYY-MM-DD')
+								: null,
+							submitted_for_sev_date: callingEmbAttestation?.submitted_for_sev_date
+								? moment(new Date(newCallingEmbAttestation?.submitted_for_sev_date)).format(
+										'YYYY-MM-DD'
+									)
+								: null,
+							sev_received_date: newCallingEmbAttestation?.sev_received_date
+								? moment(new Date(newCallingEmbAttestation?.sev_received_date)).format('YYYY-MM-DD')
+								: null,
+							submitted_for_permission_immigration_clearance_date:
+								newCallingEmbAttestation?.submitted_for_permission_immigration_clearance_date
+									? moment(
+											new Date(
+												newCallingEmbAttestation?.submitted_for_permission_immigration_clearance_date
+											)
+										).format('YYYY-MM-DD')
+									: null,
+							immigration_clearance_date: newCallingEmbAttestation?.immigration_clearance_date
+								? moment(new Date(newCallingEmbAttestation?.immigration_clearance_date)).format(
+										'YYYY-MM-DD'
+									)
+								: null,
+							accounts_cleared_date: newCallingEmbAttestation?.accounts_cleared_date
+								? moment(new Date(newCallingEmbAttestation?.accounts_cleared_date)).format('YYYY-MM-DD')
+								: null,
+							dispatched_date: newCallingEmbAttestation?.dispatched_date
+								? moment(new Date(newCallingEmbAttestation?.dispatched_date)).format('YYYY-MM-DD')
+								: null,
+							handover_passport_ticket_date: newCallingEmbAttestation?.handover_passport_ticket_date
+								? moment(new Date(newCallingEmbAttestation?.handover_passport_ticket_date)).format(
+										'YYYY-MM-DD'
+									)
+								: null,
+							repatriation_date: newCallingEmbAttestation?.repatriation_date
+								? moment(new Date(newCallingEmbAttestation?.repatriation_date)).format('YYYY-MM-DD')
+								: null
 						})
 					)
 				}),
-				invalidatesTags: ['medicals']
+				invalidatesTags: ['CallingEmbAttestations']
 			}),
 			updateCallingEmbAttestation: build.mutation({
 				query: (callingEmbAttestation) => ({
 					url: `${UPDATE_CALLINGEMBATTESTATION}${callingEmbAttestation.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...callingEmbAttestation
+						...callingEmbAttestation,
+						interviewed_date: callingEmbAttestation?.interviewed_date
+							? moment(new Date(callingEmbAttestation?.interviewed_date)).format('YYYY-MM-DD')
+							: null,
+						submitted_for_sev_date: callingEmbAttestation?.submitted_for_sev_date
+							? moment(new Date(callingEmbAttestation?.submitted_for_sev_date)).format('YYYY-MM-DD')
+							: null,
+						sev_received_date: callingEmbAttestation?.sev_received_date
+							? moment(new Date(callingEmbAttestation?.sev_received_date)).format('YYYY-MM-DD')
+							: null,
+						submitted_for_permission_immigration_clearance_date:
+							callingEmbAttestation?.submitted_for_permission_immigration_clearance_date
+								? moment(
+										new Date(
+											callingEmbAttestation?.submitted_for_permission_immigration_clearance_date
+										)
+									).format('YYYY-MM-DD')
+								: null,
+						immigration_clearance_date: callingEmbAttestation?.immigration_clearance_date
+							? moment(new Date(callingEmbAttestation?.immigration_clearance_date)).format('YYYY-MM-DD')
+							: null,
+						accounts_cleared_date: callingEmbAttestation?.accounts_cleared_date
+							? moment(new Date(callingEmbAttestation?.accounts_cleared_date)).format('YYYY-MM-DD')
+							: null,
+						dispatched_date: callingEmbAttestation?.dispatched_date
+							? moment(new Date(callingEmbAttestation?.dispatched_date)).format('YYYY-MM-DD')
+							: null,
+						handover_passport_ticket_date: callingEmbAttestation?.handover_passport_ticket_date
+							? moment(new Date(callingEmbAttestation?.handover_passport_ticket_date)).format(
+									'YYYY-MM-DD'
+								)
+							: null,
+						repatriation_date: callingEmbAttestation?.repatriation_date
+							? moment(new Date(callingEmbAttestation?.repatriation_date)).format('YYYY-MM-DD')
+							: null
 					})
 				}),
-				invalidatesTags: ['medicals']
+				invalidatesTags: ['CallingEmbAttestations']
 			}),
 			deleteCallingEmbAttestation: build.mutation({
 				query: (callingEmbAttestationId) => ({
 					url: `${DELETE_CALLINGEMBATTESTATION}${callingEmbAttestationId}`,
 					method: 'DELETE'
 				}),
-				invalidatesTags: ['medicals']
+				invalidatesTags: ['CallingEmbAttestations']
 			})
 		}),
 		overrideExisting: false
@@ -66,11 +139,11 @@ export const {
 	useCreateCallingEmbAttestationMutation
 } = CallingEmbAttestationApi;
 
-export const selectFilteredCallingEmbAttestations = (medicals) =>
+export const selectFilteredCallingEmbAttestations = (CallingEmbAttestations) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (searchText?.length === 0) {
-			return medicals;
+			return CallingEmbAttestations;
 		}
 
-		return FuseUtils.filterArrayByString(medicals, searchText);
+		return FuseUtils.filterArrayByString(CallingEmbAttestations, searchText);
 	});

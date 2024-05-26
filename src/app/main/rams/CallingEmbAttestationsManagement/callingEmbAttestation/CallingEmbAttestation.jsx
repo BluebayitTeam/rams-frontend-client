@@ -13,6 +13,7 @@ import axios from 'axios';
 import { CALLINGEMBATTESTATION_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import moment from 'moment';
 import CallingEmbAttestationHeader from './CallingEmbAttestationHeader';
 import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
 import CallingEmbAttestationForm from './CallingEmbAttestationForm';
@@ -72,30 +73,7 @@ function CallingEmbAttestation() {
 	} = methods;
 
 	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN).then((res) => {
-				if (res.data.id) {
-					// reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
-				}
-			});
-		} else {
-			reset({
-				passenger: callingEmbAttestationId,
-				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-				calling_status: doneNotDone.find((data) => data.default)?.id,
-				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	}, [fromSearch]);
-
-	useEffect(() => {
-		if (fromSearch) {
+		if (fromSearch && callingEmbAttestationId) {
 			const authTOKEN = {
 				headers: {
 					'Content-type': 'application/json',
@@ -106,7 +84,7 @@ function CallingEmbAttestation() {
 				.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
+						reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
 					} else {
 						reset({
 							passenger: callingEmbAttestationId,
@@ -126,18 +104,22 @@ function CallingEmbAttestation() {
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
-		} else {
+		} else if (callingEmbAttestationId === 'new') {
 			reset({
 				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 				calling_status: doneNotDone.find((data) => data.default)?.id,
 				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 			});
 		}
-	}, [fromSearch]);
+	}, [fromSearch, callingEmbAttestationId, reset]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
 	}
+
+	const formatDate = (date) => {
+		return date && moment(date).isValid() ? moment(date).format('YYYY-MM-DD') : '';
+	};
 
 	if (isLoading) {
 		return <FuseLoading />;
@@ -180,7 +162,6 @@ function CallingEmbAttestation() {
 												autoHighlight
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
-												// options={passengers}
 												options={[
 													{
 														id: 'all',
@@ -211,13 +192,6 @@ function CallingEmbAttestation() {
 														});
 
 													if (newValue?.id) {
-														const authTOKEN = {
-															headers: {
-																'Content-type': 'application/json',
-																Authorization: localStorage.getItem('jwt_access_token')
-															}
-														};
-
 														axios
 															.get(
 																`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${newValue?.id}`,
@@ -227,13 +201,46 @@ function CallingEmbAttestation() {
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),
+																		interviewed_date: formatDate(
+																			new Date(res?.data?.interviewed_date)
+																		),
+																		submitted_for_sev_date: formatDate(
+																			new Date(res?.data?.submitted_for_sev_date)
+																		),
+																		sev_received_date: formatDate(
+																			new Date(res?.data?.sev_received_date)
+																		),
+																		submitted_for_permission_immigration_clearance_date:
+																			formatDate(
+																				new Date(
+																					res?.data?.submitted_for_permission_immigration_clearance_date
+																				)
+																			),
+																		immigration_clearance_date: formatDate(
+																			new Date(
+																				res?.data?.immigration_clearance_date
+																			)
+																		),
+																		handover_passport_ticket_date: formatDate(
+																			new Date(
+																				res?.data?.handover_passport_ticket_date
+																			)
+																		),
+																		accounts_cleared_date: formatDate(
+																			new Date(res?.data?.accounts_cleared_date)
+																		),
+																		dispatched_date: formatDate(
+																			new Date(res?.data?.dispatched_date)
+																		),
+																		repatriation_date: formatDate(
+																			new Date(res?.data?.repatriation_date)
+																		),
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/malaysiaStatus-management/malaysiaStatus/${
-																			newValue?.passenger.id || newValue?.id
-																		}`
+																		`/apps/malaysiaStatus-management/malaysiaStatus/${res?.data?.id}`
 																	);
+																	sessionStorage.setItem('operation', 'update');
 																} else {
 																	navigate(
 																		`/apps/malaysiaStatus-management/malaysiaStatus/new`
@@ -273,9 +280,6 @@ function CallingEmbAttestation() {
 																}
 															})
 															.catch(() => {
-																navigate(
-																	`/apps/malaysiaStatus-management/malaysiaStatus/new`
-																);
 																reset({
 																	passenger: newValue?.id,
 																	emb_attestation_status: doneNotDone.find(
@@ -307,11 +311,14 @@ function CallingEmbAttestation() {
 																	repatriation_date: '',
 																	repatriation: ''
 																});
+																navigate(
+																	`/apps/malaysiaStatus-management/malaysiaStatus/new`
+																);
 															});
 													} else {
 														navigate(`/apps/malaysiaStatus-management/malaysiaStatus/new`);
 														reset({
-															passenger: newValue?.id,
+															passenger: 'all',
 															emb_attestation_status: doneNotDone.find(
 																(data) => data.default
 															)?.id,

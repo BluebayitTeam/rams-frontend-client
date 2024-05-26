@@ -14,21 +14,6 @@ const MedicalApi = api
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			// getMedicals: build.query({
-			// 	query: ({ page, size, searchKey }) => ({
-			// 		url: GET_VISAENTRYS,
-			// 		params: { page, size, searchKey }
-			// 	}),
-			// 	providesTags: ['medicals']
-			// }),
-			// deleteMedicals: build.mutation({
-			// 	query: (medicalIds) => ({
-			// 		url: ALL_USERS,
-			// 		method: 'DELETE',
-			// 		data: medicalIds
-			// 	}),
-			// 	invalidatesTags: ['medicals']
-			// }),
 			getMedical: build.query({
 				query: (medicalId) => ({
 					url: `${MEDICAL_BY_PASSENGER_ID}${medicalId}`
