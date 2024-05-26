@@ -37,6 +37,7 @@ import MofaAppConfig from '../rams/MofasManagement/MofaAppConfig';
 import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaAppConfig';
 import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
 import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
+import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 
 /**
  * The list of application configurations.
@@ -55,6 +56,7 @@ const appsConfigs = [
 	TasksAppConfig,
 	NotificationsAppConfig,
 	UserAppConfig,
+	TrainingAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
 	OfficeWorkAppConfig,
