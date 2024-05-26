@@ -199,7 +199,7 @@ function Training() {
 																	});
 																	navigate(
 																		`/apps/training-management/trainings/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {

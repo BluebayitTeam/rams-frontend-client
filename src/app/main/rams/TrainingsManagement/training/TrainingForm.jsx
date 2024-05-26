@@ -48,7 +48,7 @@ function TrainingForm(props) {
 		dispatch(getRecruitingAgencys());
 		dispatch(getCurrentStatuss());
 	}, []);
-	console.log('wbkjwb', getValues());
+
 	useEffect(() => {
 		if (trainingId === 'new') {
 			// reset({
@@ -73,17 +73,6 @@ function TrainingForm(props) {
 			// reset(formData);
 		}
 	}, [trainingId, reset, medicalCenters, currentStatuss]);
-
-	useEffect(() => {
-		setPreviewImage('');
-		setPreviewImage2('');
-	}, [getValues('medical_center')]);
-
-	// const increaseMonth = (dateString, months) =>
-	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
-	// 		.toISOString()
-	// 		.slice(0, 10)
-	// 		.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
 
 	return (
 		<div>
