@@ -68,8 +68,7 @@ function TrainingForm(props) {
 				certificate_date: '',
 				batch_number: '',
 				current_status: 'all',
-				setpreviewDoc1Image: '',
-				setpreviewCertificateImage: ''
+				
 			});
 		} else {
 			console.log('valueForm', getValues());

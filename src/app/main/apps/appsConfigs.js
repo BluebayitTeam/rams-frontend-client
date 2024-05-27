@@ -38,6 +38,8 @@ import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaA
 import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
 import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
+import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
+import ManPowerAppConfig from '../rams/ManPowersManagement/ManPowerAppConfig';
 
 /**
  * The list of application configurations.
@@ -68,6 +70,7 @@ const appsConfigs = [
 	CallingEntryAppConfig,
 	ColumnAppConfig,
 	MedicalAppConfig,
+	ManPowerAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
 	CallingEmbAttestationAppConfig,
@@ -81,6 +84,7 @@ const appsConfigs = [
 	PermissionAppConfig,
 	RoleAppConfig,
 	PassengerAppConfig,
-	FeatureDetailAppConfig
+	FeatureDetailAppConfig,
+	FlightAppConfig
 ];
 export default appsConfigs;
