@@ -59,7 +59,7 @@ function TrainingForm(props) {
 			// reset({
 			// 	recruiting_agency: 'all',
 			// 	// passenger: 'all',
-			// 	medical_serial_no: '',
+			// 	training_center: '',
 			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
 			// 	medical_card: doneNotDone.find((data) => data.default)?.id || '',
 			// 	medical_exam_date: '',
@@ -112,16 +112,16 @@ function TrainingForm(props) {
 			/>
 
 			<Controller
-				name="medical_serial_no"
+				name="training_center"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						value={field.value || ''}
 						className="mt-8 mb-16"
-						helperText={errors?.medical_serial_no?.message}
-						label="Training Serial No"
-						id="medical_serial_no"
+						helperText={errors?.training_center?.message}
+						label="Training Center"
+						id="training_center"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
