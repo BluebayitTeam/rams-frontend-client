@@ -234,44 +234,55 @@ function TrainingForm(props) {
 			/>
 
 			<Controller
-				name="medical_issue_date"
+				name="training_card_status"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
 						className="mt-8 mb-16"
-						error={!!errors.medical_issue_date}
-						helperText={errors?.medical_issue_date?.message}
-						label="Training Issue Date"
-						onChange={(event) => {
-							const { value } = event.target;
-							field.onChange(value);
-							setValue('medical_expiry_date', increaseMonth(value, 3));
+						freeSolo
+						value={value ? doneNotDone.find(data => data.id == value) : null}
+						options={doneNotDone}
+						getOptionLabel={option => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
 						}}
-						id="medical_issue_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
+						renderInput={params => (
+							<TextField
+								{...params}
+								placeholder="Select Training Card Status"
+								label="Training Card Status"
+								error={!!errors.training_card_status}
+								helperText={errors?.training_card_status?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
 					/>
 				)}
 			/>
 
 			<Controller
-				name="medical_expiry_date"
+				name="batch_number"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.medical_expiry_date}
-						helperText={errors?.medical_expiry_date?.message}
-						label="Training Expiry Date"
-						id="medical_expiry_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							error={!!errors.batch_number}
+							helperText={errors?.batch_number?.message}
+							label="Batch Number"
+							id="batch_number"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
 			/>
 			<Controller
 				name="current_status"
