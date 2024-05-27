@@ -196,6 +196,24 @@ function TrainingForm(props) {
 					/>
 				)}
 			/>
+			<Controller
+				name="certificate_no"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						value={field.value || ''}
+						error={!!errors.certificate_no}
+						helperText={errors?.certificate_no?.message}
+					    label="Certificate No"
+						id="certificate_no"
+						variant="outlined"
+						InputLabelProps={field.value && { shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
 
 			<Controller
 				name="medical_report_date"
