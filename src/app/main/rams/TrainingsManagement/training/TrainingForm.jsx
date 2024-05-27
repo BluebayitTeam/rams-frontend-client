@@ -216,16 +216,16 @@ function TrainingForm(props) {
 			/>
 
 			<Controller
-				name="medical_report_date"
+				name="certificate_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.medical_report_date}
-						helperText={errors?.medical_report_date?.message}
-						label="Training Report Date"
-						id="medical_report_date"
+						error={!!errors.certificate_date}
+						helperText={errors?.certificate_date?.message}
+						label="Certificate Date"
+						id="certificate_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
