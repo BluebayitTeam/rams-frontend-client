@@ -45,10 +45,19 @@ function TrainingHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'updateTraining');
 
-						reset({
-							training_card_status: doneNotDone.find((data) => data.default)?.id
-						});
-
+						// reset({
+						// 	passenger: 'all',
+						// 	training_card_status: doneNotDone.find((data) => data.default)?.id,
+						// 	recruiting_agency: 'all',
+						// 	training_center: '',
+						// 	admission_date: '',
+						// 	serial_no: '',
+						// 	certificate_no: '',
+						// 	certificate_date: '',
+						// 	batch_number: '',
+						// 	current_status: ''
+						// });
+						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
 						navigate('/apps/training-management/trainings/new');
 					}
@@ -76,7 +85,7 @@ function TrainingHeader() {
 
 						reset({
 							passenger: 'all',
-							training_card_status: doneNotDone.find((data) => data.default)?.id || '',
+							training_card_status: doneNotDone.find((data) => data.default)?.id,
 							recruiting_agency: 'all',
 							training_center: '',
 							admission_date: '',
@@ -84,8 +93,7 @@ function TrainingHeader() {
 							certificate_no: '',
 							certificate_date: '',
 							batch_number: '',
-							current_status: '',
-							notes: ''
+							current_status: ''
 						});
 						navigate('/apps/training-management/trainings/new');
 						AddedSuccessfully();
@@ -112,8 +120,7 @@ function TrainingHeader() {
 							certificate_no: '',
 							certificate_date: '',
 							batch_number: '',
-							current_status: '',
-							notes: ''
+							current_status: ''
 						});
 						localStorage.setItem('medicalAlert', 'saveTraining');
 						navigate('/apps/training-management/trainings/new');

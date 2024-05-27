@@ -11,7 +11,7 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import TrainingHeader from './TrainingHeader';
@@ -165,20 +165,20 @@ function Training() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															sessionStorage.setItem(
-																'passengerCurrentStatus',
-																res.data?.current_status?.name
-															);
-														});
+													// const authTOKEN = {
+													// 	headers: {
+													// 		'Content-type': 'application/json',
+													// 		Authorization: localStorage.getItem('jwt_access_token')
+													// 	}
+													// };
+													// axios
+													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+													// 	.then((res) => {
+													// 		sessionStorage.setItem(
+													// 			'passengerCurrentStatus',
+													// 			res.data?.current_status?.name
+													// 		);
+													// 	});
 
 													if (newValue?.id) {
 														const authTOKEN = {
@@ -194,27 +194,17 @@ function Training() {
 															)
 															.then((res) => {
 																if (res.data.id) {
+																	console.log('fromData', res.data);
 																	reset({
 																		...setIdIfValueIsObject({
 																			...res?.data,
 																			passenger: newValue?.id,
 
-																			training_card_status:
-																				doneNotDone.find((data) => data.default)
-																					?.id || '',
+																			training_card_status: doneNotDone.find(
+																				(data) => data.default
+																			)?.id,
 																			recruiting_agency:
-																				res?.data?.recruiting_agency?.id,
-																			training_center:
-																				res?.data?.training_center?.id,
-																			// admission_date: '',
-																			serial_no: res?.data?.serial_no?.id,
-																			// certificate_no:
-																			// 	res?.data?.certificate_no?.id,
-																			// certificate_date: '',
-																			batch_number: res?.data?.batch_number?.id,
-																			current_status:
-																				res?.data?.current_status?.id,
-																			notes: res?.data?.notes?.id
+																				res?.data?.recruiting_agency?.id
 																		})
 																	});
 																	navigate(
@@ -228,26 +218,51 @@ function Training() {
 																		passenger: newValue?.id,
 																		training_card_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+																		recruiting_agency: 'all',
+																		training_center: '',
+																		admission_date: '',
+																		serial_no: '',
+																		certificate_no: '',
+																		certificate_date: '',
+																		batch_number: '',
+																		current_status: ''
 																	});
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/training-management/trainings/new`);
 																reset({
 																	passenger: newValue?.id,
 																	training_card_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id
+																	)?.id,
+																	recruiting_agency: 'all',
+																	training_center: '',
+																	admission_date: '',
+																	serial_no: '',
+																	certificate_no: '',
+																	certificate_date: '',
+																	batch_number: '',
+																	current_status: ''
 																});
+																navigate(`/apps/training-management/trainings/new`);
 															});
 													} else {
 														navigate(`/apps/training-management/trainings/new`);
+
 														reset({
-															passenger: newValue?.id,
+															passenger: 'all',
 															training_card_status: doneNotDone.find(
 																(data) => data.default
-															)?.id
+															)?.id,
+															recruiting_agency: 'all',
+															training_center: '',
+															admission_date: '',
+															serial_no: '',
+															certificate_no: '',
+															certificate_date: '',
+															batch_number: '',
+															current_status: ''
 														});
 													}
 												}}

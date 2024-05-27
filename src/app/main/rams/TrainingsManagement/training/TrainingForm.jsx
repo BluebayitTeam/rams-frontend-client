@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
+import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import { TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import axios from 'axios';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -39,10 +42,9 @@ function TrainingForm(props) {
 	const { trainingId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
 	const [previewCertificateImage, setpreviewCertificateImage] = useState('');
-
+	const [reload, setReload] = useState(false);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getRecruitingAgencys());
@@ -55,28 +57,57 @@ function TrainingForm(props) {
 	}, [getValues('recruiting_agency')]);
 	useEffect(() => {
 		if (trainingId === 'new') {
-			// reset({
-			// 	recruiting_agency: 'all',
-			// 	// passenger: 'all',
-			// 	training_center: '',
-			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
-			// 	serial_no: doneNotDone.find((data) => data.default)?.id || '',
-			// 	admission_date: '',
-			// 	medical_report_date: '',
-			// 	medical_issue_date: '',
-			// 	medical_expiry_date: '',
-			// 	notes: '',
-			// 	slip_pic: '',
-			// 	medical_card_pic: '',
-			// 	current_status: 'all'
-			// });
-			// setPreviewImage('');
-			// setPreviewImage2('');
+			reset({
+				passenger: 'all',
+				training_card_status: doneNotDone.find((data) => data.default)?.id,
+				recruiting_agency: 'all',
+				training_center: '',
+				admission_date: '',
+				serial_no: '',
+				certificate_no: '',
+				certificate_date: '',
+				batch_number: '',
+				current_status: 'all',
+				setpreviewDoc1Image: '',
+				setpreviewCertificateImage: ''
+			});
 		} else {
+			console.log('valueForm', getValues());
 			// Fetch and set data based on trainingId if needed
 			// reset(formData);
 		}
 	}, [trainingId, reset, recruitingAgencys, currentStatuss]);
+
+	useEffect(() => {
+		if ((trainingId !== 'new', !reload)) {
+			const authTOKEN = {
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: localStorage.getItem('jwt_access_token')
+				}
+			};
+			axios.get(`${TRAINING_BY_PASSENGER_ID}${trainingId}`, authTOKEN).then((res) => {
+				if (res.data.id) {
+					console.log('fromData', res.data);
+					reset({
+						...setIdIfValueIsObject({
+							...res?.data,
+							passenger: parseInt(trainingId, 10),
+
+							training_card_status: doneNotDone.find((data) => data.default)?.id,
+							recruiting_agency: res?.data?.recruiting_agency?.id
+						})
+					});
+				}
+
+				setReload(true);
+			});
+		} else {
+			// console.log('valueForm', getValues());
+			// Fetch and set data based on trainingId if needed
+			// reset(formData);
+		}
+	}, [trainingId, reset, reload]);
 
 	return (
 		<div>
@@ -278,24 +309,6 @@ function TrainingForm(props) {
 								}}
 							/>
 						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="notes"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						value={field.value || ''}
-						helperText={errors?.notes?.message}
-						label="Notes"
-						id="notes"
-						variant="outlined"
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
 					/>
 				)}
 			/>
