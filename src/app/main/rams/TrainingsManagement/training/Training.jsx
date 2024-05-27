@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
@@ -199,7 +200,7 @@ function Training() {
 																	});
 																	navigate(
 																		`/apps/training-management/trainings/${
-																			newValue?.passenger?.id || newValue?.id
+																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
 																} else {

@@ -20,7 +20,7 @@ import { useCreateTrainingMutation, useDeleteTrainingMutation, useUpdateTraining
  */
 function TrainingHeader() {
 	const routeParams = useParams();
-	const { medicalId } = routeParams;
+	const { trainingId } = routeParams;
 	const [createTraining] = useCreateTrainingMutation();
 	const [saveTraining] = useUpdateTrainingMutation();
 	const [removeTraining] = useDeleteTrainingMutation();
@@ -134,26 +134,16 @@ function TrainingHeader() {
 	}
 
 	const handleCancel = () => {
-		reset({
-			passenger: 'all',
-			medical_center: 'all',
-			medical_serial_no: '',
-			medical_result: medicalResults.find((data) => data.default)?.id || '',
-			medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			medical_exam_date: '',
-			medical_report_date: '',
-			medical_issue_date: '',
-			medical_expiry_date: '',
-			notes: '',
-			slip_pic: '',
-			medical_card_pic: '',
-			current_status: 'all'
-		});
-		navigate('/apps/training-management/trainings/new');
+		if (fromSearch) {
+			history.goBack();
+		} else {
+			history.push('/apps/training-management/trainings/new');
+			reset({ training_card_status: doneNotDone.find((data) => data.default)?.id });
+		}
 	};
 
 	useEffect(() => {
-		if (medicalId === 'new') {
+		if (trainingId === 'new') {
 			reset({
 				passenger: 'all',
 				medical_center: 'all',
@@ -170,7 +160,7 @@ function TrainingHeader() {
 				current_status: 'all'
 			});
 		}
-	}, [medicalId, reset]);
+	}, [trainingId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -181,7 +171,7 @@ function TrainingHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.medicalId === 'new'
+								{routeParams.trainingId === 'new'
 									? 'Create New Training'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
@@ -189,7 +179,7 @@ function TrainingHeader() {
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.medicalId !== 'new' && 'Trainings Detail'}
+								{routeParams.trainingId !== 'new' && 'Trainings Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -200,7 +190,7 @@ function TrainingHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.medicalId === 'new' ||
+				{(routeParams.trainingId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
@@ -213,7 +203,7 @@ function TrainingHeader() {
 					</Button>
 				)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.trainingId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
@@ -226,7 +216,7 @@ function TrainingHeader() {
 						</Button>
 					)}
 
-				{routeParams?.medicalId !== 'new' &&
+				{routeParams?.trainingId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button

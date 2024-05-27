@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
-import increaseMonth from 'src/app/@helpers/increaseMonth';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -40,7 +39,7 @@ function TrainingForm(props) {
 	const { trainingId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
+
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
 	const [previewCertificateImage, setpreviewCertificateImage] = useState('');
 
@@ -158,8 +157,6 @@ function TrainingForm(props) {
 				)}
 			/>
 
-			
-
 			<Controller
 				name="admission_date"
 				control={control}
@@ -206,7 +203,7 @@ function TrainingForm(props) {
 						value={field.value || ''}
 						error={!!errors.certificate_no}
 						helperText={errors?.certificate_no?.message}
-					    label="Certificate No"
+						label="Certificate No"
 						id="certificate_no"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
@@ -240,13 +237,13 @@ function TrainingForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find(data => data.id == value) : null}
+						value={value ? doneNotDone.find((data) => data.id == value) : null}
 						options={doneNotDone}
-						getOptionLabel={option => `${option.name}`}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						renderInput={params => (
+						renderInput={(params) => (
 							<TextField
 								{...params}
 								placeholder="Select Training Card Status"
@@ -279,7 +276,7 @@ function TrainingForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -326,8 +323,6 @@ function TrainingForm(props) {
 						label="Notes"
 						id="notes"
 						variant="outlined"
-						multiline
-						rows={4}
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
 					/>
