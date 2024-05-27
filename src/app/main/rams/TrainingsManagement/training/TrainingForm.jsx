@@ -98,9 +98,9 @@ function TrainingForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Training Center"
-								label="Training Center"
-								id="recruiting_agency"
+								placeholder="Select Recruiting Agency"
+								label="Recruiting Agency"
+								error={!!errors.recruiting_agency}
 								helperText={errors?.recruiting_agency?.message}
 								variant="outlined"
 								required
