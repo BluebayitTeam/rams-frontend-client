@@ -195,8 +195,27 @@ function Training() {
 															.then((res) => {
 																if (res.data.id) {
 																	reset({
-																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		...setIdIfValueIsObject({
+																			...res?.data,
+																			passenger: newValue?.id,
+
+																			training_card_status:
+																				doneNotDone.find((data) => data.default)
+																					?.id || '',
+																			recruiting_agency:
+																				res?.data?.recruiting_agency?.id,
+																			training_center:
+																				res?.data?.training_center?.id,
+																			// admission_date: '',
+																			serial_no: res?.data?.serial_no?.id,
+																			// certificate_no:
+																			// 	res?.data?.certificate_no?.id,
+																			// certificate_date: '',
+																			batch_number: res?.data?.batch_number?.id,
+																			current_status:
+																				res?.data?.current_status?.id,
+																			notes: res?.data?.notes?.id
+																		})
 																	});
 																	navigate(
 																		`/apps/training-management/trainings/${

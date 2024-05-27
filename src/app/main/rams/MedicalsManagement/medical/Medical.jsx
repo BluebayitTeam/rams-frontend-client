@@ -72,18 +72,6 @@ function Medical() {
 		setValue
 	} = methods;
 
-	// useEffect(() => {
-	// 	if (medicalId === 'new') {
-	// 		reset(MedicalModel({}));
-	// 	}
-	// }, [medicalId, reset]);
-
-	// useEffect(() => {
-	// 	if (medical) {
-	// 		reset({ ...medical });
-	// 	}
-	// }, [medical, reset]);
-
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {

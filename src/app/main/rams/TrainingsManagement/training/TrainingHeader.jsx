@@ -76,7 +76,16 @@ function TrainingHeader() {
 
 						reset({
 							passenger: 'all',
-							training_card_status: doneNotDone.find((data) => data.default)?.id
+							training_card_status: doneNotDone.find((data) => data.default)?.id || '',
+							recruiting_agency: 'all',
+							training_center: '',
+							admission_date: '',
+							serial_no: '',
+							certificate_no: '',
+							certificate_date: '',
+							batch_number: '',
+							current_status: '',
+							notes: ''
 						});
 						navigate('/apps/training-management/trainings/new');
 						AddedSuccessfully();
@@ -95,7 +104,16 @@ function TrainingHeader() {
 					} else {
 						reset({
 							passenger: 'all',
-							training_card_status: doneNotDone.find((data) => data.default)?.id
+							training_card_status: doneNotDone.find((data) => data.default)?.id || '',
+							recruiting_agency: 'all',
+							training_center: '',
+							admission_date: '',
+							serial_no: '',
+							certificate_no: '',
+							certificate_date: '',
+							batch_number: '',
+							current_status: '',
+							notes: ''
 						});
 						localStorage.setItem('medicalAlert', 'saveTraining');
 						navigate('/apps/training-management/trainings/new');
