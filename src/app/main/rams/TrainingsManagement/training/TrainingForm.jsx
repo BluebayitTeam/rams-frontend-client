@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 
@@ -103,7 +103,7 @@ function TrainingForm(props) {
 								helperText={errors?.recruiting_agency?.message}
 								variant="outlined"
 								required
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+								InputLabelProps={params.value && { shrink: true }}
 							/>
 						)}
 					/>
@@ -124,35 +124,6 @@ function TrainingForm(props) {
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
-					/>
-				)}
-			/>
-
-			<Controller
-				name="medical_result"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? medicalResults.find((data) => data.id === value) : null}
-						options={medicalResults}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Training Result"
-								label="Training Result"
-								helperText={errors?.medical_result?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
 					/>
 				)}
 			/>

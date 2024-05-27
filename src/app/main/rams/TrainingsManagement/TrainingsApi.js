@@ -8,6 +8,7 @@ import {
 	TRAINING_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import TrainingModel from './training/models/TrainingModel';
 
@@ -30,13 +31,9 @@ const TrainingApi = api
 					method: 'POST',
 					data: jsonToFormData(
 						TrainingModel({
-							...newTraining
-							// medical_exam_date: moment(new Date(newTraining?.medical_exam_date)).format('YYYY-MM-DD'),
-							// medical_report_date: moment(new Date(newTraining?.medical_report_date)).format(
-							// 	'YYYY-MM-DD'
-							// ),
-							// medical_issue_date: moment(new Date(newTraining?.medical_issue_date)).format('YYYY-MM-DD'),
-							// medical_expiry_date: moment(new Date(newTraining?.medical_expiry_date)).format('YYYY-MM-DD')
+							...newTraining,
+							admission_date: moment(new Date(newTraining?.admission_date)).format('YYYY-MM-DD'),
+							certificate_date: moment(new Date(newTraining?.certificate_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),
@@ -47,11 +44,9 @@ const TrainingApi = api
 					url: `${UPDATE_TRAINING}${training.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...training
-						// medical_exam_date: moment(new Date(training?.medical_exam_date)).format('YYYY-MM-DD'),
-						// medical_report_date: moment(new Date(training?.medical_report_date)).format('YYYY-MM-DD'),
-						// medical_issue_date: moment(new Date(training?.medical_issue_date)).format('YYYY-MM-DD'),
-						// medical_expiry_date: moment(new Date(training?.medical_expiry_date)).format('YYYY-MM-DD')
+						...training,
+						admission_date: moment(new Date(training?.admission_date)).format('YYYY-MM-DD'),
+						certificate_date: moment(new Date(training?.certificate_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['trainings']

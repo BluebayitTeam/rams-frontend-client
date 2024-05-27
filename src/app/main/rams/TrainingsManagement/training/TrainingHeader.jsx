@@ -46,8 +46,7 @@ function TrainingHeader() {
 						localStorage.setItem('medicalAlert', 'updateTraining');
 
 						reset({
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_result: medicalResults.find((data) => data.default)?.id || ''
+							training_card_status: doneNotDone.find((data) => data.default)?.id
 						});
 
 						UpdatedSuccessfully();
@@ -77,18 +76,7 @@ function TrainingHeader() {
 
 						reset({
 							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+							training_card_status: doneNotDone.find((data) => data.default)?.id
 						});
 						navigate('/apps/training-management/trainings/new');
 						AddedSuccessfully();
@@ -107,18 +95,7 @@ function TrainingHeader() {
 					} else {
 						reset({
 							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+							training_card_status: doneNotDone.find((data) => data.default)?.id
 						});
 						localStorage.setItem('medicalAlert', 'saveTraining');
 						navigate('/apps/training-management/trainings/new');
