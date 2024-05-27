@@ -61,8 +61,8 @@ function TrainingForm(props) {
 			// 	// passenger: 'all',
 			// 	training_center: '',
 			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
-			// 	medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			// 	medical_exam_date: '',
+			// 	serial_no: doneNotDone.find((data) => data.default)?.id || '',
+			// 	admission_date: '',
 			// 	medical_report_date: '',
 			// 	medical_issue_date: '',
 			// 	medical_expiry_date: '',
@@ -158,48 +158,40 @@ function TrainingForm(props) {
 				)}
 			/>
 
-			<Controller
-				name="medical_card"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={doneNotDone}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select training Card"
-								label="Training Card"
-								helperText={errors?.medical_card?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
+			
 
 			<Controller
-				name="medical_exam_date"
+				name="admission_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.medical_exam_date}
-						helperText={errors?.medical_exam_date?.message}
-						label="Training Exam Date"
-						id="medical_exam_date"
+						error={!!errors.admission_date}
+						helperText={errors?.admission_date?.message}
+						label="Admission Date"
+						id="admission_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+
+			<Controller
+				name="serial_no"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						value={field.value || ''}
+						error={!!errors.serial_no}
+						helperText={errors?.serial_no?.message}
+						label="Serial No"
+						id="serial_no"
+						variant="outlined"
+						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
 					/>
 				)}
