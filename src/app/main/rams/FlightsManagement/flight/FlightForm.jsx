@@ -69,8 +69,8 @@ function FlightForm(props) {
 				bank_account_no: '',
 				new_visa_no: '',
 				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
+				issue_date: '',
+				flight_date: '',
 				current_status: 'all',
 				smart_card_image: '',
 				delivery_date: '',
@@ -151,26 +151,9 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 
 			
 
+		
 			<Controller
-				name="new_visa_no"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						value={field.value || ''}
-						error={!!errors.new_visa_no}
-						helperText={errors?.new_visa_no?.message}
-						label="New Visa No"
-						id="new_visa_no"
-						variant="outlined"
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
-			<Controller
-				name="bank_name"
+				name="carrier_air_way"
 				control={control}
 				render={({ field }) => {
 					return (
@@ -178,10 +161,32 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							error={!!errors.bank_name}
-							helperText={errors?.bank_name?.message}
-							label="Bank Name"
-							id="bank_name"
+							//error={!!errors.carrier_air_way}
+							helperText={errors?.carrier_air_way?.message}
+							label="Carrier Air Way"
+							id="carrier_air_way"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="flight_no"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							//error={!!errors.flight_no}
+							helperText={errors?.flight_no?.message}
+							label="Flight No"
+							id="flight_no"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
@@ -192,7 +197,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 			/>
 
 			<Controller
-				name="bank_account_no"
+				name="ticket_no"
 				control={control}
 				render={({ field }) => {
 					return (
@@ -200,10 +205,34 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							error={!!errors.bank_account_no}
-							helperText={errors?.bank_account_no?.message}
-							label="Account No"
-							id="bank_account_no"
+							//error={!!errors.ticket_no || !field.value || getValues().ticket_no?.length != 10}
+							helperText={errors?.ticket_no?.message}
+							label="Ticket No"
+							id="ticket_no"
+							variant="outlined"
+							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+							fullWidth
+							onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
+
+
+			
+			<Controller
+				name="sector_name"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							//error={!!errors.sector_name}
+							helperText={errors?.sector_name?.message}
+							label="Sector Name"
+							id="sector_name"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
@@ -213,37 +242,16 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				}}
 			/>
 
-			<Controller
-				name="registration_id"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							error={!!errors.registration_id}
-							helperText={errors?.registration_id?.message}
-							label="Registration ID"
-							id="registration_id"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
-			/>
 
 			<Controller
-				name="man_power_status"
+				name="ticket_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find(data => data.id == value) : null}
-						options={doneNotDone}
+						value={value ? activeRetrnCncl.find(data => data.id === value) : null}
+						options={activeRetrnCncl}
 						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -251,10 +259,10 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 						renderInput={params => (
 							<TextField
 								{...params}
-								placeholder="Select Man Power Status"
-								label="Man Power Status"
-								error={!!errors.man_power_status}
-								helperText={errors?.man_power_status?.message}
+								placeholder="Select Ticket Status"
+								label="Ticket Status"
+								//error={!!errors.ticket_status}
+								helperText={errors?.ticket_status?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -265,17 +273,60 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				)}
 			/>
 
+<Controller
+				name="flight_time"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							//error={!!errors.flight_time}
+							helperText={errors?.flight_time?.message}
+							label="Flight Time"
+							id="flight_time"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
 			<Controller
-				name="man_power_date"
+				name="arrival_time"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							//error={!!errors.arrival_time}
+							helperText={errors?.arrival_time?.message}
+							label="Arrival Time"
+							id="arrival_time"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="issue_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.man_power_date}
-						helperText={errors?.man_power_date?.message}
-						label="Man Power Date"
-						id="man_power_date"
+						error={!!errors.issue_date}
+						helperText={errors?.issue_date?.message}
+						label="Issue Date"
+						id="issue_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -283,16 +334,16 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				)}
 			/>
 			<Controller
-				name="submit_date"
+				name="flight_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.submit_date}
-						helperText={errors?.submit_date?.message}
-						label="Submit Date"
-						id="submit_date"
+						error={!!errors.flight_date}
+						helperText={errors?.flight_date?.message}
+						label="Flight Date"
+						id="flight_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -306,7 +357,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.submit_date}
+						error={!!errors.flight_date}
 						helperText={errors?.delivery_date?.message}
 						label="Delivery Date"
 						id="delivery_date"
