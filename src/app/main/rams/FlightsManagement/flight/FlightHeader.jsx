@@ -85,18 +85,19 @@ function FlightHeader() {
 
 						reset({
 							passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
+				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+				ticket_agency: 'all',
+				carrier_air_way: '',
+				flight_no: '',
+				ticket_no: '',
+				sector_name: '',
+				ticket_status: '',
+				flight_time: '',
+				arrival_time: '',
+				issue_date: '',
+				flight_date: '',
+				notes: '',
 				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: '',
 						});
 						navigate('/apps/flight-management/flights/new');
 						AddedSuccessfully();
@@ -115,18 +116,19 @@ function FlightHeader() {
 					} else {
 						reset({
 				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
+				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+				ticket_agency: 'all',
+				carrier_air_way: '',
+				flight_no: '',
+				ticket_no: '',
+				sector_name: '',
+				ticket_status: '',
+				flight_time: '',
+				arrival_time: '',
+				issue_date: '',
+				flight_date: '',
+				notes: '',
 				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: '',
 						});
 						localStorage.setItem('medicalAlert', 'saveFlight');
 						navigate('/apps/flight-management/flights/new');
@@ -148,18 +150,19 @@ function FlightHeader() {
 			history.push('/apps/flight-management/flights/new');
 			reset({
 				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
+				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+				ticket_agency: 'all',
+				carrier_air_way: '',
+				flight_no: '',
+				ticket_no: '',
+				sector_name: '',
+				ticket_status: '',
+				flight_time: '',
+				arrival_time: '',
+				issue_date: '',
+				flight_date: '',
+				notes: '',
 				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: '',
 			});
 		}
 	};
@@ -168,18 +171,20 @@ function FlightHeader() {
 		if (flightId === 'new') {
 			reset({
 				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
+				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+				ticket_agency: 'all',
+				carrier_air_way: '',
+				flight_no: '',
+				ticket_no: '',
+				sector_name: '',
+				ticket_status: '',
+				flight_time: '',
+				arrival_time: '',
+				issue_date: '',
+				flight_date: '',
+				notes: '',
 				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: '',
+				
 			});
 		}
 	}, [flightId, reset]);
