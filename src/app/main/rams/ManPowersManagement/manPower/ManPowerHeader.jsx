@@ -85,15 +85,18 @@ function ManPowerHeader() {
 
 						reset({
 							passenger: 'all',
-							training_card_status: doneNotDone.find((data) => data.default)?.id,
-							recruiting_agency: 'all',
-							training_center: '',
-							admission_date: '',
-							serial_no: '',
-							certificate_no: '',
-							certificate_date: '',
-							batch_number: '',
-							current_status: ''
+				man_power_status: doneNotDone.find((data) => data.default)?.id,
+				recruiting_agency: 'all',
+				new_visa_no: '',
+				bank_name: '',
+				bank_account_no: '',
+				new_visa_no: '',
+				registration_id: '',
+				man_power_date: '',
+				submit_date: '',
+				current_status: 'all',
+				smart_card_image: '',
+				delivery_date: '',
 						});
 						navigate('/apps/manPower-management/manPowers/new');
 						AddedSuccessfully();
@@ -111,16 +114,19 @@ function ManPowerHeader() {
 						history.goBack();
 					} else {
 						reset({
-							passenger: 'all',
-							training_card_status: doneNotDone.find((data) => data.default)?.id || '',
-							recruiting_agency: 'all',
-							training_center: '',
-							admission_date: '',
-							serial_no: '',
-							certificate_no: '',
-							certificate_date: '',
-							batch_number: '',
-							current_status: ''
+				passenger: 'all',
+				man_power_status: doneNotDone.find((data) => data.default)?.id,
+				recruiting_agency: 'all',
+				new_visa_no: '',
+				bank_name: '',
+				bank_account_no: '',
+				new_visa_no: '',
+				registration_id: '',
+				man_power_date: '',
+				submit_date: '',
+				current_status: 'all',
+				smart_card_image: '',
+				delivery_date: '',
 						});
 						localStorage.setItem('medicalAlert', 'saveManPower');
 						navigate('/apps/manPower-management/manPowers/new');
@@ -142,16 +148,18 @@ function ManPowerHeader() {
 			history.push('/apps/manPower-management/manPowers/new');
 			reset({
 				passenger: 'all',
-				training_card_status: doneNotDone.find((data) => data.default)?.id || '',
+				man_power_status: doneNotDone.find((data) => data.default)?.id,
 				recruiting_agency: 'all',
-				training_center: '',
-				admission_date: '',
-				serial_no: '',
-				certificate_no: '',
-				certificate_date: '',
-				batch_number: '',
-				current_status: '',
-				notes: ''
+				new_visa_no: '',
+				bank_name: '',
+				bank_account_no: '',
+				new_visa_no: '',
+				registration_id: '',
+				man_power_date: '',
+				submit_date: '',
+				current_status: 'all',
+				smart_card_image: '',
+				delivery_date: '',
 			});
 		}
 	};
@@ -160,18 +168,18 @@ function ManPowerHeader() {
 		if (manPowerId === 'new') {
 			reset({
 				passenger: 'all',
-				medical_center: 'all',
-				medical_serial_no: '',
-				medical_result: medicalResults.find((data) => data.default)?.id || '',
-				medical_card: doneNotDone.find((data) => data.default)?.id || '',
-				medical_exam_date: '',
-				medical_report_date: '',
-				medical_issue_date: '',
-				medical_expiry_date: '',
-				notes: '',
-				slip_pic: '',
-				medical_card_pic: '',
-				current_status: 'all'
+				man_power_status: doneNotDone.find((data) => data.default)?.id,
+				recruiting_agency: 'all',
+				new_visa_no: '',
+				bank_name: '',
+				bank_account_no: '',
+				new_visa_no: '',
+				registration_id: '',
+				man_power_date: '',
+				submit_date: '',
+				current_status: 'all',
+				smart_card_image: '',
+				delivery_date: '',
 			});
 		}
 	}, [manPowerId, reset]);

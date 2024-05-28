@@ -60,17 +60,20 @@ function ManPowerForm(props) {
 		if (manPowerId === 'new') {
 			reset({
 				passenger: 'all',
-				training_card_status: doneNotDone.find((data) => data.default)?.id,
+				man_power_status: doneNotDone.find((data) => data.default)?.id,
 				recruiting_agency: 'all',
-				training_center: '',
-				admission_date: '',
 				new_visa_no: '',
-				certificate_no: '',
+				bank_name: '',
+				bank_account_no: '',
+				new_visa_no: '',
+				registration_id: '',
 				man_power_date: '',
-				batch_number: '',
+				submit_date: '',
 				current_status: 'all',
-				setpreviewDoc1Image: '',
-				setpreviewCertificateImage: ''
+				smart_card_image: '',
+				delivery_date: '',
+				
+				
 			});
 		} else {
 			console.log('valueForm', getValues());
@@ -144,23 +147,7 @@ function ManPowerForm(props) {
 
 			
 
-			{/* <Controller
-				name="admission_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.admission_date}
-						helperText={errors?.admission_date?.message}
-						label="Admission Date"
-						id="admission_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/> */}
+			
 
 			<Controller
 				name="new_visa_no"
@@ -329,7 +316,7 @@ function ManPowerForm(props) {
 				)}
 			/>
 
-<Controller
+           <Controller
 				name="current_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
