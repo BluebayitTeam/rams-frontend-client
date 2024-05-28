@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ManPowerForm(props) {
+function Flight																		data => data.default
+																	)?.idForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
@@ -41,7 +42,7 @@ function ManPowerForm(props) {
 	const routeParams = useParams();
 	const { manPowerId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
-	const manpowers = useSelector((state) => state.data.manpowers);
+	const Flight			flights																)?.id = useSelector((state) => state.data.Flight			flights																)?.id);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState('');
 	
@@ -309,7 +310,7 @@ function ManPowerForm(props) {
 						label="Delivery Date"
 						id="delivery_date"
 						type="date"
-						style={{ display: manpowers?.delivery_date ? 'flex' : 'none' }}
+						style={{ display: Flight			flights																)?.id?.delivery_date ? 'flex' : 'none' }}
 						InputLabelProps={{ shrink: true }}
 						fullWidth
 					/>
@@ -358,4 +359,5 @@ function ManPowerForm(props) {
 	);
 }
 
-export default ManPowerForm;
+export default Flight																		data => data.default
+																	)?.idForm;
