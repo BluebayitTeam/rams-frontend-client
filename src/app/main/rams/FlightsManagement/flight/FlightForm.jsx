@@ -9,7 +9,7 @@ import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { MANPOWER_BY_PASSENGER_ID, TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { FLIGHT_BY_PASSENGER_ID, MANPOWER_BY_PASSENGER_ID, TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import axios from 'axios';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
@@ -40,7 +40,7 @@ function FlightForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { flightId } = routeParams;
-	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
+	const ticketAgencys = useSelector((state) => state.data.ticketAgencys);
 	const flights = useSelector((state) => state.data.flights);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	
@@ -62,7 +62,7 @@ function FlightForm(props) {
 		if (flightId === 'new') {
 			reset({
 				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
+				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				ticket_agency: 'all',
 				new_visa_no: '',
 				bank_name: '',
@@ -82,7 +82,7 @@ function FlightForm(props) {
 			// Fetch and set data based on flightId if needed
 			// reset(formData);
 		}
-	}, [flightId, reset, recruitingAgencys, currentStatuss]);
+	}, [flightId, reset, ticketAgencys, currentStatuss]);
 
 	useEffect(() => {
 		if ((flightId !== 'new', !reload)) {
@@ -92,7 +92,7 @@ function FlightForm(props) {
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
-			axios.get(`${MANPOWER_BY_PASSENGER_ID}${flightId}`, authTOKEN).then((res) => {
+			axios.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`, authTOKEN).then((res) => {
 				if (res.data.id) {
 					console.log('fromData', res.data);
 					reset({
@@ -124,9 +124,9 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? recruitingAgencys?.find((data) => data.id === value) : null}
-						// options={recruitingAgencys}
-						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...recruitingAgencys]}
+						value={value ? ticketAgencys?.find((data) => data.id === value) : null}
+						// options={ticketAgencys}
+						options={[{ id: 'all', name: 'Select Ticket Agency' }, ...ticketAgencys]}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -134,8 +134,8 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Recruiting Agency"
-								label="Recruiting Agency"
+								placeholder="Select Ticket Agency"
+								label="Ticket Agency"
 								error={!!errors.ticket_agency}
 								helperText={errors?.ticket_agency?.message}
 								variant="outlined"

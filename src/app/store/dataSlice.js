@@ -116,6 +116,18 @@ export const getManpower = () => (dispatch) => {
 		.then((data) => dispatch(setManpower(data)))
 		.catch(() => {});
 };
+export const getticketAgency = () => (dispatch) => {
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	fetch(MANPOWER_BY_PASSENGER_ID, authTOKEN)
+		.then((response) => response.json())
+		.then((data) => dispatch(setTicketAgency(data)))
+		.catch(() => {});
+};
 
 export const getPermissionGroups = () => (dispatch) => {
 	const authTOKEN = {
@@ -926,6 +938,7 @@ const dataSlice = createSlice({
 		currentstatuses: [],
 		employeeusers: [],
 		manpowers: [],
+		ticketAgencys: [],
 	},
 	reducers: {
 		setBranches: (state, action) => {
@@ -945,6 +958,9 @@ const dataSlice = createSlice({
 		},
 		setManpower: (state, action) => {
 			state.manpowers = action.payload ? action.payload : [];
+		},
+		setTicketAgency: (state, action) => {
+			state.ticketAgencys = action.payload ? action.payload : [];
 		},
 		setAirways: (state, action) => {
 			state.airways = action.payload;
@@ -1135,6 +1151,7 @@ const {
 	setEmployeeUsers,
 	setEmbassy,
 	setManpower,
+	setTicketAgency,
 	setUserPermissions,
 	setVendors,
 	setThanas,
