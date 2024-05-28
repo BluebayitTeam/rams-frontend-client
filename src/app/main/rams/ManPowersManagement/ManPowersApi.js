@@ -5,7 +5,7 @@ import {
 	CREATE_MANPOWER,
 	UPDATE_MANPOWER,
 	DELETE_MANPOWER,
-	TRAINING_BY_PASSENGER_ID
+	MANPOWER_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import moment from 'moment';
@@ -21,7 +21,7 @@ const ManPowerApi = api
 		endpoints: (build) => ({
 			getManPower: build.query({
 				query: (manPowerId) => ({
-					url: `${TRAINING_BY_PASSENGER_ID}${manPowerId}`
+					url: `${MANPOWER_BY_PASSENGER_ID}${manPowerId}`
 				}),
 				providesTags: ['manPowers']
 			}),
