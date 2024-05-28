@@ -11,7 +11,7 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { MANPOWER_BY_PASSENGER_ID,  } from 'src/app/constant/constants';
+import { FLIGHT_BY_PASSENGER_ID,  } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import FlightHeader from './FlightHeader';
@@ -81,14 +81,14 @@ function Flight() {
 				}
 			};
 			axios
-				.get(`${MANPOWER_BY_PASSENGER_ID}${FlightId}`, authTOKEN)
+				.get(`${FLIGHT_BY_PASSENGER_ID}${FlightId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
 						// reset({ ...setIdIfValueIsObject(res.data), passenger: FlightId });
 					} else {
 						reset({
 							passenger: FlightId,
-							man_power_status: doneNotDone.find(data => data.default)?.id
+							ticket_status: activeRetrnCncl.find(data => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
 					}
@@ -96,12 +96,12 @@ function Flight() {
 				.catch(() => {
 					reset({
 						passenger: FlightId,
-						man_power_status: doneNotDone.find(data => data.default)?.id
+						ticket_status: activeRetrnCncl.find(data => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({ man_power_status: doneNotDone.find(data => data.default)?.id});
+			reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id});
 		}
 	}, [fromSearch]);
 
@@ -189,7 +189,7 @@ function Flight() {
 														}
 													};
 													axios
-														.get(`${MANPOWER_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
+														.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 														.then(res => {
 															//update scope
 															if (res.data.id) {
@@ -208,8 +208,7 @@ function Flight() {
 																navigate(`/apps/Flight-management/Flights/new`);
 																reset({
 																	passenger: newValue?.id,
-																	createPermission: true,
-																	man_power_status: doneNotDone.find(
+																	ticket_status: activeRetrnCncl.find(
 																		data => data.default
 																	)?.id
 																});
@@ -217,7 +216,7 @@ function Flight() {
 																navigate(`/apps/Flight-management/Flights/new`);
 																reset({
 																	passenger: newValue?.id,
-																	man_power_status: doneNotDone.find(
+																	ticket_status: activeRetrnCncl.find(
 																		data => data.default
 																	)?.id
 																});
@@ -233,8 +232,9 @@ function Flight() {
 															navigate(`/apps/Flight-management/Flights/new`);
 															reset({
 																passenger: newValue?.id,
-																man_power_status: doneNotDone.find(data => data.default)
-																	?.id
+																ticket_status: activeRetrnCncl.find(
+																		data => data.default
+																	)?.id
 															});
 															// dispatch(
 															// 	setAlert({
@@ -247,8 +247,9 @@ function Flight() {
 													navigate(`/apps/Flight-management/Flights/new`);
 													reset({
 														passenger: newValue?.id,
-														man_power_status: doneNotDone.find(data => data.default)?.id
-													});
+ticket_status: activeRetrnCncl.find(
+																		data => data.default
+																	)?.id													});
 												}
 											}}
 												renderInput={(params) => (
