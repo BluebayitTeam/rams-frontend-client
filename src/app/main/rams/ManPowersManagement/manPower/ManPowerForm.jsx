@@ -63,9 +63,9 @@ function ManPowerForm(props) {
 				recruiting_agency: 'all',
 				training_center: '',
 				admission_date: '',
-				serial_no: '',
+				new_visa_no: '',
 				certificate_no: '',
-				certificate_date: '',
+				man_power_date: '',
 				batch_number: '',
 				current_status: 'all',
 				setpreviewDoc1Image: '',
@@ -141,25 +141,9 @@ function ManPowerForm(props) {
 				)}
 			/>
 
-			<Controller
-				name="training_center"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						value={field.value || ''}
-						className="mt-8 mb-16"
-						helperText={errors?.training_center?.message}
-						label="ManPower Center"
-						id="training_center"
-						variant="outlined"
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
+			
 
-			<Controller
+			{/* <Controller
 				name="admission_date"
 				control={control}
 				render={({ field }) => (
@@ -175,20 +159,20 @@ function ManPowerForm(props) {
 						fullWidth
 					/>
 				)}
-			/>
+			/> */}
 
 			<Controller
-				name="serial_no"
+				name="new_visa_no"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
 						value={field.value || ''}
-						error={!!errors.serial_no}
-						helperText={errors?.serial_no?.message}
-						label="Serial No"
-						id="serial_no"
+						error={!!errors.new_visa_no}
+						helperText={errors?.new_visa_no?.message}
+						label="New Visa No"
+						id="new_visa_no"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
 						fullWidth
@@ -196,36 +180,148 @@ function ManPowerForm(props) {
 				)}
 			/>
 			<Controller
-				name="certificate_no"
+				name="bank_name"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							error={!!errors.bank_name}
+							helperText={errors?.bank_name?.message}
+							label="Bank Name"
+							id="bank_name"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="bank_account_no"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							error={!!errors.bank_account_no}
+							helperText={errors?.bank_account_no?.message}
+							label="Account No"
+							id="bank_account_no"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="registration_id"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							error={!!errors.registration_id}
+							helperText={errors?.registration_id?.message}
+							label="Registration ID"
+							id="registration_id"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							onKeyDown={handleSubmitOnKeyDownEnter}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="man_power_status"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
 						className="mt-8 mb-16"
-						value={field.value || ''}
-						error={!!errors.certificate_no}
-						helperText={errors?.certificate_no?.message}
-						label="Certificate No"
-						id="certificate_no"
-						variant="outlined"
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
+						freeSolo
+						value={value ? doneNotDone.find(data => data.id == value) : null}
+						options={doneNotDone}
+						getOptionLabel={option => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={params => (
+							<TextField
+								{...params}
+								placeholder="Select Man Power Status"
+								label="Man Power Status"
+								error={!!errors.man_power_status}
+								helperText={errors?.man_power_status?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
 					/>
 				)}
 			/>
 
 			<Controller
-				name="certificate_date"
+				name="man_power_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.certificate_date}
-						helperText={errors?.certificate_date?.message}
-						label="Certificate Date"
-						id="certificate_date"
+						error={!!errors.man_power_date}
+						helperText={errors?.man_power_date?.message}
+						label="Man Power Date"
+						id="man_power_date"
 						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+			<Controller
+				name="submit_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.submit_date}
+						helperText={errors?.submit_date?.message}
+						label="Submit Date"
+						id="submit_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+			<Controller
+				name="delivery_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.submit_date}
+						helperText={errors?.delivery_date?.message}
+						label="Delivery Date"
+						id="delivery_date"
+						type="date"
+						style={{ display: manpowerData?.delivery_date ? 'flex' : 'none' }}
 						InputLabelProps={{ shrink: true }}
 						fullWidth
 					/>

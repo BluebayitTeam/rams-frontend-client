@@ -43,6 +43,7 @@ import {
 	GET_VENDORS_WITHOUT_PAGINATION,
 	GROUPS_WITHOUT_PAGINATION,
 	LEDGERS_WITHOUT_PAGINATION,
+	MANPOWER_BY_PASSENGER_ID,
 	MEDICALCENTERS_WITHOUT_PAGINATION,
 	ORDERSTATUS,
 	PASSENGER_VISA_ENTRY_WITHOUT_PAGINATION,
@@ -101,6 +102,18 @@ export const getEmbassy = () => (dispatch) => {
 	fetch(EMBASSY_BY_PASSENGER_ID, authTOKEN)
 		.then((response) => response.json())
 		.then((data) => dispatch(setEmbassy(data)))
+		.catch(() => {});
+};
+export const getManpower = () => (dispatch) => {
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	fetch(MANPOWER_BY_PASSENGER_ID, authTOKEN)
+		.then((response) => response.json())
+		.then((data) => dispatch(setManpower(data)))
 		.catch(() => {});
 };
 
@@ -911,7 +924,8 @@ const dataSlice = createSlice({
 		taskTypes: [],
 		currencies: [],
 		currentstatuses: [],
-		employeeusers: []
+		employeeusers: [],
+		manpowers: [],
 	},
 	reducers: {
 		setBranches: (state, action) => {
@@ -928,6 +942,9 @@ const dataSlice = createSlice({
 		},
 		setEmbassy: (state, action) => {
 			state.embassys = action.payload ? action.payload : [];
+		},
+		setManpower: (state, action) => {
+			state.manpowers = action.payload ? action.payload : [];
 		},
 		setAirways: (state, action) => {
 			state.airways = action.payload;
@@ -1117,6 +1134,7 @@ const {
 	setSiteSettings,
 	setEmployeeUsers,
 	setEmbassy,
+	setManpower,
 	setUserPermissions,
 	setVendors,
 	setThanas,
