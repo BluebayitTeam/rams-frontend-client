@@ -2,8 +2,8 @@ import { Outlet } from 'react-router';
 import withReducer from 'app/store/withReducer';
 import reducer from './store';
 
-function ManPowerApp() {
+function FlightApp() {
 	return <Outlet />;
 }
 
-export default withReducer('manPowerApp', reducer)(ManPowerApp);
+export default withReducer('flightApp', reducer)(FlightApp);
