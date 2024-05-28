@@ -9,7 +9,7 @@ import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { MANPOWER_BY_PASSENGER_ID, TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import axios from 'axios';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
@@ -86,7 +86,7 @@ function ManPowerForm(props) {
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
-			axios.get(`${TRAINING_BY_PASSENGER_ID}${manPowerId}`, authTOKEN).then((res) => {
+			axios.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`, authTOKEN).then((res) => {
 				if (res.data.id) {
 					console.log('fromData', res.data);
 					reset({
@@ -94,7 +94,7 @@ function ManPowerForm(props) {
 							...res?.data,
 							passenger: parseInt(manPowerId, 10),
 
-							training_card_status: doneNotDone.find((data) => data.default)?.id,
+							man_power_status: doneNotDone.find((data) => data.default)?.id,
 							recruiting_agency: res?.data?.recruiting_agency?.id
 						})
 					});
