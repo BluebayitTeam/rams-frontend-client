@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCurrentStatuss, getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
+import { getAgents, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -43,25 +43,27 @@ function FlightForm(props) {
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const flights = useSelector((state) => state.data.flights);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewImage, setPreviewImage] = useState('');
 	
+	const [previewFile, setPreviewFile] = useState('');
+
+	const [fileExtName, setFileExtName] = useState('');
 	const [reload, setReload] = useState(false);
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getRecruitingAgencys());
+		dispatch(getAgents());
 		dispatch(getCurrentStatuss());
 	}, []);
 
 	useEffect(() => {
-		setPreviewImage('');
-		
-	}, [getValues('recruiting_agency')]);
+		setFileExtName('');
+		setPreviewFile('');
+	}, [getValues('ticket_agency')]);
 	useEffect(() => {
 		if (flightId === 'new') {
 			reset({
 				passenger: 'all',
 				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
+				ticket_agency: 'all',
 				new_visa_no: '',
 				bank_name: '',
 				bank_account_no: '',
@@ -98,8 +100,8 @@ function FlightForm(props) {
 							...res?.data,
 							passenger: parseInt(flightId, 10),
 
-							man_power_status: doneNotDone.find((data) => data.default)?.id,
-							recruiting_agency: res?.data?.recruiting_agency?.id
+ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+							ticket_agency: res?.data?.ticket_agency?.id
 						})
 					});
 				}
@@ -116,7 +118,7 @@ function FlightForm(props) {
 	return (
 		<div>
 			<Controller
-				name="recruiting_agency"
+				name="ticket_agency"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
@@ -134,8 +136,8 @@ function FlightForm(props) {
 								{...params}
 								placeholder="Select Recruiting Agency"
 								label="Recruiting Agency"
-								error={!!errors.recruiting_agency}
-								helperText={errors?.recruiting_agency?.message}
+								error={!!errors.ticket_agency}
+								helperText={errors?.ticket_agency?.message}
 								variant="outlined"
 								required
 								InputLabelProps={params.value && { shrink: true }}
