@@ -33,16 +33,15 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Flight																		data => data.default
-																	)?.idForm(props) {
+function FlightForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { manPowerId } = routeParams;
+	const { flightId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
-	const Flight			flights																)?.id = useSelector((state) => state.data.Flight			flights																)?.id);
+	const flights = useSelector((state) => state.data.flights);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState('');
 	
@@ -58,7 +57,7 @@ function Flight																		data => data.default
 		
 	}, [getValues('recruiting_agency')]);
 	useEffect(() => {
-		if (manPowerId === 'new') {
+		if (flightId === 'new') {
 			reset({
 				passenger: 'all',
 				man_power_status: doneNotDone.find((data) => data.default)?.id,
@@ -78,26 +77,26 @@ function Flight																		data => data.default
 			});
 		} else {
 			console.log('valueForm', getValues());
-			// Fetch and set data based on manPowerId if needed
+			// Fetch and set data based on flightId if needed
 			// reset(formData);
 		}
-	}, [manPowerId, reset, recruitingAgencys, currentStatuss]);
+	}, [flightId, reset, recruitingAgencys, currentStatuss]);
 
 	useEffect(() => {
-		if ((manPowerId !== 'new', !reload)) {
+		if ((flightId !== 'new', !reload)) {
 			const authTOKEN = {
 				headers: {
 					'Content-type': 'application/json',
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
-			axios.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`, authTOKEN).then((res) => {
+			axios.get(`${MANPOWER_BY_PASSENGER_ID}${flightId}`, authTOKEN).then((res) => {
 				if (res.data.id) {
 					console.log('fromData', res.data);
 					reset({
 						...setIdIfValueIsObject({
 							...res?.data,
-							passenger: parseInt(manPowerId, 10),
+							passenger: parseInt(flightId, 10),
 
 							man_power_status: doneNotDone.find((data) => data.default)?.id,
 							recruiting_agency: res?.data?.recruiting_agency?.id
@@ -109,10 +108,10 @@ function Flight																		data => data.default
 			});
 		} else {
 			// console.log('valueForm', getValues());
-			// Fetch and set data based on manPowerId if needed
+			// Fetch and set data based on flightId if needed
 			// reset(formData);
 		}
-	}, [manPowerId, reset, reload]);
+	}, [flightId, reset, reload]);
 
 	return (
 		<div>
@@ -310,7 +309,7 @@ function Flight																		data => data.default
 						label="Delivery Date"
 						id="delivery_date"
 						type="date"
-						style={{ display: Flight			flights																)?.id?.delivery_date ? 'flex' : 'none' }}
+						style={{ display: flights?.delivery_date ? 'flex' : 'none' }}
 						InputLabelProps={{ shrink: true }}
 						fullWidth
 					/>
@@ -359,5 +358,4 @@ function Flight																		data => data.default
 	);
 }
 
-export default Flight																		data => data.default
-																	)?.idForm;
+export default FlightForm;
