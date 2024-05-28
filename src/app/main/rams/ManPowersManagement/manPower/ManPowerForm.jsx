@@ -41,9 +41,10 @@ function ManPowerForm(props) {
 	const routeParams = useParams();
 	const { manPowerId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
+	const manpowers = useSelector((state) => state.data.manpowers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
-	const [previewCertificateImage, setpreviewCertificateImage] = useState('');
+	const [previewImage, setPreviewImage] = useState('');
+	
 	const [reload, setReload] = useState(false);
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -52,8 +53,8 @@ function ManPowerForm(props) {
 	}, []);
 
 	useEffect(() => {
-		setpreviewDoc1Image('');
-		setpreviewCertificateImage('');
+		setPreviewImage('');
+		
 	}, [getValues('recruiting_agency')]);
 	useEffect(() => {
 		if (manPowerId === 'new') {
@@ -321,83 +322,32 @@ function ManPowerForm(props) {
 						label="Delivery Date"
 						id="delivery_date"
 						type="date"
-						style={{ display: manpowerData?.delivery_date ? 'flex' : 'none' }}
+						style={{ display: manpowers?.delivery_date ? 'flex' : 'none' }}
 						InputLabelProps={{ shrink: true }}
 						fullWidth
 					/>
 				)}
 			/>
 
-			<Controller
-				name="training_card_status"
+<Controller
+				name="current_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find((data) => data.id == value) : null}
-						options={doneNotDone}
-						getOptionLabel={(option) => `${option.name}`}
+						value={value ? currentStatuss.find(data => data.id == value) : null}
+						options={currentStatuss}
+						getOptionLabel={option => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						renderInput={(params) => (
+						renderInput={params => (
 							<TextField
 								{...params}
-								placeholder="Select ManPower Card Status"
-								label="ManPower Card Status"
-								error={!!errors.training_card_status}
-								helperText={errors?.training_card_status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="batch_number"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							error={!!errors.batch_number}
-							helperText={errors?.batch_number?.message}
-							label="Batch Number"
-							id="batch_number"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
-			/>
-			<Controller
-				name="current_status"
-				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select ManPower Center' }, ...currentStatuss]}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select current status"
+								placeholder={current_status === 'undefined' ? 'Select Current Status' : current_status}
 								label="Current Status"
-								id="current_status"
+								error={!!errors.current_status}
 								helperText={errors?.current_status?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -409,18 +359,12 @@ function ManPowerForm(props) {
 				)}
 			/>
 
-			<div className="flex justify-start mx-16 flex-col md:flex-row">
+			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Image
-					name="doc1_image"
-					previewImage={previewDoc1Image}
-					setPreviewImage={setpreviewDoc1Image}
-					label="Doc1 Image"
-				/>
-				<Image
-					name="certificate_image"
-					previewImage={previewCertificateImage}
-					setPreviewImage={setpreviewCertificateImage}
-					label="Certificate Image"
+					name="smart_card_image"
+					previewImage={previewImage}
+					setPreviewImage={setPreviewImage}
+					label="Smart Card Image"
 				/>
 			</div>
 		</div>
