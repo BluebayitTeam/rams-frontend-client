@@ -350,24 +350,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 					/>
 				)}
 			/>
-			<Controller
-				name="delivery_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.flight_date}
-						helperText={errors?.delivery_date?.message}
-						label="Delivery Date"
-						id="delivery_date"
-						type="date"
-						style={{ display: flights?.delivery_date ? 'flex' : 'none' }}
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
+			
 
            <Controller
 				name="current_status"
@@ -397,6 +380,30 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 						)}
 					/>
 				)}
+			/>
+
+			
+			<Controller
+				name="notes"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ''}
+							className="mt-8 mb-16"
+							//error={!!errors.notes}
+							helperText={errors?.notes?.message}
+							label="Notes"
+							id="notes"
+							variant="outlined"
+							multiline
+							rows={4}
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
 			/>
 
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
