@@ -14,9 +14,9 @@ import axios from 'axios';
 import { TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import TrainingHeader from './TrainingHeader';
-import { useGetTrainingQuery } from '../TrainingsApi';
-import TrainingForm from './TrainingForm';
+import ManPowerHeader from './ManPowerHeader';
+import { useGetManPowerQuery } from '../ManPowersApi';
+import ManPowerForm from './ManPowerForm';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -36,14 +36,14 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a training name')
-		.min(5, 'The training name must be at least 5 characters')
+		.nonempty('You must enter a manPower name')
+		.min(5, 'The manPower name must be at least 5 characters')
 });
 
-function Training() {
+function ManPower() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { trainingId, fromSearch } = routeParams;
+	const { manPowerId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const classes = useStyles();
 	const navigate = useNavigate();
@@ -55,11 +55,11 @@ function Training() {
 	});
 
 	const {
-		data: training,
+		data: manPower,
 		isLoading,
 		isError
-	} = useGetTrainingQuery(trainingId, {
-		skip: !trainingId || trainingId === 'new'
+	} = useGetManPowerQuery(manPowerId, {
+		skip: !manPowerId || manPowerId === 'new'
 	});
 
 	const [tabValue, setTabValue] = useState(0);
@@ -81,13 +81,13 @@ function Training() {
 				}
 			};
 			axios
-				.get(`${TRAINING_BY_PASSENGER_ID}${trainingId}`, authTOKEN)
+				.get(`${TRAINING_BY_PASSENGER_ID}${manPowerId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: trainingId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: manPowerId });
 					} else {
 						reset({
-							passenger: trainingId,
+							passenger: manPowerId,
 							training_card_status: doneNotDone.find((data) => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
@@ -95,7 +95,7 @@ function Training() {
 				})
 				.catch(() => {
 					reset({
-						passenger: trainingId,
+						passenger: manPowerId,
 						training_card_status: doneNotDone.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
@@ -131,10 +131,10 @@ function Training() {
 						classes={{ root: 'w-full h-64' }}
 					>
 						<Tab label="Passenger Details" />
-						<Tab label="Training Information" />
+						<Tab label="ManPower Information" />
 					</Tabs>
 				}
-				header={<TrainingHeader />}
+				header={<ManPowerHeader />}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -208,12 +208,12 @@ function Training() {
 																		})
 																	});
 																	navigate(
-																		`/apps/training-management/trainings/${
+																		`/apps/manPower-management/manPowers/${
 																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/training-management/trainings/new`);
+																	navigate(`/apps/manPower-management/manPowers/new`);
 																	reset({
 																		passenger: newValue?.id,
 																		training_card_status: doneNotDone.find(
@@ -245,10 +245,10 @@ function Training() {
 																	batch_number: '',
 																	current_status: ''
 																});
-																navigate(`/apps/training-management/trainings/new`);
+																navigate(`/apps/manPower-management/manPowers/new`);
 															});
 													} else {
-														navigate(`/apps/training-management/trainings/new`);
+														navigate(`/apps/manPower-management/manPowers/new`);
 
 														reset({
 															passenger: 'all',
@@ -285,10 +285,10 @@ function Training() {
 										)}
 									/>
 								</div>
-								<TrainingForm />
+								<ManPowerForm />
 							</div>
 						)}
-						{tabValue === 1 && <TrainingForm trainingId={trainingId} />}
+						{tabValue === 1 && <ManPowerForm manPowerId={manPowerId} />}
 					</div>
 				}
 				innerScroll
@@ -297,4 +297,4 @@ function Training() {
 	);
 }
 
-export default Training;
+export default ManPower;

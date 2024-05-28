@@ -33,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function TrainingForm(props) {
+function ManPowerForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { trainingId } = routeParams;
+	const { manPowerId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
@@ -56,7 +56,7 @@ function TrainingForm(props) {
 		setpreviewCertificateImage('');
 	}, [getValues('recruiting_agency')]);
 	useEffect(() => {
-		if (trainingId === 'new') {
+		if (manPowerId === 'new') {
 			reset({
 				passenger: 'all',
 				training_card_status: doneNotDone.find((data) => data.default)?.id,
@@ -73,26 +73,26 @@ function TrainingForm(props) {
 			});
 		} else {
 			console.log('valueForm', getValues());
-			// Fetch and set data based on trainingId if needed
+			// Fetch and set data based on manPowerId if needed
 			// reset(formData);
 		}
-	}, [trainingId, reset, recruitingAgencys, currentStatuss]);
+	}, [manPowerId, reset, recruitingAgencys, currentStatuss]);
 
 	useEffect(() => {
-		if ((trainingId !== 'new', !reload)) {
+		if ((manPowerId !== 'new', !reload)) {
 			const authTOKEN = {
 				headers: {
 					'Content-type': 'application/json',
 					Authorization: localStorage.getItem('jwt_access_token')
 				}
 			};
-			axios.get(`${TRAINING_BY_PASSENGER_ID}${trainingId}`, authTOKEN).then((res) => {
+			axios.get(`${TRAINING_BY_PASSENGER_ID}${manPowerId}`, authTOKEN).then((res) => {
 				if (res.data.id) {
 					console.log('fromData', res.data);
 					reset({
 						...setIdIfValueIsObject({
 							...res?.data,
-							passenger: parseInt(trainingId, 10),
+							passenger: parseInt(manPowerId, 10),
 
 							training_card_status: doneNotDone.find((data) => data.default)?.id,
 							recruiting_agency: res?.data?.recruiting_agency?.id
@@ -104,10 +104,10 @@ function TrainingForm(props) {
 			});
 		} else {
 			// console.log('valueForm', getValues());
-			// Fetch and set data based on trainingId if needed
+			// Fetch and set data based on manPowerId if needed
 			// reset(formData);
 		}
-	}, [trainingId, reset, reload]);
+	}, [manPowerId, reset, reload]);
 
 	return (
 		<div>
@@ -150,7 +150,7 @@ function TrainingForm(props) {
 						value={field.value || ''}
 						className="mt-8 mb-16"
 						helperText={errors?.training_center?.message}
-						label="Training Center"
+						label="ManPower Center"
 						id="training_center"
 						variant="outlined"
 						InputLabelProps={field.value && { shrink: true }}
@@ -248,8 +248,8 @@ function TrainingForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Training Card Status"
-								label="Training Card Status"
+								placeholder="Select ManPower Card Status"
+								label="ManPower Card Status"
 								error={!!errors.training_card_status}
 								helperText={errors?.training_card_status?.message}
 								variant="outlined"
@@ -291,7 +291,7 @@ function TrainingForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Training Center' }, ...currentStatuss]}
+						options={[{ id: 'all', name: 'Select ManPower Center' }, ...currentStatuss]}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -331,4 +331,4 @@ function TrainingForm(props) {
 	);
 }
 
-export default TrainingForm;
+export default ManPowerForm;

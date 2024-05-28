@@ -1,6 +1,6 @@
 import _ from '@lodash';
 
-const TrainingModel = (data) =>
+const ManPowerModel = (data) =>
 	_.defaults(data || {}, {
 		// profession: '',
 		// country: '',
@@ -9,4 +9,4 @@ const TrainingModel = (data) =>
 		// quantity: '',
 		// salary: ''
 	});
-export default TrainingModel;
+export default ManPowerModel;

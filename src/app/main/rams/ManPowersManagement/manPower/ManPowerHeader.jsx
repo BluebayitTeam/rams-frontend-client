@@ -13,37 +13,37 @@ import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useCreateTrainingMutation, useDeleteTrainingMutation, useUpdateTrainingMutation } from '../TrainingsApi';
+import { useCreateManPowerMutation, useDeleteManPowerMutation, useUpdateManPowerMutation } from '../ManPowersApi';
 
 /**
- * The training header.
+ * The manPower header.
  */
-function TrainingHeader() {
+function ManPowerHeader() {
 	const routeParams = useParams();
-	const { trainingId } = routeParams;
-	const [createTraining] = useCreateTrainingMutation();
-	const [saveTraining] = useUpdateTrainingMutation();
-	const [removeTraining] = useDeleteTrainingMutation();
+	const { manPowerId } = routeParams;
+	const [createManPower] = useCreateManPowerMutation();
+	const [saveManPower] = useUpdateManPowerMutation();
+	const [removeManPower] = useDeleteManPowerMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteTraining');
-	const handleUpdate = localStorage.getItem('updateTraining');
+	const handleDelete = localStorage.getItem('deleteManPower');
+	const handleUpdate = localStorage.getItem('updateManPower');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateTraining() {
-		saveTraining(getValues())
+	function handleUpdateManPower() {
+		saveManPower(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateTraining');
+						localStorage.setItem('medicalAlert', 'updateManPower');
 
 						// reset({
 						// 	passenger: 'all',
@@ -59,7 +59,7 @@ function TrainingHeader() {
 						// });
 						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
-						navigate('/apps/training-management/trainings/new');
+						navigate('/apps/manPower-management/manPowers/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -68,20 +68,20 @@ function TrainingHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating training', error);
+				console.error('Error updating manPower', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateTraining() {
-		createTraining(getValues())
+	function handleCreateManPower() {
+		createManPower(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveTraining');
+						localStorage.setItem('medicalAlert', 'saveManPower');
 
 						reset({
 							passenger: 'all',
@@ -95,15 +95,15 @@ function TrainingHeader() {
 							batch_number: '',
 							current_status: ''
 						});
-						navigate('/apps/training-management/trainings/new');
+						navigate('/apps/manPower-management/manPowers/new');
 						AddedSuccessfully();
 					}
 				}
 			});
 	}
 
-	function handleRemoveTraining() {
-		removeTraining(getValues()?.id)
+	function handleRemoveManPower() {
+		removeManPower(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
@@ -122,8 +122,8 @@ function TrainingHeader() {
 							batch_number: '',
 							current_status: ''
 						});
-						localStorage.setItem('medicalAlert', 'saveTraining');
-						navigate('/apps/training-management/trainings/new');
+						localStorage.setItem('medicalAlert', 'saveManPower');
+						navigate('/apps/manPower-management/manPowers/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
@@ -139,7 +139,7 @@ function TrainingHeader() {
 		if (fromSearch) {
 			history.goBack();
 		} else {
-			history.push('/apps/training-management/trainings/new');
+			history.push('/apps/manPower-management/manPowers/new');
 			reset({
 				passenger: 'all',
 				training_card_status: doneNotDone.find((data) => data.default)?.id || '',
@@ -157,7 +157,7 @@ function TrainingHeader() {
 	};
 
 	useEffect(() => {
-		if (trainingId === 'new') {
+		if (manPowerId === 'new') {
 			reset({
 				passenger: 'all',
 				medical_center: 'all',
@@ -174,7 +174,7 @@ function TrainingHeader() {
 				current_status: 'all'
 			});
 		}
-	}, [trainingId, reset]);
+	}, [manPowerId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -185,15 +185,15 @@ function TrainingHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.trainingId === 'new'
-									? 'Create New Training'
+								{routeParams.manPowerId === 'new'
+									? 'Create New manPower'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.trainingId !== 'new' && 'Trainings Detail'}
+								{routeParams.manPowerId !== 'new' && 'manPowers Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -204,39 +204,39 @@ function TrainingHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.trainingId === 'new' ||
+				{(routeParams.manPowerId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateTraining}
+						onClick={handleCreateManPower}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.trainingId !== 'new' &&
+				{routeParams?.manPowerId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							onClick={handleUpdateTraining}
+							onClick={handleUpdateManPower}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.trainingId !== 'new' &&
+				{routeParams?.manPowerId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveTraining}
+							onClick={handleRemoveManPower}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
@@ -257,4 +257,4 @@ function TrainingHeader() {
 	);
 }
 
-export default TrainingHeader;
+export default ManPowerHeader;
