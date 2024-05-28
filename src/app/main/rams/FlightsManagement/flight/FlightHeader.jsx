@@ -13,37 +13,37 @@ import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
-import { useCreateManPowerMutation, useDeleteManPowerMutation, useUpdateManPowerMutation } from '../ManPowersApi';
+import { useCreateFlightMutation, useDeleteFlightMutation, useUpdateFlightMutation } from '../FlightsApi';
 
 /**
- * The manPower header.
+ * The flight header.
  */
-function ManPowerHeader() {
+function FlightHeader() {
 	const routeParams = useParams();
-	const { manPowerId } = routeParams;
-	const [createManPower] = useCreateManPowerMutation();
-	const [saveManPower] = useUpdateManPowerMutation();
-	const [removeManPower] = useDeleteManPowerMutation();
+	const { flightId } = routeParams;
+	const [createFlight] = useCreateFlightMutation();
+	const [saveFlight] = useUpdateFlightMutation();
+	const [removeFlight] = useDeleteFlightMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteManPower');
-	const handleUpdate = localStorage.getItem('updateManPower');
+	const handleDelete = localStorage.getItem('deleteFlight');
+	const handleUpdate = localStorage.getItem('updateFlight');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateManPower() {
-		saveManPower(getValues())
+	function handleUpdateFlight() {
+		saveFlight(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateManPower');
+						localStorage.setItem('medicalAlert', 'updateFlight');
 
 						// reset({
 						// 	passenger: 'all',
@@ -59,7 +59,7 @@ function ManPowerHeader() {
 						// });
 						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
-						navigate('/apps/manPower-management/manPowers/new');
+						navigate('/apps/flight-management/flights/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -68,20 +68,20 @@ function ManPowerHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating manPower', error);
+				console.error('Error updating flight', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateManPower() {
-		createManPower(getValues())
+	function handleCreateFlight() {
+		createFlight(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveManPower');
+						localStorage.setItem('medicalAlert', 'saveFlight');
 
 						reset({
 							passenger: 'all',
@@ -98,15 +98,15 @@ function ManPowerHeader() {
 				smart_card_image: '',
 				delivery_date: '',
 						});
-						navigate('/apps/manPower-management/manPowers/new');
+						navigate('/apps/flight-management/flights/new');
 						AddedSuccessfully();
 					}
 				}
 			});
 	}
 
-	function handleRemoveManPower() {
-		removeManPower(getValues()?.id)
+	function handleRemoveFlight() {
+		removeFlight(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
@@ -128,8 +128,8 @@ function ManPowerHeader() {
 				smart_card_image: '',
 				delivery_date: '',
 						});
-						localStorage.setItem('medicalAlert', 'saveManPower');
-						navigate('/apps/manPower-management/manPowers/new');
+						localStorage.setItem('medicalAlert', 'saveFlight');
+						navigate('/apps/flight-management/flights/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
@@ -145,7 +145,7 @@ function ManPowerHeader() {
 		if (fromSearch) {
 			history.goBack();
 		} else {
-			history.push('/apps/manPower-management/manPowers/new');
+			history.push('/apps/flight-management/flights/new');
 			reset({
 				passenger: 'all',
 				man_power_status: doneNotDone.find((data) => data.default)?.id,
@@ -165,7 +165,7 @@ function ManPowerHeader() {
 	};
 
 	useEffect(() => {
-		if (manPowerId === 'new') {
+		if (flightId === 'new') {
 			reset({
 				passenger: 'all',
 				man_power_status: doneNotDone.find((data) => data.default)?.id,
@@ -182,7 +182,7 @@ function ManPowerHeader() {
 				delivery_date: '',
 			});
 		}
-	}, [manPowerId, reset]);
+	}, [flightId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -193,15 +193,15 @@ function ManPowerHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.manPowerId === 'new'
-									? 'Create New manPower'
+								{routeParams.flightId === 'new'
+									? 'Create New flight'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.manPowerId !== 'new' && 'manPowers Detail'}
+								{routeParams.flightId !== 'new' && 'flights Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -212,39 +212,39 @@ function ManPowerHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.manPowerId === 'new' ||
+				{(routeParams.flightId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateManPower}
+						onClick={handleCreateFlight}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.manPowerId !== 'new' &&
+				{routeParams?.flightId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							onClick={handleUpdateManPower}
+							onClick={handleUpdateFlight}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.manPowerId !== 'new' &&
+				{routeParams?.flightId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveManPower}
+							onClick={handleRemoveFlight}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
@@ -265,4 +265,4 @@ function ManPowerHeader() {
 	);
 }
 
-export default ManPowerHeader;
+export default FlightHeader;
