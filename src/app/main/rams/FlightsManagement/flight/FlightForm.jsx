@@ -5,12 +5,12 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { FLIGHT_BY_PASSENGER_ID, MANPOWER_BY_PASSENGER_ID, TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import axios from 'axios';
+import { activeRetrnCncl } from 'src/app/@data/data';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -43,7 +43,7 @@ function FlightForm(props) {
 	const ticketAgencys = useSelector((state) => state.data.ticketAgencys);
 	const flights = useSelector((state) => state.data.flights);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	
+
 	const [previewFile, setPreviewFile] = useState('');
 
 	const [fileExtName, setFileExtName] = useState('');
@@ -62,20 +62,18 @@ function FlightForm(props) {
 		if (flightId === 'new') {
 			reset({
 				passenger: 'all',
-				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+				ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
 				ticket_agency: 'all',
 				new_visa_no: '',
 				bank_name: '',
 				bank_account_no: '',
-				new_visa_no: '',
+				// new_visa_no: '',
 				registration_id: '',
 				issue_date: '',
 				flight_date: '',
 				current_status: 'all',
 				smart_card_image: '',
-				delivery_date: '',
-				
-				
+				delivery_date: ''
 			});
 		} else {
 			console.log('valueForm', getValues());
@@ -100,7 +98,7 @@ function FlightForm(props) {
 							...res?.data,
 							passenger: parseInt(flightId, 10),
 
-ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
 							ticket_agency: res?.data?.ticket_agency?.id
 						})
 					});
@@ -147,11 +145,6 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				)}
 			/>
 
-			
-
-			
-
-		
 			<Controller
 				name="carrier_air_way"
 				control={control}
@@ -161,7 +154,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							//error={!!errors.carrier_air_way}
+							// error={!!errors.carrier_air_way}
 							helperText={errors?.carrier_air_way?.message}
 							label="Carrier Air Way"
 							id="carrier_air_way"
@@ -183,7 +176,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							//error={!!errors.flight_no}
+							// error={!!errors.flight_no}
 							helperText={errors?.flight_no?.message}
 							label="Flight No"
 							id="flight_no"
@@ -205,7 +198,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							//error={!!errors.ticket_no || !field.value || getValues().ticket_no?.length != 10}
+							// error={!!errors.ticket_no || !field.value || getValues().ticket_no?.length != 10}
 							helperText={errors?.ticket_no?.message}
 							label="Ticket No"
 							id="ticket_no"
@@ -218,8 +211,6 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				}}
 			/>
 
-
-			
 			<Controller
 				name="sector_name"
 				control={control}
@@ -229,7 +220,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							//error={!!errors.sector_name}
+							// error={!!errors.sector_name}
 							helperText={errors?.sector_name?.message}
 							label="Sector Name"
 							id="sector_name"
@@ -242,7 +233,6 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				}}
 			/>
 
-
 			<Controller
 				name="ticket_status"
 				control={control}
@@ -250,18 +240,18 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? activeRetrnCncl.find(data => data.id === value) : null}
+						value={value ? activeRetrnCncl.find((data) => data.id === value) : null}
 						options={activeRetrnCncl}
-						getOptionLabel={option => `${option.name}`}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						renderInput={params => (
+						renderInput={(params) => (
 							<TextField
 								{...params}
 								placeholder="Select Ticket Status"
 								label="Ticket Status"
-								//error={!!errors.ticket_status}
+								// error={!!errors.ticket_status}
 								helperText={errors?.ticket_status?.message}
 								variant="outlined"
 								InputLabelProps={{
@@ -273,7 +263,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				)}
 			/>
 
-<Controller
+			<Controller
 				name="flight_time"
 				control={control}
 				render={({ field }) => {
@@ -282,7 +272,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							//error={!!errors.flight_time}
+							// error={!!errors.flight_time}
 							helperText={errors?.flight_time?.message}
 							label="Flight Time"
 							id="flight_time"
@@ -303,7 +293,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
-							//error={!!errors.arrival_time}
+							// error={!!errors.arrival_time}
 							helperText={errors?.arrival_time?.message}
 							label="Arrival Time"
 							id="arrival_time"
@@ -350,22 +340,21 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 					/>
 				)}
 			/>
-			
 
-           <Controller
+			<Controller
 				name="current_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find(data => data.id == value) : null}
+						value={value ? currentStatuss.find((data) => data.id == value) : null}
 						options={currentStatuss}
-						getOptionLabel={option => `${option.name}`}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						renderInput={params => (
+						renderInput={(params) => (
 							<TextField
 								{...params}
 								placeholder={current_status === 'undefined' ? 'Select Current Status' : current_status}
@@ -382,7 +371,6 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 				)}
 			/>
 
-			
 			<Controller
 				name="notes"
 				control={control}
@@ -392,7 +380,7 @@ ticket_status: activeRetrnCncl.find(data => data.default)?.id,
 							{...field}
 							value={field.value?.length > 10 ? field.value?.slice(0, 10) : field.value || ''}
 							className="mt-8 mb-16"
-							//error={!!errors.notes}
+							// error={!!errors.notes}
 							helperText={errors?.notes?.message}
 							label="Notes"
 							id="notes"

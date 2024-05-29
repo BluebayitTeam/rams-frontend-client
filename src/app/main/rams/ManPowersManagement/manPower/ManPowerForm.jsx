@@ -11,6 +11,7 @@ import { useParams } from 'react-router';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { MANPOWER_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import axios from 'axios';
+import moment from 'moment';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -96,7 +97,9 @@ function ManPowerForm(props) {
 							passenger: parseInt(manPowerId, 10),
 
 							man_power_status: doneNotDone.find((data) => data.default)?.id,
-							recruiting_agency: res?.data?.recruiting_agency?.id
+							recruiting_agency: res?.data?.recruiting_agency?.id,
+							man_power_date: moment(new Date(res?.data?.man_power_date)).format('YYYY-MM-DD'),
+							submit_date: moment(new Date(res?.data?.submit_date)).format('YYYY-MM-DD')
 						})
 					});
 				}

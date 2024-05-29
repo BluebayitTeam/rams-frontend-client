@@ -57,6 +57,7 @@ function ManPowerHeader() {
 						// 	batch_number: '',
 						// 	current_status: ''
 						// });
+
 						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
 						navigate('/apps/manPower-management/manPowers/new');

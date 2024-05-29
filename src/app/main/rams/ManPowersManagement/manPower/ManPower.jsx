@@ -14,6 +14,7 @@ import axios from 'axios';
 import { MANPOWER_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import moment from 'moment';
 import ManPowerHeader from './ManPowerHeader';
 import { useGetManPowerQuery } from '../ManPowersApi';
 import ManPowerForm from './ManPowerForm';
@@ -165,22 +166,6 @@ function ManPower() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													// const authTOKEN = {
-													// 	headers: {
-													// 		'Content-type': 'application/json',
-													// 		Authorization: localStorage.getItem('jwt_access_token')
-													// 	}
-													// };
-
-													// dispatch(getManpower(newValue?.id));
-													// axios
-													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-													// 	.then(res => {
-													// 		sessionStorage.setItem(
-													// 			'passengerCurrentStatus',
-													// 			res.data?.current_status?.name
-													// 		);
-													// 	});
 													if (newValue?.id) {
 														const authTOKEN = {
 															headers: {
@@ -198,7 +183,13 @@ function ManPower() {
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		passenger: newValue?.id,
+																		man_power_date: moment(
+																			new Date(res?.data?.man_power_date)
+																		).format('YYYY-MM-DD'),
+																		submit_date: moment(
+																			new Date(res?.data?.submit_date)
+																		).format('YYYY-MM-DD')
 																	});
 																	navigate(
 																		`/apps/manPower-management/manPowers/${
@@ -211,10 +202,21 @@ function ManPower() {
 																	navigate(`/apps/manPower-management/manPowers/new`);
 																	reset({
 																		passenger: newValue?.id,
-																		createPermission: true,
+																		// createPermission: true,
 																		man_power_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+																		recruiting_agency: 'all',
+																		new_visa_no: '',
+																		bank_name: '',
+																		bank_account_no: '',
+
+																		registration_id: '',
+																		man_power_date: '',
+																		submit_date: '',
+																		current_status: 'all',
+																		smart_card_image: '',
+																		delivery_date: ''
 																	});
 																} else {
 																	navigate(`/apps/manPower-management/manPowers/new`);
@@ -222,7 +224,18 @@ function ManPower() {
 																		passenger: newValue?.id,
 																		man_power_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+																		recruiting_agency: 'all',
+																		new_visa_no: '',
+																		bank_name: '',
+																		bank_account_no: '',
+
+																		registration_id: '',
+																		man_power_date: '',
+																		submit_date: '',
+																		current_status: 'all',
+																		smart_card_image: '',
+																		delivery_date: ''
 																	});
 																	// dispatch(
 																	// 	setAlert({
@@ -250,9 +263,20 @@ function ManPower() {
 													} else {
 														navigate(`/apps/manPower-management/manPowers/new`);
 														reset({
-															passenger: newValue?.id,
+															passenger: 'all',
 															man_power_status: doneNotDone.find((data) => data.default)
-																?.id
+																?.id,
+															recruiting_agency: 'all',
+															new_visa_no: '',
+															bank_name: '',
+															bank_account_no: '',
+
+															registration_id: '',
+															man_power_date: '',
+															submit_date: '',
+															current_status: 'all',
+															smart_card_image: '',
+															delivery_date: ''
 														});
 													}
 												}}

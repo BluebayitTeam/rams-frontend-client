@@ -32,8 +32,8 @@ const ManPowerApi = api
 					data: jsonToFormData(
 						ManPowerModel({
 							...newManPower,
-							admission_date: moment(new Date(newManPower?.admission_date)).format('YYYY-MM-DD'),
-							certificate_date: moment(new Date(newManPower?.certificate_date)).format('YYYY-MM-DD')
+							man_power_date: moment(new Date(newManPower?.man_power_date)).format('YYYY-MM-DD'),
+							submit_date: moment(new Date(newManPower?.submit_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),
@@ -45,8 +45,8 @@ const ManPowerApi = api
 					method: 'PUT',
 					data: jsonToFormData({
 						...manPower,
-						admission_date: moment(new Date(manPower?.admission_date)).format('YYYY-MM-DD'),
-						certificate_date: moment(new Date(manPower?.certificate_date)).format('YYYY-MM-DD')
+						man_power_date: moment(new Date(manPower?.man_power_date)).format('YYYY-MM-DD'),
+						submit_date: moment(new Date(manPower?.submit_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['manPowers']
