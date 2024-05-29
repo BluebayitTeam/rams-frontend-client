@@ -110,6 +110,8 @@ function ManPowerForm(props) {
 		}
 	}, [manPowerId, reset, reload]);
 
+	const current_status = sessionStorage.getItem('passengerCurrentStatus');
+
 	return (
 		<div>
 			<Controller
@@ -233,7 +235,7 @@ function ManPowerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find((data) => data.id == value) : null}
+						value={value ? doneNotDone.find((data) => data.id === value) : null}
 						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -309,14 +311,14 @@ function ManPowerForm(props) {
 				)}
 			/>
 
-			{/* <Controller
+			<Controller
 				name="current_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find((data) => data.id == value) : null}
+						value={value ? currentStatuss.find((data) => data.id === value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -337,7 +339,7 @@ function ManPowerForm(props) {
 						)}
 					/>
 				)}
-			/> */}
+			/>
 
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Image
