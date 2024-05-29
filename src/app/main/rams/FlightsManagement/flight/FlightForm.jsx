@@ -122,36 +122,6 @@ function FlightForm(props) {
 
 	return (
 		<div>
-			{/* <Controller
-				name="ticket_agency"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? ticketAgencys?.find((data) => data.id === value) : null}
-						// options={ticketAgencys}
-						options={[{ id: 'all', name: 'Select Ticket Agency' }, ...ticketAgencys]}
-						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Ticket Agency"
-								label="Ticket Agency"
-								error={!!errors.ticket_agency}
-								helperText={errors?.ticket_agency?.message}
-								variant="outlined"
-								required
-								InputLabelProps={params.value && { shrink: true }}
-							/>
-						)}
-					/>
-				)}
-			/> */}
-
 			<Controller
 				name="ticket_agency"
 				control={control}

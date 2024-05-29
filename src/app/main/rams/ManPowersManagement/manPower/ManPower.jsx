@@ -172,12 +172,12 @@ function ManPower() {
 															Authorization: localStorage.getItem('jwt_access_token')
 														}
 													};
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															setValue('current_status', res.data?.current_status?.id);
-															setValue('passenger', res.data?.id);
-														});
+
+													// .get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+													// .then((res) => {
+													// 	setValue('current_status', res.data?.current_status?.id);
+													// 	setValue('passenger', res.data?.id);
+													// });
 
 													if (newValue?.id) {
 														const authTOKEN = {

@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-// import { doneNotDone, medicalResults } from 'src/app/@data/data';
+// import { doneNotDone, flightResults } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
@@ -44,20 +44,24 @@ function FlightHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateFlight');
+						localStorage.setItem('flightAlert', 'updateFlight');
 
-						// reset({
-						// 	passenger: 'all',
-						// 	training_card_status: doneNotDone.find((data) => data.default)?.id,
-						// 	recruiting_agency: 'all',
-						// 	training_center: '',
-						// 	admission_date: '',
-						// 	serial_no: '',
-						// 	certificate_no: '',
-						// 	certificate_date: '',
-						// 	batch_number: '',
-						// 	current_status: ''
-						// });
+						reset({
+							passenger: 'all',
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+							ticket_agency: 'all',
+							carrier_air_way: '',
+							flight_no: '',
+							ticket_no: '',
+							sector_name: '',
+							// ticket_status: '',
+							flight_time: '',
+							arrival_time: '',
+							issue_date: '',
+							flight_date: '',
+							notes: '',
+							current_status: 'all'
+						});
 						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
 						navigate('/apps/flight-management/flights/new');
@@ -82,7 +86,7 @@ function FlightHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveFlight');
+						localStorage.setItem('flightAlert', 'saveFlight');
 
 						reset({
 							passenger: 'all',
@@ -131,7 +135,7 @@ function FlightHeader() {
 							notes: '',
 							current_status: 'all'
 						});
-						localStorage.setItem('medicalAlert', 'saveFlight');
+						localStorage.setItem('flightAlert', 'saveFlight');
 						navigate('/apps/flight-management/flights/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
@@ -178,7 +182,7 @@ function FlightHeader() {
 				flight_no: '',
 				ticket_no: '',
 				sector_name: '',
-				ticket_status: '',
+				// ticket_status: '',
 				flight_time: '',
 				arrival_time: '',
 				issue_date: '',

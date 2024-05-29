@@ -86,7 +86,7 @@ function Flight() {
 				.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: flightId });
+						reset({ ...setIdIfValueIsObject(res.data), passenger: flightId });
 					} else {
 						reset({
 							passenger: flightId,
@@ -183,6 +183,8 @@ function Flight() {
 													// 			res.data?.current_status?.name
 													// 		);
 													// 	});
+													//
+
 													if (newValue?.id) {
 														const authTOKEN = {
 															headers: {
@@ -194,6 +196,13 @@ function Flight() {
 															.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
 																// update scope
+
+																setValue(
+																	'current_status',
+																	res.data?.current_status?.id
+																);
+																setValue('passenger', res.data?.id);
+
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),
@@ -216,17 +225,35 @@ function Flight() {
 																	navigate(`/apps/Flight-management/Flights/new`);
 																	reset({
 																		passenger: newValue?.id,
-																		ticket_status: activeRetrnCncl.find(
-																			(data) => data.default
-																		)?.id
+																		ticket_agency: 'all',
+																		carrier_air_way: '',
+																		flight_no: '',
+																		ticket_no: '',
+																		sector_name: '',
+																		// ticket_status: '',
+																		flight_time: '',
+																		arrival_time: '',
+																		issue_date: '',
+																		flight_date: '',
+																		notes: '',
+																		current_status: 'all'
 																	});
 																} else {
 																	navigate(`/apps/Flight-management/Flights/new`);
 																	reset({
 																		passenger: newValue?.id,
-																		ticket_status: activeRetrnCncl.find(
-																			(data) => data.default
-																		)?.id
+																		ticket_agency: 'all',
+																		carrier_air_way: '',
+																		flight_no: '',
+																		ticket_no: '',
+																		sector_name: '',
+																		// ticket_status: '',
+																		flight_time: '',
+																		arrival_time: '',
+																		issue_date: '',
+																		flight_date: '',
+																		notes: '',
+																		current_status: 'all'
 																	});
 																	// dispatch(
 																	// 	setAlert({
@@ -240,9 +267,18 @@ function Flight() {
 																navigate(`/apps/Flight-management/Flights/new`);
 																reset({
 																	passenger: newValue?.id,
-																	ticket_status: activeRetrnCncl.find(
-																		(data) => data.default
-																	)?.id
+																	ticket_agency: 'all',
+																	carrier_air_way: '',
+																	flight_no: '',
+																	ticket_no: '',
+																	sector_name: '',
+																	// ticket_status: '',
+																	flight_time: '',
+																	arrival_time: '',
+																	issue_date: '',
+																	flight_date: '',
+																	notes: '',
+																	current_status: 'all'
 																});
 																// dispatch(
 																// 	setAlert({
@@ -255,8 +291,18 @@ function Flight() {
 														navigate(`/apps/Flight-management/Flights/new`);
 														reset({
 															passenger: newValue?.id,
-															ticket_status: activeRetrnCncl.find((data) => data.default)
-																?.id
+															ticket_agency: 'all',
+															carrier_air_way: '',
+															flight_no: '',
+															ticket_no: '',
+															sector_name: '',
+															// ticket_status: '',
+															flight_time: '',
+															arrival_time: '',
+															issue_date: '',
+															flight_date: '',
+															notes: '',
+															current_status: 'all'
 														});
 													}
 												}}
