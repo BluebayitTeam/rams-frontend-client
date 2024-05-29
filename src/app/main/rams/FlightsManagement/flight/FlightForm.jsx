@@ -301,7 +301,7 @@ function FlightForm(props) {
 			/>
 
 			<Controller
-				name="flight_time"
+				name="flight_date"
 				control={control}
 				render={({ field }) => {
 					return (

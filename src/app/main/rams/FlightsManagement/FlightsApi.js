@@ -1,13 +1,7 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import {
-	CREATE_FLIGHT,
-	UPDATE_FLIGHT,
-	DELETE_FLIGHT,
-	MANPOWER_BY_PASSENGER_ID,
-	FLIGHT_BY_PASSENGER_ID
-} from 'src/app/constant/constants';
+import { CREATE_FLIGHT, UPDATE_FLIGHT, DELETE_FLIGHT, FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
@@ -33,8 +27,8 @@ const FlightApi = api
 					data: jsonToFormData(
 						FlightModel({
 							...newFlight,
-							admission_date: moment(new Date(newFlight?.admission_date)).format('YYYY-MM-DD'),
-							certificate_date: moment(new Date(newFlight?.certificate_date)).format('YYYY-MM-DD')
+							flight_time: moment(new Date(newFlight?.flight_time)).format('YYYY-MM-DD'),
+							issue_date: moment(new Date(newFlight?.issue_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),
@@ -46,8 +40,8 @@ const FlightApi = api
 					method: 'PUT',
 					data: jsonToFormData({
 						...flight,
-						admission_date: moment(new Date(flight?.admission_date)).format('YYYY-MM-DD'),
-						certificate_date: moment(new Date(flight?.certificate_date)).format('YYYY-MM-DD')
+						flight_date: moment(new Date(flight?.flight_date)).format('YYYY-MM-DD'),
+						issue_date: moment(new Date(flight?.issue_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['flights']

@@ -15,6 +15,7 @@ import { FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
 // import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { activeRetrnCncl } from 'src/app/@data/data';
+import moment from 'moment';
 import FlightHeader from './FlightHeader';
 import { useGetFlightQuery } from '../FlightsApi';
 import FlightForm from './FlightForm';
@@ -44,7 +45,7 @@ const schema = z.object({
 function Flight() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { FlightId, fromSearch } = routeParams;
+	const { flightId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const classes = useStyles();
 	const navigate = useNavigate();
@@ -59,8 +60,8 @@ function Flight() {
 		data: Flight,
 		isLoading,
 		isError
-	} = useGetFlightQuery(FlightId, {
-		skip: !FlightId || FlightId === 'new'
+	} = useGetFlightQuery(flightId, {
+		skip: !flightId || flightId === 'new'
 	});
 
 	const [tabValue, setTabValue] = useState(0);
@@ -82,13 +83,13 @@ function Flight() {
 				}
 			};
 			axios
-				.get(`${FLIGHT_BY_PASSENGER_ID}${FlightId}`, authTOKEN)
+				.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: FlightId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: flightId });
 					} else {
 						reset({
-							passenger: FlightId,
+							passenger: flightId,
 							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
@@ -96,7 +97,7 @@ function Flight() {
 				})
 				.catch(() => {
 					reset({
-						passenger: FlightId,
+						passenger: flightId,
 						ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
@@ -196,7 +197,13 @@ function Flight() {
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		passenger: newValue?.id,
+																		flight_date: moment(
+																			new Date(res?.data?.flight_date)
+																		).format('YYYY-MM-DD'),
+																		issue_date: moment(
+																			new Date(res?.data?.issue_date)
+																		).format('YYYY-MM-DD')
 																	});
 																	navigate(
 																		`/apps/Flight-management/Flights/${
@@ -275,7 +282,7 @@ function Flight() {
 								<FlightForm />
 							</div>
 						)}
-						{tabValue === 1 && <FlightForm FlightId={FlightId} />}
+						{tabValue === 1 && <FlightForm flightId={flightId} />}
 					</div>
 				}
 				innerScroll
