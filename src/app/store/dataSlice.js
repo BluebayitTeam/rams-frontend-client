@@ -13,6 +13,7 @@ import {
 	DEMANDS_WITHOUT_PAGINATION_VISA_ENTRY,
 	DESIGNATIONS_WITHOUT_PAGINATION,
 	EMBASSY_BY_PASSENGER_ID,
+	FLIGHT_BY_PASSENGER_ID,
 	GET_ALL_CALLING_ASSIGN_WP,
 	GET_ATTRIBUTES_WITHOUT_PAGINATION,
 	GET_BRANCH_WITHOUT_PAGINATION,
@@ -123,9 +124,9 @@ export const getticketAgency = () => (dispatch) => {
 			Authorization: localStorage.getItem('jwt_access_token')
 		}
 	};
-	fetch(MANPOWER_BY_PASSENGER_ID, authTOKEN)
+	fetch(FLIGHT_BY_PASSENGER_ID, authTOKEN)
 		.then((response) => response.json())
-		.then((data) => dispatch(setTicketAgency(data)))
+		.then((data) => dispatch(setTicketAgency(data.ticket_agency)))
 		.catch(() => {});
 };
 
@@ -938,7 +939,7 @@ const dataSlice = createSlice({
 		currentstatuses: [],
 		employeeusers: [],
 		manpowers: [],
-		ticketAgencys: [],
+		ticketAgencys: []
 	},
 	reducers: {
 		setBranches: (state, action) => {

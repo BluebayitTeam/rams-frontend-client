@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
 import { getAgents, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
@@ -7,9 +7,13 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { BASE_URL, FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import axios from 'axios';
 import { activeRetrnCncl } from 'src/app/@data/data';
+import { PictureAsPdf } from '@mui/icons-material';
+import { Icon } from '@material-ui/core';
+import clsx from 'clsx';
+import { ClassNames } from '@emotion/react';
 
 // console.log('dsadasd', activeRetrnCncl);
 
@@ -41,14 +45,16 @@ function FlightForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { flightId } = routeParams;
-	const ticketAgencys = useSelector((state) => state.data.ticketAgencys);
-	const flights = useSelector((state) => state.data.flights);
+	const ticketAgencys = useSelector((state) => state.data.agents);
+	console.log('ticketAgencys', ticketAgencys);
+	// const flights = useSelector((state) => state.data.flights);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const current_status = sessionStorage.getItem('passengerCurrentStatus');
 	const [previewFile, setPreviewFile] = useState('');
 
 	const [fileExtName, setFileExtName] = useState('');
 	const [reload, setReload] = useState(false);
+	const file = watch('ticket_file') || '';
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getAgents());
@@ -116,7 +122,7 @@ function FlightForm(props) {
 
 	return (
 		<div>
-			<Controller
+			{/* <Controller
 				name="ticket_agency"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -144,8 +150,38 @@ function FlightForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
 
+			<Controller
+				name="ticket_agency"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? ticketAgencys?.find((data) => data?.id === value) : null}
+						// options={ticketAgencys}
+						options={[{ id: 'all', first_name: 'Select First Name', last_name: '' }, ...ticketAgencys]}
+						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Ticket Agency"
+								label="Ticket Agency"
+								error={!!errors.ticket_agency}
+								helperText={errors?.ticket_agency?.message}
+								variant="outlined"
+								required
+								InputLabelProps={params.value && { shrink: true }}
+							/>
+						)}
+					/>
+				)}
+			/>
 			<Controller
 				name="carrier_air_way"
 				control={control}
@@ -395,14 +431,95 @@ function FlightForm(props) {
 				}}
 			/>
 
-			{/* <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-				<Image
-					name="smart_card_image"
-					previewImage={previewImage}
-					setPreviewImage={setPreviewImage}
-					label="Smart Card Image"
-				/>
-			</div> */}
+			<Controller
+				name="ticket_file"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex-col">
+							<Typography className="text-center">Ticket File</Typography>
+							<label
+								htmlFor={`${name}-button-file`}
+								className={clsx(
+									ClassNames.productImageUpload,
+									'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+								)}
+							>
+								<input
+									accept="image/x-png,image/gif,image/jpeg,application/pdf"
+									className="hidden"
+									id={`${name}-button-file`}
+									type="file"
+									onChange={async (e) => {
+										const reader = new FileReader();
+										reader.onload = () => {
+											if (reader.readyState === 2) {
+												setPreviewFile(reader.result);
+											}
+										};
+										reader.readAsDataURL(e.target.files[0]);
+
+										const file = e.target.files[0];
+
+										setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+
+										onChange(file);
+									}}
+								/>
+								<Icon
+									fontSize="large"
+									color="action"
+								>
+									cloud_upload
+								</Icon>
+							</label>
+						</div>
+						{!previewFile && file && (
+							<div style={{ width: 'auto', height: '150px', overflow: 'hidden', display: 'flex' }}>
+								{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+									<PictureAsPdf
+										style={{
+											color: 'red',
+											cursor: 'pointer',
+											display: 'block',
+											fontSize: '35px',
+											margin: 'auto'
+										}}
+										onClick={() => window.open(`${BASE_URL}${file}`)}
+									/>
+								) : (
+									<img
+										src={`${BASE_URL}${file}`}
+										style={{ height: '150px' }}
+										alt="test"
+									/>
+								)}
+							</div>
+						)}
+
+						{previewFile && (
+							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+								{fileExtName === 'pdf' ? (
+									// eslint-disable-next-line jsx-a11y/iframe-has-title
+									<iframe
+										src={previewFile}
+										frameBorder="0"
+										scrolling="auto"
+										height="150px"
+										width="150px"
+									/>
+								) : (
+									<img
+										src={previewFile}
+										style={{ height: '150px' }}
+										alt="test"
+									/>
+								)}
+							</div>
+						)}
+					</div>
+				)}
+			/>
 		</div>
 	);
 }

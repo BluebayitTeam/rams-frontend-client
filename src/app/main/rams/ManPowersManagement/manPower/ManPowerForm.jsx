@@ -109,7 +109,7 @@ function ManPowerForm(props) {
 	// 	}
 	// }, [manPowerId, reset, reload]);
 
-	// const current_status = sessionStorage.getItem('passengerCurrentStatus');
+	const current_status = sessionStorage.getItem('passengerCurrentStatus');
 
 	return (
 		<div>
