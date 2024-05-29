@@ -9,7 +9,7 @@ import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { MANPOWER_BY_PASSENGER_ID, TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { MANPOWER_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import axios from 'axios';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
@@ -44,7 +44,7 @@ function ManPowerForm(props) {
 	const manpowers = useSelector((state) => state.data.manpowers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewImage, setPreviewImage] = useState('');
-	
+
 	const [reload, setReload] = useState(false);
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -54,7 +54,6 @@ function ManPowerForm(props) {
 
 	useEffect(() => {
 		setPreviewImage('');
-		
 	}, [getValues('recruiting_agency')]);
 	useEffect(() => {
 		if (manPowerId === 'new') {
@@ -65,15 +64,13 @@ function ManPowerForm(props) {
 				new_visa_no: '',
 				bank_name: '',
 				bank_account_no: '',
-				new_visa_no: '',
+				// new_visa_no: '',
 				registration_id: '',
 				man_power_date: '',
 				submit_date: '',
 				current_status: 'all',
 				smart_card_image: '',
-				delivery_date: '',
-				
-				
+				delivery_date: ''
 			});
 		} else {
 			console.log('valueForm', getValues());
@@ -145,10 +142,6 @@ function ManPowerForm(props) {
 				)}
 			/>
 
-			
-
-			
-
 			<Controller
 				name="new_visa_no"
 				control={control}
@@ -183,7 +176,7 @@ function ManPowerForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -205,7 +198,7 @@ function ManPowerForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -227,7 +220,7 @@ function ManPowerForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -240,13 +233,13 @@ function ManPowerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find(data => data.id == value) : null}
+						value={value ? doneNotDone.find((data) => data.id == value) : null}
 						options={doneNotDone}
-						getOptionLabel={option => `${option.name}`}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						renderInput={params => (
+						renderInput={(params) => (
 							<TextField
 								{...params}
 								placeholder="Select Man Power Status"
@@ -316,20 +309,20 @@ function ManPowerForm(props) {
 				)}
 			/>
 
-           <Controller
+			{/* <Controller
 				name="current_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find(data => data.id == value) : null}
+						value={value ? currentStatuss.find((data) => data.id == value) : null}
 						options={currentStatuss}
-						getOptionLabel={option => `${option.name}`}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						renderInput={params => (
+						renderInput={(params) => (
 							<TextField
 								{...params}
 								placeholder={current_status === 'undefined' ? 'Select Current Status' : current_status}
@@ -344,7 +337,7 @@ function ManPowerForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
 
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Image

@@ -11,7 +11,7 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { MANPOWER_BY_PASSENGER_ID, TRAINING_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { MANPOWER_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import ManPowerHeader from './ManPowerHeader';
@@ -88,7 +88,7 @@ function ManPower() {
 					} else {
 						reset({
 							passenger: manPowerId,
-							man_power_status: doneNotDone.find(data => data.default)?.id
+							man_power_status: doneNotDone.find((data) => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
 					}
@@ -96,12 +96,12 @@ function ManPower() {
 				.catch(() => {
 					reset({
 						passenger: manPowerId,
-						man_power_status: doneNotDone.find(data => data.default)?.id
+						man_power_status: doneNotDone.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({ man_power_status: doneNotDone.find(data => data.default)?.id});
+			reset({ man_power_status: doneNotDone.find((data) => data.default)?.id });
 		}
 	}, [fromSearch]);
 
@@ -165,60 +165,79 @@ function ManPower() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-												// const authTOKEN = {
-												// 	headers: {
-												// 		'Content-type': 'application/json',
-												// 		Authorization: localStorage.getItem('jwt_access_token')
-												// 	}
-												// };
+													// const authTOKEN = {
+													// 	headers: {
+													// 		'Content-type': 'application/json',
+													// 		Authorization: localStorage.getItem('jwt_access_token')
+													// 	}
+													// };
 
-												// dispatch(getManpower(newValue?.id));
-												// axios
-												// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-												// 	.then(res => {
-												// 		sessionStorage.setItem(
-												// 			'passengerCurrentStatus',
-												// 			res.data?.current_status?.name
-												// 		);
-												// 	});
-												if (newValue?.id) {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${MANPOWER_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
-														.then(res => {
-															//update scope
-															if (res.data.id) {
-																reset({
-																	...setIdIfValueIsObject(res.data),
-																	passenger: newValue?.id
-																});
-																navigate(
-																	`/apps/manPower-management/manPowers/${
-																		newValue?.passenger?.id || newValue?.id
-																	}`
-																);
+													// dispatch(getManpower(newValue?.id));
+													// axios
+													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+													// 	.then(res => {
+													// 		sessionStorage.setItem(
+													// 			'passengerCurrentStatus',
+													// 			res.data?.current_status?.name
+													// 		);
+													// 	});
+													if (newValue?.id) {
+														const authTOKEN = {
+															headers: {
+																'Content-type': 'application/json',
+																Authorization: localStorage.getItem('jwt_access_token')
 															}
-															//create scope
-															else if (res.data?.embassy_exists) {
+														};
+														axios
+															.get(
+																`${MANPOWER_BY_PASSENGER_ID}${newValue?.id}`,
+																authTOKEN
+															)
+															.then((res) => {
+																// update scope
+																if (res.data.id) {
+																	reset({
+																		...setIdIfValueIsObject(res.data),
+																		passenger: newValue?.id
+																	});
+																	navigate(
+																		`/apps/manPower-management/manPowers/${
+																			newValue?.passenger?.id || newValue?.id
+																		}`
+																	);
+																}
+																// create scope
+																else if (res.data?.embassy_exists) {
+																	navigate(`/apps/manPower-management/manPowers/new`);
+																	reset({
+																		passenger: newValue?.id,
+																		createPermission: true,
+																		man_power_status: doneNotDone.find(
+																			(data) => data.default
+																		)?.id
+																	});
+																} else {
+																	navigate(`/apps/manPower-management/manPowers/new`);
+																	reset({
+																		passenger: newValue?.id,
+																		man_power_status: doneNotDone.find(
+																			(data) => data.default
+																		)?.id
+																	});
+																	// dispatch(
+																	// 	setAlert({
+																	// 		alertType: 'warning',
+																	// 		alertValue: `please check "Embassy" information`
+																	// 	})
+																	// );
+																}
+															})
+															.catch(() => {
 																navigate(`/apps/manPower-management/manPowers/new`);
 																reset({
 																	passenger: newValue?.id,
-																	createPermission: true,
 																	man_power_status: doneNotDone.find(
-																		data => data.default
-																	)?.id
-																});
-															} else {
-																navigate(`/apps/manPower-management/manPowers/new`);
-																reset({
-																	passenger: newValue?.id,
-																	man_power_status: doneNotDone.find(
-																		data => data.default
+																		(data) => data.default
 																	)?.id
 																});
 																// dispatch(
@@ -227,30 +246,16 @@ function ManPower() {
 																// 		alertValue: `please check "Embassy" information`
 																// 	})
 																// );
-															}
-														})
-														.catch(() => {
-															navigate(`/apps/manPower-management/manPowers/new`);
-															reset({
-																passenger: newValue?.id,
-																man_power_status: doneNotDone.find(data => data.default)
-																	?.id
 															});
-															// dispatch(
-															// 	setAlert({
-															// 		alertType: 'warning',
-															// 		alertValue: `please check "Embassy" information`
-															// 	})
-															// );
+													} else {
+														navigate(`/apps/manPower-management/manPowers/new`);
+														reset({
+															passenger: newValue?.id,
+															man_power_status: doneNotDone.find((data) => data.default)
+																?.id
 														});
-												} else {
-													navigate(`/apps/manPower-management/manPowers/new`);
-													reset({
-														passenger: newValue?.id,
-														man_power_status: doneNotDone.find(data => data.default)?.id
-													});
-												}
-											}}
+													}
+												}}
 												renderInput={(params) => (
 													<TextField
 														{...params}

@@ -21,7 +21,7 @@ const ManPowerAppConfig = {
 
 				{
 					path: 'manPowers/:manPowerId/:fromSearch?',
-					
+
 					element: <ManPower />
 				}
 			]

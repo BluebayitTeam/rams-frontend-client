@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
@@ -85,18 +85,18 @@ function ManPowerHeader() {
 
 						reset({
 							passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
-				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: '',
+							man_power_status: doneNotDone.find((data) => data.default)?.id,
+							recruiting_agency: 'all',
+							new_visa_no: '',
+							bank_name: '',
+							bank_account_no: '',
+							// new_visa_no: '',
+							registration_id: '',
+							man_power_date: '',
+							submit_date: '',
+							current_status: 'all',
+							smart_card_image: '',
+							delivery_date: ''
 						});
 						navigate('/apps/manPower-management/manPowers/new');
 						AddedSuccessfully();
@@ -114,19 +114,19 @@ function ManPowerHeader() {
 						history.goBack();
 					} else {
 						reset({
-				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
-				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: '',
+							passenger: 'all',
+							man_power_status: doneNotDone.find((data) => data.default)?.id,
+							recruiting_agency: 'all',
+							new_visa_no: '',
+							bank_name: '',
+							bank_account_no: '',
+							// new_visa_no: '',
+							registration_id: '',
+							man_power_date: '',
+							submit_date: '',
+							current_status: 'all',
+							smart_card_image: '',
+							delivery_date: ''
 						});
 						localStorage.setItem('medicalAlert', 'saveManPower');
 						navigate('/apps/manPower-management/manPowers/new');
@@ -153,13 +153,13 @@ function ManPowerHeader() {
 				new_visa_no: '',
 				bank_name: '',
 				bank_account_no: '',
-				new_visa_no: '',
+				// new_visa_no: '',
 				registration_id: '',
 				man_power_date: '',
 				submit_date: '',
 				current_status: 'all',
 				smart_card_image: '',
-				delivery_date: '',
+				delivery_date: ''
 			});
 		}
 	};
@@ -173,13 +173,13 @@ function ManPowerHeader() {
 				new_visa_no: '',
 				bank_name: '',
 				bank_account_no: '',
-				new_visa_no: '',
+
 				registration_id: '',
 				man_power_date: '',
 				submit_date: '',
 				current_status: 'all',
 				smart_card_image: '',
-				delivery_date: '',
+				delivery_date: ''
 			});
 		}
 	}, [manPowerId, reset]);

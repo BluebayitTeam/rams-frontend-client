@@ -273,7 +273,7 @@ function MenusTable(props) {
 				</Table>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
+			{/* <div id="pagiContainer">
 				<Pagination
 					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
@@ -292,6 +292,40 @@ function MenusTable(props) {
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
 					count={totalData?.total_pages}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					backIconButtonProps={{
+						'aria-label': 'Previous Page'
+					}}
+					nextIconButtonProps={{
+						'aria-label': 'Next Page'
+					}}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+			</div> */}
+
+			<div
+				id="pagiContainer"
+				className="flex justify-between mb-6"
+			>
+				<Pagination
+					count={totalData?.total_pages}
+					page={page + 1}
+					defaultPage={1}
+					color="primary"
+					showFirstButton
+					showLastButton
+					variant="outlined"
+					shape="rounded"
+					onChange={handlePagination}
+				/>
+
+				<TablePagination
+					className="shrink-0 mb-2"
+					component="div"
+					rowsPerPageOptions={rowsPerPageOptions}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
