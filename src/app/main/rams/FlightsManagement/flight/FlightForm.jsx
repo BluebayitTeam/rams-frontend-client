@@ -5,12 +5,13 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import axios from 'axios';
 import { activeRetrnCncl } from 'src/app/@data/data';
+
+// console.log('dsadasd', activeRetrnCncl);
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -43,7 +44,7 @@ function FlightForm(props) {
 	const ticketAgencys = useSelector((state) => state.data.ticketAgencys);
 	const flights = useSelector((state) => state.data.flights);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-
+	const current_status = sessionStorage.getItem('passengerCurrentStatus');
 	const [previewFile, setPreviewFile] = useState('');
 
 	const [fileExtName, setFileExtName] = useState('');
@@ -183,7 +184,7 @@ function FlightForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -205,7 +206,7 @@ function FlightForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -227,7 +228,7 @@ function FlightForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							onKeyDown={handleSubmitOnKeyDownEnter}
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -394,14 +395,14 @@ function FlightForm(props) {
 				}}
 			/>
 
-			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
+			{/* <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Image
 					name="smart_card_image"
 					previewImage={previewImage}
 					setPreviewImage={setPreviewImage}
 					label="Smart Card Image"
 				/>
-			</div>
+			</div> */}
 		</div>
 	);
 }

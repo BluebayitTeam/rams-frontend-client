@@ -154,7 +154,7 @@ function CallingEmbAttestationHeader() {
 			});
 	}
 
-	const handleCancel = () => {
+	function handleCancel() {
 		reset({
 			passenger: 'all',
 			emb_attestation_status: doneNotDone.find((data) => data.default)?.id || '',
@@ -180,7 +180,8 @@ function CallingEmbAttestationHeader() {
 			repatriation: ''
 		});
 		navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
-	};
+	}
+
 	useEffect(() => {
 		if (callingEmbAttestationId === 'new') {
 			reset({

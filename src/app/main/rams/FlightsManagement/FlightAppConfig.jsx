@@ -21,7 +21,7 @@ const FlightAppConfig = {
 
 				{
 					path: 'flights/:flightId/:fromSearch?',
-					
+
 					element: <Flight />
 				}
 			]

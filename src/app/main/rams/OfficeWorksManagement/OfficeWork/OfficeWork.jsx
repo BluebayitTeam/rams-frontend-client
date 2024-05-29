@@ -194,6 +194,7 @@ function OfficeWork() {
 												freeSolo
 												autoHighlight
 												disabled={!!fromSearch}
+												id="passenger"
 												value={value ? passengers.find((data) => data.id === value) : null}
 												// options={passengers}
 												options={[
@@ -210,7 +211,18 @@ function OfficeWork() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													updateCurrentStatus(newValue?.id);
+													const authTOKEN = {
+														headers: {
+															'Content-type': 'application/json',
+															Authorization: localStorage.getItem('jwt_access_token')
+														}
+													};
+													axios
+														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+														.then((res) => {
+															setValue('current_status', res.data?.current_status?.id);
+															setValue('passenger', res.data?.id);
+														});
 
 													if (newValue?.id) {
 														const authTOKEN = {
@@ -227,8 +239,7 @@ function OfficeWork() {
 															.then((res) => {
 																if (res.data.id) {
 																	reset({
-																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		...setIdIfValueIsObject(res.data)
 																	});
 																	navigate(
 																		`/apps/officeWork/officeWorks/${
@@ -258,8 +269,7 @@ function OfficeWork() {
 																		finger_no: '',
 
 																		finger_date: '',
-																		certificate_experience: '',
-																		current_status: 'all'
+																		certificate_experience: ''
 																	});
 																}
 															})
@@ -285,15 +295,14 @@ function OfficeWork() {
 																	finger_no: '',
 
 																	finger_date: '',
-																	certificate_experience: '',
-																	current_status: 'all'
+																	certificate_experience: ''
 																});
 																navigate(`/apps/officeWork/officeWorks/new`);
 															});
 													} else {
 														navigate(`/apps/officeWork/officeWorks/new`);
 														reset({
-															passenger: 'all',
+															passenger: newValue?.id,
 															police_clearance_status: doneNotDone.find(
 																(data) => data.default
 															)?.id,
@@ -311,8 +320,7 @@ function OfficeWork() {
 															finger_no: '',
 
 															finger_date: '',
-															certificate_experience: '',
-															current_status: 'all'
+															certificate_experience: ''
 														});
 													}
 												}}

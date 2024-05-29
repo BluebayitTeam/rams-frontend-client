@@ -8,10 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
-import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { MANPOWER_BY_PASSENGER_ID } from 'src/app/constant/constants';
-import axios from 'axios';
-import moment from 'moment';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -80,40 +76,40 @@ function ManPowerForm(props) {
 		}
 	}, [manPowerId, reset, recruitingAgencys, currentStatuss]);
 
-	useEffect(() => {
-		if ((manPowerId !== 'new', !reload)) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`, authTOKEN).then((res) => {
-				if (res.data.id) {
-					console.log('fromData', res.data);
-					reset({
-						...setIdIfValueIsObject({
-							...res?.data,
-							passenger: parseInt(manPowerId, 10),
+	// useEffect(() => {
+	// 	if ((manPowerId !== 'new', !reload)) {
+	// 		const authTOKEN = {
+	// 			headers: {
+	// 				'Content-type': 'application/json',
+	// 				Authorization: localStorage.getItem('jwt_access_token')
+	// 			}
+	// 		};
+	// 		axios.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`, authTOKEN).then((res) => {
+	// 			if (res.data.id) {
+	// 				console.log('fromData', res.data);
+	// 				reset({
+	// 					...setIdIfValueIsObject({
+	// 						...res?.data,
+	// 						passenger: parseInt(manPowerId, 10),
 
-							man_power_status: doneNotDone.find((data) => data.default)?.id,
-							recruiting_agency: res?.data?.recruiting_agency?.id,
-							man_power_date: moment(new Date(res?.data?.man_power_date)).format('YYYY-MM-DD'),
-							submit_date: moment(new Date(res?.data?.submit_date)).format('YYYY-MM-DD')
-						})
-					});
-				}
+	// 						man_power_status: doneNotDone.find((data) => data.default)?.id,
+	// 						recruiting_agency: res?.data?.recruiting_agency?.id,
+	// 						man_power_date: moment(new Date(res?.data?.man_power_date)).format('YYYY-MM-DD'),
+	// 						submit_date: moment(new Date(res?.data?.submit_date)).format('YYYY-MM-DD')
+	// 					})
+	// 				});
+	// 			}
 
-				setReload(true);
-			});
-		} else {
-			// console.log('valueForm', getValues());
-			// Fetch and set data based on manPowerId if needed
-			// reset(formData);
-		}
-	}, [manPowerId, reset, reload]);
+	// 			setReload(true);
+	// 		});
+	// 	} else {
+	// 		// console.log('valueForm', getValues());
+	// 		// Fetch and set data based on manPowerId if needed
+	// 		// reset(formData);
+	// 	}
+	// }, [manPowerId, reset, reload]);
 
-	const current_status = sessionStorage.getItem('passengerCurrentStatus');
+	// const current_status = sessionStorage.getItem('passengerCurrentStatus');
 
 	return (
 		<div>

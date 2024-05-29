@@ -8,11 +8,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+// import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
+import { activeRetrnCncl } from 'src/app/@data/data';
 import { useCreateFlightMutation, useDeleteFlightMutation, useUpdateFlightMutation } from '../FlightsApi';
 
 /**
@@ -85,19 +86,19 @@ function FlightHeader() {
 
 						reset({
 							passenger: 'all',
-				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
-				ticket_agency: 'all',
-				carrier_air_way: '',
-				flight_no: '',
-				ticket_no: '',
-				sector_name: '',
-				ticket_status: '',
-				flight_time: '',
-				arrival_time: '',
-				issue_date: '',
-				flight_date: '',
-				notes: '',
-				current_status: 'all',
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+							ticket_agency: 'all',
+							carrier_air_way: '',
+							flight_no: '',
+							ticket_no: '',
+							sector_name: '',
+							// ticket_status: '',
+							flight_time: '',
+							arrival_time: '',
+							issue_date: '',
+							flight_date: '',
+							notes: '',
+							current_status: 'all'
 						});
 						navigate('/apps/flight-management/flights/new');
 						AddedSuccessfully();
@@ -115,20 +116,20 @@ function FlightHeader() {
 						history.goBack();
 					} else {
 						reset({
-				passenger: 'all',
-				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
-				ticket_agency: 'all',
-				carrier_air_way: '',
-				flight_no: '',
-				ticket_no: '',
-				sector_name: '',
-				ticket_status: '',
-				flight_time: '',
-				arrival_time: '',
-				issue_date: '',
-				flight_date: '',
-				notes: '',
-				current_status: 'all',
+							passenger: 'all',
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+							ticket_agency: 'all',
+							carrier_air_way: '',
+							flight_no: '',
+							ticket_no: '',
+							sector_name: '',
+							// ticket_status: '',
+							flight_time: '',
+							arrival_time: '',
+							issue_date: '',
+							flight_date: '',
+							notes: '',
+							current_status: 'all'
 						});
 						localStorage.setItem('medicalAlert', 'saveFlight');
 						navigate('/apps/flight-management/flights/new');
@@ -150,19 +151,19 @@ function FlightHeader() {
 			history.push('/apps/flight-management/flights/new');
 			reset({
 				passenger: 'all',
-				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+				ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
 				ticket_agency: 'all',
 				carrier_air_way: '',
 				flight_no: '',
 				ticket_no: '',
 				sector_name: '',
-				ticket_status: '',
+				// ticket_status: '',
 				flight_time: '',
 				arrival_time: '',
 				issue_date: '',
 				flight_date: '',
 				notes: '',
-				current_status: 'all',
+				current_status: 'all'
 			});
 		}
 	};
@@ -171,7 +172,7 @@ function FlightHeader() {
 		if (flightId === 'new') {
 			reset({
 				passenger: 'all',
-				ticket_status: activeRetrnCncl.find(data => data.default)?.id,
+				ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
 				ticket_agency: 'all',
 				carrier_air_way: '',
 				flight_no: '',
@@ -183,8 +184,7 @@ function FlightHeader() {
 				issue_date: '',
 				flight_date: '',
 				notes: '',
-				current_status: 'all',
-				
+				current_status: 'all'
 			});
 		}
 	}, [flightId, reset]);

@@ -20,7 +20,7 @@ const CallingEmbAttestationAppConfig = {
 				},
 
 				{
-					path: 'malaysiaStatus/:callingEmbAttestationId/:fromSearch?',
+					path: 'malaysiaStatus/:malaysiaStatusId/:fromSearch?',
 					element: <CallingEmbAttestation />
 				}
 			]

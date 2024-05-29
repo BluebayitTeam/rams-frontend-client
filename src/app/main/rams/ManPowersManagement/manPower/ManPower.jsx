@@ -166,6 +166,19 @@ function ManPower() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
+													const authTOKEN = {
+														headers: {
+															'Content-type': 'application/json',
+															Authorization: localStorage.getItem('jwt_access_token')
+														}
+													};
+													axios
+														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+														.then((res) => {
+															setValue('current_status', res.data?.current_status?.id);
+															setValue('passenger', res.data?.id);
+														});
+
 													if (newValue?.id) {
 														const authTOKEN = {
 															headers: {
@@ -183,7 +196,6 @@ function ManPower() {
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id,
 																		man_power_date: moment(
 																			new Date(res?.data?.man_power_date)
 																		).format('YYYY-MM-DD'),
@@ -214,7 +226,6 @@ function ManPower() {
 																		registration_id: '',
 																		man_power_date: '',
 																		submit_date: '',
-																		current_status: 'all',
 																		smart_card_image: '',
 																		delivery_date: ''
 																	});
@@ -233,7 +244,6 @@ function ManPower() {
 																		registration_id: '',
 																		man_power_date: '',
 																		submit_date: '',
-																		current_status: 'all',
 																		smart_card_image: '',
 																		delivery_date: ''
 																	});
@@ -263,7 +273,7 @@ function ManPower() {
 													} else {
 														navigate(`/apps/manPower-management/manPowers/new`);
 														reset({
-															passenger: 'all',
+															passenger: newValue?.id,
 															man_power_status: doneNotDone.find((data) => data.default)
 																?.id,
 															recruiting_agency: 'all',
@@ -274,7 +284,6 @@ function ManPower() {
 															registration_id: '',
 															man_power_date: '',
 															submit_date: '',
-															current_status: 'all',
 															smart_card_image: '',
 															delivery_date: ''
 														});

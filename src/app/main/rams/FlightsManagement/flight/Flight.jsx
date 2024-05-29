@@ -11,9 +11,10 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { FLIGHT_BY_PASSENGER_ID,  } from 'src/app/constant/constants';
-import { doneNotDone } from 'src/app/@data/data';
+import { FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
+// import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import { activeRetrnCncl } from 'src/app/@data/data';
 import FlightHeader from './FlightHeader';
 import { useGetFlightQuery } from '../FlightsApi';
 import FlightForm from './FlightForm';
@@ -88,7 +89,7 @@ function Flight() {
 					} else {
 						reset({
 							passenger: FlightId,
-							ticket_status: activeRetrnCncl.find(data => data.default)?.id
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 						});
 						sessionStorage.setItem('operation', 'save');
 					}
@@ -96,12 +97,12 @@ function Flight() {
 				.catch(() => {
 					reset({
 						passenger: FlightId,
-						ticket_status: activeRetrnCncl.find(data => data.default)?.id
+						ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({ ticket_status: activeRetrnCncl.find(data => data.default)?.id});
+			reset({ ticket_status: activeRetrnCncl.find((data) => data.default)?.id });
 		}
 	}, [fromSearch]);
 
@@ -165,59 +166,75 @@ function Flight() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-												// const authTOKEN = {
-												// 	headers: {
-												// 		'Content-type': 'application/json',
-												// 		Authorization: localStorage.getItem('jwt_access_token')
-												// 	}
-												// };
+													// const authTOKEN = {
+													// 	headers: {
+													// 		'Content-type': 'application/json',
+													// 		Authorization: localStorage.getItem('jwt_access_token')
+													// 	}
+													// };
 
-												// dispatch(getManpower(newValue?.id));
-												// axios
-												// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-												// 	.then(res => {
-												// 		sessionStorage.setItem(
-												// 			'passengerCurrentStatus',
-												// 			res.data?.current_status?.name
-												// 		);
-												// 	});
-												if (newValue?.id) {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
-														.then(res => {
-															//update scope
-															if (res.data.id) {
-																reset({
-																	...setIdIfValueIsObject(res.data),
-																	passenger: newValue?.id
-																});
-																navigate(
-																	`/apps/Flight-management/Flights/${
-																		newValue?.passenger?.id || newValue?.id
-																	}`
-																);
+													// dispatch(getManpower(newValue?.id));
+													// axios
+													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+													// 	.then(res => {
+													// 		sessionStorage.setItem(
+													// 			'passengerCurrentStatus',
+													// 			res.data?.current_status?.name
+													// 		);
+													// 	});
+													if (newValue?.id) {
+														const authTOKEN = {
+															headers: {
+																'Content-type': 'application/json',
+																Authorization: localStorage.getItem('jwt_access_token')
 															}
-															//create scope
-															else if (res.data?.embassy_exists) {
+														};
+														axios
+															.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
+															.then((res) => {
+																// update scope
+																if (res.data.id) {
+																	reset({
+																		...setIdIfValueIsObject(res.data),
+																		passenger: newValue?.id
+																	});
+																	navigate(
+																		`/apps/Flight-management/Flights/${
+																			newValue?.passenger?.id || newValue?.id
+																		}`
+																	);
+																}
+																// create scope
+																else if (res.data?.embassy_exists) {
+																	navigate(`/apps/Flight-management/Flights/new`);
+																	reset({
+																		passenger: newValue?.id,
+																		ticket_status: activeRetrnCncl.find(
+																			(data) => data.default
+																		)?.id
+																	});
+																} else {
+																	navigate(`/apps/Flight-management/Flights/new`);
+																	reset({
+																		passenger: newValue?.id,
+																		ticket_status: activeRetrnCncl.find(
+																			(data) => data.default
+																		)?.id
+																	});
+																	// dispatch(
+																	// 	setAlert({
+																	// 		alertType: 'warning',
+																	// 		alertValue: `please check "Embassy" information`
+																	// 	})
+																	// );
+																}
+															})
+															.catch(() => {
 																navigate(`/apps/Flight-management/Flights/new`);
 																reset({
 																	passenger: newValue?.id,
 																	ticket_status: activeRetrnCncl.find(
-																		data => data.default
-																	)?.id
-																});
-															} else {
-																navigate(`/apps/Flight-management/Flights/new`);
-																reset({
-																	passenger: newValue?.id,
-																	ticket_status: activeRetrnCncl.find(
-																		data => data.default
+																		(data) => data.default
 																	)?.id
 																});
 																// dispatch(
@@ -226,32 +243,16 @@ function Flight() {
 																// 		alertValue: `please check "Embassy" information`
 																// 	})
 																// );
-															}
-														})
-														.catch(() => {
-															navigate(`/apps/Flight-management/Flights/new`);
-															reset({
-																passenger: newValue?.id,
-																ticket_status: activeRetrnCncl.find(
-																		data => data.default
-																	)?.id
 															});
-															// dispatch(
-															// 	setAlert({
-															// 		alertType: 'warning',
-															// 		alertValue: `please check "Embassy" information`
-															// 	})
-															// );
+													} else {
+														navigate(`/apps/Flight-management/Flights/new`);
+														reset({
+															passenger: newValue?.id,
+															ticket_status: activeRetrnCncl.find((data) => data.default)
+																?.id
 														});
-												} else {
-													navigate(`/apps/Flight-management/Flights/new`);
-													reset({
-														passenger: newValue?.id,
-ticket_status: activeRetrnCncl.find(
-																		data => data.default
-																	)?.id													});
-												}
-											}}
+													}
+												}}
 												renderInput={(params) => (
 													<TextField
 														{...params}

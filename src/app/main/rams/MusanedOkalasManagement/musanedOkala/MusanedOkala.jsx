@@ -181,6 +181,7 @@ function MusanedOkala() {
 														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
 														.then((res) => {
 															setValue('current_status', res.data?.current_status?.id);
+															setValue('passenger', res.data?.id);
 														});
 
 													if (newValue?.id) {
@@ -224,8 +225,7 @@ function MusanedOkala() {
 																		musaned_given_by: 'all',
 																		okala_no: '',
 																		okala_date: '',
-																		okala_given_by: 'all',
-																		current_status: 'all'
+																		okala_given_by: 'all'
 																	});
 																}
 															})
@@ -243,18 +243,18 @@ function MusanedOkala() {
 
 																	musaned_given_by: 'all',
 																	okala_no: '',
+																	doc1_image: '',
+																	doc2_image: '',
 																	okala_date: '',
-																	okala_given_by: 'all',
-																	current_status: 'all'
+																	okala_given_by: 'all'
 																});
 																navigate(
 																	`/apps/musanedOkala-management/musanedOkalas/new`
 																);
 															});
 													} else {
-														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 														reset({
-															passenger: 'all',
+															passenger: newValue?.id,
 															musaned_no: '',
 															musaned_date: '',
 															musaned_status: doneNotDone.find((data) => data.default)
@@ -264,9 +264,9 @@ function MusanedOkala() {
 															musaned_given_by: 'all',
 															okala_no: '',
 															okala_date: '',
-															okala_given_by: 'all',
-															current_status: 'all'
+															okala_given_by: 'all'
 														});
+														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 													}
 												}}
 												renderInput={(params) => (
