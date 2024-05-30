@@ -67,8 +67,7 @@ function TrainingForm(props) {
 				certificate_no: '',
 				certificate_date: '',
 				batch_number: '',
-				current_status: 'all',
-				
+				current_status: 'all'
 			});
 		} else {
 			console.log('valueForm', getValues());
@@ -238,7 +237,7 @@ function TrainingForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find((data) => data.id == value) : null}
+						value={value ? doneNotDone.find((data) => data.id === value) : null}
 						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {

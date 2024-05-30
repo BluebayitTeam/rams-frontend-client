@@ -135,9 +135,9 @@ function FlightHeader() {
 							notes: '',
 							current_status: 'all'
 						});
-						localStorage.setItem('flightAlert', 'saveFlight');
+
 						navigate('/apps/flight-management/flights/new');
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
+						// dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
 
@@ -149,27 +149,29 @@ function FlightHeader() {
 	}
 
 	const handleCancel = () => {
-		if (fromSearch) {
-			history.goBack();
-		} else {
-			history.push('/apps/flight-management/flights/new');
-			reset({
-				passenger: 'all',
-				ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-				ticket_agency: 'all',
-				carrier_air_way: '',
-				flight_no: '',
-				ticket_no: '',
-				sector_name: '',
-				// ticket_status: '',
-				flight_time: '',
-				arrival_time: '',
-				issue_date: '',
-				flight_date: '',
-				notes: '',
-				current_status: 'all'
-			});
-		}
+		// if (fromSearch) {
+		// 	history.goBack();
+		// } else {
+
+		// }
+
+		reset({
+			passenger: 'all',
+			ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+			ticket_agency: 'all',
+			carrier_air_way: '',
+			flight_no: '',
+			ticket_no: '',
+			sector_name: '',
+			// ticket_status: '',
+			flight_time: '',
+			arrival_time: '',
+			issue_date: '',
+			flight_date: '',
+			notes: '',
+			current_status: 'all'
+		});
+		navigate('/apps/flight-management/flights/new');
 	};
 
 	useEffect(() => {
@@ -182,7 +184,7 @@ function FlightHeader() {
 				flight_no: '',
 				ticket_no: '',
 				sector_name: '',
-				// ticket_status: '',
+
 				flight_time: '',
 				arrival_time: '',
 				issue_date: '',

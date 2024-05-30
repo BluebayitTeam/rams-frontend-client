@@ -4,7 +4,6 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
@@ -43,7 +42,6 @@ const schema = z.object({
 });
 
 function Flight() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { flightId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
@@ -177,13 +175,10 @@ function Flight() {
 													// dispatch(getManpower(newValue?.id));
 													// axios
 													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-													// 	.then(res => {
-													// 		sessionStorage.setItem(
-													// 			'passengerCurrentStatus',
-													// 			res.data?.current_status?.name
-													// 		);
+													// 	.then((res) => {
+													// 		setValue('current_status', res.data?.current_status?.id);
+													// 		setValue('passenger', res.data?.id);
 													// 	});
-													//
 
 													if (newValue?.id) {
 														const authTOKEN = {
@@ -197,16 +192,11 @@ function Flight() {
 															.then((res) => {
 																// update scope
 
-																setValue(
-																	'current_status',
-																	res.data?.current_status?.id
-																);
-																setValue('passenger', res.data?.id);
-
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),
 																		passenger: newValue?.id,
+																		ticket_agency: res?.data?.ticket_agency?.id,
 																		flight_date: moment(
 																			new Date(res?.data?.flight_date)
 																		).format('YYYY-MM-DD'),
@@ -221,24 +211,25 @@ function Flight() {
 																	);
 																}
 																// create scope
-																else if (res.data?.embassy_exists) {
-																	navigate(`/apps/Flight-management/Flights/new`);
-																	reset({
-																		passenger: newValue?.id,
-																		ticket_agency: 'all',
-																		carrier_air_way: '',
-																		flight_no: '',
-																		ticket_no: '',
-																		sector_name: '',
-																		// ticket_status: '',
-																		flight_time: '',
-																		arrival_time: '',
-																		issue_date: '',
-																		flight_date: '',
-																		notes: '',
-																		current_status: 'all'
-																	});
-																} else {
+																// else if (res.data?.embassy_exists) {
+																// 	navigate(`/apps/Flight-management/Flights/new`);
+																// 	reset({
+																// 		passenger: newValue?.id,
+																// 		ticket_agency: 'all',
+																// 		carrier_air_way: '',
+																// 		flight_no: '',
+																// 		ticket_no: '',
+																// 		sector_name: '',
+																// 		// ticket_status: '',
+																// 		flight_time: '',
+																// 		arrival_time: '',
+																// 		issue_date: '',
+																// 		flight_date: '',
+																// 		notes: '',
+																// 		current_status: 'all'
+																// 	});
+																// }
+																else {
 																	navigate(`/apps/Flight-management/Flights/new`);
 																	reset({
 																		passenger: newValue?.id,
@@ -264,7 +255,6 @@ function Flight() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/Flight-management/Flights/new`);
 																reset({
 																	passenger: newValue?.id,
 																	ticket_agency: 'all',
@@ -280,6 +270,8 @@ function Flight() {
 																	notes: '',
 																	current_status: 'all'
 																});
+																navigate(`/apps/Flight-management/Flights/new`);
+
 																// dispatch(
 																// 	setAlert({
 																// 		alertType: 'warning',
@@ -288,7 +280,6 @@ function Flight() {
 																// );
 															});
 													} else {
-														navigate(`/apps/Flight-management/Flights/new`);
 														reset({
 															passenger: newValue?.id,
 															ticket_agency: 'all',
@@ -304,6 +295,7 @@ function Flight() {
 															notes: '',
 															current_status: 'all'
 														});
+														navigate(`/apps/Flight-management/Flights/new`);
 													}
 												}}
 												renderInput={(params) => (

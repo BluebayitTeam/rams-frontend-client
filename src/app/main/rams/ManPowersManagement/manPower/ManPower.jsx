@@ -166,12 +166,12 @@ function ManPower() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
+													// const authTOKEN = {
+													// 	headers: {
+													// 		'Content-type': 'application/json',
+													// 		Authorization: localStorage.getItem('jwt_access_token')
+													// 	}
+													// };
 
 													// .get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
 													// .then((res) => {
@@ -193,6 +193,12 @@ function ManPower() {
 															)
 															.then((res) => {
 																// update scope
+																setValue(
+																	'current_status',
+																	res.data?.current_status?.id
+																);
+																setValue('passenger', res.data?.id);
+
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),

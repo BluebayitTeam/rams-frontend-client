@@ -68,19 +68,18 @@ function FlightForm(props) {
 	useEffect(() => {
 		if (flightId === 'new') {
 			reset({
-				passenger: 'all',
-				ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
 				ticket_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				// new_visa_no: '',
-				registration_id: '',
+				carrier_air_way: '',
+				flight_no: '',
+				ticket_no: '',
+				sector_name: '',
+				// ticket_status: '',
+				flight_time: '',
+				arrival_time: '',
 				issue_date: '',
 				flight_date: '',
-				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: ''
+				notes: '',
+				current_status: 'all'
 			});
 		} else {
 			console.log('valueForm', getValues());
@@ -113,10 +112,6 @@ function FlightForm(props) {
 
 				setReload(true);
 			});
-		} else {
-			// console.log('valueForm', getValues());
-			// Fetch and set data based on flightId if needed
-			// reset(formData);
 		}
 	}, [flightId, reset, reload]);
 
