@@ -153,14 +153,14 @@ function VisaReissueListHeader() {
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
 								{routeParams.visaReissueListId === 'new'
-									? 'Create New VisaReissueList'
+									? 'Create New Visa Reissue List'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.visaReissueListId !== 'new' && 'VisaReissueLists Detail'}
+								{routeParams.visaReissueListId !== 'new' && 'Visa Reissue List Detail'}
 							</Typography>
 						</motion.div>
 					</div>

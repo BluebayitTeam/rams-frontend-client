@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function VisaCancelListForm(props) {
+function VisaReissueListForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { visaCancelListId } = routeParams;
+	const { visaReissueListId } = routeParams;
 	const agencys = useSelector((state) => state.data.agencies);
 	const okalaGivenBys = useSelector((state) => state.data.agents);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
@@ -37,16 +37,16 @@ function VisaCancelListForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (visaCancelListId === 'new') {
+		if (visaReissueListId === 'new') {
 			console.log('asndasdbss', getValues());
-			console.log('visaCancelListId', visaCancelListId);
+			console.log('visaReissueListId', visaReissueListId);
 			setValue('current_status', 'all');
 			setValue('doc1_image', '');
 			setValue('doc2_image', '');
 			setpreviewdoc1Image('');
 			setpreviewdoc2Image('');
 		}
-	}, [visaCancelListId]);
+	}, [visaReissueListId]);
 
 	return (
 		<div>
@@ -135,4 +135,4 @@ function VisaCancelListForm(props) {
 	);
 }
 
-export default VisaCancelListForm;
+export default VisaReissueListForm;
