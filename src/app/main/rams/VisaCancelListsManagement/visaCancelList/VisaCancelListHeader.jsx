@@ -8,7 +8,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
@@ -51,15 +50,8 @@ function VisaCancelListHeader() {
 
 						reset({
 							passenger: 'all',
-							musaned_no: '',
-							musaned_date: '',
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id,
-
-							musaned_given_by: 'all',
-							okala_no: '',
-							okala_date: '',
-							okala_given_by: 'all',
+							agency: 'all',
+							submission_date: '',
 							current_status: 'all'
 						});
 
@@ -90,15 +82,8 @@ function VisaCancelListHeader() {
 
 						reset({
 							passenger: 'all',
-							musaned_no: '',
-							musaned_date: '',
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id,
-
-							musaned_given_by: 'all',
-							okala_no: '',
-							okala_date: '',
-							okala_given_by: 'all',
+							agency: 'all',
+							submission_date: '',
 							current_status: 'all'
 						});
 					}
@@ -119,15 +104,8 @@ function VisaCancelListHeader() {
 					} else {
 						reset({
 							passenger: 'all',
-							musaned_no: '',
-							musaned_date: '',
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id,
-
-							musaned_given_by: 'all',
-							okala_no: '',
-							okala_date: '',
-							okala_given_by: 'all',
+							agency: 'all',
+							submission_date: '',
 							current_status: 'all'
 						});
 						localStorage.setItem('medicalAlert', 'saveVisaCancelList');
@@ -147,15 +125,8 @@ function VisaCancelListHeader() {
 	const handleCancel = () => {
 		reset({
 			passenger: 'all',
-			musaned_no: '',
-			musaned_date: '',
-			musaned_status: doneNotDone.find((data) => data.default)?.id,
-			okala_status: doneNotDone.find((data) => data.default)?.id,
-
-			musaned_given_by: 'all',
-			okala_no: '',
-			okala_date: '',
-			okala_given_by: 'all',
+			agency: 'all',
+			submission_date: '',
 			current_status: 'all'
 		});
 		navigate('/apps/visaCancelList-management/visaCancelLists/new');
@@ -165,18 +136,9 @@ function VisaCancelListHeader() {
 		if (visaCancelListId === 'new') {
 			reset({
 				passenger: 'all',
-				musaned_no: '',
-				musaned_date: '',
-				musaned_status: doneNotDone.find((data) => data.default)?.id,
-				okala_status: doneNotDone.find((data) => data.default)?.id,
-
-				musaned_given_by: '',
-				okala_no: '',
-				okala_date: '',
-				okala_given_by: '',
-				current_status: '',
-				doc1_image: '',
-				doc2_image: ''
+				agency: 'all',
+				submission_date: '',
+				current_status: 'all'
 			});
 		}
 	}, [visaCancelListId, reset]);

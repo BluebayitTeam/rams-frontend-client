@@ -219,13 +219,21 @@ function VisaCancelList() {
 																		`/apps/visaCancelList-management/visaCancelList/new`
 																	);
 																	reset({
-																		passenger: newValue?.id
+																		passenger: newValue?.id,
+
+																		agency: 'all',
+																		submission_date: '',
+																		current_status: 'all'
 																	});
 																}
 															})
 															.catch(() => {
 																reset({
-																	passenger: newValue?.id
+																	passenger: newValue?.id,
+
+																	agency: 'all',
+																	submission_date: '',
+																	current_status: 'all'
 																});
 																navigate(
 																	`/apps/visaCancelList-management/visaCancelLists/new`
@@ -233,7 +241,11 @@ function VisaCancelList() {
 															});
 													} else {
 														reset({
-															passenger: newValue?.id
+															passenger: newValue?.id,
+
+															agency: 'all',
+															submission_date: '',
+															current_status: 'all'
 														});
 														navigate(`/apps/visaCancelList-management/visaCancelLists/new`);
 													}
