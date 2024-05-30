@@ -14,6 +14,7 @@ import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 
 // import { useGetVisaCancelListQuery } from '../VisaCancelListsApi';
+import moment from 'moment';
 import VisaCancelListForm from './VisaCancelListForm';
 import { useGetVisaCancelListQuery } from '../VisaCancelListsApi';
 import VisaCancelListHeader from './VisaCancelListHeader';
@@ -202,7 +203,11 @@ function VisaCancelList() {
 																if (res.data.id) {
 																	reset({
 																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		passenger: newValue?.id,
+																		agency: res?.data?.agency?.id,
+																		submission_date: moment(
+																			new Date(res?.data?.submission_date)
+																		).format('YYYY-MM-DD')
 																	});
 																	navigate(
 																		`/apps/visaCancelList-management/visaCancelLists/${
