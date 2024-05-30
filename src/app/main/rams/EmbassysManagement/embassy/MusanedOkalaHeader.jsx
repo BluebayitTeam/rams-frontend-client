@@ -17,7 +17,7 @@ import {
 	useCreateMusanedOkalaMutation,
 	useDeleteMusanedOkalaMutation,
 	useUpdateMusanedOkalaMutation
-} from '../MusanedOkalasApi';
+} from '../EmbassysApi';
 
 /**
  * The musanedOkala header.

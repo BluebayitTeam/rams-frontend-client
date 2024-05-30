@@ -16,7 +16,7 @@ import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import MusanedOkalaHeader from './MusanedOkalaHeader';
 // import { useGetMusanedOkalaQuery } from '../MusanedOkalasApi';
 import MusanedOkalaForm from './MusanedOkalaForm';
-import { useGetMusanedOkalaQuery } from '../MusanedOkalasApi';
+import { useGetMusanedOkalaQuery } from '../EmbassysApi';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
