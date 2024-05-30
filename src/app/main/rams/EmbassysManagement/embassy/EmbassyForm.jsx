@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { getAgents, getCurrentStatuss, getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
+import { getCurrentStatuss, getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function MusanedOkalaForm(props) {
+function EmbassyForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
@@ -32,7 +32,7 @@ function MusanedOkalaForm(props) {
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getAgents());
+		// dispatch(getAgents());
 		dispatch(getRecruitingAgencys());
 		dispatch(getCurrentStatuss());
 	}, []);
@@ -492,4 +492,4 @@ function MusanedOkalaForm(props) {
 	);
 }
 
-export default MusanedOkalaForm;
+export default EmbassyForm;

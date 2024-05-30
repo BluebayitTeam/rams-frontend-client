@@ -65,7 +65,9 @@ function EmbassyHeader() {
 							police_clearance_no_readonly: '',
 							driving_license_no_readonly: '',
 							musaned_okala_no_readonly: '',
-							certificate_experience_no_readonly: ''
+							certificate_experience_no_readonly: '',
+							old_visa_image: '',
+							stamp_visa_image: ''
 						});
 
 						UpdatedSuccessfully();
@@ -113,7 +115,9 @@ function EmbassyHeader() {
 							police_clearance_no_readonly: '',
 							driving_license_no_readonly: '',
 							musaned_okala_no_readonly: '',
-							certificate_experience_no_readonly: ''
+							certificate_experience_no_readonly: '',
+							old_visa_image: '',
+							stamp_visa_image: ''
 						});
 					}
 
@@ -151,7 +155,9 @@ function EmbassyHeader() {
 							police_clearance_no_readonly: '',
 							driving_license_no_readonly: '',
 							musaned_okala_no_readonly: '',
-							certificate_experience_no_readonly: ''
+							certificate_experience_no_readonly: '',
+							old_visa_image: '',
+							stamp_visa_image: ''
 						});
 						localStorage.setItem('medicalAlert', 'saveEmbassy');
 						navigate('/apps/embassy-management/embassys/new');
@@ -188,7 +194,9 @@ function EmbassyHeader() {
 			police_clearance_no_readonly: '',
 			driving_license_no_readonly: '',
 			musaned_okala_no_readonly: '',
-			certificate_experience_no_readonly: ''
+			certificate_experience_no_readonly: '',
+			old_visa_image: '',
+			stamp_visa_image: ''
 		});
 		navigate('/apps/embassy-management/embassys/new');
 	};
@@ -215,7 +223,9 @@ function EmbassyHeader() {
 				police_clearance_no_readonly: '',
 				driving_license_no_readonly: '',
 				musaned_okala_no_readonly: '',
-				certificate_experience_no_readonly: ''
+				certificate_experience_no_readonly: '',
+				old_visa_image: '',
+				stamp_visa_image: ''
 			});
 		}
 	}, [embassyId, reset]);

@@ -205,7 +205,7 @@ function Embassy() {
 																		}`
 																	);
 																} else {
-																	navigate(`/apps/embassy-management/embassy/new`);
+																	navigate(`/apps/embassy-management/embassys/new`);
 																	reset({
 																		passenger: newValue?.id,
 																		musaned_no: '',
@@ -243,7 +243,7 @@ function Embassy() {
 																	okala_date: '',
 																	okala_given_by: 'all'
 																});
-																navigate(`/apps/embassy-management/embassys/new`);
+																navigate(`apps/embassy-management/embassys/new`);
 															});
 													} else {
 														reset({
@@ -259,7 +259,7 @@ function Embassy() {
 															okala_date: '',
 															okala_given_by: 'all'
 														});
-														navigate(`/apps/embassy-management/embassys/new`);
+														navigate(`apps/embassy-management/embassys/new`);
 													}
 												}}
 												renderInput={(params) => (
