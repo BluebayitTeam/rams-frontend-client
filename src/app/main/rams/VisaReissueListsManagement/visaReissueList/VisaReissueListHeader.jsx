@@ -13,40 +13,40 @@ import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import {
-	useCreateVisaCancelListMutation,
-	useDeleteVisaCancelListMutation,
-	useUpdateVisaCancelListMutation
-} from '../VisaCancelListsApi';
+	useCreateVisaReissueListMutation,
+	useDeleteVisaReissueListMutation,
+	useUpdateVisaReissueListMutation
+} from '../VisaReissueListsApi';
 
 /**
- * The visaCancelList header.
+ * The visaReissueList header.
  */
-function VisaCancelListHeader() {
+function VisaReissueListHeader() {
 	const routeParams = useParams();
-	const { visaCancelListId } = routeParams;
-	const [createVisaCancelList] = useCreateVisaCancelListMutation();
-	const [saveVisaCancelList] = useUpdateVisaCancelListMutation();
-	const [removeVisaCancelList] = useDeleteVisaCancelListMutation();
+	const { visaReissueListId } = routeParams;
+	const [createVisaReissueList] = useCreateVisaReissueListMutation();
+	const [saveVisaReissueList] = useUpdateVisaReissueListMutation();
+	const [removeVisaReissueList] = useDeleteVisaReissueListMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteVisaCancelList');
-	const handleUpdate = localStorage.getItem('updateVisaCancelList');
+	const handleDelete = localStorage.getItem('deleteVisaReissueList');
+	const handleUpdate = localStorage.getItem('updateVisaReissueList');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateVisaCancelList() {
-		saveVisaCancelList(getValues())
+	function handleUpdateVisaReissueList() {
+		saveVisaReissueList(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateVisaCancelList');
+						localStorage.setItem('medicalAlert', 'updateVisaReissueList');
 
 						reset({
 							passenger: 'all',
@@ -56,7 +56,7 @@ function VisaCancelListHeader() {
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/visaCancelList-management/visaCancelLists/new');
+						navigate('/apps/visaReissueList-management/visaReissueLists/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -65,20 +65,20 @@ function VisaCancelListHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating visaCancelList', error);
+				console.error('Error updating visaReissueList', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateVisaCancelList() {
-		createVisaCancelList(getValues())
+	function handleCreateVisaReissueList() {
+		createVisaReissueList(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveVisaCancelList');
+						localStorage.setItem('medicalAlert', 'saveVisaReissueList');
 
 						reset({
 							passenger: 'all',
@@ -88,14 +88,14 @@ function VisaCancelListHeader() {
 						});
 					}
 
-					navigate('/apps/visaCancelList-management/visaCancelLists/new');
+					navigate('/apps/visaReissueList-management/visaReissueLists/new');
 					AddedSuccessfully();
 				}
 			});
 	}
 
-	function handleRemoveVisaCancelList() {
-		removeVisaCancelList(getValues()?.id)
+	function handleRemoveVisaReissueList() {
+		removeVisaReissueList(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
@@ -108,8 +108,8 @@ function VisaCancelListHeader() {
 							submission_date: '',
 							current_status: 'all'
 						});
-						localStorage.setItem('medicalAlert', 'saveVisaCancelList');
-						navigate('/apps/visaCancelList-management/visaCancelLists/new');
+						localStorage.setItem('medicalAlert', 'saveVisaReissueList');
+						navigate('/apps/visaReissueList-management/visaReissueLists/new');
 
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
@@ -129,11 +129,11 @@ function VisaCancelListHeader() {
 			submission_date: '',
 			current_status: 'all'
 		});
-		navigate('/apps/visaCancelList-management/visaCancelLists/new');
+		navigate('/apps/visaReissueList-management/visaReissueLists/new');
 	};
 
 	useEffect(() => {
-		if (visaCancelListId === 'new') {
+		if (visaReissueListId === 'new') {
 			reset({
 				passenger: 'all',
 				agency: 'all',
@@ -141,7 +141,7 @@ function VisaCancelListHeader() {
 				current_status: 'all'
 			});
 		}
-	}, [visaCancelListId, reset]);
+	}, [visaReissueListId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -152,15 +152,15 @@ function VisaCancelListHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.visaCancelListId === 'new'
-									? 'Create New VisaCancelList'
+								{routeParams.visaReissueListId === 'new'
+									? 'Create New VisaReissueList'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.visaCancelListId !== 'new' && 'VisaCancelLists Detail'}
+								{routeParams.visaReissueListId !== 'new' && 'VisaReissueLists Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -171,39 +171,39 @@ function VisaCancelListHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.visaCancelListId === 'new' ||
+				{(routeParams.visaReissueListId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateVisaCancelList}
+						onClick={handleCreateVisaReissueList}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.visaCancelListId !== 'new' &&
+				{routeParams?.visaReissueListId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							onClick={handleUpdateVisaCancelList}
+							onClick={handleUpdateVisaReissueList}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.visaCancelListId !== 'new' &&
+				{routeParams?.visaReissueListId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveVisaCancelList}
+							onClick={handleRemoveVisaReissueList}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
@@ -224,4 +224,4 @@ function VisaCancelListHeader() {
 	);
 }
 
-export default VisaCancelListHeader;
+export default VisaReissueListHeader;
