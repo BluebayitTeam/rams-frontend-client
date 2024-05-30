@@ -153,14 +153,14 @@ function VisaCancelListHeader() {
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
 								{routeParams.visaCancelListId === 'new'
-									? 'Create New VisaCancelList'
+									? 'Create New Visa Cancel List'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.visaCancelListId !== 'new' && 'VisaCancelLists Detail'}
+								{routeParams.visaCancelListId !== 'new' && 'Visa Cancel List Detail'}
 							</Typography>
 						</motion.div>
 					</div>
