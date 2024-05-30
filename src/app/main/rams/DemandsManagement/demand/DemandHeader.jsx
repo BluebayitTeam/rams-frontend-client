@@ -31,6 +31,7 @@ function DemandHeader() {
 
 	function handleUpdateDemand() {
 		saveDemand(getValues()).then((data) => {
+			debugger;
 			UpdatedSuccessfully();
 
 			navigate(`/apps/demand/demands`);

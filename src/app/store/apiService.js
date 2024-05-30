@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import Axios from 'axios';
+import Swal from 'sweetalert2';
 
 const axiosBaseQuery =
 	() =>
@@ -21,6 +22,14 @@ const axiosBaseQuery =
 			return data;
 		} catch (axiosError) {
 			const error = axiosError;
+			console.log(`jsadkjsbakdf`, error?.response?.data?.detail);
+			Swal.fire({
+				position: 'top-center',
+				icon: 'error',
+				title: `${error?.response?.data?.detail}`,
+				showConfirmButton: false,
+				timer: 4000
+			});
 			return {
 				error
 			};
