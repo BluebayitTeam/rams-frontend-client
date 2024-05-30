@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
+import increaseMonth from 'src/app/@helpers/increaseMonth';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -108,9 +109,8 @@ function MedicalForm(props) {
 								id="medical_center"
 								helperText={errors?.medical_center?.message}
 								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
+								required
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
@@ -239,6 +239,11 @@ function MedicalForm(props) {
 						error={!!errors.medical_issue_date}
 						helperText={errors?.medical_issue_date?.message}
 						label="Medical Issue Date"
+						onChange={(event) => {
+							const { value } = event.target;
+							field.onChange(value);
+							setValue('medical_expiry_date', increaseMonth(value, 3));
+						}}
 						id="medical_issue_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -264,7 +269,6 @@ function MedicalForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="current_status"
 				control={control}

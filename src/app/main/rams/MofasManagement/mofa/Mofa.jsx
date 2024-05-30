@@ -69,18 +69,6 @@ function Mofa() {
 		setValue
 	} = methods;
 
-	// useEffect(() => {
-	// 	if (mofaId === 'new') {
-	// 		reset(MofaModel({}));
-	// 	}
-	// }, [mofaId, reset]);
-
-	// useEffect(() => {
-	// 	if (mofa) {
-	// 		reset({ ...mofa });
-	// 	}
-	// }, [mofa, reset]);
-
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -93,7 +81,7 @@ function Mofa() {
 				.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
 					} else {
 						reset({
 							passenger: mofaId,
@@ -126,18 +114,6 @@ function Mofa() {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
-
-	// const updateCurrentStatus = (id) => {
-	// 	const authTOKEN = {
-	// 		headers: {
-	// 			'Content-type': 'application/json',
-	// 			Authorization: localStorage.getItem('jwt_access_token')
-	// 		}
-	// 	};
-	// 	axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
-	// 		setValue('current_status', res.data?.current_status?.id);
-	// 	});
-	// };
 
 	return (
 		<FormProvider {...methods}>
@@ -215,33 +191,55 @@ function Mofa() {
 																	navigate(`/apps/mofa-management/mofas/new`);
 																	reset({
 																		passenger: newValue?.id,
-																		mofa_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		remofa_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id
+
+																		mofa_agency: 'all',
+
+																		remofa_status:
+																			doneNotDone.find((data) => data.default)
+																				?.id || '',
+																		mofa_status:
+																			doneNotDone.find((data) => data.default)
+																				?.id || '',
+
+																		why_remofa: '',
+																		mofa_date: '',
+																		remofa_charge: ''
 																	});
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/mofa-management/mofas/new`);
 																reset({
 																	passenger: newValue?.id,
-																	mofa_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	remofa_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id
+
+																	mofa_agency: 'all',
+
+																	remofa_status:
+																		doneNotDone.find((data) => data.default)?.id ||
+																		'',
+																	mofa_status:
+																		doneNotDone.find((data) => data.default)?.id ||
+																		'',
+
+																	why_remofa: '',
+																	mofa_date: '',
+																	remofa_charge: ''
 																});
+																navigate(`/apps/mofa-management/mofas/new`);
 															});
 													} else {
 														navigate(`/apps/mofa-management/mofas/new`);
 														reset({
-															passenger: newValue?.id,
-															mofa_status: doneNotDone.find((data) => data.default)?.id,
-															remofa_status: doneNotDone.find((data) => data.default)?.id
+															passenger: 'all',
+															mofa_agency: 'all',
+
+															remofa_status:
+																doneNotDone.find((data) => data.default)?.id || '',
+															mofa_status:
+																doneNotDone.find((data) => data.default)?.id || '',
+
+															why_remofa: '',
+															mofa_date: '',
+															remofa_charge: ''
 														});
 													}
 												}}

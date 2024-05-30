@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import history from '@history';
@@ -76,25 +76,24 @@ function MedicalHeader() {
 						localStorage.setItem('medicalAlert', 'saveMedical');
 
 						reset({
-							// medical_center: 'all',
 							passenger: 'all',
-							// medical_serial_no: '',
+							medical_center: 'all',
+							medical_serial_no: '',
 							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || ''
-							// medical_exam_date: '',
-							// medical_report_date: '',
-							// medical_issue_date: '',
-							// medical_expiry_date: '',
-							// notes: '',
-							// slip_pic: '',
-							// medical_card_pic: '',
-							// current_status: 'all'
+							medical_card: doneNotDone.find((data) => data.default)?.id || '',
+							medical_exam_date: '',
+							medical_report_date: '',
+							medical_issue_date: '',
+							medical_expiry_date: '',
+							notes: '',
+							slip_pic: '',
+							medical_card_pic: '',
+							current_status: 'all'
 						});
 						navigate('/apps/medical/medicals/new');
+						AddedSuccessfully();
 					}
 				}
-
-				AddedSuccessfully();
 			});
 	}
 
@@ -106,8 +105,6 @@ function MedicalHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMedical');
-						navigate('/apps/medical/medicals/new');
 						reset({
 							passenger: 'all',
 							medical_center: 'all',
@@ -123,6 +120,8 @@ function MedicalHeader() {
 							medical_card_pic: '',
 							current_status: 'all'
 						});
+						localStorage.setItem('medicalAlert', 'saveMedical');
+						navigate('/apps/medical/medicals/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
@@ -135,7 +134,6 @@ function MedicalHeader() {
 	}
 
 	const handleCancel = () => {
-		navigate('/apps/medical/medicals/new');
 		reset({
 			passenger: 'all',
 			medical_center: 'all',
@@ -151,6 +149,7 @@ function MedicalHeader() {
 			medical_card_pic: '',
 			current_status: 'all'
 		});
+		navigate('/apps/medical/medicals/new');
 	};
 
 	useEffect(() => {

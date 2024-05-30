@@ -43,6 +43,9 @@ function OfficeWorkForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { officeWorkId } = routeParams;
+
+	console.log('officeWorkId', officeWorkId);
+
 	// const classes = useStyles(props);
 	// const officeWorkCenters = useSelector((state) => state.data.officeWorkCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
@@ -53,18 +56,10 @@ function OfficeWorkForm(props) {
 		dispatch(getCurrentStatuss());
 	}, []);
 
-	useEffect(() => {
-		setpreviewPCImage('');
-		setpreviewDLImage('');
-		setpreviewDoc1Image('');
-		setpreviewDoc2Image('');
-	}, [getValues('police_clearance_no')]);
-
 	// console.log('wbkjwb', getValues());
 	useEffect(() => {
 		if (officeWorkId === 'new') {
 			reset({
-				passenger: 'all',
 				police_clearance_no: '',
 				police_clearance_date: '',
 				police_clearance_status: '',
@@ -75,17 +70,21 @@ function OfficeWorkForm(props) {
 				finger_status: '',
 				finger_date: '',
 				certificate_experience: '',
-				current_status: 'all'
+				pc_image: '',
+				dl_image: '',
+				doc1_image: '',
+				doc2_image: ''
 			});
 			setpreviewPCImage('');
 			setpreviewDLImage('');
 			setpreviewDoc1Image('');
 			setpreviewDoc2Image('');
-		} else {
-			// Fetch and set data based on medicalId if needed
-			// reset(formData);
+			setValue('pc_image', '');
+			setValue('dl_image', '');
+			setValue('doc1_image', '');
+			setValue('doc2_image', '');
 		}
-	}, [officeWorkId, reset, currentStatuss]);
+	}, [officeWorkId]);
 
 	return (
 		<div>

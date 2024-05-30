@@ -6,9 +6,9 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
@@ -43,11 +43,11 @@ function MofaHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateMofa');
+						localStorage.setItem('MofaAlert', 'updateMofa');
 
 						reset({
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_result: medicalResults.find((data) => data.default)?.id || ''
+							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
+							mofa_status: doneNotDone.find((data) => data.default)?.id || ''
 						});
 
 						UpdatedSuccessfully();
@@ -78,7 +78,7 @@ function MofaHeader() {
 						reset({
 							passenger: 'all',
 							mofa_agency: 'all',
-							mofa_no: '',
+
 							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
@@ -86,10 +86,9 @@ function MofaHeader() {
 							mofa_date: '',
 							remofa_charge: ''
 						});
+						navigate('/apps/mofa-management/mofas/new');
+						AddedSuccessfully();
 					}
-
-					navigate('/apps/mofa-management/mofas/new');
-					AddedSuccessfully();
 				}
 			});
 	}
@@ -102,23 +101,25 @@ function MofaHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMofa');
-						navigate('/apps/mofa-management/mofas/new');
-						RemoveSuccessfully();
 						reset({
 							passenger: 'all',
 							mofa_agency: 'all',
-							mofa_no: '',
+
 							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
 							why_remofa: '',
 							mofa_date: '',
-							remofa_charge: ''
+							remofa_charge: '',
+							mofa_no: ''
 						});
+						localStorage.setItem('medicalAlert', 'saveMofa');
+						navigate('/apps/mofa-management/mofas/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
 				}
+
+				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
@@ -126,11 +127,10 @@ function MofaHeader() {
 	}
 
 	const handleCancel = () => {
-		navigate('/apps/mofa-management/mofas/new');
 		reset({
 			passenger: 'all',
 			mofa_agency: 'all',
-			mofa_no: '',
+
 			remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 			mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 
@@ -138,6 +138,7 @@ function MofaHeader() {
 			mofa_date: '',
 			remofa_charge: ''
 		});
+		navigate('/apps/mofa-management/mofas/new');
 	};
 
 	useEffect(() => {
@@ -145,7 +146,7 @@ function MofaHeader() {
 			reset({
 				passenger: 'all',
 				mofa_agency: 'all',
-				mofa_no: '',
+
 				remofa_status: doneNotDone.find((data) => data.default)?.id || '',
 				mofa_status: doneNotDone.find((data) => data.default)?.id || '',
 

@@ -34,6 +34,13 @@ import CallingAssignAppConfig from '../rams/CallingAssignsManagement/CallingAssi
 import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConfig';
 import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
 import MofaAppConfig from '../rams/MofasManagement/MofaAppConfig';
+import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaAppConfig';
+import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
+import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
+import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
+import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
+import ManPowerAppConfig from '../rams/ManPowersManagement/ManPowerAppConfig';
+import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 
 /**
  * The list of application configurations.
@@ -52,27 +59,34 @@ const appsConfigs = [
 	TasksAppConfig,
 	NotificationsAppConfig,
 	UserAppConfig,
+	TrainingAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
 	OfficeWorkAppConfig,
 	MofaAppConfig,
+	MusanedOkalaAppConfig,
 	EvisaEntryAppConfig,
 	CallingAssignAppConfig,
 	VisaEntryAppConfig,
+	VisaCancelListAppConfig,
 	CallingEntryAppConfig,
 	ColumnAppConfig,
 	MedicalAppConfig,
+	ManPowerAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
+	CallingEmbAttestationAppConfig,
 	DepartmentAppConfig,
 	PaymentDetailAppConfig,
 	SupportAppConfig,
 	RoleMenuAppConfig,
 	DesignationAppConfig,
+	EmbassyAppConfig,
 	MenuAppConfig,
 	PermissionAppConfig,
 	RoleAppConfig,
 	PassengerAppConfig,
-	FeatureDetailAppConfig
+	FeatureDetailAppConfig,
+	FlightAppConfig
 ];
 export default appsConfigs;

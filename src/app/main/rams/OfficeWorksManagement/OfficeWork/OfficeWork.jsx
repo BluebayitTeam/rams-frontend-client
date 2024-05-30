@@ -72,125 +72,6 @@ function OfficeWork() {
 		setValue
 	} = methods;
 
-	// useEffect(() => {
-	// 	if (officeWorkId === 'new') {
-	// 		reset(OfficeWorkModel({}));
-	// 	}
-	// }, [officeWorkId, reset]);
-
-	// useEffect(() => {
-	// 	if (officeWork) {
-	// 		reset({ ...officeWork });
-	// 	}
-	// }, [officeWork, reset]);
-
-	// useEffect(() => {
-	// 	if (fromSearch) {
-	// 		const authTOKEN = {
-	// 			headers: {
-	// 				'Content-type': 'application/json',
-	// 				Authorization: localStorage.getItem('jwt_access_token')
-	// 			}
-	// 		};
-	// 		axios
-	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
-	// 			.then((res) => {
-	// 				if (res.data.id) {
-	// 					reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
-	// 				}
-	// 			})
-	// 			.catch(() => null);
-	// 	} else {
-	// 		reset({
-	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 			finger_status: doneNotDone.find((data) => data.default)?.id
-	// 		});
-	// 	}
-	// }, [fromSearch]);
-
-	// useEffect(() => {
-	// 	if (fromSearch) {
-	// 		const authTOKEN = {
-	// 			headers: {
-	// 				'Content-type': 'application/json',
-	// 				Authorization: localStorage.getItem('jwt_access_token')
-	// 			}
-	// 		};
-	// 		axios
-	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
-	// 			.then((res) => {
-	// 				if (res.data.id) {
-	// 					// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
-	// 				} else {
-	// 					reset({
-	// 						passenger: officeWorkId,
-	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 						finger_status: doneNotDone.find((data) => data.default)?.id
-	// 					});
-	// 					sessionStorage.setItem('operation', 'save');
-	// 				}
-	// 			})
-	// 			.catch(() => {
-	// 				reset({
-	// 					passenger: officeWorkId,
-	// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 					finger_status: doneNotDone.find((data) => data.default)?.id
-	// 				});
-	// 				sessionStorage.setItem('operation', 'save');
-	// 			});
-	// 	} else {
-	// 		reset({
-	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 			finger_status: doneNotDone.find((data) => data.default)?.id
-	// 		});
-	// 	}
-	// }, [fromSearch]);
-
-	// useEffect(() => {
-	// 	if (fromSearch) {
-	// 		const authTOKEN = {
-	// 			headers: {
-	// 				'Content-type': 'application/json',
-	// 				Authorization: localStorage.getItem('jwt_access_token')
-	// 			}
-	// 		};
-	// 		axios
-	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
-	// 			.then((res) => {
-	// 				if (res.data.id) {
-	// 					// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
-	// 				} else {
-	// 					reset({
-	// 						passenger: officeWorkId,
-	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 						finger_status: doneNotDone.find((data) => data.default)?.id
-	// 					});
-	// 					sessionStorage.setItem('operation', 'save');
-	// 				}
-	// 			})
-	// 			.catch(() => {
-	// 				reset({
-	// 					passenger: officeWorkId,
-	// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 					finger_status: doneNotDone.find((data) => data.default)?.id
-	// 				});
-	// 				sessionStorage.setItem('operation', 'save');
-	// 			});
-	// 	} else {
-	// 		reset({
-	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 			finger_status: doneNotDone.find((data) => data.default)?.id
-	// 		});
-	// 	}
-	// }, [fromSearch]);
-
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -313,6 +194,7 @@ function OfficeWork() {
 												freeSolo
 												autoHighlight
 												disabled={!!fromSearch}
+												id="passenger"
 												value={value ? passengers.find((data) => data.id === value) : null}
 												// options={passengers}
 												options={[
@@ -329,7 +211,18 @@ function OfficeWork() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													updateCurrentStatus(newValue?.id);
+													const authTOKEN = {
+														headers: {
+															'Content-type': 'application/json',
+															Authorization: localStorage.getItem('jwt_access_token')
+														}
+													};
+													axios
+														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+														.then((res) => {
+															setValue('current_status', res.data?.current_status?.id);
+															setValue('passenger', res.data?.id);
+														});
 
 													if (newValue?.id) {
 														const authTOKEN = {
@@ -346,12 +239,11 @@ function OfficeWork() {
 															.then((res) => {
 																if (res.data.id) {
 																	reset({
-																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		...setIdIfValueIsObject(res.data)
 																	});
 																	navigate(
 																		`/apps/officeWork/officeWorks/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {
@@ -366,12 +258,22 @@ function OfficeWork() {
 																		)?.id,
 																		finger_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id
+																		)?.id,
+
+																		police_clearance_no: '',
+																		police_clearance_date: '',
+
+																		driving_license_no: '',
+																		driving_license_date: '',
+
+																		finger_no: '',
+
+																		finger_date: '',
+																		certificate_experience: ''
 																	});
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/officeWork/officeWorks/new`);
 																reset({
 																	passenger: newValue?.id,
 																	police_clearance_status: doneNotDone.find(
@@ -382,8 +284,20 @@ function OfficeWork() {
 																	)?.id,
 																	finger_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id
+																	)?.id,
+
+																	police_clearance_no: '',
+																	police_clearance_date: '',
+
+																	driving_license_no: '',
+																	driving_license_date: '',
+
+																	finger_no: '',
+
+																	finger_date: '',
+																	certificate_experience: ''
 																});
+																navigate(`/apps/officeWork/officeWorks/new`);
 															});
 													} else {
 														navigate(`/apps/officeWork/officeWorks/new`);
@@ -395,7 +309,18 @@ function OfficeWork() {
 															driving_license_status: doneNotDone.find(
 																(data) => data.default
 															)?.id,
-															finger_status: doneNotDone.find((data) => data.default)?.id
+															finger_status: doneNotDone.find((data) => data.default)?.id,
+
+															police_clearance_no: '',
+															police_clearance_date: '',
+
+															driving_license_no: '',
+															driving_license_date: '',
+
+															finger_no: '',
+
+															finger_date: '',
+															certificate_experience: ''
 														});
 													}
 												}}
