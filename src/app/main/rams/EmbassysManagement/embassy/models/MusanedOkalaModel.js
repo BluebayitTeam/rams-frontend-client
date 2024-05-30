@@ -1,6 +1,6 @@
 import _ from '@lodash';
 
-const EmbassyModel = (data) =>
+const MusanedOkalaModel = (data) =>
 	_.defaults(data || {}, {
 		// profession: '',
 		// country: '',
@@ -9,4 +9,4 @@ const EmbassyModel = (data) =>
 		// quantity: '',
 		// salary: ''
 	});
-export default EmbassyModel;
+export default MusanedOkalaModel;
