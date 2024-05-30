@@ -4,8 +4,8 @@ import FuseUtils from '@fuse/utils';
 import { CREATE_EMBASSY, UPDATE_EMBASSY, DELETE_EMBASSY, EMBASSY_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import EmbassyModel from './musanedOkala/models/EmbassyModel';
-// import EmbassyModel from './musanedOkala/models/EmbassyModel';
+import EmbassyModel from './embassy/models/EmbassyModel';
+// import EmbassyModel from './embassy/models/EmbassyModel';
 
 export const addTagTypes = ['embassys'];
 const EmbassyApi = api
@@ -33,11 +33,11 @@ const EmbassyApi = api
 				invalidatesTags: ['embassys']
 			}),
 			updateEmbassy: build.mutation({
-				query: (musanedOkala) => ({
-					url: `${UPDATE_EMBASSY}${musanedOkala.id}`,
+				query: (embassy) => ({
+					url: `${UPDATE_EMBASSY}${embassy.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...musanedOkala
+						...embassy
 					})
 				}),
 				invalidatesTags: ['embassys']

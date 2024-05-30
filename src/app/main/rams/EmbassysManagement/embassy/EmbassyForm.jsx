@@ -25,7 +25,7 @@ function MusanedOkalaForm(props) {
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { musanedOkalaId } = routeParams;
+	const { embassyId } = routeParams;
 	const musanedGivenBys = useSelector((state) => state.data.agents);
 	const okalaGivenBys = useSelector((state) => state.data.agents);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
@@ -39,16 +39,16 @@ function MusanedOkalaForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (musanedOkalaId === 'new') {
+		if (embassyId === 'new') {
 			console.log('asndasdbss', getValues());
-			console.log('musanedOkalaId', musanedOkalaId);
+			console.log('embassyId', embassyId);
 			setValue('current_status', 'all');
 			setValue('doc1_image', '');
 			setValue('doc2_image', '');
 			setpreviewdoc1Image('');
 			setpreviewdoc2Image('');
 		}
-	}, [musanedOkalaId]);
+	}, [embassyId]);
 
 	return (
 		<div>
