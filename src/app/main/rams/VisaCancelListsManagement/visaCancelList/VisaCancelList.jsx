@@ -9,13 +9,15 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, MUSANEDOKALA_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID, VISACANCELLIST_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import VisaCancelListHeader from './VisaCancelListHeader';
+
 // import { useGetVisaCancelListQuery } from '../VisaCancelListsApi';
 import VisaCancelListForm from './VisaCancelListForm';
 import { useGetVisaCancelListQuery } from '../VisaCancelListsApi';
+import VisaCancelListHeader from './MusanedOkalaHeader';
+// import { useGetVisaCancelListQuery } from '../VisaCancelListsApi';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -81,7 +83,7 @@ function VisaCancelList() {
 				}
 			};
 			axios
-				.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${visaCancelListId}`, authTOKEN)
+				.get(`${VISACANCELLIST_BY_PASSENGER_ID}${visaCancelListId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
 						reset({ ...setIdIfValueIsObject(res.data), passenger: visaCancelListId });
@@ -192,7 +194,7 @@ function VisaCancelList() {
 														};
 														axios
 															.get(
-																`${MUSANEDOKALA_BY_PASSENGER_ID}${newValue?.id}`,
+																`${VISACANCELLIST_BY_PASSENGER_ID}${newValue?.id}`,
 																authTOKEN
 															)
 															.then((res) => {
@@ -211,41 +213,13 @@ function VisaCancelList() {
 																		`/apps/visaCancelList-management/visaCancelList/new`
 																	);
 																	reset({
-																		passenger: newValue?.id,
-																		musaned_no: '',
-																		musaned_date: '',
-																		musaned_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		okala_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-
-																		musaned_given_by: 'all',
-																		okala_no: '',
-																		okala_date: '',
-																		okala_given_by: 'all'
+																		passenger: newValue?.id
 																	});
 																}
 															})
 															.catch(() => {
 																reset({
-																	passenger: newValue?.id,
-																	musaned_no: '',
-																	musaned_date: '',
-																	musaned_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	okala_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-
-																	musaned_given_by: 'all',
-																	okala_no: '',
-																	doc1_image: '',
-																	doc2_image: '',
-																	okala_date: '',
-																	okala_given_by: 'all'
+																	passenger: newValue?.id
 																});
 																navigate(
 																	`/apps/visaCancelList-management/visaCancelLists/new`
@@ -253,17 +227,7 @@ function VisaCancelList() {
 															});
 													} else {
 														reset({
-															passenger: newValue?.id,
-															musaned_no: '',
-															musaned_date: '',
-															musaned_status: doneNotDone.find((data) => data.default)
-																?.id,
-															okala_status: doneNotDone.find((data) => data.default)?.id,
-
-															musaned_given_by: 'all',
-															okala_no: '',
-															okala_date: '',
-															okala_given_by: 'all'
+															passenger: newValue?.id
 														});
 														navigate(`/apps/visaCancelList-management/visaCancelLists/new`);
 													}
