@@ -14,40 +14,40 @@ import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import {
-	useCreateMusanedOkalaMutation,
-	useDeleteMusanedOkalaMutation,
-	useUpdateMusanedOkalaMutation
+	useCreateVisaCancelListMutation,
+	useDeleteVisaCancelListMutation,
+	useUpdateVisaCancelListMutation
 } from '../VisaCancelListsApi';
 
 /**
- * The musanedOkala header.
+ * The visaCancelList header.
  */
-function MusanedOkalaHeader() {
+function VisaCancelListHeader() {
 	const routeParams = useParams();
-	const { musanedOkalaId } = routeParams;
-	const [createMusanedOkala] = useCreateMusanedOkalaMutation();
-	const [saveMusanedOkala] = useUpdateMusanedOkalaMutation();
-	const [removeMusanedOkala] = useDeleteMusanedOkalaMutation();
+	const { visaCancelListId } = routeParams;
+	const [createVisaCancelList] = useCreateVisaCancelListMutation();
+	const [saveVisaCancelList] = useUpdateVisaCancelListMutation();
+	const [removeVisaCancelList] = useDeleteVisaCancelListMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMusanedOkala');
-	const handleUpdate = localStorage.getItem('updateMusanedOkala');
+	const handleDelete = localStorage.getItem('deleteVisaCancelList');
+	const handleUpdate = localStorage.getItem('updateVisaCancelList');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMusanedOkala() {
-		saveMusanedOkala(getValues())
+	function handleUpdateVisaCancelList() {
+		saveVisaCancelList(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateMusanedOkala');
+						localStorage.setItem('medicalAlert', 'updateVisaCancelList');
 
 						reset({
 							passenger: 'all',
@@ -64,7 +64,7 @@ function MusanedOkalaHeader() {
 						});
 
 						UpdatedSuccessfully();
-						navigate('/apps/musanedOkala-management/musanedOkalas/new');
+						navigate('/apps/visaCancelList-management/visaCancelLists/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -73,20 +73,20 @@ function MusanedOkalaHeader() {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating musanedOkala', error);
+				console.error('Error updating visaCancelList', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateMusanedOkala() {
-		createMusanedOkala(getValues())
+	function handleCreateVisaCancelList() {
+		createVisaCancelList(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
+						localStorage.setItem('medicalAlert', 'saveVisaCancelList');
 
 						reset({
 							passenger: 'all',
@@ -103,14 +103,14 @@ function MusanedOkalaHeader() {
 						});
 					}
 
-					navigate('/apps/musanedOkala-management/musanedOkalas/new');
+					navigate('/apps/visaCancelList-management/visaCancelLists/new');
 					AddedSuccessfully();
 				}
 			});
 	}
 
-	function handleRemoveMusanedOkala() {
-		removeMusanedOkala(getValues()?.id)
+	function handleRemoveVisaCancelList() {
+		removeVisaCancelList(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
@@ -130,8 +130,8 @@ function MusanedOkalaHeader() {
 							okala_given_by: 'all',
 							current_status: 'all'
 						});
-						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
-						navigate('/apps/musanedOkala-management/musanedOkalas/new');
+						localStorage.setItem('medicalAlert', 'saveVisaCancelList');
+						navigate('/apps/visaCancelList-management/visaCancelLists/new');
 
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
 					}
@@ -158,11 +158,11 @@ function MusanedOkalaHeader() {
 			okala_given_by: 'all',
 			current_status: 'all'
 		});
-		navigate('/apps/musanedOkala-management/musanedOkalas/new');
+		navigate('/apps/visaCancelList-management/visaCancelLists/new');
 	};
 
 	useEffect(() => {
-		if (musanedOkalaId === 'new') {
+		if (visaCancelListId === 'new') {
 			reset({
 				passenger: 'all',
 				musaned_no: '',
@@ -179,7 +179,7 @@ function MusanedOkalaHeader() {
 				doc2_image: ''
 			});
 		}
-	}, [musanedOkalaId, reset]);
+	}, [visaCancelListId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -190,15 +190,15 @@ function MusanedOkalaHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.musanedOkalaId === 'new'
-									? 'Create New MusanedOkala'
+								{routeParams.visaCancelListId === 'new'
+									? 'Create New VisaCancelList'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.musanedOkalaId !== 'new' && 'MusanedOkalas Detail'}
+								{routeParams.visaCancelListId !== 'new' && 'VisaCancelLists Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -209,39 +209,39 @@ function MusanedOkalaHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.musanedOkalaId === 'new' ||
+				{(routeParams.visaCancelListId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateMusanedOkala}
+						onClick={handleCreateVisaCancelList}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.musanedOkalaId !== 'new' &&
+				{routeParams?.visaCancelListId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							onClick={handleUpdateMusanedOkala}
+							onClick={handleUpdateVisaCancelList}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.musanedOkalaId !== 'new' &&
+				{routeParams?.visaCancelListId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveMusanedOkala}
+							onClick={handleRemoveVisaCancelList}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
@@ -262,4 +262,4 @@ function MusanedOkalaHeader() {
 	);
 }
 
-export default MusanedOkalaHeader;
+export default VisaCancelListHeader;

@@ -48,5 +48,5 @@
     "tailwind.config.js",
     "vite.config.mjs",
     "vite-env.d.ts"
-  ],
+, "src/app/main/rams/VisaCancelListsManagement/visaCancelList/.jsx"  ],
 }

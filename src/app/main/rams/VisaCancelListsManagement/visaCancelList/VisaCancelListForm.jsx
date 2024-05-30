@@ -19,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function MusanedOkalaForm(props) {
+function VisaCancelListForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { musanedOkalaId } = routeParams;
+	const { visaCancelListId } = routeParams;
 	const musanedGivenBys = useSelector((state) => state.data.agents);
 	const okalaGivenBys = useSelector((state) => state.data.agents);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
@@ -39,16 +39,16 @@ function MusanedOkalaForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (musanedOkalaId === 'new') {
+		if (visaCancelListId === 'new') {
 			console.log('asndasdbss', getValues());
-			console.log('musanedOkalaId', musanedOkalaId);
+			console.log('visaCancelListId', visaCancelListId);
 			setValue('current_status', 'all');
 			setValue('doc1_image', '');
 			setValue('doc2_image', '');
 			setpreviewdoc1Image('');
 			setpreviewdoc2Image('');
 		}
-	}, [musanedOkalaId]);
+	}, [visaCancelListId]);
 
 	return (
 		<div>
@@ -338,4 +338,4 @@ function MusanedOkalaForm(props) {
 	);
 }
 
-export default MusanedOkalaForm;
+export default VisaCancelListForm;

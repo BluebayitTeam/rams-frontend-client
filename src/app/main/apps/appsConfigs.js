@@ -40,6 +40,7 @@ import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
 import ManPowerAppConfig from '../rams/ManPowersManagement/ManPowerAppConfig';
+import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 
 /**
  * The list of application configurations.
@@ -67,6 +68,7 @@ const appsConfigs = [
 	EvisaEntryAppConfig,
 	CallingAssignAppConfig,
 	VisaEntryAppConfig,
+	VisaCancelListAppConfig,
 	CallingEntryAppConfig,
 	ColumnAppConfig,
 	MedicalAppConfig,
