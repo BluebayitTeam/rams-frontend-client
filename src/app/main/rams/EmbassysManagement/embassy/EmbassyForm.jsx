@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { getAgents, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { getAgents, getCurrentStatuss, getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -26,62 +26,70 @@ function MusanedOkalaForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
-	const musanedGivenBys = useSelector((state) => state.data.agents);
-	const okalaGivenBys = useSelector((state) => state.data.agents);
-	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewdoc1Image, setpreviewdoc1Image] = useState('');
-	const [previewdoc2Image, setpreviewdoc2Image] = useState('');
+	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
+
+	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
+	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getAgents());
+		dispatch(getRecruitingAgencys());
 		dispatch(getCurrentStatuss());
 	}, []);
 
 	useEffect(() => {
 		if (embassyId === 'new') {
-			console.log('asndasdbss', getValues());
-			console.log('embassyId', embassyId);
 			setValue('current_status', 'all');
-			setValue('doc1_image', '');
-			setValue('doc2_image', '');
-			setpreviewdoc1Image('');
-			setpreviewdoc2Image('');
+			setValue('old_visa_image', '');
+			setValue('stamp_visa_image', '');
+			setPreviewOldVisaImage('');
+			setPreviewOldVisaImage('');
 		}
 	}, [embassyId]);
 
 	return (
 		<div>
 			<Controller
-				name="musaned_no"
+				name="recruiting_agency"
 				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						value={field.value || ''}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
 						className="mt-8 mb-16"
-						error={!!errors.name_official}
-						helperText={errors?.name_official?.message}
-						label="Musaned No."
-						id="musaned_no"
-						variant="outlined"
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
+						freeSolo
+						value={value ? recruitingAgencys?.find((data) => data.id === value) : null}
+						// options={recruitingAgencys}
+						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...recruitingAgencys]}
+						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Recruiting Agency"
+								label="Recruiting Agency"
+								error={!!errors.recruiting_agency}
+								helperText={errors?.recruiting_agency?.message}
+								variant="outlined"
+								required
+								InputLabelProps={params.value && { shrink: true }}
+							/>
+						)}
 					/>
 				)}
 			/>
 
 			<Controller
-				name="musaned_date"
+				name="submit_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.musaned_date}
-						helperText={errors?.musaned_date?.message}
-						label="Musaned Date"
-						id="musaned_date"
+						error={!!errors.submit_date}
+						helperText={errors?.submit_date?.message}
+						label="Submit Date"
+						id="submit_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -90,43 +98,70 @@ function MusanedOkalaForm(props) {
 			/>
 
 			<Controller
-				name="musaned_given_by"
+				name="profession_english"
 				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? musanedGivenBys?.find((data) => data.id === value) : null}
-						// options={musanedOkalaAgencys}
-						// options={musanedGivenBys}
-						options={[{ id: 'all', first_name: 'Select First Name', last_name: '' }, ...musanedGivenBys]}
-						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Musaned Given By"
-								label="Musaned Given By"
-								id="musaned_given_by"
-								error={!!errors.musaned_given_by}
-								helperText={errors?.musaned_given_by?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							helperText={errors?.profession_english?.message}
+							label="Profession English"
+							id="profession_english"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
 			/>
 
 			<Controller
-				name="musaned_status"
+				name="profession_arabic"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.profession_arabic}
+							helperText={errors?.profession_arabic?.message}
+							label="Profession Arabic"
+							id="profession_arabic"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="salary"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							helperText={errors?.salary?.message}
+							label="Salary"
+							id="salary"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="stamping_status"
+				control={control}
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
@@ -139,10 +174,10 @@ function MusanedOkalaForm(props) {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Musaned Status"
-								label="Musaned Status"
-								id="musaned_status"
-								helperText={errors?.musaned_status?.message}
+								placeholder="Select Stamping Status"
+								label="Stamping Status"
+								// error={!!errors.stamping_status}
+								helperText={errors?.stamping_status?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -152,37 +187,51 @@ function MusanedOkalaForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
-				name="okala_no"
+				name="stamping_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
-						value={field.value || ''}
 						className="mt-8 mb-16"
-						error={!!errors.name_official}
-						helperText={errors?.name_official?.message}
-						label="Okala No."
-						id="okala_no"
-						variant="outlined"
-						InputLabelProps={field.value && { shrink: true }}
+						error={!!errors.stamping_date}
+						helperText={errors?.stamping_date?.message}
+						label="Stamping Date"
+						id="stamping_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
 						fullWidth
 					/>
 				)}
 			/>
-
 			<Controller
-				name="okala_date"
+				name="visa_expiry_date"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						error={!!errors.okala_date}
-						helperText={errors?.okala_date?.message}
-						label="Okala Date"
-						id="okala_date"
+						error={!!errors.visa_expiry_date}
+						helperText={errors?.visa_expiry_date?.message}
+						label="Visa Expiry Date"
+						id="visa_expiry_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+			<Controller
+				name="delivery_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.delivery_date}
+						helperText={errors?.delivery_date?.message}
+						label="delivery date"
+						id="delivery_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
 						fullWidth
@@ -191,147 +240,252 @@ function MusanedOkalaForm(props) {
 			/>
 
 			<Controller
-				name="okala_given_by"
+				name="visa_number_readonly"
 				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? okalaGivenBys.find((data) => data.id === value) : null}
-						options={okalaGivenBys}
-						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select okala Given By"
-								label="okala Given By"
-								id="okala_given_by"
-								error={!!errors.okala_given_by}
-								helperText={errors?.okala_given_by?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
-			<Controller
-				name="okala_status"
-				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={doneNotDone}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Okala Status"
-								label="Okala Status"
-								id="okala_status"
-								helperText={errors?.okala_status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.visa_number_readonly}
+							helperText={errors?.visa_number_readonly?.message}
+							label="Visa No"
+							id="visa_number_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
 			/>
 
-			{/* <Controller
-				name="current_status"
+			<Controller
+				name="sponsor_id_no_readonly"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={currentStatuss}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Current Status"
-								label="Current Status"
-								id="current_status"
-								helperText={errors?.current_status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/> */}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.sponsor_id_no_readonly}
+							helperText={errors?.sponsor_id_no_readonly?.message}
+							label="Sponsor ID No"
+							id="sponsor_id_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
 
 			<Controller
-				name="current_status"
+				name="sponsor_name_english_readonly"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						// options={currentStatuss}
-						// getOptionLabel={(option) => `${option.name}`}
-						// onChange={(event, newValue) => {
-						// 	onChange(newValue?.id);
-						// }}
-						// value={value ? currentStatuss?.find((data) => data.id === value) : null}
-						// options={musanedOkalaAgencys}
-						// options={musanedGivenBys}
-						options={[{ id: 'all', name: 'Select current_status' }, ...currentStatuss]}
-						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Current Status"
-								label="Current Status"
-								id="current_status"
-								error={!!errors.current_status}
-								helperText={errors?.current_status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.sponsor_name_english_readonly}
+							helperText={errors?.sponsor_name_english_readonly?.message}
+							label="Sponsor Name English"
+							id="sponsor_name_english_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="sponsor_name_arabic_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.sponsor_name_arabic_readonly}
+							helperText={errors?.sponsor_name_arabic_readonly?.message}
+							label="Sponsor Name Arabic"
+							id="sponsor_name_arabic_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="mofa_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.mofa_no_readonly}
+							helperText={errors?.mofa_no_readonly?.message}
+							label="Mofa No"
+							id="mofa_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="police_clearance_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.police_clearance_no_readonly}
+							helperText={errors?.police_clearance_no_readonly?.message}
+							label="Police Clearance No"
+							id="police_clearance_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="oakala_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.oakala_no_readonly}
+							helperText={errors?.oakala_no_readonly?.message}
+							label="Okala No"
+							id="oakala_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="driving_license_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.driving_license_no_readonly}
+							helperText={errors?.driving_license_no_readonly?.message}
+							label="Driving license No"
+							id="driving_license_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="musaned_okala_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.musaned_okala_no_readonly}
+							helperText={errors?.musaned_okala_no_readonly?.message}
+							label="Musaned Okala No"
+							id="musaned_okala_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="certificate_experience_no_readonly"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.certificate_experience_no_readonly}
+							helperText={errors?.certificate_experience_no_readonly?.message}
+							label="Certificate & Experience No"
+							id="certificate_experience_no_readonly"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+					);
+				}}
 			/>
 
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
 				<Image
-					name="doc1_image"
-					previewImage={previewdoc1Image}
-					setPreviewImage={setpreviewdoc1Image}
-					label="Document 1"
+					name="old_visa_image"
+					previewImage={previewOldVisaImage}
+					setPreviewImage={setPreviewOldVisaImage}
+					label="Old Visa Image"
 				/>
 				<Image
-					name="doc2_image"
-					previewImage={previewdoc2Image}
-					setPreviewImage={setpreviewdoc2Image}
-					label="Document 2"
+					name="stamp_visa_image"
+					previewImage={previewStampVisaImage}
+					setPreviewImage={setPreviewStampVisaImage}
+					label="Stamp Visa Image"
 				/>
 			</div>
 		</div>
