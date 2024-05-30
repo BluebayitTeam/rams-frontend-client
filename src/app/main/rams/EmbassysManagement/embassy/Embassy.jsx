@@ -10,13 +10,13 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, MUSANEDOKALA_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { EMBASSY_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import MusanedOkalaHeader from './MusanedOkalaHeader';
-// import { useGetMusanedOkalaQuery } from '../MusanedOkalasApi';
-import MusanedOkalaForm from './MusanedOkalaForm';
-import { useGetMusanedOkalaQuery } from '../EmbassysApi';
+import EmbassyHeader from './EmbassyHeader';
+// import { useGetEmbassyQuery } from '../EmbassysApi';
+import EmbassyForm from './EmbassyForm';
+import { useGetEmbassyQuery } from '../EmbassysApi';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -36,14 +36,14 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({
 	passenger: z
 		.string()
-		.nonempty('You must enter a musanedOkala name')
-		.min(5, 'The musanedOkala name must be at least 5 characters')
+		.nonempty('You must enter a embassy name')
+		.min(5, 'The embassy name must be at least 5 characters')
 });
 
-function MusanedOkala() {
+function Embassy() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { musanedOkalaId, fromSearch } = routeParams;
+	const { embassyId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 
 	const classes = useStyles();
@@ -56,11 +56,11 @@ function MusanedOkala() {
 	});
 
 	const {
-		data: musanedOkala,
+		data: embassy,
 		isLoading,
 		isError
-	} = useGetMusanedOkalaQuery(musanedOkalaId, {
-		skip: !musanedOkalaId || musanedOkalaId === 'new'
+	} = useGetEmbassyQuery(embassyId, {
+		skip: !embassyId || embassyId === 'new'
 	});
 
 	const [tabValue, setTabValue] = useState(0);
@@ -82,13 +82,13 @@ function MusanedOkala() {
 				}
 			};
 			axios
-				.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${musanedOkalaId}`, authTOKEN)
+				.get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: musanedOkalaId });
+						reset({ ...setIdIfValueIsObject(res.data), passenger: embassyId });
 					} else {
 						reset({
-							passenger: musanedOkalaId,
+							passenger: embassyId,
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
 							okala_status: doneNotDone.find((data) => data.default)?.id
 						});
@@ -97,7 +97,7 @@ function MusanedOkala() {
 				})
 				.catch(() => {
 					reset({
-						passenger: musanedOkalaId,
+						passenger: embassyId,
 						musaned_status: doneNotDone.find((data) => data.default)?.id,
 						okala_status: doneNotDone.find((data) => data.default)?.id
 					});
@@ -137,10 +137,10 @@ function MusanedOkala() {
 						classes={{ root: 'w-full h-64' }}
 					>
 						<Tab label="Passenger Details" />
-						<Tab label="MusanedOkala Information" />
+						<Tab label="Embassy Information" />
 					</Tabs>
 				}
-				header={<MusanedOkalaHeader />}
+				header={<EmbassyHeader />}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -192,10 +192,7 @@ function MusanedOkala() {
 															}
 														};
 														axios
-															.get(
-																`${MUSANEDOKALA_BY_PASSENGER_ID}${newValue?.id}`,
-																authTOKEN
-															)
+															.get(`${EMBASSY_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
 																if (res.data.id) {
 																	reset({
@@ -203,14 +200,12 @@ function MusanedOkala() {
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/musanedOkala-management/musanedOkalas/${
+																		`/apps/embassy-management/embassys/${
 																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																} else {
-																	navigate(
-																		`/apps/musanedOkala-management/musanedOkala/new`
-																	);
+																	navigate(`/apps/embassy-management/embassy/new`);
 																	reset({
 																		passenger: newValue?.id,
 																		musaned_no: '',
@@ -248,9 +243,7 @@ function MusanedOkala() {
 																	okala_date: '',
 																	okala_given_by: 'all'
 																});
-																navigate(
-																	`/apps/musanedOkala-management/musanedOkalas/new`
-																);
+																navigate(`/apps/embassy-management/embassys/new`);
 															});
 													} else {
 														reset({
@@ -266,7 +259,7 @@ function MusanedOkala() {
 															okala_date: '',
 															okala_given_by: 'all'
 														});
-														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
+														navigate(`/apps/embassy-management/embassys/new`);
 													}
 												}}
 												renderInput={(params) => (
@@ -288,10 +281,10 @@ function MusanedOkala() {
 										)}
 									/>
 								</div>
-								<MusanedOkalaForm />
+								<EmbassyForm />
 							</div>
 						)}
-						{tabValue === 1 && <MusanedOkalaForm musanedOkalaId={musanedOkalaId} />}
+						{tabValue === 1 && <EmbassyForm embassyId={embassyId} />}
 					</div>
 				}
 				innerScroll
@@ -300,4 +293,4 @@ function MusanedOkala() {
 	);
 }
 
-export default MusanedOkala;
+export default Embassy;
