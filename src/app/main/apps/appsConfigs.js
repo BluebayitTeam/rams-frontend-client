@@ -41,6 +41,7 @@ import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
 import ManPowerAppConfig from '../rams/ManPowersManagement/ManPowerAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
+import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 
 /**
  * The list of application configurations.
@@ -69,6 +70,7 @@ const appsConfigs = [
 	CallingAssignAppConfig,
 	VisaEntryAppConfig,
 	VisaCancelListAppConfig,
+	VisaReissueListAppConfig,
 	CallingEntryAppConfig,
 	ColumnAppConfig,
 	MedicalAppConfig,

@@ -2,9 +2,9 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-	CREATE_VISAREISSUELISTT,
-	UPDATE_VISAREISSUELISTT,
-	DELETE_VISAREISSUELISTT,
+	CREATE_VISAREISSUELIST,
+	DELETE_VISAREISSUELIST,
+	UPDATE_VISAREISSUELIST,
 	VISAREISSUELIST_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -27,7 +27,7 @@ const VisaReissueListApi = api
 			}),
 			createVisaReissueList: build.mutation({
 				query: (newVisaReissueList) => ({
-					url: CREATE_VISAREISSUELISTT,
+					url: CREATE_VISAREISSUELIST,
 					method: 'POST',
 					data: jsonToFormData(
 						VisaReissueListModel({
@@ -39,7 +39,7 @@ const VisaReissueListApi = api
 			}),
 			updateVisaReissueList: build.mutation({
 				query: (visaReissueList) => ({
-					url: `${UPDATE_VISAREISSUELISTT}${visaReissueList.id}`,
+					url: `${UPDATE_VISAREISSUELIST}${visaReissueList.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
 						...visaReissueList
@@ -49,7 +49,7 @@ const VisaReissueListApi = api
 			}),
 			deleteVisaReissueList: build.mutation({
 				query: (visaReissueListId) => ({
-					url: `${DELETE_VISAREISSUELISTT}${visaReissueListId}`,
+					url: `${DELETE_VISAREISSUELIST}${visaReissueListId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['visaReissueLists']
