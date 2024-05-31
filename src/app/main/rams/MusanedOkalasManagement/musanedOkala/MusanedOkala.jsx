@@ -142,6 +142,17 @@ function MusanedOkala() {
 		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
 	};
 
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 	return (
 		<FormProvider
 			{...methods}
@@ -239,6 +250,7 @@ function MusanedOkala() {
 																			(data) => data.default
 																		)?.id
 																	});
+																	getCurrentStatus(newValue?.id);
 																}
 															})
 															.catch(() => {
@@ -251,6 +263,8 @@ function MusanedOkala() {
 																		(data) => data.default
 																	)?.id
 																});
+																getCurrentStatus(newValue?.id);
+
 																navigate(
 																	`/apps/musanedOkala-management/musanedOkalas/new`
 																);
@@ -262,6 +276,8 @@ function MusanedOkala() {
 																?.id,
 															okala_status: doneNotDone.find((data) => data.default)?.id
 														});
+														getCurrentStatus(newValue?.id);
+
 														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 													}
 												}}
