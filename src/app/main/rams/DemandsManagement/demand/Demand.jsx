@@ -17,10 +17,7 @@ import DemandForm from './DemandForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a demand name')
-		.min(5, 'The demand name must be at least 5 characters')
+	country: z.string().nonempty('You must enter a demand name').min(5, 'The demand name must be at least 5 characters')
 });
 
 function Demand() {
