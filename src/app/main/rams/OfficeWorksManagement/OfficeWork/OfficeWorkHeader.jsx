@@ -12,7 +12,6 @@ import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import {
 	useCreateOfficeWorkMutation,
 	useDeleteOfficeWorkMutation,
@@ -22,7 +21,9 @@ import {
 /**
  * The medical header.
  */
-function OfficeWorkHeader() {
+function OfficeWorkHeader({ handleReset, emptyValue }) {
+	console.log('emptyValue', emptyValue);
+
 	const routeParams = useParams();
 	const { officeWorkId } = routeParams;
 	const [createOfficeWork] = useCreateOfficeWorkMutation();
@@ -40,25 +41,6 @@ function OfficeWorkHeader() {
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	useEffect(() => {
-		if (officeWorkId === 'new') {
-			reset({
-				passenger: 'all',
-				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-				driving_license_status: doneNotDone.find((data) => data.default)?.id,
-				finger_status: doneNotDone.find((data) => data.default)?.id,
-				police_clearance_no: '',
-				police_clearance_date: '',
-				driving_license_no: '',
-				driving_license_date: '',
-				finger_no: '',
-				finger_date: '',
-				certificate_experience: '',
-				current_status: 'all'
-			});
-		}
-	}, [officeWorkId, reset]);
-
 	function handleUpdateOfficeWork() {
 		saveOfficeWork(getValues())
 			.then((res) => {
@@ -68,19 +50,11 @@ function OfficeWorkHeader() {
 					} else {
 						localStorage.setItem('officeWorkAlert', 'updateOfficeWork');
 
-						reset({
-							passenger: 'all',
+						handleReset({
+							...emptyValue,
 							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id,
-							police_clearance_no: '',
-							police_clearance_date: '',
-							driving_license_no: '',
-							driving_license_date: '',
-							finger_no: '',
-							finger_date: '',
-							certificate_experience: '',
-							current_status: 'all'
+							finger_status: doneNotDone.find((data) => data.default)?.id
 						});
 
 						UpdatedSuccessfully();
@@ -102,24 +76,16 @@ function OfficeWorkHeader() {
 		createOfficeWork(getValues())
 			.unwrap()
 			.then((res) => {
-				if (res) {
+				if (res?.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
 						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
-						reset({
-							passenger: 'all',
+						handleReset({
+							...emptyValue,
 							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id,
-							police_clearance_no: '',
-							police_clearance_date: '',
-							driving_license_no: '',
-							driving_license_date: '',
-							finger_no: '',
-							finger_date: '',
-							certificate_experience: '',
-							current_status: 'all'
+							finger_status: doneNotDone.find((data) => data.default)?.id
 						});
 						navigate('/apps/officeWork/officeWorks/new');
 						AddedSuccessfully();
@@ -136,16 +102,8 @@ function OfficeWorkHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							police_clearance_no: '',
-							police_clearance_date: '',
-							driving_license_no: '',
-							driving_license_date: '',
-							finger_no: '',
-							finger_date: '',
-							certificate_experience: '',
-							current_status: 'all',
+						handleReset({
+							...emptyValue,
 							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							driving_license_status: doneNotDone.find((data) => data.default)?.id,
 							finger_status: doneNotDone.find((data) => data.default)?.id
@@ -153,7 +111,12 @@ function OfficeWorkHeader() {
 						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
 						navigate('/apps/officeWork/officeWorks/new');
 
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
+						dispatch(
+							showMessage({
+								message: 'Please Restart The Backend',
+								variant: 'error'
+							})
+						);
 					}
 				}
 
@@ -165,16 +128,8 @@ function OfficeWorkHeader() {
 	}
 
 	function handleCancel() {
-		reset({
-			passenger: 'all',
-			police_clearance_no: '',
-			police_clearance_date: '',
-			driving_license_no: '',
-			driving_license_date: '',
-			finger_no: '',
-			finger_date: '',
-			certificate_experience: '',
-			current_status: 'all',
+		handleReset({
+			...emptyValue,
 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
 			finger_status: doneNotDone.find((data) => data.default)?.id

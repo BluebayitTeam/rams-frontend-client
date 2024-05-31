@@ -39,53 +39,22 @@ function OfficeWorkForm(props) {
 	const [previewDLImage, setpreviewDLImage] = useState('');
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
 	const [previewDoc2Image, setpreviewDoc2Image] = useState('');
-
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { officeWorkId } = routeParams;
-
-	console.log('officeWorkId', officeWorkId);
-
-	// const classes = useStyles(props);
-	// const officeWorkCenters = useSelector((state) => state.data.officeWorkCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	// const image = watch('image');
 
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
 	}, []);
 
-	// console.log('wbkjwb', getValues());
 	useEffect(() => {
-		if (officeWorkId === 'new') {
-			reset({
-				police_clearance_no: '',
-				police_clearance_date: '',
-				police_clearance_status: '',
-				driving_license_no: '',
-				driving_license_date: '',
-				driving_license_status: '',
-				finger_no: '',
-				finger_status: '',
-				finger_date: '',
-				certificate_experience: '',
-				pc_image: '',
-				dl_image: '',
-				doc1_image: '',
-				doc2_image: ''
-			});
-			setpreviewPCImage('');
-			setpreviewDLImage('');
-			setpreviewDoc1Image('');
-			setpreviewDoc2Image('');
-			setValue('pc_image', '');
-			setValue('dl_image', '');
-			setValue('doc1_image', '');
-			setValue('doc2_image', '');
-		}
-	}, [officeWorkId]);
-
+		setpreviewPCImage('');
+		setpreviewDLImage('');
+		setpreviewDoc1Image('');
+		setpreviewDoc2Image('');
+	}, [getValues('police_clearance_no')]);
 	return (
 		<div>
 			<Controller
@@ -333,8 +302,7 @@ function OfficeWorkForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						// options={currentStatuss}
-						options={[{ id: 'all', name: 'Select current status' }, ...currentStatuss]}
+						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);

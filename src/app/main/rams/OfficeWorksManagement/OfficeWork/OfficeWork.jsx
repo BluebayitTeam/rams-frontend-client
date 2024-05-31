@@ -41,16 +41,37 @@ const schema = z.object({
 });
 
 function OfficeWork() {
+	const emptyValue = {
+		passenger: '',
+		police_clearance_no: '',
+		police_clearance_status: '',
+		police_clearance_date: '',
+		driving_license_no: '',
+		driving_license_status: '',
+		driving_license_date: '',
+		finger_no: '',
+		finger_status: '',
+		finger_date: '',
+		certificate_experience: '',
+		pc_image: '',
+		dl_image: '',
+		doc1_image: '',
+		doc2_image: '',
+		created_at: '',
+		updated_at: '',
+		current_status: ''
+	};
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { officeWorkId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const classes = useStyles();
 	const navigate = useNavigate();
+	const [formKey, setFormKey] = useState(0);
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: { passenger: null },
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -84,12 +105,16 @@ function OfficeWork() {
 				.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
+						reset({
+							...setIdIfValueIsObject(res.data),
+							passenger: officeWorkId
+						});
 					}
 				})
 				.catch(() => null);
 		} else {
-			reset({
+			handleReset({
+				...emptyValue,
 				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 				driving_license_status: doneNotDone.find((data) => data.default)?.id,
 				finger_status: doneNotDone.find((data) => data.default)?.id
@@ -109,9 +134,12 @@ function OfficeWork() {
 				.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: officeWorkId });
+						handleReset({
+							...setIdIfValueIsObject(res.data),
+							passenger: officeWorkId
+						});
 					} else {
-						reset({
+						handleReset({
 							passenger: officeWorkId,
 							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							driving_license_status: doneNotDone.find((data) => data.default)?.id,
@@ -121,7 +149,7 @@ function OfficeWork() {
 					}
 				})
 				.catch(() => {
-					reset({
+					handleReset({
 						passenger: officeWorkId,
 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
@@ -130,7 +158,8 @@ function OfficeWork() {
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({
+			handleReset({
+				...emptyValue,
 				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 				driving_license_status: doneNotDone.find((data) => data.default)?.id,
 				finger_status: doneNotDone.find((data) => data.default)?.id
@@ -146,8 +175,27 @@ function OfficeWork() {
 		return <FuseLoading />;
 	}
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -167,7 +215,12 @@ function OfficeWork() {
 						<Tab label="OfficeWork Information" />
 					</Tabs>
 				}
-				header={<OfficeWorkHeader />}
+				header={
+					<OfficeWorkHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -184,17 +237,7 @@ function OfficeWork() {
 												disabled={!!fromSearch}
 												id="passenger"
 												value={value ? passengers.find((data) => data.id === value) : null}
-												// options={passengers}
-												options={[
-													{
-														id: 'all',
-														passenger_id: '',
-														office_serial: '',
-														passport_no: '',
-														passenger_name: 'Select Passenger'
-													},
-													...passengers
-												]}
+												options={passengers}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
@@ -226,8 +269,9 @@ function OfficeWork() {
 															)
 															.then((res) => {
 																if (res.data.id) {
-																	reset({
-																		...setIdIfValueIsObject(res.data)
+																	handleReset({
+																		...setIdIfValueIsObject(res.data),
+																		passenger: newValue?.id
 																	});
 																	navigate(
 																		`/apps/officeWork/officeWorks/${
@@ -236,7 +280,7 @@ function OfficeWork() {
 																	);
 																} else {
 																	navigate(`/apps/officeWork/officeWorks/new`);
-																	reset({
+																	handleReset({
 																		passenger: newValue?.id,
 																		police_clearance_status: doneNotDone.find(
 																			(data) => data.default
@@ -246,19 +290,13 @@ function OfficeWork() {
 																		)?.id,
 																		finger_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id,
-																		police_clearance_no: '',
-																		police_clearance_date: '',
-																		driving_license_no: '',
-																		driving_license_date: '',
-																		finger_no: '',
-																		finger_date: '',
-																		certificate_experience: ''
+																		)?.id
 																	});
+																	getCurrentStatus(newValue?.id);
 																}
 															})
 															.catch(() => {
-																reset({
+																handleReset({
 																	passenger: newValue?.id,
 																	police_clearance_status: doneNotDone.find(
 																		(data) => data.default
@@ -268,20 +306,15 @@ function OfficeWork() {
 																	)?.id,
 																	finger_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id,
-																	police_clearance_no: '',
-																	police_clearance_date: '',
-																	driving_license_no: '',
-																	driving_license_date: '',
-																	finger_no: '',
-																	finger_date: '',
-																	certificate_experience: ''
+																	)?.id
 																});
+																getCurrentStatus(newValue?.id);
+
 																navigate(`/apps/officeWork/officeWorks/new`);
 															});
 													} else {
 														navigate(`/apps/officeWork/officeWorks/new`);
-														reset({
+														handleReset({
 															passenger: newValue?.id,
 															police_clearance_status: doneNotDone.find(
 																(data) => data.default
@@ -289,15 +322,9 @@ function OfficeWork() {
 															driving_license_status: doneNotDone.find(
 																(data) => data.default
 															)?.id,
-															finger_status: doneNotDone.find((data) => data.default)?.id,
-															police_clearance_no: '',
-															police_clearance_date: '',
-															driving_license_no: '',
-															driving_license_date: '',
-															finger_no: '',
-															finger_date: '',
-															certificate_experience: ''
+															finger_status: doneNotDone.find((data) => data.default)?.id
 														});
+														getCurrentStatus(newValue?.id);
 													}
 												}}
 												renderInput={(params) => (
