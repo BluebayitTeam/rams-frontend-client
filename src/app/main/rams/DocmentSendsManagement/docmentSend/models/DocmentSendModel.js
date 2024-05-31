@@ -1,7 +1,7 @@
 import _ from '@lodash';
 
-const CallingAssignModel = (data) =>
+const DocmentSendModel = (data) =>
 	_.defaults(data || {}, {
 		visa_entry: ''
 	});
-export default CallingAssignModel;
+export default DocmentSendModel;

@@ -5,36 +5,36 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateCallingAssignMutation } from '../DocmentSendsApi';
+import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 
 /**
- * The callingAssign header.
+ * The docmentSend header.
  */
-function CallingAssignHeader() {
+function DocmentSendHeader() {
 	const routeParams = useParams();
 	const { callingAssignId } = routeParams;
-	const [createCallingAssign] = useCreateCallingAssignMutation();
+	const [createDocmentSend] = useCreateDocmentSendMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteCallingAssign');
-	const handleUpdate = localStorage.getItem('updateCallingAssign');
+	const handleDelete = localStorage.getItem('deleteDocmentSend');
+	const handleUpdate = localStorage.getItem('updateDocmentSend');
 
-	function handleCreateCallingAssign() {
-		createCallingAssign(getValues())
+	function handleCreateDocmentSend() {
+		createDocmentSend(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 				reset();
-				navigate(`/apps/callingAssign/callingAssigns`);
+				navigate(`/apps/documentSend-management/documents`);
 			});
 	}
 
 	function handleCancel() {
-		navigate(`/apps/callingAssign/callingAssigns`);
+		navigate(`/apps/documentSend-management/documents`);
 		reset();
 	}
 
@@ -47,7 +47,7 @@ function CallingAssignHeader() {
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">Calling Assign</Typography>
+						<Typography className="text-16 sm:text-20 truncate font-semibold">Docment Send</Typography>
 					</motion.div>
 				</div>
 			</div>
@@ -62,7 +62,7 @@ function CallingAssignHeader() {
 					variant="contained"
 					color="secondary"
 					// disabled={_.isEmpty(dirtyFields) || !isValid}
-					onClick={handleCreateCallingAssign}
+					onClick={handleCreateDocmentSend}
 				>
 					Save
 				</Button>
@@ -80,4 +80,4 @@ function CallingAssignHeader() {
 	);
 }
 
-export default CallingAssignHeader;
+export default DocmentSendHeader;

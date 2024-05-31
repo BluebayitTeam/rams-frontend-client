@@ -42,6 +42,7 @@ import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
 import ManPowerAppConfig from '../rams/ManPowersManagement/ManPowerAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
+import DocmentSendAppConfig from '../rams/DocmentSendsManagement/DocmentSendAppConfig';
 
 /**
  * The list of application configurations.
@@ -83,6 +84,7 @@ const appsConfigs = [
 	SupportAppConfig,
 	RoleMenuAppConfig,
 	DesignationAppConfig,
+	DocmentSendAppConfig,
 	EmbassyAppConfig,
 	MenuAppConfig,
 	PermissionAppConfig,

@@ -5,23 +5,23 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import CallingAssignHeader from './CallingAssignHeader';
-import CallingAssignModel from './models/CallingAssignModel';
-import CallingAssignForm from './CallingAssignForm';
+import DocmentSendHeader from './DocmentSendHeader';
+import DocmentSendModel from './models/DocmentSendModel';
+import DocmentSendForm from './DocmentSendForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a callingAssign name')
+		.nonempty('You must enter a docmentSend name')
 		.min(5, 'The callingAssign name must be at least 5 characters')
 });
 
-function CallingAssign() {
+function DocmentSend() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { callingAssignId } = routeParams;
+	const { docmentSendId } = routeParams;
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -32,10 +32,10 @@ function CallingAssign() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (callingAssignId === 'new') {
-			reset(CallingAssignModel({}));
+		if (docmentSendId === 'new') {
+			reset(DocmentSendModel({}));
 		}
-	}, [callingAssignId, reset]);
+	}, [docmentSendId, reset]);
 
 	return (
 		<FormProvider {...methods}>
@@ -44,10 +44,10 @@ function CallingAssign() {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<CallingAssignHeader />}
+				header={<DocmentSendHeader />}
 				content={
 					<div className="p-16 ">
-						<CallingAssignForm callingAssignId={callingAssignId} />
+						<DocmentSendForm docmentSendId={docmentSendId} />
 					</div>
 				}
 				innerScroll
@@ -56,4 +56,4 @@ function CallingAssign() {
 	);
 }
 
-export default CallingAssign;
+export default DocmentSend;

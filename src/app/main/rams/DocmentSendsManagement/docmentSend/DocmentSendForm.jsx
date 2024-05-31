@@ -3,7 +3,7 @@
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCallingAssigns, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { getDocmentSends, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
@@ -14,8 +14,8 @@ import {
 	CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER
 } from 'src/app/constant/constants';
 import Swal from 'sweetalert2';
-import MultiplePassengersTable from './MultiplePassengersTable';
-import { useCreateCallingAssignMutation } from '../DocmentSendsApi';
+import MultiplePassengersTable from './DocmentSendPassengersTable';
+import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -37,19 +37,19 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function CallingAssignForm(props) {
+function DocmentSendForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
-	const [createCallingAssign] = useCreateCallingAssignMutation();
+	const [createDocmentSend] = useCreateDocmentSendMutation();
 
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { callingAssignId } = routeParams;
+	const { docmentSendId } = routeParams;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const callingAssigns = useSelector((state) => state.data.callingAssigns);
+	const docmentSends = useSelector((state) => state.data.docmentSends);
 	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
@@ -68,7 +68,7 @@ function CallingAssignForm(props) {
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
-		dispatch(getCallingAssigns());
+		dispatch(getDocmentSends());
 	}, []);
 
 	useEffect(() => {
@@ -138,8 +138,8 @@ function CallingAssignForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16 w-full "
 						freeSolo
-						value={value ? callingAssigns.find((data) => data.id === value) : null}
-						options={callingAssigns}
+						value={value ? docmentSends.find((data) => data.id === value) : null}
+						options={docmentSends}
 						getOptionLabel={(option) =>
 							`${option.visa_number}-${option.profession_english} - Qty:${option.quantity}-${option.demand?.company_name}`
 						}
@@ -251,4 +251,4 @@ function CallingAssignForm(props) {
 	);
 }
 
-export default CallingAssignForm;
+export default DocmentSendForm;
