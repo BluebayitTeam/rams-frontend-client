@@ -10,7 +10,7 @@ import { useCreateCallingAssignMutation } from '../CallingAssignsApi';
 /**
  * The callingAssign header.
  */
-function CallingAssignHeader() {
+function CallingAssignHeader({ handleReset }) {
 	const routeParams = useParams();
 	const { callingAssignId } = routeParams;
 	const [createCallingAssign] = useCreateCallingAssignMutation();
@@ -28,14 +28,14 @@ function CallingAssignHeader() {
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
-				reset();
+				handleReset();
 				navigate(`/apps/callingAssign/callingAssigns`);
 			});
 	}
 
 	function handleCancel() {
+		handleReset();
 		navigate(`/apps/callingAssign/callingAssigns`);
-		reset();
 	}
 
 	return (
@@ -61,7 +61,6 @@ function CallingAssignHeader() {
 					className="whitespace-nowrap mx-4 "
 					variant="contained"
 					color="secondary"
-					// disabled={_.isEmpty(dirtyFields) || !isValid}
 					onClick={handleCreateCallingAssign}
 				>
 					Save
@@ -70,7 +69,6 @@ function CallingAssignHeader() {
 				<Button
 					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					// style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel

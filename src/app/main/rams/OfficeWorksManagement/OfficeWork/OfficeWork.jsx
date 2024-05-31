@@ -50,7 +50,7 @@ function OfficeWork() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: { passenger: null },
 		resolver: zodResolver(schema)
 	});
 
@@ -146,18 +146,6 @@ function OfficeWork() {
 		return <FuseLoading />;
 	}
 
-	const updateCurrentStatus = (id) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN).then((res) => {
-			// setValue(`current_status`, res.data?.current_status?.id);
-			sessionStorage.setItem('passengerCurrentStatus', res.data?.current_status?.name);
-		});
-	};
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
@@ -259,15 +247,11 @@ function OfficeWork() {
 																		finger_status: doneNotDone.find(
 																			(data) => data.default
 																		)?.id,
-
 																		police_clearance_no: '',
 																		police_clearance_date: '',
-
 																		driving_license_no: '',
 																		driving_license_date: '',
-
 																		finger_no: '',
-
 																		finger_date: '',
 																		certificate_experience: ''
 																	});
@@ -285,15 +269,11 @@ function OfficeWork() {
 																	finger_status: doneNotDone.find(
 																		(data) => data.default
 																	)?.id,
-
 																	police_clearance_no: '',
 																	police_clearance_date: '',
-
 																	driving_license_no: '',
 																	driving_license_date: '',
-
 																	finger_no: '',
-
 																	finger_date: '',
 																	certificate_experience: ''
 																});
@@ -310,15 +290,11 @@ function OfficeWork() {
 																(data) => data.default
 															)?.id,
 															finger_status: doneNotDone.find((data) => data.default)?.id,
-
 															police_clearance_no: '',
 															police_clearance_date: '',
-
 															driving_license_no: '',
 															driving_license_date: '',
-
 															finger_no: '',
-
 															finger_date: '',
 															certificate_experience: ''
 														});

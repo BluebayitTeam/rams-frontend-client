@@ -40,8 +40,6 @@ function MusanedOkalaForm(props) {
 
 	useEffect(() => {
 		if (musanedOkalaId === 'new') {
-			console.log('asndasdbss', getValues());
-			console.log('musanedOkalaId', musanedOkalaId);
 			setValue('current_status', 'all');
 			setValue('doc1_image', '');
 			setValue('doc2_image', '');

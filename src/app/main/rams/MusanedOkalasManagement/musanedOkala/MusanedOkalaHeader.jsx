@@ -169,7 +169,6 @@ function MusanedOkalaHeader() {
 				musaned_date: '',
 				musaned_status: doneNotDone.find((data) => data.default)?.id,
 				okala_status: doneNotDone.find((data) => data.default)?.id,
-
 				musaned_given_by: '',
 				okala_no: '',
 				okala_date: '',

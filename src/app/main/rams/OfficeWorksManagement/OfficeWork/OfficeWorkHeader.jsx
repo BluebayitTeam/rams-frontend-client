@@ -12,6 +12,7 @@ import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
+import { useEffect } from 'react';
 import {
 	useCreateOfficeWorkMutation,
 	useDeleteOfficeWorkMutation,
@@ -39,6 +40,25 @@ function OfficeWorkHeader() {
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
+	useEffect(() => {
+		if (officeWorkId === 'new') {
+			reset({
+				passenger: 'all',
+				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+				driving_license_status: doneNotDone.find((data) => data.default)?.id,
+				finger_status: doneNotDone.find((data) => data.default)?.id,
+				police_clearance_no: '',
+				police_clearance_date: '',
+				driving_license_no: '',
+				driving_license_date: '',
+				finger_no: '',
+				finger_date: '',
+				certificate_experience: '',
+				current_status: 'all'
+			});
+		}
+	}, [officeWorkId, reset]);
+
 	function handleUpdateOfficeWork() {
 		saveOfficeWork(getValues())
 			.then((res) => {
@@ -49,10 +69,10 @@ function OfficeWorkHeader() {
 						localStorage.setItem('officeWorkAlert', 'updateOfficeWork');
 
 						reset({
+							passenger: 'all',
 							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
 							driving_license_status: doneNotDone.find((data) => data.default)?.id,
 							finger_status: doneNotDone.find((data) => data.default)?.id,
-							passenger: 'all',
 							police_clearance_no: '',
 							police_clearance_date: '',
 							driving_license_no: '',

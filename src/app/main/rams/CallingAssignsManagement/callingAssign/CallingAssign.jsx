@@ -24,6 +24,8 @@ function CallingAssign() {
 	const { callingAssignId } = routeParams;
 
 	const [tabValue, setTabValue] = useState(0);
+	const [formKey, setFormKey] = useState(0);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -36,15 +38,21 @@ function CallingAssign() {
 			reset(CallingAssignModel({}));
 		}
 	}, [callingAssignId, reset]);
-
+	const handleReset = () => {
+		reset({});
+		setFormKey((prevKey) => prevKey + 1);
+	};
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<CallingAssignHeader />}
+				header={<CallingAssignHeader handleReset={handleReset} />}
 				content={
 					<div className="p-16 ">
 						<CallingAssignForm callingAssignId={callingAssignId} />
