@@ -3,7 +3,7 @@
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getDocmentSends, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
@@ -68,7 +68,7 @@ function DocmentSendForm(props) {
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
-		dispatch(getDocmentSends());
+		// dispatch(getDocmentSends());
 	}, []);
 
 	useEffect(() => {
