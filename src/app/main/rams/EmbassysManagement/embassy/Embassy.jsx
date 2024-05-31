@@ -13,6 +13,7 @@ import axios from 'axios';
 import { EMBASSY_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import { getEmbassy } from 'app/store/dataSlice';
 import EmbassyHeader from './EmbassyHeader';
 // import { useGetEmbassyQuery } from '../EmbassysApi';
 import EmbassyForm from './EmbassyForm';
@@ -74,6 +75,48 @@ function Embassy() {
 	} = methods;
 
 	useEffect(() => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+
+		if (fromSearch) {
+			axios
+				.get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
+				.then((res) => {
+					// update scope
+					if (res.data?.visa_entry?.id && res.data?.mofa?.id && res.data?.embassy?.id) {
+						const visa_entry = res.data?.visa_entry;
+						const mofa = res.data?.mofa;
+						const office_work = res.data?.officework;
+						const musanedokala = res.data?.musanedokala;
+						reset({
+							...setIdIfValueIsObject(res.data.embassy),
+							visa_number_readonly: visa_entry.visa_number,
+							sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+							sponsor_name_english_readonly: visa_entry?.sponsor_name_english,
+							sponsor_name_arabic_readonly: visa_entry?.sponsor_name_arabic,
+							mofa_no_readonly: mofa.mofa_no,
+							passenger: embassyId,
+							updatePermission: true,
+							createPermission: false,
+							police_clearance_no_readonly: office_work.police_clearance_no,
+							oakala_no_readonly: musanedokala.okala_no,
+							driving_license_no_readonly: office_work.driving_license_no,
+							musaned_okala_no_readonly: musanedokala.musaned_no,
+							certificate_experience_no_readonly: office_work.certificate_experience
+						});
+					}
+				})
+				.catch(() => null);
+		} else {
+			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+		}
+	}, [fromSearch]);
+
+	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
 				headers: {
@@ -84,32 +127,41 @@ function Embassy() {
 			axios
 				.get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
 				.then((res) => {
-					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: embassyId });
-					} else {
+					if (res.data?.visa_entry?.id && res.data?.mofa?.id && res.data?.embassy?.id) {
+						const visa_entry = res.data?.visa_entry;
+						const mofa = res.data?.mofa;
+						const office_work = res.data?.officework;
+						const musanedokala = res.data?.musanedokala;
 						reset({
+							...setIdIfValueIsObject(res.data.embassy),
+							visa_number_readonly: visa_entry.visa_number,
+							sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+							sponsor_name_english_readonly: visa_entry?.sponsor_name_english,
+							sponsor_name_arabic_readonly: visa_entry?.sponsor_name_arabic,
+							mofa_no_readonly: mofa.mofa_no,
 							passenger: embassyId,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
+							updatePermission: true,
+							createPermission: false,
+							police_clearance_no_readonly: office_work.police_clearance_no,
+							oakala_no_readonly: musanedokala.okala_no,
+							driving_license_no_readonly: office_work.driving_license_no,
+							musaned_okala_no_readonly: musanedokala.musaned_no,
+							certificate_experience_no_readonly: office_work.certificate_experience
 						});
+					} else {
+						reset({ passenger: embassyId, stamping_status: doneNotDone.find((data) => data.default)?.id });
 						sessionStorage.setItem('operation', 'save');
 					}
 				})
 				.catch(() => {
-					reset({
-						passenger: embassyId,
-						musaned_status: doneNotDone.find((data) => data.default)?.id,
-						okala_status: doneNotDone.find((data) => data.default)?.id
-					});
+					reset({ passenger: embassyId, stamping_status: doneNotDone.find((data) => data.default)?.id });
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({
-				musaned_status: doneNotDone.find((data) => data.default)?.id,
-				okala_status: doneNotDone.find((data) => data.default)?.id
-			});
+			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
 		}
 	}, [fromSearch]);
+	const [passengerData, setPassengerData] = useState(false);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -171,125 +223,175 @@ function Embassy() {
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															setValue('current_status', res.data?.current_status?.id);
-															setValue('passenger', res.data?.id);
-														});
-
 													if (newValue?.id) {
+														getEmbassy(newValue?.id);
 														const authTOKEN = {
 															headers: {
 																'Content-type': 'application/json',
 																Authorization: localStorage.getItem('jwt_access_token')
 															}
 														};
+
+														// axios
+														// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+														// 	.then(res => {
+														// 		if (res?.data?.target_country?.id == 193) {
+														// 			setPassengerData(true);
+														// 		} else {
+														// 			setPassengerData(false);
+														// 		}
+														// 	})
+														// 	.catch(() => {});
+
 														axios
 															.get(`${EMBASSY_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
-																if (res.data.id) {
+																// update scope
+																if (
+																	res.data?.visa_entry?.id &&
+																	res.data?.mofa?.id &&
+																	res.data?.embassy?.id
+																) {
+																	const visa_entry = res.data?.visa_entry;
+																	const mofa = res.data?.mofa;
+																	const office_work = res.data?.officework;
+																	const musanedokala = res.data?.musanedokala;
 																	reset({
-																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		...setIdIfValueIsObject(res.data.embassy),
+																		visa_number_readonly: visa_entry.visa_number,
+																		sponsor_id_no_readonly:
+																			visa_entry.sponsor_id_no,
+																		sponsor_name_english_readonly:
+																			visa_entry.sponsor_name_english,
+																		sponsor_name_arabic_readonly:
+																			visa_entry.sponsor_name_arabic,
+																		mofa_no_readonly: mofa.mofa_no,
+																		passenger: newValue?.id,
+																		updatePermission: true,
+																		createPermission: false,
+																		police_clearance_no_readonly:
+																			office_work.police_clearance_no,
+																		oakala_no_readonly: musanedokala.okala_no,
+																		driving_license_no_readonly:
+																			office_work.driving_license_no,
+																		musaned_okala_no_readonly:
+																			musanedokala.musaned_no,
+																		certificate_experience_no_readonly:
+																			office_work.certificate_experience
 																	});
 																	navigate(
 																		`/apps/embassy-management/embassys/${
-																			newValue?.passenger?.id || newValue?.id
+																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
-																} else {
+																}
+																// create scope
+																else if (
+																	res.data?.visa_entry?.id &&
+																	res.data?.mofa?.id
+																) {
+																	const visa_entry = res.data?.visa_entry;
+																	const mofa = res.data?.mofa;
+																	const office_work = res.data?.officework;
+																	const musanedokala = res.data?.musanedokala;
+																	reset({
+																		profession_english:
+																			visa_entry.profession_english,
+																		profession_arabic: visa_entry.profession_arabic,
+																		visa_number_readonly: visa_entry.visa_number,
+																		sponsor_id_no_readonly:
+																			visa_entry.sponsor_id_no,
+																		sponsor_name_english_readonly:
+																			visa_entry.sponsor_name_english,
+																		sponsor_name_arabic_readonly:
+																			visa_entry.sponsor_name_arabic,
+																		mofa_no_readonly: mofa.mofa_no,
+																		police_clearance_no_readonly:
+																			office_work.police_clearance_no,
+																		oakala_no_readonly: musanedokala.okala_no,
+																		driving_license_no_readonly:
+																			office_work.driving_license_no,
+																		musaned_okala_no_readonly:
+																			musanedokala.musaned_no,
+																		certificate_experience_no_readonly:
+																			office_work.certificate_experience,
+																		passenger: newValue?.id,
+																		createPermission: true,
+																		updatePermission: false
+																	});
 																	navigate(`/apps/embassy-management/embassys/new`);
+																}
+																// no data scope show alert
+																else {
+																	navigate(`/apps/embassy-management/embassys/new`);
+
 																	reset({
 																		passenger: newValue?.id,
-																		recruiting_agency: 'all',
-																		submit_date: '',
-																		profession_english: '',
-																		profession_arabic: '',
-																		salary: '',
 																		stamping_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id,
-																		stamping_date: '',
-																		visa_expiry_date: '',
-																		delivery_date: '',
-																		visa_number_readonly: '',
-																		sponsor_id_no_readonly: '',
-																		sponsor_name_english_readonly: '',
-																		sponsor_name_arabic_readonly: '',
-																		mofa_no_readonly: '',
-																		oakala_no_readonly: '',
-																		police_clearance_no_readonly: '',
-																		driving_license_no_readonly: '',
-																		musaned_okala_no_readonly: '',
-																		certificate_experience_no_readonly: '',
-																		old_visa_image: '',
-																		stamp_visa_image: ''
+																		)?.id
 																	});
+
+																	const medical = `${
+																		res.data?.medical === false ? 'medical,' : ''
+																	}`;
+																	const mofa = `${
+																		res.data?.mofa == false
+																			? medical
+																				? 'Mofa,'
+																				: 'Mofa'
+																			: ''
+																	}`;
+																	const visaEntry = `${
+																		res.data?.visa_entry == false
+																			? mofa
+																				? 'Visa-Entry,'
+																				: 'Visa-Entry'
+																			: ''
+																	}`;
+																	const noDataItems = `${visaEntry} ${mofa} ${medical}`;
+
+																	// if(passengerData)
+
+																	axios
+																		.get(
+																			`${GET_PASSENGER_BY_ID}${newValue?.id}`,
+																			authTOKEN
+																		)
+																		.then((res) => {
+																			if (res?.data?.target_country?.id === 193) {
+																				const message =
+																					`please check "${noDataItems.trim()}" information`.replace(
+																						/\s\s+/g,
+																						' '
+																					);
+																				dispatch(
+																					setAlert({
+																						alertType: 'warning',
+																						alertValue: message
+																					})
+																				);
+																			}
+																		})
+																		.catch(() => {});
 																}
 															})
 															.catch(() => {
+																navigate(`/apps/embassy-management/embassys/new`);
 																reset({
 																	passenger: newValue?.id,
-																	recruiting_agency: 'all',
-																	submit_date: '',
-																	profession_english: '',
-																	profession_arabic: '',
-																	salary: '',
 																	stamping_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id,
-																	stamping_date: '',
-																	visa_expiry_date: '',
-																	delivery_date: '',
-																	visa_number_readonly: '',
-																	sponsor_id_no_readonly: '',
-																	sponsor_name_english_readonly: '',
-																	sponsor_name_arabic_readonly: '',
-																	mofa_no_readonly: '',
-																	oakala_no_readonly: '',
-																	police_clearance_no_readonly: '',
-																	driving_license_no_readonly: '',
-																	musaned_okala_no_readonly: '',
-																	certificate_experience_no_readonly: '',
-																	old_visa_image: '',
-																	stamp_visa_image: ''
+																	)?.id
 																});
-																navigate(`apps/embassy-management/embassys/new`);
 															});
 													} else {
+														navigate(`/apps/embassy-management/embassys/new`);
 														reset({
 															passenger: newValue?.id,
-															recruiting_agency: 'all',
-															submit_date: '',
-															profession_english: '',
-															profession_arabic: '',
-															salary: '',
 															stamping_status: doneNotDone.find((data) => data.default)
-																?.id,
-															stamping_date: '',
-															visa_expiry_date: '',
-															delivery_date: '',
-															visa_number_readonly: '',
-															sponsor_id_no_readonly: '',
-															sponsor_name_english_readonly: '',
-															sponsor_name_arabic_readonly: '',
-															mofa_no_readonly: '',
-															oakala_no_readonly: '',
-															police_clearance_no_readonly: '',
-															driving_license_no_readonly: '',
-															musaned_okala_no_readonly: '',
-															certificate_experience_no_readonly: '',
-															old_visa_image: '',
-															stamp_visa_image: ''
+																?.id
 														});
-														navigate(`apps/embassy-management/embassys/new`);
 													}
 												}}
 												renderInput={(params) => (

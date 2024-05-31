@@ -43,7 +43,7 @@ function EmbassyHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateEmbassy');
+						localStorage.setItem('embassyAlert', 'updateEmbassy');
 
 						reset({
 							passenger: 'all',
@@ -93,7 +93,7 @@ function EmbassyHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveEmbassy');
+						localStorage.setItem('embassyAlert', 'saveEmbassy');
 
 						reset({
 							passenger: 'all',
@@ -159,7 +159,7 @@ function EmbassyHeader() {
 							old_visa_image: '',
 							stamp_visa_image: ''
 						});
-						localStorage.setItem('medicalAlert', 'saveEmbassy');
+						localStorage.setItem('embassyAlert', 'saveEmbassy');
 						navigate('/apps/embassy-management/embassys/new');
 
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
