@@ -15,7 +15,7 @@ import {
 } from 'src/app/constant/constants';
 import Swal from 'sweetalert2';
 import MultiplePassengersTable from './MultiplePassengersTable';
-import { useCreateCallingAssignMutation } from '../CallingAssignsApi';
+import { useCreateCallingAssignMutation } from '../DocmentSendsApi';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
