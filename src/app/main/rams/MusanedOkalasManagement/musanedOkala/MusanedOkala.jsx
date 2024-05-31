@@ -41,6 +41,20 @@ const schema = z.object({
 });
 
 function MusanedOkala() {
+	const emptyValue = {
+		passenger: '',
+		musaned_given_by: '',
+		okala_given_by: '',
+		musaned_no: '',
+		musaned_status: '',
+		okala_no: '',
+		okala_status: '',
+		musaned_date: '',
+		okala_date: '',
+		doc1_image: '',
+		doc2_image: '',
+		current_status: ''
+	};
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { musanedOkalaId, fromSearch } = routeParams;
@@ -51,7 +65,7 @@ function MusanedOkala() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -64,6 +78,7 @@ function MusanedOkala() {
 	});
 
 	const [tabValue, setTabValue] = useState(0);
+	const [formKey, setFormKey] = useState(0);
 
 	const {
 		reset,
@@ -85,9 +100,12 @@ function MusanedOkala() {
 				.get(`${MUSANEDOKALA_BY_PASSENGER_ID}${musanedOkalaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: musanedOkalaId });
+						handleReset({
+							...setIdIfValueIsObject(res.data),
+							passenger: musanedOkalaId
+						});
 					} else {
-						reset({
+						handleReset({
 							passenger: musanedOkalaId,
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
 							okala_status: doneNotDone.find((data) => data.default)?.id
@@ -96,7 +114,7 @@ function MusanedOkala() {
 					}
 				})
 				.catch(() => {
-					reset({
+					handleReset({
 						passenger: musanedOkalaId,
 						musaned_status: doneNotDone.find((data) => data.default)?.id,
 						okala_status: doneNotDone.find((data) => data.default)?.id
@@ -104,7 +122,7 @@ function MusanedOkala() {
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({
+			handleReset({
 				musaned_status: doneNotDone.find((data) => data.default)?.id,
 				okala_status: doneNotDone.find((data) => data.default)?.id
 			});
@@ -119,8 +137,16 @@ function MusanedOkala() {
 		return <FuseLoading />;
 	}
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -140,7 +166,12 @@ function MusanedOkala() {
 						<Tab label="MusanedOkala Information" />
 					</Tabs>
 				}
-				header={<MusanedOkalaHeader />}
+				header={
+					<MusanedOkalaHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -156,17 +187,7 @@ function MusanedOkala() {
 												autoHighlight
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
-												// options={passengers}
-												options={[
-													{
-														id: 'all',
-														passenger_id: '',
-														office_serial: '',
-														passport_no: '',
-														passenger_name: 'Select Passenger'
-													},
-													...passengers
-												]}
+												options={passengers}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
@@ -180,8 +201,8 @@ function MusanedOkala() {
 													axios
 														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
 														.then((res) => {
-															setValue('current_status', res.data?.current_status?.id);
 															setValue('passenger', res.data?.id);
+															setValue('current_status', res.data?.current_status?.id);
 														});
 
 													if (newValue?.id) {
@@ -198,73 +219,48 @@ function MusanedOkala() {
 															)
 															.then((res) => {
 																if (res.data.id) {
-																	reset({
+																	handleReset({
 																		...setIdIfValueIsObject(res.data),
 																		passenger: newValue?.id
 																	});
 																	navigate(
-																		`/apps/musanedOkala-management/musanedOkalas/${
-																			newValue?.passenger?.id || newValue?.id
-																		}`
+																		`/apps/musanedOkala-management/musanedOkalas/${newValue?.passenger?.id || newValue?.id}`
 																	);
 																} else {
 																	navigate(
 																		`/apps/musanedOkala-management/musanedOkala/new`
 																	);
-																	reset({
+																	handleReset({
 																		passenger: newValue?.id,
-																		musaned_no: '',
-																		musaned_date: '',
 																		musaned_status: doneNotDone.find(
 																			(data) => data.default
 																		)?.id,
 																		okala_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id,
-
-																		musaned_given_by: 'all',
-																		okala_no: '',
-																		okala_date: '',
-																		okala_given_by: 'all'
+																		)?.id
 																	});
 																}
 															})
 															.catch(() => {
-																reset({
+																handleReset({
 																	passenger: newValue?.id,
-																	musaned_no: '',
-																	musaned_date: '',
 																	musaned_status: doneNotDone.find(
 																		(data) => data.default
 																	)?.id,
 																	okala_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id,
-
-																	musaned_given_by: 'all',
-																	okala_no: '',
-																	doc1_image: '',
-																	doc2_image: '',
-																	okala_date: '',
-																	okala_given_by: 'all'
+																	)?.id
 																});
 																navigate(
 																	`/apps/musanedOkala-management/musanedOkalas/new`
 																);
 															});
 													} else {
-														reset({
+														handleReset({
 															passenger: newValue?.id,
-															musaned_no: '',
-															musaned_date: '',
 															musaned_status: doneNotDone.find((data) => data.default)
 																?.id,
-															okala_status: doneNotDone.find((data) => data.default)?.id,
-
-															musaned_given_by: 'all',
-															okala_no: '',
-															okala_date: '',
-															okala_given_by: 'all'
+															okala_status: doneNotDone.find((data) => data.default)?.id
 														});
 														navigate(`/apps/musanedOkala-management/musanedOkalas/new`);
 													}
@@ -291,7 +287,6 @@ function MusanedOkala() {
 								<MusanedOkalaForm />
 							</div>
 						)}
-						{tabValue === 1 && <MusanedOkalaForm musanedOkalaId={musanedOkalaId} />}
 					</div>
 				}
 				innerScroll

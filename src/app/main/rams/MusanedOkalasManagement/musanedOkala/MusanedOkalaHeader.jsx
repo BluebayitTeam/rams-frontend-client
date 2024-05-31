@@ -12,7 +12,6 @@ import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import {
 	useCreateMusanedOkalaMutation,
 	useDeleteMusanedOkalaMutation,
@@ -22,7 +21,7 @@ import {
 /**
  * The musanedOkala header.
  */
-function MusanedOkalaHeader() {
+function MusanedOkalaHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
 	const { musanedOkalaId } = routeParams;
 	const [createMusanedOkala] = useCreateMusanedOkalaMutation();
@@ -49,20 +48,11 @@ function MusanedOkalaHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'updateMusanedOkala');
 
-						reset({
-							passenger: 'all',
-							musaned_no: '',
-							musaned_date: '',
+						handleReset({
+							...emptyValue,
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id,
-
-							musaned_given_by: 'all',
-							okala_no: '',
-							okala_date: '',
-							okala_given_by: 'all',
-							current_status: 'all'
+							okala_status: doneNotDone.find((data) => data.default)?.id
 						});
-
 						UpdatedSuccessfully();
 						navigate('/apps/musanedOkala-management/musanedOkalas/new');
 					}
@@ -87,19 +77,10 @@ function MusanedOkalaHeader() {
 						history.goBack();
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
-
-						reset({
-							passenger: 'all',
-							musaned_no: '',
-							musaned_date: '',
+						handleReset({
+							...emptyValue,
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id,
-
-							musaned_given_by: 'all',
-							okala_no: '',
-							okala_date: '',
-							okala_given_by: 'all',
-							current_status: 'all'
+							okala_status: doneNotDone.find((data) => data.default)?.id
 						});
 					}
 
@@ -117,23 +98,20 @@ function MusanedOkalaHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							musaned_no: '',
-							musaned_date: '',
+						handleReset({
+							...emptyValue,
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id,
-
-							musaned_given_by: 'all',
-							okala_no: '',
-							okala_date: '',
-							okala_given_by: 'all',
-							current_status: 'all'
+							okala_status: doneNotDone.find((data) => data.default)?.id
 						});
 						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
 						navigate('/apps/musanedOkala-management/musanedOkalas/new');
 
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
+						dispatch(
+							showMessage({
+								message: 'Please Restart The Backend',
+								variant: 'error'
+							})
+						);
 					}
 				}
 
@@ -145,40 +123,14 @@ function MusanedOkalaHeader() {
 	}
 
 	const handleCancel = () => {
-		reset({
-			passenger: 'all',
-			musaned_no: '',
-			musaned_date: '',
+		handleReset({
+			...emptyValue,
 			musaned_status: doneNotDone.find((data) => data.default)?.id,
-			okala_status: doneNotDone.find((data) => data.default)?.id,
-
-			musaned_given_by: 'all',
-			okala_no: '',
-			okala_date: '',
-			okala_given_by: 'all',
-			current_status: 'all'
+			okala_status: doneNotDone.find((data) => data.default)?.id
 		});
 		navigate('/apps/musanedOkala-management/musanedOkalas/new');
 	};
 
-	useEffect(() => {
-		if (musanedOkalaId === 'new') {
-			reset({
-				passenger: 'all',
-				musaned_no: '',
-				musaned_date: '',
-				musaned_status: doneNotDone.find((data) => data.default)?.id,
-				okala_status: doneNotDone.find((data) => data.default)?.id,
-				musaned_given_by: '',
-				okala_no: '',
-				okala_date: '',
-				okala_given_by: '',
-				current_status: '',
-				doc1_image: '',
-				doc2_image: ''
-			});
-		}
-	}, [musanedOkalaId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">

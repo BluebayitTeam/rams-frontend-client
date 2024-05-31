@@ -39,14 +39,9 @@ function MusanedOkalaForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (musanedOkalaId === 'new') {
-			setValue('current_status', 'all');
-			setValue('doc1_image', '');
-			setValue('doc2_image', '');
-			setpreviewdoc1Image('');
-			setpreviewdoc2Image('');
-		}
-	}, [musanedOkalaId]);
+		setpreviewdoc1Image('');
+		setpreviewdoc2Image('');
+	}, [getValues('musaned_no')]);
 
 	return (
 		<div>
@@ -96,8 +91,7 @@ function MusanedOkalaForm(props) {
 						freeSolo
 						value={value ? musanedGivenBys?.find((data) => data.id === value) : null}
 						// options={musanedOkalaAgencys}
-						// options={musanedGivenBys}
-						options={[{ id: 'all', first_name: 'Select First Name', last_name: '' }, ...musanedGivenBys]}
+						options={musanedGivenBys}
 						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 						onChange={(event, newValue) => {
@@ -248,36 +242,6 @@ function MusanedOkalaForm(props) {
 				)}
 			/>
 
-			{/* <Controller
-				name="current_status"
-				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={currentStatuss}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Current Status"
-								label="Current Status"
-								id="current_status"
-								helperText={errors?.current_status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/> */}
-
 			<Controller
 				name="current_status"
 				control={control}
@@ -286,15 +250,7 @@ function MusanedOkalaForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						// options={currentStatuss}
-						// getOptionLabel={(option) => `${option.name}`}
-						// onChange={(event, newValue) => {
-						// 	onChange(newValue?.id);
-						// }}
-						// value={value ? currentStatuss?.find((data) => data.id === value) : null}
-						// options={musanedOkalaAgencys}
-						// options={musanedGivenBys}
-						options={[{ id: 'all', name: 'Select current_status' }, ...currentStatuss]}
+						options={currentStatuss}
 						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
