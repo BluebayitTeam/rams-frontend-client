@@ -20,8 +20,8 @@ function DocmentSendHeader() {
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteDocmentSend');
-	const handleUpdate = localStorage.getItem('updateDocmentSend');
+	// const handleDelete = localStorage.getItem('deleteDocmentSend');
+	// const handleUpdate = localStorage.getItem('updateDocmentSend');
 
 	function handleCreateDocmentSend() {
 		createDocmentSend(getValues())
@@ -29,12 +29,12 @@ function DocmentSendHeader() {
 			.then((data) => {
 				AddedSuccessfully();
 				reset();
-				navigate(`/apps/documentSend-management/documents`);
+				navigate(`/apps/documentSend/documents/new`);
 			});
 	}
 
 	function handleCancel() {
-		navigate(`/apps/documentSend-management/documents`);
+		navigate(`/apps/documentSend/documents/new`);
 		reset();
 	}
 
