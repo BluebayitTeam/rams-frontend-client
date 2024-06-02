@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { getAgents, getCurrentStatuss, getEmbassy, getPassengers } from 'app/store/dataSlice';
+import { getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -27,17 +27,15 @@ function EmbassyForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
-	const recruitingAgencys = useSelector((state) => state.data.agents);
+
+	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const embassyData = useSelector((state) => state.data.embassys);
-	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getAgents());
-		dispatch(getCurrentStatuss());
-		dispatch(getEmbassy());
+		dispatch(getRecruitingAgencys());
 	}, []);
 
 	useEffect(() => {
@@ -222,25 +220,6 @@ function EmbassyForm(props) {
 			/>
 
 			<Controller
-				name="okala_no"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						value={field.value || ''}
-						className="mt-8 mb-16"
-						error={!!errors.name_official}
-						helperText={errors?.name_official?.message}
-						label="Okala No."
-						id="okala_no"
-						variant="outlined"
-						InputLabelProps={field.value && { shrink: true }}
-						fullWidth
-					/>
-				)}
-			/>
-
-			<Controller
 				name="stamping_date"
 				control={control}
 				render={({ field }) => (
@@ -280,6 +259,7 @@ function EmbassyForm(props) {
 					/>
 				)}
 			/>
+
 			<Controller
 				name="delivery_date"
 				control={control}
@@ -321,6 +301,26 @@ function EmbassyForm(props) {
 						/>
 					);
 				}}
+			/>
+			<Controller
+				name="okala_no"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						value={field.value || ''}
+						className="mt-8 mb-16"
+						error={!!errors.name_official}
+						helperText={errors?.name_official?.message}
+						label="Okala No."
+						id="okala_no"
+						variant="outlined"
+						InputProps={{
+							readOnly: true
+						}}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<Controller

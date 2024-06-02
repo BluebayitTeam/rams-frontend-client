@@ -296,6 +296,7 @@ function Embassy() {
 																	handleReset({
 																		...setIdIfValueIsObject(res.data.embassy),
 																		visa_number_readonly: visa_entry.visa_number,
+
 																		sponsor_id_no_readonly:
 																			visa_entry.sponsor_id_no,
 																		sponsor_name_english_readonly:
@@ -318,7 +319,7 @@ function Embassy() {
 																	});
 																	getCurrentStatus(newValue?.id);
 																	navigate(
-																		`/apps/embassy-management/embassy/${
+																		`/apps/embassy-management/embassys/${
 																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
@@ -358,11 +359,11 @@ function Embassy() {
 																		updatePermission: false
 																	});
 																	getCurrentStatus(newValue?.id);
-																	navigate(`/apps/embassy-management/embassy/new`);
+																	navigate(`/apps/embassy-management/embassys/new`);
 																}
 																// no data scope show alert
 																else {
-																	navigate(`/apps/embassy-management/embassy/new`);
+																	navigate(`/apps/embassy-management/embassys/new`);
 
 																	handleReset({
 																		passenger: newValue?.id,
@@ -417,7 +418,7 @@ function Embassy() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/embassy-management/embassy/new`);
+																navigate(`/apps/embassy-management/embassys/new`);
 																handleReset({
 																	passenger: newValue?.id,
 																	stamping_status: doneNotDone.find(
@@ -427,7 +428,7 @@ function Embassy() {
 																getCurrentStatus(newValue?.id);
 															});
 													} else {
-														navigate(`/apps/embassy-management/embassy/new`);
+														navigate(`/apps/embassy-management/embassys/new`);
 														handleReset({
 															passenger: newValue?.id,
 															stamping_status: doneNotDone.find((data) => data.default)
