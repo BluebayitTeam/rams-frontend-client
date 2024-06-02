@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, TextField, Tooltip, tooltipClasses } from '@mui/material';
 import { getAgents, getPassengers, getVisaEntrys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
@@ -49,13 +49,16 @@ function MultipleVisaEntryForm(props) {
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const multipleVisaEntrys = useSelector((state) => state.data.multipleVisaEntrys);
+	const visa_entries = useSelector((state) => state.data.visaEntries);
 	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [showError, setShowError] = useState(false);
 	const [availableVisa, setAvailableVisa] = useState(null);
-
+	const [checked, setChecked] = useState(false);
+	const [checked1, setChecked1] = useState(false);
+	const [checked3, setChecked3] = useState(false);
+	const [isChecked, setisChecked] = useState(false);
 	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
 
 	useEffect(() => {
@@ -70,6 +73,15 @@ function MultipleVisaEntryForm(props) {
 		dispatch(getVisaEntrys());
 		dispatch(getAgents());
 	}, []);
+	const handleChange5 = (event) => {
+		setChecked(event.target.checked);
+	};
+	const handleChange1 = (event) => {
+		setChecked1(event.target.checked);
+	};
+	const handleChange3 = (event) => {
+		setChecked3(event.target.checked);
+	};
 
 	useEffect(() => {
 		setValue(
@@ -131,38 +143,37 @@ function MultipleVisaEntryForm(props) {
 
 	return (
 		<div>
-			<Controller
-				name="visa_entry"
-				control={control}
-				render={({ field: { value, onChange } }) => (
-					<Autocomplete
-						className="mt-8 mb-16 w-full "
-						freeSolo
-						value={value ? multipleVisaEntrys.find((data) => data.id === value) : null}
-						options={multipleVisaEntrys}
-						getOptionLabel={(option) =>
-							`${option.visa_number}-${option.profession_english} - Qty:${option.quantity}-${option.demand?.company_name}`
-						}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-							handleCheckAvailableVisa(newValue?.id, newValue?.quantity);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Calling Visa"
-								label="Calling Visa"
-								error={!value}
-								helperText={errors?.visa_entry?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
+			<div className="flex md:space-x-12 flex-col md:flex-row">
+				<Controller
+					name="visa_no"
+					control={control}
+					render={({ field: { onChange, value, name } }) => (
+						<Autocomplete
+							className="mt-8 mb-16 w-full "
+							freeSolo
+							value={value ? visa_entries.find((data) => data.id === value) : null}
+							options={visa_entries}
+							getOptionLabel={(option) => `${option.visa_number} `}
+							onChange={(event, newValue) => {
+								// onChange({ id: newValue.id });
+								onChange(newValue?.id);
+							}}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									placeholder="Select Visa No."
+									label="Visa No."
+									// error={!value}
+									autoFocus
+									helperText={errors?.agency?.message}
+									variant="outlined"
+									InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+								/>
+							)}
+						/>
+					)}
+				/>
+			</div>
 
 			{watch('visa_entry') && (
 				<h6 className={`pb-10 ps-5 text-${availableVisa > 0 ? 'green' : 'red'}`}>
@@ -170,7 +181,7 @@ function MultipleVisaEntryForm(props) {
 				</h6>
 			)}
 
-			<Controller
+			{/* <Controller
 				name="current_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -198,8 +209,8 @@ function MultipleVisaEntryForm(props) {
 						)}
 					/>
 				)}
-			/>
-			<Controller
+			/> */}
+			{/* <Controller
 				name="passenger"
 				control={control}
 				render={({ field: { value, onChange } }) => (
@@ -233,7 +244,32 @@ function MultipleVisaEntryForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
+
+			<div className="flex md:space-x-12 flex-col md:flex-row">
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked1={checked}
+							onChange={handleChange1}
+						/>
+					}
+					label="Selection"
+					name="select"
+					className="mt-8 mb-16 w-full md:w-6/12"
+				/>
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked={checked}
+							onChange={handleChange5}
+						/>
+					}
+					label="CheckBox"
+					name="select"
+					className="mt-8 mb-16 w-full md:w-6/12"
+				/>
+			</div>
 
 			{mltPassengerList?.length > 0 && (
 				<div>

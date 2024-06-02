@@ -47,7 +47,9 @@ function MultipleVisaEntryHeader({ handleReset }) {
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">Calling Assign</Typography>
+						<Typography className="text-16 sm:text-20 truncate font-semibold">
+							Multiple Visa Entry
+						</Typography>
 					</motion.div>
 				</div>
 			</div>
