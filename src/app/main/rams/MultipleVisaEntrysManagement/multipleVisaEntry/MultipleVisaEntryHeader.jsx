@@ -5,37 +5,37 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
+import { useCreateMultipleVisaEntryMutation } from '../MultipleVisaEntrysApi';
 
 /**
- * The docmentSend header.
+ * The MultipleVisaEntry header.
  */
-function DocmentSendHeader() {
+function MultipleVisaEntryHeader({ handleReset }) {
 	const routeParams = useParams();
-	const { callingAssignId } = routeParams;
-	const [createDocmentSend] = useCreateDocmentSendMutation();
+	const { MultipleVisaEntryId } = routeParams;
+	const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	// const handleDelete = localStorage.getItem('deleteDocmentSend');
-	// const handleUpdate = localStorage.getItem('updateDocmentSend');
+	const handleDelete = localStorage.getItem('deleteMultipleVisaEntry');
+	const handleUpdate = localStorage.getItem('updateMultipleVisaEntry');
 
-	function handleCreateDocmentSend() {
-		createDocmentSend(getValues())
+	function handleCreateMultipleVisaEntry() {
+		createMultipleVisaEntry(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
-				reset();
-				navigate(`/apps/documentSend/documentSends/new`);
+				handleReset();
+				navigate(`/apps/multipleVisaEntry-management/multipleVisaEntrys/new`);
 			});
 	}
 
 	function handleCancel() {
-		navigate(`/apps/documentSend/documentSends/new`);
-		reset();
+		handleReset();
+		navigate(`/apps/multipleVisaEntry-management/multipleVisaEntrys/new`);
 	}
 
 	return (
@@ -47,7 +47,7 @@ function DocmentSendHeader() {
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">Docment Send</Typography>
+						<Typography className="text-16 sm:text-20 truncate font-semibold">Calling Assign</Typography>
 					</motion.div>
 				</div>
 			</div>
@@ -61,8 +61,7 @@ function DocmentSendHeader() {
 					className="whitespace-nowrap mx-4 "
 					variant="contained"
 					color="secondary"
-					// disabled={_.isEmpty(dirtyFields) || !isValid}
-					onClick={handleCreateDocmentSend}
+					onClick={handleCreateMultipleVisaEntry}
 				>
 					Save
 				</Button>
@@ -70,7 +69,6 @@ function DocmentSendHeader() {
 				<Button
 					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					// style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel
@@ -80,4 +78,4 @@ function DocmentSendHeader() {
 	);
 }
 
-export default DocmentSendHeader;
+export default MultipleVisaEntryHeader;

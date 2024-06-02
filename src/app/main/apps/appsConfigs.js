@@ -42,6 +42,7 @@ import ManPowerAppConfig from '../rams/ManPowersManagement/ManPowerAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import DocmentSendAppConfig from '../rams/DocmentSendsManagement/DocmentSendAppConfig';
+import MultipleVisaEntryAppConfig from '../rams/MultipleVisaEntrysManagement/MultipleVisaEntryAppConfig';
 
 /**
  * The list of application configurations.
@@ -78,6 +79,7 @@ const appsConfigs = [
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
 	CallingEmbAttestationAppConfig,
+	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
 	PaymentDetailAppConfig,
 	SupportAppConfig,
