@@ -12,13 +12,12 @@ import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useCreateManPowerMutation, useDeleteManPowerMutation, useUpdateManPowerMutation } from '../ManPowersApi';
 
 /**
  * The manPower header.
  */
-function ManPowerHeader() {
+function ManPowerHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
 	const { manPowerId } = routeParams;
 	const [createManPower] = useCreateManPowerMutation();
@@ -45,18 +44,10 @@ function ManPowerHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'updateManPower');
 
-						// reset({
-						// 	passenger: 'all',
-						// 	training_card_status: doneNotDone.find((data) => data.default)?.id,
-						// 	recruiting_agency: 'all',
-						// 	training_center: '',
-						// 	admission_date: '',
-						// 	serial_no: '',
-						// 	certificate_no: '',
-						// 	certificate_date: '',
-						// 	batch_number: '',
-						// 	current_status: ''
-						// });
+						handleReset({
+							...emptyValue,
+							man_power_status: doneNotDone.find((data) => data.default)?.id
+						});
 
 						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
@@ -84,20 +75,9 @@ function ManPowerHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveManPower');
 
-						reset({
-							passenger: 'all',
-							man_power_status: doneNotDone.find((data) => data.default)?.id,
-							recruiting_agency: 'all',
-							new_visa_no: '',
-							bank_name: '',
-							bank_account_no: '',
-							// new_visa_no: '',
-							registration_id: '',
-							man_power_date: '',
-							submit_date: '',
-							current_status: 'all',
-							smart_card_image: '',
-							delivery_date: ''
+						handleReset({
+							...emptyValue,
+							man_power_status: doneNotDone.find((data) => data.default)?.id
 						});
 						navigate('/apps/manPower-management/manPowers/new');
 						AddedSuccessfully();
@@ -114,20 +94,9 @@ function ManPowerHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							man_power_status: doneNotDone.find((data) => data.default)?.id,
-							recruiting_agency: 'all',
-							new_visa_no: '',
-							bank_name: '',
-							bank_account_no: '',
-							// new_visa_no: '',
-							registration_id: '',
-							man_power_date: '',
-							submit_date: '',
-							current_status: 'all',
-							smart_card_image: '',
-							delivery_date: ''
+						handleReset({
+							...emptyValue,
+							man_power_status: doneNotDone.find((data) => data.default)?.id
 						});
 						localStorage.setItem('medicalAlert', 'saveManPower');
 						navigate('/apps/manPower-management/manPowers/new');
@@ -147,43 +116,32 @@ function ManPowerHeader() {
 			history.goBack();
 		} else {
 			history.push('/apps/manPower-management/manPowers/new');
-			reset({
-				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				// new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
-				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: ''
+			handleReset({
+				...emptyValue,
+				man_power_status: doneNotDone.find((data) => data.default)?.id
 			});
 		}
 	};
 
-	useEffect(() => {
-		if (manPowerId === 'new') {
-			reset({
-				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
+	// useEffect(() => {
+	// 	if (manPowerId === 'new') {
+	// 		reset({
+	// 			passenger: 'all',
+	// 			man_power_status: doneNotDone.find((data) => data.default)?.id,
+	// 			recruiting_agency: 'all',
+	// 			new_visa_no: '',
+	// 			bank_name: '',
+	// 			bank_account_no: '',
 
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
-				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: ''
-			});
-		}
-	}, [manPowerId, reset]);
+	// 			registration_id: '',
+	// 			man_power_date: '',
+	// 			submit_date: '',
+	// 			current_status: 'all',
+	// 			smart_card_image: '',
+	// 			delivery_date: ''
+	// 		});
+	// 	}
+	// }, [manPowerId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">

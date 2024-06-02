@@ -52,29 +52,29 @@ function ManPowerForm(props) {
 	useEffect(() => {
 		setPreviewImage('');
 	}, [getValues('recruiting_agency')]);
-	useEffect(() => {
-		if (manPowerId === 'new') {
-			reset({
-				passenger: 'all',
-				man_power_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				new_visa_no: '',
-				bank_name: '',
-				bank_account_no: '',
-				// new_visa_no: '',
-				registration_id: '',
-				man_power_date: '',
-				submit_date: '',
-				current_status: 'all',
-				smart_card_image: '',
-				delivery_date: ''
-			});
-		} else {
-			console.log('valueForm', getValues());
-			// Fetch and set data based on manPowerId if needed
-			// reset(formData);
-		}
-	}, [manPowerId, reset, recruitingAgencys, currentStatuss]);
+	// useEffect(() => {
+	// 	if (manPowerId === 'new') {
+	// 		reset({
+	// 			passenger: 'all',
+	// 			man_power_status: doneNotDone.find((data) => data.default)?.id,
+	// 			recruiting_agency: 'all',
+	// 			new_visa_no: '',
+	// 			bank_name: '',
+	// 			bank_account_no: '',
+	// 			// new_visa_no: '',
+	// 			registration_id: '',
+	// 			man_power_date: '',
+	// 			submit_date: '',
+	// 			current_status: 'all',
+	// 			smart_card_image: '',
+	// 			delivery_date: ''
+	// 		});
+	// 	} else {
+	// 		console.log('valueForm', getValues());
+	// 		// Fetch and set data based on manPowerId if needed
+	// 		// reset(formData);
+	// 	}
+	// }, [manPowerId, reset, recruitingAgencys, currentStatuss]);
 
 	// useEffect(() => {
 	// 	if ((manPowerId !== 'new', !reload)) {
@@ -120,10 +120,9 @@ function ManPowerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? recruitingAgencys?.find((data) => data.id === value) : null}
-						// options={recruitingAgencys}
-						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...recruitingAgencys]}
-						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
+						value={value ? recruitingAgencys.find((data) => data.id === value) : null}
+						options={recruitingAgencys}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -317,6 +316,12 @@ function ManPowerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
+						// value={value ? currentStatuss.find((data) => data.id === value) : null}
+						// options={currentStatuss}
+						// getOptionLabel={(option) => `${option.name}`}
+						// onChange={(event, newValue) => {
+						// 	onChange(newValue?.id);
+						// }}
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
