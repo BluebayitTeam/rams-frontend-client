@@ -3,7 +3,7 @@
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
-import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ import {
 	CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER
 } from 'src/app/constant/constants';
 import Swal from 'sweetalert2';
-import MultiplePassengersTable from './DocmentSendPassengersTable';
+import MultiplePassengersTable from './MultiplePassengersTable';
 import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
@@ -67,7 +67,7 @@ function DocmentSendForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		dispatch(getCurrentStatuss());
+		// dispatch(getCurrentStatuss());
 		// dispatch(getDocmentSends());
 	}, []);
 

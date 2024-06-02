@@ -20,7 +20,7 @@ const DocmentSendAppConfig = {
 				},
 
 				{
-					path: 'docmentSends/:docmentSendId/:fromSearch?',
+					path: 'docmentSends/:docmentSendId?/*',
 					element: <DocmentSend />
 				}
 			]

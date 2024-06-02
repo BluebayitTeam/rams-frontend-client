@@ -8,7 +8,7 @@ import { useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import { TableCell } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import DocmentSendPassengersTableHead from './DocmentSendPassengersTableHead';
+import MultiplePassengersTableHead from './MultiplePassengersTableHead';
 
 const style = {
 	margin: 'auto',
@@ -21,7 +21,7 @@ const style = {
 	overflow: 'hidden'
 };
 
-function DocmentSendPassengersTable(props) {
+function MultiplePassengersTable(props) {
 	const [singleEvisaEntryDetails, setSingleEvisaEntryDetails] = useState({});
 	const [evisaEntryPackagePrice, setEvisaEntryPackagePrice] = useState(0);
 
@@ -40,7 +40,7 @@ function DocmentSendPassengersTable(props) {
 					className="min-w-xl "
 					aria-labelledby="tableTitle"
 				>
-					<DocmentSendPassengersTableHead />
+					<MultiplePassengersTableHead />
 					<TableBody>
 						{props?.passengers?.map((n, sl) => {
 							return (
@@ -109,4 +109,4 @@ function DocmentSendPassengersTable(props) {
 	);
 }
 
-export default withRouter(DocmentSendPassengersTable);
+export default withRouter(MultiplePassengersTable);

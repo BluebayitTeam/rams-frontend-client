@@ -10,9 +10,9 @@ import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 /**
  * The docmentSend header.
  */
-function DocmentSendHeader() {
+function DocmentSendHeader({ handleReset }) {
 	const routeParams = useParams();
-	const { callingAssignId } = routeParams;
+	const { docmentSendId } = routeParams;
 	const [createDocmentSend] = useCreateDocmentSendMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
@@ -20,22 +20,22 @@ function DocmentSendHeader() {
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	// const handleDelete = localStorage.getItem('deleteDocmentSend');
-	// const handleUpdate = localStorage.getItem('updateDocmentSend');
+	const handleDelete = localStorage.getItem('deleteDocmentSend');
+	const handleUpdate = localStorage.getItem('updateDocmentSend');
 
 	function handleCreateDocmentSend() {
 		createDocmentSend(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
-				reset();
-				navigate(`/apps/documentSend/documentSends/new`);
+				handleReset();
+				navigate(`/apps/docmentSend/docmentSends/new`);
 			});
 	}
 
 	function handleCancel() {
-		navigate(`/apps/documentSend/documentSends/new`);
-		reset();
+		handleReset();
+		navigate(`/apps/docmentSend/docmentSends/new`);
 	}
 
 	return (
@@ -47,7 +47,7 @@ function DocmentSendHeader() {
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">Docment Send</Typography>
+						<Typography className="text-16 sm:text-20 truncate font-semibold">Calling Assign</Typography>
 					</motion.div>
 				</div>
 			</div>
@@ -61,7 +61,6 @@ function DocmentSendHeader() {
 					className="whitespace-nowrap mx-4 "
 					variant="contained"
 					color="secondary"
-					// disabled={_.isEmpty(dirtyFields) || !isValid}
 					onClick={handleCreateDocmentSend}
 				>
 					Save
@@ -70,7 +69,6 @@ function DocmentSendHeader() {
 				<Button
 					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					// style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel
