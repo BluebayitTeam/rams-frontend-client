@@ -1,13 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
-import DemandsHeader from './DemandsHeader';
-import DemandsTable from './DemandsTable';
+import ComplainsHeader from './ComplainsHeader';
+import ComplainsTable from './ComplainsTable';
 
 /**
- * The demands page.
+ * The complains page.
  */
-function Demands() {
+function Complains() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [searchKey, setSearchKey] = useState('');
 	return (
@@ -18,13 +18,13 @@ function Demands() {
 				header: 'min-h-80 h-80'
 			}}
 			header={
-				<DemandsHeader
+				<ComplainsHeader
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
 			}
 			content={
-				<DemandsTable
+				<ComplainsTable
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
@@ -34,4 +34,4 @@ function Demands() {
 	);
 }
 
-export default Demands;
+export default Complains;

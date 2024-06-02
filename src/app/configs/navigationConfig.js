@@ -345,7 +345,7 @@ const navigationConfig = [
 				translate: 'Complain',
 				display_order: 3,
 				type: 'item',
-				url: '/apps/complain-management/complains',
+				url: '/apps/complain/complains',
 				exact: true
 			}
 		]

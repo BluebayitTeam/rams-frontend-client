@@ -45,6 +45,7 @@ import DocmentSendAppConfig from '../rams/DocmentSendsManagement/DocmentSendAppC
 import DemandAssignAppConfig from '../rams/DemandAssignsManagement/DemandAssignAppConfig';
 import MultipleVisaEntryAppConfig from '../rams/MultipleVisaEntrysManagement/MultipleVisaEntryAppConfig';
 import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
+import ComplainAppConfig from '../rams/ComplainsManagement/ComplainAppConfig';
 
 /**
  * The list of application configurations.
@@ -66,6 +67,7 @@ const appsConfigs = [
 	TrainingAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
+	ComplainAppConfig,
 	OfficeWorkAppConfig,
 	MofaAppConfig,
 	MusanedOkalaAppConfig,

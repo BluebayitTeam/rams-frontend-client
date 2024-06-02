@@ -3,92 +3,93 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	ALL_USERS,
-	GET_DEMANDS,
-	GET_DEMAND_BY_ID,
-	CREATE_DEMAND,
-	DELETE_DEMAND,
-	UPDATE_DEMAND
+	GET_COMPLAINS,
+	GET_COMPLAIN_BY_ID,
+	CREATE_COMPLAIN,
+	DELETE_COMPLAIN,
+	UPDATE_COMPLAIN
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
-import DemandModel from './demand/models/DemandModel';
+import ComplainModel from './complain/models/ComplainModel';
 
-export const addTagTypes = ['demands'];
-const DemandApi = api
+export const addTagTypes = ['complains'];
+const ComplainApi = api
 	.enhanceEndpoints({
 		addTagTypes
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			getDemands: build.query({
-				query: ({ page, size, searchKey }) => ({
-					url: GET_DEMANDS,
-					params: { page, size, searchKey }
-				}),
-				providesTags: ['demands']
+			getComplains: build.query({
+				query: ({ page, size, searchKey }) => ({ url: GET_COMPLAINS, params: { page, size, searchKey } }),
+				providesTags: ['complains']
 			}),
-			getMultiplePassengers: build.query({
-				query: ({ page, size, searchKey }) => ({
-					url: GET_DEMANDS,
-					params: { page, size, searchKey }
-				}),
-				providesTags: ['demands']
-			}),
-			deleteDemands: build.mutation({
-				query: (demandIds) => ({
+			deleteComplains: build.mutation({
+				query: (complainIds) => ({
 					url: ALL_USERS,
 					method: 'DELETE',
-					data: demandIds
+					data: complainIds
 				}),
-				invalidatesTags: ['demands']
+				invalidatesTags: ['complains']
 			}),
-			getDemand: build.query({
-				query: (demandId) => ({
-					url: `${GET_DEMAND_BY_ID}${demandId}`
+			getComplain: build.query({
+				query: (complainId) => ({
+					url: `${GET_COMPLAIN_BY_ID}${complainId}`
 				}),
-				providesTags: ['demands']
+				providesTags: ['complains']
 			}),
-			createDemand: build.mutation({
-				query: (newDemand) => ({
-					url: CREATE_DEMAND,
+			createComplain: build.mutation({
+				query: (newComplain) => ({
+					url: CREATE_COMPLAIN,
 					method: 'POST',
-					data: jsonToFormData(DemandModel(newDemand))
+					data: jsonToFormData(
+						ComplainModel({
+							...newComplain,
+							date_of_birth: moment(new Date(newComplain?.date_of_birth)).format('YYYY-MM-DD'),
+							balance_date: moment(new Date(newComplain?.balance_date)).format('YYYY-MM-DD')
+						})
+					)
 				}),
-				invalidatesTags: ['demands']
+				invalidatesTags: ['complains']
 			}),
-			updateDemand: build.mutation({
-				query: (demand) => ({
-					url: `${UPDATE_DEMAND}${demand.id}`,
+			updateComplain: build.mutation({
+				query: (complain) => ({
+					url: `${UPDATE_COMPLAIN}${complain.id}`,
 					method: 'PUT',
-					data: jsonToFormData(demand)
+					data: jsonToFormData({
+						...complain,
+						date_of_birth: moment(new Date(complain?.date_of_birth)).format('YYYY-MM-DD'),
+						balance_date: moment(new Date(complain?.balance_date)).format('YYYY-MM-DD')
+					})
 				}),
-				invalidatesTags: ['demands']
+				invalidatesTags: ['complains']
 			}),
-			deleteDemand: build.mutation({
-				query: (demandId) => ({
-					url: `${DELETE_DEMAND}${demandId}`,
+			deleteComplain: build.mutation({
+				query: (complainId) => ({
+					url: `${DELETE_COMPLAIN}${complainId}`,
 					method: 'DELETE'
 				}),
-				invalidatesTags: ['demands']
+				invalidatesTags: ['complains']
 			})
 		}),
 		overrideExisting: false
 	});
-export default DemandApi;
+export default ComplainApi;
 export const {
-	useGetDemandsQuery,
-	useDeleteDemandsMutation,
-	useGetDemandQuery,
-	useUpdateDemandMutation,
-	useDeleteDemandMutation,
-	useCreateDemandMutation
-} = DemandApi;
+	useGetComplainsQuery,
+	useDeleteComplainsMutation,
+	useGetComplainQuery,
+	useUpdateComplainMutation,
+	useDeleteComplainMutation,
+	useCreateComplainMutation
+} = ComplainApi;
 
-export const selectFilteredDemands = (demands) =>
+export const selectFilteredComplains = (complains) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (searchText?.length === 0) {
-			return demands;
+			return complains;
 		}
 
-		return FuseUtils.filterArrayByString(demands, searchText);
+		return FuseUtils.filterArrayByString(complains, searchText);
 	});
