@@ -38,14 +38,9 @@ function EmbassyForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (embassyId === 'new') {
-			setValue('current_status', 'all');
-			setValue('old_visa_image', '');
-			setValue('stamp_visa_image', '');
-			setPreviewOldVisaImage('');
-			setPreviewOldVisaImage('');
-		}
-	}, [embassyId]);
+		setPreviewOldVisaImage('');
+		setPreviewStampVisaImage('');
+	}, [getValues('recruiting_agency')]);
 
 	return (
 		<div>

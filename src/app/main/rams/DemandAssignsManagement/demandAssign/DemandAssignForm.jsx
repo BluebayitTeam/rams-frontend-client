@@ -2,17 +2,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
-import {
-	Autocomplete,
-	Checkbox,
-	FormControlLabel,
-	Icon,
-	InputAdornment,
-	TextField,
-	Tooltip,
-	tooltipClasses
-} from '@mui/material';
-import { getPassengers } from 'app/store/dataSlice';
+import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { getCurrentStatuss, getDemands, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
@@ -24,7 +15,7 @@ import {
 } from 'src/app/constant/constants';
 import Swal from 'sweetalert2';
 import MultiplePassengersTable from './MultiplePassengersTable';
-import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
+import { useCreateDemandAssignMutation } from '../DemandAssignsApi';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -46,38 +37,24 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function DocmentSendForm(props) {
+function DemandAssignForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
-	const [createDocmentSend] = useCreateDocmentSendMutation();
+	const [createDemandAssign] = useCreateDemandAssignMutation();
 
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { docmentSendId } = routeParams;
+	const { demandAssignId } = routeParams;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const docmentSends = useSelector((state) => state.data.docmentSends);
+	const demands = useSelector((state) => state.data.demands);
 	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [showError, setShowError] = useState(false);
-	const [availableVisa, setAvailableVisa] = useState(null);
-	const [documentSends, setDocumentSends] = useState([]);
-
-	function handleChheckboxSend(id) {
-		dispatch(addDocumentSendColumn(documentSends.find((data) => data?.key === id)));
-	}
-
-	const handleChange = (e) => {
-		const { name, checked } = e.target;
-		handleChheckboxSend(name);
-		const tempDocumentSend = documentSends.map((documentSend) =>
-			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-		);
-		setDocumentSends(tempDocumentSend);
-	};
+	const [availableDemand, setAvailableDemand] = useState(null);
 
 	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
 
@@ -90,8 +67,8 @@ function DocmentSendForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		// dispatch(getCurrentStatuss());
-		// dispatch(getDocmentSends());
+		dispatch(getCurrentStatuss());
+		dispatch(getDemands());
 	}, []);
 
 	useEffect(() => {
@@ -101,7 +78,7 @@ function DocmentSendForm(props) {
 		);
 	}, [mltPassengerList]);
 
-	const handleCheckAvailableVisa = (id, qty) => {
+	const handleCheckAvailableDemand = (id, qty) => {
 		setShowError(true);
 		const authTOKEN = {
 			headers: {
@@ -111,16 +88,16 @@ function DocmentSendForm(props) {
 		};
 		fetch(`${CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN}${id}`, authTOKEN)
 			.then((response) => response.json())
-			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
+			.then((data) => setAvailableDemand(qty - data.demand_passenger_count))
 			.catch((err) => {});
 	};
 
 	function handleSaveMultipleStatusUpdate(id) {
-		if (mltPassengerList?.length >= availableVisa) {
+		if (mltPassengerList?.length >= availableDemand) {
 			Swal.fire({
 				position: 'top-center',
 				icon: 'warning',
-				title: `Number of Pax Full for this Calling No`,
+				title: `Number of Pax Full for this Demand No`,
 				showConfirmButton: false,
 				timer: 5000
 			});
@@ -132,14 +109,14 @@ function DocmentSendForm(props) {
 						Swal.fire({
 							position: 'top-center',
 							icon: 'warning',
-							title: `This Passenger Has Already Been Assigned the same Calling Visa`,
+							title: `This Passenger Has Already Been Assigned the same Demand Demand`,
 							showConfirmButton: false,
 							timer: 5000
 						});
 					} else if (data?.visa_entry_exist) {
 						Swal.fire({
-							title: 'Calling Visa Already Assigned for This Passenger',
-							text: 'Please Remove the Previous Calling Visa.',
+							title: 'Demand Demand Already Assigned for This Passenger',
+							text: 'Please Remove the Previous Demand Demand.',
 							icon: 'error',
 							showConfirmButton: false,
 							timer: 5000
@@ -154,19 +131,73 @@ function DocmentSendForm(props) {
 
 	return (
 		<div>
-			<div>
-				{documentSends.map((documentSend) => (
-					<FormControlLabel
-						onChange={handleChange}
-						checked={documentSend?.isChecked || false}
-						name={documentSend.key}
-						style={{ width: '45%' }}
-						control={<Checkbox />}
-						label={`${documentSend.label} `}
+			<Controller
+				name="demand"
+				control={control}
+				render={({ field: { value, onChange } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full "
+						freeSolo
+						value={value ? demands.find((data) => data.id == value) : null}
+						options={demands}
+						getOptionLabel={(option) =>
+							`${option.company_name} -${option.profession?.name}- Qty:${option.quantity}-Salary-${option.salary}`
+						}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+							handleCheckAvailableDemand(newValue?.id, newValue?.quantity);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Demand"
+								label="Demand"
+								error={!value}
+								helperText={errors?.demand?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
 					/>
-				))}
-			</div>
+				)}
+			/>
+			{watch('demand') && (
+				<h6 className={`pb-10 ps-5 text-${availableDemand > 0 ? 'green' : 'red'}`}>
+					{availableDemand > 0 ? `Available Demand: ${availableDemand}` : 'Demand Not Available'}
+				</h6>
+			)}
 
+			<Controller
+				name="current_status"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? currentStatuss.find((data) => data.id == value) : null}
+						options={currentStatuss}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Current Status"
+								label="Current Status"
+								error={!!errors.current_status}
+								helperText={errors?.current_status?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
 			<Controller
 				name="passenger"
 				control={control}
@@ -203,43 +234,6 @@ function DocmentSendForm(props) {
 				)}
 			/>
 
-			<div>
-				<br />
-				<br />
-				<br />
-
-				<Controller
-					name="email"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							type="text"
-							error={!!errors.email}
-							helperText={errors?.email?.message}
-							label="Email"
-							InputProps={{
-								endAdornment: (
-									<InputAdornment position="end">
-										<Icon
-											className="text-20"
-											color="action"
-										>
-											user
-										</Icon>
-									</InputAdornment>
-								)
-							}}
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value && { shrink: true }}
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					)}
-				/>
-			</div>
-
 			{mltPassengerList?.length > 0 && (
 				<div>
 					<MultiplePassengersTable
@@ -249,11 +243,11 @@ function DocmentSendForm(props) {
 				</div>
 			)}
 
-			{showError && mltPassengerList?.length >= availableVisa && (
-				<h4 style={{ color: 'red' }}>Number of Pax Full for this Calling No</h4>
+			{showError && mltPassengerList?.length >= availableDemand && (
+				<h4 style={{ color: 'red' }}>Number of Pax Full for this Demand No</h4>
 			)}
 		</div>
 	);
 }
 
-export default DocmentSendForm;
+export default DemandAssignForm;

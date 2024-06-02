@@ -29,7 +29,7 @@ export default defineConfig({
 	},
 	server: {
 		open: true,
-		port: 3000
+		port: 8006
 	},
 	define: {
 		global: 'window'

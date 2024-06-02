@@ -42,6 +42,37 @@ const schema = z.object({
 });
 
 function Embassy() {
+	const emptyValue = {
+		passenger: '',
+		recruiting_agency: '',
+		submit_date: '',
+		profession_english: '',
+		profession_arabic: '',
+		salary: '',
+		stamping_status: '',
+		stamping_visa_new_no: '',
+		stamping_date: '',
+		visa_expiry_date: '',
+		delivery_date: '',
+		old_visa_image: '',
+		stamp_visa_image: '',
+		stamp_visa_pdf: '',
+		created_at: '',
+		updated_at: '',
+		visa_number_readonly: '',
+		sponsor_id_no_readonly: '',
+		sponsor_name_english_readonly: '',
+		sponsor_name_arabic_readonly: '',
+		mofa_no_readonly: '',
+		updatePermission: '',
+		createPermission: '',
+		police_clearance_no_readonly: '',
+		oakala_no_readonly: '',
+		driving_license_no_readonly: '',
+		musaned_okala_no_readonly: '',
+		certificate_experience_no_readonly: ''
+	};
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { embassyId, fromSearch } = routeParams;
@@ -52,7 +83,7 @@ function Embassy() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -65,7 +96,7 @@ function Embassy() {
 	});
 
 	const [tabValue, setTabValue] = useState(0);
-
+	const [formKey, setFormKey] = useState(0);
 	const {
 		reset,
 		watch,
@@ -73,7 +104,6 @@ function Embassy() {
 		formState: { errors },
 		setValue
 	} = methods;
-
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -92,7 +122,7 @@ function Embassy() {
 						const mofa = res.data?.mofa;
 						const office_work = res.data?.officework;
 						const musanedokala = res.data?.musanedokala;
-						reset({
+						handleReset({
 							...setIdIfValueIsObject(res.data.embassy),
 							visa_number_readonly: visa_entry.visa_number,
 							sponsor_id_no_readonly: visa_entry.sponsor_id_no,
@@ -112,7 +142,9 @@ function Embassy() {
 				})
 				.catch(() => null);
 		} else {
-			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+			handleReset({
+				stamping_status: doneNotDone.find((data) => data.default)?.id
+			});
 		}
 	}, [fromSearch]);
 
@@ -132,7 +164,7 @@ function Embassy() {
 						const mofa = res.data?.mofa;
 						const office_work = res.data?.officework;
 						const musanedokala = res.data?.musanedokala;
-						reset({
+						handleReset({
 							...setIdIfValueIsObject(res.data.embassy),
 							visa_number_readonly: visa_entry.visa_number,
 							sponsor_id_no_readonly: visa_entry.sponsor_id_no,
@@ -149,16 +181,24 @@ function Embassy() {
 							certificate_experience_no_readonly: office_work.certificate_experience
 						});
 					} else {
-						reset({ passenger: embassyId, stamping_status: doneNotDone.find((data) => data.default)?.id });
+						handleReset({
+							passenger: embassyId,
+							stamping_status: doneNotDone.find((data) => data.default)?.id
+						});
 						sessionStorage.setItem('operation', 'save');
 					}
 				})
 				.catch(() => {
-					reset({ passenger: embassyId, stamping_status: doneNotDone.find((data) => data.default)?.id });
+					handleReset({
+						passenger: embassyId,
+						stamping_status: doneNotDone.find((data) => data.default)?.id
+					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+			handleReset({
+				stamping_status: doneNotDone.find((data) => data.default)?.id
+			});
 		}
 	}, [fromSearch]);
 	const [passengerData, setPassengerData] = useState(false);
@@ -171,8 +211,27 @@ function Embassy() {
 		return <FuseLoading />;
 	}
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -192,7 +251,12 @@ function Embassy() {
 						<Tab label="Embassy Information" />
 					</Tabs>
 				}
-				header={<EmbassyHeader />}
+				header={
+					<EmbassyHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -208,17 +272,7 @@ function Embassy() {
 												autoHighlight
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
-												// options={passengers}
-												options={[
-													{
-														id: 'all',
-														passenger_id: '',
-														office_serial: '',
-														passport_no: '',
-														passenger_name: 'Select Passenger'
-													},
-													...passengers
-												]}
+												options={passengers}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
@@ -231,17 +285,6 @@ function Embassy() {
 																Authorization: localStorage.getItem('jwt_access_token')
 															}
 														};
-
-														// axios
-														// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														// 	.then(res => {
-														// 		if (res?.data?.target_country?.id == 193) {
-														// 			setPassengerData(true);
-														// 		} else {
-														// 			setPassengerData(false);
-														// 		}
-														// 	})
-														// 	.catch(() => {});
 
 														axios
 															.get(`${EMBASSY_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
@@ -256,7 +299,7 @@ function Embassy() {
 																	const mofa = res.data?.mofa;
 																	const office_work = res.data?.officework;
 																	const musanedokala = res.data?.musanedokala;
-																	reset({
+																	handleReset({
 																		...setIdIfValueIsObject(res.data.embassy),
 																		visa_number_readonly: visa_entry.visa_number,
 																		sponsor_id_no_readonly:
@@ -294,7 +337,7 @@ function Embassy() {
 																	const mofa = res.data?.mofa;
 																	const office_work = res.data?.officework;
 																	const musanedokala = res.data?.musanedokala;
-																	reset({
+																	handleReset({
 																		profession_english:
 																			visa_entry.profession_english,
 																		profession_arabic: visa_entry.profession_arabic,
@@ -325,7 +368,7 @@ function Embassy() {
 																else {
 																	navigate(`/apps/embassy-management/embassys/new`);
 
-																	reset({
+																	handleReset({
 																		passenger: newValue?.id,
 																		stamping_status: doneNotDone.find(
 																			(data) => data.default
@@ -378,7 +421,7 @@ function Embassy() {
 															})
 															.catch(() => {
 																navigate(`/apps/embassy-management/embassys/new`);
-																reset({
+																handleReset({
 																	passenger: newValue?.id,
 																	stamping_status: doneNotDone.find(
 																		(data) => data.default
@@ -387,7 +430,7 @@ function Embassy() {
 															});
 													} else {
 														navigate(`/apps/embassy-management/embassys/new`);
-														reset({
+														handleReset({
 															passenger: newValue?.id,
 															stamping_status: doneNotDone.find((data) => data.default)
 																?.id

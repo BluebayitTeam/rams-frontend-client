@@ -4,7 +4,8 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { useState } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 
 /**
@@ -13,7 +14,7 @@ import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 function DocmentSendHeader({ handleReset }) {
 	const routeParams = useParams();
 	const { docmentSendId } = routeParams;
-	const [createDocmentSend] = useCreateDocmentSendMutation();
+	const [saveDocumentSend] = useCreateDocmentSendMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
@@ -22,15 +23,14 @@ function DocmentSendHeader({ handleReset }) {
 	const { name, images, featuredImageId } = watch();
 	const handleDelete = localStorage.getItem('deleteDocmentSend');
 	const handleUpdate = localStorage.getItem('updateDocmentSend');
+	const [openSuccessStatusAlert, setOpenSuccessStatusAlert] = useState(false);
 
-	function handleCreateDocmentSend() {
-		createDocmentSend(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
-				handleReset();
-				navigate(`/apps/docmentSend/docmentSends/new`);
-			});
+	function handleSaveDocumentSend() {
+		saveDocumentSend(getValues().email);
+		handleReset({});
+		handleReset({ email: '' });
+		setOpenSuccessStatusAlert(true);
+		setTimeout(() => setOpenSuccessStatusAlert(false), 2000);
 	}
 
 	function handleCancel() {
@@ -47,7 +47,7 @@ function DocmentSendHeader({ handleReset }) {
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">Calling Assign</Typography>
+						<Typography className="text-16 sm:text-20 truncate font-semibold">Document Send</Typography>
 					</motion.div>
 				</div>
 			</div>
@@ -58,21 +58,50 @@ function DocmentSendHeader({ handleReset }) {
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
 				<Button
-					className="whitespace-nowrap mx-4 "
+					className="whitespace-nowrap mx-4"
 					variant="contained"
 					color="secondary"
-					onClick={handleCreateDocmentSend}
+					//  disabled={_.isEmpty(dirtyFields) }
+					onClick={handleSaveDocumentSend}
 				>
-					Save
+					Send
 				</Button>
 
-				<Button
-					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
-					variant="contained"
-					onClick={handleCancel}
+				{/* Dialog For Success Alert   */}
+
+				<Dialog
+					open={openSuccessStatusAlert}
+					onClose={() => setOpenSuccessStatusAlert(false)}
+					style={{ borderRadius: '15px' }}
 				>
-					Cancel
-				</Button>
+					<DialogTitle
+						style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', color: 'blue' }}
+					>
+						{' '}
+						<img
+							className="h-full block rounded"
+							style={{ borderRadius: '30px' }}
+							width="300px"
+							height="300px"
+							src="/assets/images/userImg/success.gif"
+							alt="test"
+						/>
+					</DialogTitle>
+					<DialogContent>
+						<DialogContentText style={{ fontSize: '18px' }}>
+							Successfully Email this Document in This Email.
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						{/* <Button
+						onClick={() => setOpenSuccessStatusAlert(false)}
+						style={{ backgroundColor: 'green', fontSize: '18px', color: 'white' }}
+						autoFocus
+					>
+						Ok
+					</Button> */}
+					</DialogActions>
+				</Dialog>
 			</motion.div>
 		</div>
 	);
