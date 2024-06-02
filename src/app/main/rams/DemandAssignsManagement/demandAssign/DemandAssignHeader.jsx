@@ -5,41 +5,37 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateCallingAssignMutation } from '../CallingAssignsApi';
+import { useCreateDemandAssignMutation } from '../DemandAssignsApi';
 
 /**
- * The callingAssign header.
+ * The demandAssign header.
  */
-function CallingAssignHeader({ handleReset }) {
+function DemandAssignHeader({ handleReset }) {
 	const routeParams = useParams();
-	const { callingAssignId } = routeParams;
-	const [createCallingAssign] = useCreateCallingAssignMutation();
+	const { demandAssignId } = routeParams;
+	const [createDemandAssign] = useCreateDemandAssignMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteCallingAssign');
-	const handleUpdate = localStorage.getItem('updateCallingAssign');
+	const handleDelete = localStorage.getItem('deleteDemandAssign');
+	const handleUpdate = localStorage.getItem('updateDemandAssign');
 
-	function handleCreateCallingAssign() {
-		createCallingAssign(getValues())
+	function handleCreateDemandAssign() {
+		createDemandAssign(getValues())
 			.unwrap()
 			.then((data) => {
-				debugger;
-
-				if (data?.detail === 'Status updated successfully.') {
-					AddedSuccessfully();
-					handleReset();
-					navigate(`/apps/callingAssign/callingAssigns`);
-				}
+				AddedSuccessfully();
+				handleReset();
+				navigate(`/apps/demandAssign/demandAssigns`);
 			});
 	}
 
 	function handleCancel() {
 		handleReset();
-		navigate(`/apps/callingAssign/callingAssigns`);
+		navigate(`/apps/demandAssign/demandAssigns`);
 	}
 
 	return (
@@ -51,7 +47,7 @@ function CallingAssignHeader({ handleReset }) {
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">Calling Assign</Typography>
+						<Typography className="text-16 sm:text-20 truncate font-semibold">Demand Assign</Typography>
 					</motion.div>
 				</div>
 			</div>
@@ -65,7 +61,7 @@ function CallingAssignHeader({ handleReset }) {
 					className="whitespace-nowrap mx-4 "
 					variant="contained"
 					color="secondary"
-					onClick={handleCreateCallingAssign}
+					onClick={handleCreateDemandAssign}
 				>
 					Save
 				</Button>
@@ -82,4 +78,4 @@ function CallingAssignHeader({ handleReset }) {
 	);
 }
 
-export default CallingAssignHeader;
+export default DemandAssignHeader;
