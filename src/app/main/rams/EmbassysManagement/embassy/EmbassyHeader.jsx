@@ -12,49 +12,44 @@ import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import {
-	useCreateMusanedOkalaMutation,
-	useDeleteMusanedOkalaMutation,
-	useUpdateMusanedOkalaMutation
-} from '../MusanedOkalasApi';
+import { useCreateEmbassyMutation, useDeleteEmbassyMutation, useUpdateEmbassyMutation } from '../EmbassysApi';
 
 /**
- * The musanedOkala header.
+ * The embassy header.
  */
-function MusanedOkalaHeader({ handleReset, emptyValue }) {
+function EmbassyHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
-	const { musanedOkalaId } = routeParams;
-	const [createMusanedOkala] = useCreateMusanedOkalaMutation();
-	const [saveMusanedOkala] = useUpdateMusanedOkalaMutation();
-	const [removeMusanedOkala] = useDeleteMusanedOkalaMutation();
+	const { embassyId } = routeParams;
+	const [createEmbassy] = useCreateEmbassyMutation();
+	const [saveEmbassy] = useUpdateEmbassyMutation();
+	const [removeEmbassy] = useDeleteEmbassyMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMusanedOkala');
-	const handleUpdate = localStorage.getItem('updateMusanedOkala');
+	const handleDelete = localStorage.getItem('deleteEmbassy');
+	const handleUpdate = localStorage.getItem('updateEmbassy');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMusanedOkala() {
-		saveMusanedOkala(getValues())
+	function handleUpdateEmbassy() {
+		saveEmbassy(getValues())
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'updateMusanedOkala');
+						localStorage.setItem('medicalAlert', 'updateEmbassy');
 
 						handleReset({
 							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
+							stamping_status: doneNotDone.find((data) => data.default)?.id
 						});
 						UpdatedSuccessfully();
-						navigate('/apps/musanedOkala-management/musanedOkalas/new');
+						navigate('/apps/embassy-management/embassys/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -63,35 +58,34 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating musanedOkala', error);
+				console.error('Error updating embassy', error);
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
-	function handleCreateMusanedOkala() {
-		createMusanedOkala(getValues())
+	function handleCreateEmbassy() {
+		createEmbassy(getValues())
 			// .unwrap()
 			.then((res) => {
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
+						localStorage.setItem('medicalAlert', 'saveEmbassy');
 						handleReset({
 							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
+							stamping_status: doneNotDone.find((data) => data.default)?.id
 						});
 					}
 
-					navigate('/apps/musanedOkala-management/musanedOkalas/new');
+					navigate('/apps/embassy-management/embassys/new');
 					AddedSuccessfully();
 				}
 			});
 	}
 
-	function handleRemoveMusanedOkala() {
-		removeMusanedOkala(getValues()?.id)
+	function handleRemoveEmbassy() {
+		removeEmbassy(getValues()?.id)
 			.unwrap()
 			.then((res) => {
 				if (res) {
@@ -100,11 +94,10 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 					} else {
 						handleReset({
 							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
+							stamping_status: doneNotDone.find((data) => data.default)?.id
 						});
-						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
-						navigate('/apps/musanedOkala-management/musanedOkalas/new');
+						localStorage.setItem('medicalAlert', 'saveEmbassy');
+						navigate('/apps/embassy-management/embassys/new');
 
 						dispatch(
 							showMessage({
@@ -125,10 +118,9 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 	const handleCancel = () => {
 		handleReset({
 			...emptyValue,
-			musaned_status: doneNotDone.find((data) => data.default)?.id,
-			okala_status: doneNotDone.find((data) => data.default)?.id
+			stamping_status: doneNotDone.find((data) => data.default)?.id
 		});
-		navigate('/apps/musanedOkala-management/musanedOkalas/new');
+		navigate('/apps/embassy-management/embassys/new');
 	};
 
 	return (
@@ -141,15 +133,15 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{routeParams.musanedOkalaId === 'new'
-									? 'Create New MusanedOkala'
+								{routeParams.embassyId === 'new'
+									? 'Create New Embassy'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography
 								variant="caption"
 								className="font-medium"
 							>
-								{routeParams.musanedOkalaId !== 'new' && 'MusanedOkalas Detail'}
+								{routeParams.embassyId !== 'new' && 'Embassys Detail'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -160,39 +152,39 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{(routeParams.musanedOkalaId === 'new' ||
+				{(routeParams.embassyId === 'new' ||
 					(sessionStorage.getItem('operation') === 'save' && watch('passenger'))) && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields)}
-						onClick={handleCreateMusanedOkala}
+						onClick={handleCreateEmbassy}
 					>
 						Save
 					</Button>
 				)}
 
-				{routeParams?.musanedOkalaId !== 'new' &&
+				{routeParams?.embassyId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
-							onClick={handleUpdateMusanedOkala}
+							onClick={handleUpdateEmbassy}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
 					)}
 
-				{routeParams?.musanedOkalaId !== 'new' &&
+				{routeParams?.embassyId !== 'new' &&
 					watch('passenger') &&
 					sessionStorage.getItem('operation') !== 'save' && (
 						<Button
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
-							onClick={handleRemoveMusanedOkala}
+							onClick={handleRemoveEmbassy}
 							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
@@ -213,4 +205,4 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 	);
 }
 
-export default MusanedOkalaHeader;
+export default EmbassyHeader;
