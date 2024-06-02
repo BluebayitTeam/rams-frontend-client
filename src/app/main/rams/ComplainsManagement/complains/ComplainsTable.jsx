@@ -29,8 +29,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
-import DemandsTableHead from './DemandsTableHead';
-import { selectFilteredDemands, useGetDemandsQuery } from '../ComplainsApi';
+import ComplainsTableHead from './ComplainsTableHead';
+import { selectFilteredComplains, useGetComplainsQuery } from '../ComplainsApi';
 
 const style = {
 	margin: 'auto',
@@ -43,7 +43,7 @@ const style = {
 	overflow: 'hidden'
 };
 
-function DemandsTable(props) {
+function ComplainsTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const { reset, formState, watch, control, getValues, setValue } = useForm({
@@ -52,14 +52,11 @@ function DemandsTable(props) {
 	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const [openModal, setOpenModal] = useState(false);
-	const { data, isLoading, refetch } = useGetDemandsQuery({
-		...pageAndSize,
-		searchKey
-	});
+	const { data, isLoading, refetch } = useGetComplainsQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const totalData = useSelector(selectFilteredDemands(data));
-	const demands = useSelector(selectFilteredDemands(data?.demands));
+	const totalData = useSelector(selectFilteredComplains(data));
+	const complains = useSelector(selectFilteredComplains(data?.complains));
 	const thanas = useSelector((state) => state.data.thanas);
 	const branches = useSelector((state) => state.data.branches);
 	const roles = useSelector((state) => state.data.roles);
@@ -67,17 +64,14 @@ function DemandsTable(props) {
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const employee = useSelector((state) => state.data.employees);
-	const [singleDemandDetails, setSingleDemandDetails] = useState({});
-	const [demandPackagePrice, setDemandPackagePrice] = useState(0);
+	const [singleComplainDetails, setSingleComplainDetails] = useState({});
+	const [complainPackagePrice, setComplainPackagePrice] = useState(0);
 
 	const routeParams = useParams();
 	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		refetch({ searchKey });
-	}, []);
 
 	let serialNumber = 1;
 
@@ -87,7 +81,7 @@ function DemandsTable(props) {
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 	useEffect(() => {
-		if (totalData?.demands) {
+		if (totalData?.complains) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -98,7 +92,7 @@ function DemandsTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.demands[0] || {})
+			Object.entries(totalData?.complains[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key, value]) => {
 					modifiedRow.push({
@@ -124,7 +118,7 @@ function DemandsTable(props) {
 
 			setRows(modifiedRow);
 		}
-	}, [totalData?.demands, refetch]);
+	}, [totalData?.complains]);
 	const [open, setOpen] = useState(false);
 
 	console.log('open', open);
@@ -164,7 +158,7 @@ function DemandsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(demands.map((n) => n.id));
+			setSelected(complains.map((n) => n.id));
 			return;
 		}
 
@@ -176,22 +170,22 @@ function DemandsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/demand/demands/${item.id}/${item.handle}`);
+		navigate(`/apps/complain/complains/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateDemand(item, event) {
-		localStorage.removeItem('deleteDemand');
-		localStorage.setItem('updateDemand', event);
-		navigate(`/apps/demand/demands/${item.id}/${item.handle}`);
+	function handleUpdateComplain(item, event) {
+		localStorage.removeItem('deleteComplain');
+		localStorage.setItem('updateComplain', event);
+		navigate(`/apps/complain/complains/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteDemand(item, event) {
-		localStorage.removeItem('updateDemand');
-		localStorage.setItem('deleteDemand', event);
-		navigate(`/apps/demand/demands/${item.id}/${item.handle}`);
+	function handleDeleteComplain(item, event) {
+		localStorage.removeItem('updateComplain');
+		localStorage.setItem('deleteComplain', event);
+		navigate(`/apps/complain/complains/${item.id}/${item.handle}`);
 	}
 
-	// console.log('testDelete', handleDeleteDemand);
+	// console.log('testDelete', handleDeleteComplain);
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -234,7 +228,7 @@ function DemandsTable(props) {
 		);
 	}
 
-	if (demands?.length === 0) {
+	if (complains?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -245,7 +239,7 @@ function DemandsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no demands!
+					There are no complains!
 				</Typography>
 			</motion.div>
 		);
@@ -259,18 +253,18 @@ function DemandsTable(props) {
 					className="min-w-xl "
 					aria-labelledby="tableTitle"
 				>
-					<DemandsTableHead
-						selectedDemandIds={selected}
+					<ComplainsTableHead
+						selectedComplainIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={demands?.length}
+						rowCount={complains?.length}
 						onMenuItemClick={handleDeselect}
 						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(demands, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(complains, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
@@ -324,7 +318,8 @@ function DemandsTable(props) {
 																}
 																alt={n.first_name}
 															/>
-														) : key === 'payment_valid_until' && n[key] ? (
+														) : (key === 'created_at' || key === 'flight_date') &&
+														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (key === 'is_debtor' || key === 'is_paid') &&
 														  n[key] !== undefined ? (
@@ -353,12 +348,12 @@ function DemandsTable(props) {
 											}}
 										>
 											<Edit
-												onClick={(event) => handleUpdateDemand(n, 'updateDemand')}
+												onClick={(event) => handleUpdateComplain(n, 'updateComplain')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={(event) => handleDeleteDemand(n, 'deleteDemand')}
+												onClick={(event) => handleDeleteComplain(n, 'deleteComplain')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>
@@ -406,4 +401,4 @@ function DemandsTable(props) {
 	);
 }
 
-export default withRouter(DemandsTable);
+export default withRouter(ComplainsTable);

@@ -92,6 +92,10 @@ function ColumnHeader() {
 			if (columnId === 'evisa_entry') {
 				navigate(`/apps/eVisaEntry/eVisaEntrys`);
 			}
+
+			if (columnId === 'complain') {
+				navigate(`/apps/complain/complains`);
+			}
 		});
 	}
 
@@ -154,6 +158,10 @@ function ColumnHeader() {
 
 		if (columnId === 'evisa_entry') {
 			navigate(`/apps/eVisaEntry/eVisaEntrys`);
+		}
+
+		if (columnId === 'complain') {
+			navigate(`/apps/complain/complains`);
 		}
 	}
 

@@ -9,30 +9,33 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import DemandHeader from './DemandHeader';
-import DemandModel from './models/DemandModel';
-import { useGetDemandQuery } from '../ComplainsApi';
-import DemandForm from './DemandForm';
+import ComplainHeader from './ComplainHeader';
+import ComplainModel from './models/ComplainModel';
+import { useGetComplainQuery } from '../ComplainsApi';
+import ComplainForm from './ComplainForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	country: z.string().nonempty('You must enter a demand name').min(5, 'The demand name must be at least 5 characters')
+	complainer: z
+		.string()
+		.nonempty('You must enter a complain name')
+		.min(5, 'The complain name must be at least 5 characters')
 });
 
-function Demand() {
+function Complain() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { demandId } = routeParams;
+	const { complainId } = routeParams;
 
 	const {
-		data: demand,
+		data: complain,
 		isLoading,
 		isError
-	} = useGetDemandQuery(demandId, {
-		skip: !demandId || demandId === 'new'
+	} = useGetComplainQuery(complainId, {
+		skip: !complainId || complainId === 'new'
 	});
-	console.log('demandId', demand, demandId);
+	console.log('complainId', complain, complainId);
 
 	const [tabValue, setTabValue] = useState(0);
 
@@ -46,16 +49,16 @@ function Demand() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (demandId === 'new') {
-			reset(DemandModel({}));
+		if (complainId === 'new') {
+			reset(ComplainModel({}));
 		}
-	}, [demandId, reset]);
+	}, [complainId, reset]);
 
 	useEffect(() => {
-		if (demand) {
-			reset({ ...demand });
+		if (complain) {
+			reset({ ...complain });
 		}
-	}, [demand, reset, demand?.id]);
+	}, [complain, reset, complain?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -66,9 +69,9 @@ function Demand() {
 	}
 
 	/**
-	 * Show Message if the requested demand is not exists
+	 * Show Message if the requested complain is not exists
 	 */
-	if (isError && demandId !== 'new') {
+	if (isError && complainId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -79,16 +82,16 @@ function Demand() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such demand!
+					There is no such complain!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/demand/demand"
+					to="/apps/complain/complain"
 					color="inherit"
 				>
-					Go to Demands Page
+					Go to Complains Page
 				</Button>
 			</motion.div>
 		);
@@ -101,10 +104,10 @@ function Demand() {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<DemandHeader />}
+				header={<ComplainHeader />}
 				content={
-					<div className="p-16 ">
-						<DemandForm demandId={demandId} />
+					<div className="p-16">
+						<ComplainForm complainId={complainId} />
 					</div>
 				}
 				innerScroll
@@ -113,4 +116,4 @@ function Demand() {
 	);
 }
 
-export default Demand;
+export default Complain;

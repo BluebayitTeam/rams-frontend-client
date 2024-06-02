@@ -13,9 +13,9 @@ import { ViewWeek } from '@mui/icons-material';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The demands header.
+ * The complains header.
  */
-function DemandsHeader(props) {
+function ComplainsHeader(props) {
 	const dispatch = useAppDispatch();
 	const searchText = useSelector(selectSearchText);
 	useEffect(() => {
@@ -31,7 +31,7 @@ function DemandsHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Demands</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Complains</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -44,22 +44,17 @@ function DemandsHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search by profession or company name"
+						placeholder="Search by complainer,passport no,visa no , mobile "
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
 						inputProps={{
 							'aria-label': 'Search'
 						}}
-						// onKeyDown={(ev) => {
-						//   if (ev.key === 'Enter') {
-						//     props?.setSearchKey(ev?.target?.value);
-						//   }
-						// }}
 						onKeyDown={(ev) => {
 							if (ev.key === 'Enter') {
-								props?.setSearchKey(ev?.target.value);
-							} else if (ev.key === 'Backspace' && ev.target.value?.length === 1) {
+								props?.setSearchKey(ev?.target?.value);
+							} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
 								props?.setSearchKey('');
 							}
 						}}
@@ -67,7 +62,7 @@ function DemandsHeader(props) {
 				</Paper>
 
 				<ViewWeek
-					onClick={() => navigate(`/apps/column/columns/demand`)}
+					onClick={() => navigate(`/apps/column/columns/complain`)}
 					className="cursor-pointer mr-10 "
 					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>
@@ -81,7 +76,7 @@ function DemandsHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/demand/demands/new"
+						to="/apps/complain/complains/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -92,4 +87,4 @@ function DemandsHeader(props) {
 	);
 }
 
-export default DemandsHeader;
+export default ComplainsHeader;

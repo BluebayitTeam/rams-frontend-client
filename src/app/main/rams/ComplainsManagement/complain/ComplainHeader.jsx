@@ -9,53 +9,53 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateDemandMutation, useDeleteDemandMutation, useUpdateDemandMutation } from '../ComplainsApi';
+import { useCreateComplainMutation, useDeleteComplainMutation, useUpdateComplainMutation } from '../ComplainsApi';
 
 /**
- * The demand header.
+ * The complain header.
  */
-function DemandHeader() {
+function ComplainHeader() {
 	const routeParams = useParams();
-	const { demandId } = routeParams;
-	const [createDemand] = useCreateDemandMutation();
-	const [saveDemand] = useUpdateDemandMutation();
-	const [removeDemand] = useDeleteDemandMutation();
+	const { complainId } = routeParams;
+	const [createComplain] = useCreateComplainMutation();
+	const [saveComplain] = useUpdateComplainMutation();
+	const [removeComplain] = useDeleteComplainMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteDemand');
-	const handleUpdate = localStorage.getItem('updateDemand');
+	const handleDelete = localStorage.getItem('deleteComplain');
+	const handleUpdate = localStorage.getItem('updateComplain');
 
-	function handleUpdateDemand() {
-		saveDemand(getValues()).then((data) => {
+	function handleUpdateComplain() {
+		saveComplain(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/demand/demands`);
+			navigate(`/apps/complain/complains`);
 		});
 	}
 
-	function handleCreateDemand() {
-		createDemand(getValues())
+	function handleCreateComplain() {
+		createComplain(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/demand/demands`);
+				navigate(`/apps/complain/complains`);
 			});
 	}
 
-	function handleRemoveDemand(dispatch) {
-		removeDemand(demandId);
+	function handleRemoveComplain(dispatch) {
+		removeComplain(complainId);
 		DeletedSuccessfully();
-		navigate('/apps/demand/demands');
+		navigate('/apps/complain/complains');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/demand/demands`);
+		navigate(`/apps/complain/complains`);
 	}
 
 	return (
@@ -69,7 +69,7 @@ function DemandHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/demand/demands"
+						to="/apps/complain/complains"
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>
@@ -77,7 +77,7 @@ function DemandHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Demands</span>
+						<span className="flex mx-4 font-medium">Complains</span>
 					</Typography>
 				</motion.div>
 
@@ -96,7 +96,7 @@ function DemandHeader() {
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/demand-image-placeholder.png"
+								src="assets/images/apps/ecommerce/complain-image-placeholder.png"
 								alt={name}
 							/>
 						)}
@@ -107,13 +107,13 @@ function DemandHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'New Demand'}
+							{name || 'New Complain'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							Demand Detail
+							Complain Detail
 						</Typography>
 					</motion.div>
 				</div>
@@ -124,44 +124,44 @@ function DemandHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
-				{handleDelete === 'deleteDemand' && demandId !== 'new' && (
+				{handleDelete === 'deleteComplain' && complainId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this demand?
+						Do you want to remove this complain?
 					</Typography>
 				)}
-				{handleDelete === 'deleteDemand' && demandId !== 'new' && (
+				{handleDelete === 'deleteComplain' && complainId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-1 "
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveDemand}
+						onClick={handleRemoveComplain}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						// style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{demandId === 'new' && (
+				{complainId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4 "
 						variant="contained"
 						color="secondary"
-						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateDemand}
+						disabled={_.isEmpty(dirtyFields) || !isValid}
+						onClick={handleCreateComplain}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteDemand' && handleUpdate === 'updateDemand' && demandId !== 'new' && (
+				{handleDelete !== 'deleteComplain' && handleUpdate === 'updateComplain' && complainId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 						color="secondary"
 						variant="contained"
 						// style={{ backgroundColor: '#4dc08e', color: 'white' }}
-						onClick={handleUpdateDemand}
+						onClick={handleUpdateComplain}
 					>
 						Update
 					</Button>
@@ -179,4 +179,4 @@ function DemandHeader() {
 	);
 }
 
-export default DemandHeader;
+export default ComplainHeader;
