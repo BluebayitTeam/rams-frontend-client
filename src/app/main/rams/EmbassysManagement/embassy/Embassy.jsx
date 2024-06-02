@@ -97,6 +97,7 @@ function Embassy() {
 
 	const [tabValue, setTabValue] = useState(0);
 	const [formKey, setFormKey] = useState(0);
+
 	const {
 		reset,
 		watch,
@@ -104,6 +105,7 @@ function Embassy() {
 		formState: { errors },
 		setValue
 	} = methods;
+
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -142,9 +144,7 @@ function Embassy() {
 				})
 				.catch(() => null);
 		} else {
-			handleReset({
-				stamping_status: doneNotDone.find((data) => data.default)?.id
-			});
+			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
 		}
 	}, [fromSearch]);
 
@@ -189,19 +189,13 @@ function Embassy() {
 					}
 				})
 				.catch(() => {
-					handleReset({
-						passenger: embassyId,
-						stamping_status: doneNotDone.find((data) => data.default)?.id
-					});
+					reset({ passenger: embassyId, stamping_status: doneNotDone.find((data) => data.default)?.id });
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			handleReset({
-				stamping_status: doneNotDone.find((data) => data.default)?.id
-			});
+			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
 		}
 	}, [fromSearch]);
-	const [passengerData, setPassengerData] = useState(false);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -322,8 +316,9 @@ function Embassy() {
 																		certificate_experience_no_readonly:
 																			office_work.certificate_experience
 																	});
+																	getCurrentStatus(newValue?.id);
 																	navigate(
-																		`/apps/embassy-management/embassys/${
+																		`/apps/embassy-management/embassy/${
 																			newValue?.passenger_id || newValue?.id
 																		}`
 																	);
@@ -362,11 +357,12 @@ function Embassy() {
 																		createPermission: true,
 																		updatePermission: false
 																	});
-																	navigate(`/apps/embassy-management/embassys/new`);
+																	getCurrentStatus(newValue?.id);
+																	navigate(`/apps/embassy-management/embassy/new`);
 																}
 																// no data scope show alert
 																else {
-																	navigate(`/apps/embassy-management/embassys/new`);
+																	navigate(`/apps/embassy-management/embassy/new`);
 
 																	handleReset({
 																		passenger: newValue?.id,
@@ -374,6 +370,7 @@ function Embassy() {
 																			(data) => data.default
 																		)?.id
 																	});
+																	getCurrentStatus(newValue?.id);
 
 																	const medical = `${
 																		res.data?.medical === false ? 'medical,' : ''
@@ -420,21 +417,23 @@ function Embassy() {
 																}
 															})
 															.catch(() => {
-																navigate(`/apps/embassy-management/embassys/new`);
+																navigate(`/apps/embassy-management/embassy/new`);
 																handleReset({
 																	passenger: newValue?.id,
 																	stamping_status: doneNotDone.find(
 																		(data) => data.default
 																	)?.id
 																});
+																getCurrentStatus(newValue?.id);
 															});
 													} else {
-														navigate(`/apps/embassy-management/embassys/new`);
+														navigate(`/apps/embassy-management/embassy/new`);
 														handleReset({
 															passenger: newValue?.id,
 															stamping_status: doneNotDone.find((data) => data.default)
 																?.id
 														});
+														getCurrentStatus(newValue?.id);
 													}
 												}}
 												renderInput={(params) => (
@@ -459,7 +458,6 @@ function Embassy() {
 								<EmbassyForm />
 							</div>
 						)}
-						{tabValue === 1 && <EmbassyForm embassyId={embassyId} />}
 					</div>
 				}
 				innerScroll

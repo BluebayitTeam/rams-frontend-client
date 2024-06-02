@@ -2,8 +2,8 @@ import { Outlet } from 'react-router';
 import withReducer from 'app/store/withReducer';
 import reducer from './store';
 
-function EmbassyApp() {
+function MusanedOkalaApp() {
 	return <Outlet />;
 }
 
-export default withReducer('embassyApp', reducer)(EmbassyApp);
+export default withReducer('musanedOkalaApp', reducer)(MusanedOkalaApp);

@@ -19,7 +19,6 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
-import Swal from 'sweetalert2';
 import MultiplePassengersTable from './MultiplePassengersTable';
 import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 import { columns } from './data/column';
@@ -88,8 +87,7 @@ function DocmentSendForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		// dispatch(getCurrentStatuss());
-		// dispatch(getDocmentSends());
+		
 	}, []);
 	const newColumn = [];
 	useEffect(() => {
@@ -117,42 +115,42 @@ function DocmentSendForm(props) {
 			.catch((err) => {});
 	};
 
-	function handleSaveMultipleStatusUpdate(id) {
-		if (mltPassengerList?.length >= availableVisa) {
-			Swal.fire({
-				position: 'top-center',
-				icon: 'warning',
-				title: `Number of Pax Full for this Calling No`,
-				showConfirmButton: false,
-				timer: 5000
-			});
-		} else {
-			fetch(`${GET_PASSENGER_BY_ID}/${id}/${watch('visa_entry')}`)
-				.then((response) => response.json())
-				.then((data) => {
-					if (data?.same_visa_entry) {
-						Swal.fire({
-							position: 'top-center',
-							icon: 'warning',
-							title: `This Passenger Has Already Been Assigned the same Calling Visa`,
-							showConfirmButton: false,
-							timer: 5000
-						});
-					} else if (data?.visa_entry_exist) {
-						Swal.fire({
-							title: 'Calling Visa Already Assigned for This Passenger',
-							text: 'Please Remove the Previous Calling Visa.',
-							icon: 'error',
-							showConfirmButton: false,
-							timer: 5000
-						});
-					} else {
-						setMltPassengerList((prevList) => [...prevList, passengers.find((data) => data?.id === id)]);
-					}
-				})
-				.catch(() => {});
-		}
-	}
+	// function handleSaveMultipleStatusUpdate(id) {
+	// 	if (mltPassengerList?.length >= availableVisa) {
+	// 		Swal.fire({
+	// 			position: 'top-center',
+	// 			icon: 'warning',
+	// 			title: `Number of Pax Full for this Calling No`,
+	// 			showConfirmButton: false,
+	// 			timer: 5000
+	// 		});
+	// 	} else {
+	// 		fetch(`${GET_PASSENGER_BY_ID}/${id}/${watch('visa_entry')}`)
+	// 			.then((response) => response.json())
+	// 			.then((data) => {
+	// 				if (data?.same_visa_entry) {
+	// 					Swal.fire({
+	// 						position: 'top-center',
+	// 						icon: 'warning',
+	// 						title: `This Passenger Has Already Been Assigned the same Calling Visa`,
+	// 						showConfirmButton: false,
+	// 						timer: 5000
+	// 					});
+	// 				} else if (data?.visa_entry_exist) {
+	// 					Swal.fire({
+	// 						title: 'Calling Visa Already Assigned for This Passenger',
+	// 						text: 'Please Remove the Previous Calling Visa.',
+	// 						icon: 'error',
+	// 						showConfirmButton: false,
+	// 						timer: 5000
+	// 					});
+	// 				} else {
+	// 					setMltPassengerList((prevList) => [...prevList, passengers.find((data) => data?.id === id)]);
+	// 				}
+	// 			})
+	// 			.catch(() => {});
+	// 	}
+	// }
 
 	return (
 		<div>
@@ -181,12 +179,7 @@ function DocmentSendForm(props) {
 						getOptionLabel={(option) => `${option.passenger_name} - ${option.passport_no}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
-							setSelectedValueDisable(true);
-
-							// Update mltPassengerList state with the selected passenger
-							if (newValue) {
-								handleSaveMultipleStatusUpdate(newValue?.id);
-							}
+							handleCheckAvailableVisa(newValue?.id, newValue?.quantity);
 						}}
 						renderInput={(params) => (
 							<TextField
@@ -204,6 +197,19 @@ function DocmentSendForm(props) {
 					/>
 				)}
 			/>
+
+			{mltPassengerList?.length > 0 && (
+				<div>
+					<MultiplePassengersTable
+						passengers={mltPassengerList}
+						setMltPassengerList={setMltPassengerList}
+					/>
+				</div>
+			)}
+
+			{showError && mltPassengerList?.length >= availableVisa && (
+				<h4 style={{ color: 'red' }}>Number of Pax Full for this Calling No</h4>
+			)}
 
 			<div>
 				<br />
@@ -241,19 +247,6 @@ function DocmentSendForm(props) {
 					)}
 				/>
 			</div>
-
-			{mltPassengerList?.length > 0 && (
-				<div>
-					<MultiplePassengersTable
-						passengers={mltPassengerList}
-						setMltPassengerList={setMltPassengerList}
-					/>
-				</div>
-			)}
-
-			{showError && mltPassengerList?.length >= availableVisa && (
-				<h4 style={{ color: 'red' }}>Number of Pax Full for this Calling No</h4>
-			)}
 		</div>
 	);
 }
