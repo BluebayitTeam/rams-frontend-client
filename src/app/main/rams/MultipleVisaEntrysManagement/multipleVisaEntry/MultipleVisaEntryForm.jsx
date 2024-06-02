@@ -2,27 +2,20 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
-import {
-	Autocomplete,
-	Checkbox,
-	FormControlLabel,
-	Icon,
-	InputAdornment,
-	TextField,
-	Tooltip,
-	tooltipClasses
-} from '@mui/material';
-import { getPassengers } from 'app/store/dataSlice';
+import { Autocomplete, Checkbox, FormControlLabel, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { getAgents, getPassengers, getVisaEntrys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
+import {
+	CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN,
+	CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER
+} from 'src/app/constant/constants';
 import Swal from 'sweetalert2';
 import MultiplePassengersTable from './MultiplePassengersTable';
-import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
-import { columns } from './data/column';
+import { useCreateMultipleVisaEntryMutation } from '../MultipleVisaEntrysApi';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -44,39 +37,28 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function DocmentSendForm(props) {
+function MultipleVisaEntryForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
-	const [createDocmentSend] = useCreateDocmentSendMutation();
+	const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
 
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { docmentSendId } = routeParams;
+	const { multipleVisaEntryId } = routeParams;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const docmentSends = useSelector((state) => state.data.docmentSends);
+	const visa_entries = useSelector((state) => state.data.visaEntries);
 	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [showError, setShowError] = useState(false);
 	const [availableVisa, setAvailableVisa] = useState(null);
-	const [documentSends, setDocumentSends] = useState([]);
-
-	function handleChheckboxSend(id) {
-		dispatch(addDocumentSendColumn(documentSends.find((data) => data?.key === id)));
-	}
-
-	const handleChange = (e) => {
-		const { name, checked } = e.target;
-		handleChheckboxSend(name);
-		const tempDocumentSend = documentSends.map((documentSend) =>
-			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-		);
-		setDocumentSends(tempDocumentSend);
-	};
-
+	const [checked, setChecked] = useState(false);
+	const [checked1, setChecked1] = useState(false);
+	const [checked3, setChecked3] = useState(false);
+	const [isChecked, setisChecked] = useState(false);
 	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
 
 	useEffect(() => {
@@ -88,13 +70,18 @@ function DocmentSendForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		// dispatch(getCurrentStatuss());
-		// dispatch(getDocmentSends());
+		dispatch(getVisaEntrys());
+		dispatch(getAgents());
 	}, []);
-	const newColumn = [];
-	useEffect(() => {
-		setDocumentSends(columns);
-	}, []);
+	const handleChange5 = (event) => {
+		setChecked(event.target.checked);
+	};
+	const handleChange1 = (event) => {
+		setChecked1(event.target.checked);
+	};
+	const handleChange3 = (event) => {
+		setChecked3(event.target.checked);
+	};
 
 	useEffect(() => {
 		setValue(
@@ -111,7 +98,7 @@ function DocmentSendForm(props) {
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		fetch(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN)
+		fetch(`${CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN}${id}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
 			.catch((err) => {});
@@ -127,7 +114,7 @@ function DocmentSendForm(props) {
 				timer: 5000
 			});
 		} else {
-			fetch(`${GET_PASSENGER_BY_ID}/${id}/${watch('visa_entry')}`)
+			fetch(`${CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER}/${id}/${watch('visa_entry')}`)
 				.then((response) => response.json())
 				.then((data) => {
 					if (data?.same_visa_entry) {
@@ -156,20 +143,74 @@ function DocmentSendForm(props) {
 
 	return (
 		<div>
-			<div>
-				{documentSends.map((documentSend) => (
-					<FormControlLabel
-						onChange={handleChange}
-						checked={documentSend?.isChecked || false}
-						name={documentSend.key}
-						style={{ width: '45%' }}
-						control={<Checkbox />}
-						label={`${documentSend.label} `}
-					/>
-				))}
+			<div className="flex md:space-x-12 flex-col md:flex-row">
+				<Controller
+					name="visa_no"
+					control={control}
+					render={({ field: { onChange, value, name } }) => (
+						<Autocomplete
+							className="mt-8 mb-16 w-full "
+							freeSolo
+							value={value ? visa_entries.find((data) => data.id === value) : null}
+							options={visa_entries}
+							getOptionLabel={(option) => `${option.visa_number} `}
+							onChange={(event, newValue) => {
+								// onChange({ id: newValue.id });
+								onChange(newValue?.id);
+							}}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									placeholder="Select Visa No."
+									label="Visa No."
+									// error={!value}
+									autoFocus
+									helperText={errors?.agency?.message}
+									variant="outlined"
+									InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+								/>
+							)}
+						/>
+					)}
+				/>
 			</div>
 
-			<Controller
+			{watch('visa_entry') && (
+				<h6 className={`pb-10 ps-5 text-${availableVisa > 0 ? 'green' : 'red'}`}>
+					{availableVisa > 0 ? `Available Calling: ${availableVisa}` : 'Calling Not Available'}
+				</h6>
+			)}
+
+			{/* <Controller
+				name="current_status"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? currentStatuss.find((data) => data.id == value) : null}
+						options={currentStatuss}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Current Status"
+								label="Current Status"
+								error={!!errors.current_status}
+								helperText={errors?.current_status?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/> */}
+			{/* <Controller
 				name="passenger"
 				control={control}
 				render={({ field: { value, onChange } }) => (
@@ -203,42 +244,30 @@ function DocmentSendForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
 
-			<div>
-				<br />
-				<br />
-				<br />
-
-				<Controller
-					name="email"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							type="text"
-							error={!!errors.email}
-							helperText={errors?.email?.message}
-							label="Email"
-							InputProps={{
-								endAdornment: (
-									<InputAdornment position="end">
-										<Icon
-											className="text-20"
-											color="action"
-										>
-											user
-										</Icon>
-									</InputAdornment>
-								)
-							}}
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value && { shrink: true }}
-							// onKeyDown={handleSubmitOnKeyDownEnter}
+			<div className="flex md:space-x-12 flex-col md:flex-row">
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked1={checked}
+							onChange={handleChange1}
 						/>
-					)}
+					}
+					label="Selection"
+					name="select"
+					className="mt-8 mb-16 w-full md:w-6/12"
+				/>
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked={checked}
+							onChange={handleChange5}
+						/>
+					}
+					label="CheckBox"
+					name="select"
+					className="mt-8 mb-16 w-full md:w-6/12"
 				/>
 			</div>
 
@@ -258,4 +287,4 @@ function DocmentSendForm(props) {
 	);
 }
 
-export default DocmentSendForm;
+export default MultipleVisaEntryForm;

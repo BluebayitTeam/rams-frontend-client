@@ -44,7 +44,7 @@ const rows = [
 	}
 ];
 
-function DocmentSendPassengersTableHead(props) {
+function MultiplePassengersTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
@@ -73,4 +73,4 @@ function DocmentSendPassengersTableHead(props) {
 	);
 }
 
-export default DocmentSendPassengersTableHead;
+export default MultiplePassengersTableHead;

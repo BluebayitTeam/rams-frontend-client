@@ -5,23 +5,23 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import DocmentSendHeader from './DocmentSendHeader';
-import DocmentSendModel from './models/DocmentSendModel';
-import DocmentSendForm from './DocmentSendForm';
+import MultipleVisaEntryHeader from './MultipleVisaEntryHeader';
+import MultipleVisaEntryModel from './models/MultipleVisaEntryModel';
+import MultipleVisaEntryForm from './MultipleVisaEntryForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a docmentSend name')
-		.min(5, 'The docmentSend name must be at least 5 characters')
+		.nonempty('You must enter a multipleVisaEntry name')
+		.min(5, 'The multipleVisaEntry name must be at least 5 characters')
 });
 
-function DocmentSend() {
+function MultipleVisaEntry() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { docmentSendId } = routeParams;
+	const { multipleVisaEntryId } = routeParams;
 
 	const [tabValue, setTabValue] = useState(0);
 	const [formKey, setFormKey] = useState(0);
@@ -34,10 +34,10 @@ function DocmentSend() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (docmentSendId === 'new') {
-			reset(DocmentSendModel({}));
+		if (multipleVisaEntryId === 'new') {
+			reset(MultipleVisaEntryModel({}));
 		}
-	}, [docmentSendId, reset]);
+	}, [multipleVisaEntryId, reset]);
 	const handleReset = () => {
 		reset({});
 		setFormKey((prevKey) => prevKey + 1);
@@ -52,10 +52,10 @@ function DocmentSend() {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<DocmentSendHeader handleReset={handleReset} />}
+				header={<MultipleVisaEntryHeader handleReset={handleReset} />}
 				content={
 					<div className="p-16 ">
-						<DocmentSendForm docmentSendId={docmentSendId} />
+						<MultipleVisaEntryForm multipleVisaEntryId={multipleVisaEntryId} />
 					</div>
 				}
 				innerScroll
@@ -64,4 +64,4 @@ function DocmentSend() {
 	);
 }
 
-export default DocmentSend;
+export default MultipleVisaEntry;
