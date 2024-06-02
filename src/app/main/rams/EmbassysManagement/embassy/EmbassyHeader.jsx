@@ -42,11 +42,12 @@ function EmbassyHeader({ handleReset, emptyValue }) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('embassyAlert', 'updateEmbassy');
+						localStorage.setItem('medicalAlert', 'updateEmbassy');
+
 						handleReset({
+							...emptyValue,
 							stamping_status: doneNotDone.find((data) => data.default)?.id
 						});
-
 						UpdatedSuccessfully();
 						navigate('/apps/embassy-management/embassys/new');
 					}
@@ -70,9 +71,9 @@ function EmbassyHeader({ handleReset, emptyValue }) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						localStorage.setItem('embassyAlert', 'saveEmbassy');
-
+						localStorage.setItem('medicalAlert', 'saveEmbassy');
 						handleReset({
+							...emptyValue,
 							stamping_status: doneNotDone.find((data) => data.default)?.id
 						});
 					}
@@ -92,10 +93,10 @@ function EmbassyHeader({ handleReset, emptyValue }) {
 						history.goBack();
 					} else {
 						handleReset({
+							...emptyValue,
 							stamping_status: doneNotDone.find((data) => data.default)?.id
 						});
-
-						localStorage.setItem('embassyAlert', 'saveEmbassy');
+						localStorage.setItem('medicalAlert', 'saveEmbassy');
 						navigate('/apps/embassy-management/embassys/new');
 
 						dispatch(
@@ -116,9 +117,9 @@ function EmbassyHeader({ handleReset, emptyValue }) {
 
 	const handleCancel = () => {
 		handleReset({
+			...emptyValue,
 			stamping_status: doneNotDone.find((data) => data.default)?.id
 		});
-
 		navigate('/apps/embassy-management/embassys/new');
 	};
 

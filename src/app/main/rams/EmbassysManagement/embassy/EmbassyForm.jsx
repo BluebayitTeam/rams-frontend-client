@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { getCurrentStatuss, getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
+import { getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
+import increaseMonth from 'src/app/@helpers/increaseMonth';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -26,35 +27,34 @@ function EmbassyForm(props) {
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
-	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 
+	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
+	const embassyData = useSelector((state) => state.data.embassys);
+	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
 	useEffect(() => {
 		dispatch(getPassengers());
-		// dispatch(getAgents());
 		dispatch(getRecruitingAgencys());
-		dispatch(getCurrentStatuss());
 	}, []);
 
 	useEffect(() => {
 		setPreviewOldVisaImage('');
 		setPreviewStampVisaImage('');
-	}, [getValues('recruiting_agency')]);
+	}, [getValues('musaned_no')]);
 
 	return (
 		<div>
 			<Controller
 				name="recruiting_agency"
 				control={control}
-				render={({ field: { onChange, value } }) => (
+				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? recruitingAgencys?.find((data) => data.id === value) : null}
-						// options={recruitingAgencys}
-						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...recruitingAgencys]}
-						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
+						value={value ? recruitingAgencys.find((data) => data.id === value) : null}
+						options={recruitingAgencys}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -63,11 +63,12 @@ function EmbassyForm(props) {
 								{...params}
 								placeholder="Select Recruiting Agency"
 								label="Recruiting Agency"
-								error={!!errors.recruiting_agency}
+								// error={!!errors.recruiting_agency || !value}
 								helperText={errors?.recruiting_agency?.message}
 								variant="outlined"
-								required
-								InputLabelProps={params.value && { shrink: true }}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
+								// onKeyDown={handleSubmitOnKeyDownEnter}
 							/>
 						)}
 					/>
@@ -101,12 +102,14 @@ function EmbassyForm(props) {
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
+							// error={!!errors.profession_english}
 							helperText={errors?.profession_english?.message}
 							label="Profession English"
 							id="profession_english"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -128,6 +131,7 @@ function EmbassyForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -142,12 +146,14 @@ function EmbassyForm(props) {
 							{...field}
 							value={field.value || ''}
 							className="mt-8 mb-16"
+							// error={!!errors.salary}
 							helperText={errors?.salary?.message}
 							label="Salary"
 							id="salary"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
+							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -160,7 +166,7 @@ function EmbassyForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? doneNotDone.find((data) => data.id === value) : null}
+						value={value ? doneNotDone.find((data) => data.id == value) : null}
 						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -182,6 +188,37 @@ function EmbassyForm(props) {
 					/>
 				)}
 			/>
+
+			<Controller
+				name="stamping_status"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? doneNotDone.find((data) => data.id == value) : null}
+						options={doneNotDone}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Stamping Status"
+								label="Stamping Status"
+								// error={!!errors.stamping_status}
+								helperText={errors?.stamping_status?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+
 			<Controller
 				name="stamping_date"
 				control={control}
@@ -192,6 +229,11 @@ function EmbassyForm(props) {
 						error={!!errors.stamping_date}
 						helperText={errors?.stamping_date?.message}
 						label="Stamping Date"
+						onChange={(event) => {
+							const { value } = event.target;
+							field.onChange(value);
+							setValue('visa_expiry_date', increaseMonth(value, 3));
+						}}
 						id="stamping_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -199,6 +241,7 @@ function EmbassyForm(props) {
 					/>
 				)}
 			/>
+
 			<Controller
 				name="visa_expiry_date"
 				control={control}
@@ -208,7 +251,7 @@ function EmbassyForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.visa_expiry_date}
 						helperText={errors?.visa_expiry_date?.message}
-						label="Visa Expiry Date"
+						label="visa Expiry Date"
 						id="visa_expiry_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
@@ -216,6 +259,7 @@ function EmbassyForm(props) {
 					/>
 				)}
 			/>
+
 			<Controller
 				name="delivery_date"
 				control={control}
@@ -225,10 +269,11 @@ function EmbassyForm(props) {
 						className="mt-8 mb-16"
 						error={!!errors.delivery_date}
 						helperText={errors?.delivery_date?.message}
-						label="delivery date"
+						label="Delivery Date"
 						id="delivery_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
+						style={{ display: embassyData?.embassy?.delivery_date ? 'flex' : 'none' }}
 						fullWidth
 					/>
 				)}
@@ -256,6 +301,26 @@ function EmbassyForm(props) {
 						/>
 					);
 				}}
+			/>
+			<Controller
+				name="okala_no"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						value={field.value || ''}
+						className="mt-8 mb-16"
+						error={!!errors.name_official}
+						helperText={errors?.name_official?.message}
+						label="Okala No."
+						id="okala_no"
+						variant="outlined"
+						InputProps={{
+							readOnly: true
+						}}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<Controller

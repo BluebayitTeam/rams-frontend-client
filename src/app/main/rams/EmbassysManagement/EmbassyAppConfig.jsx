@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import EmbassyApp from './EmbassyApp';
-import Embassy from './Embassy/Embassy';
+import Embassy from './embassy/Embassy';
 
 /**
  * The E-Commerce app configuration.
