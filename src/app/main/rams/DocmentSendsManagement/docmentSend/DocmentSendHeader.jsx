@@ -33,10 +33,10 @@ function DocmentSendHeader({ handleReset }) {
 		setTimeout(() => setOpenSuccessStatusAlert(false), 2000);
 	}
 
-	function handleCancel() {
-		handleReset();
-		navigate(`/apps/docmentSend/docmentSends/new`);
-	}
+	// function handleCancel() {
+	// 	handleReset();
+	// 	navigate(`/apps/docmentSend/docmentSends/new`);
+	// }
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
@@ -92,15 +92,7 @@ function DocmentSendHeader({ handleReset }) {
 							Successfully Email this Document in This Email.
 						</DialogContentText>
 					</DialogContent>
-					<DialogActions>
-						{/* <Button
-						onClick={() => setOpenSuccessStatusAlert(false)}
-						style={{ backgroundColor: 'green', fontSize: '18px', color: 'white' }}
-						autoFocus
-					>
-						Ok
-					</Button> */}
-					</DialogActions>
+					<DialogActions />
 				</Dialog>
 			</motion.div>
 		</div>

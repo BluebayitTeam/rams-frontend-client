@@ -18,13 +18,11 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN,
-	CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER
-} from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
 import Swal from 'sweetalert2';
 import MultiplePassengersTable from './MultiplePassengersTable';
 import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
+import { columns } from './data/column';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -93,6 +91,10 @@ function DocmentSendForm(props) {
 		// dispatch(getCurrentStatuss());
 		// dispatch(getDocmentSends());
 	}, []);
+	const newColumn = [];
+	useEffect(() => {
+		setDocumentSends(columns);
+	}, []);
 
 	useEffect(() => {
 		setValue(
@@ -109,7 +111,7 @@ function DocmentSendForm(props) {
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		fetch(`${CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN}${id}`, authTOKEN)
+		fetch(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
 			.catch((err) => {});
@@ -125,7 +127,7 @@ function DocmentSendForm(props) {
 				timer: 5000
 			});
 		} else {
-			fetch(`${CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER}/${id}/${watch('visa_entry')}`)
+			fetch(`${GET_PASSENGER_BY_ID}/${id}/${watch('visa_entry')}`)
 				.then((response) => response.json())
 				.then((data) => {
 					if (data?.same_visa_entry) {
