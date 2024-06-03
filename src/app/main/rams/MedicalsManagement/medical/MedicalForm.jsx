@@ -47,43 +47,13 @@ function MedicalForm(props) {
 		dispatch(getPassengers());
 		dispatch(getMedicalCenters());
 		dispatch(getCurrentStatuss());
-	}, [dispatch]);
-	console.log('wbkjwb', getValues());
-	useEffect(() => {
-		if (medicalId === 'new') {
-			// reset({
-			// 	medical_center: 'all',
-			// 	// passenger: 'all',
-			// 	medical_serial_no: '',
-			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
-			// 	medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			// 	medical_exam_date: '',
-			// 	medical_report_date: '',
-			// 	medical_issue_date: '',
-			// 	medical_expiry_date: '',
-			// 	notes: '',
-			// 	slip_pic: '',
-			// 	medical_card_pic: '',
-			// 	current_status: 'all'
-			// });
-			setPreviewImage('');
-			setPreviewImage2('');
-		} else {
-			// Fetch and set data based on medicalId if needed
-			// reset(formData);
-		}
-	}, [medicalId, reset, medicalCenters, currentStatuss]);
+	}, []);
+	// console.log('wbkjwb', getValues());
 
 	useEffect(() => {
 		setPreviewImage('');
 		setPreviewImage2('');
 	}, [getValues('medical_center')]);
-
-	// const increaseMonth = (dateString, months) =>
-	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
-	// 		.toISOString()
-	// 		.slice(0, 10)
-	// 		.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
 
 	return (
 		<div>
@@ -96,7 +66,7 @@ function MedicalForm(props) {
 						freeSolo
 						value={value ? medicalCenters?.find((data) => data.id === value) : null}
 						// options={medicalCenters}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
+						options={medicalCenters}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -277,7 +247,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...currentStatuss]}
+						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);

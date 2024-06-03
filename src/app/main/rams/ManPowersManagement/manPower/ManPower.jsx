@@ -116,37 +116,7 @@ function ManPower() {
 				.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({
-							...setIdIfValueIsObject(res.data),
-							passenger: manPowerId
-						});
-					}
-				})
-				.catch(() => null);
-		} else {
-			handleReset({
-				...emptyValue,
-				man_power_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	}, [fromSearch]);
-
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						handleReset({
-							...setIdIfValueIsObject(res.data),
-							passenger: manPowerId
-						});
+						// handleReset({ ...setIdIfValueIsObject(res.data), passenger: manPowerId });
 					} else {
 						handleReset({
 							passenger: manPowerId,
@@ -235,6 +205,7 @@ function ManPower() {
 															Authorization: localStorage.getItem('jwt_access_token')
 														}
 													};
+													// getManpower(newValue?.id);
 													axios
 														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
 														.then((res) => {

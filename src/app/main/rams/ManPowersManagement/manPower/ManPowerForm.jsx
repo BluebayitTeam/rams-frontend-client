@@ -52,62 +52,6 @@ function ManPowerForm(props) {
 	useEffect(() => {
 		setPreviewImage('');
 	}, [getValues('recruiting_agency')]);
-	// useEffect(() => {
-	// 	if (manPowerId === 'new') {
-	// 		reset({
-	// 			passenger: 'all',
-	// 			man_power_status: doneNotDone.find((data) => data.default)?.id,
-	// 			recruiting_agency: 'all',
-	// 			new_visa_no: '',
-	// 			bank_name: '',
-	// 			bank_account_no: '',
-	// 			// new_visa_no: '',
-	// 			registration_id: '',
-	// 			man_power_date: '',
-	// 			submit_date: '',
-	// 			current_status: 'all',
-	// 			smart_card_image: '',
-	// 			delivery_date: ''
-	// 		});
-	// 	} else {
-	// 		console.log('valueForm', getValues());
-	// 		// Fetch and set data based on manPowerId if needed
-	// 		// reset(formData);
-	// 	}
-	// }, [manPowerId, reset, recruitingAgencys, currentStatuss]);
-
-	// useEffect(() => {
-	// 	if ((manPowerId !== 'new', !reload)) {
-	// 		const authTOKEN = {
-	// 			headers: {
-	// 				'Content-type': 'application/json',
-	// 				Authorization: localStorage.getItem('jwt_access_token')
-	// 			}
-	// 		};
-	// 		axios.get(`${MANPOWER_BY_PASSENGER_ID}${manPowerId}`, authTOKEN).then((res) => {
-	// 			if (res.data.id) {
-	// 				console.log('fromData', res.data);
-	// 				reset({
-	// 					...setIdIfValueIsObject({
-	// 						...res?.data,
-	// 						passenger: parseInt(manPowerId, 10),
-
-	// 						man_power_status: doneNotDone.find((data) => data.default)?.id,
-	// 						recruiting_agency: res?.data?.recruiting_agency?.id,
-	// 						man_power_date: moment(new Date(res?.data?.man_power_date)).format('YYYY-MM-DD'),
-	// 						submit_date: moment(new Date(res?.data?.submit_date)).format('YYYY-MM-DD')
-	// 					})
-	// 				});
-	// 			}
-
-	// 			setReload(true);
-	// 		});
-	// 	} else {
-	// 		// console.log('valueForm', getValues());
-	// 		// Fetch and set data based on manPowerId if needed
-	// 		// reset(formData);
-	// 	}
-	// }, [manPowerId, reset, reload]);
 
 	const current_status = sessionStorage.getItem('passengerCurrentStatus');
 
