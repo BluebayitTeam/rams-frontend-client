@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
@@ -305,8 +306,8 @@ function AgentsTable(props) {
 																		color: 'red',
 																		cursor: 'pointer',
 																		display: 'block',
-																		fontSize: '35px',
-																		margin: 'auto'
+																		fontSize: '35px'
+																		// margin: 'auto'
 																	}}
 																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
@@ -315,8 +316,16 @@ function AgentsTable(props) {
 																	onClick={() =>
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
 																	}
-																	src={`${BASE_URL}${n[key]}`}
-																	style={{ height: '70px' }}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
 																	alt="test"
 																/>
 															)

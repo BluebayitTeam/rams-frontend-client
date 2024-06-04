@@ -90,7 +90,7 @@ function AgentForm(props) {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
 	};
-
+	console.log('image', image, fileExtName);
 	return (
 		<div>
 			<Controller
@@ -422,94 +422,6 @@ function AgentForm(props) {
 				/>
 			</Box>
 
-			{/* Secondary Phone Start */}
-			{/* <Box style={{ display: 'flex' }}>
-				<Controller
-					name="country_code2"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<Autocomplete
-							className="mt-8 mb-16 "
-							id="country-select-demo"
-							sx={{ width: 300 }}
-							value={value ? countryCodes.find((country) => country.value === value) : null}
-							options={countryCodes}
-							autoHighlight
-							error={!value}
-							getOptionLabel={(option) => option.label}
-							renderOption={(prop, option) => {
-								console.log('pasasrop', option);
-
-								return (
-									<Box
-										component="li"
-										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-										{...prop}
-									>
-										<img
-											loading="lazy"
-											width="20"
-											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
-											alt=""
-										/>
-										{option.label} ({option.code}) +{option.value}
-									</Box>
-								);
-							}}
-							onChange={(event, newValue) => {
-								onChange(newValue?.value);
-								handleChnageCountry(newValue?.label);
-								setValue('secondary_phone', newValue?.value);
-							}}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label="Choose a country"
-									variant="outlined"
-									error={!value}
-									style={{ width: '250px' }}
-									inputProps={{
-										...params.inputProps,
-										autoComplete: 'new-password' // disable autocomplete and autofill
-									}}
-								/>
-							)}
-						/>
-					)}
-				/>
-				<TextField
-					name="show_country_code2"
-					id="filled-read-only-input"
-					label="Country Code"
-					style={{ width: '150px' }}
-					value={getCountryCode2 || ''}
-					className="mt-8 mb-16"
-					InputLabelProps={{ shrink: true }}
-					InputProps={{
-						readOnly: true
-					}}
-					variant="outlined"
-				/>
-				<Controller
-					name="secondary_phone"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							// error={!!errors.primary_phone || !field.value}
-							label="Secondary Phone"
-							id="secondary_phone"
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						/>
-					)}
-				/>
-			</Box> */}
-			{/* Secondary Phone End */}
-
 			<Controller
 				name="user_type"
 				control={control}
@@ -528,19 +440,6 @@ function AgentForm(props) {
 					);
 				}}
 			/>
-
-			{/* <Controller
-				name="date_of_birth"
-				control={control}
-				render={({ field }) => (
-					<CustomDatePicker
-						field={field}
-						label="Birthday"
-					/>
-				)}
-			/> */}
-
-			{/* Birthday date */}
 
 			<Controller
 				name="date_of_birth"
@@ -815,100 +714,102 @@ function AgentForm(props) {
 					<img src={previewImage} />
 				</div>
 			</div> */}
-
-			<Controller
-				name="image"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<div className="flex w-full flex-row items-center justify-evenly">
-						<div className="flex-col">
-							<Typography className="text-center">File</Typography>
-							<label
-								htmlFor={`${name}-button-file`}
-								className={clsx(
-									classes.productImageUpload,
-									'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-								)}
-							>
-								<input
-									accept="image/x-png,image/gif,image/jpeg,application/pdf"
-									className="hidden"
-									id={`${name}-button-file`}
-									type="file"
-									onChange={async (e) => {
-										const reader = new FileReader();
-										reader.onload = () => {
-											if (reader.readyState === 2) {
-												setPreviewFile(reader.result);
-											}
-										};
-										reader.readAsDataURL(e.target.files[0]);
-
-										const file = e.target.files[0];
-
-										setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
-
-										onChange(file);
-									}}
-								/>
-								<Icon
-									fontSize="large"
-									color="action"
+			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
+				<Controller
+					name="image"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">File</Typography>
+								<label
+									htmlFor={`${name}-button-file`}
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
 								>
-									cloud_upload
-								</Icon>
-							</label>
-						</div>
-						{!previewFile && file && (
-							<div
-								style={{
-									width: 'auto',
-									height: '150px',
-									overflow: 'hidden',
-									display: 'flex'
-								}}
-							>
-								{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-									<PictureAsPdf
-										style={{
-											color: 'red',
-											cursor: 'pointer',
-											display: 'block',
-											fontSize: '35px',
-											margin: 'auto'
-										}}
-										onClick={() => window.open(`${BASE_URL}${file}`)}
-									/>
-								) : (
-									<img
-										src={`${BASE_URL}${file}`}
-										style={{ height: '150px' }}
-									/>
-								)}
-							</div>
-						)}
+									<input
+										// accept={`'.jpg, .jpeg, .png, .doc, .pdf, .txt, .docs , .docx, .xls, .xlsx'`}
+										accept={`'.jpg, .jpeg, .png, .pdf `}
+										className="hidden"
+										id={`${name}-button-file`}
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewFile(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
 
-						{previewFile && (
-							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-								{fileExtName === 'pdf' ? (
-									<iframe
-										src={previewFile}
-										frameBorder="0"
-										scrolling="auto"
-										height="150px"
-										width="150px"
+											const file = e.target.files[0];
+
+											setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+
+											onChange(file);
+										}}
 									/>
-								) : (
-									<img
-										src={previewFile}
-										style={{ height: '150px' }}
-									/>
-								)}
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
 							</div>
-						)}
-					</div>
-				)}
-			/>
+							{!previewFile && image && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(image || image?.File?.name)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${image}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${image}`}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+
+							{previewFile && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtName === 'pdf' ? (
+										<iframe
+											src={previewFile}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewFile}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
+				/>
+			</div>
 		</div>
 	);
 }
