@@ -90,7 +90,7 @@ function AgentForm(props) {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
 	};
-	console.log('image', image, fileExtName);
+
 	return (
 		<div>
 			<Controller
@@ -141,27 +141,6 @@ function AgentForm(props) {
 					);
 				}}
 			/>
-			{/* 
-			<Controller
-				name="last_name"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							//error={!!errors.last_name}
-							helperText={errors?.last_name?.message}
-							label="Last Name"
-							id="last_name"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-							 
-						/>
-					);
-				}}
-			/> */}
 
 			<Controller
 				name="father_name"
@@ -209,7 +188,9 @@ function AgentForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
+							// error={!!errors.username}
 							helperText={errors?.username?.message}
+							// helperText={<span style={{ color: 'red' }}>{errors?.username?.message}</span>}
 							label="User Name"
 							id="username"
 							variant="outlined"
@@ -668,52 +649,6 @@ function AgentForm(props) {
 				}}
 			/>
 
-			{/* <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-				<Controller
-					name=""
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<label
-							htmlFor="button-file"
-							className={clsx(
-								classes.productImageUpload,
-								'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-							)}
-						>
-							<input
-								accept="image/x-png,image/gif,image/jpeg,application/pdf"
-								className="hidden"
-								id="button-file"
-								type="file"
-								onChange={async (e) => {
-									const reader = new FileReader();
-									reader.onload = () => {
-										if (reader.readyState === 2) {
-											setPreviewImage(reader.result);
-										}
-									};
-									reader.readAsDataURL(e.target.files[0]);
-
-									const file = e.target.files[0];
-									onChange(file);
-								}}
-							/>
-							<Icon
-								fontSize="large"
-								color="action"
-								label="Agent Image"
-							>
-								cloud_upload
-							</Icon>
-						</label>
-					)}
-				/>
-				{image && !previewImage && <img src={`${BASE_URL}${image}`} />}
-
-				<div style={{ width: '100px', height: '100px' }}>
-					<img src={previewImage} />
-				</div>
-			</div> */}
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Controller
 					name="image"
@@ -730,8 +665,7 @@ function AgentForm(props) {
 									)}
 								>
 									<input
-										// accept={`'.jpg, .jpeg, .png, .doc, .pdf, .txt, .docs , .docx, .xls, .xlsx'`}
-										accept={`'.jpg, .jpeg, .png, .pdf `}
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
 										className="hidden"
 										id={`${name}-button-file`}
 										type="file"
@@ -759,7 +693,7 @@ function AgentForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewFile && image && (
+							{!previewFile && (image || image) && (
 								<div
 									style={{
 										width: 'auto',
@@ -768,7 +702,7 @@ function AgentForm(props) {
 										display: 'flex'
 									}}
 								>
-									{(image || image?.File?.name)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+									{(image?.name || image)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
 										<PictureAsPdf
 											style={{
 												color: 'red',
@@ -777,12 +711,12 @@ function AgentForm(props) {
 												fontSize: '35px',
 												margin: 'auto'
 											}}
-											onClick={() => window.open(`${BASE_URL}${image}`)}
+											onClick={() => window.open(`${BASE_URL}${file}`)}
 										/>
 									) : (
 										<img
 											src={`${BASE_URL}${image}`}
-											style={{ height: '150px' }}
+											style={{ height: '100px' }}
 										/>
 									)}
 								</div>
