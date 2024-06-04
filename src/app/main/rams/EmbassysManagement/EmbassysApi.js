@@ -42,11 +42,11 @@ const EmbassyApi = api
 					url: `${UPDATE_EMBASSY}${embassy.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...embassy,
-						submit_date: moment(new Date(embassy?.submit_date)).format('YYYY-MM-DD'),
-						stamping_date: moment(new Date(embassy?.stamping_date)).format('YYYY-MM-DD'),
-						visa_expiry_date: moment(new Date(embassy?.visa_expiry_date)).format('YYYY-MM-DD'),
-						delivery_date: moment(new Date(embassy?.delivery_date)).format('YYYY-MM-DD')
+						...embassy
+						// submit_date: moment(new Date(embassy?.submit_date)).format('YYYY-MM-DD'),
+						// stamping_date: moment(new Date(embassy?.stamping_date)).format('YYYY-MM-DD'),
+						// visa_expiry_date: moment(new Date(embassy?.visa_expiry_date)).format('YYYY-MM-DD'),
+						// delivery_date: moment(new Date(embassy?.delivery_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['embassys']

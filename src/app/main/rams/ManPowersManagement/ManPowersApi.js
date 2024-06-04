@@ -8,6 +8,7 @@ import {
 	MANPOWER_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import ManPowerModel from './manPower/models/ManPowerModel';
 
@@ -30,9 +31,9 @@ const ManPowerApi = api
 					method: 'POST',
 					data: jsonToFormData(
 						ManPowerModel({
-							...newManPower
-							// man_power_date: moment(new Date(newManPower?.man_power_date)).format('YYYY-MM-DD'),
-							// submit_date: moment(new Date(newManPower?.submit_date)).format('YYYY-MM-DD')
+							...newManPower,
+							man_power_date: moment(new Date(newManPower?.man_power_date)).format('YYYY-MM-DD'),
+							submit_date: moment(new Date(newManPower?.submit_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),

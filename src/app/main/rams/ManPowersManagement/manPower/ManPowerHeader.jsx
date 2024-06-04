@@ -123,25 +123,6 @@ function ManPowerHeader({ handleReset, emptyValue }) {
 		}
 	};
 
-	// useEffect(() => {
-	// 	if (manPowerId === 'new') {
-	// 		reset({
-	// 			passenger: 'all',
-	// 			man_power_status: doneNotDone.find((data) => data.default)?.id,
-	// 			recruiting_agency: 'all',
-	// 			new_visa_no: '',
-	// 			bank_name: '',
-	// 			bank_account_no: '',
-
-	// 			registration_id: '',
-	// 			man_power_date: '',
-	// 			submit_date: '',
-	// 			current_status: 'all',
-	// 			smart_card_image: '',
-	// 			delivery_date: ''
-	// 		});
-	// 	}
-	// }, [manPowerId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -191,7 +172,7 @@ function ManPowerHeader({ handleReset, emptyValue }) {
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
 							onClick={handleUpdateManPower}
-							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+							// startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>

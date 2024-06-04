@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Icon } from '@mui/material';
 import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
@@ -205,7 +204,7 @@ function MofaHeader() {
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
 							onClick={handleUpdateMofa}
-							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+							// startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>
@@ -218,7 +217,7 @@ function MofaHeader() {
 							className="whitespace-nowrap mx-2 text-white bg-red-400 hover:bg-red-800 active:bg-red-700 focus:outline-none focus:ring focus:ring-[#ea5b78]-300"
 							variant="contained"
 							onClick={handleRemoveMofa}
-							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+							// startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Remove
 						</Button>

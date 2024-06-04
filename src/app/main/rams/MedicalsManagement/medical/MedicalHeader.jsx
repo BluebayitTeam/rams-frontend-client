@@ -190,7 +190,7 @@ function MedicalHeader({ handleReset, emptyValue }) {
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
 							onClick={handleUpdateMedical}
-							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+							// startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>

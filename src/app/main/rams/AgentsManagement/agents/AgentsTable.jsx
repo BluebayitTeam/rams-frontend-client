@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
@@ -22,7 +25,7 @@ import {
 	getThanas
 } from 'app/store/dataSlice';
 import { Pagination, TableCell } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -296,24 +299,31 @@ function AgentsTable(props) {
 														key={key}
 													>
 														{key === 'image' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
-
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'payment_valid_until' && n[key] ? (
+															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+																<PictureAsPdf
+																	style={{
+																		color: 'red',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px',
+																		margin: 'auto'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : (
+																<img
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n[key]}`)
+																	}
+																	src={`${BASE_URL}${n[key]}`}
+																	style={{ height: '70px' }}
+																	alt="test"
+																/>
+															)
+														) : (key === 'calling_date' ||
+																key === 'calling_exp_date' ||
+																key === 'visa_issue_date') &&
+														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (key === 'is_debtor' || key === 'is_paid') &&
 														  n[key] !== undefined ? (
