@@ -36,3 +36,13 @@ export const UpdatedSuccessfully = () => {
 		timer: 2000
 	});
 };
+export const EmabassyAlert = () => {
+	Swal.fire({
+		position: 'top-center',
+		icon: 'error',
+		title: 'please check "Embassy" information',
+		// text: 'Something went wrong!',
+		showConfirmButton: false,
+		timer: 2000
+	});
+};

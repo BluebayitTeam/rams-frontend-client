@@ -159,7 +159,7 @@ function EmbassyForm(props) {
 				}}
 			/>
 
-			<Controller
+			{/* <Controller
 				name="stamping_status"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -187,7 +187,7 @@ function EmbassyForm(props) {
 						)}
 					/>
 				)}
-			/>
+			/> */}
 
 			<Controller
 				name="stamping_status"

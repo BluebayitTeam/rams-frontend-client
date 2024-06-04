@@ -14,6 +14,7 @@ import axios from 'axios';
 import { GET_PASSENGER_BY_ID, MANPOWER_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import { EmabassyAlert } from 'src/app/@customHooks/notificationAlert';
 import ManPowerHeader from './ManPowerHeader';
 import { useGetManPowerQuery } from '../ManPowersApi';
 import ManPowerForm from './ManPowerForm';
@@ -254,9 +255,11 @@ function ManPower() {
 																		(data) => data.default
 																	)?.id
 																});
+
 																getCurrentStatus(newValue?.id);
 
 																navigate(`/apps/manPower-management/manPowers/new`);
+																EmabassyAlert();
 															});
 													} else {
 														navigate(`/apps/manPower-management/manPowers/new`);
