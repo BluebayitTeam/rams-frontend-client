@@ -330,7 +330,11 @@ function VisaEntrysTable(props) {
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
 																	}
 																	src={`${BASE_URL}${n[key]}`}
-																	style={{ height: '70px' }}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
 																/>
 															)
 														) : (key === 'calling_date' ||
