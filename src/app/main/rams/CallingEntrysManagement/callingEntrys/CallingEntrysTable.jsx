@@ -314,10 +314,12 @@ function CallingEntrysTable(props) {
 																		color: 'red',
 																		cursor: 'pointer',
 																		display: 'block',
-																		fontSize: '35px',
-																		margin: 'auto'
+																		fontSize: '30px'
+																		// margin: 'auto'
 																	}}
-																	// onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n.file}`)
+																	}
 																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
@@ -326,7 +328,11 @@ function CallingEntrysTable(props) {
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
 																	}
 																	src={`${BASE_URL}${n[key]}`}
-																	style={{ height: '70px' }}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
 																/>
 															)
 														) : (key === 'calling_date' ||
