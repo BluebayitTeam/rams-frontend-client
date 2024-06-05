@@ -76,7 +76,7 @@ function CallingEntryForm(props) {
 						freeSolo
 						value={value ? demands.find((data) => data.id === value) : null}
 						options={demands}
-						getOptionLabel={(option) => `${option.profession?.name}(${option.company_name})`}
+						getOptionLabel={(option) => `${option.profession}(${option.company_name})`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 							// dispatch(getCallingEntryByDemand(newValue?.id));
@@ -153,8 +153,6 @@ function CallingEntryForm(props) {
 								helperText={errors?.visa_agent?.message}
 								variant="outlined"
 								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-								//
 							/>
 						)}
 					/>

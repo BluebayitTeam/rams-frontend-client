@@ -22,7 +22,7 @@ import {
 	getThanas
 } from 'app/store/dataSlice';
 import { Pagination, TableCell } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -306,25 +306,44 @@ function EvisaEntrysTable(props) {
 														scope="row"
 														key={key}
 													>
-														{key === 'image' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
-
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'payment_valid_until' && n[key] ? (
+														{key === 'file' ? (
+															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+																<PictureAsPdf
+																	style={{
+																		color: 'red',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																		// margin: 'auto'
+																	}}
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n.file}`)
+																	}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : (
+																// eslint-disable-next-line jsx-a11y/click-events-have-key-events
+																<img
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n[key]}`)
+																	}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
+																	alt="callingEntrys"
+																/>
+															)
+														) : (key === 'calling_date' ||
+																key === 'calling_exp_date' ||
+																key === 'visa_issue_date') &&
+														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (key === 'is_debtor' || key === 'is_paid') &&
 														  n[key] !== undefined ? (
