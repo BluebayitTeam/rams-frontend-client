@@ -138,10 +138,10 @@ function DemandAssignForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16 w-full "
 						freeSolo
-						value={value ? demands.find((data) => data.id == value) : null}
+						value={value ? demands.find((data) => data.id === value) : null}
 						options={demands}
 						getOptionLabel={(option) =>
-							`${option.company_name} -${option.profession?.name}- Qty:${option.quantity}-Salary-${option.salary}`
+							`${option.company_name} -${option?.profession}- Qty:${option?.quantity}-Salary-${option?.salary}`
 						}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);

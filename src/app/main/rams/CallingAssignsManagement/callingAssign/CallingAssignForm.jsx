@@ -141,7 +141,7 @@ function CallingAssignForm(props) {
 						value={value ? callingAssigns.find((data) => data.id === value) : null}
 						options={callingAssigns}
 						getOptionLabel={(option) =>
-							`${option.visa_number}-${option.profession_english} - Qty:${option.quantity}-${option.demand?.company_name}`
+							`${option?.visa_number || ''}-${option?.profession_english || ''} -``${option?.quantity} ? 'QTY:'${option?.quantity} :''``-${option?.demand?.company_name || ''}`
 						}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -177,7 +177,7 @@ function CallingAssignForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find((data) => data.id == value) : null}
+						value={value ? currentStatuss.find((data) => data.id === value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
