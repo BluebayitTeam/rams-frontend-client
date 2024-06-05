@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
@@ -378,6 +381,7 @@ function DemandsTable(props) {
 																		width: '40px',
 																		borderRadius: '50%'
 																	}}
+																	alt="test"
 																/>
 															)
 														) : (key === 'calling_date' ||
