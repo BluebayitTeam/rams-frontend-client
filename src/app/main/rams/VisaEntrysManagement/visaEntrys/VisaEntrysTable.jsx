@@ -331,7 +331,11 @@ function VisaEntrysTable(props) {
 																		// eslint-disable-next-line no-undef
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
 																	}
-																	src={`${BASE_URL}${n[key]}`}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
 																	style={{
 																		height: '40px',
 																		width: '40px',
