@@ -231,6 +231,12 @@ function ManPower() {
 																	handleReset({
 																		...setIdIfValueIsObject(res.data),
 																		passenger: newValue?.id
+																		// man_power_date: moment(
+																		// 	new Date(res.data?.man_power_date)
+																		// ).format('YYYY-MM-DD'),
+																		// submit_date: moment(
+																		// 	new Date(res.data?.man_power_date)
+																		// ).format('YYYY-MM-DD')
 																	});
 																	navigate(
 																		`/apps/manPower-management/manPowers/${

@@ -3,7 +3,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import { MEDICAL_BY_PASSENGER_ID, CREATE_MEDICAL, UPDATE_MEDICAL, DELETE_MEDICAL } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
-import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import MedicalModel from './medical/models/MedicalModel';
 
@@ -26,8 +25,8 @@ const MedicalApi = api
 					method: 'POST',
 					data: jsonToFormData(
 						MedicalModel({
-							...newMedical,
-							medical_exam_date: moment(new Date(newMedical?.medical_exam_date)).format('YYYY-MM-DD')
+							...newMedical
+							// medical_exam_date: moment(new Date(newMedical?.medical_exam_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),

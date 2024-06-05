@@ -42,6 +42,30 @@ const schema = z.object({
 });
 
 function CallingEmbAttestation() {
+	const emptyValue = {
+		passenger: 'all',
+		emb_attestation_status: '',
+		calling_status: '',
+		bio_submitted_status: '',
+		interviewed_date: '',
+		interviewed: '',
+		submitted_for_sev_date: '',
+		submitted_for_sev: '',
+		sev_received_date: '',
+		sev_received: '',
+		submitted_for_permission_immigration_clearance_date: '',
+		submitted_for_permission_immigration_clearance: '',
+		immigration_clearance_date: '',
+		immigration_clearance: '',
+		handover_passport_ticket_date: '',
+		handover_passport_ticket: '',
+		accounts_cleared_date: '',
+		accounts_cleared: '',
+		dispatched_date: '',
+		dispatched: '',
+		repatriation_date: '',
+		repatriation: ''
+	};
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { callingEmbAttestationId, fromSearch } = routeParams;
@@ -51,7 +75,7 @@ function CallingEmbAttestation() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -85,9 +109,9 @@ function CallingEmbAttestation() {
 				.get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${callingEmbAttestationId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
+						handleReset({ ...setIdIfValueIsObject(res.data), passenger: callingEmbAttestationId });
 					} else {
-						reset({
+						handleReset({
 							passenger: callingEmbAttestationId,
 							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 							calling_status: doneNotDone.find((data) => data.default)?.id,
@@ -97,7 +121,7 @@ function CallingEmbAttestation() {
 					}
 				})
 				.catch(() => {
-					reset({
+					handleReset({
 						passenger: callingEmbAttestationId,
 						emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 						calling_status: doneNotDone.find((data) => data.default)?.id,
@@ -106,7 +130,7 @@ function CallingEmbAttestation() {
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else if (callingEmbAttestationId === 'new') {
-			reset({
+			handleReset({
 				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 				calling_status: doneNotDone.find((data) => data.default)?.id,
 				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
@@ -126,6 +150,22 @@ function CallingEmbAttestation() {
 		return <FuseLoading />;
 	}
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
@@ -147,7 +187,12 @@ function CallingEmbAttestation() {
 						<Tab label="CallingEmbAttestation Information" />
 					</Tabs>
 				}
-				header={<CallingEmbAttestationHeader />}
+				header={
+					<CallingEmbAttestationHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -200,7 +245,7 @@ function CallingEmbAttestation() {
 															)
 															.then((res) => {
 																if (res.data.id) {
-																	reset({
+																	handleReset({
 																		...setIdIfValueIsObject(res.data),
 																		interviewed_date: formatDate(
 																			new Date(res?.data?.interviewed_date)
@@ -246,7 +291,7 @@ function CallingEmbAttestation() {
 																	navigate(
 																		`/apps/malaysiaStatus-management/malaysiaStatus/new`
 																	);
-																	reset({
+																	handleReset({
 																		passenger: newValue?.id,
 																		emb_attestation_status: doneNotDone.find(
 																			(data) => data.default
@@ -256,32 +301,12 @@ function CallingEmbAttestation() {
 																		)?.id,
 																		bio_submitted_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id,
-																		interviewed_date: '',
-																		interviewed: '',
-																		submitted_for_sev_date: '',
-																		submitted_for_sev: '',
-																		sev_received_date: '',
-																		sev_received: '',
-																		submitted_for_permission_immigration_clearance_date:
-																			'',
-																		submitted_for_permission_immigration_clearance:
-																			'',
-																		immigration_clearance_date: '',
-																		immigration_clearance: '',
-																		handover_passport_ticket_date: '',
-																		handover_passport_ticket: '',
-																		accounts_cleared_date: '',
-																		accounts_cleared: '',
-																		dispatched_date: '',
-																		dispatched: '',
-																		repatriation_date: '',
-																		repatriation: ''
+																		)?.id
 																	});
 																}
 															})
 															.catch(() => {
-																reset({
+																handleReset({
 																	passenger: newValue?.id,
 																	emb_attestation_status: doneNotDone.find(
 																		(data) => data.default
@@ -291,26 +316,7 @@ function CallingEmbAttestation() {
 																	)?.id,
 																	bio_submitted_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id,
-																	interviewed_date: '',
-																	interviewed: '',
-																	submitted_for_sev_date: '',
-																	submitted_for_sev: '',
-																	sev_received_date: '',
-																	sev_received: '',
-																	submitted_for_permission_immigration_clearance_date:
-																		'',
-																	submitted_for_permission_immigration_clearance: '',
-																	immigration_clearance_date: '',
-																	immigration_clearance: '',
-																	handover_passport_ticket_date: '',
-																	handover_passport_ticket: '',
-																	accounts_cleared_date: '',
-																	accounts_cleared: '',
-																	dispatched_date: '',
-																	dispatched: '',
-																	repatriation_date: '',
-																	repatriation: ''
+																	)?.id
 																});
 																navigate(
 																	`/apps/malaysiaStatus-management/malaysiaStatus/new`
@@ -318,32 +324,16 @@ function CallingEmbAttestation() {
 															});
 													} else {
 														navigate(`/apps/malaysiaStatus-management/malaysiaStatus/new`);
-														reset({
-															passenger: 'all',
-															emb_attestation_status:
-																doneNotDone.find((data) => data.default)?.id || '',
-															calling_status:
-																doneNotDone.find((data) => data.default)?.id || '',
-															bio_submitted_status:
-																doneNotDone.find((data) => data.default)?.id || '',
-															interviewed_date: '',
-															interviewed: '',
-															submitted_for_sev_date: '',
-															submitted_for_sev: '',
-															sev_received_date: '',
-															sev_received: '',
-															submitted_for_permission_immigration_clearance_date: '',
-															submitted_for_permission_immigration_clearance: '',
-															immigration_clearance_date: '',
-															immigration_clearance: '',
-															handover_passport_ticket_date: '',
-															handover_passport_ticket: '',
-															accounts_cleared_date: '',
-															accounts_cleared: '',
-															dispatched_date: '',
-															dispatched: '',
-															repatriation_date: '',
-															repatriation: ''
+														handleReset({
+															passenger: newValue?.id,
+															emb_attestation_status: doneNotDone.find(
+																(data) => data.default
+															)?.id,
+															calling_status: doneNotDone.find((data) => data.default)
+																?.id,
+															bio_submitted_status: doneNotDone.find(
+																(data) => data.default
+															)?.id
 														});
 													}
 												}}

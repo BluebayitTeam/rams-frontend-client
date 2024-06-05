@@ -12,13 +12,14 @@ import { useSelector } from 'react-redux';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
+import { useEffect } from 'react';
 import { activeRetrnCncl } from 'src/app/@data/data';
 import { useCreateFlightMutation, useDeleteFlightMutation, useUpdateFlightMutation } from '../FlightsApi';
 
 /**
  * The flight header.
  */
-function FlightHeader({ handleReset, emptyValue }) {
+function FlightHeader() {
 	const routeParams = useParams();
 	const { flightId } = routeParams;
 	const [createFlight] = useCreateFlightMutation();
@@ -45,9 +46,21 @@ function FlightHeader({ handleReset, emptyValue }) {
 					} else {
 						localStorage.setItem('flightAlert', 'updateFlight');
 
-						handleReset({
-							...emptyValue,
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
+						reset({
+							passenger: 'all',
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+							ticket_agency: 'all',
+							carrier_air_way: '',
+							flight_no: '',
+							ticket_no: '',
+							sector_name: '',
+							// ticket_status: '',
+							flight_time: '',
+							arrival_time: '',
+							issue_date: '',
+							flight_date: '',
+							notes: '',
+							current_status: 'all'
 						});
 						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
@@ -75,9 +88,21 @@ function FlightHeader({ handleReset, emptyValue }) {
 					} else {
 						localStorage.setItem('flightAlert', 'saveFlight');
 
-						handleReset({
-							...emptyValue,
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
+						reset({
+							passenger: 'all',
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+							ticket_agency: 'all',
+							carrier_air_way: '',
+							flight_no: '',
+							ticket_no: '',
+							sector_name: '',
+							// ticket_status: '',
+							flight_time: '',
+							arrival_time: '',
+							issue_date: '',
+							flight_date: '',
+							notes: '',
+							current_status: 'all'
 						});
 						navigate('/apps/flight-management/flights/new');
 						AddedSuccessfully();
@@ -94,9 +119,21 @@ function FlightHeader({ handleReset, emptyValue }) {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						handleReset({
-							...emptyValue,
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
+						reset({
+							passenger: 'all',
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+							ticket_agency: 'all',
+							carrier_air_way: '',
+							flight_no: '',
+							ticket_no: '',
+							sector_name: '',
+							// ticket_status: '',
+							flight_time: '',
+							arrival_time: '',
+							issue_date: '',
+							flight_date: '',
+							notes: '',
+							current_status: 'all'
 						});
 
 						navigate('/apps/flight-management/flights/new');
@@ -118,13 +155,45 @@ function FlightHeader({ handleReset, emptyValue }) {
 
 		// }
 
-		handleReset({
-			...emptyValue,
-			ticket_status: activeRetrnCncl.find((data) => data.default)?.id
+		reset({
+			passenger: 'all',
+			ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+			ticket_agency: 'all',
+			carrier_air_way: '',
+			flight_no: '',
+			ticket_no: '',
+			sector_name: '',
+			// ticket_status: '',
+			flight_time: '',
+			arrival_time: '',
+			issue_date: '',
+			flight_date: '',
+			notes: '',
+			current_status: 'all'
 		});
 		navigate('/apps/flight-management/flights/new');
 	};
 
+	useEffect(() => {
+		if (flightId === 'new') {
+			reset({
+				passenger: 'all',
+				ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+				ticket_agency: 'all',
+				carrier_air_way: '',
+				flight_no: '',
+				ticket_no: '',
+				sector_name: '',
+
+				flight_time: '',
+				arrival_time: '',
+				issue_date: '',
+				flight_date: '',
+				notes: '',
+				current_status: 'all'
+			});
+		}
+	}, [flightId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
