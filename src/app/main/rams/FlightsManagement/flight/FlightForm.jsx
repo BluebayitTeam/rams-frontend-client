@@ -6,9 +6,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-import { BASE_URL, FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
-import axios from 'axios';
+import { BASE_URL } from 'src/app/constant/constants';
 import { activeRetrnCncl } from 'src/app/@data/data';
 import { PictureAsPdf } from '@mui/icons-material';
 import clsx from 'clsx';
@@ -64,55 +62,6 @@ function FlightForm(props) {
 		setFileExtName('');
 		setPreviewFile('');
 	}, [getValues('ticket_agency')]);
-	useEffect(() => {
-		if (flightId === 'new') {
-			reset({
-				ticket_agency: 'all',
-				carrier_air_way: '',
-				flight_no: '',
-				ticket_no: '',
-				sector_name: '',
-				// ticket_status: '',
-				flight_time: '',
-				arrival_time: '',
-				issue_date: '',
-				flight_date: '',
-				notes: '',
-				current_status: 'all'
-			});
-		} else {
-			console.log('valueForm', getValues());
-			// Fetch and set data based on flightId if needed
-			// reset(formData);
-		}
-	}, [flightId, reset, ticketAgencys, currentStatuss]);
-
-	useEffect(() => {
-		if ((flightId !== 'new', !reload)) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`, authTOKEN).then((res) => {
-				if (res.data.id) {
-					console.log('fromData', res.data);
-					reset({
-						...setIdIfValueIsObject({
-							...res?.data,
-							passenger: parseInt(flightId, 10),
-
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-							ticket_agency: res?.data?.ticket_agency?.id
-						})
-					});
-				}
-
-				setReload(true);
-			});
-		}
-	}, [flightId, reset, reload]);
 
 	return (
 		<div>
@@ -124,9 +73,7 @@ function FlightForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? ticketAgencys?.find((data) => data?.id === value) : null}
-						// options={ticketAgencys}
-						options={[{ id: 'all', first_name: 'Select First Name', last_name: '' }, ...ticketAgencys]}
-						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+						options={ticketAgencys}
 						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -349,7 +296,7 @@ function FlightForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find((data) => data.id == value) : null}
+						value={value ? currentStatuss.find((data) => data.id === value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {

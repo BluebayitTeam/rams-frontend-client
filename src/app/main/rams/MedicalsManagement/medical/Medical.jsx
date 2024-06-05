@@ -13,6 +13,7 @@ import axios from 'axios';
 import { GET_PASSENGER_BY_ID, MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import moment from 'moment';
 import MedicalHeader from './MedicalHeader';
 import { useGetMedicalQuery } from '../MedicalsApi';
 import MedicalForm from './MedicalForm';
@@ -228,7 +229,19 @@ function Medical() {
 																if (res.data.id) {
 																	handleReset({
 																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
+																		passenger: newValue?.id,
+																		medical_expiry_date: moment(
+																			new Date(res.data?.medical_expiry_date)
+																		).format('YYYY-MM-DD'),
+																		medical_issue_date: moment(
+																			new Date(res.data?.medical_issue_date)
+																		).format('YYYY-MM-DD'),
+																		medical_report_date: moment(
+																			new Date(res.data?.medical_report_date)
+																		).format('YYYY-MM-DD'),
+																		medical_exam_date: moment(
+																			new Date(res.data?.medical_exam_date)
+																		).format('YYYY-MM-DD')
 																	});
 																	navigate(
 																		`/apps/medical/medicals/${
