@@ -423,8 +423,8 @@ function DemandForm(props) {
 											color: 'red',
 											cursor: 'pointer',
 											display: 'block',
-											fontSize: '35px',
-											margin: 'auto'
+											fontSize: '35px'
+											// margin: 'auto'
 										}}
 										onClick={() => window.open(`${BASE_URL}${file}`)}
 									/>
@@ -450,7 +450,7 @@ function DemandForm(props) {
 								) : (
 									<img
 										src={previewFile}
-										style={{ height: '150px' }}
+										style={{ height: '100px' }}
 									/>
 								)}
 							</div>
