@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 
-import { Autocomplete, Icon, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
 import { getAgents, getCountries, getProfessions } from 'app/store/dataSlice';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
@@ -12,6 +13,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { BASE_URL } from 'src/app/constant/constants';
 import { activeCncl } from 'src/app/@data/data';
+import { PictureAsPdf } from '@mui/icons-material';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -48,7 +50,10 @@ function DemandForm(props) {
 	const image = watch('image');
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const [previewImage, setPreviewImage] = useState();
+	const file = watch('file') || '';
+
+	const [previewFile, setPreviewFile] = useState('');
+	const [fileExtName, setFileExtName] = useState('');
 	useEffect(() => {
 		dispatch(getProfessions());
 		dispatch(getCountries());
@@ -314,9 +319,9 @@ function DemandForm(props) {
 				)}
 			/>
 
-			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
+			{/* <div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Controller
-					name="image"
+					name="file"
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<label
@@ -327,7 +332,7 @@ function DemandForm(props) {
 							)}
 						>
 							<input
-								accept="image/*"
+								accept="image/x-png,image/gif,image/jpeg,application/pdf"
 								className="hidden"
 								id="button-file"
 								type="file"
@@ -359,7 +364,100 @@ function DemandForm(props) {
 				<div style={{ width: '300px', height: '300px' }}>
 					<img src={previewImage} />
 				</div>
-			</div>
+			</div> */}
+			<Controller
+				name="file"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex-col">
+							<Typography className="text-center">File</Typography>
+							<label
+								htmlFor={`${name}-button-file`}
+								className={clsx(
+									classes.productImageUpload,
+									'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+								)}
+							>
+								<input
+									accept="image/x-png,image/gif,image/jpeg,application/pdf"
+									className="hidden"
+									id={`${name}-button-file`}
+									type="file"
+									onChange={async (e) => {
+										const reader = new FileReader();
+										reader.onload = () => {
+											if (reader.readyState === 2) {
+												setPreviewFile(reader.result);
+											}
+										};
+										reader.readAsDataURL(e.target.files[0]);
+
+										const file = e.target.files[0];
+
+										setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+
+										onChange(file);
+									}}
+								/>
+								<Icon
+									fontSize="large"
+									color="action"
+								>
+									cloud_upload
+								</Icon>
+							</label>
+						</div>
+						{!previewFile && file && (
+							<div
+								style={{
+									width: 'auto',
+									height: '150px',
+									overflow: 'hidden',
+									display: 'flex'
+								}}
+							>
+								{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+									<PictureAsPdf
+										style={{
+											color: 'red',
+											cursor: 'pointer',
+											display: 'block',
+											fontSize: '35px',
+											margin: 'auto'
+										}}
+										onClick={() => window.open(`${BASE_URL}${file}`)}
+									/>
+								) : (
+									<img
+										src={`${BASE_URL}${file}`}
+										style={{ height: '150px' }}
+									/>
+								)}
+							</div>
+						)}
+
+						{previewFile && (
+							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+								{fileExtName === 'pdf' ? (
+									<iframe
+										src={previewFile}
+										frameBorder="0"
+										scrolling="auto"
+										height="150px"
+										width="150px"
+									/>
+								) : (
+									<img
+										src={previewFile}
+										style={{ height: '150px' }}
+									/>
+								)}
+							</div>
+						)}
+					</div>
+				)}
+			/>
 		</div>
 	);
 }
