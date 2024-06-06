@@ -44,11 +44,8 @@ function PassengerHeader() {
 	}
 
 	function handleCreatePassenger() {
-		const formData = getValues();
-		formData.passenger_type = passengerType;
-		console.log(`getValues()sdfdsf`, formData, passengerType);
-
-		createPassenger(formData)
+		console.log(`getValues()`, getValues());
+		createPassenger(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
