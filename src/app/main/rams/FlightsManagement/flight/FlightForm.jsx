@@ -124,9 +124,7 @@ function FlightForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? ticketAgencys?.find((data) => data?.id === value) : null}
-						// options={ticketAgencys}
-						options={[{ id: 'all', first_name: 'Select First Name', last_name: '' }, ...ticketAgencys]}
-						// getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+						options={ticketAgencys}
 						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -349,7 +347,7 @@ function FlightForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? currentStatuss.find((data) => data.id == value) : null}
+						value={value ? currentStatuss.find((data) => data.id === value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {

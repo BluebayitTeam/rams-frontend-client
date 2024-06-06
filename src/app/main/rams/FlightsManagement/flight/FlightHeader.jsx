@@ -12,14 +12,13 @@ import { useSelector } from 'react-redux';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { activeRetrnCncl } from 'src/app/@data/data';
 import { useCreateFlightMutation, useDeleteFlightMutation, useUpdateFlightMutation } from '../FlightsApi';
 
 /**
  * The flight header.
  */
-function FlightHeader() {
+function FlightHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
 	const { flightId } = routeParams;
 	const [createFlight] = useCreateFlightMutation();
@@ -46,23 +45,11 @@ function FlightHeader() {
 					} else {
 						localStorage.setItem('flightAlert', 'updateFlight');
 
-						reset({
-							passenger: 'all',
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-							ticket_agency: 'all',
-							carrier_air_way: '',
-							flight_no: '',
-							ticket_no: '',
-							sector_name: '',
-							// ticket_status: '',
-							flight_time: '',
-							arrival_time: '',
-							issue_date: '',
-							flight_date: '',
-							notes: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue,
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 						});
-						console.log('sklfjjdf', getValues());
+						// console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
 						navigate('/apps/flight-management/flights/new');
 					}
@@ -88,21 +75,9 @@ function FlightHeader() {
 					} else {
 						localStorage.setItem('flightAlert', 'saveFlight');
 
-						reset({
-							passenger: 'all',
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-							ticket_agency: 'all',
-							carrier_air_way: '',
-							flight_no: '',
-							ticket_no: '',
-							sector_name: '',
-							// ticket_status: '',
-							flight_time: '',
-							arrival_time: '',
-							issue_date: '',
-							flight_date: '',
-							notes: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue,
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 						});
 						navigate('/apps/flight-management/flights/new');
 						AddedSuccessfully();
@@ -119,21 +94,9 @@ function FlightHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-							ticket_agency: 'all',
-							carrier_air_way: '',
-							flight_no: '',
-							ticket_no: '',
-							sector_name: '',
-							// ticket_status: '',
-							flight_time: '',
-							arrival_time: '',
-							issue_date: '',
-							flight_date: '',
-							notes: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue,
+							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 						});
 
 						navigate('/apps/flight-management/flights/new');
@@ -149,51 +112,33 @@ function FlightHeader() {
 	}
 
 	const handleCancel = () => {
-		// if (fromSearch) {
-		// 	history.goBack();
-		// } else {
-
-		// }
-
-		reset({
-			passenger: 'all',
-			ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-			ticket_agency: 'all',
-			carrier_air_way: '',
-			flight_no: '',
-			ticket_no: '',
-			sector_name: '',
-			// ticket_status: '',
-			flight_time: '',
-			arrival_time: '',
-			issue_date: '',
-			flight_date: '',
-			notes: '',
-			current_status: 'all'
+		handleReset({
+			...emptyValue,
+			ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 		});
 		navigate('/apps/flight-management/flights/new');
 	};
 
-	useEffect(() => {
-		if (flightId === 'new') {
-			reset({
-				passenger: 'all',
-				ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-				ticket_agency: 'all',
-				carrier_air_way: '',
-				flight_no: '',
-				ticket_no: '',
-				sector_name: '',
+	// useEffect(() => {
+	// 	if (flightId === 'new') {
+	// 		reset({
+	// 			passenger: 'all',
+	// 			ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+	// 			ticket_agency: 'all',
+	// 			carrier_air_way: '',
+	// 			flight_no: '',
+	// 			ticket_no: '',
+	// 			sector_name: '',
 
-				flight_time: '',
-				arrival_time: '',
-				issue_date: '',
-				flight_date: '',
-				notes: '',
-				current_status: 'all'
-			});
-		}
-	}, [flightId, reset]);
+	// 			flight_time: '',
+	// 			arrival_time: '',
+	// 			issue_date: '',
+	// 			flight_date: '',
+	// 			notes: '',
+	// 			current_status: 'all'
+	// 		});
+	// 	}
+	// }, [flightId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
