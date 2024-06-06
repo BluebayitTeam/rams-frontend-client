@@ -320,9 +320,9 @@ function CallingEntrysTable(props) {
 																		fontSize: '30px'
 																		// margin: 'auto'
 																	}}
-																	onClick={() =>
-																		n.file && showImage(`${BASE_URL}${n.file}`)
-																	}
+																	// onClick={() =>
+																	// 	n.file && showImage(`${BASE_URL}${n.file}`)
+																	// }
 																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
