@@ -64,28 +64,28 @@ function FlightForm(props) {
 		setFileExtName('');
 		setPreviewFile('');
 	}, [getValues('ticket_agency')]);
-	useEffect(() => {
-		if (flightId === 'new') {
-			reset({
-				ticket_agency: 'all',
-				carrier_air_way: '',
-				flight_no: '',
-				ticket_no: '',
-				sector_name: '',
-				// ticket_status: '',
-				flight_time: '',
-				arrival_time: '',
-				issue_date: '',
-				flight_date: '',
-				notes: '',
-				current_status: 'all'
-			});
-		} else {
-			console.log('valueForm', getValues());
-			// Fetch and set data based on flightId if needed
-			// reset(formData);
-		}
-	}, [flightId, reset, ticketAgencys, currentStatuss]);
+	// useEffect(() => {
+	// 	if (flightId === 'new') {
+	// 		reset({
+	// 			ticket_agency: 'all',
+	// 			carrier_air_way: '',
+	// 			flight_no: '',
+	// 			ticket_no: '',
+	// 			sector_name: '',
+	// 			// ticket_status: '',
+	// 			flight_time: '',
+	// 			arrival_time: '',
+	// 			issue_date: '',
+	// 			flight_date: '',
+	// 			notes: '',
+	// 			current_status: 'all'
+	// 		});
+	// 	} else {
+	// 		console.log('valueForm', getValues());
+	// 		// Fetch and set data based on flightId if needed
+	// 		// reset(formData);
+	// 	}
+	// }, [flightId, reset, ticketAgencys, currentStatuss]);
 
 	useEffect(() => {
 		if ((flightId !== 'new', !reload)) {
@@ -305,6 +305,24 @@ function FlightForm(props) {
 				}}
 			/>
 
+			{/* <Controller
+				name="issue_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.issue_date}
+						helperText={errors?.issue_date?.message}
+						label="Issue Date"
+						id="issue_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/> */}
+
 			<Controller
 				name="issue_date"
 				control={control}
@@ -452,7 +470,7 @@ function FlightForm(props) {
 								) : (
 									<img
 										src={`${BASE_URL}${file}`}
-										style={{ height: '150px' }}
+										style={{ height: '100px' }}
 										alt="test"
 									/>
 								)}

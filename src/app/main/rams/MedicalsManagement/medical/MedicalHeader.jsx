@@ -46,8 +46,8 @@ function MedicalHeader({ handleReset, emptyValue }) {
 
 						handleReset({
 							...emptyValue,
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_result: medicalResults.find((data) => data.default)?.id || ''
+							medical_card: doneNotDone.find((data) => data.default)?.id,
+							medical_result: medicalResults.find((data) => data.default)?.id
 						});
 
 						UpdatedSuccessfully();
@@ -97,8 +97,8 @@ function MedicalHeader({ handleReset, emptyValue }) {
 					} else {
 						handleReset({
 							...emptyValue,
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || ''
+							medical_result: medicalResults.find((data) => data.default)?.id,
+							medical_card: doneNotDone.find((data) => data.default)?.id
 						});
 						localStorage.setItem('medicalAlert', 'saveMedical');
 						navigate('/apps/medical/medicals/new');
@@ -116,8 +116,8 @@ function MedicalHeader({ handleReset, emptyValue }) {
 	const handleCancel = () => {
 		handleReset({
 			...emptyValue,
-			medical_result: medicalResults.find((data) => data.default)?.id || '',
-			medical_card: doneNotDone.find((data) => data.default)?.id || ''
+			medical_result: medicalResults.find((data) => data.default)?.id,
+			medical_card: doneNotDone.find((data) => data.default)?.id
 		});
 		navigate('/apps/medical/medicals/new');
 	};

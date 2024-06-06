@@ -13,6 +13,7 @@ import { FLIGHT_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/co
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { activeRetrnCncl } from 'src/app/@data/data';
 import moment from 'moment';
+import { getManpower } from 'app/store/dataSlice';
 import FlightHeader from './FlightHeader';
 import { useGetFlightQuery } from '../FlightsApi';
 import FlightForm from './FlightForm';
@@ -201,7 +202,7 @@ function Flight() {
 														}
 													};
 
-													// dispatch(getManpower(newValue?.id));
+													getManpower(newValue?.id);
 													axios
 														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
 														.then((res) => {
@@ -210,14 +211,20 @@ function Flight() {
 														});
 
 													if (newValue?.id) {
+														const authTOKEN = {
+															headers: {
+																'Content-type': 'application/json',
+																Authorization: localStorage.getItem('jwt_access_token')
+															}
+														};
 														axios
 															.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
 																if (res.data.id) {
 																	handleReset({
-																		...setIdIfValueIsObject(res.data),
+																		...setIdIfValueIsObject(res?.data),
 																		passenger: newValue?.id,
-																		ticket_agency: res?.data?.ticket_agency?.id,
+
 																		flight_date: moment(
 																			new Date(res?.data?.flight_date)
 																		).format('YYYY-MM-DD'),

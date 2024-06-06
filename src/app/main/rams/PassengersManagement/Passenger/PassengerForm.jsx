@@ -151,7 +151,7 @@ function PassengerForm(props) {
 				return false;
 			})?.id;
 
-			setValue('passenger_type', getPassengerType);
+			// setValue('passenger_type', getPassengerType);
 		}
 	}, [getValues('passenger_name')]);
 
@@ -182,31 +182,6 @@ function PassengerForm(props) {
 			setValue('target_country', targetCountry);
 		}
 	}, [targetCountrys]);
-
-	// useEffect(() => {
-	// 	const getPlaceOfResidence = districts.find((data) => {
-	// 		const districtName = new RegExp(data.name, 'i');
-	// 		const isMatch = district.match(districtName);
-
-	// 		if (isMatch) return true;
-	// 	})?.name;
-
-	// const getDistrict = districts.find((data) => {
-	// 	const districtName = new RegExp(data.name, 'i');
-	// 	const isMatch = district.match(districtName);
-
-	// 	if (isMatch) return true;
-
-	// 	return false;
-	// })?.id;
-
-	// 	const getPoliceStation = thanas.find((data) => {
-	// 		const PoliceStationName = new RegExp(data.name, 'i');
-	// 		const isMatch = police_station.match(PoliceStationName);
-
-	// 		if (isMatch) return true;
-	// 	})?.id;
-	// }, []);
 
 	useEffect(() => {
 		dispatch(getAgents());
@@ -461,7 +436,7 @@ function PassengerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16 w-full "
 						freeSolo
-						value={value ? agents.find((data) => data.id == value) : null}
+						value={value ? agents.find((data) => data.id === value) : null}
 						options={agents}
 						getOptionLabel={(option) => `${option.first_name}  -${option.agent_code}`}
 						onChange={(event, newValue) => {
@@ -892,40 +867,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
-			<div
-				style={{
-					display: 'none'
-				}}
-			>
-				<Controller
-					name="passenger_type"
-					control={control}
-					render={({ field: { onChange, value, name } }) => (
-						<Autocomplete
-							className="mt-8 mb-16 w-full  "
-							freeSolo
-							disabled
-							value={value ? passengerTypes.find((data) => data.id === value) : null}
-							options={passengerTypes}
-							getOptionLabel={(option) => `${option.name}`}
-							onChange={(event, newValue) => {
-								onChange(newValue?.id);
-							}}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									placeholder="Select Passenger Type"
-									label="Passenger Type"
-									helperText={errors?.passenger_type?.message}
-									variant="outlined"
-									InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-								/>
-							)}
-						/>
-					)}
-				/>
-			</div>
 
 			<Controller
 				name="father_name"
