@@ -36,7 +36,7 @@ function PassengerHeader() {
 	const { passengerName } = useParams();
 
 	function handleUpdatePassenger() {
-		savePassenger({ ...getValues(), passenger_type: passengerType }).then((data) => {
+		savePassenger(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
 			navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
@@ -45,7 +45,7 @@ function PassengerHeader() {
 
 	function handleCreatePassenger() {
 		console.log(`getValues()`, getValues());
-		createPassenger({ ...getValues(), passenger_type: passengerType })
+		createPassenger(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();

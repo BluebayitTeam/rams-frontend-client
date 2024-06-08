@@ -183,6 +183,31 @@ function PassengerForm(props) {
 		}
 	}, [targetCountrys]);
 
+	// useEffect(() => {
+	// 	const getPlaceOfResidence = districts.find((data) => {
+	// 		const districtName = new RegExp(data.name, 'i');
+	// 		const isMatch = district.match(districtName);
+
+	// 		if (isMatch) return true;
+	// 	})?.name;
+
+	// const getDistrict = districts.find((data) => {
+	// 	const districtName = new RegExp(data.name, 'i');
+	// 	const isMatch = district.match(districtName);
+
+	// 	if (isMatch) return true;
+
+	// 	return false;
+	// })?.id;
+
+	// 	const getPoliceStation = thanas.find((data) => {
+	// 		const PoliceStationName = new RegExp(data.name, 'i');
+	// 		const isMatch = police_station.match(PoliceStationName);
+
+	// 		if (isMatch) return true;
+	// 	})?.id;
+	// }, []);
+
 	useEffect(() => {
 		dispatch(getAgents());
 		dispatch(getDemands());
@@ -563,7 +588,7 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-			{/* <Controller
+			<Controller
 				name="date_of_birth"
 				control={control}
 				render={({ field }) => {
@@ -582,7 +607,7 @@ function PassengerForm(props) {
 						/>
 					);
 				}}
-			/> */}
+			/>
 
 			<Controller
 				control={control}
