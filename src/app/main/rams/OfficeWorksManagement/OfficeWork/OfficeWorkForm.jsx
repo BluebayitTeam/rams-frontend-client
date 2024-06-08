@@ -43,8 +43,8 @@ function OfficeWorkForm(props) {
 	const [previewPCImage, setpreviewPCImage] = useState('');
 	const [previewDLImage, setpreviewDLImage] = useState('');
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
-	const [previewDoc2Image, setpreviewDoc2Image] = useState('');
-	const [fileExtName, setFileExtName] = useState('');
+	const [previewDoc2Image, setpreviewDoc2Image] = useState(null);
+	const [fileExtName, setFileExtName] = useState(null);
 	const file = watch('file') || '';
 	const { errors } = formState;
 	const routeParams = useParams();
