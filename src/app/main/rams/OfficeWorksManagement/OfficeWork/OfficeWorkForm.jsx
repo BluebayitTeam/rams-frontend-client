@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { styled } from '@mui/system';
 import { Autocomplete, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
@@ -40,13 +41,22 @@ function OfficeWorkForm(props) {
 	const classes = useStyles(props);
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const pcFile = watch('pc_image') || '';
+	const dlFile = watch('dl_image') || '';
+	const doc1File = watch('doc1_image') || '';
+	const doc2File = watch('doc2_image') || '';
+
 	const [previewPCFile, setPreviewPCFile] = useState('');
+	const [previewDLFile, setPreviewDLFile] = useState('');
+	const [previewDoc2File, setPreviewDoc2File] = useState('');
+
 	const [fileExtPCName, setFileExtPCName] = useState('');
-	const [previewPCImage, setpreviewPCImage] = useState('');
-	const [previewDLImage, setpreviewDLImage] = useState('');
-	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
-	const [previewDoc2Image, setpreviewDoc2Image] = useState(null);
-	const [fileExtName, setFileExtName] = useState(null);
+	const [fileExtDLName, setFileExtDLName] = useState('');
+	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+
+	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
+	// const [previewDoc2File, setPreviewDoc2File] = useState(null);
+	const [fileExtDoc2Name, setFileExtDoc2Name] = useState(null);
+	// const [fileExtName, setFileExtName] = useState(null);
 	const file = watch('file') || '';
 	const { errors } = formState;
 	const routeParams = useParams();
@@ -60,12 +70,13 @@ function OfficeWorkForm(props) {
 
 	useEffect(() => {
 		setFileExtPCName('');
-		setPreviewPCFile('');
+		setFileExtDLName('');
 
-		setpreviewPCImage('');
-		setpreviewDLImage('');
-		setpreviewDoc1Image('');
-		setpreviewDoc2Image('');
+		setPreviewPCFile('');
+		setPreviewDLFile('');
+		setFileExtDoc1Name('');
+		setPreviewDoc1Image('');
+		// setpreviewDoc2Image('');
 	}, [getValues('police_clearance_no')]);
 	return (
 		<div>
@@ -336,100 +347,6 @@ function OfficeWorkForm(props) {
 				)}
 			/>
 
-			<Controller
-				name="pc_image"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<div className="flex w-full flex-row items-center justify-evenly">
-						<div className="flex-col">
-							<Typography className="text-center">PC File</Typography>
-							<label
-								htmlFor={`${name}-button-file`}
-								className={clsx(
-									classes.productImageUpload,
-									'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-								)}
-							>
-								<input
-									accept="image/x-png,image/gif,image/jpeg,application/pdf"
-									className="hidden"
-									id={`${name}-button-file`}
-									type="file"
-									onChange={async (e) => {
-										const reader = new FileReader();
-										reader.onload = () => {
-											if (reader.readyState === 2) {
-												setPreviewPCFile(reader.result);
-											}
-										};
-										reader.readAsDataURL(e.target.files[0]);
-
-										const file = e.target.files[0];
-
-										setFileExtPCName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
-
-										onChange(file);
-									}}
-								/>
-								<Icon
-									fontSize="large"
-									color="action"
-								>
-									cloud_upload
-								</Icon>
-							</label>
-						</div>
-						{!previewPCFile && pcFile && (
-							<div
-								style={{
-									width: 'auto',
-									height: '150px',
-									overflow: 'hidden',
-									display: 'flex'
-								}}
-							>
-								{(pcFile?.name || pcFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-									<PictureAsPdf
-										style={{
-											color: 'red',
-											cursor: 'pointer',
-											display: 'block',
-											fontSize: '35px',
-											margin: 'auto'
-										}}
-										onClick={() => window.open(`${BASE_URL}${pcFile}`)}
-									/>
-								) : (
-									<img
-										src={`${BASE_URL}${pcFile}`}
-										style={{ height: '150px' }}
-									/>
-								)}
-							</div>
-						)}
-
-						{previewPCFile && (
-							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-								{fileExtPCName === 'pdf' ? (
-									<iframe
-										src={previewPCFile}
-										frameBorder="0"
-										scrolling="auto"
-										height="150px"
-										width="150px"
-									/>
-								) : (
-									<img
-										src={previewPCFile}
-										style={{ height: '150px' }}
-									/>
-								)}
-							</div>
-						)}
-					</div>
-				)}
-			/>
-			{/* 
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
 				<Controller
 					name="pc_image"
@@ -437,9 +354,9 @@ function OfficeWorkForm(props) {
 					render={({ field: { onChange, value } }) => (
 						<div className="flex w-full flex-row items-center justify-evenly">
 							<div className="flex-col">
-								<Typography className="text-center">PC Image</Typography>
+								<Typography className="text-center">PC File</Typography>
 								<label
-									htmlFor={`${name}-button-file`}
+									htmlFor="pc_image-button-file"
 									className={clsx(
 										classes.productImageUpload,
 										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
@@ -448,20 +365,20 @@ function OfficeWorkForm(props) {
 									<input
 										accept="image/x-png,image/gif,image/jpeg,application/pdf"
 										className="hidden"
-										id={`${name}-button-file`}
+										id="pc_image-button-file"
 										type="file"
 										onChange={async (e) => {
 											const reader = new FileReader();
 											reader.onload = () => {
 												if (reader.readyState === 2) {
-													setpreviewPCImage(reader.result);
+													setPreviewPCFile(reader.result);
 												}
 											};
 											reader.readAsDataURL(e.target.files[0]);
 
 											const file = e.target.files[0];
 
-											setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+											setFileExtPCName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
 
 											onChange(file);
 										}}
@@ -474,7 +391,7 @@ function OfficeWorkForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewPCImage && file && (
+							{!previewPCFile && pcFile && (
 								<div
 									style={{
 										width: 'auto',
@@ -483,7 +400,7 @@ function OfficeWorkForm(props) {
 										display: 'flex'
 									}}
 								>
-									{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+									{(pcFile?.name || pcFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
 										<PictureAsPdf
 											style={{
 												color: 'red',
@@ -492,23 +409,22 @@ function OfficeWorkForm(props) {
 												fontSize: '35px',
 												margin: 'auto'
 											}}
-											onClick={() => window.open(`${BASE_URL}${pc_image}`)}
+											onClick={() => window.open(`${BASE_URL}${pcFile}`)}
 										/>
 									) : (
 										<img
-											src={`${BASE_URL}${pc_image}`}
+											src={`${BASE_URL}${pcFile}`}
 											style={{ height: '150px' }}
-											alt="pc_image"
 										/>
 									)}
 								</div>
 							)}
 
-							{previewPCImage && (
+							{previewPCFile && (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-									{fileExtName === 'pdf' ? (
+									{fileExtPCName === 'pdf' ? (
 										<iframe
-											src={previewPCImage}
+											src={previewPCFile}
 											frameBorder="0"
 											scrolling="auto"
 											height="150px"
@@ -516,9 +432,8 @@ function OfficeWorkForm(props) {
 										/>
 									) : (
 										<img
-											src={previewPCImage}
+											src={previewPCFile}
 											style={{ height: '150px' }}
-											alt="pc_image"
 										/>
 									)}
 								</div>
@@ -527,27 +442,293 @@ function OfficeWorkForm(props) {
 					)}
 				/>
 
-				<Image
+				<Controller
 					name="dl_image"
-					previewImage={previewDLImage}
-					setPreviewImage={setpreviewDLImage}
-					label="DL Image"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">DL File</Typography>
+								<label
+									htmlFor="dl_image-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										className="hidden"
+										id="dl_image-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewDLFile(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											setFileExtDLName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+
+											onChange(file);
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewDLFile && dlFile && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(dlFile?.name || dlFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${dlFile}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${dlFile}`}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+
+							{previewDLFile && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtDLName === 'pdf' ? (
+										<iframe
+											src={previewDLFile}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewDLFile}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				/>
 			</div>
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
-				<Image
+				<Controller
 					name="doc1_image"
-					previewImage={previewDoc1Image}
-					setPreviewImage={setpreviewDoc1Image}
-					label="Document 1"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">Document 1</Typography>
+								<label
+									htmlFor="doc1_image-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										className="hidden"
+										id="doc1_image-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewDoc1Image(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											setFileExtDoc1Name(
+												e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase()
+											);
+
+											onChange(file);
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewDoc1Image && doc1File && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(doc1File?.name || doc1File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${doc1File}`}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+
+							{previewDoc1Image && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtDoc1Name === 'pdf' ? (
+										<iframe
+											src={previewDoc1Image}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewDoc1Image}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				/>
-				<Image
+
+				<Controller
 					name="doc2_image"
-					previewImage={previewDoc2Image}
-					setPreviewImage={setpreviewDoc2Image}
-					label="Document 2"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">Document 2</Typography>
+								<label
+									htmlFor="doc2_image-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										className="hidden"
+										id="doc2_image-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewDoc2File(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											setFileExtDoc2Name(
+												e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase()
+											);
+
+											onChange(file);
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewDoc2File && doc2File && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(doc2File?.name || doc2File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${doc2File}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${doc2File}`}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+
+							{previewDoc2File && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtDoc2Name === 'pdf' ? (
+										<iframe
+											src={previewDoc2File}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewDoc2File}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				/>
-			</div> */}
+			</div>
 		</div>
 	);
 }
