@@ -94,6 +94,8 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 		removeMusanedOkala(getValues()?.id)
 			.unwrap()
 			.then((res) => {
+				RemoveSuccessfully();
+
 				if (res) {
 					if (fromSearch) {
 						history.goBack();
@@ -114,8 +116,6 @@ function MusanedOkalaHeader({ handleReset, emptyValue }) {
 						);
 					}
 				}
-
-				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));

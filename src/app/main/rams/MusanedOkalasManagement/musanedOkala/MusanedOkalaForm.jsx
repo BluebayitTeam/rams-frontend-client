@@ -1,4 +1,6 @@
-import { Autocomplete, TextField } from '@mui/material';
+/* eslint-disable jsx-a11y/iframe-has-title */
+/* eslint-disable jsx-a11y/alt-text */
+import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
 import { getAgents, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
@@ -6,7 +8,9 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { doneNotDone } from 'src/app/@data/data';
-import Image from 'src/app/@components/Image';
+import { BASE_URL } from 'src/app/constant/constants';
+import { PictureAsPdf } from '@mui/icons-material';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -30,8 +34,18 @@ function MusanedOkalaForm(props) {
 	const okalaGivenBys = useSelector((state) => state.data.agents);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewdoc1Image, setpreviewdoc1Image] = useState('');
-	const [previewdoc2Image, setpreviewdoc2Image] = useState('');
+
+	const doc1File = watch('doc1_image') || '';
+	const doc2File = watch('doc2_image') || '';
+	const classes = useStyles(props);
+	const [previewDoc2File, setPreviewDoc2File] = useState('');
+
+	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+
+	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
+
+	const [fileExtDoc2Name, setFileExtDoc2Name] = useState('');
+
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getAgents());
@@ -39,8 +53,8 @@ function MusanedOkalaForm(props) {
 	}, []);
 
 	useEffect(() => {
-		setpreviewdoc1Image('');
-		setpreviewdoc2Image('');
+		setFileExtDoc1Name('');
+		setPreviewDoc1Image('');
 	}, [getValues('musaned_no')]);
 
 	return (
@@ -274,7 +288,7 @@ function MusanedOkalaForm(props) {
 				)}
 			/>
 
-			<div className="flex justify-start -mx-16 flex-col md:flex-row">
+			{/* <div className="flex justify-start -mx-16 flex-col md:flex-row">
 				<Image
 					name="doc1_image"
 					previewImage={previewdoc1Image}
@@ -286,6 +300,200 @@ function MusanedOkalaForm(props) {
 					previewImage={previewdoc2Image}
 					setPreviewImage={setpreviewdoc2Image}
 					label="Document 2"
+				/>
+			</div> */}
+
+			<div className="flex justify-start -mx-16 flex-col md:flex-row">
+				<Controller
+					name="doc1_image"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">Document 1</Typography>
+								<label
+									htmlFor="doc1_image-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										className="hidden"
+										id="doc1_image-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewDoc1Image(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											setFileExtDoc1Name(
+												e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase()
+											);
+
+											onChange(file);
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewDoc1Image && doc1File && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(doc1File?.name || doc1File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${doc1File}`}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+
+							{previewDoc1Image && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtDoc1Name === 'pdf' ? (
+										<iframe
+											src={previewDoc1Image}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewDoc1Image}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
+				/>
+
+				<Controller
+					name="doc2_image"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">Document 2</Typography>
+								<label
+									htmlFor="doc2_image-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										className="hidden"
+										id="doc2_image-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewDoc2File(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											setFileExtDoc2Name(
+												e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase()
+											);
+
+											onChange(file);
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewDoc2File && doc2File && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(doc2File?.name || doc2File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${doc2File}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${doc2File}`}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+
+							{previewDoc2File && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtDoc2Name === 'pdf' ? (
+										<iframe
+											src={previewDoc2File}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewDoc2File}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				/>
 			</div>
 		</div>
