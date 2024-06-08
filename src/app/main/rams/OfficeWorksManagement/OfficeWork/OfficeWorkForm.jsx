@@ -55,7 +55,7 @@ function OfficeWorkForm(props) {
 
 	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
 	// const [previewDoc2File, setPreviewDoc2File] = useState(null);
-	const [fileExtDoc2Name, setFileExtDoc2Name] = useState(null);
+	const [fileExtDoc2Name, setFileExtDoc2Name] = useState('');
 	// const [fileExtName, setFileExtName] = useState(null);
 	const file = watch('file') || '';
 	const { errors } = formState;

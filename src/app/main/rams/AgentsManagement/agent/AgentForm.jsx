@@ -231,7 +231,7 @@ function AgentForm(props) {
 								className="mt-8 mb-16"
 								label="Password"
 								type="password"
-								helperText={errors?.password?.message}
+								helperText={<span style={{ color: 'red' }}>{errors?.password?.message}</span>}
 								variant="outlined"
 								fullWidth
 								InputProps={{
@@ -263,7 +263,7 @@ function AgentForm(props) {
 								className="mt-8 mb-16"
 								label="Confirm Password"
 								type="password"
-								helperText={errors?.confirmPassword?.message}
+								helperText={<span style={{ color: 'red' }}>{errors?.confirmPassword?.message}</span>}
 								variant="outlined"
 								fullWidth
 								InputProps={{

@@ -53,13 +53,13 @@ function OfficeWork() {
 		finger_status: '',
 		finger_date: '',
 		certificate_experience: '',
+		created_at: '',
+		updated_at: '',
+		current_status: '',
 		pc_image: '',
 		dl_image: '',
 		doc1_image: '',
-		doc2_image: '',
-		created_at: '',
-		updated_at: '',
-		current_status: ''
+		doc2_image: ''
 	};
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();

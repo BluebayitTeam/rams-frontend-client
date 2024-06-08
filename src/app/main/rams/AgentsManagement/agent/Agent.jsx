@@ -19,12 +19,20 @@ import OpeningBalance from './tabs/OpeningBalance';
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a agent name')
-		.min(5, 'The agent name must be at least 5 characters')
-});
+const schema = z
+	.object({
+		first_name: z
+			.string()
+			.nonempty('You must enter an agent name')
+			.min(5, 'The agent name must be at least 5 characters'),
+
+		password: z.string().min(6, 'Password must be at least 6 characters'),
+		confirmPassword: z.string().min(6, 'Password must be at least 6 characters')
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: 'Passwords must match',
+		path: ['confirmPassword'] // Path to the field that should have the error
+	});
 
 function Agent() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));

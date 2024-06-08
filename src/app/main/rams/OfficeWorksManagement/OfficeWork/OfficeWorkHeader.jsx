@@ -72,11 +72,37 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 			});
 	}
 
+	// function handleCreateOfficeWork() {
+	// 	createOfficeWork(getValues())
+	// 		.unwrap()
+	// 		.then((res) => {
+	// 			if (res?.data?.id) {
+	// 				if (fromSearch) {
+	// 					history.goBack();
+	// 				} else {
+	// 					localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
+	// 					handleReset({
+	// 						...emptyValue,
+	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 						finger_status: doneNotDone.find((data) => data.default)?.id
+	// 					});
+	// 					navigate('/apps/officeWork/officeWorks/new');
+	// 					AddedSuccessfully();
+	// 				}
+	// 			}
+	// 		});
+	// }
+
 	function handleCreateOfficeWork() {
 		createOfficeWork(getValues())
 			.unwrap()
 			.then((res) => {
-				if (res?.data?.id) {
+				// console.log('resbvbv', res);
+
+				if (res?.id) {
+					// Checking if response data contains id
+
 					if (fromSearch) {
 						history.goBack();
 					} else {
@@ -90,7 +116,15 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 						navigate('/apps/officeWork/officeWorks/new');
 						AddedSuccessfully();
 					}
+				} else {
+					// Handle cases where res.data.id is not present
+					console.error('Create failed: No id in response data');
 				}
+			})
+			.catch((error) => {
+				// Handle error
+				console.error('Error creating officeWork', error);
+				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
@@ -98,7 +132,11 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 		removeOfficeWork(getValues()?.id)
 			.unwrap()
 			.then((res) => {
-				if (res) {
+				console.log('khskdfhdskhf', res);
+
+				if (res?.detail) {
+					RemoveSuccessfully();
+
 					if (fromSearch) {
 						history.goBack();
 					} else {
@@ -119,8 +157,6 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 						);
 					}
 				}
-
-				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
