@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
@@ -319,7 +321,6 @@ function EvisaEntrysTable(props) {
 																	onClick={() =>
 																		n.file && showImage(`${BASE_URL}${n.file}`)
 																	}
-																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
 																// eslint-disable-next-line jsx-a11y/click-events-have-key-events

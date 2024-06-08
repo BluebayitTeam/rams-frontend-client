@@ -461,7 +461,7 @@ function PassengerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16 w-full "
 						freeSolo
-						value={value ? agents.find((data) => data.id == value) : null}
+						value={value ? agents.find((data) => data.id === value) : null}
 						options={agents}
 						getOptionLabel={(option) => `${option.first_name}  -${option.agent_code}`}
 						onChange={(event, newValue) => {
@@ -508,7 +508,7 @@ function PassengerForm(props) {
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
-						className="mt-8 mb-16 w-full  "
+						className="mt-8 mb-16 w-full "
 						freeSolo
 						value={value ? genders.find((data) => data.id === value) : null}
 						options={genders}
