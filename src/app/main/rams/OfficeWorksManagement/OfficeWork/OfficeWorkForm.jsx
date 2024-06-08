@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
-import Image from 'src/app/@components/Image';
 import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useParams } from 'react-router';
 import clsx from 'clsx';
@@ -40,6 +39,9 @@ function OfficeWorkForm(props) {
 	const methods = useFormContext();
 	const classes = useStyles(props);
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const pcFile = watch('pc_image') || '';
+	const [previewPCFile, setPreviewPCFile] = useState('');
+	const [fileExtPCName, setFileExtPCName] = useState('');
 	const [previewPCImage, setpreviewPCImage] = useState('');
 	const [previewDLImage, setpreviewDLImage] = useState('');
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
@@ -50,13 +52,16 @@ function OfficeWorkForm(props) {
 	const routeParams = useParams();
 	const { officeWorkId } = routeParams;
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-
+	console.log(`fndsf`, getValues());
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
 	}, []);
 
 	useEffect(() => {
+		setFileExtPCName('');
+		setPreviewPCFile('');
+
 		setpreviewPCImage('');
 		setpreviewDLImage('');
 		setpreviewDoc1Image('');
@@ -331,6 +336,100 @@ function OfficeWorkForm(props) {
 				)}
 			/>
 
+			<Controller
+				name="pc_image"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex-col">
+							<Typography className="text-center">PC File</Typography>
+							<label
+								htmlFor={`${name}-button-file`}
+								className={clsx(
+									classes.productImageUpload,
+									'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+								)}
+							>
+								<input
+									accept="image/x-png,image/gif,image/jpeg,application/pdf"
+									className="hidden"
+									id={`${name}-button-file`}
+									type="file"
+									onChange={async (e) => {
+										const reader = new FileReader();
+										reader.onload = () => {
+											if (reader.readyState === 2) {
+												setPreviewPCFile(reader.result);
+											}
+										};
+										reader.readAsDataURL(e.target.files[0]);
+
+										const file = e.target.files[0];
+
+										setFileExtPCName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+
+										onChange(file);
+									}}
+								/>
+								<Icon
+									fontSize="large"
+									color="action"
+								>
+									cloud_upload
+								</Icon>
+							</label>
+						</div>
+						{!previewPCFile && pcFile && (
+							<div
+								style={{
+									width: 'auto',
+									height: '150px',
+									overflow: 'hidden',
+									display: 'flex'
+								}}
+							>
+								{(pcFile?.name || pcFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+									<PictureAsPdf
+										style={{
+											color: 'red',
+											cursor: 'pointer',
+											display: 'block',
+											fontSize: '35px',
+											margin: 'auto'
+										}}
+										onClick={() => window.open(`${BASE_URL}${pcFile}`)}
+									/>
+								) : (
+									<img
+										src={`${BASE_URL}${pcFile}`}
+										style={{ height: '150px' }}
+									/>
+								)}
+							</div>
+						)}
+
+						{previewPCFile && (
+							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+								{fileExtPCName === 'pdf' ? (
+									<iframe
+										src={previewPCFile}
+										frameBorder="0"
+										scrolling="auto"
+										height="150px"
+										width="150px"
+									/>
+								) : (
+									<img
+										src={previewPCFile}
+										style={{ height: '150px' }}
+									/>
+								)}
+							</div>
+						)}
+					</div>
+				)}
+			/>
+			{/* 
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
 				<Controller
 					name="pc_image"
@@ -448,7 +547,7 @@ function OfficeWorkForm(props) {
 					setPreviewImage={setpreviewDoc2Image}
 					label="Document 2"
 				/>
-			</div>
+			</div> */}
 		</div>
 	);
 }
