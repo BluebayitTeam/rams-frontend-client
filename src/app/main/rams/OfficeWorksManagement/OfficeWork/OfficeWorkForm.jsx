@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import { styled } from '@mui/system';
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
 
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
@@ -9,6 +10,9 @@ import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useParams } from 'react-router';
+import clsx from 'clsx';
+import { PictureAsPdf } from '@mui/icons-material';
+import { BASE_URL } from 'src/app/constant/constants';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -34,11 +38,14 @@ const useStyles = makeStyles((theme) => ({
 function OfficeWorkForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
+	const classes = useStyles(props);
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const [previewPCImage, setpreviewPCImage] = useState('');
 	const [previewDLImage, setpreviewDLImage] = useState('');
 	const [previewDoc1Image, setpreviewDoc1Image] = useState('');
 	const [previewDoc2Image, setpreviewDoc2Image] = useState('');
+	const [fileExtName, setFileExtName] = useState('');
+	const file = watch('file') || '';
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { officeWorkId } = routeParams;
@@ -325,12 +332,102 @@ function OfficeWorkForm(props) {
 			/>
 
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
-				<Image
+				<Controller
 					name="pc_image"
-					previewImage={previewPCImage}
-					setPreviewImage={setpreviewPCImage}
-					label="PC Image"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">PC Image</Typography>
+								<label
+									htmlFor={`${name}-button-file`}
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										className="hidden"
+										id={`${name}-button-file`}
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setpreviewPCImage(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+
+											onChange(file);
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewPCImage && file && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(file?.name || file)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${pc_image}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${pc_image}`}
+											style={{ height: '150px' }}
+											alt="pc_image"
+										/>
+									)}
+								</div>
+							)}
+
+							{previewPCImage && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtName === 'pdf' ? (
+										<iframe
+											src={previewPCImage}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewPCImage}
+											style={{ height: '150px' }}
+											alt="pc_image"
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				/>
+
 				<Image
 					name="dl_image"
 					previewImage={previewDLImage}
