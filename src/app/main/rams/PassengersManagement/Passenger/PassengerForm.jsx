@@ -588,10 +588,11 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+			{/* <Controller
 				name="date_of_birth"
 				control={control}
 				render={({ field }) => {
+					const { value } = field;
 					return (
 						<TextField
 							{...field}
@@ -601,11 +602,39 @@ function PassengerForm(props) {
 							label="Date of Birth"
 							id="date_of_birth"
 							type="date"
-							InputLabelProps={{ shrink: true }}
+							InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							fullWidth
 						/>
 					);
 				}}
+			/> */}
+
+			<Controller
+				control={control}
+				name="date_of_birth"
+				render={({ field: { value, onChange } }) => (
+					<DatePicker
+						value={value ? new Date(value) : null}
+						onChange={(val) => {
+							onChange(val ? val.toISOString() : '');
+						}}
+						className="mt-32 mb-16 w-full"
+						slotProps={{
+							textField: {
+								id: 'date_of_birth',
+								label: 'Date of Birth',
+								InputLabelProps: value ? { shrink: true } : { style: { color: 'red' } },
+								fullWidth: true,
+								variant: 'outlined',
+								error: !!errors.date_of_birth,
+								helperText: errors?.date_of_birth?.message
+							},
+							actionBar: {
+								actions: ['clear', 'today']
+							}
+						}}
+					/>
+				)}
 			/>
 
 			<Controller
