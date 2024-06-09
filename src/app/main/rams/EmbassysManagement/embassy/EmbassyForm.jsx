@@ -516,12 +516,7 @@ function EmbassyForm(props) {
 			/>
 
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
-				<Image
-					name="old_visa_image"
-					previewImage={previewOldVisaImage}
-					setPreviewImage={setPreviewOldVisaImage}
-					label="Old Visa Image"
-				/>
+				
 
 				<Controller
 					name="old_visa_image"

@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
+import { PictureAsPdf } from '@mui/icons-material';
+import { BASE_URL } from 'src/app/constant/constants';
+import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -33,15 +36,18 @@ const useStyles = makeStyles((theme) => ({
 function ManPowerForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const classes = useStyles(props);
+    const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { manPowerId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const manpowers = useSelector((state) => state.data.manpowers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewImage, setPreviewImage] = useState('');
+    const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+	const doc1File = watch('doc1_image') || '';
 
+	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
 	const [reload, setReload] = useState(false);
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -50,8 +56,9 @@ function ManPowerForm(props) {
 	}, []);
 
 	useEffect(() => {
-		setPreviewImage('');
-	}, [getValues('recruiting_agency')]);
+        setFileExtDoc1Name('');
+		setPreviewDoc1Image( '' );
+	}, [ getValues( 'recruiting_agency' ) ] );
 
 	const current_status = sessionStorage.getItem('passengerCurrentStatus');
 
@@ -260,12 +267,7 @@ function ManPowerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						// value={value ? currentStatuss.find((data) => data.id === value) : null}
-						// options={currentStatuss}
-						// getOptionLabel={(option) => `${option.name}`}
-						// onChange={(event, newValue) => {
-						// 	onChange(newValue?.id);
-						// }}
+						
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
@@ -290,11 +292,100 @@ function ManPowerForm(props) {
 			/>
 
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-				<Image
-					name="smart_card_image"
-					previewImage={previewImage}
-					setPreviewImage={setPreviewImage}
-					label="Smart Card Image"
+				<Controller
+					name="old_visa_image"
+					control={control} 
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-evenly">
+							<div className="flex-col">
+								<Typography className="text-center">Old Visa</Typography>
+								<label
+									htmlFor="old_visa_image-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										className="hidden"
+										id="old_visa_image-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewDoc1Image(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											setFileExtDoc1Name(
+												e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase()
+											);
+
+											onChange(file);
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewDoc1Image && doc1File && (
+								<div
+									style={{
+										width: 'auto',
+										height: '150px',
+										overflow: 'hidden',
+										display: 'flex'
+									}}
+								>
+									{(doc1File?.name || doc1File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										<PictureAsPdf
+											style={{
+												color: 'red',
+												cursor: 'pointer',
+												display: 'block',
+												fontSize: '35px',
+												margin: 'auto'
+											}}
+											onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+										/>
+									) : (
+										<img
+											src={`${BASE_URL}${doc1File}`}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+
+							{previewDoc1Image && (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtDoc1Name === 'pdf' ? (
+										<iframe
+											src={previewDoc1Image}
+											frameBorder="0"
+											scrolling="auto"
+											height="150px"
+											width="150px"
+										/>
+									) : (
+										<img
+											src={previewDoc1Image}
+											style={{ height: '150px' }}
+										/>
+									)}
+								</div>
+							)}
+						</div>
+					)}
 				/>
 			</div>
 		</div>
