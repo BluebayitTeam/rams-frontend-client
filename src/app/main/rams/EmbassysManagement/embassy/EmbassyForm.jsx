@@ -8,7 +8,11 @@ import { useParams } from 'react-router';
 import { doneNotDone } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import increaseMonth from 'src/app/@helpers/increaseMonth';
+import { PictureAsPdf } from '@mui/icons-material';
+import { BASE_URL } from 'src/app/constant/constants';
+import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
 
+import clsx from 'clsx';
 const useStyles = makeStyles((theme) => ({
 	hidden: {
 		display: 'none'
@@ -23,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
 function EmbassyForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const classes = useStyles(props);
+    const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
@@ -31,7 +36,10 @@ function EmbassyForm(props) {
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const embassyData = useSelector((state) => state.data.embassys);
 	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewOldVisaImage, setPreviewOldVisaImage] = useState('');
+	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+	const doc1File = watch('doc1_image') || '';
+
+	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -39,7 +47,8 @@ function EmbassyForm(props) {
 	}, []);
 
 	useEffect(() => {
-		setPreviewOldVisaImage('');
+		setFileExtDoc1Name('');
+		setPreviewDoc1Image('');
 		setPreviewStampVisaImage('');
 	}, [getValues('musaned_no')]);
 
@@ -159,35 +168,7 @@ function EmbassyForm(props) {
 				}}
 			/>
 
-			{/* <Controller
-				name="stamping_status"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? doneNotDone.find((data) => data.id == value) : null}
-						options={doneNotDone}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Stamping Status"
-								label="Stamping Status"
-								// error={!!errors.stamping_status}
-								helperText={errors?.stamping_status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/> */}
+			
 
 			<Controller
 				name="stamping_status"
@@ -544,11 +525,11 @@ function EmbassyForm(props) {
 
 				<Controller
 					name="old_visa_image"
-					control={control}
+					control={control} 
 					render={({ field: { onChange, value } }) => (
 						<div className="flex w-full flex-row items-center justify-evenly">
 							<div className="flex-col">
-								<Typography className="text-center">Document 1</Typography>
+								<Typography className="text-center">Old Visa</Typography>
 								<label
 									htmlFor="old_visa_image-button-file"
 									className={clsx(
