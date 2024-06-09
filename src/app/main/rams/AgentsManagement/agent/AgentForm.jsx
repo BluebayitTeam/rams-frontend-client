@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 function AgentForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError } = methods;
+	const { control, formState, watch, setValue, setError, getValues } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { agentId } = routeParams;
@@ -98,10 +98,13 @@ function AgentForm(props) {
 	const handleRemoveFile = () => {
 		setPreviewImageFile(null);
 		setFileExtName(null);
+		setValue('image', '');
 
 		if (fileInputRef.current) {
 			fileInputRef.current.value = '';
 		}
+
+		console.log('sfsdferwer', getValues());
 	};
 
 	return (
@@ -662,7 +665,7 @@ function AgentForm(props) {
 				}}
 			/>
 
-			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
+			<div className="flex justify-center sm:justify-start flex-wrap -mx-0.5">
 				<Controller
 					name="image"
 					control={control}
@@ -696,6 +699,9 @@ function AgentForm(props) {
 											setFileExtName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
 
 											onChange(file);
+
+											// Reset the input value to allow re-uploading the same file
+											e.target.value = null;
 										}}
 									/>
 									<Icon
@@ -707,47 +713,46 @@ function AgentForm(props) {
 								</label>
 							</div>
 							{!previewImageFile && (image || image) && (
-								 <div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
-                            <div
-                                id="cancelIcon"
-                                style={{
-                                    position: 'absolute',
-                                    top: '0',
-                                    right: '0',
-                                    zIndex: 1,
-                                    color: 'red',
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                <HighlightOffIcon onClick={handleRemoveFile} />
-                            </div>
-								<div
-									style={{
-										width: 'auto',
-										height: '150px',
-										overflow: 'hidden',
-										display: 'flex'
-									}}
-								>
-									{(image?.name || image)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-										
-										<PictureAsPdf
-											style={{
-												color: 'red',
-												cursor: 'pointer',
-												display: 'block',
-												fontSize: '35px',
-												margin: 'auto'
-											}}
-											onClick={() => window.open(`${BASE_URL}${file}`)}
-										/>
-									) : (
-										<img
-											src={`${BASE_URL}${image}`}
-											style={{ height: '100px' }}
-										/>
-									)}
-								</div>
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveFile} />
+									</div>
+									<div
+										style={{
+											width: 'auto',
+											height: '150px',
+											overflow: 'hidden',
+											display: 'flex'
+										}}
+									>
+										{(image?.name || image)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+											<PictureAsPdf
+												style={{
+													color: 'red',
+													cursor: 'pointer',
+													display: 'block',
+													fontSize: '35px',
+													margin: 'auto'
+												}}
+												onClick={() => window.open(`${BASE_URL}${file}`)}
+											/>
+										) : (
+											<img
+												src={`${BASE_URL}${image}`}
+												style={{ height: '100px' }}
+											/>
+										)}
+									</div>
 								</div>
 							)}
 
@@ -826,8 +831,8 @@ function AgentForm(props) {
 										)}
 									>
 										<Typography className="text-sm font-700">
-											<span className="mr-4 text-xs">
-												image/x-png, image/gif, image/jpeg, application/pdf
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG,JPEG,PNG,PDF,GIF)
 											</span>
 										</Typography>
 									</Box>
