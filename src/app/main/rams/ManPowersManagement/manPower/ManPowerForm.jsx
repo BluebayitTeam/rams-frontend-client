@@ -1,16 +1,15 @@
 import { styled } from '@mui/system';
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, TextField, Tooltip, tooltipClasses, Icon, Typography } from '@mui/material';
 import { getCurrentStatuss, getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
-import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
-import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
+import clsx from 'clsx';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -37,14 +36,14 @@ function ManPowerForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const classes = useStyles(props);
-    const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { manPowerId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const manpowers = useSelector((state) => state.data.manpowers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-    const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
 	const doc1File = watch('doc1_image') || '';
 
 	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
@@ -56,9 +55,9 @@ function ManPowerForm(props) {
 	}, []);
 
 	useEffect(() => {
-        setFileExtDoc1Name('');
-		setPreviewDoc1Image( '' );
-	}, [ getValues( 'recruiting_agency' ) ] );
+		setFileExtDoc1Name('');
+		setPreviewDoc1Image('');
+	}, [getValues('recruiting_agency')]);
 
 	const current_status = sessionStorage.getItem('passengerCurrentStatus');
 
@@ -267,7 +266,6 @@ function ManPowerForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
 						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
@@ -294,7 +292,7 @@ function ManPowerForm(props) {
 			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
 				<Controller
 					name="old_visa_image"
-					control={control} 
+					control={control}
 					render={({ field: { onChange, value } }) => (
 						<div className="flex w-full flex-row items-center justify-evenly">
 							<div className="flex-col">

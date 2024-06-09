@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
 import { getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
@@ -10,9 +10,9 @@ import Image from 'src/app/@components/Image';
 import increaseMonth from 'src/app/@helpers/increaseMonth';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
-import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
 
 import clsx from 'clsx';
+
 const useStyles = makeStyles((theme) => ({
 	hidden: {
 		display: 'none'
@@ -28,7 +28,7 @@ function EmbassyForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const classes = useStyles(props);
-    const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { embassyId } = routeParams;
@@ -167,8 +167,6 @@ function EmbassyForm(props) {
 					);
 				}}
 			/>
-
-			
 
 			<Controller
 				name="stamping_status"
@@ -516,11 +514,9 @@ function EmbassyForm(props) {
 			/>
 
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
-				
-
 				<Controller
 					name="old_visa_image"
-					control={control} 
+					control={control}
 					render={({ field: { onChange, value } }) => (
 						<div className="flex w-full flex-row items-center justify-evenly">
 							<div className="flex-col">

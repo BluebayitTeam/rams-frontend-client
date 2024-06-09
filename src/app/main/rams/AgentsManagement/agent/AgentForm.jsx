@@ -20,14 +20,15 @@ import TextField from '@mui/material/TextField';
 import { getCities, getCountries, getGroups, getThanas, getThanasBasedOnCity } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import countryCodes from 'src/app/@data/countrycodes';
 import { genders } from 'src/app/@data/data';
+import clsx from 'clsx';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
-import clsx from 'clsx';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -74,8 +75,10 @@ function AgentForm(props) {
 
 	const file = watch('file') || '';
 
-	const [previewFile, setPreviewFile] = useState('');
-	const [fileExtName, setFileExtName] = useState('');
+	const [previewImageFile, setPreviewImageFile] = useState(null);
+	const [fileExtName, setFileExtName] = useState(null);
+	const fileInputRef = useRef(null);
+
 	useEffect(() => {
 		dispatch(getThanas());
 		dispatch(getCities());
@@ -89,6 +92,16 @@ function AgentForm(props) {
 	const handleChnageCountry = (selectedCountry) => {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
+	};
+
+	// removed image
+	const handleRemoveFile = () => {
+		setPreviewImageFile(null);
+		setFileExtName(null);
+
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
 	};
 
 	return (
@@ -673,7 +686,7 @@ function AgentForm(props) {
 											const reader = new FileReader();
 											reader.onload = () => {
 												if (reader.readyState === 2) {
-													setPreviewFile(reader.result);
+													setPreviewImageFile(reader.result);
 												}
 											};
 											reader.readAsDataURL(e.target.files[0]);
@@ -693,7 +706,21 @@ function AgentForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewFile && (image || image) && (
+							{!previewImageFile && (image || image) && (
+								 <div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+                            <div
+                                id="cancelIcon"
+                                style={{
+                                    position: 'absolute',
+                                    top: '0',
+                                    right: '0',
+                                    zIndex: 1,
+                                    color: 'red',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <HighlightOffIcon onClick={handleRemoveFile} />
+                            </div>
 								<div
 									style={{
 										width: 'auto',
@@ -703,6 +730,7 @@ function AgentForm(props) {
 									}}
 								>
 									{(image?.name || image)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+										
 										<PictureAsPdf
 											style={{
 												color: 'red',
@@ -720,25 +748,90 @@ function AgentForm(props) {
 										/>
 									)}
 								</div>
+								</div>
 							)}
 
-							{previewFile && (
+							{previewImageFile ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
 									{fileExtName === 'pdf' ? (
-										<iframe
-											src={previewFile}
-											frameBorder="0"
-											scrolling="auto"
-											height="150px"
-											width="150px"
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+											<iframe
+												src={previewImageFile}
+												frameBorder="0"
+												scrolling="auto"
+												height="150px"
+												width="150px"
+											/>
+										</div>
 									) : (
-										<img
-											src={previewFile}
-											style={{ height: '150px' }}
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+
+											<img
+												src={previewImageFile}
+												style={{ height: '150px' }}
+											/>
+										</div>
 									)}
 								</div>
+							) : (
+								!image && (
+									<Box
+										height={200}
+										width={200}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '150px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs">
+												image/x-png, image/gif, image/jpeg, application/pdf
+											</span>
+										</Typography>
+									</Box>
+								)
 							)}
 						</div>
 					)}
