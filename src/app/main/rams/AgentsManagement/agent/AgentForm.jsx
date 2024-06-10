@@ -670,7 +670,7 @@ function AgentForm(props) {
 					name="image"
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex w-full flex-row items-center justify-center ml-16">
 							<div className="flex-col">
 								<Typography className="text-center">File</Typography>
 								<label
@@ -805,7 +805,7 @@ function AgentForm(props) {
 
 											<img
 												src={previewImageFile}
-												style={{ height: '150px' }}
+												style={{ height: '140px', width: '150px' }}
 											/>
 										</div>
 									)}
@@ -813,8 +813,8 @@ function AgentForm(props) {
 							) : (
 								!image && (
 									<Box
-										height={200}
-										width={200}
+										height={180}
+										width={180}
 										my={4}
 										display="flex"
 										alignItems="center"
@@ -822,7 +822,7 @@ function AgentForm(props) {
 										p={2}
 										style={{
 											width: '150px',
-											height: '150px',
+											height: '70px',
 											border: '1px solid red'
 										}}
 										className={clsx(
