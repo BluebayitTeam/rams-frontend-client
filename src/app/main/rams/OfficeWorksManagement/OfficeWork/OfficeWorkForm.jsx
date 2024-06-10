@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { styled } from '@mui/system';
-import { Autocomplete, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
+import { Autocomplete, Icon, TextField, Tooltip, Typography, tooltipClasses, Box } from '@mui/material';
 
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
@@ -13,6 +13,7 @@ import { useParams } from 'react-router';
 import clsx from 'clsx';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -62,6 +63,7 @@ function OfficeWorkForm(props) {
 	const routeParams = useParams();
 	const { officeWorkId } = routeParams;
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
+	const fileInputRef = useRef(null);
 	console.log(`fndsf`, getValues());
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -78,6 +80,32 @@ function OfficeWorkForm(props) {
 		setPreviewDoc1Image('');
 		// setpreviewDoc2Image('');
 	}, [getValues('police_clearance_no')]);
+
+	// removed image
+	const handleRemoveFile = () => {
+		setPreviewPCFile(null);
+
+		setFileExtPCName(null);
+
+		setValue('pc_image', '');
+		setPreviewDLFile(null);
+		setFileExtDLName(null);
+		setValue('dl_image', '');
+
+		setFileExtDoc1Name(null);
+		setPreviewDoc1Image(null);
+		setValue('doc1_image', '');
+
+		setFileExtDoc2Name(null);
+		setPreviewDoc2File(null);
+		setValue('doc2_image', '');
+
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
+
+		console.log('sfsdferwer', getValues());
+	};
 	return (
 		<div>
 			<Controller
@@ -352,7 +380,7 @@ function OfficeWorkForm(props) {
 					name="pc_image"
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex w-full flex-row items-center justify-center ml-16">
 							<div className="flex-col">
 								<Typography className="text-center">PC File</Typography>
 								<label
@@ -381,6 +409,9 @@ function OfficeWorkForm(props) {
 											setFileExtPCName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
 
 											onChange(file);
+
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
 										}}
 									/>
 									<Icon
@@ -391,52 +422,131 @@ function OfficeWorkForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewPCFile && pcFile && (
-								<div
-									style={{
-										width: 'auto',
-										height: '150px',
-										overflow: 'hidden',
-										display: 'flex'
-									}}
-								>
-									{(pcFile?.name || pcFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-										<PictureAsPdf
-											style={{
-												color: 'red',
-												cursor: 'pointer',
-												display: 'block',
-												fontSize: '35px',
-												margin: 'auto'
-											}}
-											onClick={() => window.open(`${BASE_URL}${pcFile}`)}
-										/>
-									) : (
-										<img
-											src={`${BASE_URL}${pcFile}`}
-											style={{ height: '150px' }}
-										/>
-									)}
+							{!previewPCFile && (pcFile || pcFile) && (
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveFile} />
+									</div>
+									<div
+										style={{
+											width: 'auto',
+											height: '150px',
+											overflow: 'hidden',
+											display: 'flex'
+										}}
+									>
+										{(pcFile?.name || pcFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+											<PictureAsPdf
+												style={{
+													color: 'red',
+													cursor: 'pointer',
+													display: 'block',
+													fontSize: '35px',
+													margin: 'auto'
+												}}
+												onClick={() => window.open(`${BASE_URL}${file}`)}
+											/>
+										) : (
+											<img
+												src={`${BASE_URL}${pcFile}`}
+												style={{ height: '100px' }}
+											/>
+										)}
+									</div>
 								</div>
 							)}
 
-							{previewPCFile && (
+							{previewPCFile ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
 									{fileExtPCName === 'pdf' ? (
-										<iframe
-											src={previewPCFile}
-											frameBorder="0"
-											scrolling="auto"
-											height="150px"
-											width="150px"
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+											<iframe
+												src={previewPCFile}
+												frameBorder="0"
+												scrolling="auto"
+												height="150px"
+												width="150px"
+											/>
+										</div>
 									) : (
-										<img
-											src={previewPCFile}
-											style={{ height: '150px' }}
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+
+											<img
+												src={previewPCFile}
+												style={{ height: '140px', width: '150px' }}
+											/>
+										</div>
 									)}
 								</div>
+							) : (
+								!pcFile && (
+									<Box
+										height={180}
+										width={180}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '70px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG,JPEG,PNG,PDF,GIF)
+											</span>
+										</Typography>
+									</Box>
+								)
 							)}
 						</div>
 					)}
@@ -446,7 +556,7 @@ function OfficeWorkForm(props) {
 					name="dl_image"
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex w-full flex-row items-center justify-center ml-16">
 							<div className="flex-col">
 								<Typography className="text-center">DL File</Typography>
 								<label
@@ -475,6 +585,9 @@ function OfficeWorkForm(props) {
 											setFileExtDLName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
 
 											onChange(file);
+
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
 										}}
 									/>
 									<Icon
@@ -485,52 +598,131 @@ function OfficeWorkForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewDLFile && dlFile && (
-								<div
-									style={{
-										width: 'auto',
-										height: '150px',
-										overflow: 'hidden',
-										display: 'flex'
-									}}
-								>
-									{(dlFile?.name || dlFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-										<PictureAsPdf
-											style={{
-												color: 'red',
-												cursor: 'pointer',
-												display: 'block',
-												fontSize: '35px',
-												margin: 'auto'
-											}}
-											onClick={() => window.open(`${BASE_URL}${dlFile}`)}
-										/>
-									) : (
-										<img
-											src={`${BASE_URL}${dlFile}`}
-											style={{ height: '150px' }}
-										/>
-									)}
+							{!previewDLFile && (dlFile || dlFile) && (
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveFile} />
+									</div>
+									<div
+										style={{
+											width: 'auto',
+											height: '150px',
+											overflow: 'hidden',
+											display: 'flex'
+										}}
+									>
+										{(dlFile?.name || dlFile)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+											<PictureAsPdf
+												style={{
+													color: 'red',
+													cursor: 'pointer',
+													display: 'block',
+													fontSize: '35px',
+													margin: 'auto'
+												}}
+												onClick={() => window.open(`${BASE_URL}${file}`)}
+											/>
+										) : (
+											<img
+												src={`${BASE_URL}${dlFile}`}
+												style={{ height: '100px' }}
+											/>
+										)}
+									</div>
 								</div>
 							)}
 
-							{previewDLFile && (
+							{previewDLFile ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
 									{fileExtDLName === 'pdf' ? (
-										<iframe
-											src={previewDLFile}
-											frameBorder="0"
-											scrolling="auto"
-											height="150px"
-											width="150px"
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+											<iframe
+												src={previewDLFile}
+												frameBorder="0"
+												scrolling="auto"
+												height="150px"
+												width="150px"
+											/>
+										</div>
 									) : (
-										<img
-											src={previewDLFile}
-											style={{ height: '150px' }}
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+
+											<img
+												src={previewDLFile}
+												style={{ height: '140px', width: '150px' }}
+											/>
+										</div>
 									)}
 								</div>
+							) : (
+								!dlFile && (
+									<Box
+										height={180}
+										width={180}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '70px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG,JPEG,PNG,PDF,GIF)
+											</span>
+										</Typography>
+									</Box>
+								)
 							)}
 						</div>
 					)}
@@ -541,9 +733,9 @@ function OfficeWorkForm(props) {
 					name="doc1_image"
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex w-full flex-row items-center justify-center ml-16">
 							<div className="flex-col">
-								<Typography className="text-center">Document 1</Typography>
+								<Typography className="text-center">Document 1 </Typography>
 								<label
 									htmlFor="doc1_image-button-file"
 									className={clsx(
@@ -572,6 +764,9 @@ function OfficeWorkForm(props) {
 											);
 
 											onChange(file);
+
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
 										}}
 									/>
 									<Icon
@@ -582,52 +777,131 @@ function OfficeWorkForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewDoc1Image && doc1File && (
-								<div
-									style={{
-										width: 'auto',
-										height: '150px',
-										overflow: 'hidden',
-										display: 'flex'
-									}}
-								>
-									{(doc1File?.name || doc1File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-										<PictureAsPdf
-											style={{
-												color: 'red',
-												cursor: 'pointer',
-												display: 'block',
-												fontSize: '35px',
-												margin: 'auto'
-											}}
-											onClick={() => window.open(`${BASE_URL}${doc1File}`)}
-										/>
-									) : (
-										<img
-											src={`${BASE_URL}${doc1File}`}
-											style={{ height: '150px' }}
-										/>
-									)}
+							{!previewDoc1Image && (doc1File || doc1File) && (
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveFile} />
+									</div>
+									<div
+										style={{
+											width: 'auto',
+											height: '150px',
+											overflow: 'hidden',
+											display: 'flex'
+										}}
+									>
+										{(doc1File?.name || doc1File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+											<PictureAsPdf
+												style={{
+													color: 'red',
+													cursor: 'pointer',
+													display: 'block',
+													fontSize: '35px',
+													margin: 'auto'
+												}}
+												onClick={() => window.open(`${BASE_URL}${file}`)}
+											/>
+										) : (
+											<img
+												src={`${BASE_URL}${doc1File}`}
+												style={{ height: '100px' }}
+											/>
+										)}
+									</div>
 								</div>
 							)}
 
-							{previewDoc1Image && (
+							{previewDoc1Image ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
 									{fileExtDoc1Name === 'pdf' ? (
-										<iframe
-											src={previewDoc1Image}
-											frameBorder="0"
-											scrolling="auto"
-											height="150px"
-											width="150px"
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+											<iframe
+												src={previewDoc1Image}
+												frameBorder="0"
+												scrolling="auto"
+												height="150px"
+												width="150px"
+											/>
+										</div>
 									) : (
-										<img
-											src={previewDoc1Image}
-											style={{ height: '150px' }}
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+
+											<img
+												src={previewDoc1Image}
+												style={{ height: '140px', width: '150px' }}
+											/>
+										</div>
 									)}
 								</div>
+							) : (
+								!dlFile && (
+									<Box
+										height={180}
+										width={180}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '70px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG,JPEG,PNG,PDF,GIF)
+											</span>
+										</Typography>
+									</Box>
+								)
 							)}
 						</div>
 					)}
@@ -637,9 +911,9 @@ function OfficeWorkForm(props) {
 					name="doc2_image"
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex w-full flex-row items-center justify-center ml-16">
 							<div className="flex-col">
-								<Typography className="text-center">Document 2</Typography>
+								<Typography className="text-center">Document 1</Typography>
 								<label
 									htmlFor="doc2_image-button-file"
 									className={clsx(
@@ -668,6 +942,9 @@ function OfficeWorkForm(props) {
 											);
 
 											onChange(file);
+
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
 										}}
 									/>
 									<Icon
@@ -678,52 +955,131 @@ function OfficeWorkForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewDoc2File && doc2File && (
-								<div
-									style={{
-										width: 'auto',
-										height: '150px',
-										overflow: 'hidden',
-										display: 'flex'
-									}}
-								>
-									{(doc2File?.name || doc2File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-										<PictureAsPdf
-											style={{
-												color: 'red',
-												cursor: 'pointer',
-												display: 'block',
-												fontSize: '35px',
-												margin: 'auto'
-											}}
-											onClick={() => window.open(`${BASE_URL}${doc2File}`)}
-										/>
-									) : (
-										<img
-											src={`${BASE_URL}${doc2File}`}
-											style={{ height: '150px' }}
-										/>
-									)}
+							{!previewDoc2File && (doc2File || doc2File) && (
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveFile} />
+									</div>
+									<div
+										style={{
+											width: 'auto',
+											height: '150px',
+											overflow: 'hidden',
+											display: 'flex'
+										}}
+									>
+										{(doc2File?.name || doc2File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+											<PictureAsPdf
+												style={{
+													color: 'red',
+													cursor: 'pointer',
+													display: 'block',
+													fontSize: '35px',
+													margin: 'auto'
+												}}
+												onClick={() => window.open(`${BASE_URL}${file}`)}
+											/>
+										) : (
+											<img
+												src={`${BASE_URL}${doc2File}`}
+												style={{ height: '100px' }}
+											/>
+										)}
+									</div>
 								</div>
 							)}
 
-							{previewDoc2File && (
+							{previewDoc2File ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
 									{fileExtDoc2Name === 'pdf' ? (
-										<iframe
-											src={previewDoc2File}
-											frameBorder="0"
-											scrolling="auto"
-											height="150px"
-											width="150px"
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+											<iframe
+												src={previewDoc2File}
+												frameBorder="0"
+												scrolling="auto"
+												height="150px"
+												width="150px"
+											/>
+										</div>
 									) : (
-										<img
-											src={previewDoc2File}
-											style={{ height: '150px' }}
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red'
+												}}
+											>
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveFile();
+													}}
+												/>
+											</div>
+
+											<img
+												src={previewDoc2File}
+												style={{ height: '140px', width: '150px' }}
+											/>
+										</div>
 									)}
 								</div>
+							) : (
+								!dlFile && (
+									<Box
+										height={180}
+										width={180}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '70px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG,JPEG,PNG,PDF,GIF)
+											</span>
+										</Typography>
+									</Box>
+								)
 							)}
 						</div>
 					)}
