@@ -674,7 +674,7 @@ function AgentForm(props) {
 							<div className="flex-col">
 								<Typography className="text-center">File</Typography>
 								<label
-									htmlFor={`${name}-button-file`}
+									htmlFor="image-button-file"
 									className={clsx(
 										classes.productImageUpload,
 										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
@@ -683,7 +683,7 @@ function AgentForm(props) {
 									<input
 										accept="image/x-png,image/gif,image/jpeg,application/pdf"
 										className="hidden"
-										id={`${name}-button-file`}
+										id="image-button-file"
 										type="file"
 										onChange={async (e) => {
 											const reader = new FileReader();
