@@ -33,6 +33,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
+import DescriptionIcon from '@material-ui/icons/Description';
 import AgentsTableHead from './AgentsTableHead';
 import { selectFilteredAgents, useGetAgentsQuery } from '../AgentsApi';
 
@@ -290,7 +291,7 @@ function AgentsTable(props) {
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 										</TableCell>
-										{Object?.entries(n)?.map(
+										{/* {Object?.entries(n)?.map(
 											([key, value]) =>
 												key !== 'id' && (
 													<TableCell
@@ -327,6 +328,74 @@ function AgentsTable(props) {
 																		borderRadius: '50%'
 																	}}
 																	alt="test"
+																/>
+															)
+														) : (key === 'calling_date' ||
+																key === 'calling_exp_date' ||
+																key === 'visa_issue_date') &&
+														  n[key] ? (
+															moment(new Date(n[key])).format('DD-MM-YYYY')
+														) : (key === 'is_debtor' || key === 'is_paid') &&
+														  n[key] !== undefined ? (
+															n[key] ? (
+																'Yes'
+															) : (
+																'No'
+															)
+														) : (
+															value
+														)}
+													</TableCell>
+												)
+										)} */}
+										{Object?.entries(n)?.map(
+											([key, value]) =>
+												key !== 'id' && (
+													<TableCell
+														className="p-4 md:p-16 border-t-1 border-gray-200"
+														component="th"
+														scope="row"
+														key={key}
+													>
+														{key === 'image' ? (
+															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
+																<PictureAsPdf
+																	style={{
+																		color: 'red',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : ['doc', 'docx'].includes(
+																	n[key]?.split('.').pop()?.toLowerCase()
+															  ) ? (
+																<DescriptionIcon
+																	style={{
+																		color: 'blue',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : (
+																<img
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n[key]}`)
+																	}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
+																	alt="uploaded file"
 																/>
 															)
 														) : (key === 'calling_date' ||

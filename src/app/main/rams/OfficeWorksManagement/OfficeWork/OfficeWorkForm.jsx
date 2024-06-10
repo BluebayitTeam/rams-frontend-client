@@ -423,23 +423,22 @@ function OfficeWorkForm(props) {
 										id="pc_image-button-file"
 										type="file"
 										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewPCFile(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
 											const file = e.target.files[0];
 
-											if (file) {
-												const reader = new FileReader();
-												reader.onload = () => {
-													if (reader.readyState === 2) {
-														setPreviewPCFile(reader.result);
-													}
-												};
-												reader.readAsDataURL(file);
+											setFileExtPCName(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
 
-												setFileExtPCName(file.name.split('.').pop().toLowerCase());
-												onChange(file);
+											onChange(file);
 
-												// Force reset the input value to allow re-uploading the same file
-												e.target.value = '';
-											}
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
 										}}
 									/>
 									<Icon
@@ -450,7 +449,7 @@ function OfficeWorkForm(props) {
 									</Icon>
 								</label>
 							</div>
-							{!previewPCFile && pcFile && (
+							{!previewPCFile && (pcFile || pcFile) && (
 								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
 									<div
 										id="cancelIcon"
@@ -462,15 +461,23 @@ function OfficeWorkForm(props) {
 											color: 'red',
 											cursor: 'pointer'
 										}}
-										onClick={handleRemovePCFile}
 									>
-										<HighlightOffIcon />
+										<HighlightOffIcon
+											onClick={() => {
+												handleRemoveDLFile();
+											}}
+										/>
 									</div>
 									<div
-										style={{ width: 'auto', height: '150px', overflow: 'hidden', display: 'flex' }}
+										style={{
+											width: 'auto',
+											height: '150px',
+											overflow: 'hidden',
+											display: 'flex'
+										}}
 									>
 										{['pdf', 'doc', 'docx'].includes(
-											pcFile.name?.split('.').pop().toLowerCase()
+											(pcFile?.name || pcFile)?.split('.')?.pop()?.toLowerCase()
 										) ? (
 											<div
 												style={{
@@ -486,7 +493,7 @@ function OfficeWorkForm(props) {
 															color: 'red',
 															cursor: 'pointer',
 															display: 'block',
-															fontSize: '35px',
+															fontSize: '137px',
 															margin: 'auto'
 														}}
 														onClick={() => window.open(`${BASE_URL}${file}`)}
@@ -516,7 +523,7 @@ function OfficeWorkForm(props) {
 
 							{previewPCFile ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-									{['pdf', 'doc', 'docx'].includes(fileExtPCName) ? (
+									{fileExtPCName === 'pdf' || fileExtPCName === 'doc' || fileExtPCName === 'docx' ? (
 										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
 											<div
 												id="cancelIcon"
@@ -527,9 +534,12 @@ function OfficeWorkForm(props) {
 													zIndex: 1,
 													color: 'red'
 												}}
-												onClick={handleRemovePCFile}
 											>
-												<HighlightOffIcon />
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveDLFile();
+													}}
+												/>
 											</div>
 											{fileExtPCName === 'pdf' ? (
 												<iframe
@@ -563,21 +573,23 @@ function OfficeWorkForm(props) {
 													zIndex: 1,
 													color: 'red'
 												}}
-												onClick={() => {
-													handleRemovePCFile();
-												}}
 											>
-												<HighlightOffIcon />
+												<HighlightOffIcon
+													onClick={() => {
+														handleRemoveDLFile();
+													}}
+												/>
 											</div>
+
 											<img
-												src={previewPCFile}
+												src={previewDLFile}
 												style={{ height: '140px', width: '150px' }}
 											/>
 										</div>
 									)}
 								</div>
 							) : (
-								!pcFile && (
+								!dlFile && (
 									<Box
 										height={180}
 										width={180}

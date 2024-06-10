@@ -3,7 +3,8 @@
 import { FormControl } from '@mui/base';
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
-
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import DescriptionIcon from '@material-ui/icons/Description';
 import {
 	Autocomplete,
 	Box,
@@ -26,7 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import countryCodes from 'src/app/@data/countrycodes';
 import { genders } from 'src/app/@data/data';
 import clsx from 'clsx';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
 
@@ -672,7 +673,7 @@ function AgentForm(props) {
 					render={({ field: { onChange, value } }) => (
 						<div className="flex w-full flex-row items-center justify-center ml-16">
 							<div className="flex-col">
-								<Typography className="text-center">File</Typography>
+								<Typography className="text-center">PC File</Typography>
 								<label
 									htmlFor="image-button-file"
 									className={clsx(
@@ -681,7 +682,7 @@ function AgentForm(props) {
 									)}
 								>
 									<input
-										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										accept="image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 										className="hidden"
 										id="image-button-file"
 										type="file"
@@ -700,8 +701,8 @@ function AgentForm(props) {
 
 											onChange(file);
 
-											// Reset the input value to allow re-uploading the same file
-											e.target.value = null;
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
 										}}
 									/>
 									<Icon
@@ -725,7 +726,11 @@ function AgentForm(props) {
 											cursor: 'pointer'
 										}}
 									>
-										<HighlightOffIcon onClick={handleRemoveFile} />
+										<HighlightOffIcon
+											onClick={() => {
+												handleRemoveFile();
+											}}
+										/>
 									</div>
 									<div
 										style={{
@@ -735,17 +740,41 @@ function AgentForm(props) {
 											display: 'flex'
 										}}
 									>
-										{(image?.name || image)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-											<PictureAsPdf
+										{['pdf', 'doc', 'docx'].includes(
+											(image?.name || image)?.split('.')?.pop()?.toLowerCase()
+										) ? (
+											<div
 												style={{
-													color: 'red',
-													cursor: 'pointer',
-													display: 'block',
-													fontSize: '35px',
-													margin: 'auto'
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+													height: '100%'
 												}}
-												onClick={() => window.open(`${BASE_URL}${file}`)}
-											/>
+											>
+												{fileExtName === 'pdf' ? (
+													<PictureAsPdf
+														style={{
+															color: 'red',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${image}`)}
+													/>
+												) : (
+													<DescriptionIcon
+														style={{
+															color: 'blue',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${image}`)}
+													/>
+												)}
+											</div>
 										) : (
 											<img
 												src={`${BASE_URL}${image}`}
@@ -758,7 +787,7 @@ function AgentForm(props) {
 
 							{previewImageFile ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-									{fileExtName === 'pdf' ? (
+									{fileExtName === 'pdf' || fileExtName === 'doc' || fileExtName === 'docx' ? (
 										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
 											<div
 												id="cancelIcon"
@@ -776,13 +805,26 @@ function AgentForm(props) {
 													}}
 												/>
 											</div>
-											<iframe
-												src={previewImageFile}
-												frameBorder="0"
-												scrolling="auto"
-												height="150px"
-												width="150px"
-											/>
+											{fileExtName === 'pdf' ? (
+												<iframe
+													src={previewImageFile}
+													frameBorder="0"
+													scrolling="auto"
+													height="150px"
+													width="150px"
+												/>
+											) : (
+												<DescriptionIcon
+													style={{
+														color: 'blue',
+														cursor: 'pointer',
+														display: 'block',
+														fontSize: '137px',
+														margin: 'auto'
+													}}
+													onClick={() => window.open(previewImageFile)}
+												/>
+											)}
 										</div>
 									) : (
 										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
@@ -832,7 +874,7 @@ function AgentForm(props) {
 									>
 										<Typography className="text-sm font-700">
 											<span className="mr-4 text-xs text-red-500">
-												Note *(JPG,JPEG,PNG,PDF,GIF)
+												Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
 											</span>
 										</Typography>
 									</Box>
