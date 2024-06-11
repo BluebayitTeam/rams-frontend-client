@@ -1,7 +1,8 @@
-import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
+/* eslint-disable jsx-a11y/iframe-has-title */
+import { Autocomplete, Box, Icon, TextField, Typography } from '@mui/material';
 import { getPassengers, getRecruitingAgencys } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
@@ -11,6 +12,8 @@ import increaseMonth from 'src/app/@helpers/increaseMonth';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
 
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import DescriptionIcon from '@material-ui/icons/Description';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,10 +40,11 @@ function EmbassyForm(props) {
 	const embassyData = useSelector((state) => state.data.embassys);
 	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
-	const doc1File = watch('doc1_image') || '';
+	const doc1File = watch('old_visa_image') || '';
 
 	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
 	const [previewStampVisaImage, setPreviewStampVisaImage] = useState('');
+	const fileInputdoc1Ref = useRef(null);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getRecruitingAgencys());
@@ -51,6 +55,18 @@ function EmbassyForm(props) {
 		setPreviewDoc1Image('');
 		setPreviewStampVisaImage('');
 	}, [getValues('musaned_no')]);
+
+	const handleRemoveDOC1File = () => {
+		setFileExtDoc1Name(null);
+		setPreviewDoc1Image(null);
+		setValue('old_visa_image', '');
+
+		if (fileInputdoc1Ref.current) {
+			fileInputdoc1Ref.current.value = '';
+		}
+
+		console.log('sfsdferwer', getValues());
+	};
 
 	return (
 		<div>
@@ -518,9 +534,9 @@ function EmbassyForm(props) {
 					name="old_visa_image"
 					control={control}
 					render={({ field: { onChange, value } }) => (
-						<div className="flex w-full flex-row items-center justify-evenly">
+						<div className="flex w-full flex-row items-center justify-center ml-16">
 							<div className="flex-col">
-								<Typography className="text-center">Old Visa</Typography>
+								<Typography className="text-center">Old Visa File</Typography>
 								<label
 									htmlFor="old_visa_image-button-file"
 									className={clsx(
@@ -529,7 +545,7 @@ function EmbassyForm(props) {
 									)}
 								>
 									<input
-										accept="image/x-png,image/gif,image/jpeg,application/pdf"
+										accept="image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 										className="hidden"
 										id="old_visa_image-button-file"
 										type="file"
@@ -544,11 +560,14 @@ function EmbassyForm(props) {
 
 											const file = e.target.files[0];
 
-											setFileExtDoc1Name(
-												e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase()
-											);
+											if (file) {
+												const fileExtension = file.name.split('.').pop().toLowerCase();
+												setFileExtDoc1Name(fileExtension);
+												onChange(file);
+											}
 
-											onChange(file);
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
 										}}
 									/>
 									<Icon
@@ -560,55 +579,182 @@ function EmbassyForm(props) {
 								</label>
 							</div>
 							{!previewDoc1Image && doc1File && (
-								<div
-									style={{
-										width: 'auto',
-										height: '150px',
-										overflow: 'hidden',
-										display: 'flex'
-									}}
-								>
-									{(doc1File?.name || doc1File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-										<PictureAsPdf
-											style={{
-												color: 'red',
-												cursor: 'pointer',
-												display: 'block',
-												fontSize: '35px',
-												margin: 'auto'
-											}}
-											onClick={() => window.open(`${BASE_URL}${doc1File}`)}
-										/>
-									) : (
-										<img
-											src={`${BASE_URL}${doc1File}`}
-											style={{ height: '150px' }}
-										/>
-									)}
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer',
+											backgroundColor: 'white',
+											width: '20px',
+											height: '20px',
+											borderRadius: '50%',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveDOC1File} />
+									</div>
+									<div
+										style={{ width: 'auto', height: '150px', overflow: 'hidden', display: 'flex' }}
+									>
+										{typeof doc1File === 'string' &&
+										['pdf', 'doc', 'docx'].includes(doc1File.split('.').pop().toLowerCase()) ? (
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+													height: '100%'
+												}}
+											>
+												{doc1File.toLowerCase().includes('pdf') ? (
+													<PictureAsPdf
+														style={{
+															color: 'red',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+													/>
+												) : (
+													<DescriptionIcon
+														style={{
+															color: 'blue',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+													/>
+												)}
+											</div>
+										) : (
+											<img
+												src={`${BASE_URL}${doc1File}`}
+												style={{ height: '100px' }}
+												alt="old_visa_image"
+											/>
+										)}
+									</div>
 								</div>
 							)}
 
-							{previewDoc1Image && (
+							{previewDoc1Image ? (
 								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-									{fileExtDoc1Name === 'pdf' ? (
-										<iframe
-											src={previewDoc1Image}
-											frameBorder="0"
-											scrolling="auto"
-											height="150px"
-											width="150px"
-										/>
+									{previewDoc1Image && ['pdf', 'doc', 'docx'].includes(fileExtDoc1Name) ? (
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
+												}}
+											>
+												<HighlightOffIcon onClick={handleRemoveDOC1File} />
+											</div>
+											{fileExtDoc1Name === 'pdf' ? (
+												<iframe
+													src={previewDoc1Image}
+													frameBorder="0"
+													scrolling="auto"
+													height="150px"
+													width="150px"
+												/>
+											) : (
+												<DescriptionIcon
+													style={{
+														color: 'blue',
+														cursor: 'pointer',
+														display: 'block',
+														fontSize: '137px',
+														margin: 'auto'
+													}}
+													onClick={() => window.open(previewDoc1Image)}
+												/>
+											)}
+										</div>
 									) : (
-										<img
-											src={previewDoc1Image}
-											style={{ height: '150px' }}
-										/>
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
+												}}
+											>
+												<HighlightOffIcon onClick={handleRemoveDOC1File} />
+											</div>
+											<img
+												src={previewDoc1Image}
+												style={{ height: '140px', width: '150px' }}
+												alt="old_visa_image"
+											/>
+										</div>
 									)}
 								</div>
+							) : (
+								!doc1File && (
+									<Box
+										height={180}
+										width={180}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '70px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
+											</span>
+										</Typography>
+									</Box>
+								)
 							)}
 						</div>
 					)}
 				/>
+
 				<Image
 					name="stamp_visa_image"
 					previewImage={previewStampVisaImage}
