@@ -723,7 +723,14 @@ function AgentForm(props) {
 											right: '0',
 											zIndex: 1,
 											color: 'red',
-											cursor: 'pointer'
+											cursor: 'pointer',
+											backgroundColor: 'white',
+											width: '20px',
+											height: '20px',
+											borderRadius: '50%',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center'
 										}}
 									>
 										<HighlightOffIcon
@@ -796,7 +803,15 @@ function AgentForm(props) {
 													top: '0',
 													right: '0',
 													zIndex: 1,
-													color: 'red'
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
 												}}
 											>
 												<HighlightOffIcon
@@ -835,7 +850,15 @@ function AgentForm(props) {
 													top: '0',
 													right: '0',
 													zIndex: 1,
-													color: 'red'
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
 												}}
 											>
 												<HighlightOffIcon
