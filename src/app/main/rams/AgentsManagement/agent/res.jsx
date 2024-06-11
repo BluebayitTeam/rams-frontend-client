@@ -1,39 +1,36 @@
 <Controller
-	name="doc2_image"
+	name="doc1_image"
 	control={control}
 	render={({ field: { onChange, value } }) => (
-		<div className="flex w-full flex-row items-center justify-center ml-16">
+		<div className="flex w-full flex-row items-center justify-evenly">
 			<div className="flex-col">
-				<Typography className="text-center">Document 2</Typography>
+				<Typography className="text-center">Document 1</Typography>
 				<label
-					htmlFor="doc2_image-button-file"
+					htmlFor="doc1_image-button-file"
 					className={clsx(
 						classes.productImageUpload,
 						'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
 					)}
 				>
 					<input
-						accept="image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+						accept="image/x-png,image/gif,image/jpeg,application/pdf"
 						className="hidden"
-						id="doc2_image-button-file"
+						id="doc1_image-button-file"
 						type="file"
 						onChange={async (e) => {
 							const reader = new FileReader();
 							reader.onload = () => {
 								if (reader.readyState === 2) {
-									setPreviewDoc2File(reader.result);
+									setPreviewDoc1Image(reader.result);
 								}
 							};
 							reader.readAsDataURL(e.target.files[0]);
 
 							const file = e.target.files[0];
 
-							setFileExtDoc2Name(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
+							setFileExtDoc1Name(e.target.files[0]?.name?.split('.')?.pop()?.toLowerCase());
 
 							onChange(file);
-
-							// Force reset the input value to allow re-uploading the same file
-							e.target.value = '';
 						}}
 					/>
 					<Icon
@@ -44,169 +41,52 @@
 					</Icon>
 				</label>
 			</div>
-			{!previewDoc2File && (doc2File || doc2File) && (
-				<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
-					<div
-						id="cancelIcon"
-						style={{
-							position: 'absolute',
-							top: '0',
-							right: '0',
-							zIndex: 1,
-							color: 'red',
-							cursor: 'pointer'
-						}}
-					>
-						<HighlightOffIcon onClick={handleRemoveDOC2File} />
-					</div>
-					<div
-						style={{
-							width: 'auto',
-							height: '150px',
-							overflow: 'hidden',
-							display: 'flex'
-						}}
-					>
-						{['pdf', 'doc', 'docx'].includes(
-							(doc2File?.name || doc2File)?.split('.')?.pop()?.toLowerCase()
-						) ? (
-							<div
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: '100%'
-								}}
-							>
-								{fileExtDoc2Name === 'pdf' ? (
-									<PictureAsPdf
-										style={{
-											color: 'red',
-											cursor: 'pointer',
-											display: 'block',
-											fontSize: '35px',
-											margin: 'auto'
-										}}
-										onClick={() => window.open(`${BASE_URL}${file}`)}
-									/>
-								) : (
-									<DescriptionIcon
-										style={{
-											color: 'blue',
-											cursor: 'pointer',
-											display: 'block',
-											fontSize: '137px',
-
-											margin: 'auto'
-										}}
-										onClick={() => window.open(`${BASE_URL}${file}`)}
-									/>
-								)}
-							</div>
-						) : (
-							<img
-								src={`${BASE_URL}${doc2File}`}
-								style={{ height: '100px' }}
-							/>
-						)}
-					</div>
+			{!previewDoc1Image && doc1File && (
+				<div
+					style={{
+						width: 'auto',
+						height: '150px',
+						overflow: 'hidden',
+						display: 'flex'
+					}}
+				>
+					{(doc1File?.name || doc1File)?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+						<PictureAsPdf
+							style={{
+								color: 'red',
+								cursor: 'pointer',
+								display: 'block',
+								fontSize: '35px',
+								margin: 'auto'
+							}}
+							onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+						/>
+					) : (
+						<img
+							src={`${BASE_URL}${doc1File}`}
+							style={{ height: '150px' }}
+						/>
+					)}
 				</div>
 			)}
 
-			{previewDoc2File ? (
+			{previewDoc1Image && (
 				<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-					{fileExtDoc2Name === 'pdf' || fileExtDoc2Name === 'doc' || fileExtDoc2Name === 'docx' ? (
-						<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
-							<div
-								id="cancelIcon"
-								style={{
-									position: 'absolute',
-									top: '0',
-									right: '0',
-									zIndex: 1,
-									color: 'red'
-								}}
-							>
-								<HighlightOffIcon
-									onClick={() => {
-										handleRemoveDOC2File();
-									}}
-								/>
-							</div>
-							{fileExtDoc2Name === 'pdf' ? (
-								<iframe
-									src={previewDoc2File}
-									frameBorder="0"
-									scrolling="auto"
-									height="150px"
-									width="150px"
-								/>
-							) : (
-								<DescriptionIcon
-									style={{
-										color: 'blue',
-										cursor: 'pointer',
-										display: 'block',
-										fontSize: '137px',
-										margin: 'auto'
-									}}
-									onClick={() => window.open(previewDoc2File)}
-								/>
-							)}
-						</div>
+					{fileExtDoc1Name === 'pdf' ? (
+						<iframe
+							src={previewDoc1Image}
+							frameBorder="0"
+							scrolling="auto"
+							height="150px"
+							width="150px"
+						/>
 					) : (
-						<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
-							<div
-								id="cancelIcon"
-								style={{
-									position: 'absolute',
-									top: '0',
-									right: '0',
-									zIndex: 1,
-									color: 'red'
-								}}
-							>
-								<HighlightOffIcon
-									onClick={() => {
-										handleRemoveDOC2File();
-									}}
-								/>
-							</div>
-
-							<img
-								src={previewDoc2File}
-								style={{ height: '140px', width: '150px' }}
-							/>
-						</div>
+						<img
+							src={previewDoc1Image}
+							style={{ height: '150px' }}
+						/>
 					)}
 				</div>
-			) : (
-				!doc2File && (
-					<Box
-						height={180}
-						width={180}
-						my={4}
-						display="flex"
-						alignItems="center"
-						gap={4}
-						p={2}
-						style={{
-							width: '150px',
-							height: '70px',
-							border: '1px solid red'
-						}}
-						className={clsx(
-							classes.productImageUpload,
-							'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-						)}
-					>
-						<Typography className="text-sm font-700">
-							<span className="mr-4 text-xs text-red-500">
-								Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
-							</span>
-						</Typography>
-					</Box>
-				)
 			)}
 		</div>
 	)}
