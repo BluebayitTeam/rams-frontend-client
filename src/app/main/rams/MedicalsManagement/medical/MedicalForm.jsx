@@ -334,21 +334,6 @@ function MedicalForm(props) {
 				)}
 			/>
 
-			{/* <div className="flex justify-start mx-16 flex-col md:flex-row">
-				<Image
-					name="slip_pic"
-					previewImage={previewImage}
-					setPreviewImage={setPreviewImage}
-					label="Slip Picture"
-				/>
-
-				<Image
-					name="medical_card_pic"
-					previewImage={previewImage2}
-					setPreviewImage={setPreviewImage2}
-					label="Medical Card Picture"
-				/>
-			</div> */}
 			<div className="flex justify-start -mx-16 flex-col md:flex-row">
 				<Controller
 					name="slip_pic"

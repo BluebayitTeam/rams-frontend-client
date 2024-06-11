@@ -577,13 +577,6 @@ function TrainingForm(props) {
 					)}
 				/>
 
-				{/* <Image
-					name="certificate_image"
-					previewImage={previewCertificateImage}
-					setPreviewImage={setpreviewCertificateImage}
-					label="Certificate Image"
-				/> */}
-
 				<Controller
 					name="certificate_image"
 					control={control}
