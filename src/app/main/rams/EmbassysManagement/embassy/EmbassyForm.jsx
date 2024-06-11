@@ -771,12 +771,6 @@ function EmbassyForm(props) {
 					)}
 				/>
 
-				{/* <Image
-					name="stamp_visa_pdf"
-					previewImage={previewStampVisaImage}
-					setPreviewImage={setPreviewStampVisaImage}
-					label="Stamp Visa Image"
-				/> */}
 				<Controller
 					name="stamp_visa_pdf"
 					control={control}
