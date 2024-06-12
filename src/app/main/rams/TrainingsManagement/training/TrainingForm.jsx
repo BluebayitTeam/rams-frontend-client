@@ -57,7 +57,7 @@ function TrainingForm(props) {
 	const slipPic = watch('doc1_image') || '';
 
 	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
-	const doc1File = watch('old_visa_image') || '';
+	const doc1File = watch('certificate_image') || '';
 	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -69,26 +69,26 @@ function TrainingForm(props) {
 		// setpreviewDoc1Image('');
 		setpreviewCertificateImage('');
 	}, [getValues('recruiting_agency')]);
-	useEffect(() => {
-		if (trainingId === 'new') {
-			reset({
-				passenger: 'all',
-				training_card_status: doneNotDone.find((data) => data.default)?.id,
-				recruiting_agency: 'all',
-				training_center: '',
-				admission_date: '',
-				serial_no: '',
-				certificate_no: '',
-				certificate_date: '',
-				batch_number: '',
-				current_status: 'all'
-			});
-		} else {
-			console.log('valueForm', getValues());
-			// Fetch and set data based on trainingId if needed
-			// reset(formData);
-		}
-	}, [trainingId, reset, recruitingAgencys, currentStatuss]);
+	// useEffect(() => {
+	// 	if (trainingId === 'new') {
+	// 		reset({
+	// 			passenger: 'all',
+	// 			training_card_status: doneNotDone.find((data) => data.default)?.id,
+	// 			recruiting_agency: 'all',
+	// 			training_center: '',
+	// 			admission_date: '',
+	// 			serial_no: '',
+	// 			certificate_no: '',
+	// 			certificate_date: '',
+	// 			batch_number: '',
+	// 			current_status: 'all'
+	// 		});
+	// 	} else {
+	// 		console.log('valueForm', getValues());
+	// 		// Fetch and set data based on trainingId if needed
+	// 		// reset(formData);
+	// 	}
+	// }, [trainingId, reset, recruitingAgencys, currentStatuss]);
 
 	useEffect(() => {
 		if ((trainingId !== 'new', !reload)) {
@@ -157,9 +157,8 @@ function TrainingForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? recruitingAgencys?.find((data) => data.id === value) : null}
-						// options={recruitingAgencys}
-						options={[{ id: 'all', name: 'Select Recruiting Agency' }, ...recruitingAgencys]}
-						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
+						options={recruitingAgencys}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
@@ -329,7 +328,7 @@ function TrainingForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Training Center' }, ...currentStatuss]}
+						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);

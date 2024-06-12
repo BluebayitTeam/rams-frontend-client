@@ -65,8 +65,7 @@ function Embassy() {
 		sponsor_name_english_readonly: '',
 		sponsor_name_arabic_readonly: '',
 		mofa_no_readonly: '',
-		updatePermission: '',
-		createPermission: '',
+
 		police_clearance_no_readonly: '',
 		oakala_no_readonly: '',
 		driving_license_no_readonly: '',

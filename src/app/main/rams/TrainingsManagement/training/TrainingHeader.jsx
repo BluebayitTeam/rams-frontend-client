@@ -8,17 +8,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useCreateTrainingMutation, useDeleteTrainingMutation, useUpdateTrainingMutation } from '../TrainingsApi';
 
 /**
  * The training header.
  */
-function TrainingHeader() {
+function TrainingHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
 	const { trainingId } = routeParams;
 	const [createTraining] = useCreateTrainingMutation();
@@ -45,18 +44,10 @@ function TrainingHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'updateTraining');
 
-						// reset({
-						// 	passenger: 'all',
-						// 	training_card_status: doneNotDone.find((data) => data.default)?.id,
-						// 	recruiting_agency: 'all',
-						// 	training_center: '',
-						// 	admission_date: '',
-						// 	serial_no: '',
-						// 	certificate_no: '',
-						// 	certificate_date: '',
-						// 	batch_number: '',
-						// 	current_status: ''
-						// });
+						handleReset({
+							...emptyValue,
+							training_card_status: doneNotDone.find((data) => data.default)?.id
+						});
 						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
 						navigate('/apps/training-management/trainings/new');
@@ -83,17 +74,9 @@ function TrainingHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveTraining');
 
-						reset({
-							passenger: 'all',
-							training_card_status: doneNotDone.find((data) => data.default)?.id,
-							recruiting_agency: 'all',
-							training_center: '',
-							admission_date: '',
-							serial_no: '',
-							certificate_no: '',
-							certificate_date: '',
-							batch_number: '',
-							current_status: ''
+						handleReset({
+							...emptyValue,
+							training_card_status: doneNotDone.find((data) => data.default)?.id
 						});
 						navigate('/apps/training-management/trainings/new');
 						AddedSuccessfully();
@@ -110,17 +93,9 @@ function TrainingHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							training_card_status: doneNotDone.find((data) => data.default)?.id || '',
-							recruiting_agency: 'all',
-							training_center: '',
-							admission_date: '',
-							serial_no: '',
-							certificate_no: '',
-							certificate_date: '',
-							batch_number: '',
-							current_status: ''
+						handleReset({
+							...emptyValue,
+							training_card_status: doneNotDone.find((data) => data.default)?.id
 						});
 						localStorage.setItem('medicalAlert', 'saveTraining');
 						navigate('/apps/training-management/trainings/new');
@@ -140,41 +115,32 @@ function TrainingHeader() {
 			history.goBack();
 		} else {
 			history.push('/apps/training-management/trainings/new');
-			reset({
-				passenger: 'all',
-				training_card_status: doneNotDone.find((data) => data.default)?.id || '',
-				recruiting_agency: 'all',
-				training_center: '',
-				admission_date: '',
-				serial_no: '',
-				certificate_no: '',
-				certificate_date: '',
-				batch_number: '',
-				current_status: '',
-				notes: ''
+			handleReset({
+				...emptyValue,
+				training_card_status: doneNotDone.find((data) => data.default)?.id
 			});
 		}
 	};
 
-	useEffect(() => {
-		if (trainingId === 'new') {
-			reset({
-				passenger: 'all',
-				medical_center: 'all',
-				medical_serial_no: '',
-				medical_result: medicalResults.find((data) => data.default)?.id || '',
-				medical_card: doneNotDone.find((data) => data.default)?.id || '',
-				medical_exam_date: '',
-				medical_report_date: '',
-				medical_issue_date: '',
-				medical_expiry_date: '',
-				notes: '',
-				slip_pic: '',
-				medical_card_pic: '',
-				current_status: 'all'
-			});
-		}
-	}, [trainingId, reset]);
+	// useEffect(() => {
+	// 	if (trainingId === 'new') {
+	// 		reset({
+	// 			passenger: 'all',
+	// 			medical_center: 'all',
+	// 			medical_serial_no: '',
+	// 			medical_result: medicalResults.find((data) => data.default)?.id || '',
+	// 			medical_card: doneNotDone.find((data) => data.default)?.id || '',
+	// 			medical_exam_date: '',
+	// 			medical_report_date: '',
+	// 			medical_issue_date: '',
+	// 			medical_expiry_date: '',
+	// 			notes: '',
+	// 			slip_pic: '',
+	// 			medical_card_pic: '',
+	// 			current_status: 'all'
+	// 		});
+	// 	}
+	// }, [trainingId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
