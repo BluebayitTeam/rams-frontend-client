@@ -11,13 +11,13 @@ import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useCreateMofaMutation, useDeleteMofaMutation, useUpdateMofaMutation } from '../MofasApi';
 
 /**
  * The mofa header.
  */
-function MofaHeader() {
+function MofaHeader({ handleReset, emptyValue }) {
+	console.log('emptyValue', emptyValue);
 	const routeParams = useParams();
 	const { mofaId } = routeParams;
 	const [createMofa] = useCreateMofaMutation();
@@ -44,9 +44,10 @@ function MofaHeader() {
 					} else {
 						localStorage.setItem('MofaAlert', 'updateMofa');
 
-						reset({
-							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-							mofa_status: doneNotDone.find((data) => data.default)?.id || ''
+						handleReset({
+							...emptyValue,
+							remofa_status: doneNotDone.find((data) => data.default)?.id,
+							mofa_status: doneNotDone.find((data) => data.default)?.id
 						});
 
 						UpdatedSuccessfully();
@@ -74,17 +75,12 @@ function MofaHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMofa');
 
-						reset({
-							passenger: 'all',
-							mofa_agency: 'all',
-
-							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
-
-							why_remofa: '',
-							mofa_date: '',
-							remofa_charge: ''
+						handleReset({
+							...emptyValue,
+							remofa_status: doneNotDone.find((data) => data.default)?.id,
+							mofa_status: doneNotDone.find((data) => data.default)?.id
 						});
+
 						navigate('/apps/mofa-management/mofas/new');
 						AddedSuccessfully();
 					}
@@ -100,18 +96,12 @@ function MofaHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							mofa_agency: 'all',
-
-							remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-							mofa_status: doneNotDone.find((data) => data.default)?.id || '',
-
-							why_remofa: '',
-							mofa_date: '',
-							remofa_charge: '',
-							mofa_no: ''
+						handleReset({
+							...emptyValue,
+							remofa_status: doneNotDone.find((data) => data.default)?.id,
+							mofa_status: doneNotDone.find((data) => data.default)?.id
 						});
+
 						localStorage.setItem('medicalAlert', 'saveMofa');
 						navigate('/apps/mofa-management/mofas/new');
 						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
@@ -126,35 +116,30 @@ function MofaHeader() {
 	}
 
 	const handleCancel = () => {
-		reset({
-			passenger: 'all',
-			mofa_agency: 'all',
-
-			remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-			mofa_status: doneNotDone.find((data) => data.default)?.id || '',
-
-			why_remofa: '',
-			mofa_date: '',
-			remofa_charge: ''
+		handleReset({
+			...emptyValue,
+			remofa_status: doneNotDone.find((data) => data.default)?.id,
+			mofa_status: doneNotDone.find((data) => data.default)?.id
 		});
+
 		navigate('/apps/mofa-management/mofas/new');
 	};
 
-	useEffect(() => {
-		if (mofaId === 'new') {
-			reset({
-				passenger: 'all',
-				mofa_agency: 'all',
+	// useEffect(() => {
+	// 	if (mofaId === 'new') {
+	// 		reset({
+	// 			passenger: 'all',
+	// 			mofa_agency: 'all',
 
-				remofa_status: doneNotDone.find((data) => data.default)?.id || '',
-				mofa_status: doneNotDone.find((data) => data.default)?.id || '',
+	// 			remofa_status: doneNotDone.find((data) => data.default)?.id,
+	// 			mofa_status: doneNotDone.find((data) => data.default)?.id,
 
-				why_remofa: '',
-				mofa_date: '',
-				remofa_charge: ''
-			});
-		}
-	}, [mofaId, reset]);
+	// 			why_remofa: '',
+	// 			mofa_date: '',
+	// 			remofa_charge: ''
+	// 		});
+	// 	}
+	// }, [mofaId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">

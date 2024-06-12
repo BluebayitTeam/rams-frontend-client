@@ -72,28 +72,6 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 			});
 	}
 
-	// function handleCreateOfficeWork() {
-	// 	createOfficeWork(getValues())
-	// 		.unwrap()
-	// 		.then((res) => {
-	// 			if (res?.data?.id) {
-	// 				if (fromSearch) {
-	// 					history.goBack();
-	// 				} else {
-	// 					localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
-	// 					handleReset({
-	// 						...emptyValue,
-	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
-	// 						finger_status: doneNotDone.find((data) => data.default)?.id
-	// 					});
-	// 					navigate('/apps/officeWork/officeWorks/new');
-	// 					AddedSuccessfully();
-	// 				}
-	// 			}
-	// 		});
-	// }
-
 	function handleCreateOfficeWork() {
 		createOfficeWork(getValues())
 			.unwrap()

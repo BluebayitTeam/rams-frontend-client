@@ -10,7 +10,7 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID, MOFA_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import MofaHeader from './MofaHeader';
@@ -37,17 +37,28 @@ const schema = z.object({
 });
 
 function Mofa() {
+	const emptyValue = {
+		passenger: '',
+		mofa_agency: '',
+		mofa_status: '',
+		mofa_no: '',
+		mofa_date: '',
+		remofa_charge: '',
+		remofa_status: '',
+		why_remofa: '',
+		current_status: ''
+	};
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { mofaId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
-
+	const [formKey, setFormKey] = useState(0);
 	const classes = useStyles();
 	const navigate = useNavigate();
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -69,6 +80,23 @@ function Mofa() {
 		setValue
 	} = methods;
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
+
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -81,9 +109,9 @@ function Mofa() {
 				.get(`${MOFA_BY_PASSENGER_ID}${mofaId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
+						reset({ ...setIdIfValueIsObject(res.data), passenger: mofaId });
 					} else {
-						reset({
+						handleReset({
 							passenger: mofaId,
 							mofa_status: doneNotDone.find((data) => data.default)?.id,
 							remofa_status: doneNotDone.find((data) => data.default)?.id
@@ -92,7 +120,7 @@ function Mofa() {
 					}
 				})
 				.catch(() => {
-					reset({
+					handleReset({
 						passenger: mofaId,
 						mofa_status: doneNotDone.find((data) => data.default)?.id,
 						remofa_status: doneNotDone.find((data) => data.default)?.id
@@ -100,7 +128,8 @@ function Mofa() {
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({
+			handleReset({
+				...emptyValue,
 				mofa_status: doneNotDone.find((data) => data.default)?.id,
 				remofa_status: doneNotDone.find((data) => data.default)?.id
 			});
@@ -116,7 +145,10 @@ function Mofa() {
 	}
 
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -136,7 +168,12 @@ function Mofa() {
 						<Tab label="Mofa Information" />
 					</Tabs>
 				}
-				header={<MofaHeader />}
+				header={
+					<MofaHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -153,20 +190,24 @@ function Mofa() {
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
 												// options={passengers}
-												options={[
-													{
-														id: 'all',
-														passenger_id: '',
-														office_serial: '',
-														passport_no: '',
-														passenger_name: 'Select Passenger'
-													},
-													...passengers
-												]}
+												options={passengers}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
+													const authTOKEN = {
+														headers: {
+															'Content-type': 'application/json',
+															Authorization: localStorage.getItem('jwt_access_token')
+														}
+													};
+													axios
+														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+														.then((res) => {
+															setValue('current_status', res.data?.current_status?.id);
+															setValue('passenger', res.data?.id);
+														});
+
 													if (newValue?.id) {
 														const authTOKEN = {
 															headers: {
@@ -178,7 +219,7 @@ function Mofa() {
 															.get(`${MOFA_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
 																if (res.data.id) {
-																	reset({
+																	handleReset({
 																		...setIdIfValueIsObject(res.data),
 																		passenger: newValue?.id
 																	});
@@ -189,58 +230,42 @@ function Mofa() {
 																	);
 																} else {
 																	navigate(`/apps/mofa-management/mofas/new`);
-																	reset({
+																	handleReset({
 																		passenger: newValue?.id,
 
-																		mofa_agency: 'all',
-
-																		remofa_status:
-																			doneNotDone.find((data) => data.default)
-																				?.id || '',
-																		mofa_status:
-																			doneNotDone.find((data) => data.default)
-																				?.id || '',
-
-																		why_remofa: '',
-																		mofa_date: '',
-																		remofa_charge: ''
+																		remofa_status: doneNotDone.find(
+																			(data) => data.default
+																		)?.id,
+																		mofa_status: doneNotDone.find(
+																			(data) => data.default
+																		)?.id
 																	});
+																	getCurrentStatus(newValue?.id);
 																}
 															})
 															.catch(() => {
-																reset({
+																handleReset({
 																	passenger: newValue?.id,
 
-																	mofa_agency: 'all',
-
-																	remofa_status:
-																		doneNotDone.find((data) => data.default)?.id ||
-																		'',
-																	mofa_status:
-																		doneNotDone.find((data) => data.default)?.id ||
-																		'',
-
-																	why_remofa: '',
-																	mofa_date: '',
-																	remofa_charge: ''
+																	remofa_status: doneNotDone.find(
+																		(data) => data.default
+																	)?.id,
+																	mofa_status: doneNotDone.find(
+																		(data) => data.default
+																	)?.id
 																});
+																getCurrentStatus(newValue?.id);
 																navigate(`/apps/mofa-management/mofas/new`);
 															});
 													} else {
 														navigate(`/apps/mofa-management/mofas/new`);
-														reset({
-															passenger: 'all',
-															mofa_agency: 'all',
+														handleReset({
+															passenger: newValue?.id,
 
-															remofa_status:
-																doneNotDone.find((data) => data.default)?.id || '',
-															mofa_status:
-																doneNotDone.find((data) => data.default)?.id || '',
-
-															why_remofa: '',
-															mofa_date: '',
-															remofa_charge: ''
+															remofa_status: doneNotDone.find((data) => data.default)?.id,
+															mofa_status: doneNotDone.find((data) => data.default)?.id
 														});
+														getCurrentStatus(newValue?.id);
 													}
 												}}
 												renderInput={(params) => (

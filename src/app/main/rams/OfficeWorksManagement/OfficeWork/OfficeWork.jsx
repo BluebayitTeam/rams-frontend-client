@@ -139,50 +139,50 @@ function OfficeWork() {
 		}
 	}, [fromSearch]);
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						handleReset({
-							...setIdIfValueIsObject(res.data),
-							passenger: officeWorkId
-						});
-					} else {
-						handleReset({
-							passenger: officeWorkId,
-							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id
-						});
-						sessionStorage.setItem('operation', 'save');
-					}
-				})
-				.catch(() => {
-					handleReset({
-						passenger: officeWorkId,
-						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-						driving_license_status: doneNotDone.find((data) => data.default)?.id,
-						finger_status: doneNotDone.find((data) => data.default)?.id
-					});
-					sessionStorage.setItem('operation', 'save');
-				});
-		} else {
-			handleReset({
-				...emptyValue,
-				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-				driving_license_status: doneNotDone.find((data) => data.default)?.id,
-				finger_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	}, [fromSearch]);
+	// useEffect(() => {
+	// 	if (fromSearch) {
+	// 		const authTOKEN = {
+	// 			headers: {
+	// 				'Content-type': 'application/json',
+	// 				Authorization: localStorage.getItem('jwt_access_token')
+	// 			}
+	// 		};
+	// 		axios
+	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
+	// 			.then((res) => {
+	// 				if (res.data.id) {
+	// 					handleReset({
+	// 						...setIdIfValueIsObject(res.data),
+	// 						passenger: officeWorkId
+	// 					});
+	// 				} else {
+	// 					handleReset({
+	// 						passenger: officeWorkId,
+	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 						finger_status: doneNotDone.find((data) => data.default)?.id
+	// 					});
+	// 					sessionStorage.setItem('operation', 'save');
+	// 				}
+	// 			})
+	// 			.catch(() => {
+	// 				handleReset({
+	// 					passenger: officeWorkId,
+	// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 					finger_status: doneNotDone.find((data) => data.default)?.id
+	// 				});
+	// 				sessionStorage.setItem('operation', 'save');
+	// 			});
+	// 	} else {
+	// 		handleReset({
+	// 			...emptyValue,
+	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 			finger_status: doneNotDone.find((data) => data.default)?.id
+	// 		});
+	// 	}
+	// }, [fromSearch]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
