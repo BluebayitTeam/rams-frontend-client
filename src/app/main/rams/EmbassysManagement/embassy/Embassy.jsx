@@ -14,6 +14,7 @@ import { EMBASSY_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/c
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { getEmbassy } from 'app/store/dataSlice';
+import { setAlert } from 'app/store/alertSlice';
 import EmbassyHeader from './EmbassyHeader';
 // import { useGetEmbassyQuery } from '../EmbassysApi';
 import EmbassyForm from './EmbassyForm';
@@ -64,8 +65,7 @@ function Embassy() {
 		sponsor_name_english_readonly: '',
 		sponsor_name_arabic_readonly: '',
 		mofa_no_readonly: '',
-		updatePermission: '',
-		createPermission: '',
+
 		police_clearance_no_readonly: '',
 		oakala_no_readonly: '',
 		driving_license_no_readonly: '',
@@ -320,7 +320,7 @@ function Embassy() {
 																	getCurrentStatus(newValue?.id);
 																	navigate(
 																		`/apps/embassy-management/embassys/${
-																			newValue?.passenger_id || newValue?.id
+																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
 																}

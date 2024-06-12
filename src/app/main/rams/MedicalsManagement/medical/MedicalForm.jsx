@@ -1,14 +1,20 @@
+/* eslint-disable no-undef */
+/* eslint-disable jsx-a11y/iframe-has-title */
 import { styled } from '@mui/system';
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, Box, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
 import { getCurrentStatuss, getMedicalCenters, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
-import Image from 'src/app/@components/Image';
 import { useParams } from 'react-router';
 import increaseMonth from 'src/app/@helpers/increaseMonth';
+import clsx from 'clsx';
+import { PictureAsPdf } from '@mui/icons-material';
+import { BASE_URL } from 'src/app/constant/constants';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -34,56 +40,65 @@ const useStyles = makeStyles((theme) => ({
 function MedicalForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
+	const classes = useStyles(props);
 	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { medicalId } = routeParams;
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const [previewImage, setPreviewImage] = useState();
-	const [previewImage2, setPreviewImage2] = useState();
+	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
+
+	const doc1File = watch('medical_card_pic') || '';
+
+	const [fileExtPCName, setFileExtPCName] = useState('');
+
+	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+
+	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
+
+	const fileInputRef = useRef(null);
+	const fileInputdoc1Ref = useRef(null);
+
+	const slipPic = watch('slip_pic') || '';
 
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getMedicalCenters());
 		dispatch(getCurrentStatuss());
-	}, [dispatch]);
-	console.log('wbkjwb', getValues());
-	useEffect(() => {
-		if (medicalId === 'new') {
-			// reset({
-			// 	medical_center: 'all',
-			// 	// passenger: 'all',
-			// 	medical_serial_no: '',
-			// 	medical_result: medicalResults.find((data) => data.default)?.id || '',
-			// 	medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			// 	medical_exam_date: '',
-			// 	medical_report_date: '',
-			// 	medical_issue_date: '',
-			// 	medical_expiry_date: '',
-			// 	notes: '',
-			// 	slip_pic: '',
-			// 	medical_card_pic: '',
-			// 	current_status: 'all'
-			// });
-			setPreviewImage('');
-			setPreviewImage2('');
-		} else {
-			// Fetch and set data based on medicalId if needed
-			// reset(formData);
+	}, []);
+	// console.log('wbkjwb', getValues());
+
+	// useEffect(() => {
+	// 	setPreviewslipPic('');
+	// 	setPreviewImage2('');
+	// }, [getValues('medical_center')]);
+
+	// removed image
+	const handleRemoveslipPicFile = () => {
+		setPreviewslipPicFile(null);
+
+		setFileExtPCName(null);
+
+		setValue('slip_pic', '');
+
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
 		}
-	}, [medicalId, reset, medicalCenters, currentStatuss]);
 
-	useEffect(() => {
-		setPreviewImage('');
-		setPreviewImage2('');
-	}, [getValues('medical_center')]);
+		console.log('sfsdferwer', getValues());
+	};
+	const handleRemoveDOC1File = () => {
+		setFileExtDoc1Name(null);
+		setPreviewDoc1Image(null);
+		setValue('medical_card_pic', '');
 
-	// const increaseMonth = (dateString, months) =>
-	// 	new Date(new Date(dateString).setMonth(new Date(dateString).getMonth() + months))
-	// 		.toISOString()
-	// 		.slice(0, 10)
-	// 		.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$3-$2');
+		if (fileInputdoc1Ref.current) {
+			fileInputdoc1Ref.current.value = '';
+		}
+
+		console.log('sfsdferwer', getValues());
+	};
 
 	return (
 		<div>
@@ -96,7 +111,7 @@ function MedicalForm(props) {
 						freeSolo
 						value={value ? medicalCenters?.find((data) => data.id === value) : null}
 						// options={medicalCenters}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...medicalCenters]}
+						options={medicalCenters}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -277,7 +292,7 @@ function MedicalForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? currentStatuss.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Medical Center' }, ...currentStatuss]}
+						options={currentStatuss}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -319,18 +334,452 @@ function MedicalForm(props) {
 				)}
 			/>
 
-			<div className="flex justify-start mx-16 flex-col md:flex-row">
-				<Image
+			<div className="flex justify-start -mx-16 flex-col md:flex-row">
+				<Controller
 					name="slip_pic"
-					previewImage={previewImage}
-					setPreviewImage={setPreviewImage}
-					label="Slip Picture"
+					control={control}
+					render={({ field: { onChange } }) => (
+						<div className="flex w-full flex-row items-center justify-center ml-16">
+							<div className="flex-col">
+								<Typography className="text-center">Slip Pic File</Typography>
+								<label
+									htmlFor="slip_pic-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+										className="hidden"
+										id="slip_pic-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewslipPicFile(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											if (file) {
+												const fileExtension = file.name.split('.').pop().toLowerCase();
+												setFileExtPCName(fileExtension);
+												onChange(file);
+											}
+
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewslipPicFile && slipPic && (
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer',
+											backgroundColor: 'white',
+											width: '20px',
+											height: '20px',
+											borderRadius: '50%',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveslipPicFile} />
+									</div>
+									<div
+										style={{ width: 'auto', height: '150px', overflow: 'hidden', display: 'flex' }}
+									>
+										{typeof slipPic === 'string' &&
+										['pdf', 'doc', 'docx'].includes(slipPic.split('.').pop().toLowerCase()) ? (
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+													height: '100%'
+												}}
+											>
+												{slipPic.toLowerCase().includes('pdf') ? (
+													<PictureAsPdf
+														style={{
+															color: 'red',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${slipPic}`)}
+													/>
+												) : (
+													<DescriptionIcon
+														style={{
+															color: 'blue',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${slipPic}`)}
+													/>
+												)}
+											</div>
+										) : (
+											<img
+												src={`${BASE_URL}${slipPic}`}
+												style={{ height: '100px' }}
+												alt="slip_pic"
+											/>
+										)}
+									</div>
+								</div>
+							)}
+
+							{previewslipPicFile ? (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{fileExtPCName && ['pdf', 'doc', 'docx'].includes(fileExtPCName) ? (
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
+												}}
+											>
+												<HighlightOffIcon onClick={handleRemoveslipPicFile} />
+											</div>
+											{fileExtPCName === 'pdf' ? (
+												<iframe
+													src={previewslipPicFile}
+													frameBorder="0"
+													scrolling="auto"
+													height="150px"
+													width="150px"
+												/>
+											) : (
+												<DescriptionIcon
+													style={{
+														color: 'blue',
+														cursor: 'pointer',
+														display: 'block',
+														fontSize: '137px',
+														margin: 'auto'
+													}}
+													onClick={() => window.open(previewslipPicFile)}
+												/>
+											)}
+										</div>
+									) : (
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
+												}}
+											>
+												<HighlightOffIcon onClick={handleRemoveslipPicFile} />
+											</div>
+											<img
+												src={previewslipPicFile}
+												style={{ height: '140px', width: '150px' }}
+												alt="slip_pic"
+											/>
+										</div>
+									)}
+								</div>
+							) : (
+								!slipPic && (
+									<Box
+										height={180}
+										width={180}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '70px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
+											</span>
+										</Typography>
+									</Box>
+								)
+							)}
+						</div>
+					)}
 				/>
-				<Image
+				<Controller
 					name="medical_card_pic"
-					previewImage={previewImage2}
-					setPreviewImage={setPreviewImage2}
-					label="Medical Card Picture"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<div className="flex w-full flex-row items-center justify-center ml-16">
+							<div className="flex-col">
+								<Typography className="text-center">Medical Card File</Typography>
+								<label
+									htmlFor="doc1_image-button-file"
+									className={clsx(
+										classes.productImageUpload,
+										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+									)}
+								>
+									<input
+										accept="image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+										className="hidden"
+										id="doc1_image-button-file"
+										type="file"
+										onChange={async (e) => {
+											const reader = new FileReader();
+											reader.onload = () => {
+												if (reader.readyState === 2) {
+													setPreviewDoc1Image(reader.result);
+												}
+											};
+											reader.readAsDataURL(e.target.files[0]);
+
+											const file = e.target.files[0];
+
+											if (file) {
+												const fileExtension = file.name.split('.').pop().toLowerCase();
+												setFileExtDoc1Name(fileExtension);
+												onChange(file);
+											}
+
+											// Force reset the input value to allow re-uploading the same file
+											e.target.value = '';
+										}}
+									/>
+									<Icon
+										fontSize="large"
+										color="action"
+									>
+										cloud_upload
+									</Icon>
+								</label>
+							</div>
+							{!previewDoc1Image && doc1File && (
+								<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+									<div
+										id="cancelIcon"
+										style={{
+											position: 'absolute',
+											top: '0',
+											right: '0',
+											zIndex: 1,
+											color: 'red',
+											cursor: 'pointer',
+											backgroundColor: 'white',
+											width: '20px',
+											height: '20px',
+											borderRadius: '50%',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center'
+										}}
+									>
+										<HighlightOffIcon onClick={handleRemoveDOC1File} />
+									</div>
+									<div
+										style={{ width: 'auto', height: '150px', overflow: 'hidden', display: 'flex' }}
+									>
+										{typeof doc1File === 'string' &&
+										['pdf', 'doc', 'docx'].includes(doc1File.split('.').pop().toLowerCase()) ? (
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+													height: '100%'
+												}}
+											>
+												{doc1File.toLowerCase().includes('pdf') ? (
+													<PictureAsPdf
+														style={{
+															color: 'red',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+													/>
+												) : (
+													<DescriptionIcon
+														style={{
+															color: 'blue',
+															cursor: 'pointer',
+															display: 'block',
+															fontSize: '137px',
+															margin: 'auto'
+														}}
+														onClick={() => window.open(`${BASE_URL}${doc1File}`)}
+													/>
+												)}
+											</div>
+										) : (
+											<img
+												src={`${BASE_URL}${doc1File}`}
+												style={{ height: '100px' }}
+											/>
+										)}
+									</div>
+								</div>
+							)}
+
+							{previewDoc1Image ? (
+								<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
+									{previewDoc1Image && ['pdf', 'doc', 'docx'].includes(fileExtDoc1Name) ? (
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
+												}}
+											>
+												<HighlightOffIcon onClick={handleRemoveDOC1File} />
+											</div>
+											{fileExtDoc1Name === 'pdf' ? (
+												<iframe
+													src={previewDoc1Image}
+													frameBorder="0"
+													scrolling="auto"
+													height="150px"
+													width="150px"
+												/>
+											) : (
+												<DescriptionIcon
+													style={{
+														color: 'blue',
+														cursor: 'pointer',
+														display: 'block',
+														fontSize: '137px',
+														margin: 'auto'
+													}}
+													onClick={() => window.open(previewDoc1Image)}
+												/>
+											)}
+										</div>
+									) : (
+										<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
+											<div
+												id="cancelIcon"
+												style={{
+													position: 'absolute',
+													top: '0',
+													right: '0',
+													zIndex: 1,
+													color: 'red',
+													cursor: 'pointer',
+													backgroundColor: 'white',
+													width: '20px',
+													height: '20px',
+													borderRadius: '50%',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center'
+												}}
+											>
+												<HighlightOffIcon onClick={handleRemoveDOC1File} />
+											</div>
+											<img
+												src={previewDoc1Image}
+												style={{ height: '140px', width: '150px' }}
+											/>
+										</div>
+									)}
+								</div>
+							) : (
+								!doc1File && (
+									<Box
+										height={180}
+										width={180}
+										my={4}
+										display="flex"
+										alignItems="center"
+										gap={4}
+										p={2}
+										style={{
+											width: '150px',
+											height: '70px',
+											border: '1px solid red'
+										}}
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+										)}
+									>
+										<Typography className="text-sm font-700">
+											<span className="mr-4 text-xs text-red-500">
+												Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
+											</span>
+										</Typography>
+									</Box>
+								)
+							)}
+						</div>
+					)}
 				/>
 			</div>
 		</div>

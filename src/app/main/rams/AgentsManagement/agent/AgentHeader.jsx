@@ -25,9 +25,11 @@ function AgentHeader() {
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
+	const { name, image, featuredImageId } = watch();
 	const handleDelete = localStorage.getItem('deleteAgent');
 	const handleUpdate = localStorage.getItem('updateAgent');
+
+	// console.log('image', image);
 
 	function handleUpdateAgent() {
 		saveAgent(getValues()).then((data) => {
@@ -87,16 +89,16 @@ function AgentHeader() {
 						initial={{ scale: 0 }}
 						animate={{ scale: 1, transition: { delay: 0.3 } }}
 					>
-						{images && images.length > 0 && featuredImageId ? (
+						{image ? (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src={_.find(images, { id: featuredImageId })?.url}
+								src={image}
 								alt={name}
 							/>
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/agent-image-placeholder.png"
+								src="assets/logos/user.jpg"
 								alt={name}
 							/>
 						)}

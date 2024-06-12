@@ -395,7 +395,7 @@ function PassengerForm(props) {
 									)}
 								>
 									<input
-										accept="image/*"
+										accept="image/x-png,image/gif,image/jpeg,application/pdf"
 										className="hidden"
 										id="button-file-1"
 										type="file"
@@ -459,9 +459,9 @@ function PassengerForm(props) {
 				control={control}
 				render={({ field: { onChange, value, name } }) => (
 					<Autocomplete
-						className="mt-8 mb-16 w-full "
+						className="mt-8 mb-16 w-full"
 						freeSolo
-						value={value ? agents.find((data) => data.id == value) : null}
+						value={value ? agents.find((data) => data.id === value) : null}
 						options={agents}
 						getOptionLabel={(option) => `${option.first_name}  -${option.agent_code}`}
 						onChange={(event, newValue) => {
@@ -491,7 +491,6 @@ function PassengerForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16 w-full  "
-							// error={!!errors.passenger_name || !field.value}
 							helperText={errors?.passenger_name?.message}
 							label="Passenger Name"
 							id="passenger_name"
@@ -508,7 +507,7 @@ function PassengerForm(props) {
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
-						className="mt-8 mb-16 w-full  "
+						className="mt-8 mb-16 w-full "
 						freeSolo
 						value={value ? genders.find((data) => data.id === value) : null}
 						options={genders}
@@ -593,6 +592,7 @@ function PassengerForm(props) {
 				name="date_of_birth"
 				control={control}
 				render={({ field }) => {
+					const { value } = field;
 					return (
 						<TextField
 							{...field}
@@ -602,12 +602,39 @@ function PassengerForm(props) {
 							label="Date of Birth"
 							id="date_of_birth"
 							type="date"
-							InputLabelProps={{ shrink: true }}
+							InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
+			/>
+
+			<Controller
+				control={control}
+				name="date_of_birth"
+				render={({ field: { value, onChange } }) => (
+					<DatePicker
+						value={value ? new Date(value) : null}
+						onChange={(val) => {
+							onChange(val ? val.toISOString() : '');
+						}}
+						className="mt-32 mb-16 w-full"
+						slotProps={{
+							textField: {
+								id: 'date_of_birth',
+								label: 'Date of Birth',
+								InputLabelProps: value ? { shrink: true } : { style: { color: 'red' } },
+								fullWidth: true,
+								variant: 'outlined',
+								error: !!errors.date_of_birth,
+								helperText: errors?.date_of_birth?.message
+							},
+							actionBar: {
+								actions: ['clear', 'today']
+							}
+						}}
+					/>
+				)}
 			/>
 
 			<Controller
@@ -697,18 +724,16 @@ function PassengerForm(props) {
 				name="passport_issue_date"
 				render={({ field: { value, onChange } }) => (
 					<DatePicker
-						value={new Date(value)}
+						value={value ? new Date(value) : null}
 						onChange={(val) => {
-							onChange(val?.toString());
+							onChange(val ? val.toISOString() : '');
 						}}
 						className="mt-32 mb-16 w-full"
 						slotProps={{
 							textField: {
 								id: 'passport_issue_date',
-								label: 'passport_issue_date',
-								InputLabelProps: {
-									shrink: true
-								},
+								label: 'Passport Issue Date',
+								InputLabelProps: value ? { shrink: true } : { style: { color: 'red' } },
 								fullWidth: true,
 								variant: 'outlined',
 								error: !!errors.passport_issue_date,
@@ -721,6 +746,7 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
+
 			<Controller
 				control={control}
 				name="passport_expiry_date"

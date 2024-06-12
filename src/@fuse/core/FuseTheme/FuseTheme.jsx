@@ -2,6 +2,7 @@ import { alpha, ThemeProvider } from '@mui/material/styles';
 import { memo, useEffect, useLayoutEffect } from 'react';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { useDispatch, useSelector } from 'react-redux';
+import { setMenuItem } from 'app/theme-layouts/shared-components/navigation/store/navigationSlice';
 /**
  * The useEnhancedEffect function is used to conditionally use the useLayoutEffect hook if the window object is defined.
  * Otherwise, it uses the useEffect hook.
@@ -88,7 +89,7 @@ function FuseTheme(props) {
 
 	useEffect(() => {
 		// This line for Dynamic Sidebar
-		// dispatch(setMenuItem());
+		dispatch(setMenuItem());
 	}, [auth]);
 	useEffect(() => {
 		document.body.classList.add(mode === 'light' ? 'light' : 'dark');

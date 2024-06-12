@@ -41,6 +41,18 @@ const schema = z.object({
 });
 
 function Training() {
+	const emptyValue = {
+		passenger: '',
+		training_card_status: '',
+		recruiting_agency: '',
+		training_center: '',
+		admission_date: '',
+		serial_no: '',
+		certificate_no: '',
+		certificate_date: '',
+		batch_number: '',
+		current_status: ''
+	};
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { trainingId, fromSearch } = routeParams;
@@ -50,7 +62,7 @@ function Training() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -63,7 +75,7 @@ function Training() {
 	});
 
 	const [tabValue, setTabValue] = useState(0);
-
+	const [formKey, setFormKey] = useState(0);
 	const {
 		reset,
 		watch,
@@ -71,6 +83,22 @@ function Training() {
 		formState: { errors },
 		setValue
 	} = methods;
+
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 
 	useEffect(() => {
 		if (fromSearch) {
@@ -84,9 +112,9 @@ function Training() {
 				.get(`${TRAINING_BY_PASSENGER_ID}${trainingId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						// reset({ ...setIdIfValueIsObject(res.data), passenger: trainingId });
+						handleReset({ ...setIdIfValueIsObject(res.data), passenger: trainingId });
 					} else {
-						reset({
+						handleReset({
 							passenger: trainingId,
 							training_card_status: doneNotDone.find((data) => data.default)?.id
 						});
@@ -94,14 +122,14 @@ function Training() {
 					}
 				})
 				.catch(() => {
-					reset({
+					handleReset({
 						passenger: trainingId,
 						training_card_status: doneNotDone.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({ training_card_status: doneNotDone.find((data) => data.default)?.id });
+			handleReset({ training_card_status: doneNotDone.find((data) => data.default)?.id });
 		}
 	}, [fromSearch]);
 
@@ -114,7 +142,10 @@ function Training() {
 	}
 
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -134,7 +165,12 @@ function Training() {
 						<Tab label="Training Information" />
 					</Tabs>
 				}
-				header={<TrainingHeader />}
+				header={
+					<TrainingHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -150,17 +186,7 @@ function Training() {
 												autoHighlight
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
-												// options={passengers}
-												options={[
-													{
-														id: 'all',
-														passenger_id: '',
-														office_serial: '',
-														passport_no: '',
-														passenger_name: 'Select Passenger'
-													},
-													...passengers
-												]}
+												options={passengers}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
@@ -174,10 +200,8 @@ function Training() {
 													// axios
 													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
 													// 	.then((res) => {
-													// 		sessionStorage.setItem(
-													// 			'passengerCurrentStatus',
-													// 			res.data?.current_status?.name
-													// 		);
+													// 		setValue('passenger', res.data?.id);
+													// 		setValue('current_status', res.data?.current_status?.id);
 													// 	});
 
 													if (newValue?.id) {
@@ -195,16 +219,16 @@ function Training() {
 															.then((res) => {
 																if (res.data.id) {
 																	console.log('fromData', res.data);
-																	reset({
+																	handleReset({
 																		...setIdIfValueIsObject({
 																			...res?.data,
-																			passenger: newValue?.id,
+																			passenger: newValue?.id
 
-																			training_card_status: doneNotDone.find(
-																				(data) => data.default
-																			)?.id,
-																			recruiting_agency:
-																				res?.data?.recruiting_agency?.id
+																			// training_card_status: doneNotDone.find(
+																			// 	(data) => data.default
+																			// )?.id,
+																			// recruiting_agency:
+																			// 	res?.data?.recruiting_agency?.id
 																		})
 																	});
 																	navigate(
@@ -214,56 +238,34 @@ function Training() {
 																	);
 																} else {
 																	navigate(`/apps/training-management/trainings/new`);
-																	reset({
+																	handleReset({
 																		passenger: newValue?.id,
 																		training_card_status: doneNotDone.find(
 																			(data) => data.default
-																		)?.id,
-																		recruiting_agency: 'all',
-																		training_center: '',
-																		admission_date: '',
-																		serial_no: '',
-																		certificate_no: '',
-																		certificate_date: '',
-																		batch_number: '',
-																		current_status: ''
+																		)?.id
 																	});
+																	getCurrentStatus(newValue?.id);
 																}
 															})
 															.catch(() => {
-																reset({
+																handleReset({
 																	passenger: newValue?.id,
 																	training_card_status: doneNotDone.find(
 																		(data) => data.default
-																	)?.id,
-																	recruiting_agency: 'all',
-																	training_center: '',
-																	admission_date: '',
-																	serial_no: '',
-																	certificate_no: '',
-																	certificate_date: '',
-																	batch_number: '',
-																	current_status: ''
+																	)?.id
 																});
+																getCurrentStatus(newValue?.id);
 																navigate(`/apps/training-management/trainings/new`);
 															});
 													} else {
-														navigate(`/apps/training-management/trainings/new`);
-
-														reset({
-															passenger: 'all',
+														handleReset({
+															passenger: newValue?.id,
 															training_card_status: doneNotDone.find(
 																(data) => data.default
-															)?.id,
-															recruiting_agency: 'all',
-															training_center: '',
-															admission_date: '',
-															serial_no: '',
-															certificate_no: '',
-															certificate_date: '',
-															batch_number: '',
-															current_status: ''
+															)?.id
 														});
+														getCurrentStatus(newValue?.id);
+														navigate(`/apps/training-management/trainings/new`);
 													}
 												}}
 												renderInput={(params) => (

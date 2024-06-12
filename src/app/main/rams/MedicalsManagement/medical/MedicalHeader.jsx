@@ -12,13 +12,12 @@ import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MedicalsApi';
 
 /**
  * The medical header.
  */
-function MedicalHeader() {
+function MedicalHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
 	const { medicalId } = routeParams;
 	const [createMedical] = useCreateMedicalMutation();
@@ -45,9 +44,10 @@ function MedicalHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'updateMedical');
 
-						reset({
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_result: medicalResults.find((data) => data.default)?.id || ''
+						handleReset({
+							...emptyValue,
+							medical_card: doneNotDone.find((data) => data.default)?.id,
+							medical_result: medicalResults.find((data) => data.default)?.id
 						});
 
 						UpdatedSuccessfully();
@@ -75,20 +75,10 @@ function MedicalHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveMedical');
 
-						reset({
-							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue,
+							medical_result: medicalResults.find((data) => data.default)?.id,
+							medical_card: doneNotDone.find((data) => data.default)?.id
 						});
 						navigate('/apps/medical/medicals/new');
 						AddedSuccessfully();
@@ -105,20 +95,10 @@ function MedicalHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							medical_center: 'all',
-							medical_serial_no: '',
-							medical_result: medicalResults.find((data) => data.default)?.id || '',
-							medical_card: doneNotDone.find((data) => data.default)?.id || '',
-							medical_exam_date: '',
-							medical_report_date: '',
-							medical_issue_date: '',
-							medical_expiry_date: '',
-							notes: '',
-							slip_pic: '',
-							medical_card_pic: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue,
+							medical_result: medicalResults.find((data) => data.default)?.id,
+							medical_card: doneNotDone.find((data) => data.default)?.id
 						});
 						localStorage.setItem('medicalAlert', 'saveMedical');
 						navigate('/apps/medical/medicals/new');
@@ -134,43 +114,14 @@ function MedicalHeader() {
 	}
 
 	const handleCancel = () => {
-		reset({
-			passenger: 'all',
-			medical_center: 'all',
-			medical_serial_no: '',
-			medical_result: medicalResults.find((data) => data.default)?.id || '',
-			medical_card: doneNotDone.find((data) => data.default)?.id || '',
-			medical_exam_date: '',
-			medical_report_date: '',
-			medical_issue_date: '',
-			medical_expiry_date: '',
-			notes: '',
-			slip_pic: '',
-			medical_card_pic: '',
-			current_status: 'all'
+		handleReset({
+			...emptyValue,
+			medical_result: medicalResults.find((data) => data.default)?.id,
+			medical_card: doneNotDone.find((data) => data.default)?.id
 		});
 		navigate('/apps/medical/medicals/new');
 	};
 
-	useEffect(() => {
-		if (medicalId === 'new') {
-			reset({
-				passenger: 'all',
-				medical_center: 'all',
-				medical_serial_no: '',
-				medical_result: medicalResults.find((data) => data.default)?.id || '',
-				medical_card: doneNotDone.find((data) => data.default)?.id || '',
-				medical_exam_date: '',
-				medical_report_date: '',
-				medical_issue_date: '',
-				medical_expiry_date: '',
-				notes: '',
-				slip_pic: '',
-				medical_card_pic: '',
-				current_status: 'all'
-			});
-		}
-	}, [medicalId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -220,7 +171,7 @@ function MedicalHeader() {
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
 							onClick={handleUpdateMedical}
-							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+							// startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>

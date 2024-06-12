@@ -325,12 +325,23 @@ function VisaEntrysTable(props) {
 																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
+																// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
 																<img
 																	onClick={() =>
+																		// eslint-disable-next-line no-undef
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
 																	}
-																	src={`${BASE_URL}${n[key]}`}
-																	style={{ height: '70px' }}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
+																	alt="visaEntrys"
 																/>
 															)
 														) : (key === 'calling_date' ||

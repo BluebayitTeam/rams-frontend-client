@@ -76,7 +76,11 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 		createOfficeWork(getValues())
 			.unwrap()
 			.then((res) => {
-				if (res?.data?.id) {
+				// console.log('resbvbv', res);
+
+				if (res?.id) {
+					// Checking if response data contains id
+
 					if (fromSearch) {
 						history.goBack();
 					} else {
@@ -90,7 +94,15 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 						navigate('/apps/officeWork/officeWorks/new');
 						AddedSuccessfully();
 					}
+				} else {
+					// Handle cases where res.data.id is not present
+					console.error('Create failed: No id in response data');
 				}
+			})
+			.catch((error) => {
+				// Handle error
+				console.error('Error creating officeWork', error);
+				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
 
@@ -98,7 +110,11 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 		removeOfficeWork(getValues()?.id)
 			.unwrap()
 			.then((res) => {
-				if (res) {
+				console.log('khskdfhdskhf', res);
+
+				if (res?.detail) {
+					RemoveSuccessfully();
+
 					if (fromSearch) {
 						history.goBack();
 					} else {
@@ -119,8 +135,6 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 						);
 					}
 				}
-
-				RemoveSuccessfully();
 			})
 			.catch((error) => {
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
@@ -186,7 +200,7 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
 							className="whitespace-nowrap mx-2 text-white bg-green-400 hover:bg-green-800 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
 							variant="contained"
 							onClick={handleUpdateOfficeWork}
-							startIcon={<Icon className="hidden sm:flex">delete</Icon>}
+							// startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						>
 							Update
 						</Button>

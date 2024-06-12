@@ -78,6 +78,8 @@ export const passportTypes = [
 	{ id: 'Ordinary', name: 'Ordinary' },
 	{ id: 'Business', name: 'Business' },
 	{ id: 'Exclusive', name: 'Exclusive' }
+	// { id: 'Recruitings', name: 'Recruitings' },
+	// { id: 'Processing', name: 'Processing' }
 ];
 
 export const doneNotDone = [

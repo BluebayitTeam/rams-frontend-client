@@ -29,9 +29,11 @@ function CallingEntryHeader() {
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
+	const { name, image, featuredImageId } = watch();
 	const handleDelete = localStorage.getItem('deleteCallingEntry');
 	const handleUpdate = localStorage.getItem('updateCallingEntry');
+
+	// console.log('image', image);
 
 	function handleUpdateCallingEntry() {
 		saveCallingEntry(getValues()).then((data) => {
@@ -91,16 +93,16 @@ function CallingEntryHeader() {
 						initial={{ scale: 0 }}
 						animate={{ scale: 1, transition: { delay: 0.3 } }}
 					>
-						{images && images.length > 0 && featuredImageId ? (
+						{image ? (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src={_.find(images, { id: featuredImageId })?.url}
+								src={image}
 								alt={name}
 							/>
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/callingEntry-image-placeholder.png"
+								src="assets/logos/user.jpg"
 								alt={name}
 							/>
 						)}
@@ -153,7 +155,7 @@ function CallingEntryHeader() {
 						className="whitespace-nowrap mx-4 "
 						variant="contained"
 						color="secondary"
-						// disabled={_.isEmpty(dirtyFields) || !isValid}
+						disabled={_.isEmpty(dirtyFields) || !isValid}
 						onClick={handleCreateCallingEntry}
 					>
 						Save

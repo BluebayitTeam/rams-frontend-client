@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-no-duplicate-props */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
@@ -314,19 +317,31 @@ function CallingEntrysTable(props) {
 																		color: 'red',
 																		cursor: 'pointer',
 																		display: 'block',
-																		fontSize: '35px',
-																		margin: 'auto'
+																		fontSize: '30px'
+																		// margin: 'auto'
 																	}}
-																	// onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
+																	// onClick={() =>
+																	// 	n.file && showImage(`${BASE_URL}${n.file}`)
+																	// }
 																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
+																// eslint-disable-next-line jsx-a11y/click-events-have-key-events
 																<img
 																	onClick={() =>
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
 																	}
-																	src={`${BASE_URL}${n[key]}`}
-																	style={{ height: '70px' }}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
+																	alt="callingEntrys"
 																/>
 															)
 														) : (key === 'calling_date' ||

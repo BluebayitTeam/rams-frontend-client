@@ -1,22 +1,13 @@
-import { styled } from '@mui/system';
-import { Autocomplete, TextField, Tooltip, tooltipClasses } from '@mui/material';
+/* eslint-disable jsx-a11y/iframe-has-title */
+/* eslint-disable jsx-a11y/alt-text */
+import { Autocomplete, TextField } from '@mui/material';
 import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { doneNotDone } from 'src/app/@data/data';
-
-const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		maxWidth: 220,
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9'
-	}
-}));
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -45,6 +36,17 @@ function CallingEmbAttestationForm(props) {
 	const dispatcheds = doneNotDone;
 	const repatriations = doneNotDone;
 
+	const doc1File = watch('doc1_image') || '';
+	const doc2File = watch('doc2_image') || '';
+	const classes = useStyles(props);
+	const [previewDoc2File, setPreviewDoc2File] = useState('');
+
+	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+
+	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
+
+	const [fileExtDoc2Name, setFileExtDoc2Name] = useState('');
+
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
@@ -63,6 +65,11 @@ function CallingEmbAttestationForm(props) {
 			});
 		}
 	}, []);
+
+	useEffect(() => {
+		setFileExtDoc1Name('');
+		setPreviewDoc1Image('');
+	}, [getValues('musaned_no')]);
 
 	return (
 		<div>

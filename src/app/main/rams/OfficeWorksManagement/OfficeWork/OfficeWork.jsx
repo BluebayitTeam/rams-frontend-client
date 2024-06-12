@@ -53,13 +53,13 @@ function OfficeWork() {
 		finger_status: '',
 		finger_date: '',
 		certificate_experience: '',
+		created_at: '',
+		updated_at: '',
+		current_status: '',
 		pc_image: '',
 		dl_image: '',
 		doc1_image: '',
-		doc2_image: '',
-		created_at: '',
-		updated_at: '',
-		current_status: ''
+		doc2_image: ''
 	};
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
@@ -93,6 +93,23 @@ function OfficeWork() {
 		setValue
 	} = methods;
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
+
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -122,50 +139,50 @@ function OfficeWork() {
 		}
 	}, [fromSearch]);
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						handleReset({
-							...setIdIfValueIsObject(res.data),
-							passenger: officeWorkId
-						});
-					} else {
-						handleReset({
-							passenger: officeWorkId,
-							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id
-						});
-						sessionStorage.setItem('operation', 'save');
-					}
-				})
-				.catch(() => {
-					handleReset({
-						passenger: officeWorkId,
-						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-						driving_license_status: doneNotDone.find((data) => data.default)?.id,
-						finger_status: doneNotDone.find((data) => data.default)?.id
-					});
-					sessionStorage.setItem('operation', 'save');
-				});
-		} else {
-			handleReset({
-				...emptyValue,
-				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-				driving_license_status: doneNotDone.find((data) => data.default)?.id,
-				finger_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	}, [fromSearch]);
+	// useEffect(() => {
+	// 	if (fromSearch) {
+	// 		const authTOKEN = {
+	// 			headers: {
+	// 				'Content-type': 'application/json',
+	// 				Authorization: localStorage.getItem('jwt_access_token')
+	// 			}
+	// 		};
+	// 		axios
+	// 			.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
+	// 			.then((res) => {
+	// 				if (res.data.id) {
+	// 					handleReset({
+	// 						...setIdIfValueIsObject(res.data),
+	// 						passenger: officeWorkId
+	// 					});
+	// 				} else {
+	// 					handleReset({
+	// 						passenger: officeWorkId,
+	// 						police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 						driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 						finger_status: doneNotDone.find((data) => data.default)?.id
+	// 					});
+	// 					sessionStorage.setItem('operation', 'save');
+	// 				}
+	// 			})
+	// 			.catch(() => {
+	// 				handleReset({
+	// 					passenger: officeWorkId,
+	// 					police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 					driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 					finger_status: doneNotDone.find((data) => data.default)?.id
+	// 				});
+	// 				sessionStorage.setItem('operation', 'save');
+	// 			});
+	// 	} else {
+	// 		handleReset({
+	// 			...emptyValue,
+	// 			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+	// 			driving_license_status: doneNotDone.find((data) => data.default)?.id,
+	// 			finger_status: doneNotDone.find((data) => data.default)?.id
+	// 		});
+	// 	}
+	// }, [fromSearch]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -175,22 +192,6 @@ function OfficeWork() {
 		return <FuseLoading />;
 	}
 
-	const handleReset = (defaultValues) => {
-		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-	};
-
-	const getCurrentStatus = (passengerId) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
 	return (
 		<FormProvider
 			{...methods}

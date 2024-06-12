@@ -3,6 +3,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import { CREATE_EMBASSY, UPDATE_EMBASSY, DELETE_EMBASSY, EMBASSY_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import moment from 'moment';
 import { selectSearchText } from './store/searchTextSlice';
 import EmbassyModel from './embassy/models/EmbassyModel';
 // import EmbassyModel from './embassy/models/EmbassyModel';
@@ -26,7 +27,8 @@ const EmbassyApi = api
 					method: 'POST',
 					data: jsonToFormData(
 						EmbassyModel({
-							...newEmbassy
+							...newEmbassy,
+							delivery_date: moment(new Date(newEmbassy?.delivery_date)).format('YYYY-MM-DD')
 						})
 					)
 				}),
@@ -37,7 +39,8 @@ const EmbassyApi = api
 					url: `${UPDATE_EMBASSY}${embassy.id}`,
 					method: 'PUT',
 					data: jsonToFormData({
-						...embassy
+						...embassy,
+						delivery_date: moment(new Date(embassy?.delivery_date)).format('YYYY-MM-DD')
 					})
 				}),
 				invalidatesTags: ['embassys']

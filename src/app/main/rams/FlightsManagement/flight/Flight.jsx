@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
@@ -7,14 +6,14 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { FLIGHT_BY_PASSENGER_ID } from 'src/app/constant/constants';
-// import { doneNotDone } from 'src/app/@data/data';
+import { FLIGHT_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { activeRetrnCncl } from 'src/app/@data/data';
 import moment from 'moment';
+import { getManpower } from 'app/store/dataSlice';
 import FlightHeader from './FlightHeader';
 import { useGetFlightQuery } from '../FlightsApi';
 import FlightForm from './FlightForm';
@@ -42,15 +41,31 @@ const schema = z.object({
 });
 
 function Flight() {
+	const emptyValue = {
+		passenger: '',
+		ticket_status: '',
+		ticket_agency: '',
+		carrier_air_way: '',
+		flight_no: '',
+		ticket_no: '',
+		sector_name: '',
+		flight_time: '',
+		arrival_time: '',
+		issue_date: '',
+		flight_date: '',
+		notes: '',
+		current_status: ''
+	};
 	const routeParams = useParams();
 	const { flightId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
+	const dispatch = useDispatch();
 	const classes = useStyles();
 	const navigate = useNavigate();
-
+	const [formKey, setFormKey] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -72,6 +87,23 @@ function Flight() {
 		setValue
 	} = methods;
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
+
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -84,9 +116,9 @@ function Flight() {
 				.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: flightId });
+						// handleReset({ ...setIdIfValueIsObject(res.data), passenger: flightId });
 					} else {
-						reset({
+						handleReset({
 							passenger: flightId,
 							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 						});
@@ -94,14 +126,14 @@ function Flight() {
 					}
 				})
 				.catch(() => {
-					reset({
+					handleReset({
 						passenger: flightId,
 						ticket_status: activeRetrnCncl.find((data) => data.default)?.id
 					});
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({ ticket_status: activeRetrnCncl.find((data) => data.default)?.id });
+			handleReset({ ...emptyValue, ticket_status: activeRetrnCncl.find((data) => data.default)?.id });
 		}
 	}, [fromSearch]);
 
@@ -114,7 +146,10 @@ function Flight() {
 	}
 
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -134,7 +169,12 @@ function Flight() {
 						<Tab label="Flight Information" />
 					</Tabs>
 				}
-				header={<FlightHeader />}
+				header={
+					<FlightHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -150,35 +190,25 @@ function Flight() {
 												autoHighlight
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
-												// options={passengers}
-												options={[
-													{
-														id: 'all',
-														passenger_id: '',
-														office_serial: '',
-														passport_no: '',
-														passenger_name: 'Select Passenger'
-													},
-													...passengers
-												]}
+												options={passengers}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
 												onChange={(event, newValue) => {
-													// const authTOKEN = {
-													// 	headers: {
-													// 		'Content-type': 'application/json',
-													// 		Authorization: localStorage.getItem('jwt_access_token')
-													// 	}
-													// };
+													const authTOKEN = {
+														headers: {
+															'Content-type': 'application/json',
+															Authorization: localStorage.getItem('jwt_access_token')
+														}
+													};
 
-													// dispatch(getManpower(newValue?.id));
-													// axios
-													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-													// 	.then((res) => {
-													// 		setValue('current_status', res.data?.current_status?.id);
-													// 		setValue('passenger', res.data?.id);
-													// 	});
+													getManpower(newValue?.id);
+													axios
+														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+														.then((res) => {
+															setValue('current_status', res.data?.current_status?.id);
+															setValue('passenger', res.data?.id);
+														});
 
 													if (newValue?.id) {
 														const authTOKEN = {
@@ -190,13 +220,11 @@ function Flight() {
 														axios
 															.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
-																// update scope
-
 																if (res.data.id) {
-																	reset({
-																		...setIdIfValueIsObject(res.data),
+																	handleReset({
+																		...setIdIfValueIsObject(res?.data),
 																		passenger: newValue?.id,
-																		ticket_agency: res?.data?.ticket_agency?.id,
+
 																		flight_date: moment(
 																			new Date(res?.data?.flight_date)
 																		).format('YYYY-MM-DD'),
@@ -209,92 +237,34 @@ function Flight() {
 																			newValue?.passenger?.id || newValue?.id
 																		}`
 																	);
-																}
-																// create scope
-																// else if (res.data?.embassy_exists) {
-																// 	navigate(`/apps/Flight-management/Flights/new`);
-																// 	reset({
-																// 		passenger: newValue?.id,
-																// 		ticket_agency: 'all',
-																// 		carrier_air_way: '',
-																// 		flight_no: '',
-																// 		ticket_no: '',
-																// 		sector_name: '',
-																// 		// ticket_status: '',
-																// 		flight_time: '',
-																// 		arrival_time: '',
-																// 		issue_date: '',
-																// 		flight_date: '',
-																// 		notes: '',
-																// 		current_status: 'all'
-																// 	});
-																// }
-																else {
+																} else {
 																	navigate(`/apps/Flight-management/Flights/new`);
-																	reset({
+																	handleReset({
 																		passenger: newValue?.id,
-																		ticket_agency: 'all',
-																		carrier_air_way: '',
-																		flight_no: '',
-																		ticket_no: '',
-																		sector_name: '',
-																		// ticket_status: '',
-																		flight_time: '',
-																		arrival_time: '',
-																		issue_date: '',
-																		flight_date: '',
-																		notes: '',
-																		current_status: 'all'
+																		ticket_status: activeRetrnCncl.find(
+																			(data) => data.default
+																		)?.id
 																	});
-																	// dispatch(
-																	// 	setAlert({
-																	// 		alertType: 'warning',
-																	// 		alertValue: `please check "Embassy" information`
-																	// 	})
-																	// );
+																	getCurrentStatus(newValue?.id);
 																}
 															})
 															.catch(() => {
-																reset({
+																handleReset({
 																	passenger: newValue?.id,
-																	ticket_agency: 'all',
-																	carrier_air_way: '',
-																	flight_no: '',
-																	ticket_no: '',
-																	sector_name: '',
-																	// ticket_status: '',
-																	flight_time: '',
-																	arrival_time: '',
-																	issue_date: '',
-																	flight_date: '',
-																	notes: '',
-																	current_status: 'all'
+																	ticket_status: activeRetrnCncl.find(
+																		(data) => data.default
+																	)?.id
 																});
+																getCurrentStatus(newValue?.id);
 																navigate(`/apps/Flight-management/Flights/new`);
-
-																// dispatch(
-																// 	setAlert({
-																// 		alertType: 'warning',
-																// 		alertValue: `please check "Embassy" information`
-																// 	})
-																// );
 															});
 													} else {
-														reset({
+														handleReset({
 															passenger: newValue?.id,
-															ticket_agency: 'all',
-															carrier_air_way: '',
-															flight_no: '',
-															ticket_no: '',
-															sector_name: '',
-															// ticket_status: '',
-															flight_time: '',
-															arrival_time: '',
-															issue_date: '',
-															flight_date: '',
-															notes: '',
-															current_status: 'all'
+															ticket_status: activeRetrnCncl.find((data) => data.default)
+																?.id
 														});
+														getCurrentStatus(newValue?.id);
 														navigate(`/apps/Flight-management/Flights/new`);
 													}
 												}}
