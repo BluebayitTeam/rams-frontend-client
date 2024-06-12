@@ -10,65 +10,27 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-	getBranches,
-	getCities,
-	getCountries,
-	getDepartments,
-	getEmployees,
-	getPackages,
-	getRoles,
-	getThanas
-} from 'app/store/dataSlice';
+import { useSelector } from 'react-redux';
+
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import ComplainsTableHead from './ComplainsTableHead';
 import { selectFilteredComplains, useGetComplainsQuery } from '../ComplainsApi';
 
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
-
 function ComplainsTable(props) {
-	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
-	const { reset, formState, watch, control, getValues, setValue } = useForm({
-		mode: 'onChange',
-		resolver: zodResolver()
-	});
+
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [openModal, setOpenModal] = useState(false);
 	const { data, isLoading, refetch } = useGetComplainsQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredComplains(data));
 	const complains = useSelector(selectFilteredComplains(data?.complains));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	const [singleComplainDetails, setSingleComplainDetails] = useState({});
-	const [complainPackagePrice, setComplainPackagePrice] = useState(0);
 
-	const routeParams = useParams();
-	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -94,7 +56,7 @@ function ComplainsTable(props) {
 
 			Object.entries(totalData?.complains[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
-				.map(([key, value]) => {
+				.map(([key, _value]) => {
 					modifiedRow.push({
 						id: key,
 						label: key
@@ -119,25 +81,11 @@ function ComplainsTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.complains]);
-	const [open, setOpen] = useState(false);
 
-	console.log('open', open);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {}
 	});
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getPackages());
-		dispatch(getDepartments());
-		dispatch(getCities());
-		dispatch(getCountries());
-		dispatch(getEmployees());
-	}, []);
 
 	const [selected, setSelected] = useState([]);
 
@@ -169,10 +117,6 @@ function ComplainsTable(props) {
 		setSelected([]);
 	}
 
-	function handleClick(item) {
-		navigate(`/apps/complain/complains/${item.id}/${item.handle}`);
-	}
-
 	function handleUpdateComplain(item, event) {
 		localStorage.removeItem('deleteComplain');
 		localStorage.setItem('updateComplain', event);
@@ -183,25 +127,6 @@ function ComplainsTable(props) {
 		localStorage.removeItem('updateComplain');
 		localStorage.setItem('deleteComplain', event);
 		navigate(`/apps/complain/complains/${item.id}/${item.handle}`);
-	}
-
-	// console.log('testDelete', handleDeleteComplain);
-
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-
-		setSelected(newSelected);
 	}
 
 	// pagination
@@ -348,12 +273,12 @@ function ComplainsTable(props) {
 											}}
 										>
 											<Edit
-												onClick={(event) => handleUpdateComplain(n, 'updateComplain')}
+												onClick={() => handleUpdateComplain(n, 'updateComplain')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={(event) => handleDeleteComplain(n, 'deleteComplain')}
+												onClick={() => handleDeleteComplain(n, 'deleteComplain')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>
