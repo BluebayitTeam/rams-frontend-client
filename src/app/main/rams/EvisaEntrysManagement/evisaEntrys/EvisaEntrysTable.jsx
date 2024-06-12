@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -29,23 +30,11 @@ import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EvisaEntrysTableHead from './EvisaEntrysTableHead';
 import { selectFilteredEvisaEntrys, useGetEvisaEntrysQuery } from '../EvisaEntrysApi';
-
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
 
 function EvisaEntrysTable(props) {
 	const dispatch = useDispatch();
@@ -55,7 +44,7 @@ function EvisaEntrysTable(props) {
 		resolver: zodResolver()
 	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [openModal, setOpenModal] = useState(false);
+
 	const { data, isLoading, refetch } = useGetEvisaEntrysQuery({
 		...pageAndSize,
 		searchKey
@@ -64,18 +53,7 @@ function EvisaEntrysTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredEvisaEntrys(data));
 	const evisaEntrys = useSelector(selectFilteredEvisaEntrys(data?.evisa_entries));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	const [singleEvisaEntryDetails, setSingleEvisaEntryDetails] = useState({});
-	const [evisaEntryPackagePrice, setEvisaEntryPackagePrice] = useState(0);
 
-	const routeParams = useParams();
-	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -104,7 +82,7 @@ function EvisaEntrysTable(props) {
 
 			Object.entries(totalData?.evisa_entries[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
-				.map(([key, value]) => {
+				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
 						label: key
@@ -375,12 +353,12 @@ function EvisaEntrysTable(props) {
 											}}
 										>
 											<Edit
-												onClick={(event) => handleUpdateEvisaEntry(n, 'updateEvisaEntry')}
+												onClick={() => handleUpdateEvisaEntry(n, 'updateEvisaEntry')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={(event) => handleDeleteEvisaEntry(n, 'deleteEvisaEntry')}
+												onClick={() => handleDeleteEvisaEntry(n, 'deleteEvisaEntry')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>
