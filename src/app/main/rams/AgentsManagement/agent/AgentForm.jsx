@@ -4,7 +4,7 @@ import { FormControl } from '@mui/base';
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import DescriptionIcon from '@material-ui/icons/Description';
+import DescriptionIcon from '@mui/icons-material/Description';
 import {
 	Autocomplete,
 	Box,

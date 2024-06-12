@@ -12,7 +12,7 @@ import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
 
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import DescriptionIcon from '@material-ui/icons/Description';
+import DescriptionIcon from '@mui/icons-material/Description';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({

@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { styled } from '@mui/system';
 import { Autocomplete, Icon, TextField, Tooltip, Typography, tooltipClasses, Box } from '@mui/material';
-import DescriptionIcon from '@material-ui/icons/Description';
+import DescriptionIcon from '@mui/icons-material/Description';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';

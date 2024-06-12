@@ -13,7 +13,7 @@ import { activeRetrnCncl } from 'src/app/@data/data';
 import { PictureAsPdf } from '@mui/icons-material';
 import clsx from 'clsx';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import DescriptionIcon from '@material-ui/icons/Description';
+import DescriptionIcon from '@mui/icons-material/Description';
 // console.log('dsadasd', activeRetrnCncl);
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({

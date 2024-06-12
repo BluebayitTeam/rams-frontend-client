@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { doneNotDone } from 'src/app/@data/data';
 import clsx from 'clsx';
-import DescriptionIcon from '@material-ui/icons/Description';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { PictureAsPdf } from '@mui/icons-material';

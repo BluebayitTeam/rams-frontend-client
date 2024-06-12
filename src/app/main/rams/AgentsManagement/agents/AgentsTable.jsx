@@ -33,7 +33,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
-import DescriptionIcon from '@material-ui/icons/Description';
+import DescriptionIcon from '@mui/icons-material/Description';
 import AgentsTableHead from './AgentsTableHead';
 import { selectFilteredAgents, useGetAgentsQuery } from '../AgentsApi';
 
