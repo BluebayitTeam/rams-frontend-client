@@ -30,7 +30,7 @@ import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import DescriptionIcon from '@material-ui/icons/Description';
+import DescriptionIcon from '@mui/icons-material/Description';
 import { BASE_URL } from 'src/app/constant/constants';
 import DemandsTableHead from './DemandsTableHead';
 import { selectFilteredDemands, useGetDemandsQuery } from '../DemandsApi';
