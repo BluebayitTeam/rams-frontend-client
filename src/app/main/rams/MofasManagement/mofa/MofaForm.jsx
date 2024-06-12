@@ -73,7 +73,7 @@ function MofaForm(props) {
 						freeSolo
 						value={value ? mofaAgencys?.find((data) => data.id === value) : null}
 						// options={mofaAgencys}
-						options={[{ id: 'all', name: 'Select Mofa Agency' }, ...mofaAgencys]}
+						options={mofaAgencys}
 						getOptionLabel={(option) => option?.id !== 'all' && `${option?.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -158,7 +158,7 @@ function MofaForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Re Mofa Status' }, ...doneNotDone]}
+						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -206,7 +206,7 @@ function MofaForm(props) {
 						className="mt-8 mb-16"
 						freeSolo
 						value={value ? doneNotDone.find((data) => data.id === value) : null}
-						options={[{ id: 'all', name: 'Select Mofa Status' }, ...doneNotDone]}
+						options={doneNotDone}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
