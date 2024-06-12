@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -15,38 +16,17 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-	getBranches,
-	getCities,
-	getCountries,
-	getDepartments,
-	getEmployees,
-	getPackages,
-	getRoles,
-	getThanas
-} from 'app/store/dataSlice';
+
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import AgentsTableHead from './AgentsTableHead';
 import { selectFilteredAgents, useGetAgentsQuery } from '../AgentsApi';
-
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
 
 function AgentsTable(props) {
 	const dispatch = useDispatch();
@@ -56,24 +36,12 @@ function AgentsTable(props) {
 		resolver: zodResolver()
 	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [openModal, setOpenModal] = useState(false);
 	const { data, isLoading, refetch } = useGetAgentsQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredAgents(data));
 	const agents = useSelector(selectFilteredAgents(data?.agents));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	const [singleAgentDetails, setSingleAgentDetails] = useState({});
-	const [agentPackagePrice, setAgentPackagePrice] = useState(0);
 
-	const routeParams = useParams();
-	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -99,7 +67,7 @@ function AgentsTable(props) {
 
 			Object.entries(totalData?.agents[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
-				.map(([key, value]) => {
+				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
 						label: key
@@ -124,25 +92,6 @@ function AgentsTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.agents]);
-	const [open, setOpen] = useState(false);
-
-	console.log('open', open);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getPackages());
-		dispatch(getDepartments());
-		dispatch(getCities());
-		dispatch(getCountries());
-		dispatch(getEmployees());
-	}, []);
 
 	const [selected, setSelected] = useState([]);
 
@@ -174,7 +123,7 @@ function AgentsTable(props) {
 		setSelected([]);
 	}
 
-	function handleClick(item) {
+	function _handleClick(item) {
 		navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
 	}
 
@@ -192,7 +141,7 @@ function AgentsTable(props) {
 
 	// console.log('testDelete', handleDeleteAgent);
 
-	function handleCheck(event, id) {
+	function _handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -291,63 +240,7 @@ function AgentsTable(props) {
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 										</TableCell>
-										{/* {Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'image' ? (
-															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-																<PictureAsPdf
-																	style={{
-																		color: 'red',
-																		cursor: 'pointer',
-																		display: 'block',
-																		fontSize: '35px'
-																		// margin: 'auto'
-																	}}
-																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-																/>
-															) : (
-																<img
-																	onClick={() =>
-																		n.file && showImage(`${BASE_URL}${n[key]}`)
-																	}
-																	src={
-																		n[key]
-																			? `${BASE_URL}${n[key]}`
-																			: 'assets/logos/user.jpg'
-																	}
-																	style={{
-																		height: '40px',
-																		width: '40px',
-																		borderRadius: '50%'
-																	}}
-																	alt="test"
-																/>
-															)
-														) : (key === 'calling_date' ||
-																key === 'calling_exp_date' ||
-																key === 'visa_issue_date') &&
-														  n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
-														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)} */}
+
 										{Object?.entries(n)?.map(
 											([key, value]) =>
 												key !== 'id' && (
@@ -425,12 +318,12 @@ function AgentsTable(props) {
 											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 										>
 											<Edit
-												onClick={(event) => handleUpdateAgent(n, 'updateAgent')}
+												onClick={() => handleUpdateAgent(n, 'updateAgent')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={(event) => handleDeleteAgent(n, 'deleteAgent')}
+												onClick={() => handleDeleteAgent(n, 'deleteAgent')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>

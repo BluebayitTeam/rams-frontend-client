@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/alt-text */
@@ -14,6 +15,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
+import DescriptionIcon from '@mui/icons-material/Description';
 import {
 	getBranches,
 	getCities,
@@ -29,22 +31,10 @@ import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import CallingEntrysTableHead from './CallingEntrysTableHead';
 import { selectFilteredCallingEntrys, useGetCallingEntrysQuery } from '../CallingEntrysApi';
-
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
 
 function CallingEntrysTable(props) {
 	const dispatch = useDispatch();
@@ -54,7 +44,7 @@ function CallingEntrysTable(props) {
 		resolver: zodResolver()
 	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [openModal, setOpenModal] = useState(false);
+
 	const { data, isLoading, refetch } = useGetCallingEntrysQuery({
 		...pageAndSize,
 		searchKey
@@ -63,24 +53,12 @@ function CallingEntrysTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCallingEntrys(data));
 	const callingEntrys = useSelector(selectFilteredCallingEntrys(data?.malaysia_visa_entries));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	const [singleCallingEntryDetails, setSingleCallingEntryDetails] = useState({});
-	const [callingEntryPackagePrice, setCallingEntryPackagePrice] = useState(0);
 
-	const routeParams = useParams();
-	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
 	useEffect(() => {
 		refetch();
-		console.log('Callingdata', data);
 	}, [data]);
 
 	let serialNumber = 1;
@@ -104,7 +82,7 @@ function CallingEntrysTable(props) {
 
 			Object.entries(totalData?.malaysia_visa_entries[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
-				.map(([key, value]) => {
+				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
 						label: key
@@ -129,15 +107,7 @@ function CallingEntrysTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.callingEntrys, callingEntrys]);
-	const [open, setOpen] = useState(false);
 
-	console.log('open', open);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
 	useEffect(() => {
 		dispatch(getBranches());
 		dispatch(getThanas());
@@ -197,7 +167,7 @@ function CallingEntrysTable(props) {
 
 	// console.log('testDelete', handleDeleteCallingEntry);
 
-	function handleCheck(event, id) {
+	function _handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -305,28 +275,35 @@ function CallingEntrysTable(props) {
 											([key, value]) =>
 												key !== 'id' && (
 													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
+														className="p-4 md:p-16 border-t-1 border-gray-200"
 														component="th"
 														scope="row"
 														key={key}
 													>
 														{key === 'file' ? (
-															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
 																<PictureAsPdf
 																	style={{
 																		color: 'red',
 																		cursor: 'pointer',
 																		display: 'block',
-																		fontSize: '30px'
-																		// margin: 'auto'
+																		fontSize: '35px'
 																	}}
-																	// onClick={() =>
-																	// 	n.file && showImage(`${BASE_URL}${n.file}`)
-																	// }
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : ['doc', 'docx'].includes(
+																	n[key]?.split('.').pop()?.toLowerCase()
+															  ) ? (
+																<DescriptionIcon
+																	style={{
+																		color: 'blue',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
 																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
-																// eslint-disable-next-line jsx-a11y/click-events-have-key-events
 																<img
 																	onClick={() =>
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
@@ -341,7 +318,7 @@ function CallingEntrysTable(props) {
 																		width: '40px',
 																		borderRadius: '50%'
 																	}}
-																	alt="callingEntrys"
+																	alt="uploaded file"
 																/>
 															)
 														) : (key === 'calling_date' ||

@@ -89,7 +89,7 @@ function CallingAssignForm(props) {
 		fetch(`${CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN}${id}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
-			.catch((err) => {});
+			.catch(() => {});
 	};
 
 	function handleSaveMultipleStatusUpdate(id) {

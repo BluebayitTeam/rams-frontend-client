@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
-import { useParams } from 'react-router-dom';
 
 import { Autocomplete, Box, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
 import { getAgents, getCountries, getDemandVisaEntrys } from 'app/store/dataSlice';
@@ -39,14 +38,12 @@ function VisaEntryForm(props) {
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError, getValues } = methods;
 	const { errors } = formState;
-	const routeParams = useParams();
-	const { visaEntryId } = routeParams;
+
 	const classes = useStyles(props);
 	const demands = useSelector((state) => state.data.demandVisaEntrys);
-	const professions = useSelector((state) => state.data.professions);
+
 	const countries = useSelector((state) => state.data.countries);
 	const visaAgents = useSelector((state) => state.data.agents);
-	const getCountryCode1 = watch('country_code1');
 
 	const file = watch('file') || '';
 
@@ -81,7 +78,7 @@ function VisaEntryForm(props) {
 			<Controller
 				name="demand"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
@@ -90,8 +87,7 @@ function VisaEntryForm(props) {
 						getOptionLabel={(option) => `${option?.profession}(${option.company_name})`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
-							// dispatch(getVisaEntryByDemand(newValue?.id));
-							// setProfession(newValue?.profession?.name);
+
 							setValue('profession_english', newValue?.profession?.name);
 						}}
 						renderInput={(params) => (
@@ -115,11 +111,11 @@ function VisaEntryForm(props) {
 			<Controller
 				name="country"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? countries.find((data) => data.id == value) : null}
+						value={value ? countries.find((data) => data.id === value) : null}
 						options={countries}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
@@ -130,12 +126,9 @@ function VisaEntryForm(props) {
 								{...params}
 								placeholder="Select Country"
 								label="Country"
-								// error={!!errors.country || !value}
 								helperText={errors?.country?.message}
 								variant="outlined"
 								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-								//
 							/>
 						)}
 					/>
@@ -145,7 +138,7 @@ function VisaEntryForm(props) {
 			<Controller
 				name="visa_agent"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
@@ -160,7 +153,6 @@ function VisaEntryForm(props) {
 								{...params}
 								placeholder="Select Visa Agent"
 								label="Visa Agent"
-								// error={!!errors.visa_agent || !value}
 								helperText={errors?.visa_agent?.message}
 								variant="outlined"
 								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}

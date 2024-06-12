@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -29,22 +30,10 @@ import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router';
+import DescriptionIcon from '@material-ui/icons/Description';
 import { BASE_URL } from 'src/app/constant/constants';
-import moment from 'moment';
 import DemandsTableHead from './DemandsTableHead';
 import { selectFilteredDemands, useGetDemandsQuery } from '../DemandsApi';
-
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
 
 function DemandsTable(props) {
 	const dispatch = useDispatch();
@@ -54,7 +43,7 @@ function DemandsTable(props) {
 		resolver: zodResolver()
 	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [openModal, setOpenModal] = useState(false);
+
 	const { data, isLoading, refetch } = useGetDemandsQuery({
 		...pageAndSize,
 		searchKey
@@ -63,18 +52,7 @@ function DemandsTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredDemands(data));
 	const demands = useSelector(selectFilteredDemands(data?.demands));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	const [singleDemandDetails, setSingleDemandDetails] = useState({});
-	const [demandPackagePrice, setDemandPackagePrice] = useState(0);
 
-	const routeParams = useParams();
-	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -103,7 +81,7 @@ function DemandsTable(props) {
 
 			Object.entries(totalData?.demands[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
-				.map(([key, value]) => {
+				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
 						label: key
@@ -128,15 +106,7 @@ function DemandsTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.demands, refetch]);
-	const [open, setOpen] = useState(false);
 
-	console.log('open', open);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
 	useEffect(() => {
 		dispatch(getBranches());
 		dispatch(getThanas());
@@ -178,7 +148,7 @@ function DemandsTable(props) {
 		setSelected([]);
 	}
 
-	function handleClick(item) {
+	function _handleClick(item) {
 		navigate(`/apps/demand/demands/${item.id}/${item.handle}`);
 	}
 
@@ -196,7 +166,7 @@ function DemandsTable(props) {
 
 	// console.log('testDelete', handleDeleteDemand);
 
-	function handleCheck(event, id) {
+	function _handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -300,49 +270,8 @@ function DemandsTable(props) {
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 										</TableCell>
-										{/* {Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'file' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
 
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'payment_valid_until' && n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
-														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)} */}
-										{Object?.entries(n)?.map(
+										{/* {Object?.entries(n)?.map(
 											([key, value]) =>
 												key !== 'id' &&
 												key !== 'random_number' && (
@@ -382,6 +311,75 @@ function DemandsTable(props) {
 																		borderRadius: '50%'
 																	}}
 																	alt="test"
+																/>
+															)
+														) : (key === 'calling_date' ||
+																key === 'calling_exp_date' ||
+																key === 'visa_issue_date') &&
+														  n[key] ? (
+															moment(new Date(n[key])).format('DD-MM-YYYY')
+														) : (key === 'is_debtor' || key === 'is_paid') &&
+														  n[key] !== undefined ? (
+															n[key] ? (
+																'Yes'
+															) : (
+																'No'
+															)
+														) : (
+															value
+														)}
+													</TableCell>
+												)
+										)} */}
+
+										{Object?.entries(n)?.map(
+											([key, value]) =>
+												key !== 'id' && (
+													<TableCell
+														className="p-4 md:p-16 border-t-1 border-gray-200"
+														component="th"
+														scope="row"
+														key={key}
+													>
+														{key === 'file' ? (
+															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
+																<PictureAsPdf
+																	style={{
+																		color: 'red',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : ['doc', 'docx'].includes(
+																	n[key]?.split('.').pop()?.toLowerCase()
+															  ) ? (
+																<DescriptionIcon
+																	style={{
+																		color: 'blue',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : (
+																<img
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n[key]}`)
+																	}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
+																	alt="uploaded file"
 																/>
 															)
 														) : (key === 'calling_date' ||

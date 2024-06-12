@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable array-callback-return */
 /* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
@@ -11,6 +13,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
+import DescriptionIcon from '@material-ui/icons/Description';
 import {
 	getBranches,
 	getCities,
@@ -26,22 +29,10 @@ import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import VisaEntrysTableHead from './VisaEntrysTableHead';
 import { selectFilteredVisaEntrys, useGetVisaEntrysQuery } from '../VisaEntrysApi';
-
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
 
 function VisaEntrysTable(props) {
 	const dispatch = useDispatch();
@@ -51,7 +42,7 @@ function VisaEntrysTable(props) {
 		resolver: zodResolver()
 	});
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [openModal, setOpenModal] = useState(false);
+
 	const { data, isLoading, refetch } = useGetVisaEntrysQuery({
 		...pageAndSize,
 		searchKey
@@ -60,18 +51,7 @@ function VisaEntrysTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredVisaEntrys(data));
 	const visaEntrys = useSelector(selectFilteredVisaEntrys(data?.visa_entries));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	const [singleVisaEntryDetails, setSingleVisaEntryDetails] = useState({});
-	const [visaEntryPackagePrice, setVisaEntryPackagePrice] = useState(0);
 
-	const routeParams = useParams();
-	const { paymentStaus } = routeParams;
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -129,15 +109,7 @@ function VisaEntrysTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.visaEntrys, visaEntrys]);
-	const [open, setOpen] = useState(false);
 
-	console.log('open', open);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
 	useEffect(() => {
 		dispatch(getBranches());
 		dispatch(getThanas());
@@ -179,7 +151,7 @@ function VisaEntrysTable(props) {
 		setSelected([]);
 	}
 
-	function handleClick(item) {
+	function _handleClick(item) {
 		navigate(`/apps/visaEntry/visaEntrys/${item.id}/${item.handle}`);
 	}
 
@@ -197,7 +169,7 @@ function VisaEntrysTable(props) {
 
 	// console.log('testDelete', handleDeleteVisaEntry);
 
-	function handleCheck(event, id) {
+	function _handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -303,32 +275,39 @@ function VisaEntrysTable(props) {
 										</TableCell>
 										{Object?.entries(n)?.map(
 											([key, value]) =>
-												key !== 'id' &&
-												key !== 'random_number' && (
+												key !== 'id' && (
 													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
+														className="p-4 md:p-16 border-t-1 border-gray-200"
 														component="th"
 														scope="row"
 														key={key}
 													>
 														{key === 'file' ? (
-															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
 																<PictureAsPdf
 																	style={{
 																		color: 'red',
 																		cursor: 'pointer',
 																		display: 'block',
-																		fontSize: '35px',
-																		margin: 'auto'
+																		fontSize: '35px'
 																	}}
-																	// onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : ['doc', 'docx'].includes(
+																	n[key]?.split('.').pop()?.toLowerCase()
+															  ) ? (
+																<DescriptionIcon
+																	style={{
+																		color: 'blue',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
 																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
-																// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
 																<img
 																	onClick={() =>
-																		// eslint-disable-next-line no-undef
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
 																	}
 																	src={
@@ -341,7 +320,7 @@ function VisaEntrysTable(props) {
 																		width: '40px',
 																		borderRadius: '50%'
 																	}}
-																	alt="visaEntrys"
+																	alt="uploaded file"
 																/>
 															)
 														) : (key === 'calling_date' ||
