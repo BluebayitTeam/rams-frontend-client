@@ -2,16 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
-import {
-	Autocomplete,
-	Checkbox,
-	FormControlLabel,
-	Icon,
-	TextField,
-	Tooltip,
-	Typography,
-	tooltipClasses
-} from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, TextField, Tooltip, tooltipClasses } from '@mui/material';
 import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
@@ -20,9 +11,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormControl } from '@mui/base';
 import { activeCncl } from 'src/app/@data/data';
-import { PictureAsPdf } from '@mui/icons-material';
-import { BASE_URL } from 'src/app/constant/constants';
-import clsx from 'clsx';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
@@ -56,13 +44,11 @@ function EvisaEntryForm(props) {
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const file = watch('file') || '';
-	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
+
 	const [previewFile, setPreviewFile] = useState('');
 	const [fileExtName, setFileExtName] = useState('');
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-
-	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
 
 	useEffect(() => {
 		if (mltPassengerList) {
@@ -286,7 +272,7 @@ function EvisaEntryForm(props) {
 				)}
 			/>
 
-			<Controller
+			{/* <Controller
 				name="file"
 				control={control}
 				render={({ field: { onChange, value } }) => (
@@ -378,7 +364,7 @@ function EvisaEntryForm(props) {
 						)}
 					</div>
 				)}
-			/>
+			/> */}
 		</div>
 	);
 }
