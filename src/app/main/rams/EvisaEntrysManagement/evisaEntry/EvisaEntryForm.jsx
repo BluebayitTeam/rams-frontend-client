@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 function EvisaEntryForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError } = methods;
+	const { control, formState, watch, setValue } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { evisaEntryId } = routeParams;
@@ -77,10 +77,6 @@ function EvisaEntryForm(props) {
 		}
 	}, [mltPassengerDeletedId]);
 
-	// useEffect(() => {
-	// 	setFileExtName('');
-	// 	setPreviewFile('');
-	// }, [watch('demand')]);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
