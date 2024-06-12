@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-nested-ternary */
@@ -31,6 +32,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'react-router';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
+import DescriptionIcon from '@mui/icons-material/Description';
 import EvisaEntrysTableHead from './EvisaEntrysTableHead';
 import { selectFilteredEvisaEntrys, useGetEvisaEntrysQuery } from '../EvisaEntrysApi';
 
@@ -127,15 +129,7 @@ function EvisaEntrysTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.evisa_entries]);
-	const [open, setOpen] = useState(false);
 
-	console.log('open', open);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
 	useEffect(() => {
 		dispatch(getBranches());
 		dispatch(getThanas());
@@ -177,7 +171,7 @@ function EvisaEntrysTable(props) {
 		setSelected([]);
 	}
 
-	function handleClick(item) {
+	function _handleClick(item) {
 		navigate(`/apps/evisaEntry/evisaEntrys/${item.id}/${item.handle}`);
 	}
 
@@ -195,7 +189,7 @@ function EvisaEntrysTable(props) {
 
 	// console.log('testDelete', handleDeleteEvisaEntry);
 
-	function handleCheck(event, id) {
+	function _handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 
@@ -303,27 +297,35 @@ function EvisaEntrysTable(props) {
 											([key, value]) =>
 												key !== 'id' && (
 													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
+														className="p-4 md:p-16 border-t-1 border-gray-200"
 														component="th"
 														scope="row"
 														key={key}
 													>
 														{key === 'file' ? (
-															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
+															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
 																<PictureAsPdf
 																	style={{
 																		color: 'red',
 																		cursor: 'pointer',
 																		display: 'block',
 																		fontSize: '35px'
-																		// margin: 'auto'
 																	}}
-																	onClick={() =>
-																		n.file && showImage(`${BASE_URL}${n.file}`)
-																	}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : ['doc', 'docx'].includes(
+																	n[key]?.split('.').pop()?.toLowerCase()
+															  ) ? (
+																<DescriptionIcon
+																	style={{
+																		color: 'blue',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
 																/>
 															) : (
-																// eslint-disable-next-line jsx-a11y/click-events-have-key-events
 																<img
 																	onClick={() =>
 																		n.file && showImage(`${BASE_URL}${n[key]}`)
@@ -338,7 +340,7 @@ function EvisaEntrysTable(props) {
 																		width: '40px',
 																		borderRadius: '50%'
 																	}}
-																	alt="callingEntrys"
+																	alt="uploaded file"
 																/>
 															)
 														) : (key === 'calling_date' ||
