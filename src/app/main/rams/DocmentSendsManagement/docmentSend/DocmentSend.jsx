@@ -2,7 +2,6 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import DocmentSendHeader from './DocmentSendHeader';
@@ -19,7 +18,6 @@ const schema = z.object({
 });
 
 function DocmentSend() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { docmentSendId } = routeParams;
 
