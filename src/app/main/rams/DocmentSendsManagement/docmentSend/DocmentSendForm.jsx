@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { styled } from '@mui/system';
-import { useParams } from 'react-router-dom';
 import {
 	Autocomplete,
 	Checkbox,
@@ -20,7 +19,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
 import MultiplePassengersTable from './MultiplePassengersTable';
-import { useCreateDocmentSendMutation } from '../DocmentSendsApi';
 import { columns } from './data/column';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
@@ -47,16 +45,9 @@ function DocmentSendForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
-	const [createDocmentSend] = useCreateDocmentSendMutation();
 
 	const { errors } = formState;
-	const routeParams = useParams();
-	const { docmentSendId } = routeParams;
-	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
-	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	const docmentSends = useSelector((state) => state.data.docmentSends);
-	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [showError, setShowError] = useState(false);
@@ -76,8 +67,6 @@ function DocmentSendForm(props) {
 		setDocumentSends(tempDocumentSend);
 	};
 
-	console.log('mltPassengerList', mltPassengerList, mltPassengerDeletedId);
-
 	useEffect(() => {
 		if (mltPassengerDeletedId) {
 			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
@@ -87,7 +76,6 @@ function DocmentSendForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-		
 	}, []);
 	const newColumn = [];
 	useEffect(() => {
