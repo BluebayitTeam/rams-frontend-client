@@ -6,7 +6,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { FLIGHT_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
@@ -59,7 +59,6 @@ function Flight() {
 	const routeParams = useParams();
 	const { flightId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
-	const dispatch = useDispatch();
 	const classes = useStyles();
 	const navigate = useNavigate();
 	const [formKey, setFormKey] = useState(0);
@@ -81,7 +80,6 @@ function Flight() {
 
 	const {
 		reset,
-		watch,
 		control,
 		formState: { errors },
 		setValue

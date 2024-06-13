@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 function FlightForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const { control, formState, watch, setValue, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { flightId } = routeParams;
