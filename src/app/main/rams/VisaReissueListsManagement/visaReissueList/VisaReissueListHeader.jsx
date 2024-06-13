@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
@@ -11,7 +10,6 @@ import { useSelector } from 'react-redux';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import {
 	useCreateVisaReissueListMutation,
 	useDeleteVisaReissueListMutation,
@@ -21,23 +19,20 @@ import {
 /**
  * The visaReissueList header.
  */
-function VisaReissueListHeader() {
+function VisaReissueListHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
-	const { visaReissueListId } = routeParams;
+
 	const [createVisaReissueList] = useCreateVisaReissueListMutation();
 	const [saveVisaReissueList] = useUpdateVisaReissueListMutation();
 	const [removeVisaReissueList] = useDeleteVisaReissueListMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
+	const { formState, watch, getValues } = methods;
+	const { dirtyFields } = formState;
+
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteVisaReissueList');
-	const handleUpdate = localStorage.getItem('updateVisaReissueList');
+
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
 
 	function handleUpdateVisaReissueList() {
 		saveVisaReissueList(getValues())
@@ -48,24 +43,18 @@ function VisaReissueListHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'updateVisaReissueList');
 
-						reset({
-							passenger: 'all',
-							agency: 'all',
-							submission_date: '',
-							current_status: 'all'
-						});
+						handleReset({ ...emptyValue });
 
 						UpdatedSuccessfully();
 						navigate('/apps/visaReissueList-management/visaReissueLists/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
 				}
 			})
 			.catch((error) => {
 				// Handle error
-				console.error('Error updating visaReissueList', error);
+
 				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
 			});
 	}
@@ -80,12 +69,7 @@ function VisaReissueListHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveVisaReissueList');
 
-						reset({
-							passenger: 'all',
-							agency: 'all',
-							submission_date: '',
-							current_status: 'all'
-						});
+						handleReset({ ...emptyValue });
 					}
 
 					navigate('/apps/visaReissueList-management/visaReissueLists/new');
@@ -102,12 +86,7 @@ function VisaReissueListHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							agency: 'all',
-							submission_date: '',
-							current_status: 'all'
-						});
+						handleReset({ ...emptyValue });
 						localStorage.setItem('medicalAlert', 'saveVisaReissueList');
 						navigate('/apps/visaReissueList-management/visaReissueLists/new');
 
@@ -123,25 +102,10 @@ function VisaReissueListHeader() {
 	}
 
 	const handleCancel = () => {
-		reset({
-			passenger: 'all',
-			agency: 'all',
-			submission_date: '',
-			current_status: 'all'
-		});
+		handleReset({ ...emptyValue });
 		navigate('/apps/visaReissueList-management/visaReissueLists/new');
 	};
 
-	useEffect(() => {
-		if (visaReissueListId === 'new') {
-			reset({
-				passenger: 'all',
-				agency: 'all',
-				submission_date: '',
-				current_status: 'all'
-			});
-		}
-	}, [visaReissueListId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">

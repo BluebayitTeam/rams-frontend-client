@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import VisaEntryHeader from './VisaEntryHeader';
@@ -24,7 +23,6 @@ const schema = z.object({
 });
 
 function VisaEntry() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { visaEntryId } = routeParams;
 
