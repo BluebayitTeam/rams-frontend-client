@@ -29,11 +29,11 @@ const ManPowerApi = api
 					url: CREATE_MANPOWER,
 					method: 'POST',
 					data: jsonToFormData(
-						ManPowerModel({
-							...newManPower
+						ManPowerModel(
+							newManPower
 							// man_power_date: moment(new Date(newManPower?.man_power_date)).format('YYYY-MM-DD'),
 							// submit_date: moment(new Date(newManPower?.submit_date)).format('YYYY-MM-DD')
-						})
+						)
 					)
 				}),
 				invalidatesTags: ['manPowers']
@@ -42,11 +42,11 @@ const ManPowerApi = api
 				query: (manPower) => ({
 					url: `${UPDATE_MANPOWER}${manPower.id}`,
 					method: 'PUT',
-					data: jsonToFormData({
-						...manPower
+					data: jsonToFormData(
+						manPower
 						// man_power_date: moment(new Date(manPower?.man_power_date)).format('YYYY-MM-DD'),
 						// submit_date: moment(new Date(manPower?.submit_date)).format('YYYY-MM-DD')
-					})
+					)
 				}),
 				invalidatesTags: ['manPowers']
 			}),

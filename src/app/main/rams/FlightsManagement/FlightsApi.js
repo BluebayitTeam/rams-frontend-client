@@ -23,13 +23,7 @@ const FlightApi = api
 				query: (newFlight) => ({
 					url: CREATE_FLIGHT,
 					method: 'POST',
-					data: jsonToFormData(
-						FlightModel({
-							...newFlight
-							// flight_time: moment(new Date(newFlight?.flight_time)).format('YYYY-MM-DD'),
-							// issue_date: moment(new Date(newFlight?.issue_date)).format('YYYY-MM-DD')
-						})
-					)
+					data: jsonToFormData(FlightModel(newFlight))
 				}),
 				invalidatesTags: ['flights']
 			}),
@@ -37,11 +31,7 @@ const FlightApi = api
 				query: (flight) => ({
 					url: `${UPDATE_FLIGHT}${flight.id}`,
 					method: 'PUT',
-					data: jsonToFormData({
-						...flight
-						// flight_date: moment(new Date(flight?.flight_date)).format('YYYY-MM-DD'),
-						// issue_date: moment(new Date(flight?.issue_date)).format('YYYY-MM-DD')
-					})
+					data: jsonToFormData(flight)
 				}),
 				invalidatesTags: ['flights']
 			}),
