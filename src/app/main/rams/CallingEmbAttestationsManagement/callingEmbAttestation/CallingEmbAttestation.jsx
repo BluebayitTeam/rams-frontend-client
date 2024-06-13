@@ -13,6 +13,7 @@ import { CALLINGEMBATTESTATION_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 // import { formatDate } from 'date-fns';
+import { format } from 'date-fns';
 import CallingEmbAttestationHeader from './CallingEmbAttestationHeader';
 // import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
 import CallingEmbAttestationForm from './CallingEmbAttestationForm';
@@ -41,6 +42,8 @@ const schema = z.object({
 });
 
 function CallingEmbAttestation() {
+	const date = new Date();
+	const formattedDate = format(date, 'yyyy-MM-dd');
 	const emptyValue = {
 		passenger: '',
 		emb_attestation_status: '',

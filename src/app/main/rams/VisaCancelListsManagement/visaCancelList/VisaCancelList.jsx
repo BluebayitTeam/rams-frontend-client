@@ -44,6 +44,7 @@ const schema = z.object({
 });
 
 function VisaCancelList() {
+	const emptyValue = { passenger: '', agency: '', submission_date: '', current_status: '' };
 	// const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { visaCancelListId, fromSearch } = routeParams;
@@ -54,7 +55,7 @@ function VisaCancelList() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 
@@ -67,7 +68,7 @@ function VisaCancelList() {
 	});
 
 	const [tabValue, setTabValue] = useState(0);
-
+	const [formKey, setFormKey] = useState(0);
 	const {
 		reset,
 		watch,
@@ -76,6 +77,22 @@ function VisaCancelList() {
 		setValue
 	} = methods;
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 	useEffect(() => {
 		if (fromSearch) {
 			const authTOKEN = {
@@ -88,9 +105,9 @@ function VisaCancelList() {
 				.get(`${VISACANCELLIST_BY_PASSENGER_ID}${visaCancelListId}`, authTOKEN)
 				.then((res) => {
 					if (res.data.id) {
-						reset({ ...setIdIfValueIsObject(res.data), passenger: visaCancelListId });
+						handleReset({ ...setIdIfValueIsObject(res.data), passenger: visaCancelListId });
 					} else {
-						reset({
+						handleReset({
 							passenger: visaCancelListId,
 							musaned_status: doneNotDone.find((data) => data.default)?.id,
 							okala_status: doneNotDone.find((data) => data.default)?.id
@@ -99,7 +116,7 @@ function VisaCancelList() {
 					}
 				})
 				.catch(() => {
-					reset({
+					handleReset({
 						passenger: visaCancelListId,
 						musaned_status: doneNotDone.find((data) => data.default)?.id,
 						okala_status: doneNotDone.find((data) => data.default)?.id
@@ -107,7 +124,7 @@ function VisaCancelList() {
 					sessionStorage.setItem('operation', 'save');
 				});
 		} else {
-			reset({
+			handleReset({
 				musaned_status: doneNotDone.find((data) => data.default)?.id,
 				okala_status: doneNotDone.find((data) => data.default)?.id
 			});
@@ -123,7 +140,10 @@ function VisaCancelList() {
 	}
 
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -143,7 +163,12 @@ function VisaCancelList() {
 						<Tab label="VisaCancelList Information" />
 					</Tabs>
 				}
-				header={<VisaCancelListHeader />}
+				header={
+					<VisaCancelListHeader
+						handleReset={handleReset}
+						emptyValue={emptyValue}
+					/>
+				}
 				content={
 					<div className="p-16">
 						{tabValue === 0 && (
@@ -160,16 +185,7 @@ function VisaCancelList() {
 												disabled={!!fromSearch}
 												value={value ? passengers.find((data) => data.id === value) : null}
 												// options={passengers}
-												options={[
-													{
-														id: 'all',
-														passenger_id: '',
-														office_serial: '',
-														passport_no: '',
-														passenger_name: 'Select Passenger'
-													},
-													...passengers
-												]}
+												options={passengers}
 												getOptionLabel={(option) =>
 													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
 												}
@@ -218,35 +234,28 @@ function VisaCancelList() {
 																	navigate(
 																		`/apps/visaCancelList-management/visaCancelList/new`
 																	);
-																	reset({
-																		passenger: newValue?.id,
-
-																		agency: 'all',
-																		submission_date: '',
-																		current_status: 'all'
+																	handleReset({
+																		passenger: newValue?.id
 																	});
+																	getCurrentStatus(newValue?.id);
 																}
 															})
 															.catch(() => {
-																reset({
-																	passenger: newValue?.id,
-
-																	agency: 'all',
-																	submission_date: '',
-																	current_status: 'all'
+																handleReset({
+																	passenger: newValue?.id
 																});
+																getCurrentStatus(newValue?.id);
+
 																navigate(
 																	`/apps/visaCancelList-management/visaCancelLists/new`
 																);
 															});
 													} else {
-														reset({
-															passenger: newValue?.id,
-
-															agency: 'all',
-															submission_date: '',
-															current_status: 'all'
+														handleReset({
+															passenger: newValue?.id
 														});
+														getCurrentStatus(newValue?.id);
+
 														navigate(`/apps/visaCancelList-management/visaCancelLists/new`);
 													}
 												}}

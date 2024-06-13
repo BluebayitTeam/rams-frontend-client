@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
@@ -11,7 +10,6 @@ import { useSelector } from 'react-redux';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import {
 	useCreateVisaCancelListMutation,
 	useDeleteVisaCancelListMutation,
@@ -21,7 +19,7 @@ import {
 /**
  * The visaCancelList header.
  */
-function VisaCancelListHeader() {
+function VisaCancelListHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
 	const { visaCancelListId } = routeParams;
 	const [createVisaCancelList] = useCreateVisaCancelListMutation();
@@ -29,15 +27,12 @@ function VisaCancelListHeader() {
 	const [removeVisaCancelList] = useDeleteVisaCancelListMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
+	const { dirtyFields } = formState;
+
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteVisaCancelList');
-	const handleUpdate = localStorage.getItem('updateVisaCancelList');
+
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
 
 	function handleUpdateVisaCancelList() {
 		saveVisaCancelList(getValues())
@@ -48,11 +43,8 @@ function VisaCancelListHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'updateVisaCancelList');
 
-						reset({
-							passenger: 'all',
-							agency: 'all',
-							submission_date: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue
 						});
 
 						UpdatedSuccessfully();
@@ -80,11 +72,8 @@ function VisaCancelListHeader() {
 					} else {
 						localStorage.setItem('medicalAlert', 'saveVisaCancelList');
 
-						reset({
-							passenger: 'all',
-							agency: 'all',
-							submission_date: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue
 						});
 					}
 
@@ -102,11 +91,8 @@ function VisaCancelListHeader() {
 					if (fromSearch) {
 						history.goBack();
 					} else {
-						reset({
-							passenger: 'all',
-							agency: 'all',
-							submission_date: '',
-							current_status: 'all'
+						handleReset({
+							...emptyValue
 						});
 						localStorage.setItem('medicalAlert', 'saveVisaCancelList');
 						navigate('/apps/visaCancelList-management/visaCancelLists/new');
@@ -123,25 +109,12 @@ function VisaCancelListHeader() {
 	}
 
 	const handleCancel = () => {
-		reset({
-			passenger: 'all',
-			agency: 'all',
-			submission_date: '',
-			current_status: 'all'
+		handleReset({
+			...emptyValue
 		});
 		navigate('/apps/visaCancelList-management/visaCancelLists/new');
 	};
 
-	useEffect(() => {
-		if (visaCancelListId === 'new') {
-			reset({
-				passenger: 'all',
-				agency: 'all',
-				submission_date: '',
-				current_status: 'all'
-			});
-		}
-	}, [visaCancelListId, reset]);
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
