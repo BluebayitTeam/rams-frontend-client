@@ -266,24 +266,6 @@ function FlightForm(props) {
 				}}
 			/>
 
-			{/* <Controller
-				name="issue_date"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.issue_date}
-						helperText={errors?.issue_date?.message}
-						label="Issue Date"
-						id="issue_date"
-						type="date"
-						InputLabelProps={{ shrink: true }}
-						fullWidth
-					/>
-				)}
-			/> */}
-
 			<Controller
 				name="issue_date"
 				control={control}
@@ -301,6 +283,7 @@ function FlightForm(props) {
 					/>
 				)}
 			/>
+
 			<Controller
 				name="flight_date"
 				control={control}
@@ -311,6 +294,10 @@ function FlightForm(props) {
 						error={!!errors.flight_date}
 						helperText={errors?.flight_date?.message}
 						label="Flight Date"
+						onChange={(event) => {
+							const { value } = event.target;
+							field.onChange(value);
+						}}
 						id="flight_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
