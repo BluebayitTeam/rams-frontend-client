@@ -100,45 +100,8 @@ function DocmentSendForm(props) {
 		fetch(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
-			.catch((err) => {});
+			.catch(() => {});
 	};
-
-	// function handleSaveMultipleStatusUpdate(id) {
-	// 	if (mltPassengerList?.length >= availableVisa) {
-	// 		Swal.fire({
-	// 			position: 'top-center',
-	// 			icon: 'warning',
-	// 			title: `Number of Pax Full for this Calling No`,
-	// 			showConfirmButton: false,
-	// 			timer: 5000
-	// 		});
-	// 	} else {
-	// 		fetch(`${GET_PASSENGER_BY_ID}/${id}/${watch('visa_entry')}`)
-	// 			.then((response) => response.json())
-	// 			.then((data) => {
-	// 				if (data?.same_visa_entry) {
-	// 					Swal.fire({
-	// 						position: 'top-center',
-	// 						icon: 'warning',
-	// 						title: `This Passenger Has Already Been Assigned the same Calling Visa`,
-	// 						showConfirmButton: false,
-	// 						timer: 5000
-	// 					});
-	// 				} else if (data?.visa_entry_exist) {
-	// 					Swal.fire({
-	// 						title: 'Calling Visa Already Assigned for This Passenger',
-	// 						text: 'Please Remove the Previous Calling Visa.',
-	// 						icon: 'error',
-	// 						showConfirmButton: false,
-	// 						timer: 5000
-	// 					});
-	// 				} else {
-	// 					setMltPassengerList((prevList) => [...prevList, passengers.find((data) => data?.id === id)]);
-	// 				}
-	// 			})
-	// 			.catch(() => {});
-	// 	}
-	// }
 
 	return (
 		<div>
@@ -230,7 +193,6 @@ function DocmentSendForm(props) {
 							variant="outlined"
 							fullWidth
 							InputLabelProps={field.value && { shrink: true }}
-							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					)}
 				/>
