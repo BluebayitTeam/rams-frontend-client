@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 function FlightForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, reset } = methods;
+	const { control, formState, watch, setValue, reset, getValues } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { flightId } = routeParams;
@@ -46,7 +46,7 @@ function FlightForm(props) {
 		dispatch(getAgents());
 		dispatch(getCurrentStatuss());
 	}, []);
-
+	console.log(`bsdkfdsf`, getValues());
 	useEffect(() => {
 		if ((flightId !== 'new', !reload)) {
 			const authTOKEN = {
@@ -265,6 +265,24 @@ function FlightForm(props) {
 					);
 				}}
 			/>
+
+			{/* <Controller
+				name="issue_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.issue_date}
+						helperText={errors?.issue_date?.message}
+						label="Issue Date"
+						id="issue_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/> */}
 
 			<Controller
 				name="issue_date"

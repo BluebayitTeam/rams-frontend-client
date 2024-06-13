@@ -219,13 +219,18 @@ function Flight() {
 															.get(`${FLIGHT_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
 															.then((res) => {
 																if (res.data.id) {
+																	console.log(
+																		`basdnaksnd`,
+																		moment(new Date(res?.data?.issue_date)).format(
+																			'YYYY-MM-DD'
+																		)
+																	);
 																	handleReset({
 																		...setIdIfValueIsObject(res?.data),
 																		passenger: newValue?.id,
-
 																		flight_date: moment(
 																			new Date(res?.data?.flight_date)
-																		).format('YYYY-MM-DD'),
+																		).format('DD-MM-YYYY'),
 																		issue_date: moment(
 																			new Date(res?.data?.issue_date)
 																		).format('YYYY-MM-DD')
