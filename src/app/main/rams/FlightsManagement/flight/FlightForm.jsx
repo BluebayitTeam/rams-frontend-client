@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 function FlightForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, reset, getValues } = methods;
+	const { control, formState, watch, setValue, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { flightId } = routeParams;
@@ -46,7 +46,7 @@ function FlightForm(props) {
 		dispatch(getAgents());
 		dispatch(getCurrentStatuss());
 	}, []);
-	console.log(`bsdkfdsf`, getValues());
+
 	useEffect(() => {
 		if ((flightId !== 'new', !reload)) {
 			const authTOKEN = {
@@ -283,7 +283,6 @@ function FlightForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="flight_date"
 				control={control}
@@ -294,10 +293,6 @@ function FlightForm(props) {
 						error={!!errors.flight_date}
 						helperText={errors?.flight_date?.message}
 						label="Flight Date"
-						onChange={(event) => {
-							const { value } = event.target;
-							field.onChange(value);
-						}}
 						id="flight_date"
 						type="date"
 						InputLabelProps={{ shrink: true }}
