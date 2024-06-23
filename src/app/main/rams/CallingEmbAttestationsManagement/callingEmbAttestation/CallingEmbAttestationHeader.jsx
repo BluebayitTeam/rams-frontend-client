@@ -145,7 +145,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
 								{routeParams.callingEmbAttestationId === 'new'
-									? 'Create New CallingEmbAttestation'
+									? 'Create New Malayasia Status'
 									: passengers?.find(({ id }) => id === watch('passenger'))?.passenger_name || ''}
 							</Typography>
 							<Typography

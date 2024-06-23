@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
@@ -248,52 +247,40 @@ function CallingEmbAttestation() {
 																	handleReset({
 																		...setIdIfValueIsObject(res.data),
 
-																		interviewed_date:
-																			moment(
-																				new Date(res.data?.interviewed_date)
-																			).format('YYYY-MM-DD') || '',
-																		submitted_for_sev_date:
-																			moment(
-																				new Date(
-																					res.data?.submitted_for_sev_date
-																				)
-																			).format('YYYY-MM-DD') || '',
-																		sev_received_date:
-																			moment(
-																				new Date(res.data?.sev_received_date)
-																			).format('YYYY-MM-DD') || '',
+																		interviewed_date: moment(
+																			new Date(res.data?.interviewed_date)
+																		).format('YYYY-MM-DD'),
+																		submitted_for_sev_date: moment(
+																			new Date(res.data?.submitted_for_sev_date)
+																		).format('YYYY-MM-DD'),
+																		sev_received_date: moment(
+																			new Date(res.data?.sev_received_date)
+																		).format('YYYY-MM-DD'),
 																		submitted_for_permission_immigration_clearance_date:
 																			moment(
 																				new Date(
 																					res.data?.submitted_for_permission_immigration_clearance_date
 																				)
-																			).format('YYYY-MM-DD') || '',
-																		immigration_clearance_date:
-																			moment(
-																				new Date(
-																					res.data?.immigration_clearance_date
-																				)
-																			).format('YYYY-MM-DD') || '',
-																		handover_passport_ticket_date:
-																			moment(
-																				new Date(
-																					res.data?.handover_passport_ticket_date
-																				)
-																			).format('YYYY-MM-DD') || '',
-																		accounts_cleared_date:
-																			moment(
-																				new Date(
-																					res.data?.accounts_cleared_date
-																				)
-																			).format('YYYY-MM-DD') || '',
-																		dispatched_date:
-																			moment(
-																				new Date(res.data?.dispatched_date)
-																			).format('YYYY-MM-DD') || '',
-																		repatriation_date:
-																			moment(
-																				new Date(res.data?.repatriation_date)
-																			).format('YYYY-MM-DD') || '',
+																			).format('YYYY-MM-DD'),
+																		immigration_clearance_date: moment(
+																			new Date(
+																				res.data?.immigration_clearance_date
+																			)
+																		).format('YYYY-MM-DD'),
+																		handover_passport_ticket_date: moment(
+																			new Date(
+																				res.data?.handover_passport_ticket_date
+																			)
+																		).format('YYYY-MM-DD'),
+																		accounts_cleared_date: moment(
+																			new Date(res.data?.accounts_cleared_date)
+																		).format('YYYY-MM-DD'),
+																		dispatched_date: moment(
+																			new Date(res.data?.dispatched_date)
+																		).format('YYYY-MM-DD'),
+																		repatriation_date: moment(
+																			new Date(res.data?.repatriation_date)
+																		).format('YYYY-MM-DD'),
 
 																		passenger: newValue?.id
 																	});
