@@ -45,7 +45,7 @@ function AgentForm(props) {
 	const getCountryCode1 = watch('country_code1');
 	// const getCountryCode2 = watch('country_code2');
 	const image = watch('image');
-
+	const [file, setFile] = useState(null);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -81,20 +81,6 @@ function AgentForm(props) {
 
 	// 	console.log('sfsdferwer', getValues());
 	// };
-
-	const handleRemoveslipPicFile = () => {
-		setPreviewslipPicFile(null);
-
-		setFileExtPCName(null);
-
-		setValue('image', '');
-
-		if (fileInputRef.current) {
-			fileInputRef.current.value = '';
-		}
-
-		console.log('sfsdferwer', getValues());
-	};
 
 	return (
 		<div>
