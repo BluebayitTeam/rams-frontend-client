@@ -79,43 +79,24 @@ function CvFemaleHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">CvFemales</span>
+						<span className="flex mx-4 font-medium">Female CV</span>
 					</Typography>
 				</motion.div>
 
 				<div className="flex items-center max-w-full">
-					<motion.div
-						className="hidden sm:flex"
-						initial={{ scale: 0 }}
-						animate={{ scale: 1, transition: { delay: 0.3 } }}
-					>
-						{image ? (
-							<img
-								className="w-32 sm:w-48 rounded"
-								src={image}
-								alt={name}
-							/>
-						) : (
-							<img
-								className="w-32 sm:w-48 rounded"
-								src="assets/logos/user.jpg"
-								alt={name}
-							/>
-						)}
-					</motion.div>
 					<motion.div
 						className="flex flex-col min-w-0 mx-8 sm:mx-16"
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'New CvFemale'}
+							{name || 'Create New Female CV'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							CvFemale Detail
+							Female CV Detail
 						</Typography>
 					</motion.div>
 				</div>
