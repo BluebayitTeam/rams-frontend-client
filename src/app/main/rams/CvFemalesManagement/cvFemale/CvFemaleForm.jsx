@@ -124,6 +124,7 @@ function CvFemaleForm(props) {
 								variant="outlined"
 								autoFocus
 								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+								// required
 							/>
 						)}
 					/>
@@ -151,6 +152,7 @@ function CvFemaleForm(props) {
 								// error={!!errors.country || !value}
 								helperText={errors?.country?.message}
 								variant="outlined"
+								required
 								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}

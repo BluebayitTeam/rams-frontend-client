@@ -19,20 +19,14 @@ import CvFemaleForm from './CvFemaleForm';
 /**
  * Form Validation Schema
  */
-const schema = z
-	.object({
-		first_name: z
-			.string()
-			.nonempty('You must enter an cvFemale name')
-			.min(5, 'The cvFemale name must be at least 5 characters'),
-
-		password: z.string().min(6, 'Password must be at least 6 characters'),
-		confirmPassword: z.string().min(6, 'Password must be at least 6 characters')
+const schema = z.object({
+	passenger: z.number().refine((val) => val !== null && val !== undefined, {
+		message: 'Passenger is required'
+	}),
+	country: z.number().refine((val) => val !== null && val !== undefined, {
+		message: 'Country is required'
 	})
-	.refine((data) => data.password === data.confirmPassword, {
-		message: 'Passwords must match',
-		path: ['confirmPassword'] // Path to the field that should have the error
-	});
+});
 
 function CvFemale() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
