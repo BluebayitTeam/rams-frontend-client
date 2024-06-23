@@ -36,9 +36,6 @@ function AgentForm(props) {
 	const { agentId } = routeParams;
 	const classes = useStyles(props);
 	const thanas = useSelector((state) => state.data.thanas);
-
-	console.log('thanas', thanas);
-
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const groups = useSelector((state) => state.data.groups);
@@ -68,19 +65,6 @@ function AgentForm(props) {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
 	};
-
-	// removed image
-	// const handleRemoveFile = () => {
-	// 	setPreviewImageFile(null);
-	// 	setFileExtName(null);
-	// 	setValue('image', '');
-
-	// 	if (fileInputRef.current) {
-	// 		fileInputRef.current.value = '';
-	// 	}
-
-	// 	console.log('sfsdferwer', getValues());
-	// };
 
 	return (
 		<div>

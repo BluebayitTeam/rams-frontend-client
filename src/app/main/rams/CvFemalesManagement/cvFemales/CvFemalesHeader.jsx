@@ -62,7 +62,7 @@ function CvFemalesHeader(props) {
 				</Paper>
 
 				<ViewWeek
-					onClick={() => navigate(`/apps/column/columns/cvFemale`)}
+					onClick={() => navigate(`/apps/column/columns/female_cv`)}
 					className="cursor-pointer mr-10 "
 					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>

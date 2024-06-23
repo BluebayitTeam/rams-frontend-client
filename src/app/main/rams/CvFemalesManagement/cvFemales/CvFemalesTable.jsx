@@ -40,7 +40,7 @@ function CvFemalesTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvFemales(data));
-	const cvFemales = useSelector(selectFilteredCvFemales(data?.cvFemales));
+	const female_cvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
 
 	useEffect(() => {
 		refetch({ searchKey });
@@ -54,7 +54,7 @@ function CvFemalesTable(props) {
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 	useEffect(() => {
-		if (totalData?.cvFemales) {
+		if (totalData?.female_cvs) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -65,7 +65,7 @@ function CvFemalesTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.cvFemales[0] || {})
+			Object.entries(totalData?.female_cvs[0] || {})
 				.filter(([key]) => key !== 'id') // Filter out the 'id' field
 				.map(([key]) => {
 					modifiedRow.push({
@@ -91,7 +91,7 @@ function CvFemalesTable(props) {
 
 			setRows(modifiedRow);
 		}
-	}, [totalData?.cvFemales]);
+	}, [totalData?.female_cvs]);
 
 	const [selected, setSelected] = useState([]);
 
@@ -112,7 +112,7 @@ function CvFemalesTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(cvFemales.map((n) => n.id));
+			setSelected(female_cvs.map((n) => n.id));
 			return;
 		}
 
@@ -180,7 +180,7 @@ function CvFemalesTable(props) {
 		);
 	}
 
-	if (cvFemales?.length === 0) {
+	if (female_cvs?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -191,7 +191,7 @@ function CvFemalesTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no cvFemales!
+					There are no female_cvs!
 				</Typography>
 			</motion.div>
 		);
@@ -210,13 +210,13 @@ function CvFemalesTable(props) {
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={cvFemales?.length}
+						rowCount={female_cvs?.length}
 						onMenuItemClick={handleDeselect}
 						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(cvFemales, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(female_cvs, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
@@ -289,9 +289,7 @@ function CvFemalesTable(props) {
 																	alt="uploaded file"
 																/>
 															)
-														) : (key === 'calling_date' ||
-																key === 'calling_exp_date' ||
-																key === 'visa_issue_date') &&
+														) : (key === 'created_at' || key === 'flight_date') &&
 														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (key === 'is_debtor' || key === 'is_paid') &&
