@@ -46,7 +46,7 @@ const AgentApi = api
 					data: jsonToFormData(
 						AgentModel({
 							...newAgent,
-							date_of_birth: moment(new Date(newAgent?.date_of_birth)).format('YYYY-MM-DD'),
+							// date_of_birth: moment(new Date(newAgent?.date_of_birth)).format('YYYY-MM-DD'),
 							balance_date: moment(new Date(newAgent?.balance_date)).format('YYYY-MM-DD')
 						})
 					)
@@ -59,7 +59,7 @@ const AgentApi = api
 					method: 'PUT',
 					data: jsonToFormData({
 						...agent,
-						date_of_birth: moment(new Date(agent?.date_of_birth)).format('YYYY-MM-DD'),
+						// date_of_birth: moment(new Date(agent?.date_of_birth)).format('YYYY-MM-DD'),
 						balance_date: moment(new Date(agent?.balance_date)).format('YYYY-MM-DD')
 					})
 				}),
