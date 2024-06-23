@@ -46,6 +46,7 @@ import MultipleVisaEntryAppConfig from '../rams/MultipleVisaEntrysManagement/Mul
 import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
 import ComplainAppConfig from '../rams/ComplainsManagement/ComplainAppConfig';
 import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
+import CvFemaleAppConfig from '../rams/CvFemalesManagement/CvFemaleAppConfig';
 
 /**
  * The list of application configurations.
@@ -74,6 +75,7 @@ const appsConfigs = [
 	EvisaEntryAppConfig,
 	CallingAssignAppConfig,
 	CallingEmbAttestationAppConfig,
+	CvFemaleAppConfig,
 	DemandAssignAppConfig,
 	VisaEntryAppConfig,
 	VisaCancelListAppConfig,

@@ -31,6 +31,37 @@ const CallingEmbAttestationApi = api
 					data: jsonToFormData(
 						CallingEmbAttestationModel({
 							...newCallingEmbAttestation
+							// interviewed_date:
+							// 	moment(new Date(newCallingEmbAttestation?.interviewed_date)).format('YYYY-MM-DD') || '',
+							// submitted_for_sev_date:
+							// 	moment(new Date(newCallingEmbAttestation?.submitted_for_sev_date)).format(
+							// 		'YYYY-MM-DD'
+							// 	) || '',
+							// sev_received_date:
+							// 	moment(new Date(newCallingEmbAttestation?.sev_received_date)).format('YYYY-MM-DD') ||
+							// 	'',
+							// submitted_for_permission_immigration_clearance_date:
+							// 	moment(
+							// 		new Date(
+							// 			newCallingEmbAttestation?.submitted_for_permission_immigration_clearance_date
+							// 		)
+							// 	).format('YYYY-MM-DD') || '',
+							// immigration_clearance_date:
+							// 	moment(new Date(newCallingEmbAttestation?.immigration_clearance_date)).format(
+							// 		'YYYY-MM-DD'
+							// 	) || '',
+							// handover_passport_ticket_date:
+							// 	moment(new Date(newCallingEmbAttestation?.handover_passport_ticket_date)).format(
+							// 		'YYYY-MM-DD'
+							// 	) || '',
+							// accounts_cleared_date:
+							// 	moment(new Date(newCallingEmbAttestation?.accounts_cleared_date)).format(
+							// 		'YYYY-MM-DD'
+							// 	) || '',
+							// dispatched_date:
+							// 	moment(new Date(newCallingEmbAttestation?.dispatched_date)).format('YYYY-MM-DD') || '',
+							// repatriation_date:
+							// 	moment(new Date(newCallingEmbAttestation?.repatriation_date)).format('YYYY-MM-DD') || ''
 						})
 					)
 				}),
