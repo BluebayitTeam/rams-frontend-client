@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import CallingEmbAttestationApp from './CallingEmbAttestationApp';
-import CallingEmbAttestation from './callingEmbAttestation/CallingEmbAttestation';
+import CallingEmbAttestation from './CallingEmbAttestation/CallingEmbAttestation';
 
 /**
  * The E-Commerce app configuration.
@@ -11,16 +11,16 @@ const CallingEmbAttestationAppConfig = {
 	},
 	routes: [
 		{
-			path: 'apps/malaysiaStatus-management',
+			path: 'apps/callingEmbAttestation-management',
 			element: <CallingEmbAttestationApp />,
 			children: [
 				{
 					path: '',
-					element: <Navigate to="malaysiaStatus" />
+					element: <Navigate to="callingEmbAttestations" />
 				},
 
 				{
-					path: 'malaysiaStatus/:malaysiaStatusId/:fromSearch?',
+					path: 'callingEmbAttestations/:callingEmbAttestationId/:fromSearch?',
 					element: <CallingEmbAttestation />
 				}
 			]

@@ -35,7 +35,6 @@ import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConf
 import MedicalAppConfig from '../rams/MedicalsManagement/MedicalAppConfig';
 import MofaAppConfig from '../rams/MofasManagement/MofaAppConfig';
 import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaAppConfig';
-import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
 import ManPowerAppConfig from '../rams/ManPowersManagement/ManPowerAppConfig';
@@ -46,6 +45,7 @@ import DemandAssignAppConfig from '../rams/DemandAssignsManagement/DemandAssignA
 import MultipleVisaEntryAppConfig from '../rams/MultipleVisaEntrysManagement/MultipleVisaEntryAppConfig';
 import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
 import ComplainAppConfig from '../rams/ComplainsManagement/ComplainAppConfig';
+import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
 
 /**
  * The list of application configurations.
@@ -73,6 +73,7 @@ const appsConfigs = [
 	MusanedOkalaAppConfig,
 	EvisaEntryAppConfig,
 	CallingAssignAppConfig,
+	CallingEmbAttestationAppConfig,
 	DemandAssignAppConfig,
 	VisaEntryAppConfig,
 	VisaCancelListAppConfig,
@@ -83,7 +84,7 @@ const appsConfigs = [
 	ManPowerAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
-	CallingEmbAttestationAppConfig,
+	// CallingEmbAttestationAppConfig,
 	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
 	PaymentDetailAppConfig,

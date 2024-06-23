@@ -2,31 +2,30 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { Autocomplete, TextField } from '@mui/material';
 import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
-import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { doneNotDone } from 'src/app/@data/data';
 
-const useStyles = makeStyles((theme) => ({
-	hidden: {
-		display: 'none'
-	},
-	productImageUpload: {
-		transitionProperty: 'box-shadow',
-		transitionDuration: theme.transitions.duration.short,
-		transitionTimingFunction: theme.transitions.easing.easeInOut
-	}
-}));
+// const useStyles = makeStyles((theme) => ({
+// 	hidden: {
+// 		display: 'none'
+// 	},
+// 	productImageUpload: {
+// 		transitionProperty: 'box-shadow',
+// 		transitionDuration: theme.transitions.duration.short,
+// 		transitionTimingFunction: theme.transitions.easing.easeInOut
+// 	}
+// }));
 
 function CallingEmbAttestationForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const { control, formState, reset } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { callingEmbAttestationId } = routeParams;
+	// const { callingEmbAttestationId } = routeParams;
 	const intervieweds = doneNotDone;
 	const submittedForSevs = doneNotDone;
 	const sevReceiveds = doneNotDone;
@@ -36,16 +35,16 @@ function CallingEmbAttestationForm(props) {
 	const dispatcheds = doneNotDone;
 	const repatriations = doneNotDone;
 
-	const doc1File = watch('doc1_image') || '';
-	const doc2File = watch('doc2_image') || '';
-	const classes = useStyles(props);
-	const [previewDoc2File, setPreviewDoc2File] = useState('');
+	// const doc1File = watch('doc1_image') || '';
+	// const doc2File = watch('doc2_image') || '';
+	// const classes = useStyles(props);
+	// const [previewDoc2File, setPreviewDoc2File] = useState('');
 
-	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+	// const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
 
-	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
+	// const [previewDoc1Image, setPreviewDoc1Image] = useState('');
 
-	const [fileExtDoc2Name, setFileExtDoc2Name] = useState('');
+	// const [fileExtDoc2Name, setFileExtDoc2Name] = useState('');
 
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -66,11 +65,10 @@ function CallingEmbAttestationForm(props) {
 		}
 	}, []);
 
-	useEffect(() => {
-		setFileExtDoc1Name('');
-		setPreviewDoc1Image('');
-	}, [getValues('musaned_no')]);
-
+	// useEffect(() => {
+	// 	setFileExtDoc1Name('');
+	// 	setPreviewDoc1Image('');
+	// }, [getValues('emb_attestation_status')]);
 	return (
 		<div>
 			<Controller

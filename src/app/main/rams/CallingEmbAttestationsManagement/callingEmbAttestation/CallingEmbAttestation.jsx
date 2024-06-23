@@ -9,11 +9,9 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { CALLINGEMBATTESTATION_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID, CALLINGEMBATTESTATION_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
-// import { formatDate } from 'date-fns';
-import { format } from 'date-fns';
 import CallingEmbAttestationHeader from './CallingEmbAttestationHeader';
 // import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
 import CallingEmbAttestationForm from './CallingEmbAttestationForm';
@@ -42,8 +40,6 @@ const schema = z.object({
 });
 
 function CallingEmbAttestation() {
-	const date = new Date();
-	const formattedDate = format(date, 'yyyy-MM-dd');
 	const emptyValue = {
 		passenger: '',
 		emb_attestation_status: '',
@@ -68,7 +64,7 @@ function CallingEmbAttestation() {
 		repatriation_date: '',
 		repatriation: ''
 	};
-
+	// const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { callingEmbAttestationId, fromSearch } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
@@ -100,6 +96,23 @@ function CallingEmbAttestation() {
 		formState: { errors },
 		setValue
 	} = methods;
+
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 
 	useEffect(() => {
 		if (fromSearch) {
@@ -138,7 +151,6 @@ function CallingEmbAttestation() {
 				});
 		} else {
 			handleReset({
-				passenger: callingEmbAttestationId,
 				emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
 				calling_status: doneNotDone.find((data) => data.default)?.id,
 				bio_submitted_status: doneNotDone.find((data) => data.default)?.id
@@ -154,22 +166,6 @@ function CallingEmbAttestation() {
 		return <FuseLoading />;
 	}
 
-	const handleReset = (defaultValues) => {
-		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-	};
-
-	const getCurrentStatus = (passengerId) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
 	return (
 		<FormProvider
 			{...methods}
@@ -287,11 +283,11 @@ function CallingEmbAttestation() {
 																	});
 
 																	navigate(
-																		`/apps/malaysiaStatus-management/malaysiaStatus/${newValue?.passenger?.id || newValue?.id}`
+																		`/apps/callingEmbAttestations-management/callingEmbAttestations/${newValue?.passenger?.id || newValue?.id}`
 																	);
 																} else {
 																	navigate(
-																		`/apps/malaysiaStatus-management/malaysiaStatus/new`
+																		`/apps/callingEmbAttestations-management/callingEmbAttestations/new`
 																	);
 																	handleReset({
 																		passenger: newValue?.id,
@@ -324,7 +320,7 @@ function CallingEmbAttestation() {
 																getCurrentStatus(newValue?.id);
 
 																navigate(
-																	`/apps/malaysiaStatus-management/malaysiaStatus/new`
+																	`/apps/callingEmbAttestations-management/callingEmbAttestations/new`
 																);
 															});
 													} else {
@@ -341,7 +337,9 @@ function CallingEmbAttestation() {
 														});
 														getCurrentStatus(newValue?.id);
 
-														navigate(`/apps/malaysiaStatus-management/malaysiaStatus/new`);
+														navigate(
+															`/apps/callingEmbAttestations-management/callingEmbAttestations/new`
+														);
 													}
 												}}
 												renderInput={(params) => (

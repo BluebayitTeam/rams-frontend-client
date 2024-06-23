@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
@@ -23,18 +22,18 @@ import {
  */
 function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
 	const routeParams = useParams();
-	const { callingEmbAttestationId } = routeParams;
+	// const { callingEmbAttestationId } = routeParams;
 	const [createCallingEmbAttestation] = useCreateCallingEmbAttestationMutation();
 	const [saveCallingEmbAttestation] = useUpdateCallingEmbAttestationMutation();
 	const [removeCallingEmbAttestation] = useDeleteCallingEmbAttestationMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
+	const { watch, getValues, reset, formState } = methods;
 	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
+	// const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteCallingEmbAttestation');
-	const handleUpdate = localStorage.getItem('updateCallingEmbAttestation');
+	// const { name, images, featuredImageId } = watch();
+	// const handleDelete = localStorage.getItem('deleteCallingEmbAttestation');
+	// const handleUpdate = localStorage.getItem('updateCallingEmbAttestation');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
 	// const user_role = localStorage.getItem('user_role');
@@ -50,11 +49,12 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
 
 						handleReset({
 							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
+							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+							calling_status: doneNotDone.find((data) => data.default)?.id,
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 						});
 						UpdatedSuccessfully();
-						navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
+						navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
 					}
 				} else {
 					// Handle cases where res.data.id is not present
@@ -79,12 +79,13 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
 						localStorage.setItem('medicalAlert', 'saveCallingEmbAttestation');
 						handleReset({
 							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
+							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+							calling_status: doneNotDone.find((data) => data.default)?.id,
+							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 						});
 					}
 
-					navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
+					navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
 					AddedSuccessfully();
 				}
 			});
@@ -107,7 +108,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
 							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 						});
 						localStorage.setItem('medicalAlert', 'saveCallingEmbAttestation');
-						navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
+						navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
 
 						dispatch(
 							showMessage({
@@ -130,7 +131,7 @@ function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
 			calling_status: doneNotDone.find((data) => data.default)?.id,
 			bio_submitted_status: doneNotDone.find((data) => data.default)?.id
 		});
-		navigate('/apps/malaysiaStatus-management/malaysiaStatus/new');
+		navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
 	};
 
 	return (
