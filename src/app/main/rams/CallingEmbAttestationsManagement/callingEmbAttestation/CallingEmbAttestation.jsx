@@ -12,6 +12,7 @@ import axios from 'axios';
 import { GET_PASSENGER_BY_ID, CALLINGEMBATTESTATION_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
+import moment from 'moment';
 import CallingEmbAttestationHeader from './CallingEmbAttestationHeader';
 // import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
 import CallingEmbAttestationForm from './CallingEmbAttestationForm';
@@ -245,49 +246,51 @@ function CallingEmbAttestation() {
 																if (res.data.id) {
 																	handleReset({
 																		...setIdIfValueIsObject(res.data),
-																		interviewed_date: formatDate(
-																			new Date(res?.data?.interviewed_date)
-																		),
-																		submitted_for_sev_date: formatDate(
-																			new Date(res?.data?.submitted_for_sev_date)
-																		),
-																		sev_received_date: formatDate(
-																			new Date(res?.data?.sev_received_date)
-																		),
+
+																		interviewed_date: moment(
+																			new Date(res.data?.interviewed_date)
+																		).format('YYYY-MM-DD'),
+																		submitted_for_sev_date: moment(
+																			new Date(res.data?.submitted_for_sev_date)
+																		).format('YYYY-MM-DD'),
+																		sev_received_date: moment(
+																			new Date(res.data?.sev_received_date)
+																		).format('YYYY-MM-DD'),
 																		submitted_for_permission_immigration_clearance_date:
-																			formatDate(
+																			moment(
 																				new Date(
-																					res?.data?.submitted_for_permission_immigration_clearance_date
+																					res.data?.submitted_for_permission_immigration_clearance_date
 																				)
-																			),
-																		immigration_clearance_date: formatDate(
+																			).format('YYYY-MM-DD'),
+																		immigration_clearance_date: moment(
 																			new Date(
-																				res?.data?.immigration_clearance_date
+																				res.data?.immigration_clearance_date
 																			)
-																		),
-																		handover_passport_ticket_date: formatDate(
+																		).format('YYYY-MM-DD'),
+																		handover_passport_ticket_date: moment(
 																			new Date(
-																				res?.data?.handover_passport_ticket_date
+																				res.data?.handover_passport_ticket_date
 																			)
-																		),
-																		accounts_cleared_date: formatDate(
-																			new Date(res?.data?.accounts_cleared_date)
-																		),
-																		dispatched_date: formatDate(
-																			new Date(res?.data?.dispatched_date)
-																		),
-																		repatriation_date: formatDate(
-																			new Date(res?.data?.repatriation_date)
-																		),
+																		).format('YYYY-MM-DD'),
+																		accounts_cleared_date: moment(
+																			new Date(res.data?.accounts_cleared_date)
+																		).format('YYYY-MM-DD'),
+																		dispatched_date: moment(
+																			new Date(res.data?.dispatched_date)
+																		).format('YYYY-MM-DD'),
+																		repatriation_date: moment(
+																			new Date(res.data?.repatriation_date)
+																		).format('YYYY-MM-DD'),
+
 																		passenger: newValue?.id
 																	});
 
 																	navigate(
-																		`/apps/callingEmbAttestations-management/callingEmbAttestations/${newValue?.passenger?.id || newValue?.id}`
+																		`/apps/callingEmbAttestation-management/callingEmbAttestations/${newValue?.passenger?.id || newValue?.id}`
 																	);
 																} else {
 																	navigate(
-																		`/apps/callingEmbAttestations-management/callingEmbAttestations/new`
+																		`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
 																	);
 																	handleReset({
 																		passenger: newValue?.id,
@@ -320,7 +323,7 @@ function CallingEmbAttestation() {
 																getCurrentStatus(newValue?.id);
 
 																navigate(
-																	`/apps/callingEmbAttestations-management/callingEmbAttestations/new`
+																	`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
 																);
 															});
 													} else {
@@ -338,7 +341,7 @@ function CallingEmbAttestation() {
 														getCurrentStatus(newValue?.id);
 
 														navigate(
-															`/apps/callingEmbAttestations-management/callingEmbAttestations/new`
+															`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
 														);
 													}
 												}}
