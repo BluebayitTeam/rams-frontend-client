@@ -8,14 +8,13 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useEffect } from 'react';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import { useSelector } from 'react-redux';
-import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The employees header.
+ * The qualifications header.
  */
-function EmployeesHeader(props) {
+function QualificationsHeader(props) {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -31,7 +30,7 @@ function EmployeesHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Employees</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Qualifications</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -44,7 +43,7 @@ function EmployeesHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search employees"
+						placeholder="Search qualifications"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -59,11 +58,6 @@ function EmployeesHeader(props) {
 					/>
 				</Paper>
 
-				<ViewWeek
-					onClick={() => navigate(`/apps/column/columns/employee`)}
-					className="cursor-pointer mr-10 "
-					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
-				/>
 				<motion.div
 					className="flex flex-grow-0"
 					initial={{ opacity: 0, x: 20 }}
@@ -74,7 +68,7 @@ function EmployeesHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/employee/employees/new"
+						to="/apps/qualification/qualifications/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -85,4 +79,4 @@ function EmployeesHeader(props) {
 	);
 }
 
-export default EmployeesHeader;
+export default QualificationsHeader;

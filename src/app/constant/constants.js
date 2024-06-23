@@ -250,11 +250,12 @@ export const CREATE_QUALIFICATION = `${BASE_URL}/qualification/api/v1/qualificat
 
 export const GET_QUALIFICATIONS = `${BASE_URL}/qualification/api/v1/qualification/all/`;
 
-export const GET_QUALIFICATIONID = `${BASE_URL}/qualification/api/v1/qualification/`;
+export const GET_QUALIFICATION_BY_ID = `${BASE_URL}/qualification/api/v1/qualification/`;
 
 export const UPDATE_QUALIFICATION = `${BASE_URL}/qualification/api/v1/qualification/update/`;
 
 export const DELETE_QUALIFICATION = `${BASE_URL}/qualification/api/v1/qualification/delete/`;
+export const DELETE_QUALIFICATION_MULTIPLE = `${BASE_URL}/qualification/api/v1/qualification/delete/`;
 
 export const SEARCH_QUALIFICATON = `${BASE_URL}/qualification/api/v1/qualification/search/`;
 
