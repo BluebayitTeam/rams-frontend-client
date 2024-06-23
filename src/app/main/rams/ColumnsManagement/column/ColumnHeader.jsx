@@ -41,7 +41,7 @@ function ColumnHeader() {
 				navigate(`/apps/agent/agents`);
 			}
 
-			if (columnId === 'Employees') {
+			if (columnId === 'employee') {
 				navigate(`/apps/employee/employees`);
 			}
 
@@ -108,7 +108,7 @@ function ColumnHeader() {
 			navigate(`/apps/agent/agents`);
 		}
 
-		if (columnId === 'Employees') {
+		if (columnId === 'employee') {
 			navigate(`/apps/employee/employees`);
 		}
 

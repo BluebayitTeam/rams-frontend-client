@@ -2,16 +2,14 @@
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 
-import { Autocomplete, Icon, Tooltip, tooltipClasses } from '@mui/material';
+import { Autocomplete, Tooltip, tooltipClasses } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { getAgents, getCountries, getProfessions } from 'app/store/dataSlice';
-import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { BASE_URL } from 'src/app/constant/constants';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -49,10 +47,7 @@ function ComplainForm(props) {
 
 	const image = watch('image');
 
-	const [showPassword, setShowPassword] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-	const [previewImage, setPreviewImage] = useState();
+	const [previewImage, setPreviewImage] = useState(null);
 	useEffect(() => {
 		dispatch(getProfessions());
 		dispatch(getCountries());
@@ -485,53 +480,6 @@ function ComplainForm(props) {
 					);
 				}}
 			/>
-
-			<div className="flex justify-center sm:justify-start flex-wrap -mx-16">
-				<Controller
-					name="image"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<label
-							htmlFor="button-file"
-							className={clsx(
-								classes.productImageUpload,
-								'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-							)}
-						>
-							<input
-								accept="image/*"
-								className="hidden"
-								id="button-file"
-								type="file"
-								onChange={async (e) => {
-									const reader = new FileReader();
-									reader.onload = () => {
-										if (reader.readyState === 2) {
-											setPreviewImage(reader.result);
-										}
-									};
-									reader.readAsDataURL(e.target.files[0]);
-
-									const file = e.target.files[0];
-									onChange(file);
-								}}
-							/>
-							<Icon
-								fontSize="large"
-								color="action"
-								label="Complain Image"
-							>
-								cloud_upload
-							</Icon>
-						</label>
-					)}
-				/>
-				{image && !previewImage && <img src={`${BASE_URL}${image}`} />}
-
-				<div style={{ width: '100px', height: '100px' }}>
-					<img src={previewImage} />
-				</div>
-			</div>
 		</div>
 	);
 }

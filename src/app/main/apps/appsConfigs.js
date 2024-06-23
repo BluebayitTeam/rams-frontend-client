@@ -46,6 +46,7 @@ import MultipleVisaEntryAppConfig from '../rams/MultipleVisaEntrysManagement/Mul
 import EmbassyAppConfig from '../rams/EmbassysManagement/EmbassyAppConfig';
 import ComplainAppConfig from '../rams/ComplainsManagement/ComplainAppConfig';
 import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
+import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
 import CvFemaleAppConfig from '../rams/CvFemalesManagement/CvFemaleAppConfig';
 
 /**
@@ -68,6 +69,7 @@ const appsConfigs = [
 	TrainingAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
+	QualificationAppConfig,
 	ComplainAppConfig,
 	OfficeWorkAppConfig,
 	MofaAppConfig,
