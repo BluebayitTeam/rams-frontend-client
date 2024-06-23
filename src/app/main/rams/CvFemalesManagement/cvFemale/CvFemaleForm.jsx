@@ -41,7 +41,7 @@ function CvFemaleForm(props) {
 	const methods = useFormContext();
 	const routeParams = useParams();
 	const { cvFemaleId } = routeParams;
-	const { control, formState, watch, getValues, reset } = methods;
+	const { control, formState, watch, getValues, reset, setValue } = methods;
 	const { errors, isValid, dirtyFields } = formState;
 	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
 	const [fileExtPCName, setFileExtPCName] = useState('');
@@ -133,7 +133,7 @@ function CvFemaleForm(props) {
 			<Controller
 				name="country"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16 w-full  "
 						freeSolo

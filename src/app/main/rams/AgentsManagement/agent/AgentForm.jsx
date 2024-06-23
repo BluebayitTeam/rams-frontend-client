@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { FormControl } from '@mui/base';
-import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -13,9 +12,7 @@ import {
 	Icon,
 	IconButton,
 	InputAdornment,
-	Tooltip,
-	Typography,
-	tooltipClasses
+	Typography
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { getCities, getCountries, getGroups, getThanas, getThanasBasedOnCity } from 'app/store/dataSlice';
@@ -31,15 +28,6 @@ import clsx from 'clsx';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
 
-const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		maxWidth: 220,
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9'
-	}
-}));
 const useStyles = makeStyles((theme) => ({
 	hidden: {
 		display: 'none'
@@ -62,14 +50,10 @@ function AgentForm(props) {
 
 	const thanas = useSelector((state) => state.data.thanas);
 
-	console.log('thanas', thanas);
-
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const groups = useSelector((state) => state.data.groups);
 	const getCountryCode1 = watch('country_code1');
-	// const getCountryCode2 = watch('country_code2');
-	const image = watch('image');
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -94,19 +78,6 @@ function AgentForm(props) {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
 	};
-
-	// removed image
-	// const handleRemoveFile = () => {
-	// 	setPreviewImageFile(null);
-	// 	setFileExtName(null);
-	// 	setValue('image', '');
-
-	// 	if (fileInputRef.current) {
-	// 		fileInputRef.current.value = '';
-	// 	}
-
-	// 	console.log('sfsdferwer', getValues());
-	// };
 
 	const handleRemoveslipPicFile = () => {
 		setPreviewslipPicFile(null);
