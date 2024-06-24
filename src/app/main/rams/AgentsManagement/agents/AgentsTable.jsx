@@ -38,7 +38,7 @@ function AgentsTable(props) {
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const { data, isLoading, refetch } = useGetAgentsQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
+	const [rowsPerPage, setRowsPerPage] = useState(25);
 	const totalData = useSelector(selectFilteredAgents(data));
 	const agents = useSelector(selectFilteredAgents(data?.agents));
 

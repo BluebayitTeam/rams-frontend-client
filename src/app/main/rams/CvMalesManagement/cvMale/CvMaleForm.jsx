@@ -29,7 +29,6 @@ function CvMaleForm(props) {
 	const userID = localStorage.getItem('user_id');
 
 	const countrys = useSelector((state) => state.data.countries);
-	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const AllPassengers = useSelector((state) => state.data.passengers);
 	const passengers = AllPassengers.filter((data) => data?.gender === 'female' || data?.gender === 'Female');
 	const classes = useStyles(props);
@@ -37,15 +36,10 @@ function CvMaleForm(props) {
 	const methods = useFormContext();
 	const routeParams = useParams();
 	const { cvMaleId } = routeParams;
-	const { control, formState, watch, getValues, reset, setValue } = methods;
-	const { errors, isValid, dirtyFields } = formState;
-	// const [previewslipPicFile, setPreviewslipPicFile] = useState('');
-	// const [fileExtPCName, setFileExtPCName] = useState('');
+	const { control, formState, watch, getValues, setValue } = methods;
+	const { errors } = formState;
+
 	const [file, setFile] = useState(null);
-
-	// const slipPic = watch('image') || '';
-
-	// const fileInputRef = useRef(null);
 
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -62,25 +56,6 @@ function CvMaleForm(props) {
 			setFile(`${BASE_URL}/${currentImage}`);
 		}
 	}, [cvMaleId, watch('image')]);
-
-	// const handleChnageCountry = (selectedCountry) => {
-	// 	const countryID = countries.find((data) => data.name === selectedCountry)?.id;
-	// 	setValue('country', countryID);
-	// };
-
-	// const handleRemoveslipPicFile = () => {
-	// 	setPreviewslipPicFile(null);
-
-	// 	setFileExtPCName(null);
-
-	// 	setValue('image', '');
-
-	// 	if (fileInputRef.current) {
-	// 		fileInputRef.current.value = '';
-	// 	}
-
-	// 	console.log('sfsdferwer', getValues());
-	// };
 
 	return (
 		<div>
@@ -124,7 +99,7 @@ function CvMaleForm(props) {
 								{...params}
 								placeholder="Select Passenger"
 								label="Passenger"
-								// error={!!errors.passenger || !value}
+								error={!!errors.passenger || !value}
 								helperText={errors?.passenger?.message}
 								variant="outlined"
 								autoFocus

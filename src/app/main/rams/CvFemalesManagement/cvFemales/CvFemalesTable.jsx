@@ -16,8 +16,7 @@ import { motion } from 'framer-motion'; // Animation library
 import { useEffect, useState } from 'react'; // React hooks
 import withRouter from '@fuse/core/withRouter'; // HOC for routing
 import FuseLoading from '@fuse/core/FuseLoading'; // Loading spinner component
-import { useSelector, useDispatch } from 'react-redux'; // Redux hooks
-
+import { useSelector } from 'react-redux'; // Redux hooks
 import { Pagination, TableCell } from '@mui/material'; // MUI Pagination and TableCell components
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material'; // MUI icons
 import { rowsPerPageOptions } from 'src/app/@data/data'; // Custom rows per page options
@@ -30,9 +29,8 @@ import CvFemalesTableHead from './CvFemalesTableHead'; // Custom table header co
 import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi'; // Redux selectors and API hooks
 
 function CvFemalesTable(props) {
-	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
-	const { reset, formState, watch, control, getValues, setValue } = useForm({
+	const { setValue } = useForm({
 		mode: 'onChange',
 		resolver: zodResolver()
 	});

@@ -5,34 +5,34 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 
-import FuseScrollbars from '@fuse/core/FuseScrollbars'; // Custom scrollbar component
-import _ from '@lodash'; // Utility library
-import Table from '@mui/material/Table'; // MUI Table component
-import TableBody from '@mui/material/TableBody'; // MUI TableBody component
-import TablePagination from '@mui/material/TablePagination'; // MUI TablePagination component
-import TableRow from '@mui/material/TableRow'; // MUI TableRow component
-import Typography from '@mui/material/Typography'; // MUI Typography component
-import { motion } from 'framer-motion'; // Animation library
-import { useEffect, useState } from 'react'; // React hooks
-import withRouter from '@fuse/core/withRouter'; // HOC for routing
-import FuseLoading from '@fuse/core/FuseLoading'; // Loading spinner component
-import { useSelector, useDispatch } from 'react-redux'; // Redux hooks
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import _ from '@lodash';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import withRouter from '@fuse/core/withRouter';
+import FuseLoading from '@fuse/core/FuseLoading';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { Pagination, TableCell } from '@mui/material'; // MUI Pagination and TableCell components
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material'; // MUI icons
-import { rowsPerPageOptions } from 'src/app/@data/data'; // Custom rows per page options
-import { useForm } from 'react-hook-form'; // React hook form library
-import { zodResolver } from '@hookform/resolvers/zod'; // Zod resolver for validation
-import { BASE_URL } from 'src/app/constant/constants'; // Base URL constant
-import moment from 'moment'; // Date manipulation library
-import DescriptionIcon from '@mui/icons-material/Description'; // MUI description icon
-import CvMalesTableHead from './CvMalesTableHead'; // Custom table header component
-import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi'; // Redux selectors and API hooks
+import { Pagination, TableCell } from '@mui/material';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { BASE_URL } from 'src/app/constant/constants';
+import moment from 'moment';
+import DescriptionIcon from '@mui/icons-material/Description';
+import CvMalesTableHead from './CvMalesTableHead';
+import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi';
 
 function CvMalesTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
-	const { reset, formState, watch, control, getValues, setValue } = useForm({
+	const { _setValue } = useForm({
 		mode: 'onChange',
 		resolver: zodResolver()
 	});
@@ -131,6 +131,7 @@ function CvMalesTable(props) {
 	}
 
 	function handleUpdateCvMale(item, event) {
+		console.log('sadasdasdsad', event);
 		localStorage.removeItem('deleteCvMale');
 		localStorage.setItem('updateCvMale', event);
 		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
@@ -194,7 +195,7 @@ function CvMalesTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no maleCvs!
+					There are no male Cv !
 				</Typography>
 			</motion.div>
 		);

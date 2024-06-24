@@ -49,6 +49,7 @@ import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManage
 import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
 import CvFemaleAppConfig from '../rams/CvFemalesManagement/CvFemaleAppConfig';
 import CvMaleAppConfig from '../rams/CvMalesManagement/CvMaleAppConfig';
+import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
 
 /**
  * The list of application configurations.
@@ -104,6 +105,7 @@ const appsConfigs = [
 	RoleAppConfig,
 	PassengerAppConfig,
 	FeatureDetailAppConfig,
-	FlightAppConfig
+	FlightAppConfig,
+	GroupAppConfig
 ];
 export default appsConfigs;
