@@ -13,7 +13,7 @@ import TablePagination from '@mui/material/TablePagination'; // MUI TablePaginat
 import TableRow from '@mui/material/TableRow'; // MUI TableRow component
 import Typography from '@mui/material/Typography'; // MUI Typography component
 import { motion } from 'framer-motion'; // Animation library
-import { useEffect, useState } from 'react'; // React hooks
+import { useEffect, useRef, useState } from 'react'; // React hooks
 import withRouter from '@fuse/core/withRouter'; // HOC for routing
 import FuseLoading from '@fuse/core/FuseLoading'; // Loading spinner component
 import { useSelector } from 'react-redux'; // Redux hooks
@@ -25,9 +25,11 @@ import { zodResolver } from '@hookform/resolvers/zod'; // Zod resolver for valid
 import { BASE_URL } from 'src/app/constant/constants'; // Base URL constant
 import moment from 'moment'; // Date manipulation library
 import DescriptionIcon from '@mui/icons-material/Description'; // MUI description icon
+import PrintIcon from '@mui/icons-material/Print';
 import CvFemalesTableHead from './CvFemalesTableHead'; // Custom table header component
 import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi'; // Redux selectors and API hooks
 
+// import PrintVoucher from '../PrintVoucher';
 function CvFemalesTable(props) {
 	const { navigate, searchKey } = props;
 	const { setValue } = useForm({
@@ -41,7 +43,7 @@ function CvFemalesTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvFemales(data));
 	const femaleCvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
-
+	const printVoucherRef = useRef();
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -201,6 +203,11 @@ function CvFemalesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
+				{/* <PrintVoucher
+					ref={printVoucherRef}
+					title="Receipt Voucher"
+					type="receipt"
+				/> */}
 				<Table
 					stickyHeader
 					className="min-w-xl "
@@ -305,22 +312,29 @@ function CvFemalesTable(props) {
 													</TableCell>
 												)
 										)}
-
 										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+											className="p-4 md:p-16 whitespace-nowrap border-t-1 border-gray-200"
 											component="th"
 											scope="row"
 											align="right"
-											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+											style={{
+												position: 'sticky',
+												right: 0,
+												zIndex: 1,
+												backgroundColor: '#fff'
+											}}
 										>
 											<Edit
 												onClick={() => handleUpdateCvFemale(n, 'updateCvFemale')}
-												className="cursor-pointer custom-edit-icon-style"
+												className="cursor-pointer custom-edit-icon-style text-3xl	"
 											/>
-
 											<Delete
 												onClick={() => handleDeleteCvFemale(n, 'deleteCvFemale')}
-												className="cursor-pointer custom-delete-icon-style"
+												className="cursor-pointer custom-delete-icon-style text-3xl	"
+											/>
+											<PrintIcon
+												className="cursor-pointer custom-print-icon-style text-3xl	"
+												onClick={(cvFemaleEvent) => handlePrintCvFemale(n)}
 											/>
 										</TableCell>
 									</TableRow>
