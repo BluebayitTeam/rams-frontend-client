@@ -42,7 +42,7 @@ function CvFemalesTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvFemales(data));
-	const female_cvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
+	const femaleCvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
 
 	useEffect(() => {
 		refetch({ searchKey });
@@ -115,7 +115,7 @@ function CvFemalesTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(female_cvs.map((n) => n.id));
+			setSelected(femaleCvs.map((n) => n.id));
 			return;
 		}
 
@@ -183,7 +183,7 @@ function CvFemalesTable(props) {
 		);
 	}
 
-	if (female_cvs?.length === 0) {
+	if (femaleCvs?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -194,7 +194,7 @@ function CvFemalesTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no female_cvs!
+					There are no femaleCvs!
 				</Typography>
 			</motion.div>
 		);
@@ -213,13 +213,13 @@ function CvFemalesTable(props) {
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={female_cvs?.length}
+						rowCount={femaleCvs?.length}
 						onMenuItemClick={handleDeselect}
 						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(female_cvs, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(femaleCvs, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;

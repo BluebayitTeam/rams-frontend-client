@@ -42,7 +42,7 @@ function CvMalesTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvMales(data));
-	const maleCvs = useSelector(selectFilteredCvMales(data?.maleCvs));
+	const maleCvs = useSelector(selectFilteredCvMales(data?.male_cvs));
 
 	useEffect(() => {
 		refetch({ searchKey });
@@ -57,7 +57,7 @@ function CvMalesTable(props) {
 	}, [page, rowsPerPage]);
 
 	useEffect(() => {
-		if (totalData?.maleCvs) {
+		if (totalData?.male_cvs) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -68,7 +68,7 @@ function CvMalesTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.maleCvs[0] || {})
+			Object.entries(totalData?.male_cvs[0] || {})
 				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' and 'random_number' fields
 				.map(([key]) => {
 					modifiedRow.push({
