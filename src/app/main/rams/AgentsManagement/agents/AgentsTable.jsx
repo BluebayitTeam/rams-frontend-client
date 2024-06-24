@@ -159,7 +159,7 @@ function AgentsTable(props) {
 	}
 
 	// pagination
-	const handlePagination = (e, handlePage) => {
+	const handlePagination = (event, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
 		setPage(handlePage - 1);
 	};
@@ -219,7 +219,7 @@ function AgentsTable(props) {
 
 					<TableBody>
 						{_.orderBy(agents, [tableOrder.id], [tableOrder.direction])
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (

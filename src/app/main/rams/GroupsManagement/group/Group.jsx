@@ -38,12 +38,18 @@ function Group() {
 	console.log('groupId', group, groupId);
 
 	const [tabValue, setTabValue] = useState(0);
+	const [formKey, setFormKey] = useState(0);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
 	const { reset, watch } = methods;
+	const handleReset = () => {
+		reset({});
+		setFormKey((prevKey) => prevKey + 1);
+	};
 	const form = watch();
 	useEffect(() => {
 		if (groupId === 'new') {
@@ -95,13 +101,19 @@ function Group() {
 	}
 
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				header={<GroupHeader />}
 				content={
 					<div className="p-16 ">
 						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<GroupForm groupId={groupId} />
+							<GroupForm
+								groupId={groupId}
+								handleReset={handleReset}
+							/>
 						</div>
 					</div>
 				}

@@ -5,9 +5,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
-import { Checkbox, IconButton } from '@mui/material';
-import { Box } from '@mui/system';
-import { Delete } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useDeleteGroupsMutation } from '../GroupsApi';
 
@@ -28,6 +25,14 @@ const rows = [
 		align: 'left',
 		disablePadding: false,
 		label: 'Name',
+		sort: true
+	},
+
+	{
+		id: 'head_group',
+		align: 'left',
+		disablePadding: false,
+		label: 'Head Group',
 		sort: true
 	},
 	{
@@ -76,62 +81,6 @@ function GroupsTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
-				<TableCell
-					sx={{
-						backgroundColor: (theme) =>
-							theme.palette.mode === 'light'
-								? lighten(theme.palette.background.default, 0.4)
-								: lighten(theme.palette.background.default, 0.02)
-					}}
-					padding="none"
-					className="w-40 md:w-64 text-center z-99"
-				>
-					<Checkbox
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount !== 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-					/>
-					{numSelected > 0 && (
-						<Box
-							className="flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1"
-							sx={{
-								background: (theme) => theme.palette.background.default
-							}}
-						>
-							<IconButton
-								aria-haspopup="true"
-								onClick={openSelectedGroupsMenu}
-								size="large"
-							>
-								<Delete
-									onClick={(event) => handleDeleteMultipleItem()}
-									className="cursor-pointer custom-delete-icon-style"
-								/>
-							</IconButton>
-							{/* <Menu
-								id="selectedGroupsMenu"
-								anchorEl={selectedGroupsMenu}
-								open={Boolean(selectedGroupsMenu)}
-								onClose={closeSelectedGroupsMenu}
-							>
-								<MenuList>
-									<MenuItem
-										onClick={() => {
-											removeGroups(selectedGroupIds);
-											onMenuItemClick();
-											closeSelectedGroupsMenu();
-										}}
-									>
-										<ListItemIcon>
-											<FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
-										</ListItemIcon>
-										<ListItemText primary="Remove" />
-									</MenuItem>
-								</MenuList>
-							</Menu> */}
-						</Box>
-					)}
-				</TableCell>
 				{rows.map((row, index, array) => {
 					return (
 						<TableCell
