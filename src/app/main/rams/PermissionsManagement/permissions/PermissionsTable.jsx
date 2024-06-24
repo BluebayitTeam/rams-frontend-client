@@ -180,55 +180,53 @@ function PermissionsTable(props) {
 					/>
 
 					<TableBody>
-						{_.orderBy(permissions, [tableOrder.id], [tableOrder.direction])
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-20 cursor-pointer "
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
+						{_.orderBy(permissions, [tableOrder.id], [tableOrder.direction]).map((n) => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-20 cursor-pointer "
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell
+										className="w-40 md:w-64"
+										component="th"
+										scope="row"
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<TableCell
-											className="w-40 md:w-64"
-											component="th"
-											scope="row"
-											style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-										</TableCell>
-										<TableCell
-											className="p-4 md:p-16"
-											component="th"
-											scope="row"
-										>
-											{n.name}
-										</TableCell>
-										<TableCell
-											className="p-4 md:p-16"
-											component="th"
-											scope="row"
-											align="right"
-											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											<Edit
-												onClick={(event) => handleUpdatePermission(n, 'updatePermission')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+									</TableCell>
+									<TableCell
+										className="p-4 md:p-16"
+										component="th"
+										scope="row"
+									>
+										{n.name}
+									</TableCell>
+									<TableCell
+										className="p-4 md:p-16"
+										component="th"
+										scope="row"
+										align="right"
+										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+									>
+										<Edit
+											onClick={(event) => handleUpdatePermission(n, 'updatePermission')}
+											className="cursor-pointer custom-edit-icon-style"
+										/>
 
-											<Delete
-												onClick={(event) => handleDeletePermission(n, 'deletePermission')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+										<Delete
+											onClick={(event) => handleDeletePermission(n, 'deletePermission')}
+											className="cursor-pointer custom-delete-icon-style"
+										/>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>

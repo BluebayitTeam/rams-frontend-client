@@ -246,128 +246,126 @@ function VisaEntrysTable(props) {
 					/>
 
 					<TableBody>
-						{_.orderBy(visaEntrys, [tableOrder.id], [tableOrder.direction])
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-20 cursor-pointer border-t-1  border-gray-200"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
+						{_.orderBy(visaEntrys, [tableOrder.id], [tableOrder.direction]).map((n) => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-20 cursor-pointer border-t-1  border-gray-200"
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell
+										className="w-40 md:w-64 border-t-1  border-gray-200"
+										component="th"
+										scope="row"
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
-										<TableCell
-											className="w-40 md:w-64 border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											style={{
-												position: 'sticky',
-												left: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
-											}}
-										>
-											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-										</TableCell>
-										{Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' &&
-												key !== 'random_number' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1 border-gray-200"
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'file' ? (
-															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
-																<PictureAsPdf
-																	style={{
-																		color: 'red',
-																		cursor: 'pointer',
-																		display: 'block',
-																		fontSize: '35px'
-																	}}
-																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-																/>
-															) : ['doc', 'docx'].includes(
-																	n[key]?.split('.').pop()?.toLowerCase()
-															  ) ? (
-																<DescriptionIcon
-																	style={{
-																		color: 'blue',
-																		cursor: 'pointer',
-																		display: 'block',
-																		fontSize: '35px'
-																	}}
-																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-																/>
-															) : (
-																<img
-																	onClick={() =>
-																		n.file && showImage(`${BASE_URL}${n[key]}`)
-																	}
-																	src={
-																		n[key]
-																			? `${BASE_URL}${n[key]}`
-																			: 'assets/logos/user.jpg'
-																	}
-																	style={{
-																		height: '40px',
-																		width: '40px',
-																		borderRadius: '50%'
-																	}}
-																	alt="uploaded file"
-																/>
-															)
-														) : (key === 'calling_date' ||
-																key === 'calling_exp_date' ||
-																key === 'visa_issue_date') &&
-														  n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+									</TableCell>
+									{Object?.entries(n)?.map(
+										([key, value]) =>
+											key !== 'id' &&
+											key !== 'random_number' && (
+												<TableCell
+													className="p-4 md:p-16 border-t-1 border-gray-200"
+													component="th"
+													scope="row"
+													key={key}
+												>
+													{key === 'file' ? (
+														n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
+															<PictureAsPdf
+																style={{
+																	color: 'red',
+																	cursor: 'pointer',
+																	display: 'block',
+																	fontSize: '35px'
+																}}
+																onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+															/>
+														) : ['doc', 'docx'].includes(
+																n[key]?.split('.').pop()?.toLowerCase()
+														  ) ? (
+															<DescriptionIcon
+																style={{
+																	color: 'blue',
+																	cursor: 'pointer',
+																	display: 'block',
+																	fontSize: '35px'
+																}}
+																onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+															/>
 														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)}
+															<img
+																onClick={() =>
+																	n.file && showImage(`${BASE_URL}${n[key]}`)
+																}
+																src={
+																	n[key]
+																		? `${BASE_URL}${n[key]}`
+																		: 'assets/logos/user.jpg'
+																}
+																style={{
+																	height: '40px',
+																	width: '40px',
+																	borderRadius: '50%'
+																}}
+																alt="uploaded file"
+															/>
+														)
+													) : (key === 'calling_date' ||
+															key === 'calling_exp_date' ||
+															key === 'visa_issue_date') &&
+													  n[key] ? (
+														moment(new Date(n[key])).format('DD-MM-YYYY')
+													) : (key === 'is_debtor' || key === 'is_paid') &&
+													  n[key] !== undefined ? (
+														n[key] ? (
+															'Yes'
+														) : (
+															'No'
+														)
+													) : (
+														value
+													)}
+												</TableCell>
+											)
+									)}
 
-										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											align="right"
-											style={{
-												position: 'sticky',
-												right: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
-											}}
-										>
-											<Edit
-												onClick={(event) => handleUpdateVisaEntry(n, 'updateVisaEntry')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+									<TableCell
+										className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+										component="th"
+										scope="row"
+										align="right"
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
+									>
+										<Edit
+											onClick={(event) => handleUpdateVisaEntry(n, 'updateVisaEntry')}
+											className="cursor-pointer custom-edit-icon-style"
+										/>
 
-											<Delete
-												onClick={(event) => handleDeleteVisaEntry(n, 'deleteVisaEntry')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+										<Delete
+											onClick={(event) => handleDeleteVisaEntry(n, 'deleteVisaEntry')}
+											className="cursor-pointer custom-delete-icon-style"
+										/>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>

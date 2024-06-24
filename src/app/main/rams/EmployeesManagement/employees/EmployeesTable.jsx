@@ -236,82 +236,80 @@ function EmployeesTable(props) {
 					/>
 
 					<TableBody>
-						{_.orderBy(employees, [tableOrder.id], [tableOrder.direction])
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-20 cursor-pointer "
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
+						{_.orderBy(employees, [tableOrder.id], [tableOrder.direction]).map((n) => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-20 cursor-pointer "
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell
+										className="w-40 md:w-64"
+										component="th"
+										scope="row"
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<TableCell
-											className="w-40 md:w-64"
-											component="th"
-											scope="row"
-											style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-										</TableCell>
-										{Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' && (
-													<TableCell
-														className="p-4 md:p-16"
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'logo' ? (
-															n?.value ? (
-																<img
-																	className="h-full block rounded"
-																	style={{ borderRadius: '30px' }}
-																	width="60px"
-																	height="60px"
-																	src={`${BASE_URL}${n?.value}`}
-																	alt={n?.first_name}
-																/>
-															) : (
-																''
-															)
-														) : key === 'payment_valid_until' ? (
-															n?.value ? (
-																moment(new Date(n?.value)).format('DD-MM-YYYY')
-															) : (
-																''
-															)
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+									</TableCell>
+									{Object?.entries(n)?.map(
+										([key, value]) =>
+											key !== 'id' && (
+												<TableCell
+													className="p-4 md:p-16"
+													component="th"
+													scope="row"
+													key={key}
+												>
+													{key === 'logo' ? (
+														n?.value ? (
+															<img
+																className="h-full block rounded"
+																style={{ borderRadius: '30px' }}
+																width="60px"
+																height="60px"
+																src={`${BASE_URL}${n?.value}`}
+																alt={n?.first_name}
+															/>
 														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)}
-										<TableCell
-											className="p-4 md:p-16"
-											component="th"
-											scope="row"
-											align="right"
-											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											<Edit
-												onClick={(event) => handleUpdateEmployee(n, 'updateEmployee')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+															''
+														)
+													) : key === 'payment_valid_until' ? (
+														n?.value ? (
+															moment(new Date(n?.value)).format('DD-MM-YYYY')
+														) : (
+															''
+														)
+													) : (
+														value
+													)}
+												</TableCell>
+											)
+									)}
+									<TableCell
+										className="p-4 md:p-16"
+										component="th"
+										scope="row"
+										align="right"
+										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+									>
+										<Edit
+											onClick={(event) => handleUpdateEmployee(n, 'updateEmployee')}
+											className="cursor-pointer custom-edit-icon-style"
+										/>
 
-											<Delete
-												onClick={(event) => handleDeleteEmployee(n, 'deleteEmployee')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+										<Delete
+											onClick={(event) => handleDeleteEmployee(n, 'deleteEmployee')}
+											className="cursor-pointer custom-delete-icon-style"
+										/>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>

@@ -275,116 +275,114 @@ function PassengersTable(props) {
 					/>
 
 					<TableBody>
-						{_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-20 cursor-pointer border-t-1  border-gray-200"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
+						{_.orderBy(passengers, [tableOrder.id], [tableOrder.direction]).map((n) => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-20 cursor-pointer border-t-1  border-gray-200"
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+								>
+									<TableCell
+										className="w-40 md:w-64 border-t-1  border-gray-200"
+										component="th"
+										scope="row"
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
-										<TableCell
-											className="w-40 md:w-64 border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											style={{
-												position: 'sticky',
-												left: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
-											}}
-										>
-											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-										</TableCell>
-										{Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'passenger_pic' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+									</TableCell>
+									{Object?.entries(n)?.map(
+										([key, value]) =>
+											key !== 'id' && (
+												<TableCell
+													className="p-4 md:p-16 border-t-1  border-gray-200 "
+													component="th"
+													scope="row"
+													key={key}
+												>
+													{key === 'passenger_pic' ? (
+														<img
+															className="h-full block rounded"
+															style={{
+																height: '50px',
+																width: '50px',
+																borderRadius: '50%',
+																marginRight: '15px'
+															}}
+															// src={`${BASE_URL}${n[key]}`}
 
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'passport_pic' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
+															src={
+																n[key]
+																	? `${BASE_URL}${n[key]}`
+																	: 'assets/logos/user.jpg'
+															}
+															alt={n.first_name}
+														/>
+													) : key === 'passport_pic' ? (
+														<img
+															className="h-full block rounded"
+															style={{
+																height: '50px',
+																width: '50px',
+																borderRadius: '50%',
+																marginRight: '15px'
+															}}
+															// src={`${BASE_URL}${n[key]}`}
 
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/passport.png'
-																}
-																alt={n.first_name}
-															/>
-														) : key === 'passport_expiry_date' && n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : key === 'passport_issue_date' && n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : key === 'date_of_birth' && n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)}
+															src={
+																n[key]
+																	? `${BASE_URL}${n[key]}`
+																	: 'assets/logos/passport.png'
+															}
+															alt={n.first_name}
+														/>
+													) : key === 'passport_expiry_date' && n[key] ? (
+														moment(new Date(n[key])).format('DD-MM-YYYY')
+													) : key === 'passport_issue_date' && n[key] ? (
+														moment(new Date(n[key])).format('DD-MM-YYYY')
+													) : key === 'date_of_birth' && n[key] ? (
+														moment(new Date(n[key])).format('DD-MM-YYYY')
+													) : (
+														value
+													)}
+												</TableCell>
+											)
+									)}
 
-										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											align="right"
-											style={{
-												position: 'sticky',
-												right: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
-											}}
-										>
-											<Edit
-												onClick={(event) => handleUpdatePassenger(n, 'updatePassenger')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+									<TableCell
+										className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
+										component="th"
+										scope="row"
+										align="right"
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
+									>
+										<Edit
+											onClick={(event) => handleUpdatePassenger(n, 'updatePassenger')}
+											className="cursor-pointer custom-edit-icon-style"
+										/>
 
-											<Delete
-												onClick={(event) => handleDeletePassenger(n, 'deletePassenger')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+										<Delete
+											onClick={(event) => handleDeletePassenger(n, 'deletePassenger')}
+											className="cursor-pointer custom-delete-icon-style"
+										/>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>

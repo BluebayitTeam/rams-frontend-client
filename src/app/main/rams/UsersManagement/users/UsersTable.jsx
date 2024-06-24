@@ -162,89 +162,87 @@ function UsersTable(props) {
 					/>
 
 					<TableBody>
-						{_.orderBy(users, [tableOrder.id], [tableOrder.direction])
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-20 cursor-pointer px-10"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										// onClick={() => handleClick(n)}
+						{_.orderBy(users, [tableOrder.id], [tableOrder.direction]).map((n) => {
+							const isSelected = selected.indexOf(n.id) !== -1;
+							return (
+								<TableRow
+									className="h-20 cursor-pointer px-10"
+									hover
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+									// onClick={() => handleClick(n)}
+								>
+									<TableCell
+										className="w-40 md:w-64"
+										component="th"
+										scope="row"
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<TableCell
-											className="w-40 md:w-64"
-											component="th"
-											scope="row"
-											style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-										</TableCell>
-										<TableCell
-											className="w-52 px-4 md:px-10"
-											component="th"
-											scope="row"
-											padding="none"
-										>
-											{n.image ? (
-												<img
-													className="h-full block rounded"
-													style={{ borderRadius: '30px' }}
-													width="40px"
-													height="40px"
-													src={`${BASE_URL}${n.image}`}
-													alt={n.first_name}
-												/>
-											) : (
-												<img
-													className="h-full block rounded"
-													style={{ borderRadius: '30px' }}
-													width="40px"
-													height="40px"
-													src="/assets/images/userImg/user.png"
-													alt={n.first_name}
-												/>
-											)}
-										</TableCell>
-										<TableCell
-											className="p-4 md:p-16"
-											component="th"
-											scope="row"
-										>
-											{n.username}{' '}
-										</TableCell>
-										<TableCell
-											className="p-4 md:p-16 truncate"
-											component="th"
-											scope="row"
-										>
-											{n?.email}
-										</TableCell>{' '}
-										<TableCell
-											className="p-4 md:p-16 truncate"
-											component="th"
-											scope="row"
-										>
-											{n.secondary_phone}
-										</TableCell>
-										<TableCell
-											className="p-4 md:p-16"
-											component="th"
-											scope="row"
-											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											<Box onClick={(event) => handleUpdateUser(n, 'updateUser')}>
-												<VpnKeyIcon className="cursor-pointer custom-edit-icon-style" />
-											</Box>
-										</TableCell>
-									</TableRow>
-								);
-							})}
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+									</TableCell>
+									<TableCell
+										className="w-52 px-4 md:px-10"
+										component="th"
+										scope="row"
+										padding="none"
+									>
+										{n.image ? (
+											<img
+												className="h-full block rounded"
+												style={{ borderRadius: '30px' }}
+												width="40px"
+												height="40px"
+												src={`${BASE_URL}${n.image}`}
+												alt={n.first_name}
+											/>
+										) : (
+											<img
+												className="h-full block rounded"
+												style={{ borderRadius: '30px' }}
+												width="40px"
+												height="40px"
+												src="/assets/images/userImg/user.png"
+												alt={n.first_name}
+											/>
+										)}
+									</TableCell>
+									<TableCell
+										className="p-4 md:p-16"
+										component="th"
+										scope="row"
+									>
+										{n.username}{' '}
+									</TableCell>
+									<TableCell
+										className="p-4 md:p-16 truncate"
+										component="th"
+										scope="row"
+									>
+										{n?.email}
+									</TableCell>{' '}
+									<TableCell
+										className="p-4 md:p-16 truncate"
+										component="th"
+										scope="row"
+									>
+										{n.secondary_phone}
+									</TableCell>
+									<TableCell
+										className="p-4 md:p-16"
+										component="th"
+										scope="row"
+										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+									>
+										<Box onClick={(event) => handleUpdateUser(n, 'updateUser')}>
+											<VpnKeyIcon className="cursor-pointer custom-edit-icon-style" />
+										</Box>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>
