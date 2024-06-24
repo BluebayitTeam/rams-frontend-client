@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import { getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import FileUpload from 'src/app/@components/FileUploader';
@@ -39,13 +39,13 @@ function CvFemaleForm(props) {
 	const { cvFemaleId } = routeParams;
 	const { control, formState, watch, getValues, reset, setValue } = methods;
 	const { errors, isValid, dirtyFields } = formState;
-	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
-	const [fileExtPCName, setFileExtPCName] = useState('');
+	// const [previewslipPicFile, setPreviewslipPicFile] = useState('');
+	// const [fileExtPCName, setFileExtPCName] = useState('');
 	const [file, setFile] = useState(null);
 
-	const slipPic = watch('image') || '';
+	// const slipPic = watch('image') || '';
 
-	const fileInputRef = useRef(null);
+	// const fileInputRef = useRef(null);
 
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -63,24 +63,24 @@ function CvFemaleForm(props) {
 		}
 	}, [cvFemaleId, watch('image')]);
 
-	const handleChnageCountry = (selectedCountry) => {
-		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
-		setValue('country', countryID);
-	};
+	// const handleChnageCountry = (selectedCountry) => {
+	// 	const countryID = countries.find((data) => data.name === selectedCountry)?.id;
+	// 	setValue('country', countryID);
+	// };
 
-	const handleRemoveslipPicFile = () => {
-		setPreviewslipPicFile(null);
+	// const handleRemoveslipPicFile = () => {
+	// 	setPreviewslipPicFile(null);
 
-		setFileExtPCName(null);
+	// 	setFileExtPCName(null);
 
-		setValue('image', '');
+	// 	setValue('image', '');
 
-		if (fileInputRef.current) {
-			fileInputRef.current.value = '';
-		}
+	// 	if (fileInputRef.current) {
+	// 		fileInputRef.current.value = '';
+	// 	}
 
-		console.log('sfsdferwer', getValues());
-	};
+	// 	console.log('sfsdferwer', getValues());
+	// };
 
 	return (
 		<div>

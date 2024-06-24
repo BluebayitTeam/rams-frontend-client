@@ -66,7 +66,7 @@ function CvFemalesTable(props) {
 			];
 
 			Object.entries(totalData?.female_cvs[0] || {})
-				.filter(([key]) => key !== 'id') // Filter out the 'id' field
+				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' field
 				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
