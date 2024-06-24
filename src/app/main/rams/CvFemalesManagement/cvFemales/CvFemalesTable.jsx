@@ -4,29 +4,30 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import _ from '@lodash';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { Pagination, TableCell } from '@mui/material';
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
-import moment from 'moment';
-import DescriptionIcon from '@mui/icons-material/Description';
-import CvFemalesTableHead from './CvFemalesTableHead';
-import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi';
+import FuseScrollbars from '@fuse/core/FuseScrollbars'; // Custom scrollbar component
+import _ from '@lodash'; // Utility library
+import Table from '@mui/material/Table'; // MUI Table component
+import TableBody from '@mui/material/TableBody'; // MUI TableBody component
+import TablePagination from '@mui/material/TablePagination'; // MUI TablePagination component
+import TableRow from '@mui/material/TableRow'; // MUI TableRow component
+import Typography from '@mui/material/Typography'; // MUI Typography component
+import { motion } from 'framer-motion'; // Animation library
+import { useEffect, useState } from 'react'; // React hooks
+import withRouter from '@fuse/core/withRouter'; // HOC for routing
+import FuseLoading from '@fuse/core/FuseLoading'; // Loading spinner component
+import { useSelector, useDispatch } from 'react-redux'; // Redux hooks
+
+import { Pagination, TableCell } from '@mui/material'; // MUI Pagination and TableCell components
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material'; // MUI icons
+import { rowsPerPageOptions } from 'src/app/@data/data'; // Custom rows per page options
+import { useForm } from 'react-hook-form'; // React hook form library
+import { zodResolver } from '@hookform/resolvers/zod'; // Zod resolver for validation
+import { BASE_URL } from 'src/app/constant/constants'; // Base URL constant
+import moment from 'moment'; // Date manipulation library
+import DescriptionIcon from '@mui/icons-material/Description'; // MUI description icon
+import CvFemalesTableHead from './CvFemalesTableHead'; // Custom table header component
+import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi'; // Redux selectors and API hooks
 
 function CvFemalesTable(props) {
 	const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function CvFemalesTable(props) {
 		mode: 'onChange',
 		resolver: zodResolver()
 	});
+
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const { data, isLoading, refetch } = useGetCvFemalesQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
@@ -53,6 +55,7 @@ function CvFemalesTable(props) {
 		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
+
 	useEffect(() => {
 		if (totalData?.female_cvs) {
 			const modifiedRow = [
@@ -66,7 +69,7 @@ function CvFemalesTable(props) {
 			];
 
 			Object.entries(totalData?.female_cvs[0] || {})
-				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' field
+				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' and 'random_number' fields
 				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
@@ -231,17 +234,16 @@ function CvFemalesTable(props) {
 										selected={isSelected}
 									>
 										<TableCell
-											className="w-40 md:w-64 border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+											className="w-40 md:w-64 border-t-1  border-gray-200 text-center"
+											padding="none"
 										>
-											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+											{serialNumber++}
 										</TableCell>
 
-										{Object?.entries(n)?.map(
+										{Object.entries(n).map(
 											([key, value]) =>
-												key !== 'id' && (
+												key !== 'id' &&
+												key !== 'random_number' && (
 													<TableCell
 														className="p-4 md:p-16 border-t-1 border-gray-200"
 														component="th"
