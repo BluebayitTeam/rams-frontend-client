@@ -131,37 +131,11 @@ function CvFemale() {
 				}
 				header={<CvFemaleHeader />}
 				content={
-					<>
-						{/* <Tabs
-							value={tabValue}
-							onChange={handleTabChange}
-							indicatorColor="secondary"
-							textColor="secondary"
-							variant="scrollable"
-							scrollButtons="auto"
-							classes={{ root: 'w-full h-64 border-b-1' }}
-						>
-							<Tab
-								className="h-64"
-								label="Basic Info"
-							/>
-							{cvFemaleId !== 'new' && (
-								<Tab
-									className="h-64"
-									label="Opening Balance"
-								/>
-							)}
-						</Tabs> */}
-						<div className="p-16">
-							<div className={tabValue !== 0 ? 'hidden' : ''}>
-								<CvFemaleForm cvFemaleId={cvFemaleId} />
-							</div>
-
-							{/* <div className={tabValue !== 1 ? 'hidden' : ''}>
-								<OpeningBalance />
-							</div> */}
+					<div className="p-16">
+						<div className={tabValue !== 0 ? 'hidden' : ''}>
+							<CvFemaleForm cvFemaleId={cvFemaleId} />
 						</div>
-					</>
+					</div>
 				}
 				innerScroll
 			/>

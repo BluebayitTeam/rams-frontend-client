@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { styled } from '@mui/system';
 
-import { Autocomplete, Box, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
+import { Autocomplete, Box, Icon, TextField, Typography } from '@mui/material';
 import { getAgents, getCountries, getDemandVisaEntrys } from 'app/store/dataSlice';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
@@ -13,15 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BASE_URL } from 'src/app/constant/constants';
 import { PictureAsPdf } from '@mui/icons-material';
 
-const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		maxWidth: 220,
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9'
-	}
-}));
 const useStyles = makeStyles((theme) => ({
 	hidden: {
 		display: 'none'
