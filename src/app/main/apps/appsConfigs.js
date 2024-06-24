@@ -48,6 +48,7 @@ import ComplainAppConfig from '../rams/ComplainsManagement/ComplainAppConfig';
 import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManagement/CallingEmbAttestationAppConfig';
 import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
 import CvFemaleAppConfig from '../rams/CvFemalesManagement/CvFemaleAppConfig';
+import CvMaleAppConfig from '../rams/CvMalesManagement/CvMaleAppConfig';
 
 /**
  * The list of application configurations.
@@ -78,6 +79,7 @@ const appsConfigs = [
 	CallingAssignAppConfig,
 	CallingEmbAttestationAppConfig,
 	CvFemaleAppConfig,
+	CvMaleAppConfig,
 	DemandAssignAppConfig,
 	VisaEntryAppConfig,
 	VisaCancelListAppConfig,
