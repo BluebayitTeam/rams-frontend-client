@@ -56,3 +56,35 @@ export const UsernameAlert = () => {
 		timer: 2000
 	});
 };
+
+export const CustomNotification = (type, message) => {
+	if (type === 'success') {
+		Swal.fire({
+			position: 'top-center',
+			icon: 'success',
+			title: `${message}`,
+			showConfirmButton: false,
+			timer: 2000
+		});
+	}
+
+	if (type === 'error') {
+		Swal.fire({
+			position: 'top-center',
+			icon: 'error',
+			title: `${message}`,
+			showConfirmButton: false,
+			timer: 2000
+		});
+	}
+
+	if (type === 'warning') {
+		Swal.fire({
+			position: 'top-center',
+			icon: 'warning',
+			title: `${message}`,
+			showConfirmButton: false,
+			timer: 2000
+		});
+	}
+};
