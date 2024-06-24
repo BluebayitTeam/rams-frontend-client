@@ -44,7 +44,7 @@ function CvFemalesHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search By Name or Username or Email or Phone"
+						placeholder="Search by Passenger Name or Id or No"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
