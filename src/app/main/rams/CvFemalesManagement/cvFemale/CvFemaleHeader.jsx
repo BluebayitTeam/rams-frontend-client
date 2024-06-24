@@ -108,14 +108,6 @@ function CvFemaleHeader() {
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
 				{handleDelete === 'deleteCvFemale' && cvFemaleId !== 'new' && (
-					<Typography
-						className="mt-6"
-						variant="subtitle2"
-					>
-						Do you want to remove this cvFemale?
-					</Typography>
-				)}
-				{handleDelete === 'deleteCvFemale' && cvFemaleId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-1 "
 						variant="contained"
