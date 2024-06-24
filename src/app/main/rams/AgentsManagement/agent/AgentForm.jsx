@@ -70,25 +70,12 @@ function AgentForm(props) {
 		setValue('country', countryID);
 	};
 
-	// removed image
-	// const handleRemoveFile = () => {
-	// 	setPreviewImageFile(null);
-	// 	setFileExtName(null);
-	// 	setValue('image', '');
-
-	// 	if (fileInputRef.current) {
-	// 		fileInputRef.current.value = '';
-	// 	}
-
-	// 	console.log('sfsdferwer', getValues());
-	// };
-
 	return (
 		<div>
 			<Controller
 				name="group"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
@@ -489,7 +476,7 @@ function AgentForm(props) {
 			<Controller
 				name="country"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
