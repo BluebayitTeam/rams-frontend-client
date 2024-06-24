@@ -9,55 +9,55 @@ import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import _ from 'lodash';
-import { useCreateCvFemaleMutation, useDeleteCvFemaleMutation, useUpdateCvFemaleMutation } from '../CvFemalesApi';
+import { useCreateCvMaleMutation, useDeleteCvMaleMutation, useUpdateCvMaleMutation } from '../CvMalesApi';
 
 /**
- * The cvFemale header.
+ * The cvMale header.
  */
-function CvFemaleHeader() {
+function CvMaleHeader() {
 	const routeParams = useParams();
-	const { cvFemaleId } = routeParams;
-	const [createCvFemale] = useCreateCvFemaleMutation();
-	const [saveCvFemale] = useUpdateCvFemaleMutation();
-	const [removeCvFemale] = useDeleteCvFemaleMutation();
+	const { cvMaleId } = routeParams;
+	const [createCvMale] = useCreateCvMaleMutation();
+	const [saveCvMale] = useUpdateCvMaleMutation();
+	const [removeCvMale] = useDeleteCvMaleMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, image, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteCvFemale');
-	const handleUpdate = localStorage.getItem('updateCvFemale');
+	const handleDelete = localStorage.getItem('deleteCvMale');
+	const handleUpdate = localStorage.getItem('updateCvMale');
 
 	// console.log('image', image);
 
-	function handleUpdateCvFemale() {
-		saveCvFemale(getValues()).then((data) => {
+	function handleUpdateCvMale() {
+		saveCvMale(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/cvFemale/cvFemales`);
+			navigate(`/apps/cvMale/cvMales`);
 		});
 	}
 
-	function handleCreateCvFemale() {
-		createCvFemale(getValues())
+	function handleCreateCvMale() {
+		createCvMale(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/cvFemale/cvFemales`);
+				navigate(`/apps/cvMale/cvMales`);
 			});
 	}
 
-	function handleRemoveCvFemale(dispatch) {
-		removeCvFemale(cvFemaleId);
+	function handleRemoveCvMale(dispatch) {
+		removeCvMale(cvMaleId);
 		DeletedSuccessfully();
-		navigate('/apps/cvFemale/cvFemales');
+		navigate('/apps/cvMale/cvMales');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/cvFemale/cvFemales`);
+		navigate(`/apps/cvMale/cvMales`);
 	}
 
 	return (
@@ -71,7 +71,7 @@ function CvFemaleHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/cvFemale/cvFemales"
+						to="/apps/cvMale/cvMales"
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>
@@ -107,36 +107,36 @@ function CvFemaleHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
-				{handleDelete === 'deleteCvFemale' && cvFemaleId !== 'new' && (
+				{handleDelete === 'deleteCvMale' && cvMaleId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-1 "
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveCvFemale}
+						onClick={handleRemoveCvMale}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						// style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{cvFemaleId === 'new' && (
+				{cvMaleId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4 "
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateCvFemale}
+						onClick={handleCreateCvMale}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteCvFemale' && handleUpdate === 'updateCvFemale' && cvFemaleId !== 'new' && (
+				{handleDelete !== 'deleteCvMale' && handleUpdate === 'updateCvMale' && cvMaleId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 						color="secondary"
 						variant="contained"
 						// style={{ backgroundColor: '#4dc08e', color: 'white' }}
-						onClick={handleUpdateCvFemale}
+						onClick={handleUpdateCvMale}
 					>
 						Update
 					</Button>
@@ -154,4 +154,4 @@ function CvFemaleHeader() {
 	);
 }
 
-export default CvFemaleHeader;
+export default CvMaleHeader;

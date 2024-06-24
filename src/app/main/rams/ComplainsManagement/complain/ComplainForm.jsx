@@ -10,6 +10,8 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import FileUpload from 'src/app/@components/FileUploader';
+import { BASE_URL } from 'src/app/constant/constants';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -34,20 +36,23 @@ const useStyles = makeStyles((theme) => ({
 function ComplainForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError } = methods;
+	const { control, formState, watch, setValue, getValues } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { complainId } = routeParams;
 	const classes = useStyles(props);
-
-	const professions = useSelector((state) => state.data.professions);
+	const [file, setFile] = useState(null);
 	const countries = useSelector((state) => state.data.countries);
-	const visaAgents = useSelector((state) => state.data.agents);
+
 	const agents = useSelector((state) => state.data.agents);
+	useEffect(() => {
+		const currentImage = getValues('image');
 
-	const image = watch('image');
+		if (currentImage && !currentImage.name) {
+			setFile(`${BASE_URL}/${currentImage}`);
+		}
+	}, [complainId, watch('image')]);
 
-	const [previewImage, setPreviewImage] = useState(null);
 	useEffect(() => {
 		dispatch(getProfessions());
 		dispatch(getCountries());
@@ -480,6 +485,21 @@ function ComplainForm(props) {
 					);
 				}}
 			/>
+
+			<div className="text-center">
+				<div>
+					<FileUpload
+						name="image"
+						label="File"
+						control={control}
+						setValue={setValue}
+						setFile={setFile}
+						file={file}
+						BASE_URL={BASE_URL}
+						classes={classes}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 }

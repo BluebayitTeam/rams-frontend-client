@@ -5,45 +5,45 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 
-import FuseScrollbars from '@fuse/core/FuseScrollbars'; // Custom scrollbar component
-import _ from '@lodash'; // Utility library
-import Table from '@mui/material/Table'; // MUI Table component
-import TableBody from '@mui/material/TableBody'; // MUI TableBody component
-import TablePagination from '@mui/material/TablePagination'; // MUI TablePagination component
-import TableRow from '@mui/material/TableRow'; // MUI TableRow component
-import Typography from '@mui/material/Typography'; // MUI Typography component
-import { motion } from 'framer-motion'; // Animation library
-import { useEffect, useRef, useState } from 'react'; // React hooks
-import withRouter from '@fuse/core/withRouter'; // HOC for routing
-import FuseLoading from '@fuse/core/FuseLoading'; // Loading spinner component
-import { useSelector } from 'react-redux'; // Redux hooks
-import { Pagination, TableCell } from '@mui/material'; // MUI Pagination and TableCell components
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material'; // MUI icons
-import { rowsPerPageOptions } from 'src/app/@data/data'; // Custom rows per page options
-import { useForm } from 'react-hook-form'; // React hook form library
-import { zodResolver } from '@hookform/resolvers/zod'; // Zod resolver for validation
-import { BASE_URL } from 'src/app/constant/constants'; // Base URL constant
-import moment from 'moment'; // Date manipulation library
-import DescriptionIcon from '@mui/icons-material/Description'; // MUI description icon
-import PrintIcon from '@mui/icons-material/Print';
-import CvFemalesTableHead from './CvFemalesTableHead'; // Custom table header component
-import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi'; // Redux selectors and API hooks
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import _ from '@lodash';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import withRouter from '@fuse/core/withRouter';
+import FuseLoading from '@fuse/core/FuseLoading';
+import { useSelector, useDispatch } from 'react-redux';
 
-// import PrintVoucher from '../PrintVoucher';
-function CvFemalesTable(props) {
+import { Pagination, TableCell } from '@mui/material';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { BASE_URL } from 'src/app/constant/constants';
+import moment from 'moment';
+import DescriptionIcon from '@mui/icons-material/Description';
+import CvMalesTableHead from './CvMalesTableHead';
+import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi';
+
+function CvMalesTable(props) {
+	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
-	const { setValue } = useForm({
+	const { _setValue } = useForm({
 		mode: 'onChange',
 		resolver: zodResolver()
 	});
 
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetCvFemalesQuery({ ...pageAndSize, searchKey });
+	const { data, isLoading, refetch } = useGetCvMalesQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const totalData = useSelector(selectFilteredCvFemales(data));
-	const femaleCvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
-	const printVoucherRef = useRef();
+	const totalData = useSelector(selectFilteredCvMales(data));
+	const maleCvs = useSelector(selectFilteredCvMales(data?.male_cvs));
+
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -57,7 +57,7 @@ function CvFemalesTable(props) {
 	}, [page, rowsPerPage]);
 
 	useEffect(() => {
-		if (totalData?.female_cvs) {
+		if (totalData?.male_cvs) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -68,7 +68,7 @@ function CvFemalesTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.female_cvs[0] || {})
+			Object.entries(totalData?.male_cvs[0] || {})
 				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' and 'random_number' fields
 				.map(([key]) => {
 					modifiedRow.push({
@@ -94,7 +94,7 @@ function CvFemalesTable(props) {
 
 			setRows(modifiedRow);
 		}
-	}, [totalData?.female_cvs]);
+	}, [totalData?.male_cvs]);
 
 	const [selected, setSelected] = useState([]);
 
@@ -115,7 +115,7 @@ function CvFemalesTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(femaleCvs.map((n) => n.id));
+			setSelected(maleCvs.map((n) => n.id));
 			return;
 		}
 
@@ -127,19 +127,20 @@ function CvFemalesTable(props) {
 	}
 
 	function _handleClick(item) {
-		navigate(`/apps/cvFemale/cvFemales/${item.id}/${item.handle}`);
+		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateCvFemale(item, event) {
-		localStorage.removeItem('deleteCvFemale');
-		localStorage.setItem('updateCvFemale', event);
-		navigate(`/apps/cvFemale/cvFemales/${item.id}/${item.handle}`);
+	function handleUpdateCvMale(item, event) {
+		console.log('sadasdasdsad', event);
+		localStorage.removeItem('deleteCvMale');
+		localStorage.setItem('updateCvMale', event);
+		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteCvFemale(item, event) {
-		localStorage.removeItem('updateCvFemale');
-		localStorage.setItem('deleteCvFemale', event);
-		navigate(`/apps/cvFemale/cvFemales/${item.id}/${item.handle}`);
+	function handleDeleteCvMale(item, event) {
+		localStorage.removeItem('updateCvMale');
+		localStorage.setItem('deleteCvMale', event);
+		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
 	}
 
 	function _handleCheck(event, id) {
@@ -183,7 +184,7 @@ function CvFemalesTable(props) {
 		);
 	}
 
-	if (femaleCvs?.length === 0) {
+	if (maleCvs?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -194,7 +195,7 @@ function CvFemalesTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no femaleCvs!
+					There are no male Cv !
 				</Typography>
 			</motion.div>
 		);
@@ -203,28 +204,23 @@ function CvFemalesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
-				{/* <PrintVoucher
-					ref={printVoucherRef}
-					title="Receipt Voucher"
-					type="receipt"
-				/> */}
 				<Table
 					stickyHeader
 					className="min-w-xl "
 					aria-labelledby="tableTitle"
 				>
-					<CvFemalesTableHead
-						selectedCvFemaleIds={selected}
+					<CvMalesTableHead
+						selectedCvMaleIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={femaleCvs?.length}
+						rowCount={maleCvs?.length}
 						onMenuItemClick={handleDeselect}
 						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(femaleCvs, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(maleCvs, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
@@ -312,29 +308,22 @@ function CvFemalesTable(props) {
 													</TableCell>
 												)
 										)}
+
 										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1 border-gray-200"
+											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
 											component="th"
 											scope="row"
 											align="right"
-											style={{
-												position: 'sticky',
-												right: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
-											}}
+											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 										>
 											<Edit
-												onClick={() => handleUpdateCvFemale(n, 'updateCvFemale')}
-												className="cursor-pointer custom-edit-icon-style text-3xl	"
+												onClick={() => handleUpdateCvMale(n, 'updateCvMale')}
+												className="cursor-pointer custom-edit-icon-style"
 											/>
+
 											<Delete
-												onClick={() => handleDeleteCvFemale(n, 'deleteCvFemale')}
-												className="cursor-pointer custom-delete-icon-style text-3xl	"
-											/>
-											<PrintIcon
-												className="cursor-pointer custom-print-icon-style text-3xl	"
-												onClick={(cvFemaleEvent) => handlePrintCvFemale(n)}
+												onClick={() => handleDeleteCvMale(n, 'deleteCvMale')}
+												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>
 									</TableRow>
@@ -381,4 +370,4 @@ function CvFemalesTable(props) {
 	);
 }
 
-export default withRouter(CvFemalesTable);
+export default withRouter(CvMalesTable);

@@ -100,6 +100,10 @@ function ColumnHeader() {
 			if (columnId === 'female_cv') {
 				navigate(`/apps/cvFemale/cvFemales`);
 			}
+
+			if (columnId === 'male_cv') {
+				navigate(`/apps/cvMale/cvMales`);
+			}
 		});
 	}
 
@@ -170,6 +174,10 @@ function ColumnHeader() {
 
 		if (columnId === 'female_cv') {
 			navigate(`/apps/cvFemale/cvFemales`);
+		}
+
+		if (columnId === 'male_cv') {
+			navigate(`/apps/cvMale/cvMales`);
 		}
 	}
 

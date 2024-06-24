@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
@@ -13,11 +16,12 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector } from 'react-redux';
 
 import { Pagination, TableCell } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
+import DescriptionIcon from '@mui/icons-material/Description'; // MUI description icon
 import ComplainsTableHead from './ComplainsTableHead';
 import { selectFilteredComplains, useGetComplainsQuery } from '../ComplainsApi';
 
@@ -55,7 +59,7 @@ function ComplainsTable(props) {
 			];
 
 			Object.entries(totalData?.complains[0] || {})
-				.filter(([key]) => key !== 'id') // Filter out the 'id' field
+				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' field
 				.map(([key, _value]) => {
 					modifiedRow.push({
 						id: key,
@@ -82,7 +86,7 @@ function ComplainsTable(props) {
 		}
 	}, [totalData?.complains]);
 
-	const methods = useForm({
+	const _methods = useForm({
 		mode: 'onChange',
 		defaultValues: {}
 	});
@@ -216,33 +220,57 @@ function ComplainsTable(props) {
 										>
 											{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 										</TableCell>
-										{Object?.entries(n)?.map(
+										{Object.entries(n).map(
 											([key, value]) =>
-												key !== 'id' && (
+												key !== 'id' &&
+												key !== 'random_number' && (
 													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
+														className="p-4 md:p-16 border-t-1 border-gray-200"
 														component="th"
 														scope="row"
 														key={key}
 													>
 														{key === 'image' ? (
-															<img
-																className="h-full block rounded"
-																style={{
-																	height: '50px',
-																	width: '50px',
-																	borderRadius: '50%',
-																	marginRight: '15px'
-																}}
-																// src={`${BASE_URL}${n[key]}`}
-
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																alt={n.first_name}
-															/>
+															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
+																<PictureAsPdf
+																	style={{
+																		color: 'red',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : ['doc', 'docx'].includes(
+																	n[key]?.split('.').pop()?.toLowerCase()
+															  ) ? (
+																<DescriptionIcon
+																	style={{
+																		color: 'blue',
+																		cursor: 'pointer',
+																		display: 'block',
+																		fontSize: '35px'
+																	}}
+																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
+																/>
+															) : (
+																<img
+																	onClick={() =>
+																		n.file && showImage(`${BASE_URL}${n[key]}`)
+																	}
+																	src={
+																		n[key]
+																			? `${BASE_URL}${n[key]}`
+																			: 'assets/logos/user.jpg'
+																	}
+																	style={{
+																		height: '40px',
+																		width: '40px',
+																		borderRadius: '50%'
+																	}}
+																	alt="uploaded file"
+																/>
+															)
 														) : (key === 'created_at' || key === 'flight_date') &&
 														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')

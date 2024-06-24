@@ -30,14 +30,12 @@ function EmbassyForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const classes = useStyles(props);
-	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const { control, formState, watch, setValue, getValues } = methods;
 	const { errors } = formState;
-	const routeParams = useParams();
-	const { embassyId } = routeParams;
+	const _routeParams = useParams();
 
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const embassyData = useSelector((state) => state.data.embassys);
-	// const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
 	const doc1File = watch('old_visa_image') || '';
 
@@ -89,7 +87,7 @@ function EmbassyForm(props) {
 			<Controller
 				name="recruiting_agency"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo

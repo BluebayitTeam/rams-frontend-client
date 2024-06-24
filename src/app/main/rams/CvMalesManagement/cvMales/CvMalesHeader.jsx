@@ -13,9 +13,9 @@ import { ViewWeek } from '@mui/icons-material';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The cvFemales header.
+ * The cvMales header.
  */
-function CvFemalesHeader(props) {
+function CvMalesHeader(props) {
 	const dispatch = useAppDispatch();
 	const searchText = useSelector(selectSearchText);
 	useEffect(() => {
@@ -31,7 +31,7 @@ function CvFemalesHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Female CV</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Male CV</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -62,7 +62,7 @@ function CvFemalesHeader(props) {
 				</Paper>
 
 				<ViewWeek
-					onClick={() => navigate(`/apps/column/columns/female_cv`)}
+					onClick={() => navigate(`/apps/column/columns/male_cv`)}
 					className="cursor-pointer mr-10 "
 					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>
@@ -76,7 +76,7 @@ function CvFemalesHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/cvFemale/cvFemales/new"
+						to="/apps/cvMale/cvMales/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -87,4 +87,4 @@ function CvFemalesHeader(props) {
 	);
 }
 
-export default CvFemalesHeader;
+export default CvMalesHeader;
