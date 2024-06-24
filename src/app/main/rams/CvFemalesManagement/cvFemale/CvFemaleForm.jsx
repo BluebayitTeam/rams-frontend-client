@@ -2,9 +2,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { useParams } from 'react-router-dom';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { Autocomplete, Box, Icon, Typography } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
@@ -12,9 +10,7 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import clsx from 'clsx';
-
-import { PictureAsPdf } from '@mui/icons-material';
+import FileUpload from 'src/app/@components/FileUploader';
 import { BASE_URL } from 'src/app/constant/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +41,7 @@ function CvFemaleForm(props) {
 	const { errors, isValid, dirtyFields } = formState;
 	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
 	const [fileExtPCName, setFileExtPCName] = useState('');
+	const [file, setFile] = useState(null);
 
 	const slipPic = watch('image') || '';
 
@@ -57,6 +54,14 @@ function CvFemaleForm(props) {
 	}, []);
 
 	useEffect(() => {}, [watch('date_of_birth')]);
+
+	useEffect(() => {
+		const currentImage = getValues('image');
+
+		if (currentImage && !currentImage.name) {
+			setFile(`${BASE_URL}/${currentImage}`);
+		}
+	}, [cvFemaleId, watch('image')]);
 
 	const handleChnageCountry = (selectedCountry) => {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
@@ -476,7 +481,7 @@ function CvFemaleForm(props) {
 				}}
 			/>
 
-			<div className="flex justify-center sm:justify-start flex-wrap -mx-0.5">
+			{/* <div className="flex justify-center sm:justify-start flex-wrap -mx-0.5">
 				<Controller
 					name="image"
 					control={control}
@@ -700,6 +705,20 @@ function CvFemaleForm(props) {
 						</div>
 					)}
 				/>
+			</div> */}
+			<div className="text-center">
+				<div>
+					<FileUpload
+						name="image"
+						// label="File"
+						control={control}
+						setValue={setValue}
+						setFile={setFile}
+						file={file}
+						BASE_URL={BASE_URL}
+						classes={classes}
+					/>
+				</div>
 			</div>
 		</div>
 	);

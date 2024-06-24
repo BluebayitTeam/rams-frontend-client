@@ -96,6 +96,10 @@ function ColumnHeader() {
 			if (columnId === 'complain') {
 				navigate(`/apps/complain/complains`);
 			}
+
+			if (columnId === 'female_cv') {
+				navigate(`/apps/cvFemale/cvFemales`);
+			}
 		});
 	}
 
@@ -162,6 +166,10 @@ function ColumnHeader() {
 
 		if (columnId === 'complain') {
 			navigate(`/apps/complain/complains`);
+		}
+
+		if (columnId === 'female_cv') {
+			navigate(`/apps/cvFemale/cvFemales`);
 		}
 	}
 
