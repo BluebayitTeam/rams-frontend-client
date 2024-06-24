@@ -31,7 +31,7 @@ function CvFemalesHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Cv Females</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Female CV</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">

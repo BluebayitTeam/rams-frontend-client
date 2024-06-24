@@ -42,7 +42,7 @@ function CvMalesTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvMales(data));
-	const female_cvs = useSelector(selectFilteredCvMales(data?.female_cvs));
+	const maleCvs = useSelector(selectFilteredCvMales(data?.maleCvs));
 
 	useEffect(() => {
 		refetch({ searchKey });
@@ -57,7 +57,7 @@ function CvMalesTable(props) {
 	}, [page, rowsPerPage]);
 
 	useEffect(() => {
-		if (totalData?.female_cvs) {
+		if (totalData?.maleCvs) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -68,7 +68,7 @@ function CvMalesTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.female_cvs[0] || {})
+			Object.entries(totalData?.maleCvs[0] || {})
 				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' and 'random_number' fields
 				.map(([key]) => {
 					modifiedRow.push({
@@ -94,7 +94,7 @@ function CvMalesTable(props) {
 
 			setRows(modifiedRow);
 		}
-	}, [totalData?.female_cvs]);
+	}, [totalData?.male_cvs]);
 
 	const [selected, setSelected] = useState([]);
 
@@ -115,7 +115,7 @@ function CvMalesTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(female_cvs.map((n) => n.id));
+			setSelected(maleCvs.map((n) => n.id));
 			return;
 		}
 
@@ -183,7 +183,7 @@ function CvMalesTable(props) {
 		);
 	}
 
-	if (female_cvs?.length === 0) {
+	if (maleCvs?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -194,7 +194,7 @@ function CvMalesTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no female_cvs!
+					There are no maleCvs!
 				</Typography>
 			</motion.div>
 		);
@@ -213,13 +213,13 @@ function CvMalesTable(props) {
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={female_cvs?.length}
+						rowCount={maleCvs?.length}
 						onMenuItemClick={handleDeselect}
 						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(female_cvs, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(maleCvs, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
