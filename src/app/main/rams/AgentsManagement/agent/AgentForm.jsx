@@ -15,6 +15,7 @@ import { genders } from 'src/app/@data/data';
 
 import { BASE_URL } from 'src/app/constant/constants';
 import FileUpload from 'src/app/@components/FileUploader';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -53,7 +54,7 @@ function AgentForm(props) {
 		dispatch(getGroups());
 		// dispatch(getThanasBasedOnCity());
 	}, []);
-	useEffect(() => {}, [watch('date_of_birth')]);
+	// useEffect(() => {}, [watch('date_of_birth')]);
 	useEffect(() => {
 		const currentImage = getValues('image');
 
@@ -400,22 +401,17 @@ function AgentForm(props) {
 			<Controller
 				name="date_of_birth"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.date_of_birth}
-							helperText={errors?.date_of_birth?.message}
-							label="Date of Birth"
-							id="date_of_birth"
-							type="date"
-							InputLabelProps={{ shrink: true }}
-							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<CustomDatePicker
+						field={field}
+						label="Date of Birth"
+						required
+						className="mt-8 mb-16 w-full"
+						error={!!errors.date_of_birth}
+						helperText={errors?.date_of_birth?.message}
+						placeholder="DD-MM-YYYY"
+					/>
+				)}
 			/>
 
 			<Controller

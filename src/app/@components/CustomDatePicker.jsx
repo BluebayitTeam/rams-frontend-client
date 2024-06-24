@@ -1,42 +1,43 @@
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useFormContext } from 'react-hook-form';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import dayjs from 'dayjs';
 
 function CustomDatePicker(props) {
-	console.log('propssdasd', props);
-
-	const methods = useFormContext();
-	const { formState } = methods;
-	const { errors } = formState;
+	console.log('props', props);
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterDayjs}>
-			<DemoContainer components={['DatePicker']}>
-				<DatePicker
-					{...props.field}
-					{...props}
-					className={props?.className || 'mt-8 mb-16 w-full'}
-					autoOk
-					required={!!props.required}
-					variant="inline"
-					inputVariant="outlined"
-					format={props?.format || 'dd/MM/yyyy'}
-					placeholder={props?.placeholder || 'dd/MM/yyyy'}
-					value={props.value || props.field.value || null}
-					error={!!errors[props.field.name] || props.required ? !(props.value || props.field.value) : false}
-					helperText={errors[props.field.name]?.message || ''}
-					onChange={(value) => {
-						console.log('valuevaluevalue', `abc${value}def`);
-
-						props.field.onChange(value); // Ensure the value is in YYYY-MM-DD format
-						props?.onChange && props?.onChange(value);
-					}}
-					InputAdornmentProps={{ position: 'start' }}
-					InputLabelProps={props.field.value ? { shrink: true } : { style: { color: 'red' } }}
-				/>
-			</DemoContainer>
+			<DatePicker
+				{...props?.field}
+				value={props?.field.value ? dayjs(props?.field.value, 'YYYY-MM-DD') : null}
+				onChange={(date) => {
+					props?.field.onChange(date ? dayjs(date).format('YYYY-MM-DD') : null);
+				}}
+				renderInput={(params) => (
+					<TextField
+						{...params}
+						className={props?.className || 'mt-8 mb-16 w-full'}
+						required={props?.required}
+						error={!!props?.error}
+						helperText={props?.helperText}
+						placeholder={props?.placeholder || 'DD-MM-YYYY'}
+						label="asdasdknl"
+						InputProps={{
+							startAdornment: (
+								<InputAdornment position="start">
+									<CalendarTodayIcon />
+								</InputAdornment>
+							)
+						}}
+						InputLabelProps={{ shrink: true }}
+					/>
+				)}
+				inputFormat="DD-MM-YYYY"
+			/>
 		</LocalizationProvider>
 	);
 }
