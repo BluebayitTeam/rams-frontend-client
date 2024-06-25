@@ -50,8 +50,8 @@ module.exports = {
 			}
 		],
 		env: {
-			browser: true, // Add this line to define the browser environment
-			node: true // Optionally add this line if you're also using Node.js
+			browser: true, 
+			node: true 
 		},
 		'padding-line-between-statements': [
 			'warn',
