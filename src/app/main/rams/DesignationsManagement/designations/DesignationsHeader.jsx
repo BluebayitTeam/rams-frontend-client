@@ -54,6 +54,8 @@ function DesignationsHeader(props) {
 						onKeyDown={(ev) => {
 							if (ev.key === 'Enter') {
 								props?.setSearchKey(ev?.target?.value);
+							} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
+								props?.setSearchKey('');
 							}
 						}}
 					/>
