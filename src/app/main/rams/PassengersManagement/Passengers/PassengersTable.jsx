@@ -17,16 +17,6 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-	getBranches,
-	getCities,
-	getCountries,
-	getDepartments,
-	getEmployees,
-	getPackages,
-	getRoles,
-	getThanas
-} from 'app/store/dataSlice';
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
@@ -69,13 +59,7 @@ function PassengersTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredPassengers(data));
 	const passengers = useSelector(selectFilteredPassengers(data?.passengers));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
+
 	const [singlePassengerDetails, setSinglePassengerDetails] = useState({});
 	const [passengerPackagePrice, setPassengerPackagePrice] = useState(0);
 
@@ -139,16 +123,6 @@ function PassengersTable(props) {
 	});
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getPackages());
-		dispatch(getDepartments());
-		dispatch(getCities());
-		dispatch(getCountries());
-		dispatch(getEmployees());
-	}, []);
 
 	const [selected, setSelected] = useState([]);
 

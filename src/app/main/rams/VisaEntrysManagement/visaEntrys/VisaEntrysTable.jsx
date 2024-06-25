@@ -14,16 +14,6 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import DescriptionIcon from '@mui/icons-material/Description';
-import {
-	getBranches,
-	getCities,
-	getCountries,
-	getDepartments,
-	getEmployees,
-	getPackages,
-	getRoles,
-	getThanas
-} from 'app/store/dataSlice';
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
@@ -109,17 +99,6 @@ function VisaEntrysTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.visaEntrys, visaEntrys]);
-
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getPackages());
-		dispatch(getDepartments());
-		dispatch(getCities());
-		dispatch(getCountries());
-		dispatch(getEmployees());
-	}, []);
 
 	const [selected, setSelected] = useState([]);
 

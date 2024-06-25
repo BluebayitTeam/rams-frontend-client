@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
@@ -29,18 +28,8 @@ function DepartmentsTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const { data, isLoading, refetch } = useGetDepartmentsQuery({ ...pageAndSize, searchKey });
-
-	console.log('sdsdsds', data);
-
 	const totalData = useSelector(selectFilteredDepartments(data));
 	const departments = useSelector(selectFilteredDepartments(data?.departments));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const department = useSelector((state) => state.data.departments);
-	console.log('departmentsss', totalData);
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -51,13 +40,6 @@ function DepartmentsTable(props) {
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getCities());
-		dispatch(getCountries());
-	}, []);
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({
