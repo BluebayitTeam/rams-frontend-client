@@ -21,16 +21,13 @@ function LedgerHeader() {
 	const [saveLedger] = useUpdateLedgerMutation();
 	const [removeLedger] = useDeleteLedgerMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
+	const { watch, getValues } = methods;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteLedger');
-	const handleUpdate = localStorage.getItem('updateLedger');
 
 	function handleUpdateLedger() {
-		saveLedger(getValues()).then((data) => {
+		saveLedger(getValues()).then(() => {
 			UpdatedSuccessfully();
 			navigate(`/apps/ledger/ledgers`);
 		});
@@ -39,7 +36,7 @@ function LedgerHeader() {
 	function handleCreateLedger() {
 		createLedger(getValues())
 			.unwrap()
-			.then((data) => {
+			.then(() => {
 				AddedSuccessfully();
 
 				navigate(`/apps/ledger/ledgers`);
@@ -123,14 +120,6 @@ function LedgerHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteLedger' && ledgerId !== 'new' && (
-					<Typography
-						className="mt-6"
-						variant="subtitle2"
-					>
-						Do you want to remove this ledger?
-					</Typography>
-				)}
 				{handleDelete === 'deleteLedger' && ledgerId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
