@@ -34,11 +34,7 @@ function LedgersTable(props) {
 
 	const totalData = useSelector(selectFilteredLedgers(data));
 	const ledgers = useSelector(selectFilteredLedgers(data?.ledger_accounts));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
+	
 	const ledger = useSelector((state) => state.data.ledgers);
 	console.log('ledgersss', totalData);
 	let serialNumber = 1;
@@ -51,13 +47,7 @@ function LedgersTable(props) {
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getCities());
-		dispatch(getCountries());
-	}, []);
+
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({

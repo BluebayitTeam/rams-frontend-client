@@ -47,9 +47,9 @@ function CallingEntrysTable(props) {
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		refetch();
-	}, [data]);
+	// useEffect(() => {
+	// 	refetch();
+	// }, [data]);
 
 	let serialNumber = 1;
 

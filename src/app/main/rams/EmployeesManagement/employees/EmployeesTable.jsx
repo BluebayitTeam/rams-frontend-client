@@ -94,15 +94,6 @@ function EmployeesTable(props) {
 		}
 	}, [totalData?.employees]);
 
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getDepartments());
-		dispatch(getCities());
-		dispatch(getCountries());
-		dispatch(getEmployees());
-	}, []);
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({

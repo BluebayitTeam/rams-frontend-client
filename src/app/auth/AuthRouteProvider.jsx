@@ -19,6 +19,7 @@ import withReducer from 'app/store/withReducer';
 import useJwtAuth from './services/jwt/useJwtAuth';
 import useFirebaseAuth from './services/firebase/useFirebaseAuth';
 import UserModel from './user/models/UserModel';
+import { USER_BY_TOKEN } from '../constant/constants';
 
 const AuthContext = createContext({
 	isAuthenticated: false
@@ -39,35 +40,35 @@ function AuthRoute(props) {
 	 * Jwt auth service
 	 */
 	const jwtService = useJwtAuth({
-		config: {
-			tokenStorageKey: 'jwt_access_token',
-			signInUrl: 'mock-api/auth/sign-in',
-			signUpUrl: 'mock-api/auth/sign-up',
-			tokenRefreshUrl: 'mock-api/auth/refresh',
-			getUserUrl: 'mock-api/auth/user',
-			updateUserUrl: 'mock-api/auth/user',
-			updateTokenFromHeader: true
-		},
-		onSignedIn: (user) => {
-			dispatch(setUser(user));
-			setAuthService('jwt');
-		},
-		onSignedUp: (user) => {
-			dispatch(setUser(user));
-			setAuthService('jwt');
-		},
-		onSignedOut: () => {
-			dispatch(resetUser());
-			resetAuthService();
-		},
-		onUpdateUser: (user) => {
-			dispatch(updateUser(user));
-		},
-		onError: (error) => {
-			// eslint-disable-next-line no-console
-			console.warn(error);
-		}
-	});
+    config: {
+      tokenStorageKey: 'jwt_access_token',
+      signInUrl: 'mock-api/auth/sign-in',
+      signUpUrl: 'mock-api/auth/sign-up',
+      tokenRefreshUrl: 'mock-api/auth/refresh',
+      getUserUrl: USER_BY_TOKEN,
+      updateUserUrl: 'mock-api/auth/user',
+      updateTokenFromHeader: true,
+    },
+    onSignedIn: (user) => {
+      dispatch(setUser(user));
+      setAuthService('jwt');
+    },
+    onSignedUp: (user) => {
+      dispatch(setUser(user));
+      setAuthService('jwt');
+    },
+    onSignedOut: () => {
+      dispatch(resetUser());
+      resetAuthService();
+    },
+    onUpdateUser: (user) => {
+      dispatch(updateUser(user));
+    },
+    onError: (error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+    },
+  });
 	/**
 	 * Firebase auth service
 	 */

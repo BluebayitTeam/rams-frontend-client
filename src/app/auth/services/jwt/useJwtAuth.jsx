@@ -149,6 +149,69 @@ const useJwtAuth = (props) => {
 		getAccessToken,
 		isAuthenticated
 	]);
+
+
+// 	  useEffect(() => {
+//     const attemptAutoLogin = async () => {
+//       const accessToken = getAccessToken();
+
+//       console.log('accessToken', accessToken);
+
+//       if (isTokenValid(accessToken)) {
+// 		  try {
+			
+//           setIsLoading(true);
+//           const res = await axios.get(authConfig.getUserUrl, {
+//             headers: { Authorization: `${accessToken}` },
+//           });
+
+//           console.log('respondasdasse', res?.data);
+
+//           const userData = {
+//             uid: res?.data?.id,
+//             role: 'Admin'|| 'Guest',
+//             data: {
+//               displayName: `${res?.data?.first_name} ${res?.data?.last_name}`,
+//               photoURL: res?.data?.image,
+//               email: res?.data?.email,
+//               settings: {
+//                 layout: {},
+//                 theme: {},
+//               },
+//               shortcuts: ['apps.calendar', 'apps.mailbox', 'apps.contacts'],
+//             },
+//           };
+//           console.log('userData', userData);
+// setUser(userData);
+//           handleSignInSuccess(userData, accessToken);
+//           return true;
+//         } catch (error) {
+//           console.log('asasasas', error?.response);
+
+//           const axiosError = error;
+//           handleSignInFailure(axiosError);
+//           return false;
+//         }
+//       } else {
+//         resetSession();
+//         return false;
+//       }
+//     };
+
+//     if (!isAuthenticated) {
+//       attemptAutoLogin().then(() => {
+//         setIsLoading(false);
+//       });
+//     }
+//   }, [
+//     isTokenValid,
+//     setSession,
+//     handleSignInSuccess,
+//     handleSignInFailure,
+//     handleError,
+//     getAccessToken,
+//     isAuthenticated,
+//   ]);
 	/**
 	 * Sign in
 	 */

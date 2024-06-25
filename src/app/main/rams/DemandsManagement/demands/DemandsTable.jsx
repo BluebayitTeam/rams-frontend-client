@@ -107,16 +107,7 @@ function DemandsTable(props) {
 		}
 	}, [totalData?.demands, refetch]);
 
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getPackages());
-		dispatch(getDepartments());
-		dispatch(getCities());
-		dispatch(getCountries());
-		dispatch(getEmployees());
-	}, []);
+
 
 	const [selected, setSelected] = useState([]);
 
