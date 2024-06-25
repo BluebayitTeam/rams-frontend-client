@@ -43,7 +43,7 @@ function CvFemalesTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvFemales(data));
 	const femaleCvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
-	const printVoucherRef = useRef();
+	const FeMaleCVPrintRef = useRef();
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -203,10 +203,10 @@ function CvFemalesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
-				{/* <PrintVoucher
-					ref={printVoucherRef}
-					title="Receipt Voucher"
-					type="receipt"
+				{/* <FeMaleCVPrint
+					ref={FeMaleCVPrintRef}
+					title="Male CV"
+					type="CV"
 				/> */}
 				<Table
 					stickyHeader
@@ -321,17 +321,17 @@ function CvFemalesTable(props) {
 											backgroundColor: '#fff'
 										}}
 									>
+										<PrintIcon
+											className="cursor-pointer custom-print-icon-style text-3xl"
+											onClick={() => FeMaleCVPrintRef.current.doPrint(n)}
+										/>
 										<Edit
 											onClick={() => handleUpdateCvFemale(n, 'updateCvFemale')}
-											className="cursor-pointer custom-edit-icon-style text-3xl	"
+											className="cursor-pointer custom-edit-icon-style text-3xl"
 										/>
 										<Delete
 											onClick={() => handleDeleteCvFemale(n, 'deleteCvFemale')}
 											className="cursor-pointer custom-delete-icon-style text-3xl	"
-										/>
-										<PrintIcon
-											className="cursor-pointer custom-print-icon-style text-3xl	"
-											onClick={(cvFemaleEvent) => handlePrintCvFemale(n)}
 										/>
 									</TableCell>
 								</TableRow>

@@ -16,7 +16,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
@@ -30,7 +30,6 @@ import CvMalesTableHead from './CvMalesTableHead';
 import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi';
 
 function CvMalesTable(props) {
-	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const { _setValue } = useForm({
 		mode: 'onChange',

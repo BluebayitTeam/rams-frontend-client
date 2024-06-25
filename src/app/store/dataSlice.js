@@ -26,6 +26,7 @@ import {
 	GET_DEPARTMENTS_WITHOUT_PAGINATION,
 	GET_EMPLOYEE_USERS_WITHOUT_PAGINATION,
 	GET_EMPLOYEES_WITHOUT_PAGINATION,
+	GET_FEMALECV_BY_ID,
 	GET_FORM_CONTROL_HEAD_WITHOUT_PG,
 	GET_GDSS,
 	GET_MENUS_ALL_NESTED,
@@ -200,6 +201,18 @@ export const getThanas = () => (dispatch) => {
 	fetch(GET_THANAS_WITHOUT_PAGINATION, authTOKEN)
 		.then((response) => response.json())
 		.then((data) => dispatch(setThanas(data.thanas)))
+		.catch(() => {});
+};
+export const getFemaleCVPrint = () => (dispatch) => {
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	fetch(GET_FEMALECV_BY_ID, authTOKEN)
+		.then((response) => response.json())
+		.then((data) => dispatch(setFemaleCVPrint(data.femaleCVPrint)))
 		.catch(() => {});
 };
 export const getPackages = () => (dispatch) => {
@@ -1080,6 +1093,9 @@ const dataSlice = createSlice({
 		setThanas: (state, action) => {
 			state.thanas = action.payload ? action.payload : [];
 		},
+		setFemaleCVPrint: (state, action) => {
+			state.femaleCVPrint = action.payload ? action.payload : [];
+		},
 		setDemandVisaEntrys: (state, action) => {
 			state.demandVisaEntrys = action.payload ? action.payload : [];
 		},
@@ -1156,6 +1172,7 @@ const {
 	setUserPermissions,
 	setVendors,
 	setThanas,
+	setFemaleCVPrint,
 	setPackages,
 	setClientTypes,
 	setGDSs,
