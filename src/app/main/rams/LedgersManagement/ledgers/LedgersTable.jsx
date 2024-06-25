@@ -191,7 +191,6 @@ function LedgersTable(props) {
 									tabIndex={-1}
 									key={n.id}
 									selected={isSelected}
-									// onClick={() => handleClick(n)}
 								>
 									<TableCell
 										className="w-40 md:w-64 text-center"
