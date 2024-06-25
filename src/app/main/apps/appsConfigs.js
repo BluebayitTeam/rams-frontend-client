@@ -50,6 +50,7 @@ import QualificationAppConfig from '../rams/QualificationsManagement/Qualificati
 import CvFemaleAppConfig from '../rams/CvFemalesManagement/CvFemaleAppConfig';
 import CvMaleAppConfig from '../rams/CvMalesManagement/CvMaleAppConfig';
 import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
+import LedgerAppConfig from '../rams/LedgersManagement/LedgerAppConfig';
 
 /**
  * The list of application configurations.
@@ -106,6 +107,7 @@ const appsConfigs = [
 	PassengerAppConfig,
 	FeatureDetailAppConfig,
 	FlightAppConfig,
-	GroupAppConfig
+	GroupAppConfig,
+	LedgerAppConfig
 ];
 export default appsConfigs;
