@@ -15,7 +15,7 @@ const DocmentSendApi = api
 			createDocmentSend: build.mutation({
 				query: (newDocmentSend) => ({
 					url: CREATE_DOCUMENT_MAIL,
-					method: 'PUT',
+					method: 'POST',
 					data: DocmentSendModel({
 						visa_entry: newDocmentSend?.visa_entry,
 						status: newDocmentSend?.current_status,

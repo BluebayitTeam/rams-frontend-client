@@ -1,70 +1,38 @@
-/* eslint-disable jsx-a11y/iframe-has-title */
-/* eslint-disable jsx-a11y/alt-text */
-import { styled } from '@mui/system';
-import {
-	Autocomplete,
-	Checkbox,
-	FormControlLabel,
-	Icon,
-	InputAdornment,
-	TextField,
-	Tooltip,
-	tooltipClasses
-} from '@mui/material';
-import { getPassengers } from 'app/store/dataSlice';
-import { makeStyles } from '@mui/styles';
+import { Autocomplete, Checkbox, FormControlLabel, Icon, InputAdornment, TextField } from '@mui/material';
+import { getPassengers } from 'app/store/dataSlice'; 
 
 import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
-import MultiplePassengersTable from './MultiplePassengersTable';
-import { columns } from './data/column';
+import { Controller, useFormContext } from 'react-hook-form'; 
+import { useDispatch, useSelector } from 'react-redux'; 
+import { GET_PASSENGER_BY_ID } from 'src/app/constant/constants'; 
+import MultiplePassengersTable from './MultiplePassengersTable'; 
+import { columns } from './data/column'; 
 
-const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
-	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: '#f5f5f9',
-		color: 'rgba(0, 0, 0, 0.87)',
-		maxWidth: 220,
-		fontSize: theme.typography.pxToRem(12),
-		border: '1px solid #dadde9'
-	}
-}));
-const useStyles = makeStyles((theme) => ({
-	hidden: {
-		display: 'none'
-	},
-	productImageUpload: {
-		transitionProperty: 'box-shadow',
-		transitionDuration: theme.transitions.duration.short,
-		transitionTimingFunction: theme.transitions.easing.easeInOut
-	}
-}));
-
-function DocmentSendForm(props) {
+function DocmentSendForm() {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError } = methods;
+	const { control, formState, setValue } = methods;
 
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
-	const [mltPassengerList, setMltPassengerList] = useState([]);
-	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-	const [showError, setShowError] = useState(false);
-	const [availableVisa, setAvailableVisa] = useState(null);
-	const [documentSends, setDocumentSends] = useState([]);
+	const [mltPassengerList, setMltPassengerList] = useState([]); 
+	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null); 
+	const [showError, setShowError] = useState(false); 
+	// const [availableVisa, setAvailableVisa] = useState(null); 
+	const [documentSends, setDocumentSends] = useState([]); 
 
-	function handleChheckboxSend(id) {
-		dispatch(addDocumentSendColumn(documentSends.find((data) => data?.key === id)));
-	}
+	const handleCheckboxSend = (name, checked) => {
+		const updatedDocumentSends = documentSends.map((documentSend) =>
+			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
+		);
+		setDocumentSends(updatedDocumentSends);
+		
+		dispatch(addDocumentSendColumn(updatedDocumentSends.find((data) => data?.key === name)));
+	};
 
 	const handleChange = (e) => {
 		const { name, checked } = e.target;
-		handleChheckboxSend(name);
-		const tempDocumentSend = documentSends.map((documentSend) =>
-			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-		);
-		setDocumentSends(tempDocumentSend);
+		handleCheckboxSend(name, checked);
 	};
 
 	useEffect(() => {
@@ -75,32 +43,44 @@ function DocmentSendForm(props) {
 	}, [mltPassengerDeletedId]);
 
 	useEffect(() => {
-		dispatch(getPassengers());
-	}, []);
-	const newColumn = [];
+		dispatch(getPassengers()); 
+	}, [dispatch]);
+
 	useEffect(() => {
-		setDocumentSends(columns);
+		setDocumentSends(columns); 
 	}, []);
 
 	useEffect(() => {
 		setValue(
 			'passengers',
-			mltPassengerList?.map((data) => data.id)
+			mltPassengerList?.map((data) => data.id) 
 		);
-	}, [mltPassengerList]);
+	}, [mltPassengerList, setValue]);
 
-	const handleCheckAvailableVisa = (id, qty) => {
-		setShowError(true);
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
+	// const handleCheckAvailableVisa = (id, qty) => {
+	// 	setShowError(true);
+	// 	const authTOKEN = {
+	// 		headers: {
+	// 			'Content-type': 'application/json',
+	// 			Authorization: localStorage.getItem('jwt_access_token') 
+	// 		}
+	// 	};
+	// 	fetch(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN) // Fetch available visas for selected passenger
+	// 		.then((response) => response.json())
+	// 		.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
+			
+	// 		.catch(() => {});
+	// };
+	
+
+	const handlePassengerSelect = (newPassenger) => {
+		if (newPassenger) {
+			// Check if passenger is already in the list
+			if (!mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
+				setMltPassengerList([...mltPassengerList, newPassenger]);
 			}
-		};
-		fetch(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
-			.catch(() => {});
+			// handleCheckAvailableVisa(newPassenger.id, newPassenger.quantity);
+		}
 	};
 
 	return (
@@ -108,6 +88,7 @@ function DocmentSendForm(props) {
 			<div>
 				{documentSends.map((documentSend) => (
 					<FormControlLabel
+						key={documentSend.key}
 						onChange={handleChange}
 						checked={documentSend?.isChecked || false}
 						name={documentSend.key}
@@ -130,7 +111,7 @@ function DocmentSendForm(props) {
 						getOptionLabel={(option) => `${option.passenger_name} - ${option.passport_no}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
-							handleCheckAvailableVisa(newValue?.id, newValue?.quantity);
+							handlePassengerSelect(newValue);
 						}}
 						renderInput={(params) => (
 							<TextField
@@ -165,7 +146,6 @@ function DocmentSendForm(props) {
 			<div>
 				<br />
 				<br />
-				<br />
 
 				<Controller
 					name="email"
@@ -181,10 +161,7 @@ function DocmentSendForm(props) {
 							InputProps={{
 								endAdornment: (
 									<InputAdornment position="end">
-										<Icon
-											className="text-20"
-											color="action"
-										>
+										<Icon className="text-20" color="action">
 											user
 										</Icon>
 									</InputAdornment>
