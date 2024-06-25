@@ -79,7 +79,7 @@ function CvMaleHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Female CV</span>
+						<span className="flex mx-4 font-medium">Male CV</span>
 					</Typography>
 				</motion.div>
 
@@ -90,13 +90,13 @@ function CvMaleHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'Create New Female CV'}
+							{name || 'Create New Male CV'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							Female CV Detail
+							Male CV Detail
 						</Typography>
 					</motion.div>
 				</div>
