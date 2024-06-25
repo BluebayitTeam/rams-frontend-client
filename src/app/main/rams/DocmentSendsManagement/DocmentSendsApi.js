@@ -17,9 +17,10 @@ const DocmentSendApi = api
 					url: CREATE_DOCUMENT_MAIL,
 					method: 'POST',
 					data: DocmentSendModel({
-						visa_entry: newDocmentSend?.visa_entry,
-						status: newDocmentSend?.current_status,
-						passengers: newDocmentSend?.passengers
+						checkbox: newDocmentSend?.checkbox,
+						passengers: newDocmentSend?.passengers,
+						email: newDocmentSend?.email,
+					
 					})
 				}),
 				invalidatesTags: ['docmentSends']

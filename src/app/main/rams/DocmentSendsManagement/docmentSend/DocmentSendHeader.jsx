@@ -31,7 +31,9 @@ function DocmentSendHeader({ handleReset }) {
 		handleReset({ email: '' });
 		setOpenSuccessStatusAlert(true);
 		setTimeout(() => setOpenSuccessStatusAlert(false), 2000);
+		console.log('xjggdasj',getValues)
 	}
+	
 
 	// function handleCancel() {
 	// 	handleReset();

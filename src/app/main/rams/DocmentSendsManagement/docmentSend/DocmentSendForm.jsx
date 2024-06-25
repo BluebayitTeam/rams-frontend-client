@@ -11,14 +11,15 @@ import { columns } from './data/column';
 function DocmentSendForm() {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, setValue } = methods;
+	const { control, formState, setValue, getValues } = methods;
+	
 
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]); 
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null); 
 	const [showError, setShowError] = useState(false); 
-	// const [availableVisa, setAvailableVisa] = useState(null); 
+
 	const [documentSends, setDocumentSends] = useState([]); 
 
 	const handleCheckboxSend = (name, checked) => {
@@ -139,9 +140,7 @@ function DocmentSendForm() {
 				</div>
 			)}
 
-			{showError && mltPassengerList?.length >= availableVisa && (
-				<h4 style={{ color: 'red' }}>Number of Pax Full for this Calling No</h4>
-			)}
+		
 
 			<div>
 				<br />

@@ -2,6 +2,11 @@ import _ from '@lodash';
 
 const DocmentSendModel = (data) =>
 	_.defaults(data || {}, {
-		visa_entry: ''
+		checkbox: '',
+		passengers:'',
+		email: '',
+
+		
+
 	});
 export default DocmentSendModel;
