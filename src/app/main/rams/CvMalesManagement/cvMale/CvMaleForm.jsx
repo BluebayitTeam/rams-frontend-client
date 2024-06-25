@@ -162,7 +162,7 @@ function CvMaleForm(props) {
 			/>
 
 			<Controller
-				name="experience_task"
+				name="experience"
 				control={control}
 				render={({ field }) => {
 					return (
@@ -183,7 +183,7 @@ function CvMaleForm(props) {
 			/>
 
 			<Controller
-				name="experience_period"
+				name="year_of_experience"
 				control={control}
 				render={({ field }) => {
 					return (

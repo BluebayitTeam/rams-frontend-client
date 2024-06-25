@@ -7,7 +7,7 @@ import {
 	CREATE_MALECV,
 	DELETE_MALECV,
 	UPDATE_MALECV,
-	MALECV_BY_PASSENGER_ID
+	MALECV_BY_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -34,7 +34,7 @@ const CvMaleApi = api
 			}),
 			getCvMale: build.query({
 				query: (cvMaleId) => ({
-					url: `${MALECV_BY_PASSENGER_ID}${cvMaleId}`
+					url: `${MALECV_BY_ID}${cvMaleId}`
 				}),
 				providesTags: ['cvMales']
 			}),

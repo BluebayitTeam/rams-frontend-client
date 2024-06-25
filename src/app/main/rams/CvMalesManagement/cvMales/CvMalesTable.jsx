@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -17,6 +18,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector } from 'react-redux';
+import PrintIcon from '@mui/icons-material/Print';
 
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
@@ -130,7 +132,6 @@ function CvMalesTable(props) {
 	}
 
 	function handleUpdateCvMale(item, event) {
-		console.log('sadasdasdsad', event);
 		localStorage.removeItem('deleteCvMale');
 		localStorage.setItem('updateCvMale', event);
 		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
@@ -315,6 +316,10 @@ function CvMalesTable(props) {
 											align="right"
 											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 										>
+											<PrintIcon
+												className="cursor-pointer custom-print-icon-style text-3xl"
+												onClick={() => FeMaleCVPrintRef.current.doPrint(n)}
+											/>
 											<Edit
 												onClick={() => handleUpdateCvMale(n, 'updateCvMale')}
 												className="cursor-pointer custom-edit-icon-style"
