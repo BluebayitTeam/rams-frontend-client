@@ -49,6 +49,10 @@ module.exports = {
 				avoidEscape: true
 			}
 		],
+		env: {
+			browser: true, // Add this line to define the browser environment
+			node: true // Optionally add this line if you're also using Node.js
+		},
 		'padding-line-between-statements': [
 			'warn',
 			{ blankLine: 'always', prev: 'function', next: '*' },
@@ -85,7 +89,12 @@ module.exports = {
 		'unused-imports/no-unused-imports': 'error',
 		'unused-imports/no-unused-vars': [
 			'warn',
-			{ vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }
+			{
+				vars: 'all',
+				varsIgnorePattern: '^_',
+				args: 'after-used',
+				argsIgnorePattern: '^_'
+			}
 		],
 		'no-useless-constructor': 'off',
 		'no-tabs': 'off',
