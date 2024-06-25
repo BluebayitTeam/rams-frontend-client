@@ -41,18 +41,8 @@ function EmployeesTable(props) {
 
 	const { data, isLoading, refetch } = useGetEmployeesQuery({ ...pageAndSize, searchKey });
 
-	console.log('sdsdsds', data);
-
 	const totalData = useSelector(selectFilteredEmployees(data));
 	const employees = useSelector(selectFilteredEmployees(data?.employees));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const departments = useSelector((state) => state.data.departments);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const employee = useSelector((state) => state.data.employees);
-	console.log('employeesss', totalData);
 	const [rows, setRows] = useState([]);
 	let serialNumber = 1;
 

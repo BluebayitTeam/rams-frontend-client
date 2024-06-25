@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
@@ -34,13 +33,7 @@ function QualificationsTable(props) {
 
 	const totalData = useSelector(selectFilteredQualifications(data));
 	const qualifications = useSelector(selectFilteredQualifications(data?.qualifications));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const qualification = useSelector((state) => state.data.qualifications);
-	console.log('qualificationsss', totalData);
+
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -51,13 +44,7 @@ function QualificationsTable(props) {
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getCities());
-		dispatch(getCountries());
-	}, []);
+
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({

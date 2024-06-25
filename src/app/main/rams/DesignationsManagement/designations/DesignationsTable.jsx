@@ -13,7 +13,6 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { Delete, Edit } from '@mui/icons-material';
-import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import DesignationsTableHead from './DesignationsTableHead';
@@ -28,20 +27,10 @@ function DesignationsTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-
 	const { data, isLoading, refetch } = useGetDesignationsQuery({ ...pageAndSize, searchKey });
-
-	console.log('sdsdsds', data);
-
 	const totalData = useSelector(selectFilteredDesignations(data));
 	const designations = useSelector(selectFilteredDesignations(data?.designations));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const designation = useSelector((state) => state.data.designations);
-	console.log('designationsss', totalData);
+
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -51,13 +40,7 @@ function DesignationsTable(props) {
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getCities());
-		dispatch(getCountries());
-	}, []);
+
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({
