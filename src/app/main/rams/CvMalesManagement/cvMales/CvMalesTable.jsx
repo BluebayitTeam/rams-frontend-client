@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
