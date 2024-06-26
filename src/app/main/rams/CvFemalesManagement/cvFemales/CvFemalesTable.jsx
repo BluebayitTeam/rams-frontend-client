@@ -5,29 +5,30 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 
-import FuseScrollbars from '@fuse/core/FuseScrollbars'; // Custom scrollbar component
-import _ from '@lodash'; // Utility library
-import Table from '@mui/material/Table'; // MUI Table component
-import TableBody from '@mui/material/TableBody'; // MUI TableBody component
-import TablePagination from '@mui/material/TablePagination'; // MUI TablePagination component
-import TableRow from '@mui/material/TableRow'; // MUI TableRow component
-import Typography from '@mui/material/Typography'; // MUI Typography component
-import { motion } from 'framer-motion'; // Animation library
-import { useEffect, useRef, useState } from 'react'; // React hooks
-import withRouter from '@fuse/core/withRouter'; // HOC for routing
-import FuseLoading from '@fuse/core/FuseLoading'; // Loading spinner component
-import { useSelector } from 'react-redux'; // Redux hooks
-import { Pagination, TableCell } from '@mui/material'; // MUI Pagination and TableCell components
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material'; // MUI icons
-import { rowsPerPageOptions } from 'src/app/@data/data'; // Custom rows per page options
-import { useForm } from 'react-hook-form'; // React hook form library
-import { zodResolver } from '@hookform/resolvers/zod'; // Zod resolver for validation
-import { BASE_URL } from 'src/app/constant/constants'; // Base URL constant
-import moment from 'moment'; // Date manipulation library
-import DescriptionIcon from '@mui/icons-material/Description'; // MUI description icon
+import FuseScrollbars from '@fuse/core/FuseScrollbars'; 
+import _ from '@lodash';
+import Table from '@mui/material/Table'; 
+import TableBody from '@mui/material/TableBody'; 
+import TablePagination from '@mui/material/TablePagination'; 
+import TableRow from '@mui/material/TableRow'; 
+import Typography from '@mui/material/Typography'; 
+import { motion } from 'framer-motion'; 
+import { useEffect, useRef, useState } from 'react'; 
+import withRouter from '@fuse/core/withRouter'; 
+import FuseLoading from '@fuse/core/FuseLoading'; 
+import { useSelector } from 'react-redux'; 
+import { Pagination, TableCell } from '@mui/material'; 
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material'; 
+import { rowsPerPageOptions } from 'src/app/@data/data';
+import { useForm } from 'react-hook-form'; 
+import { zodResolver } from '@hookform/resolvers/zod'; 
+import { BASE_URL } from 'src/app/constant/constants'; 
+import moment from 'moment'; 
+import DescriptionIcon from '@mui/icons-material/Description';
 import PrintIcon from '@mui/icons-material/Print';
-import CvFemalesTableHead from './CvFemalesTableHead'; // Custom table header component
-import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi'; // Redux selectors and API hooks
+import CvFemalesTableHead from './CvFemalesTableHead'; 
+import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi'; 
+import PrintFemaleCv from '@fuse/utils/Print/PrintFemaleCv';
 
 // import PrintVoucher from '../PrintVoucher';
 function CvFemalesTable(props) {
@@ -43,7 +44,8 @@ function CvFemalesTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvFemales(data));
 	const femaleCvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
-	const FeMaleCVPrintRef = useRef();
+		const printFemaleCvRef = useRef();
+
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -203,11 +205,10 @@ function CvFemalesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
-				{/* <FeMaleCVPrint
-					ref={FeMaleCVPrintRef}
-					title="Male CV"
-					type="CV"
-				/> */}
+				
+				<PrintFemaleCv
+					ref={printFemaleCvRef}
+				/>
 				<Table
 					stickyHeader
 					className="min-w-xl "
@@ -323,7 +324,7 @@ function CvFemalesTable(props) {
 									>
 										<PrintIcon
 											className="cursor-pointer custom-print-icon-style text-3xl"
-											onClick={() => FeMaleCVPrintRef.current.doPrint(n)}
+											onClick={() => printFemaleCvRef.current.doPrint(n)}
 										/>
 										<Edit
 											onClick={() => handleUpdateCvFemale(n, 'updateCvFemale')}
