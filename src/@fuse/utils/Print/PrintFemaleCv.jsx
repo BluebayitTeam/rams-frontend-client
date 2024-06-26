@@ -129,6 +129,9 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
   const toWords = new ToWords();
   const [generalData, setGeneralData] = useState({});
   const [data, setData] = useState({});
+
+  console.log("datasaasasa", data)
+
   const [femaleCVPrint , setFemaleCVPrint ] = useState({});
 
   console.log("datasasa", data)
@@ -155,7 +158,7 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
   });
 
 
-  const getVoucerData = async (id) => {
+  const getFemaleCvData = async (id) => {
     try {
       const response = await axios.get(
         `${GET_FEMALECV_BY_ID_FOR_PRINT}${id}`,
@@ -165,15 +168,21 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
           },
         }
       );
+            console.log("response?.data", response?.data)
+setData(response?.data)
       return response?.data || {};
+
+
     } catch (er) {
       throw er;
     }
   };
 
   useImperativeHandle(ref, () => ({
+    
     doPrint(n) {
-      getVoucerData(n.id)
+      debugger
+      getFemaleCvData(n.id)
         .then((res) => {
           unstable_batchedUpdates(() => {
             setData(
