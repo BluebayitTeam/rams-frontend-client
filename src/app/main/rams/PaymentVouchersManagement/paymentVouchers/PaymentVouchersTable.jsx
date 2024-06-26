@@ -8,16 +8,18 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
+import PrintIcon from '@mui/icons-material/Print';
 import PaymentVouchersTableHead from './PaymentVouchersTableHead';
 import { selectFilteredPaymentVouchers, useGetPaymentVouchersQuery } from '../PaymentVouchersApi';
 import moment from 'moment';
+import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
 
 /**
  * The paymentVouchers table.
@@ -34,6 +36,7 @@ function PaymentVouchersTable(props) {
     selectFilteredPaymentVouchers(data?.payment_vouchers)
   );
 	let serialNumber = 1;
+	const printVoucherRef = useRef();
 
 	useEffect(() => {
 		// Fetch data with specific page and size when component mounts or when page and size change
@@ -148,26 +151,31 @@ function PaymentVouchersTable(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
-				>
-					<PaymentVouchersTableHead
-						selectedPaymentVoucherIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={paymentVouchers.length}
-						onMenuItemClick={handleDeselect}
-					/>
+    <div className='w-full flex flex-col min-h-full px-10'>
+      <FuseScrollbars className='grow overflow-x-auto'>
+        <PrintVoucher
+          ref={printVoucherRef}
+          title='Payment Voucher'
+          type='payment'
+        />
+        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+          <PaymentVouchersTableHead
+            selectedPaymentVoucherIds={selected}
+            tableOrder={tableOrder}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={paymentVouchers.length}
+            onMenuItemClick={handleDeselect}
+          />
 
-					<TableBody>
-						{_.orderBy(paymentVouchers, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
+          <TableBody>
+            {_.orderBy(
+              paymentVouchers,
+              [tableOrder.id],
+              [tableOrder.direction]
+            ).map((n) => {
+              const isSelected = selected.indexOf(n.id) !== -1;
+              return (
                 <TableRow
                   className='h-20 cursor-pointer'
                   hover
@@ -284,6 +292,10 @@ function PaymentVouchersTable(props) {
                       zIndex: 1,
                       backgroundColor: '#fff',
                     }}>
+                    <PrintIcon
+                      className='cursor-pointer custom-print-icon-style'
+                      onClick={() => printVoucherRef.current.doPrint(n)}
+                    />
                     <Edit
                       onClick={(event) =>
                         handleUpdatePaymentVoucher(n, 'updatePaymentVoucher')
@@ -300,44 +312,44 @@ function PaymentVouchersTable(props) {
                   </TableCell>
                 </TableRow>
               );
-						})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
+            })}
+          </TableBody>
+        </Table>
+      </FuseScrollbars>
 
-			<div id="pagiContainer">
-				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
+      <div id='pagiContainer'>
+        <Pagination
+          // classes={{ ul: 'flex-nowrap' }}
+          count={totalData?.total_pages}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
 
-				<TablePagination
-					className="shrink-0 border-t-1"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</div>
-		</div>
-	);
+        <TablePagination
+          className='shrink-0 border-t-1'
+          component='div'
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalData?.total_pages}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(PaymentVouchersTable);
