@@ -12,24 +12,54 @@ function DocmentSendForm() {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, setValue, getValues } = methods;
-	
+
 
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]); 
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null); 
 	const [showError, setShowError] = useState(false); 
-
+	// const [availableVisa, setAvailableVisa] = useState(null); 
 	const [documentSends, setDocumentSends] = useState([]); 
+	const [keyData, setKeyData] = useState([])
+
+	// const handleCheckboxSend = (name, checked) => {
+	// 	const updatedDocumentSends = documentSends.map((documentSend) =>
+	// 		documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
+	// 	);
+	// 	setDocumentSends(updatedDocumentSends);
+		
+	// 	// dispatch(addDocumentSendColumn(updatedDocumentSends.find((data) => data?.key === name)));
+	// 	setKeyData([...keyData, updatedDocumentSends.find((data) => data?.key === name).key])
+	// 	setValue('checkbox', keyData)
+	// };
 
 	const handleCheckboxSend = (name, checked) => {
-		const updatedDocumentSends = documentSends.map((documentSend) =>
-			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-		);
-		setDocumentSends(updatedDocumentSends);
-		
-		dispatch(addDocumentSendColumn(updatedDocumentSends.find((data) => data?.key === name)));
-	};
+    const updatedDocumentSends = documentSends.map((documentSend) =>
+        documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
+    );
+    setDocumentSends(updatedDocumentSends);
+
+    const updatedKeyData = [...keyData];
+    const documentSend = updatedDocumentSends.find((data) => data?.key === name);
+
+    if (documentSend) {
+        
+        const keyIndex = updatedKeyData.indexOf(documentSend.key);
+
+        if (checked && keyIndex === -1) {
+           
+            updatedKeyData.push(documentSend.key);
+        } else if (!checked && keyIndex !== -1) {
+           
+            updatedKeyData.splice(keyIndex, 1);
+        }
+    }
+
+    setKeyData(updatedKeyData);
+    setValue('checkbox', updatedKeyData);
+};
+
 
 	const handleChange = (e) => {
 		const { name, checked } = e.target;
@@ -83,7 +113,7 @@ function DocmentSendForm() {
 			// handleCheckAvailableVisa(newPassenger.id, newPassenger.quantity);
 		}
 	};
-
+console.log("test",getValues())
 	return (
 		<div>
 			<div>
@@ -140,7 +170,9 @@ function DocmentSendForm() {
 				</div>
 			)}
 
-		
+			{showError && mltPassengerList?.length >= availableVisa && (
+				<h4 style={{ color: 'red' }}>Number of Pax Full for this Calling No</h4>
+			)}
 
 			<div>
 				<br />
