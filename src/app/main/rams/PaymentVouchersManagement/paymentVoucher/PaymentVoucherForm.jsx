@@ -1,6 +1,24 @@
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
 import { FormControl } from '@mui/base';
-
+import {
+	Autocomplete,
+	Button,
+	Checkbox,
+	Dialog,
+	DialogContent,
+	FormControlLabel,
+	FormLabel,
+	Grid,
+	Paper,
+	Radio,
+	RadioGroup,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableRow,
+	Typography
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import {
@@ -74,12 +92,12 @@ function PaymentVoucherForm() {
 
 	const [file, setFile] = useState(null);
 	useEffect(() => {
-		const currentImage = getValues('image');
+		const currentFile = getValues('file');
 
-		if (currentImage && !currentImage.name) {
-			setFile(`${BASE_URL}/${currentImage}`);
+		if (currentFile && !currentFile.name) {
+			setFile(`${BASE_URL}/${currentFile}`);
 		}
-	}, [paymentVoucherId, watch('image')]);
+	}, [paymentVoucherId, watch('file')]);
 	useEffect(() => {
 		cheackDbCdEquality();
 	}, [getValues()]);
@@ -102,7 +120,7 @@ function PaymentVoucherForm() {
 
 		const totalCreditAmount = getTotalAmount(items || [], 'credit_amount');
 
-		if (totalDebitAmount == totalCreditAmount && totalDebitAmount > 0) {
+		if (totalDebitAmount === totalCreditAmount && totalDebitAmount > 0) {
 			setIsDebitCreditMatched(true);
 			setDebitCreditMessage('Congratulations, Debit & Credit match...');
 		} else {
@@ -159,7 +177,7 @@ function PaymentVoucherForm() {
 			.then((data) => {
 				setValue(`items.${idx}.bank_or_cash`, data?.has_bank_accounts);
 
-				if (data?.has_bank_accounts == true) {
+				if (data?.has_bank_accounts === true) {
 					setSelectedId(idx);
 					setModalOpen(true);
 					setValue(`items.${idx}.is_cheque`, 'cheque');
@@ -230,7 +248,7 @@ function PaymentVoucherForm() {
 						className="mt-8 mb-16"
 						freeSolo
 						options={branchs}
-						value={value ? branchs.find((data) => data.id == value) : null}
+						value={value ? branchs.find((data) => data.id === value) : null}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
@@ -260,7 +278,7 @@ function PaymentVoucherForm() {
 						freeSolo
 						autoHighlight
 						options={passengers}
-						value={value ? passengers.find((data) => data.id == value) : null}
+						value={value ? passengers.find((data) => data.id === value) : null}
 						getOptionLabel={(option) =>
 							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
 						}
@@ -326,7 +344,7 @@ function PaymentVoucherForm() {
 			<div className="text-center">
 				<div>
 					<FileUpload
-						name="image"
+						name="file"
 						label="File"
 						control={control}
 						setValue={setValue}

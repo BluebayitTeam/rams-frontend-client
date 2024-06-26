@@ -49,10 +49,7 @@ module.exports = {
 				avoidEscape: true
 			}
 		],
-		// env: {
-		// 	browser: true,
-		// 	node: true
-		// },
+	
 		'padding-line-between-statements': [
 			'warn',
 			{ blankLine: 'always', prev: 'function', next: '*' },
