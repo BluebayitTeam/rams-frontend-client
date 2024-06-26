@@ -1,4 +1,6 @@
 /* eslint-disable no-nested-ternary */
+
+// Import necessary modules and components
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
@@ -17,7 +19,10 @@ import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import PrintIcon from '@mui/icons-material/Print';
 import PaymentVouchersTableHead from './PaymentVouchersTableHead';
-import { selectFilteredPaymentVouchers, useGetPaymentVouchersQuery } from '../PaymentVouchersApi';
+import {
+  selectFilteredPaymentVouchers,
+  useGetPaymentVouchersQuery,
+} from '../PaymentVouchersApi';
 import moment from 'moment';
 import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
 
@@ -25,132 +30,134 @@ import PrintVoucher from '@fuse/utils/Print/PrintVoucher';
  * The paymentVouchers table.
  */
 function PaymentVouchersTable(props) {
-	const dispatch = useDispatch();
-	const { navigate, searchKey } = props;
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetPaymentVouchersQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredPaymentVouchers(data));
-	const paymentVouchers = useSelector(
+  const dispatch = useDispatch();
+  const { navigate, searchKey } = props;
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const { data, isLoading, refetch } = useGetPaymentVouchersQuery({
+    ...pageAndSize,
+    searchKey,
+  });
+  const totalData = useSelector(selectFilteredPaymentVouchers(data));
+  const paymentVouchers = useSelector(
     selectFilteredPaymentVouchers(data?.payment_vouchers)
   );
-	let serialNumber = 1;
-	const printVoucherRef = useRef();
+  let serialNumber = 1;
+  const printVoucherRef = useRef();
 
-	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
+  useEffect(() => {
+    // Fetch data with specific page and size when component mounts or when page and size change
+    refetch({ page, rowsPerPage });
+  }, [page, rowsPerPage]);
 
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
-	const [selected, setSelected] = useState([]);
+  useEffect(() => {
+    refetch({ searchKey });
+  }, [searchKey]);
+  const [selected, setSelected] = useState([]);
 
-	const [tableOrder, setTableOrder] = useState({
-		direction: 'asc',
-		id: ''
-	});
+  const [tableOrder, setTableOrder] = useState({
+    direction: 'asc',
+    id: '',
+  });
 
-	function handleRequestSort(event, property) {
-		const newOrder = { id: property, direction: 'desc' };
+  function handleRequestSort(event, property) {
+    const newOrder = { id: property, direction: 'desc' };
 
-		if (tableOrder.id === property && tableOrder.direction === 'desc') {
-			newOrder.direction = 'asc';
-		}
+    if (tableOrder.id === property && tableOrder.direction === 'desc') {
+      newOrder.direction = 'asc';
+    }
 
-		setTableOrder(newOrder);
-	}
+    setTableOrder(newOrder);
+  }
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(paymentVouchers.map((n) => n.id));
-			return;
-		}
+  function handleSelectAllClick(event) {
+    if (event.target.checked) {
+      setSelected(paymentVouchers.map((n) => n.id));
+      return;
+    }
 
-		setSelected([]);
-	}
+    setSelected([]);
+  }
 
-	function handleDeselect() {
-		setSelected([]);
-	}
+  function handleDeselect() {
+    setSelected([]);
+  }
 
-	function handleClick(item) {
-		navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
-	}
+  function handleClick(item) {
+    navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
+  }
 
-	function handleUpdatePaymentVoucher(item, event) {
-		localStorage.removeItem('deletePaymentVoucher');
-		localStorage.setItem('updatePaymentVoucher', event);
-		navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
-	}
+  function handleUpdatePaymentVoucher(item, event) {
+    localStorage.removeItem('deletePaymentVoucher');
+    localStorage.setItem('updatePaymentVoucher', event);
+    navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
+  }
 
-	function handleDeletePaymentVoucher(item, event) {
-		localStorage.removeItem('updatePaymentVoucher');
-		localStorage.setItem('deletePaymentVoucher', event);
-		navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
-	}
+  function handleDeletePaymentVoucher(item, event) {
+    localStorage.removeItem('updatePaymentVoucher');
+    localStorage.setItem('deletePaymentVoucher', event);
+    navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
+  }
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+  function handleCheck(event, id) {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
 
-		setSelected(newSelected);
-	}
+    setSelected(newSelected);
+  }
 
-	// pagination
-	const handlePagination = (e, handlePage) => {
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
-	};
+  // pagination
+  const handlePagination = (e, handlePage) => {
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
+  };
 
-	function handleChangePage(event, value) {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
-	}
+  function handleChangePage(event, value) {
+    setPage(value);
+    setPageAndSize({ ...pageAndSize, page: value + 1 });
+  }
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(+event.target.value);
-		setPageAndSize({ ...pageAndSize, size: event.target.value });
-	}
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPageAndSize({ ...pageAndSize, size: event.target.value });
+  }
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
-	if (paymentVouchers?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no paymentVouchers!
-				</Typography>
-			</motion.div>
-		);
-	}
+  if (paymentVouchers?.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There are no paymentVouchers!
+        </Typography>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <div className='w-full flex flex-col min-h-full px-10'>
       <FuseScrollbars className='grow overflow-x-auto'>
         <PrintVoucher
@@ -291,6 +298,7 @@ function PaymentVouchersTable(props) {
                       right: 0,
                       zIndex: 1,
                       backgroundColor: '#fff',
+                      display: 'flex',
                     }}>
                     <PrintIcon
                       className='cursor-pointer custom-print-icon-style'

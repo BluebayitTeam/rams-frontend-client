@@ -1,52 +1,82 @@
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
-import { FormControl } from '@mui/base';
-import { Autocomplete, Box, Checkbox, FormControlLabel, Grid, Icon, IconButton, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import {  FormControl } from '@mui/base';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Checkbox,
+  Dialog,
+  DialogContent,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Icon,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Radio,
+  RadioGroup,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
-import { getBangladeshAllBanks, getBranches, getCurrencies, getLedgers, getPassengers, getSubLedgers } from 'app/store/dataSlice';
+import {
+  getBangladeshAllBanks,
+  getBranches,
+  getCurrencies,
+  getLedgers,
+  getPassengers,
+  getSubLedgers,
+} from 'app/store/dataSlice';
 import clsx from 'clsx';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import countryCodes from 'src/app/@data/countrycodes';
 import { genders } from 'src/app/@data/data';
-import { BASE_URL } from 'src/app/constant/constants';
+import { BASE_URL, CHECK_BANK_OR_CASH, GET_LEDGER_CURRENT_BALANCE } from 'src/app/constant/constants';
 import getTotalAmount from 'src/app/@helpers/getTotalAmount';
-
 
 const useStyles = makeStyles((theme) => ({
   ...getAccountFormStyles(theme),
 }));
 
 function PaymentVoucherForm(props) {
-		const classes = useStyles();
+  const classes = useStyles();
 
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-		const { paymentVoucherId } = useParams();
+  const dispatch = useDispatch();
+  const methods = useFormContext();
+  const { paymentVoucherId } = useParams();
 
-	const { control, formState, getValues, setValue, reset, watch } = methods;
+  const { control, formState, getValues, setValue, reset, watch } = methods;
 
-	console.log("getValues", getValues())
+  console.log('getValues', getValues());
 
-	const { errors } = formState;
-const passengers = useSelector((state) => state.data.passengers);
-const branchs = useSelector((state) => state.data.branches);
-const subLedgers = useSelector((state) => state.data.subLedgers);
-const ledgers = useSelector((state) => state.data.ledgers);
-const currencies = useSelector((state) => state.data.currencies);
-const accountName = ledgers.filter(
-  (data) => data?.head_group?.name === 'Bank Accounts'
-);
-const bangladeshAllBanks = useSelector(
-  (state) => state.data.bangladeshAllBanks
-);
-	
-	const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
+  const { errors } = formState;
+  const passengers = useSelector((state) => state.data.passengers);
+  const branchs = useSelector((state) => state.data.branches);
+  const subLedgers = useSelector((state) => state.data.subLedgers);
+  const ledgers = useSelector((state) => state.data.ledgers);
+  const currencies = useSelector((state) => state.data.currencies);
+  const accountName = ledgers.filter(
+    (data) => data?.head_group?.name === 'Bank Accounts'
+  );
+  const bangladeshAllBanks = useSelector(
+    (state) => state.data.bangladeshAllBanks
+  );
+
+  const [isDebitCreditMatched, setIsDebitCreditMatched] = useState(true);
   const [debitCreditMessage, setDebitCreditMessage] = useState('');
   const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
   const [ledgerMessage, setLedgerMessage] = useState('');
@@ -59,24 +89,22 @@ const bangladeshAllBanks = useSelector(
       : false
   );
   const [bankInfo, setBankInfo] = useState(getValues()?.items);
-	const { fields, remove } = useFieldArray({
+  const { fields, remove } = useFieldArray({
     control,
     name: 'items',
     keyName: 'key',
   });
   const values = getValues();
-	useEffect(() => {
+  useEffect(() => {
     dispatch(getPassengers());
     dispatch(getBranches());
     dispatch(getSubLedgers());
     dispatch(getLedgers());
     dispatch(getCurrencies());
     dispatch(getBangladeshAllBanks());
-	}, []);
-	
+  }, []);
 
-	
-	useEffect(() => {
+  useEffect(() => {
     cheackDbCdEquality();
   }, [getValues()]);
   const handleChange = (event) => {
@@ -189,6 +217,7 @@ const bangladeshAllBanks = useSelector(
   }, [fields]);
   <Autocomplete onChange={handleAutocompleteChange} />;
   const handleGetLedgerCurrentBalance = (ledgerId, idx) => {
+    debugger
     const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
@@ -217,7 +246,7 @@ const bangladeshAllBanks = useSelector(
       setValue('currency', '');
     }
   }, [watch('is_foreign_currency')]);
-	return (
+  return (
     <div>
       <Controller
         name='branch'
@@ -315,10 +344,7 @@ const bangladeshAllBanks = useSelector(
         }}
       />
 
-			<div className='flex'>
-				
-
-				
+      <div className='flex'>
         <Controller
           name='is_foreign_currency'
           control={control}
@@ -460,8 +486,6 @@ const bangladeshAllBanks = useSelector(
           )}
         />
 
-        
-
         <Controller
           name='rp_date'
           control={control}
@@ -555,28 +579,30 @@ const bangladeshAllBanks = useSelector(
                                 options={ledgers}
                                 value={
                                   value
-                                    ? ledgers.find((data) => data.id == value)
+                                    ? ledgers.find((data) => data.id === value)
                                     : null
                                 }
                                 getOptionLabel={(option) => `${option.name}`}
-                                InputLabelProps={{ shrink: true }}
                                 onChange={(_event, newValue) => {
-                                  onChange(newValue?.id);
-                                //   checkEmptyLedger();
-                                  handleCheckBankOrCash(newValue?.id, idx);
-                                  handleGetLedgerCurrentBalance(
-                                    newValue?.id,
-                                    idx
-                                  );
+                                  if (newValue) {
+                                    onChange(newValue.id);
+                                    checkEmptyLedger();
+                                 handleCheckBankOrCash(newValue.id, idx);
+                                    handleGetLedgerCurrentBalance(
+                                      newValue.id,
+                                      idx
+                                    );
+                                  } else {
+                                    onChange(null);
+                                  }
                                 }}
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
-                                    placeholder='Select a account'
+                                    placeholder='Select an account'
                                     label='Account'
                                     style={{ width: '300px' }}
                                     variant='outlined'
-                                    // error={!value}
                                     InputLabelProps={
                                       value
                                         ? { shrink: true }
