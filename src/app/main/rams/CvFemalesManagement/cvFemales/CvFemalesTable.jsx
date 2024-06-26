@@ -5,30 +5,30 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 
-import FuseScrollbars from '@fuse/core/FuseScrollbars'; 
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Table from '@mui/material/Table'; 
-import TableBody from '@mui/material/TableBody'; 
-import TablePagination from '@mui/material/TablePagination'; 
-import TableRow from '@mui/material/TableRow'; 
-import Typography from '@mui/material/Typography'; 
-import { motion } from 'framer-motion'; 
-import { useEffect, useRef, useState } from 'react'; 
-import withRouter from '@fuse/core/withRouter'; 
-import FuseLoading from '@fuse/core/FuseLoading'; 
-import { useSelector } from 'react-redux'; 
-import { Pagination, TableCell } from '@mui/material'; 
-import { Delete, Edit, PictureAsPdf } from '@mui/icons-material'; 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import withRouter from '@fuse/core/withRouter';
+import FuseLoading from '@fuse/core/FuseLoading';
+import { useSelector } from 'react-redux';
+import { Pagination, TableCell } from '@mui/material';
+import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { useForm } from 'react-hook-form'; 
-import { zodResolver } from '@hookform/resolvers/zod'; 
-import { BASE_URL } from 'src/app/constant/constants'; 
-import moment from 'moment'; 
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { BASE_URL } from 'src/app/constant/constants';
+import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PrintIcon from '@mui/icons-material/Print';
-import CvFemalesTableHead from './CvFemalesTableHead'; 
-import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi'; 
 import PrintFemaleCv from '@fuse/utils/Print/PrintFemaleCv';
+import CvFemalesTableHead from './CvFemalesTableHead';
+import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi';
 
 // import PrintVoucher from '../PrintVoucher';
 function CvFemalesTable(props) {
@@ -44,7 +44,7 @@ function CvFemalesTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvFemales(data));
 	const femaleCvs = useSelector(selectFilteredCvFemales(data?.female_cvs));
-		const printFemaleCvRef = useRef();
+	const printFemaleCvRef = useRef();
 
 	useEffect(() => {
 		refetch({ searchKey });
@@ -205,9 +205,10 @@ function CvFemalesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
-				
 				<PrintFemaleCv
 					ref={printFemaleCvRef}
+					title="printFemaleCvr"
+					type="CV"
 				/>
 				<Table
 					stickyHeader
