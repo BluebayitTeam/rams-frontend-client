@@ -55,8 +55,6 @@ function PaymentVoucherForm() {
 
 	const { control, formState, getValues, setValue, reset, watch } = methods;
 
-	console.log('getValues', getValues());
-
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const branchs = useSelector((state) => state.data.branches);
@@ -101,6 +99,7 @@ function PaymentVoucherForm() {
 	useEffect(() => {
 		cheackDbCdEquality();
 	}, [getValues()]);
+
 	const handleChange = (event) => {
 		setChecked(event.target.checked);
 	};
@@ -888,15 +887,17 @@ function PaymentVoucherForm() {
 												name={`items.${idx}.is_post_date`}
 												control={control}
 												render={({ field }) => (
-													<CustomDatePicker
-														field={field}
-														label="Post Date"
-														required
-														className="mt-8 mb-16 w-full"
-														error={!!errors.is_post_date}
-														helperText={errors?.is_post_date?.message}
-														placeholder="DD-MM-YYYY"
-													/>
+													<FormControl>
+														<FormControlLabel
+															label="Post Date"
+															control={
+																<Checkbox
+																	{...field}
+																	checked={field.value ? field.value : false}
+																/>
+															}
+														/>
+													</FormControl>
 												)}
 											/>
 

@@ -34,7 +34,8 @@ function PaymentVoucherHeader() {
 	const handleUpdate = localStorage.getItem('updatePaymentVoucher');
 
 	function handleUpdatePaymentVoucher() {
-		savePaymentVoucher(getValues()).then((data) => {
+		console.log(`jbjk`, getValues());
+		savePaymentVoucher({ ...getValues(), id: paymentVoucherId }).then((data) => {
 			UpdatedSuccessfully();
 			navigate(`/apps/paymentVoucher/paymentVouchers`);
 		});

@@ -16,91 +16,91 @@ import { useDeletePaymentVouchersMutation } from '../PaymentVouchersApi';
  */
 
 const rows = [
-  {
-    id: 'SL',
-    align: 'left',
-    disablePadding: true,
-    label: 'SL',
-    sort: true,
-  },
-  {
-    id: 'date',
-    align: 'left',
-    disablePadding: true,
-    label: 'Date',
-    sort: true,
-  },
-  {
-    id: 'branch',
-    align: 'left',
-    disablePadding: false,
-    label: 'Branch',
-    sort: true,
-  },
-  {
-    id: 'invoice_no',
-    align: 'left',
-    disablePadding: false,
-    label: 'Invoice No',
-    sort: true,
-  },
-  {
-    id: 'ledger',
-    align: 'left',
-    disablePadding: false,
-    label: 'Ledger',
-    sort: true,
-  },
-  {
-    id: 'sub-ledger',
-    align: 'left',
-    disablePadding: false,
-    label: 'Sub Ledger',
-    sort: true,
-  },
-  {
-    id: 'currency',
-    align: 'left',
-    disablePadding: false,
-    label: 'Currency',
-    sort: true,
-  },
-  {
-    id: 'currency_rate',
-    align: 'left',
-    disablePadding: false,
-    label: 'Rate',
-    sort: true,
-  },
-  {
-    id: 'Amount',
-    align: 'left',
-    disablePadding: false,
-    label: 'Foreign Currency',
-    sort: true,
-  },
-  {
-    id: 'details',
-    align: 'left',
-    disablePadding: false,
-    label: 'Details',
-    sort: true,
-  },
-  {
-    id: 'total_amount',
-    align: 'left',
-    disablePadding: false,
-    label: 'Total Amount',
-    sort: true,
-  },
+	{
+		id: 'SL',
+		align: 'left',
+		disablePadding: true,
+		label: 'SL',
+		sort: true
+	},
+	{
+		id: 'date',
+		align: 'left',
+		disablePadding: true,
+		label: 'Date',
+		sort: true
+	},
+	{
+		id: 'branch',
+		align: 'left',
+		disablePadding: false,
+		label: 'Branch',
+		sort: true
+	},
+	{
+		id: 'invoice_no',
+		align: 'left',
+		disablePadding: false,
+		label: 'Invoice No',
+		sort: true
+	},
+	{
+		id: 'ledger',
+		align: 'left',
+		disablePadding: false,
+		label: 'Ledger',
+		sort: true
+	},
+	{
+		id: 'sub-ledger',
+		align: 'left',
+		disablePadding: false,
+		label: 'Sub Ledger',
+		sort: true
+	},
+	{
+		id: 'currency',
+		align: 'left',
+		disablePadding: false,
+		label: 'Currency',
+		sort: true
+	},
+	{
+		id: 'currency_rate',
+		align: 'left',
+		disablePadding: false,
+		label: 'Rate',
+		sort: true
+	},
+	{
+		id: 'Amount',
+		align: 'left',
+		disablePadding: false,
+		label: 'Foreign Currency',
+		sort: true
+	},
+	{
+		id: 'details',
+		align: 'left',
+		disablePadding: false,
+		label: 'Details',
+		sort: true
+	},
+	{
+		id: 'total_amount',
+		align: 'left',
+		disablePadding: false,
+		label: 'Total Amount',
+		sort: true
+	},
 
-  {
-    id: 'action',
-    align: 'center',
-    disablePadding: false,
-    label: 'Action',
-    sort: true,
-  },
+	{
+		id: 'action',
+		align: 'center',
+		disablePadding: false,
+		label: 'Action',
+		sort: true
+	}
 ];
 
 function PaymentVouchersTableHead(props) {

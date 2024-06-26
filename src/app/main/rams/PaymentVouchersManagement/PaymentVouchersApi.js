@@ -6,7 +6,7 @@ import {
 	DELETE_PAYMENTVOUCHER,
 	DELETE_PAYMENTVOUCHER_MULTIPLE,
 	GET_PAYMENTVOUCHERS,
-	GET_PAYMENTVOUCHER_BY_ID,
+	GET_PAYMENT_VOUCHER_BY_INVOICE_NO,
 	UPDATE_PAYMENTVOUCHER
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -21,7 +21,10 @@ const PaymentVoucherApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getPaymentVouchers: build.query({
-				query: ({ page, size, searchKey }) => ({ url: GET_PAYMENTVOUCHERS, params: { page, size, searchKey } }),
+				query: ({ page, size, searchKey }) => ({
+					url: GET_PAYMENTVOUCHERS,
+					params: { page, size, searchKey }
+				}),
 				providesTags: ['paymentVouchers']
 			}),
 			deletePaymentVouchers: build.mutation({
@@ -34,7 +37,7 @@ const PaymentVoucherApi = api
 			}),
 			getPaymentVoucher: build.query({
 				query: (paymentVoucherId) => ({
-					url: `${GET_PAYMENTVOUCHER_BY_ID}${paymentVoucherId}`
+					url: `${GET_PAYMENT_VOUCHER_BY_INVOICE_NO}${paymentVoucherId}`
 				}),
 				providesTags: ['paymentVouchers']
 			}),
@@ -48,7 +51,7 @@ const PaymentVoucherApi = api
 			}),
 			updatePaymentVoucher: build.mutation({
 				query: (paymentVoucher) => ({
-					url: `${UPDATE_PAYMENTVOUCHER}${paymentVoucher.id}`,
+					url: `${UPDATE_PAYMENTVOUCHER}`,
 					method: 'PUT',
 					data: jsonToFormData(paymentVoucher)
 				}),
