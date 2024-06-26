@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import axios from 'axios';
 import moment from 'moment';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 
 import { BASE_URL, GET_FEMALECV_BY_ID_FOR_PRINT, GET_SITESETTINGS } from 'src/app/constant/constants';
 import { makeStyles } from '@mui/styles';
@@ -115,11 +116,6 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 
 	console.log('datasasa', data);
 
-	const [dataItems, setDataItems] = useState([]);
-	const [totalDbAmount, setTotalDbAmount] = useState('0.00');
-	const [totalCDAmount, setTotalCDAmount] = useState('0.00');
-	const [amountInWord, setAmountInWord] = useState('ZERO TK ONLY');
-
 	// Get general setting data
 	useEffect(() => {
 		fetch(`${GET_SITESETTINGS}`)
@@ -137,6 +133,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 	});
 
 	const getFemaleCvData = async (id) => {
+		// eslint-disable-next-line no-useless-catch
 		try {
 			const response = await axios.get(`${GET_FEMALECV_BY_ID_FOR_PRINT}${id}`, {
 				headers: {
@@ -144,7 +141,6 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 				}
 			});
 			console.log('response?.data', response?.data);
-			setData(response?.data);
 			return response?.data || {};
 		} catch (er) {
 			throw er;
@@ -152,30 +148,26 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 	};
 
 	useImperativeHandle(ref, () => ({
-		doPrint(n) {
-			debugger;
-			getFemaleCvData(n.id)
-				.then((res) => {
-					unstable_batchedUpdates(() => {
-						setData(res || {});
-					});
-					printAction();
-					unstable_batchedUpdates(() => {
-						setData({});
-					});
-				})
-				.catch(() => {
-					unstable_batchedUpdates(() => {
-						setData({});
-					});
-				});
+		async doPrint(n) {
+			try {
+				const res = await getFemaleCvData(n.id);
+				setData(res || {});
+				printAction();
+			} catch (error) {
+				console.error('Error fetching data:', error);
+				setData({});
+			}
 		}
 	}));
 
+	useEffect(() => {
+		console.log('data:', data);
+	}, [data]);
+
 	return (
 		<div
-			className="w-full"
-			style={{ minHeight: '270px' }}
+			ref={componentRef}
+			className={`${classes.printableContainer} hidden print:block`}
 		>
 			<div
 				ref={componentRef}
@@ -189,6 +181,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 								src={`${BASE_URL}${generalData?.logo}`}
 								width="200px"
 								className="text-center"
+								alt="BASE_URL"
 							/>
 						</td>{' '}
 						<td width="50%">
@@ -222,9 +215,10 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 						</td>
 						<td width="25%">
 							<img
-								src={`${BASE_URL}${femaleCVPrint?.passenger?.passenger_pic}`}
+								src={`${BASE_URL}${data?.passenger?.passenger_pic}`}
 								className="border rounded border-black w-75 text-center"
 								height="200px"
+								alt="passenger_pic"
 							/>
 						</td>
 					</tr>
@@ -251,7 +245,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 							<table className="border-collapse borderborder-black w-100">
 								<tr>
 									<td className="border border-black "> Post Applied For</td>
-									<td className="border border-black text-center">{femaleCVPrint?.post}</td>
+									<td className="border border-black text-center">{data?.post}</td>
 									<td className="border border-black text-right">الوظيفة</td>
 								</tr>
 								<tr>
@@ -275,7 +269,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 					width="100%"
 				>
 					<td className="border border-black ">Name:</td>
-					<td className="border border-black text-center	">{femaleCVPrint?.passenger?.passenger_name}</td>
+					<td className="border border-black text-center	">{data?.passenger?.passenger_name}</td>
 					<td className="border border-black text-right">الاسم الكامل</td>
 				</table>
 				<h3>DETAILS OF APPLICATION</h3>
@@ -294,15 +288,13 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 								</tr>
 								<tr>
 									<td className="border border-black ">Religion</td>
-									<td className="border border-black text-center ">
-										{femaleCVPrint?.passenger?.religion}
-									</td>
+									<td className="border border-black text-center ">{data?.passenger?.religion}</td>
 									<td className="border border-black text-right"> الديانه</td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black ">Date of Birth</td>
 									<td className="border border-black text-center">
-										{moment(new Date(femaleCVPrint?.passenger?.date_of_birth)).format('DD-MM-YYYY')}
+										{moment(new Date(data?.passenger?.date_of_birth)).format('DD-MM-YYYY')}
 									</td>
 									<td className="border border-black text-right"> لميالد ت</td>{' '}
 								</tr>
@@ -311,7 +303,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 									<td className="border border-black text-center">
 										{/* {differenceInYears(
 												new Date(),
-												new Date(femaleCVPrint?.passenger?.date_of_birth)
+												new Date(data?.passenger?.date_of_birth)
 											)} */}
 									</td>
 									<td className="border border-black text-right"> العمر</td>{' '}
@@ -319,44 +311,40 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 								<tr>
 									<td className="border border-black "> Place of Birth</td>
 									<td className="border border-black text-center ">
-										{femaleCVPrint?.passenger?.place_of_birth}
+										{data?.passenger?.place_of_birth}
 									</td>
 									<td className="border border-black text-right"> محل الولادة /مكان الميلاد</td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black "> Place of Residence </td>
-									<td className="border border-black text-center ">
-										{femaleCVPrint?.place_of_residence}
-									</td>
+									<td className="border border-black text-center ">{data?.place_of_residence}</td>
 									<td className="border border-black text-right"> مكان السكن </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black "> Marital status </td>
 									<td className="border border-black text-center ">
-										{femaleCVPrint?.passenger?.marital_status}
+										{data?.passenger?.marital_status}
 									</td>
 									<td className="border border-black text-right"> الحالة الاجتماعية </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black "> No. Of Children </td>
-									<td className="border border-black text-center">
-										{femaleCVPrint?.number_of_children}
-									</td>
+									<td className="border border-black text-center">{data?.number_of_children}</td>
 									<td className="border border-black text-right"> ل عدد </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black ">Weight</td>
-									<td className="border border-black text-center">{femaleCVPrint?.weight}</td>
+									<td className="border border-black text-center">{data?.weight}</td>
 									<td className="border border-black text-right"> الطول </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black ">Education</td>
-									<td className="border border-black text-center ">{femaleCVPrint?.education}</td>
+									<td className="border border-black text-center ">{data?.education}</td>
 									<td className="border border-black text-right"> التعليم </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black ">Complexion</td>
-									<td className="border border-black text-center">{femaleCVPrint?.complexion}</td>
+									<td className="border border-black text-center">{data?.complexion}</td>
 									<td className="border border-black text-right"> &nbsp; </td>{' '}
 								</tr>
 								<tr>
@@ -367,41 +355,33 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 								</tr>
 								<tr>
 									<td className="border border-black ">Number</td>
-									<td className="border border-black text-center">
-										{femaleCVPrint?.passenger?.passport_no}
-									</td>
+									<td className="border border-black text-center">{data?.passenger?.passport_no}</td>
 									<td className="border border-black text-right "> رقم جواز السفر </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black "> Date Of Issue </td>
 									<td className="border border-black text-center">
-										{moment(new Date(femaleCVPrint?.passenger?.passport_issue_date)).format(
-											'DD-MM-YYYY'
-										)}
+										{moment(new Date(data?.passenger?.passport_issue_date)).format('DD-MM-YYYY')}
 									</td>
 									<td className="border border-black text-right"> تاريخ الاصدار </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black "> Date of Exp. </td>
 									<td className="border border-black text-center">
-										{moment(new Date(femaleCVPrint?.passenger?.passport_expiry_date)).format(
-											'DD-MM-YYYY'
-										)}
+										{moment(new Date(data?.passenger?.passport_expiry_date)).format('DD-MM-YYYY')}
 									</td>
 									<td className="border border-black text-right"> تاريخ انتهاء صلاحية الجواز </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black "> Place of Issue. </td>
 									<td className="border border-black text-center">
-										{femaleCVPrint?.passenger?.passport_issue_place}
+										{data?.passenger?.passport_issue_place}
 									</td>
 									<td className="border border-black text-right"> محل الاصدار </td>{' '}
 								</tr>
 								<tr>
 									<td className="border border-black "> Contact Number. </td>
-									<td className="border border-black text-center">
-										{femaleCVPrint?.passenger?.contact_no}
-									</td>
+									<td className="border border-black text-center">{data?.passenger?.contact_no}</td>
 									<td className="border border-black text-right"> رقم الجواز </td>{' '}
 								</tr>
 							</table>
@@ -410,7 +390,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 						{/* CV Image  */}
 						<td width="100%">
 							<img
-								src={`${BASE_URL}${femaleCVPrint?.image}`}
+								src={`${BASE_URL}${data?.image}`}
 								className="text-center"
 								style={{
 									height: '480px',
@@ -419,6 +399,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 									width: '100%'
 								}}
 								align="center"
+								alt="dataImage"
 							/>
 						</td>
 					</tr>
@@ -443,11 +424,11 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 								</tr>
 								<tr>
 									<td className="border border-black text-center"> Arabic</td>
-									<td className="border border-black text-center">{femaleCVPrint?.arabic_skill}</td>
+									<td className="border border-black text-center">{data?.arabic_skill}</td>
 								</tr>
 								<tr>
 									<td className="border border-black text-center"> English</td>
-									<td className="border border-black text-center">{femaleCVPrint?.english_skill}</td>
+									<td className="border border-black text-center">{data?.english_skill}</td>
 								</tr>
 							</table>
 						</td>
