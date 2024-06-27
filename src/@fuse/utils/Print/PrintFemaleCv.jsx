@@ -1,103 +1,42 @@
 import axios from 'axios';
 import moment from 'moment';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 
 import { BASE_URL, GET_FEMALECV_BY_ID_FOR_PRINT, GET_SITESETTINGS } from 'src/app/constant/constants';
 import { makeStyles } from '@mui/styles';
 import { useReactToPrint } from 'react-to-print';
+import { unstable_batchedUpdates } from 'react-dom';
 
 const useStyles = makeStyles(() => ({
-	printableContainer: {
-		padding: '30px',
-		'& .companyLogo': {
-			display: 'flex',
-			justifyContent: 'center',
-			height: '50px',
-			overflow: 'hidden',
-			'& > img': {
-				height: '100%',
-				width: 'fit-content'
-			}
+	textField: {
+		'& > div': {
+			height: '35px'
+		}
+	},
+	container: {
+		padding: '0px 25px',
+		minWidth: '1000px',
+		'& *': {
+			boxSizing: 'border-box'
 		},
-		'& .companyName': {
-			marginTop: '10px',
-			display: 'flex',
-			justifyContent: 'center',
-			alignItems: 'flex-end',
-			fontWeight: 'bold'
+		'& .row': {
+			marginRight: '-15px',
+			marginLeft: '-15px'
 		},
-		'& .address': {
-			padding: '1px 0px',
-			display: 'flex',
-			justifyContent: 'center'
+		'& .western': {
+			marginBottom: '5px'
 		},
-		'& .moEmailWeb': {
-			padding: '1px 0px',
-			display: 'flex',
-			justifyContent: 'center',
-			'& > div': {
-				margin: '0px 5px',
-				'& > span': {
-					paddingLeft: '5px'
-				}
-			}
-		},
-		'& .title': {
-			textAlign: 'center',
-			marginTop: '10px',
-			fontWeight: 500
-		},
-		'& .voucerAndDate': {
-			display: 'flex',
-			justifyContent: 'space-between',
-			flexWrap: 'wrap',
-			padding: '5px 20px',
-			fontWeight: 500
-		},
-		'& table, th, td': {
-			border: '1px solid darkgray'
-		},
-		'& table': {
-			with: '100%',
-			'& thead': {
-				background: 'lightgrey'
+		'& .borderedTable': {
+			'& table, th, td': {
+				border: '1px solid white'
 			},
-			'& tr': {
-				height: '25px'
-			},
-			'& th.left, td.left': {
-				width: '100%',
-				textAlign: 'left',
-				paddingLeft: '5px',
-				fontSize: '14px',
-				fontWeight: 500
-			},
-			'& th.right, td.right': {
-				padding: '0px 5px',
-				textAlign: 'right',
-				width: 'fit-content',
-				whiteSpace: 'nowrap'
-			}
-		},
-		'& .allSignatureContainer': {
-			height: '120px',
-			display: 'flex',
-			justifyContent: 'space-around',
-			alignItems: 'flex-end',
-			'& .signatureContainer': {
-				height: '30px',
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				justifyContent: 'space-between',
-				'& div': {
-					borderTop: '1px dashed',
-					width: '100px'
-				},
-				'& h5': {
-					width: 'fit-content',
-					whiteSpace: 'nowrap'
+			'& table': {
+				color: 'black',
+				background: 'transparent',
+				borderSpacing: 0,
+				borderCollapse: 'collapse',
+				'& td, th': {
+					padding: '0px'
 				}
 			}
 		}
@@ -106,36 +45,21 @@ const useStyles = makeStyles(() => ({
 
 const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 	const classes = useStyles();
-	const toWords = new ToWords();
 	const [generalData, setGeneralData] = useState({});
-	const [data, setData] = useState({});
-
-	console.log('datasaasasa', data);
-
 	const [femaleCVPrint, setFemaleCVPrint] = useState({});
 
-	console.log('datasasa', data);
+	const componentRef = useRef();
 
-	const [dataItems, setDataItems] = useState([]);
-	const [totalDbAmount, setTotalDbAmount] = useState('0.00');
-	const [totalCDAmount, setTotalCDAmount] = useState('0.00');
-	const [amountInWord, setAmountInWord] = useState('ZERO TK ONLY');
+	const printAction = useReactToPrint({
+		content: () => componentRef.current
+	});
 
-	// Get general setting data
 	useEffect(() => {
 		fetch(`${GET_SITESETTINGS}`)
 			.then((response) => response.json())
 			.then((data) => setGeneralData(data.general_settings[0] || {}))
 			.catch(() => setGeneralData({}));
 	}, []);
-
-	// Print DOM ref
-	const componentRef = useRef();
-
-	// Printer action
-	const printAction = useReactToPrint({
-		content: () => componentRef.current
-	});
 
 	const getFemaleCvData = async (id) => {
 		try {
@@ -144,38 +68,36 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 					Authorization: `${localStorage.getItem('jwt_access_token')}`
 				}
 			});
-			console.log('response?.data', response?.data);
-			setData(response?.data);
 			return response?.data || {};
-		} catch (er) {
-			throw er;
+		} catch (error) {
+			console.error(error);
+			return {};
 		}
 	};
 
 	useImperativeHandle(ref, () => ({
 		doPrint(n) {
-			debugger;
 			getFemaleCvData(n.id)
-				.then((res) => {
+				.then((data) => {
 					unstable_batchedUpdates(() => {
-						setData(res || {});
+						setFemaleCVPrint(data);
 					});
 					printAction();
 					unstable_batchedUpdates(() => {
-						setData({});
+						setFemaleCVPrint({});
 					});
 				})
 				.catch(() => {
 					unstable_batchedUpdates(() => {
-						setData({});
+						setFemaleCVPrint({});
 					});
 				});
 		}
 	}));
-
 	return (
 		<div
-			className="w-full"
+			ref={componentRef}
+			className={`${classes.printableContainer} hidden print:block`}
 			style={{ minHeight: '270px' }}
 		>
 			<div
@@ -311,9 +233,9 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 									<td className="border border-black ">Age</td>
 									<td className="border border-black text-center">
 										{/* {differenceInYears(
-												new Date(),
-												new Date(femaleCVPrint?.passenger?.date_of_birth)
-											)} */}
+                        new Date(),
+                        new Date(femaleCVPrint?.passenger?.date_of_birth)
+                      )} */}
 									</td>
 									<td className="border border-black text-right"> العمر</td>{' '}
 								</tr>
