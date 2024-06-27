@@ -39,14 +39,7 @@ function CvFemaleForm(props) {
 	const { cvFemaleId } = routeParams;
 	const { control, formState, watch, getValues, reset, setValue } = methods;
 	const { errors, isValid, dirtyFields } = formState;
-	// const [previewslipPicFile, setPreviewslipPicFile] = useState('');
-	// const [fileExtPCName, setFileExtPCName] = useState('');
 	const [file, setFile] = useState(null);
-
-	// const slipPic = watch('image') || '';
-
-	// const fileInputRef = useRef(null);
-
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCountries());
@@ -62,25 +55,6 @@ function CvFemaleForm(props) {
 			setFile(`${BASE_URL}/${currentImage}`);
 		}
 	}, [cvFemaleId, watch('image')]);
-
-	// const handleChnageCountry = (selectedCountry) => {
-	// 	const countryID = countries.find((data) => data.name === selectedCountry)?.id;
-	// 	setValue('country', countryID);
-	// };
-
-	// const handleRemoveslipPicFile = () => {
-	// 	setPreviewslipPicFile(null);
-
-	// 	setFileExtPCName(null);
-
-	// 	setValue('image', '');
-
-	// 	if (fileInputRef.current) {
-	// 		fileInputRef.current.value = '';
-	// 	}
-
-	// 	console.log('sfsdferwer', getValues());
-	// };
 
 	return (
 		<div>

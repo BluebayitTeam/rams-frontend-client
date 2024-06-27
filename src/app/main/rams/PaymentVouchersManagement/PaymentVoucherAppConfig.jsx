@@ -24,7 +24,7 @@ const PaymentVoucherAppConfig = {
 					element: <PaymentVouchers />
 				},
 				{
-					path: 'paymentVouchers/:paymentVoucherId/*',
+					path: 'paymentVouchers/:paymentVoucherId/:invoice_no?',
 					element: <PaymentVoucher />
 				}
 			]

@@ -3,12 +3,14 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
+import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
 import PaymentVoucherHeader from './PaymentVoucherHeader';
 import PaymentVoucherModel from './models/PaymentVoucherModel';
 import { useGetPaymentVoucherQuery } from '../PaymentVouchersApi';
@@ -16,20 +18,18 @@ import PaymentVoucherForm from './PaymentVoucherForm';
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-	
-});
+const schema = z.object({});
 
 function PaymentVoucher() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { paymentVoucherId } = routeParams;
+	const { paymentVoucherId, invoice_no } = routeParams;
 
 	const {
 		data: paymentVoucher,
 		isLoading,
 		isError
-	} = useGetPaymentVoucherQuery(paymentVoucherId, {
+	} = useGetPaymentVoucherQuery(invoice_no, {
 		skip: !paymentVoucherId || paymentVoucherId === 'new'
 	});
 
@@ -48,13 +48,14 @@ function PaymentVoucher() {
 
 	useEffect(() => {
 		if (paymentVoucher) {
-			reset({ ...paymentVoucher });
+			const convertedPaymentVoucherItems = setIdIfValueIsObjArryData(paymentVoucher?.items);
+			const convertedPaymentVoucher = setIdIfValueIsObject2(paymentVoucher);
+			reset({
+				...convertedPaymentVoucher,
+				items: convertedPaymentVoucherItems
+			});
 		}
 	}, [paymentVoucher, reset, paymentVoucher?.id]);
-
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
 
 	if (isLoading) {
 		return <FuseLoading />;
@@ -95,7 +96,7 @@ function PaymentVoucher() {
 				header={<PaymentVoucherHeader />}
 				content={
 					<div className="p-16 ">
-						<div >
+						<div>
 							<PaymentVoucherForm paymentVoucherId={paymentVoucherId} />
 						</div>
 					</div>

@@ -40,6 +40,7 @@ import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { BASE_URL, CHECK_BANK_OR_CASH, GET_LEDGER_CURRENT_BALANCE } from 'src/app/constant/constants';
 import getTotalAmount from 'src/app/@helpers/getTotalAmount';
+import FileUpload from 'src/app/@components/FileUploader';
 
 const useStyles = makeStyles((theme) => ({
 	...getAccountFormStyles(theme)
@@ -53,8 +54,6 @@ function PaymentVoucherForm() {
 	const { paymentVoucherId } = useParams();
 
 	const { control, formState, getValues, setValue, reset, watch } = methods;
-
-	console.log('getValues', getValues());
 
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
@@ -100,6 +99,7 @@ function PaymentVoucherForm() {
 	useEffect(() => {
 		cheackDbCdEquality();
 	}, [getValues()]);
+
 	const handleChange = (event) => {
 		setChecked(event.target.checked);
 	};
@@ -340,7 +340,7 @@ function PaymentVoucherForm() {
 				}}
 			/>
 
-			{/* <div className="text-center">
+			<div className="text-center">
 				<div>
 					<FileUpload
 						name="file"
@@ -353,7 +353,7 @@ function PaymentVoucherForm() {
 						classes={classes}
 					/>
 				</div>
-			</div> */}
+			</div>
 
 			<div className="flex">
 				<Controller
@@ -887,15 +887,17 @@ function PaymentVoucherForm() {
 												name={`items.${idx}.is_post_date`}
 												control={control}
 												render={({ field }) => (
-													<CustomDatePicker
-														field={field}
-														label="Post Date"
-														required
-														className="mt-8 mb-16 w-full"
-														error={!!errors.is_post_date}
-														helperText={errors?.is_post_date?.message}
-														placeholder="DD-MM-YYYY"
-													/>
+													<FormControl>
+														<FormControlLabel
+															label="Post Date"
+															control={
+																<Checkbox
+																	{...field}
+																	checked={field.value ? field.value : false}
+																/>
+															}
+														/>
+													</FormControl>
 												)}
 											/>
 

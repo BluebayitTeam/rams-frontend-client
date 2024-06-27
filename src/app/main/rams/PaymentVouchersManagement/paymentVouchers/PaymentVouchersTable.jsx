@@ -86,13 +86,13 @@ function PaymentVouchersTable(props) {
 	function handleUpdatePaymentVoucher(item, event) {
 		localStorage.removeItem('deletePaymentVoucher');
 		localStorage.setItem('updatePaymentVoucher', event);
-		navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
+		navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.invoice_no}`);
 	}
 
 	function handleDeletePaymentVoucher(item, event) {
 		localStorage.removeItem('updatePaymentVoucher');
 		localStorage.setItem('deletePaymentVoucher', event);
-		navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.handle}`);
+		navigate(`/apps/paymentVoucher/paymentVouchers/${item.id}/${item.invoice_no}`);
 	}
 
 	function handleCheck(event, id) {
