@@ -17,12 +17,8 @@ import clsx from 'clsx';
 
 import _ from '@lodash';
 
-// import { makeStyles } from '@material-ui/core/styles';
-// import 'react-image-crop/dist/ReactCrop.css';
-// import replaceSpaceToUnderscore from 'app/@helpers/replaceSpaceToUnderscore';
 import axios from 'axios';
 
-// import decreaseYear from 'app/@helpers/decreaseYear';
 import {
 	getAgencys,
 	getAgents,
@@ -88,7 +84,7 @@ function PassengerForm(props) {
 	const routeParams = useParams();
 
 	const { passengerId } = routeParams;
-	// const history = useHistory();
+
 	const handleDelete = localStorage.getItem('passengerEvent');
 	const dispatch = useDispatch();
 	const cities = useSelector((state) => state.data.cities);
@@ -183,31 +179,6 @@ function PassengerForm(props) {
 		}
 	}, [targetCountrys]);
 
-	// useEffect(() => {
-	// 	const getPlaceOfResidence = districts.find((data) => {
-	// 		const districtName = new RegExp(data.name, 'i');
-	// 		const isMatch = district.match(districtName);
-
-	// 		if (isMatch) return true;
-	// 	})?.name;
-
-	// const getDistrict = districts.find((data) => {
-	// 	const districtName = new RegExp(data.name, 'i');
-	// 	const isMatch = district.match(districtName);
-
-	// 	if (isMatch) return true;
-
-	// 	return false;
-	// })?.id;
-
-	// 	const getPoliceStation = thanas.find((data) => {
-	// 		const PoliceStationName = new RegExp(data.name, 'i');
-	// 		const isMatch = police_station.match(PoliceStationName);
-
-	// 		if (isMatch) return true;
-	// 	})?.id;
-	// }, []);
-
 	useEffect(() => {
 		dispatch(getAgents());
 		dispatch(getDemands());
@@ -267,10 +238,7 @@ function PassengerForm(props) {
 
 	const selectImage = (file) => {
 		const reader = new FileReader();
-		// reader.onloadend = function() {
 
-		// 	setImagesrc(reader.result);
-		// }
 		reader.readAsDataURL(file);
 
 		const ImageData = URL.createObjectURL(file);
@@ -346,13 +314,6 @@ function PassengerForm(props) {
 		}
 	};
 
-	// useEffect(() => {
-	// 	if (getValues().passport_expiry_date) {
-	// 		setValue('passport_issue_date', decreaseYear(getValues().passport_expiry_date, 10));
-	// 		const getPspIssPlace = districts.find((data) => data.name === 'Dhaka' || data.name === 'dhaka')?.id;
-	// 		setValue('passport_issue_place', getPspIssPlace);
-	// 	}
-	// }, [getValues().passport_expiry_date]);
 	return (
 		<div>
 			<Controller
@@ -587,26 +548,6 @@ function PassengerForm(props) {
 						)}
 					/>
 				)}
-			/>
-			<Controller
-				name="date_of_birth"
-				control={control}
-				render={({ field }) => {
-					const { value } = field;
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							error={!!errors.date_of_birth}
-							helperText={errors?.date_of_birth?.message}
-							label="Date of Birth"
-							id="date_of_birth"
-							type="date"
-							InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
 			/>
 
 			<Controller

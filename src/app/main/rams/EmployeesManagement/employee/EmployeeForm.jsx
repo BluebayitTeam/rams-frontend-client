@@ -50,20 +50,65 @@ function EmployeeForm(props) {
 	return (
 		<div>
 			<Controller
+				name="branch"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? branches.find((bnch) => bnch.id === value) : null}
+						options={branches}
+						getOptionLabel={(option) => `${option.name}`}
+						InputLabelProps={{ shrink: true }}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select a branch"
+								label="Branch"
+								autoFocus
+								helperText={errors?.branch?.message}
+								variant="outlined"
+								required
+								InputLabelProps={value ? {} : { style: { color: 'red', borderColor: 'red' } }}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="emp_id_no"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						// error={!!errors.emp_id_no}
+						helperText={errors?.emp_id_no?.message}
+						label={field.value ? 'Employee Id' : <span style={{ color: 'red' }}>Employee Id</span>}
+						id="emp_id_no"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field ? {} : { style: { color: 'red', borderColor: 'red' } }}
+						required
+					/>
+				)}
+			/>
+			<Controller
 				name="first_name"
 				control={control}
 				render={({ field }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						required
 						label="First Name"
-						autoFocus
-						id="first_name"
+						helperText={errors?.first_name?.message}
+						id="firstName"
 						variant="outlined"
 						fullWidth
-						error={!!errors.first_name}
-						helperText={errors?.first_name?.message}
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 					/>
 				)}
 			/>
@@ -74,32 +119,13 @@ function EmployeeForm(props) {
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						required
 						label="Last Name"
-						autoFocus
-						id="last_name"
-						variant="outlined"
-						fullWidth
-						error={!!errors.last_name}
 						helperText={errors?.last_name?.message}
-					/>
-				)}
-			/>{' '}
-			<Controller
-				name="rl_no"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="RL No"
-						autoFocus
-						id="rl_no"
+						id="lastName"
 						variant="outlined"
 						fullWidth
-						error={!!errors.rl_no}
-						helperText={errors?.rl_no?.message}
+						color="success"
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 					/>
 				)}
 			/>
@@ -110,17 +136,17 @@ function EmployeeForm(props) {
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						required
-						label="Username"
-						autoFocus
-						id="username"
+						// error={!!errors.username || !field.value}
+						helperText={errors?.username?.message}
+						label="User Name"
+						id="userName"
 						variant="outlined"
 						fullWidth
-						error={!!errors.username}
-						helperText={errors?.username?.message}
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 					/>
 				)}
 			/>
+
 			<Controller
 				name="email"
 				control={control}
@@ -360,61 +386,87 @@ function EmployeeForm(props) {
 				)}
 			/>
 			<Controller
-				name="country"
+				name="role"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? countries.find((country) => country.id === value) : null}
-						options={countries}
+						value={value ? roles.find((role) => role.id === value) : null}
+						options={roles}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						// defaultValue={{ id: null, name: "Select a country" }}
+						// defaultValue={{ id: null, name: "Select a role" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select a country"
-								label="Country"
+								placeholder="Select a employee role"
+								label="Role"
 								variant="outlined"
-								//
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
 					/>
 				)}
 			/>
 			<Controller
-				name="city"
+				name="department"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? cities.find((city) => city.id === value) : null}
-						options={cities}
+						value={value ? departments.find((department) => department.id === value) : null}
+						options={departments}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
-							// dispatch(getThanasBasedOnCity(newValue?.id));
 						}}
-						// defaultValue={{ id: null, name: "Select a city" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select a city"
-								label="District"
+								placeholder="Select a employee department"
+								label="Department"
 								variant="outlined"
-								//
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
 							/>
 						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="street_address_one"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.street_address_one}
+						helperText={errors?.street_address_one?.message}
+						label="Primary address"
+						id="address1"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
+			/>
+			<Controller
+				name="street_address_two"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.street_address_two}
+						helperText={errors?.street_address_two?.message}
+						label="Secondary address"
+						id="address2"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
 					/>
 				)}
 			/>
@@ -487,7 +539,7 @@ function EmployeeForm(props) {
 				<Controller
 					name="logo"
 					control={control}
-					render={({ field: { onChange, value } }) => (
+					render={({ field: { onChange } }) => (
 						<label
 							htmlFor="button-file"
 							className={clsx(
