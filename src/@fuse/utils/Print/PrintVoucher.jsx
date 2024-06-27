@@ -214,6 +214,7 @@ const PrintVoucher = forwardRef(({ title, type }, ref) => {
 				<img
 					style={{ width: generalData?.logo && 'auto' }}
 					src={BASE_URL ? `${BASE_URL}${generalData?.logo}` : null}
+					alt=""
 				/>
 			</div>
 			<div className="companyName">

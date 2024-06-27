@@ -17,7 +17,7 @@ import CallingEntryForm from './CallingEntryForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	demand: z
+	sponsor_id_no: z
 		.string()
 		.nonempty('You must enter a callingEntry name')
 		.min(5, 'The callingEntry name must be at least 5 characters')
