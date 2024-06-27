@@ -109,7 +109,7 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 	const classes = useStyles();
 	const [generalData, setGeneralData] = useState({});
 	const [data, setData] = useState({});
-	const [femaleCVPrint, setFemaleCVPrint] = useState({});
+
 	const [isReadyToPrint, setIsReadyToPrint] = useState(false);
 
 	// Get general setting data

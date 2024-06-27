@@ -1,120 +1,56 @@
+/* eslint-disable no-useless-catch */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import axios from 'axios';
 import moment from 'moment';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { BASE_URL, GET_FEMALECV_BY_ID_FOR_PRINT, GET_SITESETTINGS } from 'src/app/constant/constants';
+import { BASE_URL, GET_MALECV_BY_ID_FOR_PRINT, GET_SITESETTINGS } from 'src/app/constant/constants';
 import { makeStyles } from '@mui/styles';
 import { useReactToPrint } from 'react-to-print';
 
 const useStyles = makeStyles(() => ({
-	printableContainer: {
-		padding: '30px',
-		'& .companyLogo': {
-			display: 'flex',
-			justifyContent: 'center',
-			height: '50px',
-			overflow: 'hidden',
-			'& > img': {
-				height: '100%',
-				width: 'fit-content'
-			}
+	textField: {
+		'& > div': {
+			height: '35px'
+		}
+	},
+	container: {
+		padding: '0px 25px',
+		minWidth: '1000px',
+		'& *': {
+			boxSizing: 'border-box'
 		},
-		'& .companyName': {
-			marginTop: '10px',
-			display: 'flex',
-			justifyContent: 'center',
-			alignItems: 'flex-end',
-			fontWeight: 'bold'
+		'& .row': {
+			marginRight: '-15px',
+			marginLeft: '-15px'
 		},
-		'& .address': {
-			padding: '1px 0px',
-			display: 'flex',
-			justifyContent: 'center'
+		'& .western': {
+			marginBottom: '5px'
 		},
-		'& .moEmailWeb': {
-			padding: '1px 0px',
-			display: 'flex',
-			justifyContent: 'center',
-			'& > div': {
-				margin: '0px 5px',
-				'& > span': {
-					paddingLeft: '5px'
-				}
-			}
-		},
-		'& .title': {
-			textAlign: 'center',
-			marginTop: '10px',
-			fontWeight: 500
-		},
-		'& .voucerAndDate': {
-			display: 'flex',
-			justifyContent: 'space-between',
-			flexWrap: 'wrap',
-			padding: '5px 20px',
-			fontWeight: 500
-		},
-		'& table, th, td': {
-			border: '1px solid darkgray'
-		},
-		'& table': {
-			with: '100%',
-			'& thead': {
-				background: 'lightgrey'
+		'& .borderedTable': {
+			'& table, th, td': {
+				border: '1px solid white'
 			},
-			'& tr': {
-				height: '25px'
-			},
-			'& th.left, td.left': {
-				width: '100%',
-				textAlign: 'left',
-				paddingLeft: '5px',
-				fontSize: '14px',
-				fontWeight: 500
-			},
-			'& th.right, td.right': {
-				padding: '0px 5px',
-				textAlign: 'right',
-				width: 'fit-content',
-				whiteSpace: 'nowrap'
-			}
-		},
-		'& .allSignatureContainer': {
-			height: '120px',
-			display: 'flex',
-			justifyContent: 'space-around',
-			alignItems: 'flex-end',
-			'& .signatureContainer': {
-				height: '30px',
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-				justifyContent: 'space-between',
-				'& div': {
-					borderTop: '1px dashed',
-					width: '100px'
-				},
-				'& h5': {
-					width: 'fit-content',
-					whiteSpace: 'nowrap'
+			'& table': {
+				color: 'black',
+				background: 'transparent',
+				borderSpacing: 0,
+				borderCollapse: 'collapse',
+				'& td, th': {
+					padding: '0px'
 				}
 			}
 		}
 	}
 }));
 
-const PrintMaleCv = forwardRef(({ title, type }, ref) => {
+const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 	const classes = useStyles();
 	const [generalData, setGeneralData] = useState({});
 	const [data, setData] = useState({});
 
-	console.log('datasaasasa', data);
-
-	const [femaleCVPrint, setFemaleCVPrint] = useState({});
-
-	console.log('datasasa', data);
+	const [isReadyToPrint, setIsReadyToPrint] = useState(false);
 
 	// Get general setting data
 	useEffect(() => {
@@ -133,14 +69,12 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 	});
 
 	const getFemaleCvData = async (id) => {
-		// eslint-disable-next-line no-useless-catch
 		try {
-			const response = await axios.get(`${GET_FEMALECV_BY_ID_FOR_PRINT}${id}`, {
+			const response = await axios.get(`${GET_MALECV_BY_ID_FOR_PRINT}${id}`, {
 				headers: {
 					Authorization: `${localStorage.getItem('jwt_access_token')}`
 				}
 			});
-			console.log('response?.data', response?.data);
 			return response?.data || {};
 		} catch (er) {
 			throw er;
@@ -152,7 +86,7 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 			try {
 				const res = await getFemaleCvData(n.id);
 				setData(res || {});
-				printAction();
+				setIsReadyToPrint(true);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 				setData({});
@@ -161,362 +95,323 @@ const PrintMaleCv = forwardRef(({ title, type }, ref) => {
 	}));
 
 	useEffect(() => {
-		console.log('data:', data);
-	}, [data]);
-
+		if (isReadyToPrint) {
+			printAction();
+			setIsReadyToPrint(false);
+		}
+	}, [isReadyToPrint, printAction]);
 	return (
 		<div
 			ref={componentRef}
 			className={`${classes.printableContainer} hidden print:block`}
 		>
 			<div
-				ref={componentRef}
-				id="downloadPage"
-				className="p-10"
+				className="w-full"
+				style={{ minHeight: '270px' }}
 			>
-				<table>
-					<tr>
-						<td width="25%">
-							<img
-								src={`${BASE_URL}${generalData?.logo}`}
-								width="200px"
-								className="text-center"
-								alt="BASE_URL"
-							/>
-						</td>{' '}
-						<td width="50%">
-							<center>
-								<table>
-									<tr>
-										<td>
-											<p className="title  pl-0 md:-pl-20 text-center">{` ${
-												generalData?.title || ''
-											}`}</p>{' '}
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<p className="title  pl-0 md:-pl-20 text-center">{` ${
-												generalData?.address || ''
-											}`}</p>{' '}
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<p className="title  pl-0 md:-pl-20 text-center">
-												{`Mobile:  ${generalData?.phone || ''}`}{' '}
-												{`Email : ${generalData?.email || ''}`}
-											</p>{' '}
-										</td>
-										<tr />
-									</tr>
-								</table>
-							</center>
-						</td>
-						<td width="25%">
-							<img
-								src={`${BASE_URL}${data?.passenger?.passenger_pic}`}
-								className="border rounded border-black w-75 text-center"
-								height="200px"
-								alt="passenger_pic"
-							/>
-						</td>
-					</tr>
-				</table>
-
-				<table
-					cellPadding="5"
-					cellSpacing="2"
+				<div
+					ref={componentRef}
+					id="downloadPage"
+					className="p-20"
 				>
-					<tr>
-						<td
-							width="50%"
-							className="text-center"
-						>
-							<h3>
-								BIO DATA <br /> Professionals in supplying all kind of manpower
-								<br /> (Bangladesh Manpower Specialish)
-							</h3>
-						</td>
-						<td
-							width="50%"
-							className="text-center"
-						>
-							<table className="border-collapse borderborder-black w-100">
-								<tr>
-									<td className="border border-black "> Post Applied For</td>
-									<td className="border border-black text-center">{data?.post}</td>
-									<td className="border border-black text-right">الوظيفة</td>
-								</tr>
-								<tr>
-									<td className="border border-black "> Monthly Salary </td>
-									<td className="border border-black text-center">1000</td>
-									<td className="border border-black text-right"> الراتب الشهري</td>
-								</tr>
-								<tr>
-									<td className="border border-black ">Contract Period </td>
-									<td className="border border-black text-center"> 2 years </td>
-									<td className="border border-black text-right"> مدة العقد</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-
-				<table
-					cellPadding="5"
-					cellSpacing="2"
-					width="100%"
-				>
-					<td className="border border-black ">Name:</td>
-					<td className="border border-black text-center	">{data?.passenger?.passenger_name}</td>
-					<td className="border border-black text-right">الاسم الكامل</td>
-				</table>
-				<h3>DETAILS OF APPLICATION</h3>
-				<table>
-					<tr>
-						<td width="50%">
-							<table
-								cellPadding="5"
-								cellSpacing="2"
-								width="100%"
+					<table className="mt-40 text-center">
+						<tr>
+							<td width="25%">
+								<img
+									src={`${BASE_URL}${generalData?.logo}`}
+									width="200px"
+									className="text-center"
+									alt="testLogo"
+								/>
+							</td>{' '}
+							<td width="50%">
+								<center>
+									<table>
+										<tr>
+											<td>
+												<p className="title  pl-0 md:-pl-20 text-center">{` ${
+													generalData?.title || ''
+												}`}</p>{' '}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p className="title  pl-0 md:-pl-20 text-center">{` ${
+													generalData?.address || ''
+												}`}</p>{' '}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p className="title  pl-0 md:-pl-20 text-center">
+													{`Mobile:  ${generalData?.phone || ''}`}{' '}
+													{`Email : ${generalData?.email || ''}`}
+												</p>{' '}
+											</td>
+											<tr />
+										</tr>
+									</table>
+								</center>
+							</td>
+							<td
+								width="25%"
+								className="object-none object-right"
 							>
-								<tr>
-									<td className="border border-black ">Nationality</td>
-									<td className="border border-black text-center">Bangladeshi</td>
-									<td className="border border-black text-right">الجنسية</td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black ">Religion</td>
-									<td className="border border-black text-center ">{data?.passenger?.religion}</td>
-									<td className="border border-black text-right"> الديانه</td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black ">Date of Birth</td>
-									<td className="border border-black text-center">
-										{moment(new Date(data?.passenger?.date_of_birth)).format('DD-MM-YYYY')}
-									</td>
-									<td className="border border-black text-right"> لميالد ت</td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black ">Age</td>
-									<td className="border border-black text-center">
-										{/* {differenceInYears(
-												new Date(),
-												new Date(data?.passenger?.date_of_birth)
-											)} */}
-									</td>
-									<td className="border border-black text-right"> العمر</td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> Place of Birth</td>
-									<td className="border border-black text-center ">
-										{data?.passenger?.place_of_birth}
-									</td>
-									<td className="border border-black text-right"> محل الولادة /مكان الميلاد</td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> Place of Residence </td>
-									<td className="border border-black text-center ">{data?.place_of_residence}</td>
-									<td className="border border-black text-right"> مكان السكن </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> Marital status </td>
-									<td className="border border-black text-center ">
-										{data?.passenger?.marital_status}
-									</td>
-									<td className="border border-black text-right"> الحالة الاجتماعية </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> No. Of Children </td>
-									<td className="border border-black text-center">{data?.number_of_children}</td>
-									<td className="border border-black text-right"> ل عدد </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black ">Weight</td>
-									<td className="border border-black text-center">{data?.weight}</td>
-									<td className="border border-black text-right"> الطول </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black ">Education</td>
-									<td className="border border-black text-center ">{data?.education}</td>
-									<td className="border border-black text-right"> التعليم </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black ">Complexion</td>
-									<td className="border border-black text-center">{data?.complexion}</td>
-									<td className="border border-black text-right"> &nbsp; </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black text-center w-100 ">
-										{' '}
-										<center>PASSPORT DETAILS</center>
-									</td>
-								</tr>
-								<tr>
-									<td className="border border-black ">Number</td>
-									<td className="border border-black text-center">{data?.passenger?.passport_no}</td>
-									<td className="border border-black text-right "> رقم جواز السفر </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> Date Of Issue </td>
-									<td className="border border-black text-center">
-										{moment(new Date(data?.passenger?.passport_issue_date)).format('DD-MM-YYYY')}
-									</td>
-									<td className="border border-black text-right"> تاريخ الاصدار </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> Date of Exp. </td>
-									<td className="border border-black text-center">
-										{moment(new Date(data?.passenger?.passport_expiry_date)).format('DD-MM-YYYY')}
-									</td>
-									<td className="border border-black text-right"> تاريخ انتهاء صلاحية الجواز </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> Place of Issue. </td>
-									<td className="border border-black text-center">
-										{data?.passenger?.passport_issue_place}
-									</td>
-									<td className="border border-black text-right"> محل الاصدار </td>{' '}
-								</tr>
-								<tr>
-									<td className="border border-black "> Contact Number. </td>
-									<td className="border border-black text-center">{data?.passenger?.contact_no}</td>
-									<td className="border border-black text-right"> رقم الجواز </td>{' '}
-								</tr>
-							</table>
-						</td>
+								<img
+									src={`${BASE_URL}${data?.passenger?.passenger_pic}`}
+									className="border rounded border-black  text-center"
+									style={{ height: '200px', width: '200px' }}
+								/>
+							</td>
+						</tr>
+					</table>
 
-						{/* CV Image  */}
-						<td width="100%">
-							<img
-								src={`${BASE_URL}${data?.image}`}
-								className="text-center"
-								style={{
-									height: '480px',
-									justifyContent: 'center',
-									alignItems: 'center',
-									width: '100%'
-								}}
-								align="center"
-								alt="dataImage"
-							/>
-						</td>
-					</tr>
-				</table>
+					<h1 className="text-center  p-10 w-25 my-20">
+						{' '}
+						<span className="border border-black rounded p-10">BIO-DATA</span>{' '}
+					</h1>
 
-				<table
-					cellPadding="2"
-					cellSpacing="2"
-					width="100%"
-				>
-					<tr>
-						<td width="30%">
-							<table
-								cellPadding="5"
-								cellSpacing="2"
-								width="100%"
+					<table
+						cellPadding="5"
+						cellSpacing="2"
+						width="100%"
+						className="mt-5 border-separate border-spacing-4"
+					>
+						<tr>
+							<td width="25%"> SERIAL NO.</td>
+							<td
+								width="25%"
+								className="border border-black"
 							>
-								<caption>LANGUAGES EXP</caption>
-								<tr>
-									<td className="border border-black text-center"> Language</td>
-									<td className="border border-black text-center">Experience</td>
-								</tr>
-								<tr>
-									<td className="border border-black text-center"> Arabic</td>
-									<td className="border border-black text-center">{data?.arabic_skill}</td>
-								</tr>
-								<tr>
-									<td className="border border-black text-center"> English</td>
-									<td className="border border-black text-center">{data?.english_skill}</td>
-								</tr>
-							</table>
-						</td>
-						<td width="5%">&nbsp;</td>
-						<td width="60%">
-							<p className="border border-black p-10">
-								I HERE BY DECLARATE THAT THE ABOVE PARTICULARS FURNISHED BY ME ARE TRUE AND ACCURATE TO
-								THE OF MY KNOWLEDGE
-							</p>
-						</td>
-						<td width="5%">&nbsp;</td>
-					</tr>
-				</table>
-				<table
-					cellPadding="2"
-					cellSpacing="2"
-					width="100%"
-				>
-					<tr>
-						<td width="30%">
-							<table
-								cellPadding="5"
-								cellSpacing="2"
-								width="30%"
+								{' '}
+								{data?.passenger?.passenger_id}{' '}
+							</td>
+							<td
+								width="25%"
+								className="text-right"
 							>
-								<caption>WORK EXPERIENCE</caption>
-								<tr>
-									<td className="border border-black text-center"> Country</td>
-									<td className="border border-black text-center"> Bangladesh</td>
-								</tr>
-								<tr>
-									<td className="border border-black text-center"> Period</td>
-									<td className="border border-black text-center">03 Years</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-				<table
-					cellPadding="2"
-					cellSpacing="2"
-					width="100%"
-				>
-					<tr>
-						<td width="100%">
-							<table
-								cellPadding="5"
-								cellSpacing="2"
-								width="100%"
+								{' '}
+								POST
+							</td>
+							<td
+								width="25%"
+								className="border border-black"
 							>
-								<tr>
-									<td
-										className="border border-black "
-										width="30%"
-									>
-										{' '}
-										What I Can Do For
-									</td>
-									<td
-										className="border border-black "
-										width="70%"
-									>
-										{' '}
-										&nbsp;
-									</td>
-								</tr>
-								<tr>
-									<td
-										className="border border-black "
-										width="30%"
-									>
-										{' '}
-										REMARKS
-									</td>
-									<td
-										className="border border-black "
-										width="70%"
-									>
-										&nbsp;
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
+								{data?.post}{' '}
+							</td>
+						</tr>
+					</table>
+					<table
+						cellPadding="5"
+						cellSpacing="2"
+						width="100%"
+						className="mt-5 border-separate border-spacing-4"
+					>
+						<tr>
+							<td width="25%">NAME</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{' '}
+								{data?.passenger?.passenger_name}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">FATHER'S NAME</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.passenger?.father_name}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">MOTHER'S NAME</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.passenger?.mother_name}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">PERMANENT ADDRESS</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								PERMANENT ADDRESS
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">PRESENT ADDRESS</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								PRESENT ADDRESS
+							</td>
+						</tr>
+					</table>
+
+					<table
+						cellPadding="5"
+						cellSpacing="5"
+						width="100%"
+						className="mt-5 border-separate border-spacing-4"
+					>
+						<tr>
+							<td width="25%"> PASSPORT NO.</td>
+							<td
+								width="25%"
+								className="border border-black"
+							>
+								{data?.passenger?.passport_no}
+							</td>
+							<td
+								width="25%"
+								className="text-right"
+							>
+								Date of Issue
+							</td>
+							<td
+								width="25%"
+								className="border border-black"
+							>
+								{moment(new Date(data?.passenger?.passport_issue_date)).format('DD-MM-YYYY')}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%"> &nbsp;</td>
+							<td width="25%"> &nbsp; </td>
+							<td
+								width="25%"
+								className="text-right"
+							>
+								VALID UP TO DATE
+							</td>
+							<td
+								width="25%"
+								className="border border-black"
+							>
+								{moment(new Date(data?.passenger?.passport_expiry_date)).format('DD-MM-YYYY')}
+							</td>
+						</tr>
+					</table>
+
+					<table
+						cellPadding="5"
+						cellSpacing="2"
+						width="100%"
+						className="mt-5 border-separate border-spacing-4"
+					>
+						<tr>
+							<td width="25%">DATE OF BIRTH</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{moment(new Date(data?.passenger?.date_of_birth)).format('DD-MM-YYYY')}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">NATIONALITY</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								BANGLADESHI
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">QUALIFICATION</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.qualification}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">HEIGHT</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.height}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">WEIGHT</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.weight}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">RELIGION</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.passenger?.religion}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">MARITIAL STATUS</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.passenger?.marital_status}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">LANGUAGE KNOW</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.language_skill}
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">EXPERIENCE</td>
+							<td
+								width="75%"
+								className="border border-black"
+							>
+								{data?.experience}
+							</td>
+						</tr>
+					</table>
+
+					<table
+						width="100%"
+						className="mt-40 border-separate border-spacing-4"
+					>
+						<tr>
+							<td
+								width="50%"
+								className=""
+							>
+								AUTHORIZED SIGNATURE
+							</td>
+							<td
+								width="50%"
+								className="text-right"
+							>
+								Date : {moment().format('YYYY-MM-DD')}{' '}
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 		</div>
 	);
 });
 
-export default memo(PrintMaleCv);
+export default memo(PrintFemaleCv);
