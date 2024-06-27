@@ -40,7 +40,6 @@ import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { BASE_URL, CHECK_BANK_OR_CASH, GET_LEDGER_CURRENT_BALANCE } from 'src/app/constant/constants';
 import getTotalAmount from 'src/app/@helpers/getTotalAmount';
-import FileUpload from 'src/app/@components/FileUploader';
 
 const useStyles = makeStyles((theme) => ({
 	...getAccountFormStyles(theme)
@@ -341,7 +340,7 @@ function PaymentVoucherForm() {
 				}}
 			/>
 
-			<div className="text-center">
+			{/* <div className="text-center">
 				<div>
 					<FileUpload
 						name="file"
@@ -354,7 +353,7 @@ function PaymentVoucherForm() {
 						classes={classes}
 					/>
 				</div>
-			</div>
+			</div> */}
 
 			<div className="flex">
 				<Controller
