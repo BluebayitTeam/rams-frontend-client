@@ -87,7 +87,7 @@ function PassengerForm(props) {
 	const { errors, isValid, dirtyFields } = formState;
 	const routeParams = useParams();
 
-	const { passengerId } = routeParams;
+	const { passengerId, passengerType } = routeParams;
 	// const history = useHistory();
 	const handleDelete = localStorage.getItem('passengerEvent');
 	const dispatch = useDispatch();
@@ -153,7 +153,7 @@ function PassengerForm(props) {
 
 			setValue('passenger_type', getPassengerType);
 		}
-	}, [getValues('passenger_name')]);
+	}, [watch('passenger_name')]);
 
 	useEffect(() => {
 		if (!_.isEmpty(districts)) {
@@ -182,31 +182,6 @@ function PassengerForm(props) {
 			setValue('target_country', targetCountry);
 		}
 	}, [targetCountrys]);
-
-	// useEffect(() => {
-	// 	const getPlaceOfResidence = districts.find((data) => {
-	// 		const districtName = new RegExp(data.name, 'i');
-	// 		const isMatch = district.match(districtName);
-
-	// 		if (isMatch) return true;
-	// 	})?.name;
-
-	// const getDistrict = districts.find((data) => {
-	// 	const districtName = new RegExp(data.name, 'i');
-	// 	const isMatch = district.match(districtName);
-
-	// 	if (isMatch) return true;
-
-	// 	return false;
-	// })?.id;
-
-	// 	const getPoliceStation = thanas.find((data) => {
-	// 		const PoliceStationName = new RegExp(data.name, 'i');
-	// 		const isMatch = police_station.match(PoliceStationName);
-
-	// 		if (isMatch) return true;
-	// 	})?.id;
-	// }, []);
 
 	useEffect(() => {
 		dispatch(getAgents());

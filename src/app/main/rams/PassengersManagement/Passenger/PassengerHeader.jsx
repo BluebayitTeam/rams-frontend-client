@@ -45,7 +45,7 @@ function PassengerHeader() {
 
 	function handleCreatePassenger() {
 		console.log(`getValues()`, getValues());
-		createPassenger(getValues())
+		createPassenger({ ...getValues(), passenger_type: passengerType })
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
