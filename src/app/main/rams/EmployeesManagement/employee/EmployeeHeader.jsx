@@ -82,25 +82,6 @@ function EmployeeHeader() {
 				</motion.div>
 
 				<div className="flex items-center max-w-full">
-					{/* <motion.div
-						className="hidden sm:flex"
-						initial={{ scale: 0 }}
-						animate={{ scale: 1, transition: { delay: 0.3 } }}
-					>
-						{images && images.length > 0 && featuredImageId ? (
-							<img
-								className="w-32 sm:w-48 rounded"
-								src={_.find(images, { id: featuredImageId })?.url}
-								alt={name}
-							/>
-						) : (
-							<img
-								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/employee-image-placeholder.png"
-								alt={name}
-							/>
-						)}
-					</motion.div> */}
 					<motion.div
 						className="flex flex-col min-w-0 mx-8 sm:mx-16"
 						initial={{ x: -20 }}
