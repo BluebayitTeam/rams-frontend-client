@@ -1060,6 +1060,8 @@ export const FEMALECV_BY_PASSENGER_ID = `${BASE_URL}/female_cv/api/v1/female_cv/
 
 export const GET_FEMALECV_BY_ID = `${BASE_URL}/female_cv/api/v1/female_cv/`;
 
+export const GET_FEMALECV_BY_ID_FOR_PRINT = `${BASE_URL}/female_cv/api/v1/female_cv/print/`;
+
 export const GET_FEMALECVS = `${BASE_URL}/female_cv/api/v1/female_cv/all/`;
 
 export const SEARCH_FEMALECV = `${BASE_URL}/female_cv/api/v1/female_cv/search/`;

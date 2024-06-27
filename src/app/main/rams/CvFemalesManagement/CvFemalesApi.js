@@ -38,6 +38,12 @@ const CvFemaleApi = api
 				}),
 				providesTags: ['cvFemales']
 			}),
+			getCvFemalePrint: build.query({
+				query: (cvFemaleId) => ({
+					url: `${GET_FEMALECV_BY_ID_FOR_PRINT}${cvFemaleId}`
+				}),
+				providesTags: ['cvFemales']
+			}),
 			createCvFemale: build.mutation({
 				query: (newCvFemale) => ({
 					url: CREATE_FEMALECV,

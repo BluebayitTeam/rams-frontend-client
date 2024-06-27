@@ -1,36 +1,47 @@
 import { Autocomplete, Checkbox, FormControlLabel, Icon, InputAdornment, TextField } from '@mui/material';
-import { getPassengers } from 'app/store/dataSlice'; 
-
+import { getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form'; 
-import { useDispatch, useSelector } from 'react-redux'; 
-import { GET_PASSENGER_BY_ID } from 'src/app/constant/constants'; 
-import MultiplePassengersTable from './MultiplePassengersTable'; 
-import { columns } from './data/column'; 
+import { Controller, useFormContext } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import MultiplePassengersTable from './MultiplePassengersTable';
+import { columns } from './data/column';
 
 function DocmentSendForm() {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, setValue, getValues } = methods;
-	
-
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]); 
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null); 
 	const [showError, setShowError] = useState(false); 
-
 	const [documentSends, setDocumentSends] = useState([]); 
-
+	const [keyData, setKeyData] = useState([])
 	const handleCheckboxSend = (name, checked) => {
-		const updatedDocumentSends = documentSends.map((documentSend) =>
-			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-		);
-		setDocumentSends(updatedDocumentSends);
-		
-		dispatch(addDocumentSendColumn(updatedDocumentSends.find((data) => data?.key === name)));
-	};
+    const updatedDocumentSends = documentSends.map((documentSend) =>
+        documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
+    );
+    setDocumentSends(updatedDocumentSends);
 
+    const updatedKeyData = [...keyData];
+    const documentSend = updatedDocumentSends.find((data) => data?.key === name);
+
+    if (documentSend) {
+        
+        const keyIndex = updatedKeyData.indexOf(documentSend.key);
+
+        if (checked && keyIndex === -1) {
+           
+            updatedKeyData.push(documentSend.key);
+        } else if (!checked && keyIndex !== -1) {
+           
+            updatedKeyData.splice(keyIndex, 1);
+        }
+    }
+
+    setKeyData(updatedKeyData);
+    setValue('checkbox', updatedKeyData);
+};
 	const handleChange = (e) => {
 		const { name, checked } = e.target;
 		handleCheckboxSend(name, checked);
@@ -58,32 +69,16 @@ function DocmentSendForm() {
 		);
 	}, [mltPassengerList, setValue]);
 
-	// const handleCheckAvailableVisa = (id, qty) => {
-	// 	setShowError(true);
-	// 	const authTOKEN = {
-	// 		headers: {
-	// 			'Content-type': 'application/json',
-	// 			Authorization: localStorage.getItem('jwt_access_token') 
-	// 		}
-	// 	};
-	// 	fetch(`${GET_PASSENGER_BY_ID}${id}`, authTOKEN) // Fetch available visas for selected passenger
-	// 		.then((response) => response.json())
-	// 		.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
-			
-	// 		.catch(() => {});
-	// };
-	
+
 
 	const handlePassengerSelect = (newPassenger) => {
 		if (newPassenger) {
-			// Check if passenger is already in the list
 			if (!mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
 				setMltPassengerList([...mltPassengerList, newPassenger]);
 			}
-			// handleCheckAvailableVisa(newPassenger.id, newPassenger.quantity);
 		}
 	};
-
+console.log("test",getValues())
 	return (
 		<div>
 			<div>
@@ -143,7 +138,6 @@ function DocmentSendForm() {
 		
 
 			<div>
-				<br />
 				<br />
 
 				<Controller
