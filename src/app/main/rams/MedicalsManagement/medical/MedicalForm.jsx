@@ -67,14 +67,7 @@ function MedicalForm(props) {
 		dispatch(getMedicalCenters());
 		dispatch(getCurrentStatuss());
 	}, []);
-	// console.log('wbkjwb', getValues());
 
-	// useEffect(() => {
-	// 	setPreviewslipPic('');
-	// 	setPreviewImage2('');
-	// }, [getValues('medical_center')]);
-
-	// removed image
 	const handleRemoveslipPicFile = () => {
 		setPreviewslipPicFile(null);
 

@@ -38,6 +38,7 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { maritalStatuses, passportTypes, religions } from 'src/app/@data/data';
 import Image from 'src/app/@components/Image';
 import { DatePicker } from '@mui/x-date-pickers';
+import increaseYear from 'src/app/@helpers/increaseYear';
 import {
 	BASE_URL,
 	CHECK_PASSPORT_NO_WHEN_CREATE,
@@ -660,7 +661,7 @@ function PassengerForm(props) {
 				)}
 			/>
 
-			<Controller
+			{/* <Controller
 				control={control}
 				name="passport_issue_date"
 				render={({ field: { value, onChange } }) => (
@@ -716,6 +717,47 @@ function PassengerForm(props) {
 						}}
 					/>
 				)}
+			/> */}
+
+			<Controller
+				name="passport_issue_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.passport_issue_date}
+						helperText={errors?.passport_issue_date?.message}
+						label="Passport Issue Date"
+						onChange={(event) => {
+							const { value } = event.target;
+							field.onChange(value);
+							setValue('passport_expiry_date', increaseYear(value, 10));
+						}}
+						id="passport_issue_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+
+			<Controller
+				name="passport_expiry_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.passport_expiry_date}
+						helperText={errors?.passport_expiry_date?.message}
+						label="passport Expiry Date"
+						id="passport_expiry_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
 			/>
 
 			<div
@@ -734,7 +776,7 @@ function PassengerForm(props) {
 								field={field}
 								label="Travel Year"
 								placeholder="YYYY"
-								className="mt-8 mb-16 w-full "
+								className="mt-8 mb-10 w-full "
 							/>
 						);
 					}}
