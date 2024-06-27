@@ -149,7 +149,7 @@ function PassengerForm(props) {
 
 			setValue('passenger_type', getPassengerType);
 		}
-	}, [getValues('passenger_name')]);
+	}, [watch('passenger_name')]);
 
 	useEffect(() => {
 		if (!_.isEmpty(districts)) {
