@@ -3,28 +3,17 @@ import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { useEffect } from 'react';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
-import { useSelector } from 'react-redux';
 import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
-import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
  * The employees header.
  */
 function EmployeesHeader(props) {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const searchText = useSelector(selectSearchText);
-	useEffect(() => {
-		return () => {
-			dispatch(resetSearchText());
-		};
-	}, []);
 	return (
 		<div className="flex flex-col sm:flex-row space-y-12 sm:space-y-0 flex-1 w-full justify-between py-32 px-24 md:px-32">
 			<motion.span
