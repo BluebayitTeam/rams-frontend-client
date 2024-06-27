@@ -109,12 +109,8 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 	const classes = useStyles();
 	const [generalData, setGeneralData] = useState({});
 	const [data, setData] = useState({});
-
-	console.log('datasaasasa', data);
-
 	const [femaleCVPrint, setFemaleCVPrint] = useState({});
-
-	console.log('datasasa', data);
+	const [isReadyToPrint, setIsReadyToPrint] = useState(false);
 
 	// Get general setting data
 	useEffect(() => {
@@ -133,14 +129,12 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 	});
 
 	const getFemaleCvData = async (id) => {
-		// eslint-disable-next-line no-useless-catch
 		try {
 			const response = await axios.get(`${GET_FEMALECV_BY_ID_FOR_PRINT}${id}`, {
 				headers: {
 					Authorization: `${localStorage.getItem('jwt_access_token')}`
 				}
 			});
-			console.log('response?.data', response?.data);
 			return response?.data || {};
 		} catch (er) {
 			throw er;
@@ -152,7 +146,7 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 			try {
 				const res = await getFemaleCvData(n.id);
 				setData(res || {});
-				printAction();
+				setIsReadyToPrint(true);
 			} catch (error) {
 				console.error('Error fetching data:', error);
 				setData({});
@@ -161,19 +155,17 @@ const PrintFemaleCv = forwardRef(({ title, type }, ref) => {
 	}));
 
 	useEffect(() => {
-		console.log('data:', data);
-	}, [data]);
-
+		if (isReadyToPrint) {
+			printAction();
+			setIsReadyToPrint(false);
+		}
+	}, [isReadyToPrint, printAction]);
 	return (
 		<div
 			ref={componentRef}
 			className={`${classes.printableContainer} hidden print:block`}
 		>
-			<div
-				ref={componentRef}
-				id="downloadPage"
-				className="p-10"
-			>
+			<div className="p-10">
 				<table>
 					<tr>
 						<td width="25%">
