@@ -3,7 +3,7 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
@@ -11,26 +11,26 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
-import PaymentVoucherHeader from './PaymentVoucherHeader';
-import PaymentVoucherModel from './models/PaymentVoucherModel';
-import { useGetPaymentVoucherQuery } from '../PaymentVouchersApi';
-import PaymentVoucherForm from './PaymentVoucherForm';
+import ReceiptVoucherHeader from './ReceiptVoucherHeader';
+import ReceiptVoucherModel from './models/ReceiptVoucherModel';
+import { useGetReceiptVoucherQuery } from '../ReceiptVouchersApi';
+import ReceiptVoucherForm from './ReceiptVoucherForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({});
 
-function PaymentVoucher() {
+function ReceiptVoucher() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { paymentVoucherId, invoice_no } = routeParams;
+	const { receiptVoucherId, invoice_no } = routeParams;
 
 	const {
-		data: paymentVoucher,
+		data: receiptVoucher,
 		isLoading,
 		isError
-	} = useGetPaymentVoucherQuery(invoice_no, {
-		skip: !paymentVoucherId || paymentVoucherId === 'new'
+	} = useGetReceiptVoucherQuery(invoice_no, {
+		skip: !receiptVoucherId || receiptVoucherId === 'new'
 	});
 
 	const methods = useForm({
@@ -40,33 +40,31 @@ function PaymentVoucher() {
 	});
 	const { reset, watch } = methods;
 	const form = watch();
-	const [formKey, setFormKey] = useState(0);
-
 	useEffect(() => {
-		if (paymentVoucherId === 'new') {
-			reset(PaymentVoucherModel({}));
+		if (receiptVoucherId === 'new') {
+			reset(ReceiptVoucherModel({}));
 		}
-	}, [paymentVoucherId, reset]);
+	}, [receiptVoucherId, reset]);
 
 	useEffect(() => {
-		if (paymentVoucher) {
-			const convertedPaymentVoucherItems = setIdIfValueIsObjArryData(paymentVoucher?.items);
-			const convertedPaymentVoucher = setIdIfValueIsObject2(paymentVoucher);
+		if (receiptVoucher) {
+			const convertedReceiptVoucherItems = setIdIfValueIsObjArryData(receiptVoucher?.items);
+			const convertedReceiptVoucher = setIdIfValueIsObject2(receiptVoucher);
 			reset({
-				...convertedPaymentVoucher,
-				items: convertedPaymentVoucherItems
+				...convertedReceiptVoucher,
+				items: convertedReceiptVoucherItems
 			});
 		}
-	}, [paymentVoucher, reset, paymentVoucher?.id]);
+	}, [receiptVoucher, reset, receiptVoucher?.id]);
 
 	if (isLoading) {
 		return <FuseLoading />;
 	}
 
 	/**
-	 * Show Message if the requested paymentVouchers is not exists
+	 * Show Message if the requested receiptVouchers is not exists
 	 */
-	if (isError && paymentVoucherId !== 'new') {
+	if (isError && receiptVoucherId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -77,39 +75,29 @@ function PaymentVoucher() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such paymentVoucher!
+					There is no such receiptVoucher!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/paymentVoucher/paymentVouchers"
+					to="/apps/receiptVoucher/receiptVouchers"
 					color="inherit"
 				>
-					Go to PaymentVouchers Page
+					Go to ReceiptVouchers Page
 				</Button>
 			</motion.div>
 		);
 	}
 
-	const handleReset = () => {
-		reset({});
-		setFormKey((prevKey) => prevKey + 1);
-	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
+		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<PaymentVoucherHeader />}
+				header={<ReceiptVoucherHeader />}
 				content={
 					<div className="p-16 ">
 						<div>
-							<PaymentVoucherForm
-								paymentVoucherId={paymentVoucherId}
-								handleReset={handleReset}
-							/>
+							<ReceiptVoucherForm receiptVoucherId={receiptVoucherId} />
 						</div>
 					</div>
 				}
@@ -119,4 +107,4 @@ function PaymentVoucher() {
 	);
 }
 
-export default PaymentVoucher;
+export default ReceiptVoucher;

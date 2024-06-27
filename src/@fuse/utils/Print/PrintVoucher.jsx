@@ -5,7 +5,6 @@ import EmailIcon from '@mui/icons-material/Email';
 import axios from 'axios';
 import moment from 'moment';
 import { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 
 import {
 	BASE_URL,
@@ -118,19 +117,22 @@ const useStyles = makeStyles(() => ({
 const PrintVoucher = forwardRef(({ title, type }, ref) => {
 	const classes = useStyles();
 	const toWords = new ToWords();
-
 	const [generalData, setGeneralData] = useState({});
 	const [data, setData] = useState({});
 	const [dataItems, setDataItems] = useState([]);
 	const [totalDbAmount, setTotalDbAmount] = useState('0.00');
 	const [totalCDAmount, setTotalCDAmount] = useState('0.00');
 	const [amountInWord, setAmountInWord] = useState('ZERO TK ONLY');
+	const [isReadyToPrint, setIsReadyToPrint] = useState(false);
 
 	// Get general setting data
 	useEffect(() => {
-		fetch(`${GET_SITESETTINGS}`)
+		fetch(GET_SITESETTINGS)
 			.then((response) => response.json())
-			.then((data) => setGeneralData(data.general_settings[0] || {}))
+			.then((data) => {
+				console.log('General Settings:', data);
+				setGeneralData(data.general_settings[0] || {});
+			})
 			.catch(() => setGeneralData({}));
 	}, []);
 
@@ -139,10 +141,18 @@ const PrintVoucher = forwardRef(({ title, type }, ref) => {
 
 	// Printer action
 	const printAction = useReactToPrint({
-		content: () => componentRef.current
+		content: () => componentRef.current,
+		onAfterPrint: () => {
+			// Reset state after printing
+			setData({});
+			setDataItems([]);
+			setTotalCDAmount('0.00');
+			setTotalDbAmount('0.00');
+			setAmountInWord('ZERO TK ONLY');
+		}
 	});
 
-	const getVoucerData = async (invoice_no) => {
+	const getVoucherData = async (invoice_no) => {
 		try {
 			const response = await axios.get(
 				`${type === 'payment' ? GET_PAYMENT_VOUCHER_BY_INVOICE_NO : GET_RECEIPT_VOUCHER_ID_NAME_BY}${invoice_no}`,
@@ -152,56 +162,54 @@ const PrintVoucher = forwardRef(({ title, type }, ref) => {
 					}
 				}
 			);
+			console.log('Voucher Data:', response.data);
 			return response?.data || {};
-		} catch (er) {
-			throw er;
+		} catch (error) {
+			console.error('Error fetching voucher data:', error);
+			throw error;
 		}
 	};
 
 	useImperativeHandle(ref, () => ({
-		doPrint(n) {
-			getVoucerData(n.invoice_no)
-				.then((res) => {
-					unstable_batchedUpdates(() => {
-						setDataItems(res?.items || []);
-						setData(
-							{
-								...res,
-								date: type === 'payment' ? res.payment_date : res.receipt_date
-							} || {}
-						);
-						const totalDbAmnt = getTotalAmount(res?.items || [], 'debit_amount');
-						setTotalDbAmount(totalDbAmnt.toFixed(2));
-						const totalCDAmnt = getTotalAmount(res?.items || [], 'credit_amount');
-						setTotalCDAmount(totalCDAmnt.toFixed(2));
-						setAmountInWord(
-							toWords
-								.convert(type === 'payment' ? Number(totalCDAmnt) : Number(totalDbAmnt))
-								.toUpperCase()
-								.concat(' TK ONLY')
-						);
-					});
-					printAction();
-					unstable_batchedUpdates(() => {
-						setData({});
-						setDataItems([]);
-						setTotalCDAmount('0.00');
-						setTotalDbAmount('0.00');
-						setAmountInWord('ZERO TK ONLY');
-					});
-				})
-				.catch(() => {
-					unstable_batchedUpdates(() => {
-						setData({});
-						setDataItems([]);
-						setTotalCDAmount('0.00');
-						setTotalDbAmount('0.00');
-						setAmountInWord('ZERO TK ONLY');
-					});
+		async doPrint(n) {
+			try {
+				const res = await getVoucherData(n.invoice_no);
+				const items = res?.items || [];
+				const totalDbAmnt = getTotalAmount(items, 'debit_amount');
+				const totalCDAmnt = getTotalAmount(items, 'credit_amount');
+
+				setDataItems(items);
+				setData({
+					...res,
+					date: type === 'payment' ? res.payment_date : res.receipt_date
 				});
+				setTotalDbAmount(totalDbAmnt.toFixed(2));
+				setTotalCDAmount(totalCDAmnt.toFixed(2));
+				setAmountInWord(
+					toWords
+						.convert(type === 'payment' ? Number(totalCDAmnt) : Number(totalDbAmnt))
+						.toUpperCase()
+						.concat(' TK ONLY')
+				);
+
+				setIsReadyToPrint(true);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+				setData({});
+				setDataItems([]);
+				setTotalCDAmount('0.00');
+				setTotalDbAmount('0.00');
+				setAmountInWord('ZERO TK ONLY');
+			}
 		}
 	}));
 
+	useEffect(() => {
+		if (isReadyToPrint) {
+			printAction();
+			setIsReadyToPrint(false);
+		}
+	}, [isReadyToPrint, printAction]);
 	return (
 		<div
 			ref={componentRef}

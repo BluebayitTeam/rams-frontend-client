@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { getAccountFormStyles } from '@fuse/utils/accountMakeStyles';
 import { FormControl } from '@mui/base';
 import {
@@ -46,12 +47,12 @@ const useStyles = makeStyles((theme) => ({
 	...getAccountFormStyles(theme)
 }));
 
-function PaymentVoucherForm() {
+function ReceiptVoucherForm() {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { paymentVoucherId } = useParams();
+	const { receiptVoucherId } = useParams();
 
 	const { control, formState, getValues, setValue, reset, watch } = methods;
 
@@ -68,7 +69,7 @@ function PaymentVoucherForm() {
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyLedger, setHaveEmptyLedger] = useState(true);
 	const [ledgerMessage, setLedgerMessage] = useState('');
-	const [checked, setChecked] = useState(!!paymentVoucherId?.currency);
+	const [checked, setChecked] = useState(!!receiptVoucherId?.currency);
 	const [checked3, setChecked3] = useState(
 		localStorage.getItem('post_date') ? localStorage.getItem('post_date') : false
 	);
@@ -95,7 +96,7 @@ function PaymentVoucherForm() {
 		if (currentFile && !currentFile.name) {
 			setFile(`${BASE_URL}/${currentFile}`);
 		}
-	}, [paymentVoucherId, watch('file')]);
+	}, [receiptVoucherId, watch('file')]);
 	useEffect(() => {
 		cheackDbCdEquality();
 	}, [getValues()]);
@@ -109,8 +110,8 @@ function PaymentVoucherForm() {
 	};
 	const cheackDbCdEquality = async () => {
 		const items = getValues()?.items || [];
-		const totalDebitAmount = getTotalAmount(items || [], 'debit_amount') || 0;
-		!watch('is_dual_mode') && setValue(`items.0.credit_amount`, totalDebitAmount);
+		const totalDebitAmount = getTotalAmount(items || [], 'credit_amount') || 0;
+		!watch('is_dual_mode') && setValue(`items.0.debit_amount`, totalDebitAmount);
 
 		if (watch('is_foreign_currency')) {
 			const ForeignTotalAmount = totalCreditAmount / getValues().currency_rate || 0;
@@ -328,13 +329,13 @@ function PaymentVoucherForm() {
 			/>
 
 			<Controller
-				name="payment_date"
+				name="receipt_date"
 				control={control}
 				render={({ field }) => {
 					return (
 						<CustomDatePicker
 							field={field}
-							label="Payment Date"
+							label="Receipt Date"
 						/>
 					);
 				}}
@@ -699,8 +700,8 @@ function PaymentVoucherForm() {
 																fullWidth
 																disabled={
 																	!!(
-																		paymentVoucherId === 'new' &&
-																		idx === 0 &&
+																		receiptVoucherId === 'new' &&
+																		idx != 0 &&
 																		!watch('is_dual_mode')
 																	)
 																}
@@ -740,8 +741,8 @@ function PaymentVoucherForm() {
 																fullWidth
 																disabled={
 																	!!(
-																		paymentVoucherId === 'new' &&
-																		idx != 0 &&
+																		receiptVoucherId === 'new' &&
+																		idx === 0 &&
 																		!watch('is_dual_mode')
 																	)
 																}
@@ -759,7 +760,7 @@ function PaymentVoucherForm() {
 													style={{ minWidth: '80px' }}
 												>
 													<div>
-														{checked || watch('passenger') ? (
+														{getValues().passenger ? (
 															<div
 																variant="outlined"
 																className={classes.btnContainer}
@@ -785,7 +786,6 @@ function PaymentVoucherForm() {
 																	});
 																	checkEmptyLedger();
 																}}
-																onBlur={() => {}}
 															>
 																<AddIcon />
 															</div>
@@ -1097,4 +1097,4 @@ function PaymentVoucherForm() {
 	);
 }
 
-export default PaymentVoucherForm;
+export default ReceiptVoucherForm;

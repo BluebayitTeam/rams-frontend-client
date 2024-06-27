@@ -38,6 +38,7 @@ function EvisaEntryForm(props) {
 	const passengers = useSelector((state) => state.data.passengers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
+	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const [fileExtPCName, setFileExtPCName] = useState('');
 	const fileInputRef = useRef(null);
 	const slipPic = watch('file') || '';
