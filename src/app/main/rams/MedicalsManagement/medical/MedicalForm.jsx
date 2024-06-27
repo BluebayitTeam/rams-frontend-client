@@ -280,7 +280,7 @@ function MedicalForm(props) {
 			<Controller
 				name="current_status"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
