@@ -205,7 +205,11 @@ function CvFemalesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
-				<PrintFemaleCv ref={printFemaleCvRef} />
+				<PrintFemaleCv
+					ref={printFemaleCvRef}
+					title="printFemaleCv"
+					type="CV"
+				/>
 				<Table
 					stickyHeader
 					className="min-w-xl "

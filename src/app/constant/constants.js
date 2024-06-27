@@ -1089,6 +1089,7 @@ export const UPDATE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/update/`;
 export const DELETE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/delete/`;
 
 export const DELETE_MULTIPLE_MALECV = `${BASE_URL}/male_cv/api/v1/male_cv/delete_multiple/`;
+export const GET_MALECV_BY_ID_FOR_PRINT = `${BASE_URL}/male_cv/api/v1/male_cv/print/`;
 
 export const MALECV_BY_PASSENGER_ID = `${BASE_URL}/male_cv/api/v1/male_cv/get_by_passenger_id/`;
 

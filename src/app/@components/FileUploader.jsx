@@ -43,7 +43,7 @@ export default function FileUpload({ control, setFile, setValue, file, name, BAS
 	};
 	return (
 		<div className="text-center">
-			<Typography className="h3 text-center mb-4 font-bold	 text-blue">{label}</Typography>
+			<Typography className="h3 text-center mb-9 font-bold	 text-blue">{label}</Typography>
 			<Controller
 				name={name}
 				control={control}

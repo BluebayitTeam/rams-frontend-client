@@ -14,7 +14,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector } from 'react-redux';
@@ -28,6 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
+import PrintMaleCv from '@fuse/utils/Print/PrintMaleCv';
 import CvMalesTableHead from './CvMalesTableHead';
 import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi';
 
@@ -44,7 +45,7 @@ function CvMalesTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvMales(data));
 	const maleCvs = useSelector(selectFilteredCvMales(data?.male_cvs));
-
+	const printMaleCvRef = useRef();
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -204,6 +205,11 @@ function CvMalesTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
+				<PrintMaleCv
+					ref={printMaleCvRef}
+					title="printMaleCv"
+					type="CV"
+				/>
 				<Table
 					stickyHeader
 					className="min-w-xl "
@@ -318,7 +324,7 @@ function CvMalesTable(props) {
 										>
 											<PrintIcon
 												className="cursor-pointer custom-print-icon-style text-3xl"
-												onClick={() => FeMaleCVPrintRef.current.doPrint(n)}
+												onClick={() => printMaleCvRef.current.doPrint(n)}
 											/>
 											<Edit
 												onClick={() => handleUpdateCvMale(n, 'updateCvMale')}
