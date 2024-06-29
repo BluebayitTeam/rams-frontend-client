@@ -55,6 +55,9 @@ import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig'
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
 import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
 import CvBankAppConfig from '../rams/CvBanksManagement/CvBankAppConfig';
+import ContraAppConfig from '../rams/ContrasManagement/ContraAppConfig';
+import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
+import JournalIdAppConfig from '../rams/JournalIdsManagement/JournalIdAppConfig';
 
 /**
  * The list of application configurations.
@@ -116,6 +119,9 @@ const appsConfigs = [
 	LedgerAppConfig,
 	SubLedgerAppConfig,
 	PaymentVoucherAppConfig,
-	ReceiptVoucherAppConfig
+	ReceiptVoucherAppConfig,
+	ContraAppConfig,
+	JournalAppConfig,
+	JournalIdAppConfig
 ];
 export default appsConfigs;

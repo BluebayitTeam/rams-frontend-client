@@ -1,7 +1,6 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import moment from 'moment';
 
 import {
 	ALL_USERS,
@@ -48,20 +47,7 @@ const PassengerApi = api
 				query: (newPassenger) => ({
 					url: CREATE_PASSENGER,
 					method: 'POST',
-					data: jsonToFormData(
-						PassengerModel({
-							...newPassenger,
-							passport_issue_date: moment(new Date(newPassenger?.passport_issue_date))?.format(
-								'YYYY-MM-DD'
-							),
-
-							passport_expiry_date: moment(new Date(newPassenger?.passport_expiry_date)).format(
-								'YYYY-MM-DD'
-							),
-
-							date_of_birth: moment(new Date(newPassenger?.date_of_birth)).format('YYYY-MM-DD')
-						})
-					)
+					data: jsonToFormData(PassengerModel(newPassenger))
 				}),
 				invalidatesTags: ['passengers']
 			}),
@@ -77,12 +63,7 @@ const PassengerApi = api
 				query: (passenger) => ({
 					url: `${UPDATE_PASSENGER}${passenger.id}`,
 					method: 'PUT',
-					data: jsonToFormData({
-						...passenger,
-						passport_issue_date: moment(new Date(passenger?.passport_issue_date)).format('YYYY-MM-DD'),
-						passport_expiry_date: moment(new Date(passenger?.passport_expiry_date)).format('YYYY-MM-DD'),
-						date_of_birth: moment(new Date(passenger?.date_of_birth)).format('YYYY-MM-DD')
-					})
+					data: jsonToFormData(passenger)
 				}),
 				invalidatesTags: ['passengers']
 			}),
