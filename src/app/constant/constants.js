@@ -141,7 +141,7 @@ export const DEMANDS_WITHOUT_PAGINATION_VISA_ENTRY = `${BASE_URL}/demand/api/v1/
 
 export const DEMANDS_WITHOUT_PAGINATION_CALLING_ENTRY = `${BASE_URL}/demand/api/v1/demand/without_pagination/all/malaysia/active`;
 
-export const PASSENGERTYPES_WITHOUT_PAGINATION = `${BASE_URL}/passenger_type/api/v1/passenger_type/all/`;
+export const PASSENGERTYPES_WITHOUT_PAGINATION = `${BASE_URL}/passenger_type/api/v1/passenger_type/without_pagination/all/`;
 
 export const PASSENGER_COLUMN = `${BASE_URL}/table_column_passenger/api/v1/table_column_passenger/`;
 
