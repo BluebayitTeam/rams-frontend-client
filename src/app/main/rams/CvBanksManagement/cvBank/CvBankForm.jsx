@@ -4,7 +4,16 @@
 import { useParams } from 'react-router-dom';
 import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import {
+	getAgencys,
+	getAgents,
+	getCities,
+	getCountries,
+	getCurrentStatuss,
+	getPassengers,
+	getProfessions,
+	getThanas
+} from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
@@ -43,8 +52,15 @@ function CvBankForm(props) {
 
 	useEffect(() => {
 		dispatch(getPassengers());
+		dispatch(getProfessions());
 		dispatch(getCountries());
 		dispatch(getCurrentStatuss());
+		dispatch(getPassengers());
+		dispatch(getAgents());
+		dispatch(getAgencys());
+		dispatch(getCountries());
+		dispatch(getThanas());
+		dispatch(getCities());
 	}, []);
 
 	useEffect(() => {}, [watch('date_of_birth')]);
