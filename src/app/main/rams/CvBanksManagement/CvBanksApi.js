@@ -7,7 +7,7 @@ import {
 	CREATE_CV_BANK,
 	DELETE_CV_BANK,
 	UPDATE_CV_BANK,
-	CV_BANK_BY_PASSENGER_ID
+	GET_CV_BANK_BY_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -34,7 +34,7 @@ const CvBankApi = api
 			}),
 			getCvBank: build.query({
 				query: (cvBankId) => ({
-					url: `${CV_BANK_BY_PASSENGER_ID}${cvBankId}`
+					url: `${GET_CV_BANK_BY_ID}${cvBankId}`
 				}),
 				providesTags: ['cvBanks']
 			}),

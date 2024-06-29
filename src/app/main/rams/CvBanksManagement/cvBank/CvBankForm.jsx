@@ -292,7 +292,7 @@ function CvBankForm(props) {
 						options={districts}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
-							onChange(newValue?.id);
+							onChange(newValue?.name);
 						}}
 						renderInput={(params) => (
 							<TextField
@@ -300,6 +300,7 @@ function CvBankForm(props) {
 								error={!value}
 								placeholder="Select Passport Issue Place"
 								label="Passport Issue Place"
+								id="passport_issue_place"
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
@@ -914,7 +915,7 @@ function CvBankForm(props) {
 			<div className="text-center">
 				<div>
 					<FileUpload
-						name="image"
+						name="file"
 						label="Resume"
 						control={control}
 						setValue={setValue}

@@ -44,7 +44,7 @@ function CvBanksTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvBanks(data));
-	const maleCvs = useSelector(selectFilteredCvBanks(data?.male_cvs));
+	const bankCvs = useSelector(selectFilteredCvBanks(data?.cv_banks));
 	const printMaleCvRef = useRef();
 	useEffect(() => {
 		refetch({ searchKey });
@@ -59,7 +59,7 @@ function CvBanksTable(props) {
 	}, [page, rowsPerPage]);
 
 	useEffect(() => {
-		if (totalData?.male_cvs) {
+		if (totalData?.cv_banks) {
 			const modifiedRow = [
 				{
 					id: 'sl',
@@ -70,7 +70,7 @@ function CvBanksTable(props) {
 				}
 			];
 
-			Object.entries(totalData?.male_cvs[0] || {})
+			Object.entries(totalData?.cv_banks[0] || {})
 				.filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' and 'random_number' fields
 				.map(([key]) => {
 					modifiedRow.push({
@@ -96,7 +96,7 @@ function CvBanksTable(props) {
 
 			setRows(modifiedRow);
 		}
-	}, [totalData?.male_cvs]);
+	}, [totalData?.cv_banks]);
 
 	const [selected, setSelected] = useState([]);
 
@@ -117,7 +117,7 @@ function CvBanksTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(maleCvs.map((n) => n.id));
+			setSelected(bankCvs.map((n) => n.id));
 			return;
 		}
 
@@ -185,7 +185,7 @@ function CvBanksTable(props) {
 		);
 	}
 
-	if (maleCvs?.length === 0) {
+	if (bankCvs?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -220,13 +220,13 @@ function CvBanksTable(props) {
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={maleCvs?.length}
+						rowCount={bankCvs?.length}
 						onMenuItemClick={handleDeselect}
 						rows={rows}
 					/>
 
 					<TableBody>
-						{_.orderBy(maleCvs, [tableOrder.id], [tableOrder.direction])
+						{_.orderBy(bankCvs, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((n) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
@@ -257,7 +257,7 @@ function CvBanksTable(props) {
 														scope="row"
 														key={key}
 													>
-														{key === 'image' ? (
+														{key === 'file' ? (
 															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
 																<PictureAsPdf
 																	style={{
@@ -298,7 +298,10 @@ function CvBanksTable(props) {
 																	alt="uploaded file"
 																/>
 															)
-														) : (key === 'created_at' || key === 'flight_date') &&
+														) : (key === 'created_at' || key === 'passport_issue_date') &&
+														  n[key] ? (
+															moment(new Date(n[key])).format('DD-MM-YYYY')
+														) : (key === 'updated_at' || key === 'passport_issue_date') &&
 														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (key === 'is_debtor' || key === 'is_paid') &&
