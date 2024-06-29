@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Calendar, DateObject } from 'react-multi-date-picker';
 import DatePickerHeader from 'react-multi-date-picker/plugins/date_picker_header';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
@@ -8,7 +8,7 @@ import Toolbar from 'react-multi-date-picker/plugins/toolbar';
 
 const dateObject = new DateObject();
 
-const toDateObject = day => new DateObject(dateObject).setDay(day);
+const toDateObject = (day) => new DateObject(dateObject).setDay(day);
 
 const colors = {
 	green: [2, 10, 17].map(toDateObject),
@@ -17,7 +17,7 @@ const colors = {
 	yellow: [15, 22, 28].map(toDateObject)
 };
 
-Object.keys(colors).forEach(color => {
+Object.keys(colors).forEach((color) => {
 	colors[color].forEach((date, index) => {
 		colors[color][index].color = color;
 	});
@@ -42,14 +42,20 @@ export default function DatePickerPlugins() {
 			<Calendar
 				{...props}
 				plugins={[
-					<DatePickerHeader position="top" size="medium" />,
+					<DatePickerHeader
+						position="top"
+						size="medium"
+					/>,
 					<DatePanel
 						position={isRTL ? 'left' : 'right'}
 						sort="date"
 						eachDaysInRange={!props.onlyMonthPicker && !props.onlyYearPicker}
 					/>,
 					multiColors({ position: isRTL ? 'right' : 'left' }),
-					<Settings position="bottom" defaultActive="locale" />,
+					<Settings
+						position="bottom"
+						defaultActive="locale"
+					/>,
 					<Toolbar position="bottom" />
 				]}
 			/>
