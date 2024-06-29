@@ -21,7 +21,10 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import FileUpload from 'src/app/@components/FileUploader';
 import { BASE_URL } from 'src/app/constant/constants';
-import { genders } from 'src/app/@data/data';
+import { genders, maritalStatuses, religions } from 'src/app/@data/data';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { differenceInYears } from 'date-fns';
+import increaseYear from 'src/app/@helpers/increaseYear';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -38,7 +41,9 @@ function CvBankForm(props) {
 	const dispatch = useDispatch();
 	const userID = localStorage.getItem('user_id');
 
-	const countrys = useSelector((state) => state.data.countries);
+	const targetCountrys = useSelector((state) => state.data.countries);
+	const districts = useSelector((state) => state.data.cities);
+	const thanas = useSelector((state) => state.data.thanas);
 
 	const classes = useStyles(props);
 
@@ -94,7 +99,6 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="passenger_name"
 				control={control}
@@ -114,7 +118,6 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="gender"
 				control={control}
@@ -145,36 +148,6 @@ function CvBankForm(props) {
 					/>
 				)}
 			/>
-
-			<Controller
-				name="country"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16 w-full  "
-						freeSolo
-						value={value ? countrys.find((data) => data.id === value) : null}
-						options={countrys}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select  Country"
-								label="Country"
-								// error={!!errors.country || !value}
-								helperText={errors?.country?.message}
-								variant="outlined"
-								required
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-							/>
-						)}
-					/>
-				)}
-			/>
-
 			<Controller
 				name="profession"
 				control={control}
@@ -195,20 +168,222 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
-				name="experience"
+				name="date_of_birth"
+				control={control}
+				render={({ field }) => (
+					<CustomDatePicker
+						field={field}
+						label="Date Of Birth"
+						className="mt-8 mb-16 w-full"
+						InputLabelProps={field.value && { shrink: true }}
+						onChange={(value) => {
+							// Check if value is valid date
+							if (value) {
+								const selectedDate = new Date(value);
+								const age = differenceInYears(new Date(), selectedDate);
+
+								if (age < 22 || age > 35) {
+									window.alert('Age must be between 22-35');
+									dispatch(showMessage({ message: 'Age must be between 22-35', variant: 'error' }));
+									setValue('date_of_birth', null); // Clear the field if condition is not met
+								} else {
+									// Set the valid date value
+									setValue('date_of_birth', selectedDate);
+								}
+							} else {
+								// If value is null or invalid, clear the field
+								setValue('date_of_birth', null);
+							}
+						}}
+					/>
+				)}
+			/>
+			<Controller
+				name="target_country"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-16 mb-16 w-full  "
+						freeSolo
+						value={value ? targetCountrys.find((data) => data.id === value) : null}
+						options={targetCountrys}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Target Country"
+								label="Target Country"
+								// error={!!errors.target_country || !value}
+								helperText={errors?.target_country?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="passport_no"
 				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
 							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.experience_task}
-							helperText={errors?.experience_task?.message}
-							label="Experience Task"
-							id="experience_task"
+							className="mt-8 mb-16 w-full  "
+							// error={!!errors.passport_no || !field.value}
+							helperText={errors?.passport_no?.message}
+							label="Passport No"
+							id="passport_no"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+							onChange={(event) => {
+								field.onChange(event.target.value);
+							}}
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="passport_issue_place"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full  "
+						freeSolo
+						value={value ? districts.find((data) => data.id === value || data.name === value) : null}
+						options={districts}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								error={!value}
+								placeholder="Select Passport Issue Place"
+								label="Passport Issue Place"
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="passport_issue_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.passport_issue_date}
+						helperText={errors?.passport_issue_date?.message}
+						label="Passport Issue Date"
+						onChange={(event) => {
+							const { value } = event.target;
+							field.onChange(value);
+							setValue('passport_expiry_date', increaseYear(value, 10));
+						}}
+						id="passport_issue_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+			<Controller
+				name="passport_expiry_date"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.passport_expiry_date}
+						helperText={errors?.passport_expiry_date?.message}
+						label="passport Expiry Date"
+						id="passport_expiry_date"
+						type="date"
+						InputLabelProps={{ shrink: true }}
+						fullWidth
+					/>
+				)}
+			/>
+			<Controller
+				name="district"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full  "
+						freeSolo
+						value={value ? districts.find((data) => data.id === value) : null}
+						options={districts}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+							dispatch(getThanasBasedOnCity(newValue?.id));
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select District"
+								label="District"
+								// error={!!errors.district}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="police_station"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full  "
+						freeSolo
+						value={value ? thanas.find((data) => data.id === value) : null}
+						options={thanas}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Police Station"
+								label="Police Station"
+								// error={!!errors.police_station}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="office_serial"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full "
+							label="Office Serial"
+							id="office_serial"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
@@ -216,20 +391,16 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
-				name="year_of_experience"
+				name="father_name"
 				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
 							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.experience_period}
-							helperText={errors?.experience_period?.message}
-							label="Experience Period"
-							id="experience_period"
+							className="mt-8 mb-16 w-full  "
+							label="Father Name"
+							id="father_name"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
@@ -237,7 +408,162 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
+			<Controller
+				name="mother_name"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full  "
+							label="Mother Name"
+							id="mother_name"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="spouse_name"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full  "
+							label="Spouse Name"
+							id="spouse_name"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="religion"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full  "
+						freeSolo
+						value={value ? religions.find((data) => data.id === value) : null}
+						options={religions}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Religion"
+								label="Religion"
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="post_office"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full  "
+							label="Post Office"
+							id="post_office"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="village"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full  "
+							label="Village"
+							id="village"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="marital_status"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full  "
+						freeSolo
+						value={value ? maritalStatuses.find((data) => data.id === value) : null}
+						options={maritalStatuses}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select Marital Status"
+								label="Marital Status"
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="contact_no"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full  "
+							label="Contact No"
+							id="contact_no"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="nid"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full  "
+							label="NID"
+							id="nid"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
 			<Controller
 				name="place_of_birth"
 				control={control}
@@ -245,10 +571,7 @@ function CvBankForm(props) {
 					return (
 						<TextField
 							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.place_of_birth}
-							helperText={errors?.place_of_birth?.message}
+							className="mt-8 mb-16 w-full  "
 							label="Place Of Birth"
 							id="place_of_birth"
 							variant="outlined"
@@ -257,105 +580,17 @@ function CvBankForm(props) {
 						/>
 					);
 				}}
-			/>
-
+			/>{' '}
 			<Controller
-				name="place_of_residence"
+				name="emergency_contact_no"
 				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
 							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.place_of_residence}
-							helperText={errors?.place_of_residence?.message}
-							label="Place Of Residence"
-							id="place_of_residence"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="number_of_children"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.number_of_children}
-							helperText={errors?.number_of_children?.message}
-							label="Number Of Children"
-							id="number_of_children"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="height"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.height}
-							helperText={errors?.height?.message}
-							label="Height"
-							id="height"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="weight"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.weight}
-							helperText={errors?.weight?.message}
-							label="weight"
-							id="weight"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="education"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							value={field.value || ''}
-							className="mt-8 mb-16"
-							// error={!!errors.education}
-							helperText={errors?.education?.message}
-							label="Education"
-							id="education"
+							className="mt-8 mb-16 w-full  "
+							label="Emergency Contact No"
+							id="emergency_contact_no"
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
@@ -383,7 +618,166 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
+			<Controller
+				name="experience"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.experience}
+							helperText={errors?.experience?.message}
+							label="Experience Task"
+							id="experience"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="year_of_experience"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.year_of_experience}
+							helperText={errors?.year_of_experience?.message}
+							label="Experience Period"
+							id="year_of_experience"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="place_of_birth"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.place_of_birth}
+							helperText={errors?.place_of_birth?.message}
+							label="Place Of Birth"
+							id="place_of_birth"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="place_of_residence"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.place_of_residence}
+							helperText={errors?.place_of_residence?.message}
+							label="Place Of Residence"
+							id="place_of_residence"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="number_of_children"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.number_of_children}
+							helperText={errors?.number_of_children?.message}
+							label="Number Of Children"
+							id="number_of_children"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="height"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.height}
+							helperText={errors?.height?.message}
+							label="Height"
+							id="height"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="weight"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.weight}
+							helperText={errors?.weight?.message}
+							label="weight"
+							id="weight"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+			<Controller
+				name="education"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							value={field.value || ''}
+							className="mt-8 mb-16"
+							// error={!!errors.education}
+							helperText={errors?.education?.message}
+							label="Education"
+							id="education"
+							variant="outlined"
+							InputLabelProps={field.value && { shrink: true }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
 			<Controller
 				name="arabic_skill"
 				control={control}
@@ -404,7 +798,6 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="english_skill"
 				control={control}
@@ -425,7 +818,6 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="salary"
 				control={control}
@@ -446,7 +838,6 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="complexion"
 				control={control}
@@ -467,7 +858,6 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="remarks"
 				control={control}
@@ -490,7 +880,6 @@ function CvBankForm(props) {
 					);
 				}}
 			/>
-
 			<div className="text-center">
 				<div>
 					<FileUpload

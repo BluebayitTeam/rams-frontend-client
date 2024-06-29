@@ -336,7 +336,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<div
 			// style={{ display: routeParams.passengerId === 'new' ? 'block' : 'none' }}
 			>
@@ -444,7 +443,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="passenger_name"
 				control={control}
@@ -492,7 +490,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="profession"
 				control={control}
@@ -520,7 +517,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="agency"
 				control={control}
@@ -550,7 +546,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				control={control}
 				name="date_of_birth"
@@ -578,7 +573,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="target_country"
 				control={control}
@@ -606,7 +600,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="passport_no"
 				control={control}
@@ -631,7 +624,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="passport_issue_place"
 				control={control}
@@ -660,35 +652,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
-			{/* <Controller
-				control={control}
-				name="passport_issue_date"
-				render={({ field: { value, onChange } }) => (
-					<DatePicker
-						value={value ? new Date(value) : null}
-						onChange={(val) => {
-							onChange(val ? val.toISOString() : '');
-						}}
-						className="mt-32 mb-16 w-full"
-						slotProps={{
-							textField: {
-								id: 'passport_issue_date',
-								label: 'Passport Issue Date',
-								InputLabelProps: value ? { shrink: true } : { style: { color: 'red' } },
-								fullWidth: true,
-								variant: 'outlined',
-								error: !!errors.passport_issue_date,
-								helperText: errors?.passport_issue_date?.message
-							},
-							actionBar: {
-								actions: ['clear', 'today']
-							}
-						}}
-					/>
-				)}
-			/>
-
 			<Controller
 				control={control}
 				name="passport_expiry_date"
@@ -717,7 +680,7 @@ function PassengerForm(props) {
 						}}
 					/>
 				)}
-			/> */}
+			/>
 
 			<Controller
 				name="passport_issue_date"
@@ -741,7 +704,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="passport_expiry_date"
 				control={control}
@@ -759,7 +721,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<div
 				style={{
 					display: routeParams.passengerType === 'hajj' ? 'block' : 'none'
@@ -824,7 +785,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="district"
 				control={control}
@@ -855,7 +815,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="police_station"
 				control={control}
@@ -901,7 +860,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<div
 				style={{
 					display: 'none'
@@ -935,7 +893,6 @@ function PassengerForm(props) {
 					)}
 				/>
 			</div>
-
 			<Controller
 				name="father_name"
 				control={control}
@@ -954,7 +911,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="mother_name"
 				control={control}
@@ -973,7 +929,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="spouse_name"
 				control={control}
@@ -992,7 +947,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="religion"
 				control={control}
@@ -1020,7 +974,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="post_office"
 				control={control}
@@ -1039,7 +992,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="village"
 				control={control}
@@ -1058,7 +1010,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="marital_status"
 				control={control}
@@ -1086,7 +1037,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="contact_no"
 				control={control}
@@ -1105,7 +1055,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="nid"
 				control={control}
@@ -1124,7 +1073,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="place_of_birth"
 				control={control}
@@ -1172,7 +1120,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="emergency_contact_no"
 				control={control}
@@ -1223,7 +1170,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="current_status"
 				control={control}
@@ -1252,7 +1198,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="passport_type"
 				control={control}
@@ -1280,7 +1225,6 @@ function PassengerForm(props) {
 					/>
 				)}
 			/>
-
 			<Controller
 				name="place_of_residence"
 				control={control}
@@ -1299,7 +1243,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<Controller
 				name="notes"
 				control={control}
@@ -1319,7 +1262,6 @@ function PassengerForm(props) {
 					);
 				}}
 			/>
-
 			<div className="flex md:space-x-12 flex-col md:flex-row">
 				<div className="flex flex-wrap w-full   my-2 justify-evenly items-center">
 					{passportPic && !previewImage1 && (
