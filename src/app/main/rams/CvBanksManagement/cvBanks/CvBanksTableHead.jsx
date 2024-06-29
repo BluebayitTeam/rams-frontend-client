@@ -6,6 +6,7 @@ import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
 import { useDeleteCvBanksMutation } from '../CvBanksApi';
+
 /**
  * The table head rows data.
  */
@@ -13,21 +14,21 @@ import { useDeleteCvBanksMutation } from '../CvBanksApi';
 /**
  * The cvBanks table head component.
  */
-function CvMalesTableHead(props) {
-	const { selectedCvMaleIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
-	const [removeCvMales] = useDeleteCvBanksMutation();
+function CvBanksTableHead(props) {
+	const { selectedCvMaleIds = [], tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+	const [removeCvBanks] = useDeleteCvBanksMutation();
 	const numSelected = selectedCvMaleIds.length;
-	const [selectedCvMalesMenu, setSelectedCvMalesMenu] = useState(null);
+	const [selectedCvBanksMenu, setSelectedCvBanksMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedCvMalesMenu(event) {
-		setSelectedCvMalesMenu(event.currentTarget);
+	function openSelectedCvBanksMenu(event) {
+		setSelectedCvBanksMenu(event.currentTarget);
 	}
 
-	function closeSelectedCvMalesMenu() {
-		setSelectedCvMalesMenu(null);
+	function closeSelectedCvBanksMenu() {
+		setSelectedCvBanksMenu(null);
 	}
 
 	return (
@@ -78,4 +79,4 @@ function CvMalesTableHead(props) {
 	);
 }
 
-export default CvMalesTableHead;
+export default CvBanksTableHead;

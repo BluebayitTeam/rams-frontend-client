@@ -12,6 +12,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import FileUpload from 'src/app/@components/FileUploader';
 import { BASE_URL } from 'src/app/constant/constants';
+import { genders } from 'src/app/@data/data';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -29,8 +30,7 @@ function CvBankForm(props) {
 	const userID = localStorage.getItem('user_id');
 
 	const countrys = useSelector((state) => state.data.countries);
-	const AllPassengers = useSelector((state) => state.data.passengers);
-	const passengers = AllPassengers.filter((data) => data?.gender === 'female' || data?.gender === 'Female');
+
 	const classes = useStyles(props);
 
 	const methods = useFormContext();
@@ -80,31 +80,50 @@ function CvBankForm(props) {
 			/>
 
 			<Controller
-				name="passenger"
+				name="passenger_name"
+				control={control}
+				render={({ field }) => {
+					return (
+						<TextField
+							{...field}
+							className="mt-8 mb-16 w-full  "
+							// error={!!errors.passenger_name || !field.value}
+							helperText={errors?.passenger_name?.message}
+							label="Passenger Name"
+							id="passenger_name"
+							variant="outlined"
+							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+							fullWidth
+						/>
+					);
+				}}
+			/>
+
+			<Controller
+				name="gender"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
-						className="mt-8 mb-16"
+						className="mt-8 mb-16 w-full  "
 						freeSolo
-						fullWidth
-						autoHighlight
-						value={value ? passengers.find((data) => data.id === value) : null}
-						options={passengers}
-						getOptionLabel={(option) => `${option.passenger_id} ${option.passenger_name}`}
+						value={value ? genders.find((data) => data.id === value) : null}
+						options={genders}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Passenger"
-								label="Passenger"
-								error={!!errors.passenger || !value}
-								helperText={errors?.passenger?.message}
+								placeholder="Select Gender"
+								label="Gender"
+								id="gender"
+								// error={!!errors.gender || !value}
+								helperText={errors?.gender?.message}
 								variant="outlined"
-								autoFocus
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-								// required
+								InputLabelProps={{
+									shrink: true
+								}}
 							/>
 						)}
 					/>

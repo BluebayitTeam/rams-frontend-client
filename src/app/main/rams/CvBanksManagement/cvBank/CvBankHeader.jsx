@@ -79,7 +79,7 @@ function CvBankHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Male CV</span>
+						<span className="flex mx-4 font-medium">Bank CV</span>
 					</Typography>
 				</motion.div>
 
@@ -90,13 +90,13 @@ function CvBankHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'Create New Male CV'}
+							{name || 'Create New Bank CV'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							Male CV Detail
+							Bank CV Detail
 						</Typography>
 					</motion.div>
 				</div>
