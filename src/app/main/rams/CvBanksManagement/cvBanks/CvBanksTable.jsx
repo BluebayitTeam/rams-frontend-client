@@ -1,11 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable array-callback-return */
-/* eslint-disable no-undef */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable no-nested-ternary */
-
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
@@ -28,7 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
-import PrintMaleCv from '@fuse/utils/Print/PrintMaleCv';
+import PrintCvBank from '@fuse/utils/Print/PrintCvBank';
 import CvBanksTableHead from './CvBanksTableHead';
 import { selectFilteredCvBanks, useGetCvBanksQuery } from '../CvBanksApi';
 
@@ -45,14 +37,14 @@ function CvBanksTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredCvBanks(data));
 	const bankCvs = useSelector(selectFilteredCvBanks(data?.cv_banks));
-	const printMaleCvRef = useRef();
+	const printCvBankRef = useRef();
+
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
 
-	let serialNumber = 1;
-
 	const [rows, setRows] = useState([]);
+
 	useEffect(() => {
 		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
@@ -205,9 +197,9 @@ function CvBanksTable(props) {
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
-				<PrintMaleCv
-					ref={printMaleCvRef}
-					title="printMaleCv"
+				<PrintCvBank
+					ref={printCvBankRef}
+					title="printCvBank"
 					type="CV"
 				/>
 				<Table
@@ -228,7 +220,7 @@ function CvBanksTable(props) {
 					<TableBody>
 						{_.orderBy(bankCvs, [tableOrder.id], [tableOrder.direction])
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((n) => {
+							.map((n, index) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
@@ -244,7 +236,7 @@ function CvBanksTable(props) {
 											className="w-40 md:w-64 border-t-1  border-gray-200 text-center"
 											padding="none"
 										>
-											{serialNumber++}
+											{page * rowsPerPage + index + 1}
 										</TableCell>
 
 										{Object.entries(n).map(
@@ -304,6 +296,12 @@ function CvBanksTable(props) {
 														) : (key === 'updated_at' || key === 'passport_issue_date') &&
 														  n[key] ? (
 															moment(new Date(n[key])).format('DD-MM-YYYY')
+														) : (key === 'created_at' || key === 'passport_expiry_date') &&
+														  n[key] ? (
+															moment(new Date(n[key])).format('DD-MM-YYYY')
+														) : (key === 'updated_at' || key === 'passport_expiry_date') &&
+														  n[key] ? (
+															moment(new Date(n[key])).format('DD-MM-YYYY')
 														) : (key === 'is_debtor' || key === 'is_paid') &&
 														  n[key] !== undefined ? (
 															n[key] ? (
@@ -327,7 +325,7 @@ function CvBanksTable(props) {
 										>
 											<PrintIcon
 												className="cursor-pointer custom-print-icon-style text-3xl"
-												onClick={() => printMaleCvRef.current.doPrint(n)}
+												onClick={() => printCvBankRef.current.doPrint(n)}
 											/>
 											<Edit
 												onClick={() => handleUpdateCvBank(n, 'updateCvBank')}

@@ -2043,6 +2043,7 @@ export const CREATE_BULK_TICKET = `${BASE_URL}/iata_ticket_temporary/api/v1/iata
 
 // CV_BANK
 export const CREATE_CV_BANK = `${BASE_URL}/cv_bank/api/v1/cv_bank/create/`;
+export const CREATE_PRINT_CV_BANK = `${BASE_URL}/cv_bank/api/v1/cv_bank/print/`;
 
 export const UPDATE_CV_BANK = `${BASE_URL}/cv_bank/api/v1/cv_bank/update/`;
 
