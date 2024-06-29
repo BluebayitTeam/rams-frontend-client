@@ -104,6 +104,10 @@ function ColumnHeader() {
 			if (columnId === 'male_cv') {
 				navigate(`/apps/cvMale/cvMales`);
 			}
+
+			if (columnId === 'cv_bank') {
+				navigate(`/apps/cvBank/cvBanks`);
+			}
 		});
 	}
 
@@ -178,6 +182,10 @@ function ColumnHeader() {
 
 		if (columnId === 'male_cv') {
 			navigate(`/apps/cvMale/cvMales`);
+		}
+
+		if (columnId === 'cv_bank') {
+			navigate(`/apps/cvBank/cvBanks`);
 		}
 	}
 

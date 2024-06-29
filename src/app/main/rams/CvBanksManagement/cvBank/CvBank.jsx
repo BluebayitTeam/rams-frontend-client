@@ -20,12 +20,10 @@ import CvBankForm from './CvBankForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	passenger: z.number().refine((val) => val !== null && val !== undefined, {
-		message: 'Passenger is required'
-	}),
-	country: z.number().refine((val) => val !== null && val !== undefined, {
-		message: 'Country is required'
-	})
+	passenger_name: z
+		.string()
+		.nonempty('You must enter a passenger name')
+		.min(5, 'The passenger name must be at least 5 characters')
 });
 
 function CvBank() {

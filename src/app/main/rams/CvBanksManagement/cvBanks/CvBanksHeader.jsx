@@ -62,7 +62,7 @@ function CvBanksHeader(props) {
 				</Paper>
 
 				<ViewWeek
-					onClick={() => navigate(`/apps/column/columns/male_cv`)}
+					onClick={() => navigate(`/apps/column/columns/cv_bank`)}
 					className="cursor-pointer mr-10 "
 					style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
 				/>

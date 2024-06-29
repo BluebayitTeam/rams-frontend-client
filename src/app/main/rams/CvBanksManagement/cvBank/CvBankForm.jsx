@@ -44,6 +44,7 @@ function CvBankForm(props) {
 	const targetCountrys = useSelector((state) => state.data.countries);
 	const districts = useSelector((state) => state.data.cities);
 	const thanas = useSelector((state) => state.data.thanas);
+	const professions = useSelector((state) => state.data.professions);
 
 	const classes = useStyles(props);
 
@@ -151,6 +152,36 @@ function CvBankForm(props) {
 			<Controller
 				name="profession"
 				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16 w-full  "
+						freeSolo
+						value={value ? professions.find((data) => data.id === value) : null}
+						options={professions}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select profession"
+								label="profession"
+								id="profession"
+								// error={!!errors.profession || !value}
+								helperText={errors?.professions?.message}
+								variant="outlined"
+								InputLabelProps={{
+									shrink: true
+								}}
+							/>
+						)}
+					/>
+				)}
+			/>
+			{/* <Controller
+				name="profession"
+				control={control}
 				render={({ field }) => {
 					return (
 						<TextField
@@ -167,7 +198,7 @@ function CvBankForm(props) {
 						/>
 					);
 				}}
-			/>
+			/> */}
 			<Controller
 				name="date_of_birth"
 				control={control}
