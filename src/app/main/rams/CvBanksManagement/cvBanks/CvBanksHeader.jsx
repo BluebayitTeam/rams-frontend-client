@@ -13,9 +13,9 @@ import { ViewWeek } from '@mui/icons-material';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The cvMales header.
+ * The cvBanks header.
  */
-function CvMalesHeader(props) {
+function CvBanksHeader(props) {
 	const dispatch = useAppDispatch();
 	const searchText = useSelector(selectSearchText);
 	useEffect(() => {
@@ -76,7 +76,7 @@ function CvMalesHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/cvMale/cvMales/new"
+						to="/apps/cvBank/cvBanks/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -87,4 +87,4 @@ function CvMalesHeader(props) {
 	);
 }
 
-export default CvMalesHeader;
+export default CvBanksHeader;

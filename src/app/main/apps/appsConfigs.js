@@ -54,12 +54,14 @@ import LedgerAppConfig from '../rams/LedgersManagement/LedgerAppConfig';
 import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
 import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
+import CvBankAppConfig from '../rams/CvBanksManagement/CvBankAppConfig';
 
 /**
  * The list of application configurations.
  */
 const appsConfigs = [
 	CalendarAppConfig,
+	CvBankAppConfig,
 	MessengerAppConfig,
 	ContactsAppConfig,
 	ECommerceAppConfig,

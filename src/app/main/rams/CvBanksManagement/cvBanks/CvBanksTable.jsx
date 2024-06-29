@@ -29,10 +29,10 @@ import { BASE_URL } from 'src/app/constant/constants';
 import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PrintMaleCv from '@fuse/utils/Print/PrintMaleCv';
-import CvMalesTableHead from './CvMalesTableHead';
-import { selectFilteredCvMales, useGetCvMalesQuery } from '../CvMalesApi';
+import CvBanksTableHead from './CvBanksTableHead';
+import { selectFilteredCvBanks, useGetCvBanksQuery } from '../CvBanksApi';
 
-function CvMalesTable(props) {
+function CvBanksTable(props) {
 	const { navigate, searchKey } = props;
 	const { _setValue } = useForm({
 		mode: 'onChange',
@@ -40,11 +40,11 @@ function CvMalesTable(props) {
 	});
 
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetCvMalesQuery({ ...pageAndSize, searchKey });
+	const { data, isLoading, refetch } = useGetCvBanksQuery({ ...pageAndSize, searchKey });
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const totalData = useSelector(selectFilteredCvMales(data));
-	const maleCvs = useSelector(selectFilteredCvMales(data?.male_cvs));
+	const totalData = useSelector(selectFilteredCvBanks(data));
+	const maleCvs = useSelector(selectFilteredCvBanks(data?.male_cvs));
 	const printMaleCvRef = useRef();
 	useEffect(() => {
 		refetch({ searchKey });
@@ -129,19 +129,19 @@ function CvMalesTable(props) {
 	}
 
 	function _handleClick(item) {
-		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
+		navigate(`/apps/cvBank/cvBanks/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateCvMale(item, event) {
-		localStorage.removeItem('deleteCvMale');
-		localStorage.setItem('updateCvMale', event);
-		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
+	function handleUpdateCvBank(item, event) {
+		localStorage.removeItem('deleteCvBank');
+		localStorage.setItem('updateCvBank', event);
+		navigate(`/apps/cvBank/cvBanks/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteCvMale(item, event) {
-		localStorage.removeItem('updateCvMale');
-		localStorage.setItem('deleteCvMale', event);
-		navigate(`/apps/cvMale/cvMales/${item.id}/${item.handle}`);
+	function handleDeleteCvBank(item, event) {
+		localStorage.removeItem('updateCvBank');
+		localStorage.setItem('deleteCvBank', event);
+		navigate(`/apps/cvBank/cvBanks/${item.id}/${item.handle}`);
 	}
 
 	function _handleCheck(event, id) {
@@ -215,8 +215,8 @@ function CvMalesTable(props) {
 					className="min-w-xl "
 					aria-labelledby="tableTitle"
 				>
-					<CvMalesTableHead
-						selectedCvMaleIds={selected}
+					<CvBanksTableHead
+						selectedCvBankIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
@@ -327,12 +327,12 @@ function CvMalesTable(props) {
 												onClick={() => printMaleCvRef.current.doPrint(n)}
 											/>
 											<Edit
-												onClick={() => handleUpdateCvMale(n, 'updateCvMale')}
+												onClick={() => handleUpdateCvBank(n, 'updateCvBank')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={() => handleDeleteCvMale(n, 'deleteCvMale')}
+												onClick={() => handleDeleteCvBank(n, 'deleteCvBank')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</TableCell>
@@ -380,4 +380,4 @@ function CvMalesTable(props) {
 	);
 }
 
-export default withRouter(CvMalesTable);
+export default withRouter(CvBanksTable);

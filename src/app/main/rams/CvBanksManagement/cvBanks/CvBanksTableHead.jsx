@@ -5,17 +5,17 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
-import { useDeleteCvMalesMutation } from '../CvMalesApi';
+import { useDeleteCvBanksMutation } from '../CvBanksApi';
 /**
  * The table head rows data.
  */
 
 /**
- * The cvMales table head component.
+ * The cvBanks table head component.
  */
 function CvMalesTableHead(props) {
 	const { selectedCvMaleIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
-	const [removeCvMales] = useDeleteCvMalesMutation();
+	const [removeCvMales] = useDeleteCvBanksMutation();
 	const numSelected = selectedCvMaleIds.length;
 	const [selectedCvMalesMenu, setSelectedCvMalesMenu] = useState(null);
 	const createSortHandler = (event, property) => {
