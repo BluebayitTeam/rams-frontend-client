@@ -1,6 +1,7 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
+
 import { CREATE_MULTIPLE_VISA_ENTRY } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 import MultipleVisaEntryModel from './multipleVisaEntry/models/MultipleVisaEntryModel';

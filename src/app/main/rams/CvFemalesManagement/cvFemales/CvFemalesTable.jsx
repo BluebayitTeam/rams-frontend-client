@@ -239,8 +239,15 @@ function CvFemalesTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64 border-t-1  border-gray-200 text-center"
-										padding="none"
+										className="w-40 md:w-64 border-t-1  border-gray-200"
+										component="th"
+										scope="row"
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										{serialNumber++}
 									</TableCell>

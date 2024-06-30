@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { Controller } from 'react-hook-form';
 import Icon from '@mui/material/Icon';
 import Typography from '@mui/material/Typography';
@@ -25,9 +24,11 @@ export default function FileUpload({ control, setFile, setValue, file, name, BAS
 				file.endsWith('.jpeg') ||
 				file.endsWith('.jpg') ||
 				file.endsWith('.gif') ||
+				file.endsWith('.webp') ||
 				file.endsWith('.GIF') ||
 				file.endsWith('.PNG') ||
 				file.endsWith('.JPG') ||
+				file.endsWith('.Webp') ||
 				file.endsWith('.JPEG')));
 	const isPdf =
 		(file && file.type === 'application/pdf') || (typeof file === 'string' && file && file.endsWith('.pdf'));
@@ -40,10 +41,12 @@ export default function FileUpload({ control, setFile, setValue, file, name, BAS
 	const handleFileRemove = () => {
 		setValue(name, null);
 		setFile(null);
+		document.getElementById('file-button').value = ''; // Reset file input
 	};
+
 	return (
 		<div className="text-center">
-			<Typography className="h3 text-center mb-9 font-bold	 text-blue">{label}</Typography>
+			<Typography className="h3 text-center mb-9 font-bold text-blue">{label}</Typography>
 			<Controller
 				name={name}
 				control={control}
