@@ -4,13 +4,8 @@ import { makeStyles } from '@mui/styles';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgents, getPassengers, getVisaEntrys } from 'app/store/dataSlice';
-import Swal from 'sweetalert2';
-import {
-	CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN,
-	CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER
-} from 'src/app/constant/constants';
 // Ensure correct import path
-import { useCreateMultipleVisaEntryMutation } from '../MultipleVisaEntrysApi';
+import MultiplePassengersTable from './MultiplePassengersTable';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -26,18 +21,69 @@ const useStyles = makeStyles((theme) => ({
 function MultipleVisaEntryForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue } = methods;
-	const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
+	const { control, formState, watch, setValue, getValues } = methods;
+	// const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
 	const { errors } = formState;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const agents = useSelector((state) => state.data.agents);
 	const visaEntries = useSelector((state) => state.data.visaEntries);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
-	const [availableVisa, setAvailableVisa] = useState(null);
 	const [checked, setChecked] = useState(false);
 	const [checked1, setChecked1] = useState(false);
-	const [showPassengerTable, setShowPassengerTable] = useState(false); // State to control showing passenger table
+
+	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
+	const [documentSends, setDocumentSends] = useState([]);
+	const [keyData, setKeyData] = useState([]);
+	const handleCheckboxSend = (name, checked) => {
+		const updatedDocumentSends = documentSends.map((documentSend) =>
+			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
+		);
+		setDocumentSends(updatedDocumentSends);
+
+		const updatedKeyData = [...keyData];
+		const documentSend = updatedDocumentSends.find((data) => data?.key === name);
+
+		if (documentSend) {
+			const keyIndex = updatedKeyData.indexOf(documentSend.key);
+
+			if (checked && keyIndex === -1) {
+				updatedKeyData.push(documentSend.key);
+			} else if (!checked && keyIndex !== -1) {
+				updatedKeyData.splice(keyIndex, 1);
+			}
+		}
+
+		setKeyData(updatedKeyData);
+		setValue('checkbox', updatedKeyData);
+	};
+	const handleChange = (e) => {
+		const { name, checked } = e.target;
+		handleCheckboxSend(name, checked);
+	};
+
+	useEffect(() => {
+		if (mltPassengerDeletedId) {
+			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
+			setMltPassengerDeletedId(null);
+		}
+	}, [mltPassengerDeletedId]);
+
+	useEffect(() => {
+		setValue(
+			'passengers',
+			mltPassengerList?.map((data) => data.id)
+		);
+	}, [mltPassengerList, setValue]);
+
+	const handlePassengerSelect = (newPassenger) => {
+		if (newPassenger) {
+			if (!mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
+				setMltPassengerList([...mltPassengerList, newPassenger]);
+			}
+		}
+	};
+	console.log('test', getValues());
 
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -51,61 +97,6 @@ function MultipleVisaEntryForm(props) {
 			mltPassengerList?.map((data) => data.id)
 		);
 	}, [mltPassengerList]);
-
-	const handleCheckAvailableVisa = (id, qty) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		fetch(`${CHECK_AVAILABLE_VISA_FOR_CALLING_ASSIGN}${id}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) => setAvailableVisa(qty - data.visa_entry_passenger_count))
-			.catch((err) => {});
-	};
-
-	const handleSaveMultipleStatusUpdate = (id) => {
-		// Check if the passenger already exists in the list
-		const isAlreadySelected = mltPassengerList.some((passenger) => passenger.id === id);
-
-		if (!isAlreadySelected) {
-			fetch(`${CHECK_CALLING_ASSIGN_EXIST_IN_PASSENGER}/${id}/${watch('visa_entry')}`)
-				.then((response) => response.json())
-				.then((data) => {
-					if (data?.same_visa_entry) {
-						Swal.fire({
-							position: 'top-center',
-							icon: 'warning',
-							title: `This Passenger Has Already Been Assigned the same Calling Visa`,
-							showConfirmButton: false,
-							timer: 5000
-						});
-					} else if (data?.visa_entry_exist) {
-						Swal.fire({
-							title: 'Calling Visa Already Assigned for This Passenger',
-							text: 'Please Remove the Previous Calling Visa.',
-							icon: 'error',
-							showConfirmButton: false,
-							timer: 5000
-						});
-					} else {
-						const selectedPassenger = passengers.find((passenger) => passenger.id === id);
-
-						if (selectedPassenger) {
-							setMltPassengerList((prevList) => [...prevList, selectedPassenger]);
-							setShowPassengerTable(true); // Show table when a passenger is added
-						}
-					}
-				})
-				.catch(() => {});
-		}
-	};
-
-	const handleDeletePassenger = (id) => {
-		setMltPassengerList(mltPassengerList.filter((passenger) => passenger.id !== id));
-		setShowPassengerTable(mltPassengerList.length > 1); // Hide table when last passenger is removed
-	};
 
 	const handleSelectionChange = (event) => {
 		setChecked1(event.target.checked);
@@ -184,14 +175,14 @@ function MultipleVisaEntryForm(props) {
 					control={control}
 					render={({ field: { value, onChange } }) => (
 						<Autocomplete
-							className="mt-8 mb-16 w-full "
+							className="mt-8 mb-16 w-full"
 							freeSolo
 							value={value ? passengers.find((data) => data.id === value) : null}
 							options={passengers}
 							getOptionLabel={(option) => `${option.passenger_name} - ${option.passport_no}`}
 							onChange={(event, newValue) => {
 								onChange(newValue?.id);
-								handleSaveMultipleStatusUpdate(newValue?.id);
+								handlePassengerSelect(newValue);
 							}}
 							renderInput={(params) => (
 								<TextField
@@ -209,6 +200,16 @@ function MultipleVisaEntryForm(props) {
 						/>
 					)}
 				/>
+			)}
+
+			{mltPassengerList?.length > 0 && (
+				<div>
+					<MultiplePassengersTable
+						passengers={mltPassengerList}
+						setMltPassengerList={setMltPassengerList}
+						onDelete={(passengerId) => handleDelete(passengerId)} // Function to handle delete
+					/>
+				</div>
 			)}
 
 			{checked && (

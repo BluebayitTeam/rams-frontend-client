@@ -19,7 +19,6 @@ const MultipleVisaEntryApi = api
 					method: 'PUT',
 					data: MultipleVisaEntryModel({
 						visa_entry: newMultipleVisaEntry?.visa_entry,
-						status: newMultipleVisaEntry?.current_status,
 						passengers: newMultipleVisaEntry?.passengers
 					})
 				}),
