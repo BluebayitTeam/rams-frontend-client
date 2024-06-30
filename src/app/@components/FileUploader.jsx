@@ -41,6 +41,7 @@ export default function FileUpload({ control, setFile, setValue, file, name, BAS
 		setValue(name, null);
 		setFile(null);
 	};
+
 	return (
 		<div className="text-center">
 			<Typography className="h3 text-center mb-9 font-bold	 text-blue">{label}</Typography>

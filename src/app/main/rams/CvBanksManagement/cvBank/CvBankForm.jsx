@@ -72,12 +72,12 @@ function CvBankForm(props) {
 	useEffect(() => {}, [watch('date_of_birth')]);
 
 	useEffect(() => {
-		const currentImage = getValues('image');
+		const currentImage = getValues('file');
 
 		if (currentImage && !currentImage.name) {
 			setFile(`${BASE_URL}/${currentImage}`);
 		}
-	}, [cvBankId, watch('image')]);
+	}, [cvBankId, watch('file')]);
 
 	return (
 		// <div>
