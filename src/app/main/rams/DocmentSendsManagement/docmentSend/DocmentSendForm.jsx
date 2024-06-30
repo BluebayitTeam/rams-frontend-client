@@ -99,7 +99,9 @@ function DocmentSendForm() {
 						freeSolo
 						value={value ? passengers.find((data) => data.id === value) : null}
 						options={passengers}
-						getOptionLabel={(option) => `${option.passenger_name} - ${option.passport_no}`}
+						getOptionLabel={(option) =>
+							`${option.passenger_name} ${option.passenger_id}   ${option.passport_no}  ${option.post_office}`
+						}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 							handlePassengerSelect(newValue);

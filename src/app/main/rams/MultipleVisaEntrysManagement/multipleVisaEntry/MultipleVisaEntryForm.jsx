@@ -4,8 +4,8 @@ import { makeStyles } from '@mui/styles';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgents, getPassengers, getVisaEntrys } from 'app/store/dataSlice';
-// Ensure correct import path
 import MultiplePassengersTable from './MultiplePassengersTable';
+// Ensure correct import path
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -21,43 +21,20 @@ const useStyles = makeStyles((theme) => ({
 function MultipleVisaEntryForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, setValue, getValues } = methods;
-	// const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
+	const { control, formState, setValue } = methods;
 	const { errors } = formState;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const agents = useSelector((state) => state.data.agents);
+	console.log('fksahdkhsdkfh', agents);
 	const visaEntries = useSelector((state) => state.data.visaEntries);
-	// console.log('nncxncxnc', visaEntries);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [checked, setChecked] = useState(false);
 	const [checked1, setChecked1] = useState(false);
+	const [filterPassengers, setFilterPassengers] = useState([]);
+	const [isChecked, setisChecked] = useState(false);
 
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-
-	useEffect(() => {
-		if (mltPassengerDeletedId) {
-			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
-			setMltPassengerDeletedId(null);
-		}
-	}, [mltPassengerDeletedId]);
-
-	useEffect(() => {
-		setValue(
-			'passengers',
-			mltPassengerList?.map((data) => data.id)
-		);
-	}, [mltPassengerList, setValue]);
-
-	const handlePassengerSelect = (newPassenger) => {
-		if (newPassenger) {
-			if (!mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
-				setMltPassengerList([...mltPassengerList, newPassenger]);
-			}
-		}
-	};
-	console.log('test', getValues());
-
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getVisaEntrys());
@@ -77,6 +54,26 @@ function MultipleVisaEntryForm(props) {
 
 	const handleCheckboxChange = (event) => {
 		setChecked(event.target.checked);
+	};
+
+	const handlePassengerSelect = (newPassenger) => {
+		if (newPassenger) {
+			if (!mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
+				setMltPassengerList([...mltPassengerList, newPassenger]);
+			}
+		}
+	};
+	useEffect(() => {
+		if (mltPassengerDeletedId) {
+			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
+			setMltPassengerDeletedId(null);
+		}
+	}, [mltPassengerDeletedId]);
+
+	const handleFilterPassenger = (id) => {
+		const filteredPassengers = passengers.filter((passenger) => passenger.agent.id === id);
+
+		setFilterPassengers(filteredPassengers);
 	};
 
 	return (
@@ -136,6 +133,64 @@ function MultipleVisaEntryForm(props) {
 				/>
 			</div>
 
+			{checked && (
+				<div
+					className="flex md:space-x-12 flex-col md:flex-row"
+					style={{ display: checked ? '' : 'none' }}
+				>
+					<Controller
+						name="agent"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								className="mt-8 mb-16 w-full md:w-6/12"
+								freeSolo
+								value={value ? agents.find((data) => data.id === value) : null}
+								options={agents}
+								getOptionLabel={(option) => `${option.first_name}  -${option.agent_code}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+									handleFilterPassenger(newValue?.id);
+								}}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										placeholder="Select Agent"
+										label="Agent"
+										helperText={errors?.agent?.message}
+										variant="outlined"
+										autoFocus
+										InputLabelProps={{
+											shrink: true
+										}}
+									/>
+								)}
+							/>
+						)}
+					/>
+				</div>
+			)}
+			<div style={{ display: checked ? '' : 'none' }}>
+				{' '}
+				{filterPassengers.map((passenger) => (
+					<FormControlLabel
+						onChange={passenger}
+						// onChange={() => handleSaveMultipleVisaEntry(passenger.id)}
+						// onChange={(event) =>
+						// 	event.target.checked
+						// 		? handleSaveMultipleVisaEntry(passenger.id)
+						// 		: dispatch(removeMultipleVisaEntryRow(passenger.id))
+						// }
+						key={passenger.id}
+						checked5={isChecked}
+						name={passenger.id}
+						style={{ width: '45%' }}
+						control={<Checkbox />}
+						label={`${passenger.passenger_name} ${passenger.passenger_id}   ${passenger.passport_no}  ${passenger.post_office}`}
+					/>
+				))}
+			</div>
+
 			{checked1 && (
 				<Controller
 					name="passenger"
@@ -174,41 +229,8 @@ function MultipleVisaEntryForm(props) {
 					<MultiplePassengersTable
 						passengers={mltPassengerList}
 						setMltPassengerList={setMltPassengerList}
-						onDelete={(passengerId) => handleDelete(passengerId)} // Function to handle delete
 					/>
 				</div>
-			)}
-
-			{checked && (
-				<Controller
-					name="agent"
-					control={control}
-					render={({ field: { value, onChange } }) => (
-						<Autocomplete
-							className="mt-8 mb-16 w-full"
-							freeSolo
-							value={value ? agents.find((data) => data.id === value) : null}
-							options={agents}
-							getOptionLabel={(option) => `${option.agent_name} - ${option.agent_code}`}
-							onChange={(event, newValue) => {
-								onChange(newValue?.id);
-							}}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									placeholder="Select Agent"
-									label="Agent"
-									error={!value}
-									helperText={errors?.agency?.message}
-									variant="outlined"
-									InputLabelProps={{
-										shrink: true
-									}}
-								/>
-							)}
-						/>
-					)}
-				/>
 			)}
 		</div>
 	);
