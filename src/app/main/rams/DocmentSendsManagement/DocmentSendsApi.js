@@ -19,8 +19,7 @@ const DocmentSendApi = api
 					data: DocmentSendModel({
 						checkbox: newDocmentSend?.checkbox,
 						passengers: newDocmentSend?.passengers,
-						email: newDocmentSend?.email,
-					
+						email: newDocmentSend?.email
 					})
 				}),
 				invalidatesTags: ['docmentSends']

@@ -21,46 +21,19 @@ const useStyles = makeStyles((theme) => ({
 function MultipleVisaEntryForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, getValues } = methods;
+	const { control, formState, setValue, getValues } = methods;
 	// const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
 	const { errors } = formState;
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const agents = useSelector((state) => state.data.agents);
 	const visaEntries = useSelector((state) => state.data.visaEntries);
+	// console.log('nncxncxnc', visaEntries);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [checked, setChecked] = useState(false);
 	const [checked1, setChecked1] = useState(false);
 
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-	const [documentSends, setDocumentSends] = useState([]);
-	const [keyData, setKeyData] = useState([]);
-	const handleCheckboxSend = (name, checked) => {
-		const updatedDocumentSends = documentSends.map((documentSend) =>
-			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-		);
-		setDocumentSends(updatedDocumentSends);
-
-		const updatedKeyData = [...keyData];
-		const documentSend = updatedDocumentSends.find((data) => data?.key === name);
-
-		if (documentSend) {
-			const keyIndex = updatedKeyData.indexOf(documentSend.key);
-
-			if (checked && keyIndex === -1) {
-				updatedKeyData.push(documentSend.key);
-			} else if (!checked && keyIndex !== -1) {
-				updatedKeyData.splice(keyIndex, 1);
-			}
-		}
-
-		setKeyData(updatedKeyData);
-		setValue('checkbox', updatedKeyData);
-	};
-	const handleChange = (e) => {
-		const { name, checked } = e.target;
-		handleCheckboxSend(name, checked);
-	};
 
 	useEffect(() => {
 		if (mltPassengerDeletedId) {
@@ -137,12 +110,6 @@ function MultipleVisaEntryForm(props) {
 					)}
 				/>
 			</div>
-
-			{watch('visa_entry') && (
-				<h6 className={`pb-10 ps-5 text-${availableVisa > 0 ? 'green' : 'red'}`}>
-					{availableVisa > 0 ? `Available Calling: ${availableVisa}` : 'Calling Not Available'}
-				</h6>
-			)}
 
 			<div className="flex md:space-x-12 flex-col md:flex-row">
 				<FormControlLabel
