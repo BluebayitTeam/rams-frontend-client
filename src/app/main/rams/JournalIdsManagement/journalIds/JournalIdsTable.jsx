@@ -18,24 +18,24 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import moment from 'moment';
-import JournalIdsTableHead from './JournalIdsTableHead';
-import { selectFilteredJournalIds, useGetJournalIdsQuery } from '../JournalIdsApi';
+import JournalIDsTableHead from './JournalIDsTableHead';
+import { selectFilteredJournalIDs, useGetJournalIDsQuery } from '../JournalIDsApi';
 
 /**
- * The journalIds table.
+ * The journalIDs table.
  */
-function JournalIdsTable(props) {
+function JournalIDsTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetJournalIdsQuery({
+	const { data, isLoading, refetch } = useGetJournalIDsQuery({
 		...pageAndSize,
 		searchKey
 	});
-	const totalData = useSelector(selectFilteredJournalIds(data));
-	const journalIds = useSelector(selectFilteredJournalIds(data?.idjournals));
+	const totalData = useSelector(selectFilteredJournalIDs(data));
+	const journalIDs = useSelector(selectFilteredJournalIDs(data?.idjournals));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -65,7 +65,7 @@ function JournalIdsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(journalIds.map((n) => n.id));
+			setSelected(journalIDs.map((n) => n.id));
 			return;
 		}
 
@@ -77,19 +77,19 @@ function JournalIdsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/journalId/journalIds/${item.id}/${item.handle}`);
+		navigate(`/apps/journalID/journalIDs/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateJournalId(item, event) {
-		localStorage.removeItem('deleteJournalId');
-		localStorage.setItem('updateJournalId', event);
-		navigate(`/apps/journalId/journalIds/${item.id}/${item.invoice_no}`);
+	function handleUpdateJournalID(item, event) {
+		localStorage.removeItem('deleteJournalID');
+		localStorage.setItem('updateJournalID', event);
+		navigate(`/apps/journalID/journalIDs/${item.id}/${item.invoice_no}`);
 	}
 
-	function handleDeleteJournalId(item, event) {
-		localStorage.removeItem('updateJournalId');
-		localStorage.setItem('deleteJournalId', event);
-		navigate(`/apps/journalId/journalIds/${item.id}/${item.invoice_no}`);
+	function handleDeleteJournalID(item, event) {
+		localStorage.removeItem('updateJournalID');
+		localStorage.setItem('deleteJournalID', event);
+		navigate(`/apps/journalID/journalIDs/${item.id}/${item.invoice_no}`);
 	}
 
 	function handleCheck(event, id) {
@@ -133,7 +133,7 @@ function JournalIdsTable(props) {
 		);
 	}
 
-	if (journalIds?.length === 0) {
+	if (journalIDs?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -144,7 +144,7 @@ function JournalIdsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no journalIds!
+					There are no journalIDs!
 				</Typography>
 			</motion.div>
 		);
@@ -158,17 +158,17 @@ function JournalIdsTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<JournalIdsTableHead
-						selectedJournalIdIds={selected}
+					<JournalIDsTableHead
+						selectedJournalIDIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={journalIds.length}
+						rowCount={journalIDs.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(journalIds, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(journalIDs, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -210,9 +210,8 @@ function JournalIdsTable(props) {
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
-
 									<TableCell
-										className="p-4 md:p-12  whitespace-nowrap	 "
+										className="p-4 md:p-12  whitespace-nowrap	 whitespace-nowrap"
 										component="th"
 										scope="row"
 									>
@@ -250,7 +249,6 @@ function JournalIdsTable(props) {
 									>
 										{n.credit_amount}
 									</TableCell>
-
 									<TableCell
 										className="p-4 md:p-16 whitespace-nowrap"
 										component="th"
@@ -264,12 +262,12 @@ function JournalIdsTable(props) {
 										}}
 									>
 										<Edit
-											onClick={(event) => handleUpdateJournalId(n, 'updateJournalId')}
+											onClick={(event) => handleUpdateJournalID(n, 'updateJournalID')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteJournalId(n, 'deleteJournalId')}
+											onClick={(event) => handleDeleteJournalID(n, 'deleteJournalID')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
@@ -315,4 +313,4 @@ function JournalIdsTable(props) {
 	);
 }
 
-export default withRouter(JournalIdsTable);
+export default withRouter(JournalIDsTable);

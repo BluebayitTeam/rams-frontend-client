@@ -1,7 +1,7 @@
 import _ from '@lodash';
 import moment from 'moment';
 
-const ReceiptVoucherModel = (data) =>
+const JournalIDModel = (data) =>
 	_.defaults(
 		data || {},
 
@@ -13,4 +13,4 @@ const ReceiptVoucherModel = (data) =>
 			]
 		}
 	);
-export default ReceiptVoucherModel;
+export default JournalIDModel;

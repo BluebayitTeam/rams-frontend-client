@@ -4,7 +4,7 @@ import { appSelector } from 'app/store/store';
 const initialState = '';
 
 export const searchTextSlice = createSlice({
-	name: 'journalIdApp/searchText',
+	name: 'journalIDApp/searchText',
 	initialState,
 	reducers: {
 		resetSearchText: () => initialState,
@@ -19,6 +19,6 @@ export const searchTextSlice = createSlice({
 	}
 });
 export const { setSearchText, resetSearchText } = searchTextSlice.actions;
-export const selectSearchText = appSelector((state) => state.journalIdApp?.searchText);
+export const selectSearchText = appSelector((state) => state.journalIDApp?.searchText);
 const searchTextReducer = searchTextSlice.reducer;
 export default searchTextReducer;

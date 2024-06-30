@@ -1,13 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
-import JournalIdsHeader from './JournalIdsHeader';
-import JournalIdsTable from './JournalIdsTable';
+import JournalIDsHeader from './JournalIDsHeader';
+import JournalIDsTable from './JournalIDsTable';
 
 /**
- * The journalIds page.
+ * The journalIDs page.
  */
-function JournalIds() {
+function JournalIDs() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
 	const [searchKey, setSearchKey] = useState('');
@@ -19,13 +19,13 @@ function JournalIds() {
 				header: 'min-h-80 h-80'
 			}}
 			header={
-				<JournalIdsHeader
+				<JournalIDsHeader
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
 			}
 			content={
-				<JournalIdsTable
+				<JournalIDsTable
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
@@ -35,4 +35,4 @@ function JournalIds() {
 	);
 }
 
-export default JournalIds;
+export default JournalIDs;
