@@ -26,7 +26,6 @@ function MultipleVisaEntryForm(props) {
 	const classes = useStyles(props);
 	const passengers = useSelector((state) => state.data.passengers);
 	const agents = useSelector((state) => state.data.agents);
-	console.log('fksahdkhsdkfh', agents);
 	const visaEntries = useSelector((state) => state.data.visaEntries);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [checked, setChecked] = useState(false);
