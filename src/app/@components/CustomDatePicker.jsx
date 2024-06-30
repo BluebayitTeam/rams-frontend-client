@@ -11,7 +11,7 @@ function CustomDatePicker(props) {
 		<div>
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<DatePicker
-					className="w-full"
+					className="w-full my-7"
 					{...props?.field}
 					value={props?.field.value ? dayjs(props?.field.value, 'YYYY-MM-DD') : null}
 					label={props?.label}

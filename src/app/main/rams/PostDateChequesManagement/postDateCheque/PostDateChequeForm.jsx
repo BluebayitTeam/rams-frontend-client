@@ -1,52 +1,47 @@
 import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getBangladeshAllBanks, getBranches, getSubLedgers } from 'app/store/dataSlice';
+import { getBranches, getSubLedgers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { postDateTypes } from 'src/app/@data/data';
-import { CHECK_BANK_OR_CASH } from 'src/app/constant/constants';
+import { LEDGER_BANK_CASH } from 'src/app/constant/constants';
 
 function PostDateChequeForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch } = methods;
+	const { control, formState, watch, getValues, setValue } = methods;
 	const { errors } = formState;
-	const members = useSelector((state) => state.data.memberledgers);
-	const countries = useSelector((state) => state.data.countries);
+	const routeParams = useParams();
+	const handleDelete = localStorage.getItem('postDateCheckEvent');
 	const branches = useSelector((state) => state.data.branches);
-	const ledgers = useSelector((state) => state.data.ledgers);
-	const branchs = useSelector((state) => state.data.branches);
 	const subLedgers = useSelector((state) => state.data.subLedgers);
-	const [checkBankOrCash, setCheckBankOrCash] = useState(false);
-	const bangladeshAllBanks = useSelector((state) => state.data.bangladeshAllBanks);
+
+	const [paymentAccounts, setPaymentAccounts] = useState([]);
+
+	console.log('paymentAccounts', paymentAccounts);
 
 	useEffect(() => {
-		handleCheckBankOrCash(watch('payment_account'));
-	}, [watch('payment_account')]);
+		dispatch(getBranches());
+		dispatch(getSubLedgers());
+	}, []);
 
-	const handleCheckBankOrCash = (bankId) => {
+	useEffect(() => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-
-		fetch(`${CHECK_BANK_OR_CASH}${bankId}`, authTOKEN)
+		fetch(`${LEDGER_BANK_CASH}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => {
-				setCheckBankOrCash(data?.has_bank_accounts);
+				setPaymentAccounts(data.ledger_accounts);
 			});
-	};
-	const [paymentAccounts, setPaymentAccounts] = useState([]);
+	}, [watch('cheque_no')]);
 
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getSubLedgers());
-		dispatch(getBangladeshAllBanks());
-	}, []);
 	return (
 		<div>
 			<Controller
@@ -185,52 +180,6 @@ function PostDateChequeForm(props) {
 						/>
 					);
 				}}
-			/>
-
-			<Controller
-				name="bank_name"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						autoHighlight
-						options={bangladeshAllBanks}
-						value={value ? bangladeshAllBanks.find((data) => data.id == value) : null}
-						getOptionLabel={(option) => `${option.name}`}
-						InputLabelProps={{ shrink: true }}
-						onChange={(_event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select a Bank Name Of Cheque/PO "
-								label="Bank Name Of Cheque/PO "
-								variant="outlined"
-								// error={!value}
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-							/>
-						)}
-					/>
-				)}
-			/>
-			<Controller
-				name="inst_no"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						error={!!errors.inst_no}
-						helperText={errors?.inst_no?.message}
-						label="Inst No"
-						id="inst_no"
-						variant="outlined"
-						fullWidth
-						InputLabelProps={field.value && { shrink: true }}
-					/>
-				)}
 			/>
 
 			<Controller

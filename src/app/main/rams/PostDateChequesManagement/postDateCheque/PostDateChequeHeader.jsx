@@ -80,7 +80,7 @@ function PostDateChequeHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">PostDateCheques</span>
+						<span className="flex mx-4 font-medium">Post Date Cheque</span>
 					</Typography>
 				</motion.div>
 
@@ -116,7 +116,7 @@ function PostDateChequeHeader() {
 							variant="caption"
 							className="font-medium"
 						>
-							PostDateCheque Detail
+							Post Date Cheque Detail
 						</Typography>
 					</motion.div>
 				</div>
@@ -132,7 +132,7 @@ function PostDateChequeHeader() {
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this postDateCheque?
+						Do you want to remove this post Date Cheque?
 					</Typography>
 				)}
 				{handleDelete === 'deletePostDateCheque' && postDateChequeId !== 'new' && (

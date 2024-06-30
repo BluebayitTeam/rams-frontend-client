@@ -14,7 +14,7 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { Edit } from '@mui/icons-material';
 import moment from 'moment';
 import clsx from 'clsx';
 import PostDateChequesTableHead from './PostDateChequesTableHead';
@@ -231,7 +231,7 @@ function PostDateChequesTable(props) {
 										component="th"
 										scope="row"
 									>
-										{n.bank_name?.name}
+										{n.payment_account?.name}
 									</TableCell>
 
 									<TableCell
@@ -292,10 +292,10 @@ function PostDateChequesTable(props) {
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
-										<Delete
+										{/* <Delete
 											onClick={(event) => handleDeletePostDateCheque(n, 'deletePostDateCheque')}
 											className="cursor-pointer custom-delete-icon-style"
-										/>
+										/> */}
 									</TableCell>
 								</TableRow>
 							);

@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -6,7 +5,6 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useEffect } from 'react';
-import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
@@ -30,7 +28,7 @@ function PostDateChequesHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">PostDateCheques</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Post Date Cheque</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -60,7 +58,7 @@ function PostDateChequesHeader(props) {
 					/>
 				</Paper>
 
-				<motion.div
+				{/* <motion.div
 					className="flex flex-grow-0"
 					initial={{ opacity: 0, x: 20 }}
 					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
@@ -75,7 +73,7 @@ function PostDateChequesHeader(props) {
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
 					</Button>
-				</motion.div>
+				</motion.div> */}
 			</div>
 		</div>
 	);
