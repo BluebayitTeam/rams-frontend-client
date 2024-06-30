@@ -11,7 +11,7 @@ import MultipleVisaEntryForm from './MultipleVisaEntryForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	visa_no: z
+	first_name: z
 		.string()
 		.nonempty('You must enter a multipleVisaEntry name')
 		.min(5, 'The multipleVisaEntry name must be at least 5 characters')
