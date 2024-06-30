@@ -8,6 +8,7 @@ export const notificationType = [
 	{ id: 'passport', name: 'Passport' },
 	{ id: 'visa', name: 'Visa' }
 ];
+
 export const months = [
 	{ id: '1', name: '1' },
 	{ id: '2', name: '2' },

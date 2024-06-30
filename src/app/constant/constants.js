@@ -2005,11 +2005,13 @@ export const GET_POST_DATE_CHECKS = `${BASE_URL}/postdate_cheque/api/v1/postdate
 
 export const GET_POST_DATE_CHECKS_WITHOUT_PAGINATION = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/without_pagination/all/`;
 
-export const GET_POST_DATE_CHECKID = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/`;
+export const GET_POST_DATE_CHECK_BY_ID = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/`;
 
 export const UPDATE_POST_DATE_CHECK = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/update/`;
 
 export const DELETE_POST_DATE_CHECK = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/delete/`;
+
+export const DELETE_POST_DATE_CHECK_MULTIPLE = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/delete/`;
 
 export const SEARCH_POST_DATE_CHECK = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/search/`;
 

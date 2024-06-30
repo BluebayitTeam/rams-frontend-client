@@ -58,6 +58,7 @@ import CvBankAppConfig from '../rams/CvBanksManagement/CvBankAppConfig';
 import ContraAppConfig from '../rams/ContrasManagement/ContraAppConfig';
 import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
 import JournalIDAppConfig from '../rams/JournalIDsManagement/JournalIDAppConfig';
+import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateChequeAppConfig';
 
 /**
  * The list of application configurations.
@@ -122,6 +123,7 @@ const appsConfigs = [
 	ReceiptVoucherAppConfig,
 	ContraAppConfig,
 	JournalAppConfig,
-	JournalIDAppConfig
+	JournalIDAppConfig,
+	PostDateChequeAppConfig
 ];
 export default appsConfigs;
