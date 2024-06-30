@@ -9,53 +9,53 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateJournalIdMutation, useDeleteJournalIdMutation, useUpdateJournalIdMutation } from '../JournalIdsApi';
+import { useCreateJournalIDMutation, useDeleteJournalIDMutation, useUpdateJournalIDMutation } from '../JournalIDsApi';
 
 /**
- * The journalId header.
+ * The journalID header.
  */
-function JournalIdHeader() {
+function JournalIDHeader() {
 	const routeParams = useParams();
-	const { journalIdId } = routeParams;
-	const [createJournalId] = useCreateJournalIdMutation();
-	const [saveJournalId] = useUpdateJournalIdMutation();
-	const [removeJournalId] = useDeleteJournalIdMutation();
+	const { journalIDId } = routeParams;
+	const [createJournalID] = useCreateJournalIDMutation();
+	const [saveJournalID] = useUpdateJournalIDMutation();
+	const [removeJournalID] = useDeleteJournalIDMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteJournalId');
-	const handleUpdate = localStorage.getItem('updateJournalId');
+	const handleDelete = localStorage.getItem('deleteJournalID');
+	const handleUpdate = localStorage.getItem('updateJournalID');
 
-	function handleUpdateJournalId() {
+	function handleUpdateJournalID() {
 		console.log(`jbjk`, getValues());
-		saveJournalId({ ...getValues(), id: journalIdId }).then((data) => {
+		saveJournalID({ ...getValues(), id: journalIDId }).then((data) => {
 			UpdatedSuccessfully();
-			navigate(`/apps/journalId/journalIds`);
+			navigate(`/apps/journalID/journalIDs`);
 		});
 	}
 
-	function handleCreateJournalId() {
-		createJournalId(getValues())
+	function handleCreateJournalID() {
+		createJournalID(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/journalId/journalIds`);
+				navigate(`/apps/journalID/journalIDs`);
 			});
 	}
 
-	function handleRemoveJournalId(dispatch) {
-		removeJournalId(journalIdId);
+	function handleRemoveJournalID(dispatch) {
+		removeJournalID(journalIDId);
 		DeletedSuccessfully();
-		navigate('/apps/journalId/journalIds');
+		navigate('/apps/journalID/journalIDs');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/journalId/journalIds`);
+		navigate(`/apps/journalID/journalIDs`);
 	}
 
 	return (
@@ -69,7 +69,7 @@ function JournalIdHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/journalId/journalIds"
+						to="/apps/journalID/journalIDs"
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>
@@ -77,7 +77,7 @@ function JournalIdHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">JournalIds</span>
+						<span className="flex mx-4 font-medium">JournalIDs</span>
 					</Typography>
 				</motion.div>
 
@@ -96,7 +96,7 @@ function JournalIdHeader() {
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/journalId-image-placeholder.png"
+								src="assets/images/apps/ecommerce/journalID-image-placeholder.png"
 								alt={name}
 							/>
 						)}
@@ -107,13 +107,13 @@ function JournalIdHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'New JournalId'}
+							{name || 'New JournalID'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							JournalId Detail
+							JournalID Detail
 						</Typography>
 					</motion.div>
 				</div>
@@ -124,44 +124,44 @@ function JournalIdHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteJournalId' && journalIdId !== 'new' && (
+				{handleDelete === 'deleteJournalID' && journalIDId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this journalId?
+						Do you want to remove this journalID?
 					</Typography>
 				)}
-				{handleDelete === 'deleteJournalId' && journalIdId !== 'new' && (
+				{handleDelete === 'deleteJournalID' && journalIDId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveJournalId}
+						onClick={handleRemoveJournalID}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{journalIdId === 'new' && (
+				{journalIDId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateJournalId}
+						onClick={handleCreateJournalID}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteJournalId' && handleUpdate === 'updateJournalId' && journalIdId !== 'new' && (
+				{handleDelete !== 'deleteJournalID' && handleUpdate === 'updateJournalID' && journalIDId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						color="secondary"
 						variant="contained"
 						style={{ backgroundColor: '#4dc08e', color: 'white' }}
-						onClick={handleUpdateJournalId}
+						onClick={handleUpdateJournalID}
 					>
 						Update
 					</Button>
@@ -179,4 +179,4 @@ function JournalIdHeader() {
 	);
 }
 
-export default JournalIdHeader;
+export default JournalIDHeader;

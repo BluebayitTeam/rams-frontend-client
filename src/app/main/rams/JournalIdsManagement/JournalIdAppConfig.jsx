@@ -1,34 +1,34 @@
 import { Navigate } from 'react-router-dom';
-import JournalIdApp from './JournalIdApp';
-import JournalIds from './journalIds/JournalIds';
-import JournalId from './journalId/JournalId';
+import JournalIDApp from './JournalIDApp';
+import JournalIDs from './journalIDs/JournalIDs';
+import JournalID from './journalID/JournalID';
 
 /**
  * The E-Commerce app configuration.
  */
-const JournalIdAppConfig = {
+const JournalIDAppConfig = {
 	settings: {
 		layout: {}
 	},
 	routes: [
 		{
-			path: 'apps/journalId',
-			element: <JournalIdApp />,
+			path: 'apps/journalID',
+			element: <JournalIDApp />,
 			children: [
 				{
 					path: '',
-					element: <Navigate to="journalIds" />
+					element: <Navigate to="journalIDs" />
 				},
 				{
-					path: 'journalIds',
-					element: <JournalIds />
+					path: 'journalIDs',
+					element: <JournalIDs />
 				},
 				{
-					path: 'journalIds/:journalId/:invoice_no?',
-					element: <JournalId />
+					path: 'journalIDs/:journalIDId/:invoice_no?',
+					element: <JournalID />
 				}
 			]
 		}
 	]
 };
-export default JournalIdAppConfig;
+export default JournalIDAppConfig;

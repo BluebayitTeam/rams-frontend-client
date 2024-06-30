@@ -57,7 +57,7 @@ import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVo
 import CvBankAppConfig from '../rams/CvBanksManagement/CvBankAppConfig';
 import ContraAppConfig from '../rams/ContrasManagement/ContraAppConfig';
 import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
-import JournalIdAppConfig from '../rams/JournalIdsManagement/JournalIdAppConfig';
+import JournalIDAppConfig from '../rams/JournalIDsManagement/JournalIDAppConfig';
 
 /**
  * The list of application configurations.
@@ -122,6 +122,6 @@ const appsConfigs = [
 	ReceiptVoucherAppConfig,
 	ContraAppConfig,
 	JournalAppConfig,
-	JournalIdAppConfig
+	JournalIDAppConfig
 ];
 export default appsConfigs;

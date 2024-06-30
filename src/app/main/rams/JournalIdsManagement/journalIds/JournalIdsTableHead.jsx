@@ -9,10 +9,10 @@ import { Checkbox, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { Delete } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { useDeleteJournalIdsMutation } from '../JournalIdsApi';
+import { useDeleteJournalIDsMutation } from '../JournalIDsApi';
 
 /**
- * The journalIds table head component.
+ * The journalIDs table head component.
  */
 
 const rows = [
@@ -68,30 +68,30 @@ const rows = [
 	}
 ];
 
-function JournalIdsTableHead(props) {
-	const { selectedJournalIdIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+function JournalIDsTableHead(props) {
+	const { selectedJournalIDIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
 
 	console.log('onMenuItemClick', onMenuItemClick);
 
-	console.log('selectedJournalIdIds', selectedJournalIdIds);
+	console.log('selectedJournalIDIds', selectedJournalIDIds);
 
-	const [removeJournalIds] = useDeleteJournalIdsMutation();
-	const numSelected = selectedJournalIdIds.length;
-	const [selectedJournalIdsMenu, setSelectedJournalIdsMenu] = useState(null);
+	const [removeJournalIDs] = useDeleteJournalIDsMutation();
+	const numSelected = selectedJournalIDIds.length;
+	const [selectedJournalIDsMenu, setSelectedJournalIDsMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedJournalIdsMenu(event) {
-		setSelectedJournalIdsMenu(event.currentTarget);
+	function openSelectedJournalIDsMenu(event) {
+		setSelectedJournalIDsMenu(event.currentTarget);
 	}
 
-	function closeSelectedJournalIdsMenu() {
-		setSelectedJournalIdsMenu(null);
+	function closeSelectedJournalIDsMenu() {
+		setSelectedJournalIDsMenu(null);
 	}
 
 	function handleDeleteMultipleItem() {
-		removeJournalIds(selectedJournalIdIds).then((data) => {
+		removeJournalIDs(selectedJournalIDIds).then((data) => {
 			Swal.fire({
 				position: 'top-center',
 				icon: 'success',
@@ -129,7 +129,7 @@ function JournalIdsTableHead(props) {
 						>
 							<IconButton
 								aria-haspopup="true"
-								onClick={openSelectedJournalIdsMenu}
+								onClick={openSelectedJournalIDsMenu}
 								size="large"
 							>
 								<Delete
@@ -138,17 +138,17 @@ function JournalIdsTableHead(props) {
 								/>
 							</IconButton>
 							{/* <Menu
-								id="selectedJournalIdsMenu"
-								anchorEl={selectedJournalIdsMenu}
-								open={Boolean(selectedJournalIdsMenu)}
-								onClose={closeSelectedJournalIdsMenu}
+								id="selectedJournalIDsMenu"
+								anchorEl={selectedJournalIDsMenu}
+								open={Boolean(selectedJournalIDsMenu)}
+								onClose={closeSelectedJournalIDsMenu}
 							>
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											removeJournalIds(selectedJournalIdIds);
+											removeJournalIDs(selectedJournalIDIds);
 											onMenuItemClick();
-											closeSelectedJournalIdsMenu();
+											closeSelectedJournalIDsMenu();
 										}}
 									>
 										<ListItemIcon>
@@ -206,4 +206,4 @@ function JournalIdsTableHead(props) {
 	);
 }
 
-export default JournalIdsTableHead;
+export default JournalIDsTableHead;

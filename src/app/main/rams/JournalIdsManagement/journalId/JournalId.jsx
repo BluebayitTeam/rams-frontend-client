@@ -11,26 +11,26 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
-import JournalIdHeader from './JournalIdHeader';
-import JournalIdModel from './models/JournalIdModel';
-import { useGetJournalIdQuery } from '../JournalIdsApi';
-import JournalIdForm from './JournalIdForm';
+import JournalIDHeader from './JournalIDHeader';
+import JournalIDModel from './models/JournalIDModel';
+import { useGetJournalIDQuery } from '../JournalIDsApi';
+import JournalIDForm from './JournalIDForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({});
 
-function JournalId() {
+function JournalID() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { journalIdId, invoice_no } = routeParams;
+	const { journalIDId, invoice_no } = routeParams;
 
 	const {
-		data: journalId,
+		data: journalID,
 		isLoading,
 		isError
-	} = useGetJournalIdQuery(invoice_no, {
-		skip: !journalIdId || journalIdId === 'new'
+	} = useGetJournalIDQuery(invoice_no, {
+		skip: !journalIDId || journalIDId === 'new'
 	});
 
 	const methods = useForm({
@@ -41,30 +41,30 @@ function JournalId() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (journalIdId === 'new') {
-			reset(JournalIdModel({}));
+		if (journalIDId === 'new') {
+			reset(JournalIDModel({}));
 		}
-	}, [journalIdId, reset]);
+	}, [journalIDId, reset]);
 
 	useEffect(() => {
-		if (journalId) {
-			const convertedJournalIdItems = setIdIfValueIsObjArryData(journalId?.items);
-			const convertedJournalId = setIdIfValueIsObject2(journalId);
+		if (journalID) {
+			const convertedJournalIDItems = setIdIfValueIsObjArryData(journalID?.items);
+			const convertedJournalID = setIdIfValueIsObject2(journalID);
 			reset({
-				...convertedJournalId,
-				items: convertedJournalIdItems
+				...convertedJournalID,
+				items: convertedJournalIDItems
 			});
 		}
-	}, [journalId, reset, journalId?.id]);
+	}, [journalID, reset, journalID?.id]);
 
 	if (isLoading) {
 		return <FuseLoading />;
 	}
 
 	/**
-	 * Show Message if the requested journalIds is not exists
+	 * Show Message if the requested journalIDs is not exists
 	 */
-	if (isError && journalIdId !== 'new') {
+	if (isError && journalIDId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -75,16 +75,16 @@ function JournalId() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such journalId!
+					There is no such journalID!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/journalId/journalIds"
+					to="/apps/journalID/journalIDs"
 					color="inherit"
 				>
-					Go to JournalIds Page
+					Go to JournalIDs Page
 				</Button>
 			</motion.div>
 		);
@@ -93,11 +93,11 @@ function JournalId() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<JournalIdHeader />}
+				header={<JournalIDHeader />}
 				content={
 					<div className="p-16 ">
 						<div>
-							<JournalIdForm journalIdId={journalIdId} />
+							<JournalIDForm journalIDId={journalIDId} />
 						</div>
 					</div>
 				}
@@ -107,4 +107,4 @@ function JournalId() {
 	);
 }
 
-export default JournalId;
+export default JournalID;

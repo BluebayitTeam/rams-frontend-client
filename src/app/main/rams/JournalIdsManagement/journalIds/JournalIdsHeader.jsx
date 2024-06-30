@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The journalIds header.
+ * The journalIDs header.
  */
-function JournalIdsHeader(props) {
+function JournalIDsHeader(props) {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ function JournalIdsHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">JournalIds</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">JournalIDs</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -43,7 +43,7 @@ function JournalIdsHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search journalIds"
+						placeholder="Search journalIDs"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -70,7 +70,7 @@ function JournalIdsHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/journalId/journalIds/new"
+						to="/apps/journalID/journalIDs/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -81,4 +81,4 @@ function JournalIdsHeader(props) {
 	);
 }
 
-export default JournalIdsHeader;
+export default JournalIDsHeader;

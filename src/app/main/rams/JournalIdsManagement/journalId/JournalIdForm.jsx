@@ -20,22 +20,21 @@ import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 
 const useStyles = makeStyles((theme) => ({
 	...getAccountFormStyles(theme)
 }));
 
-function JournalIdForm() {
+function JournalIDForm() {
 	const classes = useStyles();
 
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { journalId } = useParams();
+	const { journalIDId } = useParams();
 
 	const { control, formState, getValues, setValue, reset, watch } = methods;
-
 	const { errors } = formState;
 	const branchs = useSelector((state) => state.data.branches);
 	const passengers = useSelector((state) => state.data.passengers);
@@ -44,12 +43,14 @@ function JournalIdForm() {
 	const [debitCreditMessage, setDebitCreditMessage] = useState('');
 	const [haveEmptyPassenger, setHaveEmptyPassenger] = useState(true);
 	const [passengerMessage, setPassengerMessage] = useState('');
+
+	const values = getValues();
+
 	const { fields, remove } = useFieldArray({
 		control,
 		name: 'items',
 		keyName: 'key'
 	});
-	const values = getValues();
 
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -93,14 +94,13 @@ function JournalIdForm() {
 	};
 
 	useEffect(() => {
-		checkEmptyPassenger(watch('items') || []);
-	}, [getValues()]);
+		checkEmptyPassenger(journalIDId?.items || []);
+	}, [journalIDId]);
 
 	// rerender feildsArray after passengers fetched otherwise passenger's option not be shown
 	useEffect(() => {
 		reset({ ...getValues(), items: watch('items') });
 	}, [passengers]);
-
 	return (
 		<div>
 			<Controller
@@ -110,18 +110,16 @@ function JournalIdForm() {
 					return (
 						<CustomDatePicker
 							field={field}
-							label="Journal Date"
-							required
-							className="mt-8 mb-16 w-full"
-							error={!!errors.journal_date}
-							helperText={errors?.journal_date?.message}
-							placeholder="DD-MM-YYYY"
+							label="Id Journal Date"
 						/>
 					);
 				}}
 			/>
 
-			<Grid xs={12}>
+			<Grid
+				xs={12}
+				className="mt-32"
+			>
 				<div className={classes.mainContainer}>
 					<TableContainer
 						component={Paper}
@@ -364,4 +362,4 @@ function JournalIdForm() {
 	);
 }
 
-export default JournalIdForm;
+export default JournalIDForm;

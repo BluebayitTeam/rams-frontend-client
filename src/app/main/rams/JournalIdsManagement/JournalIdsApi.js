@@ -9,80 +9,79 @@ import {
 	GET_JOURNALID_BY_INVOICE_NO,
 	UPDATE_JOURNALID
 } from 'src/app/constant/constants';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import JournalIdModel from './journalId/models/JournalIdModel';
+import JournalIDModel from './journalID/models/JournalIDModel';
 
-export const addTagTypes = ['journalIds'];
-const JournalIdApi = api
+export const addTagTypes = ['journalIDs'];
+const JournalIDApi = api
 	.enhanceEndpoints({
 		addTagTypes
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			getJournalIds: build.query({
+			getJournalIDs: build.query({
 				query: ({ page, size, searchKey }) => ({
 					url: GET_JOURNALIDS,
 					params: { page, size, searchKey }
 				}),
-				providesTags: ['journalIds']
+				providesTags: ['journalIDs']
 			}),
-			deleteJournalIds: build.mutation({
-				query: (journalIdIds) => ({
+			deleteJournalIDs: build.mutation({
+				query: (journalIDIds) => ({
 					url: DELETE_JOURNALID_MULTIPLE,
 					method: 'DELETE',
-					data: { ids: journalIdIds }
+					data: { ids: journalIDIds }
 				}),
-				invalidatesTags: ['journalIds']
+				invalidatesTags: ['journalIDs']
 			}),
-			getJournalId: build.query({
-				query: (journalIdId) => ({
-					url: `${GET_JOURNALID_BY_INVOICE_NO}${journalIdId}`
+			getJournalID: build.query({
+				query: (journalIDId) => ({
+					url: `${GET_JOURNALID_BY_INVOICE_NO}${journalIDId}`
 				}),
-				providesTags: ['journalIds']
+				providesTags: ['journalIDs']
 			}),
-			createJournalId: build.mutation({
-				query: (newJournalId) => ({
+			createJournalID: build.mutation({
+				query: (newJournalID) => ({
 					url: CREATE_JOURNALID,
 					method: 'POST',
-					data: jsonToFormData(JournalIdModel(newJournalId))
+					data: JournalIDModel(newJournalID)
 				}),
-				invalidatesTags: ['journalIds']
+				invalidatesTags: ['journalIDs']
 			}),
-			updateJournalId: build.mutation({
-				query: (journalId) => ({
+			updateJournalID: build.mutation({
+				query: (journalID) => ({
 					url: `${UPDATE_JOURNALID}`,
 					method: 'PUT',
-					data: jsonToFormData(journalId)
+					data: journalID
 				}),
-				invalidatesTags: ['journalIds']
+				invalidatesTags: ['journalIDs']
 			}),
-			deleteJournalId: build.mutation({
-				query: (journalIdId) => ({
-					url: `${DELETE_JOURNALID}${journalIdId}`,
+			deleteJournalID: build.mutation({
+				query: (journalIDId) => ({
+					url: `${DELETE_JOURNALID}${journalIDId}`,
 					method: 'DELETE'
 				}),
-				invalidatesTags: ['journalIds']
+				invalidatesTags: ['journalIDs']
 			})
 		}),
 		overrideExisting: false
 	});
-export default JournalIdApi;
+export default JournalIDApi;
 export const {
-	useGetJournalIdsQuery,
-	useDeleteJournalIdsMutation,
-	useGetJournalIdQuery,
-	useUpdateJournalIdMutation,
-	useDeleteJournalIdMutation,
+	useGetJournalIDsQuery,
+	useDeleteJournalIDsMutation,
+	useGetJournalIDQuery,
+	useUpdateJournalIDMutation,
+	useDeleteJournalIDMutation,
 
-	useCreateJournalIdMutation
-} = JournalIdApi;
+	useCreateJournalIDMutation
+} = JournalIDApi;
 
-export const selectFilteredJournalIds = (journalIds) =>
+export const selectFilteredJournalIDs = (journalIDs) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (searchText?.length === 0) {
-			return journalIds;
+			return journalIDs;
 		}
 
-		return FuseUtils.filterArrayByString(journalIds, searchText);
+		return FuseUtils.filterArrayByString(journalIDs, searchText);
 	});
