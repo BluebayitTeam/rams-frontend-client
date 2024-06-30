@@ -12,36 +12,33 @@ function DocmentSendForm() {
 	const { control, formState, setValue, getValues } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
-	const [mltPassengerList, setMltPassengerList] = useState([]); 
-	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null); 
-	const [showError, setShowError] = useState(false); 
-	const [documentSends, setDocumentSends] = useState([]); 
-	const [keyData, setKeyData] = useState([])
+	const [mltPassengerList, setMltPassengerList] = useState([]);
+	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
+	const [showError, setShowError] = useState(false);
+	const [documentSends, setDocumentSends] = useState([]);
+	const [keyData, setKeyData] = useState([]);
 	const handleCheckboxSend = (name, checked) => {
-    const updatedDocumentSends = documentSends.map((documentSend) =>
-        documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-    );
-    setDocumentSends(updatedDocumentSends);
+		const updatedDocumentSends = documentSends.map((documentSend) =>
+			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
+		);
+		setDocumentSends(updatedDocumentSends);
 
-    const updatedKeyData = [...keyData];
-    const documentSend = updatedDocumentSends.find((data) => data?.key === name);
+		const updatedKeyData = [...keyData];
+		const documentSend = updatedDocumentSends.find((data) => data?.key === name);
 
-    if (documentSend) {
-        
-        const keyIndex = updatedKeyData.indexOf(documentSend.key);
+		if (documentSend) {
+			const keyIndex = updatedKeyData.indexOf(documentSend.key);
 
-        if (checked && keyIndex === -1) {
-           
-            updatedKeyData.push(documentSend.key);
-        } else if (!checked && keyIndex !== -1) {
-           
-            updatedKeyData.splice(keyIndex, 1);
-        }
-    }
+			if (checked && keyIndex === -1) {
+				updatedKeyData.push(documentSend.key);
+			} else if (!checked && keyIndex !== -1) {
+				updatedKeyData.splice(keyIndex, 1);
+			}
+		}
 
-    setKeyData(updatedKeyData);
-    setValue('checkbox', updatedKeyData);
-};
+		setKeyData(updatedKeyData);
+		setValue('checkbox', updatedKeyData);
+	};
 	const handleChange = (e) => {
 		const { name, checked } = e.target;
 		handleCheckboxSend(name, checked);
@@ -55,21 +52,19 @@ function DocmentSendForm() {
 	}, [mltPassengerDeletedId]);
 
 	useEffect(() => {
-		dispatch(getPassengers()); 
+		dispatch(getPassengers());
 	}, [dispatch]);
 
 	useEffect(() => {
-		setDocumentSends(columns); 
+		setDocumentSends(columns);
 	}, []);
 
 	useEffect(() => {
 		setValue(
 			'passengers',
-			mltPassengerList?.map((data) => data.id) 
+			mltPassengerList?.map((data) => data.id)
 		);
 	}, [mltPassengerList, setValue]);
-
-
 
 	const handlePassengerSelect = (newPassenger) => {
 		if (newPassenger) {
@@ -78,7 +73,7 @@ function DocmentSendForm() {
 			}
 		}
 	};
-console.log("test",getValues())
+	console.log('test', getValues());
 	return (
 		<div>
 			<div>
@@ -135,8 +130,6 @@ console.log("test",getValues())
 				</div>
 			)}
 
-		
-
 			<div>
 				<br />
 
@@ -154,7 +147,10 @@ console.log("test",getValues())
 							InputProps={{
 								endAdornment: (
 									<InputAdornment position="end">
-										<Icon className="text-20" color="action">
+										<Icon
+											className="text-20"
+											color="action"
+										>
 											user
 										</Icon>
 									</InputAdornment>

@@ -2,7 +2,6 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import MultipleVisaEntryHeader from './MultipleVisaEntryHeader';
@@ -12,18 +11,16 @@ import MultipleVisaEntryForm from './MultipleVisaEntryForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
+	visa_no: z
 		.string()
 		.nonempty('You must enter a multipleVisaEntry name')
 		.min(5, 'The multipleVisaEntry name must be at least 5 characters')
 });
 
 function MultipleVisaEntry() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { multipleVisaEntryId } = routeParams;
 
-	const [tabValue, setTabValue] = useState(0);
 	const [formKey, setFormKey] = useState(0);
 
 	const methods = useForm({
@@ -31,8 +28,7 @@ function MultipleVisaEntry() {
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
-	const { reset, watch } = methods;
-	const form = watch();
+	const { reset } = methods;
 	useEffect(() => {
 		if (multipleVisaEntryId === 'new') {
 			reset(MultipleVisaEntryModel({}));
