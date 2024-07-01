@@ -1746,6 +1746,7 @@ export const GET_DEBTOR_TOTAL_REPORT_DATA_WITHOUT_PG = `${BASE_URL}/account_repo
 export const GET_MULTIPLE_VISA_ENTRY_CLM_ = `${BASE_URL}/passenger/api/v1/passenger/without_pagination/all/`;
 export const PASSENGER_VISA_ENTRY_WITHOUT_PAGINATION = `${BASE_URL}/passenger/api/v1/passenger/visa_entry_null_without_pagination/all/`;
 export const CREATE_MULTIPLE_VISA_ENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/multiple_visa_entry/`;
+export const GET_PASSENGER_BY_AGENTID = `${BASE_URL}/passenger/api/v1/passenger/by_agent_id/`;
 
 // Authorized Account
 
