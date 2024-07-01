@@ -97,7 +97,7 @@ const navigationConfig = [
         translate: "Employee",
         display_order: 3,
         type: "item",
-        url: "/apps/employee-management/employees",
+        url: "/apps/employee/employees",
         exact: true,
       },
       {
