@@ -21,9 +21,9 @@ const PostDateChequeApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getPostDateCheques: build.query({
-				query: ({ page, size, searchKey }) => ({
+				query: ({ page, size, searchKey, is_cheque = 'cheque' }) => ({
 					url: GET_POST_DATE_CHECKS,
-					params: { page, size, searchKey }
+					params: { page, size, searchKey, is_cheque }
 				}),
 				providesTags: ['postDateCheques']
 			}),

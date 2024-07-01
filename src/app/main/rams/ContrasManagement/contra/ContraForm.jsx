@@ -135,11 +135,11 @@ function ContraForm() {
 			if (isLedgerEmpty) {
 				setHaveEmptyLedger(true);
 				setLedgerMessage('Account type is required   ');
-				setLetFormSave(false);
+				// setLetFormSave(false);
 			} else {
 				setHaveEmptyLedger(false);
 				setLedgerMessage('');
-				isDebitCreditMatched && setLetFormSave(true);
+				// isDebitCreditMatched && setLetFormSave(true);
 			}
 		}, 0);
 	};

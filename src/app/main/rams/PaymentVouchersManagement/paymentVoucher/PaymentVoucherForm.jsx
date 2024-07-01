@@ -179,7 +179,7 @@ function PaymentVoucherForm() {
 				if (data?.has_bank_accounts === true) {
 					setSelectedId(idx);
 					setModalOpen(true);
-					setValue(`items.${idx}.is_cheque`, 'cheque');
+					setValue(`items.${idx}.is_cheque`, 'pay_order');
 				} else {
 					setValue(`items.${idx}.is_post_date`, false);
 					setValue(`items.${idx}.cheque_no`, '');

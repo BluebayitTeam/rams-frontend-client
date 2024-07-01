@@ -59,6 +59,7 @@ import ContraAppConfig from '../rams/ContrasManagement/ContraAppConfig';
 import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
 import JournalIDAppConfig from '../rams/JournalIDsManagement/JournalIDAppConfig';
 import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateChequeAppConfig';
+import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 
 /**
  * The list of application configurations.
@@ -124,6 +125,8 @@ const appsConfigs = [
 	ContraAppConfig,
 	JournalAppConfig,
 	JournalIDAppConfig,
-	PostDateChequeAppConfig
+	PostDateChequeAppConfig,
+
+	ReceivableBillAppConfig
 ];
 export default appsConfigs;

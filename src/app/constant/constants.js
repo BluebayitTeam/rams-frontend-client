@@ -2091,24 +2091,25 @@ export const GET_TICKET_SALES_REPORT_FOR_DASHBOARD_REPORT_WITHOUT_PG = `${BASE_U
 
 export const PASSENGER_STATUS_STEP_DIAGRAM = `${BASE_URL}/passenger_status_overview/api/v1/passenger_status_overview/passenger_status_step_diagram/`;
 
-//  postdate_cheque
-export const CREATE_PAYORDER_CLEARING = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/create/`;
+//  payorder_clearing
+export const CREATE_PAYORDER_CLEARING = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/create/`;
 
-export const GET_PAYORDER_CLEARINGS = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/all/`;
+export const GET_PAYORDER_CLEARINGS = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/all/`;
 
-export const GET_PAYORDER_CLEARINGS_WITHOUT_PAGINATION = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/without_pagination/all/`;
+export const GET_PAYORDER_CLEARINGS_WITHOUT_PAGINATION = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/without_pagination/all/`;
 
-export const GET_PAYORDER_CLEARINGID = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/`;
+export const GET_PAYORDER_CLEARING_BY_ID = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/`;
 
-export const UPDATE_PAYORDER_CLEARING = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/update/`;
+export const UPDATE_PAYORDER_CLEARING = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/update/`;
 
-export const DELETE_PAYORDER_CLEARING = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/delete/`;
+export const DELETE_PAYORDER_CLEARING = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/delete/`;
+export const DELETE_PAYORDER_CLEARING_MULTIPLE = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/delete/`;
 
-export const SEARCH_PAYORDER_CLEARING = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/search/`;
+export const SEARCH_PAYORDER_CLEARING = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/search/`;
 
-export const PAYORDER_CLEARING_PREVIOUS_BALANCE = `${BASE_URL}/postdate_cheque/api/v1/previous_balance_check_account/`;
+export const PAYORDER_CLEARING_PREVIOUS_BALANCE = `${BASE_URL}/payorder_clearing/api/v1/previous_balance_check_account/`;
 
-export const PAYORDER_TYPE_WITHOUT_PAGINATION = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/get_distinct_types_of_payorder/`;
+export const PAYORDER_TYPE_WITHOUT_PAGINATION = `${BASE_URL}/payorder_clearing/api/v1/payorder_clearing/get_distinct_types_of_payorder/`;
 
 export const LEDGER_BANK_CASH = `${BASE_URL}/ledger_account/api/v1/ledger_account/cash_bank/`;
 
