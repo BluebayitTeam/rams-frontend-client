@@ -4,10 +4,8 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import { Delete } from '@mui/icons-material';
-import { useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import { TableCell } from '@mui/material';
-import { useForm } from 'react-hook-form';
 import MultiplePassengersTableHead from './MultiplePassengersTableHead';
 
 const style = {
@@ -22,16 +20,6 @@ const style = {
 };
 
 function MultiplePassengersTable(props) {
-	const [singleEvisaEntryDetails, setSingleEvisaEntryDetails] = useState({});
-	const [evisaEntryPackagePrice, setEvisaEntryPackagePrice] = useState(0);
-
-	const serialNumber = 1;
-
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
-
 	return (
 		<div className="w-full flex flex-col min-h-full px-10 ">
 			<FuseScrollbars className="grow overflow-x-auto ">
