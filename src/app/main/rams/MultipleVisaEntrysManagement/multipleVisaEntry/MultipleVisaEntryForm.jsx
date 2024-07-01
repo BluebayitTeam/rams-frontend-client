@@ -17,6 +17,7 @@ function MultipleVisaEntryForm(props) {
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [filterPassengers, setFilterPassengers] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
+
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getVisaEntrys());
@@ -179,12 +180,13 @@ function MultipleVisaEntryForm(props) {
 				<div>
 					{filterPassengers.map((passenger) => (
 						<FormControlLabel
-							onChange={passenger}
-							// 	onChange={event =>
+							// onChange={passenger}
+							// onChange={(event) =>
 							// 	event.target.checked
 							// 		? handleSaveMultipleVisaEntry(passenger.id)
 							// 		: dispatch(removeMultipleVisaEntryRow(passenger.id))
 							// }
+
 							key={passenger.id}
 							name={passenger.id}
 							style={{ width: '45%' }}
