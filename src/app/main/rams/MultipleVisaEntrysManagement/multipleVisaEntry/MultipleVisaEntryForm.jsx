@@ -31,6 +31,8 @@ function MultipleVisaEntryForm(props) {
 	const [filterPassengers, setFilterPassengers] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [page, setPage] = useState(1);
+	const [selectedAgent, setSelectedAgent] = useState(null);
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getVisaEntrys());
@@ -94,10 +96,22 @@ function MultipleVisaEntryForm(props) {
 			.then((data) => setFilterPassengers(data?.passengers))
 			.catch(() => {});
 	};
+	const handleFilterSerch = (id) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		fetch(`${GET_PASSENGER_BY_AGENTID}${id}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) => setFilterPassengers(data?.searchKey))
+			.catch(() => {});
+	};
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
-		// Add any additional logic for fetching new data based on the page number
+		setPageAndSize({ ...pageAndSize, page: value + 1 });
 	};
 
 	return (
@@ -177,28 +191,6 @@ function MultipleVisaEntryForm(props) {
 
 			{watch('selection_or_checkbox') === 'checkbox' && (
 				<div className="flex flex-col md:space-y-12">
-					<Paper
-						component={motion.div}
-						initial={{ y: -20, opacity: 0 }}
-						animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-						className="flex items-center w-full sm:max-w-400 mb-24 mt-24 mx-24 space-x-8 px-16  border-1 shadow-0"
-					>
-						<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
-						<Input
-							placeholder="Search By Passport Number"
-							className="flex flex-1"
-							disableUnderline
-							fullWidth
-							inputProps={{ 'aria-label': 'Search' }}
-							onKeyDown={(ev) => {
-								if (ev.key === 'Enter') {
-									props?.setSearchKey(ev?.target?.value);
-								} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
-									props?.setSearchKey('');
-								}
-							}}
-						/>
-					</Paper>
 					<Controller
 						name="agent"
 						control={control}
@@ -211,6 +203,7 @@ function MultipleVisaEntryForm(props) {
 								getOptionLabel={(option) => `${option.first_name} - ${option.agent_code}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
+									setSelectedAgent(newValue); // Set selected agent
 									handleFilterPassenger(newValue?.id);
 								}}
 								renderInput={(params) => (
@@ -227,6 +220,30 @@ function MultipleVisaEntryForm(props) {
 							/>
 						)}
 					/>
+					{selectedAgent && (
+						<Paper
+							component={motion.div}
+							initial={{ y: -20, opacity: 0 }}
+							animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+							className="flex items-center w-full sm:max-w-400 mb-24 mt-24 mx-24 space-x-8 px-16 border-1 shadow-0"
+						>
+							<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
+							<Input
+								placeholder="Search By Passport Number"
+								className="flex flex-1"
+								disableUnderline
+								fullWidth
+								inputProps={{ 'aria-label': 'Search' }}
+								onKeyDown={(ev) => {
+									if (ev.key === 'Enter') {
+										props?.setSearchKey(ev?.target?.value);
+									} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
+										props?.setSearchKey('');
+									}
+								}}
+							/>
+						</Paper>
+					)}
 				</div>
 			)}
 
@@ -250,7 +267,7 @@ function MultipleVisaEntryForm(props) {
 						<Pagination
 							count={10}
 							page={page}
-							onChange={(event, value) => setPage(value)}
+							onChange={handlePageChange}
 							color="primary"
 						/>
 					</div>
