@@ -91,6 +91,36 @@ function DocmentSendForm() {
 			</div>
 
 			<Controller
+				name="email"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						type="text"
+						error={!!errors.email}
+						helperText={errors?.email?.message}
+						label="Email"
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<Icon
+										className="text-20"
+										color="action"
+									>
+										user
+									</Icon>
+								</InputAdornment>
+							)
+						}}
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
+			/>
+
+			<Controller
 				name="passenger"
 				control={control}
 				render={({ field: { value, onChange } }) => (
@@ -134,36 +164,6 @@ function DocmentSendForm() {
 
 			<div>
 				<br />
-
-				<Controller
-					name="email"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							type="text"
-							error={!!errors.email}
-							helperText={errors?.email?.message}
-							label="Email"
-							InputProps={{
-								endAdornment: (
-									<InputAdornment position="end">
-										<Icon
-											className="text-20"
-											color="action"
-										>
-											user
-										</Icon>
-									</InputAdornment>
-								)
-							}}
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value && { shrink: true }}
-						/>
-					)}
-				/>
 			</div>
 		</div>
 	);

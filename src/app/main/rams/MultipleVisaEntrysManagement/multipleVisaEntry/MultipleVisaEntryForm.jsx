@@ -12,7 +12,7 @@ import {
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgents, getPassengers, getVisaEntrys } from 'app/store/dataSlice';
-import { GET_PASSENGER_BY_AGENTID } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_PASSENGERID } from 'src/app/constant/constants';
 import Paper from '@mui/material/Paper';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Input from '@mui/material/Input';
@@ -25,14 +25,17 @@ function MultipleVisaEntryForm(props) {
 	const { control, formState, setValue, watch } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
-	const agents = useSelector((state) => state.data.agents);
 	const visaEntries = useSelector((state) => state.data.visaEntries);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [filterPassengers, setFilterPassengers] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [page, setPage] = useState(1);
-	const [selectedAgent, setSelectedAgent] = useState(null);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+	const [selectedPassenger, setselectedPassenger] = useState(null);
+	const [searchKey, setSearchKey] = useState('');
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 2 });
+
+	console.log('pageAndSize', pageAndSize);
+
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getVisaEntrys());
@@ -84,30 +87,39 @@ function MultipleVisaEntryForm(props) {
 		}
 	}, [mltPassengerDeletedId]);
 
-	const handleFilterPassenger = (id) => {
+	useEffect(() => {
+		if (watch('selection_or_checkbox') === 'checkbox') {
+			handleFilterPassenger(pageAndSize);
+		}
+	}, [watch('selection_or_checkbox'), searchKey, pageAndSize]);
+
+	const handleFilterPassenger = (parameter) => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		fetch(`${GET_PASSENGER_BY_AGENTID}${id}`, authTOKEN)
+		fetch(
+			`${GET_PASSENGER_BY_PASSENGERID}?searchKey=${searchKey}&page=${parameter?.page}&size=${parameter?.size}`,
+			authTOKEN
+		)
 			.then((response) => response.json())
 			.then((data) => setFilterPassengers(data?.passengers))
 			.catch(() => {});
 	};
-	const handleFilterSerch = (id) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		fetch(`${GET_PASSENGER_BY_AGENTID}${id}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) => setFilterPassengers(data?.searchKey))
-			.catch(() => {});
-	};
+	// const handleFilterSerch = () => {
+	// 	const authTOKEN = {
+	// 		headers: {
+	// 			'Content-type': 'application/json',
+	// 			Authorization: localStorage.getItem('jwt_access_token')
+	// 		}
+	// 	};
+	// 	fetch(`${GET_PASSENGER_BY_PASSENGERID}?passport_no=${searchKey}`, authTOKEN)
+	// 		.then((response) => response.json())
+	// 		.then((data) => setFilterPassengers(data?.passengers))
+	// 		.catch(() => {});
+	// };
 
 	const handlePageChange = (event, value) => {
 		setPage(value);
@@ -182,6 +194,10 @@ function MultipleVisaEntryForm(props) {
 						/>
 						<FormControlLabel
 							value="checkbox"
+							onChange={(event, newValue) => {
+								// onChange(newValue?.id);
+								setselectedPassenger(newValue); // Set selected agent
+							}}
 							control={<Radio />}
 							label="CheckBox"
 						/>
@@ -191,36 +207,7 @@ function MultipleVisaEntryForm(props) {
 
 			{watch('selection_or_checkbox') === 'checkbox' && (
 				<div className="flex flex-col md:space-y-12">
-					<Controller
-						name="agent"
-						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								className="mt-8 mb-16 w-full md:w-6/12"
-								freeSolo
-								value={value ? agents.find((data) => data.id === value) : null}
-								options={agents}
-								getOptionLabel={(option) => `${option.first_name} - ${option.agent_code}`}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-									setSelectedAgent(newValue); // Set selected agent
-									handleFilterPassenger(newValue?.id);
-								}}
-								renderInput={(params) => (
-									<TextField
-										{...params}
-										placeholder="Select Agent"
-										label="Agent"
-										helperText={errors?.agent?.message}
-										variant="outlined"
-										autoFocus
-										InputLabelProps={{ shrink: true }}
-									/>
-								)}
-							/>
-						)}
-					/>
-					{selectedAgent && (
+					{selectedPassenger && (
 						<Paper
 							component={motion.div}
 							initial={{ y: -20, opacity: 0 }}
@@ -228,6 +215,22 @@ function MultipleVisaEntryForm(props) {
 							className="flex items-center w-full sm:max-w-400 mb-24 mt-24 mx-24 space-x-8 px-16 border-1 shadow-0"
 						>
 							<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
+							{/* <Input
+								placeholder="Search By Passport Number"
+								className="flex flex-1"
+								disableUnderline
+								fullWidth
+								inputProps={{ 'aria-label': 'Search' }}
+								// onKeyDown={(ev) => {
+								// 	if (ev.key === 'Enter') {
+								// 		props?.setSearchKey(ev?.target?.value);
+								// 	} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
+								// 		props?.setSearchKey('');
+								// 	}
+								// }}
+								onChange={handleFilterSerch}
+							/> */}
+
 							<Input
 								placeholder="Search By Passport Number"
 								className="flex flex-1"
@@ -236,11 +239,12 @@ function MultipleVisaEntryForm(props) {
 								inputProps={{ 'aria-label': 'Search' }}
 								onKeyDown={(ev) => {
 									if (ev.key === 'Enter') {
-										props?.setSearchKey(ev?.target?.value);
+										setSearchKey(ev?.target?.value);
 									} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
-										props?.setSearchKey('');
+										setSearchKey('');
 									}
 								}}
+								// onChange={(e) => setSearchKey(e.target.value)}
 							/>
 						</Paper>
 					)}

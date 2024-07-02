@@ -2,16 +2,10 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.117:8006';
+export const BASE_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.117:8006';
 // export const BASE_URL = "https://rl7811api.ramsbd.net";
-export const CLIENT_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.119:3000';
-export const ADMIN_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.117:8008';
+export const CLIENT_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.119:3000';
+export const ADMIN_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.117:8008';
 export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
 export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
 
@@ -1752,7 +1746,7 @@ export const GET_DEBTOR_TOTAL_REPORT_DATA_WITHOUT_PG = `${BASE_URL}/account_repo
 export const GET_MULTIPLE_VISA_ENTRY_CLM_ = `${BASE_URL}/passenger/api/v1/passenger/without_pagination/all/`;
 export const PASSENGER_VISA_ENTRY_WITHOUT_PAGINATION = `${BASE_URL}/passenger/api/v1/passenger/visa_entry_null_without_pagination/all/`;
 export const CREATE_MULTIPLE_VISA_ENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/multiple_visa_entry/`;
-export const GET_PASSENGER_BY_AGENTID = `${BASE_URL}/passenger/api/v1/passenger/by_agent_id/`;
+export const GET_PASSENGER_BY_PASSENGERID = `${BASE_URL}/passenger/api/v1/passenger/without_visa_entry/`;
 
 // Authorized Account
 
