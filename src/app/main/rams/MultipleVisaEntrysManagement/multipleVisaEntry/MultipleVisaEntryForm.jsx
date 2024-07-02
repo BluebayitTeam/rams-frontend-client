@@ -33,6 +33,7 @@ function MultipleVisaEntryForm(props) {
 	const [selectedPassenger, setselectedPassenger] = useState(null);
 	const [searchKey, setSearchKey] = useState('');
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 2 });
+	const [rowsPerPage, setRowsPerPage] = useState(50);
 
 	console.log('pageAndSize', pageAndSize);
 
@@ -108,22 +109,10 @@ function MultipleVisaEntryForm(props) {
 			.then((data) => setFilterPassengers(data?.passengers))
 			.catch(() => {});
 	};
-	// const handleFilterSerch = () => {
-	// 	const authTOKEN = {
-	// 		headers: {
-	// 			'Content-type': 'application/json',
-	// 			Authorization: localStorage.getItem('jwt_access_token')
-	// 		}
-	// 	};
-	// 	fetch(`${GET_PASSENGER_BY_PASSENGERID}?passport_no=${searchKey}`, authTOKEN)
-	// 		.then((response) => response.json())
-	// 		.then((data) => setFilterPassengers(data?.passengers))
-	// 		.catch(() => {});
-	// };
-
-	const handlePageChange = (event, value) => {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
+	// pagination
+	const handlePagination = (e, handlePage) => {
+		setPageAndSize({ ...pageAndSize, page: handlePage });
+		setPage(handlePage - 1);
 	};
 
 	return (
@@ -215,21 +204,6 @@ function MultipleVisaEntryForm(props) {
 							className="flex items-center w-full sm:max-w-400 mb-24 mt-24 mx-24 space-x-8 px-16 border-1 shadow-0"
 						>
 							<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
-							{/* <Input
-								placeholder="Search By Passport Number"
-								className="flex flex-1"
-								disableUnderline
-								fullWidth
-								inputProps={{ 'aria-label': 'Search' }}
-								// onKeyDown={(ev) => {
-								// 	if (ev.key === 'Enter') {
-								// 		props?.setSearchKey(ev?.target?.value);
-								// 	} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
-								// 		props?.setSearchKey('');
-								// 	}
-								// }}
-								onChange={handleFilterSerch}
-							/> */}
 
 							<Input
 								placeholder="Search By Passport Number"
@@ -244,7 +218,6 @@ function MultipleVisaEntryForm(props) {
 										setSearchKey('');
 									}
 								}}
-								// onChange={(e) => setSearchKey(e.target.value)}
 							/>
 						</Paper>
 					)}
@@ -267,13 +240,36 @@ function MultipleVisaEntryForm(props) {
 							label={`${passenger.passenger_name} ${passenger.passenger_id}   ${passenger.passport_no}  ${passenger.post_office}`}
 						/>
 					))}
-					<div className="mt-24 mb-24 w-full md:w-6/12">
+					<div id="pagiContainer">
 						<Pagination
-							count={10}
-							page={page}
-							onChange={handlePageChange}
+							// classes={{ ul: 'flex-nowrap' }}
+							// count={totalData?.total_pages}
+							page={page + 1}
+							defaultPage={1}
 							color="primary"
+							showFirstButton
+							showLastButton
+							variant="outlined"
+							shape="rounded"
+							onChange={handlePagination}
 						/>
+
+						{/* <TablePagination
+							className="shrink-0 border-t-1"
+							component="div"
+							rowsPerPageOptions={rowsPerPageOptions}
+							// count={totalData?.total_pages}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							backIconButtonProps={{
+								'aria-label': 'Previous Page'
+							}}
+							nextIconButtonProps={{
+								'aria-label': 'Next Page'
+							}}
+							onPageChange={handleChangePage}
+							onRowsPerPageChange={handleChangeRowsPerPage}
+						/> */}
 					</div>
 				</div>
 			)}
