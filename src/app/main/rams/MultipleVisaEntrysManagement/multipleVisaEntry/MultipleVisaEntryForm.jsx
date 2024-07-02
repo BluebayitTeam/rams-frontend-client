@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Autocomplete, Checkbox, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import {
+	Autocomplete,
+	Checkbox,
+	FormControlLabel,
+	FormLabel,
+	Pagination,
+	Radio,
+	RadioGroup,
+	TextField
+} from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgents, getPassengers, getVisaEntrys } from 'app/store/dataSlice';
@@ -21,7 +30,7 @@ function MultipleVisaEntryForm(props) {
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [filterPassengers, setFilterPassengers] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-
+	const [page, setPage] = useState(1);
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getVisaEntrys());
@@ -84,6 +93,11 @@ function MultipleVisaEntryForm(props) {
 			.then((response) => response.json())
 			.then((data) => setFilterPassengers(data?.passengers))
 			.catch(() => {});
+	};
+
+	const handlePageChange = (event, value) => {
+		setPage(value);
+		// Add any additional logic for fetching new data based on the page number
 	};
 
 	return (
@@ -222,7 +236,7 @@ function MultipleVisaEntryForm(props) {
 						<FormControlLabel
 							key={passenger.id}
 							name={passenger.id}
-							style={{ width: '45%' }}
+							style={{ width: '45%', marginTop: '24px' }}
 							control={
 								<Checkbox
 									checked={selectedPassengerIds.includes(passenger.id)}
@@ -232,6 +246,14 @@ function MultipleVisaEntryForm(props) {
 							label={`${passenger.passenger_name} ${passenger.passenger_id}   ${passenger.passport_no}  ${passenger.post_office}`}
 						/>
 					))}
+					<div className="mt-24 mb-24 w-full md:w-6/12">
+						<Pagination
+							count={10}
+							page={page}
+							onChange={(event, value) => setPage(value)}
+							color="primary"
+						/>
+					</div>
 				</div>
 			)}
 			{watch('selection_or_checkbox') === 'selection' && (
