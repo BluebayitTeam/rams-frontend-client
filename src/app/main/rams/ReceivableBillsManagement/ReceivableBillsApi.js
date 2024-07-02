@@ -6,7 +6,7 @@ import {
 	DELETE_RECEIVABLEBILL,
 	DELETE_RECEIVABLEBILL_MULTIPLE,
 	GET_RECEIVABLEBILLS,
-	GET_RECEIVABLEBILL_BY_ID,
+	GET_RECEIVABLEBILL_BY_INVOICE_NO,
 	UPDATE_RECEIVABLEBILL
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -21,7 +21,10 @@ const ReceivableBillApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getReceivableBills: build.query({
-				query: ({ page, size, searchKey }) => ({ url: GET_RECEIVABLEBILLS, params: { page, size, searchKey } }),
+				query: ({ page, size, searchKey }) => ({
+					url: GET_RECEIVABLEBILLS,
+					params: { page, size, searchKey }
+				}),
 				providesTags: ['receivableBills']
 			}),
 			deleteReceivableBills: build.mutation({
@@ -34,7 +37,7 @@ const ReceivableBillApi = api
 			}),
 			getReceivableBill: build.query({
 				query: (receivableBillId) => ({
-					url: `${GET_RECEIVABLEBILL_BY_ID}${receivableBillId}`
+					url: `${GET_RECEIVABLEBILL_BY_INVOICE_NO}${receivableBillId}`
 				}),
 				providesTags: ['receivableBills']
 			}),

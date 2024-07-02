@@ -41,6 +41,7 @@ function ReceivableBillHeader() {
 	}
 
 	function handleCreateReceivableBill() {
+		console.log(`nsdflksf`, getValues());
 		createReceivableBill(getValues())
 			.unwrap()
 			.then((data) => {

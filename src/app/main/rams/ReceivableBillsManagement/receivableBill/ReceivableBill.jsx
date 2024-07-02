@@ -26,13 +26,13 @@ const schema = z.object({
 function ReceivableBill() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { receivableBillId } = routeParams;
+	const { receivableBillId, invoice_no } = routeParams;
 
 	const {
 		data: receivableBill,
 		isLoading,
 		isError
-	} = useGetReceivableBillQuery(receivableBillId, {
+	} = useGetReceivableBillQuery(invoice_no, {
 		skip: !receivableBillId || receivableBillId === 'new'
 	});
 	console.log('receivableBillId', receivableBill, receivableBillId);
@@ -53,7 +53,7 @@ function ReceivableBill() {
 
 	useEffect(() => {
 		if (receivableBill) {
-			reset({ ...receivableBill });
+			reset(receivableBill);
 		}
 	}, [receivableBill, reset, receivableBill?.id]);
 

@@ -78,13 +78,13 @@ function ReceivableBillsTable(props) {
 	function handleUpdateReceivableBill(item, event) {
 		localStorage.removeItem('deleteReceivableBill');
 		localStorage.setItem('updateReceivableBill', event);
-		navigate(`/apps/receivableBill/receivableBills/${item.id}/${item.handle}`);
+		navigate(`/apps/receivableBill/receivableBills/${item.id}/${item.invoice_no}`);
 	}
 
 	function handleDeleteReceivableBill(item, event) {
 		localStorage.removeItem('updateReceivableBill');
 		localStorage.setItem('deleteReceivableBill', event);
-		navigate(`/apps/receivableBill/receivableBills/${item.id}/${item.handle}`);
+		navigate(`/apps/receivableBill/receivableBills/${item.id}/${item.invoice_no}`);
 	}
 
 	function handleCheck(event, id) {

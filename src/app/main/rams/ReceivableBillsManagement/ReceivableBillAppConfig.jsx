@@ -24,7 +24,7 @@ const ReceivableBillAppConfig = {
 					element: <ReceivableBills />
 				},
 				{
-					path: 'receivableBills/:receivableBillId/*',
+					path: 'receivableBills/:receivableBillId/:invoice_no?',
 					element: <ReceivableBill />
 				}
 			]

@@ -25,9 +25,15 @@ const useStyles = makeStyles((theme) => ({
 function ReceivableBillForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue } = methods;
+	const { control, formState, watch, setValue, getValues } = methods;
+
+	console.log('getValues', getValues());
+
 	const { errors } = formState;
 	const routeParams = useParams();
+
+	console.log('routeParams', routeParams);
+
 	const { receivableBillId } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const branchs = useSelector((state) => state.data.branches);
@@ -76,10 +82,18 @@ function ReceivableBillForm(props) {
 	}, []);
 
 	useEffect(() => {
+		if (receivableBillId !== 'new') {
+			if (getValues()?.passenger_list?.length > 1) {
+				setMltPassengerList(watch('passenger_list'));
+			}
+		}
+	}, [receivableBillId, getValues()?.passenger_list]);
+
+	useEffect(() => {
 		setValue('passenger_list', mltPassengerList);
 		setValue(
 			'debit_amount',
-			mltPassengerList.reduce((sum, item) => sum + parseFloat(item.amount), 0)
+			mltPassengerList?.reduce((sum, item) => sum + parseFloat(item.amount), 0)
 		);
 	}, [mltPassengerList]);
 
@@ -418,7 +432,7 @@ function ReceivableBillForm(props) {
 			<div className="text-center">
 				<div>
 					<FileUpload
-						name="image"
+						name="file"
 						label="File"
 						control={control}
 						setValue={setValue}
