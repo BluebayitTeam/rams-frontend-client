@@ -253,23 +253,6 @@ function MultipleVisaEntryForm(props) {
 							shape="rounded"
 							onChange={handlePagination}
 						/>
-
-						{/* <TablePagination
-							className="shrink-0 border-t-1"
-							component="div"
-							rowsPerPageOptions={rowsPerPageOptions}
-							// count={totalData?.total_pages}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							backIconButtonProps={{
-								'aria-label': 'Previous Page'
-							}}
-							nextIconButtonProps={{
-								'aria-label': 'Next Page'
-							}}
-							onPageChange={handleChangePage}
-							onRowsPerPageChange={handleChangeRowsPerPage}
-						/> */}
 					</div>
 				</div>
 			)}
