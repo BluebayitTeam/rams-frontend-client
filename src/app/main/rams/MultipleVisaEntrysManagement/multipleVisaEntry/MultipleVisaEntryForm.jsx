@@ -33,7 +33,7 @@ function MultipleVisaEntryForm(props) {
 	}, [mltPassengerList]);
 
 	const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
-	console.log('selectedPassengerIds', selectedPassengerIds);
+
 	const handleCheckboxChange = (event, passengerId) => {
 		if (event.target.checked) {
 			// Add the passenger ID to the state
