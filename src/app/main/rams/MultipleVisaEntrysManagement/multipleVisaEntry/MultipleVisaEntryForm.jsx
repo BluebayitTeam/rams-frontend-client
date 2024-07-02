@@ -162,23 +162,20 @@ function MultipleVisaEntryForm(props) {
 			/>
 
 			{watch('selection_or_checkbox') === 'checkbox' && (
-				<div className="flex md:space-x-12 flex-col md:flex-row">
+				<div className="flex flex-col md:space-y-12">
 					<Paper
 						component={motion.div}
 						initial={{ y: -20, opacity: 0 }}
 						animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-						className="flex items-center w-full sm:max-w-556 mx-24  space-x-8 px-16 rounded-full border-1 shadow-0"
+						className="flex items-center w-full sm:max-w-400 mb-24 mt-24 mx-24 space-x-8 px-16  border-1 shadow-0"
 					>
 						<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
-
 						<Input
-							placeholder="Search By Name or Username or Email or Phone"
+							placeholder="Search By Passport Number"
 							className="flex flex-1"
 							disableUnderline
 							fullWidth
-							inputProps={{
-								'aria-label': 'Search'
-							}}
+							inputProps={{ 'aria-label': 'Search' }}
 							onKeyDown={(ev) => {
 								if (ev.key === 'Enter') {
 									props?.setSearchKey(ev?.target?.value);
@@ -197,7 +194,7 @@ function MultipleVisaEntryForm(props) {
 								freeSolo
 								value={value ? agents.find((data) => data.id === value) : null}
 								options={agents}
-								getOptionLabel={(option) => `${option.first_name}  -${option.agent_code}`}
+								getOptionLabel={(option) => `${option.first_name} - ${option.agent_code}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 									handleFilterPassenger(newValue?.id);
@@ -210,9 +207,7 @@ function MultipleVisaEntryForm(props) {
 										helperText={errors?.agent?.message}
 										variant="outlined"
 										autoFocus
-										InputLabelProps={{
-											shrink: true
-										}}
+										InputLabelProps={{ shrink: true }}
 									/>
 								)}
 							/>
