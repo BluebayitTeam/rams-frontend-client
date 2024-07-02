@@ -4,6 +4,10 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgents, getPassengers, getVisaEntrys } from 'app/store/dataSlice';
 import { GET_PASSENGER_BY_AGENTID } from 'src/app/constant/constants';
+import Paper from '@mui/material/Paper';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import Input from '@mui/material/Input';
+import { motion } from 'framer-motion';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleVisaEntryForm(props) {
@@ -159,6 +163,31 @@ function MultipleVisaEntryForm(props) {
 
 			{watch('selection_or_checkbox') === 'checkbox' && (
 				<div className="flex md:space-x-12 flex-col md:flex-row">
+					<Paper
+						component={motion.div}
+						initial={{ y: -20, opacity: 0 }}
+						animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+						className="flex items-center w-full sm:max-w-556 mx-24  space-x-8 px-16 rounded-full border-1 shadow-0"
+					>
+						<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
+
+						<Input
+							placeholder="Search By Name or Username or Email or Phone"
+							className="flex flex-1"
+							disableUnderline
+							fullWidth
+							inputProps={{
+								'aria-label': 'Search'
+							}}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									props?.setSearchKey(ev?.target?.value);
+								} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
+									props?.setSearchKey('');
+								}
+							}}
+						/>
+					</Paper>
 					<Controller
 						name="agent"
 						control={control}

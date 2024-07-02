@@ -19,7 +19,7 @@ function MultipleVisaEntryHeader({ handleReset }) {
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
+
 	const handleDelete = localStorage.getItem('deleteMultipleVisaEntry');
 	const handleUpdate = localStorage.getItem('updateMultipleVisaEntry');
 
