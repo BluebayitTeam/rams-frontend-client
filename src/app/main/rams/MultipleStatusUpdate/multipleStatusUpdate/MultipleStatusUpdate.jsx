@@ -4,22 +4,24 @@ import { useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import MultipleVisaEntryHeader from './MultipleVisaEntryHeader';
-import MultipleVisaEntryModel from './models/MultipleVisaEntryModel';
-import MultipleVisaEntryForm from './MultipleVisaEntryForm';
+import MultipleStatusUpdateHeader from './MultipleStatusUpdateHeader';
+import MultipleStatusUpdateModel from './models/MultipleStatusUpdateModel';
+import MultipleStatusUpdateForm from './MultipleStatusUpdateForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	visa_entry: z.union([z.number(), z.null(), z.undefined()]).refine((val) => val !== null && val !== undefined, {
-		message: 'visa entry is required'
-	})
+	first_name: z
+		.string()
+		.nonempty('You must enter a multipleStatusUpdate name')
+		.min(5, 'The multipleStatusUpdate name must be at least 5 characters')
 });
 
-function MultipleVisaEntry() {
+function MultipleStatusUpdate() {
 	const routeParams = useParams();
-	const { multipleVisaEntryId } = routeParams;
+	const { multipleStatusUpdateId } = routeParams;
 
+	const [tabValue, setTabValue] = useState(0);
 	const [formKey, setFormKey] = useState(0);
 
 	const methods = useForm({
@@ -27,12 +29,13 @@ function MultipleVisaEntry() {
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
-	const { reset } = methods;
+	const { reset, watch } = methods;
+	const form = watch();
 	useEffect(() => {
-		if (multipleVisaEntryId === 'new') {
-			reset(MultipleVisaEntryModel({}));
+		if (multipleStatusUpdateId === 'new') {
+			reset(MultipleStatusUpdateModel({}));
 		}
-	}, [multipleVisaEntryId, reset]);
+	}, [multipleStatusUpdateId, reset]);
 	const handleReset = () => {
 		reset({});
 		setFormKey((prevKey) => prevKey + 1);
@@ -47,10 +50,10 @@ function MultipleVisaEntry() {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<MultipleVisaEntryHeader handleReset={handleReset} />}
+				header={<MultipleStatusUpdateHeader handleReset={handleReset} />}
 				content={
 					<div className="p-16 ">
-						<MultipleVisaEntryForm multipleVisaEntryId={multipleVisaEntryId} />
+						<MultipleStatusUpdateForm multipleStatusUpdateId={multipleStatusUpdateId} />
 					</div>
 				}
 				innerScroll
@@ -59,4 +62,4 @@ function MultipleVisaEntry() {
 	);
 }
 
-export default MultipleVisaEntry;
+export default MultipleStatusUpdate;
