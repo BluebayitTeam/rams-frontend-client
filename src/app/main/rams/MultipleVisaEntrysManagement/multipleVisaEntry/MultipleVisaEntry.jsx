@@ -19,6 +19,7 @@ const schema = z.object({
 function MultipleVisaEntry() {
 	const routeParams = useParams();
 	const { multipleVisaEntryId } = routeParams;
+	const [save, setSave] = useState(false);
 
 	const [formKey, setFormKey] = useState(0);
 
@@ -47,10 +48,20 @@ function MultipleVisaEntry() {
 					toolbar: 'p-0',
 					header: 'min-h-80 h-80'
 				}}
-				header={<MultipleVisaEntryHeader handleReset={handleReset} />}
+				header={
+					<MultipleVisaEntryHeader
+						handleReset={handleReset}
+						save={save}
+						setSave={setSave}
+					/>
+				}
 				content={
 					<div className="p-16 ">
-						<MultipleVisaEntryForm multipleVisaEntryId={multipleVisaEntryId} />
+						<MultipleVisaEntryForm
+							save={save}
+							setSave={setSave}
+							multipleVisaEntryId={multipleVisaEntryId}
+						/>
 					</div>
 				}
 				innerScroll

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -13,10 +14,10 @@ import { useCreateMultipleVisaEntryMutation } from '../MultipleVisaEntrysApi';
 function MultipleVisaEntryHeader({ handleReset }) {
 	const routeParams = useParams();
 	const { MultipleVisaEntryId } = routeParams;
+	const [isVisaEntrySelected, setIsVisaEntrySelected] = useState(false);
 	const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
+	const { getValues } = methods;
 	const theme = useTheme();
 	const navigate = useNavigate();
 
@@ -60,9 +61,18 @@ function MultipleVisaEntryHeader({ handleReset }) {
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
 				<Button
-					className="whitespace-nowrap mx-4 "
+					className="whitespace-nowrap mx-4"
 					variant="contained"
 					color="secondary"
+					disabled={!isVisaEntrySelected}
+					style={{
+						backgroundColor: !isVisaEntrySelected
+							? theme.palette.action.disabledBackground
+							: theme.palette.secondary.main,
+						color: !isVisaEntrySelected
+							? theme.palette.action.disabled
+							: theme.palette.secondary.contrastText
+					}}
 					onClick={handleCreateMultipleVisaEntry}
 				>
 					Save

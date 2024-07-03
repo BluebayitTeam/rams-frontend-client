@@ -7,6 +7,7 @@ import {
 	Pagination,
 	Radio,
 	RadioGroup,
+	TablePagination,
 	TextField
 } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -17,76 +18,57 @@ import Paper from '@mui/material/Paper';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Input from '@mui/material/Input';
 import { motion } from 'framer-motion';
+
+import { rowsPerPageOptions } from 'src/app/@data/data';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleVisaEntryForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, setValue, watch } = methods;
+	const { data, control, formState, setValue, watch } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const visaEntries = useSelector((state) => state.data.visaEntries);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [filterPassengers, setFilterPassengers] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useState(0);
 	const [selectedPassenger, setselectedPassenger] = useState(null);
 	const [searchKey, setSearchKey] = useState('');
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 2 });
-	const [rowsPerPage, setRowsPerPage] = useState(50);
 
-	console.log('pageAndSize', pageAndSize);
+	const [rowsPerPage, setRowsPerPage] = useState(2);
+	const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
+	const [totalData, setTotalData] = useState({ total_pages: 0, total_elements: 0 });
 
+	// Fetch initial data
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getVisaEntrys());
 		dispatch(getAgents());
-	}, []);
+	}, [dispatch]);
 
-	// data send
 	useEffect(() => {
 		setValue(
 			'passengers',
 			mltPassengerList?.map((data) => data.id)
 		);
-	}, [mltPassengerList]);
-
-	const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
+	}, [mltPassengerList, setValue]);
 
 	const handleCheckboxChange = (event, passengerId) => {
 		if (event.target.checked) {
-			// Add the passenger ID to the state
 			setSelectedPassengerIds([...selectedPassengerIds, passengerId]);
 		} else {
-			// Remove the passenger ID from the state
 			setSelectedPassengerIds(selectedPassengerIds.filter((id) => id !== passengerId));
 		}
 	};
+
 	useEffect(() => {
 		setValue('passengers', selectedPassengerIds);
-	}, [selectedPassengerIds]);
-
-	// useEffect(() => {
-	//   const authTOKEN = {
-	//     headers: {
-	//       'Content-type': 'application/json',
-	//       Authorization: localStorage.getItem('jwt_access_token'),
-	//     },
-	//   };
-	//   fetch(
-	//     `${GET_PASSENGER_BY_PASSENGERID}?searchKey=${searchKey}&page=${1}&size=${2}`,
-	//     authTOKEN
-	//   )
-	//     .then((response) => response.json())
-	//     .then((data) => setFilterPassengers(data?.passengers))
-	//     .catch(() => {});
-	// }, []);
+	}, [selectedPassengerIds, setValue]);
 
 	const handlePassengerSelect = (newPassenger) => {
-		if (newPassenger) {
-			if (!mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
-				setMltPassengerList([...mltPassengerList, newPassenger]);
-			}
+		if (newPassenger && !mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
+			setMltPassengerList([...mltPassengerList, newPassenger]);
 		}
 	};
 
@@ -95,42 +77,42 @@ function MultipleVisaEntryForm(props) {
 			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
 			setMltPassengerDeletedId(null);
 		}
-	}, [mltPassengerDeletedId]);
-
-	useEffect(() => {
-		if (mltPassengerDeletedId) {
-			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
-			setMltPassengerDeletedId(null);
-		}
-	}, [mltPassengerDeletedId]);
+	}, [mltPassengerDeletedId, mltPassengerList]);
 
 	useEffect(() => {
 		if (watch('selection_or_checkbox') === 'checkbox') {
-			handleFilterPassenger(pageAndSize);
+			handleFilterPassenger(page, rowsPerPage);
 		}
-	}, [watch('selection_or_checkbox'), searchKey, pageAndSize]);
+	}, [watch('selection_or_checkbox'), searchKey, page, rowsPerPage]);
 
-	const handleFilterPassenger = (parameter) => {
+	const handleFilterPassenger = (page, size) => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		fetch(
-			`${GET_PASSENGER_BY_PASSENGERID}?searchKey=${searchKey}&page=${parameter?.page}&size=${parameter?.size}`,
-			authTOKEN
-		)
+		fetch(`${GET_PASSENGER_BY_PASSENGERID}?searchKey=${searchKey}&page=${page}&size=${size}`, authTOKEN)
 			.then((response) => response.json())
-			.then((data) => setFilterPassengers(data?.passengers))
+			.then((data) => {
+				setFilterPassengers(data?.passengers);
+				setTotalData({ total_pages: data.total_pages, total_elements: data.total_elements });
+			})
 			.catch(() => {});
 	};
-	// pagination
-	const handlePagination = (e, handlePage) => {
-		console.log('handelPage', handlePage);
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
+
+	const handlePagination = (event, newPage) => {
+		setPage(newPage - 1);
 	};
+
+	function handleChangePage(event, newPage) {
+		setPage(newPage);
+	}
+
+	function handleChangeRowsPerPage(event) {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
+	}
 
 	return (
 		<div>
@@ -140,12 +122,12 @@ function MultipleVisaEntryForm(props) {
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<Autocomplete
-							className="mt-8 mb-16 w-full "
+							className="mt-8 mb-16 w-full"
 							freeSolo
 							value={value ? visaEntries.find((data) => data.id === value) : null}
 							options={visaEntries}
 							getOptionLabel={(option) =>
-								`${option?.visa_number || 'N/A'} - ${option?.profession_english || 'N/A'} -${option?.quantity || 'N/A'}`
+								`${option?.visa_number || 'N/A'} - ${option?.profession_english || 'N/A'} - ${option?.quantity || 'N/A'}`
 							}
 							onChange={(event, newValue) => {
 								onChange(newValue?.id);
@@ -170,16 +152,13 @@ function MultipleVisaEntryForm(props) {
 				name="selection_or_checkbox"
 				control={control}
 				className="my-10"
-				// defaultValue="" // Set the default value here
 				render={({ field }) => (
 					<RadioGroup
-						value={field.value} // Set the value directly
-						style={{
-							flexDirection: 'row'
-						}}
+						value={field.value}
+						style={{ flexDirection: 'row' }}
 						id="selection_or_checkbox"
 						onChange={(e) => {
-							field.onChange(e.target.value); // Update the value in the field
+							field.onChange(e.target.value);
 							setMltPassengerList([]);
 							setFilterPassengers([]);
 							setValue('passenger', '');
@@ -188,10 +167,7 @@ function MultipleVisaEntryForm(props) {
 					>
 						<FormLabel
 							disabled
-							style={{
-								marginRight: '1rem',
-								marginTop: '1.5rem'
-							}}
+							style={{ marginRight: '1rem', marginTop: '1.5rem' }}
 						>
 							Select an option
 						</FormLabel>
@@ -202,10 +178,6 @@ function MultipleVisaEntryForm(props) {
 						/>
 						<FormControlLabel
 							value="checkbox"
-							onChange={(event, newValue) => {
-								// onChange(newValue?.id);
-								setselectedPassenger(newValue); // Set selected agent
-							}}
 							control={<Radio />}
 							label="CheckBox"
 						/>
@@ -215,31 +187,31 @@ function MultipleVisaEntryForm(props) {
 
 			{watch('selection_or_checkbox') === 'checkbox' && (
 				<div className="flex flex-col md:space-y-12">
-					{selectedPassenger && (
-						<Paper
-							component={motion.div}
-							initial={{ y: -20, opacity: 0 }}
-							animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-							className="flex items-center w-full sm:max-w-400 mb-24 mt-24 mx-24 space-x-8 px-16 border-1 shadow-0"
-						>
-							<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
+					<Paper
+						component={motion.div}
+						initial={{ y: -20, opacity: 0 }}
+						animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+						className="flex items-center w-full sm:max-w-400 mb-24 mt-24 mx-24 space-x-8 px-16 border-1 shadow-0"
+					>
+						<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
-							<Input
-								placeholder="Search By Passport Number"
-								className="flex flex-1"
-								disableUnderline
-								fullWidth
-								inputProps={{ 'aria-label': 'Search' }}
-								onKeyDown={(ev) => {
-									if (ev.key === 'Enter') {
-										setSearchKey(ev?.target?.value);
-									} else if (ev.key === 'Backspace' && ev?.target?.value?.length === 1) {
-										setSearchKey('');
-									}
-								}}
-							/>
-						</Paper>
-					)}
+						<Input
+							placeholder="Search By Passport Number"
+							className="flex flex-1"
+							disableUnderline
+							fullWidth
+							inputProps={{ 'aria-label': 'Search' }}
+							onKeyDown={(ev) => {
+								if (ev.key === 'Enter') {
+									setSearchKey(ev.target.value);
+									setPage(0); // Reset to the first page on search
+								} else if (ev.key === 'Backspace' && ev.target.value.length === 1) {
+									setSearchKey('');
+									setPage(0); // Reset to the first page on clear search
+								}
+							}}
+						/>
+					</Paper>
 				</div>
 			)}
 
@@ -249,20 +221,22 @@ function MultipleVisaEntryForm(props) {
 						<FormControlLabel
 							key={passenger.id}
 							name={passenger.id}
-							style={{ width: '45%', marginTop: '24px' }}
+							style={{ width: '45%', marginTop: '24px', marginBottom: '24px' }}
 							control={
 								<Checkbox
 									checked={selectedPassengerIds.includes(passenger.id)}
 									onChange={(e) => handleCheckboxChange(e, passenger.id)}
 								/>
 							}
-							label={`${passenger.passenger_name} ${passenger.passenger_id}   ${passenger.passport_no}  ${passenger.post_office}`}
+							label={`${passenger.passenger_name} ${passenger.passenger_id} ${passenger.passport_no} ${passenger.post_office}`}
 						/>
 					))}
-					<div id="pagiContainer">
+					<div
+						id="pagiContainer"
+						className="flex justify-between mb-6"
+					>
 						<Pagination
-							// classes={{ ul: 'flex-nowrap' }}
-							// count={totalData?.total_pages}
+							count={totalData.total_pages}
 							page={page + 1}
 							defaultPage={1}
 							color="primary"
@@ -272,9 +246,27 @@ function MultipleVisaEntryForm(props) {
 							shape="rounded"
 							onChange={handlePagination}
 						/>
+
+						<TablePagination
+							className="shrink-0 mb-2"
+							component="div"
+							rowsPerPageOptions={rowsPerPageOptions}
+							count={totalData.total_elements}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							backIconButtonProps={{
+								'aria-label': 'Previous Page'
+							}}
+							nextIconButtonProps={{
+								'aria-label': 'Next Page'
+							}}
+							onPageChange={handleChangePage}
+							onRowsPerPageChange={handleChangeRowsPerPage}
+						/>
 					</div>
 				</div>
 			)}
+
 			{watch('selection_or_checkbox') === 'selection' && (
 				<div>
 					<Controller
@@ -299,9 +291,7 @@ function MultipleVisaEntryForm(props) {
 										error={!value}
 										helperText={errors?.agency?.message}
 										variant="outlined"
-										InputLabelProps={{
-											shrink: true
-										}}
+										InputLabelProps={{ shrink: true }}
 									/>
 								)}
 							/>
