@@ -144,7 +144,9 @@ function MultipleVisaEntryForm(props) {
 							freeSolo
 							value={value ? visaEntries.find((data) => data.id === value) : null}
 							options={visaEntries}
-							getOptionLabel={(option) => `${option.visa_number} `}
+							getOptionLabel={(option) =>
+								`${option?.visa_number || 'N/A'} - ${option?.profession_english || 'N/A'} -${option?.quantity || 'N/A'}`
+							}
 							onChange={(event, newValue) => {
 								onChange(newValue?.id);
 							}}
