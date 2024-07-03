@@ -31,21 +31,18 @@ const useStyles = makeStyles((theme) => ({
 function AgentForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues } = methods;
+	const { control, formState, watch, setValue, getValues } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
 	const { agentId } = routeParams;
 	const classes = useStyles(props);
 	const thanas = useSelector((state) => state.data.thanas);
 
-	console.log('thanas', thanas);
-
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const groups = useSelector((state) => state.data.groups);
 	const getCountryCode1 = watch('country_code1');
-	// const getCountryCode2 = watch('country_code2');
-	const image = watch('image');
+
 	const [file, setFile] = useState(null);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -55,9 +52,8 @@ function AgentForm(props) {
 		dispatch(getCities());
 		dispatch(getCountries());
 		dispatch(getGroups());
-		// dispatch(getThanasBasedOnCity());
 	}, []);
-	// useEffect(() => {}, [watch('date_of_birth')]);
+
 	useEffect(() => {
 		const currentImage = getValues('image');
 
@@ -167,9 +163,7 @@ function AgentForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							// error={!!errors.username}
 							helperText={errors?.username?.message}
-							// helperText={<span style={{ color: 'red' }}>{errors?.username?.message}</span>}
 							label="User Name"
 							id="username"
 							variant="outlined"
@@ -271,7 +265,7 @@ function AgentForm(props) {
 			<Controller
 				name="gender"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
@@ -313,8 +307,6 @@ function AgentForm(props) {
 							error={!value}
 							getOptionLabel={(option) => option.label}
 							renderOption={(prop, option) => {
-								console.log('pasasrop', option);
-
 								return (
 									<Box
 										component="li"
@@ -345,7 +337,7 @@ function AgentForm(props) {
 									style={{ width: '250px' }}
 									inputProps={{
 										...params.inputProps,
-										autoComplete: 'new-password' // disable autocomplete and autofill
+										autoComplete: 'new-password'
 									}}
 								/>
 							)}
@@ -506,7 +498,7 @@ function AgentForm(props) {
 			<Controller
 				name="city"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
@@ -527,7 +519,6 @@ function AgentForm(props) {
 								InputLabelProps={{
 									shrink: true
 								}}
-								//
 							/>
 						)}
 					/>
@@ -537,7 +528,7 @@ function AgentForm(props) {
 			<Controller
 				name="thana"
 				control={control}
-				render={({ field: { onChange, value, name } }) => (
+				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
@@ -557,7 +548,6 @@ function AgentForm(props) {
 								InputLabelProps={{
 									shrink: true
 								}}
-								//
 							/>
 						)}
 					/>

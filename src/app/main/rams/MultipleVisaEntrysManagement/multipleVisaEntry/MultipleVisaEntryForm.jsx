@@ -25,7 +25,7 @@ import MultiplePassengersTable from './MultiplePassengersTable';
 function MultipleVisaEntryForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { data, control, formState, setValue, watch } = methods;
+	const { control, formState, setValue, watch } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const visaEntries = useSelector((state) => state.data.visaEntries);
@@ -33,7 +33,7 @@ function MultipleVisaEntryForm(props) {
 	const [filterPassengers, setFilterPassengers] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [page, setPage] = useState(0);
-	const [selectedPassenger, setselectedPassenger] = useState(null);
+
 	const [searchKey, setSearchKey] = useState('');
 
 	const [rowsPerPage, setRowsPerPage] = useState(25);
@@ -204,10 +204,10 @@ function MultipleVisaEntryForm(props) {
 							onKeyDown={(ev) => {
 								if (ev.key === 'Enter') {
 									setSearchKey(ev.target.value);
-									setPage(0); // Reset to the first page on search
+									setPage(0);
 								} else if (ev.key === 'Backspace' && ev.target.value.length === 1) {
 									setSearchKey('');
-									setPage(0); // Reset to the first page on clear search
+									setPage(0);
 								}
 							}}
 						/>
