@@ -66,6 +66,22 @@ function MultipleVisaEntryForm(props) {
 		setValue('passengers', selectedPassengerIds);
 	}, [selectedPassengerIds]);
 
+	// useEffect(() => {
+	//   const authTOKEN = {
+	//     headers: {
+	//       'Content-type': 'application/json',
+	//       Authorization: localStorage.getItem('jwt_access_token'),
+	//     },
+	//   };
+	//   fetch(
+	//     `${GET_PASSENGER_BY_PASSENGERID}?searchKey=${searchKey}&page=${1}&size=${2}`,
+	//     authTOKEN
+	//   )
+	//     .then((response) => response.json())
+	//     .then((data) => setFilterPassengers(data?.passengers))
+	//     .catch(() => {});
+	// }, []);
+
 	const handlePassengerSelect = (newPassenger) => {
 		if (newPassenger) {
 			if (!mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
@@ -111,6 +127,7 @@ function MultipleVisaEntryForm(props) {
 	};
 	// pagination
 	const handlePagination = (e, handlePage) => {
+		console.log('handelPage', handlePage);
 		setPageAndSize({ ...pageAndSize, page: handlePage });
 		setPage(handlePage - 1);
 	};
@@ -244,7 +261,7 @@ function MultipleVisaEntryForm(props) {
 						<Pagination
 							// classes={{ ul: 'flex-nowrap' }}
 							// count={totalData?.total_pages}
-							page={page}
+							page={page + 1}
 							defaultPage={1}
 							color="primary"
 							showFirstButton
