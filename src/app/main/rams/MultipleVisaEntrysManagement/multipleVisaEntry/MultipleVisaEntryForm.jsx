@@ -36,7 +36,7 @@ function MultipleVisaEntryForm(props) {
 	const [selectedPassenger, setselectedPassenger] = useState(null);
 	const [searchKey, setSearchKey] = useState('');
 
-	const [rowsPerPage, setRowsPerPage] = useState(2);
+	const [rowsPerPage, setRowsPerPage] = useState(25);
 	const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
 	const [totalData, setTotalData] = useState({ total_pages: 0, total_elements: 0 });
 

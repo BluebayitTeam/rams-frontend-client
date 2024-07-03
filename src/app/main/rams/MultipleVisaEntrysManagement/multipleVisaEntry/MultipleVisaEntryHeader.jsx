@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -11,27 +10,31 @@ import { useCreateMultipleVisaEntryMutation } from '../MultipleVisaEntrysApi';
 /**
  * The MultipleVisaEntry header.
  */
-function MultipleVisaEntryHeader({ handleReset }) {
+function MultipleVisaEntryHeader({ handleReset, save, setSave }) {
 	const routeParams = useParams();
 	const { MultipleVisaEntryId } = routeParams;
-	const [isVisaEntrySelected, setIsVisaEntrySelected] = useState(false);
 	const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
 	const methods = useFormContext();
-	const { getValues } = methods;
+	const { formState, watch, getValues, reset } = methods;
+	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 
 	const handleDelete = localStorage.getItem('deleteMultipleVisaEntry');
 	const handleUpdate = localStorage.getItem('updateMultipleVisaEntry');
 
+	const visaEntry = watch('visa_entry');
+
 	function handleCreateMultipleVisaEntry() {
-		createMultipleVisaEntry(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
-				handleReset();
-				navigate(`/apps/multipleVisaEntry-management/multipleVisaEntrys/new`);
-			});
+		if (visaEntry) {
+			createMultipleVisaEntry(getValues())
+				.unwrap()
+				.then((data) => {
+					AddedSuccessfully();
+					handleReset();
+					navigate(`/apps/multipleVisaEntry-management/multipleVisaEntrys/new`);
+				});
+		}
 	}
 
 	function handleCancel() {
@@ -63,17 +66,9 @@ function MultipleVisaEntryHeader({ handleReset }) {
 				<Button
 					className="whitespace-nowrap mx-4"
 					variant="contained"
-					color="secondary"
-					disabled={!isVisaEntrySelected}
-					style={{
-						backgroundColor: !isVisaEntrySelected
-							? theme.palette.action.disabledBackground
-							: theme.palette.secondary.main,
-						color: !isVisaEntrySelected
-							? theme.palette.action.disabled
-							: theme.palette.secondary.contrastText
-					}}
+					color={visaEntry ? 'secondary' : 'primary'}
 					onClick={handleCreateMultipleVisaEntry}
+					disabled={!visaEntry}
 				>
 					Save
 				</Button>

@@ -11,9 +11,13 @@ import MultipleVisaEntryForm from './MultipleVisaEntryForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	visa_entry: z.union([z.number(), z.null(), z.undefined()]).refine((val) => val !== null && val !== undefined, {
-		message: 'visa entry is required'
-	})
+	visa_entry: z
+		.union([z.number(), z.null(), z.undefined()])
+		.refine((val, data) => !data.is_form_save || (val !== null && val !== undefined), {
+			path: ['visa_entry'],
+			message: 'visa entry is required when form is to be saved'
+		}),
+	is_form_save: z.boolean()
 });
 
 function MultipleVisaEntry() {
