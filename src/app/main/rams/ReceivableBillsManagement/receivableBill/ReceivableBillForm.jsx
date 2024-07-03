@@ -26,14 +26,8 @@ function ReceivableBillForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, getValues } = methods;
-
-	console.log('getValues', getValues());
-
 	const { errors } = formState;
 	const routeParams = useParams();
-
-	console.log('routeParams', routeParams);
-
 	const { receivableBillId } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const branchs = useSelector((state) => state.data.branches);
@@ -41,12 +35,8 @@ function ReceivableBillForm(props) {
 	const currencies = useSelector((state) => state.data.currencies);
 	const ledgers = useSelector((state) => state.data.ledgers);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
-
-	console.log('mltPassengerList', mltPassengerList);
-
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const classes = useStyles(props);
-
 	const image = watch('file');
 	const [file, setFile] = useState(null);
 	useEffect(() => {
@@ -61,11 +51,10 @@ function ReceivableBillForm(props) {
 			setMltPassengerList((prevList) =>
 				prevList
 					.filter((item) => item.id !== mltPassengerDeletedId)
-					.map(({ passenger_id, passenger_name, passport_no, id }) => ({
+					.map(({ passenger_id, passenger_name, passport_no }) => ({
 						passenger_id,
 						passenger_name,
-						passport_no,
-						pid
+						passport_no
 					}))
 			);
 
@@ -106,7 +95,7 @@ function ReceivableBillForm(props) {
 				passenger_id: passengers.find((data) => data?.id === id)?.passenger_id,
 				passenger_name: passengers.find((data) => data?.id === id)?.passenger_name,
 				passport_no: passengers.find((data) => data?.id === id)?.passport_no,
-				pid: passengers.find((data) => data?.id === id)?.id
+				id: passengers.find((data) => data?.id === id)?.id
 			}
 		]);
 	}

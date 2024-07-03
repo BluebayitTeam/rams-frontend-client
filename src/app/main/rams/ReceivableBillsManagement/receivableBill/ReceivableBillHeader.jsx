@@ -20,7 +20,7 @@ import {
  */
 function ReceivableBillHeader() {
 	const routeParams = useParams();
-	const { receivableBillId } = routeParams;
+	const { receivableBillId, invoice_no } = routeParams;
 	const [createReceivableBill] = useCreateReceivableBillMutation();
 	const [saveReceivableBill] = useUpdateReceivableBillMutation();
 	const [removeReceivableBill] = useDeleteReceivableBillMutation();
@@ -52,7 +52,7 @@ function ReceivableBillHeader() {
 	}
 
 	function handleRemoveReceivableBill(dispatch) {
-		removeReceivableBill(receivableBillId);
+		removeReceivableBill(invoice_no);
 		DeletedSuccessfully();
 		navigate('/apps/receivableBill/receivableBills');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));

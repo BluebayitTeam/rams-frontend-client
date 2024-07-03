@@ -51,15 +51,15 @@ const ReceivableBillApi = api
 			}),
 			updateReceivableBill: build.mutation({
 				query: (receivableBill) => ({
-					url: `${UPDATE_RECEIVABLEBILL}${receivableBill.id}`,
+					url: `${UPDATE_RECEIVABLEBILL}`,
 					method: 'PUT',
 					data: jsonToFormData(receivableBill)
 				}),
 				invalidatesTags: ['receivableBills']
 			}),
 			deleteReceivableBill: build.mutation({
-				query: (receivableBillId) => ({
-					url: `${DELETE_RECEIVABLEBILL}${receivableBillId}`,
+				query: (invoice_no) => ({
+					url: `${DELETE_RECEIVABLEBILL}${invoice_no}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['receivableBills']
