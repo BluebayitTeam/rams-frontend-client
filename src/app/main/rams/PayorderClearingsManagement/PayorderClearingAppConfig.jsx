@@ -1,19 +1,19 @@
 import { Navigate } from 'react-router-dom';
-import PostDateClearingApp from './PayorderClearingApp';
-import PostDateClearings from './payorderClearings/PayorderClearings';
-import PostDateClearing from './payorderClearing/PayorderClearing';
+import PayorderClearingApp from './PayorderClearingApp';
+import PayorderClearings from './payorderClearings/PayorderClearings';
+import PayorderClearing from './payorderClearing/PayorderClearing';
 
 /**
  * The E-Commerce app configuration.
  */
-const PostDateClearingAppConfig = {
+const PayorderClearingAppConfig = {
 	settings: {
 		layout: {}
 	},
 	routes: [
 		{
 			path: 'apps/payorderClearing',
-			element: <PostDateClearingApp />,
+			element: <PayorderClearingApp />,
 			children: [
 				{
 					path: '',
@@ -21,14 +21,14 @@ const PostDateClearingAppConfig = {
 				},
 				{
 					path: 'payorderClearings',
-					element: <PostDateClearings />
+					element: <PayorderClearings />
 				},
 				{
 					path: 'payorderClearings/:payorderClearingId/*',
-					element: <PostDateClearing />
+					element: <PayorderClearing />
 				}
 			]
 		}
 	]
 };
-export default PostDateClearingAppConfig;
+export default PayorderClearingAppConfig;

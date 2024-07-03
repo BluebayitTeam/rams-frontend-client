@@ -60,6 +60,8 @@ import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
 import JournalIDAppConfig from '../rams/JournalIDsManagement/JournalIDAppConfig';
 import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateChequeAppConfig';
 import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
+import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
+import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 
 /**
  * The list of application configurations.
@@ -126,7 +128,8 @@ const appsConfigs = [
 	JournalAppConfig,
 	JournalIDAppConfig,
 	PostDateChequeAppConfig,
-
-	ReceivableBillAppConfig
+	PayorderClearingAppConfig,
+	ReceivableBillAppConfig,
+	PayableBillAppConfig
 ];
 export default appsConfigs;

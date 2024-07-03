@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -5,14 +6,15 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useEffect } from 'react';
+import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The postDateCheques header.
+ * The payableBills header.
  */
-function PostDateChequesHeader(props) {
+function PayableBillsHeader(props) {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ function PostDateChequesHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Post Date Cheque</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">PayableBills</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -41,7 +43,7 @@ function PostDateChequesHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search by Cheque/PO or Invoice No"
+						placeholder="Search payableBills"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -58,7 +60,7 @@ function PostDateChequesHeader(props) {
 					/>
 				</Paper>
 
-				{/* <motion.div
+				<motion.div
 					className="flex flex-grow-0"
 					initial={{ opacity: 0, x: 20 }}
 					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
@@ -68,15 +70,15 @@ function PostDateChequesHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/postDateCheque/postDateCheques/new"
+						to="/apps/payableBill/payableBills/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
 					</Button>
-				</motion.div> */}
+				</motion.div>
 			</div>
 		</div>
 	);
 }
 
-export default PostDateChequesHeader;
+export default PayableBillsHeader;

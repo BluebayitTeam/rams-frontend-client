@@ -22,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ReceivableBillForm(props) {
+function PayableBillForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, getValues } = methods;
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { receivableBillId } = routeParams;
+	const { payableBillId } = routeParams;
 	const passengers = useSelector((state) => state.data.passengers);
 	const branchs = useSelector((state) => state.data.branches);
 	const subLedgers = useSelector((state) => state.data.subLedgers);
@@ -39,14 +39,13 @@ function ReceivableBillForm(props) {
 	const classes = useStyles(props);
 	const image = watch('file');
 	const [file, setFile] = useState(null);
-
 	useEffect(() => {
 		const currentImage = watch('file');
 
 		if (currentImage && !currentImage.name) {
 			setFile(`${BASE_URL}/${currentImage}`);
 		}
-	}, [receivableBillId, watch('file')]);
+	}, [payableBillId, watch('file')]);
 	useEffect(() => {
 		if (mltPassengerDeletedId) {
 			setMltPassengerList((prevList) =>
@@ -72,15 +71,17 @@ function ReceivableBillForm(props) {
 	}, []);
 
 	useEffect(() => {
-		if (receivableBillId !== 'new') {
-			setMltPassengerList(watch('passenger_list'));
+		if (payableBillId !== 'new') {
+			if (getValues()?.passenger_list?.length > 1) {
+				setMltPassengerList(watch('passenger_list'));
+			}
 		}
-	}, [receivableBillId, getValues()?.passenger_list]);
+	}, [payableBillId, getValues()?.passenger_list]);
 
 	useEffect(() => {
 		setValue('passenger_list', mltPassengerList);
 		setValue(
-			'debit_amount',
+			'credit_amount',
 			mltPassengerList?.reduce((sum, item) => sum + parseFloat(item.amount), 0)
 		);
 	}, [mltPassengerList]);
@@ -399,7 +400,7 @@ function ReceivableBillForm(props) {
 				)}
 			/>
 			<Controller
-				name="debit_amount"
+				name="credit_amount"
 				control={control}
 				render={({ field }) => {
 					return (
@@ -435,4 +436,4 @@ function ReceivableBillForm(props) {
 	);
 }
 
-export default ReceivableBillForm;
+export default PayableBillForm;

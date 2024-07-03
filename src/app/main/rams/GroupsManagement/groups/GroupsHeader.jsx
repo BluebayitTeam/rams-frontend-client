@@ -43,7 +43,7 @@ function GroupsHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search groups"
+						placeholder="Search by Name"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
