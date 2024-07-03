@@ -244,7 +244,7 @@ function MultipleVisaEntryForm(props) {
 						<Pagination
 							// classes={{ ul: 'flex-nowrap' }}
 							// count={totalData?.total_pages}
-							page={page + 1}
+							page={page}
 							defaultPage={1}
 							color="primary"
 							showFirstButton
