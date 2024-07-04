@@ -38,7 +38,6 @@ function MultipleStatusUpdateHeader({ handleReset }) {
 
 	function handleCancelMultipleStatusUpdate() {
 		handleReset({});
-		// dispatch(resetMultipleStatusUpdateTable());
 
 		handleReset({ date: '' });
 	}
