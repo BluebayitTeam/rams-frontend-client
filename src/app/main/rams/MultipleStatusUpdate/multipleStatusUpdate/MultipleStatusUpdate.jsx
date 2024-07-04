@@ -21,7 +21,6 @@ function MultipleStatusUpdate() {
 	const routeParams = useParams();
 	const { multipleStatusUpdateId } = routeParams;
 
-	const [tabValue, setTabValue] = useState(0);
 	const [formKey, setFormKey] = useState(0);
 
 	const methods = useForm({
