@@ -25,12 +25,14 @@ function MultipleVisaEntryHeader({ handleReset }) {
 
 	const visaEntry = watch('visa_entry');
 	const selectionOrCheckbox = watch('selection_or_checkbox');
-	const selectedPassengerIds = watch('selectedPassengerIds');
+	// const selectedPassengerIds = watch('selectedPassengerIds');
+	// console.log('selectedPassengerIds', selectedPassengerIds);
 	const passenger = watch('passenger');
+	console.log('passenger', passenger);
 
 	// Determine if the save button should be enabled
 	const isSaveDisabled = !(
-		(visaEntry && selectionOrCheckbox === 'checkbox' && selectedPassengerIds?.length >= 1) ||
+		(visaEntry && selectionOrCheckbox === 'checkbox' && selection_or_checkbox) ||
 		(visaEntry && selectionOrCheckbox === 'selection' && passenger)
 	);
 
