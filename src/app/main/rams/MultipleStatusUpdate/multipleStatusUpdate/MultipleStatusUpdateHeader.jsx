@@ -3,97 +3,79 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
-import _ from '@lodash';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useCreateMultipleStatusUpdateMutation } from '../MultipleStatusUpdatesApi';
 
 /**
- * The multipleStatusUpdate header.
+ * The MultipleStatusUpdate header.
  */
 function MultipleStatusUpdateHeader({ handleReset }) {
 	const routeParams = useParams();
-	const { multipleStatusUpdateId } = routeParams;
-	const [saveDocumentSend] = useCreateMultipleStatusUpdateMutation();
+	const { MultipleStatusUpdateId } = routeParams;
+	const [createMultipleStatusUpdate] = useCreateMultipleStatusUpdateMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
+	const navigate = useNavigate();
 
-	const { passenger } = watch();
-	const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-	const name = watch('name');
+	const handleDelete = localStorage.getItem('deleteMultipleStatusUpdate');
+	const handleUpdate = localStorage.getItem('updateMultipleStatusUpdate');
 
-	useEffect(() => {
-		setIsButtonDisabled(!passenger);
-	}, [passenger]);
+	const visaEntry = watch('visa_entry');
+	const isFormSave = watch('is_form_save');
 
-	function handleSaveMultipleStatusUpdate() {
-		saveDocumentSend(getValues()).then((res) => {
-			CustomNotification('success', 'Multiple Status UpdateSuccessfully..');
-			handleReset({ email: '' });
-		});
+	function handleCreateMultipleStatusUpdate() {
+		createMultipleStatusUpdate(getValues())
+			.unwrap()
+			.then((data) => {
+				AddedSuccessfully();
+				handleReset();
+				navigate(`/multipleStatusUpdate/multipleStatusUpdates/new`);
+			});
 	}
 
-	function handleCancelMultipleStatusUpdate() {
-		handleReset({});
-
-		handleReset({ date: '' });
+	function handleCancel() {
+		handleReset();
+		navigate(`/apps/multipleStatusUpdate/multipleStatusUpdates/new`);
 	}
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
-				<div className="flex flex-col items-start max-w-full min-w-0">
-					<div className="flex items-center max-w-full">
-						<motion.div
-							className="hidden sm:flex"
-							initial={{ scale: 0 }}
-							animate={{ scale: 1, transition: { delay: 0.3 } }}
-						/>
-
-						<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
-							<motion.div
-								initial={{ x: -20 }}
-								animate={{ x: 0, transition: { delay: 0.3 } }}
-							>
-								<span className="hidden sm:flex mx-4 font-medium">Multiple Status Update</span>
-								<Typography className="text-16 sm:text-20 truncate font-semibold">
-									{name || 'Create Multiple Status Update'}
-								</Typography>
-								<Typography
-									variant="caption"
-									className="font-medium"
-								>
-									Multiple Status Update Detail
-								</Typography>
-							</motion.div>
-						</div>
-					</div>
+				<div className="flex items-center max-w-full">
+					<motion.div
+						className="flex flex-col min-w-0 mx-8 sm:mx-16"
+						initial={{ x: -20 }}
+						animate={{ x: 0, transition: { delay: 0.3 } }}
+					>
+						<Typography className="text-16 sm:text-20 truncate font-semibold">
+							Multiple Visa Entry
+						</Typography>
+					</motion.div>
 				</div>
 			</div>
 
 			<motion.div
 				className="flex"
 				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
 				<Button
 					className="whitespace-nowrap mx-4"
 					variant="contained"
-					color="secondary"
-					disabled={_.isEmpty(dirtyFields) || !isValid}
-					onClick={handleSaveMultipleStatusUpdate}
+					color={visaEntry ? 'secondary' : 'primary'}
+					onClick={handleCreateMultipleStatusUpdate}
+					disabled={!isFormSave}
 				>
 					Save
 				</Button>
 
 				<Button
-					className="whitespace-nowrap mx-4"
+					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-					onClick={handleCancelMultipleStatusUpdate}
+					onClick={handleCancel}
 				>
 					Cancel
 				</Button>
