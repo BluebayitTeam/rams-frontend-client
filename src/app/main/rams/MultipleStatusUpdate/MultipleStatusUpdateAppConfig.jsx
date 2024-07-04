@@ -2,9 +2,6 @@ import { Navigate } from 'react-router-dom';
 import MultipleStatusUpdateApp from './MultipleStatusUpdateApp';
 import MultipleStatusUpdate from './multipleStatusUpdate/MultipleStatusUpdate';
 
-/**
- * The E-Commerce app configuration.
- */
 const MultipleStatusUpdateAppConfig = {
 	settings: {
 		layout: {}

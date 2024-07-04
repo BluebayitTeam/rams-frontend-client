@@ -16,16 +16,14 @@ function MultipleStatusUpdateHeader({ handleReset }) {
 	const { multipleStatusUpdateId } = routeParams;
 	const [saveDocumentSend] = useCreateMultipleStatusUpdateMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
+	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, images, featuredImageId, checkbox, passenger, email } = watch();
-	const [openSuccessStatusAlert, setOpenSuccessStatusAlert] = useState(false);
+	const { checkbox, passenger, email } = watch();
 	const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
 	useEffect(() => {
-		// Update the isButtonDisabled state based on the checkbox, passenger, and email values
 		setIsButtonDisabled(!(checkbox && passenger && email));
 	}, [checkbox, passenger, email]);
 

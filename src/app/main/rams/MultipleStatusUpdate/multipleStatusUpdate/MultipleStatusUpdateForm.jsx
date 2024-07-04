@@ -14,7 +14,6 @@ function MultipleStatusUpdateForm() {
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-	const [showError, setShowError] = useState(false);
 	const [documentSends, setDocumentSends] = useState([]);
 	const [keyData, setKeyData] = useState([]);
 	const handleCheckboxSend = (name, checked) => {
@@ -161,10 +160,6 @@ function MultipleStatusUpdateForm() {
 					/>
 				</div>
 			)}
-
-			<div>
-				<br />
-			</div>
 		</div>
 	);
 }

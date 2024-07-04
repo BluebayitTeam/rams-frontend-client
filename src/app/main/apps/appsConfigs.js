@@ -62,6 +62,7 @@ import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateC
 import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
+import MultipleStatusUpdateAppConfig from '../rams/MultipleStatusUpdate/MultipleStatusUpdateAppConfig';
 
 /**
  * The list of application configurations.
@@ -70,6 +71,7 @@ const appsConfigs = [
 	CalendarAppConfig,
 	CvBankAppConfig,
 	MessengerAppConfig,
+	MultipleStatusUpdateAppConfig,
 	ContactsAppConfig,
 	ECommerceAppConfig,
 	FileManagerAppConfig,

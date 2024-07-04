@@ -1,9 +1,9 @@
 import _ from '@lodash';
 
-const DocmentSendModel = (data) =>
+const MultipleStatusUpdateModel = (data) =>
 	_.defaults(data || {}, {
 		date: '',
 		passengers: '',
 		status: ''
 	});
-export default DocmentSendModel;
+export default MultipleStatusUpdateModel;
