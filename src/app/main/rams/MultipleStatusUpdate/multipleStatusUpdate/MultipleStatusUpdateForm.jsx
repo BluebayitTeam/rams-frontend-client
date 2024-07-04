@@ -1,10 +1,9 @@
-import { Autocomplete, Checkbox, FormControlLabel, Icon, InputAdornment, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import MultiplePassengersTable from './MultiplePassengersTable';
-import { columns } from './data/column';
 
 function MultipleStatusUpdateForm() {
 	const dispatch = useDispatch();
@@ -14,34 +13,6 @@ function MultipleStatusUpdateForm() {
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-	const [documentSends, setDocumentSends] = useState([]);
-	const [keyData, setKeyData] = useState([]);
-	const handleCheckboxSend = (name, checked) => {
-		const updatedDocumentSends = documentSends.map((documentSend) =>
-			documentSend.key === name ? { ...documentSend, isChecked: checked } : documentSend
-		);
-		setDocumentSends(updatedDocumentSends);
-
-		const updatedKeyData = [...keyData];
-		const documentSend = updatedDocumentSends.find((data) => data?.key === name);
-
-		if (documentSend) {
-			const keyIndex = updatedKeyData.indexOf(documentSend.key);
-
-			if (checked && keyIndex === -1) {
-				updatedKeyData.push(documentSend.key);
-			} else if (!checked && keyIndex !== -1) {
-				updatedKeyData.splice(keyIndex, 1);
-			}
-		}
-
-		setKeyData(updatedKeyData);
-		setValue('checkbox', updatedKeyData);
-	};
-	const handleChange = (e) => {
-		const { name, checked } = e.target;
-		handleCheckboxSend(name, checked);
-	};
 
 	useEffect(() => {
 		if (mltPassengerDeletedId) {
@@ -53,10 +24,6 @@ function MultipleStatusUpdateForm() {
 	useEffect(() => {
 		dispatch(getPassengers());
 	}, [dispatch]);
-
-	useEffect(() => {
-		setDocumentSends(columns);
-	}, []);
 
 	useEffect(() => {
 		setValue(
@@ -72,53 +39,9 @@ function MultipleStatusUpdateForm() {
 			}
 		}
 	};
-	console.log('test', getValues());
+
 	return (
 		<div>
-			<div>
-				{documentSends.map((documentSend) => (
-					<FormControlLabel
-						key={documentSend.key}
-						onChange={handleChange}
-						checked={documentSend?.isChecked || false}
-						name={documentSend.key}
-						style={{ width: '45%' }}
-						control={<Checkbox />}
-						label={`${documentSend.label} `}
-					/>
-				))}
-			</div>
-
-			<Controller
-				name="email"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						type="text"
-						error={!!errors.email}
-						helperText={errors?.email?.message}
-						label="Email"
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<Icon
-										className="text-20"
-										color="action"
-									>
-										user
-									</Icon>
-								</InputAdornment>
-							)
-						}}
-						variant="outlined"
-						fullWidth
-						InputLabelProps={field.value && { shrink: true }}
-					/>
-				)}
-			/>
-
 			<Controller
 				name="passenger"
 				control={control}
