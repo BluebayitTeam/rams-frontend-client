@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Autocomplete, FormControlLabel, Radio, TextField } from '@mui/material';
 import { getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
@@ -23,6 +24,7 @@ function MultipleStatusUpdateForm() {
 		setSelectedValue(event.target.value);
 	};
 	sessionStorage.setItem('MultipleStatusUpdateFormselectedValue', selectedValue);
+
 	useEffect(() => {
 		if (mltPassengerDeletedId) {
 			setMltPassengerList(mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId));
