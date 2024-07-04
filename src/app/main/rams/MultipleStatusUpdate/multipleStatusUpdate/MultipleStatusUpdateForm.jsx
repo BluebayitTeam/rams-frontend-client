@@ -84,8 +84,6 @@ function MultipleStatusUpdateForm() {
 									InputLabelProps={{
 										shrink: true
 									}}
-
-									// onKeyDown={handleSubmitOnKeyDownEnter}
 								/>
 							)}
 						/>
@@ -103,7 +101,7 @@ function MultipleStatusUpdateForm() {
 				<Controller
 					name="medical_result"
 					control={control}
-					render={({ field: { onChange, value, name } }) => (
+					render={({ field: { onChange, value } }) => (
 						<Autocomplete
 							className="mt-8 mb-16 w-11/12	"
 							freeSolo
@@ -125,7 +123,6 @@ function MultipleStatusUpdateForm() {
 									InputLabelProps={{
 										shrink: true
 									}}
-									// onKeyDown={handleSubmitOnKeyDownEnter}
 								/>
 							)}
 						/>
