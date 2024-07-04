@@ -11,7 +11,7 @@ import MultiplePassengersTable from './MultiplePassengersTable';
 function MultipleStatusUpdateForm() {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, setValue, getValues } = methods;
+	const { control, formState, setValue, getValues, watch } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
@@ -52,6 +52,14 @@ function MultipleStatusUpdateForm() {
 			}
 		}
 	};
+
+	useEffect(() => {
+		if (mltPassengerList?.length > 0 && watch('passenger')) {
+			setValue('is_form_save', true);
+		} else {
+			setValue('is_form_save', false);
+		}
+	}, [mltPassengerList, watch('passenger')]);
 
 	return (
 		<div>

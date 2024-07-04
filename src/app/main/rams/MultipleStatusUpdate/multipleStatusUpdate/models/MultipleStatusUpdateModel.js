@@ -4,6 +4,7 @@ const MultipleStatusUpdateModel = (data) =>
 	_.defaults(data || {}, {
 		date: '',
 		passengers: '',
-		status: ''
+		status: '',
+		is_form_save: false
 	});
 export default MultipleStatusUpdateModel;

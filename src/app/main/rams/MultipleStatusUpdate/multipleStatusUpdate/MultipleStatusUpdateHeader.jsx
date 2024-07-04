@@ -23,7 +23,7 @@ function MultipleStatusUpdateHeader({ handleReset }) {
 	const handleDelete = localStorage.getItem('deleteMultipleStatusUpdate');
 	const handleUpdate = localStorage.getItem('updateMultipleStatusUpdate');
 
-	const visaEntry = watch('visa_entry');
+	const passenger = watch('passenger');
 	const isFormSave = watch('is_form_save');
 
 	function handleCreateMultipleStatusUpdate() {
@@ -65,7 +65,7 @@ function MultipleStatusUpdateHeader({ handleReset }) {
 				<Button
 					className="whitespace-nowrap mx-4"
 					variant="contained"
-					color={visaEntry ? 'secondary' : 'primary'}
+					color={passenger ? 'secondary' : 'primary'}
 					onClick={handleCreateMultipleStatusUpdate}
 					disabled={!isFormSave}
 				>
