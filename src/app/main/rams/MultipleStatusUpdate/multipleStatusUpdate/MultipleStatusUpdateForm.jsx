@@ -4,14 +4,14 @@ import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleStatusUpdateForm() {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, setValue, getValues, watch } = methods;
+	const { control, formState, setValue, watch } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
@@ -386,7 +386,7 @@ function MultipleStatusUpdateForm() {
 					)}
 				/>
 			</div>
-
+			{/* 
 			<Controller
 				name="date"
 				control={control}
@@ -401,7 +401,19 @@ function MultipleStatusUpdateForm() {
 						placeholder="DD-MM-YYYY"
 					/>
 				)}
-			/>
+			/> */}
+			<div>
+				<Controller
+					name="date"
+					control={control}
+					render={({ field }) => (
+						<CustomDatePicker
+							field={field}
+							label="Date"
+						/>
+					)}
+				/>
+			</div>
 			<Controller
 				name="passenger"
 				control={control}
