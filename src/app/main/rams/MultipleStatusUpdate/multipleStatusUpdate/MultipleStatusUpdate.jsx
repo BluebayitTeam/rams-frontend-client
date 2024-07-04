@@ -11,7 +11,7 @@ import MultipleStatusUpdateForm from './MultipleStatusUpdateForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
+	passenger: z
 		.string()
 		.nonempty('You must enter a multipleStatusUpdate name')
 		.min(5, 'The multipleStatusUpdate name must be at least 5 characters')
