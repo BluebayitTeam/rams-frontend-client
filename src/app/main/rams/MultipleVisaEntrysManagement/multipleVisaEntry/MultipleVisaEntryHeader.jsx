@@ -10,12 +10,12 @@ import { useCreateMultipleVisaEntryMutation } from '../MultipleVisaEntrysApi';
 /**
  * The MultipleVisaEntry header.
  */
-function MultipleVisaEntryHeader({ handleReset, save, setSave }) {
+function MultipleVisaEntryHeader({ handleReset }) {
 	const routeParams = useParams();
 	const { MultipleVisaEntryId } = routeParams;
 	const [createMultipleVisaEntry] = useCreateMultipleVisaEntryMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
+	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
@@ -24,9 +24,18 @@ function MultipleVisaEntryHeader({ handleReset, save, setSave }) {
 	const handleUpdate = localStorage.getItem('updateMultipleVisaEntry');
 
 	const visaEntry = watch('visa_entry');
+	const selectionOrCheckbox = watch('selection_or_checkbox');
+	const selectedPassengerIds = watch('selectedPassengerIds');
+	const passenger = watch('passenger');
+
+	// Determine if the save button should be enabled
+	const isSaveDisabled = !(
+		(visaEntry && selectionOrCheckbox === 'checkbox' && selectedPassengerIds?.length >= 1) ||
+		(visaEntry && selectionOrCheckbox === 'selection' && passenger)
+	);
 
 	function handleCreateMultipleVisaEntry() {
-		if (visaEntry) {
+		if (!isSaveDisabled) {
 			createMultipleVisaEntry(getValues())
 				.unwrap()
 				.then((data) => {
@@ -68,7 +77,7 @@ function MultipleVisaEntryHeader({ handleReset, save, setSave }) {
 					variant="contained"
 					color={visaEntry ? 'secondary' : 'primary'}
 					onClick={handleCreateMultipleVisaEntry}
-					disabled={!visaEntry}
+					disabled={isSaveDisabled}
 				>
 					Save
 				</Button>

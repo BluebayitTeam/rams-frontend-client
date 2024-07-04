@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { Autocomplete, FormControlLabel, Radio, TextField } from '@mui/material';
-import { getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +19,7 @@ function MultipleStatusUpdateForm() {
 	const [selectedValue, setSelectedValue] = useState('current_status');
 	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
+	console.log('checkCurrentStatus', currentStatuss);
 
 	const handleChangeCurrentStatus = (event) => {
 		setSelectedValue(event.target.value);
@@ -34,7 +35,8 @@ function MultipleStatusUpdateForm() {
 
 	useEffect(() => {
 		dispatch(getPassengers());
-	}, [dispatch]);
+		dispatch(getCurrentStatuss());
+	}, []);
 
 	useEffect(() => {
 		setValue(
@@ -92,6 +94,7 @@ function MultipleStatusUpdateForm() {
 					)}
 				/>
 			</div>
+
 			<div className="flex md:space-x-12 flex-col md:flex-row">
 				<FormControlLabel
 					value="medical_result"
