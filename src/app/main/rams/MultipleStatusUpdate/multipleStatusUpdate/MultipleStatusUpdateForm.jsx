@@ -17,9 +17,8 @@ function MultipleStatusUpdateForm() {
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [selectedValue, setSelectedValue] = useState('current_status');
-	const [selectedValueDisable, setSelectedValueDisable] = useState(false);
+	const [date, setDate] = useState('');
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
-	console.log('checkCurrentStatus', currentStatuss);
 
 	const handleChangeCurrentStatus = (event) => {
 		setSelectedValue(event.target.value);
@@ -44,6 +43,13 @@ function MultipleStatusUpdateForm() {
 			mltPassengerList?.map((data) => data.id)
 		);
 	}, [mltPassengerList, setValue]);
+
+	// useEffect(() => {
+	// 	setValue('passengers', stamping_status);
+	// }, [stamping_status, setValue]);
+	useEffect(() => {
+		setValue('passengers', date);
+	}, [date, setValue]);
 
 	const handlePassengerSelect = (newPassenger) => {
 		if (newPassenger) {
