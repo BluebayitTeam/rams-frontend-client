@@ -3,6 +3,7 @@ import { getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleStatusUpdateForm() {
@@ -42,6 +43,21 @@ function MultipleStatusUpdateForm() {
 
 	return (
 		<div>
+			<Controller
+				name="date"
+				control={control}
+				render={({ field }) => (
+					<CustomDatePicker
+						field={field}
+						label="Date"
+						required
+						className="mt-8 mb-16 w-full"
+						error={!!errors.date}
+						helperText={errors?.date?.message}
+						placeholder="DD-MM-YYYY"
+					/>
+				)}
+			/>
 			<Controller
 				name="passenger"
 				control={control}
