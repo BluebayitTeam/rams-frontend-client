@@ -33,9 +33,7 @@ function MultipleVisaEntryForm(props) {
 	const [filterPassengers, setFilterPassengers] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 	const [page, setPage] = useState(0);
-
 	const [searchKey, setSearchKey] = useState('');
-
 	const [rowsPerPage, setRowsPerPage] = useState(25);
 	const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
 	const [totalData, setTotalData] = useState({ total_pages: 0, total_elements: 0 });
@@ -46,6 +44,14 @@ function MultipleVisaEntryForm(props) {
 		dispatch(getVisaEntrys());
 		dispatch(getAgents());
 	}, [dispatch]);
+
+	useEffect(() => {
+		if ((mltPassengerList?.length > 0 || selectedPassengerIds?.length > 0) && watch('visa_entry')) {
+			setValue('is_form_save', true);
+		} else {
+			setValue('is_form_save', false);
+		}
+	}, [mltPassengerList, selectedPassengerIds, watch('visa_entry')]);
 
 	useEffect(() => {
 		setValue(
