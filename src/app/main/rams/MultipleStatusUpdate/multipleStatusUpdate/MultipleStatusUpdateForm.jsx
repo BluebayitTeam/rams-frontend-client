@@ -154,7 +154,7 @@ function MultipleStatusUpdateForm() {
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<Autocomplete
-							className="mt-8 mb-16 w-11/12	"
+							className="mt-8 mb-16 w-11/12"
 							freeSolo
 							value={value ? doneNotDone.find((data) => data.id === value) : null}
 							options={doneNotDone}
@@ -436,7 +436,7 @@ function MultipleStatusUpdateForm() {
 								placeholder="Select Passenger"
 								label="Passenger"
 								error={!value}
-								helperText={errors?.agency?.message}
+								helperText={errors?.passengers?.message}
 								variant="outlined"
 								InputLabelProps={{
 									shrink: true
