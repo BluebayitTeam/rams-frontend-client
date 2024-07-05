@@ -28,8 +28,7 @@ function MultipleStatusUpdate() {
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
-	const { reset, watch } = methods;
-	const form = watch();
+	const { reset } = methods;
 	useEffect(() => {
 		if (multipleStatusUpdateId === 'new') {
 			reset(MultipleStatusUpdateModel({}));
