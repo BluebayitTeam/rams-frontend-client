@@ -5,7 +5,7 @@ const MultipleStatusUpdateModel = (data) =>
     current_status: "",
     date: "",
     passengers: "",
-    selected_value: "",
+    selectedValue: "",
     status: "",
   });
 export default MultipleStatusUpdateModel;

@@ -21,8 +21,9 @@ const MultipleStatusUpdateApi = api
             data: MultipleStatusUpdateModel({
               current_status: newMultipleStatusUpdate?.current_status,
               date: newMultipleStatusUpdate?.date,
-              selected_value: newMultipleStatusUpdate?.selected_value,
               passengers: newMultipleStatusUpdate?.passengers,
+
+              selectedValue: newMultipleStatusUpdate?.selectedValue,
               status: newMultipleStatusUpdate?.status,
             }),
           };
