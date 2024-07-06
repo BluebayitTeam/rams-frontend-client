@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-undef */
 import {
   Autocomplete,
@@ -16,7 +17,8 @@ import MultiplePassengersTable from "./MultiplePassengersTable";
 function MultipleStatusUpdateForm() {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, setValue, watch } = methods;
+  const { control, formState, setValue, watch, getValues } = methods;
+  console.log("tesgfsfgs", getValues());
   const { errors } = formState;
   const passengers = useSelector((state) => state.data.passengers);
   const [mltPassengerList, setMltPassengerList] = useState([]);
