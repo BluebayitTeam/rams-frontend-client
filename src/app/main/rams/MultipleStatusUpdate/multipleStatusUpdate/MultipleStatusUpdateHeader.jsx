@@ -78,7 +78,7 @@ function MultipleStatusUpdateHeader({ handleReset }) {
       status_value: getValues()?.selected_status, 
 
         selected_value:getValues()?.selected_value, 
-        status: getValues()?.status_value 
+        // status: getValues()?.status_value 
     };
 
     createMultipleStatusUpdate(modifiedData)
