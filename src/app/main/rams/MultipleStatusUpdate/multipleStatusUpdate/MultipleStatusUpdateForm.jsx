@@ -5,25 +5,25 @@ import {
   FormControlLabel,
   Radio,
   TextField,
-} from "@mui/material";
-import { getCurrentStatuss, getPassengers } from "app/store/dataSlice";
-import { useEffect, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { doneNotDone, medicalResults } from "src/app/@data/data";
-import CustomDatePicker from "src/app/@components/CustomDatePicker";
-import MultiplePassengersTable from "./MultiplePassengersTable";
+} from '@mui/material';
+import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { useEffect, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleStatusUpdateForm() {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { control, formState, setValue, watch, getValues } = methods;
-  console.log("tesgfsfgs", getValues());
+  console.log('tesgfsfgs', getValues());
   const { errors } = formState;
   const passengers = useSelector((state) => state.data.passengers);
   const [mltPassengerList, setMltPassengerList] = useState([]);
   const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-  const [selectedValue, setSelectedValue] = useState("current_status");
+  const [selectedValue, setSelectedValue] = useState('current_status');
 
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
 
@@ -31,7 +31,7 @@ function MultipleStatusUpdateForm() {
     setSelectedValue(event.target.value);
   };
   sessionStorage.setItem(
-    "MultipleStatusUpdateFormselectedValue",
+    'MultipleStatusUpdateFormselectedValue',
     selectedValue
   );
 
@@ -51,7 +51,7 @@ function MultipleStatusUpdateForm() {
 
   useEffect(() => {
     setValue(
-      "passengers",
+      'passengers',
       mltPassengerList?.map((data) => data.id)
     );
   }, [mltPassengerList, setValue]);
@@ -67,51 +67,16 @@ function MultipleStatusUpdateForm() {
   };
 
   useEffect(() => {
-    if (mltPassengerList?.length > 0 && watch("passenger")) {
-      setValue("is_form_save", true);
+    if (mltPassengerList?.length > 0 && watch('passenger')) {
+      setValue('is_form_save', true);
     } else {
-      setValue("is_form_save", false);
+      setValue('is_form_save', false);
     }
-  }, [mltPassengerList, watch("passenger")]);
+  }, [mltPassengerList, watch('passenger')]);
 
   return (
-    <div>
-      <Controller
-        name="current_status"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <Autocomplete
-            className="mt-8 mb-16 w-full"
-            freeSolo
-            disabled={selectedValue !== "current_status"}
-            value={
-              value ? currentStatuss.find((data) => data.id === value) : null
-            }
-            options={currentStatuss}
-            getOptionLabel={(option) => `${option.name}`}
-            onChange={(event, newValue) => {
-              onChange(newValue?.id);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Select Current Status"
-                label="Current Status"
-                error={
-                  !!errors.current_status ||
-                  (selectedValue === "current_status" && !value)
-                }
-                helperText={errors?.current_status?.message}
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            )}
-          />
-        )}
-      />
-      <div>
+	  <div>
+		   <div>
         <Controller
           name="date"
           control={control}
@@ -128,10 +93,46 @@ function MultipleStatusUpdateForm() {
           )}
         />
       </div>
+      <Controller
+        name="current_status"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            className="mt-8 mb-16 w-full"
+            freeSolo
+            disabled={selectedValue !== 'current_status'}
+            value={
+              value ? currentStatuss.find((data) => data.id === value) : null
+            }
+            options={currentStatuss}
+            getOptionLabel={(option) => `${option.name}`}
+            onChange={(event, newValue) => {
+              onChange(newValue?.id);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Select Current Status"
+                label="Current Status"
+                error={
+                  !!errors.current_status ||
+                  (selectedValue === 'current_status' && !value)
+                }
+                helperText={errors?.current_status?.message}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            )}
+          />
+        )}
+      />
+     
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="medical_result"
-          checked={selectedValue === "medical_result"}
+          checked={selectedValue === 'medical_result'}
           onChange={handleChangeCurrentStatus}
           control={<Radio />}
           className="mt-8 mb-16 w-min	"
@@ -147,7 +148,7 @@ function MultipleStatusUpdateForm() {
                 value ? medicalResults.find((data) => data.id === value) : null
               }
               options={medicalResults}
-              disabled={selectedValue !== "medical_result"}
+              disabled={selectedValue !== 'medical_result'}
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
@@ -159,7 +160,7 @@ function MultipleStatusUpdateForm() {
                   label="Medical Status"
                   error={
                     !!errors.current_status ||
-                    (selectedValue === "medical_result" && !value)
+                    (selectedValue === 'medical_result' && !value)
                   }
                   helperText={errors?.current_status?.message}
                   variant="outlined"
@@ -175,7 +176,7 @@ function MultipleStatusUpdateForm() {
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="stamping_status"
-          checked={selectedValue === "stamping_status"}
+          checked={selectedValue === 'stamping_status'}
           onChange={handleChangeCurrentStatus}
           control={<Radio />}
           className="mt-8 mb-16 w-min	"
@@ -191,7 +192,7 @@ function MultipleStatusUpdateForm() {
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
               options={doneNotDone}
-              disabled={selectedValue !== "stamping_status"}
+              disabled={selectedValue !== 'stamping_status'}
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
@@ -203,7 +204,7 @@ function MultipleStatusUpdateForm() {
                   label="Visa Status"
                   error={
                     !!errors.stamping_status ||
-                    (selectedValue === "stamping_status" && !value)
+                    (selectedValue === 'stamping_status' && !value)
                   }
                   helperText={errors?.stamping_status?.message}
                   variant="outlined"
@@ -219,7 +220,7 @@ function MultipleStatusUpdateForm() {
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="training_card_status"
-          checked={selectedValue === "training_card_status"}
+          checked={selectedValue === 'training_card_status'}
           onChange={handleChangeCurrentStatus}
           control={<Radio />}
           className="mt-8 mb-16 w-min	"
@@ -235,7 +236,7 @@ function MultipleStatusUpdateForm() {
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
               options={doneNotDone}
-              disabled={selectedValue !== "training_card_status"}
+              disabled={selectedValue !== 'training_card_status'}
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
@@ -247,7 +248,7 @@ function MultipleStatusUpdateForm() {
                   label="Training Status"
                   error={
                     !!errors.training_card_status ||
-                    (selectedValue === "training_card_status" && !value)
+                    (selectedValue === 'training_card_status' && !value)
                   }
                   helperText={errors?.training_card_status?.message}
                   variant="outlined"
@@ -263,7 +264,7 @@ function MultipleStatusUpdateForm() {
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="man_power_status"
-          checked={selectedValue === "man_power_status"}
+          checked={selectedValue === 'man_power_status'}
           onChange={handleChangeCurrentStatus}
           control={<Radio />}
           className="mt-8 mb-16 w-min	"
@@ -275,7 +276,7 @@ function MultipleStatusUpdateForm() {
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== "man_power_status"}
+              disabled={selectedValue !== 'man_power_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -291,7 +292,7 @@ function MultipleStatusUpdateForm() {
                   label="Manpower Status"
                   error={
                     !!errors.man_power_status ||
-                    (selectedValue === "man_power_status" && !value)
+                    (selectedValue === 'man_power_status' && !value)
                   }
                   helperText={errors?.man_power_status?.message}
                   variant="outlined"
@@ -307,7 +308,7 @@ function MultipleStatusUpdateForm() {
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="police_clearance_status"
-          checked={selectedValue === "police_clearance_status"}
+          checked={selectedValue === 'police_clearance_status'}
           onChange={handleChangeCurrentStatus}
           control={<Radio />}
           className="mt-8 mb-16 w-min	"
@@ -319,7 +320,7 @@ function MultipleStatusUpdateForm() {
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== "police_clearance_status"}
+              disabled={selectedValue !== 'police_clearance_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -335,7 +336,7 @@ function MultipleStatusUpdateForm() {
                   label="Police Clearance Status"
                   error={
                     !!errors.police_clearance_status ||
-                    (selectedValue === "police_clearance_status" && !value)
+                    (selectedValue === 'police_clearance_status' && !value)
                   }
                   helperText={errors?.police_clearance_status?.message}
                   variant="outlined"
@@ -351,7 +352,7 @@ function MultipleStatusUpdateForm() {
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="driving_license_status"
-          checked={selectedValue === "driving_license_status"}
+          checked={selectedValue === 'driving_license_status'}
           onChange={handleChangeCurrentStatus}
           control={<Radio />}
           className="mt-8 mb-16 w-min	"
@@ -363,7 +364,7 @@ function MultipleStatusUpdateForm() {
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== "driving_license_status"}
+              disabled={selectedValue !== 'driving_license_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -379,7 +380,7 @@ function MultipleStatusUpdateForm() {
                   label="Driving License Status"
                   error={
                     !!errors.driving_license_status ||
-                    (selectedValue === "driving_license_status" && !value)
+                    (selectedValue === 'driving_license_status' && !value)
                   }
                   helperText={errors?.driving_license_status?.message}
                   variant="outlined"
@@ -395,7 +396,7 @@ function MultipleStatusUpdateForm() {
       <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="finger_status"
-          checked={selectedValue === "finger_status"}
+          checked={selectedValue === 'finger_status'}
           onChange={handleChangeCurrentStatus}
           control={<Radio />}
           className="mt-8 mb-16 w-min	"
@@ -407,7 +408,7 @@ function MultipleStatusUpdateForm() {
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== "finger_status"}
+              disabled={selectedValue !== 'finger_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -423,7 +424,7 @@ function MultipleStatusUpdateForm() {
                   label="Finger Status"
                   error={
                     !!errors.finger_status ||
-                    (selectedValue === "finger_status" && !value)
+                    (selectedValue === 'finger_status' && !value)
                   }
                   helperText={errors?.finger_status?.message}
                   variant="outlined"
