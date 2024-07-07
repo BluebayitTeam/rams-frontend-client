@@ -168,7 +168,6 @@ function MultipleVisaEntryForm(props) {
 							setMltPassengerList([]);
 							setFilterPassengers([]);
 							setValue('passenger', '');
-							setValue('agent', '');
 						}}
 					>
 						<FormLabel

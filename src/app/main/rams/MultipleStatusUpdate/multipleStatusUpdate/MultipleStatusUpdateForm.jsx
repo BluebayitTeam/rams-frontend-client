@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleStatusUpdateForm() {
@@ -75,6 +76,12 @@ function MultipleStatusUpdateForm() {
     }
   }, [mltPassengerList, watch('passenger')]);
 
+    useEffect(() => {
+    setValue('selected_status', null); 
+  }, [setValue]);
+
+ 
+
   return (
 	  <div>
 		   <div>
@@ -101,7 +108,6 @@ function MultipleStatusUpdateForm() {
           <Autocomplete
             className="mt-8 mb-16 w-full"
             freeSolo
-            disabled={selectedValue !== 'current_status'}
             value={
               value ? currentStatuss.find((data) => data.id === value) : null
             }
@@ -134,20 +140,24 @@ function MultipleStatusUpdateForm() {
 		  {/* Radio Button work start here */}
 
 		  <Controller
-				name="selection_or_checkbox"
+				name="selected_status"
 				control={control}
 				className="my-10"
 				render={({ field }) => (
 					<RadioGroup
 						value={field.value}
 						style={{ flexDirection: 'row' }}
-						id="selection_or_checkbox"
+						id="selected_status"
 						onChange={(e) => {
 							field.onChange(e.target.value);
-							// setMltPassengerList([]);
-							// setFilterPassengers([]);
-							// setValue('passenger', '');
-							// setValue('agent', '');
+						 field.onChange(e.target.value);
+              setValue('medical_result', null);
+              setValue('stamping_status', null);
+              setValue('training_card_status', null);
+              setValue('man_power_status', null);
+              setValue('police_clearance_status', null);
+              setValue('driving_license_status', null);
+              setValue('finger_status', null);
 						}}
 					>
 						<FormLabel
@@ -157,62 +167,58 @@ function MultipleStatusUpdateForm() {
 							Select Status
 						</FormLabel>
 						
-						<FormControlLabel
-							value="medical_status
-"
+						
+            
+            <FormControlLabel
+							value="medical_status"
 							control={<Radio />}
 							label="Medical"
 						/>
 
-						<FormControlLabel
-							value="stamping_status
-"
+						
+            
+             <FormControlLabel
+							value="stamping_status"
 							control={<Radio />}
 							label="Visa"
 						/>
-						<FormControlLabel
-							value="training_card_status
-"
+						
+            <FormControlLabel
+							value="training_card_status"
 							control={<Radio />}
 							label="Training"
 						/>
 						<FormControlLabel
-							value="man_power_status
-"
+							value="man_power_status"
 							control={<Radio />}
 							label="Manpower"
 						/>
 						<FormControlLabel
-							value="police_clearance_status
-"
+							value="police_clearance_status"
 							control={<Radio />}
 							label="Police Clearance "
-						/>
+            />
+            
+            
+            
 						<FormControlLabel
-							value="driving_license_status
-"
+							value="driving_license_status"
 							control={<Radio />}
 							label="Driving License"
 						/>
 						<FormControlLabel
-							value="finger_status
-"
+							value="finger_status"
 							control={<Radio />}
-							label="Finger "
+							label="Finger"
 						/>
 					</RadioGroup>
 				)}
 			/>
      
-      {/* <div className="flex md:space-x-12 flex-col md:flex-row">
-        <FormControlLabel
-          value="medical_result"
-          checked={selectedValue === 'medical_result'}
-          onChange={handleChangeCurrentStatus}
-          control={<Radio />}
-          className="mt-8 mb-16 w-min	"
-        />
-        <Controller
+     
+		  {watch('selected_status') === 'medical_status' && (
+				<div>
+					 <Controller
           name="medical_result"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -223,7 +229,6 @@ function MultipleStatusUpdateForm() {
                 value ? medicalResults.find((data) => data.id === value) : null
               }
               options={medicalResults}
-              disabled={selectedValue !== 'medical_result'}
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
@@ -247,16 +252,14 @@ function MultipleStatusUpdateForm() {
             />
           )}
         />
-      </div>
-      <div className="flex md:space-x-12 flex-col md:flex-row">
-        <FormControlLabel
-          value="stamping_status"
-          checked={selectedValue === 'stamping_status'}
-          onChange={handleChangeCurrentStatus}
-          control={<Radio />}
-          className="mt-8 mb-16 w-min	"
-        />
-        <Controller
+
+					
+				</div>
+      )}
+      
+
+       
+    {watch('selected_status') === 'stamping_status' &&     <Controller
           name="stamping_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -267,7 +270,6 @@ function MultipleStatusUpdateForm() {
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
               options={doneNotDone}
-              disabled={selectedValue !== 'stamping_status'}
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
@@ -290,17 +292,9 @@ function MultipleStatusUpdateForm() {
               )}
             />
           )}
-        />
-      </div>
-      <div className="flex md:space-x-12 flex-col md:flex-row">
-        <FormControlLabel
-          value="training_card_status"
-          checked={selectedValue === 'training_card_status'}
-          onChange={handleChangeCurrentStatus}
-          control={<Radio />}
-          className="mt-8 mb-16 w-min	"
-        />
-        <Controller
+        />}
+     
+  {watch('selected_status') === 'training_card_status' &&       <Controller
           name="training_card_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -311,7 +305,6 @@ function MultipleStatusUpdateForm() {
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
               options={doneNotDone}
-              disabled={selectedValue !== 'training_card_status'}
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
@@ -335,23 +328,15 @@ function MultipleStatusUpdateForm() {
             />
           )}
         />
-      </div>
-      <div className="flex md:space-x-12 flex-col md:flex-row">
-        <FormControlLabel
-          value="man_power_status"
-          checked={selectedValue === 'man_power_status'}
-          onChange={handleChangeCurrentStatus}
-          control={<Radio />}
-          className="mt-8 mb-16 w-min	"
-        />
-        <Controller
+    }
+    
+      {watch('selected_status') === 'man_power_status' &&   <Controller
           name="man_power_status"
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== 'man_power_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -378,24 +363,15 @@ function MultipleStatusUpdateForm() {
               )}
             />
           )}
-        />
-      </div>
-      <div className="flex md:space-x-12 flex-col md:flex-row">
-        <FormControlLabel
-          value="police_clearance_status"
-          checked={selectedValue === 'police_clearance_status'}
-          onChange={handleChangeCurrentStatus}
-          control={<Radio />}
-          className="mt-8 mb-16 w-min	"
-        />
-        <Controller
+        />}
+  
+     {watch('selected_status') === 'police_clearance_status' &&    <Controller
           name="police_clearance_status"
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== 'police_clearance_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -422,24 +398,15 @@ function MultipleStatusUpdateForm() {
               )}
             />
           )}
-        />
-      </div>
-      <div className="flex md:space-x-12 flex-col md:flex-row">
-        <FormControlLabel
-          value="driving_license_status"
-          checked={selectedValue === 'driving_license_status'}
-          onChange={handleChangeCurrentStatus}
-          control={<Radio />}
-          className="mt-8 mb-16 w-min	"
-        />
-        <Controller
+        />}
+    
+ {/* {  watch('selected_status') === 'driving_license_status' &&      <Controller
           name="driving_license_status"
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== 'driving_license_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -466,24 +433,50 @@ function MultipleStatusUpdateForm() {
               )}
             />
           )}
-        />
-      </div>
-      <div className="flex md:space-x-12 flex-col md:flex-row">
-        <FormControlLabel
-          value="finger_status"
-          checked={selectedValue === 'finger_status'}
-          onChange={handleChangeCurrentStatus}
-          control={<Radio />}
-          className="mt-8 mb-16 w-min	"
-        />
-        <Controller
+      />} */}
+      
+       {watch('selected_status') === 'driving_license_status' &&      <Controller
+          name="driving_license_status"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Autocomplete
+              className="mt-8 mb-16 w-11/12	"
+              freeSolo
+              value={
+                value ? doneNotDone.find((data) => data.id === value) : null
+              }
+              options={doneNotDone}
+              getOptionLabel={(option) => `${option.name}`}
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Select Driving License Status"
+                  label="Driving License Status"
+                  error={
+                    !!errors.driving_license_status ||
+                    (selectedValue === 'driving_license_status' && !value)
+                  }
+                  helperText={errors?.driving_license_status?.message}
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          )}
+        />}
+
+   {watch('selected_status') === 'finger_status' &&      <Controller
           name="finger_status"
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
-              disabled={selectedValue !== 'finger_status'}
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
               }
@@ -510,8 +503,7 @@ function MultipleStatusUpdateForm() {
               )}
             />
           )}
-        />
-      </div> */}
+        />}
 
       <Controller
         name="passenger"
