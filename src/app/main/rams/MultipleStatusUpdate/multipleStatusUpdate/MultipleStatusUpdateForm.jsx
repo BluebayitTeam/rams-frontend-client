@@ -221,7 +221,8 @@ function MultipleStatusUpdateForm() {
 					 <Controller
           name="medical_result"
           control={control}
-          render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value } }) => (
+            
             <Autocomplete
               className="mt-8 mb-16 w-11/12	"
               freeSolo
@@ -232,6 +233,8 @@ function MultipleStatusUpdateForm() {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
@@ -251,7 +254,9 @@ function MultipleStatusUpdateForm() {
               )}
             />
           )}
-        />
+          />
+          
+          
 
 					
 				</div>
@@ -273,6 +278,8 @@ function MultipleStatusUpdateForm() {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
@@ -308,6 +315,8 @@ function MultipleStatusUpdateForm() {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
@@ -344,6 +353,7 @@ function MultipleStatusUpdateForm() {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
+                setValue('selected_value', newValue?.id)
               }}
               renderInput={(params) => (
                 <TextField
@@ -379,6 +389,8 @@ function MultipleStatusUpdateForm() {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
@@ -400,40 +412,7 @@ function MultipleStatusUpdateForm() {
           )}
         />}
     
- {/* {  watch('selected_status') === 'driving_license_status' &&      <Controller
-          name="driving_license_status"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
-              freeSolo
-              value={
-                value ? doneNotDone.find((data) => data.id === value) : null
-              }
-              options={doneNotDone}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Select Driving License Status"
-                  label="Driving License Status"
-                  error={
-                    !!errors.driving_license_status ||
-                    (selectedValue === 'driving_license_status' && !value)
-                  }
-                  helperText={errors?.driving_license_status?.message}
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-      />} */}
+
       
        {watch('selected_status') === 'driving_license_status' &&      <Controller
           name="driving_license_status"
@@ -449,6 +428,8 @@ function MultipleStatusUpdateForm() {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
@@ -484,6 +465,8 @@ function MultipleStatusUpdateForm() {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField

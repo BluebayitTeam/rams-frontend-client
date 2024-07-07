@@ -48,19 +48,51 @@ function MultipleStatusUpdateHeader({ handleReset }) {
 
   //   return filteredObj;
   // }
-  function handleCreateMultipleStatusUpdate() {
+//   function handleCreateMultipleStatusUpdate() {
   
    
+//     const modifiedData = {
+//   current_status: getValues()?.current_status,
+// 							date: getValues()?.date,
+// 							passengers: getValues()?.passengers,
 
-    createMultipleStatusUpdate( getValues())
-      .unwrap()
-      .then((data) => {
-        AddedSuccessfully();
-        handleReset();
-        navigate(`/multipleStatusUpdate/multipleStatusUpdates/new`);
-      });
-  }
+// 							selected_status: getValues()?.selected_value,
+// 							status_value: ''
+// }
+//     createMultipleStatusUpdate( getValues())
+//       .unwrap()
+//       .then((data) => {
+//         AddedSuccessfully();
+//         handleReset();
+//         navigate(`/multipleStatusUpdate/multipleStatusUpdates/new`);
+//       });
+  //   }
+  
+  function handleCreateMultipleStatusUpdate() {
+    
+    const modifiedData = {
+        current_status: getValues()?.current_status,
+        date: getValues()?.date,
+        passengers: getValues()?.passengers,
+        selected_status: getValues()?.status_value, 
+      status_value: getValues()?.selected_status, 
 
+        selected_value:getValues()?.selected_value, 
+        status: getValues()?.status_value 
+    };
+
+    createMultipleStatusUpdate(modifiedData)
+        .unwrap()
+        .then((data) => {
+            AddedSuccessfully();
+            handleReset();
+            navigate(`/multipleStatusUpdate/multipleStatusUpdates/new`);
+        });
+}
+
+
+
+  
   function handleCancel() {
     handleReset();
     navigate(`/apps/multipleStatusUpdate/multipleStatusUpdates/new`);
