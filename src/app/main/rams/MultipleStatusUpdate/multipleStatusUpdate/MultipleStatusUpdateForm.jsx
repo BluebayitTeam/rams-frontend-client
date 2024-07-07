@@ -3,14 +3,15 @@
 import {
   Autocomplete,
   FormControlLabel,
+  FormLabel,
   Radio,
+  RadioGroup,
   TextField,
 } from '@mui/material';
 import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
@@ -127,9 +128,83 @@ function MultipleStatusUpdateForm() {
             )}
           />
         )}
-      />
+		  />
+		  
+
+		  {/* Radio Button work start here */}
+
+		  <Controller
+				name="selection_or_checkbox"
+				control={control}
+				className="my-10"
+				render={({ field }) => (
+					<RadioGroup
+						value={field.value}
+						style={{ flexDirection: 'row' }}
+						id="selection_or_checkbox"
+						onChange={(e) => {
+							field.onChange(e.target.value);
+							// setMltPassengerList([]);
+							// setFilterPassengers([]);
+							// setValue('passenger', '');
+							// setValue('agent', '');
+						}}
+					>
+						<FormLabel
+							disabled
+							style={{ marginRight: '1rem', marginTop: '1.5rem' }}
+						>
+							Select Status
+						</FormLabel>
+						
+						<FormControlLabel
+							value="medical_status
+"
+							control={<Radio />}
+							label="Medical"
+						/>
+
+						<FormControlLabel
+							value="stamping_status
+"
+							control={<Radio />}
+							label="Visa"
+						/>
+						<FormControlLabel
+							value="training_card_status
+"
+							control={<Radio />}
+							label="Training"
+						/>
+						<FormControlLabel
+							value="man_power_status
+"
+							control={<Radio />}
+							label="Manpower"
+						/>
+						<FormControlLabel
+							value="police_clearance_status
+"
+							control={<Radio />}
+							label="Police Clearance "
+						/>
+						<FormControlLabel
+							value="driving_license_status
+"
+							control={<Radio />}
+							label="Driving License"
+						/>
+						<FormControlLabel
+							value="finger_status
+"
+							control={<Radio />}
+							label="Finger "
+						/>
+					</RadioGroup>
+				)}
+			/>
      
-      <div className="flex md:space-x-12 flex-col md:flex-row">
+      {/* <div className="flex md:space-x-12 flex-col md:flex-row">
         <FormControlLabel
           value="medical_result"
           checked={selectedValue === 'medical_result'}
@@ -436,7 +511,7 @@ function MultipleStatusUpdateForm() {
             />
           )}
         />
-      </div>
+      </div> */}
 
       <Controller
         name="passenger"

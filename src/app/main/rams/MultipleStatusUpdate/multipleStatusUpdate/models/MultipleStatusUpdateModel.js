@@ -1,11 +1,13 @@
-import _ from "@lodash";
+import _ from '@lodash';
+import moment from 'moment';
 
 const MultipleStatusUpdateModel = (data) =>
-  _.defaults(data || {}, {
-    current_status: "",
-    date: "",
-    passengers: "",
-    selectedValue: "",
-    status: "",
-  });
+	_.defaults(data || {}, {
+		date: moment(new Date()).format('YYYY-MM-DD'),
+		current_status: '',
+
+		passengers: '',
+		selectedValue: '',
+		status: ''
+	});
 export default MultipleStatusUpdateModel;

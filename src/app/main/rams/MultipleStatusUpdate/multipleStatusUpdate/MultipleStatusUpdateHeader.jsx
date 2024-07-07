@@ -76,7 +76,7 @@ function MultipleStatusUpdateHeader({ handleReset }) {
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              Multiple Visa Entry
+              Multiple Status Update
             </Typography>
           </motion.div>
         </div>
