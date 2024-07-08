@@ -1,10 +1,18 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { FormControl } from '@mui/base';
-import { useParams } from 'react-router-dom';
 import { Autocomplete, Box, Checkbox, FormControlLabel, Icon, IconButton, InputAdornment } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getCities, getCountries, getGroups, getThanas, getThanasBasedOnCity } from 'app/store/dataSlice';
+import {
+	getBranches,
+	getCities,
+	getCountries,
+	getDepartments,
+	getEmployees,
+	getRoles,
+	getThanas,
+	getThanasBasedOnCity
+} from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 
 import { useEffect, useState } from 'react';
@@ -16,6 +24,7 @@ import { genders } from 'src/app/@data/data';
 import { BASE_URL } from 'src/app/constant/constants';
 import FileUpload from 'src/app/@components/FileUploader';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -31,31 +40,34 @@ const useStyles = makeStyles((theme) => ({
 function EmployeeForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, getValues } = methods;
-	const { errors } = formState;
 	const routeParams = useParams();
-	const { employeeId } = routeParams;
 	const classes = useStyles(props);
+	const { employeeId } = routeParams;
+	const { control, formState, watch, setValue } = methods;
+	const { errors } = formState;
 	const thanas = useSelector((state) => state.data.thanas);
-
+	const branches = useSelector((state) => state.data.branches);
+	const roles = useSelector((state) => state.data.roles);
+	const departments = useSelector((state) => state.data.departments);
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
-	const groups = useSelector((state) => state.data.groups);
-	const getCountryCode1 = watch('country_code1');
-
-	const [file, setFile] = useState(null);
 	const [showPassword, setShowPassword] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const getCountryCode1 = watch('country_code1');
+	const getCountryCode2 = watch('country_code2');
+	const [file, setFile] = useState(null);
 
 	useEffect(() => {
+		dispatch(getBranches());
 		dispatch(getThanas());
+		dispatch(getRoles());
+		dispatch(getDepartments());
 		dispatch(getCities());
 		dispatch(getCountries());
-		dispatch(getGroups());
+		dispatch(getEmployees());
 	}, []);
 
 	useEffect(() => {
-		const currentImage = getValues('image');
+		const currentImage = watch('image');
 
 		if (currentImage && !currentImage.name) {
 			setFile(`${BASE_URL}/${currentImage}`);
@@ -69,225 +81,196 @@ function EmployeeForm(props) {
 	return (
 		<div>
 			<Controller
-				name="group"
+				name="branch"
 				control={control}
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? groups.find((data) => data.id === value) : null}
-						options={groups}
+						value={value ? branches.find((bnch) => bnch.id === value) : null}
+						options={branches}
 						getOptionLabel={(option) => `${option.name}`}
+						InputLabelProps={{ shrink: true }}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
+						// value={employee && employee.branch}
+						// defaultValue={{ id: null, name: "Select a branch" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Group"
-								label="Group"
-								helperText={errors?.group?.message}
-								variant="outlined"
+								placeholder="Select a branch"
+								label="Branch"
 								autoFocus
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-								//
+								// error={!!errors.branch || !value}
+								helperText={errors?.branch?.message}
+								variant="outlined"
+								InputLabelProps={value ? {} : { style: { color: 'red', borderColor: 'red' } }}
 							/>
 						)}
 					/>
 				)}
 			/>
-
+			<Controller
+				name="emp_id_no"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						// error={!!errors.emp_id_no}
+						helperText={errors?.emp_id_no?.message}
+						label={field.value ? 'Employee Id' : <span style={{ color: 'red' }}>Employee Id</span>}
+						id="emp_id_no"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
+			/>
 			<Controller
 				name="first_name"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16  "
-							helperText={<span style={{ color: 'red' }}>{errors?.first_name?.message}</span>}
-							label="Employee Name"
-							id="first_name"
-							variant="outlined"
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						label="First Name"
+						helperText={errors?.first_name?.message}
+						id="firstName"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+					/>
+				)}
 			/>
-
 			<Controller
-				name="father_name"
+				name="last_name"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.father_name?.message}
-							label="Father Name"
-							id="father_name"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						label="Last Name"
+						helperText={errors?.last_name?.message}
+						id="lastName"
+						variant="outlined"
+						fullWidth
+						color="success"
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+					/>
+				)}
 			/>
-
-			<Controller
-				name="mother_name"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.mother_name?.message}
-							label="Mother Name"
-							id="mother_name"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
 			<Controller
 				name="username"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.username?.message}
-							label="User Name"
-							id="username"
-							variant="outlined"
-							InputLabelProps={field?.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						// error={!!errors.username || !field.value}
+						helperText={errors?.username?.message}
+						onBlur={(event) => handleOnChange('username', event)}
+						label="User Name"
+						id="userName"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+					/>
+				)}
 			/>
-
 			<Controller
 				name="email"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.email?.message}
-							label="Email"
-							id="email"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			{employeeId === 'new' && (
-				<>
-					<Controller
-						name="password"
-						control={control}
-						render={({ field }) => (
-							<TextField
-								{...field}
-								className="mt-8 mb-16"
-								label="Password"
-								type="password"
-								helperText={<span style={{ color: 'red' }}>{errors?.password?.message}</span>}
-								variant="outlined"
-								fullWidth
-								InputProps={{
-									className: 'pr-2',
-									type: showPassword ? 'text' : 'password',
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton onClick={() => setShowPassword(!showPassword)}>
-												<Icon
-													className="text-20"
-													color="action"
-												>
-													{showPassword ? 'visibility' : 'visibility_off'}
-												</Icon>
-											</IconButton>
-										</InputAdornment>
-									)
-								}}
-								InputLabelProps={field.value && { shrink: true }}
-							/>
-						)}
-					/>
-					<Controller
-						name="confirmPassword"
-						control={control}
-						render={({ field }) => (
-							<TextField
-								{...field}
-								className="mt-8 mb-16"
-								label="Confirm Password"
-								type="password"
-								helperText={<span style={{ color: 'red' }}>{errors?.confirmPassword?.message}</span>}
-								variant="outlined"
-								fullWidth
-								InputProps={{
-									className: 'pr-2',
-									type: showConfirmPassword ? 'text' : 'password',
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-												<Icon
-													className="text-20"
-													color="action"
-												>
-													{showConfirmPassword ? 'visibility' : 'visibility_off'}
-												</Icon>
-											</IconButton>
-										</InputAdornment>
-									)
-								}}
-								InputLabelProps={field.value && { shrink: true }}
-							/>
-						)}
-					/>
-				</>
-			)}
-
-			<Controller
-				name="gender"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
+				render={({ field }) => (
+					<TextField
+						{...field}
 						className="mt-8 mb-16"
-						freeSolo
-						value={value ? genders.find((data) => data.id === value) : null}
-						options={genders}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
+						type="text"
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+						helperText={errors?.email?.message}
+						onBlur={(event) => handleOnChange('email', event)}
+						label="Email"
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<Icon
+										className="text-20"
+										color="action"
+									>
+										user
+									</Icon>
+								</InputAdornment>
+							)
 						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Gender"
-								label="Gender"
-								helperText={errors?.gender?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-								//
-							/>
-						)}
+						variant="outlined"
+						fullWidth
+					/>
+				)}
+			/>
+			{/* {!updateEmployee && ( */}
+			<Controller
+				name="password"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						label="Password"
+						type="password"
+						helperText={errors?.password?.message}
+						variant="outlined"
+						fullWidth
+						InputProps={{
+							className: 'pr-2',
+							type: showPassword ? 'text' : 'password',
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onClick={() => setShowPassword(!showPassword)}>
+										<Icon
+											className="text-20"
+											color="action"
+										>
+											{showPassword ? 'visibility' : 'visibility_off'}
+										</Icon>
+									</IconButton>
+								</InputAdornment>
+							)
+						}}
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+					/>
+				)}
+			/>
+			<Controller
+				name="confirmPassword"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						label="Confirm Password"
+						type="password"
+						// error={!!errors.confirmPassword || !field.value}
+						helperText={errors?.confirmPassword?.message}
+						variant="outlined"
+						fullWidth
+						InputProps={{
+							className: 'pr-2',
+							type: showPassword ? 'text' : 'password',
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onClick={() => setShowPassword(!showPassword)}>
+										<Icon
+											className="text-20"
+											color="action"
+										>
+											{showPassword ? 'visibility' : 'visibility_off'}
+										</Icon>
+									</IconButton>
+								</InputAdornment>
+							)
+						}}
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 					/>
 				)}
 			/>
@@ -298,7 +281,7 @@ function EmployeeForm(props) {
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<Autocomplete
-							className="mt-8 mb-16 "
+							className="mt-8 mb-16"
 							id="country-select-demo"
 							sx={{ width: 300 }}
 							value={value ? countryCodes.find((country) => country.value === value) : null}
@@ -316,17 +299,17 @@ function EmployeeForm(props) {
 										<img
 											loading="lazy"
 											width="20"
-											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
+											src={`https://flagcdn.com/w20/${prop?.code?.toLowerCase()}.png`}
+											srcSet={`https://flagcdn.com/w40/${prop?.code?.toLowerCase()}.png 2x`}
 											alt=""
 										/>
-										{option.label} ({option.code}) +{option.value}
+										{prop.label} ({prop.code}) +{prop.value}
 									</Box>
 								);
 							}}
 							onChange={(event, newValue) => {
 								onChange(newValue?.value);
-								handleChnageCountry(newValue?.label);
+								// reset({ ...formState, country_code: newValue.value })
 							}}
 							renderInput={(params) => (
 								<TextField
@@ -334,10 +317,10 @@ function EmployeeForm(props) {
 									label="Choose a country"
 									variant="outlined"
 									error={!value}
-									style={{ width: '250px' }}
+									style={{ width: '150px' }}
 									inputProps={{
 										...params.inputProps,
-										autoComplete: 'new-password'
+										autoComplete: 'new-password' // disable autocomplete and autofill
 									}}
 								/>
 							)}
@@ -350,6 +333,7 @@ function EmployeeForm(props) {
 					label="Country Code"
 					style={{ width: '150px' }}
 					value={getCountryCode1 || ''}
+					// defaultValue="Hello World"
 					className="mt-8 mb-16"
 					InputLabelProps={{ shrink: true }}
 					InputProps={{
@@ -364,7 +348,9 @@ function EmployeeForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							label="Primary Phone"
+							// error={!!errors.primary_phone || !field.value}
+							onBlur={(event) => handleOnChange('primary_phone', event)}
+							label="Phone"
 							id="primary_phone"
 							variant="outlined"
 							fullWidth
@@ -373,98 +359,214 @@ function EmployeeForm(props) {
 					)}
 				/>
 			</Box>
-
-			<Controller
-				name="user_type"
-				control={control}
-				render={({ field }) => {
-					return (
+			<Box style={{ display: 'flex' }}>
+				<Controller
+					name="country_code2"
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<Autocomplete
+							className="mt-8 mb-16"
+							id="country-select-demo"
+							sx={{ width: 300 }}
+							value={value ? countryCodes.find((country) => country.value === value) : null}
+							options={countryCodes}
+							autoHighlight
+							getOptionLabel={(option) => option.label}
+							renderOption={(pro, option) => {
+								return (
+									<Box
+										component="li"
+										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+										{...pro}
+									>
+										<img
+											loading="lazy"
+											width="20"
+											src={`https://flagcdn.com/w20/${pro?.code?.toLowerCase()}.png`}
+											srcSet={`https://flagcdn.com/w40/${pro?.code?.toLowerCase()}.png 2x`}
+											alt=""
+										/>
+										{pro.label} ({pro.code}) +{pro.value}
+									</Box>
+								);
+							}}
+							onChange={(event, newValue) => {
+								onChange(newValue?.value);
+								// reset({ ...formState, country_code: newValue.value })
+							}}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Choose a country"
+									variant="outlined"
+									style={{ width: '150px' }}
+									inputProps={{
+										...params.inputProps,
+										autoComplete: 'new-password' // disable autocomplete and autofill
+									}}
+								/>
+							)}
+						/>
+					)}
+				/>
+				<TextField
+					name="show_country_code2"
+					id="filled-read-only-input"
+					label="Country Code"
+					style={{ width: '150px' }}
+					value={getCountryCode2 || ''}
+					className="mt-8 mb-16"
+					InputLabelProps={{ shrink: true }}
+					InputProps={{
+						readOnly: true
+					}}
+					variant="outlined"
+				/>
+				<Controller
+					name="secondary_phone"
+					control={control}
+					render={({ field }) => (
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							helperText={errors?.user_type?.message}
-							label="User Type"
-							id="user_type"
+							error={!!errors.secondary_phone}
+							helperText={errors?.secondary_phone?.message}
+							onBlur={(event) => handleOnChange('secondary_phone', event)}
+							label="Mobile"
+							id="secondary_phone"
 							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
+							InputLabelProps={field.value && { shrink: true }}
 						/>
-					);
-				}}
+					)}
+				/>
+			</Box>
+
+			<Controller
+				name="gender"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? genders.find((gender) => gender.id === value) : null}
+						options={genders}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						// defaultValue={{ id: null, name: "Select a gender" }}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select a gender"
+								label="Gender"
+								variant="outlined"
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+							/>
+						)}
+					/>
+				)}
 			/>
 
+			<Controller
+				name="role"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? roles.find((role) => role.id === value) : null}
+						options={roles}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						// defaultValue={{ id: null, name: "Select a role" }}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select a employee role"
+								label="Role"
+								variant="outlined"
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="department"
+				control={control}
+				render={({ field: { onChange, value } }) => (
+					<Autocomplete
+						className="mt-8 mb-16"
+						freeSolo
+						value={value ? departments.find((department) => department.id === value) : null}
+						options={departments}
+						getOptionLabel={(option) => `${option.name}`}
+						onChange={(event, newValue) => {
+							onChange(newValue?.id);
+						}}
+						// defaultValue={{ id: null, name: "Select a deparment" }}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								placeholder="Select a employee department"
+								label="Department"
+								variant="outlined"
+								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+							/>
+						)}
+					/>
+				)}
+			/>
+			<Controller
+				name="street_address_one"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.street_address_one}
+						helperText={errors?.street_address_one?.message}
+						//
+						label="Primary address"
+						id="address1"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
+			/>
+			<Controller
+				name="street_address_two"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.street_address_two}
+						helperText={errors?.street_address_two?.message}
+						label="Secondary address"
+						id="address2"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
+			/>
 			<Controller
 				name="date_of_birth"
 				control={control}
 				render={({ field }) => (
 					<CustomDatePicker
 						field={field}
-						label="Date of Birth"
-						required
-						className="mt-8 mb-16 w-full"
-						error={!!errors.date_of_birth}
-						helperText={errors?.date_of_birth?.message}
-						placeholder="DD-MM-YYYY"
+						label="Birthday"
 					/>
 				)}
 			/>
 
-			<Controller
-				name="is_active"
-				control={control}
-				render={({ field }) => (
-					<FormControl>
-						<FormControlLabel
-							label="Is active"
-							control={
-								<Checkbox
-									{...field}
-									color="primary"
-									checked={field.value || false}
-								/>
-							}
-						/>
-					</FormControl>
-				)}
-			/>
-
-			<Controller
-				name="street_address_one"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.street_address_one?.message}
-							label="Street Address One"
-							id="street_address_one"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="street_address_two"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.street_address_two?.message}
-							label="Street Address Two"
-							id="street_address_two"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
 			<Controller
 				name="country"
 				control={control}
@@ -472,23 +574,23 @@ function EmployeeForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? countries.find((data) => data.id === value) : null}
+						value={value ? countries.find((country) => country.id === value) : null}
 						options={countries}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
+						// defaultValue={{ id: null, name: "Select a country" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Country"
+								placeholder="Select a country"
 								label="Country"
-								helperText={errors?.country?.message}
 								variant="outlined"
+								//
 								InputLabelProps={{
 									shrink: true
 								}}
-								//
 							/>
 						)}
 					/>
@@ -502,20 +604,21 @@ function EmployeeForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? cities.find((data) => data.id === value) : null}
+						value={value ? cities.find((city) => city.id === value) : null}
 						options={cities}
-						getOptionLabel={(option) => `${option?.name}`}
+						getOptionLabel={(option) => `${option.name}`}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 							dispatch(getThanasBasedOnCity(newValue?.id));
 						}}
+						// defaultValue={{ id: null, name: "Select a city" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select District"
+								placeholder="Select a city"
 								label="District"
-								helperText={errors?.city?.message}
 								variant="outlined"
+								//
 								InputLabelProps={{
 									shrink: true
 								}}
@@ -532,22 +635,24 @@ function EmployeeForm(props) {
 					<Autocomplete
 						className="mt-8 mb-16"
 						freeSolo
-						value={value ? thanas.find((data) => data?.id === value) : null}
+						value={value ? thanas.find((thana) => thana.id === value) : null}
 						options={thanas}
-						getOptionLabel={(option) => `${option?.name}`}
+						getOptionLabel={(option) => `${option.name}`}
+						// defaultValue={{ id: null, name: "Select a thana" }}
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								placeholder="Select Police Station"
+								placeholder="Select a police station"
 								label="Police Station"
-								helperText={errors?.thana?.message}
 								variant="outlined"
+								//
 								InputLabelProps={{
 									shrink: true
 								}}
+								InputProps={{ ...params.InputProps, type: 'search' }}
 							/>
 						)}
 					/>
@@ -557,60 +662,116 @@ function EmployeeForm(props) {
 			<Controller
 				name="postal_code"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.postal_code?.message}
-							label="Postal Code"
-							id="postal_code"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.postal_code}
+						helperText={errors?.postal_code?.message}
+						label="Postal Code"
+						id="postal_code"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
 			/>
-
 			<Controller
 				name="nid"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.nid?.message}
-							label="NID"
-							id="nid"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.nid}
+						helperText={errors?.nid?.message}
+						label="National Id"
+						id="nid"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
 			/>
 
 			<Controller
-				name="notes"
+				name="basic_money"
 				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors.notes?.message}
-							label="Notes*"
-							id="notes"
-							multiline
-							rows={4}
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.basic_money}
+						helperText={errors?.basic_money?.message}
+						label="Basic Money"
+						id="basic_money"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
+			/>
+			<Controller
+				name="allowance_money"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						error={!!errors.allowance_money}
+						helperText={errors?.allowance_money?.message}
+						label="Allowance Money"
+						id="allowance_money"
+						variant="outlined"
+						fullWidth
+						InputLabelProps={field.value && { shrink: true }}
+					/>
+				)}
+			/>
+			<Controller
+				name="emp_join_date"
+				control={control}
+				render={({ field }) => (
+					<CustomDatePicker
+						field={field}
+						label="Join Date"
+					/>
+				)}
+			/>
+			<Controller
+				name="is_active"
+				control={control}
+				render={({ field }) => (
+					<FormControl>
+						<FormControlLabel
+							//
+							label="Is active"
+							control={
+								<Checkbox
+									{...field}
+									checked={field.value ? field.value : false}
+								/>
+							}
 						/>
-					);
-				}}
+					</FormControl>
+				)}
+			/>
+			<Controller
+				name="is_admin"
+				control={control}
+				render={({ field }) => (
+					<FormControl>
+						<FormControlLabel
+							label="Is admin"
+							control={
+								<Checkbox
+									{...field}
+									checked={field.value ? field.value : false}
+								/>
+							}
+						/>
+					</FormControl>
+				)}
 			/>
 
 			<div className="text-center">
