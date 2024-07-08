@@ -27,7 +27,7 @@ function MultipleStatusUpdateForm() {
   const [mltPassengerList, setMltPassengerList] = useState([]);
   const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
   const [selectedValue, setSelectedValue] = useState('current_status');
-
+const [passengerStatus,setPassengerStatus]=useState([])
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
 
   const handleChangeCurrentStatus = (event) => {
@@ -83,14 +83,14 @@ function MultipleStatusUpdateForm() {
 
  
 
-const handleFilterPassenger = (page, size) => {
+const handleFilterPassenger = (status_value) => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
 		};
-		fetch(`${GET_PASSENGER_BY_PASSENGER_STATUS}?status_value=${status_value}&status_value=${status_value}`, authTOKEN)
+		fetch(`${GET_PASSENGER_BY_PASSENGER_STATUS}?status_value=${status_value}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => {
 				setFilterPassengers(data?.passengers);
@@ -99,10 +99,14 @@ const handleFilterPassenger = (page, size) => {
 			.catch(() => {});
 	};
 
-  useEffect(() => {
-    handleFilterPassenger(getValues('selected_status'));
-  }, [getValues('selected_status')]);
+useEffect(() => {
+		const selectedStatus = getValues('selected_status');
 
+		if (selectedStatus) {
+			handleFilterPassenger(selectedStatus);
+			setPassengerStatus('passengers');
+		}
+	}, [getValues('selected_status'), passengerStatus]);
 
   return (
 	  <div>
