@@ -94,7 +94,7 @@ const handleFilterPassenger = (status_value) => {
 			.then((response) => response.json())
 			.then((data) => {
 				setFilterPassengers(data?.passengers);
-				setTotalData({ total_pages: data.total_pages, total_elements: data.total_elements });
+			
 			})
 			.catch(() => {});
 	};
