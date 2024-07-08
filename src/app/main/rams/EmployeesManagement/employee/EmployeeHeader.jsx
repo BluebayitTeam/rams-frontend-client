@@ -25,9 +25,11 @@ function EmployeeHeader() {
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
+	const { name, image, featuredImageId } = watch();
 	const handleDelete = localStorage.getItem('deleteEmployee');
 	const handleUpdate = localStorage.getItem('updateEmployee');
+
+	// console.log('image', image);
 
 	function handleUpdateEmployee() {
 		saveEmployee(getValues()).then((data) => {
@@ -49,7 +51,7 @@ function EmployeeHeader() {
 
 	function handleRemoveEmployee(dispatch) {
 		removeEmployee(employeeId);
-		DeletedSuccessfully;
+		DeletedSuccessfully();
 		navigate('/apps/employee/employees');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
@@ -83,12 +85,31 @@ function EmployeeHeader() {
 
 				<div className="flex items-center max-w-full">
 					<motion.div
+						className="hidden sm:flex"
+						initial={{ scale: 0 }}
+						animate={{ scale: 1, transition: { delay: 0.3 } }}
+					>
+						{image ? (
+							<img
+								className="w-32 sm:w-48 rounded"
+								src={image}
+								alt={name}
+							/>
+						) : (
+							<img
+								className="w-32 sm:w-48 rounded"
+								src="assets/logos/user.jpg"
+								alt={name}
+							/>
+						)}
+					</motion.div>
+					<motion.div
 						className="flex flex-col min-w-0 mx-8 sm:mx-16"
 						initial={{ x: -20 }}
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'Create New Employee'}
+							{name || 'New Employee'}
 						</Typography>
 						<Typography
 							variant="caption"
@@ -103,7 +124,7 @@ function EmployeeHeader() {
 			<motion.div
 				className="flex"
 				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
 				{handleDelete === 'deleteEmployee' && employeeId !== 'new' && (
 					<Typography
@@ -115,19 +136,18 @@ function EmployeeHeader() {
 				)}
 				{handleDelete === 'deleteEmployee' && employeeId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-1 "
 						variant="contained"
 						color="secondary"
 						onClick={handleRemoveEmployee}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
 				{employeeId === 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-4 "
 						variant="contained"
 						color="secondary"
 						disabled={_.isEmpty(dirtyFields) || !isValid}
@@ -138,19 +158,17 @@ function EmployeeHeader() {
 				)}
 				{handleDelete !== 'deleteEmployee' && handleUpdate === 'updateEmployee' && employeeId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 						color="secondary"
 						variant="contained"
-						style={{ backgroundColor: '#4dc08e', color: 'white' }}
 						onClick={handleUpdateEmployee}
 					>
 						Update
 					</Button>
 				)}
 				<Button
-					className="whitespace-nowrap mx-4"
+					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel

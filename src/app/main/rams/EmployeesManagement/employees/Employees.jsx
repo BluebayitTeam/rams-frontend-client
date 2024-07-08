@@ -4,12 +4,8 @@ import { useState } from 'react';
 import EmployeesHeader from './EmployeesHeader';
 import EmployeesTable from './EmployeesTable';
 
-/**
- * The employees page.
- */
 function Employees() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-
 	const [searchKey, setSearchKey] = useState('');
 	return (
 		<FusePageCarded

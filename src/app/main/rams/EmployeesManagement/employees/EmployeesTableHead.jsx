@@ -7,9 +7,6 @@ import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
 import { useDeleteEmployeesMutation } from '../EmployeesApi';
 
-/**
- * The employees table head component.
- */
 function EmployeesTableHead(props) {
 	const { selectedEmployeeIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
 	const [removeEmployees] = useDeleteEmployeesMutation();
@@ -29,7 +26,7 @@ function EmployeesTableHead(props) {
 
 	return (
 		<TableHead>
-			<TableRow className="h-48 sm:h-64 px-96">
+			<TableRow className="h-48 sm:h-64">
 				{props?.rows.map((row, index, array) => {
 					return (
 						<TableCell

@@ -9,19 +9,30 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import EmployeeHeader from './EmployeeHeader';
 import EmployeeModel from './models/EmployeeModel';
 import { useGetEmployeeQuery } from '../EmployeesApi';
 import EmployeeForm from './EmployeeForm';
+import OpeningBalance from './tabs/OpeningBalance';
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a employee name')
-		.min(5, 'The employee name must be at least 5 characters')
-});
+const schema = z
+	.object({
+		first_name: z
+			.string()
+			.nonempty('You must enter an employee name')
+			.min(5, 'The employee name must be at least 5 characters'),
+
+		password: z.string().min(6, 'Password must be at least 6 characters'),
+		confirmPassword: z.string().min(6, 'Password must be at least 6 characters')
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: 'Passwords must match',
+		path: ['confirmPassword']
+	});
 
 function Employee() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -35,16 +46,16 @@ function Employee() {
 	} = useGetEmployeeQuery(employeeId, {
 		skip: !employeeId || employeeId === 'new'
 	});
-	console.log('employeeId', employee, employeeId);
 
 	const [tabValue, setTabValue] = useState(0);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
 	const { reset, watch } = methods;
-	const form = watch();
+
 	useEffect(() => {
 		if (employeeId === 'new') {
 			reset(EmployeeModel({}));
@@ -65,9 +76,6 @@ function Employee() {
 		return <FuseLoading />;
 	}
 
-	/**
-	 * Show Message if the requested employees is not exists
-	 */
 	if (isError && employeeId !== 'new') {
 		return (
 			<motion.div
@@ -85,7 +93,7 @@ function Employee() {
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/employee/employees"
+					to="/apps/employee/employee"
 					color="inherit"
 				>
 					Go to Employees Page
@@ -97,15 +105,65 @@ function Employee() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				contentToolbar={
+					<Tabs
+						value={tabValue}
+						onChange={handleTabChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto"
+						classes={{ root: 'w-full h-64' }}
+					>
+						<Tab
+							className="h-64"
+							label="Basic Info"
+						/>
+						<Tab
+							className="h-64"
+							label="Opening Balance"
+						/>
+					</Tabs>
+				}
 				header={<EmployeeHeader />}
 				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<EmployeeForm employeeId={employeeId} />
+					<>
+						<Tabs
+							value={tabValue}
+							onChange={handleTabChange}
+							indicatorColor="secondary"
+							textColor="secondary"
+							variant="scrollable"
+							scrollButtons="auto"
+							classes={{ root: 'w-full h-64 border-b-1' }}
+						>
+							<Tab
+								className="h-64"
+								label="Basic Info"
+							/>
+							{employeeId !== 'new' && (
+								<Tab
+									className="h-64"
+									label="Opening Balance"
+								/>
+							)}
+						</Tabs>
+						<div className="p-16">
+							<div className={tabValue !== 0 ? 'hidden' : ''}>
+								<EmployeeForm employeeId={employeeId} />
+							</div>
+
+							<div className={tabValue !== 1 ? 'hidden' : ''}>
+								<OpeningBalance />
+							</div>
 						</div>
-					</div>
+					</>
 				}
-				scroll={isMobile ? 'normal' : 'content'}
+				innerScroll
 			/>
 		</FormProvider>
 	);
