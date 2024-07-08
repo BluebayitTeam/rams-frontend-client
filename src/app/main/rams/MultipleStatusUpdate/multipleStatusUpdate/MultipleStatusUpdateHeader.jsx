@@ -35,11 +35,9 @@ function MultipleStatusUpdateHeader({ handleReset }) {
         current_status: getValues()?.current_status,
         date: getValues()?.date,
         passengers: getValues()?.passengers,
-        selected_status: getValues()?.status_value, 
-      status_value: getValues()?.selected_status, 
+        status: getValues()?.selected_status, 
+      value: getValues()?.status_value, 
 
-        selected_value:getValues()?.selected_value, 
-        // status: getValues()?.status_value 
     };
 
     createMultipleStatusUpdate(modifiedData)

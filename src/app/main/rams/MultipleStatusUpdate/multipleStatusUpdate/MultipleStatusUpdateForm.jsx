@@ -67,23 +67,17 @@ const [passengers,setPassengers]=useState([])
     }
   };
 
-  // useEffect(() => {
-  //   if (mltPassengerList?.length > 0 && watch('passenger') ) {
-  //     setValue('is_form_save', true);
-  //   } else {
-  //     setValue('is_form_save', false);
-  //   }
-  // }, [mltPassengerList, watch('passenger')]);
-console.log(`sdbaskdj`,watch('selected_value'))
+
+console.log(`sdbaskdj`,watch('status_value'))
 
 useEffect(() => {
   // Check if mltPassengerList has items and watch('passenger') is truthy
-  if (mltPassengerList?.length > 0 && watch('passenger') && watch('selected_value') ) {
+  if (mltPassengerList?.length > 0 && watch('passenger') && watch('status_value') ) {
     setValue('is_form_save', true);
   } else {
     setValue('is_form_save', false);
   }
-}, [mltPassengerList, watch('passenger'), watch('selected_status'),watch('selected_value') ]);
+}, [mltPassengerList, watch('passenger'), watch('selected_status'),watch('status_value') ]);
 
 
 
@@ -258,7 +252,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
+                                setValue('status_value', newValue?.id)
 
               }}
               renderInput={(params) => (
@@ -301,7 +295,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
+                                setValue('status_value', newValue?.id)
 
               }}
               renderInput={(params) => (
@@ -335,7 +329,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
+                                setValue('status_value', newValue?.id)
 
               }}
               renderInput={(params) => (
@@ -370,7 +364,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id)
+                setValue('status_value', newValue?.id)
               }}
               renderInput={(params) => (
                 <TextField
@@ -403,7 +397,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
+                                setValue('status_value', newValue?.id)
 
               }}
               renderInput={(params) => (
@@ -439,7 +433,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
+                                setValue('status_value', newValue?.id)
 
               }}
               renderInput={(params) => (
@@ -473,7 +467,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
+                                setValue('status_value', newValue?.id)
 
               }}
               renderInput={(params) => (

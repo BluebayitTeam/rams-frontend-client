@@ -5,9 +5,8 @@ const MultipleStatusUpdateModel = (data) =>
 	_.defaults(data || {}, {
 		date: moment(new Date()).format('YYYY-MM-DD'),
 		current_status: '',
-
 		passengers: '',
-		selected_value: ''
-		// status: ''
+		status: '',
+		value: ''
 	});
 export default MultipleStatusUpdateModel;
