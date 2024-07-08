@@ -8,7 +8,7 @@ import {
   RadioGroup,
   TextField,
 } from '@mui/material';
-import { getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
+import { getCurrentStatuss } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,13 +21,12 @@ function MultipleStatusUpdateForm() {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { control, formState, setValue, watch, getValues } = methods;
-  console.log('tesgfsfgs', getValues());
   const { errors } = formState;
-  const passengers = useSelector((state) => state.data.passengers);
+const [passengers,setPassengers]=useState([])
   const [mltPassengerList, setMltPassengerList] = useState([]);
   const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
   const [selectedValue, setSelectedValue] = useState('current_status');
-const [passengerStatus,setPassengerStatus]=useState([])
+
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
 
   const handleChangeCurrentStatus = (event) => {
@@ -48,7 +47,6 @@ const [passengerStatus,setPassengerStatus]=useState([])
   }, [mltPassengerDeletedId]);
 
   useEffect(() => {
-    dispatch(getPassengers());
     dispatch(getCurrentStatuss());
   }, []);
 
@@ -77,40 +75,29 @@ const [passengerStatus,setPassengerStatus]=useState([])
     }
   }, [mltPassengerList, watch('passenger')]);
 
-  useEffect(() => {
-    setValue('selected_status', null);
-  }, [setValue]);
 
- 
-
-const handleFilterPassenger = (status_value) => {
+useEffect(() => {
 		const authTOKEN = {
 			headers: {
 				'Content-type': 'application/json',
 				Authorization: localStorage.getItem('jwt_access_token')
 			}
-		};
-		fetch(`${GET_PASSENGER_BY_PASSENGER_STATUS}?status_value=${status_value}`, authTOKEN)
+    };
+  setValue('passenger','')
+		fetch(`${GET_PASSENGER_BY_PASSENGER_STATUS}?status_value=${watch('selected_status')}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => {
-				setFilterPassengers(data?.passengers);
+				setPassengers(data);
 			
 			})
 			.catch(() => {});
-	};
+	}, [watch('selected_status')]);
 
-useEffect(() => {
-		const selectedStatus = getValues('selected_status');
 
-		if (selectedStatus) {
-			handleFilterPassenger(selectedStatus);
-			setPassengerStatus('passengers');
-		}
-	}, [getValues('selected_status'), passengerStatus]);
 
   return (
-    <div>
-      <div>
+	  <div>
+		   <div>
         <Controller
           name="date"
           control={control}
@@ -160,9 +147,10 @@ useEffect(() => {
             )}
           />
         )}
-      />
+		  />
+		  
 
-      {/* Radio Button work start here */}
+		  {/* Radio Button work start here */}
 
 		  <Controller
 				name="selected_status"
@@ -175,9 +163,7 @@ useEffect(() => {
 						id="selected_status"
 						onChange={(e) => {
 							field.onChange(e.target.value);
-              field.onChange(e.target.value);
               setMltPassengerList([]);
-							setFilterPassengers([]);
 							setValue('passenger', '');
               setValue('medical_result', null);
               setValue('stamping_status', null);
@@ -194,37 +180,31 @@ useEffect(() => {
 						>
 							Select Status
 						</FormLabel>
-						
-						
-            
-            <FormControlLabel
+						 <FormControlLabel
 							value="medical_result"
 							control={<Radio />}
 							label="Medical"
 						/>
-
-						
-            
-             <FormControlLabel
+            <FormControlLabel
 							value="stamping_status"
 							control={<Radio />}
 							label="Visa"
 						/>
 						
             <FormControlLabel
-              value="training_card_status"
-              control={<Radio />}
-              label="Training"
-            />
-            <FormControlLabel
-              value="man_power_status"
-              control={<Radio />}
-              label="Manpower"
-            />
-            <FormControlLabel
-              value="police_clearance_status"
-              control={<Radio />}
-              label="Police Clearance "
+							value="training_card_status"
+							control={<Radio />}
+							label="Training"
+						/>
+						<FormControlLabel
+							value="man_power_status"
+							control={<Radio />}
+							label="Manpower"
+						/>
+						<FormControlLabel
+							value="police_clearance_status"
+							control={<Radio />}
+							label="Police Clearance "
             />
             
             
@@ -250,44 +230,47 @@ useEffect(() => {
           name="medical_result"
           control={control}
             render={({ field: { onChange, value } }) => (
-              <Autocomplete
-                className="mt-8 mb-16 w-11/12	"
-                freeSolo
-                value={
-                  value
-                    ? medicalResults.find((data) => data.id === value)
-                    : null
-                }
-                options={medicalResults}
-                getOptionLabel={(option) => `${option.name}`}
-                onChange={(event, newValue) => {
-                  onChange(newValue?.id);
-                  setValue('selected_value', newValue?.id);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Select Medical Status"
-                    label="Medical Status"
-                    error={
-                      !!errors.current_status ||
-                      (selectedValue === 'medical_result' && !value)
-                    }
-                    helperText={errors?.current_status?.message}
-                    variant="outlined"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                )}
-              />
-            )}
-          />
-        </div>
-      )}
+            
+            <Autocomplete
+              className="mt-8 mb-16 w-11/12	"
+              freeSolo
+              value={
+                value ? medicalResults.find((data) => data.id === value) : null
+              }
+              options={medicalResults}
+              getOptionLabel={(option) => `${option.name}`}
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+                                setValue('selected_value', newValue?.id)
 
-      {watch('selected_status') === 'stamping_status' && (
-        <Controller
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Select Medical Status"
+                  label="Medical Status"
+                  
+                  id="medical_result"
+                  helperText={errors?.current_status?.message}
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          )}
+          />
+          
+          
+
+					
+				</div>
+      )}
+      
+
+       
+    {watch('selected_status') === 'stamping_status' &&     <Controller
           name="stamping_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -301,17 +284,15 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   placeholder="Select Visa Status"
                   label="Visa Status"
-                  error={
-                    !!errors.stamping_status ||
-                    (selectedValue === 'stamping_status' && !value)
-                  }
+                  id="stamping_status"
                   helperText={errors?.stamping_status?.message}
                   variant="outlined"
                   InputLabelProps={{
@@ -321,11 +302,9 @@ useEffect(() => {
               )}
             />
           )}
-        />
-      )}
-
-      {watch('selected_status') === 'training_card_status' && (
-        <Controller
+        />}
+     
+  {watch('selected_status') === 'training_card_status' &&       <Controller
           name="training_card_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -339,17 +318,15 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   placeholder="Select Training Status"
                   label="Training Status"
-                  error={
-                    !!errors.training_card_status ||
-                    (selectedValue === 'training_card_status' && !value)
-                  }
+                  id="training_card_status"
                   helperText={errors?.training_card_status?.message}
                   variant="outlined"
                   InputLabelProps={{
@@ -360,10 +337,9 @@ useEffect(() => {
             />
           )}
         />
-      )}
-
-      {watch('selected_status') === 'man_power_status' && (
-        <Controller
+    }
+    
+      {watch('selected_status') === 'man_power_status' &&   <Controller
           name="man_power_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -377,17 +353,14 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id);
+                setValue('selected_value', newValue?.id)
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   placeholder="Select Manpower Status"
                   label="Manpower Status"
-                  error={
-                    !!errors.man_power_status ||
-                    (selectedValue === 'man_power_status' && !value)
-                  }
+                  id='man_power_status'
                   helperText={errors?.man_power_status?.message}
                   variant="outlined"
                   InputLabelProps={{
@@ -397,11 +370,9 @@ useEffect(() => {
               )}
             />
           )}
-        />
-      )}
-
-      {watch('selected_status') === 'police_clearance_status' && (
-        <Controller
+        />}
+  
+     {watch('selected_status') === 'police_clearance_status' &&    <Controller
           name="police_clearance_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -415,17 +386,15 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   placeholder="Select Police Clearance Status"
                   label="Police Clearance Status"
-                  error={
-                    !!errors.police_clearance_status ||
-                    (selectedValue === 'police_clearance_status' && !value)
-                  }
+                 id='police_clearance_status'
                   helperText={errors?.police_clearance_status?.message}
                   variant="outlined"
                   InputLabelProps={{
@@ -435,11 +404,11 @@ useEffect(() => {
               )}
             />
           )}
-        />
-      )}
+        />}
+    
 
-      {watch('selected_status') === 'driving_license_status' && (
-        <Controller
+      
+       {watch('selected_status') === 'driving_license_status' &&      <Controller
           name="driving_license_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -453,17 +422,15 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   placeholder="Select Driving License Status"
                   label="Driving License Status"
-                  error={
-                    !!errors.driving_license_status ||
-                    (selectedValue === 'driving_license_status' && !value)
-                  }
+                  id='driving_license_status'
                   helperText={errors?.driving_license_status?.message}
                   variant="outlined"
                   InputLabelProps={{
@@ -473,11 +440,9 @@ useEffect(() => {
               )}
             />
           )}
-        />
-      )}
+        />}
 
-      {watch('selected_status') === 'finger_status' && (
-        <Controller
+   {watch('selected_status') === 'finger_status' &&      <Controller
           name="finger_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -491,17 +456,15 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id);
+                                setValue('selected_value', newValue?.id)
+
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   placeholder="Select Finger Status"
                   label="Finger Status"
-                  error={
-                    !!errors.finger_status ||
-                    (selectedValue === 'finger_status' && !value)
-                  }
+                  id='finger_status'
                   helperText={errors?.finger_status?.message}
                   variant="outlined"
                   InputLabelProps={{
@@ -511,8 +474,7 @@ useEffect(() => {
               )}
             />
           )}
-        />
-      )}
+        />}
 
       <Controller
         name="passenger"
@@ -536,7 +498,7 @@ useEffect(() => {
                 placeholder="Select Passenger"
                 label="Passenger"
                 error={!value}
-                helperText={errors?.passengers?.message}
+                helperText={errors?.passenger?.message}
                 variant="outlined"
                 InputLabelProps={{
                   shrink: true,
