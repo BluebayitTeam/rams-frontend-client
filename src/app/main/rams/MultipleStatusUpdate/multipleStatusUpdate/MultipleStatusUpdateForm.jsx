@@ -66,10 +66,6 @@ const [passengers,setPassengers]=useState([])
       }
     }
   };
-
-
-console.log(`sdbaskdj`,watch('status_value'))
-
 useEffect(() => {
   // Check if mltPassengerList has items and watch('passenger') is truthy
   if (mltPassengerList?.length > 0 && watch('passenger') && watch('status_value') ) {
@@ -78,9 +74,6 @@ useEffect(() => {
     setValue('is_form_save', false);
   }
 }, [mltPassengerList, watch('passenger'), watch('selected_status'),watch('status_value') ]);
-
-
-
 
   useEffect(() => {
   const selectedStatus = watch('selected_status');
@@ -159,11 +152,8 @@ useEffect(() => {
           />
         )}
 		  />
-		  
-
-		  {/* Radio Button work start here */}
-
-		  <Controller
+		{/* Radio Button work start here */}
+     <Controller
 				name="selected_status"
 				control={control}
 				className="my-10"
@@ -201,8 +191,7 @@ useEffect(() => {
 							control={<Radio />}
 							label="Visa"
 						/>
-						
-            <FormControlLabel
+					<FormControlLabel
 							value="training_card_status"
 							control={<Radio />}
 							label="Training"
@@ -217,10 +206,7 @@ useEffect(() => {
 							control={<Radio />}
 							label="Police Clearance "
             />
-            
-            
-            
-						<FormControlLabel
+            <FormControlLabel
 							value="driving_license_status"
 							control={<Radio />}
 							label="Driving License"
@@ -251,8 +237,8 @@ useEffect(() => {
               options={medicalResults}
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
-                onChange(newValue?.id);
-                                setValue('status_value', newValue?.id)
+              onChange(newValue?.id);
+              setValue('status_value', newValue?.id)
 
               }}
               renderInput={(params) => (
@@ -278,10 +264,7 @@ useEffect(() => {
 					
 				</div>
       )}
-      
-
-       
-    {watch('selected_status') === 'stamping_status' &&     <Controller
+      {watch('selected_status') === 'stamping_status' &&<Controller
           name="stamping_status"
           control={control}
           render={({ field: { onChange, value } }) => (
