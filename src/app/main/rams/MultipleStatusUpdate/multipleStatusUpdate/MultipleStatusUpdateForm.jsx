@@ -243,7 +243,7 @@ useEffect(() => {
             render={({ field: { onChange, value } }) => (
             
             <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
+              className="mt-8 mb-16 w-full	"
               freeSolo
               value={
                 value ? medicalResults.find((data) => data.id === value) : null
@@ -286,7 +286,7 @@ useEffect(() => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-11/12"
+              className="mt-8 mb-16 w-full"
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -320,7 +320,7 @@ useEffect(() => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
+              className="mt-8 mb-16 w-full	"
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -355,7 +355,7 @@ useEffect(() => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
+              className="mt-8 mb-16 w-full	"
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -388,7 +388,7 @@ useEffect(() => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
+              className="mt-8 mb-16 w-full	"
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -424,7 +424,7 @@ useEffect(() => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
+              className="mt-8 mb-16 w-full	"
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -458,7 +458,7 @@ useEffect(() => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
+              className="mt-8 mb-16 w-full	"
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
