@@ -77,8 +77,8 @@ const [passengerStatus,setPassengerStatus]=useState([])
     }
   }, [mltPassengerList, watch('passenger')]);
 
-    useEffect(() => {
-    setValue('selected_status', null); 
+  useEffect(() => {
+    setValue('selected_status', null);
   }, [setValue]);
 
  
@@ -109,8 +109,8 @@ useEffect(() => {
 	}, [getValues('selected_status'), passengerStatus]);
 
   return (
-	  <div>
-		   <div>
+    <div>
+      <div>
         <Controller
           name="date"
           control={control}
@@ -160,10 +160,9 @@ useEffect(() => {
             )}
           />
         )}
-		  />
-		  
+      />
 
-		  {/* Radio Button work start here */}
+      {/* Radio Button work start here */}
 
 		  <Controller
 				name="selected_status"
@@ -213,19 +212,19 @@ useEffect(() => {
 						/>
 						
             <FormControlLabel
-							value="training_card_status"
-							control={<Radio />}
-							label="Training"
-						/>
-						<FormControlLabel
-							value="man_power_status"
-							control={<Radio />}
-							label="Manpower"
-						/>
-						<FormControlLabel
-							value="police_clearance_status"
-							control={<Radio />}
-							label="Police Clearance "
+              value="training_card_status"
+              control={<Radio />}
+              label="Training"
+            />
+            <FormControlLabel
+              value="man_power_status"
+              control={<Radio />}
+              label="Manpower"
+            />
+            <FormControlLabel
+              value="police_clearance_status"
+              control={<Radio />}
+              label="Police Clearance "
             />
             
             
@@ -251,49 +250,44 @@ useEffect(() => {
           name="medical_result"
           control={control}
             render={({ field: { onChange, value } }) => (
-            
-            <Autocomplete
-              className="mt-8 mb-16 w-11/12	"
-              freeSolo
-              value={
-                value ? medicalResults.find((data) => data.id === value) : null
-              }
-              options={medicalResults}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
-
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Select Medical Status"
-                  label="Medical Status"
-                  error={
-                    !!errors.current_status ||
-                    (selectedValue === 'medical_result' && !value)
-                  }
-                  helperText={errors?.current_status?.message}
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
+              <Autocomplete
+                className="mt-8 mb-16 w-11/12	"
+                freeSolo
+                value={
+                  value
+                    ? medicalResults.find((data) => data.id === value)
+                    : null
+                }
+                options={medicalResults}
+                getOptionLabel={(option) => `${option.name}`}
+                onChange={(event, newValue) => {
+                  onChange(newValue?.id);
+                  setValue('selected_value', newValue?.id);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Select Medical Status"
+                    label="Medical Status"
+                    error={
+                      !!errors.current_status ||
+                      (selectedValue === 'medical_result' && !value)
+                    }
+                    helperText={errors?.current_status?.message}
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            )}
           />
-          
-          
-
-					
-				</div>
+        </div>
       )}
-      
 
-       
-    {watch('selected_status') === 'stamping_status' &&     <Controller
+      {watch('selected_status') === 'stamping_status' && (
+        <Controller
           name="stamping_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -307,8 +301,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
-
+                setValue('selected_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -328,9 +321,11 @@ useEffect(() => {
               )}
             />
           )}
-        />}
-     
-  {watch('selected_status') === 'training_card_status' &&       <Controller
+        />
+      )}
+
+      {watch('selected_status') === 'training_card_status' && (
+        <Controller
           name="training_card_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -344,8 +339,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
-
+                setValue('selected_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -366,9 +360,10 @@ useEffect(() => {
             />
           )}
         />
-    }
-    
-      {watch('selected_status') === 'man_power_status' &&   <Controller
+      )}
+
+      {watch('selected_status') === 'man_power_status' && (
+        <Controller
           name="man_power_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -382,7 +377,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('selected_value', newValue?.id)
+                setValue('selected_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -402,9 +397,11 @@ useEffect(() => {
               )}
             />
           )}
-        />}
-  
-     {watch('selected_status') === 'police_clearance_status' &&    <Controller
+        />
+      )}
+
+      {watch('selected_status') === 'police_clearance_status' && (
+        <Controller
           name="police_clearance_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -418,8 +415,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
-
+                setValue('selected_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -439,11 +435,11 @@ useEffect(() => {
               )}
             />
           )}
-        />}
-    
+        />
+      )}
 
-      
-       {watch('selected_status') === 'driving_license_status' &&      <Controller
+      {watch('selected_status') === 'driving_license_status' && (
+        <Controller
           name="driving_license_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -457,8 +453,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
-
+                setValue('selected_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -478,9 +473,11 @@ useEffect(() => {
               )}
             />
           )}
-        />}
+        />
+      )}
 
-   {watch('selected_status') === 'finger_status' &&      <Controller
+      {watch('selected_status') === 'finger_status' && (
+        <Controller
           name="finger_status"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -494,8 +491,7 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('selected_value', newValue?.id)
-
+                setValue('selected_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -515,7 +511,8 @@ useEffect(() => {
               )}
             />
           )}
-        />}
+        />
+      )}
 
       <Controller
         name="passenger"
