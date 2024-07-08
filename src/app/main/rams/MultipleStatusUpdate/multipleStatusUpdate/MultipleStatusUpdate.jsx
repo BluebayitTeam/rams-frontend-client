@@ -2,20 +2,18 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import MultipleStatusUpdateHeader from './MultipleStatusUpdateHeader';
 import MultipleStatusUpdateModel from './models/MultipleStatusUpdateModel';
 import MultipleStatusUpdateForm from './MultipleStatusUpdateForm';
 /**
  * Form Validation Schema
  */
-const schema = z.object({
-	passenger: z
-		.string()
-		.nonempty('You must enter a multipleStatusUpdate name')
-		.min(5, 'The multipleStatusUpdate name must be at least 5 characters')
-});
+// const schema = z.object({
+// 	passenger: z
+// 		.string()
+// 		.nonempty('You must enter a multipleStatusUpdate name')
+// 		.min(5, 'The multipleStatusUpdate name must be at least 5 characters')
+// });
 
 function MultipleStatusUpdate() {
 	const routeParams = useParams();
@@ -25,8 +23,8 @@ function MultipleStatusUpdate() {
 
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
+		defaultValues: {}
+		// resolver: zodResolver(schema)
 	});
 	const { reset } = methods;
 	useEffect(() => {

@@ -27,46 +27,7 @@ function MultipleStatusUpdateHeader({ handleReset }) {
   const passenger = watch('passenger');
   const isFormSave = watch('is_form_save');
 
-  // function filterUndefinedValues(obj) {
-  //   if (obj === null || typeof obj !== "object") {
-  //     return obj; // Return the value if it is not an object or is null
-  //     // eslint-disable-next-line prettier/prettier
-  //   }
-
-  //   if (Array.isArray(obj)) {
-  //     return obj
-  //       .map((item) => filterUndefinedValues(item)) // Recursively filter array items
-  //       .filter((item) => item !== undefined); // Filter out undefined items
-  //   }
-
-  //   const filteredObj = {};
-  //   for (const [key, value] of Object.entries(obj)) {
-  //     if (value !== undefined) {
-  //       filteredObj[key] = filterUndefinedValues(value);
-  //     }
-  //   }
-
-  //   return filteredObj;
-  // }
-//   function handleCreateMultipleStatusUpdate() {
   
-   
-//     const modifiedData = {
-//   current_status: getValues()?.current_status,
-// 							date: getValues()?.date,
-// 							passengers: getValues()?.passengers,
-
-// 							selected_status: getValues()?.selected_value,
-// 							status_value: ''
-// }
-//     createMultipleStatusUpdate( getValues())
-//       .unwrap()
-//       .then((data) => {
-//         AddedSuccessfully();
-//         handleReset();
-//         navigate(`/multipleStatusUpdate/multipleStatusUpdates/new`);
-//       });
-  //   }
   
   function handleCreateMultipleStatusUpdate() {
     
@@ -86,7 +47,7 @@ function MultipleStatusUpdateHeader({ handleReset }) {
         .then((data) => {
             AddedSuccessfully();
             handleReset();
-            navigate(`/multipleStatusUpdate/multipleStatusUpdates/new`);
+            navigate(`/apps/multipleStatusUpdate/multipleStatusUpdates/new`);
         });
 }
 

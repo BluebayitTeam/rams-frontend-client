@@ -20,7 +20,7 @@ import MultiplePassengersTable from './MultiplePassengersTable';
 function MultipleStatusUpdateForm() {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, setValue, watch, getValues } = methods;
+  const { control, formState, setValue, watch } = methods;
   const { errors } = formState;
 const [passengers,setPassengers]=useState([])
   const [mltPassengerList, setMltPassengerList] = useState([]);
@@ -67,32 +67,52 @@ const [passengers,setPassengers]=useState([])
     }
   };
 
-  useEffect(() => {
-    if (mltPassengerList?.length > 0 && watch('passenger')) {
-      setValue('is_form_save', true);
-    } else {
-      setValue('is_form_save', false);
-    }
-  }, [mltPassengerList, watch('passenger')]);
-
+  // useEffect(() => {
+  //   if (mltPassengerList?.length > 0 && watch('passenger') ) {
+  //     setValue('is_form_save', true);
+  //   } else {
+  //     setValue('is_form_save', false);
+  //   }
+  // }, [mltPassengerList, watch('passenger')]);
+console.log(`sdbaskdj`,watch('selected_value'))
 
 useEffect(() => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-    };
-  setValue('passenger','')
-		fetch(`${GET_PASSENGER_BY_PASSENGER_STATUS}?status_value=${watch('selected_status')}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) => {
-				setPassengers(data);
-			
-			})
-			.catch(() => {});
-	}, [watch('selected_status')]);
+  // Check if mltPassengerList has items and watch('passenger') is truthy
+  if (mltPassengerList?.length > 0 && watch('passenger') && watch('selected_value') ) {
+    setValue('is_form_save', true);
+  } else {
+    setValue('is_form_save', false);
+  }
+}, [mltPassengerList, watch('passenger'), watch('selected_status'),watch('selected_value') ]);
 
+
+
+
+  useEffect(() => {
+  const selectedStatus = watch('selected_status');
+  
+  if (selectedStatus) {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token')
+      }
+    };
+
+    fetch(`${GET_PASSENGER_BY_PASSENGER_STATUS}?status_value=${selectedStatus}`, authTOKEN)
+      .then((response) => response.json())
+      .then((data) => {
+     
+        setPassengers(data || []);
+      })
+      .catch(() => {
+     
+      });
+  } else {
+    
+    setPassengers([]);
+  }
+}, [watch('selected_status')]);
 
 
   return (
@@ -134,10 +154,7 @@ useEffect(() => {
                 {...params}
                 placeholder="Select Current Status"
                 label="Current Status"
-                error={
-                  !!errors.current_status ||
-                  (selectedValue === 'current_status' && !value)
-                }
+                
                 helperText={errors?.current_status?.message}
                 variant="outlined"
                 InputLabelProps={{
@@ -484,9 +501,9 @@ useEffect(() => {
             className="mt-8 mb-16 w-full "
             freeSolo
             value={value ? passengers.find((data) => data.id === value) : null}
-            options={passengers}
+            options={(passengers) || []}
             getOptionLabel={(option) =>
-              `${option.passenger_name} ${option.passenger_id}   ${option.passport_no}  ${option.post_office}`
+              `${option?.passenger_name} ${option?.passenger_id}   ${option?.passport_no}  ${option?.post_office}`
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
