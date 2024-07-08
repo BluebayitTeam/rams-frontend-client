@@ -14,6 +14,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
+import { GET_PASSENGER_BY_PASSENGER_STATUS } from 'src/app/constant/constants';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleStatusUpdateForm() {
@@ -81,6 +82,27 @@ function MultipleStatusUpdateForm() {
   }, [setValue]);
 
  
+
+const handleFilterPassenger = (page, size) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		fetch(`${GET_PASSENGER_BY_PASSENGER_STATUS}?status_value=${status_value}&status_value=${status_value}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) => {
+				setFilterPassengers(data?.passengers);
+				setTotalData({ total_pages: data.total_pages, total_elements: data.total_elements });
+			})
+			.catch(() => {});
+	};
+
+  useEffect(() => {
+    handleFilterPassenger(getValues('selected_status'));
+  }, [getValues('selected_status')]);
+
 
   return (
 	  <div>
@@ -150,7 +172,10 @@ function MultipleStatusUpdateForm() {
 						id="selected_status"
 						onChange={(e) => {
 							field.onChange(e.target.value);
-						 field.onChange(e.target.value);
+              field.onChange(e.target.value);
+              setMltPassengerList([]);
+							setFilterPassengers([]);
+							setValue('passenger', '');
               setValue('medical_result', null);
               setValue('stamping_status', null);
               setValue('training_card_status', null);
@@ -170,7 +195,7 @@ function MultipleStatusUpdateForm() {
 						
             
             <FormControlLabel
-							value="medical_status"
+							value="medical_result"
 							control={<Radio />}
 							label="Medical"
 						/>
@@ -216,7 +241,7 @@ function MultipleStatusUpdateForm() {
 			/>
      
      
-		  {watch('selected_status') === 'medical_status' && (
+		  {watch('selected_status') === 'medical_result' && (
 				<div>
 					 <Controller
           name="medical_result"
