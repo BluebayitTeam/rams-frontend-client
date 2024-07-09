@@ -65,6 +65,7 @@ const [passengers,setPassengers]=useState([])
         setMltPassengerList([...mltPassengerList, newPassenger]);
       }
     }
+    
   };
 useEffect(() => {
   
