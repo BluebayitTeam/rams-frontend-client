@@ -27,7 +27,7 @@ function MakeAListsManagementsTable(props) {
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const { data, isLoading, refetch } = useGetMakeAListsManagementsQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredMakeAListsManagements(data));
-	const makeAListsManagements = useSelector(selectFilteredMakeAListsManagements(data?.makeAListsManagements));
+	const makeAListsManagements = useSelector(selectFilteredMakeAListsManagements(data?.make_lists));
 	const serialNumber = 1;
 
 	useEffect(() => {
@@ -128,7 +128,7 @@ function MakeAListsManagementsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no Make A Lists Managements!
+					There are no makeAListsManagements!
 				</Typography>
 			</motion.div>
 		);
