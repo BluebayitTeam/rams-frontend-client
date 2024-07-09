@@ -12,9 +12,9 @@ import { getCurrentStatuss } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import { GET_PASSENGER_BY_PASSENGER_STATUS } from 'src/app/constant/constants';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 function MultipleStatusUpdateForm() {
@@ -104,23 +104,7 @@ useEffect(() => {
 
   return (
 	  <div>
-		   <div>
-        <Controller
-          name="date"
-          control={control}
-          render={({ field }) => (
-            <CustomDatePicker
-              field={field}
-              label="Date"
-              required
-              className="mt-8 mb-16 w-full"
-              error={!!errors.date}
-              helperText={errors?.date?.message}
-              placeholder="DD-MM-YYYY"
-            />
-          )}
-        />
-      </div>
+		   
       <Controller
         name="current_status"
         control={control}
@@ -218,7 +202,25 @@ useEffect(() => {
 						/>
 					</RadioGroup>
 				)}
-			/>
+      />
+      
+      <div>
+        <Controller
+          name="date"
+          control={control}
+          render={({ field }) => (
+            <CustomDatePicker
+              field={field}
+              label="Date"
+              required
+              className="mt-8 mb-16 w-full"
+              error={!!errors.date}
+              helperText={errors?.date?.message}
+              placeholder="DD-MM-YYYY"
+            />
+          )}
+        />
+      </div>
      
      
 		  {watch('selected_status') === 'medical_result' && (

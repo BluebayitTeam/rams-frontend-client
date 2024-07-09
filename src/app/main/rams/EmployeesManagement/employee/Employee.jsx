@@ -64,7 +64,12 @@ function Employee() {
 
 	useEffect(() => {
 		if (employee) {
-			reset({ ...employee });
+			reset({
+				...employee,
+				branch: employee.branch.id,
+				role: employee.role.id,
+				department: employee.department.id
+			});
 		}
 	}, [employee, reset, employee?.id]);
 

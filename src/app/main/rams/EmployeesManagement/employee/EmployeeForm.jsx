@@ -43,7 +43,7 @@ function EmployeeForm(props) {
 	const routeParams = useParams();
 	const classes = useStyles(props);
 	const { employeeId } = routeParams;
-	const { control, formState, watch, setValue } = methods;
+	const { control, formState, watch, setValue, getValues } = methods;
 	const { errors } = formState;
 	const thanas = useSelector((state) => state.data.thanas);
 	const branches = useSelector((state) => state.data.branches);
@@ -68,7 +68,7 @@ function EmployeeForm(props) {
 	}, []);
 
 	useEffect(() => {
-		const currentImage = watch('image');
+		const currentImage = getValues('image');
 
 		if (currentImage && !currentImage.name) {
 			setFile(`${BASE_URL}/${currentImage}`);
@@ -95,15 +95,12 @@ function EmployeeForm(props) {
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						// value={employee && employee.branch}
-						// defaultValue={{ id: null, name: "Select a branch" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
 								placeholder="Select a branch"
 								label="Branch"
 								autoFocus
-								// error={!!errors.branch || !value}
 								helperText={errors?.branch?.message}
 								variant="outlined"
 								InputLabelProps={value ? {} : { style: { color: 'red', borderColor: 'red' } }}
@@ -169,7 +166,6 @@ function EmployeeForm(props) {
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						// error={!!errors.username || !field.value}
 						helperText={errors?.username?.message}
 						// onBlur={(event) => handleOnChange('username', event)}
 						label="User Name"
@@ -284,7 +280,7 @@ function EmployeeForm(props) {
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<Autocomplete
-							className="mt-8 mb-16"
+							className="mt-8 mb-16 "
 							id="country-select-demo"
 							sx={{ width: 300 }}
 							value={value ? countryCodes.find((country) => country.value === value) : null}
@@ -302,17 +298,17 @@ function EmployeeForm(props) {
 										<img
 											loading="lazy"
 											width="20"
-											src={`https://flagcdn.com/w20/${prop?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${prop?.code?.toLowerCase()}.png 2x`}
+											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
+											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
 											alt=""
 										/>
-										{prop.label} ({prop.code}) +{prop.value}
+										{option.label} ({option.code}) +{option.value}
 									</Box>
 								);
 							}}
 							onChange={(event, newValue) => {
 								onChange(newValue?.value);
-								// reset({ ...formState, country_code: newValue.value })
+								handleChnageCountry(newValue?.label);
 							}}
 							renderInput={(params) => (
 								<TextField
@@ -320,10 +316,10 @@ function EmployeeForm(props) {
 									label="Choose a country"
 									variant="outlined"
 									error={!value}
-									style={{ width: '150px' }}
+									style={{ width: '250px' }}
 									inputProps={{
 										...params.inputProps,
-										autoComplete: 'new-password' // disable autocomplete and autofill
+										autoComplete: 'new-password'
 									}}
 								/>
 							)}
@@ -336,7 +332,6 @@ function EmployeeForm(props) {
 					label="Country Code"
 					style={{ width: '150px' }}
 					value={getCountryCode1 || ''}
-					// defaultValue="Hello World"
 					className="mt-8 mb-16"
 					InputLabelProps={{ shrink: true }}
 					InputProps={{
@@ -351,9 +346,7 @@ function EmployeeForm(props) {
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							// error={!!errors.primary_phone || !field.value}
-							onBlur={(event) => handleOnChange('primary_phone', event)}
-							label="Phone"
+							label="Primary Phone"
 							id="primary_phone"
 							variant="outlined"
 							fullWidth
@@ -368,44 +361,46 @@ function EmployeeForm(props) {
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<Autocomplete
-							className="mt-8 mb-16"
+							className="mt-8 mb-16 "
 							id="country-select-demo"
 							sx={{ width: 300 }}
 							value={value ? countryCodes.find((country) => country.value === value) : null}
 							options={countryCodes}
 							autoHighlight
+							error={!value}
 							getOptionLabel={(option) => option.label}
-							renderOption={(pro, option) => {
+							renderOption={(prop, option) => {
 								return (
 									<Box
 										component="li"
 										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-										{...pro}
+										{...prop}
 									>
 										<img
 											loading="lazy"
 											width="20"
-											src={`https://flagcdn.com/w20/${pro?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${pro?.code?.toLowerCase()}.png 2x`}
+											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
+											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
 											alt=""
 										/>
-										{pro.label} ({pro.code}) +{pro.value}
+										{option.label} ({option.code}) +{option.value}
 									</Box>
 								);
 							}}
 							onChange={(event, newValue) => {
 								onChange(newValue?.value);
-								// reset({ ...formState, country_code: newValue.value })
+								handleChnageCountry(newValue?.label);
 							}}
 							renderInput={(params) => (
 								<TextField
 									{...params}
 									label="Choose a country"
 									variant="outlined"
-									style={{ width: '150px' }}
+									error={!value}
+									style={{ width: '250px' }}
 									inputProps={{
 										...params.inputProps,
-										autoComplete: 'new-password' // disable autocomplete and autofill
+										autoComplete: 'new-password'
 									}}
 								/>
 							)}
@@ -426,20 +421,17 @@ function EmployeeForm(props) {
 					variant="outlined"
 				/>
 				<Controller
-					name="secondary_phone"
+					name="primary_phone"
 					control={control}
 					render={({ field }) => (
 						<TextField
 							{...field}
 							className="mt-8 mb-16"
-							error={!!errors.secondary_phone}
-							helperText={errors?.secondary_phone?.message}
-							onBlur={(event) => handleOnChange('secondary_phone', event)}
-							label="Mobile"
-							id="secondary_phone"
+							label="Primary Phone"
+							id="primary_phone"
 							variant="outlined"
 							fullWidth
-							InputLabelProps={field.value && { shrink: true }}
+							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 						/>
 					)}
 				/>
@@ -458,7 +450,6 @@ function EmployeeForm(props) {
 						onChange={(event, newValue) => {
 							onChange(newValue?.id);
 						}}
-						// defaultValue={{ id: null, name: "Select a gender" }}
 						renderInput={(params) => (
 							<TextField
 								{...params}
