@@ -23,16 +23,33 @@ const rows = [
 		label: 'SL',
 		sort: true
 	},
+
 	{
-		id: 'name',
+		id: 'make_date',
 		align: 'left',
 		disablePadding: false,
-		label: 'Name',
+		label: 'Date',
+		sort: true
+	},
+
+	{
+		id: 'title',
+		align: 'left',
+		disablePadding: false,
+		label: 'Title',
 		sort: true
 	},
 	{
+		id: 'note',
+		align: 'left',
+		disablePadding: false,
+		label: 'Note',
+		sort: true
+	},
+
+	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
@@ -133,7 +150,7 @@ function MakeAListsManagementsTableHead(props) {
 						</Box>
 					)}
 				</TableCell>
-				{rows.map((row, index, array) => {
+				{rows?.map((row, index, array) => {
 					return (
 						<TableCell
 							sx={{
