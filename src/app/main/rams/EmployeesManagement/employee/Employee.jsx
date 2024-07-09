@@ -15,7 +15,8 @@ import EmployeeHeader from './EmployeeHeader';
 import EmployeeModel from './models/EmployeeModel';
 import { useGetEmployeeQuery } from '../EmployeesApi';
 import EmployeeForm from './EmployeeForm';
-import OpeningBalance from './tabs/OpeningBalance';
+import OpeningBalance from '../../AgentsManagement/agent/tabs/OpeningBalance';
+// import OpeningBalance from './tabs/OpeningBalance';
 /**
  * Form Validation Schema
  */

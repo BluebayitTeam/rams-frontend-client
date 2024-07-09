@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function OpeningBalance(props) {
+function PersonalInfo(props) {
 	const userID = localStorage.getItem('user_id');
 	const classes = useStyles(props);
 	const methods = useFormContext();
@@ -158,4 +158,4 @@ function OpeningBalance(props) {
 	);
 }
 
-export default OpeningBalance;
+export default PersonalInfo;
