@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
@@ -29,7 +28,7 @@ function MakeAListsManagementHeader() {
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
+	const { name, image, featuredImageId } = watch();
 	const handleDelete = localStorage.getItem('deleteMakeAListsManagement');
 	const handleUpdate = localStorage.getItem('updateMakeAListsManagement');
 
@@ -90,16 +89,16 @@ function MakeAListsManagementHeader() {
 						initial={{ scale: 0 }}
 						animate={{ scale: 1, transition: { delay: 0.3 } }}
 					>
-						{images && images.length > 0 && featuredImageId ? (
+						{image ? (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src={_.find(images, { id: featuredImageId })?.url}
+								src={image}
 								alt={name}
 							/>
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/makeAListsManagement-image-placeholder.png"
+								src="assets/logos/user.jpg"
 								alt={name}
 							/>
 						)}
@@ -110,13 +109,13 @@ function MakeAListsManagementHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'New MakeAListsManagement'}
+							{name || 'Create New Make A List'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							MakeAListsManagement Detail
+							Make A List Detail
 						</Typography>
 					</motion.div>
 				</div>
