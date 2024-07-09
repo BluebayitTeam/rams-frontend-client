@@ -150,7 +150,7 @@ function Employee() {
 								className="h-64"
 								label="Basic Info"
 							/>
-							{employeeId !== 'new' && (
+							{employeeId === 'new' && (
 								<Tab
 									className="h-64"
 									label="Opening Balance"
