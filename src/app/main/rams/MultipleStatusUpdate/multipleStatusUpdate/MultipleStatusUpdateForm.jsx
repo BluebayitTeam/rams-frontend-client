@@ -17,7 +17,7 @@ import { GET_PASSENGER_BY_PASSENGER_STATUS } from 'src/app/constant/constants';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
-function MultipleStatusUpdateForm() {
+function MultipleStatusUpdateForm({ handleReset }) {
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { control, formState, setValue, watch } = methods;
@@ -67,17 +67,18 @@ const [passengers,setPassengers]=useState([])
     }
   };
 useEffect(() => {
-  // Check if mltPassengerList has items and watch('passenger') is truthy
-  if (mltPassengerList?.length > 0 && watch('passenger') && watch('status_value') ) {
+  
+  if (mltPassengerList?.length > 0 && watch('passenger') && watch('status_value') && watch('current_status')) {
     setValue('is_form_save', true);
   } else {
     setValue('is_form_save', false);
   }
-}, [mltPassengerList, watch('passenger'), watch('selected_status'),watch('status_value') ]);
+}, [mltPassengerList, watch('passenger'), watch('selected_status'),watch('current_status') ]);
 
   useEffect(() => {
   const selectedStatus = watch('selected_status');
-  
+  // setValue('passenger','')
+
   if (selectedStatus) {
     const authTOKEN = {
       headers: {
@@ -107,11 +108,11 @@ useEffect(() => {
     const selectedStatus = watch('selected_status');
     switch (selectedStatus) {
       case 'stamping_status':
-        return 'Visa Date';
+        return 'Stamping Date';
       case 'training_card_status':
-        return 'Training Date';
+        return 'Certificate Date';
       case 'man_power_status':
-        return 'Manpower Date';
+        return 'ManPower Date';
       case 'police_clearance_status':
         return 'Police Clearance Date';
       case 'driving_license_status':
@@ -119,7 +120,7 @@ useEffect(() => {
       case 'finger_status':
         return 'Finger Date';
       default:
-        return 'Medical Date';
+        return 'Medical Report Date';
     }
   };
   
