@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import MakeAListsManagementsTableHead from './MakeAListsManagementsTableHead';
@@ -21,7 +21,6 @@ import { selectFilteredMakeAListsManagements, useGetMakeAListsManagementsQuery }
  * The makeAListsManagements table.
  */
 function MakeAListsManagementsTable(props) {
-	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -129,7 +128,7 @@ function MakeAListsManagementsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no makeAListsManagements!
+					There are no Make A Lists Managements!
 				</Typography>
 			</motion.div>
 		);
