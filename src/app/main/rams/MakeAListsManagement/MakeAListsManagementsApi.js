@@ -2,11 +2,11 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-	CREATE_DEPARTMENT,
-	DELETE_DEPARTMENT,
-	DELETE_DEPARTMENT_MULTIPLE,
-	GET_DEPARTMENTS,
-	GET_DEPARTMENT_BY_ID,
+	CREATE_MAKEALIST,
+	DELETE_MAKEALIST,
+	DELETE_MAKEALIST_MULTIPLE,
+	GET_MAKEALIST_BY_ID,
+	GET_MAKEALISTS,
 	UPDATE_DEPARTMENT
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -21,12 +21,12 @@ const MakeAListsManagementApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getMakeAListsManagements: build.query({
-				query: ({ page, size, searchKey }) => ({ url: GET_DEPARTMENTS, params: { page, size, searchKey } }),
+				query: ({ page, size, searchKey }) => ({ url: GET_MAKEALISTS, params: { page, size, searchKey } }),
 				providesTags: ['makeAListsManagements']
 			}),
 			deleteMakeAListsManagements: build.mutation({
 				query: (makeAListsManagementIds) => ({
-					url: DELETE_DEPARTMENT_MULTIPLE,
+					url: DELETE_MAKEALIST_MULTIPLE,
 					method: 'DELETE',
 					data: { ids: makeAListsManagementIds }
 				}),
@@ -34,13 +34,13 @@ const MakeAListsManagementApi = api
 			}),
 			getMakeAListsManagement: build.query({
 				query: (makeAListsManagementId) => ({
-					url: `${GET_DEPARTMENT_BY_ID}${makeAListsManagementId}`
+					url: `${GET_MAKEALIST_BY_ID}${makeAListsManagementId}`
 				}),
 				providesTags: ['makeAListsManagements']
 			}),
 			createMakeAListsManagement: build.mutation({
 				query: (newMakeAListsManagement) => ({
-					url: CREATE_DEPARTMENT,
+					url: CREATE_MAKEALIST,
 					method: 'POST',
 					data: jsonToFormData(MakeAListsManagementModel(newMakeAListsManagement))
 				}),
@@ -56,7 +56,7 @@ const MakeAListsManagementApi = api
 			}),
 			deleteMakeAListsManagement: build.mutation({
 				query: (makeAListsManagementId) => ({
-					url: `${DELETE_DEPARTMENT}${makeAListsManagementId}`,
+					url: `${DELETE_MAKEALIST}${makeAListsManagementId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['makeAListsManagements']

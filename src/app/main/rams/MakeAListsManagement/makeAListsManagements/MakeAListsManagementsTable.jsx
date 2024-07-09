@@ -13,8 +13,7 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { Pagination } from '@mui/material';
 import MakeAListsManagementsTableHead from './MakeAListsManagementsTableHead';
 import { selectFilteredMakeAListsManagements, useGetMakeAListsManagementsQuery } from '../MakeAListsManagementsApi';
 
@@ -30,7 +29,7 @@ function MakeAListsManagementsTable(props) {
 	const { data, isLoading, refetch } = useGetMakeAListsManagementsQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredMakeAListsManagements(data));
 	const makeAListsManagements = useSelector(selectFilteredMakeAListsManagements(data?.makeAListsManagements));
-	let serialNumber = 1;
+	const serialNumber = 1;
 
 	useEffect(() => {
 		// Fetch data with specific page and size when component mounts or when page and size change
@@ -119,15 +118,7 @@ function MakeAListsManagementsTable(props) {
 		setPageAndSize({ ...pageAndSize, size: event.target.value });
 	}
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
-
-	if (makeAListsManagements?.length === 0) {
+	if (!makeAListsManagements || makeAListsManagements.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -141,6 +132,14 @@ function MakeAListsManagementsTable(props) {
 					There are no makeAListsManagements!
 				</Typography>
 			</motion.div>
+		);
+	}
+
+	if (isLoading) {
+		return (
+			<div className="flex items-center justify-center h-full">
+				<FuseLoading />
+			</div>
 		);
 	}
 
@@ -162,69 +161,35 @@ function MakeAListsManagementsTable(props) {
 					/>
 
 					<TableBody>
-						{_.orderBy(makeAListsManagements, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 md:w-64 text-center"
-										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+						{makeAListsManagements && makeAListsManagements.length > 0 ? (
+							_.orderBy(makeAListsManagements, [tableOrder.id], [tableOrder.direction]).map((n) => {
+								const isSelected = selected.indexOf(n.id) !== -1;
+								return (
+									<TableRow
+										className="h-20 cursor-pointer"
+										hover
+										role="checkbox"
+										aria-checked={isSelected}
+										tabIndex={-1}
+										key={n.id}
+										selected={isSelected}
 									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
-
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										{/* Your TableCell components */}
+									</TableRow>
+								);
+							})
+						) : (
+							<TableRow>
+								<TableCell colSpan={3}>
+									<Typography
+										color="text.secondary"
+										variant="h5"
 									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n.name}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Edit
-											onClick={(event) =>
-												handleUpdateMakeAListsManagement(n, 'updateMakeAListsManagement')
-											}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
-
-										<Delete
-											onClick={(event) =>
-												handleDeleteMakeAListsManagement(n, 'deleteMakeAListsManagement')
-											}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
-									</TableCell>
-								</TableRow>
-							);
-						})}
+										There are no makeAListsManagements!
+									</Typography>
+								</TableCell>
+							</TableRow>
+						)}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>

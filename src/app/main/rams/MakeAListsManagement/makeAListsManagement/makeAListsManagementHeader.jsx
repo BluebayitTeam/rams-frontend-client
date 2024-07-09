@@ -80,7 +80,7 @@ function MakeAListsManagementHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">MakeAListsManagements</span>
+						<span className="flex mx-4 font-medium">Make A List</span>
 					</Typography>
 				</motion.div>
 

@@ -30,9 +30,7 @@ function MakeAListsManagementsHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">
-					MakeAListsManagements
-				</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Make A List</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
