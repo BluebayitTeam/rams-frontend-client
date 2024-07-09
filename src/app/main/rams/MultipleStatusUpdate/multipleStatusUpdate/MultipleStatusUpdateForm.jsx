@@ -99,9 +99,33 @@ useEffect(() => {
     
     setPassengers([]);
   }
+    
 }, [watch('selected_status')]);
 
+// Date field change lavel 
+  const getDateFieldLabel = () => {
+    const selectedStatus = watch('selected_status');
+    switch (selectedStatus) {
+      case 'stamping_status':
+        return 'Visa Date';
+      case 'training_card_status':
+        return 'Training Date';
+      case 'man_power_status':
+        return 'Manpower Date';
+      case 'police_clearance_status':
+        return 'Police Clearance Date';
+      case 'driving_license_status':
+        return 'Driving License Date';
+      case 'finger_status':
+        return 'Finger Date';
+      default:
+        return 'Medical Date';
+    }
+  };
+  
 
+  
+  
   return (
 	  <div>
 		   
@@ -137,19 +161,20 @@ useEffect(() => {
         )}
 		  />
 		{/* Radio Button work start here */}
-     <Controller
-				name="selected_status"
-				control={control}
-				className="my-10"
-				render={({ field }) => (
-					<RadioGroup
-						value={field.value}
-						style={{ flexDirection: 'row' }}
-						id="selected_status"
-						onChange={(e) => {
-							field.onChange(e.target.value);
+       <Controller
+        name="selected_status"
+        control={control}
+        defaultValue="medical_result"
+        className="my-10"
+        render={({ field }) => (
+          <RadioGroup
+            value={field.value}
+            style={{ flexDirection: 'row' }}
+            id="selected_status"
+            onChange={(e) => {
+              field.onChange(e.target.value);
               setMltPassengerList([]);
-							setValue('passenger', '');
+              setValue('passenger', '');
               setValue('medical_result', null);
               setValue('stamping_status', null);
               setValue('training_card_status', null);
@@ -157,61 +182,61 @@ useEffect(() => {
               setValue('police_clearance_status', null);
               setValue('driving_license_status', null);
               setValue('finger_status', null);
-						}}
-					>
-						<FormLabel
-							disabled
-							style={{ marginRight: '1rem', marginTop: '1.5rem' }}
-						>
-							Select Status
-						</FormLabel>
-						 <FormControlLabel
-							value="medical_result"
-							control={<Radio />}
-							label="Medical"
-						/>
+            }}
+          >
+            <FormLabel
+              disabled
+              style={{ marginRight: '1rem', marginTop: '1.5rem' }}
+            >
+              Select Status
+            </FormLabel>
             <FormControlLabel
-							value="stamping_status"
-							control={<Radio />}
-							label="Visa"
-						/>
-					<FormControlLabel
-							value="training_card_status"
-							control={<Radio />}
-							label="Training"
-						/>
-						<FormControlLabel
-							value="man_power_status"
-							control={<Radio />}
-							label="Manpower"
-						/>
-						<FormControlLabel
-							value="police_clearance_status"
-							control={<Radio />}
-							label="Police Clearance "
+              value="medical_result"
+              control={<Radio />}
+              label="Medical"
             />
             <FormControlLabel
-							value="driving_license_status"
-							control={<Radio />}
-							label="Driving License"
-						/>
-						<FormControlLabel
-							value="finger_status"
-							control={<Radio />}
-							label="Finger"
-						/>
-					</RadioGroup>
-				)}
+              value="stamping_status"
+              control={<Radio />}
+              label="Visa"
+            />
+            <FormControlLabel
+              value="training_card_status"
+              control={<Radio />}
+              label="Training"
+            />
+            <FormControlLabel
+              value="man_power_status"
+              control={<Radio />}
+              label="Manpower"
+            />
+            <FormControlLabel
+              value="police_clearance_status"
+              control={<Radio />}
+              label="Police Clearance"
+            />
+            <FormControlLabel
+              value="driving_license_status"
+              control={<Radio />}
+              label="Driving License"
+            />
+            <FormControlLabel
+              value="finger_status"
+              control={<Radio />}
+              label="Finger"
+            />
+          </RadioGroup>
+        )}
       />
-      
-      <div>
+
+       <div>
         <Controller
           name="date"
           control={control}
           render={({ field }) => (
             <CustomDatePicker
               field={field}
-              label="Date"
+              label={getDateFieldLabel()}
               required
               className="mt-8 mb-16 w-full"
               error={!!errors.date}
