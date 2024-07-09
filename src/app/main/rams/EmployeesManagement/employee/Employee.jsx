@@ -130,7 +130,7 @@ function Employee() {
 						/>
 						<Tab
 							className="h-64"
-							label="Opening Balance"
+							label="Personal Info"
 						/>
 					</Tabs>
 				}
@@ -153,7 +153,7 @@ function Employee() {
 							{employeeId === 'new' && (
 								<Tab
 									className="h-64"
-									label="Opening Balance"
+									label="Personal Info"
 								/>
 							)}
 						</Tabs>
