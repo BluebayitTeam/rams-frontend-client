@@ -15,16 +15,6 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-	getBranches,
-	getCities,
-	getCountries,
-	getDepartments,
-	getEmployees,
-	getPackages,
-	getRoles,
-	getThanas
-} from 'app/store/dataSlice';
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
@@ -80,7 +70,7 @@ function DemandsTable(props) {
 			];
 
 			Object.entries(totalData?.demands[0] || {})
-				.filter(([key]) => key !== 'id') // Filter out the 'id' field
+				.filter(([key]) => key !== 'id' && key !== 'random_number')
 				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
@@ -106,8 +96,6 @@ function DemandsTable(props) {
 			setRows(modifiedRow);
 		}
 	}, [totalData?.demands, refetch]);
-
-
 
 	const [selected, setSelected] = useState([]);
 
@@ -260,70 +248,10 @@ function DemandsTable(props) {
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
 
-									{/* {Object?.entries(n)?.map(
-											([key, value]) =>
-												key !== 'id' &&
-												key !== 'random_number' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1  border-gray-200 "
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'file' ? (
-															n[key]?.split('.')?.pop()?.toLowerCase() === 'pdf' ? (
-																<PictureAsPdf
-																	style={{
-																		color: 'red',
-																		cursor: 'pointer',
-																		display: 'block',
-																		fontSize: '35px'
-																		// margin: 'auto'
-																	}}
-																	// onClick={() => n.file && showImage(`${BASE_URL}${n.file}`)}
-																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-																/>
-															) : (
-																// eslint-disable-next-line jsx-a11y/alt-text
-																<img
-																	onClick={() =>
-																		n.file && showImage(`${BASE_URL}${n[key]}`)
-																	}
-																	src={
-																		n[key]
-																			? `${BASE_URL}${n[key]}`
-																			: 'assets/logos/user.jpg'
-																	}
-																	style={{
-																		height: '40px',
-																		width: '40px',
-																		borderRadius: '50%'
-																	}}
-																	alt="test"
-																/>
-															)
-														) : (key === 'calling_date' ||
-																key === 'calling_exp_date' ||
-																key === 'visa_issue_date') &&
-														  n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
-														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)} */}
-
 									{Object?.entries(n)?.map(
 										([key, value]) =>
-											key !== 'id' && (
+											key !== 'id' &&
+											key !== 'random_number' && (
 												<TableCell
 													className="p-4 md:p-16 border-t-1 border-gray-200"
 													component="th"

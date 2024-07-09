@@ -52,6 +52,7 @@ function EmployeeForm(props) {
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const getCountryCode1 = watch('country_code1');
 	const getCountryCode2 = watch('country_code2');
 	const [file, setFile] = useState(null);
@@ -170,7 +171,7 @@ function EmployeeForm(props) {
 						className="mt-8 mb-16"
 						// error={!!errors.username || !field.value}
 						helperText={errors?.username?.message}
-						onBlur={(event) => handleOnChange('username', event)}
+						// onBlur={(event) => handleOnChange('username', event)}
 						label="User Name"
 						id="userName"
 						variant="outlined"
@@ -189,7 +190,7 @@ function EmployeeForm(props) {
 						type="text"
 						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 						helperText={errors?.email?.message}
-						onBlur={(event) => handleOnChange('email', event)}
+						// onBlur={(event) => handleOnChange('email', event)}
 						label="Email"
 						InputProps={{
 							endAdornment: (
@@ -208,72 +209,74 @@ function EmployeeForm(props) {
 					/>
 				)}
 			/>
-			{/* {!updateEmployee && ( */}
-			<Controller
-				name="password"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						label="Password"
-						type="password"
-						helperText={errors?.password?.message}
-						variant="outlined"
-						fullWidth
-						InputProps={{
-							className: 'pr-2',
-							type: showPassword ? 'text' : 'password',
-							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton onClick={() => setShowPassword(!showPassword)}>
-										<Icon
-											className="text-20"
-											color="action"
-										>
-											{showPassword ? 'visibility' : 'visibility_off'}
-										</Icon>
-									</IconButton>
-								</InputAdornment>
-							)
-						}}
-						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+			{employeeId === 'new' && (
+				<>
+					<Controller
+						name="password"
+						control={control}
+						render={({ field }) => (
+							<TextField
+								{...field}
+								className="mt-8 mb-16"
+								label="Password"
+								type="password"
+								helperText={<span style={{ color: 'red' }}>{errors?.password?.message}</span>}
+								variant="outlined"
+								fullWidth
+								InputProps={{
+									className: 'pr-2',
+									type: showPassword ? 'text' : 'password',
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton onClick={() => setShowPassword(!showPassword)}>
+												<Icon
+													className="text-20"
+													color="action"
+												>
+													{showPassword ? 'visibility' : 'visibility_off'}
+												</Icon>
+											</IconButton>
+										</InputAdornment>
+									)
+								}}
+								InputLabelProps={field.value && { shrink: true }}
+							/>
+						)}
 					/>
-				)}
-			/>
-			<Controller
-				name="confirmPassword"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						label="Confirm Password"
-						type="password"
-						// error={!!errors.confirmPassword || !field.value}
-						helperText={errors?.confirmPassword?.message}
-						variant="outlined"
-						fullWidth
-						InputProps={{
-							className: 'pr-2',
-							type: showPassword ? 'text' : 'password',
-							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton onClick={() => setShowPassword(!showPassword)}>
-										<Icon
-											className="text-20"
-											color="action"
-										>
-											{showPassword ? 'visibility' : 'visibility_off'}
-										</Icon>
-									</IconButton>
-								</InputAdornment>
-							)
-						}}
-						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+					<Controller
+						name="confirmPassword"
+						control={control}
+						render={({ field }) => (
+							<TextField
+								{...field}
+								className="mt-8 mb-16"
+								label="Confirm Password"
+								type="password"
+								helperText={<span style={{ color: 'red' }}>{errors?.confirmPassword?.message}</span>}
+								variant="outlined"
+								fullWidth
+								InputProps={{
+									className: 'pr-2',
+									type: showConfirmPassword ? 'text' : 'password',
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+												<Icon
+													className="text-20"
+													color="action"
+												>
+													{showConfirmPassword ? 'visibility' : 'visibility_off'}
+												</Icon>
+											</IconButton>
+										</InputAdornment>
+									)
+								}}
+								InputLabelProps={field.value && { shrink: true }}
+							/>
+						)}
 					/>
-				)}
-			/>
+				</>
+			)}
 
 			<Box style={{ display: 'flex' }}>
 				<Controller

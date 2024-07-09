@@ -72,7 +72,7 @@ function EvisaEntrysTable(props) {
 			];
 
 			Object.entries(totalData?.evisa_entries[0] || {})
-				.filter(([key]) => key !== 'id') // Filter out the 'id' field
+				.filter(([key]) => key !== 'id' && key !== 'random_number')
 				.map(([key]) => {
 					modifiedRow.push({
 						id: key,
@@ -251,7 +251,8 @@ function EvisaEntrysTable(props) {
 									</TableCell>
 									{Object?.entries(n)?.map(
 										([key, value]) =>
-											key !== 'id' && (
+											key !== 'id' &&
+											key !== 'random_number' && (
 												<TableCell
 													className="p-4 md:p-16 border-t-1 border-gray-200"
 													component="th"
