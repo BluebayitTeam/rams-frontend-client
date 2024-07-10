@@ -128,14 +128,6 @@ function MakeAListsManagementHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'Delete' && (
-					<Typography
-						className="mt-6"
-						variant="subtitle2"
-					>
-						Do you want to remove this Make A List?
-					</Typography>
-				)}
 				{handleDelete === 'Delete' && makeAListsManagementId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
@@ -148,18 +140,18 @@ function MakeAListsManagementHeader() {
 						Remove
 					</Button>
 				)}
-				{routeParams.makeAListsManagementId === 'new' && (
+				{makeAListsManagementId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
+						// disabled={_.isEmpty(dirtyFields) || !isValid}
 						onClick={handleCreateMakeAListsManagement}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'Delete' && makeAListsManagementId && (
+				{handleDelete !== 'Delete' && makeAListsManagementId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						color="secondary"
