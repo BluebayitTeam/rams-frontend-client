@@ -4,6 +4,7 @@ import { getCurrentStatuss, getDemandVisaEntrys, getMedicalCenters, getRecruitin
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 function MakeAListsManagementForm(props) {
@@ -15,6 +16,8 @@ function MakeAListsManagementForm(props) {
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
+	const routeParams = useParams();
+	const { makeAListsManagementId } = routeParams;
 
 	useEffect(() => {
 		dispatch(getDemandVisaEntrys());
@@ -22,12 +25,6 @@ function MakeAListsManagementForm(props) {
 		dispatch(getCurrentStatuss());
 		dispatch(getRecruitingAgencys());
 	}, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (makeAListId === 'new') {
-	// 		setValue('type', 'medical_re_medical');
-	// 	}
-	// }, [makeAListId, setValue]);
 
 	const resetValuesForTypeOthers = () => {
 		setValue('trade', '');
@@ -41,17 +38,19 @@ function MakeAListsManagementForm(props) {
 			resetValuesForTypeOthers();
 		}
 	}, [watch('type')]);
+
 	return (
 		<div>
 			<Controller
 				name="type"
 				control={control}
+				defaultValue="medical_re_medical" // Default value for 'type'
 				className="my-10"
 				render={({ field }) => (
 					<RadioGroup
 						value={field.value}
 						style={{ flexDirection: 'row' }}
-						id="selection_or_checkbox"
+						id="type"
 						onChange={(e) => {
 							field.onChange(e.target.value);
 						}}
