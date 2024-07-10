@@ -238,20 +238,20 @@ function MakeAListsManagementsTable(props) {
 											/>
 
 											<Edit
-												onClick={() => handleUpdateMakeAList(n)}
+												onClick={() => handleUpdateMakeAListsManagement(n)}
 												className="cursor-pointer mr-14"
 												style={{ color: 'green' }}
 											/>
 
 											<Delete
-												onClick={() => handleDeleteMakeAList(n, 'Delete')}
+												onClick={() => handleDeleteMakeAListsManagement(n, 'Delete')}
 												className="cursor-pointer mr-15"
 												style={{
-													color: 'red',
-													visibility:
-														user_role === 'ADMIN' || user_role === 'admin'
-															? 'visible'
-															: 'hidden'
+													color: 'red'
+													// visibility:
+													// 	user_role === 'ADMIN' || user_role === 'admin'
+													// 		? 'visible'
+													// 		: 'hidden'
 												}}
 											/>
 										</div>
