@@ -14,8 +14,9 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
 import moment from 'moment';
+
+import { Delete, Edit, ViewDay, ViewWeek, Visibility } from '@mui/icons-material';
 import MakeAListsManagementsTableHead from './MakeAListsManagementsTableHead';
 import { selectFilteredMakeAListsManagements, useGetMakeAListsManagementsQuery } from '../MakeAListsManagementsApi';
 
@@ -145,6 +146,8 @@ function MakeAListsManagementsTable(props) {
 		);
 	}
 
+	const user_role = localStorage.getItem('user_role');
+
 	return (
 		<div className="w-full flex flex-col min-h-full px-10">
 			<FuseScrollbars className="grow overflow-x-auto">
@@ -216,26 +219,42 @@ function MakeAListsManagementsTable(props) {
 									>
 										{n.note}
 									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Edit
-											onClick={(event) =>
-												handleUpdateMakeAListsManagement(n, 'updateMakeAListsManagement')
-											}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+									<TableCell>
+										<div>
+											<ViewWeek
+												onClick={() => handleMakeAListColumn(n)}
+												className="cursor-pointer mr-14"
+												style={{ color: 'blue' }}
+											/>
+											<ViewDay
+												onClick={() => handleMakeAListRow(n)}
+												className="cursor-pointer mr-14"
+												style={{ color: 'orange' }}
+											/>
+											<Visibility
+												onClick={() => handleMakeAListReport(n)}
+												className="cursor-pointer mr-14"
+												style={{ color: '#00c7f3' }}
+											/>
 
-										<Delete
-											onClick={(event) =>
-												handleDeleteMakeAListsManagement(n, 'deleteMakeAListsManagement')
-											}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
+											<Edit
+												onClick={() => handleUpdateMakeAList(n)}
+												className="cursor-pointer mr-14"
+												style={{ color: 'green' }}
+											/>
+
+											<Delete
+												onClick={() => handleDeleteMakeAList(n, 'Delete')}
+												className="cursor-pointer mr-15"
+												style={{
+													color: 'red',
+													visibility:
+														user_role === 'ADMIN' || user_role === 'admin'
+															? 'visible'
+															: 'hidden'
+												}}
+											/>
+										</div>
 									</TableCell>
 								</TableRow>
 							);
