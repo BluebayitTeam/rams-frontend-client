@@ -35,7 +35,6 @@ function MakeAListsManagement() {
 	} = useGetMakeAListsManagementQuery(makeAListsManagementId, {
 		skip: !makeAListsManagementId || makeAListsManagementId === 'new'
 	});
-	console.log('makeAListsManagementId', makeAListsManagement, makeAListsManagementId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({

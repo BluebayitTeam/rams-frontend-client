@@ -248,10 +248,6 @@ function MakeAListsManagementsTable(props) {
 												className="cursor-pointer mr-15"
 												style={{
 													color: 'red'
-													// visibility:
-													// 	user_role === 'ADMIN' || user_role === 'admin'
-													// 		? 'visible'
-													// 		: 'hidden'
 												}}
 											/>
 										</div>
