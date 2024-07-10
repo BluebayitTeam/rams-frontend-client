@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
@@ -28,8 +29,9 @@ function MakeAListsManagementHeader() {
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, image, featuredImageId } = watch();
+	const { name, images, featuredImageId } = watch();
 	const handleDelete = localStorage.getItem('deleteMakeAListsManagement');
+	console.log('handleDelete', handleDelete);
 	const handleUpdate = localStorage.getItem('updateMakeAListsManagement');
 
 	function handleUpdateMakeAListsManagement() {
@@ -79,7 +81,7 @@ function MakeAListsManagementHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Make A List</span>
+						<span className="flex mx-4 font-medium">MakeAListsManagements</span>
 					</Typography>
 				</motion.div>
 
@@ -89,16 +91,16 @@ function MakeAListsManagementHeader() {
 						initial={{ scale: 0 }}
 						animate={{ scale: 1, transition: { delay: 0.3 } }}
 					>
-						{image ? (
+						{images && images.length > 0 && featuredImageId ? (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src={image}
+								src={_.find(images, { id: featuredImageId })?.url}
 								alt={name}
 							/>
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/logos/user.jpg"
+								src="assets/images/apps/ecommerce/makeAListsManagement-image-placeholder.png"
 								alt={name}
 							/>
 						)}
@@ -109,13 +111,13 @@ function MakeAListsManagementHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'Create New Make A List'}
+							{name || 'New MakeAListsManagement'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							Make A List Detail
+							MakeAListsManagement Detail
 						</Typography>
 					</motion.div>
 				</div>
@@ -126,15 +128,15 @@ function MakeAListsManagementHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteMakeAListsManagement' && makeAListsManagementId !== 'new' && (
+				{handleDelete === 'Delete' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this makeAListsManagement?
+						Do you want to remove this Make A List?
 					</Typography>
 				)}
-				{handleDelete === 'deleteMakeAListsManagement' && makeAListsManagementId !== 'new' && (
+				{handleDelete === 'Delete' && makeAListsManagementId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
@@ -146,30 +148,28 @@ function MakeAListsManagementHeader() {
 						Remove
 					</Button>
 				)}
-				{makeAListsManagementId === 'new' && (
+				{routeParams.makeAListsManagementId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						// disabled={_.isEmpty(dirtyFields) || !isValid}
+						disabled={_.isEmpty(dirtyFields) || !isValid}
 						onClick={handleCreateMakeAListsManagement}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteMakeAListsManagement' &&
-					handleUpdate === 'updateMakeAListsManagement' &&
-					makeAListsManagementId !== 'new' && (
-						<Button
-							className="whitespace-nowrap mx-4"
-							color="secondary"
-							variant="contained"
-							style={{ backgroundColor: '#4dc08e', color: 'white' }}
-							onClick={handleUpdateMakeAListsManagement}
-						>
-							Update
-						</Button>
-					)}
+				{handleDelete !== 'Delete' && makeAListsManagementId && (
+					<Button
+						className="whitespace-nowrap mx-4"
+						color="secondary"
+						variant="contained"
+						style={{ backgroundColor: '#4dc08e', color: 'white' }}
+						onClick={handleUpdateMakeAListsManagement}
+					>
+						Update
+					</Button>
+				)}
 				<Button
 					className="whitespace-nowrap mx-4"
 					variant="contained"

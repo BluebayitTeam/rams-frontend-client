@@ -7,7 +7,7 @@ import {
 	DELETE_MAKEALIST_MULTIPLE,
 	GET_MAKEALIST_BY_ID,
 	GET_MAKEALISTS,
-	UPDATE_DEPARTMENT
+	UPDATE_MAKEALIST
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -48,7 +48,7 @@ const MakeAListsManagementApi = api
 			}),
 			updateMakeAListsManagement: build.mutation({
 				query: (makeAListsManagement) => ({
-					url: `${UPDATE_DEPARTMENT}${makeAListsManagement.id}`,
+					url: `${UPDATE_MAKEALIST}${makeAListsManagement.id}`,
 					method: 'PUT',
 					data: jsonToFormData(makeAListsManagement)
 				}),
