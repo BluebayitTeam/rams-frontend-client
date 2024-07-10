@@ -44,7 +44,7 @@ function MakeAListsManagementForm(props) {
 			<Controller
 				name="type"
 				control={control}
-				defaultValue="medical_re_medical" // Default value for 'type'
+				defaultValue="medical_re_medical"
 				className="my-10"
 				render={({ field }) => (
 					<RadioGroup
