@@ -1,5 +1,7 @@
 import { Autocomplete, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import { getCurrentStatuss, getDemandVisaEntrys, getMedicalCenters, getRecruitingAgencys } from 'app/store/dataSlice';
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
@@ -7,12 +9,38 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 function MakeAListsManagementForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch } = methods;
+	const { control, formState, watch, setValue } = methods;
 	const { errors } = formState;
 	const trades = useSelector((state) => state.data.demandVisaEntrys);
 	const medicalCenters = useSelector((state) => state.data.medicalCenters);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
+
+	useEffect(() => {
+		dispatch(getDemandVisaEntrys());
+		dispatch(getMedicalCenters());
+		dispatch(getCurrentStatuss());
+		dispatch(getRecruitingAgencys());
+	}, [dispatch]);
+
+	// useEffect(() => {
+	// 	if (makeAListId === 'new') {
+	// 		setValue('type', 'medical_re_medical');
+	// 	}
+	// }, [makeAListId, setValue]);
+
+	const resetValuesForTypeOthers = () => {
+		setValue('trade', '');
+		setValue('medical_center', '');
+		setValue('recruiting_agency', '');
+		setValue('recruiting_agency_transfer', '');
+	};
+
+	useEffect(() => {
+		if (watch('type') === 'others') {
+			resetValuesForTypeOthers();
+		}
+	}, [watch('type')]);
 	return (
 		<div>
 			<Controller
@@ -77,7 +105,7 @@ function MakeAListsManagementForm(props) {
 							freeSolo
 							value={field.value ? trades.find((data) => data.id === field.value) : null}
 							options={trades}
-							getOptionLabel={(option) => `${option.profession?.name}(${option.company_name})`}
+							getOptionLabel={(option) => `${option.profession}(${option.company_name})`}
 							onChange={(event, newValue) => field.onChange(newValue?.id)}
 							renderInput={(params) => (
 								<TextField
