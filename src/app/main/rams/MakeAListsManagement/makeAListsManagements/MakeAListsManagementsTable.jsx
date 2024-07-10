@@ -259,9 +259,11 @@ function MakeAListsManagementsTable(props) {
 				</Table>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
+			<div
+				id="pagiContainer"
+				className="flex justify-between mb-6"
+			>
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -274,10 +276,10 @@ function MakeAListsManagementsTable(props) {
 				/>
 
 				<TablePagination
-					className="shrink-0 border-t-1"
+					className="shrink-0 mb-2"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
