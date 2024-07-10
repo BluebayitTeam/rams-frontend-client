@@ -33,7 +33,7 @@ function MakeAListsManagementHeader() {
 	const handleUpdate = localStorage.getItem('updateMakeAListsManagement');
 
 	function handleUpdateMakeAListsManagement() {
-		saveMakeAListsManagement(getValues()).then((data) => {
+		saveMakeAListsManagement(getValues()).then(() => {
 			UpdatedSuccessfully();
 			navigate(`/apps/makeAListsManagement/makeAListsManagements`);
 		});
@@ -42,7 +42,7 @@ function MakeAListsManagementHeader() {
 	function handleCreateMakeAListsManagement() {
 		createMakeAListsManagement(getValues())
 			.unwrap()
-			.then((data) => {
+			.then(() => {
 				AddedSuccessfully();
 
 				navigate(`/apps/makeAListsManagement/makeAListsManagements`);
