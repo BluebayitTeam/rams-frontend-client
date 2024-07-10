@@ -35,7 +35,6 @@ function MakeAListsManagementsTable(props) {
 	let serialNumber = 1;
 
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 
