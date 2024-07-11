@@ -9,12 +9,12 @@ import { columns } from './data/column';
 function DocmentSendForm() {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, setValue, getValues } = methods;
+	const { control, formState, setValue } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
 	const [mltPassengerList, setMltPassengerList] = useState([]);
 	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
-	const [showError, setShowError] = useState(false);
+
 	const [documentSends, setDocumentSends] = useState([]);
 	const [keyData, setKeyData] = useState([]);
 	const handleCheckboxSend = (name, checked) => {
@@ -73,7 +73,7 @@ function DocmentSendForm() {
 			}
 		}
 	};
-	console.log('test', getValues());
+
 	return (
 		<div>
 			<div>
