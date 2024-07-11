@@ -63,7 +63,7 @@ import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/Receivabl
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import MultipleStatusUpdateAppConfig from '../rams/MultipleStatusUpdate/MultipleStatusUpdateAppConfig';
-import MakeAListsManagementAppConfig from '../rams/MakeAListsManagement/MakeAListsManagementAppConfig';
+import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig';
 
 /**
  * The list of application configurations.
@@ -78,7 +78,7 @@ const appsConfigs = [
 	FileManagerAppConfig,
 	HelpCenterAppConfig,
 	MailboxAppConfig,
-	MakeAListsManagementAppConfig,
+	MakeAListAppConfig,
 	NotesAppConfig,
 	ProfileAppConfig,
 	ScrumboardAppConfig,

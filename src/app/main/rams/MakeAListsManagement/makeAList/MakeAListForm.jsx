@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
-function MakeAListsManagementForm(props) {
+function MakeAListForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue } = methods;
@@ -17,7 +17,7 @@ function MakeAListsManagementForm(props) {
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const routeParams = useParams();
-	const { makeAListsManagementId } = routeParams;
+	const { makeAListId } = routeParams;
 
 	useEffect(() => {
 		dispatch(getDemandVisaEntrys());
@@ -279,4 +279,4 @@ function MakeAListsManagementForm(props) {
 	);
 }
 
-export default MakeAListsManagementForm;
+export default MakeAListForm;

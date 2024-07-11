@@ -1,10 +1,10 @@
 import _ from '@lodash';
 import moment from 'moment';
 
-const MakeAListsManagementModel = (data) =>
+const MakeAListModel = (data) =>
 	_.defaults(data || {}, {
 		make_date: moment(new Date()).format('YYYY-MM-DD'),
-		id: _.uniqueId('MakeAListsManagement-'),
+		id: _.uniqueId('MakeAList-'),
 		title: '',
 		trade: '',
 		medical_center: '',
@@ -13,4 +13,4 @@ const MakeAListsManagementModel = (data) =>
 		current_status: '',
 		note: ''
 	});
-export default MakeAListsManagementModel;
+export default MakeAListModel;

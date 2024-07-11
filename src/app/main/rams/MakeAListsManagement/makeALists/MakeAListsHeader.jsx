@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The makeAListsManagements header.
+ * The makeALists header.
  */
-function MakeAListsManagementsHeader(props) {
+function MakeAListsHeader(props) {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -70,7 +70,7 @@ function MakeAListsManagementsHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/makeAListsManagement/makeAListsManagements/new"
+						to="/apps/makeAList/makeALists/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -81,4 +81,4 @@ function MakeAListsManagementsHeader(props) {
 	);
 }
 
-export default MakeAListsManagementsHeader;
+export default MakeAListsHeader;

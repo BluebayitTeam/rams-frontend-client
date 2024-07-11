@@ -1,13 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
-import MakeAListsManagementsHeader from './MakeAListsManagementsHeader';
-import MakeAListsManagementsTable from './MakeAListsManagementsTable';
+import MakeAListsHeader from './MakeAListsHeader';
+import MakeAListsTable from './MakeAListsTable';
 
 /**
- * The makeAListsManagements page.
+ * The makeALists page.
  */
-function MakeAListsManagements() {
+function MakeALists() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
 	const [searchKey, setSearchKey] = useState('');
@@ -19,13 +19,13 @@ function MakeAListsManagements() {
 				header: 'min-h-80 h-80'
 			}}
 			header={
-				<MakeAListsManagementsHeader
+				<MakeAListsHeader
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
 			}
 			content={
-				<MakeAListsManagementsTable
+				<MakeAListsTable
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
@@ -35,4 +35,4 @@ function MakeAListsManagements() {
 	);
 }
 
-export default MakeAListsManagements;
+export default MakeALists;

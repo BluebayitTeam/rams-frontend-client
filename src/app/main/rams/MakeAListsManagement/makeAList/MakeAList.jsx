@@ -9,34 +9,32 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import ColumnHeader from './ColumnHeader';
-import ColumnModel from './models/ColumnModel';
-import { useGetColumnQuery } from '../MakeAListsManagementColumnsApi';
-import ColumnForm from './ColumnForm';
+import MakeAListHeader from './MakeAListHeader';
+import MakeAListModel from './models/MakeAListModel';
+import { useGetMakeAListQuery } from '../MakeAListsApi';
+import MakeAListForm from './MakeAListForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a column name')
-		.min(5, 'The column name must be at least 5 characters')
+		.nonempty('You must enter a makeAList name')
+		.min(5, 'The makeAList name must be at least 5 characters')
 });
 
-function Column() {
+function MakeAList() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { columnId } = routeParams;
+	const { makeAListId } = routeParams;
 
 	const {
-		data: column,
+		data: makeAList,
 		isLoading,
-		isError,
-		refetch
-	} = useGetColumnQuery(columnId, {
-		skip: !columnId || columnId === 'new'
+		isError
+	} = useGetMakeAListQuery(makeAListId, {
+		skip: !makeAListId || makeAListId === 'new'
 	});
-	console.log('columnIdsdsdds', column, columnId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -46,24 +44,17 @@ function Column() {
 	});
 	const { reset, watch } = methods;
 	const form = watch();
-
 	useEffect(() => {
-		refetch();
-	}, []);
-
-	useEffect(() => {
-		if (columnId === 'new') {
-			reset(ColumnModel({}));
+		if (makeAListId === 'new') {
+			reset(MakeAListModel({}));
 		}
-	}, [columnId, reset]);
+	}, [makeAListId, reset]);
 
 	useEffect(() => {
-		refetch();
-
-		if (column) {
-			reset(column);
+		if (makeAList) {
+			reset({ ...makeAList });
 		}
-	}, [reset, column?.id]);
+	}, [makeAList, reset, makeAList?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -74,9 +65,9 @@ function Column() {
 	}
 
 	/**
-	 * Show Message if the requested columns is not exists
+	 * Show Message if the requested makeALists is not exists
 	 */
-	if (isError && columnId !== 'new') {
+	if (isError && makeAListId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -87,16 +78,16 @@ function Column() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such column!
+					There is no such makeAList!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/column/columns"
+					to="/apps/makeAList/makeALists"
 					color="inherit"
 				>
-					Go to Columns Page
+					Go to MakeALists Page
 				</Button>
 			</motion.div>
 		);
@@ -105,11 +96,11 @@ function Column() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<ColumnHeader />}
+				header={<MakeAListHeader />}
 				content={
 					<div className="p-16 ">
 						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<ColumnForm columns={column} />
+							<MakeAListForm makeAListId={makeAListId} />
 						</div>
 					</div>
 				}
@@ -119,4 +110,4 @@ function Column() {
 	);
 }
 
-export default Column;
+export default MakeAList;

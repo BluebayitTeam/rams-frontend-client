@@ -17,24 +17,24 @@ import { Checkbox, Pagination } from '@mui/material';
 import moment from 'moment';
 
 import { Delete, Edit, ViewDay, ViewWeek, Visibility } from '@mui/icons-material';
-import MakeAListsManagementsTableHead from './MakeAListsManagementsTableHead';
-import { selectFilteredMakeAListsManagements, useGetMakeAListsManagementsQuery } from '../MakeAListsManagementsApi';
+import MakeAListsTableHead from './MakeAListsTableHead';
+import { selectFilteredMakeALists, useGetMakeAListsQuery } from '../MakeAListsApi';
 
 /**
- * The makeAListsManagements table.
+ * The makeALists table.
  */
-function MakeAListsManagementsTable(props) {
+function MakeAListsTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetMakeAListsManagementsQuery({
+	const { data, isLoading, refetch } = useGetMakeAListsQuery({
 		...pageAndSize,
 		searchKey
 	});
-	const totalData = useSelector(selectFilteredMakeAListsManagements(data));
-	const makeAListsManagements = useSelector(selectFilteredMakeAListsManagements(data?.make_lists));
+	const totalData = useSelector(selectFilteredMakeALists(data));
+	const makeALists = useSelector(selectFilteredMakeALists(data?.make_lists));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -63,7 +63,7 @@ function MakeAListsManagementsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(makeAListsManagements.map((n) => n.id));
+			setSelected(makeALists.map((n) => n.id));
 			return;
 		}
 
@@ -75,19 +75,19 @@ function MakeAListsManagementsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/makeAListsManagement/makeAListsManagements/${item.id}/${item.handle}`);
+		navigate(`/apps/makeAList/makeALists/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateMakeAListsManagement(item, event) {
-		localStorage.removeItem('deleteMakeAListsManagement');
-		localStorage.setItem('updateMakeAListsManagement', event);
-		navigate(`/apps/makeAListsManagement/makeAListsManagements/${item.id}/${item.handle}`);
+	function handleUpdateMakeAList(item, event) {
+		localStorage.removeItem('deleteMakeAList');
+		localStorage.setItem('updateMakeAList', event);
+		navigate(`/apps/makeAList/makeALists/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteMakeAListsManagement(item, event) {
-		localStorage.removeItem('updateMakeAListsManagement');
-		localStorage.setItem('deleteMakeAListsManagement', event);
-		navigate(`/apps/makeAListsManagement/makeAListsManagements/${item.id}/${item.handle}`);
+	function handleDeleteMakeAList(item, event) {
+		localStorage.removeItem('updateMakeAList');
+		localStorage.setItem('deleteMakeAList', event);
+		navigate(`/apps/makeAList/makeALists/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -131,7 +131,7 @@ function MakeAListsManagementsTable(props) {
 		);
 	}
 
-	if (makeAListsManagements?.length === 0) {
+	if (makeALists?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -152,9 +152,7 @@ function MakeAListsManagementsTable(props) {
 
 	function handleMakeAListColumn(item) {
 		localStorage.removeItem('makeAListEvent');
-		navigate(
-			`/apps/makeAListsManagement/makeAListsManagements/makeAListsManagementColumns/${item.id}/${item.title}`
-		);
+		navigate(`/apps/makeAList/makeALists/makeAListColumns/${item.id}/${item.title}`);
 	}
 
 	return (
@@ -165,17 +163,17 @@ function MakeAListsManagementsTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<MakeAListsManagementsTableHead
-						selectedMakeAListsManagementIds={selected}
+					<MakeAListsTableHead
+						selectedMakeAListIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={makeAListsManagements?.length}
+						rowCount={makeALists?.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(makeAListsManagements, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(makeALists, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -257,13 +255,13 @@ function MakeAListsManagementsTable(props) {
 											/>
 
 											<Edit
-												onClick={() => handleUpdateMakeAListsManagement(n)}
+												onClick={() => handleUpdateMakeAList(n)}
 												className="cursor-pointer mr-14"
 												style={{ color: 'green' }}
 											/>
 
 											<Delete
-												onClick={() => handleDeleteMakeAListsManagement(n, 'Delete')}
+												onClick={() => handleDeleteMakeAList(n, 'Delete')}
 												className="cursor-pointer mr-15"
 												style={{
 													color: 'red'
@@ -315,4 +313,4 @@ function MakeAListsManagementsTable(props) {
 	);
 }
 
-export default withRouter(MakeAListsManagementsTable);
+export default withRouter(MakeAListsTable);

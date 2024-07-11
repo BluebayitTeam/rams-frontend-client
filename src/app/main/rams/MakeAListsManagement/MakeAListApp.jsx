@@ -2,8 +2,8 @@ import { Outlet } from 'react-router';
 import withReducer from 'app/store/withReducer';
 import reducer from './store';
 
-function MakeAListsManagementApp() {
+function MakeAListApp() {
 	return <Outlet />;
 }
 
-export default withReducer('makeAListsManagementApp', reducer)(MakeAListsManagementApp);
+export default withReducer('makeAListApp', reducer)(MakeAListApp);

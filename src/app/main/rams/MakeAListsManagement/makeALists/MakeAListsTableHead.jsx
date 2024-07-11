@@ -9,10 +9,10 @@ import { Checkbox, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { Delete } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { useDeleteMakeAListsManagementsMutation } from '../MakeAListsManagementsApi';
+import { useDeleteMakeAListsMutation } from '../MakeAListsApi';
 
 /**
- * The makeAListsManagements table head component.
+ * The makeALists table head component.
  */
 
 const rows = [
@@ -56,31 +56,30 @@ const rows = [
 	}
 ];
 
-function MakeAListsManagementsTableHead(props) {
-	const { selectedMakeAListsManagementIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } =
-		props;
+function MakeAListsTableHead(props) {
+	const { selectedMakeAListIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
 
 	console.log('onMenuItemClick', onMenuItemClick);
 
-	console.log('selectedMakeAListsManagementIds', selectedMakeAListsManagementIds);
+	console.log('selectedMakeAListIds', selectedMakeAListIds);
 
-	const [removeMakeAListsManagements] = useDeleteMakeAListsManagementsMutation();
-	const numSelected = selectedMakeAListsManagementIds.length;
-	const [selectedMakeAListsManagementsMenu, setSelectedMakeAListsManagementsMenu] = useState(null);
+	const [removeMakeALists] = useDeleteMakeAListsMutation();
+	const numSelected = selectedMakeAListIds.length;
+	const [selectedMakeAListsMenu, setSelectedMakeAListsMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedMakeAListsManagementsMenu(event) {
-		setSelectedMakeAListsManagementsMenu(event.currentTarget);
+	function openSelectedMakeAListsMenu(event) {
+		setSelectedMakeAListsMenu(event.currentTarget);
 	}
 
-	function closeSelectedMakeAListsManagementsMenu() {
-		setSelectedMakeAListsManagementsMenu(null);
+	function closeSelectedMakeAListsMenu() {
+		setSelectedMakeAListsMenu(null);
 	}
 
 	function handleDeleteMultipleItem() {
-		removeMakeAListsManagements(selectedMakeAListsManagementIds).then((data) => {
+		removeMakeALists(selectedMakeAListIds).then((data) => {
 			Swal.fire({
 				position: 'top-center',
 				icon: 'success',
@@ -118,7 +117,7 @@ function MakeAListsManagementsTableHead(props) {
 						>
 							<IconButton
 								aria-haspopup="true"
-								onClick={openSelectedMakeAListsManagementsMenu}
+								onClick={openSelectedMakeAListsMenu}
 								size="large"
 							>
 								<Delete
@@ -127,17 +126,17 @@ function MakeAListsManagementsTableHead(props) {
 								/>
 							</IconButton>
 							{/* <Menu
-								id="selectedMakeAListsManagementsMenu"
-								anchorEl={selectedMakeAListsManagementsMenu}
-								open={Boolean(selectedMakeAListsManagementsMenu)}
-								onClose={closeSelectedMakeAListsManagementsMenu}
+								id="selectedMakeAListsMenu"
+								anchorEl={selectedMakeAListsMenu}
+								open={Boolean(selectedMakeAListsMenu)}
+								onClose={closeSelectedMakeAListsMenu}
 							>
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											removeMakeAListsManagements(selectedMakeAListsManagementIds);
+											removeMakeALists(selectedMakeAListIds);
 											onMenuItemClick();
-											closeSelectedMakeAListsManagementsMenu();
+											closeSelectedMakeAListsMenu();
 										}}
 									>
 										<ListItemIcon>
@@ -195,4 +194,4 @@ function MakeAListsManagementsTableHead(props) {
 	);
 }
 
-export default MakeAListsManagementsTableHead;
+export default MakeAListsTableHead;
