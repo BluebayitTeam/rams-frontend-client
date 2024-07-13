@@ -14,20 +14,6 @@ const MakeListColumnApi = api
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      // getMakeListColumn: build.query({
-      //   query: () => ({ url: GET_CLIENTS }),
-      //   providesTags: ['makeListColumn'],
-      // }),
-
-      // deleteMakeListColumn: build.mutation({
-      //   query: (makeListColumnsIds) => ({
-      //     url: ALL_USERS,
-      //     method: 'DELETE',
-      //     data: makeListColumnsIds,
-      //   }),
-      //   invalidatesTags: ['makeListColumn'],
-      // }),
-
       getMakeListColumn: build.query({
         query: (makeListColumnsId) => ({
           url: `${GET_MAKEALIST_CLM_BY_LIST_ID}${makeListColumnsId}`,
@@ -35,11 +21,14 @@ const MakeListColumnApi = api
         providesTags: ['makeListColumn'],
       }),
       updateMakeListColumn: build.mutation({
-        query: (data) => ({
-          url: `${UPDATE_MAKEALIST_CLM}${data?.type}/`,
-          method: 'PUT',
-          data,
-        }),
+        query: (data) => {
+          console.log('data', data.id);
+          return {
+            url: `${UPDATE_MAKEALIST_CLM}${data?.id}`,
+            method: 'PUT',
+            data,
+          };
+        },
 
         invalidatesTags: ['makeListColumn'],
       }),
@@ -59,8 +48,6 @@ export const {
   useGetMakeListColumnQuery,
   useDeleteMakeListColumnMutation,
   useUpdateMakeListColumnMutation,
-
-  useCreateMakeListColumnMutation,
 } = MakeListColumnApi;
 
 export const selectFilteredMakeListColumn = (makeListColumn) =>

@@ -4,16 +4,12 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useUpdateMakeListColumnMutation } from '../MakeListColumnApi';
 
-/**
- * The makeListColumn header.
- */
 function MakeListColumnHeader() {
   const routeParams = useParams();
-  const { makeListColumnId } = routeParams;
-
-  console.log('makeListColumnId', makeListColumnId);
+  console.log('routeParams', routeParams);
 
   const [saveMakeListColumn] = useUpdateMakeListColumnMutation();
   const methods = useFormContext();
@@ -23,174 +19,24 @@ function MakeListColumnHeader() {
   const navigate = useNavigate();
 
   function handleUpdateMakeListColumn() {
-    const filteredData = Object.values(getValues()?.makeListColumns).map(
-      (item) => {
-        return {
-          serial: item.isChecked ? item.serial.toString() : null,
-          isChecked: item.isChecked,
-          id: item.key,
-        };
-      }
-    );
-
-    saveMakeListColumn({
-      makeListColumns: filteredData,
-      type: makeListColumnId,
-    }).then((data) => {
-      if (makeListColumnId === 'Clients') {
-        navigate(`/apps/client/clients`);
-      }
-
-      if (makeListColumnId === 'agent') {
-        navigate(`/apps/agent/agents`);
-      }
-
-      if (makeListColumnId === 'employee') {
-        navigate(`/apps/employee/employees`);
-      }
-
-      if (makeListColumnId === 'Departments') {
-        navigate(`/apps/department/departments`);
-      }
-
-      if (makeListColumnId === 'recruiting') {
-        navigate(`/apps/passenger/passengers/recruiting`);
-      }
-
-      if (makeListColumnId === 'processing') {
-        navigate(`/apps/passenger/passengers/processing`);
-      }
-
-      if (makeListColumnId === 'female') {
-        navigate(`/apps/passenger/passengers/female`);
-      }
-
-      if (makeListColumnId === 'hajj') {
-        navigate(`/apps/passenger/passengers/hajj`);
-      }
-
-      if (makeListColumnId === 'umrah') {
-        navigate(`/apps/passenger/passengers/umrah`);
-      }
-
-      if (makeListColumnId === 'travel') {
-        navigate(`/apps/passenger/passengers/travel`);
-      }
-
-      if (makeListColumnId === 'student') {
-        navigate(`/apps/passenger/passengers/student`);
-      }
-
-      if (makeListColumnId === 'demand') {
-        navigate(`/apps/demand/demands`);
-      }
-
-      if (makeListColumnId === 'visa_entry') {
-        navigate(`/apps/visaEntry/visaEntrys`);
-      }
-
-      if (makeListColumnId === 'calling_entry') {
-        navigate(`/apps/callingEntry/callingEntrys`);
-      }
-
-      if (makeListColumnId === 'evisa_entry') {
-        navigate(`/apps/eVisaEntry/eVisaEntrys`);
-      }
-
-      if (makeListColumnId === 'complain') {
-        navigate(`/apps/complain/complains`);
-      }
-
-      if (makeListColumnId === 'female_cv') {
-        navigate(`/apps/cvFemale/cvFemales`);
-      }
-
-      if (makeListColumnId === 'male_cv') {
-        navigate(`/apps/cvMale/cvMales`);
-      }
-
-      if (makeListColumnId === 'cv_bank') {
-        navigate(`/apps/cvBank/cvBanks`);
-      }
-    });
+    const expendedData = {
+      id: routeParams.makeAListId,
+      ...getValues(),
+    };
+    console.log('expendedData', expendedData);
+    saveMakeListColumn(expendedData)
+      .unwrap()
+      .then(() => {
+        AddedSuccessfully();
+        navigate(`/apps/makeAList/makeALists`);
+      })
+      .catch((error) => {
+        console.error('Failed to create make a list column:', error);
+      });
   }
 
   function handleCancel() {
-    if (makeListColumnId === 'Clients') {
-      navigate(`/apps/client/clients`);
-    }
-
-    if (makeListColumnId === 'agent') {
-      navigate(`/apps/agent/agents`);
-    }
-
-    if (makeListColumnId === 'employee') {
-      navigate(`/apps/employee/employees`);
-    }
-
-    if (makeListColumnId === 'Departments') {
-      navigate(`/apps/department/departments`);
-    }
-
-    if (makeListColumnId === 'recruiting') {
-      navigate(`/apps/passenger/passengers/recruiting`);
-    }
-
-    if (makeListColumnId === 'processing') {
-      navigate(`/apps/passenger/passengers/processing`);
-    }
-
-    if (makeListColumnId === 'female') {
-      navigate(`/apps/passenger/passengers/female`);
-    }
-
-    if (makeListColumnId === 'hajj') {
-      navigate(`/apps/passenger/passengers/hajj`);
-    }
-
-    if (makeListColumnId === 'umrah') {
-      navigate(`/apps/passenger/passengers/umrah`);
-    }
-
-    if (makeListColumnId === 'travel') {
-      navigate(`/apps/passenger/passengers/travel`);
-    }
-
-    if (makeListColumnId === 'student') {
-      navigate(`/apps/passenger/passengers/student`);
-    }
-
-    if (makeListColumnId === 'demand') {
-      navigate(`/apps/demand/demands`);
-    }
-
-    if (makeListColumnId === 'visa_entry') {
-      navigate(`/apps/visaEntry/visaEntrys`);
-    }
-
-    if (makeListColumnId === 'calling_entry') {
-      navigate(`/apps/callingEntry/callingEntrys`);
-    }
-
-    if (makeListColumnId === 'evisa_entry') {
-      navigate(`/apps/eVisaEntry/eVisaEntrys`);
-    }
-
-    if (makeListColumnId === 'complain') {
-      navigate(`/apps/complain/complains`);
-    }
-
-    if (makeListColumnId === 'female_cv') {
-      navigate(`/apps/cvFemale/cvFemales`);
-    }
-
-    if (makeListColumnId === 'male_cv') {
-      navigate(`/apps/cvMale/cvMales`);
-    }
-
-    if (makeListColumnId === 'cv_bank') {
-      navigate(`/apps/cvBank/cvBanks`);
-    }
+    navigate(`/apps/makeAList/makeALists`);
   }
 
   return (
