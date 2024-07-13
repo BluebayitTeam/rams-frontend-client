@@ -51,7 +51,7 @@ function MakeListColumnHeader() {
               MakeAListClms{' '}
             </Typography>
             <Typography variant='caption' className='font-medium'>
-              Test{' '}
+              {routeParams?.['*']}
             </Typography>
             <Typography variant='caption' className='font-medium'>
               MakeListColumn Detail
