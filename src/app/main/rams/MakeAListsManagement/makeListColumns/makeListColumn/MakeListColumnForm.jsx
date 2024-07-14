@@ -5,91 +5,88 @@ import { useParams } from 'react-router-dom';
 import { GET_MAKEALIST_CLM_BY_LIST_ID } from 'src/app/constant/constants';
 
 function MakeListColumnForm() {
-  const { control, setValue, getValues, reset } = useFormContext();
-  const [apiData, setApiData] = useState({});
-  const [booleanKeys, setBooleanKeys] = useState([]);
-  const param = useParams();
+	const methods = useFormContext();
+	const { control, formState, reset, setValue } = methods;
+	const [apiData, setApiData] = useState({});
+	const [booleanKeys, setBooleanKeys] = useState([]);
+	const param = useParams();
 
-  useEffect(() => {
-    console.log('Fetched ID from URL:', param.makeAListId, param['*']); // Debug statement
-    const authTOKEN = {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
-      },
-    };
+	useEffect(() => {
+		console.log('Fetched ID from URL:', param.makeAListId, param['*']); // Debug statement
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
 
-    if (param.makeAListId) {
-      const url = `${GET_MAKEALIST_CLM_BY_LIST_ID}${param.makeAListId}`;
-      console.log('API URL:', url); // Debug statement
-      fetch(url, authTOKEN)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
+		if (param.makeAListId) {
+			const url = `${GET_MAKEALIST_CLM_BY_LIST_ID}${param.makeAListId}`;
+			console.log('API URL:', url);
+			fetch(url, authTOKEN)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
 
-          return response.json();
-        })
-        .then((data) => {
-          const booleanArr = Object.keys(data).filter(
-            (key) => typeof data[key] === 'boolean'
-          );
-          console.log('booleanKeys', booleanArr); // Debug statement
-          setBooleanKeys(booleanArr);
-          setApiData(data);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
-    } else {
-      console.error('No ID provided');
-    }
-  }, [param]);
+					return response.json();
+				})
+				.then((data) => {
+					const booleanArr = Object.keys(data).filter((key) => typeof data[key] === 'boolean');
 
-  useEffect(() => {
-    if (apiData) {
-      const formValues = {};
-      booleanKeys.forEach((key) => {
-        formValues[`columns.${key}.isChecked`] = apiData[key];
-      });
-      reset({ ...getValues(), ...formValues });
-    }
-  }, [apiData, booleanKeys, reset, getValues]);
+					setBooleanKeys(booleanArr);
+					setApiData(data);
+				})
+				.catch((error) => {
+					console.error('Error fetching data:', error);
+				});
+		} else {
+			console.error('No ID provided');
+		}
+	}, [param]);
 
-  function snakeToTitleCase(text) {
-    return text
-      .split('_')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  }
+	useEffect(() => {
+		if (apiData) {
+			booleanKeys.forEach((key) => {
+				setValue(`${key}`, apiData[key]);
+			});
+		}
+	}, [apiData, booleanKeys, setValue]);
 
-  return (
-    <div className='grid grid-cols-3 grid-flow-row gap-1'>
-      {booleanKeys.map((key) => (
-        <FormControlLabel
-          key={key}
-          control={
-            <Controller
-              name={`columns.${key}.isChecked`}
-              control={control}
-              render={({ field }) => (
-                <Checkbox
-                  {...field}
-                  checked={field.value || false}
-                  onChange={(e) =>
-                    setValue(`columns.${key}.isChecked`, e.target.checked)
-                  }
-                />
-              )}
-            />
-          }
-          label={
-            <Typography variant='body1'>{snakeToTitleCase(key)}</Typography>
-          }
-        />
-      ))}
-    </div>
-  );
+	function snakeToTitleCase(text) {
+		return text
+			.split('_')
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
+	}
+
+	return (
+		<div className="grid grid-cols-3 grid-flow-row gap-1">
+			{booleanKeys.map((key) => (
+				<FormControlLabel
+					key={key}
+					control={
+						<Controller
+							name={`${key}`}
+							control={control}
+							defaultValue={apiData[key]} // set default value here
+							render={({ field }) => {
+								console.log('checked Field', field);
+								return (
+									<Checkbox
+										{...field}
+										checked={field.value || false}
+										onChange={(e) => field.onChange(e.target.checked)}
+									/>
+								);
+							}}
+						/>
+					}
+					label={<Typography variant="body1">{snakeToTitleCase(key)}</Typography>}
+				/>
+			))}
+		</div>
+	);
 }
 
 export default MakeListColumnForm;
