@@ -17,7 +17,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPassengers } from 'app/store/dataSlice';
 import MakeListRowHeader from './MakeListRowHeader';
 import MakeListRowModel from './models/MakeListRowModel';
-import { useGetMakeListRowQuery } from '../MakeListRowApi';
+import {
+  useCreateMakeListRowMutation,
+  useGetMakeListRowQuery,
+} from '../MakeListRowApi';
 import MultiplePassengersTable from './MultiplePassengersTable';
 
 /**
@@ -65,7 +68,8 @@ function MakeListRow() {
     defaultValues: {},
     resolver: zodResolver(schema),
   });
-  const { control, reset, watch, formState, setValue } = methods;
+  const { control, reset, watch, formState, setValue, getValues } = methods;
+  console.log('getValues', getValues());
   const { errors } = formState;
   const passengers = useSelector((state) => state.data.passengers);
   const [mltPassengerList, setMltPassengerList] = useState([]);
@@ -92,7 +96,7 @@ function MakeListRow() {
   useEffect(() => {
     if (mltPassengerDeletedId) {
       setMltPassengerList(
-        mltPassengerList?.filter((item) => item.id !== mltPassengerDeletedId)
+        mltPassengerList.filter((item) => item.id !== mltPassengerDeletedId)
       );
       setMltPassengerDeletedId(null);
     }
@@ -105,7 +109,7 @@ function MakeListRow() {
   useEffect(() => {
     setValue(
       'passengers',
-      mltPassengerList?.map((data) => data.id)
+      mltPassengerList.map((data) => data.id)
     );
   }, [mltPassengerList, setValue]);
 
@@ -115,9 +119,23 @@ function MakeListRow() {
         !mltPassengerList.some((passenger) => passenger.id === newPassenger.id)
       ) {
         setMltPassengerList([...mltPassengerList, newPassenger]);
+        createMakeAListRow({
+          variables: {
+            passengerId: newPassenger.id,
+            // other necessary variables for your mutation
+          },
+        })
+          .then((response) => {
+            console.log('Passenger saved successfully:', response.data);
+          })
+          .catch((error) => {
+            console.error('Error saving passenger:', error);
+          });
       }
     }
   };
+
+  const [createMakeAListRow] = useCreateMakeListRowMutation();
 
   useEffect(() => {
     if (pageData.page && pageData.size && params.makeAListId) {
@@ -133,7 +151,7 @@ function MakeListRow() {
       fetch(fetchUrl, authTOKEN)
         .then((response) => response.json())
         .then((data) => {
-          console.log('Fetched passengers:', data?.passengers); // Debug log
+          console.log('Fetched passengers:', data?.passengers);
           setPassengers(data?.passengers || []);
           setPageData({
             ...pageData,
@@ -218,7 +236,6 @@ function MakeListRow() {
                 </div>
               </div>
             )}
-            {/* Render Multiple Passengers Table if there are any selected passengers */}
             {mltPassengerList.length > 0 && (
               <MultiplePassengersTable
                 passengers={mltPassengerList}
