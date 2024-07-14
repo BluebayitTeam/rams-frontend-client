@@ -14,11 +14,13 @@ const MakeListRowApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getMakeListRow: build.query({
-				query: (makeListRowId) => ({
-					url: `${GET_MAKEALIST_ROW_BY_LIST_ID}${makeListRowId}`
+				query: ({ page, size }) => ({
+					url: GET_MAKEALIST_ROW_BY_LIST_ID,
+					params: { page, size }
 				}),
 				providesTags: ['makeListRows']
 			}),
+
 			createMakeListRow: build.mutation({
 				query: (newMakeListRow) => ({
 					url: CREATE_MAKEALIST_ROW,

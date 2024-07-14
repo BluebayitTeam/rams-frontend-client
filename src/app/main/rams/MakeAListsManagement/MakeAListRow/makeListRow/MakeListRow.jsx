@@ -5,14 +5,19 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { Autocomplete, TextField } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { GET_MAKEALIST_ROW_BY_LIST_ID } from 'src/app/constant/constants';
+import { getPassengers } from 'app/store/dataSlice';
+import { useDispatch } from 'react-redux';
 import MakeListRowHeader from './MakeListRowHeader';
 import MakeListRowModel from './models/MakeListRowModel';
 import { useGetMakeListRowQuery } from '../MakeListRowApi';
-import MakeListRowForm from './MakeListRowForm';
+import MultiplePassengersTable from './MultiplePassengersTable';
 
 /**
  * Form Validation Schema
@@ -24,11 +29,26 @@ const schema = z.object({
 		.min(5, 'The makeListRow name must be at least 5 characters')
 });
 
+const useStyles = makeStyles((theme) => ({
+	container: {
+		borderBottom: `1px solid ${theme.palette.primary.main}`,
+		paddingTop: '0.8rem',
+		paddingBottom: '0.7rem',
+		boxSizing: 'content-box'
+	},
+	textField: {
+		height: '4.8rem',
+		'& > div': {
+			height: '100%'
+		}
+	}
+}));
+
 function MakeListRow() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const classes = useStyles();
 	const routeParams = useParams();
 	const { makeListRowId } = routeParams;
-
 	const {
 		data: makeListRow,
 		isLoading,
@@ -44,8 +64,44 @@ function MakeListRow() {
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
-	const { reset, watch } = methods;
-	const form = watch();
+	const { control, reset, watch, formState, setValue } = methods;
+	const { errors } = formState;
+	const [passengers, setPassengers] = useState([]);
+	const [mltPassengerList, setMltPassengerList] = useState([]);
+	const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
+	const [pageData, setPageData] = useState({ page: 1, size: 30 });
+	const params = routeParams;
+	const dispatch = useDispatch();
+
+	// Fetch initial data
+	useEffect(() => {
+		dispatch(getPassengers());
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (mltPassengerDeletedId) {
+			setMltPassengerList((prevList) => prevList?.filter((item) => item.id !== mltPassengerDeletedId) || []);
+			setMltPassengerDeletedId(null);
+		}
+	}, [mltPassengerDeletedId]);
+
+	useEffect(() => {
+		setValue('passengers', mltPassengerList?.map((data) => data.id) || []);
+	}, [mltPassengerList, setValue]);
+
+	const handlePassengerSelect = (newPassenger) => {
+		if (newPassenger && !mltPassengerList.some((passenger) => passenger.id === newPassenger.id)) {
+			setMltPassengerList([...mltPassengerList, newPassenger]);
+		}
+	};
+
+	useEffect(() => {
+		if (mltPassengerList?.length > 0 && watch('passenger')) {
+			setValue('is_form_save', true);
+		} else {
+			setValue('is_form_save', false);
+		}
+	}, [mltPassengerList, watch('passenger'), setValue]);
 
 	useEffect(() => {
 		if (makeListRowId && makeListRowId !== 'new') {
@@ -61,17 +117,38 @@ function MakeListRow() {
 		}
 	}, [makeListRowId, reset, makeListRow]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+	useEffect(() => {
+		if (pageData.page && pageData.size && params.makeAListId) {
+			const authTOKEN = {
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: localStorage.getItem('jwt_access_token')
+				}
+			};
+
+			const fetchUrl = `${GET_MAKEALIST_ROW_BY_LIST_ID}${params.makeAListId}?page=${pageData.page}&size=${pageData.size}`;
+
+			fetch(fetchUrl, authTOKEN)
+				.then((response) => response.json())
+				.then((data) => {
+					console.log('Fetched passengers:', data?.passengers); // Debug log
+					setPassengers(data?.passengers || []);
+					setPageData({
+						...pageData,
+						total_pages: data.total_pages,
+						total_elements: data.total_elements
+					});
+				})
+				.catch((error) => {
+					console.error('Error fetching data:', error);
+				});
+		}
+	}, [pageData.page, pageData.size, params.makeAListId]);
 
 	if (isLoading) {
 		return <FuseLoading />;
 	}
 
-	/**
-	 * Show Message if the requested makeListRows is not exists
-	 */
 	if (isError && makeListRowId !== 'new') {
 		return (
 			<motion.div
@@ -103,13 +180,53 @@ function MakeListRow() {
 			<FusePageCarded
 				header={<MakeListRowHeader />}
 				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<MakeListRowForm makeListRows={makeListRow} />
-						</div>
+					<div className="p-16">
+						{tabValue === 0 && (
+							<div className="p-16">
+								<div className="flex justify-center w-full px-16">
+									<Controller
+										name="passenger"
+										control={control}
+										render={({ field: { value, onChange } }) => (
+											<Autocomplete
+												className={`w-full max-w-320 h-48 ${classes.container}`}
+												freeSolo
+												value={value ? passengers.find((data) => data.id === value) : null}
+												options={passengers}
+												getOptionLabel={(option) =>
+													`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+												}
+												onChange={(event, newValue) => {
+													onChange(newValue?.id);
+													handlePassengerSelect(newValue);
+												}}
+												renderInput={(params) => (
+													<TextField
+														{...params}
+														placeholder="Select Passenger"
+														label="Passenger"
+														error={!value}
+														helperText={errors?.agency?.message}
+														variant="outlined"
+														InputLabelProps={{ shrink: true }}
+													/>
+												)}
+											/>
+										)}
+									/>
+								</div>
+							</div>
+						)}
+						{/* Render Multiple Passengers Table if there are any selected passengers */}
+						{mltPassengerList.length > 0 && (
+							<MultiplePassengersTable
+								passengers={mltPassengerList}
+								setMltPassengerList={setMltPassengerList}
+							/>
+						)}
 					</div>
 				}
-				scroll={isMobile ? 'normal' : 'content'}
+				innerScroll
 			/>
 		</FormProvider>
 	);
