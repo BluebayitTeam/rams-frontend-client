@@ -3,8 +3,9 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useUpdateMakeListColumnMutation } from '../MakeListColumnApi';
 
 function MakeListColumnHeader() {
@@ -50,10 +51,23 @@ function MakeListColumnHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography
-							variant="caption"
-							className="text-2xl font-bold"
+							className="flex items-center sm:mb-12"
+							component={Link}
+							role="button"
+							to="/apps/makeAList/makeALists"
+							color="inherit"
 						>
-							{routeParams?.['*']}
+							<FuseSvgIcon size={20}>
+								{theme.direction === 'ltr'
+									? 'heroicons-outline:arrow-sm-left'
+									: 'heroicons-outline:arrow-sm-right'}
+							</FuseSvgIcon>
+							<Typography
+								variant="caption"
+								className="text-2xl font-bold"
+							>
+								{routeParams?.['*']}
+							</Typography>
 						</Typography>
 					</motion.div>
 				</div>
