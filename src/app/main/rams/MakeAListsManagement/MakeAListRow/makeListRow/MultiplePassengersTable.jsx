@@ -1,112 +1,131 @@
-/* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import { Delete } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import withRouter from '@fuse/core/withRouter';
-import { TableCell } from '@mui/material';
+import { Pagination, TableCell, TablePagination } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import MultiplePassengersTableHead from './MultiplePassengersTableHead';
 
-const style = {
-	margin: 'auto',
-	backgroundColor: 'white',
-	width: '1400px',
-	height: 'fit-content',
-	maxWidth: '940px',
-	maxHeight: 'fit-content',
-	borderRadius: '20px',
-	overflow: 'hidden'
-};
+// ... (style object remains unchanged)
 
 function MultiplePassengersTable(props) {
-	const [singleEvisaEntryDetails, setSingleEvisaEntryDetails] = useState({});
-	const [evisaEntryPackagePrice, setEvisaEntryPackagePrice] = useState(0);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rows, setRows] = useState([]);
 
-	const serialNumber = 1;
+  useEffect(() => {
+    if (props.passengers && props.passengers.length > 0) {
+      setRows(props.passengers);
+    }
+  }, [props.passengers]);
 
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {}
-	});
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+  });
 
-	return (
-		<div className="w-full flex flex-col min-h-full px-10 ">
-			<FuseScrollbars className="grow overflow-x-auto ">
-				<Table
-					stickyHeader
-					className="min-w-xl "
-					aria-labelledby="tableTitle"
-				>
-					<MultiplePassengersTableHead />
-					<TableBody>
-						{props?.passengers?.map((n, sl) => {
-							return (
-								<TableRow
-									className="h-72 cursor-pointer"
-									hover
-									role="checkbox"
-									tabIndex={-1}
-									key={n.id}
-								>
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-									>
-										{sl + 1}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n?.passenger_id}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n?.passenger_name}
-									</TableCell>
+  // Pagination handlers
+  const handlePagination = (event, newPage) => {
+    setPage(newPage - 1);
+  };
 
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{`${n?.passport_no}`}
-									</TableCell>
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
 
-									<TableCell
-										className="p-4 md:p-16"
-										align="center"
-										component="th"
-										scope="row"
-									>
-										<div>
-											<Delete
-												onClick={() =>
-													props?.setMltPassengerList(
-														props?.passengers.filter((item) => item.id !== n?.id)
-													)
-												}
-												className="cursor-pointer"
-												style={{ color: 'red' }}
-											/>
-										</div>
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-		</div>
-	);
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
+
+  // Calculate the number of pages
+  const pageCount = Math.ceil(rows.length / rowsPerPage);
+
+  return (
+    <div className='w-full flex flex-col min-h-full px-10 '>
+      <FuseScrollbars className='grow overflow-x-auto '>
+        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
+          <MultiplePassengersTableHead />
+          <TableBody>
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((n, sl) => (
+                <TableRow
+                  className='h-72 cursor-pointer'
+                  hover
+                  role='checkbox'
+                  tabIndex={-1}
+                  key={n.id}>
+                  <TableCell
+                    className='w-40 md:w-64'
+                    component='th'
+                    scope='row'>
+                    {sl + 1 + page * rowsPerPage}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n?.passenger_id}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n?.passenger_name}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n?.passport_no}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n?.agent}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-16'
+                    align='center'
+                    component='th'
+                    scope='row'>
+                    <div>
+                      <Delete
+                        onClick={() =>
+                          props?.setMltPassengerList(
+                            props?.passengers.filter(
+                              (item) => item.id !== n?.id
+                            )
+                          )
+                        }
+                        className='cursor-pointer'
+                        style={{ color: 'red' }}
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </FuseScrollbars>
+      <div id='pagiContainer' className='flex justify-between mb-6'>
+        <Pagination
+          count={pageCount}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
+
+        <TablePagination
+          className='shrink-0 mb-2'
+          component='div'
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(MultiplePassengersTable);

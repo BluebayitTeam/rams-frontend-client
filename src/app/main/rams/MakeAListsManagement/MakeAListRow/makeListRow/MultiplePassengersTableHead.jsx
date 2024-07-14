@@ -35,10 +35,10 @@ const rows = [
     sort: true,
   },
   {
-    id: 'first_name',
+    id: 'agent',
     align: 'left',
     disablePadding: false,
-    label: 'agent',
+    label: 'Agent',
     sort: true,
   },
 
