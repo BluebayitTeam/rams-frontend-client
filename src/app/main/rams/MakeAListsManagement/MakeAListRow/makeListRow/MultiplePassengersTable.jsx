@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
