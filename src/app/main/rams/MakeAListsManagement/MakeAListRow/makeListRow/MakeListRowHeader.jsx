@@ -1,17 +1,16 @@
-import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useUpdateMakeListRowMutation } from '../../MakeAListsApi';
+import { useCreateMakeListRowMutation } from '../MakeListRowApi';
 
 function MakeListRowHeader() {
 	const routeParams = useParams();
 	console.log('routeParams', routeParams);
 
-	const [saveMakeListRow] = useUpdateMakeListRowMutation();
+	const [saveMakeListRow] = useCreateMakeListRowMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
@@ -64,22 +63,20 @@ function MakeListRowHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				<Button
-					className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
-					color="secondary"
-					variant="contained"
-					onClick={handleUpdateMakeListRow}
-				>
-					Save
-				</Button>
-
-				<Button
-					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
-					variant="contained"
-					onClick={handleCancel}
-				>
-					Cancel
-				</Button>
+				<div className="flex items-center max-w-full">
+					<motion.div
+						className="flex flex-col min-w-0 mx-8 sm:mx-16"
+						initial={{ x: -20 }}
+						animate={{ x: 0, transition: { delay: 0.3 } }}
+					>
+						<Typography
+							variant="caption"
+							className="text-2xl font-bold"
+						>
+							{routeParams?.['*']}
+						</Typography>
+					</motion.div>
+				</div>
 			</motion.div>
 		</div>
 	);

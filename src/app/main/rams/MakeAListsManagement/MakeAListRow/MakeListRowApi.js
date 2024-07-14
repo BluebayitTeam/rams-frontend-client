@@ -43,7 +43,7 @@ export const {
 	useGetMakeListRowsQuery,
 	useDeleteMakeListRowsMutation,
 	useGetMakeListRowQuery,
-	useUpdateMakeListRowMutation,
+
 	useDeleteMakeListRowMutation,
 
 	useCreateMakeListRowMutation

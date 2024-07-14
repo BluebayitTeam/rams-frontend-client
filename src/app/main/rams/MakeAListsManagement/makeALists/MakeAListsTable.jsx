@@ -92,7 +92,7 @@ function MakeAListsTable(props) {
 
 	function handleMakeAListRow(item) {
 		localStorage.removeItem('makeAListEvent');
-		navigate(`/apps/makeAList-management/rows/${item.id}/${item.title}`);
+		navigate(`/apps/makeAList/makeALists/makeAListRows/${item.id}/${item.title}`);
 	}
 
 	function handleCheck(event, id) {
