@@ -15,6 +15,7 @@ import { makeStyles } from '@mui/styles';
 import { GET_MAKEALIST_ROW_BY_LIST_ID } from 'src/app/constant/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPassengers } from 'app/store/dataSlice';
+import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import MakeListRowHeader from './MakeListRowHeader';
 import MakeListRowModel from './models/MakeListRowModel';
 import {
@@ -120,13 +121,11 @@ function MakeListRow() {
       ) {
         setMltPassengerList([...mltPassengerList, newPassenger]);
         createMakeAListRow({
-          variables: {
-            passengerId: newPassenger.id,
-            // other necessary variables for your mutation
-          },
+          passenger: newPassenger.id,
+          make_list: params.makeAListId,
         })
           .then((response) => {
-            console.log('Passenger saved successfully:', response.data);
+            AddedSuccessfully();
           })
           .catch((error) => {
             console.error('Error saving passenger:', error);
