@@ -77,8 +77,9 @@ function MakeListRow() {
 
   const [pageData, setPageData] = useState({ page: 1, size: 30 });
   const { makeAListId } = routeParams;
-  const [passengerIds, setPassengerIds] = useState(passengers.id)
-  console.log('passengerIds',passengerIds);
+  const [passengerId, setPassengerId] = useState('');
+
+  console.log('passengerId', passengerId);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -121,9 +122,10 @@ function MakeListRow() {
         !mltPassengerList.some((passenger) => passenger.id === newPassenger.id)
       ) {
         setMltPassengerList([...mltPassengerList, newPassenger]);
+        setPassengerId(newPassenger.id);
         createMakeAListRow({
           passenger: newPassenger.id,
-          make_list: params.makeAListId,
+          make_list: makeAListId,
         })
           .then((response) => {
             AddedSuccessfully();
@@ -146,8 +148,6 @@ function MakeListRow() {
   //       },
   //     };
 
-     
-
   //     fetch(`${GET_MAKEALIST_ROW_BY_LIST_ID}${params.makeAListId}?page=${pageData.page}&size=${pageData.size}`, authTOKEN)
   //       .then((response) => response.json())
   //       .then((data) => {
@@ -160,7 +160,7 @@ function MakeListRow() {
   //         });
   //       })
   //       .catch(() => {
-         
+
   //       });
   //   }
   // }, [pageData.page, pageData.size, params.makeAListId]);
@@ -240,8 +240,7 @@ function MakeListRow() {
               <MultiplePassengersTable
                 passengers={mltPassengerList}
                 setMltPassengerList={setMltPassengerList}
-                passengerIds={passengerIds}
-                
+                passengerId={passengerId}
               />
             )}
           </div>
