@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import { Pagination, TableCell, TablePagination } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { CREATE_MAKEALIST_ROW } from 'src/app/constant/constants';
 import MultiplePassengersTableHead from './MultiplePassengersTableHead';
 
 // ... (style object remains unchanged)
@@ -16,12 +17,42 @@ function MultiplePassengersTable(props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [rows, setRows] = useState([]);
+  console.log('passengerIds', props?.passengerIds);
+  
+  const [passengerList, setPassengerList] = useState([])
+  // console.log('passengerList',setPassengerList);
+  
+
+  useEffect(() => {
+    if (props?.passengerIds) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+
+     
+
+      fetch(`${CREATE_MAKEALIST_ROW}${props?.passengerIds}`, authTOKEN)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('dataCheck', data);
+          setPassengerList(data)
+        })
+        .catch(() => {
+         
+        });
+    }
+  }, [props?.passengerIds]);
 
   useEffect(() => {
     if (props.passengers && props.passengers.length > 0) {
       setRows(props.passengers);
     }
   }, [props.passengers]);
+
+
 
   const methods = useForm({
     mode: 'onChange',
@@ -90,6 +121,8 @@ function MultiplePassengersTable(props) {
                             props?.passengers.filter(
                               (item) => item.id !== n?.id
                             )
+
+                            
                           )
                         }
                         className='cursor-pointer'

@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Autocomplete, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { GET_MAKEALIST_ROW_BY_LIST_ID } from 'src/app/constant/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPassengers } from 'app/store/dataSlice';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
@@ -77,7 +76,8 @@ function MakeListRow() {
   const [mltPassengerDeletedId, setMltPassengerDeletedId] = useState(null);
 
   const [pageData, setPageData] = useState({ page: 1, size: 30 });
-  const params = routeParams;
+  const { makeAListId } = routeParams;
+  const [passengerIds,setPassengerIds]=useState(passengers)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -136,33 +136,33 @@ function MakeListRow() {
 
   const [createMakeAListRow] = useCreateMakeListRowMutation();
 
-  useEffect(() => {
-    if (pageData.page && pageData.size && params.makeAListId) {
-      const authTOKEN = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: localStorage.getItem('jwt_access_token'),
-        },
-      };
+  // useEffect(() => {
+  //   if (pageData.page && pageData.size && params.makeAListId) {
+  //     const authTOKEN = {
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //         Authorization: localStorage.getItem('jwt_access_token'),
+  //       },
+  //     };
 
      
 
-      fetch(`${GET_MAKEALIST_ROW_BY_LIST_ID}${params.makeAListId}?page=${pageData.page}&size=${pageData.size}`, authTOKEN)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Fetched passengers:', data?.passengers);
-          setPassengers(data?.passengers || []);
-          setPageData({
-            ...pageData,
-            total_pages: data.total_pages,
-            total_elements: data.total_elements,
-          });
-        })
-        .catch(() => {
+  //     fetch(`${GET_MAKEALIST_ROW_BY_LIST_ID}${params.makeAListId}?page=${pageData.page}&size=${pageData.size}`, authTOKEN)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         console.log('Fetched passengers:', data?.passengers);
+  //         setPassengers(data?.passengers || []);
+  //         setPageData({
+  //           ...pageData,
+  //           total_pages: data.total_pages,
+  //           total_elements: data.total_elements,
+  //         });
+  //       })
+  //       .catch(() => {
          
-        });
-    }
-  }, [pageData.page, pageData.size, params.makeAListId]);
+  //       });
+  //   }
+  // }, [pageData.page, pageData.size, params.makeAListId]);
 
   if (isLoading) {
     return <FuseLoading />;
@@ -239,6 +239,8 @@ function MakeListRow() {
               <MultiplePassengersTable
                 passengers={mltPassengerList}
                 setMltPassengerList={setMltPassengerList}
+                passengerIds={passengerIds}
+                
               />
             )}
           </div>
