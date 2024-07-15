@@ -77,7 +77,8 @@ function MakeListRow() {
 
   const [pageData, setPageData] = useState({ page: 1, size: 30 });
   const { makeAListId } = routeParams;
-  const [passengerIds,setPassengerIds]=useState(passengers)
+  const [passengerIds, setPassengerIds] = useState(passengers.id)
+  console.log('passengerIds',passengerIds);
   const dispatch = useDispatch();
 
   useEffect(() => {
