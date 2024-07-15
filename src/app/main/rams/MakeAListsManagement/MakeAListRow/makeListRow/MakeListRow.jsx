@@ -145,9 +145,9 @@ function MakeListRow() {
         },
       };
 
-      const fetchUrl = `${GET_MAKEALIST_ROW_BY_LIST_ID}${params.makeAListId}?page=${pageData.page}&size=${pageData.size}`;
+     
 
-      fetch(fetchUrl, authTOKEN)
+      fetch(`${GET_MAKEALIST_ROW_BY_LIST_ID}${params.makeAListId}?page=${pageData.page}&size=${pageData.size}`, authTOKEN)
         .then((response) => response.json())
         .then((data) => {
           console.log('Fetched passengers:', data?.passengers);
@@ -158,8 +158,8 @@ function MakeListRow() {
             total_elements: data.total_elements,
           });
         })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
+        .catch(() => {
+         
         });
     }
   }, [pageData.page, pageData.size, params.makeAListId]);
