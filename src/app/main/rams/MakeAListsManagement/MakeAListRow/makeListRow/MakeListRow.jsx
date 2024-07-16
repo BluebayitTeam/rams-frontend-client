@@ -96,7 +96,6 @@ function MakeListRow() {
 														placeholder="Select Passenger"
 														label="Passenger"
 														error={!value}
-														helperText={errors?.passenger?.message}
 														variant="outlined"
 														InputLabelProps={{ shrink: true }}
 													/>
@@ -106,7 +105,7 @@ function MakeListRow() {
 									/>
 								</div>
 							</div>
-							<hr className={`w-full max-w-620 h-48 font-800 `} />
+							<hr className={`w-full max-w-620 h-48 font-800 border-gray-00 `} />
 							<MultiplePassengersTable passengerId={watch('passenger')} />
 						</div>
 					</Tabs>

@@ -91,7 +91,7 @@ function MultiplePassengersTable(props) {
 				}
 			})
 			.catch((error) => {
-				CustomNotification('error', `${error?.response?.data?.detail}`);
+				CustomNotification('error', `${error?.response?.detail}`);
 			});
 	};
 
