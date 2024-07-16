@@ -23,7 +23,6 @@ function MultiplePassengersTable(props) {
 
 	const { makeAListId } = routeParams;
 
-	const [rows, setRows] = useState([]);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
@@ -163,7 +162,7 @@ function MultiplePassengersTable(props) {
 		setSelected(newSelected);
 	}
 
-	const pageCount = Math.ceil(rows.length / rowsPerPage);
+	const pageCount = Math.ceil(passengerList.length / rowsPerPage);
 
 	if (passengerList?.length === 0) {
 		return (
@@ -247,7 +246,7 @@ function MultiplePassengersTable(props) {
 				<TablePagination
 					className="shrink-0 mb-2"
 					component="div"
-					count={rows.length}
+					count={passengerList.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					onPageChange={handleChangePage}
