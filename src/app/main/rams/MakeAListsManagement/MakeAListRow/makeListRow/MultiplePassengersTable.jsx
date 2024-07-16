@@ -4,25 +4,32 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import { Delete } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
-import { Pagination, TableCell, TablePagination } from '@mui/material';
+import { Pagination, TableCell, TablePagination, Typography } from '@mui/material';
 import { CREATE_MAKEALIST_ROW, DELETE_MAKEALIST_ROW, GET_MAKEALIST_ROW_BY_LIST_ID } from 'src/app/constant/constants';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import withRouter from '@fuse/core/withRouter';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import { motion } from 'framer-motion';
 import MultiplePassengersTableHead from './MultiplePassengersTableHead';
 
 function MultiplePassengersTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(25);
 	const { passengerId } = props;
-	const [pageData, setPageData] = useState({ page: 1, size: 30 });
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 	const [passengerList, setPassengerList] = useState([]);
 	const routeParams = useParams();
 
 	const { makeAListId } = routeParams;
 
 	const [rows, setRows] = useState([]);
+	const [order, setOrder] = useState({
+		direction: 'asc',
+		id: null
+	});
+	const [selected, setSelected] = useState([]);
+
 	const handleGetPassengerTableData = () => {
 		const authTOKEN = {
 			headers: {
@@ -31,19 +38,16 @@ function MultiplePassengersTable(props) {
 			}
 		};
 
-		fetch(`${GET_MAKEALIST_ROW_BY_LIST_ID}${makeAListId}?page=${pageData.page}&size=${pageData.size}`, authTOKEN)
+		fetch(
+			`${GET_MAKEALIST_ROW_BY_LIST_ID}${makeAListId}?page=${pageAndSize.page}&size=${pageAndSize.size}`,
+			authTOKEN
+		)
 			.then((response) => response.json())
 			.then((data) => {
 				setPassengerList(data?.make_list_items || []);
-				// setPageData((data) => ({
-				// 	...data,
-				// 	make_list_items: data.make_list_items,
-				// 	total_pages: data.total_pages,
-				// 	total_elements: data.total_elements
-				// }));
 			})
 			.catch((error) => {
-				CustomNotification('error', `${error?.resposne?.data?.detail}`);
+				CustomNotification('error', `${error?.response?.data?.detail}`);
 			});
 	};
 
@@ -66,9 +70,8 @@ function MultiplePassengersTable(props) {
 				handleGetPassengerTableData();
 				CustomNotification('success', 'Passenger Added Successfully');
 			}
-			// setPassengerList(response.data);
 		} catch (error) {
-			CustomNotification('error', `${error?.resposne?.data?.detail}`);
+			CustomNotification('error', `${error?.response?.data?.detail}`);
 		}
 	};
 
@@ -89,7 +92,7 @@ function MultiplePassengersTable(props) {
 				}
 			})
 			.catch((error) => {
-				CustomNotification('error', `${error?.resposne?.data?.detail}`);
+				CustomNotification('error', `${error?.response?.data?.detail}`);
 			});
 	};
 
@@ -116,7 +119,68 @@ function MultiplePassengersTable(props) {
 		setPage(0);
 	};
 
+	function handleRequestSort(makeAListEvent, property) {
+		const id = property;
+		let direction = 'desc';
+
+		if (order.id === property && order.direction === 'desc') {
+			direction = 'asc';
+		}
+
+		setOrder({
+			direction,
+			id
+		});
+	}
+
+	function handleSelectAllClick(makeAListEvent) {
+		if (makeAListEvent.target.checked) {
+			setSelected(passengerList.map((n) => n.id));
+			return;
+		}
+
+		setSelected([]);
+	}
+
+	function handleDeselect() {
+		setSelected([]);
+	}
+
+	function handleCheck(makeAListEvent, id) {
+		const selectedIndex = selected.indexOf(id);
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1));
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1));
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+		}
+
+		setSelected(newSelected);
+	}
+
 	const pageCount = Math.ceil(rows.length / rowsPerPage);
+
+	if (passengerList?.length === 0) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-1 items-center justify-center h-full"
+			>
+				<Typography
+					color="textSecondary"
+					variant="h5"
+				>
+					Row is Empty!
+				</Typography>
+			</motion.div>
+		);
+	}
 
 	return (
 		<div className="w-full flex flex-col min-h-full px-10">
@@ -126,7 +190,15 @@ function MultiplePassengersTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<MultiplePassengersTableHead />
+					<MultiplePassengersTableHead
+						selectedMakeAListIds={selected}
+						order={order}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={passengerList.length}
+						onMenuItemClick={handleDeselect}
+						pagination={pageAndSize}
+					/>
 					<TableBody>
 						{passengerList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, index) => (
 							<TableRow
@@ -172,7 +244,6 @@ function MultiplePassengersTable(props) {
 					shape="rounded"
 					onChange={handlePagination}
 				/>
-
 				<TablePagination
 					className="shrink-0 mb-2"
 					component="div"
