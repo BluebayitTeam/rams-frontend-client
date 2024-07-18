@@ -1,7 +1,7 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import { GET_KSAVISA_BY_ID } from 'src/app/constant/constants';
+import { GET_KSAVISA_BY_ID, GET_KSAVISAS } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['ksaVisas'];
@@ -11,9 +11,14 @@ const KsaVisaApi = api
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
+			getKsaVisas: build.query({
+				query: ({ id }) => ({ url: GET_KSAVISAS, params: { id } }),
+				providesTags: ['ksaVisas']
+			}),
+
 			getKsaVisa: build.query({
-				query: (newKsaVisa) => ({
-					url: `${GET_KSAVISA_BY_ID}${newKsaVisa.id}`
+				query: (ksaVisaId) => ({
+					url: `${GET_KSAVISA_BY_ID}${ksaVisaId}`
 				}),
 				providesTags: ['ksaVisas']
 			})
@@ -21,7 +26,11 @@ const KsaVisaApi = api
 		overrideExisting: false
 	});
 export default KsaVisaApi;
-export const { useGetKsaVisaMutation } = KsaVisaApi;
+export const {
+	useGetKsaVisasQuery,
+
+	useGetKsaVisaQuery
+} = KsaVisaApi;
 
 export const selectFilteredKsaVisas = (ksaVisas) =>
 	createSelector([selectSearchText], (searchText) => {
