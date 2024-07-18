@@ -13,6 +13,7 @@ import { useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Print } from '@mui/icons-material';
 import moment from 'moment';
+import Barcode from 'react-barcode';
 
 const useStyles = makeStyles(() => ({
 	textField: {

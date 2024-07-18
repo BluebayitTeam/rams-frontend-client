@@ -61,6 +61,7 @@
         "react-apexcharts": "1.4.1",
         "react-app-alias": "2.2.2",
         "react-autosuggest": "10.1.0",
+        "react-barcode": "^1.5.3",
         "react-beautiful-dnd": "13.1.1",
         "react-datepicker": "^6.4.0",
         "react-dom": "18.2.0",
