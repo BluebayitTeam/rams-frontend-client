@@ -8,11 +8,10 @@ import { Button, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 import Barcode from 'react-barcode';
-import { getKsaVisa } from 'app/store/dataSlice';
 import _ from 'lodash';
 import { useReactToPrint } from 'react-to-print';
 import { Print } from '@material-ui/icons';
@@ -67,17 +66,28 @@ function KsaVisaForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
-	// const [createKsaVisa] = useCreateKsaVisaMutation();
 
 	const { errors } = formState;
 	const routeParams = useParams();
-	// const { ksaVisaId } = routeParams;
-	// console.log('ksaVisaId', ksaVisaId);
-	const params = routeParams;
-	console.log('params', params);
-	const classes = useStyles(props);
 
-	const data = useSelector((state) => state.data.ksaVisa);
+	const classes = useStyles(props);
+	const [showError, setShowError] = useState(false);
+	const [show, setShow] = useState(null);
+	const data = {};
+	const getKsaVisa = () => {};
+	// const data = (id) => {
+	// 	setShowError(true);
+	// 	const authTOKEN = {
+	// 		headers: {
+	// 			'Content-type': 'application/json',
+	// 			Authorization: localStorage.getItem('jwt_access_token')
+	// 		}
+	// 	};
+	// 	fetch(`${GET_KSAVISA_BY_ID}${id}`, authTOKEN)
+	// 		.then((response) => response.json())
+	// 		.then((data) => setShow(data.id))
+	// 		.catch((err) => {});
+	// };
 
 	const [showPrint, setShowPrint] = useState(false);
 
@@ -122,7 +132,9 @@ function KsaVisaForm(props) {
 								fullWidth
 								onKeyDown={(e) => {
 									if (e?.key === 'Enter') {
-										e?.target?.value && dispatch(getKsaVisa(e.target.value));
+										if (e?.target?.value) {
+											dispatch(getKsaVisa(e.target.value));
+										}
 									}
 								}}
 							/>
@@ -470,7 +482,6 @@ function KsaVisaForm(props) {
 												<td style={{ textAlign: 'right' }}>:&nbsp;مصدرة</td>
 												<td style={{ textAlign: 'right' }}>:&nbsp;المؤهل العلمي</td>
 												<td style={{ textAlign: 'right', fontFamily: 'Arial' }}>
-													{/* <asp:Label ID="lblJobtitleArabic" Font-Bold="true" fontSize="11pt}} runat="server"  ></asp:Label> */}{' '}
 													<span style={{ color: 'white', fontSize: '1px' }}>a</span>
 													{data?.[0]?.unknown} :&nbsp;المهنـة
 												</td>
