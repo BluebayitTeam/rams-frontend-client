@@ -29,6 +29,7 @@ import {
 	GET_FEMALECV_BY_ID,
 	GET_FORM_CONTROL_HEAD_WITHOUT_PG,
 	GET_GDSS,
+	GET_KSAVISA_BY_ID,
 	GET_MENUS_ALL_NESTED,
 	GET_MENUS_WITHOUT_PAGINATION,
 	GET_PACKAGE_TYPES_WITHOUT_PAGINATION,
@@ -351,6 +352,19 @@ export const getAutoStatusUpdates = () => (dispatch) => {
 	fetch(POST_CORN_JOB, authTOKEN)
 		.then((response) => response.json())
 		.then((data) => dispatch(setAutoStatusUpdates(data.cron_job)))
+		.catch(() => {});
+};
+
+export const getKsaVisa = () => (dispatch) => {
+	const authTOKEN = {
+		headers: {
+			'Content-type': 'application/json',
+			Authorization: localStorage.getItem('jwt_access_token')
+		}
+	};
+	fetch(GET_KSAVISA_BY_ID, authTOKEN)
+		.then((response) => response.json())
+		.then((data) => dispatch(setKsaVisa(data.ksaVisa)))
 		.catch(() => {});
 };
 
@@ -1018,6 +1032,9 @@ const dataSlice = createSlice({
 		setAutoStatusUpdates: (state, action) => {
 			state.autoStatusUpdates = action.payload;
 		},
+		setKsaVisa: (state, action) => {
+			state.ksaVisa = action.payload;
+		},
 		setDepartments: (state, action) => {
 			state.departments = action.payload;
 		},
@@ -1181,6 +1198,7 @@ const {
 	setTicketDepartments,
 	setTicketStatuss,
 	setAutoStatusUpdates,
+	setKsaVisa,
 	setDepartments,
 	setClients,
 	setAgents,

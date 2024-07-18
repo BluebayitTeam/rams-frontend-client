@@ -8,12 +8,14 @@ import { Button, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useRef, useState } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { Print } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 import Barcode from 'react-barcode';
+import { getKsaVisa } from 'app/store/dataSlice';
+import _ from 'lodash';
+import { useReactToPrint } from 'react-to-print';
+import { Print } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
 	textField: {
@@ -69,20 +71,28 @@ function KsaVisaForm(props) {
 
 	const { errors } = formState;
 	const routeParams = useParams();
-	const { ksaVisaId } = routeParams;
+	// const { ksaVisaId } = routeParams;
+	// console.log('ksaVisaId', ksaVisaId);
+	const params = routeParams;
+	console.log('params', params);
 	const classes = useStyles(props);
 
-	const data = {};
+	const data = useSelector((state) => state.data.ksaVisa);
 
 	const [showPrint, setShowPrint] = useState(false);
-	// useEffect(() => {
-	// 	_.isEmpty(data) ? setShowPrint(false) : setShowPrint(true);
 
-	// 	if (routeParams.ksaVisaId != 'ksa-visa-form') {
-	// 		setValue('name', routeParams.ksaVisaId);
-	// 		dispatch(getKsaVisa(routeParams.ksaVisaId));
-	// 	}
-	// }, [data]);
+	useEffect(() => {
+		if (_.isEmpty(data)) {
+			setShowPrint(false);
+		} else {
+			setShowPrint(true);
+		}
+
+		if (routeParams.ksaVisaId !== 'ksa-visa-form') {
+			setValue('name', routeParams.ksaVisaId);
+			dispatch(getKsaVisa(routeParams.ksaVisaId));
+		}
+	}, [data]);
 
 	// print dom ref
 	const componentRef = useRef();
@@ -112,7 +122,7 @@ function KsaVisaForm(props) {
 								fullWidth
 								onKeyDown={(e) => {
 									if (e?.key === 'Enter') {
-										e.target.value && dispatch(getKsaVisa(e.target.value));
+										e?.target?.value && dispatch(getKsaVisa(e.target.value));
 									}
 								}}
 							/>
@@ -126,7 +136,7 @@ function KsaVisaForm(props) {
 							padding: '0px 5px',
 							height: '35px'
 						}}
-						// onClick={() => watch('name') && dispatch(getKsaVisa(watch('name')))}
+						onClick={() => watch('name') && dispatch(getKsaVisa(watch('name')))}
 					>
 						Show
 					</Button>
