@@ -64,6 +64,7 @@ import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppC
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import MultipleStatusUpdateAppConfig from '../rams/MultipleStatusUpdate/MultipleStatusUpdateAppConfig';
 import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig';
+import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
 
 /**
  * The list of application configurations.
@@ -80,6 +81,7 @@ const appsConfigs = [
 	MailboxAppConfig,
 	MakeAListAppConfig,
 	NotesAppConfig,
+	KsaVisaAppConfig,
 	ProfileAppConfig,
 	ScrumboardAppConfig,
 	TasksAppConfig,

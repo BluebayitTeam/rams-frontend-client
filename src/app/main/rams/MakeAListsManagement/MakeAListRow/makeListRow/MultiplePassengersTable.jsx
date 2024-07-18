@@ -68,6 +68,7 @@ function MultiplePassengersTable(props) {
 			if (response) {
 				handleGetPassengerTableData();
 				CustomNotification('success', 'Passenger Added Successfully');
+				resetState(); // Reset the state after adding a passenger
 			}
 		} catch (error) {
 			CustomNotification('error', `${error?.response?.data?.detail}`);
@@ -93,6 +94,16 @@ function MultiplePassengersTable(props) {
 			.catch((error) => {
 				CustomNotification('error', `${error?.response?.detail}`);
 			});
+	};
+
+	const resetState = () => {
+		setPage(0);
+		setRowsPerPage(25);
+		setOrder({
+			direction: 'asc',
+			id: null
+		});
+		setSelected([]);
 	};
 
 	useEffect(() => {

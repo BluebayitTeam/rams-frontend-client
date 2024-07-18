@@ -1,5 +1,5 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,21 +40,33 @@ const useStyles = makeStyles((theme) => ({
 function MakeListRow() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const classes = useStyles();
+	const emptyValue = {
+		passenger: ''
+	};
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
-	const { control, formState, watch } = methods;
+	const { control, formState, watch, reset } = methods;
 	const { errors } = formState;
 	const passengers = useSelector((state) => state.data.passengers);
+	const [formKey, setFormKey] = useState(0);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getPassengers());
 	}, []);
 
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
+
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				classes={{
 					toolbar: 'p-0',
@@ -106,7 +118,11 @@ function MakeListRow() {
 								</div>
 							</div>
 							<hr className={`w-full max-w-620 h-48 font-800 border-gray-00 `} />
-							<MultiplePassengersTable passengerId={watch('passenger')} />
+							<MultiplePassengersTable
+								handleReset={handleReset}
+								emptyValue={emptyValue}
+								passengerId={watch('passenger')}
+							/>
 						</div>
 					</Tabs>
 				}
