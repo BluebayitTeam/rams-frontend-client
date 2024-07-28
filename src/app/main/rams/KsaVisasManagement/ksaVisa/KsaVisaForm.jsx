@@ -69,19 +69,23 @@ function KsaVisaForm(props) {
 	const methods = useFormContext();
 	const { control, formState, watch, setValue, setError } = methods;
 
-	const { errors } = formState;
 	const routeParams = useParams();
 	const classes = useStyles(props);
-	const [showError, setShowError] = useState(false);
 	const [show, setShow] = useState(null);
 
-	const [ksaVisaId, setKsaVisaId] = useState(null);
+	const [ksaVisaId, setKsaVisaId] = useState();
 
-	const { data } = useGetKsaVisaQuery(ksaVisaId);
+	console.log('ksaVisaId', ksaVisaId);
 
-	const handleGetKsaVisa = (input) => {
-		setKsaVisaId(input);
-	};
+	// const { data, refetch } = useGetKsaVisaQuery(ksaVisaId);
+
+	const { data, refetch } = useGetKsaVisaQuery(ksaVisaId);
+
+	console.log('fsdfsdf', data);
+
+	useEffect(() => {
+		refetch({ ksaVisaId });
+	}, [ksaVisaId]);
 
 	const [showPrint, setShowPrint] = useState(false);
 
@@ -92,11 +96,20 @@ function KsaVisaForm(props) {
 			setShowPrint(true);
 		}
 
-		if (routeParams.ksaVisaId !== 'ksa-visa-form') {
-			setValue('name', routeParams.ksaVisaId);
-			dispatch(handleGetKsaVisa(routeParams.ksaVisaId));
+		if (routeParams?.ksaVisaId !== 'ksa-visa-form') {
+			setValue('name', routeParams?.ksaVisaId);
+			// dispatch(handleGetKsaVisa(routeParams.ksaVisaId));
 		}
-	}, [data]);
+	}, [data, routeParams?.ksaVisaId]);
+
+	useEffect(() => {
+		if (routeParams?.ksaVisaId) {
+			setKsaVisaId(routeParams.ksaVisaId);
+			setError(null); // Clear error if ksaVisaId is valid
+		} else {
+			setError('Invalid ksaVisaId'); // Set error if ksaVisaId is invalid
+		}
+	}, [routeParams?.ksaVisaId]); // Ensure ksaVisaId is set from routeParams
 
 	// print dom ref
 	const componentRef = useRef();
@@ -124,20 +137,9 @@ function KsaVisaForm(props) {
 								className={classes.textField}
 								variant="outlined"
 								fullWidth
-								// onKeyDown={(e) => {
-								// 	if (e.key === 'Enter') {
-								// 		e.preventDefault(); // Prevent default behavior of the Enter key
-
-								// 		if (e.target.value) {
-								// 			handleGetKsaVisa(e.target.value);
-								// 		}
-								// 	}
-								// }}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter') {
-										handleGetKsaVisa(e?.target?.value);
-									} else if (e.key === 'Backspace' && e?.target?.value?.length === 1) {
-										handleGetKsaVisa('');
+								onKeyDown={(ev) => {
+									if (ev.key === 'Enter') {
+										ev.target.value && setKsaVisaId(ev.target.value);
 									}
 								}}
 							/>
@@ -151,7 +153,7 @@ function KsaVisaForm(props) {
 							padding: '0px 5px',
 							height: '35px'
 						}}
-						onClick={() => watch('name') && dispatch(handleGetKsaVisa(watch('name')))}
+						onClick={() => watch('name') && setKsaVisaId(watch('name'))}
 					>
 						Show
 					</button>
