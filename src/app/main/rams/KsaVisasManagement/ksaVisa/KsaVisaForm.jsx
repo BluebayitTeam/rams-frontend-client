@@ -6,16 +6,15 @@
 import { useParams } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
-import moment from 'moment';
-import Barcode from 'react-barcode';
 import { useReactToPrint } from 'react-to-print';
 import { Print } from '@material-ui/icons';
-import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
 import _ from 'lodash';
+import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
+import moment from 'moment';
+import Barcode from 'react-barcode';
 import { useGetKsaVisaQuery } from '../KsaVisasApi';
 
 const useStyles = makeStyles(() => ({
@@ -71,26 +70,21 @@ function KsaVisaForm(props) {
 
 	const routeParams = useParams();
 	const classes = useStyles(props);
-	const [show, setShow] = useState(null);
-
-	const [ksaVisaId, setKsaVisaId] = useState();
-
-	console.log('ksaVisaId', ksaVisaId);
-
-	// const { data, refetch } = useGetKsaVisaQuery(ksaVisaId);
-
-	const { data, refetch } = useGetKsaVisaQuery(ksaVisaId);
-
-	console.log('fsdfsdf', data);
-
-	useEffect(() => {
-		refetch({ ksaVisaId });
-	}, [ksaVisaId]);
-
+	const [ksaVisaId, setKsaVisaId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
 
+	const { data, refetch } = useGetKsaVisaQuery(ksaVisaId, {
+		skip: !ksaVisaId // This skips the query if ksaVisaId is empty
+	});
+
 	useEffect(() => {
-		if (_.isEmpty(data)) {
+		if (ksaVisaId) {
+			refetch();
+		}
+	}, [ksaVisaId, refetch]);
+
+	useEffect(() => {
+		if (!data || _.isEmpty(data)) {
 			setShowPrint(false);
 		} else {
 			setShowPrint(true);
@@ -98,18 +92,8 @@ function KsaVisaForm(props) {
 
 		if (routeParams?.ksaVisaId !== 'ksa-visa-form') {
 			setValue('name', routeParams?.ksaVisaId);
-			// dispatch(handleGetKsaVisa(routeParams.ksaVisaId));
 		}
-	}, [data, routeParams?.ksaVisaId]);
-
-	useEffect(() => {
-		if (routeParams?.ksaVisaId) {
-			setKsaVisaId(routeParams.ksaVisaId);
-			setError(null); // Clear error if ksaVisaId is valid
-		} else {
-			setError('Invalid ksaVisaId'); // Set error if ksaVisaId is invalid
-		}
-	}, [routeParams?.ksaVisaId]); // Ensure ksaVisaId is set from routeParams
+	}, [data, routeParams?.ksaVisaId, setValue]);
 
 	// print dom ref
 	const componentRef = useRef();
@@ -118,6 +102,34 @@ function KsaVisaForm(props) {
 	const printAction = useReactToPrint({
 		content: () => componentRef.current
 	});
+
+	const handleKeyDown = (e) => {
+		if (e.key === 'Enter') {
+			const { value } = e.target;
+
+			if (value) {
+				setKsaVisaId(value);
+			} else {
+				setError('name', {
+					type: 'manual',
+					message: 'Please enter a valid ID or Passport Number'
+				});
+			}
+		}
+	};
+
+	const handleShowClick = () => {
+		const value = watch('name');
+
+		if (value) {
+			setKsaVisaId(value);
+		} else {
+			setError('name', {
+				type: 'manual',
+				message: 'Please enter a valid ID or Passport Number'
+			});
+		}
+	};
 
 	return (
 		<>
@@ -137,11 +149,7 @@ function KsaVisaForm(props) {
 								className={classes.textField}
 								variant="outlined"
 								fullWidth
-								onKeyDown={(ev) => {
-									if (ev.key === 'Enter') {
-										ev.target.value && setKsaVisaId(ev.target.value);
-									}
-								}}
+								onKeyDown={handleKeyDown}
 							/>
 						)}
 					/>
@@ -153,7 +161,7 @@ function KsaVisaForm(props) {
 							padding: '0px 5px',
 							height: '35px'
 						}}
-						onClick={() => watch('name') && setKsaVisaId(watch('name'))}
+						onClick={handleShowClick}
 					>
 						Show
 					</button>
@@ -255,7 +263,7 @@ function KsaVisaForm(props) {
 															<tr>
 																<td>
 																	<img
-																		src="/public/assets/images/logos/ksaVisaLogo.png"
+																		src="assets/images/logos/ksaVisaLogo.png"
 																		alt=""
 																		style={{ width: '150px' }}
 																	/>
@@ -274,6 +282,12 @@ function KsaVisaForm(props) {
 																	<table
 																		style={{ width: '100%', textAlign: 'center' }}
 																	>
+																		{/* <tr>
+																			<td> */}
+																		{/* <asp:Label ID="lblInternetNo"  runat="server" Font-Bold="true" fontSize="16pt}} ></asp:Label><br />
+                                                                                    <asp:Label ID="lbloldmofa" Visible="false"  runat="server" Font-Bold="true" fontSize="Medium" ></asp:Label> */}
+																		{/* </td>
+																		</tr> */}
 																		<tr>
 																			<td
 																				style={{
@@ -487,6 +501,7 @@ function KsaVisaForm(props) {
 												<td style={{ textAlign: 'right' }}>:&nbsp;مصدرة</td>
 												<td style={{ textAlign: 'right' }}>:&nbsp;المؤهل العلمي</td>
 												<td style={{ textAlign: 'right', fontFamily: 'Arial' }}>
+													{/* <asp:Label ID="lblJobtitleArabic" Font-Bold="true" fontSize="11pt}} runat="server"  ></asp:Label> */}{' '}
 													<span style={{ color: 'white', fontSize: '1px' }}>a</span>
 													{data?.[0]?.unknown} :&nbsp;المهنـة
 												</td>
@@ -572,71 +587,85 @@ function KsaVisaForm(props) {
 															<td
 																style={{
 																	textAlign: 'left',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
 																}}
 															>
+																{/* <asp:Label ID="Label5" runat="server" Text="عمل&nbsp;<br/>Work" BorderStyle="Solid" BorderWidth="1px" Width="100%"></asp:Label> */}
 																<br />
 															</td>
 															<td
 																style={{
 																	textAlign: 'left',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
 																}}
 															>
+																{/* <asp:Label ID="Label6" runat="server" Text="مرور&nbsp;<br/>Transit" BorderStyle="Solid" BorderWidth="1px" Width="100%"></asp:Label> */}
 																<br />
 															</td>
 															<td
 																style={{
 																	textAlign: 'left',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
 																}}
 															>
+																{/* <asp:Label ID="Label7" runat="server" Text="زيارة&nbsp;<br/>Visit" BorderStyle="Solid" BorderWidth="1px" Width="100%"></asp:Label> */}
 																<br />
 															</td>
 															<td
 																style={{
 																	textAlign: 'left',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9.5%',
 																	fontSize: '9.5pt'
 																}}
 															>
+																{/* <asp:Label ID="Label8" runat="server" Text="عمـرة&nbsp;<br/>Umrah" BorderStyle="Solid" BorderWidth="1px" Width="100%"></asp:Label> */}
 																<br />
 															</td>
 															<td
 																style={{
 																	textAlign: 'left',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '12%',
 																	fontSize: '9.5pt'
 																}}
 															>
+																{/* <asp:Label ID="Label9" runat="server" Text="للإقامة&nbsp;<br/>Residence" BorderStyle="Solid" BorderWidth="1px" Width="95%"></asp:Label> */}
 																<br />
 															</td>
 															<td
 																style={{
 																	textAlign: 'left',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '9%',
 																	fontSize: '9.5pt'
 																}}
 															>
+																{/* <asp:Label ID="Label10" runat="server" Text="حــج&nbsp;<br/>Hajj" BorderStyle="Solid" BorderWidth="1px" Width="100%"></asp:Label> */}
 																<br />
 															</td>
 															<td
 																style={{
 																	textAlign: 'left',
+																	// textAlign: 'Center',
 																	float: 'left',
 																	width: '13%',
 																	fontSize: '9.5pt'
 																}}
 															>
+																{/* <asp:Label ID="Label11" runat="server" Text="دبلوماسية&nbsp;<br/>Diplomacy" BorderStyle="Solid" BorderWidth="1px" Width="95%"></asp:Label> */}
 																<br />
 															</td>
 															<td
@@ -661,6 +690,7 @@ function KsaVisaForm(props) {
 																style={{
 																	textAlign: 'Center',
 																	fontSize: '8pt'
+																	// borderBottom: '1px solid black'
 																}}
 															>
 																Place of issue:&emsp;محل الإصدار
@@ -673,6 +703,7 @@ function KsaVisaForm(props) {
 																style={{
 																	textAlign: 'Center',
 																	fontSize: '8pt'
+																	// borderBottom: '1px solid black'
 																}}
 															>
 																&nbsp;&nbsp;Passport issued date:&nbsp;تاريخ الإصدار
@@ -690,6 +721,7 @@ function KsaVisaForm(props) {
 																style={{
 																	textAlign: 'Center',
 																	fontSize: '8pt'
+																	// borderBottom: '1px solid black'
 																}}
 															>
 																&nbsp;&nbsp;Date of passport's expiry:&emsp;تاريخ إنتهاء
@@ -1149,7 +1181,10 @@ function KsaVisaForm(props) {
 															<td
 																colSpan="3"
 																align="center"
-															/>
+															>
+																&emsp; &emsp;
+																{/* <asp:Label ID="lblVisapassportno"   runat="server"></asp:Label> */}
+															</td>
 														</tr>
 													</table>
 												</td>
@@ -1438,6 +1473,13 @@ function KsaVisaForm(props) {
 									</tr>
 								</table>
 							</div>
+							<div className="col-sm-4">
+								{/* <asp:SqlDataSource ID="SqlPassMedical" runat="server" ConnectionString="<%$ ConnectionStrings:travelConnectionString %>" ProviderName="<%$ ConnectionStrings:travelConnectionString.ProviderName %>" SelectCommand="SELECT UPPER(tbl_visa_details.copil_name) AS copil_name, UPPER(tbl_country.country_name) AS sector_name_country, UPPER(tbl_passenger_details.passenger_name) AS passenger_name, UPPER(tbl_passenger_pp_details.passenger_pp_no) AS passenger_pp_no, UPPER(tbl_visa_details.destination) AS visa_comment, UPPER(tbl_visa_details.group_name) AS job_title FROM tbl_passenger_details INNER JOIN tbl_passenger_pp_details ON tbl_passenger_details.passenger_id = tbl_passenger_pp_details.passenger_id INNER JOIN tbl_visa_details ON tbl_passenger_details.passenger_id = tbl_visa_details.passenger_id INNER JOIN tbl_country ON tbl_passenger_details.country_id = tbl_country.country_id WHERE (CONVERT (varchar(50), tbl_passenger_details.passenger_id) = @search) OR (tbl_passenger_pp_details.passenger_pp_no = @search)">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="txtPassportJobID" Name="search" PropertyName="Text" />
+                        </SelectParameters>
+                    </asp:SqlDataSource> */}
+							</div>
 
 							<table
 								width="100%"
@@ -1529,9 +1571,10 @@ function KsaVisaForm(props) {
 														<tr>
 															<td style={{ width: '5%' }}>1.</td>
 															<td>
-																MONTHLY SALARY &nbsp;to the 2nd party as his monthly
-																salary to serve him as a{' '}
-																<b>{data?.[0]?.embassy?.profession_english}</b>
+																MONTHLY SALARY
+																{/* <asp:Label ID="lblVisaComment" runat="server"></asp:Label> */}
+																&nbsp;to the 2nd party as his monthly salary to serve
+																him as a <b>{data?.[0]?.embassy?.profession_english}</b>
 																&nbsp;
 															</td>
 															<td>:SR 1000/-</td>
@@ -1673,7 +1716,7 @@ function KsaVisaForm(props) {
 									</td>
 								</tr>
 							</table>
-
+							{/* 3rd Page   */}
 							<h2
 								className="print:mt-200"
 								style={{ marginTop: '900px' }}
@@ -2040,6 +2083,8 @@ function KsaVisaForm(props) {
 									</td>
 								</tr>
 							</table>
+
+							{/* </asp:Panel> */}
 						</div>
 					</div>
 				</div>
