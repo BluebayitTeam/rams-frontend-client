@@ -67,6 +67,7 @@ import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig'
 import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
 import MalaysiaVisaAppConfig from '../rams/MalaysiaVisasManagement/MalaysiaVisaAppConfig';
 import BmetAppConfig from '../rams/BmetsManagement/BmetAppConfig';
+import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
 
 /**
  * The list of application configurations.
@@ -92,6 +93,7 @@ const appsConfigs = [
 	NotificationsAppConfig,
 	UserAppConfig,
 	TrainingAppConfig,
+	ThailandVisaAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
 	QualificationAppConfig,
@@ -114,7 +116,6 @@ const appsConfigs = [
 	ManPowerAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
-	// CallingEmbAttestationAppConfig,
 	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
 	PaymentDetailAppConfig,

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
@@ -170,7 +171,7 @@ function BmetForm(props) {
 				ref={componentRef}
 				className={classes.container}
 			>
-				<div className="row">
+				<div className="row px-48 py-30">
 					<div className="md:w-full">
 						<div>
 							<table
@@ -181,19 +182,19 @@ function BmetForm(props) {
 								<tr valign="middle">
 									<td
 										valign="middle"
-										style={{ width: '15%', padding: 0 }}
+										style={{ width: '14%', padding: 0 }}
 									>
 										<img
 											src="assets/images/logos/bmetLogo.png"
 											align="LEFT"
-											width="70"
-											height="70"
+											width="50"
+											height="50"
 											style={{ filter: 'grayscale(100%)' }}
 										/>
 									</td>
 									<td
 										valign="middle"
-										style={{ width: '70%' }}
+										style={{ width: '50%' }}
 									>
 										<center>
 											<b>
@@ -221,7 +222,7 @@ function BmetForm(props) {
 									<td
 										colSpan="3"
 										width="698"
-										height="2"
+										height="1"
 										style={{
 											borderTop: '1.50pt double #000000',
 											borderBottom: 'none',
