@@ -1149,7 +1149,7 @@ const navigationConfig = [
 				translate: 'Kuwait Visa Form',
 				display_order: 4,
 				type: 'item',
-				url: '/apps/kuwaitVisa-management/kuwaitVisa-form',
+				url: '/apps/kuwaitVisa/kuwaitVisas',
 				exact: true
 			},
 			{
