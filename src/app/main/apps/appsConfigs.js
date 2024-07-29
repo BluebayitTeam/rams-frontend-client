@@ -66,11 +66,13 @@ import MultipleStatusUpdateAppConfig from '../rams/MultipleStatusUpdate/Multiple
 import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig';
 import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
 import MalaysiaVisaAppConfig from '../rams/MalaysiaVisasManagement/MalaysiaVisaAppConfig';
+import BmetAppConfig from '../rams/BmetsManagement/BmetAppConfig';
 
 /**
  * The list of application configurations.
  */
 const appsConfigs = [
+	BmetAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	MessengerAppConfig,
