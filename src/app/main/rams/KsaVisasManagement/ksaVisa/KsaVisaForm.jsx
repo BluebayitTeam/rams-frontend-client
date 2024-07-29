@@ -66,7 +66,7 @@ const barcodeConfig2 = {
 function KsaVisaForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError } = methods;
+	const { control, formState, watch, setValue, setError, reset } = methods;
 
 	const routeParams = useParams();
 	const classes = useStyles(props);
@@ -74,14 +74,20 @@ function KsaVisaForm(props) {
 	const [showPrint, setShowPrint] = useState(false);
 
 	const { data, refetch } = useGetKsaVisaQuery(ksaVisaId, {
-		skip: !ksaVisaId // This skips the query if ksaVisaId is empty
+		skip: !ksaVisaId
 	});
 
 	useEffect(() => {
+		// Fetch data when ksaVisaId is defined
 		if (ksaVisaId) {
 			refetch();
+		} else {
+			// Reset form when ksaVisaId is not set
+			reset({
+				name: ksaVisaId
+			});
 		}
-	}, [ksaVisaId, refetch]);
+	}, [ksaVisaId, refetch, reset]);
 
 	useEffect(() => {
 		if (!data || _.isEmpty(data)) {
@@ -94,6 +100,14 @@ function KsaVisaForm(props) {
 			setValue('name', routeParams?.ksaVisaId);
 		}
 	}, [data, routeParams?.ksaVisaId, setValue]);
+
+	// useEffect(() => {
+	// 	if (!ksaVisaId) {
+	// 		reset({
+	// 			name: ksaVisaId
+	// 		});
+	// 	}
+	// }, [ksaVisaId, reset]);
 
 	// print dom ref
 	const componentRef = useRef();

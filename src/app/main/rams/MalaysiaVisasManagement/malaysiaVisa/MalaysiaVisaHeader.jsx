@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 
 /**
- * The ksaVisa header.
+ * The malaysiaVisa header.
  */
-function KsaVisaHeader() {
+function MalaysiaVisaHeader() {
 	const routeParams = useParams();
 	const data = {};
 	const name = data?.passenger?.[0]?.passenger_name;
@@ -20,7 +20,7 @@ function KsaVisaHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{name || 'KSA Visa Form'}
+								{name || 'Malaysia Visa Form'}
 							</Typography>
 						</motion.div>
 					</div>
@@ -30,4 +30,4 @@ function KsaVisaHeader() {
 	);
 }
 
-export default KsaVisaHeader;
+export default MalaysiaVisaHeader;

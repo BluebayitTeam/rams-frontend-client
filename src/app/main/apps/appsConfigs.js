@@ -65,6 +65,7 @@ import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/Payor
 import MultipleStatusUpdateAppConfig from '../rams/MultipleStatusUpdate/MultipleStatusUpdateAppConfig';
 import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig';
 import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
+import MalaysiaVisaAppConfig from '../rams/MalaysiaVisasManagement/MalaysiaVisaAppConfig';
 
 /**
  * The list of application configurations.
@@ -74,6 +75,7 @@ const appsConfigs = [
 	CvBankAppConfig,
 	MessengerAppConfig,
 	MultipleStatusUpdateAppConfig,
+	MalaysiaVisaAppConfig,
 	ContactsAppConfig,
 	ECommerceAppConfig,
 	FileManagerAppConfig,

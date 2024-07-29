@@ -4,64 +4,64 @@
 // import { GET_KSAVISA_BY_ID, GET_KSAVISAS } from 'src/app/constant/constants';
 // import { selectSearchText } from './store/searchTextSlice';
 
-// export const addTagTypes = ['ksaVisas'];
-// const KsaVisaApi = api
+// export const addTagTypes = ['malaysiaVisas'];
+// const MalaysiaVisaApi = api
 // 	.enhanceEndpoints({
 // 		addTagTypes
 // 	})
 // 	.injectEndpoints({
 // 		endpoints: (build) => ({
-// 			getKsaVisas: build.query({
+// 			getMalaysiaVisas: build.query({
 // 				query: ({ id }) => ({ url: GET_KSAVISAS, params: { id } }),
-// 				providesTags: ['ksaVisas']
+// 				providesTags: ['malaysiaVisas']
 // 			}),
 
-// 			getKsaVisa: build.query({
-// 				query: (ksaVisaId) => ({
-// 					url: `${GET_KSAVISA_BY_ID}${ksaVisaId}`
+// 			getMalaysiaVisa: build.query({
+// 				query: (malaysiaVisaId) => ({
+// 					url: `${GET_KSAVISA_BY_ID}${malaysiaVisaId}`
 // 				}),
-// 				providesTags: ['ksaVisas']
+// 				providesTags: ['malaysiaVisas']
 // 			})
 // 		}),
 // 		overrideExisting: false
 // 	});
-// export default KsaVisaApi;
+// export default MalaysiaVisaApi;
 // export const {
-// 	useGetKsaVisasQuery,
+// 	useGetMalaysiaVisasQuery,
 
-// 	useGetKsaVisaQuery
-// } = KsaVisaApi;
+// 	useGetMalaysiaVisaQuery
+// } = MalaysiaVisaApi;
 
-// export const selectFilteredKsaVisas = (ksaVisas) =>
+// export const selectFilteredMalaysiaVisas = (malaysiaVisas) =>
 // 	createSelector([selectSearchText], (searchText) => {
 // 		if (searchText?.length === 0) {
-// 			return ksaVisas;
+// 			return malaysiaVisas;
 // 		}
 
-// 		return FuseUtils.filterArrayByString(ksaVisas, searchText);
+// 		return FuseUtils.filterArrayByString(malaysiaVisas, searchText);
 // 	});
 
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import { GET_KSAVISA_BY_ID } from 'src/app/constant/constants';
+import { GET_BMET_BY_ID } from 'src/app/constant/constants';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
 
-export const addTagTypes = ['ksaVisas'];
+export const addTagTypes = ['malaysiaVisas'];
 
-const KsaVisaApi = api
+const MalaysiaVisaApi = api
 	.enhanceEndpoints({
 		addTagTypes
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			getKsaVisa: build.query({
-				query: (ksaVisaId) => ({
-					url: `${GET_KSAVISA_BY_ID}${ksaVisaId}`
+			getMalaysiaVisa: build.query({
+				query: (malaysiaVisaId) => ({
+					url: `${GET_BMET_BY_ID}${malaysiaVisaId}`
 				}),
-				providesTags: ['ksaVisas'],
-				async onQueryStarted(ksaVisaId, { queryFulfilled }) {
+				providesTags: ['malaysiaVisas'],
+				async onQueryStarted(malaysiaVisaId, { queryFulfilled }) {
 					try {
 						await queryFulfilled;
 					} catch (error) {
@@ -73,15 +73,15 @@ const KsaVisaApi = api
 		overrideExisting: false
 	});
 
-export default KsaVisaApi;
+export default MalaysiaVisaApi;
 
-export const { useGetKsaVisasQuery, useGetKsaVisaQuery } = KsaVisaApi;
+export const { useGetMalaysiaVisasQuery, useGetMalaysiaVisaQuery } = MalaysiaVisaApi;
 
-export const selectFilteredKsaVisas = (ksaVisas) =>
+export const selectFilteredMalaysiaVisas = (malaysiaVisas) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (!searchText || searchText.length === 0) {
-			return ksaVisas;
+			return malaysiaVisas;
 		}
 
-		return FuseUtils.filterArrayByString(ksaVisas, searchText);
+		return FuseUtils.filterArrayByString(malaysiaVisas, searchText);
 	});
