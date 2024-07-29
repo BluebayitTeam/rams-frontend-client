@@ -29,8 +29,8 @@ const useStyles = makeStyles(() => ({
 			boxSizing: 'border-box'
 		},
 		'& .row': {
-			marginRight: '-15px',
-			marginLeft: '-15px'
+			// marginRight: '-15px',
+			// marginLeft: '-15px'
 		},
 		'& .western': {
 			marginBottom: '5px'
@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
 				borderSpacing: 0,
 				borderCollapse: 'collapse',
 				'& td, th': {
-					padding: '0px'
+					padding: '5px'
 				}
 			}
 		}
@@ -171,1875 +171,1386 @@ function KuwaitVisaForm(props) {
 				ref={componentRef}
 				className={classes.container}
 			>
-				<div className="row px-48 py-30">
-					<div className="md:w-full">
+				<div className="row p-10">
+					<div className="md:w-full p-20">
 						<div>
 							<table
 								width="100%"
-								cellPadding="7"
-								cellSpacing="1"
+								cellpadding="7"
+								cellspacing="2"
+								className="mt-60 p-10"
 							>
 								<tr valign="middle">
 									<td
 										valign="middle"
-										style={{ width: '14%', padding: 0 }}
+										align="center"
+										style={{ width: '20%', padding: 0, marginLeft: '50px' }}
 									>
-										<img
-											src="assets/images/logos/kuwaitVisaLogo.png"
-											align="LEFT"
-											width="50"
-											height="50"
-											style={{ filter: 'grayscale(100%)' }}
-										/>
+										<div
+											className="border border-black p-2 "
+											style={{
+												width: '133px',
+												height: '148px',
+												marginLeft: '40px',
+												paddingTop: '20px'
+											}}
+										>
+											Please attach <br /> 2 photographs <br /> taken within <br /> the last 6
+											months <br /> (3.5 * 4.5 cm)
+										</div>{' '}
 									</td>
 									<td
 										valign="middle"
 										style={{ width: '50%' }}
 									>
 										<center>
-											<b>
+											<img
+												src="assets/images/logos/kuwaitVisa.png"
+												align="CENTER"
+												width="120"
+												height="120"
+											/>{' '}
+											<span style={{ fontSize: 'large' }}>
 												{' '}
-												<span style={{ fontSize: 'large' }}>
-													{' '}
-													Government People’s Republic of Bangladesh
-												</span>
-											</b>{' '}
-											<br />
-											<b>Bureau of Manpower, Employment and Training (BMET)</b>
+												<b>VISA APPLICATION FORM نموذج طلب تأشيره</b>
+											</span>
 										</center>
 									</td>
 
 									<td
 										valign="middle"
-										style={{ width: '15%' }}
+										style={{ width: '100%' }}
 									>
-										{' '}
+										<table cellspacing="15">
+											<tr>
+												<td>
+													<table width="100%">
+														<tr>
+															<td
+																style={{
+																	borderBottom: '1px dashed black',
+																	width: '100%'
+																}}
+															/>
+															<td className="whitespace-nowrap">
+																قنصلية / سفارة دولة الكويت{' '}
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<table width="100%">
+														<tr>
+															<td
+																style={{
+																	borderBottom: '1px dashed black',
+																	width: '100%'
+																}}
+															/>
+															<td className="whitespace-nowrap">بمدينة</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
 										&nbsp;
 									</td>
 								</tr>
-
-								<tr valign="middle">
-									<td
-										colSpan="3"
-										width="698"
-										height="1"
-										style={{
-											borderTop: '1.50pt double #000000',
-											borderBottom: 'none',
-											borderLeft: 'none',
-											borderRight: 'none',
-											padding: '0in'
-										}}
-									>
-										<p
-											className="western"
-											align="CENTER"
-										>
-											<span face="Calibri-Bold, sans-serif">
-												<span size="2">
-													<b>Individual Clearance Application Form</b>
-												</span>
-											</span>
-										</p>
-									</td>
-								</tr>
 							</table>
+
 							<table
 								width="100%"
-								cellPadding="7"
-								cellSpacing="1"
+								cellpadding="7"
+								cellspacing="2"
+								className="mt-32 p-10"
 							>
-								<tr valign="middle">
-									<td
-										colSpan="3"
-										width="130"
-										height="1"
-										style={{ border: 'none', padding: '0in' }}
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
+								<tr>
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<table width="100%">
+														<tr>
+															<td className="whitespace-nowrap">Application No:</td>
+															<td
+																style={{
+																	borderBottom: '1px dashed black',
+																	width: '100%'
+																}}
+															/>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+
+									<td>
+										<table width="100%">
+											<tr>
+												<td className="whitespace-nowrap text-right">Transit Visa &nbsp;</td>
+												<td
+													className="whitespace-nowrap d-flex"
+													style={{ display: 'flex' }}
 												>
-													<b>Serial Number:</b>
-												</span>
-											</span>
-										</p>
+													تأشيرة مرور{' '}
+													<div className="border border-black  w-16 d-flex text-left ml-10">
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													</div>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td
-										width="8"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
+
+									<td>
+										<table width="100%">
+											<tr>
+												<td className="whitespace-nowrap text-right">Entry Visa &nbsp;</td>
+												<td
+													className="whitespace-nowrap d-flex"
+													style={{ display: 'flex' }}
+												>
+													تأشيرة دخول{' '}
+													<div className="border border-black  w-16 d-flex text-left ml-10">
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													</div>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td
-										width="10"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
+
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<table width="100%">
+														<tr>
+															<td
+																style={{
+																	borderBottom: '1px dashed black',
+																	width: '100%'
+																}}
+															/>
+															<td className="whitespace-nowrap">: رقم الطلب </td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td
-										colSpan="2"
-										width="10"
-										style={{
-											borderTop: 'none',
-											borderBottom: 'none',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
+								</tr>
+
+								<tr>
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<table width="100%">
+														<tr>
+															<td className="whitespace-nowrap">Date:</td>
+															<td
+																style={{
+																	borderBottom: '1px dashed black',
+																	width: '100%'
+																}}
+															/>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td
-										width="8"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
+
+									<td>
+										<table width="100%">
+											<tr>
+												<td className="whitespace-nowrap text-right">Transit Permit &nbsp;</td>
+												<td
+													className="whitespace-nowrap d-flex"
+													style={{ display: 'flex' }}
+												>
+													و إذن مرور
+													<div className="border border-black  w-16 d-flex text-left ml-10">
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													</div>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td
-										width="8"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
+
+									<td>
+										<table width="100%">
+											<tr>
+												<td className="whitespace-nowrap text-right">Visa Permit &nbsp;</td>
+												<td
+													className="whitespace-nowrap d-flex"
+													style={{ display: 'flex' }}
+												>
+													لا إذن زيارة
+													<div className="border border-black  w-16 d-flex text-left ml-10">
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													</div>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td
-										width="10"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										colSpan="2"
-										width="10"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										colSpan="2"
-										width="9"
-										style={{
-											borderTop: 'none',
-											borderBottom: 'none',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										colSpan="2"
-										width="9"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										width="14"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										width="15"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										colSpan="2"
-										width="14"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										width="13"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										colSpan="2"
-										width="13"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										width="13"
-										style={{
-											borderTop: '1px solid #000000',
-											borderBottom: '1px solid #000000',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										colSpan="2"
-										width="73"
-										style={{
-											borderTop: 'none',
-											borderBottom: 'none',
-											borderLeft: '1px solid #000000',
-											borderRight: 'none',
-											paddingTop: '0in',
-											paddingBottom: '0in',
-											paddingLeft: '0.08in',
-											paddingRight: '0in'
-										}}
-									>
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												Date :
-											</span>
-										</p>
-									</td>
-									<td
-										colSpan="2"
-										width="81"
-										style={{ border: 'none', padding: '0in' }}
-									>
-										<p className="western">
-											<br />
-										</p>
+
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<table width="100%">
+														<tr>
+															<td
+																style={{
+																	borderBottom: '1px dashed black',
+																	width: '100%'
+																}}
+															/>
+															<td className="whitespace-nowrap">: التاريخ </td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 							</table>
+
 							<table
 								width="100%"
-								cellPadding="7"
-								cellSpacing="1"
+								className="mt-32 p-10 border border-black"
 							>
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span color="#000000">
-												<span face="Calibri-Bold, sans-serif">
-													<span
-														size="2"
-														style={{ fontSize: '9pt' }}
-													>
-														<b>A. Visa Information </b>
-													</span>
-												</span>
-											</span>
-										</p>
-									</td>
-								</tr>
-								<tr>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '11pt' }}
-												>
-													1. Block visa No.:&nbsp; &nbsp; {data?.[0]?.visa_entry?.visa_number}
-												</span>
-											</span>
-										</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '11pt' }}
-												>
-													2. Visa issue Date : &nbsp; &nbsp;{' '}
-													{data?.[0]?.visa_entry?.visa_issue_date &&
-														moment(new Date(data?.[0]?.visa_entry?.visa_issue_date)).format(
-															'DD-MM-YYYY'
-														)}
-												</span>
-											</span>
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
-												>
-													3. Visa issuing country :&nbsp; &nbsp;{' '}
-													{data?.[0]?.visa_entry?.country?.name}
-												</span>
-											</span>
-										</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
-												>
-													4. Total visa count: &nbsp; &nbsp;01
-												</span>
-											</span>
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
-												>
-													5. RL no.:
-												</span>
-											</span>
-											&nbsp; &nbsp;
-											<span style={{ fontSize: '12pt' }}>
-												<b>{data?.[0]?.visa_entry?.visa_number}</b>
-											</span>
-										</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
-												>
-													6. RA name:
-												</span>
-											</span>
-											&nbsp; &nbsp;
-											<span style={{ fontSize: '12pt' }}>
-												<b> {data?.[0]?.agency?.name} </b>
-											</span>
-										</p>
-									</td>
-								</tr>
-							</table>
-							<table
-								width="100%"
-								cellPadding="7"
-								cellSpacing="1"
-							>
-								<tr valign="middle">
-									<td
-										colSpan="2"
-										style={{ border: 'none', padding: '0in' }}
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
-												>
-													<b>B. Employer /Company/ foreign recruiting agent Information</b>
-												</span>
-											</span>
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										colSpan="2"
-										style={{ border: 'none', padding: '0in' }}
-									>
-										<p className="western">
-											<span color="#000000">
-												<span face="Calibri, sans-serif">
-													<span
-														size="2"
-														style={{ fontSize: '9pt' }}
-													>
-														7. Employer is a company or recruiting agent (foreign):{' '}
-													</span>
-												</span>
-											</span>
-											<span color="#000000">
-												<span face="Calibri-Bold, sans-serif">
-													<span
-														size="2"
-														style={{ fontSize: '9pt' }}
-													>
-														Yes/NO &nbsp; &nbsp; {data?.[0]?.agency?.sponsor_name_english}
-													</span>
-												</span>
-											</span>
-										</p>
+								<tr className="border-collapse border border-black">
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<center>
+														<b>Applicant's Data</b>
+													</center>
+												</td>
+												<td>
+													<b>
+														<center> بيانات طالب التأشيرة الإسم الأول</center>
+													</b>
+												</td>{' '}
+											</tr>
+										</table>
 									</td>
 								</tr>
 
-								<tr valign="middle">
-									<td
-										colSpan="2"
-										style={{ border: 'none', padding: '0in' }}
-									>
-										<p className="western">
-											<span color="#000000">
-												<span face="Calibri, sans-serif">
-													<span
-														size="2"
-														style={{ fontSize: '9pt' }}
-													>
-														8. Employer/ company/recruiting agent (foreign) Name :{' '}
-													</span>
-												</span>
-											</span>
-										</p>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>Sex الجنس</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>Last Name اللقب / إسم العائلة</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>Middle Name إسم الأب</center>
+												</td>
+												<td width="25%">
+													<center>First Name الإسم الأول</center>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
-								<tr valign="middle">
-									<td
-										colSpan="2"
-										style={{ border: 'none', padding: '0in' }}
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
 												>
-													9a) Street address: &nbsp; &nbsp;{' '}
-													{/* <asp:Label ID="dest2" runat="server"></asp:Label> */}
-												</span>
-											</span>
-										</p>
+													<center>
+														<b> {data?.[0]?.passenger?.gender?.toUpperCase()}</b>
+													</center>
+												</td>
+
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>
+														<b>
+															{' '}
+															{data?.[0]?.passenger?.passenger_name
+																.substring(
+																	data?.[0]?.passenger?.passenger_name.indexOf(' ') +
+																		1
+																)
+																?.toUpperCase()}
+														</b>
+													</center>
+												</td>
+												<td
+													className="border-r-1 border-black text-center"
+													width="25%"
+												>
+													<center>
+														<b> &nbsp;</b>
+													</center>
+												</td>
+												<td width="25%">
+													<center>
+														<b>
+															{' '}
+															{data?.[0]?.passenger?.passenger_name
+																.split(' ')[0]
+																?.toUpperCase()}
+														</b>
+													</center>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												b) City/town
-											</span>
-										</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												c) Phone:
-											</span>
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												d) Zip code :
-											</span>
-										</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												e) Fax Number:
-											</span>
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												f) E-mail :
-											</span>
-										</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												g) Website:
-											</span>
-										</p>
-									</td>
-								</tr>
-							</table>
-
-							<div style={{ textAlign: 'left' }}>
-								<span face="Calibri-Bold, sans-serif">
-									<span
-										size="2"
-										style={{ fontSize: '9pt' }}
-									>
-										<b>C. Job information</b>
-									</span>
-								</span>
-							</div>
-
-							<table
-								className="borderedTable"
-								border="1"
-								cellSpacing="0"
-								style={{ borderColor: 'beige' }}
-								cellPadding="0"
-							>
-								<tr>
-									<td
-										width="130"
-										align="center"
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
 												>
-													<b>Item</b>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td
-										width="186"
-										align="center"
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
+													<center>Place of Birth مكان الميلاد</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
 												>
-													<b>Job/post category # 1</b>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td
-										width="175"
-										align="center"
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
+													<center>Date of Birth تاريخ الميلاد</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
 												>
-													<b>Job/post category # 2</b>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td
-										width="162"
-										align="center"
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
+													<center>Pre.Nationality الجنسية السابقة</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
 												>
-													<b>Job/post category # 3</b>
-												</span>
-											</span>
-										</p>
+													<center>Nationality االجنسية</center>
+												</td>
+												<td width="20%">
+													<center>Profession المهنة</center>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 
-								<tr>
-									<td
-										width="130"
-										height="1"
-										valign="middle"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black text-center"
+													width="20%"
 												>
-													Name of Job/post
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												&nbsp; &nbsp;{data?.[0]?.embassy?.profession_english}{' '}
-											</span>
-										</p>
-									</td>
-									<td
-										width="175"
-										valign="middle"
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										width="162"
-										valign="middle"
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
+													<center>
+														<b>{data?.[0]?.passenger?.place_of_birth?.toUpperCase()} </b>
+													</center>
+												</td>
 
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '7pt' }}
+												<td
+													className="border-r-1 border-black text-center"
+													width="20%"
 												>
-													Monthly wages/salary
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												&nbsp;&nbsp; {data?.[0]?.embassy?.salary}{' '}
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span color="#000000">
-												<span face="Calibri, sans-serif">
-													<span
-														size="1"
-														style={{ fontSize: '8pt' }}
-													>
-														Food (Put √){' '}
-													</span>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													&nbsp;YES/NO
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Housing (Put √){' '}
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													&nbsp;YES/NO
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Medical (Put √){' '}
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													&nbsp;YES/NO
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Air fare (Put √){' '}
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													&nbsp;YES/NO
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Over time (Put √){' '}
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													&nbsp;YES/NO
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Contact duration (yr)
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												&nbsp;2yrs
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Others
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Remarks
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-							</table>
-
-							<div style={{ textAlign: 'left', marginBottom: '5px' }}>
-								<span face="Calibri-Bold, sans-serif">
-									<span
-										size="2"
-										style={{ fontSize: '9pt' }}
-									>
-										<b>D. Employee Information</b>
-									</span>
-								</span>
-							</div>
-
-							<table
-								className="borderedTable"
-								border="1"
-								style={{ borderColor: 'beige' }}
-								cellSpacing="0"
-								cellPadding="0"
-							>
-								<tr valign="middle">
-									<td
-										width="130"
-										align="center"
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="2"
-													style={{ fontSize: '9pt' }}
-												>
-													<b>Item</b>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td
-										width="186"
-										align="center"
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													<b>Item Employee # 1</b>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td
-										width="175"
-										align="center"
-									>
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													<b>Item Employee # 2</b>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<span face="Calibri-Bold, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													<b />
-												</span>
-											</span>
-										</p>
-									</td>
-								</tr>
-
-								<tr>
-									<td
-										width="130"
-										height="1"
-										valign="middle"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Registration ID
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												{' '}
-												&nbsp; &nbsp;{data?.[0]?.man_power?.new_visa_no}
-											</span>
-										</p>
-									</td>
-									<td
-										width="175"
-										valign="middle"
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td
-										width="162"
-										valign="middle"
-									>
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '7pt' }}
-												>
-													Visa number
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '9pt' }}
-											>
-												<p style={{ fontSize: '11pt' }}>
-													&nbsp;{data?.[0]?.visa_entry?.visa_number}
-												</p>{' '}
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span color="#000000">
-												<span face="Calibri, sans-serif">
-													<span
-														size="1"
-														style={{ fontSize: '8pt' }}
-													>
-														Visa issue date{' '}
-													</span>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													<p style={{ fontSize: '11pt' }}>
-														&nbsp;
-														{data?.[0]?.embassy?.stamping_date &&
-															moment(new Date(data?.[0]?.embassy?.stamping_date)).format(
-																'DD-MM-YYYY'
-															)}
-													</p>{' '}
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Visa expiry date
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													<p style={{ fontSize: '11pt' }}>
-														&nbsp;
-														{data?.[0]?.embassy?.visa_expiry_date &&
-															moment(
-																new Date(data?.[0]?.embassy?.visa_expiry_date)
+													<center>
+														<b>
+															{' '}
+															{moment(
+																new Date(data?.[0]?.passenger?.date_of_birth)
 															).format('DD-MM-YYYY')}
-													</p>
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
+														</b>
+													</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
 												>
-													Visa issue country
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '11pt' }}
+													<center>
+														<b> BANGLADESHI</b>
+													</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
 												>
-													&nbsp;BANGLADESH
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Visa issue place
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '11pt' }}
-												>
-													&nbsp;DHAKA
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td width="130">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Type of visa
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '10pt' }}
-												>
-													&nbsp;EMPLOYMENT
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Passport type
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="2"
-												style={{ fontSize: '10pt' }}
-											>
-												&nbsp;INTERNATIONAL
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Job (post) name
-												</span>
-											</span>
-										</p>
-									</td>
-									<td
-										valign="middle"
-										width="186"
-									>
-										<p className="western">
-											<span
-												size="1"
-												style={{ fontSize: '8pt' }}
-											>
-												&nbsp; as like as visa/visa copy{' '}
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
+													<center>
+														<b> BANGLADESHI</b>
+													</center>
+												</td>
+												<td width="20%">
+													<center>
+														<b>{data?.[0]?.embassy?.profession_english?.toUpperCase()}</b>
+													</center>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
 												>
-													Purpose of visit
-												</span>
-											</span>
-										</p>
+													<center>Permanent Address: </center>
+												</td>
+												<td
+													className="border-r-1 border-black  font-bold"
+													width="66.66%"
+												>
+													<center>
+														{data?.[0]?.passenger?.village?.toUpperCase()},{' '}
+														{data?.[0]?.passenger?.post_office?.toUpperCase()},{' '}
+														{data?.[0]?.passenger?.police_station?.name?.toUpperCase()},
+														{data?.[0]?.passenger?.district?.name?.toUpperCase()},
+														{data?.[0]?.passenger?.country?.name?.toUpperCase()} &nbsp;{' '}
+													</center>
+												</td>
+												<td width="16.66%">
+													<center>عنوان دائم </center>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td
-										valign="middle"
-										width="186"
-									>
-										<p className="western">
-											<span
-												size="1"
-												style={{ fontSize: '8pt' }}
-											>
-												&nbsp; Job/Employ
-											</span>
-										</p>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>Home Fax No.</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center> رقم فاكس المنزل</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>Home Phone No</center>
+												</td>
+												<td
+													className="border-r-1 border-black  font-bold"
+													width="16.66%"
+												>
+													<center>{data?.[0]?.passenger?.contact_no}</center>
+												</td>
+												<td width="16.66%">
+													<center> رقم هاتف المنزل</center>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center> Address in Kuwait: </center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="66.66%"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td width="16.66%">
+													<center>العنوان في الكويت</center>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center> Fax No. in Kuwait</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center> رقم الفاكس في الكويت </center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center> Phone No in Kuwait</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td width="16.66%">
+													<center> رقم الهاتف في الكويت</center>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Passport number
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<p style={{ fontSize: '11pt' }}>
-												&nbsp;{data?.[0]?.passenger?.passport_no}
-											</p>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Passport issue date
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="1"
-												style={{ fontSize: '8pt' }}
-											>
-												<p style={{ fontSize: '11pt' }}>
-													&nbsp;
-													{data?.[0]?.passenger?.passport_issue_date &&
-														moment(
-															new Date(data?.[0]?.passenger?.passport_issue_date)
-														).format('DD-MM-YYYY')}
-												</p>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Passport expiry date
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="1"
-												style={{ fontSize: '8pt' }}
-											>
-												<p style={{ fontSize: '11pt' }}>
-													&nbsp;
-													{data?.[0]?.passenger?.passport_expiry_date &&
-														moment(
-															new Date(data?.[0]?.passenger?.passport_expiry_date)
-														).format('DD-MM-YYYY')}
-												</p>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Birth date in passport
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="1"
-												style={{ fontSize: '8pt' }}
-											>
-												<p style={{ fontSize: '11pt' }}>
-													&nbsp;
-													{data?.[0]?.passenger?.date_of_birth &&
-														moment(new Date(data?.[0]?.passenger?.date_of_birth)).format(
-															'DD-MM-YYYY'
-														)}
-												</p>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
-												>
-													Passport issue place
-												</span>
-											</span>
-										</p>
-									</td>
-									<td width="186">
-										<p className="western">
-											<span
-												size="1"
-												style={{ fontSize: '9pt' }}
-											>
-												<p style={{ fontSize: '11pt' }}>
-													&nbsp;{data?.[0]?.passenger?.passport_issue_place}
-												</p>
-											</span>
-										</p>
-									</td>
-									<td width="175">
-										<p className="western">
-											<br />
-										</p>
-									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
+								<tr className="border-collapse border border-black">
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<center>
+														<b>Applicant's Passport Information</b>
+													</center>
+												</td>
+												<td>
+													<b>
+														<center>معلومات جواز سفر مقدم الطلب</center>
+													</b>
+												</td>{' '}
+											</tr>
+										</table>
 									</td>
 								</tr>
 
-								<tr valign="middle">
-									<td
-										width="130"
-										height="1"
-									>
-										<p className="western">
-											<span face="Calibri, sans-serif">
-												<span
-													size="1"
-													style={{ fontSize: '8pt' }}
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
 												>
-													Profession in passport
-												</span>
-											</span>
-										</p>
+													<center>Valid Until صالح حتى</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>Date of Issue تاريخ المسألة</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>Place of Issue مكان الإصدار</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>Passport Type نوع جواز السفر</center>
+												</td>
+												<td width="20%">
+													<center>Passport No رقم جواز السفر</center>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td width="186">
-										<p className="western">&nbsp; Private Service</p>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>
+														<b>
+															{' '}
+															{moment(
+																new Date(data?.[0]?.passenger?.passport_expiry_date)
+															).format('DD-MM-YYYY')}{' '}
+														</b>
+													</center>
+												</td>
+
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>
+														<b>
+															{' '}
+															{moment(
+																new Date(data?.[0]?.passenger?.passport_issue_date)
+															).format('DD-MM-YYYY')}
+														</b>
+													</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>
+														<b>
+															{' '}
+															{data?.[0]?.passenger?.passport_issue_place?.toUpperCase()}
+														</b>
+													</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>
+														<b> {data?.[0]?.passenger?.passport_type?.toUpperCase()}</b>
+													</center>
+												</td>
+												<td width="20%">
+													<center>
+														<b> {data?.[0]?.passenger?.passport_no}</b>
+													</center>
+												</td>
+											</tr>
+										</table>
 									</td>
-									<td width="175">
-										<p className="western">
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<center>
+														<b>Family members travelling on same passport (if any)</b>
+													</center>
+												</td>
+												<td>
+													<b>
+														<center>
+															{' '}
+															أعضاء العائلة الذين يسافرون على نفس جواز السفر (إن وجد)
+														</center>
+													</b>
+												</td>{' '}
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td width="12.5%">
+													<center>Sex </center>
+												</td>
+
+												<td
+													className="border-r-1 border-black"
+													width="12.5%"
+												>
+													<center>الجنس </center>
+												</td>
+												<td width="12.5%">
+													<center>Place Of Birth </center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="12.5%"
+												>
+													<center>مكان الميلاد</center>
+												</td>
+
+												<td width="12.5%">
+													<center>Date Of Birth </center>
+												</td>
+
+												<td
+													className="border-r-1 border-black"
+													width="12.5%"
+												>
+													<center>تاريخ الولادة</center>
+												</td>
+
+												<td width="12.5%">
+													<center>Name </center>
+												</td>
+												<td width="12.5%">
+													<center>اسم </center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="25%"
+												>
+													<center>&nbsp;</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<center>
+														<b>Purpose of Visit</b>
+													</center>
+												</td>
+												<td>
+													<b>
+														<center>غرض الزيارة </center>
+													</b>
+												</td>{' '}
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="33.33%"
+												>
+													<table width="100%">
+														<tr>
+															<td className="whitespace-nowrap text-right">
+																Personal Visit &nbsp;
+															</td>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																زيارة شخصية
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="33.33%"
+												>
+													<table width="100%">
+														<tr>
+															<td className="whitespace-nowrap text-right">
+																Business Visit
+															</td>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																Business Visit
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+
+												<td
+													className="border-r-1 border-black"
+													width="33.33%"
+												>
+													<table width="100%">
+														<tr>
+															<td className="whitespace-nowrap text-right">
+																Official Visit
+															</td>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																زيارة رسمية
+																<div className=" w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="33.33%"
+												>
+													<table width="100%">
+														<tr>
+															<td className="whitespace-nowrap text-right">
+																Multiple Entries
+															</td>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																مداخل متعددة
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="33.33%"
+												>
+													<table width="100%">
+														<tr>
+															<td className="whitespace-nowrap text-right">
+																Single Entry
+															</td>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																دخول واحد
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>Date.</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>&nbsp;</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>رقم فاكسل</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>Applicant Signature :</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>&nbsp;</center>
+												</td>
+
+												<td
+													className="border-r-1 border-black"
+													width="16.66%"
+												>
+													<center>توقيع مقدم الطلب</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td
+										className="p-0 border-r-1 border-black"
+										width="16.66%"
+									>
+										<center>
+											التاريخ : أقر أنا الموقع أعلاه بأن البيانات المدرجة بهذا الطلب صحيحة وأتعهد
+											بتنفيذ ما جاء بقانون إقامة الأجانب رقم 17 لسنة 1959 والقوانين المعدلة له ،
+											وما جاء باللائحة التنفيذية لهذا القانون
 											<br />
-										</p>
+											<small>
+												{' '}
+												I, the oversigned acknowledge that the infomation given here is true &
+												undertake to obey the Foreigners Residence Law # 17 of 1959 with later
+												amendments & executive instructions for this law
+											</small>
+										</center>
 									</td>
-									<td width="162">
-										<p className="western">
-											<br />
-										</p>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td
+										className="p-0 border-r-1 border-black"
+										width="16.66%"
+									>
+										<center>
+											Maximum stay in Kuwait one month each entry (Visitors Visa)-الحد الأعلى
+											للبقاء في الكويت شهر واحد لكل سفرة (في حالة الزيارة)
+										</center>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td>
+										<table width="100%">
+											<tr>
+												<td>
+													<center>
+														<b>For Official Use Only</b>
+													</center>
+												</td>
+												<td>
+													<b>
+														<center>للإستعمال الرسمي فقط</center>
+													</b>
+												</td>{' '}
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td width="20%">
+													<table width="100%">
+														<tr>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																أفراد{' '}
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td width="20%">
+													<table width="100%">
+														<tr>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																شركات
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<table width="100%">
+														<tr>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																و حكومة
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td width="40%">
+													<center>
+														{' '}
+														نوع الكفيل في حالة الإقامة المؤقتة للعمل في الكويت :
+													</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="85%"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td width="15%">
+													<center>: إسم الكفيل</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="85%"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td width="15%">
+													<center>: العنوان</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="35%"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td
+													width="15%"
+													className="border-r-1 border-black"
+												>
+													<center>: رقم الفاكس</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="35%"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td width="15%">
+													<center>: رقم الهاتف</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="70%"
+												>
+													<center>&nbsp; </center>
+												</td>
+
+												<td width="30%">
+													<center>رقم شهادة عدم الممانعة أو تصريح العمل (إن وجد) :</center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td
+													width="20%"
+													className="border-r-1 border-black"
+												>
+													<center>: تاريخ الإصدار</center>
+												</td>
+												<td
+													className="border-r-1 border-black"
+													width="20%"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td
+													width="20%"
+													className="border-r-1 border-black"
+												>
+													<center>: رقم سمة الدخول أو التأشيرة</center>
+												</td>
+												<td width="10%">
+													<table width="100%">
+														<tr>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																:ومنحت التأشيرة
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td width="10%">
+													<table width="100%">
+														<tr>
+															<td
+																className="whitespace-nowrap d-flex"
+																style={{ display: 'flex' }}
+															>
+																:و مؤجلة
+																<div className="border border-black  w-16 d-flex text-left ml-10">
+																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													className="border-r-1 border-black"
+													width="45%"
+												>
+													<table width="100%">
+														<tr>
+															<td>
+																<table width="100%">
+																	<tr>
+																		<td
+																			className="whitespace-nowrap d-flex"
+																			style={{ display: 'flex' }}
+																		>
+																			: عدة سفرات
+																			<div className="border border-black  w-16 d-flex text-left ml-10">
+																				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			</div>
+																		</td>
+																	</tr>
+																</table>
+															</td>
+															<td>
+																<table width="100%">
+																	<tr>
+																		<td
+																			className="whitespace-nowrap d-flex"
+																			style={{ display: 'flex' }}
+																		>
+																			: سفرة واحدة
+																			<div className="border border-black  w-16 d-flex text-left ml-10">
+																				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																			</div>
+																		</td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+													</table>{' '}
+												</td>
+												<td
+													width="40%"
+													className="border-r-1 border-black"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td width="15%">
+													<center>: صلاحيتها </center>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr className="border-collapse border border-black">
+									<td className="p-0">
+										<table width="100%">
+											<tr>
+												<td
+													width="85%"
+													className="border-r-1 border-black"
+												>
+													<center>&nbsp; </center>
+												</td>
+												<td width="15%">
+													<center>: ملاحظات </center>
+												</td>
+											</tr>
+										</table>
 									</td>
 								</tr>
 							</table>
-							<table
-								border="0"
-								cellSpacing="0"
-								width="100%"
-								cellPadding="0"
-							>
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">&nbsp;</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">&nbsp;</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">&nbsp;</p>
-									</td>
-									<td style={{ border: 'none', padding: '0in' }}>
-										<p className="western">&nbsp;</p>
-									</td>
-								</tr>
-								<tr valign="middle">
-									<td align="left">
-										<p className="western">-------------------------------------</p>
-									</td>
-									<td align="right">
-										<p className="western">--------------------------------</p>
-									</td>
-								</tr>
 
-								<tr valign="middle">
-									<td
-										align="left"
-										style={{ fontSize: '9pt' }}
-									>
-										&nbsp; &nbsp; &nbsp; &nbsp;Signature of the recipient Officer
-									</td>
-
-									<td
-										align="right"
-										style={{ fontSize: '9pt' }}
-									>
-										Applicant’s Signature &nbsp; &nbsp; &nbsp; &nbsp;
-									</td>
-								</tr>
-							</table>
+							<p style={{ textAlign: 'right', marginTop: '20px' }}>
+								{' '}
+								______________________ :توقيع المسؤول
+							</p>
 						</div>
 					</div>
 				</div>
