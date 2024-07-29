@@ -65,48 +65,28 @@ const barcodeConfig2 = {
 function MalaysiaVisaForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, reset } = methods;
+	const { control, watch, setValue, setError } = methods;
 
 	const routeParams = useParams();
 	const classes = useStyles(props);
 	const [malaysiaVisaId, setMalaysiaVisaId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
 
-	const { data, refetch } = useGetMalaysiaVisaQuery(malaysiaVisaId, {
+	const { data } = useGetMalaysiaVisaQuery(malaysiaVisaId, {
 		skip: !malaysiaVisaId
 	});
 
 	useEffect(() => {
-		// Fetch data when malaysiaVisaId is defined
-		if (malaysiaVisaId) {
-			refetch();
-		} else {
-			// Reset form when malaysiaVisaId is not set
-			reset({
-				name: malaysiaVisaId
-			});
-		}
-	}, [malaysiaVisaId, refetch, reset]);
-
-	useEffect(() => {
-		if (!data || _.isEmpty(data)) {
+		if (_.isEmpty(data)) {
 			setShowPrint(false);
 		} else {
 			setShowPrint(true);
 		}
 
-		if (routeParams?.malaysiaVisaId !== 'ksa-visa-form') {
-			setValue('name', routeParams?.malaysiaVisaId);
+		if (routeParams.malaysiaVisaId !== 'malaysiaVisa-form') {
+			setValue('name', routeParams.malaysiaVisaId);
 		}
-	}, [data, routeParams?.malaysiaVisaId, setValue]);
-
-	// useEffect(() => {
-	// 	if (!malaysiaVisaId) {
-	// 		reset({
-	// 			name: malaysiaVisaId
-	// 		});
-	// 	}
-	// }, [malaysiaVisaId, reset]);
+	}, [data]);
 
 	// print dom ref
 	const componentRef = useRef();
