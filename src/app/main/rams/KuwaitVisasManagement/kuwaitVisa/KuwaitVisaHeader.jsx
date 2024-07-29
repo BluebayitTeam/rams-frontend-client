@@ -20,7 +20,7 @@ function KuwaitVisaHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{name || 'KuwaitVisa Form'}
+								{name || 'Kuwait Visa Form'}
 							</Typography>
 						</motion.div>
 					</div>
