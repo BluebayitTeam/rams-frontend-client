@@ -68,6 +68,7 @@ import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
 import MalaysiaVisaAppConfig from '../rams/MalaysiaVisasManagement/MalaysiaVisaAppConfig';
 import BmetAppConfig from '../rams/BmetsManagement/BmetAppConfig';
 import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
+import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
 
 /**
  * The list of application configurations.
@@ -87,6 +88,7 @@ const appsConfigs = [
 	MakeAListAppConfig,
 	NotesAppConfig,
 	KsaVisaAppConfig,
+	KuwaitVisaAppConfig,
 	ProfileAppConfig,
 	ScrumboardAppConfig,
 	TasksAppConfig,

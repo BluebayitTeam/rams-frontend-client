@@ -66,7 +66,7 @@ function ThailandVisaForm(props) {
 	const { data } = useGetThailandVisaQuery(thailandVisaId, {
 		skip: !thailandVisaId
 	});
-
+	console.log('dsfdsklfdsklhf', data);
 	useEffect(() => {
 		if (_.isEmpty(data)) {
 			setShowPrint(false);
@@ -77,7 +77,7 @@ function ThailandVisaForm(props) {
 		if (routeParams.thailandVisaId !== 'thailandVisa-form') {
 			setValue('name', routeParams.thailandVisaId);
 		}
-	}, [data]);
+	}, [data, routeParams?.thailandVisaId, setValue]);
 
 	// print dom ref
 	const componentRef = useRef();

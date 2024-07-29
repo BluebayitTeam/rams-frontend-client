@@ -5,25 +5,24 @@ import { GET_BMET_BY_ID } from 'src/app/constant/constants';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
 
-export const addTagTypes = ['thailandVisas'];
+export const addTagTypes = ['kuwaitVisas'];
 
-const ThailandVisaApi = api
+const KuwaitVisaApi = api
 	.enhanceEndpoints({
 		addTagTypes
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			getThailandVisa: build.query({
-				query: (thailandVisaId) => ({
-					url: `${GET_BMET_BY_ID}${thailandVisaId}`
+			getKuwaitVisa: build.query({
+				query: (kuwaitVisaId) => ({
+					url: `${GET_BMET_BY_ID}${kuwaitVisaId}`
 				}),
-				providesTags: ['thailandVisas'],
-				async onQueryStarted(thailandVisaId, { queryFulfilled }) {
+				providesTags: ['kuwaitVisas'],
+				async onQueryStarted(kuwaitVisaId, { queryFulfilled }) {
 					try {
 						await queryFulfilled;
 					} catch (error) {
-						console.log('vjlkldfg', error);
-						CustomNotification('error', `${error?.response?.data?.detail}`);
+						CustomNotification('error', `${error?.error?.response?.data?.detail}`);
 					}
 				}
 			})
@@ -31,15 +30,15 @@ const ThailandVisaApi = api
 		overrideExisting: false
 	});
 
-export default ThailandVisaApi;
+export default KuwaitVisaApi;
 
-export const { useGetThailandVisasQuery, useGetThailandVisaQuery } = ThailandVisaApi;
+export const { useGetKuwaitVisasQuery, useGetKuwaitVisaQuery } = KuwaitVisaApi;
 
-export const selectFilteredThailandVisas = (thailandVisas) =>
+export const selectFilteredKuwaitVisas = (kuwaitVisas) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (!searchText || searchText.length === 0) {
-			return thailandVisas;
+			return kuwaitVisas;
 		}
 
-		return FuseUtils.filterArrayByString(thailandVisas, searchText);
+		return FuseUtils.filterArrayByString(kuwaitVisas, searchText);
 	});
