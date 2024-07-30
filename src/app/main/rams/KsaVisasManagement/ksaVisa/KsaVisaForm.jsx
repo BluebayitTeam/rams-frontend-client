@@ -12,9 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Print } from '@material-ui/icons';
 import _ from 'lodash';
-import Barcode from 'react-barcode';
-import moment from 'moment';
 import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
+import moment from 'moment';
+import Barcode from 'react-barcode';
 import { useGetKsaVisaQuery } from '../KsaVisasApi';
 
 const useStyles = makeStyles(() => ({
@@ -69,42 +69,44 @@ function KsaVisaForm(props) {
 	const { control, formState, watch, setValue, setError, reset } = methods;
 
 	const routeParams = useParams();
-	const classes = useStyles(props);
-	const [ksaVisaId, setKsaVisaId] = useState('');
+	const classes = useStyles();
+	const [ksaVisaId, setKsaVisaId] = useState(null);
 	const [showPrint, setShowPrint] = useState(false);
 
 	const { data, refetch } = useGetKsaVisaQuery(ksaVisaId, {
 		skip: !ksaVisaId
 	});
 
-	console.log('jjkjgj', data);
+	console.log('Fetched Data:', data);
 
 	useEffect(() => {
-		// Fetch data when ksaVisaId is defined
 		if (ksaVisaId) {
 			refetch();
 		} else {
-			// Reset form when ksaVisaId is not set
-			reset({});
+			reset({}); // Reset the form with empty values
 		}
 	}, [ksaVisaId, refetch, reset]);
 
 	useEffect(() => {
-		if (!data || _.isEmpty(data)) {
-			setShowPrint(false);
-		} else {
+		if (data && !_.isEmpty(data)) {
 			setShowPrint(true);
+			reset(data); // Reset the form with fetched data
+		} else {
+			setShowPrint(false);
+			reset({}); // Clear the form when no data is fetched
 		}
+	}, [data, reset]);
 
+	useEffect(() => {
 		if (routeParams?.ksaVisaId !== 'ksa-visa-form') {
 			setValue('name', routeParams?.ksaVisaId);
 		}
-	}, [data, routeParams?.ksaVisaId, setValue]);
+	}, [routeParams?.ksaVisaId, setValue]);
 
-	// print dom ref
+	// Print DOM ref
 	const componentRef = useRef();
 
-	// printer action
+	// Printer action
 	const printAction = useReactToPrint({
 		content: () => componentRef.current
 	});
@@ -120,6 +122,7 @@ function KsaVisaForm(props) {
 					type: 'manual',
 					message: 'Please enter a valid ID or Passport Number'
 				});
+				reset({}); // Clear the form when no valid ID is entered
 			}
 		}
 	};
@@ -134,6 +137,7 @@ function KsaVisaForm(props) {
 				type: 'manual',
 				message: 'Please enter a valid ID or Passport Number'
 			});
+			reset({}); // Clear the form when no valid ID is entered
 		}
 	};
 
@@ -198,7 +202,7 @@ function KsaVisaForm(props) {
 				ref={componentRef}
 				className={`${classes.container}`}
 			>
-				<div className="row px-10 py-10">
+				<div className="row px-20 py-20">
 					<div className="md:w-full">
 						<div>
 							<table style={{ height: '600px', width: '100%' }}>
@@ -292,6 +296,12 @@ function KsaVisaForm(props) {
 																	<table
 																		style={{ width: '100%', textAlign: 'center' }}
 																	>
+																		{/* <tr>
+																			<td> */}
+																		{/* <asp:Label ID="lblInternetNo"  runat="server" Font-Bold="true" fontSize="16pt}} ></asp:Label><br />
+                                                                                    <asp:Label ID="lbloldmofa" Visible="false"  runat="server" Font-Bold="true" fontSize="Medium" ></asp:Label> */}
+																		{/* </td>
+																		</tr> */}
 																		<tr>
 																			<td
 																				style={{
