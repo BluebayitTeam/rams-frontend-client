@@ -6,8 +6,9 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import BmetContractHeader from './BmetContractHeader';
-import BmetContractModel from './models/BmetContractContractModel';
+
 import BmetContractForm from './BmetContractForm';
+import BmetContractModel from './models/BmetContractModel';
 /**
  * Form Validation Schema
  */

@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import BmetContractApp from './BmetContractContractApp';
-import BmetContract from './bmetContractContract/BmetContractContract';
+import BmetContractApp from './BmetContractApp';
+import BmetContract from './bmetContract/BmetContract';
 
 /**
  * The E-Commerce app configuration.
