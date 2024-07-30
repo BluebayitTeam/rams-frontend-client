@@ -101,14 +101,6 @@ function KsaVisaForm(props) {
 		}
 	}, [data, routeParams?.ksaVisaId, setValue]);
 
-	// useEffect(() => {
-	// 	if (!ksaVisaId) {
-	// 		reset({
-	// 			name: ksaVisaId
-	// 		});
-	// 	}
-	// }, [ksaVisaId, reset]);
-
 	// print dom ref
 	const componentRef = useRef();
 
@@ -188,7 +180,9 @@ function KsaVisaForm(props) {
 								border: '1px solid grey',
 								borderRadius: '4px',
 								padding: '0px 5px',
-								height: '35px'
+								height: '35px',
+								marginTop: '3px',
+								marginLeft: '1px'
 							}}
 							onClick={() => printAction()}
 						>

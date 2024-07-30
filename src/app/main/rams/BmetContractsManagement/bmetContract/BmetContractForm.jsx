@@ -156,7 +156,9 @@ function BmetContractForm(props) {
 								border: '1px solid grey',
 								borderRadius: '4px',
 								padding: '0px 5px',
-								height: '35px'
+								height: '35px',
+								marginTop: '3px',
+								marginLeft: '1px'
 							}}
 							onClick={() => printAction()}
 						>
