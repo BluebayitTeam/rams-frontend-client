@@ -15,6 +15,10 @@ import _ from 'lodash';
 import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
 import moment from 'moment';
 import Barcode from 'react-barcode';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import increaseYear from 'src/app/@helpers/increaseYear';
+import { genders, maritalStatuses, religions } from 'src/app/@data/data';
+import Autocomplete from '@mui/material/Autocomplete';
 import { useGetKsaVisaManualQuery } from '../KsaVisaManualsApi';
 
 const useStyles = makeStyles(() => ({
@@ -101,14 +105,6 @@ function KsaVisaManualForm(props) {
 		}
 	}, [data, routeParams?.ksaVisaManualId, setValue]);
 
-	// useEffect(() => {
-	// 	if (!ksaVisaManualId) {
-	// 		reset({
-	// 			name: ksaVisaManualId
-	// 		});
-	// 	}
-	// }, [ksaVisaManualId, reset]);
-
 	// print dom ref
 	const componentRef = useRef();
 
@@ -116,21 +112,6 @@ function KsaVisaManualForm(props) {
 	const printAction = useReactToPrint({
 		content: () => componentRef.current
 	});
-
-	const handleKeyDown = (e) => {
-		if (e.key === 'Enter') {
-			const { value } = e.target;
-
-			if (value) {
-				setKsaVisaManualId(value);
-			} else {
-				setError('name', {
-					type: 'manual',
-					message: 'Please enter a valid ID or Passport Number'
-				});
-			}
-		}
-	};
 
 	const handleShowClick = () => {
 		const value = watch('name');
@@ -147,41 +128,467 @@ function KsaVisaManualForm(props) {
 
 	return (
 		<>
-			<div className="flex justify-evenly items-center flex-wrap m-5">
-				<div>
-					<h4>Passenger Job ID or Passport No.</h4>
-				</div>
-				<div className="flex">
+			<div className="bg-white pb-10">
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
-						name="name"
+						name="religion"
 						control={control}
-						render={({ field }) => (
-							<TextField
-								{...field}
-								autoFocus
-								id="name"
-								className={classes.textField}
-								variant="outlined"
-								fullWidth
-								onKeyDown={handleKeyDown}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								className="mt-8 mb-16 w-full md:w-6/12"
+								freeSolo
+								value={value ? religions.find((data) => data.id === value) : null}
+								options={religions}
+								getOptionLabel={(option) => `${option.name}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+								}}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										placeholder="Select Religion"
+										label="Religion"
+										id="religion"
+										variant="outlined"
+										InputLabelProps={{
+											shrink: true
+										}}
+									/>
+								)}
 							/>
 						)}
 					/>
-					<button
-						style={{
-							background: 'white',
-							border: '1px solid grey',
-							borderRadius: '4px',
-							padding: '0px 5px',
-							height: '35px',
-							marginTop: '3px',
-							marginLeft: '1px'
+
+					<Controller
+						name="pp_expire_year"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									required
+									label="PP Expiry Years"
+									id="pp_expire_year"
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+								/>
+							);
 						}}
-						onClick={handleShowClick}
-					>
-						Show
-					</button>
-					{showPrint && (
+					/>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="gender"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								className="mt-8 mb-16 w-full md:w-6/12"
+								freeSolo
+								value={value ? genders.find((data) => data.id === value) : null}
+								options={genders}
+								getOptionLabel={(option) => `${option.name}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+								}}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										placeholder="Select Gender"
+										label="Gender"
+										required
+										variant="outlined"
+										InputLabelProps={{
+											shrink: true
+										}}
+									/>
+								)}
+							/>
+						)}
+					/>
+
+					<Controller
+						name="passenger_name"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									required
+									label="Name"
+									id="passenger_name"
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="father_name"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Father's Name"
+									id="father_name"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+
+					<Controller
+						name="mother_name"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									required
+									label="Mother's Name"
+									id="mother_name"
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="marital_status"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								className="mt-8 mb-16 w-full md:w-6/12"
+								freeSolo
+								value={value ? maritalStatuses.find((data) => data.id === value) : null}
+								options={maritalStatuses}
+								getOptionLabel={(option) => `${option.name}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+								}}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										placeholder="Select Marital Status"
+										label="Marital Status"
+										variant="outlined"
+										InputLabelProps={{
+											shrink: true
+										}}
+									/>
+								)}
+							/>
+						)}
+					/>
+
+					<Controller
+						name="passport_no"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									required
+									label="Passport No"
+									id="passport_no"
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="address"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full "
+									label="Address"
+									id="address"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<div className="w-100%">
+						<Controller
+							name="date_of_birth"
+							control={control}
+							render={({ field }) => {
+								return (
+									<CustomDatePicker
+										field={field}
+										className="mt-8 mb-16 w-full md:w-6/12"
+										label="Date of Birth"
+										onChange={(value) => {
+											// setValue('passport_expiry_date', increaseYear(value, 5));
+										}}
+									/>
+								);
+							}}
+						/>
+					</div>
+
+					<div className="w-100%">
+						<Controller
+							name="passport_issue_date"
+							control={control}
+							render={({ field }) => {
+								return (
+									<CustomDatePicker
+										field={field}
+										className="mt-8 mb-16 w-full md:w-6/12"
+										label="Passport Issue Date"
+										onChange={(value) => {
+											setValue('passport_expiry_date', increaseYear(value, 10));
+										}}
+									/>
+								);
+							}}
+						/>
+					</div>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="visa_number"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Visa No"
+									id="visa_number"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+
+					<Controller
+						name="visa_issue_date"
+						control={control}
+						render={({ field }) => {
+							return (
+								<CustomDatePicker
+									field={field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Visa Issue Date"
+									onChange={(value) => {
+										// setValue('passport_expiry_date', increaseYear(value, 5));
+									}}
+								/>
+							);
+						}}
+					/>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="sponsor_name_arabic"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Sponsor Name"
+									id="sponsor_name_arabic"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+
+					<Controller
+						name="mofa_no"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Mofa No"
+									id="mofa_no"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="occupation_arabic"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Occupation(Arabic)"
+									id="occupation_arabic"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+
+					<Controller
+						name="profession_english"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Occupation(English)"
+									id="profession_english"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="musaned_no"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Musaned No"
+									id="musaned_no"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+
+					<Controller
+						name="okala_no"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Okala No"
+									id="okala_no"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="police_clearance_no"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Police Clearance No"
+									id="police_clearance_no"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+
+					<Controller
+						name="license"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="License"
+									id="license"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="finger_no"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Finger No"
+									id="finger_no"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+				</div>
+
+				<div className="flex justify-evenly items-center flex-wrap m-5">
+					<div className="flex">
 						<button
 							style={{
 								background: 'white',
@@ -190,14 +597,25 @@ function KsaVisaManualForm(props) {
 								padding: '0px 5px',
 								height: '35px'
 							}}
-							onClick={() => printAction()}
+							onClick={handleShowClick}
 						>
-							<Print />
+							Show
 						</button>
-					)}
-				</div>
-				<div style={{ minWidth: '250px' }}>
-					<h4>(Please use Chrome browser only to Print)</h4>
+						{showPrint && (
+							<button
+								style={{
+									background: 'white',
+									border: '1px solid grey',
+									borderRadius: '4px',
+									padding: '0px 5px',
+									height: '35px'
+								}}
+								onClick={() => printAction()}
+							>
+								<Print />
+							</button>
+						)}
+					</div>
 				</div>
 			</div>
 			<div
