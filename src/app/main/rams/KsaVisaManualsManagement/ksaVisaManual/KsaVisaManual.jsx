@@ -6,8 +6,9 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import KsaVisaManualHeader from './KsaVisaManualHeader';
-import KsaVisaManualModel from './models/KsaVisaManualModel';
+
 import KsaVisaManualForm from './KsaVisaManualForm';
+import KsaVisaManualModel from './models/KsaVisaModel';
 /**
  * Form Validation Schema
  */
