@@ -22,7 +22,6 @@ const ThailandVisaApi = api
 					try {
 						await queryFulfilled;
 					} catch (error) {
-						console.log('vjlkldfg', error);
 						CustomNotification('error', `${error?.error?.response?.data?.detail}`);
 					}
 				}
