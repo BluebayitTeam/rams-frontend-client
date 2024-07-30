@@ -1176,7 +1176,7 @@ const navigationConfig = [
 				translate: 'Visa Form (Manual)',
 				display_order: 7,
 				type: 'item',
-				url: '/apps/ksa-visa-manual-management/ksa-visa-manual-form',
+				url: '/apps/ksaVisaManual/ksaVisaManuals',
 				exact: true
 			},
 			{
