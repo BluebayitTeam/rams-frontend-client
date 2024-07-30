@@ -12,9 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Print } from '@material-ui/icons';
 import _ from 'lodash';
-import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
-import moment from 'moment';
 import Barcode from 'react-barcode';
+import moment from 'moment';
+import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
 import { useGetKsaVisaQuery } from '../KsaVisasApi';
 
 const useStyles = makeStyles(() => ({
@@ -77,15 +77,15 @@ function KsaVisaForm(props) {
 		skip: !ksaVisaId
 	});
 
+	console.log('jjkjgj', data);
+
 	useEffect(() => {
 		// Fetch data when ksaVisaId is defined
 		if (ksaVisaId) {
 			refetch();
 		} else {
 			// Reset form when ksaVisaId is not set
-			reset({
-				name: ksaVisaId
-			});
+			reset({});
 		}
 	}, [ksaVisaId, refetch, reset]);
 
@@ -198,7 +198,7 @@ function KsaVisaForm(props) {
 				ref={componentRef}
 				className={`${classes.container}`}
 			>
-				<div className="row">
+				<div className="row px-10 py-10">
 					<div className="md:w-full">
 						<div>
 							<table style={{ height: '600px', width: '100%' }}>
@@ -292,12 +292,6 @@ function KsaVisaForm(props) {
 																	<table
 																		style={{ width: '100%', textAlign: 'center' }}
 																	>
-																		{/* <tr>
-																			<td> */}
-																		{/* <asp:Label ID="lblInternetNo"  runat="server" Font-Bold="true" fontSize="16pt}} ></asp:Label><br />
-                                                                                    <asp:Label ID="lbloldmofa" Visible="false"  runat="server" Font-Bold="true" fontSize="Medium" ></asp:Label> */}
-																		{/* </td>
-																		</tr> */}
 																		<tr>
 																			<td
 																				style={{
