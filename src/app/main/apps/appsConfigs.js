@@ -69,12 +69,14 @@ import MalaysiaVisaAppConfig from '../rams/MalaysiaVisasManagement/MalaysiaVisaA
 import BmetAppConfig from '../rams/BmetsManagement/BmetAppConfig';
 import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
 import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
+import BmetContractAppConfig from '../rams/BmetContractsManagement/BmetContractAppConfig';
 
 /**
  * The list of application configurations.
  */
 const appsConfigs = [
 	BmetAppConfig,
+	BmetContractAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	MessengerAppConfig,
