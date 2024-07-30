@@ -70,7 +70,6 @@ import BmetAppConfig from '../rams/BmetsManagement/BmetAppConfig';
 import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
 import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
 import BmetContractAppConfig from '../rams/BmetContractsManagement/BmetContractAppConfig';
-import KsaVisaManualAppConfig from '../rams/KsaVisaManualsManagement/KsaVisaManualAppConfig';
 
 /**
  * The list of application configurations.
@@ -92,7 +91,7 @@ const appsConfigs = [
 	NotesAppConfig,
 	KsaVisaAppConfig,
 	KuwaitVisaAppConfig,
-	KsaVisaManualAppConfig,
+	// KsaVisaManualAppConfig,
 	ProfileAppConfig,
 	ScrumboardAppConfig,
 	TasksAppConfig,

@@ -1,9 +1,9 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
-import { useParams } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -20,7 +20,6 @@ import increaseYear from 'src/app/@helpers/increaseYear';
 import { genders, maritalStatuses, religions } from 'src/app/@data/data';
 import Autocomplete from '@mui/material/Autocomplete';
 import { GET_SITESETTINGS } from 'src/app/constant/constants';
-import { useGetKsaVisaManualQuery } from '../KsaVisaManualsApi';
 
 const useStyles = makeStyles(() => ({
 	textField: {
@@ -69,52 +68,28 @@ const barcodeConfig2 = {
 };
 
 function KsaVisaManualForm(props) {
-	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, reset } = methods;
+	const { control, watch, getValues, setValue, reset } = methods;
 
-	const routeParams = useParams();
-	const classes = useStyles(props);
-	const [ksaVisaManualId, setKsaVisaManualId] = useState('');
+	const classes = useStyles();
+
+	const dispatch = useDispatch();
+	useEffect(() => {
+		reset({ religion: 'Muslim', pp_expire_year: '10' });
+	}, []);
+	const [data, setdata] = useState({});
+
 	const [showPrint, setShowPrint] = useState(false);
-	const [generalData, setGeneralData] = useState({});
-
-	const { data, refetch } = useGetKsaVisaManualQuery(ksaVisaManualId, {
-		skip: !ksaVisaManualId
-	});
 
 	useEffect(() => {
-		// Fetch data when ksaVisaManualId is defined
-		if (ksaVisaManualId) {
-			refetch();
-		} else {
-			// Reset form when ksaVisaManualId is not set
-			reset({
-				name: ksaVisaManualId
-			});
-		}
-	}, [ksaVisaManualId, refetch, reset]);
-
-	useEffect(() => {
-		if (!data || _.isEmpty(data)) {
+		if (_.isEmpty(data)) {
 			setShowPrint(false);
 		} else {
 			setShowPrint(true);
 		}
-
-		if (routeParams?.ksaVisaManualId !== 'ksa-visa-form') {
-			setValue('name', routeParams?.ksaVisaManualId);
-		}
-	}, [data, routeParams?.ksaVisaManualId, setValue]);
-
-	// print dom ref
-	const componentRef = useRef();
-
-	// printer action
-	const printAction = useReactToPrint({
-		content: () => componentRef.current
-	});
-
+	}, [data]);
+	const [generalData, setGeneralData] = useState({});
+	// get general setting data
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -128,12 +103,18 @@ function KsaVisaManualForm(props) {
 			.then((data) => setGeneralData(data.general_settings[0] || {}))
 			.catch(() => setGeneralData({}));
 	}, []);
+	// print dom ref
+	const componentRef = useRef();
 
+	// printer action
+	const printAction = useReactToPrint({
+		content: () => componentRef.current
+	});
 	const handleShowClick = () => {
 		const value = watch('name');
 
 		if (value) {
-			setKsaVisaManualId(value);
+			setdata(value);
 		} else {
 			setError('name', {
 				type: 'manual',
@@ -141,7 +122,6 @@ function KsaVisaManualForm(props) {
 			});
 		}
 	};
-
 	return (
 		<>
 			<div className="bg-white pb-10">
@@ -149,6 +129,7 @@ function KsaVisaManualForm(props) {
 					<Controller
 						name="religion"
 						control={control}
+						defaultValue="Muslim"
 						render={({ field: { onChange, value } }) => (
 							<Autocomplete
 								className="mt-8 mb-16 w-full md:w-6/12"
@@ -178,6 +159,7 @@ function KsaVisaManualForm(props) {
 					<Controller
 						name="pp_expire_year"
 						control={control}
+						defaultValue="10"
 						render={({ field }) => {
 							return (
 								<TextField
