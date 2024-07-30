@@ -220,7 +220,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{bmetContract?.[0]?.visa_entry?.sponsor_name_english}
+															{data?.[0]?.visa_entry?.sponsor_name_english}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }}>الطرف الاول</td>
@@ -233,7 +233,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{bmetContract?.[0]?.passenger?.passenger_name}
+															{data?.[0]?.passenger?.passenger_name}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }} />
@@ -250,7 +250,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{bmetContract?.[0]?.passenger?.passport_no}
+															{data?.[0]?.passenger?.passport_no}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }}>الجواز سفر رقم</td>
@@ -261,7 +261,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{bmetContract?.[0]?.embassy?.profession_english}
+															{data?.[0]?.embassy?.profession_english}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }}>المهنة</td>
