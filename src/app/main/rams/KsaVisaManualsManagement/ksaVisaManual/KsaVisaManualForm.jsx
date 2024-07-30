@@ -19,6 +19,7 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import increaseYear from 'src/app/@helpers/increaseYear';
 import { genders, maritalStatuses, religions } from 'src/app/@data/data';
 import Autocomplete from '@mui/material/Autocomplete';
+import { GET_SITESETTINGS } from 'src/app/constant/constants';
 import { useGetKsaVisaManualQuery } from '../KsaVisaManualsApi';
 
 const useStyles = makeStyles(() => ({
@@ -76,6 +77,7 @@ function KsaVisaManualForm(props) {
 	const classes = useStyles(props);
 	const [ksaVisaManualId, setKsaVisaManualId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
+	const [generalData, setGeneralData] = useState({});
 
 	const { data, refetch } = useGetKsaVisaManualQuery(ksaVisaManualId, {
 		skip: !ksaVisaManualId
@@ -112,6 +114,20 @@ function KsaVisaManualForm(props) {
 	const printAction = useReactToPrint({
 		content: () => componentRef.current
 	});
+
+	useEffect(() => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+
+		fetch(`${GET_SITESETTINGS}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) => setGeneralData(data.general_settings[0] || {}))
+			.catch(() => setGeneralData({}));
+	}, []);
 
 	const handleShowClick = () => {
 		const value = watch('name');
@@ -335,7 +351,7 @@ function KsaVisaManualForm(props) {
 				</div>
 
 				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
-					<div className="w-100%">
+					<div className="w-full">
 						<Controller
 							name="date_of_birth"
 							control={control}
@@ -354,7 +370,7 @@ function KsaVisaManualForm(props) {
 						/>
 					</div>
 
-					<div className="w-100%">
+					<div className="w-full">
 						<Controller
 							name="passport_issue_date"
 							control={control}
@@ -393,22 +409,24 @@ function KsaVisaManualForm(props) {
 						}}
 					/>
 
-					<Controller
-						name="visa_issue_date"
-						control={control}
-						render={({ field }) => {
-							return (
-								<CustomDatePicker
-									field={field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Visa Issue Date"
-									onChange={(value) => {
-										// setValue('passport_expiry_date', increaseYear(value, 5));
-									}}
-								/>
-							);
-						}}
-					/>
+					<div className="w-full">
+						<Controller
+							name="visa_issue_date"
+							control={control}
+							render={({ field }) => {
+								return (
+									<CustomDatePicker
+										field={field}
+										className="mt-8 mb-16 w-full md:w-6/12"
+										label="Visa Issue Date"
+										onChange={(value) => {
+											// setValue('passport_expiry_date', increaseYear(value, 5));
+										}}
+									/>
+								);
+							}}
+						/>
+					</div>
 				</div>
 				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
