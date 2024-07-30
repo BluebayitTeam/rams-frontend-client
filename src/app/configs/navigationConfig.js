@@ -1158,7 +1158,7 @@ const navigationConfig = [
 				translate: 'Bmet Contract Form',
 				display_order: 5,
 				type: 'item',
-				url: '/apps/bmetContract-management/bmetContract-form',
+				url: '/apps/bmetContract/bmetContracts',
 				exact: true
 			},
 			{
