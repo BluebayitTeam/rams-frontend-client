@@ -23,7 +23,7 @@ const ThailandVisaApi = api
 						await queryFulfilled;
 					} catch (error) {
 						console.log('vjlkldfg', error);
-						CustomNotification('error', `${error?.response?.data?.detail}`);
+						CustomNotification('error', `${error?.error?.response?.data?.detail}`);
 					}
 				}
 			})
