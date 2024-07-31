@@ -62,11 +62,22 @@ function ThailandVisaForm(props) {
 	const classes = useStyles(props);
 	const [thailandVisaId, setThailandVisaId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
+	const [localData, setLocalData] = useState([]);
 
-	const { data } = useGetThailandVisaQuery(thailandVisaId, {
+	const { data, isSuccess } = useGetThailandVisaQuery(thailandVisaId, {
 		skip: !thailandVisaId
 	});
-	console.log('dsfdsklfdsklhf', data);
+	useEffect(() => {
+		if (isSuccess) {
+			setLocalData(data);
+		} else {
+			setLocalData([]);
+			setShowPrint(false);
+		}
+	}, [isSuccess, data]);
+
+	console.log('Fetched Data:', localData, isSuccess);
+
 	useEffect(() => {
 		if (_.isEmpty(data)) {
 			setShowPrint(false);
@@ -343,7 +354,9 @@ function ThailandVisaForm(props) {
 												className="cursor-pointer inside icon"
 												style={{
 													visibility:
-														data?.[0]?.passenger?.gender === 'male' ? 'visible' : 'hidden'
+														localData?.[0]?.passenger?.gender === 'male'
+															? 'visible'
+															: 'hidden'
 												}}
 											/>{' '}
 										</div>{' '}
@@ -353,8 +366,8 @@ function ThailandVisaForm(props) {
 												className="cursor-pointer inside icon"
 												style={{
 													visibility:
-														data?.[0]?.passenger?.gender == 'female' &&
-														data?.[0]?.passenger?.marital_status == 'married'
+														localData?.[0]?.passenger?.gender == 'female' &&
+														localData?.[0]?.passenger?.marital_status == 'married'
 															? 'visible'
 															: 'hidden'
 												}}
@@ -366,8 +379,8 @@ function ThailandVisaForm(props) {
 												className="cursor-pointer inside icon"
 												style={{
 													visibility:
-														data?.[0]?.passenger?.gender == 'female' &&
-														data?.[0]?.passenger?.marital_status == 'single'
+														localData?.[0]?.passenger?.gender == 'female' &&
+														localData?.[0]?.passenger?.marital_status == 'single'
 															? 'visible'
 															: 'hidden'
 												}}
@@ -383,12 +396,14 @@ function ThailandVisaForm(props) {
 											}}
 										>
 											<span style={{ marginLeft: '72px' }}>
-												{data?.[0]?.passenger?.passenger_name.split(' ')[0]?.toUpperCase()}
+												{localData?.[0]?.passenger?.passenger_name.split(' ')[0]?.toUpperCase()}
 											</span>
 											<span style={{ marginLeft: '280px' }}>
-												{/* {data?.[0]?.passenger?.passenger_name?.toUpperCase()} */}
-												{data?.[0]?.passenger?.passenger_name
-													.substring(data?.[0]?.passenger?.passenger_name.indexOf(' ') + 1)
+												{/* {localData?.[0]?.passenger?.passenger_name?.toUpperCase()} */}
+												{localData?.[0]?.passenger?.passenger_name
+													.substring(
+														localData?.[0]?.passenger?.passenger_name.indexOf(' ') + 1
+													)
 													?.toUpperCase()}
 											</span>
 										</div>
@@ -595,7 +610,7 @@ function ThailandVisaForm(props) {
 															}}
 															className=" font-bold"
 														>
-															{data?.[0]?.passenger?.place_of_birth?.toUpperCase()}
+															{localData?.[0]?.passenger?.place_of_birth?.toUpperCase()}
 														</td>
 													</tr>
 												</table>
@@ -612,7 +627,7 @@ function ThailandVisaForm(props) {
 															}}
 															className=" font-bold"
 														>
-															{data?.[0]?.passenger?.marital_status?.toUpperCase()}
+															{localData?.[0]?.passenger?.marital_status?.toUpperCase()}
 														</td>
 													</tr>
 												</table>
@@ -646,7 +661,7 @@ function ThailandVisaForm(props) {
 															>
 																{' '}
 																{moment(
-																	new Date(data?.[0]?.passenger?.date_of_birth)
+																	new Date(localData?.[0]?.passenger?.date_of_birth)
 																).format('DD-MM-YYYY')}
 															</td>
 														</tr>
@@ -696,7 +711,7 @@ function ThailandVisaForm(props) {
 																}}
 																className=" font-bold"
 															>
-																{data?.[0]?.passenger?.passport_type?.toUpperCase()}
+																{localData?.[0]?.passenger?.passport_type?.toUpperCase()}
 															</td>
 														</tr>
 													</table>
@@ -741,7 +756,7 @@ function ThailandVisaForm(props) {
 															}}
 															className=" font-bold"
 														>
-															{data?.[0]?.passenger?.passport_no}
+															{localData?.[0]?.passenger?.passport_no}
 														</td>
 													</tr>
 												</table>
@@ -758,7 +773,7 @@ function ThailandVisaForm(props) {
 															}}
 															className=" font-bold"
 														>
-															{data?.[0]?.passenger?.passport_issue_place?.toUpperCase()}
+															{localData?.[0]?.passenger?.passport_issue_place?.toUpperCase()}
 														</td>
 													</tr>
 												</table>
@@ -799,9 +814,9 @@ function ThailandVisaForm(props) {
 													className=" font-bold"
 												>
 													{' '}
-													{moment(new Date(data?.[0]?.passenger?.passport_issue_date)).format(
-														'DD-MM-YYYY'
-													)}
+													{moment(
+														new Date(localData?.[0]?.passenger?.passport_issue_date)
+													).format('DD-MM-YYYY')}
 												</td>
 												<td className="whitespace-nowrap">Expiry Date</td>
 												<td
@@ -814,7 +829,7 @@ function ThailandVisaForm(props) {
 												>
 													{' '}
 													{moment(
-														new Date(data?.[0]?.passenger?.passport_expiry_date)
+														new Date(localData?.[0]?.passenger?.passport_expiry_date)
 													).format('DD-MM-YYYY')}
 												</td>
 											</tr>
@@ -844,7 +859,7 @@ function ThailandVisaForm(props) {
 													}}
 													className=" font-bold"
 												>
-													{data?.[0]?.embassy?.profession_english?.toUpperCase()}
+													{localData?.[0]?.embassy?.profession_english?.toUpperCase()}
 												</td>
 											</tr>
 										</table>
@@ -901,11 +916,11 @@ function ThailandVisaForm(props) {
 													style={{ borderBottom: '1px solid black', width: '100%' }}
 													className="text-center font-bold"
 												>
-													{data?.[0]?.passenger?.village?.toUpperCase()},{' '}
-													{data?.[0]?.passenger?.post_office?.toUpperCase()},{' '}
-													{data?.[0]?.passenger?.police_station?.name?.toUpperCase()},
-													{data?.[0]?.passenger?.district?.name?.toUpperCase()},
-													{data?.[0]?.passenger?.country?.name?.toUpperCase()} &nbsp;
+													{localData?.[0]?.passenger?.village?.toUpperCase()},{' '}
+													{localData?.[0]?.passenger?.post_office?.toUpperCase()},{' '}
+													{localData?.[0]?.passenger?.police_station?.name?.toUpperCase()},
+													{localData?.[0]?.passenger?.district?.name?.toUpperCase()},
+													{localData?.[0]?.passenger?.country?.name?.toUpperCase()} &nbsp;
 												</td>
 											</tr>
 										</table>

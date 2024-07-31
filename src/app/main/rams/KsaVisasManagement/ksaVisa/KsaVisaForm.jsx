@@ -83,10 +83,9 @@ function KsaVisaForm(props) {
 			setLocalData(data);
 		} else {
 			setLocalData([]);
+			setShowPrint(false);
 		}
 	}, [isSuccess, data]);
-
-	console.log('Fetched Data:', localData, isSuccess);
 
 	useEffect(() => {
 		if (ksaVisaId) {

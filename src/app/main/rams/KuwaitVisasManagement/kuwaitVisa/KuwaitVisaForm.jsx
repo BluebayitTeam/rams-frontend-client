@@ -61,10 +61,19 @@ function KuwaitVisaForm(props) {
 	const classes = useStyles(props);
 	const [kuwaitVisaId, setKuwaitVisaId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
-
-	const { data } = useGetKuwaitVisaQuery(kuwaitVisaId, {
+	const [localData, setLocalData] = useState([]);
+	const { data, isSuccess } = useGetKuwaitVisaQuery(kuwaitVisaId, {
 		skip: !kuwaitVisaId
 	});
+
+	useEffect(() => {
+		if (isSuccess) {
+			setLocalData(data);
+		} else {
+			setLocalData([]);
+			setShowPrint(false);
+		}
+	}, [isSuccess, data]);
 
 	useEffect(() => {
 		if (_.isEmpty(data)) {
@@ -484,7 +493,7 @@ function KuwaitVisaForm(props) {
 													width="25%"
 												>
 													<center>
-														<b> {data?.[0]?.passenger?.gender?.toUpperCase()}</b>
+														<b> {localData?.[0]?.passenger?.gender?.toUpperCase()}</b>
 													</center>
 												</td>
 
@@ -495,10 +504,11 @@ function KuwaitVisaForm(props) {
 													<center>
 														<b>
 															{' '}
-															{data?.[0]?.passenger?.passenger_name
+															{localData?.[0]?.passenger?.passenger_name
 																.substring(
-																	data?.[0]?.passenger?.passenger_name.indexOf(' ') +
-																		1
+																	localData?.[0]?.passenger?.passenger_name.indexOf(
+																		' '
+																	) + 1
 																)
 																?.toUpperCase()}
 														</b>
@@ -516,7 +526,7 @@ function KuwaitVisaForm(props) {
 													<center>
 														<b>
 															{' '}
-															{data?.[0]?.passenger?.passenger_name
+															{localData?.[0]?.passenger?.passenger_name
 																.split(' ')[0]
 																?.toUpperCase()}
 														</b>
@@ -572,7 +582,9 @@ function KuwaitVisaForm(props) {
 													width="20%"
 												>
 													<center>
-														<b>{data?.[0]?.passenger?.place_of_birth?.toUpperCase()} </b>
+														<b>
+															{localData?.[0]?.passenger?.place_of_birth?.toUpperCase()}{' '}
+														</b>
 													</center>
 												</td>
 
@@ -584,7 +596,7 @@ function KuwaitVisaForm(props) {
 														<b>
 															{' '}
 															{moment(
-																new Date(data?.[0]?.passenger?.date_of_birth)
+																new Date(localData?.[0]?.passenger?.date_of_birth)
 															).format('DD-MM-YYYY')}
 														</b>
 													</center>
@@ -607,7 +619,9 @@ function KuwaitVisaForm(props) {
 												</td>
 												<td width="20%">
 													<center>
-														<b>{data?.[0]?.embassy?.profession_english?.toUpperCase()}</b>
+														<b>
+															{localData?.[0]?.embassy?.profession_english?.toUpperCase()}
+														</b>
 													</center>
 												</td>
 											</tr>
@@ -630,11 +644,11 @@ function KuwaitVisaForm(props) {
 													width="66.66%"
 												>
 													<center>
-														{data?.[0]?.passenger?.village?.toUpperCase()},{' '}
-														{data?.[0]?.passenger?.post_office?.toUpperCase()},{' '}
-														{data?.[0]?.passenger?.police_station?.name?.toUpperCase()},
-														{data?.[0]?.passenger?.district?.name?.toUpperCase()},
-														{data?.[0]?.passenger?.country?.name?.toUpperCase()} &nbsp;{' '}
+														{localData?.[0]?.passenger?.village?.toUpperCase()},{' '}
+														{localData?.[0]?.passenger?.post_office?.toUpperCase()},{' '}
+														{localData?.[0]?.passenger?.police_station?.name?.toUpperCase()}
+														,{localData?.[0]?.passenger?.district?.name?.toUpperCase()},
+														{localData?.[0]?.passenger?.country?.name?.toUpperCase()} &nbsp;{' '}
 													</center>
 												</td>
 												<td width="16.66%">
@@ -676,7 +690,7 @@ function KuwaitVisaForm(props) {
 													className="border-r-1 border-black  font-bold"
 													width="16.66%"
 												>
-													<center>{data?.[0]?.passenger?.contact_no}</center>
+													<center>{localData?.[0]?.passenger?.contact_no}</center>
 												</td>
 												<td width="16.66%">
 													<center> رقم هاتف المنزل</center>
@@ -817,7 +831,9 @@ function KuwaitVisaForm(props) {
 														<b>
 															{' '}
 															{moment(
-																new Date(data?.[0]?.passenger?.passport_expiry_date)
+																new Date(
+																	localData?.[0]?.passenger?.passport_expiry_date
+																)
 															).format('DD-MM-YYYY')}{' '}
 														</b>
 													</center>
@@ -831,7 +847,7 @@ function KuwaitVisaForm(props) {
 														<b>
 															{' '}
 															{moment(
-																new Date(data?.[0]?.passenger?.passport_issue_date)
+																new Date(localData?.[0]?.passenger?.passport_issue_date)
 															).format('DD-MM-YYYY')}
 														</b>
 													</center>
@@ -843,7 +859,7 @@ function KuwaitVisaForm(props) {
 													<center>
 														<b>
 															{' '}
-															{data?.[0]?.passenger?.passport_issue_place?.toUpperCase()}
+															{localData?.[0]?.passenger?.passport_issue_place?.toUpperCase()}
 														</b>
 													</center>
 												</td>
@@ -852,12 +868,15 @@ function KuwaitVisaForm(props) {
 													width="20%"
 												>
 													<center>
-														<b> {data?.[0]?.passenger?.passport_type?.toUpperCase()}</b>
+														<b>
+															{' '}
+															{localData?.[0]?.passenger?.passport_type?.toUpperCase()}
+														</b>
 													</center>
 												</td>
 												<td width="20%">
 													<center>
-														<b> {data?.[0]?.passenger?.passport_no}</b>
+														<b> {localData?.[0]?.passenger?.passport_no}</b>
 													</center>
 												</td>
 											</tr>

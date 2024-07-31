@@ -72,6 +72,7 @@ function BmetForm(props) {
 			setLocalData(data);
 		} else {
 			setLocalData([]);
+			setShowPrint(false);
 		}
 	}, [isSuccess, data]);
 
