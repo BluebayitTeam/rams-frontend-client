@@ -72,6 +72,7 @@ import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConf
 import BmetContractAppConfig from '../rams/BmetContractsManagement/BmetContractAppConfig';
 import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
 import KsaVisaManualAppConfig from '../rams/KsaVisaManualsManagement/KsaVisaManualAppConfig';
+import FingerAppConfig from '../rams/FingersManagement/FingerAppConfig';
 
 /**
  * The list of application configurations.
@@ -94,6 +95,7 @@ const appsConfigs = [
 	KsaVisaAppConfig,
 	KuwaitVisaAppConfig,
 	KsaVisaManualAppConfig,
+	FingerAppConfig,
 	ProfileAppConfig,
 	ScrumboardAppConfig,
 	TasksAppConfig,
