@@ -56,16 +56,26 @@ function BmetForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, watch, setValue, setError } = methods;
+	const [localData, setLocalData] = useState([]);
 
 	const routeParams = useParams();
 	const classes = useStyles(props);
 	const [bmetId, setBmetId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
 
-	const { data } = useGetBmetQuery(bmetId, {
+	const { data, isSuccess } = useGetBmetQuery(bmetId, {
 		skip: !bmetId
 	});
 
+	useEffect(() => {
+		if (isSuccess) {
+			setLocalData(data);
+		} else {
+			setLocalData([]);
+		}
+	}, [isSuccess, data]);
+
+	console.log('Fetched Data:', localData, isSuccess);
 	useEffect(() => {
 		if (_.isEmpty(data)) {
 			setShowPrint(false);
@@ -595,7 +605,8 @@ function BmetForm(props) {
 													size="2"
 													style={{ fontSize: '11pt' }}
 												>
-													1. Block visa No.:&nbsp; &nbsp; {data?.[0]?.visa_entry?.visa_number}
+													1. Block visa No.:&nbsp; &nbsp;{' '}
+													{localData?.[0]?.visa_entry?.visa_number}
 												</span>
 											</span>
 										</p>
@@ -608,10 +619,10 @@ function BmetForm(props) {
 													style={{ fontSize: '11pt' }}
 												>
 													2. Visa issue Date : &nbsp; &nbsp;{' '}
-													{data?.[0]?.visa_entry?.visa_issue_date &&
-														moment(new Date(data?.[0]?.visa_entry?.visa_issue_date)).format(
-															'DD-MM-YYYY'
-														)}
+													{localData?.[0]?.visa_entry?.visa_issue_date &&
+														moment(
+															new Date(localData?.[0]?.visa_entry?.visa_issue_date)
+														).format('DD-MM-YYYY')}
 												</span>
 											</span>
 										</p>
@@ -626,7 +637,7 @@ function BmetForm(props) {
 													style={{ fontSize: '9pt' }}
 												>
 													3. Visa issuing country :&nbsp; &nbsp;{' '}
-													{data?.[0]?.visa_entry?.country?.name}
+													{localData?.[0]?.visa_entry?.country?.name}
 												</span>
 											</span>
 										</p>
@@ -657,7 +668,7 @@ function BmetForm(props) {
 											</span>
 											&nbsp; &nbsp;
 											<span style={{ fontSize: '12pt' }}>
-												<b>{data?.[0]?.visa_entry?.visa_number}</b>
+												<b>{localData?.[0]?.visa_entry?.visa_number}</b>
 											</span>
 										</p>
 									</td>
@@ -673,7 +684,7 @@ function BmetForm(props) {
 											</span>
 											&nbsp; &nbsp;
 											<span style={{ fontSize: '12pt' }}>
-												<b> {data?.[0]?.agency?.name} </b>
+												<b> {localData?.[0]?.agency?.name} </b>
 											</span>
 										</p>
 									</td>
@@ -723,7 +734,8 @@ function BmetForm(props) {
 														size="2"
 														style={{ fontSize: '9pt' }}
 													>
-														Yes/NO &nbsp; &nbsp; {data?.[0]?.agency?.sponsor_name_english}
+														Yes/NO &nbsp; &nbsp;{' '}
+														{localData?.[0]?.agency?.sponsor_name_english}
 													</span>
 												</span>
 											</span>
@@ -941,7 +953,7 @@ function BmetForm(props) {
 												size="2"
 												style={{ fontSize: '9pt' }}
 											>
-												&nbsp; &nbsp;{data?.[0]?.embassy?.profession_english}{' '}
+												&nbsp; &nbsp;{localData?.[0]?.embassy?.profession_english}{' '}
 											</span>
 										</p>
 									</td>
@@ -985,7 +997,7 @@ function BmetForm(props) {
 												size="2"
 												style={{ fontSize: '9pt' }}
 											>
-												&nbsp;&nbsp; {data?.[0]?.embassy?.salary}{' '}
+												&nbsp;&nbsp; {localData?.[0]?.embassy?.salary}{' '}
 											</span>
 										</p>
 									</td>
@@ -1388,7 +1400,7 @@ function BmetForm(props) {
 												style={{ fontSize: '9pt' }}
 											>
 												{' '}
-												&nbsp; &nbsp;{data?.[0]?.man_power?.new_visa_no}
+												&nbsp; &nbsp;{localData?.[0]?.man_power?.new_visa_no}
 											</span>
 										</p>
 									</td>
@@ -1433,7 +1445,7 @@ function BmetForm(props) {
 												style={{ fontSize: '9pt' }}
 											>
 												<p style={{ fontSize: '11pt' }}>
-													&nbsp;{data?.[0]?.visa_entry?.visa_number}
+													&nbsp;{localData?.[0]?.visa_entry?.visa_number}
 												</p>{' '}
 											</span>
 										</p>
@@ -1474,10 +1486,10 @@ function BmetForm(props) {
 												>
 													<p style={{ fontSize: '11pt' }}>
 														&nbsp;
-														{data?.[0]?.embassy?.stamping_date &&
-															moment(new Date(data?.[0]?.embassy?.stamping_date)).format(
-																'DD-MM-YYYY'
-															)}
+														{localData?.[0]?.embassy?.stamping_date &&
+															moment(
+																new Date(localData?.[0]?.embassy?.stamping_date)
+															).format('DD-MM-YYYY')}
 													</p>{' '}
 												</span>
 											</span>
@@ -1516,9 +1528,9 @@ function BmetForm(props) {
 												>
 													<p style={{ fontSize: '11pt' }}>
 														&nbsp;
-														{data?.[0]?.embassy?.visa_expiry_date &&
+														{localData?.[0]?.embassy?.visa_expiry_date &&
 															moment(
-																new Date(data?.[0]?.embassy?.visa_expiry_date)
+																new Date(localData?.[0]?.embassy?.visa_expiry_date)
 															).format('DD-MM-YYYY')}
 													</p>
 												</span>
@@ -1782,7 +1794,7 @@ function BmetForm(props) {
 									<td width="186">
 										<p className="western">
 											<p style={{ fontSize: '11pt' }}>
-												&nbsp;{data?.[0]?.passenger?.passport_no}
+												&nbsp;{localData?.[0]?.passenger?.passport_no}
 											</p>
 										</p>
 									</td>
@@ -1821,9 +1833,9 @@ function BmetForm(props) {
 											>
 												<p style={{ fontSize: '11pt' }}>
 													&nbsp;
-													{data?.[0]?.passenger?.passport_issue_date &&
+													{localData?.[0]?.passenger?.passport_issue_date &&
 														moment(
-															new Date(data?.[0]?.passenger?.passport_issue_date)
+															new Date(localData?.[0]?.passenger?.passport_issue_date)
 														).format('DD-MM-YYYY')}
 												</p>
 											</span>
@@ -1864,9 +1876,9 @@ function BmetForm(props) {
 											>
 												<p style={{ fontSize: '11pt' }}>
 													&nbsp;
-													{data?.[0]?.passenger?.passport_expiry_date &&
+													{localData?.[0]?.passenger?.passport_expiry_date &&
 														moment(
-															new Date(data?.[0]?.passenger?.passport_expiry_date)
+															new Date(localData?.[0]?.passenger?.passport_expiry_date)
 														).format('DD-MM-YYYY')}
 												</p>
 											</span>
@@ -1907,10 +1919,10 @@ function BmetForm(props) {
 											>
 												<p style={{ fontSize: '11pt' }}>
 													&nbsp;
-													{data?.[0]?.passenger?.date_of_birth &&
-														moment(new Date(data?.[0]?.passenger?.date_of_birth)).format(
-															'DD-MM-YYYY'
-														)}
+													{localData?.[0]?.passenger?.date_of_birth &&
+														moment(
+															new Date(localData?.[0]?.passenger?.date_of_birth)
+														).format('DD-MM-YYYY')}
 												</p>
 											</span>
 										</p>
@@ -1949,7 +1961,7 @@ function BmetForm(props) {
 												style={{ fontSize: '9pt' }}
 											>
 												<p style={{ fontSize: '11pt' }}>
-													&nbsp;{data?.[0]?.passenger?.passport_issue_place}
+													&nbsp;{localData?.[0]?.passenger?.passport_issue_place}
 												</p>
 											</span>
 										</p>

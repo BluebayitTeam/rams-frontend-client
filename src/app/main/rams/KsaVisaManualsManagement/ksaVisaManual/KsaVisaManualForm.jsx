@@ -20,6 +20,7 @@ import increaseYear from 'src/app/@helpers/increaseYear';
 import { genders, maritalStatuses, religions } from 'src/app/@data/data';
 import Autocomplete from '@mui/material/Autocomplete';
 import { GET_SITESETTINGS } from 'src/app/constant/constants';
+import { useGetKsaVisaManualQuery } from '../KsaVisaManualsApi';
 
 const useStyles = makeStyles(() => ({
 	textField: {
@@ -70,26 +71,14 @@ const barcodeConfig2 = {
 function KsaVisaManualForm(props) {
 	const methods = useFormContext();
 	const { control, watch, getValues, setValue, reset } = methods;
-
 	const classes = useStyles();
-
-	const dispatch = useDispatch();
-	useEffect(() => {
-		reset({ religion: 'Muslim', pp_expire_year: '10' });
-	}, []);
-	const [data, setdata] = useState({});
-
 	const [showPrint, setShowPrint] = useState(false);
-
-	useEffect(() => {
-		if (_.isEmpty(data)) {
-			setShowPrint(false);
-		} else {
-			setShowPrint(true);
-		}
-	}, [data]);
+	const [ksaVisaManualId, setKsaVisaManualId] = useState('');
+	const dispatch = useDispatch();
 	const [generalData, setGeneralData] = useState({});
-	// get general setting data
+	const componentRef = useRef();
+
+	// Fetch general settings data
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -103,25 +92,56 @@ function KsaVisaManualForm(props) {
 			.then((data) => setGeneralData(data.general_settings[0] || {}))
 			.catch(() => setGeneralData({}));
 	}, []);
-	// print dom ref
-	const componentRef = useRef();
 
-	// printer action
-	const printAction = useReactToPrint({
-		content: () => componentRef.current
+	// Reset form
+	useEffect(() => {
+		reset({ religion: 'Muslim', pp_expire_year: '10' });
+	}, [reset]);
+
+	// Get passenger agreement data
+	const { data } = useGetKsaVisaManualQuery(ksaVisaManualId, {
+		skip: !ksaVisaManualId
 	});
+
+	// Handle show click
 	const handleShowClick = () => {
-		const value = watch('name');
+		const value = watch('religion');
 
 		if (value) {
-			setdata(value);
+			setKsaVisaManualId(value);
 		} else {
-			setError('name', {
+			setError('religion', {
 				type: 'manual',
 				message: 'Please enter a valid ID or Passport Number'
 			});
 		}
 	};
+
+	// Show or hide print option based on data
+	useEffect(() => {
+		if (_.isEmpty(data)) {
+			setShowPrint(false);
+		} else {
+			setShowPrint(true);
+		}
+	}, [data]);
+
+	// Printer action
+	const printAction = useReactToPrint({
+		content: () => componentRef.current
+	});
+	// const handleShowClick = () => {
+	// 	const value = watch('religion');
+
+	// 	if (value) {
+	// 		setKsaVisaManualId(value);
+	// 	} else {
+	// 		setError('religion', {
+	// 			type: 'manual',
+	// 			message: 'Please enter a valid ID or Passport Number'
+	// 		});
+	// 	}
+	// };
 	return (
 		<>
 			<div className="bg-white pb-10">
