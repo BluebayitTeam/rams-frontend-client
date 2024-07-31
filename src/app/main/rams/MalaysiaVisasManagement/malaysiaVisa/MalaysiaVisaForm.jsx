@@ -40,41 +40,29 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-const barcodeConfig = {
-	width: 1,
-	height: 30,
-	margin: 0,
-	marginTop: 5,
-	marginBottom: 0,
-	marginLeft: 10,
-	marginRight: 10,
-	format: 'CODE128',
-	displayValue: false
-};
-const barcodeConfig2 = {
-	width: 1,
-	height: 50,
-	margin: 0,
-	marginTop: 5,
-	marginBottom: 10,
-	marginLeft: 20,
-	marginRight: 20,
-	format: 'CODE128'
-};
-
 function MalaysiaVisaForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, watch, setValue, setError } = methods;
+	const [localData, setLocalData] = useState([]);
 
 	const routeParams = useParams();
 	const classes = useStyles(props);
 	const [malaysiaVisaId, setMalaysiaVisaId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
 
-	const { data } = useGetMalaysiaVisaQuery(malaysiaVisaId, {
+	const { data, isSuccess } = useGetMalaysiaVisaQuery(malaysiaVisaId, {
 		skip: !malaysiaVisaId
 	});
+
+	useEffect(() => {
+		if (isSuccess) {
+			setLocalData(data);
+		} else {
+			setLocalData([]);
+			setShowPrint(false);
+		}
+	}, [isSuccess, data]);
 
 	useEffect(() => {
 		if (_.isEmpty(data)) {
@@ -335,7 +323,7 @@ function MalaysiaVisaForm(props) {
 										colSpan="3"
 										className="w-80 border border-black p-2 pl-96 font-bold text-center	"
 									>
-										&nbsp;{data?.[0]?.passenger?.passenger_name?.toUpperCase()}
+										&nbsp;{localData?.[0]?.passenger?.passenger_name?.toUpperCase()}
 									</td>
 								</tr>
 
@@ -364,7 +352,7 @@ function MalaysiaVisaForm(props) {
 															className="cursor-pointer inside icon"
 															style={{
 																visibility:
-																	data?.[0]?.passenger?.gender === 'male'
+																	localData?.[0]?.passenger?.gender === 'male'
 																		? 'visible'
 																		: 'hidden'
 															}}
@@ -392,7 +380,7 @@ function MalaysiaVisaForm(props) {
 															className="cursor-pointer inside icon"
 															style={{
 																visibility:
-																	data?.[0]?.passenger?.gender == 'female'
+																	localData?.[0]?.passenger?.gender == 'female'
 																		? 'visible'
 																		: 'hidden'
 															}}
@@ -415,7 +403,7 @@ function MalaysiaVisaForm(props) {
 										colSpan="2"
 										className="w-100 border border-black p-2 text-center font-bold	"
 									>
-										{data?.[0]?.passenger?.place_of_birth?.toUpperCase()}
+										{localData?.[0]?.passenger?.place_of_birth?.toUpperCase()}
 									</td>
 								</tr>
 								<tr>
@@ -443,11 +431,11 @@ function MalaysiaVisaForm(props) {
 										className="w-100  mt-0"
 									>
 										<div className="border border-black p-2 w-100 font-bold	">
-											{data?.[0]?.passenger?.date_of_birth.slice(8, 10)}{' '}
+											{localData?.[0]?.passenger?.date_of_birth.slice(8, 10)}{' '}
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											{data?.[0]?.passenger?.date_of_birth.slice(5, 7)}{' '}
+											{localData?.[0]?.passenger?.date_of_birth.slice(5, 7)}{' '}
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											{data?.[0]?.passenger?.date_of_birth.slice(0, 4)}{' '}
+											{localData?.[0]?.passenger?.date_of_birth.slice(0, 4)}{' '}
 										</div>
 									</td>
 
@@ -515,7 +503,7 @@ function MalaysiaVisaForm(props) {
 									>
 										<div className="border border-black p-2 w-100 text-center font-bold	">
 											{' '}
-											&nbsp; {data?.[0]?.passenger?.profession?.name?.toUpperCase()}
+											&nbsp; {localData?.[0]?.passenger?.profession?.name?.toUpperCase()}
 										</div>
 									</td>
 								</tr>
@@ -534,11 +522,11 @@ function MalaysiaVisaForm(props) {
 									>
 										<div className="border border-black p-2 w-100 text-center font-bold	">
 											{' '}
-											{data?.[0]?.passenger?.village?.toUpperCase()},{' '}
-											{data?.[0]?.passenger?.post_office?.toUpperCase()},{' '}
-											{data?.[0]?.passenger?.police_station?.name?.toUpperCase()},
-											{data?.[0]?.passenger?.district?.name?.toUpperCase()},
-											{data?.[0]?.passenger?.country?.name?.toUpperCase()} &nbsp;
+											{localData?.[0]?.passenger?.village?.toUpperCase()},{' '}
+											{localData?.[0]?.passenger?.post_office?.toUpperCase()},{' '}
+											{localData?.[0]?.passenger?.police_station?.name?.toUpperCase()},
+											{localData?.[0]?.passenger?.district?.name?.toUpperCase()},
+											{localData?.[0]?.passenger?.country?.name?.toUpperCase()} &nbsp;
 										</div>
 									</td>
 								</tr>
@@ -598,7 +586,8 @@ function MalaysiaVisaForm(props) {
 															className="cursor-pointer inside icon"
 															style={{
 																visibility:
-																	data?.[0]?.passenger?.marital_status == 'single'
+																	localData?.[0]?.passenger?.marital_status ==
+																	'single'
 																		? 'visible'
 																		: 'hidden'
 															}}
@@ -625,7 +614,8 @@ function MalaysiaVisaForm(props) {
 															className="cursor-pointer inside icon"
 															style={{
 																visibility:
-																	data?.[0]?.passenger?.marital_status == 'married'
+																	localData?.[0]?.passenger?.marital_status ==
+																	'married'
 																		? 'visible'
 																		: 'hidden'
 															}}
@@ -684,7 +674,7 @@ function MalaysiaVisaForm(props) {
 									>
 										<div className="border border-black p-2 w-100 text-center font-bold	">
 											{' '}
-											&nbsp;{data?.[0]?.passenger?.passport_no}
+											&nbsp;{localData?.[0]?.passenger?.passport_no}
 										</div>
 									</td>
 								</tr>
@@ -722,7 +712,7 @@ function MalaysiaVisaForm(props) {
 									>
 										<div className="border border-black p-2 w-100 text-center font-bold	">
 											{' '}
-											{moment(new Date(data?.[0]?.passenger?.passport_expiry_date)).format(
+											{moment(new Date(localData?.[0]?.passenger?.passport_expiry_date)).format(
 												'DD-MM-YYYY'
 											)}
 										</div>
@@ -734,11 +724,11 @@ function MalaysiaVisaForm(props) {
 										className=" font-bold"
 									>
 										13.Date of Issue :
-										{moment(new Date(data?.[0]?.passenger?.passport_issue_date)).format(
+										{moment(new Date(localData?.[0]?.passenger?.passport_issue_date)).format(
 											'DD-MM-YYYY'
 										)}
 										<br /> &nbsp;&nbsp;&nbsp;&nbsp;Place of Issue :{' '}
-										{data?.[0]?.passenger?.passport_issue_place?.toUpperCase()}
+										{localData?.[0]?.passenger?.passport_issue_place?.toUpperCase()}
 									</td>
 								</tr>
 
@@ -783,7 +773,7 @@ function MalaysiaVisaForm(props) {
 										className="w-100  mt-0 text-center"
 									>
 										<div className="border border-black p-2 text-center font-bold	">
-											&nbsp; {data?.[0]?.visa_entry?.sponsor_name_english?.toUpperCase()}
+											&nbsp; {localData?.[0]?.visa_entry?.sponsor_name_english?.toUpperCase()}
 										</div>
 									</td>
 								</tr>
@@ -821,7 +811,7 @@ function MalaysiaVisaForm(props) {
 									>
 										<div className="border border-black p-2 w-100 text-center font-bold	">
 											{' '}
-											&nbsp; {data?.[0]?.visa_entry?.sponsor_mobile}
+											&nbsp; {localData?.[0]?.visa_entry?.sponsor_mobile}
 										</div>
 									</td>
 								</tr>
@@ -839,7 +829,7 @@ function MalaysiaVisaForm(props) {
 										className="w-100  mt-0"
 									>
 										<div className="border border-black p-2 w-100 text-center font-bold	">
-											&nbsp; {data?.[0]?.visa_entry?.sponsor_address?.toUpperCase()}
+											&nbsp; {localData?.[0]?.visa_entry?.sponsor_address?.toUpperCase()}
 										</div>
 									</td>
 								</tr>
