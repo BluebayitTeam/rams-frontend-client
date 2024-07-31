@@ -70,6 +70,7 @@ import BmetAppConfig from '../rams/BmetsManagement/BmetAppConfig';
 import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
 import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
 import BmetContractAppConfig from '../rams/BmetContractsManagement/BmetContractAppConfig';
+import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
 
 /**
  * The list of application configurations.
@@ -145,6 +146,7 @@ const appsConfigs = [
 	JournalIDAppConfig,
 	PostDateChequeAppConfig,
 	PayorderClearingAppConfig,
+	PassengerAgreementAppConfig,
 	ReceivableBillAppConfig,
 	PayableBillAppConfig
 ];
