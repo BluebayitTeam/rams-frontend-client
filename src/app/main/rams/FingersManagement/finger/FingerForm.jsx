@@ -1120,7 +1120,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked} s
+																	//   checked={isChecked}
 																/>
 																Good( ভালো )
 															</td>
@@ -1138,7 +1138,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked} s
+																	//   checked={isChecked}
 																/>
 																Excellent( অতি ভালো )
 															</td>
