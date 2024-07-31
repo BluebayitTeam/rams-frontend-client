@@ -286,7 +286,7 @@ function FingerForm(props) {
 									<td colspan="3">
 										<table width="100%">
 											<tr>
-												<td>{localData?.[0]?.passenger?.agent?.first_name}</td>
+												<td>{localData?.[0]?.passenger?.agent}</td>
 												<td>&nbsp;</td>
 											</tr>
 										</table>
@@ -420,9 +420,7 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Birth District ( যে জেলায় জন্ম)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.place_of_birth
-											? localData?.[0]?.passenger?.place_of_birth
-											: ' '}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 								<tr>
@@ -517,33 +515,33 @@ function FingerForm(props) {
 								<tr>
 									<td>*Division ( বিভাগ)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*District (জেলা)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Upazila/Thana (উপজেলা/থানা) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station?.name}
+										{localData?.[0]?.passenger?.police_station}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Union/Word( ইউনিয়ন/ওয়ার্ড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station?.name}
+										{localData?.[0]?.passenger?.police_station}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Mauza/Moholla (মৌজা/মহল্লা ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Village( গ্রাম ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
@@ -554,18 +552,18 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp; Post Code( পোস্ট কোড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
 								<tr>
 									<td>&nbsp;Road Number (সড়ক নগর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp;House Number( বাড়ী নম্বর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
@@ -611,29 +609,29 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*District (জেলা)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Upazila/Thana (উপজেলা/থানা) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station?.name}
+										{localData?.[0]?.passenger?.police_station}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Union/Word( ইউনিয়ন/ওয়ার্ড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station?.name}
+										{localData?.[0]?.passenger?.police_station}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Mauza/Moholla (মৌজা/মহল্লা ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Village( গ্রাম ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
@@ -644,18 +642,18 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp; Post Code( পোস্ট কোড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
 								<tr>
 									<td>&nbsp;Road Number (সড়ক নগর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp;House Number( বাড়ী নম্বর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district?.name}
+										{localData?.[0]?.passenger?.district}
 									</td>
 								</tr>
 
