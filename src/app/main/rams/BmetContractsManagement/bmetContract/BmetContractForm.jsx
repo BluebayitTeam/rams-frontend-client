@@ -60,10 +60,20 @@ function BmetContractForm(props) {
 	const classes = useStyles(props);
 	const [bmetContractId, setBmetContractId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
+	const [localData, setLocalData] = useState([]);
 
-	const { data } = useGetBmetContractQuery(bmetContractId, {
+	const { data, isSuccess } = useGetBmetContractQuery(bmetContractId, {
 		skip: !bmetContractId
 	});
+
+	useEffect(() => {
+		if (isSuccess) {
+			setLocalData(data);
+		} else {
+			setLocalData([]);
+			setShowPrint(false);
+		}
+	}, [isSuccess, data]);
 
 	useEffect(() => {
 		if (_.isEmpty(data)) {
@@ -222,7 +232,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{data?.[0]?.visa_entry?.sponsor_name_english}
+															{localData?.[0]?.visa_entry?.sponsor_name_english}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }}>الطرف الاول</td>
@@ -235,7 +245,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{data?.[0]?.passenger?.passenger_name}
+															{localData?.[0]?.passenger?.passenger_name}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }} />
@@ -252,7 +262,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{data?.[0]?.passenger?.passport_no}
+															{localData?.[0]?.passenger?.passport_no}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }}>الجواز سفر رقم</td>
@@ -263,7 +273,7 @@ function BmetContractForm(props) {
 														<span
 															style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
 														>
-															{data?.[0]?.embassy?.profession_english}
+															{localData?.[0]?.embassy?.profession_english}
 														</span>
 													</td>
 													<td style={{ textAlign: 'right' }}>المهنة</td>
