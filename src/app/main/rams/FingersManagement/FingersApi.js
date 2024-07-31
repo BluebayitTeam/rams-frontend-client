@@ -22,7 +22,8 @@ const FingerApi = api
 					try {
 						await queryFulfilled;
 					} catch (error) {
-						CustomNotification('error', `${error?.error?.response?.data?.detail}`);
+						const errorMessage = error?.response?.data?.detail || `Passenger doesn't exist`;
+						CustomNotification('error', errorMessage);
 					}
 				}
 			})
