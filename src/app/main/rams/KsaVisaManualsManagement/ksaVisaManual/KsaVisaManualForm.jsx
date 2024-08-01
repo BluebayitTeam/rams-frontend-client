@@ -130,18 +130,7 @@ function KsaVisaManualForm(props) {
 	const printAction = useReactToPrint({
 		content: () => componentRef.current
 	});
-	// const handleShowClick = () => {
-	// 	const value = watch('religion');
 
-	// 	if (value) {
-	// 		setKsaVisaManualId(value);
-	// 	} else {
-	// 		setError('religion', {
-	// 			type: 'manual',
-	// 			message: 'Please enter a valid ID or Passport Number'
-	// 		});
-	// 	}
-	// };
 	return (
 		<>
 			<div className="bg-white pb-10">
