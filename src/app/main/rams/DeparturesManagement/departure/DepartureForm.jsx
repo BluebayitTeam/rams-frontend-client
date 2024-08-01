@@ -67,7 +67,7 @@ function DepartureForm(props) {
 		skip: !departureId
 	});
 
-useEffect(() => {
+	useEffect(() => {
 		if (isSuccess) {
 			setLocalData(data);
 			setShowPrint(true);
@@ -189,7 +189,7 @@ useEffect(() => {
 			>
 				<div
 					className="row"
-					style={{ height: '1700px', width: '45%' }}
+					style={{ height: '1080px', width: '45%' }}
 				>
 					<div className="md:w-full">
 						<div>
