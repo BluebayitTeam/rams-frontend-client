@@ -1747,8 +1747,8 @@ function KsaVisaForm(props) {
 							</table>
 							{/* 3rd Page   */}
 							<h2
-								className="print:mt-20"
-								style={{ marginTop: '200px' }}
+								className="print:mt-40"
+								style={{ marginTop: '300px' }}
 							>
 								<center style={{ paddingTop: '100px' }}>إرفاق الجدول التالي في كل معاملة</center>
 							</h2>

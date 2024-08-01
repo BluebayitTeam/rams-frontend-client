@@ -152,7 +152,9 @@ function FingerForm(props) {
 							border: '1px solid grey',
 							borderRadius: '4px',
 							padding: '0px 5px',
-							height: '35px'
+							height: '35px',
+							marginTop: '3px',
+							marginLeft: '1px'
 						}}
 						onClick={handleShowClick}
 					>
@@ -165,7 +167,9 @@ function FingerForm(props) {
 								border: '1px solid grey',
 								borderRadius: '4px',
 								padding: '0px 5px',
-								height: '35px'
+								height: '35px',
+								marginTop: '3px',
+								marginLeft: '1px'
 							}}
 							onClick={() => printAction()}
 						>
@@ -268,7 +272,7 @@ function FingerForm(props) {
 								width="100%"
 								cellspacing="1"
 								cellpadding="4"
-								style={{ marginRight: '60px' }}
+								style={{ marginRight: '50px' }}
 							>
 								<tr>
 									<td>*Transaction ID (ট্রানজাকশান আইডি)</td>
