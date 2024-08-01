@@ -8,7 +8,8 @@ import { z } from 'zod';
 import KsaVisaManualHeader from './KsaVisaManualHeader';
 
 import KsaVisaManualForm from './KsaVisaManualForm';
-import KsaVisaManualModel from './models/KsaVisaModel';
+import KsaVisaManualModel from './models/KsaVisaManualModel';
+
 /**
  * Form Validation Schema
  */
