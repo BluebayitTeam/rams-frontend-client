@@ -10,9 +10,9 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import MakeAListsManagementColumnHeader from './MakeAListsManagementColumnHeader';
-import MakeAListsManagementColumnModel from './models/MakeAListsManagementMakeAListsManagementColumnModel';
-import { useGetMakeAListsManagementColumnQuery } from '../MakeAListsManagementMakeAListsManagementColumnsApi';
 import MakeAListsManagementColumnForm from './MakeAListsManagementColumnForm';
+import MakeAListsManagementColumnModel from './models/MakeAListsManagementColumnModel';
+import { useGetMakeAListsManagementColumnQuery } from '../MakeAListsManagementColumnsApi';
 /**
  * Form Validation Schema
  */
