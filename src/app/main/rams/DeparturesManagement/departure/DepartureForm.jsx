@@ -1088,7 +1088,9 @@ function DepartureForm(props) {
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
 								</tr>
-
+								<br />
+								<br />
+								<br />
 								<tr>
 									<td>
 										<table
@@ -1120,7 +1122,9 @@ function DepartureForm(props) {
 										</table>
 									</td>
 								</tr>
-
+								<br />
+								<br />
+								<br />
 								<tr>
 									<td>
 										<tr>
