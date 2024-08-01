@@ -101,7 +101,7 @@ function NavbarStyle3Content(props) {
 					>
 						<img
 							className="my-32 w-44"
-							src="assets/images/logo/logo.svg"
+							src="assets/images/logo/bbit.png"
 							alt="logo"
 						/>
 

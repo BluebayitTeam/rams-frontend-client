@@ -53,7 +53,7 @@ function NavbarMobileLayout2(props) {
 				<div className="flex-0 flex items-center justify-center py-48 opacity-10">
 					<img
 						className="w-full max-w-64"
-						src="assets/images/logo/logo.svg"
+						src="assets/images/logo/bbit.png"
 						alt="footer logo"
 					/>
 				</div>
