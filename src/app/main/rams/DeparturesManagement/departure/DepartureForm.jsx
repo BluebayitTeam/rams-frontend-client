@@ -188,7 +188,7 @@ function DepartureForm(props) {
 				className={classes.container}
 			>
 				<div
-					className="row"
+					className="row px-20 py-20"
 					style={{ height: '1080px', width: '45%' }}
 				>
 					<div className="md:w-full">
