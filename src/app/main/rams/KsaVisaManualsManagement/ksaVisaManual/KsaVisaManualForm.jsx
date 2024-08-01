@@ -1617,7 +1617,7 @@ function KsaVisaManualForm(props) {
 													<td
 														className="auto-style1"
 														align="justify"
-														style={{ paddingTop: '300px' }}
+														style={{ paddingTop: '100px' }}
 													>
 														To,
 														<br />
@@ -1870,7 +1870,7 @@ function KsaVisaManualForm(props) {
 														fontWeight: 'bold',
 														fontSize: 'large',
 														textAlign: 'center',
-														paddingTop: '300px'
+														paddingTop: '100px'
 													}}
 												>
 													<h3>
@@ -2091,10 +2091,10 @@ function KsaVisaManualForm(props) {
 							</table>
 							{/* 3rd Page   */}
 							<h2
-								className="print:mt-200"
-								style={{ marginTop: '900px' }}
+								className="print:mt-100"
+								style={{ marginTop: '200px' }}
 							>
-								<center style={{ paddingTop: '400px' }}>إرفاق الجدول التالي في كل معاملة</center>
+								<center style={{ paddingTop: '100px' }}>إرفاق الجدول التالي في كل معاملة</center>
 							</h2>
 							<table
 								style={{ width: '100%', border: '1px solid' }}
