@@ -81,6 +81,7 @@ function KsaVisaForm(props) {
 	useEffect(() => {
 		if (isSuccess) {
 			setLocalData(data);
+			setShowPrint(true);
 		} else {
 			setLocalData([]);
 			setShowPrint(false);

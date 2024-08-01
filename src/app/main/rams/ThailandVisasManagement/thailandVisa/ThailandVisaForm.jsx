@@ -67,9 +67,10 @@ function ThailandVisaForm(props) {
 	const { data, isSuccess } = useGetThailandVisaQuery(thailandVisaId, {
 		skip: !thailandVisaId
 	});
-	useEffect(() => {
+useEffect(() => {
 		if (isSuccess) {
 			setLocalData(data);
+			setShowPrint(true);
 		} else {
 			setLocalData([]);
 			setShowPrint(false);

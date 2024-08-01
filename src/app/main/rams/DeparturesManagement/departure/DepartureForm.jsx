@@ -67,9 +67,10 @@ function DepartureForm(props) {
 		skip: !departureId
 	});
 
-	useEffect(() => {
+useEffect(() => {
 		if (isSuccess) {
 			setLocalData(data);
+			setShowPrint(true);
 		} else {
 			setLocalData([]);
 			setShowPrint(false);
