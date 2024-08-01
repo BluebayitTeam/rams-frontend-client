@@ -63,29 +63,45 @@ import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/Receivabl
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import MultipleStatusUpdateAppConfig from '../rams/MultipleStatusUpdate/MultipleStatusUpdateAppConfig';
-import MakeAListsManagementAppConfig from '../rams/MakeAListsManagement/MakeAListsManagementAppConfig';
+import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig';
+import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
+import MalaysiaVisaAppConfig from '../rams/MalaysiaVisasManagement/MalaysiaVisaAppConfig';
+import BmetAppConfig from '../rams/BmetsManagement/BmetAppConfig';
+import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
+import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
+import BmetContractAppConfig from '../rams/BmetContractsManagement/BmetContractAppConfig';
+import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
+import FingerAppConfig from '../rams/FingersManagement/FingerAppConfig';
 
 /**
  * The list of application configurations.
  */
 const appsConfigs = [
+	BmetAppConfig,
+	BmetContractAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	MessengerAppConfig,
 	MultipleStatusUpdateAppConfig,
+	MalaysiaVisaAppConfig,
 	ContactsAppConfig,
 	ECommerceAppConfig,
 	FileManagerAppConfig,
 	HelpCenterAppConfig,
 	MailboxAppConfig,
-	MakeAListsManagementAppConfig,
+	MakeAListAppConfig,
 	NotesAppConfig,
+	KsaVisaAppConfig,
+	KuwaitVisaAppConfig,
+	// KsaVisaManualAppConfig,
+	FingerAppConfig,
 	ProfileAppConfig,
 	ScrumboardAppConfig,
 	TasksAppConfig,
 	NotificationsAppConfig,
 	UserAppConfig,
 	TrainingAppConfig,
+	ThailandVisaAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
 	QualificationAppConfig,
@@ -108,7 +124,6 @@ const appsConfigs = [
 	ManPowerAppConfig,
 	EmployeeAppConfig,
 	SubscriptionLoanAppConfig,
-	// CallingEmbAttestationAppConfig,
 	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
 	PaymentDetailAppConfig,
@@ -133,6 +148,7 @@ const appsConfigs = [
 	JournalIDAppConfig,
 	PostDateChequeAppConfig,
 	PayorderClearingAppConfig,
+	PassengerAgreementAppConfig,
 	ReceivableBillAppConfig,
 	PayableBillAppConfig
 ];

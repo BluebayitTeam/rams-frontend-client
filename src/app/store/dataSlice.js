@@ -354,6 +354,19 @@ export const getAutoStatusUpdates = () => (dispatch) => {
 		.catch(() => {});
 };
 
+// export const getKsaVisa = () => (dispatch) => {
+// 	const authTOKEN = {
+// 		headers: {
+// 			'Content-type': 'application/json',
+// 			Authorization: localStorage.getItem('jwt_access_token')
+// 		}
+// 	};
+// 	fetch(GET_KSAVISA_BY_ID, authTOKEN)
+// 		.then((response) => response.json())
+// 		.then((data) => dispatch(setKsaVisa(data?.id)))
+// 		.catch(() => {});
+// };
+
 export const getDepartments = () => (dispatch) => {
 	const authTOKEN = {
 		headers: {
@@ -1018,6 +1031,9 @@ const dataSlice = createSlice({
 		setAutoStatusUpdates: (state, action) => {
 			state.autoStatusUpdates = action.payload;
 		},
+		// setKsaVisa: (state, action) => {
+		// 	state.ksaVisa = action.payload;
+		// },
 		setDepartments: (state, action) => {
 			state.departments = action.payload;
 		},
@@ -1181,6 +1197,7 @@ const {
 	setTicketDepartments,
 	setTicketStatuss,
 	setAutoStatusUpdates,
+	// setKsaVisa,
 	setDepartments,
 	setClients,
 	setAgents,

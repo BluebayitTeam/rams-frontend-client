@@ -55,7 +55,7 @@ function Mofa() {
 	const [formKey, setFormKey] = useState(0);
 	const classes = useStyles();
 	const navigate = useNavigate();
-
+	console.log('passengerId', routeParams.passengerId);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: emptyValue,

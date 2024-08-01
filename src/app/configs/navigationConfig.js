@@ -489,7 +489,7 @@ const navigationConfig = [
 				translate: 'Make A List',
 				display_order: 14,
 				type: 'item',
-				url: '/apps/makeAListsManagement/makeAListsManagements',
+				url: '/apps/makeAList/makeALists',
 				exact: true
 			},
 			{
@@ -1122,7 +1122,7 @@ const navigationConfig = [
 				translate: 'Bmet Form',
 				display_order: 1,
 				type: 'item',
-				url: '/apps/bmet-management/bmet-form',
+				url: '/apps/bmet/bmets',
 				exact: true
 			},
 			{
@@ -1131,7 +1131,7 @@ const navigationConfig = [
 				translate: 'Malaysia Visa Form',
 				display_order: 2,
 				type: 'item',
-				url: '/apps/malaysiaVisa-management/malaysiaVisa-form',
+				url: '/apps/malaysiaVisa/malaysiaVisas',
 				exact: true
 			},
 			{
@@ -1140,7 +1140,7 @@ const navigationConfig = [
 				translate: 'Thailand Visa Form',
 				display_order: 3,
 				type: 'item',
-				url: '/apps/thailandVisa-management/thailandVisa-form',
+				url: '/apps/thailandVisa/thailandVisas',
 				exact: true
 			},
 			{
@@ -1149,7 +1149,7 @@ const navigationConfig = [
 				translate: 'Kuwait Visa Form',
 				display_order: 4,
 				type: 'item',
-				url: '/apps/kuwaitVisa-management/kuwaitVisa-form',
+				url: '/apps/kuwaitVisa/kuwaitVisas',
 				exact: true
 			},
 			{
@@ -1158,7 +1158,7 @@ const navigationConfig = [
 				translate: 'Bmet Contract Form',
 				display_order: 5,
 				type: 'item',
-				url: '/apps/bmetContract-management/bmetContract-form',
+				url: '/apps/bmetContract/bmetContracts',
 				exact: true
 			},
 			{
@@ -1167,7 +1167,7 @@ const navigationConfig = [
 				translate: 'Visa Form',
 				display_order: 6,
 				type: 'item',
-				url: '/apps/ksa-visa-management/ksa-visa-form',
+				url: '/apps/ksaVisa/ksaVisas',
 				exact: true
 			},
 			{
@@ -1176,7 +1176,7 @@ const navigationConfig = [
 				translate: 'Visa Form (Manual)',
 				display_order: 7,
 				type: 'item',
-				url: '/apps/ksa-visa-manual-management/ksa-visa-manual-form',
+				url: '/apps/ksaVisaManual/ksaVisaManuals',
 				exact: true
 			},
 			{
