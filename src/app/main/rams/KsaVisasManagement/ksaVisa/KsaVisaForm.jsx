@@ -1239,12 +1239,12 @@ function KsaVisaForm(props) {
 									width: '100%',
 									height: '1080px',
 									backgroundRepeat: 'no-repeat',
-									marginBottom: '250px'
+									marginBottom: '50px'
 								}}
 							>
 								<table
 									width="100%"
-									style={{ marginTop: '300px' }}
+									style={{ marginTop: '100px' }}
 								>
 									<tr>
 										<td
@@ -1256,7 +1256,7 @@ function KsaVisaForm(props) {
 													<td
 														className="auto-style1"
 														align="justify"
-														style={{ paddingTop: '300px' }}
+														style={{ paddingBottom: '50px' }}
 													>
 														To,
 														<br />
@@ -1511,7 +1511,7 @@ function KsaVisaForm(props) {
 
 							<table
 								width="100%"
-								className="print:mt-200"
+								className="print:mt-100"
 							>
 								<tr>
 									<td
@@ -1525,7 +1525,7 @@ function KsaVisaForm(props) {
 														fontWeight: 'bold',
 														fontSize: 'large',
 														textAlign: 'center',
-														paddingTop: '300px'
+														paddingTop: '100px'
 													}}
 												>
 													<h3>
@@ -1747,10 +1747,10 @@ function KsaVisaForm(props) {
 							</table>
 							{/* 3rd Page   */}
 							<h2
-								className="print:mt-200"
-								style={{ marginTop: '900px' }}
+								className="print:mt-20"
+								style={{ marginTop: '200px' }}
 							>
-								<center style={{ paddingTop: '400px' }}>إرفاق الجدول التالي في كل معاملة</center>
+								<center style={{ paddingTop: '100px' }}>إرفاق الجدول التالي في كل معاملة</center>
 							</h2>
 							<table
 								style={{ width: '100%', border: '1px solid' }}
