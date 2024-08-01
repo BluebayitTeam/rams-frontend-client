@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-nested-ternary */
@@ -262,11 +263,11 @@ function PassengerAgreementForm(props) {
 				{showPrint && (
 					<div
 						className="row"
-						style={{ marginTop: '100px', marginLeft: '90px', marginRight: '90px' }}
+						style={{ marginTop: '50px', marginLeft: '90px', marginRight: '90px' }}
 					>
 						<div
 							className="md:w-full"
-							style={{ marginTop: '432px' }}
+							style={{ marginTop: '100px' }}
 						>
 							<h3 style={{ textAlign: 'center', lineHeight: '40px', fontSize: '20px' }}>
 								{' '}
@@ -298,7 +299,10 @@ function PassengerAgreementForm(props) {
 								এবং দেশে ফেরত আসতে হইলে তার জন্য আমি নিজেই দায়ী হইব,
 							</h3>
 						</div>
-						<div className="md:w-full ">
+						<div
+							className="md:w-full "
+							style={{ marginTop: '-300px' }}
+						>
 							<div style={{ minHeight: '832px' }}> </div>
 							<h3 style={{ lineHeight: '40px', fontSize: '20px', textAlign: 'justify' }}>
 								কোন অবস্থাতেই {generalData?.agency_name_bangla} দায়ী হইবে না এবং{' '}
@@ -313,9 +317,6 @@ function PassengerAgreementForm(props) {
 								সম্মতিতে সম্পূর্ণ সুস্থ মস্তিষ্কে নিম্নোক্ত সাক্ষিগণের সম্মখে সহি সম্পাদন করিলাম । ইতি
 								তাং {today} ইং
 							</h3>{' '}
-							<br />
-							<br />
-							<br />
 							<br />
 							<h3>
 								<table
