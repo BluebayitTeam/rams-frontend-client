@@ -5,8 +5,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { useParams } from 'react-router-dom';
-import { TextField } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
@@ -14,6 +12,8 @@ import { useReactToPrint } from 'react-to-print';
 import { Print } from '@material-ui/icons';
 import _ from 'lodash';
 import moment from 'moment';
+import { TextField } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useGetFingerQuery } from '../FingersApi';
 
 const useStyles = makeStyles(() => ({
@@ -76,7 +76,6 @@ function FingerForm(props) {
 		}
 	}, [isSuccess, data]);
 
-	console.log('Fetched Data:', localData);
 	useEffect(() => {
 		if (_.isEmpty(data)) {
 			setShowPrint(false);
@@ -127,7 +126,7 @@ function FingerForm(props) {
 
 	return (
 		<>
-			<div className="flex justify-evenly items-center flex-wrap m-5">
+			<div className="flex justify-evenly items-center flex-wrap mt-5">
 				<div>
 					<h4>Passenger Job ID or Passport No.</h4>
 				</div>
@@ -153,9 +152,7 @@ function FingerForm(props) {
 							border: '1px solid grey',
 							borderRadius: '4px',
 							padding: '0px 5px',
-							height: '35px',
-							marginTop: '3px',
-							marginLeft: '1px'
+							height: '35px'
 						}}
 						onClick={handleShowClick}
 					>
@@ -168,9 +165,7 @@ function FingerForm(props) {
 								border: '1px solid grey',
 								borderRadius: '4px',
 								padding: '0px 5px',
-								height: '35px',
-								marginTop: '3px',
-								marginLeft: '1px'
+								height: '35px'
 							}}
 							onClick={() => printAction()}
 						>
@@ -178,6 +173,7 @@ function FingerForm(props) {
 						</button>
 					)}
 				</div>
+
 				<div style={{ minWidth: '250px' }}>
 					<h4>(Please use Chrome browser only to Print)</h4>
 				</div>
@@ -286,7 +282,7 @@ function FingerForm(props) {
 									<td colspan="3">
 										<table width="100%">
 											<tr>
-												<td>{localData?.[0]?.passenger?.agent}</td>
+												<td>{localData?.[0]?.passenger?.agent?.first_name}</td>
 												<td>&nbsp;</td>
 											</tr>
 										</table>
@@ -420,7 +416,9 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Birth District ( যে জেলায় জন্ম)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.place_of_birth
+											? localData?.[0]?.passenger?.place_of_birth
+											: ' '}
 									</td>
 								</tr>
 								<tr>
@@ -515,33 +513,33 @@ function FingerForm(props) {
 								<tr>
 									<td>*Division ( বিভাগ)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*District (জেলা)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Upazila/Thana (উপজেলা/থানা) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station}
+										{localData?.[0]?.passenger?.police_station?.name}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Union/Word( ইউনিয়ন/ওয়ার্ড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station}
+										{localData?.[0]?.passenger?.police_station?.name}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Mauza/Moholla (মৌজা/মহল্লা ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Village( গ্রাম ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
@@ -552,18 +550,18 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp; Post Code( পোস্ট কোড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
 								<tr>
 									<td>&nbsp;Road Number (সড়ক নগর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp;House Number( বাড়ী নম্বর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
@@ -609,29 +607,29 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*District (জেলা)</td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Upazila/Thana (উপজেলা/থানা) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station}
+										{localData?.[0]?.passenger?.police_station?.name}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Union/Word( ইউনিয়ন/ওয়ার্ড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.police_station}
+										{localData?.[0]?.passenger?.police_station?.name}
 									</td>
 								</tr>
 
 								<tr>
 									<td>*Mauza/Moholla (মৌজা/মহল্লা ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>*Village( গ্রাম ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
@@ -642,18 +640,18 @@ function FingerForm(props) {
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp; Post Code( পোস্ট কোড ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
 								<tr>
 									<td>&nbsp;Road Number (সড়ক নগর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 									<td style={{ paddingLeft: '150px' }}>&nbsp;House Number( বাড়ী নম্বর ) </td>
 									<td style={{ borderBottom: '1px dashed' }}>
-										{localData?.[0]?.passenger?.district}
+										{localData?.[0]?.passenger?.district?.name}
 									</td>
 								</tr>
 
@@ -806,7 +804,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Basic( প্রাথমিক )
 															</td>
@@ -823,7 +821,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Good( ভালো )
 															</td>
@@ -841,7 +839,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Excellent( অতি ভালো )
 															</td>
@@ -861,7 +859,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Basic( প্রাথমিক )
 															</td>
@@ -878,7 +876,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Good( ভালো )
 															</td>
@@ -896,7 +894,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Excellent( অতি ভালো )
 															</td>
@@ -927,7 +925,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Basic( প্রাথমিক )
 															</td>
@@ -944,7 +942,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Good( ভালো )
 															</td>
@@ -962,7 +960,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Excellent( অতি ভালো )
 															</td>
@@ -982,7 +980,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Basic( প্রাথমিক )
 															</td>
@@ -999,7 +997,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Good( ভালো )
 															</td>
@@ -1017,7 +1015,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Excellent( অতি ভালো )
 															</td>
@@ -1048,7 +1046,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Basic( প্রাথমিক )
 															</td>
@@ -1065,7 +1063,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Good( ভালো )
 															</td>
@@ -1083,7 +1081,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Excellent( অতি ভালো )
 															</td>
@@ -1103,7 +1101,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Basic( প্রাথমিক )
 															</td>
@@ -1120,7 +1118,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Good( ভালো )
 															</td>
@@ -1138,7 +1136,7 @@ function FingerForm(props) {
 																	name="same"
 																	value="same"
 																	style={{ marginRight: '8px' }}
-																	//   checked={isChecked}
+																	//   checked={isChecked} s
 																/>
 																Excellent( অতি ভালো )
 															</td>
