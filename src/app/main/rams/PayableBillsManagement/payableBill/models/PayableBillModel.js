@@ -9,7 +9,7 @@ const PayableBillModel = (data) =>
 		passenger: '',
 		passenger_list: [],
 		sub_ledger: '',
-		sales_date: moment(new Date()).format('YYYY-MM-DD'),
+		purchase_date: moment(new Date()).format('YYYY-MM-DD'),
 		is_foreign_currency: false,
 		ledger: '',
 		credit_amount: 0,

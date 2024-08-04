@@ -264,13 +264,13 @@ function PayableBillForm(props) {
 				)}
 			/>
 			<Controller
-				name="sales_date"
+				name="purchase_date"
 				control={control}
 				render={({ field }) => {
 					return (
 						<CustomDatePicker
 							field={field}
-							label="Sales Date"
+							label="Purchase Date"
 						/>
 					);
 				}}
