@@ -111,7 +111,7 @@ function FullScreenReversedConfirmationRequiredPage() {
 				<div className="max-w-320 sm:w-320 mx-auto w-full sm:mx-0">
 					<img
 						className="w-48"
-						src="assets/images/logo/logo.svg"
+						src="assets/images/logo/bbit.png"
 						alt="logo"
 					/>
 

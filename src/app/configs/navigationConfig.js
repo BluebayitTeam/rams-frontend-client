@@ -1194,7 +1194,7 @@ const navigationConfig = [
 				translate: 'Manpower Note Sheet',
 				display_order: 9,
 				type: 'item',
-				url: '/apps/manpowerNoteSheet-management/manpowerNoteSheet/new',
+				url: '/apps/manpowerNoteSheet/manpowerNoteSheets/new',
 				exact: true
 			},
 
