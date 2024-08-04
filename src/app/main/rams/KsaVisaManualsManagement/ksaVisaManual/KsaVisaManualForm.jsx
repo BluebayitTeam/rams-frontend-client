@@ -196,9 +196,26 @@ function KsaVisaManualForm(props) {
 			</div>
 
 			<br />
-			<br />
+
 			<div className="bg-white pb-10">
 				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<Controller
+						name="passenger_name"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									required
+									label="Passenger Name"
+									id="passenger_name"
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+								/>
+							);
+						}}
+					/>
 					<Controller
 						name="religion"
 						control={control}
@@ -227,25 +244,6 @@ function KsaVisaManualForm(props) {
 								)}
 							/>
 						)}
-					/>
-
-					<Controller
-						name="pp_expire_year"
-						control={control}
-						defaultValue="10"
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									required
-									label="PP Expiry Years"
-									id="pp_expire_year"
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-								/>
-							);
-						}}
 					/>
 				</div>
 				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
@@ -281,18 +279,18 @@ function KsaVisaManualForm(props) {
 							/>
 						)}
 					/>
-
 					<Controller
-						name="passenger_name"
+						name="pp_expire_year"
 						control={control}
+						defaultValue="10"
 						render={({ field }) => {
 							return (
 								<TextField
 									{...field}
 									className="mt-8 mb-16 w-full md:w-6/12"
 									required
-									label="Name"
-									id="passenger_name"
+									label="PP Expiry Years"
+									id="pp_expire_year"
 									variant="outlined"
 									InputLabelProps={field.value && { shrink: true }}
 								/>
