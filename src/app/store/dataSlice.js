@@ -32,7 +32,6 @@ import {
 	GET_MENUS_ALL_NESTED,
 	GET_MENUS_WITHOUT_PAGINATION,
 	GET_PACKAGE_TYPES_WITHOUT_PAGINATION,
-	GET_PASSENGER_BY_ID,
 	GET_PERMISSION_GROUP,
 	GET_PERMISSIONS_WITHOUT_PAGINATION,
 	GET_ROLES_WITHOUT_PAGINATION,
@@ -847,18 +846,6 @@ export const getPassengers = () => (dispatch) => {
 		.then((data) => dispatch(setPassengers(data.passengers)))
 		.catch((err) => {});
 };
-export const getPassengerID = () => (dispatch) => {
-	const authTOKEN = {
-		headers: {
-			'Content-type': 'application/json',
-			Authorization: localStorage.getItem('jwt_access_token')
-		}
-	};
-	fetch(GET_PASSENGER_BY_ID, authTOKEN)
-		.then((response) => response.json())
-		.then((data) => dispatch(setPassengerId(data.passengerId)))
-		.catch((err) => {});
-};
 
 export const getformcontent_head = () => (dispatch) => {
 	const authTOKEN = {
@@ -1169,9 +1156,6 @@ const dataSlice = createSlice({
 		setPassengers: (state, action) => {
 			state.passengers = action.payload ? action.payload : [];
 		},
-		setPassengerID: (state, action) => {
-			state.passengerId = action.payload ? action.payload : [];
-		},
 		setFormcontent_heads: (state, action) => {
 			state.formcontent_heads = action.payload ? action.payload : [];
 		},
@@ -1258,7 +1242,6 @@ const {
 	setMedicals,
 	setOfficeWorks,
 	setPassengers,
-	setPassengerId,
 	setPassengersWithVisaEntry,
 	setLedgers,
 	setSubLedgers,
