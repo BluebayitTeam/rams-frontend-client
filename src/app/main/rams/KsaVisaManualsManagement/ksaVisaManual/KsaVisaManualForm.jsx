@@ -12,7 +12,7 @@ import { useReactToPrint } from 'react-to-print';
 import { Print } from '@material-ui/icons';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import increaseYear from 'src/app/@helpers/increaseYear';
-import { genders, maritalStatuses, religions } from 'src/app/@data/data';
+import { religions } from 'src/app/@data/data';
 import Autocomplete from '@mui/material/Autocomplete';
 import { GET_SITESETTINGS } from 'src/app/constant/constants';
 import { useSelector, useDispatch } from 'react-redux';
@@ -160,20 +160,6 @@ function KsaVisaManualForm(props) {
 				visa_number: '',
 				mother_name: ''
 			});
-			console.log('Form reset', {
-				religion: 'Muslim',
-				pp_expire_year: '10',
-				passenger_name: '',
-				gender: '',
-				father_name: '',
-				marital_status: '',
-				passport_no: '',
-				address: '',
-				date_of_birth: '',
-				passport_issue_date: '',
-				visa_number: '',
-				mother_name: ''
-			});
 		}
 	}, [formData.passenger, setValue, reset]);
 	return (
@@ -267,35 +253,22 @@ function KsaVisaManualForm(props) {
 					<Controller
 						name="gender"
 						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								className="mt-8 mb-16 w-full md:w-6/12"
-								freeSolo
-								value={value ? genders.find((data) => data.id === value) : null}
-								options={genders}
-								getOptionLabel={(option) => `${option.name}`}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-									setFormData((prevFormData) => ({
-										...prevFormData,
-										passenger: newValue
-									}));
-								}}
-								renderInput={(params) => (
-									<TextField
-										{...params}
-										placeholder="Select Gender"
-										label="Gender"
-										required
-										variant="outlined"
-										InputLabelProps={{
-											shrink: true
-										}}
-									/>
-								)}
-							/>
-						)}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Gender"
+									id="gender"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
 					/>
+
 					<Controller
 						name="pp_expire_year"
 						control={control}
@@ -359,29 +332,20 @@ function KsaVisaManualForm(props) {
 					<Controller
 						name="marital_status"
 						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								className="mt-8 mb-16 w-full md:w-6/12"
-								freeSolo
-								value={value ? maritalStatuses.find((data) => data.id === value) : null}
-								options={maritalStatuses}
-								getOptionLabel={(option) => `${option.name}`}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-								}}
-								renderInput={(params) => (
-									<TextField
-										{...params}
-										placeholder="Select Marital Status"
-										label="Marital Status"
-										variant="outlined"
-										InputLabelProps={{
-											shrink: true
-										}}
-									/>
-								)}
-							/>
-						)}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="Marital Status"
+									id="marital_status"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
 					/>
 
 					<Controller
