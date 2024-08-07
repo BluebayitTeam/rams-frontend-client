@@ -14,13 +14,14 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import increaseYear from 'src/app/@helpers/increaseYear';
 import { religions } from 'src/app/@data/data';
 import Autocomplete from '@mui/material/Autocomplete';
-import { GET_SITESETTINGS } from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_VISA_FORM_MANUAL, GET_SITESETTINGS } from 'src/app/constant/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPassengers } from 'app/store/dataSlice';
 import moment from 'moment';
 import Barcode from 'react-barcode';
 import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
 import _ from 'lodash';
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
 	textField: {
@@ -145,23 +146,22 @@ function KsaVisaManualForm(props) {
 			setValue('passport_issue_date', formData.passenger.passport_issue_date);
 			setValue('visa_number', formData.passenger.visa_entry);
 			setValue('mother_name', formData.passenger.mother_name);
-		} else {
-			reset({
-				religion: 'Muslim',
-				pp_expire_year: '10',
-				passenger_name: '',
-				gender: '',
-				father_name: '',
-				marital_status: '',
-				passport_no: '',
-				address: '',
-				date_of_birth: '',
-				passport_issue_date: '',
-				visa_number: '',
-				mother_name: ''
-			});
+			// setValue('mother_name', formData.passenger.passport_expiry_date);
 		}
 	}, [formData.passenger, setValue, reset]);
+
+	const manualApiData = async (passengerId) => {
+		// debugger;
+		console.log('Fetching data for passenger ID:', passengerId); // Debugging log
+		try {
+			const response = await axios.get(`${GET_PASSENGER_BY_VISA_FORM_MANUAL}${passengerId}`);
+
+			setFormData(response.data);
+			console.log('kfhdskfhdksf', response.data);
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	};
 
 	return (
 		<>
@@ -171,17 +171,26 @@ function KsaVisaManualForm(props) {
 					control={control}
 					render={({ field: { value, onChange } }) => (
 						<Autocomplete
-							className="mt-8 mb-16 w-2/4 "
+							className="mt-8 mb-16 w-2/4"
 							freeSolo
 							value={value ? passengers.find((data) => data.id === value) : null}
 							options={passengers}
 							getOptionLabel={(option) => `${option.passenger_name} - ${option.passport_no}`}
 							onChange={(event, newValue) => {
-								onChange(newValue?.id);
-								setFormData((formData) => ({
-									...formData,
-									passenger: newValue
-								}));
+								// Check if newValue is defined and has an ID
+								if (newValue?.id) {
+									console.log('Selected passenger:', newValue); // Debugging log
+									onChange(newValue.id);
+									setFormData((formData) => ({
+										...formData,
+										passenger: newValue,
+										id: newValue
+									}));
+									manualApiData(newValue.id);
+								} else {
+									// Handle case where no passenger is selected
+									console.log('No passenger selected');
+								}
 							}}
 							renderInput={(params) => (
 								<TextField
@@ -696,14 +705,14 @@ function KsaVisaManualForm(props) {
 														<tr>
 															<td align="center">
 																Visa Number:
-																{formData?.passenger?.visa_number}
+																{data?.visa_number}
 															</td>
 														</tr>
 														<tr>
 															<td align="right">
-																{formData?.passenger?.visa_number && (
+																{data?.visa_number && (
 																	<Barcode
-																		value={formData?.passenger?.visa_number}
+																		value={data?.visa_number}
 																		{...barcodeConfig}
 																	/>
 																)}
@@ -712,10 +721,10 @@ function KsaVisaManualForm(props) {
 														<tr>
 															<td align="center">
 																Visa Date:
-																{formData?.passenger?.visa_issue_date &&
-																	moment(
-																		new Date(formData?.passenger?.visa_issue_date)
-																	).format('DD-MM-YYYY')}
+																{data?.visa_issue_date &&
+																	moment(new Date(data?.visa_issue_date)).format(
+																		'DD-MM-YYYY'
+																	)}
 															</td>
 														</tr>
 													</table>
@@ -781,7 +790,7 @@ function KsaVisaManualForm(props) {
 																					fontWeight: 'bold'
 																				}}
 																			>
-																				E{formData?.passenger?.mofa_no}&nbsp;
+																				E{data?.mofa_no}&nbsp;
 																			</td>
 																		</tr>
 																		<tr>
@@ -848,16 +857,14 @@ function KsaVisaManualForm(props) {
 																Full
 																name:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 																<b>
-																	{formData?.passenger?.passenger_name &&
-																		`${formData?.passenger?.passenger_name} ${
-																			formData?.passenger?.gender
-																				? formData?.passenger?.gender?.match(
-																						/female/i
-																					)
+																	{data?.passenger_name &&
+																		`${data?.passenger_name} ${
+																			data?.gender
+																				? data?.gender?.match(/female/i)
 																					? 'D/O'
 																					: 'S/O'
 																				: ''
-																		} ${formData?.passenger?.father_name || ''}`}
+																		} ${data?.father_name || ''}`}
 																</b>
 															</td>
 															<td style={{ textAlign: 'right', fontSize: '9.5pt' }}>
@@ -873,7 +880,7 @@ function KsaVisaManualForm(props) {
 														<tr>
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																Mother's name:&emsp;&emsp;
-																{formData?.passenger?.mother_name}
+																{data?.mother_name}
 															</td>
 															<td style={{ textAlign: 'right' }}>:&nbsp;إسم الأم</td>
 														</tr>
@@ -886,17 +893,17 @@ function KsaVisaManualForm(props) {
 														<tr>
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																Date of birth:&emsp;
-																{formData?.passenger?.date_of_birth &&
-																	moment(
-																		new Date(formData?.passenger?.date_of_birth)
-																	).format('DD-MM-YYYY')}
+																{data?.date_of_birth &&
+																	moment(new Date(data?.date_of_birth)).format(
+																		'DD-MM-YYYY'
+																	)}
 															</td>
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																:&nbsp;تاريخ الولادة&emsp;&emsp;Place of birth:
 															</td>
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																&emsp;
-																<b>{formData?.passenger?.place_of_birth}</b>
+																<b>{data?.place_of_birth}</b>
 															</td>
 															<td style={{ textAlign: 'right', fontSize: '9.5pt' }}>
 																:&nbsp;محل الولادة
@@ -941,8 +948,8 @@ function KsaVisaManualForm(props) {
 																<span
 																	style={{ border: '1px solid', padding: '0px 3px' }}
 																>
-																	{formData?.passenger?.gender
-																		? formData?.passenger?.gender?.match(/female/i)
+																	{data?.gender
+																		? data?.gender?.match(/female/i)
 																			? 'Female أنثي'
 																			: 'Male ذكر'
 																		: ''}
@@ -953,7 +960,7 @@ function KsaVisaManualForm(props) {
 															</td>
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																&emsp;
-																{formData?.passenger?.marital_status}
+																{data?.marital_status}
 															</td>
 															<td style={{ textAlign: 'right', fontSize: '9.5pt' }}>
 																:&nbsp;الحالة الإجتماعية
@@ -974,7 +981,7 @@ function KsaVisaManualForm(props) {
 															</td>
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																&emsp;&emsp;Religion:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-																<b>{formData?.passenger?.religion}</b>
+																<b>{data?.religion}</b>
 															</td>
 															<td style={{ textAlign: 'right', fontSize: '9.5pt' }}>
 																:&nbsp;الديـانـة
@@ -988,7 +995,7 @@ function KsaVisaManualForm(props) {
 												<td style={{ textAlign: 'right' }}>:&nbsp;المؤهل العلمي</td>
 												<td style={{ textAlign: 'right', fontFamily: 'Arial' }}>
 													<span style={{ color: 'white', fontSize: '1px' }}>a</span>
-													{formData?.passenger?.[0]?.unknown} :&nbsp;المهنـة
+													{data?.[0]?.unknown} :&nbsp;المهنـة
 												</td>
 											</tr>
 											<td colSpan="3">
@@ -1002,7 +1009,7 @@ function KsaVisaManualForm(props) {
 															colSpan="2"
 														>
 															Profession:&emsp;
-															<b>{formData?.passenger?.profession_english}</b>
+															<b>{data?.profession}</b>
 														</td>
 													</tr>
 												</table>
@@ -1014,9 +1021,7 @@ function KsaVisaManualForm(props) {
 												}}
 											>
 												<td style={{ textAlign: 'left' }}>Home address and telephone No.:</td>
-												<td
-													style={{ textAlign: 'left' }}
-												>{`${formData?.passenger?.address || ''} `}</td>
+												<td style={{ textAlign: 'left' }}>{`${data?.address || ''} `}</td>
 												<td style={{ textAlign: 'right' }}>:&nbsp;عنوان المنزل ورقم التلفون</td>
 											</tr>
 
@@ -1175,10 +1180,7 @@ function KsaVisaManualForm(props) {
 																Place of issue:&emsp;محل الإصدار
 																<br />
 																<b style={{ fontSize: '10pt' }}>
-																	{
-																		formData?.passenger?.[0]?.passenger
-																			?.passport_issue_place
-																	}
+																	{data?.[0]?.passenger?.passport_issue_place}
 																</b>
 															</td>
 															<td
@@ -1191,11 +1193,9 @@ function KsaVisaManualForm(props) {
 																&nbsp;&nbsp;Passport issued date:&nbsp;تاريخ الإصدار
 																<br />
 																<b style={{ fontSize: '10pt' }}>
-																	{formData?.passenger?.passport_issue_date &&
+																	{data?.passport_issue_date &&
 																		moment(
-																			new Date(
-																				formData?.passenger?.passport_issue_date
-																			)
+																			new Date(data?.passport_issue_date)
 																		).format('DD-MM-YYYY')}
 																</b>
 															</td>
@@ -1210,20 +1210,16 @@ function KsaVisaManualForm(props) {
 																صلاحية الجواز
 																<br />
 																<b style={{ fontSize: '10pt' }}>
-																	{formData?.passenger?.passport_expiry_date &&
+																	{data?.passport_expiry_date &&
 																		moment(
-																			new Date(
-																				formData?.passenger?.passport_expiry_date
-																			)
+																			new Date(data?.passport_expiry_date)
 																		).format('DD-MM-YYYY')}
 																</b>
 															</td>
 															<td style={{ textAlign: 'Center', fontSize: '8pt' }}>
 																Passport No.:&emsp;رقم الجواز
 																<br />
-																<b style={{ fontSize: '10pt' }}>
-																	{formData?.passenger?.passport_no}
-																</b>
+																<b style={{ fontSize: '10pt' }}>{data?.passport_no}</b>
 															</td>
 														</tr>
 													</table>
@@ -1490,10 +1486,7 @@ function KsaVisaManualForm(props) {
 															<td style={{ textAlign: 'left', fontSize: '9.5pt' }}>
 																&emsp;
 																<b style={{ fontSize: '10pt' }}>
-																	{
-																		formData?.passenger?.[0]?.passenger
-																			?.passenger_name
-																	}
+																	{data?.[0]?.passenger?.passenger_name}
 																</b>
 															</td>
 															<td style={{ textAlign: 'right', fontSize: '9.5pt' }}>
@@ -1527,14 +1520,12 @@ function KsaVisaManualForm(props) {
 											<tr style={{ borderBottom: '1px solid black' }}>
 												<td style={{ textAlign: 'left' }}>
 													Date:&emsp;&emsp;&emsp;
-													{formData?.passenger?.visa_issue_date &&
-														moment(new Date(formData?.passenger?.visa_issue_date)).format(
-															'DD-MM-YYYY'
-														)}
+													{data?.visa_issue_date &&
+														moment(new Date(data?.visa_issue_date)).format('DD-MM-YYYY')}
 												</td>
 												<td style={{ textAlign: 'left' }}>
 													:&nbsp;تاريخه&emsp;&emsp;Authorization:&emsp;&emsp;&emsp;
-													<b>{formData?.passenger?.visa_number}</b>
+													<b>{data?.visa_number}</b>
 												</td>
 												<td style={{ textAlign: 'right' }}>
 													:&nbsp;رقم الامر المعتمد عليه في إعطاء التأشيرة
@@ -1555,7 +1546,7 @@ function KsaVisaManualForm(props) {
 																}}
 															>
 																<span style={{ fontSize: '13pt' }}>
-																	{formData?.passenger?.sponsor_name_arabic}
+																	{data?.sponsor_name_arabic}
 																</span>
 																<span style={{ color: 'white', fontSize: '1px' }}>
 																	a
@@ -1578,7 +1569,7 @@ function KsaVisaManualForm(props) {
 												<td style={{ textAlign: 'left' }}>Date:&emsp;&emsp;&emsp;</td>
 												<td style={{ textAlign: 'left' }}>
 													:&nbsp;وتاريخ&emsp;&emsp;Visa No.:&emsp;
-													{formData?.passenger?.sponsor_id_no}
+													{data?.sponsor_id_no}
 												</td>
 												<td style={{ textAlign: 'right' }}>:&nbsp;أشر له برقم</td>
 											</tr>
@@ -1642,9 +1633,9 @@ function KsaVisaManualForm(props) {
 																style={{ width: '70%' }}
 																className="ppBrcodeWraper"
 															>
-																{formData?.passenger?.passport_no && (
+																{data?.passport_no && (
 																	<Barcode
-																		value={formData?.passenger?.passport_no}
+																		value={data?.passport_no}
 																		{...barcodeConfig2}
 																	/>
 																)}
@@ -1760,7 +1751,7 @@ function KsaVisaManualForm(props) {
 																	style={{ width: '55%' }}
 																>
 																	:&nbsp;&nbsp;
-																	{formData?.passenger?.sponsor_name_arabic}
+																	{data?.sponsor_name_arabic}
 																</td>
 															</tr>
 															<tr>
@@ -1784,14 +1775,12 @@ function KsaVisaManualForm(props) {
 																<td align="left">VISA NO. AND DATE</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	{formData?.passenger?.visa_number}
+																	{data?.visa_number}
 																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATE: &nbsp;
-																	{formData?.passenger?.visa_issue_date &&
-																		moment(
-																			new Date(
-																				formData?.passenger?.visa_issue_date
-																			)
-																		).format('DD-MM-YYYY')}
+																	{data?.visa_issue_date &&
+																		moment(new Date(data?.visa_issue_date)).format(
+																			'DD-MM-YYYY'
+																		)}
 																	&nbsp;
 																</td>
 															</tr>
@@ -1824,7 +1813,7 @@ function KsaVisaManualForm(props) {
 																	className="auto-style3"
 																>
 																	:&nbsp;&nbsp;
-																	{formData?.passenger?.passenger_name}
+																	{data?.passenger_name}
 																</td>
 															</tr>
 															<tr>
@@ -1849,13 +1838,11 @@ function KsaVisaManualForm(props) {
 																<td align="left">PASSPORT NO. WITH DATE</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	{formData?.passenger?.passport_no}
+																	{data?.passport_no}
 																	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATE: &nbsp;
-																	{formData?.passenger?.passport_expiry_date &&
+																	{data?.passport_expiry_date &&
 																		moment(
-																			new Date(
-																				formData?.passenger?.passport_expiry_date
-																			)
+																			new Date(data?.passport_expiry_date)
 																		).format('DD-MM-YYYY')}
 																</td>
 															</tr>
@@ -1880,7 +1867,7 @@ function KsaVisaManualForm(props) {
 																<td align="left">PROFESSION</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	{formData?.passenger?.profession_english}
+																	{data?.profession_english}
 																</td>
 															</tr>
 															<tr>
@@ -1904,7 +1891,7 @@ function KsaVisaManualForm(props) {
 																<td align="left">RELIGION</td>
 																<td align="left">
 																	:&nbsp;&nbsp;
-																	{formData?.passenger?.religion}
+																	{data?.religion}
 																</td>
 															</tr>
 														</table>
@@ -1988,7 +1975,7 @@ function KsaVisaManualForm(props) {
 															<td>NAME OF COMPANY: M/S</td>
 															<td>
 																:&nbsp;
-																{formData?.passenger?.sponsor_name_arabic}
+																{data?.sponsor_name_arabic}
 															</td>
 														</tr>
 
@@ -1996,21 +1983,21 @@ function KsaVisaManualForm(props) {
 															<td>HERE BY APPOINTED MR/MRS</td>
 															<td>
 																:&nbsp;
-																{formData?.passenger?.passenger_name}
+																{data?.passenger_name}
 															</td>
 														</tr>
 														<tr>
 															<td>HOLDER OF BANGLADESH PASSPORT NO</td>
 															<td>
 																:&nbsp;
-																{formData?.passenger?.passport_no}
+																{data?.passport_no}
 															</td>
 														</tr>
 
 														<tr>
 															<td>
 																AS A/AN &nbsp;&emsp;&emsp;
-																{formData?.passenger?.profession_english}
+																{data?.profession_english}
 																&nbsp;&nbsp;
 															</td>
 															<td />
@@ -2039,7 +2026,7 @@ function KsaVisaManualForm(props) {
 																MONTHLY SALARY
 																{/* <asp:Label ID="lblVisaComment" runat="server"></asp:Label> */}
 																&nbsp;to the 2nd party as his monthly salary to serve
-																him as a{formData?.passenger?.profession_english}
+																him as a{data?.profession_english}
 																&nbsp;
 															</td>
 															<td>:SR 1000/-</td>
@@ -2238,10 +2225,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid', width: '22%' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid', width: '22%' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid', width: '22%' }}>
-											<center>
-												{' '}
-												{formData?.passenger?.mofa_no ? formData?.passenger?.mofa_no : 'N/A'}
-											</center>
+											<center> {data?.mofa_no ? data?.mofa_no : 'N/A'}</center>
 										</td>
 										<td>
 											<center>Mofa No / إنجاز ر</center>
@@ -2251,7 +2235,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center> {formData?.passenger?.visa_number}</center>
+											<center> {data?.visa_number}</center>
 										</td>
 										<td>
 											<center>Visa No/ المستند رقم</center>
@@ -2261,7 +2245,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center> {formData?.passenger?.passenger_name}</center>
+											<center> {data?.passenger_name}</center>
 										</td>
 										<td>
 											<center>Passport Name / الجواز في االسم</center>
@@ -2271,7 +2255,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center> {formData?.passenger?.passport_no}</center>
+											<center> {data?.passport_no}</center>
 										</td>
 										<td>
 											<center>Passport No/ الجواز رقم</center>
@@ -2283,10 +2267,8 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>
 											<center>
 												{' '}
-												{formData?.passenger?.passport_expiry_date &&
-													moment(new Date(formData?.passenger?.passport_expiry_date)).format(
-														'DD-MM-YYYY'
-													)}
+												{data?.passport_expiry_date &&
+													moment(new Date(data?.passport_expiry_date)).format('DD-MM-YYYY')}
 											</center>
 										</td>
 										<td>
@@ -2299,25 +2281,16 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>
 											<center>
 												{' '}
-												{formData?.passenger?.date_of_birth
-													? differenceInYears(
-															new Date(),
-															new Date(formData?.passenger?.date_of_birth)
-														)
+												{data?.date_of_birth
+													? differenceInYears(new Date(), new Date(data?.date_of_birth))
 													: ''}{' '}
 												Years{' '}
-												{formData?.passenger?.date_of_birth
-													? differenceInMonths(
-															new Date(),
-															new Date(formData?.passenger?.date_of_birth)
-														) % 12
+												{data?.date_of_birth
+													? differenceInMonths(new Date(), new Date(data?.date_of_birth)) % 12
 													: ''}{' '}
 												Months{' '}
-												{formData?.passenger?.date_of_birth
-													? differenceInDays(
-															new Date(),
-															new Date(formData?.passenger?.date_of_birth)
-														) % 30
+												{data?.date_of_birth
+													? differenceInDays(new Date(), new Date(data?.date_of_birth)) % 30
 													: ''}{' '}
 												Days
 											</center>
@@ -2330,7 +2303,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center> {formData?.passenger?.gender}</center>
+											<center> {data?.gender}</center>
 										</td>
 										<td>
 											<center>Sex/ الجنس</center>
@@ -2340,12 +2313,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center>
-												{' '}
-												{formData?.passenger?.musaned_no
-													? formData?.passenger?.musaned_no
-													: 'N/A'}{' '}
-											</center>
+											<center> {data?.musaned_no ? data?.musaned_no : 'N/A'} </center>
 										</td>
 										<td>
 											<center>Musaned/ مساند</center>
@@ -2355,12 +2323,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center>
-												{' '}
-												{formData?.passenger?.okala_no
-													? formData?.passenger?.okala_no
-													: 'N/A'}{' '}
-											</center>
+											<center> {data?.okala_no ? data?.okala_no : 'N/A'} </center>
 										</td>
 										<td>
 											<center>Okalah/ الوكالة</center>
@@ -2370,12 +2333,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center>
-												{' '}
-												{formData?.passenger?.medical_result
-													? formData?.passenger?.medical_result
-													: 'N/A'}{' '}
-											</center>
+											<center> {data?.medical_result ? data?.medical_result : 'N/A'} </center>
 										</td>
 										<td>
 											<center>Medical/ طبي فحص</center>
@@ -2387,9 +2345,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>
 											<center>
 												{' '}
-												{formData?.passenger?.police_clearance_no
-													? formData?.passenger?.police_clearance_no
-													: 'N/A'}{' '}
+												{data?.police_clearance_no ? data?.police_clearance_no : 'N/A'}{' '}
 											</center>
 										</td>
 										<td>
@@ -2402,9 +2358,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>
 											<center>
 												{' '}
-												{formData?.passenger?.driving_license_no
-													? formData?.passenger?.driving_license_no
-													: 'N/A'}{' '}
+												{data?.driving_license_no ? data?.driving_license_no : 'N/A'}{' '}
 											</center>
 										</td>
 										<td>
@@ -2417,9 +2371,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>
 											<center>
 												{' '}
-												{formData?.passenger?.profession_english
-													? formData?.passenger?.profession_english
-													: 'N/A'}
+												{data?.profession_english ? data?.profession_english : 'N/A'}
 											</center>
 										</td>
 										<td>
@@ -2432,8 +2384,8 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>
 											<center>
 												{' '}
-												{formData?.passenger?.certificate_experience
-													? formData?.passenger?.certificate_experience
+												{data?.certificate_experience
+													? data?.certificate_experience
 													: 'N/A'}{' '}
 											</center>
 										</td>
@@ -2445,12 +2397,7 @@ function KsaVisaManualForm(props) {
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>&nbsp;</td>
 										<td style={{ borderRight: '1px solid' }}>
-											<center>
-												{' '}
-												{formData?.passenger?.finger_no
-													? formData?.passenger?.finger_no
-													: 'N/A'}{' '}
-											</center>
+											<center> {data?.finger_no ? data?.finger_no : 'N/A'} </center>
 										</td>
 										<td>
 											<center>Finger/ البصمة</center>
@@ -2467,14 +2414,14 @@ function KsaVisaManualForm(props) {
 							>
 								<tr>
 									<td>
-										<b align="right">{formData?.passenger?.agency}</b>
+										<b align="right">{data?.agency}</b>
 									</td>
 									<td>
 										<b align="left">: - إسم المكتب </b>
 									</td>
 								</tr>
 								<tr>
-									<td>{formData?.passenger?.agency?.rl_no}</td>
+									<td>{data?.agency?.rl_no}</td>
 									<td>
 										<b align="left">: رقم الرخصة</b>
 									</td>

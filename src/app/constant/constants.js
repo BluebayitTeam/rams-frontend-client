@@ -1752,7 +1752,7 @@ export const PASSENGER_VISA_ENTRY_WITHOUT_PAGINATION = `${BASE_URL}/passenger/ap
 export const CREATE_MULTIPLE_VISA_ENTRY = `${BASE_URL}/visa_entry/api/v1/visa_entry/multiple_visa_entry/`;
 export const GET_PASSENGER_BY_PASSENGERID = `${BASE_URL}/passenger/api/v1/passenger/without_visa_entry/`;
 export const GET_PASSENGER_BY_PASSENGER_STATUS = `${BASE_URL}/passenger/api/v1/passenger/status/`;
-export const GET_PASSENGER_BY_VISA_FORM_MANUAL = `${BASE_URL}passenger/api/v1/passenger/visa_form/`;
+export const GET_PASSENGER_BY_VISA_FORM_MANUAL = `${BASE_URL}/passenger/api/v1/passenger/visa_form/`;
 
 // Authorized Account
 
