@@ -20,6 +20,7 @@ import { getPassengers } from 'app/store/dataSlice';
 import moment from 'moment';
 import Barcode from 'react-barcode';
 import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
+import _ from 'lodash';
 
 const useStyles = makeStyles(() => ({
 	textField: {
@@ -85,12 +86,14 @@ function KsaVisaManualForm(props) {
 		reset({ religion: 'Muslim', pp_expire_year: '10' });
 	}, [reset]);
 
-	// Handle show click
-	const handleShowClick = () => {
-		const data = watch();
-		setFormData(data);
-		setShowPrint(true);
-	};
+	const data = watch();
+	useEffect(() => {
+		if (_.isEmpty(data)) {
+			setShowPrint(false);
+		} else {
+			setShowPrint(true);
+		}
+	}, [data]);
 
 	// Printer action
 	const printAction = useReactToPrint({
@@ -686,7 +689,7 @@ function KsaVisaManualForm(props) {
 								padding: '0px 5px',
 								height: '35px'
 							}}
-							onClick={handleShowClick}
+							// onClick={handleShowClick}
 						>
 							Show
 						</button>
