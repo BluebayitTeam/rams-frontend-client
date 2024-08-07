@@ -74,6 +74,12 @@ import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/P
 import FingerAppConfig from '../rams/FingersManagement/FingerAppConfig';
 import KsaVisaManualAppConfig from '../rams/KsaVisaManualsManagement/KsaVisaManualAppConfig';
 import DepartureAppConfig from '../rams/DeparturesManagement/DepartureAppConfig';
+import CurrentStatusAppConfig from '../rams/CurrentStatussManagement/CurrentStatusAppConfig';
+import ProfessionAppConfig from '../rams/ProfessionsManagement/ProfessionAppConfig';
+import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
+import MedicalCenterAppConfig from '../rams/MedicalCentersManagement/MedicalCenterAppConfig';
+import CurrencyAppConfig from '../rams/CurrencysManagement/CurrencyAppConfig';
+import DistrictAppConfig from '../rams/DistrictsManagement/DistrictAppConfig';
 
 /**
  * The list of application configurations.
@@ -130,6 +136,12 @@ const appsConfigs = [
 	SubscriptionLoanAppConfig,
 	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
+	DistrictAppConfig,
+	CurrencyAppConfig,
+	MedicalCenterAppConfig,
+	PassengerTypeAppConfig,
+	ProfessionAppConfig,
+	CurrentStatusAppConfig,
 	PaymentDetailAppConfig,
 	SupportAppConfig,
 	RoleMenuAppConfig,

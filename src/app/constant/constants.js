@@ -296,10 +296,12 @@ export const GET_CITYS = `${BASE_URL}/city/api/v1/city/all/`;
 export const GET_CITYS_WITHOUT_PAGINATION = `${BASE_URL}/city/api/v1/city/without_pagination/all/`;
 
 export const GET_CITYID = `${BASE_URL}/city/api/v1/city/`;
+export const GET_CITY_BY_ID = `${BASE_URL}/city/api/v1/city/`;
 
 export const UPDATE_CITY = `${BASE_URL}/city/api/v1/city/update/`;
 
 export const DELETE_CITY = `${BASE_URL}/city/api/v1/city/delete/`;
+export const DELETE_CITY_MULTIPLE = `${BASE_URL}/city/api/v1/city/delete/`;
 
 export const SEARCH_CITY = `${BASE_URL}/city/api/v1/city/search/`;
 
@@ -811,6 +813,7 @@ export const GET_PASSENGERTYPE_BY_ID = `${BASE_URL}/passenger_type/api/v1/passen
 export const UPDATE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/update/`;
 
 export const DELETE_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/delete/`;
+export const DELETE_PASSENGERTYPE_MULTIPLE = `${BASE_URL}/passenger_type/api/v1/passenger_type/delete/`;
 
 export const SEARCH_PASSENGERTYPE = `${BASE_URL}/passenger_type/api/v1/passenger_type/search/`;
 
@@ -824,6 +827,7 @@ export const GET_CURRENTSTATUS_BY_ID = `${BASE_URL}/current_status/api/v1/curren
 export const UPDATE_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/update/`;
 
 export const DELETE_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/delete/`;
+export const DELETE_CURRENTSTATUS_MULTIPLE = `${BASE_URL}/current_status/api/v1/current_status/delete/`;
 
 export const SEARCH_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/search/`;
 
@@ -837,6 +841,7 @@ export const GET_PROFESSION_BY_ID = `${BASE_URL}/profession/api/v1/profession/`;
 export const UPDATE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/update/`;
 
 export const DELETE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/delete/`;
+export const DELETE_PROFESSION_MULTIPLE = `${BASE_URL}/profession/api/v1/profession/delete/`;
 
 export const SEARCH_PROFESSION = `${BASE_URL}/profession/api/v1/profession/search/`;
 
@@ -850,6 +855,7 @@ export const GET_CURRENCY_BY_ID = `${BASE_URL}/currency/api/v1/currency/`;
 export const UPDATE_CURRENCY = `${BASE_URL}/currency/api/v1/currency/update/`;
 
 export const DELETE_CURRENCY = `${BASE_URL}/currency/api/v1/currency/delete/`;
+export const DELETE_CURRENCY_MULTIPLE = `${BASE_URL}/currency/api/v1/currency/delete/`;
 
 export const SEARCH_CURRENCY = `${BASE_URL}/currency/api/v1/currency/search/`;
 
