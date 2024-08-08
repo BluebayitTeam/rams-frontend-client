@@ -330,10 +330,12 @@ export const GET_THANAS = `${BASE_URL}/thana/api/v1/thana/all/`;
 export const GET_THANAS_WITHOUT_PAGINATION = `${BASE_URL}/thana/api/v1/thana/without_pagination/all/`;
 
 export const GET_THANAID = `${BASE_URL}/thana/api/v1/thana/`;
+export const GET_THANA_BY_ID = `${BASE_URL}/thana/api/v1/thana/`;
 
 export const UPDATE_THANA = `${BASE_URL}/thana/api/v1/thana/update/`;
 
 export const DELETE_THANA = `${BASE_URL}/thana/api/v1/thana/delete/`;
+export const DELETE_THANA_MULTIPLE = `${BASE_URL}/thana/api/v1/thana/delete/`;
 
 export const SEARCH_THANA = `${BASE_URL}/thana/api/v1/thana/search/`;
 
