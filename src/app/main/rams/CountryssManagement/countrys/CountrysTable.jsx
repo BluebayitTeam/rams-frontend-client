@@ -15,21 +15,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import DistrictsTableHead from './DistrictsTableHead';
-import { selectFilteredDistricts, useGetDistrictsQuery } from '../DistrictsApi';
+import CountrysTableHead from './CountrysTableHead';
+import { selectFilteredCountrys, useGetCountrysQuery } from '../CountrysApi';
 
 /**
- * The districts table.
+ * The countrys table.
  */
-function DistrictsTable(props) {
+function CountrysTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetDistrictsQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredDistricts(data));
-	const districts = useSelector(selectFilteredDistricts(data?.cities));
+	const { data, isLoading, refetch } = useGetCountrysQuery({ ...pageAndSize, searchKey });
+	const totalData = useSelector(selectFilteredCountrys(data));
+	const countrys = useSelector(selectFilteredCountrys(data?.countries));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -59,7 +59,7 @@ function DistrictsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(districts.map((n) => n.id));
+			setSelected(countrys.map((n) => n.id));
 			return;
 		}
 
@@ -71,19 +71,19 @@ function DistrictsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+		navigate(`/apps/country/countrys/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateDistrict(item, event) {
-		localStorage.removeItem('deleteDistrict');
-		localStorage.setItem('updateDistrict', event);
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+	function handleUpdateCountry(item, event) {
+		localStorage.removeItem('deleteCountry');
+		localStorage.setItem('updateCountry', event);
+		navigate(`/apps/country/countrys/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteDistrict(item, event) {
-		localStorage.removeItem('updateDistrict');
-		localStorage.setItem('deleteDistrict', event);
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+	function handleDeleteCountry(item, event) {
+		localStorage.removeItem('updateCountry');
+		localStorage.setItem('deleteCountry', event);
+		navigate(`/apps/country/countrys/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -127,7 +127,7 @@ function DistrictsTable(props) {
 		);
 	}
 
-	if (districts?.length === 0) {
+	if (countrys?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ function DistrictsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no districts!
+					There are no countrys!
 				</Typography>
 			</motion.div>
 		);
@@ -152,17 +152,17 @@ function DistrictsTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<DistrictsTableHead
-						selectedDistrictIds={selected}
+					<CountrysTableHead
+						selectedCountryIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={districts.length}
+						rowCount={countrys.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(districts, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(countrys, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -177,12 +177,7 @@ function DistrictsTable(props) {
 									<TableCell
 										className="w-40 md:w-64 text-center"
 										padding="none"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Checkbox
 											checked={isSelected}
@@ -195,12 +190,7 @@ function DistrictsTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -212,31 +202,19 @@ function DistrictsTable(props) {
 										{n.name}
 									</TableCell>
 									<TableCell
-										className="p-4 w-1/4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.country?.name}
-									</TableCell>
-									<TableCell
 										className="p-4 md:p-16"
 										component="th"
 										scope="row"
 										align="right"
-										style={{
-											position: 'sticky',
-											right: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
+										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Edit
-											onClick={(event) => handleUpdateDistrict(n, 'updateDistrict')}
+											onClick={(event) => handleUpdateCountry(n, 'updateCountry')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteDistrict(n, 'deleteDistrict')}
+											onClick={(event) => handleDeleteCountry(n, 'deleteCountry')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
@@ -282,4 +260,4 @@ function DistrictsTable(props) {
 	);
 }
 
-export default withRouter(DistrictsTable);
+export default withRouter(CountrysTable);

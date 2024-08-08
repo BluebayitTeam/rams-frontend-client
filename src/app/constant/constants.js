@@ -330,10 +330,12 @@ export const GET_THANAS = `${BASE_URL}/thana/api/v1/thana/all/`;
 export const GET_THANAS_WITHOUT_PAGINATION = `${BASE_URL}/thana/api/v1/thana/without_pagination/all/`;
 
 export const GET_THANAID = `${BASE_URL}/thana/api/v1/thana/`;
+export const GET_THANA_BY_ID = `${BASE_URL}/thana/api/v1/thana/`;
 
 export const UPDATE_THANA = `${BASE_URL}/thana/api/v1/thana/update/`;
 
 export const DELETE_THANA = `${BASE_URL}/thana/api/v1/thana/delete/`;
+export const DELETE_THANA_MULTIPLE = `${BASE_URL}/thana/api/v1/thana/delete/`;
 
 export const SEARCH_THANA = `${BASE_URL}/thana/api/v1/thana/search/`;
 
@@ -905,6 +907,7 @@ export const GET_RECRUITINGAGENCY_BY_ID = `${BASE_URL}/recruiting_agency/api/v1/
 export const UPDATE_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/update/`;
 
 export const DELETE_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/delete/`;
+export const DELETE_RECRUITINGAGENCY_MULTIPLE = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/delete/`;
 
 export const SEARCH_RECRUITINGAGENCY = `${BASE_URL}/recruiting_agency/api/v1/recruiting_agency/search/`;
 
@@ -1424,6 +1427,10 @@ export const GET_COUNTRYS = `${BASE_URL}/country/api/v1/country/all/`;
 export const GET_COUNTRYS_WITHOUT_PAGINATION = `${BASE_URL}/country/api/v1/country/without_pagination/all/`;
 
 export const GET_COUNTRYID = `${BASE_URL}/country/api/v1/country/`;
+
+export const GET_COUNTRY_BY_ID = `${BASE_URL}/country/api/v1/country/`;
+
+export const DELETE_COUNTRY_MULTIPLE = `${BASE_URL}/country/api/v1/country/`;
 
 export const UPDATE_COUNTRY = `${BASE_URL}/country/api/v1/country/update/`;
 

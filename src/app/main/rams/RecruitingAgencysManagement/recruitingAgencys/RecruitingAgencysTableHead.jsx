@@ -9,10 +9,10 @@ import { Checkbox, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { Delete } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { useDeleteMedicalCentersMutation } from '../MedicalCentersApi';
+import { useDeleteRecruitingAgencysMutation } from '../RecruitingAgencysApi';
 
 /**
- * The medicalCenters table head component.
+ * The recruitingAgencys table head component.
  */
 
 const rows = [
@@ -23,54 +23,11 @@ const rows = [
 		label: 'SL',
 		sort: true
 	},
-
 	{
 		id: 'name',
 		align: 'left',
 		disablePadding: false,
 		label: 'Name',
-		sort: true
-	},
-	{
-		id: 'email',
-		align: 'left',
-		disablePadding: false,
-		label: 'Email',
-		sort: true
-	},
-	{
-		id: 'contact_person',
-		align: 'left',
-		disablePadding: false,
-		label: 'Contact Person',
-		sort: true
-	},
-	{
-		id: 'mobile',
-		align: 'left',
-		disablePadding: false,
-		label: 'Mobile',
-		sort: true
-	},
-	{
-		id: 'phone_number',
-		align: 'left',
-		disablePadding: false,
-		label: 'Phone Number',
-		sort: true
-	},
-	{
-		id: 'web_address',
-		align: 'left',
-		disablePadding: false,
-		label: 'Web Address',
-		sort: true
-	},
-	{
-		id: 'google_map_link',
-		align: 'left',
-		disablePadding: false,
-		label: 'google Map Link',
 		sort: true
 	},
 	{
@@ -80,40 +37,47 @@ const rows = [
 		label: 'Address',
 		sort: true
 	},
-
+	{
+		id: 'rl',
+		align: 'left',
+		disablePadding: false,
+		label: 'RL No',
+		sort: true
+	},
 	{
 		id: 'action',
-		align: 'center',
+		align: 'right',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
 	}
 ];
 
-function MedicalCentersTableHead(props) {
-	const { selectedMedicalCenterIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+function RecruitingAgencysTableHead(props) {
+	const { selectedRecruitingAgencyIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } =
+		props;
 
 	console.log('onMenuItemClick', onMenuItemClick);
 
-	console.log('selectedMedicalCenterIds', selectedMedicalCenterIds);
+	console.log('selectedRecruitingAgencyIds', selectedRecruitingAgencyIds);
 
-	const [removeMedicalCenters] = useDeleteMedicalCentersMutation();
-	const numSelected = selectedMedicalCenterIds.length;
-	const [selectedMedicalCentersMenu, setSelectedMedicalCentersMenu] = useState(null);
+	const [removeRecruitingAgencys] = useDeleteRecruitingAgencysMutation();
+	const numSelected = selectedRecruitingAgencyIds.length;
+	const [selectedRecruitingAgencysMenu, setSelectedRecruitingAgencysMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedMedicalCentersMenu(event) {
-		setSelectedMedicalCentersMenu(event.currentTarget);
+	function openSelectedRecruitingAgencysMenu(event) {
+		setSelectedRecruitingAgencysMenu(event.currentTarget);
 	}
 
-	function closeSelectedMedicalCentersMenu() {
-		setSelectedMedicalCentersMenu(null);
+	function closeSelectedRecruitingAgencysMenu() {
+		setSelectedRecruitingAgencysMenu(null);
 	}
 
 	function handleDeleteMultipleItem() {
-		removeMedicalCenters(selectedMedicalCenterIds).then((data) => {
+		removeRecruitingAgencys(selectedRecruitingAgencyIds).then((data) => {
 			Swal.fire({
 				position: 'top-center',
 				icon: 'success',
@@ -151,7 +115,7 @@ function MedicalCentersTableHead(props) {
 						>
 							<IconButton
 								aria-haspopup="true"
-								onClick={openSelectedMedicalCentersMenu}
+								onClick={openSelectedRecruitingAgencysMenu}
 								size="large"
 							>
 								<Delete
@@ -160,17 +124,17 @@ function MedicalCentersTableHead(props) {
 								/>
 							</IconButton>
 							{/* <Menu
-								id="selectedMedicalCentersMenu"
-								anchorEl={selectedMedicalCentersMenu}
-								open={Boolean(selectedMedicalCentersMenu)}
-								onClose={closeSelectedMedicalCentersMenu}
+								id="selectedRecruitingAgencysMenu"
+								anchorEl={selectedRecruitingAgencysMenu}
+								open={Boolean(selectedRecruitingAgencysMenu)}
+								onClose={closeSelectedRecruitingAgencysMenu}
 							>
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											removeMedicalCenters(selectedMedicalCenterIds);
+											removeRecruitingAgencys(selectedRecruitingAgencyIds);
 											onMenuItemClick();
-											closeSelectedMedicalCentersMenu();
+											closeSelectedRecruitingAgencysMenu();
 										}}
 									>
 										<ListItemIcon>
@@ -228,4 +192,4 @@ function MedicalCentersTableHead(props) {
 	);
 }
 
-export default MedicalCentersTableHead;
+export default RecruitingAgencysTableHead;

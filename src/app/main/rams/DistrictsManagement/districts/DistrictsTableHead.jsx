@@ -31,8 +31,15 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'country',
+		align: 'left',
+		disablePadding: false,
+		label: 'Country',
+		sort: true
+	},
+	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true

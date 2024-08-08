@@ -9,10 +9,10 @@ import { Checkbox, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { Delete } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { useDeleteMedicalCentersMutation } from '../MedicalCentersApi';
+import { useDeleteCountrysMutation } from '../CountrysApi';
 
 /**
- * The medicalCenters table head component.
+ * The countrys table head component.
  */
 
 const rows = [
@@ -23,7 +23,6 @@ const rows = [
 		label: 'SL',
 		sort: true
 	},
-
 	{
 		id: 'name',
 		align: 'left',
@@ -32,88 +31,38 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'email',
-		align: 'left',
-		disablePadding: false,
-		label: 'Email',
-		sort: true
-	},
-	{
-		id: 'contact_person',
-		align: 'left',
-		disablePadding: false,
-		label: 'Contact Person',
-		sort: true
-	},
-	{
-		id: 'mobile',
-		align: 'left',
-		disablePadding: false,
-		label: 'Mobile',
-		sort: true
-	},
-	{
-		id: 'phone_number',
-		align: 'left',
-		disablePadding: false,
-		label: 'Phone Number',
-		sort: true
-	},
-	{
-		id: 'web_address',
-		align: 'left',
-		disablePadding: false,
-		label: 'Web Address',
-		sort: true
-	},
-	{
-		id: 'google_map_link',
-		align: 'left',
-		disablePadding: false,
-		label: 'google Map Link',
-		sort: true
-	},
-	{
-		id: 'address',
-		align: 'left',
-		disablePadding: false,
-		label: 'Address',
-		sort: true
-	},
-
-	{
 		id: 'action',
-		align: 'center',
+		align: 'right',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
 	}
 ];
 
-function MedicalCentersTableHead(props) {
-	const { selectedMedicalCenterIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+function CountrysTableHead(props) {
+	const { selectedCountryIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
 
 	console.log('onMenuItemClick', onMenuItemClick);
 
-	console.log('selectedMedicalCenterIds', selectedMedicalCenterIds);
+	console.log('selectedCountryIds', selectedCountryIds);
 
-	const [removeMedicalCenters] = useDeleteMedicalCentersMutation();
-	const numSelected = selectedMedicalCenterIds.length;
-	const [selectedMedicalCentersMenu, setSelectedMedicalCentersMenu] = useState(null);
+	const [removeCountrys] = useDeleteCountrysMutation();
+	const numSelected = selectedCountryIds.length;
+	const [selectedCountrysMenu, setSelectedCountrysMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedMedicalCentersMenu(event) {
-		setSelectedMedicalCentersMenu(event.currentTarget);
+	function openSelectedCountrysMenu(event) {
+		setSelectedCountrysMenu(event.currentTarget);
 	}
 
-	function closeSelectedMedicalCentersMenu() {
-		setSelectedMedicalCentersMenu(null);
+	function closeSelectedCountrysMenu() {
+		setSelectedCountrysMenu(null);
 	}
 
 	function handleDeleteMultipleItem() {
-		removeMedicalCenters(selectedMedicalCenterIds).then((data) => {
+		removeCountrys(selectedCountryIds).then((data) => {
 			Swal.fire({
 				position: 'top-center',
 				icon: 'success',
@@ -151,7 +100,7 @@ function MedicalCentersTableHead(props) {
 						>
 							<IconButton
 								aria-haspopup="true"
-								onClick={openSelectedMedicalCentersMenu}
+								onClick={openSelectedCountrysMenu}
 								size="large"
 							>
 								<Delete
@@ -160,17 +109,17 @@ function MedicalCentersTableHead(props) {
 								/>
 							</IconButton>
 							{/* <Menu
-								id="selectedMedicalCentersMenu"
-								anchorEl={selectedMedicalCentersMenu}
-								open={Boolean(selectedMedicalCentersMenu)}
-								onClose={closeSelectedMedicalCentersMenu}
+								id="selectedCountrysMenu"
+								anchorEl={selectedCountrysMenu}
+								open={Boolean(selectedCountrysMenu)}
+								onClose={closeSelectedCountrysMenu}
 							>
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											removeMedicalCenters(selectedMedicalCenterIds);
+											removeCountrys(selectedCountryIds);
 											onMenuItemClick();
-											closeSelectedMedicalCentersMenu();
+											closeSelectedCountrysMenu();
 										}}
 									>
 										<ListItemIcon>
@@ -228,4 +177,4 @@ function MedicalCentersTableHead(props) {
 	);
 }
 
-export default MedicalCentersTableHead;
+export default CountrysTableHead;

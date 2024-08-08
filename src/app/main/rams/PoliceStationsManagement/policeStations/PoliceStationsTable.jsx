@@ -15,21 +15,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import DistrictsTableHead from './DistrictsTableHead';
-import { selectFilteredDistricts, useGetDistrictsQuery } from '../DistrictsApi';
+import PoliceStationsTableHead from './PoliceStationsTableHead';
+import { selectFilteredPoliceStations, useGetPoliceStationsQuery } from '../PoliceStationsApi';
 
 /**
- * The districts table.
+ * The policeStations table.
  */
-function DistrictsTable(props) {
+function PoliceStationsTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetDistrictsQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredDistricts(data));
-	const districts = useSelector(selectFilteredDistricts(data?.cities));
+	const { data, isLoading, refetch } = useGetPoliceStationsQuery({ ...pageAndSize, searchKey });
+	const totalData = useSelector(selectFilteredPoliceStations(data));
+	const policeStations = useSelector(selectFilteredPoliceStations(data?.policeStations));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -59,7 +59,7 @@ function DistrictsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(districts.map((n) => n.id));
+			setSelected(policeStations.map((n) => n.id));
 			return;
 		}
 
@@ -71,19 +71,19 @@ function DistrictsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+		navigate(`/apps/policeStation/policeStations/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateDistrict(item, event) {
-		localStorage.removeItem('deleteDistrict');
-		localStorage.setItem('updateDistrict', event);
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+	function handleUpdatePoliceStation(item, event) {
+		localStorage.removeItem('deletePoliceStation');
+		localStorage.setItem('updatePoliceStation', event);
+		navigate(`/apps/policeStation/policeStations/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteDistrict(item, event) {
-		localStorage.removeItem('updateDistrict');
-		localStorage.setItem('deleteDistrict', event);
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+	function handleDeletePoliceStation(item, event) {
+		localStorage.removeItem('updatePoliceStation');
+		localStorage.setItem('deletePoliceStation', event);
+		navigate(`/apps/policeStation/policeStations/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -127,7 +127,7 @@ function DistrictsTable(props) {
 		);
 	}
 
-	if (districts?.length === 0) {
+	if (policeStations?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ function DistrictsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no districts!
+					There are no policeStations!
 				</Typography>
 			</motion.div>
 		);
@@ -152,17 +152,17 @@ function DistrictsTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<DistrictsTableHead
-						selectedDistrictIds={selected}
+					<PoliceStationsTableHead
+						selectedPoliceStationIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={districts.length}
+						rowCount={policeStations.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(districts, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(policeStations, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -177,12 +177,7 @@ function DistrictsTable(props) {
 									<TableCell
 										className="w-40 md:w-64 text-center"
 										padding="none"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Checkbox
 											checked={isSelected}
@@ -195,12 +190,7 @@ function DistrictsTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
+										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -212,31 +202,19 @@ function DistrictsTable(props) {
 										{n.name}
 									</TableCell>
 									<TableCell
-										className="p-4 w-1/4 md:p-12  whitespace-nowrap	"
-										component="th"
-										scope="row"
-									>
-										{n.country?.name}
-									</TableCell>
-									<TableCell
 										className="p-4 md:p-16"
 										component="th"
 										scope="row"
 										align="right"
-										style={{
-											position: 'sticky',
-											right: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
+										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Edit
-											onClick={(event) => handleUpdateDistrict(n, 'updateDistrict')}
+											onClick={(event) => handleUpdatePoliceStation(n, 'updatePoliceStation')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteDistrict(n, 'deleteDistrict')}
+											onClick={(event) => handleDeletePoliceStation(n, 'deletePoliceStation')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
@@ -282,4 +260,4 @@ function DistrictsTable(props) {
 	);
 }
 
-export default withRouter(DistrictsTable);
+export default withRouter(PoliceStationsTable);

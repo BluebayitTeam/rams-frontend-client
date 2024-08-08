@@ -15,21 +15,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import DistrictsTableHead from './DistrictsTableHead';
-import { selectFilteredDistricts, useGetDistrictsQuery } from '../DistrictsApi';
+import RecruitingAgencysTableHead from './RecruitingAgencysTableHead';
+import { selectFilteredRecruitingAgencys, useGetRecruitingAgencysQuery } from '../RecruitingAgencysApi';
 
 /**
- * The districts table.
+ * The recruitingAgencys table.
  */
-function DistrictsTable(props) {
+function RecruitingAgencysTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetDistrictsQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredDistricts(data));
-	const districts = useSelector(selectFilteredDistricts(data?.cities));
+	const { data, isLoading, refetch } = useGetRecruitingAgencysQuery({ ...pageAndSize, searchKey });
+	const totalData = useSelector(selectFilteredRecruitingAgencys(data));
+	const recruitingAgencys = useSelector(selectFilteredRecruitingAgencys(data?.recruiting_agencies));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -59,7 +59,7 @@ function DistrictsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(districts.map((n) => n.id));
+			setSelected(recruitingAgencys.map((n) => n.id));
 			return;
 		}
 
@@ -71,19 +71,19 @@ function DistrictsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+		navigate(`/apps/recruitingAgency/recruitingAgencys/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateDistrict(item, event) {
-		localStorage.removeItem('deleteDistrict');
-		localStorage.setItem('updateDistrict', event);
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+	function handleUpdateRecruitingAgency(item, event) {
+		localStorage.removeItem('deleteRecruitingAgency');
+		localStorage.setItem('updateRecruitingAgency', event);
+		navigate(`/apps/recruitingAgency/recruitingAgencys/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteDistrict(item, event) {
-		localStorage.removeItem('updateDistrict');
-		localStorage.setItem('deleteDistrict', event);
-		navigate(`/apps/district/districts/${item.id}/${item.handle}`);
+	function handleDeleteRecruitingAgency(item, event) {
+		localStorage.removeItem('updateRecruitingAgency');
+		localStorage.setItem('deleteRecruitingAgency', event);
+		navigate(`/apps/recruitingAgency/recruitingAgencys/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -127,7 +127,7 @@ function DistrictsTable(props) {
 		);
 	}
 
-	if (districts?.length === 0) {
+	if (recruitingAgencys?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ function DistrictsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no districts!
+					There are no recruitingAgencys!
 				</Typography>
 			</motion.div>
 		);
@@ -152,17 +152,17 @@ function DistrictsTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<DistrictsTableHead
-						selectedDistrictIds={selected}
+					<RecruitingAgencysTableHead
+						selectedRecruitingAgencyIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={districts.length}
+						rowCount={recruitingAgencys.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(districts, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(recruitingAgencys, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -211,12 +211,21 @@ function DistrictsTable(props) {
 									>
 										{n.name}
 									</TableCell>
+
 									<TableCell
-										className="p-4 w-1/4 md:p-12  whitespace-nowrap	"
+										className="p-4 md:p-12  whitespace-nowrap	 "
 										component="th"
 										scope="row"
 									>
-										{n.country?.name}
+										{n.address}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12   whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.rl_no}
 									</TableCell>
 									<TableCell
 										className="p-4 md:p-16"
@@ -231,12 +240,16 @@ function DistrictsTable(props) {
 										}}
 									>
 										<Edit
-											onClick={(event) => handleUpdateDistrict(n, 'updateDistrict')}
+											onClick={(event) =>
+												handleUpdateRecruitingAgency(n, 'updateRecruitingAgency')
+											}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteDistrict(n, 'deleteDistrict')}
+											onClick={(event) =>
+												handleDeleteRecruitingAgency(n, 'deleteRecruitingAgency')
+											}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
@@ -282,4 +295,4 @@ function DistrictsTable(props) {
 	);
 }
 
-export default withRouter(DistrictsTable);
+export default withRouter(RecruitingAgencysTable);
