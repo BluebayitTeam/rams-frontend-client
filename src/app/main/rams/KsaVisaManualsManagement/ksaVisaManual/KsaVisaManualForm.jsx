@@ -76,10 +76,8 @@ function KsaVisaManualForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, watch, setValue, reset, formState, getValues } = methods;
-	console.log('getValues', getValues());
 	const classes = useStyles();
 	const [showPrint, setShowPrint] = useState(false);
-	const [formData, setFormData] = useState({});
 	const [generalData, setGeneralData] = useState({});
 	const componentRef = useRef();
 	const passengers = useSelector((state) => state.data.passengers);
@@ -118,47 +116,22 @@ function KsaVisaManualForm(props) {
 	}, []);
 
 	const handleGetVisaFormData = async (passengerId) => {
+		setShowPrint(false);
 		try {
 			const response = await axios.get(`${GET_PASSENGER_BY_VISA_FORM_MANUAL}${passengerId}`);
 			reset({ ...response.data, religion: 'Muslim', pp_expire_year: '10', passenger: passengerId });
 		} catch (error) {
-			console.error('Error fetching data:', error);
+			console.log('Error fetching data:', error);
 		}
 	};
 
-	const handleCreateShow = async (passengerId) => {
-		console.log('Passenger ID:', passengerId); // Debugging statement
-
-		if (!passengerId) {
-			console.error('No passengerId provided');
-			return;
-		}
-
+	const handleCreateVisaForm = async (passengerId) => {
 		try {
-			const response = await axios.post(`${CREATE_KSAVISA_MANUALS}${passengerId}`);
-			reset({ ...response.data, religion: 'Muslim', pp_expire_year: '10', passenger: passengerId });
+			const _response = await axios.post(`${CREATE_KSAVISA_MANUALS}${passengerId}`, getValues());
 		} catch (error) {
-			console.error('Error fetching data:', error);
+			console.log('Error fetching data:', error);
 		}
 	};
-
-	// Example function to call handleCreateShow with a valid passengerId
-	const handleButtonClick = () => {
-		const selectedPassengerId = passengers?.[0]?.id; // Replace this with the logic to get the correct passenger ID
-		console.log('Selected passenger ID:', selectedPassengerId);
-		handleCreateShow(selectedPassengerId);
-	};
-
-	// const handleCreateShow = (passengerId) => {
-	//   console.log('klfsjdlfkjsdjf',passengerId);
-	//   createShow(getValues())
-	//     .unwrap()
-	//     .then((data) => {
-	//       AddedSuccessfully();
-	//       navigate(`/apps/ksaVisaManual/ksaVisaManuals`);
-	//     });
-	// };
-
 	return (
 		<>
 			<div className="flex justify-center">
@@ -656,7 +629,8 @@ function KsaVisaManualForm(props) {
 							onClick={() => {
 								setShowPrint(true);
 								reset(getValues());
-								handleButtonClick();
+								// eslint-disable-next-line no-unused-expressions
+								watch('passenger') && handleCreateVisaForm(watch('passenger'));
 							}}
 							className="mx-10"
 						>
