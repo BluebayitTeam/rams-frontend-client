@@ -29,7 +29,7 @@ function PoliceStationsTable(props) {
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const { data, isLoading, refetch } = useGetPoliceStationsQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredPoliceStations(data));
-	const policeStations = useSelector(selectFilteredPoliceStations(data?.policeStations));
+	const policeStations = useSelector(selectFilteredPoliceStations(data?.thanas));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -177,7 +177,12 @@ function PoliceStationsTable(props) {
 									<TableCell
 										className="w-40 md:w-64 text-center"
 										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										<Checkbox
 											checked={isSelected}
@@ -190,7 +195,12 @@ function PoliceStationsTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -202,11 +212,23 @@ function PoliceStationsTable(props) {
 										{n.name}
 									</TableCell>
 									<TableCell
+										className="p-4 w-1/4 md:p-12  whitespace-nowrap	"
+										component="th"
+										scope="row"
+									>
+										{n.city.name}
+									</TableCell>
+									<TableCell
 										className="p-4 md:p-16"
 										component="th"
 										scope="row"
 										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										<Edit
 											onClick={(event) => handleUpdatePoliceStation(n, 'updatePoliceStation')}

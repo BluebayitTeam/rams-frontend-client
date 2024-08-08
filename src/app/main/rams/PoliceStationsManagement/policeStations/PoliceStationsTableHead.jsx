@@ -23,6 +23,7 @@ const rows = [
 		label: 'SL',
 		sort: true
 	},
+
 	{
 		id: 'name',
 		align: 'left',
@@ -31,8 +32,16 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'city',
+		align: 'left',
+		disablePadding: false,
+		label: 'City',
+		sort: true
+	},
+
+	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
