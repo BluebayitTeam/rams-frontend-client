@@ -15,6 +15,7 @@ import increaseYear from 'src/app/@helpers/increaseYear';
 import { religions } from 'src/app/@data/data';
 import Autocomplete from '@mui/material/Autocomplete';
 import {
+  CREATE_KSAVISA_MANUALS,
   GET_PASSENGER_BY_VISA_FORM_MANUAL,
   GET_SITESETTINGS,
 } from 'src/app/constant/constants';
@@ -29,6 +30,10 @@ import {
 } from 'date-fns';
 import _ from 'lodash';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
+import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { useCreateKvisaMaualsMutation } from '../KsaVisaManualsApi';
+
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -77,17 +82,18 @@ const barcodeConfig2 = {
 };
 
 function KsaVisaManualForm(props) {
-  const dispatch = useDispatch();
+ const dispatch = useDispatch();
   const methods = useFormContext();
   const { control, watch, setValue, reset, formState, getValues } = methods;
+  console.log('getValues',getValues());
   const classes = useStyles();
   const [showPrint, setShowPrint] = useState(false);
   const [formData, setFormData] = useState({});
   const [generalData, setGeneralData] = useState({});
   const componentRef = useRef();
   const passengers = useSelector((state) => state.data.passengers);
-  const { errors } = formState;
 
+  const { errors } = formState;
   // Reset form
   useEffect(() => {
     reset({ religion: 'Muslim', pp_expire_year: '10' });
@@ -121,15 +127,39 @@ function KsaVisaManualForm(props) {
   }, []);
 
   const handleGetVisaFormData = async (passengerId) => {
+     
     try {
       const response = await axios.get(
         `${GET_PASSENGER_BY_VISA_FORM_MANUAL}${passengerId}`
       );
-      reset({ ...response.data, religion: 'Muslim', pp_expire_year: '10' });
+      reset({ ...response.data, religion: 'Muslim', pp_expire_year: '10',passenger:passengerId });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+
+   const handleCreateShow = async (passengerId) => {
+     console.log("kfhdskfhkdshf", id);
+     debugger;
+    try {
+      const response = await axios.post(
+        `${CREATE_KSAVISA_MANUALS}${passengerId}`
+      );
+      // reset({ ...response.data, religion: 'Muslim', pp_expire_year: '10' });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  // const handleCreateShow = (passengerId) => {
+  //   console.log('klfsjdlfkjsdjf',passengerId);
+  //   createShow(getValues())
+  //     .unwrap()
+  //     .then((data) => {
+  //       AddedSuccessfully();
+  //       navigate(`/apps/ksaVisaManual/ksaVisaManuals`);
+  //     });
+  // };
 
   return (
     <>
@@ -152,9 +182,10 @@ function KsaVisaManualForm(props) {
                 if (newValue?.id) {
                   onChange(newValue?.id);
                   handleGetVisaFormData(newValue.id);
+                  reset({})
                 } else {
                   setShowPrint(false);
-                  reset({});
+                  
                 }
               }}
               renderInput={(params) => (
@@ -632,8 +663,9 @@ function KsaVisaManualForm(props) {
               }}
               // onClick={handleShowClick}
               onClick={() => {
-                setShowPrint(true);
-                reset(getValues());
+               setShowPrint(true);
+      reset(getValues());
+      handleCreateShow();
               }}
               className='mx-10'>
               Show

@@ -2,7 +2,7 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.68.109:8006';
+export const BASE_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.68.113:8006';
 
 // added by live api
 
@@ -1288,6 +1288,9 @@ export const DELETE_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete/`;
 export const DELETE_KSAVISA_MULTIPLE = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/delete_multiple/`;
 
 export const SEARCH_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/search/`;
+
+// ksa_visa_menuals
+export const CREATE_KSAVISA_MANUALS = `${BASE_URL}/passenger/api/v1/passenger/create_mofa_musaned_okala_office_work/`;
 
 // Visa Entry Report
 export const VISA_ENTRY_FILTER_BY = `${BASE_URL}/report/api/v1/visa_entry_report/filter/`;
