@@ -1292,6 +1292,9 @@ export const DELETE_KSAVISA_MULTIPLE = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/del
 
 export const SEARCH_KSAVISA = `${BASE_URL}/ksa_visa/api/v1/ksa_visa/search/`;
 
+// ksa_visa_menuals
+export const CREATE_KSAVISA_MANUALS = `${BASE_URL}/passenger/api/v1/passenger/create_mofa_musaned_okala_office_work/`;
+
 // Visa Entry Report
 export const VISA_ENTRY_FILTER_BY = `${BASE_URL}/report/api/v1/visa_entry_report/filter/`;
 
