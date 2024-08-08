@@ -428,12 +428,11 @@ function KsaVisaManualForm(props) {
 								<TextField
 									{...field}
 									className="mt-8 mb-16 w-full md:w-6/12"
-									// error={!!errors.sponsor_id_no || !field.value}
-									helperText={errors?.sponsor_id_no?.message}
 									label="Sponsor ID No"
 									id="sponsor_id_no"
+									required
 									variant="outlined"
-									InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+									InputLabelProps={field.value && { shrink: true }}
 									fullWidth
 								/>
 							);
@@ -498,7 +497,7 @@ function KsaVisaManualForm(props) {
 						}}
 					/>
 					<Controller
-						name="occupation_arabic"
+						name="profession_arabic"
 						control={control}
 						render={({ field }) => {
 							return (
@@ -506,7 +505,7 @@ function KsaVisaManualForm(props) {
 									{...field}
 									className="mt-8 mb-16 w-full md:w-6/12"
 									label="Occupation(Arabic)"
-									id="occupation_arabic"
+									id="profession_arabic"
 									required
 									variant="outlined"
 									InputLabelProps={field.value && { shrink: true }}
