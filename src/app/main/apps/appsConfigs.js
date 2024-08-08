@@ -80,6 +80,9 @@ import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTy
 import MedicalCenterAppConfig from '../rams/MedicalCentersManagement/MedicalCenterAppConfig';
 import CurrencyAppConfig from '../rams/CurrencysManagement/CurrencyAppConfig';
 import DistrictAppConfig from '../rams/DistrictsManagement/DistrictAppConfig';
+import CountryAppConfig from '../rams/CountryssManagement/CountryAppConfig';
+import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
+import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
 
 /**
  * The list of application configurations.
@@ -136,6 +139,9 @@ const appsConfigs = [
 	SubscriptionLoanAppConfig,
 	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
+	PoliceStationAppConfig,
+	RecruitingAgencyAppConfig,
+	CountryAppConfig,
 	DistrictAppConfig,
 	CurrencyAppConfig,
 	MedicalCenterAppConfig,

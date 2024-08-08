@@ -177,7 +177,12 @@ function MedicalCentersTable(props) {
 									<TableCell
 										className="w-40 md:w-64 text-center"
 										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										<Checkbox
 											checked={isSelected}
@@ -190,7 +195,12 @@ function MedicalCentersTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -201,12 +211,73 @@ function MedicalCentersTable(props) {
 									>
 										{n.name}
 									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12  	 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.email}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12   whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.contact_person}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12 	 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.mobile}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12   whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.phone_number}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12 	 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.web_address}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12  	 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.google_map_link}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12  	 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.address}
+									</TableCell>
 									<TableCell
 										className="p-4 md:p-16"
 										component="th"
 										scope="row"
 										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										<Edit
 											onClick={(event) => handleUpdateMedicalCenter(n, 'updateMedicalCenter')}
