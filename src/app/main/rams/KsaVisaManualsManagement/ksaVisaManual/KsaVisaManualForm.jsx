@@ -89,6 +89,7 @@ function KsaVisaManualForm(props) {
 	}, []);
 
 	const data = getValues();
+	console.log('dfgdfklgdf', data);
 
 	// Printer action
 	const printAction = useReactToPrint({
@@ -419,45 +420,65 @@ function KsaVisaManualForm(props) {
 						}}
 					/>
 
-					<div className="w-full">
-						<Controller
-							name="visa_issue_date"
-							control={control}
-							render={({ field }) => {
-								return (
-									<CustomDatePicker
-										field={field}
-										className="mt-8 mb-16 w-full md:w-6/12"
-										label="Visa Issue Date"
-										onChange={(value) => {
-											// setValue('passport_expiry_date', increaseYear(value, 5));
-										}}
-									/>
-								);
-							}}
-						/>
-					</div>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
-						name="sponsor_name_arabic"
+						name="sponsor_id_no"
 						control={control}
 						render={({ field }) => {
 							return (
 								<TextField
 									{...field}
 									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Sponsor Name"
-									id="sponsor_name_arabic"
-									required
+									// error={!!errors.sponsor_id_no || !field.value}
+									helperText={errors?.sponsor_id_no?.message}
+									label="Sponsor ID No"
+									id="sponsor_id_no"
 									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
+									InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 									fullWidth
 								/>
 							);
 						}}
 					/>
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
+					<div className="w-full">
+						<Controller
+							name="spouse_name"
+							control={control}
+							render={({ field }) => (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 "
+									label="Sponsor Name"
+									id="spouse_name"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							)}
+						/>
+					</div>
 
+					<div className="w-full">
+						<Controller
+							name="visa_issue_date"
+							control={control}
+							render={({ field }) => (
+								<CustomDatePicker
+									field={field}
+									className="mt-8 mb-16 w-full md:w-1/2"
+									label="Visa Issue Date"
+									onChange={(value) => {
+										// setValue('passport_expiry_date', increaseYear(value, 5));
+									}}
+								/>
+							)}
+						/>
+					</div>
+				</div>
+
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
 						name="mofa_no"
 						control={control}
@@ -476,8 +497,6 @@ function KsaVisaManualForm(props) {
 							);
 						}}
 					/>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
 						name="occupation_arabic"
 						control={control}
@@ -496,7 +515,8 @@ function KsaVisaManualForm(props) {
 							);
 						}}
 					/>
-
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
 						name="profession_english"
 						control={control}
@@ -515,8 +535,6 @@ function KsaVisaManualForm(props) {
 							);
 						}}
 					/>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
 						name="musaned_no"
 						control={control}
@@ -535,7 +553,8 @@ function KsaVisaManualForm(props) {
 							);
 						}}
 					/>
-
+				</div>
+				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
 						name="okala_no"
 						control={control}
@@ -554,8 +573,6 @@ function KsaVisaManualForm(props) {
 							);
 						}}
 					/>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
 					<Controller
 						name="police_clearance_no"
 						control={control}
@@ -566,25 +583,6 @@ function KsaVisaManualForm(props) {
 									className="mt-8 mb-16 w-full md:w-6/12"
 									label="Police Clearance No"
 									id="police_clearance_no"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-
-					<Controller
-						name="license"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="License"
-									id="license"
 									required
 									variant="outlined"
 									InputLabelProps={field.value && { shrink: true }}
@@ -605,6 +603,24 @@ function KsaVisaManualForm(props) {
 									className="mt-8 mb-16 w-full md:w-6/12"
 									label="Finger No"
 									id="finger_no"
+									required
+									variant="outlined"
+									InputLabelProps={field.value && { shrink: true }}
+									fullWidth
+								/>
+							);
+						}}
+					/>
+					<Controller
+						name="license"
+						control={control}
+						render={({ field }) => {
+							return (
+								<TextField
+									{...field}
+									className="mt-8 mb-16 w-full md:w-6/12"
+									label="License"
+									id="license"
 									required
 									variant="outlined"
 									InputLabelProps={field.value && { shrink: true }}
@@ -1833,7 +1849,7 @@ function KsaVisaManualForm(props) {
 																	}}
 																>
 																	<span style={{ fontSize: '13pt' }}>
-																		{data?.sponsor_name_arabic}
+																		{data?.spouse_name}
 																	</span>
 																	<span style={{ color: 'white', fontSize: '1px' }}>
 																		a
@@ -1856,7 +1872,7 @@ function KsaVisaManualForm(props) {
 													<td style={{ textAlign: 'left' }}>Date:&emsp;&emsp;&emsp;</td>
 													<td style={{ textAlign: 'left' }}>
 														:&nbsp;وتاريخ&emsp;&emsp;Visa No.:&emsp;
-														{data?.sponsor_id_no}
+														{data?.visa_number}
 													</td>
 													<td style={{ textAlign: 'right' }}>:&nbsp;أشر له برقم</td>
 												</tr>
@@ -2083,7 +2099,7 @@ function KsaVisaManualForm(props) {
 																		style={{ width: '55%' }}
 																	>
 																		:&nbsp;&nbsp;
-																		{data?.sponsor_name_arabic}
+																		{data?.spouse_name}
 																	</td>
 																</tr>
 																<tr>
@@ -2308,7 +2324,7 @@ function KsaVisaManualForm(props) {
 																<td>NAME OF COMPANY: M/S</td>
 																<td>
 																	:&nbsp;
-																	{data?.sponsor_name_arabic}
+																	{data?.spouse_name}
 																</td>
 															</tr>
 
