@@ -72,6 +72,7 @@ function Employee() {
         branch: employee.branch.id,
         role: employee.role.id,
         department: employee.department.id,
+        country: employee.country.id,
       });
     }
   }, [employee, reset, employee?.id]);
