@@ -86,6 +86,7 @@ import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStati
 import ManpowerSubmissionListAppConfig from '../rams/ManpowerSubmissionListsManagement/ManpowerSubmissionListAppConfig';
 import BranchAppConfig from '../rams/BranchsManagement/BranchAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
+import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -133,6 +134,7 @@ const appsConfigs = [
 	CvFemaleAppConfig,
 	CvMaleAppConfig,
 	DemandAssignAppConfig,
+	AgentReportAppConfig,
 	VisaEntryAppConfig,
 	VisaCancelListAppConfig,
 	VisaReissueListAppConfig,
