@@ -3,13 +3,16 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { getAgencys, getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import { makeStyles } from '@mui/styles';
 import { Search } from '@mui/icons-material';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { Button } from '@mui/material';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
+import { useNavigate } from 'react-router';
+import { useCreateManpowerSubmissionListMutation } from '../ManpowerSubmissionListsApi';
 
 const useStyles = makeStyles((theme) => ({
 	searchContainer: ({ isPassenger }) => ({
@@ -41,10 +44,12 @@ const useStyles = makeStyles((theme) => ({
 function ManpowerSubmissionListForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue } = methods;
+	const { formState, watch, getValues, reset } = methods;
+	console.log('getValues', getValues());
 	const { errors } = formState;
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
-
+	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
+	const navigate = useNavigate();
 	const classes = useStyles({ isPassenger: watch('passenger') });
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -53,26 +58,24 @@ function ManpowerSubmissionListForm(props) {
 		dispatch(getCurrentStatuss());
 	}, []);
 
-	function handleSaveManpowerSubmissionList() {
-		dispatch(saveManpowerSubmissionList(getValues())).then((res) => {
-			if (res.payload?.data?.id) {
-				if (res.payload?.data?.id) {
-					localStorage.setItem('manpowerSubmissionListAlert', 'saveManpowerSubmissionList');
-					// history.push('/apps/manpowerSubmissionList-management/manpowerSubmissionList/new');
-					// dispatch(setAlert(saveAlertMsg));
-					dispatch(getManpowerSubmissionList({ man_power_date: getValues().man_power_date }));
+	function handleCreateManpowerSubmissionList() {
+		createManpowerSubmissionList(getValues())
+			.unwrap()
+			.then((data) => {
+				if (data) {
+					AddedSuccessfully();
 				}
-			} else {
-				setError('passenger', {
-					type: 'manual',
-					message: `This Passenger has already assigned`
-				});
-			}
-		});
+
+				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
+			})
+			.catch((error) => {
+				if (error && error.response && error.response.data) {
+					CustomNotification('error', `${error.response.data.passenger}`);
+				}
+			});
 	}
 
 	function handleCancel() {
-		// history.push('/apps/manpowerSubmissionList-management/manpowerSubmissionList/new');
 		reset({});
 	}
 
@@ -116,18 +119,11 @@ function ManpowerSubmissionListForm(props) {
 
 			<div className="flex flex-nowrap">
 				<div className="w-full">
-					<Controller
+					<CustomDatePicker
 						name="man_power_date"
-						className="mt-8 mb-16 w-full"
-						control={control}
-						render={({ field }) => {
-							return (
-								<CustomDatePicker
-									field={field}
-									label="Man Power Submission  Date"
-								/>
-							);
-						}}
+						label="Manpower Date"
+						required
+						placeholder="DD-MM-YYYY"
 					/>
 				</div>
 				<div
@@ -146,7 +142,7 @@ function ManpowerSubmissionListForm(props) {
 				variant="contained"
 				color="secondary"
 				// disabled={_.isEmpty(dirtyFields) || !isValid}
-				onClick={handleSaveManpowerSubmissionList}
+				onClick={handleCreateManpowerSubmissionList}
 			>
 				Save
 			</Button>

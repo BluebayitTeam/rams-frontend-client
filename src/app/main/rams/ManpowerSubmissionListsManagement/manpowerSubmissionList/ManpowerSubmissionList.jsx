@@ -27,6 +27,7 @@ function ManpowerSubmissionList() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { manpowerSubmissionListId } = routeParams;
+	console.log('manpowerSubmissionListId', manpowerSubmissionListId);
 
 	const {
 		data: manpowerSubmissionList,
@@ -35,7 +36,7 @@ function ManpowerSubmissionList() {
 	} = useGetManpowerSubmissionListQuery(manpowerSubmissionListId, {
 		skip: !manpowerSubmissionListId || manpowerSubmissionListId === 'new'
 	});
-	console.log('manpowerSubmissionListId', manpowerSubmissionList, manpowerSubmissionListId);
+	// console.log('manpowerSubmissionListId', manpowerSubmissionList, manpowerSubmissionListId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
