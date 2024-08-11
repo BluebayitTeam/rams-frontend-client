@@ -84,6 +84,7 @@ import CountryAppConfig from '../rams/CountryssManagement/CountryAppConfig';
 import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
 import ManpowerSubmissionListAppConfig from '../rams/ManpowerSubmissionListsManagement/ManpowerSubmissionListAppConfig';
+import BranchAppConfig from '../rams/BranchsManagement/BranchAppConfig';
 
 /**
  * The list of application configurations.
@@ -91,6 +92,7 @@ import ManpowerSubmissionListAppConfig from '../rams/ManpowerSubmissionListsMana
 const appsConfigs = [
 	BmetAppConfig,
 	BmetContractAppConfig,
+	BranchAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	MessengerAppConfig,
