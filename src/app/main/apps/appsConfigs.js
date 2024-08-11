@@ -141,6 +141,7 @@ const appsConfigs = [
 	SubscriptionLoanAppConfig,
 	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
+	BranchAppConfig,
 	PoliceStationAppConfig,
 	RecruitingAgencyAppConfig,
 	CountryAppConfig,

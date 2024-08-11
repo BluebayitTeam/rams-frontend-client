@@ -749,6 +749,7 @@ export const DELETE_SLIDERSETTING = `${BASE_URL}/homepage_slider/api/v1/homepage
 export const CREATE_BRANCH = `${BASE_URL}/branch/api/v1/branch/create/`;
 
 export const GET_BRANCHID = `${BASE_URL}/branch/api/v1/branch/`;
+export const GET_BRANCH_BY_ID = `${BASE_URL}/branch/api/v1/branch/`;
 
 export const GET_BRANCHS = `${BASE_URL}/branch/api/v1/branch/all/`;
 
@@ -757,6 +758,7 @@ export const GET_BRANCH_WITHOUT_PAGINATION = `${BASE_URL}/branch/api/v1/branch/w
 export const UPDATE_BRANCH = `${BASE_URL}/branch/api/v1/branch/update/`;
 
 export const DELETE_BRANCH = `${BASE_URL}/branch/api/v1/branch/delete/`;
+export const DELETE_BRANCH_MULTIPLE = `${BASE_URL}/branch/api/v1/branch/delete/`;
 
 export const SEARCH_BRANCH = `${BASE_URL}/branch/api/v1/branch/search/`;
 
