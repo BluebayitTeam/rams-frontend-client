@@ -34,7 +34,7 @@ function ManpowerSubmissionListHeader() {
 	function handleUpdateManpowerSubmissionList() {
 		saveManpowerSubmissionList(getValues()).then((data) => {
 			UpdatedSuccessfully();
-			navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists`);
+			navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 		});
 	}
 
@@ -44,19 +44,19 @@ function ManpowerSubmissionListHeader() {
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists`);
+				navigate(`F`);
 			});
 	}
 
 	function handleRemoveManpowerSubmissionList(dispatch) {
 		removeManpowerSubmissionList(manpowerSubmissionListId);
 		DeletedSuccessfully();
-		navigate('/apps/manpowerSubmissionList/manpowerSubmissionLists');
+		navigate('/apps/manpowerSubmissionList/manpowerSubmissionLists/new');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists`);
+		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 	}
 
 	return (
