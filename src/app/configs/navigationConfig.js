@@ -1185,7 +1185,7 @@ const navigationConfig = [
 				translate: 'Passenger Agreement Form',
 				display_order: 8,
 				type: 'item',
-				url: '/apps/passengerAgreement-management/passengerAgreement-form',
+				url: '/apps/passengerAgreement/passengerAgreements',
 				exact: true
 			},
 			{
@@ -1223,7 +1223,7 @@ const navigationConfig = [
 				translate: 'Finger Form',
 				display_order: 12,
 				type: 'item',
-				url: '/apps/finger-management/finger-form',
+				url: '/apps/finger/fingers',
 				exact: true
 			},
 			{
@@ -1232,7 +1232,7 @@ const navigationConfig = [
 				translate: 'Departure Card',
 				display_order: 13,
 				type: 'item',
-				url: '/apps/departure-management/departure-form',
+				url: '/apps/departure/departures',
 				exact: true
 			},
 			{
@@ -1250,7 +1250,7 @@ const navigationConfig = [
 				translate: 'Manpower Submission List',
 				display_order: 15,
 				type: 'item',
-				url: '/apps/manpowerSubmissionList-management/manpowerSubmissionList/new',
+				url: '/apps/manpowerSubmissionList/manpowerSubmissionLists/new',
 				exact: true
 			},
 			{
