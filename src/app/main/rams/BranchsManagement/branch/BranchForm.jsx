@@ -1,13 +1,13 @@
 import { getCities, getCountries, getThanas } from 'app/store/dataSlice';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import CustomCheckbox from 'src/app/@components/CustomCheckbox';
+import CustomDropdownField from 'src/app/@components/CustomDropdownField';
+import CustomTextField from 'src/app/@components/CustomTextField';
 
 function BranchForm(props) {
 	const dispatch = useDispatch();
-	const thanas = useSelector((state) => state.data.thanas);
-	const cities = useSelector((state) => state.data.cities);
-	const countrys = useSelector((state) => state.data.countries);
-
+	const { thanas, cities, countries } = useSelector((state) => state.data);
 	useEffect(() => {
 		dispatch(getThanas());
 		dispatch(getCountries());
@@ -15,7 +15,7 @@ function BranchForm(props) {
 	}, []);
 	return (
 		<div>
-			{/* <CustomTextField
+			<CustomTextField
 				name="name"
 				label="Name"
 				required
@@ -24,7 +24,7 @@ function BranchForm(props) {
 			<CustomDropdownField
 				name="country"
 				label="Country"
-				options={countrys}
+				options={countries}
 				optionLabelFormat={(option) => `${option?.name}`}
 				// onChange={(newValue) =>
 				//   handleCheckAvailableDemand(newValue?.id, newValue?.quantity)
@@ -74,7 +74,7 @@ function BranchForm(props) {
 				name="postal_code"
 				label="Postal Code"
 				required
-			/> */}
+			/>
 		</div>
 	);
 }
