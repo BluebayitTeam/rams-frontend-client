@@ -89,7 +89,6 @@ function KsaVisaManualForm(props) {
 	}, []);
 
 	const data = getValues();
-	console.log('dfgdfklgdf', data);
 
 	// Printer action
 	const printAction = useReactToPrint({
@@ -406,215 +405,6 @@ function KsaVisaManualForm(props) {
             }}
           />
 
-					<Controller
-						name="sponsor_id_no"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Sponsor ID No"
-									id="sponsor_id_no"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
-					<div className="w-full">
-						<Controller
-							name="spouse_name"
-							control={control}
-							render={({ field }) => (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 "
-									label="Sponsor Name"
-									id="spouse_name"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							)}
-						/>
-					</div>
-
-					<div className="w-full">
-						<Controller
-							name="visa_issue_date"
-							control={control}
-							render={({ field }) => (
-								<CustomDatePicker
-									field={field}
-									className="mt-8 mb-16 w-full md:w-1/2"
-									label="Visa Issue Date"
-									onChange={(value) => {
-										// setValue('passport_expiry_date', increaseYear(value, 5));
-									}}
-								/>
-							)}
-						/>
-					</div>
-				</div>
-
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
-					<Controller
-						name="mofa_no"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Mofa No"
-									id="mofa_no"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-					<Controller
-						name="profession_arabic"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Occupation(Arabic)"
-									id="profession_arabic"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
-					<Controller
-						name="profession_english"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Occupation(English)"
-									id="profession_english"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-					<Controller
-						name="musaned_no"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Musaned No"
-									id="musaned_no"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
-					<Controller
-						name="okala_no"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Okala No"
-									id="okala_no"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-					<Controller
-						name="police_clearance_no"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Police Clearance No"
-									id="police_clearance_no"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-				</div>
-				<div className="flex md:space-x-12 flex-col md:flex-row m-10">
-					<Controller
-						name="finger_no"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="Finger No"
-									id="finger_no"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-					<Controller
-						name="license"
-						control={control}
-						render={({ field }) => {
-							return (
-								<TextField
-									{...field}
-									className="mt-8 mb-16 w-full md:w-6/12"
-									label="License"
-									id="license"
-									required
-									variant="outlined"
-									InputLabelProps={field.value && { shrink: true }}
-									fullWidth
-								/>
-							);
-						}}
-					/>
-				</div>
           <div className='w-full'>
             
             <CustomDatePicker
@@ -1910,168 +1700,161 @@ function KsaVisaManualForm(props) {
                           </td>
                         </tr>
 
-												<tr>
-													<td colSpan="3">
-														<table width="100%">
-															<tr>
-																<td
-																	style={{
-																		textAlign: 'left',
-																		fontSize: '9.5pt',
-																		fontWeight: 'bold'
-																	}}
-																>
-																	<u>For official use only</u>
-																</td>
-																<td
-																	style={{
-																		textAlign: 'right',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	<u>:&nbsp;للا ستعمال الرسمى فقط </u>
-																</td>
-															</tr>
-														</table>
-													</td>
-												</tr>
-												<tr style={{ borderBottom: '1px solid black' }}>
-													<td style={{ textAlign: 'left' }}>
-														Date:&emsp;&emsp;&emsp;
-														{data?.visa_issue_date &&
-															moment(new Date(data?.visa_issue_date)).format(
-																'DD-MM-YYYY'
-															)}
-													</td>
-													<td style={{ textAlign: 'left' }}>
-														:&nbsp;تاريخه&emsp;&emsp;Authorization:&emsp;&emsp;&emsp;
-														<b>{data?.visa_number}</b>
-													</td>
-													<td style={{ textAlign: 'right' }}>
-														:&nbsp;رقم الامر المعتمد عليه في إعطاء التأشيرة
-													</td>
-												</tr>
-												<tr style={{ borderBottom: '1px solid black' }}>
-													<td colSpan="3">
-														<table width="100%">
-															<tr>
-																<td
-																	style={{
-																		textAlign: 'left',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	Visit/ Work for:
-																</td>
-																<td
-																	style={{
-																		textAlign: 'Center',
-																		fontSize: '9.5pt',
-																		fontFamily: 'Arial'
-																	}}
-																>
-																	<span style={{ fontSize: '13pt' }}>
-																		{data?.spouse_name}
-																	</span>
-																	<span style={{ color: 'white', fontSize: '1px' }}>
-																		a
-																	</span>
-																</td>
-																<td
-																	style={{
-																		textAlign: 'right',
-																		fontSize: '9.5pt',
-																		fontFamily: 'Arial'
-																	}}
-																>
-																	&nbsp;&nbsp;:&nbsp;لزيارة – العمل لدي
-																</td>
-															</tr>
-														</table>
-													</td>
-												</tr>
-												<tr style={{ borderBottom: '1px solid black' }}>
-													<td style={{ textAlign: 'left' }}>Date:&emsp;&emsp;&emsp;</td>
-													<td style={{ textAlign: 'left' }}>
-														:&nbsp;وتاريخ&emsp;&emsp;Visa No.:&emsp;
-														{data?.visa_number}
-													</td>
-													<td style={{ textAlign: 'right' }}>:&nbsp;أشر له برقم</td>
-												</tr>
-												<tr style={{ borderBottom: '1px solid black' }}>
-													<td colSpan="3">
-														<table width="100%">
-															<tr>
-																<td
-																	style={{
-																		textAlign: 'left',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	FEE COLLECTED&emsp;&emsp;
-																</td>
-																<td
-																	style={{
-																		textAlign: 'left',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	المبلغ المحصل
-																</td>
-																<td
-																	style={{
-																		textAlign: 'left',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	Type:
-																</td>
-																<td
-																	style={{
-																		textAlign: 'right',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	:&nbsp;نوعها
-																</td>
-																<td
-																	style={{
-																		textAlign: 'left',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	&emsp;Duration:
-																</td>
-																<td
-																	style={{
-																		textAlign: 'right',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	:&nbsp;مدتها
-																</td>
-															</tr>
-														</table>
-													</td>
-												</tr>
-												<tr>
-													<td colSpan="3">
-														<table width="100%">
-															<tr>
-																<td
-																	style={{
-																		textAlign: 'left',
-																		fontSize: '9.5pt'
-																	}}
-																>
-																	&emsp;&emsp;القنصل العام
-																</td>
-																<td
-																	style={{
-																		textAlign: 'Center',
-																		fontSize: '9.5pt'
-																	}}
-																/>
+                        <tr>
+                          <td colSpan='3'>
+                            <table width='100%'>
+                              <tr>
+                                <td
+                                  style={{
+                                    textAlign: 'left',
+                                    fontSize: '9.5pt',
+                                    fontWeight: 'bold',
+                                  }}>
+                                  <u>For official use only</u>
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'right',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  <u>:&nbsp;للا ستعمال الرسمى فقط </u>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: '1px solid black' }}>
+                          <td style={{ textAlign: 'left' }}>
+                            Date:&emsp;&emsp;&emsp;
+                            {data?.visa_issue_date &&
+                              moment(new Date(data?.visa_issue_date)).format(
+                                'DD-MM-YYYY'
+                              )}
+                          </td>
+                          <td style={{ textAlign: 'left' }}>
+                            :&nbsp;تاريخه&emsp;&emsp;Authorization:&emsp;&emsp;&emsp;
+                            <b>{data?.visa_number}</b>
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+                            :&nbsp;رقم الامر المعتمد عليه في إعطاء التأشيرة
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: '1px solid black' }}>
+                          <td colSpan='3'>
+                            <table width='100%'>
+                              <tr>
+                                <td
+                                  style={{
+                                    textAlign: 'left',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  Visit/ Work for:
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'Center',
+                                    fontSize: '9.5pt',
+                                    fontFamily: 'Arial',
+                                  }}>
+                                  <span style={{ fontSize: '13pt' }}>
+                                    {data?.sponsor_name_arabic}
+                                  </span>
+                                  <span
+                                    style={{ color: 'white', fontSize: '1px' }}>
+                                    a
+                                  </span>
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'right',
+                                    fontSize: '9.5pt',
+                                    fontFamily: 'Arial',
+                                  }}>
+                                  &nbsp;&nbsp;:&nbsp;لزيارة – العمل لدي
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: '1px solid black' }}>
+                          <td style={{ textAlign: 'left' }}>
+                            Date:&emsp;&emsp;&emsp;
+                          </td>
+                          <td style={{ textAlign: 'left' }}>
+                            :&nbsp;وتاريخ&emsp;&emsp;Visa No.:&emsp;
+                            {data?.sponsor_id_no}
+                          </td>
+                          <td style={{ textAlign: 'right' }}>
+                            :&nbsp;أشر له برقم
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: '1px solid black' }}>
+                          <td colSpan='3'>
+                            <table width='100%'>
+                              <tr>
+                                <td
+                                  style={{
+                                    textAlign: 'left',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  FEE COLLECTED&emsp;&emsp;
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'left',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  المبلغ المحصل
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'left',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  Type:
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'right',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  :&nbsp;نوعها
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'left',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  &emsp;Duration:
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'right',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  :&nbsp;مدتها
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan='3'>
+                            <table width='100%'>
+                              <tr>
+                                <td
+                                  style={{
+                                    textAlign: 'left',
+                                    fontSize: '9.5pt',
+                                  }}>
+                                  &emsp;&emsp;القنصل العام
+                                </td>
+                                <td
+                                  style={{
+                                    textAlign: 'Center',
+                                    fontSize: '9.5pt',
+                                  }}
+                                />
 
                                 <td
                                   style={{
@@ -2135,166 +1918,136 @@ function KsaVisaManualForm(props) {
                 <br />
                 <br />
 
-								<div style={{ display: 'block' }} />
-								<div
-									style={{
-										backgroundImage: 'url(../Form/padairtrade1.jpg) !important',
-										width: '100%',
-										height: '1080px',
-										backgroundRepeat: 'no-repeat',
-										marginBottom: '250px'
-									}}
-								>
-									<table
-										width="100%"
-										style={{ marginTop: '300px' }}
-									>
-										<tr>
-											<td
-												valign="top"
-												align="center"
-											>
-												<table width="93%">
-													<tr>
-														<td
-															className="auto-style1"
-															align="justify"
-															style={{ paddingTop: '100px' }}
-														>
-															To,
-															<br />
-															<br />
-															HIS EXCLLENCY THE CHIEF OF CONSULATE SECTION
-															<br />
-															THE ROYAL EMBASSY OF SAUDI ARABIA
-															<br />
-															GULSHAN, DHAKA, BANGLADESH
-															<br />
-															<br />
-															<br />
-															EXCELLENCY,
-															<br />
-															<br />
-															WITH DUE RESPECT WE ARE SUBMITTING ONE PASSPORT FOR WORK
-															VISA WITH ALL NECESSARY DOCUMENT AND PARTICULARS MENTIONED
-															AS BELOW, KNOWING ALL INSTRUCTIONS AND REGULATIONS OF THE
-															CONSULATE SECTION:
-															<br />
-															<br />
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<table
-																style={{
-																	textAlign: 'Center',
-																	fontWeight: 'normal',
-																	borderCollapse: 'collapse',
-																	width: '100%'
-																}}
-															>
-																<tr>
-																	<td
-																		valign="top"
-																		className="auto-style2"
-																	>
-																		1.
-																	</td>
-																	<td
-																		valign="top"
-																		align="left"
-																		className="auto-style3"
-																	>
-																		NAME OF THE EMPLOYER IN SAUDI ARABIA
-																	</td>
-																	<td
-																		valign="top"
-																		align="left"
-																		className="auto-style3"
-																		style={{ width: '55%' }}
-																	>
-																		:&nbsp;&nbsp;
-																		{data?.spouse_name}
-																	</td>
-																</tr>
-																<tr>
-																	<td className="auto-style2">&nbsp;</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																	>
-																		&nbsp;
-																	</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																		style={{ width: '55%' }}
-																	>
-																		&nbsp;&nbsp;
-																	</td>
-																</tr>
-																<tr>
-																	<td style={{ width: '5%' }}>2.</td>
-																	<td align="left">VISA NO. AND DATE</td>
-																	<td align="left">
-																		:&nbsp;&nbsp;
-																		{data?.visa_number}
-																		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATE: &nbsp;
-																		{data?.visa_issue_date &&
-																			moment(
-																				new Date(data?.visa_issue_date)
-																			).format('DD-MM-YYYY')}
-																		&nbsp;
-																	</td>
-																</tr>
-																<tr>
-																	<td className="auto-style2">&nbsp;</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																	>
-																		&nbsp;
-																	</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																		style={{ width: '55%' }}
-																	>
-																		&nbsp;&nbsp;
-																	</td>
-																</tr>
-																<tr>
-																	<td className="auto-style2">3.</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																	>
-																		FULL NAME OF THE EMPLOYEE
-																	</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																	>
-																		:&nbsp;&nbsp;
-																		{data?.passenger_name}
-																	</td>
-																</tr>
-																<tr>
-																	<td className="auto-style2">&nbsp;</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																	>
-																		&nbsp;
-																	</td>
-																	<td
-																		align="left"
-																		className="auto-style3"
-																		style={{ width: '55%' }}
-																	>
-																		&nbsp;&nbsp;
-																	</td>
-																</tr>
+                <div style={{ display: 'block' }} />
+                <div
+                  style={{
+                    backgroundImage: 'url(../Form/padairtrade1.jpg) !important',
+                    width: '100%',
+                    height: '1080px',
+                    backgroundRepeat: 'no-repeat',
+                    marginBottom: '250px',
+                  }}>
+                  <table width='100%' style={{ marginTop: '300px' }}>
+                    <tr>
+                      <td valign='top' align='center'>
+                        <table width='93%'>
+                          <tr>
+                            <td
+                              className='auto-style1'
+                              align='justify'
+                              style={{ paddingTop: '100px' }}>
+                              To,
+                              <br />
+                              <br />
+                              HIS EXCLLENCY THE CHIEF OF CONSULATE SECTION
+                              <br />
+                              THE ROYAL EMBASSY OF SAUDI ARABIA
+                              <br />
+                              GULSHAN, DHAKA, BANGLADESH
+                              <br />
+                              <br />
+                              <br />
+                              EXCELLENCY,
+                              <br />
+                              <br />
+                              WITH DUE RESPECT WE ARE SUBMITTING ONE PASSPORT
+                              FOR WORK VISA WITH ALL NECESSARY DOCUMENT AND
+                              PARTICULARS MENTIONED AS BELOW, KNOWING ALL
+                              INSTRUCTIONS AND REGULATIONS OF THE CONSULATE
+                              SECTION:
+                              <br />
+                              <br />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <table
+                                style={{
+                                  textAlign: 'Center',
+                                  fontWeight: 'normal',
+                                  borderCollapse: 'collapse',
+                                  width: '100%',
+                                }}>
+                                <tr>
+                                  <td valign='top' className='auto-style2'>
+                                    1.
+                                  </td>
+                                  <td
+                                    valign='top'
+                                    align='left'
+                                    className='auto-style3'>
+                                    NAME OF THE EMPLOYER IN SAUDI ARABIA
+                                  </td>
+                                  <td
+                                    valign='top'
+                                    align='left'
+                                    className='auto-style3'
+                                    style={{ width: '55%' }}>
+                                    :&nbsp;&nbsp;
+                                    {data?.sponsor_name_arabic}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className='auto-style2'>&nbsp;</td>
+                                  <td align='left' className='auto-style3'>
+                                    &nbsp;
+                                  </td>
+                                  <td
+                                    align='left'
+                                    className='auto-style3'
+                                    style={{ width: '55%' }}>
+                                    &nbsp;&nbsp;
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style={{ width: '5%' }}>2.</td>
+                                  <td align='left'>VISA NO. AND DATE</td>
+                                  <td align='left'>
+                                    :&nbsp;&nbsp;
+                                    {data?.visa_number}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DATE:
+                                    &nbsp;
+                                    {data?.visa_issue_date &&
+                                      moment(
+                                        new Date(data?.visa_issue_date)
+                                      ).format('DD-MM-YYYY')}
+                                    &nbsp;
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className='auto-style2'>&nbsp;</td>
+                                  <td align='left' className='auto-style3'>
+                                    &nbsp;
+                                  </td>
+                                  <td
+                                    align='left'
+                                    className='auto-style3'
+                                    style={{ width: '55%' }}>
+                                    &nbsp;&nbsp;
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className='auto-style2'>3.</td>
+                                  <td align='left' className='auto-style3'>
+                                    FULL NAME OF THE EMPLOYEE
+                                  </td>
+                                  <td align='left' className='auto-style3'>
+                                    :&nbsp;&nbsp;
+                                    {data?.passenger_name}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className='auto-style2'>&nbsp;</td>
+                                  <td align='left' className='auto-style3'>
+                                    &nbsp;
+                                  </td>
+                                  <td
+                                    align='left'
+                                    className='auto-style3'
+                                    style={{ width: '55%' }}>
+                                    &nbsp;&nbsp;
+                                  </td>
+                                </tr>
 
                                 <tr>
                                   <td style={{ width: '5%' }}>4.</td>
@@ -2410,25 +2163,25 @@ function KsaVisaManualForm(props) {
                           </td>
                         </tr>
 
-												<tr>
-													<td
-														style={{
-															fontWeight: 'bold',
-															fontSize: 'small',
-															textAlign: 'center'
-														}}
-													/>
-												</tr>
-												<tr>
-													<td align="left">
-														<table width="95%">
-															<tr>
-																<td>NAME OF COMPANY: M/S</td>
-																<td>
-																	:&nbsp;
-																	{data?.spouse_name}
-																</td>
-															</tr>
+                        <tr>
+                          <td
+                            style={{
+                              fontWeight: 'bold',
+                              fontSize: 'small',
+                              textAlign: 'center',
+                            }}
+                          />
+                        </tr>
+                        <tr>
+                          <td align='left'>
+                            <table width='95%'>
+                              <tr>
+                                <td>NAME OF COMPANY: M/S</td>
+                                <td>
+                                  :&nbsp;
+                                  {data?.sponsor_name_arabic}
+                                </td>
+                              </tr>
 
                               <tr>
                                 <td>HERE BY APPOINTED MR/MRS</td>
