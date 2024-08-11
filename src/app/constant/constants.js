@@ -728,11 +728,14 @@ export const CREATE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_se
 
 export const GET_SITESETTINGID = `${BASE_URL}/general_setting/api/v1/general_setting/`;
 
+export const GET_SITESETTING_BY_ID = `${BASE_URL}/general_setting/api/v1/general_setting/`;
+
 export const GET_SITESETTINGS = `${BASE_URL}/general_setting/api/v1/general_setting/all/`;
 
 export const UPDATE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_setting/update/`;
 
 export const DELETE_SITESETTING = `${BASE_URL}/general_setting/api/v1/general_setting/delete/`;
+export const DELETE_SITESETTING_MULTIPLE = `${BASE_URL}/general_setting/api/v1/general_setting/delete/`;
 
 // slidersettings
 export const CREATE_SLIDERSETTING = `${BASE_URL}/homepage_slider/api/v1/homepage_slider/create/`;

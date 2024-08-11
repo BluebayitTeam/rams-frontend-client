@@ -330,17 +330,11 @@ function ReceiptVoucherForm() {
 				)}
 			/>
 
-			<Controller
+			<CustomDatePicker
 				name="receipt_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Receipt Date"
-						/>
-					);
-				}}
+				label="Receipt Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 
 			<div className="flex">
@@ -485,21 +479,13 @@ function ReceiptVoucherForm() {
 					)}
 				/>
 
-				<Controller
+				<CustomDatePicker
 					name="rp_date"
-					control={control}
-					render={({ field }) => (
-						<CustomDatePicker
-							field={field}
-							label="Payment Date"
-							required
-							className="mt-8 mb-16 w-full"
-							error={!!errors.rp_date}
-							helperText={errors?.rp_date?.message}
-							placeholder="DD-MM-YYYY"
-						/>
-					)}
+					label="Payment Date"
+					required
+					placeholder="DD-MM-YYYY"
 				/>
+
 				<Controller
 					name="rp_bank_id"
 					control={control}
@@ -1017,21 +1003,13 @@ function ReceiptVoucherForm() {
 												)}
 											/>
 
-											<Controller
+											<CustomDatePicker
 												name={`items.${selectedId}.cheque_date`}
-												control={control}
-												render={({ field }) => (
-													<CustomDatePicker
-														field={field}
-														label="PDC Issue Date"
-														required
-														className="mt-8 mb-16 w-full"
-														error={!!errors.date_of_birth}
-														helperText={errors?.date_of_birth?.message}
-														placeholder="DD-MM-YYYY"
-													/>
-												)}
+												label="Cheque Date"
+												required
+												placeholder="DD-MM-YYYY"
 											/>
+
 											<Controller
 												name={`items.${selectedId}.pdc_note`}
 												control={control}

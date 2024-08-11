@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
 /**
- * The departments header.
+ * The siteSettings header.
  */
-function DepartmentsHeader(props) {
+function SiteSettingsHeader(props) {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ function DepartmentsHeader(props) {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Departments</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">SiteSettings</Typography>
 			</motion.span>
 
 			<div className="flex w-full sm:w-auto flex-1 items-center justify-end space-x-8">
@@ -43,7 +43,7 @@ function DepartmentsHeader(props) {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search departments"
+						placeholder="Search siteSettings"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -70,7 +70,7 @@ function DepartmentsHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/department/departments/new"
+						to="/apps/siteSetting/siteSettings/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>
@@ -81,4 +81,4 @@ function DepartmentsHeader(props) {
 	);
 }
 
-export default DepartmentsHeader;
+export default SiteSettingsHeader;

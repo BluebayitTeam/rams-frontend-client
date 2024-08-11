@@ -432,18 +432,12 @@ function PayorderClearingsTable(props) {
 										/>
 									)}
 								/>
-								<Controller
+
+								<CustomDatePicker
 									name="cheque_date"
-									control={control}
-									render={({ field }) => {
-										return (
-											<CustomDatePicker
-												field={field}
-												id="cheque_date"
-												label="Cheque Date"
-											/>
-										);
-									}}
+									label="Cheque Date"
+									required
+									placeholder="DD-MM-YYYY"
 								/>
 
 								<Controller

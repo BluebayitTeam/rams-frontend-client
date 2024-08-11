@@ -142,17 +142,11 @@ function JournalForm() {
 				)}
 			/>
 
-			<Controller
+			<CustomDatePicker
 				name="journal_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Journal Date"
-						/>
-					);
-				}}
+				label="Journal Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 
 			<Grid

@@ -129,14 +129,13 @@ useEffect(() => {
   
   
   return (
-	  <div>
-		   
+    <div>
       <Controller
-        name="current_status"
+        name='current_status'
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            className="mt-8 mb-16 w-full"
+            className='mt-8 mb-16 w-full'
             freeSolo
             value={
               value ? currentStatuss.find((data) => data.id === value) : null
@@ -149,11 +148,10 @@ useEffect(() => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="Select Current Status"
-                label="Current Status"
-                
+                placeholder='Select Current Status'
+                label='Current Status'
                 helperText={errors?.current_status?.message}
-                variant="outlined"
+                variant='outlined'
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -161,18 +159,18 @@ useEffect(() => {
             )}
           />
         )}
-		  />
-		{/* Radio Button work start here */}
-       <Controller
-        name="selected_status"
+      />
+      {/* Radio Button work start here */}
+      <Controller
+        name='selected_status'
         control={control}
-        defaultValue="medical_result"
-        className="my-10"
+        defaultValue='medical_result'
+        className='my-10'
         render={({ field }) => (
           <RadioGroup
             value={field.value}
             style={{ flexDirection: 'row' }}
-            id="selected_status"
+            id='selected_status'
             onChange={(e) => {
               field.onChange(e.target.value);
               setMltPassengerList([]);
@@ -184,121 +182,107 @@ useEffect(() => {
               setValue('police_clearance_status', null);
               setValue('driving_license_status', null);
               setValue('finger_status', null);
-            }}
-          >
+            }}>
             <FormLabel
               disabled
-              style={{ marginRight: '1rem', marginTop: '1.5rem' }}
-            >
+              style={{ marginRight: '1rem', marginTop: '1.5rem' }}>
               Select Status
             </FormLabel>
             <FormControlLabel
-              value="medical_result"
+              value='medical_result'
               control={<Radio />}
-              label="Medical"
+              label='Medical'
             />
             <FormControlLabel
-              value="stamping_status"
+              value='stamping_status'
               control={<Radio />}
-              label="Visa"
+              label='Visa'
             />
             <FormControlLabel
-              value="training_card_status"
+              value='training_card_status'
               control={<Radio />}
-              label="Training"
+              label='Training'
             />
             <FormControlLabel
-              value="man_power_status"
+              value='man_power_status'
               control={<Radio />}
-              label="Manpower"
+              label='Manpower'
             />
             <FormControlLabel
-              value="police_clearance_status"
+              value='police_clearance_status'
               control={<Radio />}
-              label="Police Clearance"
+              label='Police Clearance'
             />
             <FormControlLabel
-              value="driving_license_status"
+              value='driving_license_status'
               control={<Radio />}
-              label="Driving License"
+              label='Driving License'
             />
             <FormControlLabel
-              value="finger_status"
+              value='finger_status'
               control={<Radio />}
-              label="Finger"
+              label='Finger'
             />
           </RadioGroup>
         )}
       />
 
-       <div>
-        <Controller
-          name="date"
-          control={control}
-          render={({ field }) => (
-            <CustomDatePicker
-              field={field}
-              label={getDateFieldLabel()}
-              required
-              className="mt-8 mb-16 w-full"
-              error={!!errors.date}
-              helperText={errors?.date?.message}
-              placeholder="DD-MM-YYYY"
-            />
-          )}
+      <div>
+      
+
+        <CustomDatePicker
+          name='date'
+          label={getDateFieldLabel()}
+          required
+          placeholder='DD-MM-YYYY'
         />
       </div>
-     
-     
-		  {watch('selected_status') === 'medical_result' && (
-				<div>
-					 <Controller
-          name="medical_result"
-          control={control}
+
+      {watch('selected_status') === 'medical_result' && (
+        <div>
+          <Controller
+            name='medical_result'
+            control={control}
             render={({ field: { onChange, value } }) => (
-            
-            <Autocomplete
-              className="mt-8 mb-16 w-full	"
-              freeSolo
-              value={
-                value ? medicalResults.find((data) => data.id === value) : null
-              }
-              options={medicalResults}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-              onChange(newValue?.id);
-              setValue('status_value', newValue?.id)
-
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Select Medical Status"
-                  label="Medical Status"
-                  
-                  id="medical_result"
-                  helperText={errors?.current_status?.message}
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
+              <Autocomplete
+                className='mt-8 mb-16 w-full	'
+                freeSolo
+                value={
+                  value
+                    ? medicalResults.find((data) => data.id === value)
+                    : null
+                }
+                options={medicalResults}
+                getOptionLabel={(option) => `${option.name}`}
+                onChange={(event, newValue) => {
+                  onChange(newValue?.id);
+                  setValue('status_value', newValue?.id);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder='Select Medical Status'
+                    label='Medical Status'
+                    id='medical_result'
+                    helperText={errors?.current_status?.message}
+                    variant='outlined'
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            )}
           />
-          
-          
-
-					
-				</div>
+        </div>
       )}
-      {watch('selected_status') === 'stamping_status' &&<Controller
-          name="stamping_status"
+      {watch('selected_status') === 'stamping_status' && (
+        <Controller
+          name='stamping_status'
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-full"
+              className='mt-8 mb-16 w-full'
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -307,51 +291,16 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('status_value', newValue?.id)
-
+                setValue('status_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Select Visa Status"
-                  label="Visa Status"
-                  id="stamping_status"
+                  placeholder='Select Visa Status'
+                  label='Visa Status'
+                  id='stamping_status'
                   helperText={errors?.stamping_status?.message}
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />}
-     
-  {watch('selected_status') === 'training_card_status' &&       <Controller
-          name="training_card_status"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              className="mt-8 mb-16 w-full	"
-              freeSolo
-              value={
-                value ? doneNotDone.find((data) => data.id === value) : null
-              }
-              options={doneNotDone}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-                                setValue('status_value', newValue?.id)
-
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Select Training Status"
-                  label="Training Status"
-                  id="training_card_status"
-                  helperText={errors?.training_card_status?.message}
-                  variant="outlined"
+                  variant='outlined'
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -360,14 +309,15 @@ useEffect(() => {
             />
           )}
         />
-    }
-    
-      {watch('selected_status') === 'man_power_status' &&   <Controller
-          name="man_power_status"
+      )}
+
+      {watch('selected_status') === 'training_card_status' && (
+        <Controller
+          name='training_card_status'
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-full	"
+              className='mt-8 mb-16 w-full	'
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -376,16 +326,51 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                setValue('status_value', newValue?.id)
+                setValue('status_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Select Manpower Status"
-                  label="Manpower Status"
+                  placeholder='Select Training Status'
+                  label='Training Status'
+                  id='training_card_status'
+                  helperText={errors?.training_card_status?.message}
+                  variant='outlined'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          )}
+        />
+      )}
+
+      {watch('selected_status') === 'man_power_status' && (
+        <Controller
+          name='man_power_status'
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Autocomplete
+              className='mt-8 mb-16 w-full	'
+              freeSolo
+              value={
+                value ? doneNotDone.find((data) => data.id === value) : null
+              }
+              options={doneNotDone}
+              getOptionLabel={(option) => `${option.name}`}
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+                setValue('status_value', newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder='Select Manpower Status'
+                  label='Manpower Status'
                   id='man_power_status'
                   helperText={errors?.man_power_status?.message}
-                  variant="outlined"
+                  variant='outlined'
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -393,14 +378,16 @@ useEffect(() => {
               )}
             />
           )}
-        />}
-  
-     {watch('selected_status') === 'police_clearance_status' &&    <Controller
-          name="police_clearance_status"
+        />
+      )}
+
+      {watch('selected_status') === 'police_clearance_status' && (
+        <Controller
+          name='police_clearance_status'
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-full	"
+              className='mt-8 mb-16 w-full	'
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -409,17 +396,16 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('status_value', newValue?.id)
-
+                setValue('status_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Select Police Clearance Status"
-                  label="Police Clearance Status"
-                 id='police_clearance_status'
+                  placeholder='Select Police Clearance Status'
+                  label='Police Clearance Status'
+                  id='police_clearance_status'
                   helperText={errors?.police_clearance_status?.message}
-                  variant="outlined"
+                  variant='outlined'
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -427,16 +413,16 @@ useEffect(() => {
               )}
             />
           )}
-        />}
-    
+        />
+      )}
 
-      
-       {watch('selected_status') === 'driving_license_status' &&      <Controller
-          name="driving_license_status"
+      {watch('selected_status') === 'driving_license_status' && (
+        <Controller
+          name='driving_license_status'
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-full	"
+              className='mt-8 mb-16 w-full	'
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -445,17 +431,16 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('status_value', newValue?.id)
-
+                setValue('status_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Select Driving License Status"
-                  label="Driving License Status"
+                  placeholder='Select Driving License Status'
+                  label='Driving License Status'
                   id='driving_license_status'
                   helperText={errors?.driving_license_status?.message}
-                  variant="outlined"
+                  variant='outlined'
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -463,14 +448,16 @@ useEffect(() => {
               )}
             />
           )}
-        />}
+        />
+      )}
 
-   {watch('selected_status') === 'finger_status' &&      <Controller
-          name="finger_status"
+      {watch('selected_status') === 'finger_status' && (
+        <Controller
+          name='finger_status'
           control={control}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              className="mt-8 mb-16 w-full	"
+              className='mt-8 mb-16 w-full	'
               freeSolo
               value={
                 value ? doneNotDone.find((data) => data.id === value) : null
@@ -479,17 +466,16 @@ useEffect(() => {
               getOptionLabel={(option) => `${option.name}`}
               onChange={(event, newValue) => {
                 onChange(newValue?.id);
-                                setValue('status_value', newValue?.id)
-
+                setValue('status_value', newValue?.id);
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Select Finger Status"
-                  label="Finger Status"
+                  placeholder='Select Finger Status'
+                  label='Finger Status'
                   id='finger_status'
                   helperText={errors?.finger_status?.message}
-                  variant="outlined"
+                  variant='outlined'
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -497,17 +483,18 @@ useEffect(() => {
               )}
             />
           )}
-        />}
+        />
+      )}
 
       <Controller
-        name="passenger"
+        name='passenger'
         control={control}
         render={({ field: { value, onChange } }) => (
           <Autocomplete
-            className="mt-8 mb-16 w-full "
+            className='mt-8 mb-16 w-full '
             freeSolo
             value={value ? passengers.find((data) => data.id === value) : null}
-            options={(passengers) || []}
+            options={passengers || []}
             getOptionLabel={(option) =>
               `${option?.passenger_name} ${option?.passenger_id}   ${option?.passport_no}  ${option?.post_office}`
             }
@@ -518,11 +505,11 @@ useEffect(() => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="Select Passenger"
-                label="Passenger"
+                placeholder='Select Passenger'
+                label='Passenger'
                 error={!value}
                 helperText={errors?.passenger?.message}
-                variant="outlined"
+                variant='outlined'
                 InputLabelProps={{
                   shrink: true,
                 }}

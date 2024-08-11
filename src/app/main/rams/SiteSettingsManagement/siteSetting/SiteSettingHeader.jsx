@@ -10,55 +10,55 @@ import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import {
-	useCreateDepartmentMutation,
-	useDeleteDepartmentMutation,
-	useUpdateDepartmentMutation
-} from '../DepartmentsApi';
+	useCreateSiteSettingMutation,
+	useDeleteSiteSettingMutation,
+	useUpdateSiteSettingMutation
+} from '../SiteSettingsApi';
 
 /**
- * The department header.
+ * The siteSetting header.
  */
-function DepartmentHeader() {
+function SiteSettingHeader() {
 	const routeParams = useParams();
-	const { departmentId } = routeParams;
-	const [createDepartment] = useCreateDepartmentMutation();
-	const [saveDepartment] = useUpdateDepartmentMutation();
-	const [removeDepartment] = useDeleteDepartmentMutation();
+	const { siteSettingId } = routeParams;
+	const [createSiteSetting] = useCreateSiteSettingMutation();
+	const [saveSiteSetting] = useUpdateSiteSettingMutation();
+	const [removeSiteSetting] = useDeleteSiteSettingMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteDepartment');
-	const handleUpdate = localStorage.getItem('updateDepartment');
+	const handleDelete = localStorage.getItem('deleteSiteSetting');
+	const handleUpdate = localStorage.getItem('updateSiteSetting');
 
-	function handleUpdateDepartment() {
-		saveDepartment(getValues()).then((data) => {
+	function handleUpdateSiteSetting() {
+		saveSiteSetting(getValues()).then((data) => {
 			UpdatedSuccessfully();
-			navigate(`/apps/department/departments`);
+			navigate(`/apps/siteSetting/siteSettings`);
 		});
 	}
 
-	function handleCreateDepartment() {
-		createDepartment(getValues())
+	function handleCreateSiteSetting() {
+		createSiteSetting(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/department/departments`);
+				navigate(`/apps/siteSetting/siteSettings`);
 			});
 	}
 
-	function handleRemoveDepartment(dispatch) {
-		removeDepartment(departmentId);
+	function handleRemoveSiteSetting(dispatch) {
+		removeSiteSetting(siteSettingId);
 		DeletedSuccessfully();
-		navigate('/apps/department/departments');
+		navigate('/apps/siteSetting/siteSettings');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/department/departments`);
+		navigate(`/apps/siteSetting/siteSettings`);
 	}
 
 	return (
@@ -72,7 +72,7 @@ function DepartmentHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/department/departments"
+						to="/apps/siteSetting/siteSettings"
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>
@@ -80,7 +80,7 @@ function DepartmentHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Departments</span>
+						<span className="flex mx-4 font-medium">SiteSettings</span>
 					</Typography>
 				</motion.div>
 
@@ -99,7 +99,7 @@ function DepartmentHeader() {
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/department-image-placeholder.png"
+								src="assets/images/apps/ecommerce/siteSetting-image-placeholder.png"
 								alt={name}
 							/>
 						)}
@@ -110,13 +110,13 @@ function DepartmentHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'New Department'}
+							{name || 'New SiteSetting'}
 						</Typography>
 						<Typography
 							variant="caption"
 							className="font-medium"
 						>
-							Department Detail
+							SiteSetting Detail
 						</Typography>
 					</motion.div>
 				</div>
@@ -127,46 +127,46 @@ function DepartmentHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteDepartment' && departmentId !== 'new' && (
+				{handleDelete === 'deleteSiteSetting' && siteSettingId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this department?
+						Do you want to remove this siteSetting?
 					</Typography>
 				)}
-				{handleDelete === 'deleteDepartment' && departmentId !== 'new' && (
+				{handleDelete === 'deleteSiteSetting' && siteSettingId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveDepartment}
+						onClick={handleRemoveSiteSetting}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{departmentId === 'new' && (
+				{siteSettingId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateDepartment}
+						onClick={handleCreateSiteSetting}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteDepartment' &&
-					handleUpdate === 'updateDepartment' &&
-					departmentId !== 'new' && (
+				{handleDelete !== 'deleteSiteSetting' &&
+					handleUpdate === 'updateSiteSetting' &&
+					siteSettingId !== 'new' && (
 						<Button
 							className="whitespace-nowrap mx-4"
 							color="secondary"
 							variant="contained"
 							style={{ backgroundColor: '#4dc08e', color: 'white' }}
-							onClick={handleUpdateDepartment}
+							onClick={handleUpdateSiteSetting}
 						>
 							Update
 						</Button>
@@ -184,4 +184,4 @@ function DepartmentHeader() {
 	);
 }
 
-export default DepartmentHeader;
+export default SiteSettingHeader;

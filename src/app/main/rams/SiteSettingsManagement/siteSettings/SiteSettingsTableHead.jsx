@@ -9,10 +9,10 @@ import { Checkbox, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { Delete } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { useDeleteDepartmentsMutation } from '../DepartmentsApi';
+import { useDeleteSiteSettingsMutation } from '../SiteSettingsApi';
 
 /**
- * The departments table head component.
+ * The siteSettings table head component.
  */
 
 const rows = [
@@ -24,45 +24,59 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'name',
+		id: 'sitename',
 		align: 'left',
 		disablePadding: false,
-		label: 'Name',
+		label: 'Site Name',
+		sort: true
+	},
+	{
+		id: 'email',
+		align: 'left',
+		disablePadding: false,
+		label: 'Email',
+		sort: true
+	},
+	{
+		id: 'phone',
+		align: 'left',
+		disablePadding: false,
+		label: 'Phone',
 		sort: true
 	},
 	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
 	}
 ];
 
-function DepartmentsTableHead(props) {
-	const { selectedDepartmentIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+function SiteSettingsTableHead(props) {
+	const { selectedSiteSettingIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
 
 	console.log('onMenuItemClick', onMenuItemClick);
 
-	console.log('selectedDepartmentIds', selectedDepartmentIds);
+	console.log('selectedSiteSettingIds', selectedSiteSettingIds);
 
-	const [removeDepartments] = useDeleteDepartmentsMutation();
-	const numSelected = selectedDepartmentIds.length;
-	const [selectedDepartmentsMenu, setSelectedDepartmentsMenu] = useState(null);
+	const [removeSiteSettings] = useDeleteSiteSettingsMutation();
+	const numSelected = selectedSiteSettingIds.length;
+	const [selectedSiteSettingsMenu, setSelectedSiteSettingsMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedDepartmentsMenu(event) {
-		setSelectedDepartmentsMenu(event.currentTarget);
+	function openSelectedSiteSettingsMenu(event) {
+		setSelectedSiteSettingsMenu(event.currentTarget);
 	}
 
-	function closeSelectedDepartmentsMenu() {
-		setSelectedDepartmentsMenu(null);
+	function closeSelectedSiteSettingsMenu() {
+		setSelectedSiteSettingsMenu(null);
 	}
 
 	function handleDeleteMultipleItem() {
-		removeDepartments(selectedDepartmentIds).then((data) => {
+		removeSiteSettings(selectedSiteSettingIds).then((data) => {
 			Swal.fire({
 				position: 'top-center',
 				icon: 'success',
@@ -100,7 +114,7 @@ function DepartmentsTableHead(props) {
 						>
 							<IconButton
 								aria-haspopup="true"
-								onClick={openSelectedDepartmentsMenu}
+								onClick={openSelectedSiteSettingsMenu}
 								size="large"
 							>
 								<Delete
@@ -109,17 +123,17 @@ function DepartmentsTableHead(props) {
 								/>
 							</IconButton>
 							{/* <Menu
-								id="selectedDepartmentsMenu"
-								anchorEl={selectedDepartmentsMenu}
-								open={Boolean(selectedDepartmentsMenu)}
-								onClose={closeSelectedDepartmentsMenu}
+								id="selectedSiteSettingsMenu"
+								anchorEl={selectedSiteSettingsMenu}
+								open={Boolean(selectedSiteSettingsMenu)}
+								onClose={closeSelectedSiteSettingsMenu}
 							>
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											removeDepartments(selectedDepartmentIds);
+											removeSiteSettings(selectedSiteSettingIds);
 											onMenuItemClick();
-											closeSelectedDepartmentsMenu();
+											closeSelectedSiteSettingsMenu();
 										}}
 									>
 										<ListItemIcon>
@@ -177,4 +191,4 @@ function DepartmentsTableHead(props) {
 	);
 }
 
-export default DepartmentsTableHead;
+export default SiteSettingsTableHead;

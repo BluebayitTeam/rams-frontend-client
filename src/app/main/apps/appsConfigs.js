@@ -85,6 +85,7 @@ import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/Recru
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
 import ManpowerSubmissionListAppConfig from '../rams/ManpowerSubmissionListsManagement/ManpowerSubmissionListAppConfig';
 import BranchAppConfig from '../rams/BranchsManagement/BranchAppConfig';
+import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 
 /**
  * The list of application configurations.
@@ -143,6 +144,7 @@ const appsConfigs = [
 	SubscriptionLoanAppConfig,
 	MultipleVisaEntryAppConfig,
 	DepartmentAppConfig,
+	SiteSettingAppConfig,
 	BranchAppConfig,
 	PoliceStationAppConfig,
 	RecruitingAgencyAppConfig,

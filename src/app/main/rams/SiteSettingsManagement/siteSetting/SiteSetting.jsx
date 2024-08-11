@@ -9,33 +9,33 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import DepartmentHeader from './DepartmentHeader';
-import DepartmentModel from './models/DepartmentModel';
-import { useGetDepartmentQuery } from '../DepartmentsApi';
-import DepartmentForm from './DepartmentForm';
+import SiteSettingHeader from './SiteSettingHeader';
+import SiteSettingModel from './models/SiteSettingModel';
+import { useGetSiteSettingQuery } from '../SiteSettingsApi';
+import SiteSettingForm from './SiteSettingForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
 	first_name: z
 		.string()
-		.nonempty('You must enter a department name')
-		.min(5, 'The department name must be at least 5 characters')
+		.nonempty('You must enter a siteSetting name')
+		.min(5, 'The siteSetting name must be at least 5 characters')
 });
 
-function Department() {
+function SiteSetting() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { departmentId } = routeParams;
+	const { siteSettingId } = routeParams;
 
 	const {
-		data: department,
+		data: siteSetting,
 		isLoading,
 		isError
-	} = useGetDepartmentQuery(departmentId, {
-		skip: !departmentId || departmentId === 'new'
+	} = useGetSiteSettingQuery(siteSettingId, {
+		skip: !siteSettingId || siteSettingId === 'new'
 	});
-	console.log('departmentId', department, departmentId);
+	console.log('siteSettingId', siteSetting, siteSettingId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -46,16 +46,16 @@ function Department() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (departmentId === 'new') {
-			reset(DepartmentModel({}));
+		if (siteSettingId === 'new') {
+			reset(SiteSettingModel({}));
 		}
-	}, [departmentId, reset]);
+	}, [siteSettingId, reset]);
 
 	useEffect(() => {
-		if (department) {
-			reset({ ...department });
+		if (siteSetting) {
+			reset({ ...siteSetting });
 		}
-	}, [department, reset, department?.id]);
+	}, [siteSetting, reset, siteSetting?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -66,9 +66,9 @@ function Department() {
 	}
 
 	/**
-	 * Show Message if the requested departments is not exists
+	 * Show Message if the requested siteSettings is not exists
 	 */
-	if (isError && departmentId !== 'new') {
+	if (isError && siteSettingId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -79,16 +79,16 @@ function Department() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such department!
+					There is no such siteSetting!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/department/departments"
+					to="/apps/siteSetting/siteSettings"
 					color="inherit"
 				>
-					Go to Departments Page
+					Go to SiteSettings Page
 				</Button>
 			</motion.div>
 		);
@@ -97,11 +97,11 @@ function Department() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<DepartmentHeader />}
+				header={<SiteSettingHeader />}
 				content={
 					<div className="p-16 ">
 						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<DepartmentForm departmentId={departmentId} />
+							<SiteSettingForm siteSettingId={siteSettingId} />
 						</div>
 					</div>
 				}
@@ -111,4 +111,4 @@ function Department() {
 	);
 }
 
-export default Department;
+export default SiteSetting;

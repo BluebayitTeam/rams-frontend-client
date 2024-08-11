@@ -73,22 +73,17 @@ function ManpowerNoteSheetForm(props) {
 	// }, [watch('man_power_date')]);
 
 	return (
-		<div>
-			<Controller
-				name="man_power_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Man Power Sheet  Date"
-							required
-						/>
-					);
-				}}
-			/>
-		</div>
-	);
+    <div>
+     
+
+      <CustomDatePicker
+        name='man_power_date'
+        label='Man Power Sheet  Date'
+        required
+        placeholder='DD-MM-YYYY'
+      />
+    </div>
+  );
 }
 
 export default ManpowerNoteSheetForm;

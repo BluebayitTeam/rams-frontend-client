@@ -75,17 +75,12 @@ function PayorderClearingForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+
+			<CustomDatePicker
 				name="date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Date"
-						/>
-					);
-				}}
+				label="Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 
 			<Controller
@@ -168,18 +163,12 @@ function PayorderClearingForm(props) {
 					);
 				}}
 			/>
-			<Controller
+
+			<CustomDatePicker
 				name="cheque_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							fullWidth
-							field={field}
-							label="PDC Issue Date"
-						/>
-					);
-				}}
+				label="PDC Issue Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 
 			<Controller
