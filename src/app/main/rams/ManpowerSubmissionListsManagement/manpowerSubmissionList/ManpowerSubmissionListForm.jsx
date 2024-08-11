@@ -11,6 +11,7 @@ import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
+import { useNavigate } from 'react-router';
 import { useCreateManpowerSubmissionListMutation } from '../ManpowerSubmissionListsApi';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,12 +44,12 @@ const useStyles = makeStyles((theme) => ({
 function ManpowerSubmissionListForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
+	const { formState, watch, getValues, reset } = methods;
 	console.log('getValues', getValues());
 	const { errors } = formState;
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
-
+	const navigate = useNavigate();
 	const classes = useStyles({ isPassenger: watch('passenger') });
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -69,16 +70,13 @@ function ManpowerSubmissionListForm(props) {
 			})
 			.catch((error) => {
 				if (error && error.response && error.response.data) {
-					console.log('AxiosError:', error.response.data.passenger);
 					CustomNotification('error', `${error.response.data.passenger}`);
-				} else {
-					console.log('An unexpected error occurred:', error);
 				}
 			});
 	}
 
 	function handleCancel() {
-		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
+		reset({});
 	}
 
 	return (

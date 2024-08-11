@@ -5,8 +5,8 @@ import {
 	CREATE_MANPOWERLIST,
 	DELETE_DEPARTMENT,
 	DELETE_MANPOWERLIST,
-	GET_DEPARTMENTS,
 	MANPOWERLIST_BY_PASSENGER_ID,
+	MANPOWERSBLISTS_BY_DATE,
 	UPDATE_MANPOWERLIST
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -21,7 +21,10 @@ const ManpowerSubmissionListApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getManpowerSubmissionLists: build.query({
-				query: ({ page, size, searchKey }) => ({ url: GET_DEPARTMENTS, params: { page, size, searchKey } }),
+				query: ({ manPowerDate }) => ({
+					url: MANPOWERSBLISTS_BY_DATE,
+					params: { manPowerDate }
+				}),
 				providesTags: ['manpowerSubmissionLists']
 			}),
 			deleteManpowerSubmissionLists: build.mutation({
