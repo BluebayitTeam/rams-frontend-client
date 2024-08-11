@@ -83,6 +83,7 @@ import DistrictAppConfig from '../rams/DistrictsManagement/DistrictAppConfig';
 import CountryAppConfig from '../rams/CountryssManagement/CountryAppConfig';
 import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
+import ManpowerSubmissionListAppConfig from '../rams/ManpowerSubmissionListsManagement/ManpowerSubmissionListAppConfig';
 
 /**
  * The list of application configurations.
@@ -106,6 +107,7 @@ const appsConfigs = [
 	KuwaitVisaAppConfig,
 	KsaVisaManualAppConfig,
 	// ManpowerNoteSheetAppConfig,
+	ManpowerSubmissionListAppConfig,
 	DepartureAppConfig,
 	FingerAppConfig,
 	ProfileAppConfig,

@@ -1,0 +1,114 @@
+import FuseLoading from '@fuse/core/FuseLoading';
+import FusePageCarded from '@fuse/core/FusePageCarded';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { FormProvider, useForm } from 'react-hook-form';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import ManpowerSubmissionListHeader from './ManpowerSubmissionListHeader';
+import ManpowerSubmissionListModel from './models/ManpowerSubmissionListModel';
+import { useGetManpowerSubmissionListQuery } from '../ManpowerSubmissionListsApi';
+import ManpowerSubmissionListForm from './ManpowerSubmissionListForm';
+/**
+ * Form Validation Schema
+ */
+const schema = z.object({
+	first_name: z
+		.string()
+		.nonempty('You must enter a manpowerSubmissionList name')
+		.min(5, 'The manpowerSubmissionList name must be at least 5 characters')
+});
+
+function ManpowerSubmissionList() {
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const routeParams = useParams();
+	const { manpowerSubmissionListId } = routeParams;
+
+	const {
+		data: manpowerSubmissionList,
+		isLoading,
+		isError
+	} = useGetManpowerSubmissionListQuery(manpowerSubmissionListId, {
+		skip: !manpowerSubmissionListId || manpowerSubmissionListId === 'new'
+	});
+	console.log('manpowerSubmissionListId', manpowerSubmissionList, manpowerSubmissionListId);
+
+	const [tabValue, setTabValue] = useState(0);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: zodResolver(schema)
+	});
+	const { reset, watch } = methods;
+	const form = watch();
+	useEffect(() => {
+		if (manpowerSubmissionListId === 'new') {
+			reset(ManpowerSubmissionListModel({}));
+		}
+	}, [manpowerSubmissionListId, reset]);
+
+	useEffect(() => {
+		if (manpowerSubmissionList) {
+			reset({ ...manpowerSubmissionList });
+		}
+	}, [manpowerSubmissionList, reset, manpowerSubmissionList?.id]);
+
+	function handleTabChange(event, value) {
+		setTabValue(value);
+	}
+
+	if (isLoading) {
+		return <FuseLoading />;
+	}
+
+	/**
+	 * Show Message if the requested manpowerSubmissionLists is not exists
+	 */
+	if (isError && manpowerSubmissionListId !== 'new') {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography
+					color="text.secondary"
+					variant="h5"
+				>
+					There is no such manpowerSubmissionList!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/manpowerSubmissionList/manpowerSubmissionLists"
+					color="inherit"
+				>
+					Go to ManpowerSubmissionLists Page
+				</Button>
+			</motion.div>
+		);
+	}
+
+	return (
+		<FormProvider {...methods}>
+			<FusePageCarded
+				header={<ManpowerSubmissionListHeader />}
+				content={
+					<div className="p-16 ">
+						<div className={tabValue !== 0 ? 'hidden' : ''}>
+							<ManpowerSubmissionListForm manpowerSubmissionListId={manpowerSubmissionListId} />
+						</div>
+					</div>
+				}
+				scroll={isMobile ? 'normal' : 'content'}
+			/>
+		</FormProvider>
+	);
+}
+
+export default ManpowerSubmissionList;
