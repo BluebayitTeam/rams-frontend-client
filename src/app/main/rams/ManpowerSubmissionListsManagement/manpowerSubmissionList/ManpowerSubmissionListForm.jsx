@@ -10,6 +10,8 @@ import { makeStyles } from '@mui/styles';
 import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
+import { useCreateManpowerSubmissionListMutation } from '../ManpowerSubmissionListsApi';
 
 const useStyles = makeStyles((theme) => ({
 	searchContainer: ({ isPassenger }) => ({
@@ -41,9 +43,11 @@ const useStyles = makeStyles((theme) => ({
 function ManpowerSubmissionListForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch, setValue } = methods;
+	const { formState, watch, getValues } = methods;
+	console.log('getValues', getValues());
 	const { errors } = formState;
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
+	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
 	const classes = useStyles({ isPassenger: watch('passenger') });
 	useEffect(() => {
@@ -53,27 +57,28 @@ function ManpowerSubmissionListForm(props) {
 		dispatch(getCurrentStatuss());
 	}, []);
 
-	function handleSaveManpowerSubmissionList() {
-		dispatch(saveManpowerSubmissionList(getValues())).then((res) => {
-			if (res.payload?.data?.id) {
-				if (res.payload?.data?.id) {
-					localStorage.setItem('manpowerSubmissionListAlert', 'saveManpowerSubmissionList');
-					// history.push('/apps/manpowerSubmissionList-management/manpowerSubmissionList/new');
-					// dispatch(setAlert(saveAlertMsg));
-					dispatch(getManpowerSubmissionList({ man_power_date: getValues().man_power_date }));
+	function handleCreateManpowerSubmissionList() {
+		createManpowerSubmissionList(getValues())
+			.unwrap()
+			.then((data) => {
+				if (data) {
+					AddedSuccessfully();
 				}
-			} else {
-				setError('passenger', {
-					type: 'manual',
-					message: `This Passenger has already assigned`
-				});
-			}
-		});
+
+				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
+			})
+			.catch((error) => {
+				if (error && error.response && error.response.data) {
+					console.log('AxiosError:', error.response.data.passenger);
+					CustomNotification('error', `${error.response.data.passenger}`);
+				} else {
+					console.log('An unexpected error occurred:', error);
+				}
+			});
 	}
 
 	function handleCancel() {
-		// history.push('/apps/manpowerSubmissionList-management/manpowerSubmissionList/new');
-		reset({});
+		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 	}
 
 	return (
@@ -139,7 +144,7 @@ function ManpowerSubmissionListForm(props) {
 				variant="contained"
 				color="secondary"
 				// disabled={_.isEmpty(dirtyFields) || !isValid}
-				onClick={handleSaveManpowerSubmissionList}
+				onClick={handleCreateManpowerSubmissionList}
 			>
 				Save
 			</Button>

@@ -2,7 +2,6 @@ import _ from '@lodash';
 
 const ManpowerSubmissionListModel = (data) =>
 	_.defaults(data || {}, {
-		id: _.uniqueId('manpowerSubmissionList-'),
 		agency: '',
 		country: '',
 		passenger: '',

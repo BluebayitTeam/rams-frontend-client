@@ -1,17 +1,8 @@
-import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import {
-	useCreateManpowerSubmissionListMutation,
-	useDeleteManpowerSubmissionListMutation,
-	useUpdateManpowerSubmissionListMutation
-} from '../ManpowerSubmissionListsApi';
+import { useParams } from 'react-router-dom';
 
 /**
  * The manpowerSubmissionList header.
@@ -19,45 +10,11 @@ import {
 function ManpowerSubmissionListHeader() {
 	const routeParams = useParams();
 	const { manpowerSubmissionListId } = routeParams;
-	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
-	const [saveManpowerSubmissionList] = useUpdateManpowerSubmissionListMutation();
-	const [removeManpowerSubmissionList] = useDeleteManpowerSubmissionListMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteManpowerSubmissionList');
-	const handleUpdate = localStorage.getItem('updateManpowerSubmissionList');
-
-	function handleUpdateManpowerSubmissionList() {
-		saveManpowerSubmissionList(getValues()).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
-		});
-	}
-
-	function handleCreateManpowerSubmissionList() {
-		createManpowerSubmissionList(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
-
-				navigate(`F`);
-			});
-	}
-
-	function handleRemoveManpowerSubmissionList(dispatch) {
-		removeManpowerSubmissionList(manpowerSubmissionListId);
-		DeletedSuccessfully();
-		navigate('/apps/manpowerSubmissionList/manpowerSubmissionLists/new');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
-
-	function handleCancel() {
-		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
-	}
+	const { name } = watch();
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
@@ -75,7 +32,7 @@ function ManpowerSubmissionListHeader() {
 				</div>
 			</div>
 
-			<motion.div
+			{/* <motion.div
 				className="flex"
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
@@ -132,7 +89,7 @@ function ManpowerSubmissionListHeader() {
 				>
 					Cancel
 				</Button>
-			</motion.div>
+			</motion.div> */}
 		</div>
 	);
 }
