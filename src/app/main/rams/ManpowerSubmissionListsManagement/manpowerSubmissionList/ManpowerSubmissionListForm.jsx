@@ -3,13 +3,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { getAgencys, getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import { makeStyles } from '@mui/styles';
 import { Search } from '@mui/icons-material';
-import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { Button } from '@mui/material';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 const useStyles = makeStyles((theme) => ({
 	searchContainer: ({ isPassenger }) => ({
@@ -116,18 +116,11 @@ function ManpowerSubmissionListForm(props) {
 
 			<div className="flex flex-nowrap">
 				<div className="w-full">
-					<Controller
+					<CustomDatePicker
 						name="man_power_date"
-						className="mt-8 mb-16 w-full"
-						control={control}
-						render={({ field }) => {
-							return (
-								<CustomDatePicker
-									field={field}
-									label="Man Power Submission  Date"
-								/>
-							);
-						}}
+						label="Manpower Date"
+						required
+						placeholder="DD-MM-YYYY"
 					/>
 				</div>
 				<div
