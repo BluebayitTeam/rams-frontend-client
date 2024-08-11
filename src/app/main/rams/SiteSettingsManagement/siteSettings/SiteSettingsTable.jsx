@@ -15,21 +15,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import DepartmentsTableHead from './DepartmentsTableHead';
-import { selectFilteredDepartments, useGetDepartmentsQuery } from '../DepartmentsApi';
+import SiteSettingsTableHead from './SiteSettingsTableHead';
+import { selectFilteredSiteSettings, useGetSiteSettingsQuery } from '../SiteSettingsApi';
 
 /**
- * The departments table.
+ * The siteSettings table.
  */
-function DepartmentsTable(props) {
+function SiteSettingsTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetDepartmentsQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredDepartments(data));
-	const departments = useSelector(selectFilteredDepartments(data?.departments));
+	const { data, isLoading, refetch } = useGetSiteSettingsQuery({ ...pageAndSize, searchKey });
+	const totalData = useSelector(selectFilteredSiteSettings(data));
+	const siteSettings = useSelector(selectFilteredSiteSettings(data?.general_settings));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -59,7 +59,7 @@ function DepartmentsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(departments.map((n) => n.id));
+			setSelected(siteSettings.map((n) => n.id));
 			return;
 		}
 
@@ -71,19 +71,19 @@ function DepartmentsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+		navigate(`/apps/siteSetting/siteSettings/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateDepartment(item, event) {
-		localStorage.removeItem('deleteDepartment');
-		localStorage.setItem('updateDepartment', event);
-		navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+	function handleUpdateSiteSetting(item, event) {
+		localStorage.removeItem('deleteSiteSetting');
+		localStorage.setItem('updateSiteSetting', event);
+		navigate(`/apps/siteSetting/siteSettings/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteDepartment(item, event) {
-		localStorage.removeItem('updateDepartment');
-		localStorage.setItem('deleteDepartment', event);
-		navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+	function handleDeleteSiteSetting(item, event) {
+		localStorage.removeItem('updateSiteSetting');
+		localStorage.setItem('deleteSiteSetting', event);
+		navigate(`/apps/siteSetting/siteSettings/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -127,7 +127,7 @@ function DepartmentsTable(props) {
 		);
 	}
 
-	if (departments?.length === 0) {
+	if (siteSettings?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ function DepartmentsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no departments!
+					There are no siteSettings!
 				</Typography>
 			</motion.div>
 		);
@@ -152,17 +152,17 @@ function DepartmentsTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<DepartmentsTableHead
-						selectedDepartmentIds={selected}
+					<SiteSettingsTableHead
+						selectedSiteSettingIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={departments.length}
+						rowCount={siteSettings.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(departments, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(siteSettings, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -177,7 +177,12 @@ function DepartmentsTable(props) {
 									<TableCell
 										className="w-40 md:w-64 text-center"
 										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										<Checkbox
 											checked={isSelected}
@@ -190,31 +195,57 @@ function DepartmentsTable(props) {
 										className="w-40 md:w-64"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-12  whitespace-nowrap	"
 										component="th"
 										scope="row"
 									>
-										{n.name}
+										{n.site_name}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12  whitespace-nowrap	"
+										component="th"
+										scope="row"
+									>
+										{n.email}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12  whitespace-nowrap	"
+										component="th"
+										scope="row"
+									>
+										{n.phone}
 									</TableCell>
 									<TableCell
 										className="p-4 md:p-16"
 										component="th"
 										scope="row"
 										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										<Edit
-											onClick={(event) => handleUpdateDepartment(n, 'updateDepartment')}
+											onClick={(event) => handleUpdateSiteSetting(n, 'updateSiteSetting')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteDepartment(n, 'deleteDepartment')}
+											onClick={(event) => handleDeleteSiteSetting(n, 'deleteSiteSetting')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
@@ -260,4 +291,4 @@ function DepartmentsTable(props) {
 	);
 }
 
-export default withRouter(DepartmentsTable);
+export default withRouter(SiteSettingsTable);

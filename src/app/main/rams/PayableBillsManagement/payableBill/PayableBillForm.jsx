@@ -263,17 +263,11 @@ function PayableBillForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+			<CustomDatePicker
 				name="purchase_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Purchase Date"
-						/>
-					);
-				}}
+				label="Purchase Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 			<Controller
 				name="is_foreign_currency"

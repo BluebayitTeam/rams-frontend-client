@@ -393,20 +393,11 @@ function AgentForm(props) {
 				}}
 			/>
 
-			<Controller
+			<CustomDatePicker
 				name="date_of_birth"
-				control={control}
-				render={({ field }) => (
-					<CustomDatePicker
-						field={field}
-						label="Date of Birth"
-						required
-						className="mt-8 mb-16 w-full"
-						error={!!errors.date_of_birth}
-						helperText={errors?.date_of_birth?.message}
-						placeholder="DD-MM-YYYY"
-					/>
-				)}
+				label="Date of Birth"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 
 			<Controller

@@ -239,19 +239,12 @@ function ContraForm() {
 				)}
 			/>
 
-			<Controller
+			<CustomDatePicker
 				name="contra_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Contra Date"
-						/>
-					);
-				}}
+				label="Contra Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
-
 			<Grid xs={12}>
 				<div className={classes.mainContainer}>
 					<TableContainer
@@ -603,15 +596,12 @@ function ContraForm() {
 													/>
 												)}
 											/>
-											<Controller
+
+											<CustomDatePicker
 												name={`items.${selectedId}.cheque_date`}
-												control={control}
-												render={({ field }) => (
-													<CustomDatePicker
-														field={field}
-														label="Cheque Date"
-													/>
-												)}
+												label="Cheque Date"
+												required
+												placeholder="DD-MM-YYYY"
 											/>
 
 											<Button

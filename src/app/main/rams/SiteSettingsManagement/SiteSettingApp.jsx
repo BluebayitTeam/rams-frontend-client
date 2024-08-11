@@ -2,8 +2,8 @@ import { Outlet } from 'react-router';
 import withReducer from 'app/store/withReducer';
 import reducer from './store';
 
-function DepartmentApp() {
+function SiteSettingApp() {
 	return <Outlet />;
 }
 
-export default withReducer('departmentApp', reducer)(DepartmentApp);
+export default withReducer('siteSettingApp', reducer)(SiteSettingApp);

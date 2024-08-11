@@ -1,13 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
-import DepartmentsHeader from './DepartmentsHeader';
-import DepartmentsTable from './DepartmentsTable';
+import SiteSettingsHeader from './SiteSettingsHeader';
+import SiteSettingsTable from './SiteSettingsTable';
 
 /**
- * The departments page.
+ * The siteSettings page.
  */
-function Departments() {
+function SiteSettings() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
 	const [searchKey, setSearchKey] = useState('');
@@ -19,13 +19,13 @@ function Departments() {
 				header: 'min-h-80 h-80'
 			}}
 			header={
-				<DepartmentsHeader
+				<SiteSettingsHeader
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
 			}
 			content={
-				<DepartmentsTable
+				<SiteSettingsTable
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
@@ -35,4 +35,4 @@ function Departments() {
 	);
 }
 
-export default Departments;
+export default SiteSettings;

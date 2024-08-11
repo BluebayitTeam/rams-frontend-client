@@ -3,7 +3,7 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
@@ -37,7 +37,6 @@ function Branch() {
 	});
 	console.log('branchId', branch, branchId);
 
-	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -56,10 +55,6 @@ function Branch() {
 			reset({ ...branch });
 		}
 	}, [branch, reset, branch?.id]);
-
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
 
 	if (isLoading) {
 		return <FuseLoading />;
@@ -100,7 +95,7 @@ function Branch() {
 				header={<BranchHeader />}
 				content={
 					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
+						<div>
 							<BranchForm branchId={branchId} />
 						</div>
 					</div>

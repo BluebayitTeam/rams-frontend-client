@@ -17,7 +17,7 @@ const allowedFileTypes = [
 	'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 ];
 
-export default function FileUpload({ control, setFile, setValue, file, name, BASE_URL, classes, label }) {
+export default function FileUpload({ control, setFile, setValue, file, name, classes, label }) {
 	const isImage =
 		(file && typeof file !== 'string' && file.type.startsWith('image/')) ||
 		(typeof file === 'string' &&

@@ -262,17 +262,11 @@ function ReceivableBillForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+			<CustomDatePicker
 				name="sales_date"
-				control={control}
-				render={({ field }) => {
-					return (
-						<CustomDatePicker
-							field={field}
-							label="Sales Date"
-						/>
-					);
-				}}
+				label="Sales Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 			<Controller
 				name="is_foreign_currency"

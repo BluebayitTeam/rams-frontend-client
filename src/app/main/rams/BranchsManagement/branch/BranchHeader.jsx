@@ -41,7 +41,6 @@ function BranchHeader() {
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
-
 				navigate(`/apps/branch/branchs`);
 			});
 	}

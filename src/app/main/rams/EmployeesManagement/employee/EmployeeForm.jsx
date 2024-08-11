@@ -550,15 +550,12 @@ function EmployeeForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+
+			<CustomDatePicker
 				name="date_of_birth"
-				control={control}
-				render={({ field }) => (
-					<CustomDatePicker
-						field={field}
-						label="Birthday"
-					/>
-				)}
+				label="Date of Birth"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 
 			<Controller
@@ -722,15 +719,12 @@ function EmployeeForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+
+			<CustomDatePicker
 				name="emp_join_date"
-				control={control}
-				render={({ field }) => (
-					<CustomDatePicker
-						field={field}
-						label="Join Date"
-					/>
-				)}
+				label="Join Date"
+				required
+				placeholder="DD-MM-YYYY"
 			/>
 			<Controller
 				name="is_active"
