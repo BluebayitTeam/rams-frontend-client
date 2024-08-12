@@ -1,13 +1,14 @@
 import { useTheme } from '@mui/material/styles';
 import { useFormContext } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
 import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { getCities, getGroups } from 'app/store/dataSlice';
-import { useCreateAgentReportMutation } from '../AgentReportsApi';
+import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
+import Keyword from 'src/app/@components/ReportComponents/Keyword';
+import { useGetAgentsQuery, useGetAllAgentsQuery } from '../AgentReportsApi';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,36 +19,29 @@ function AgentFilterMenu() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const routeParams = useParams();
-	const { agentReportId } = routeParams;
-	const [createAgentReport] = useCreateAgentReportMutation();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { groups, cities } = useSelector((state) => state.data);
+	const { getValues } = methods;
+	const isShowAllMode = true;
+	const { data, isLoading, refetch } = isShowAllMode ? useGetAllAgentsQuery({}) : useGetAgentsQuery({});
 
-	console.log('groups', groups);
-	useEffect(() => {
-		dispatch(getCities());
-		dispatch(getGroups());
-	}, []);
+	const theme = useTheme();
+	const { groups, cities } = useSelector((state) => state.data);
+	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
 
 	// element refs
 	const userNameEl = useRef(null);
 	const primaryPhoneEl = useRef(null);
 	const agentCodeEl = useRef(null);
-	const commonFieldProps = {
-		setReRender
-		//   onEnter: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents()),
-	};
 
-	const commonKewordProps = {
-		setReRender
-		//   onClick: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents()),
-	};
+	const commonFieldProps = { setReRender, refetch };
+	const commonKewordProps = { setReRender, refetch };
+
+	useEffect(() => {
+		dispatch(getCities());
+		dispatch(getGroups());
+	}, [dispatch]);
+
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
@@ -60,6 +54,8 @@ function AgentFilterMenu() {
 					icon="person"
 					width="75px"
 				/>
+
+				{/* group */}
 				<ReportSelect
 					{...commonFieldProps}
 					name="group"
@@ -83,17 +79,91 @@ function AgentFilterMenu() {
 					{...commonFieldProps}
 					name="district"
 					options={cities}
-					icon="locationCity"
+					icon="homeSharp"
 					width="45px"
 				/>
 
-				{/* Agent Code */}
+				{/* agent code */}
 				<ReportTextField
 					{...commonFieldProps}
 					name="agent_code"
 					domEl={agentCodeEl}
-					// icon={QrCodeIcon}
+					icon="qr_code_scanner_sharp"
 					width="77px"
+				/>
+
+				{/* date from */}
+				<ReportDatePicker
+					{...commonFieldProps}
+					name="date_after"
+					label="Date From"
+					maxDate={values.date_before || new Date()}
+				/>
+
+				{/* date to */}
+				<ReportDatePicker
+					{...commonFieldProps}
+					name="date_before"
+					label="Date To"
+					minDate={values.date_after}
+					maxDate={new Date()}
+				/>
+			</div>
+
+			{/* keywords */}
+			<div className="allKeyWrdContainer">
+				<Keyword
+					{...commonKewordProps}
+					type="text"
+					name="username"
+					label="User Name"
+					domEl={userNameEl}
+					icon="person"
+				/>
+
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="group"
+					icon="groups"
+				/>
+
+				<Keyword
+					{...commonKewordProps}
+					type="text"
+					name="primary_phone"
+					label="Phone"
+					domEl={primaryPhoneEl}
+					icon="phone"
+				/>
+
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="district"
+					icon="homeSharp"
+				/>
+
+				<Keyword
+					{...commonKewordProps}
+					type="text"
+					name="agent_code"
+					domEl={agentCodeEl}
+					icon="qr_code_scanner_sharp"
+				/>
+
+				<Keyword
+					{...commonKewordProps}
+					type="date"
+					name="date_after"
+					label="Date From"
+				/>
+
+				<Keyword
+					{...commonKewordProps}
+					type="date"
+					name="date_before"
+					label="Date To"
 				/>
 			</div>
 		</div>

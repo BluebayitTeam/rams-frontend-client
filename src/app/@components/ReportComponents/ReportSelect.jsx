@@ -90,7 +90,7 @@ function ReportSelect({ name, label, options = [], icon, width, setReRender, onE
 					setTimeout(() => document.getElementById(`${name}groupEl`).focus(), 300);
 				}}
 			>
-				arrowDropDownIcon
+				arrow_drop_down_icon
 			</Icon>
 
 			<Controller

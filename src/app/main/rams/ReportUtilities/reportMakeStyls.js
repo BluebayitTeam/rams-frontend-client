@@ -1,8 +1,9 @@
-export const getReportMakeStyles = theme => ({
+export const getReportMakeStyles = (theme) => ({
 	headContainer: {
 		marginLeft: 'auto',
 		marginRight: 'auto',
-		width: 'fit-content'
+		width: '100%',
+		backgroundColor: ''
 	},
 	pageContainer: {
 		width: '100%',
@@ -249,7 +250,7 @@ export const getReportMakeStyles = theme => ({
 	}
 });
 
-export const getReportFilterMakeStyles = theme => ({
+export const getReportFilterMakeStyles = (theme) => ({
 	filterMenuContainer: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -381,7 +382,7 @@ export const getReportFilterMakeStyles = theme => ({
 	}
 });
 
-export const getReportPaginationMakeStyles = theme => ({
+export const getReportPaginationMakeStyles = (theme) => ({
 	paginationContainer: {
 		display: 'flex',
 		justifyContent: 'center',

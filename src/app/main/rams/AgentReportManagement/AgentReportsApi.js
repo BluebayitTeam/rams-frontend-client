@@ -1,35 +1,36 @@
 import { apiService as api } from 'app/store/apiService';
-import { createSelector } from '@reduxjs/toolkit';
-import FuseUtils from '@fuse/utils';
-import { UPDATE_DEMAND_ASSIGN } from 'src/app/constant/constants';
-import { selectSearchText } from './store/searchTextSlice';
+import { AGENT_FILTER_BY, AGENT_FILTER_WITHOUT_PG } from 'src/app/constant/constants';
 
+// Define the tags for cache invalidation and refetching
 export const addTagTypes = ['agentReports'];
+
+// Configure API endpoints using the RTK Query API service
 const AgentReportApi = api
 	.enhanceEndpoints({
-		addTagTypes
+		addTagTypes // Specify tags to be used for cache management
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			createAgentReport: build.mutation({
-				query: (newAgentReport) => ({
-					url: UPDATE_DEMAND_ASSIGN,
-					method: 'PUT',
-					data: newAgentReport
+			// Endpoint for fetching agents with pagination and search
+			getAgents: build.query({
+				query: (filterData) => ({
+					url: AGENT_FILTER_BY,
+					params: filterData
 				}),
-				invalidatesTags: ['agentReports']
+				providesTags: ['agentReports'] // Tags used for cache invalidation
+			}),
+			// Endpoint for fetching all agents without pagination
+			getAllAgents: build.query({
+				query: (filterData) => ({
+					url: AGENT_FILTER_WITHOUT_PG,
+					params: filterData
+				}),
+				providesTags: ['agentReports'] // Tags used for cache invalidation
 			})
 		}),
-		overrideExisting: false
+		overrideExisting: false // Prevent overriding existing endpoints
 	});
+
+// Export the API service hooks for use in components
 export default AgentReportApi;
-export const { useCreateAgentReportMutation } = AgentReportApi;
-
-export const selectFilteredAgentReports = (agentReports) =>
-	createSelector([selectSearchText], (searchText) => {
-		if (searchText?.length === 0) {
-			return agentReports;
-		}
-
-		return FuseUtils.filterArrayByString(agentReports, searchText);
-	});
+export const { useGetAgentsQuery, useGetAllAgentsQuery } = AgentReportApi;
