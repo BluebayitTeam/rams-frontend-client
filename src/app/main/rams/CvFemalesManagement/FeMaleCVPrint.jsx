@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core';
-
-import PrintIcon from '@material-ui/icons/Print';
+import PrintIcon from '@mui/icons-material/Print';
+import { makeStyles } from '@mui/styles';
 import { getFemaleCVPrint } from 'app/store/dataSlice';
 
 import moment from 'moment';

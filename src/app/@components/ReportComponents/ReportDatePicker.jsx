@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import dayjs from 'dayjs';
 import { Controller, useFormContext } from 'react-hook-form';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
 	fieldContainer: {

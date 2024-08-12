@@ -9,7 +9,7 @@ import { makeStyles } from '@mui/styles';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useEffect, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Print } from '@material-ui/icons';
+import { Print } from '@mui/icons-material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import increaseYear from 'src/app/@helpers/increaseYear';
 import { religions } from 'src/app/@data/data';

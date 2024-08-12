@@ -1,4 +1,3 @@
-// import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@material-ui/icons';
 import { memo, useMemo } from 'react';
 import { makeStyles } from '@mui/styles';
 import { getReportPaginationMakeStyles } from 'src/app/main/rams/ReportUtilities/reportMakeStyls';

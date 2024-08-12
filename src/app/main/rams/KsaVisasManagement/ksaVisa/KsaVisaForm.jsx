@@ -10,7 +10,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Print } from '@material-ui/icons';
+import { Print } from '@mui/icons-material';
 import _ from 'lodash';
 import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
 import moment from 'moment';

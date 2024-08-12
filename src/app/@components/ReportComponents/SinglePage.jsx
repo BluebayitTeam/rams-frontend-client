@@ -1,6 +1,6 @@
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-import { Email, Language, LocationOn, PhoneEnabled } from '@material-ui/icons';
+import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import moment from 'moment';
 // import '../../../Print.css';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';

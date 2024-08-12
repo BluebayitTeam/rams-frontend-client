@@ -11,7 +11,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Print } from '@material-ui/icons';
+import { Print } from '@mui/icons-material';
 import _ from 'lodash';
 import { useGetBmetContractQuery } from '../BmetContractsApi';
 
@@ -66,7 +66,7 @@ function BmetContractForm(props) {
 		skip: !bmetContractId
 	});
 
-useEffect(() => {
+	useEffect(() => {
 		if (isSuccess) {
 			setLocalData(data);
 			setShowPrint(true);

@@ -10,10 +10,10 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Print } from '@material-ui/icons';
+import { Print } from '@mui/icons-material';
 import _ from 'lodash';
 import moment from 'moment';
-import CheckIcon from '@material-ui/icons/Check';
+import CheckIcon from '@mui/icons-material/Check';
 import { useGetMalaysiaVisaQuery } from '../MalaysiaVisasApi';
 
 const useStyles = makeStyles(() => ({
