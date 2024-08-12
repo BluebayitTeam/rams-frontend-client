@@ -87,6 +87,7 @@ import ManpowerSubmissionListAppConfig from '../rams/ManpowerSubmissionListsMana
 import BranchAppConfig from '../rams/BranchsManagement/BranchAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
+import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/FormContentDetailAppConfig';
 
 /**
  * The list of application configurations.
@@ -113,6 +114,7 @@ const appsConfigs = [
 	// ManpowerNoteSheetAppConfig,
 	ManpowerSubmissionListAppConfig,
 	DepartureAppConfig,
+	FormContentDetailAppConfig,
 	FingerAppConfig,
 	ProfileAppConfig,
 	ScrumboardAppConfig,

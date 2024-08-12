@@ -847,7 +847,7 @@ export const getPassengers = () => (dispatch) => {
 		.catch((err) => {});
 };
 
-export const getformcontent_head = () => (dispatch) => {
+export const getformcontentHead = () => (dispatch) => {
 	const authTOKEN = {
 		headers: {
 			'Content-type': 'application/json',
@@ -856,7 +856,7 @@ export const getformcontent_head = () => (dispatch) => {
 	};
 	fetch(GET_FORM_CONTROL_HEAD_WITHOUT_PG, authTOKEN)
 		.then((response) => response.json())
-		.then((data) => dispatch(setFormcontent_heads(data.formcontent_heads)))
+		.then((data) => dispatch(setFormcontentHeads(data.formcontent_heads)))
 		.catch((err) => {});
 };
 
@@ -957,7 +957,7 @@ const dataSlice = createSlice({
 		callingAssigns: [],
 		medicalCenters: [],
 		passengers: [],
-		formcontent_heads: [],
+		formcontentHeads: [],
 		ledgers: [],
 		subLedgers: [],
 		taskTypes: [],
@@ -1156,8 +1156,8 @@ const dataSlice = createSlice({
 		setPassengers: (state, action) => {
 			state.passengers = action.payload ? action.payload : [];
 		},
-		setFormcontent_heads: (state, action) => {
-			state.formcontent_heads = action.payload ? action.payload : [];
+		setFormcontentHeads: (state, action) => {
+			state.formcontentHeads = action.payload ? action.payload : [];
 		},
 		setPassengersWithVisaEntry: (state, action) => {
 			state.passengers = action.payload ? action.payload : [];
@@ -1217,7 +1217,7 @@ const {
 	setPaymentMathods,
 	setCusotmerTypes,
 	setBrands,
-	// setFormcontent_heads,
+	setFormcontentHeads,
 	setCategories,
 	setParentMenus,
 	setAllMenuNested,
