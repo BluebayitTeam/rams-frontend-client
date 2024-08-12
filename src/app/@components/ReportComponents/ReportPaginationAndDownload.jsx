@@ -1,12 +1,22 @@
 // ReportPaginationAndDownload.js
 import { useState, useRef, useLayoutEffect } from 'react';
-import { Pagination } from '@mui/material'; // Adjust import according to your Pagination component
-import { GetApp, Print as PrintIcon, ViewWeek } from '@mui/icons-material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf, faFileExcel, faDownload, faBookOpen, faScroll } from '@fortawesome/free-solid-svg-icons';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
-import html2PDF from 'html2pdf.js';
+import PrintSharpIcon from '@mui/icons-material/PrintSharp';
+import ImportContactsSharpIcon from '@mui/icons-material/ImportContactsSharp';
+import DensitySmallIcon from '@mui/icons-material/DensitySmall';
+import BallotIcon from '@mui/icons-material/Ballot';
+import { makeStyles } from '@mui/styles';
+import { getReportMakeStyles } from 'src/app/main/rams/ReportUtilities/reportMakeStyls';
+import DownloadIcon from '@mui/icons-material/Download';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DifferenceIcon from '@mui/icons-material/Difference';
 import { useReactToPrint } from 'react-to-print';
+import html2PDF from 'jspdf-html2canvas';
+import Pagination from './Pagination';
+
+const useStyles = makeStyles((theme) => ({
+	...getReportMakeStyles(theme)
+}));
 
 function ReportPaginationAndDownload({
 	page,
@@ -20,11 +30,13 @@ function ReportPaginationAndDownload({
 	handlePdfDownload,
 	handleExelDownload,
 	handlePrint,
-	handleGetAgents,
-	handleGetAllAgents,
+	handleGetData,
+	handleGetAllData,
 	tableColumns,
 	dispatchTableColumns
 }) {
+	const classes = useStyles();
+
 	const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -53,7 +65,7 @@ function ReportPaginationAndDownload({
 		setInDowloadPdf(false);
 	};
 
-	let downloadPage = document.getElementById('downloadPage');
+	const downloadPage = document.getElementById('downloadPage');
 
 	useLayoutEffect(() => {
 		window.addEventListener('click', (e) => {
@@ -62,7 +74,10 @@ function ReportPaginationAndDownload({
 	}, []);
 
 	return (
-		<div className="menubar">
+		<div
+			className={`${classes.menubar} justify-start md:justify-center`}
+			style={{ backgroundColor: '#c2c7f1' }}
+		>
 			{/* Pagination */}
 			<Pagination
 				page={page}
@@ -87,9 +102,9 @@ function ReportPaginationAndDownload({
 								handlePdfDownload();
 							}}
 						>
-							<FontAwesomeIcon icon={faFilePdf} />
-							<b>Download PDF</b>
-							<FontAwesomeIcon icon={faDownload} />
+							<PictureAsPdfIcon />
+							<b className="text-nowrap">Download PDF</b>
+							<DownloadIcon />
 						</div>
 
 						<div
@@ -100,13 +115,13 @@ function ReportPaginationAndDownload({
 								handleExelDownload();
 							}}
 						>
-							<FontAwesomeIcon icon={faFileExcel} />
+							<DifferenceIcon />
 							<b>Download Excel</b>
-							<FontAwesomeIcon icon={faDownload} />
+							<DownloadIcon />
 						</div>
 					</div>
 				</div>
-				<GetApp
+				<DownloadIcon
 					className="cursor-pointer inside icon"
 					style={{
 						margin: '0px',
@@ -115,7 +130,7 @@ function ReportPaginationAndDownload({
 				/>
 			</div>
 
-			<PrintIcon
+			<PrintSharpIcon
 				className="cursor-pointer inside icon"
 				style={{ padding: '6px', border: inPrint && '1px solid' }}
 				onClick={() => {
@@ -124,22 +139,20 @@ function ReportPaginationAndDownload({
 				}}
 			/>
 
-			<FontAwesomeIcon
+			<ImportContactsSharpIcon
 				className="cursor-pointer inside icon"
 				style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
-				onClick={() => handleGetAgents()}
-				icon={faBookOpen}
+				onClick={() => handleGetData()}
 			/>
 
-			<FontAwesomeIcon
+			<BallotIcon
 				className="cursor-pointer inside icon"
 				style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-				onClick={() => handleGetAllAgents()}
-				icon={faScroll}
+				onClick={() => handleGetAllData()}
 			/>
 
 			<div className="columnSelectContainer">
-				<ViewWeek
+				<DensitySmallIcon
 					id="insideClmSelect"
 					className="cursor-pointer inside icon"
 					style={{
@@ -154,13 +167,13 @@ function ReportPaginationAndDownload({
 					id="insideClmSelect"
 					className={`allColumnContainer shadow-5 ${showClmSelectOption ? 'block' : 'hidden'}`}
 				>
-					{tableColumns.map((column) => (
+					{/* {tableColumns.map((column) => (
 						<ColumnLabel
 							key={column.name}
 							column={column}
 							dispatchTableColumns={dispatchTableColumns}
 						/>
-					))}
+					))} */}
 				</div>
 			</div>
 
