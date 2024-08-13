@@ -89,6 +89,7 @@ import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppC
 import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
 import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/FormContentDetailAppConfig';
 import MaletrainingAppConfig from '../rams/MaletrainingsManagement/MaletrainingAppConfig';
+import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/FemaletrainingAppConfig';
 
 /**
  * The list of application configurations.
@@ -115,6 +116,7 @@ const appsConfigs = [
 	// ManpowerNoteSheetAppConfig,
 	ManpowerSubmissionListAppConfig,
 	MaletrainingAppConfig,
+	FemaletrainingAppConfig,
 	DepartureAppConfig,
 	FormContentDetailAppConfig,
 	FingerAppConfig,
