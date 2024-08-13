@@ -1317,7 +1317,7 @@ const navigationConfig = [
 				translate: 'Form Content Detail',
 				display_order: 1,
 				type: 'item',
-				url: '/apps/formContentDetail-management/formContentDetails',
+				url: '/apps/formContentDetail/formContentDetails',
 				exact: true
 			},
 			{
@@ -1326,7 +1326,7 @@ const navigationConfig = [
 				translate: 'Male Training Letter',
 				display_order: 2,
 				type: 'item',
-				url: '/apps/maletraining-management/maletraining-form',
+				url: '/apps/maletraining/maletrainings',
 				exact: true
 			},
 
@@ -1336,7 +1336,7 @@ const navigationConfig = [
 				translate: 'Female Training Letter',
 				display_order: 3,
 				type: 'item',
-				url: '/apps/femaletraining-management/femaletraining-form',
+				url: '/apps/femaletraining/femaletrainings',
 				exact: true
 			},
 			{
@@ -1345,7 +1345,7 @@ const navigationConfig = [
 				translate: 'BMET Verify Form',
 				display_order: 4,
 				type: 'item',
-				url: '/apps/bmetVerify-management/bmetVerify-form',
+				url: '/apps/bmetVerify/bmetVerifys',
 				exact: true
 			},
 
