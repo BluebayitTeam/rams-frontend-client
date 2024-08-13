@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable react/button-has-type */
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useFormContext } from 'react-hook-form';
@@ -9,9 +11,8 @@ import { GET_SITESETTINGS } from 'src/app/constant/constants';
 import { getPassengers } from 'app/store/dataSlice';
 import _ from 'lodash';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
-import CustomTextField from 'src/app/@components/CustomTextField';
 import moment from 'moment';
-import { useGetMaletrainingQuery } from '../MaletrainingsApi';
+import { useGetBmetVerifyQuery } from '../BmetVerifysApi';
 
 const useStyles = makeStyles(() => ({
 	textField: {
@@ -49,25 +50,23 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-function MaletrainingForm(props) {
+function BmetVerifyForm(props) {
 	const methods = useFormContext();
 	const { watch } = methods;
 	const [generalData, setGeneralData] = useState({});
 	const routeParams = useParams();
-	const [maletrainingId, setMaletrainingId] = useState('');
+	const [bmetVerifyId, setBmetVerifyId] = useState('');
 	const [showPrint, setShowPrint] = useState(false);
 	const Comment = '';
 	const [formData, setFormData] = useState({
-		passenger: '',
-		center_name: '',
-		district: ''
+		passenger: ''
 	});
 
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
-	const { data: maletraining } = useGetMaletrainingQuery(maletrainingId, {
-		skip: !maletrainingId
+	const { data: bmetVerify } = useGetBmetVerifyQuery(bmetVerifyId, {
+		skip: !bmetVerifyId
 	});
 
 	const passengers = useSelector((state) => state.data.passengers);
@@ -83,16 +82,16 @@ function MaletrainingForm(props) {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (_.isEmpty(maletraining)) {
+		if (_.isEmpty(bmetVerify)) {
 			setShowPrint(false);
 		} else {
 			setShowPrint(true);
 		}
 
-		if (routeParams.maletrainingId !== 'maletraining-form') {
-			setMaletrainingId(routeParams.maletrainingId);
+		if (routeParams.bmetVerifyId !== 'bmetVerify-form') {
+			setBmetVerifyId(routeParams.bmetVerifyId);
 		}
-	}, [maletraining, routeParams.maletrainingId]);
+	}, [bmetVerify, routeParams.bmetVerifyId]);
 
 	const componentRef = useRef();
 
@@ -102,18 +101,13 @@ function MaletrainingForm(props) {
 
 	const today = moment().format('DD/MM/YYYY');
 
-	const centerName = formData.center_name;
-	const { district } = formData;
-
 	const handleShowClick = () => {
 		const value = watch('passenger');
 
 		if (value) {
-			setMaletrainingId(value);
+			setBmetVerifyId(value);
 			setFormData({
-				passenger: value,
-				center_name: watch('center_name'),
-				district: watch('district')
+				passenger: value
 			});
 		}
 	};
@@ -126,17 +120,6 @@ function MaletrainingForm(props) {
 					label="Passenger"
 					options={passengers}
 					optionLabelFormat={(option) => `${option.passport_no} - ${option.passenger_name}`}
-					required
-				/>
-
-				<CustomTextField
-					name="center_name"
-					label="Center Name"
-					required
-				/>
-				<CustomTextField
-					name="district"
-					label="District"
 					required
 				/>
 
@@ -193,24 +176,25 @@ function MaletrainingForm(props) {
 					>
 						<div className="md:w-full">
 							<div>
-								<div style={{ minHeight: '100px' }} />
+								<div style={{ minHeight: '100px' }}> </div>
 								<h3 style={{ textAlign: 'center' }}>তারিখ : {today}</h3>
 								<p>
-									অধ্যক্ষ,
+									বরাবর ,
 									<br />
-									{centerName}
+									মহাপরিচারক <br />
+									জনশক্তি কর্মসংস্থান ও প্রশিক্ষন ব্যুরো <br />
+									ঢাকা টেকনিক্যাল ট্রাইনিং সেন্টার <br />
+									দৃষ্টি আকর্ষণঃ যাচাই বাচাই সদস্য ০১ জন
 									<br />
-									{district}
-									<br />
-									<br />
-									বিষয় : {maletraining?.target_country?.name || ''} গমনেচ্ছুক কোর্সে ভর্তি প্রসঙ্গে ।
+									<b>বিষয়ঃ ০১ (এক) জন {bmetVerify?.gender} কর্মীর যাচাই বাচাই এর জন্য আবেদন। </b>
 									<br />
 									<br />
 									জনাব,
 									<br />
-									যথাবিহীত সম্মানপূর্বক নিবেদন এইযে , {generalData?.agency_name_bangla} (আর,এল নং-{' '}
-									{generalData?.rl_no}) হতে {maletraining?.target_country?.name || ''} গমনেচ্ছুক
-									নিম্নে বর্ণিত যাত্রীর ৩ দিন মেয়াদী প্রশিক্ষনের জন্য আপনার নিকট প্রেরণ করিলাম ।
+									বিনীত নিবেদন এই যে আমি নিম্ন স্বাক্ষরকারী,স্বত্বাধিকারী{' '}
+									{generalData?.agency_name_bangla} আর এল-{generalData?.rl_no},সৌদি আরবের বিভিন্ন
+									নিয়োকর্তার অধীনে নিয়োগ প্রাপ্তির মোট ০১ (এক) জন {bmetVerify?.gender} কর্মীর যাচাই
+									বাচাই এর জন্য অনুমতি প্রার্থনা করছি।
 									<br />
 									<br />
 								</p>
@@ -227,8 +211,7 @@ function MaletrainingForm(props) {
 									<thead>
 										<tr>
 											<th style={{ border: '1px solid black' }}>নং</th>
-											<th style={{ border: '1px solid black' }}>যাত্রীর নাম </th>
-											<th style={{ border: '1px solid black' }}>পিতা /স্বামী নাম </th>
+											<th style={{ border: '1px solid black' }}>কর্মীর নাম </th>
 											<th style={{ border: '1px solid black' }}>পাসর্পোট নং</th>
 											<th style={{ border: '1px solid black' }}>গন্তব্য দেশ</th>
 											<th style={{ border: '1px solid black' }}>মন্তব্য</th>
@@ -237,17 +220,10 @@ function MaletrainingForm(props) {
 									<tbody>
 										<tr>
 											<td style={{ border: '1px solid black' }}>01</td>
+											<td style={{ border: '1px solid black' }}>{bmetVerify?.passenger_name} </td>
+											<td style={{ border: '1px solid black' }}>{bmetVerify?.passport_no}</td>
 											<td style={{ border: '1px solid black' }}>
-												{maletraining?.passenger_name || ''}{' '}
-											</td>
-											<td style={{ border: '1px solid black' }}>
-												{maletraining?.father_name || ''}{' '}
-											</td>
-											<td style={{ border: '1px solid black' }}>
-												{maletraining?.passport_no || ''}
-											</td>
-											<td style={{ border: '1px solid black' }}>
-												{maletraining?.target_country?.name || ''}
+												{bmetVerify?.target_country?.name}
 											</td>
 											<td style={{ border: '1px solid black' }}>{Comment}</td>
 										</tr>
@@ -255,16 +231,19 @@ function MaletrainingForm(props) {
 								</table>
 								<br />
 								<p>
-									অতএব জনাবের সমীপে আবেদন , আমার প্রেরিত উপরোক্ত কর্মীর যাচাই বাচাই পূর্বক কোর্সে
-									ভর্তি সুযোগ দিতে আপনার সু -মর্জি হয় ।
+									অতএব,জনাবের নিকট আকুল আবেদন এই য়ে , আমাকে সংযুক্ত ০১ (এক) জন {bmetVerify?.gender}{' '}
+									কর্মীর যাচাই বাচাই এর জন্য ছাড়পএ প্রানের যথাযথ ব্যবস্থা গ্রহন করলে বাধিত হবো।
 								</p>
 								<br />
 								<br />
 								<br />
-								<p style={{ textAlign: 'center' }}>{generalData?.site_owner_name_bangla}</p>
-								<p style={{ textAlign: 'center' }}>{generalData?.site_owner_designation_bangla}</p>
-								<p style={{ textAlign: 'center' }}>{generalData?.site_owner_company_bangla}</p>
-								<p style={{ textAlign: 'center' }}>{generalData?.site_owner_company_rl_no_bangla}</p>
+								<div className="text-right mr-"> বিনীত নিবেদক</div> <br />
+								<br />
+								<br />
+								<br />
+								<br />
+								<br />
+								<div className="text-right mr-">মালিক/ব্যবস্থাপনা পরিচালক/অংশীদার সীল </div> <br />
 							</div>
 						</div>
 					</div>
@@ -274,4 +253,4 @@ function MaletrainingForm(props) {
 	);
 }
 
-export default MaletrainingForm;
+export default BmetVerifyForm;

@@ -97,6 +97,7 @@ import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/Femaletra
 const appsConfigs = [
 	BmetAppConfig,
 	BmetContractAppConfig,
+	// BmetVerifyAppConfig,
 	BranchAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
