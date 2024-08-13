@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
@@ -14,51 +15,52 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
+import FormContentDetailsTableHead from './FormContentDetailsTableHead';
 import { selectFilteredFormContentDetails, useGetFormContentDetailsQuery } from '../FormContentDetailsApi';
-import FormContentDetailsTableHead from './FormContentDetailsHead';
 
+/**
+ * The formContentDetails table.
+ */
 function FormContentDetailsTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-
-	// Fetching data from the API
-	const { data, isLoading, refetch, error } = useGetFormContentDetailsQuery({ ...pageAndSize, searchKey });
-
-	// Handle the data processing after fetching
-	const formContentDetails = useSelector(selectFilteredFormContentDetails(data?.formContentDetails || []));
-	console.log('formContentDetails', error);
+	const { data, isLoading, refetch } = useGetFormContentDetailsQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredFormContentDetails(data));
-	console.log('totalData', data);
-
+	console.log('fdsdfsdfsd', totalData);
+	const formContentDetails = useSelector(selectFilteredFormContentDetails(data?.formcontent_details));
 	let serialNumber = 1;
 
 	useEffect(() => {
-		// Refetch data when page or rowsPerPage changes
-		refetch({ page: page + 1, size: rowsPerPage });
+		// Fetch data with specific page and size when component mounts or when page and size change
+		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 
 	useEffect(() => {
-		// Refetch data when searchKey changes
 		refetch({ searchKey });
 	}, [searchKey]);
 
 	const [selected, setSelected] = useState([]);
+
 	const [tableOrder, setTableOrder] = useState({
 		direction: 'asc',
 		id: ''
 	});
 
-	// Handlers
 	function handleRequestSort(event, property) {
-		const isAsc = tableOrder.id === property && tableOrder.direction === 'asc';
-		setTableOrder({ id: property, direction: isAsc ? 'desc' : 'asc' });
+		const newOrder = { id: property, direction: 'desc' };
+
+		if (tableOrder.id === property && tableOrder.direction === 'desc') {
+			newOrder.direction = 'asc';
+		}
+
+		setTableOrder(newOrder);
 	}
 
 	function handleSelectAllClick(event) {
-		if (event.target.checked) {
+		if (event.target.checked && formContentDetails) {
 			setSelected(formContentDetails.map((n) => n.id));
 			return;
 		}
@@ -71,19 +73,19 @@ function FormContentDetailsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/department/formContentDetails/${item.id}/${item.handle}`);
+		navigate(`/apps/formContentDetail/formContentDetails/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateDepartment(item, event) {
-		localStorage.removeItem('deleteDepartment');
-		localStorage.setItem('updateDepartment', event);
-		navigate(`/apps/department/formContentDetails/${item.id}/${item.handle}`);
+	function handleUpdateFormContentDetail(item, event) {
+		localStorage.removeItem('deleteFormContentDetail');
+		localStorage.setItem('updateFormContentDetail', event);
+		navigate(`/apps/formContentDetail/formContentDetails/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteDepartment(item, event) {
-		localStorage.removeItem('updateDepartment');
-		localStorage.setItem('deleteDepartment', event);
-		navigate(`/apps/department/formContentDetails/${item.id}/${item.handle}`);
+	function handleDeleteFormContentDetail(item, event) {
+		localStorage.removeItem('updateFormContentDetail');
+		localStorage.setItem('deleteFormContentDetail', event);
+		navigate(`/apps/formContentDetail/formContentDetails/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -103,7 +105,7 @@ function FormContentDetailsTable(props) {
 		setSelected(newSelected);
 	}
 
-	// Pagination Handlers
+	// pagination
 	const handlePagination = (e, handlePage) => {
 		setPageAndSize({ ...pageAndSize, page: handlePage });
 		setPage(handlePage - 1);
@@ -119,7 +121,6 @@ function FormContentDetailsTable(props) {
 		setPageAndSize({ ...pageAndSize, size: event.target.value });
 	}
 
-	// Loading and Empty State Handling
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center h-full">
@@ -128,7 +129,7 @@ function FormContentDetailsTable(props) {
 		);
 	}
 
-	if (formContentDetails.length === 0) {
+	if (!formContentDetails || formContentDetails.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -154,7 +155,7 @@ function FormContentDetailsTable(props) {
 					aria-labelledby="tableTitle"
 				>
 					<FormContentDetailsTableHead
-						selectedDepartmentIds={selected}
+						selectedFormContentDetailIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
@@ -200,7 +201,7 @@ function FormContentDetailsTable(props) {
 										component="th"
 										scope="row"
 									>
-										{n.name}
+										{n.head?.title}
 									</TableCell>
 									<TableCell
 										className="p-4 md:p-16"
@@ -210,12 +211,16 @@ function FormContentDetailsTable(props) {
 										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Edit
-											onClick={(event) => handleUpdateDepartment(n, 'updateDepartment')}
+											onClick={(event) =>
+												handleUpdateFormContentDetail(n, 'updateFormContentDetail')
+											}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteDepartment(n, 'deleteDepartment')}
+											onClick={(event) =>
+												handleDeleteFormContentDetail(n, 'deleteFormContentDetail')
+											}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
@@ -228,6 +233,7 @@ function FormContentDetailsTable(props) {
 
 			<div id="pagiContainer">
 				<Pagination
+					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}

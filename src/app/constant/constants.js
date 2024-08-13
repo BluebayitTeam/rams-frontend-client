@@ -319,6 +319,7 @@ export const GET_FORM_CONTENT_DETAILID = `${BASE_URL}/formcontent_detail/api/v1/
 export const UPDATE_FORM_CONTENT_DETAIL = `${BASE_URL}/formcontent_detail/api/v1/formcontent_detail/update/`;
 
 export const DELETE_FORM_CONTENT_DETAIL = `${BASE_URL}/formcontent_detail/api/v1/formcontent_detail/delete/`;
+export const DELETE_FORM_CONTENT_DETAIL_MULTIPLE = `${BASE_URL}/formcontent_detail/api/v1/formcontent_detail/delete/`;
 
 export const SEARCH_FORM_CONTENT_DETAIL = `${BASE_URL}/formcontent_detail/api/v1/formcontent_detail/search/`;
 

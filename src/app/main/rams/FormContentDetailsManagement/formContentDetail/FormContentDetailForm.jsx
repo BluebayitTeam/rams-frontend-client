@@ -19,6 +19,7 @@ function FormContentDetailForm(props) {
 	const handleContentChange = (content) => {
 		setValue('details', content);
 	};
+
 	return (
 		<div>
 			<CustomDropdownField

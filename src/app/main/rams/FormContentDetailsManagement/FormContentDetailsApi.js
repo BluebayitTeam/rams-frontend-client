@@ -4,6 +4,7 @@ import FuseUtils from '@fuse/utils';
 import {
 	CREATE_FORM_CONTENT_DETAIL,
 	DELETE_FORM_CONTENT_DETAIL,
+	DELETE_FORM_CONTENT_DETAIL_MULTIPLE,
 	GET_FORM_CONTENT_DETAILID,
 	GET_FORM_CONTENT_DETAILS,
 	UPDATE_FORM_CONTENT_DETAIL
@@ -25,7 +26,14 @@ const FormContentDetailApi = api
 				}),
 				providesTags: ['formContentDetails']
 			}),
-
+			deleteFormContentDetails: build.mutation({
+				query: (formContentDetailIds) => ({
+					url: DELETE_FORM_CONTENT_DETAIL_MULTIPLE,
+					method: 'DELETE',
+					data: { ids: formContentDetailIds }
+				}),
+				invalidatesTags: ['formContentDetails']
+			}),
 			getFormContentDetail: build.query({
 				query: (formContentDetailId) => ({
 					url: `${GET_FORM_CONTENT_DETAILID}${formContentDetailId}`
