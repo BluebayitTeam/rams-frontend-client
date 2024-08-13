@@ -10,6 +10,7 @@ import { getPassengers } from 'app/store/dataSlice';
 import _ from 'lodash';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import CustomTextField from 'src/app/@components/CustomTextField';
+import moment from 'moment';
 import { useGetMaletrainingQuery } from '../MaletrainingsApi';
 
 const useStyles = makeStyles(() => ({
@@ -98,11 +99,7 @@ function MaletrainingForm(props) {
 		content: () => componentRef.current
 	});
 
-	let today = new Date();
-	const dd = String(today.getDate()).padStart(2, '0');
-	const mm = String(today.getMonth() + 1).padStart(2, '0');
-	const yyyy = today.getFullYear();
-	today = `${dd}/${mm}/${yyyy}`;
+	const today = moment().format('DD/MM/YYYY');
 
 	const centerName = formData.center_name;
 	const { district } = formData;
