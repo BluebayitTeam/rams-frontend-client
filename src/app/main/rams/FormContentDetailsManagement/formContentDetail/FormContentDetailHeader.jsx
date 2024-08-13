@@ -96,7 +96,7 @@ function FormContentDetailHeader() {
 							variant="caption"
 							className="font-medium"
 						>
-							FormContentDetail Detail
+							Form Content Detail
 						</Typography>
 					</motion.div>
 				</div>
