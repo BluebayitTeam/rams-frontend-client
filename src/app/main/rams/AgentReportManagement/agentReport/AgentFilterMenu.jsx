@@ -8,21 +8,18 @@ import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { getCities, getGroups } from 'app/store/dataSlice';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
-import { useGetAgentsQuery, useGetAllAgentsQuery } from '../AgentReportsApi';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function AgentFilterMenu() {
+function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const methods = useFormContext();
 	const { getValues } = methods;
-	const isShowAllMode = true;
-	const { data, isLoading, refetch } = isShowAllMode ? useGetAllAgentsQuery({}) : useGetAgentsQuery({});
 
 	const theme = useTheme();
 	const { groups, cities } = useSelector((state) => state.data);
@@ -34,8 +31,14 @@ function AgentFilterMenu() {
 	const primaryPhoneEl = useRef(null);
 	const agentCodeEl = useRef(null);
 
-	const commonFieldProps = { setReRender, refetch };
-	const commonKewordProps = { setReRender, refetch };
+	const commonFieldProps = {
+		setReRender,
+		onEnter: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+	};
+	const commonKewordProps = {
+		setReRender,
+		onClick: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+	};
 
 	useEffect(() => {
 		dispatch(getCities());

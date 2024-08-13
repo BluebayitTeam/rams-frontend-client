@@ -3,7 +3,7 @@
 
 import { makeStyles } from '@mui/styles';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useReducer, useRef, useState } from 'react';
@@ -11,8 +11,11 @@ import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/Re
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
+import { unstable_batchedUpdates } from 'react-dom';
+import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import AgentFilterMenu from './AgentFilterMenu';
+import { selectFilteredAgentReports, useGetAgentAllReportsQuery, useGetAgentReportsQuery } from '../AgentReportsApi';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
@@ -37,6 +40,8 @@ function AgentReportsTable(props) {
 		defaultValues: {},
 		resolver: zodResolver(schema) // Use zodResolver for form validation
 	});
+	const { control, formState, watch, getValues } = methods;
+
 	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData();
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -46,8 +51,16 @@ function AgentReportsTable(props) {
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
+
+	console.log('inShowAllMode', inShowAllMode);
+
+	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const componentRef = useRef();
 
+	const { data, isLoading, refetch } = inShowAllMode
+		? useGetAgentAllReportsQuery({ ...getValues() })
+		: useGetAgentReportsQuery({ ...getValues(), page, size });
+	const totalData = useSelector(selectFilteredAgentReports(data));
 	const handlePdfDownload = () => {
 		// Your logic to handle PDF download
 	};
@@ -60,26 +73,59 @@ function AgentReportsTable(props) {
 		// Your logic to handle print
 	};
 
-	const handleGetAgents = () => {
-		// Your logic to get agents for the current page
+	const handleGetAgents = (newPage, callBack) => {
+		debugger;
+		setPage(newPage || 1);
+		refetch({ ...getValues(), page: newPage || 1, size });
+		unstable_batchedUpdates(() => {
+			callBack && callBack(totalData);
+			setModifiedAgentData(totalData?.agents || []);
+			setInSiglePageMode(false);
+			setInShowAllMode(false);
+			const { totalPages, totalElements } = getPaginationData(totalData?.agents, size, newPage || 1);
+			setPage(page || 1);
+			setSize(size || 25);
+			setTotalPages(totalPages);
+			setTotalElements(totalElements);
+		});
 	};
 
-	const handleGetAllAgents = () => {
-		// Your logic to get all agents
+	const handleGetAllAgents = (callBack, callBackAfterStateUpdated) => {
+		refetch(getValues());
+		unstable_batchedUpdates(() => {
+			callBack && callBack(totalData);
+			setModifiedAgentData(totalData?.agents || []);
+			setInSiglePageMode(false);
+			setInShowAllMode(true);
+			// get pagination data
+			const { totalPages, totalElements } = getPaginationData(totalData?.agents, size, page);
+			setPage(page || 1);
+			setSize(size || 25);
+			setTotalPages(totalPages);
+			setTotalElements(totalElements);
+		});
+		callBackAfterStateUpdated && callBackAfterStateUpdated(totalData);
 	};
+	console.log(`modifiedAgentData`, modifiedAgentData);
+
 	return (
 		<div className={classes.headContainer}>
 			{/* Filter */}
 			<FormProvider {...methods}>
 				<AgentFilterMenu
 					inShowAllMode={inShowAllMode}
-					// handleGetAgents={handleGetAgents}
-					// handleGetAllAgents={handleGetAllAgents}
+					handleGetAgents={handleGetAgents}
+					handleGetAllAgents={handleGetAllAgents}
 				/>
 			</FormProvider>
 			<ReportPaginationAndDownload
 				page={page}
 				size={size}
+				setPage={setPage}
+				setSize={setSize}
+				inShowAllMode={inShowAllMode}
+				setInShowAllMode={setInShowAllMode}
+				componentRef={componentRef}
 				totalPages={totalPages}
 				totalElements={totalElements}
 				onFirstPage={() => handleGetAgents(1)}

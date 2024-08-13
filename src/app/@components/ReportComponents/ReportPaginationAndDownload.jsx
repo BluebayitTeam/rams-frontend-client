@@ -1,5 +1,5 @@
 // ReportPaginationAndDownload.js
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 import PrintSharpIcon from '@mui/icons-material/PrintSharp';
 import ImportContactsSharpIcon from '@mui/icons-material/ImportContactsSharp';
@@ -13,6 +13,7 @@ import DifferenceIcon from '@mui/icons-material/Difference';
 import { useReactToPrint } from 'react-to-print';
 import html2PDF from 'jspdf-html2canvas';
 import Pagination from './Pagination';
+import ColumnLabel from './ColumnLabel';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
@@ -20,7 +21,11 @@ const useStyles = makeStyles((theme) => ({
 
 function ReportPaginationAndDownload({
 	page,
+	setPage,
 	size,
+	setSize,
+	inShowAllMode,
+	setInShowAllMode,
 	totalPages,
 	totalElements,
 	onFirstPage,
@@ -33,21 +38,20 @@ function ReportPaginationAndDownload({
 	handleGetData,
 	handleGetAllData,
 	tableColumns,
-	dispatchTableColumns
+	dispatchTableColumns,
+	componentRef
 }) {
 	const classes = useStyles();
 
 	const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
-	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [inDowloadPdf, setInDowloadPdf] = useState(false);
 	const [inDowloadExcel, setInDowloadExcel] = useState(false);
 	const [showClmSelectOption, setShowClmSelectOption] = useState(false);
 
-	const componentRef = useRef();
-
 	const printAction = useReactToPrint({
-		content: () => componentRef.current
+		content: () => componentRef.current,
+		onAfterPrint: () => setInPrint(false)
 	});
 
 	const pdfDownloadAction = () => {
@@ -141,7 +145,7 @@ function ReportPaginationAndDownload({
 
 			<ImportContactsSharpIcon
 				className="cursor-pointer inside icon"
-				style={{ padding: '8px', border: inSiglePageMode && '1px solid' }}
+				style={{ padding: '8px', border: !inShowAllMode && '1px solid' }}
 				onClick={() => handleGetData()}
 			/>
 
@@ -167,13 +171,13 @@ function ReportPaginationAndDownload({
 					id="insideClmSelect"
 					className={`allColumnContainer shadow-5 ${showClmSelectOption ? 'block' : 'hidden'}`}
 				>
-					{/* {tableColumns.map((column) => (
+					{tableColumns.map((column) => (
 						<ColumnLabel
 							key={column.name}
 							column={column}
 							dispatchTableColumns={dispatchTableColumns}
 						/>
-					))} */}
+					))}
 				</div>
 			</div>
 
