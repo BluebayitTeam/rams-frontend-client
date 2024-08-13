@@ -1,3 +1,5 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useFormContext } from 'react-hook-form';
