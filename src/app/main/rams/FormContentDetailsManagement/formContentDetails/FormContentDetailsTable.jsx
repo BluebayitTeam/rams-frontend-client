@@ -13,7 +13,7 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import FormContentDetailsTableHead from './FormContentDetailsTableHead';
 import { selectFilteredFormContentDetails, useGetFormContentDetailsQuery } from '../FormContentDetailsApi';
@@ -181,11 +181,11 @@ function FormContentDetailsTable(props) {
 										padding="none"
 										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<Checkbox
+										{/* <Checkbox
 											checked={isSelected}
 											onClick={(event) => event.stopPropagation()}
 											onChange={(event) => handleCheck(event, n.id)}
-										/>
+										/> */}
 									</TableCell>
 
 									<TableCell
@@ -249,7 +249,7 @@ function FormContentDetailsTable(props) {
 					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
