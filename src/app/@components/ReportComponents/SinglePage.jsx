@@ -4,11 +4,11 @@ import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import moment from 'moment';
 // import '../../../Print.css';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { BASE_URL } from 'src/app/constant/constants';
+import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+import { useEffect, useState } from 'react';
 
 function SinglePage({
 	classes,
-	generalData,
 	reportTitle = 'Report',
 	tableColumns = [],
 	filteredData,
@@ -22,11 +22,20 @@ function SinglePage({
 }) {
 	let pageBasedSerialNo = serialNumber;
 
-	// const filteredKeys = Object?.keys(filteredData)?.filter(key => filteredData[key] !== null);
-	// const filteredValues = filteredKeys?.map(key => {
-	// 	return `${key?.replace(/_/g, ' ')}: ${filteredData[key]}`;
-	// });
-	// const FilteredCriteria = filteredValues?.join(' , ');
+	const [generalData, setGeneralData] = useState({});
+	// get general setting data
+	useEffect(() => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		fetch(`${GET_SITESETTINGS}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) => setGeneralData(data.general_settings[0] || {}))
+			.catch(() => setGeneralData({}));
+	}, []);
 
 	return (
 		<div
