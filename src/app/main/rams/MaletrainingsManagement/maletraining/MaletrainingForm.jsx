@@ -1,10 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable react/button-has-type */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/iframe-has-title */
-/* eslint-disable jsx-a11y/alt-text */
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useFormContext } from 'react-hook-form';
@@ -57,12 +50,18 @@ const useStyles = makeStyles(() => ({
 
 function MaletrainingForm(props) {
 	const methods = useFormContext();
-	const { control, watch, setValue, setError, getValues, reset } = methods;
+	const { watch } = methods;
 	const [generalData, setGeneralData] = useState({});
 	const routeParams = useParams();
 	const [maletrainingId, setMaletrainingId] = useState('');
-	const classes = useStyles();
+	const [showPrint, setShowPrint] = useState(false);
+	const [formData, setFormData] = useState({
+		passenger: '',
+		center_name: '',
+		district: ''
+	});
 
+	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const { data: maletraining } = useGetMaletrainingQuery(maletrainingId, {
@@ -81,8 +80,6 @@ function MaletrainingForm(props) {
 		dispatch(getPassengers());
 	}, [dispatch]);
 
-	const [showPrint, setShowPrint] = useState(false);
-
 	useEffect(() => {
 		if (_.isEmpty(maletraining)) {
 			setShowPrint(false);
@@ -91,9 +88,9 @@ function MaletrainingForm(props) {
 		}
 
 		if (routeParams.maletrainingId !== 'maletraining-form') {
-			setValue('passenger', routeParams.maletrainingId);
+			setMaletrainingId(routeParams.maletrainingId);
 		}
-	}, [maletraining, routeParams.maletrainingId, setValue]);
+	}, [maletraining, routeParams.maletrainingId]);
 
 	const componentRef = useRef();
 
@@ -101,30 +98,24 @@ function MaletrainingForm(props) {
 		content: () => componentRef.current
 	});
 
-	const passengerName = maletraining?.passenger_name || '';
-	const fathersName = maletraining?.father_name || '';
-	const passportNo = maletraining?.passport_no || '';
-	const Designations = maletraining?.target_country?.name || '';
-	const Comment = '';
-
 	let today = new Date();
 	const dd = String(today.getDate()).padStart(2, '0');
 	const mm = String(today.getMonth() + 1).padStart(2, '0');
 	const yyyy = today.getFullYear();
 	today = `${dd}/${mm}/${yyyy}`;
 
-	const centerName = watch('center_name');
-	const district = watch('district');
+	const centerName = formData.center_name;
+	const { district } = formData;
 
 	const handleShowClick = () => {
 		const value = watch('passenger');
 
 		if (value) {
 			setMaletrainingId(value);
-		} else {
-			setError('passenger', {
-				type: 'manual',
-				message: 'Please enter a valid ID or Passport Number'
+			setFormData({
+				passenger: value,
+				center_name: watch('center_name'),
+				district: watch('district')
 			});
 		}
 	};
@@ -214,14 +205,14 @@ function MaletrainingForm(props) {
 									{district}
 									<br />
 									<br />
-									বিষয় : {Designations} গমনেচ্ছুক কোর্সে ভর্তি প্রসঙ্গে ।
+									বিষয় : {maletraining?.target_country?.name || ''} গমনেচ্ছুক কোর্সে ভর্তি প্রসঙ্গে ।
 									<br />
 									<br />
 									জনাব,
 									<br />
 									যথাবিহীত সম্মানপূর্বক নিবেদন এইযে , {generalData?.agency_name_bangla} (আর,এল নং-{' '}
-									{generalData?.rl_no}) হতে {Designations} গমনেচ্ছুক নিম্নে বর্ণিত যাত্রীর ৩ দিন
-									মেয়াদী প্রশিক্ষনের জন্য আপনার নিকট প্রেরণ করিলাম ।
+									{generalData?.rl_no}) হতে {maletraining?.target_country?.name || ''} গমনেচ্ছুক
+									নিম্নে বর্ণিত যাত্রীর ৩ দিন মেয়াদী প্রশিক্ষনের জন্য আপনার নিকট প্রেরণ করিলাম ।
 									<br />
 									<br />
 								</p>
@@ -248,11 +239,19 @@ function MaletrainingForm(props) {
 									<tbody>
 										<tr>
 											<td style={{ border: '1px solid black' }}>01</td>
-											<td style={{ border: '1px solid black' }}>{passengerName} </td>
-											<td style={{ border: '1px solid black' }}>{fathersName} </td>
-											<td style={{ border: '1px solid black' }}>{passportNo}</td>
-											<td style={{ border: '1px solid black' }}>{Designations}</td>
-											<td style={{ border: '1px solid black' }}>{Comment}</td>
+											<td style={{ border: '1px solid black' }}>
+												{maletraining?.passenger_name || ''}{' '}
+											</td>
+											<td style={{ border: '1px solid black' }}>
+												{maletraining?.father_name || ''}{' '}
+											</td>
+											<td style={{ border: '1px solid black' }}>
+												{maletraining?.passport_no || ''}
+											</td>
+											<td style={{ border: '1px solid black' }}>
+												{maletraining?.target_country?.name || ''}
+											</td>
+											<td style={{ border: '1px solid black' }}>''</td>
 										</tr>
 									</tbody>
 								</table>
