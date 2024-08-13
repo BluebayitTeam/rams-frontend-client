@@ -108,21 +108,12 @@ function FormContentDetailHeader() {
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
 				{handleDelete === 'deleteFormContentDetail' && formContentDetailId !== 'new' && (
-					<Typography
-						className="mt-6"
-						variant="subtitle2"
-					>
-						Do you want to remove this formContentDetail?
-					</Typography>
-				)}
-				{handleDelete === 'deleteFormContentDetail' && formContentDetailId !== 'new' && (
 					<Button
-						className="whitespace-nowrap mx-4"
+						className="whitespace-nowrap mx-1 "
 						variant="contained"
 						color="secondary"
 						onClick={handleRemoveFormContentDetail}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
@@ -152,9 +143,8 @@ function FormContentDetailHeader() {
 						</Button>
 					)}
 				<Button
-					className="whitespace-nowrap mx-4"
+					className="whitespace-nowrap mx-4  text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"
-					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
 					onClick={handleCancel}
 				>
 					Cancel

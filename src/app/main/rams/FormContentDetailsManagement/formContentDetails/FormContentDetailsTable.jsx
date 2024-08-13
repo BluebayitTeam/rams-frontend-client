@@ -12,29 +12,45 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
+import { rowsPerPageOptions } from 'src/app/@data/data';
 import FormContentDetailsTableHead from './FormContentDetailsTableHead';
 import { selectFilteredFormContentDetails, useGetFormContentDetailsQuery } from '../FormContentDetailsApi';
 
 /**
  * The formContentDetails table.
  */
+
+const useStyles = makeStyles(() => ({
+	root: {
+		display: 'flex',
+		justifyContent: 'space-between',
+		flexWrap: 'nowrap',
+		overflow: 'auto',
+		minHeight: '35px'
+	},
+	toolbar: {
+		'& > div': {
+			minHeight: 'fit-content'
+		}
+	}
+}));
+
 function FormContentDetailsTable(props) {
 	const dispatch = useDispatch();
+	const classes = useStyles();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const { data, isLoading, refetch } = useGetFormContentDetailsQuery({ ...pageAndSize, searchKey });
 	const totalData = useSelector(selectFilteredFormContentDetails(data));
-	console.log('fdsdfsdfsd', totalData);
 	const formContentDetails = useSelector(selectFilteredFormContentDetails(data?.formcontent_details));
 	let serialNumber = 1;
 
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 
@@ -147,8 +163,8 @@ function FormContentDetailsTable(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
+		<div className="w-full flex flex-col">
+			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table
 					stickyHeader
 					className="min-w-xl"
@@ -168,7 +184,7 @@ function FormContentDetailsTable(props) {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
-									className="h-20 cursor-pointer"
+									className="h-72 cursor-pointer border-t-1  border-gray-200"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -177,52 +193,56 @@ function FormContentDetailsTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64 text-center"
+										className="w-40 md:w-64 text-cente border-t-1  border-gray-200"
 										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										{/* <Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/> */}
-									</TableCell>
+									/>
 
 									<TableCell
-										className="w-40 md:w-64"
+										className="w-40 md:w-64 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
+
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
 										{n.head?.title}
 									</TableCell>
+
+									{/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+										<Interweave
+											allowAttributes
+											allowElements
+											disableLineBreaks={true}
+											content={n.details}
+										/>{' '}
+									</TableCell> */}
+
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-16 border-t-1  border-gray-200"
+										align="center"
 										component="th"
 										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<Edit
-											onClick={(event) =>
-												handleUpdateFormContentDetail(n, 'updateFormContentDetail')
-											}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+										<div>
+											<Edit
+												onClick={() =>
+													handleUpdateFormContentDetail(n, 'updateFormContentDetail')
+												}
+												className="cursor-pointer custom-edit-icon-style"
+											/>
 
-										<Delete
-											onClick={(event) =>
-												handleDeleteFormContentDetail(n, 'deleteFormContentDetail')
-											}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
+											<Delete
+												onClick={() =>
+													handleDeleteFormContentDetail(n, 'deleteFormContentDetail')
+												}
+												className="cursor-pointer custom-delete-icon-style"
+											/>
+										</div>
 									</TableCell>
 								</TableRow>
 							);
@@ -231,9 +251,8 @@ function FormContentDetailsTable(props) {
 				</Table>
 			</FuseScrollbars>
 
-			<div id="pagiContainer">
+			<div className={classes.root}>
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
