@@ -88,6 +88,7 @@ import BranchAppConfig from '../rams/BranchsManagement/BranchAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
 import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/FormContentDetailAppConfig';
+import MaletrainingAppConfig from '../rams/MaletrainingsManagement/MaletrainingAppConfig';
 
 /**
  * The list of application configurations.
@@ -113,6 +114,7 @@ const appsConfigs = [
 	KsaVisaManualAppConfig,
 	// ManpowerNoteSheetAppConfig,
 	ManpowerSubmissionListAppConfig,
+	MaletrainingAppConfig,
 	DepartureAppConfig,
 	FormContentDetailAppConfig,
 	FingerAppConfig,
