@@ -1565,6 +1565,7 @@ export const GET_AIRWAYID = `${BASE_URL}/airway/api/v1/airway/`;
 export const UPDATE_AIRWAY = `${BASE_URL}/airway/api/v1/airway/update/`;
 
 export const DELETE_AIRWAY = `${BASE_URL}/airway/api/v1/airway/delete/`;
+export const DELETE_AIRWAY_MULTIPLE = `${BASE_URL}/airway/api/v1/airway/delete/`;
 
 export const SEARCH_AIRWAY = `${BASE_URL}/airway/api/v1/airway/search/`;
 
