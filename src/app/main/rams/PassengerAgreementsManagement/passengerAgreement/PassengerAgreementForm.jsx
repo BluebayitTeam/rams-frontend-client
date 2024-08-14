@@ -186,7 +186,6 @@ function PassengerAgreementForm(props) {
 								variant="outlined"
 								InputLabelProps={field.value && { shrink: true }}
 								fullWidth
-								// onBlur={(ev) => sessionStorage.setItem('paid_amount', field.value)}
 							/>
 						);
 					}}
