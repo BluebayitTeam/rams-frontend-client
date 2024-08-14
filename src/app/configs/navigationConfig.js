@@ -1364,7 +1364,7 @@ const navigationConfig = [
 				translate: 'Female Finger Letter',
 				display_order: 6,
 				type: 'item',
-				url: '/apps/femalefingerletter-management/femalefingerletter-form',
+				url: '/apps/femalefingerletter/femalefingerletters',
 				exact: true
 			}
 		]
