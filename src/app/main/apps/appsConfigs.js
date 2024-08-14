@@ -91,6 +91,8 @@ import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/For
 import MaletrainingAppConfig from '../rams/MaletrainingsManagement/MaletrainingAppConfig';
 import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/FemaletrainingAppConfig';
 import MalefingerletterAppConfig from '../rams/MalefingerlettersManagement/MalefingerletterAppConfig';
+import FemalefingerletterAppConfig from '../rams/FemalefingerlettersManagement/FemalefingerletterAppConfig';
+import BmetVerifyAppConfig from '../rams/BmetVerifysManagement/BmetVerifyAppConfig';
 
 /**
  * The list of application configurations.
@@ -98,10 +100,11 @@ import MalefingerletterAppConfig from '../rams/MalefingerlettersManagement/Malef
 const appsConfigs = [
 	BmetAppConfig,
 	BmetContractAppConfig,
-	// BmetVerifyAppConfig,
+	BmetVerifyAppConfig,
 	BranchAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
+	FemalefingerletterAppConfig,
 	MessengerAppConfig,
 	MalefingerletterAppConfig,
 	MultipleStatusUpdateAppConfig,
