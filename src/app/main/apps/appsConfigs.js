@@ -90,6 +90,7 @@ import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppCo
 import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/FormContentDetailAppConfig';
 import MaletrainingAppConfig from '../rams/MaletrainingsManagement/MaletrainingAppConfig';
 import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/FemaletrainingAppConfig';
+import MalefingerletterAppConfig from '../rams/MalefingerlettersManagement/MalefingerletterAppConfig';
 
 /**
  * The list of application configurations.
@@ -102,6 +103,7 @@ const appsConfigs = [
 	CalendarAppConfig,
 	CvBankAppConfig,
 	MessengerAppConfig,
+	MalefingerletterAppConfig,
 	MultipleStatusUpdateAppConfig,
 	MalaysiaVisaAppConfig,
 	ContactsAppConfig,

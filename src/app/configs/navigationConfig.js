@@ -1355,7 +1355,7 @@ const navigationConfig = [
 				translate: 'Male Finger Letter',
 				display_order: 5,
 				type: 'item',
-				url: '/apps/malefingerletter-management/malefingerletter-form',
+				url: '/apps/malefingerletter/malefingerletters',
 				exact: true
 			},
 			{
