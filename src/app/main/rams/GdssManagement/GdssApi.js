@@ -5,7 +5,7 @@ import {
 	CREATE_GDS,
 	DELETE_GDS,
 	DELETE_GDS_MULTIPLE,
-	GET_AIRWAYID,
+	GET_GDSID,
 	GET_GDSS,
 	UPDATE_GDS
 } from 'src/app/constant/constants';
@@ -34,7 +34,7 @@ const GdsApi = api
 			}),
 			getGds: build.query({
 				query: (gdsId) => ({
-					url: `${GET_AIRWAYID}${gdsId}`
+					url: `${GET_GDSID}${gdsId}`
 				}),
 				providesTags: ['gdss']
 			}),
