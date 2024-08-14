@@ -5,8 +5,8 @@ import {
 	CREATE_AIRWAY,
 	DELETE_AIRWAY,
 	DELETE_AIRWAY_MULTIPLE,
+	GET_AIRWAYID,
 	GET_AIRWAYS,
-	GET_DEPARTMENT_BY_ID,
 	UPDATE_AIRWAY
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -34,7 +34,7 @@ const AirwayApi = api
 			}),
 			getAirway: build.query({
 				query: (airwayId) => ({
-					url: `${GET_DEPARTMENT_BY_ID}${airwayId}`
+					url: `${GET_AIRWAYID}${airwayId}`
 				}),
 				providesTags: ['airways']
 			}),

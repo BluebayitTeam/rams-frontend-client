@@ -13,16 +13,14 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import AirwaysTableHead from './AirwaysTableHead';
 import { selectFilteredAirways, useGetAirwaysQuery } from '../AirwaysApi';
 
-/**
- * The airways table.
- */
 function AirwaysTable(props) {
 	const dispatch = useDispatch();
+
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -33,7 +31,6 @@ function AirwaysTable(props) {
 	let serialNumber = 1;
 
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 
@@ -145,6 +142,128 @@ function AirwaysTable(props) {
 	}
 
 	return (
+		// <div className="w-full flex flex-col min-h-full px-10">
+		// 	<FuseScrollbars className="grow overflow-x-auto">
+		// 		<Table
+		// 			stickyHeader
+		// 			className="min-w-xl"
+		// 			aria-labelledby="tableTitle"
+		// 		>
+		// 			<AirwaysTableHead
+		// 				selectedAirwayIds={selected}
+		// 				tableOrder={tableOrder}
+		// 				onSelectAllClick={handleSelectAllClick}
+		// 				onRequestSort={handleRequestSort}
+		// 				rowCount={airways.length}
+		// 				onMenuItemClick={handleDeselect}
+		// 			/>
+
+		// 			<TableBody>
+		// 				{_.orderBy(airways, [tableOrder.id], [tableOrder.direction]).map((n) => {
+		// 					const isSelected = selected.indexOf(n.id) !== -1;
+		// 					return (
+		// 						<TableRow
+		// 							className="h-20 cursor-pointer"
+		// 							hover
+		// 							role="checkbox"
+		// 							aria-checked={isSelected}
+		// 							tabIndex={-1}
+		// 							key={n.id}
+		// 							selected={isSelected}
+		// 						>
+		// 							<TableCell
+		// 								className="w-40 md:w-64 text-center"
+		// 								padding="none"
+		// 								style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+		// 							/>
+
+		// 							<TableCell
+		// 								className="w-40 md:w-64"
+		// 								component="th"
+		// 								scope="row"
+		// 								style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+		// 							>
+		// 								{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+		// 							</TableCell>
+		// 							<TableCell
+		// 								className="p-2 w-1/5 md:p-12  whitespace-nowrap	"
+		// 								component="th"
+		// 								scope="row"
+		// 							>
+		// 								{n.name}
+		// 							</TableCell>
+
+		// 							<TableCell
+		// 								className="p-2 w-1/5 md:p-12  whitespace-nowrap	"
+		// 								component="th"
+		// 								scope="row"
+		// 							>
+		// 								{n.short_code}
+		// 							</TableCell>
+		// 							<TableCell
+		// 								className="p-2 w-1/5 md:p-12  whitespace-nowrap	"
+		// 								component="th"
+		// 								scope="row"
+		// 							>
+		// 								{n.air_code}
+		// 							</TableCell>
+		// 							<TableCell
+		// 								className="p-2 md:p-16"
+		// 								component="th"
+		// 								scope="row"
+		// 								align="right"
+		// 								style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+		// 							>
+		// 								<Edit
+		// 									onClick={() => handleUpdateAirway(n, 'updateAirway')}
+		// 									className="cursor-pointer custom-edit-icon-style"
+		// 								/>
+
+		// 								<Delete
+		// 									onClick={() => handleDeleteAirway(n, 'deleteAirway')}
+		// 									className="cursor-pointer custom-delete-icon-style"
+		// 								/>
+		// 							</TableCell>
+		// 						</TableRow>
+		// 					);
+		// 				})}
+		// 			</TableBody>
+		// 		</Table>
+		// 	</FuseScrollbars>
+
+		// 	<div id="pagiContainer">
+		// 		<Pagination
+		// 			// classes={{ ul: 'flex-nowrap' }}
+		// 			count={totalData?.total_pages}
+		// 			page={page + 1}
+		// 			defaultPage={1}
+		// 			color="primary"
+		// 			showFirstButton
+		// 			showLastButton
+		// 			variant="outlined"
+		// 			shape="rounded"
+		// 			onChange={handlePagination}
+		// 		/>
+
+		// 		<TablePagination
+		// 			className="shrink-0 border-t-1"
+		// 			component="div"
+		// 			rowsPerPageOptions={rowsPerPageOptions}
+		// 			count={totalData?.total_elements}
+		// 			rowsPerPage={rowsPerPage}
+		// 			page={page}
+		// 			backIconButtonProps={{
+		// 				'aria-label': 'Previous Page'
+		// 			}}
+		// 			nextIconButtonProps={{
+		// 				'aria-label': 'Next Page'
+		// 			}}
+		// 			onPageChange={handleChangePage}
+		// 			onRowsPerPageChange={handleChangeRowsPerPage}
+		// 		/>
+		// 	</div>
+		// </div>
+
 		<div className="w-full flex flex-col min-h-full px-10">
 			<FuseScrollbars className="grow overflow-x-auto">
 				<Table
@@ -175,48 +294,58 @@ function AirwaysTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64 text-center"
+										className="w-40 md:w-64 text-center border-t-1  border-gray-200"
 										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+									/>
+
+									<TableCell
+										className="w-40 w-1/5 md:w-64 border-t-1  border-gray-200"
+										component="th"
+										scope="row"
 									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}{' '}
 									</TableCell>
 
 									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
 										component="th"
 										scope="row"
 									>
 										{n.name}
 									</TableCell>
+
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap	border-t-1  border-gray-200"
 										component="th"
 										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<Edit
-											onClick={(event) => handleUpdateAirway(n, 'updateAirway')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+										{n.short_code}
+									</TableCell>
+									<TableCell
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap	border-t-1  border-gray-200"
+										component="th"
+										scope="row"
+									>
+										{n.air_code}
+									</TableCell>
 
-										<Delete
-											onClick={(event) => handleDeleteAirway(n, 'deleteAirway')}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
+									<TableCell
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
+										align="center"
+										component="th"
+										scope="row"
+									>
+										<div>
+											<Edit
+												onClick={() => handleUpdateAirway(n, 'updateAirway')}
+												className="cursor-pointer custom-edit-icon-style"
+											/>
+
+											<Delete
+												onClick={() => handleDeleteAirway(n, 'deleteAirway')}
+												className="cursor-pointer custom-delete-icon-style"
+											/>
+										</div>
 									</TableCell>
 								</TableRow>
 							);
@@ -227,7 +356,7 @@ function AirwaysTable(props) {
 
 			<div id="pagiContainer">
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
+					// 			// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -243,7 +372,7 @@ function AirwaysTable(props) {
 					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{

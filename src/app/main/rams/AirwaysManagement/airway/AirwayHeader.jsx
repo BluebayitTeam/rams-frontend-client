@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useCreateAirwayMutation, useDeleteAirwayMutation, useUpdateAirwayMutation } from '../AirwaysApi';
 
@@ -44,11 +43,21 @@ function AirwayHeader() {
 			});
 	}
 
-	function handleRemoveAirway(dispatch) {
-		removeAirway(airwayId);
-		DeletedSuccessfully();
-		navigate('/apps/airway/airways');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+	async function handleRemoveAirway() {
+		try {
+			// Attempt to remove the airway
+			await removeAirway(airwayId);
+
+			if (airwayId) {
+				DeletedSuccessfully();
+			}
+
+			// Navigate to the specified route
+			navigate('/apps/airway/airways');
+		} catch (error) {
+			// Handle any errors that occur during the process
+			console.error('Error removing airway:', error);
+		}
 	}
 
 	function handleCancel() {

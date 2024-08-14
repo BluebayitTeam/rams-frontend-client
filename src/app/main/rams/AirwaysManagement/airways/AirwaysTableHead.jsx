@@ -5,10 +5,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
-import { Checkbox, IconButton } from '@mui/material';
-import { Box } from '@mui/system';
-import { Delete } from '@mui/icons-material';
-import Swal from 'sweetalert2';
 import { useDeleteAirwaysMutation } from '../AirwaysApi';
 
 /**
@@ -30,9 +26,24 @@ const rows = [
 		label: 'Name',
 		sort: true
 	},
+
+	{
+		id: 'short_code',
+		align: 'left',
+		disablePadding: false,
+		label: 'Short Code',
+		sort: true
+	},
+	{
+		id: 'air_code',
+		align: 'left',
+		disablePadding: false,
+		label: 'Air Code',
+		sort: true
+	},
 	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
@@ -40,11 +51,7 @@ const rows = [
 ];
 
 function AirwaysTableHead(props) {
-	const { selectedAirwayIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
-
-	console.log('onMenuItemClick', onMenuItemClick);
-
-	console.log('selectedAirwayIds', selectedAirwayIds);
+	const { selectedAirwayIds, tableOrder, onRequestSort } = props;
 
 	const [removeAirways] = useDeleteAirwaysMutation();
 	const numSelected = selectedAirwayIds.length;
@@ -55,22 +62,6 @@ function AirwaysTableHead(props) {
 
 	function openSelectedAirwaysMenu(event) {
 		setSelectedAirwaysMenu(event.currentTarget);
-	}
-
-	function closeSelectedAirwaysMenu() {
-		setSelectedAirwaysMenu(null);
-	}
-
-	function handleDeleteMultipleItem() {
-		removeAirways(selectedAirwayIds).then((data) => {
-			Swal.fire({
-				position: 'top-center',
-				icon: 'success',
-				title: 'Deleted Successfully',
-				showConfirmButton: false,
-				timer: 2000
-			});
-		});
 	}
 
 	return (
@@ -85,53 +76,7 @@ function AirwaysTableHead(props) {
 					}}
 					padding="none"
 					className="w-40 md:w-64 text-center z-99"
-				>
-					<Checkbox
-						indeterminate={numSelected > 0 && numSelected < rowCount}
-						checked={rowCount !== 0 && numSelected === rowCount}
-						onChange={onSelectAllClick}
-					/>
-					{numSelected > 0 && (
-						<Box
-							className="flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1"
-							sx={{
-								background: (theme) => theme.palette.background.default
-							}}
-						>
-							<IconButton
-								aria-haspopup="true"
-								onClick={openSelectedAirwaysMenu}
-								size="large"
-							>
-								<Delete
-									onClick={(event) => handleDeleteMultipleItem()}
-									className="cursor-pointer custom-delete-icon-style"
-								/>
-							</IconButton>
-							{/* <Menu
-								id="selectedAirwaysMenu"
-								anchorEl={selectedAirwaysMenu}
-								open={Boolean(selectedAirwaysMenu)}
-								onClose={closeSelectedAirwaysMenu}
-							>
-								<MenuList>
-									<MenuItem
-										onClick={() => {
-											removeAirways(selectedAirwayIds);
-											onMenuItemClick();
-											closeSelectedAirwaysMenu();
-										}}
-									>
-										<ListItemIcon>
-											<FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
-										</ListItemIcon>
-										<ListItemText primary="Remove" />
-									</MenuItem>
-								</MenuList>
-							</Menu> */}
-						</Box>
-					)}
-				</TableCell>
+				/>
 				{rows.map((row, index, array) => {
 					return (
 						<TableCell
