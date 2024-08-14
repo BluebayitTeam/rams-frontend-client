@@ -1493,7 +1493,7 @@ const navigationConfig = [
 				translate: 'Airway',
 				display_order: 1,
 				type: 'item',
-				url: '/apps/airway-management/airways',
+				url: '/apps/airway/airways',
 				exact: true
 			},
 

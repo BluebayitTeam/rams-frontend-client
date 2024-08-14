@@ -93,6 +93,7 @@ import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/Femaletra
 import MalefingerletterAppConfig from '../rams/MalefingerlettersManagement/MalefingerletterAppConfig';
 import FemalefingerletterAppConfig from '../rams/FemalefingerlettersManagement/FemalefingerletterAppConfig';
 import BmetVerifyAppConfig from '../rams/BmetVerifysManagement/BmetVerifyAppConfig';
+import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
 
 /**
  * The list of application configurations.
@@ -101,6 +102,7 @@ const appsConfigs = [
 	BmetAppConfig,
 	BmetContractAppConfig,
 	BmetVerifyAppConfig,
+	AirwayAppConfig,
 	BranchAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
