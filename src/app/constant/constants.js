@@ -1581,6 +1581,7 @@ export const GET_GDSID = `${BASE_URL}/gds/api/v1/gds/`;
 export const UPDATE_GDS = `${BASE_URL}/gds/api/v1/gds/update/`;
 
 export const DELETE_GDS = `${BASE_URL}/gds/api/v1/gds/delete/`;
+export const DELETE_GDS_MULTIPLE = `${BASE_URL}/gds/api/v1/gds/delete/`;
 
 export const SEARCH_GDS = `${BASE_URL}/gds/api/v1/gds/search/`;
 

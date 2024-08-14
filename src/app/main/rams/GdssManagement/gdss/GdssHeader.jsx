@@ -43,7 +43,7 @@ function GdssHeader(props) {
 					delay={300}
 					className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
 				>
-					Airway
+					Gds
 				</Typography>
 			</div>
 
@@ -84,7 +84,7 @@ function GdssHeader(props) {
 						variant="contained"
 						color="secondary"
 						component={NavLinkAdapter}
-						to="/apps/airway/gdss/new"
+						to="/apps/gds/gdss/new"
 					>
 						<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
 						<span className="hidden sm:flex mx-8">Add</span>

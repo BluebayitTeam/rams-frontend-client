@@ -3,7 +3,6 @@ import _ from '@lodash';
 const GdsModel = (data) =>
 	_.defaults(data || {}, {
 		name: '',
-		short_code: '',
-		air_code: ''
+		note: ''
 	});
 export default GdsModel;

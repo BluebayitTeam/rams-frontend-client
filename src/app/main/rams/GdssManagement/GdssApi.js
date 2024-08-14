@@ -2,12 +2,12 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-	CREATE_AIRWAY,
-	DELETE_AIRWAY,
-	DELETE_AIRWAY_MULTIPLE,
+	CREATE_GDS,
+	DELETE_GDS,
+	DELETE_GDS_MULTIPLE,
 	GET_AIRWAYID,
-	GET_AIRWAYS,
-	UPDATE_AIRWAY
+	GET_GDSS,
+	UPDATE_GDS
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -21,12 +21,12 @@ const GdsApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getGdss: build.query({
-				query: ({ page, size, searchKey }) => ({ url: GET_AIRWAYS, params: { page, size, searchKey } }),
+				query: ({ page, size, searchKey }) => ({ url: GET_GDSS, params: { page, size, searchKey } }),
 				providesTags: ['gdss']
 			}),
 			deleteGdss: build.mutation({
 				query: (gdsIds) => ({
-					url: DELETE_AIRWAY_MULTIPLE,
+					url: DELETE_GDS_MULTIPLE,
 					method: 'DELETE',
 					data: { ids: gdsIds }
 				}),
@@ -40,7 +40,7 @@ const GdsApi = api
 			}),
 			createGds: build.mutation({
 				query: (newGds) => ({
-					url: CREATE_AIRWAY,
+					url: CREATE_GDS,
 					method: 'POST',
 					data: jsonToFormData(GdsModel(newGds))
 				}),
@@ -48,7 +48,7 @@ const GdsApi = api
 			}),
 			updateGds: build.mutation({
 				query: (gds) => ({
-					url: `${UPDATE_AIRWAY}${gds.id}`,
+					url: `${UPDATE_GDS}${gds.id}`,
 					method: 'PUT',
 					data: jsonToFormData(gds)
 				}),
@@ -56,7 +56,7 @@ const GdsApi = api
 			}),
 			deleteGds: build.mutation({
 				query: (gdsId) => ({
-					url: `${DELETE_AIRWAY}${gdsId}`,
+					url: `${DELETE_GDS}${gdsId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['gdss']

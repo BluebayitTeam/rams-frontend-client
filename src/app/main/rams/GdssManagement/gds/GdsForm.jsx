@@ -17,12 +17,8 @@ function GdsForm(props) {
 				required
 			/>
 			<CustomTextField
-				name="short_code"
-				label="Short Code"
-			/>
-			<CustomTextField
-				name="air_code"
-				label="Air Code"
+				name="note"
+				label="Note"
 			/>
 		</div>
 	);

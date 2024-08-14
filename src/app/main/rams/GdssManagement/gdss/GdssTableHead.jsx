@@ -26,19 +26,11 @@ const rows = [
 		label: 'Name',
 		sort: true
 	},
-
 	{
-		id: 'short_code',
+		id: 'note',
 		align: 'left',
 		disablePadding: false,
-		label: 'Short Code',
-		sort: true
-	},
-	{
-		id: 'air_code',
-		align: 'left',
-		disablePadding: false,
-		label: 'Air Code',
+		label: 'Note',
 		sort: true
 	},
 	{
@@ -51,10 +43,10 @@ const rows = [
 ];
 
 function GdssTableHead(props) {
-	const { selectedAirwayIds, tableOrder, onRequestSort } = props;
+	const { selectedGdsIds, tableOrder, onRequestSort } = props;
 
 	const [removeGdss] = useDeleteGdssMutation();
-	const numSelected = selectedAirwayIds.length;
+	const numSelected = selectedGdsIds.length;
 	const [selectedGdssMenu, setSelectedGdssMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
@@ -67,7 +59,7 @@ function GdssTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
-				<TableCell
+				{/* <TableCell
 					sx={{
 						backgroundColor: (theme) =>
 							theme.palette.mode === 'light'
@@ -76,7 +68,7 @@ function GdssTableHead(props) {
 					}}
 					padding="none"
 					className="w-40 md:w-64 text-center z-99"
-				/>
+				/> */}
 				{rows.map((row, index, array) => {
 					return (
 						<TableCell
