@@ -12,70 +12,70 @@ import {
 	UpdatedSuccessfully
 } from 'src/app/@customHooks/notificationAlert';
 import { useDispatch } from 'react-redux';
-import { useCreateAirwayMutation, useDeleteAirwayMutation, useUpdateAirwayMutation } from '../AirwaysApi';
+import { useCreateGdsMutation, useDeleteGdsMutation, useUpdateGdsMutation } from '../GdssApi';
 
 /**
- * The airway header.
+ * The gds header.
  */
-function AirwayHeader() {
+function GdsHeader() {
 	const dispatch = useDispatch();
 
 	const routeParams = useParams();
-	const { airwayId } = routeParams;
-	const [createAirway] = useCreateAirwayMutation();
-	const [saveAirway] = useUpdateAirwayMutation();
-	const [removeAirway] = useDeleteAirwayMutation();
+	const { gdsId } = routeParams;
+	const [createGds] = useCreateGdsMutation();
+	const [saveGds] = useUpdateGdsMutation();
+	const [removeGds] = useDeleteGdsMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteAirway');
-	const handleUpdate = localStorage.getItem('updateAirway');
+	const handleDelete = localStorage.getItem('deleteGds');
+	const handleUpdate = localStorage.getItem('updateGds');
 
-	function handleUpdateAirway() {
-		saveAirway(getValues()).then((data) => {
+	function handleUpdateGds() {
+		saveGds(getValues()).then((data) => {
 			UpdatedSuccessfully();
-			navigate(`/apps/airway/airways`);
+			navigate(`/apps/gds/gdss`);
 		});
 	}
 
-	function handleCreateAirway() {
-		createAirway(getValues())
+	function handleCreateGds() {
+		createGds(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/airway/airways`);
+				navigate(`/apps/gds/gdss`);
 			});
 	}
 
-	// function handleRemoveAirway(dispatch) {
+	// function handleRemoveGds(dispatch) {
 	// 	debugger;
 	// 	try {
-	// 		removeAirway(airwayId);
+	// 		removeGds(gdsId);
 
-	// 		if (airwayId) {
+	// 		if (gdsId) {
 	// 			DeletedSuccessfully();
 	// 		}
 
-	// 		navigate('/apps/airway/airways');
+	// 		navigate('/apps/gds/gdss');
 	// 	} catch (error) {
 	// 		// Handle the error here
 	// 		console.error('Errodfsdfdsfsdfsdfdsr', error);
 	// 	}
 	// }
 
-	function handleRemoveAirway() {
-		removeAirway(airwayId)
+	function handleRemoveGds() {
+		removeGds(gdsId)
 			.unwrap()
 			.then((data) => {
 				if (data) {
 					DeletedSuccessfully();
 				}
 
-				navigate('/apps/airway/airways');
+				navigate('/apps/gds/gdss');
 			})
 			.catch((error) => {
 				CustomNotification('error', `${error.response.data.detail}`);
@@ -83,25 +83,25 @@ function AirwayHeader() {
 	}
 
 	function handleCancel() {
-		navigate(`/apps/airway/airways`);
+		navigate(`/apps/gds/gdss`);
 	}
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
 			<div className="flex flex-col items-start max-w-full min-w-0">
 				<motion.div
-					initial={{ x: 20, opaairway: 0 }}
-					animate={{ x: 0, opaairway: 1, transition: { delay: 0.3 } }}
+					initial={{ x: 20, opagds: 0 }}
+					animate={{ x: 0, opagds: 1, transition: { delay: 0.3 } }}
 				>
 					<Typography
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/airway-management/airways"
+						to="/apps/gds-management/gdss"
 						color="inherit"
 					>
 						<Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
-						<span className="hidden sm:flex mx-4 font-medium">Airways</span>
+						<span className="hidden sm:flex mx-4 font-medium">Gdss</span>
 					</Typography>
 				</motion.div>
 
@@ -123,7 +123,7 @@ function AirwayHeader() {
 								variant="caption"
 								className="font-medium"
 							>
-								Airway Detail
+								Gds Detail
 							</Typography>
 						</motion.div>
 					</div>
@@ -135,44 +135,44 @@ function AirwayHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteAirway' && airwayId !== 'new' && (
+				{handleDelete === 'deleteGds' && gdsId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this airway?
+						Do you want to remove this gds?
 					</Typography>
 				)}
-				{handleDelete === 'deleteAirway' && airwayId !== 'new' && (
+				{handleDelete === 'deleteGds' && gdsId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveAirway}
+						onClick={handleRemoveGds}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{airwayId === 'new' && (
+				{gdsId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateAirway}
+						onClick={handleCreateGds}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteAirway' && handleUpdate === 'updateAirway' && airwayId !== 'new' && (
+				{handleDelete !== 'deleteGds' && handleUpdate === 'updateGds' && gdsId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						color="secondary"
 						variant="contained"
 						style={{ backgroundColor: '#4dc08e', color: 'white' }}
-						onClick={handleUpdateAirway}
+						onClick={handleUpdateGds}
 					>
 						Update
 					</Button>
@@ -190,4 +190,4 @@ function AirwayHeader() {
 	);
 }
 
-export default AirwayHeader;
+export default GdsHeader;

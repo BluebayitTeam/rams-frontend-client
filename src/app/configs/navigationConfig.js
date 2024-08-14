@@ -1503,7 +1503,7 @@ const navigationConfig = [
 				translate: 'GDS',
 				display_order: 2,
 				type: 'item',
-				url: '/apps/gds-management/gdss',
+				url: '/apps/gds/gdss',
 				exact: true
 			}
 		]

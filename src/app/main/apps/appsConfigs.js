@@ -94,6 +94,7 @@ import MalefingerletterAppConfig from '../rams/MalefingerlettersManagement/Malef
 import FemalefingerletterAppConfig from '../rams/FemalefingerlettersManagement/FemalefingerletterAppConfig';
 import BmetVerifyAppConfig from '../rams/BmetVerifysManagement/BmetVerifyAppConfig';
 import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
+import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
 
 /**
  * The list of application configurations.
@@ -126,6 +127,7 @@ const appsConfigs = [
 	MaletrainingAppConfig,
 	FemaletrainingAppConfig,
 	DepartureAppConfig,
+	GdsAppConfig,
 	FormContentDetailAppConfig,
 	FingerAppConfig,
 	ProfileAppConfig,
