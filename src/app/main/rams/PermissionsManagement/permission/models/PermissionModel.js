@@ -1,8 +1,7 @@
 import _ from '@lodash';
 
-const DepartmentModel = (data) =>
+const PermissionModel = (data) =>
 	_.defaults(data || {}, {
-		id: _.uniqueId('permission-'),
 		name: ''
 	});
-export default DepartmentModel;
+export default PermissionModel;

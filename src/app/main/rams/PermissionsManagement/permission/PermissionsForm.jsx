@@ -5,15 +5,15 @@ import { CHECK_GDS_NAME_DUPLECATE } from 'src/app/constant/constants';
 // Ensure lodash is installed
 import axios from 'axios';
 
-function GdsForm(props) {
+function PermissionForm(props) {
 	const methods = useFormContext();
 	const { setError } = methods;
 	const routeParams = useParams();
-	const { gdsId } = routeParams;
+	const { PermissionId } = routeParams;
 
-	const handleCheckGdsName = async (name) => {
+	const handleCheckPermissionName = async (name) => {
 		const response = await axios.get(
-			`${CHECK_GDS_NAME_DUPLECATE}?name=${name}&id=${gdsId === 'new' ? '' : gdsId}&type=${gdsId === 'new' ? 'create' : 'update'}`
+			`${CHECK_GDS_NAME_DUPLECATE}?name=${name}&id=${PermissionId === 'new' ? '' : PermissionId}&type=${PermissionId === 'new' ? 'create' : 'update'}`
 		);
 
 		if (response?.data.name_exists) {
@@ -31,17 +31,11 @@ function GdsForm(props) {
 				label="Name"
 				required
 				onChange={(e) => {
-					handleCheckGdsName(e.target.value);
+					handleCheckPermissionName(e.target.value);
 				}}
-			/>
-
-			<CustomTextField
-				name="note"
-				label="Note"
-				required
 			/>
 		</div>
 	);
 }
 
-export default GdsForm;
+export default PermissionForm;

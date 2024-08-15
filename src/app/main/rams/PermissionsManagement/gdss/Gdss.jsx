@@ -1,13 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
-import PermissionsHeader from './PermissionsHeader';
-import PermissionsTable from './PermissionsTable';
+import GdssHeader from './GdssHeader';
+import GdssTable from './GdssTable';
 
 /**
- * The permissions page.
+ * The gdss page.
  */
-function Permissions() {
+function Gdss() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
 	const [searchKey, setSearchKey] = useState('');
@@ -19,13 +19,13 @@ function Permissions() {
 				header: 'min-h-80 h-80'
 			}}
 			header={
-				<PermissionsHeader
+				<GdssHeader
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
 			}
 			content={
-				<PermissionsTable
+				<GdssTable
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
@@ -35,4 +35,4 @@ function Permissions() {
 	);
 }
 
-export default Permissions;
+export default Gdss;

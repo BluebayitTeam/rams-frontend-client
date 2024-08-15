@@ -12,49 +12,28 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { Delete, Edit } from '@mui/icons-material';
-import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
-import PermissionsTableHead from './PermissionsTableHead';
-import { selectFilteredPermissions, useGetPermissionsQuery } from '../PermissionsApi';
+import { Delete, Edit } from '@mui/icons-material';
+import GdssTableHead from './GdssTableHead';
+import { selectFilteredGdss, useGetGdssQuery } from '../GdssApi';
 
-/**
- * The permissions table.
- */
-function PermissionsTable(props) {
+function GdssTable(props) {
 	const dispatch = useDispatch();
+
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-
-	const { data, isLoading, refetch } = useGetPermissionsQuery({ ...pageAndSize, searchKey });
-
-	console.log('sdsdsds', data);
+	const { data, isLoading, refetch } = useGetGdssQuery({ ...pageAndSize, searchKey });
+	const totalData = useSelector(selectFilteredGdss(data));
+	const gdss = useSelector(selectFilteredGdss(data?.gdses));
 	let serialNumber = 1;
 
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
-	const totalData = useSelector(selectFilteredPermissions(data));
-	const permissions = useSelector(selectFilteredPermissions(data?.permissions));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const roles = useSelector((state) => state.data.roles);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const permission = useSelector((state) => state.data.permissions);
-	console.log('permissionsss', totalData);
 
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getCities());
-		dispatch(getCountries());
-	}, []);
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
@@ -77,7 +56,7 @@ function PermissionsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(permissions.map((n) => n.id));
+			setSelected(gdss.map((n) => n.id));
 			return;
 		}
 
@@ -89,19 +68,19 @@ function PermissionsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/permission/permissions/${item.id}/${item.handle}`);
+		navigate(`/apps/gds/gdss/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdatePermission(item, event) {
-		localStorage.removeItem('deletePermission');
-		localStorage.setItem('updatePermission', event);
-		navigate(`/apps/permission/permissions/${item.id}/${item.handle}`);
+	function handleUpdateGds(item, event) {
+		localStorage.removeItem('deleteGds');
+		localStorage.setItem('updateGds', event);
+		navigate(`/apps/gds/gdss/${item.id}/${item.handle}`);
 	}
 
-	function handleDeletePermission(item, event) {
-		localStorage.removeItem('updatePermission');
-		localStorage.setItem('deletePermission', event);
-		navigate(`/apps/permission/permissions/${item.id}/${item.handle}`);
+	function handleDeleteGds(item, event) {
+		localStorage.removeItem('updateGds');
+		localStorage.setItem('deleteGds', event);
+		navigate(`/apps/gds/gdss/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -145,7 +124,7 @@ function PermissionsTable(props) {
 		);
 	}
 
-	if (permissions?.length === 0) {
+	if (gdss.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -156,7 +135,7 @@ function PermissionsTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no permissions!
+					There are no gdss!
 				</Typography>
 			</motion.div>
 		);
@@ -170,21 +149,21 @@ function PermissionsTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<PermissionsTableHead
-						selectedPermissionIds={selected}
+					<GdssTableHead
+						selectedGdsIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={permissions?.length}
+						rowCount={gdss.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(permissions, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(gdss, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
-									className="h-20 cursor-pointer "
+									className="h-20 cursor-pointer"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -193,36 +172,46 @@ function PermissionsTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64"
+										className="w-40 w-1/5 md:w-64 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}{' '}
 									</TableCell>
+
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
 										component="th"
 										scope="row"
 									>
 										{n.name}
 									</TableCell>
+
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 w-1/4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<Edit
-											onClick={(event) => handleUpdatePermission(n, 'updatePermission')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+										{n.note}
+									</TableCell>
 
-										<Delete
-											onClick={(event) => handleDeletePermission(n, 'deletePermission')}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
+									<TableCell
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
+										align="center"
+										component="th"
+										scope="row"
+									>
+										<div>
+											<Edit
+												onClick={() => handleUpdateGds(n, 'updateGds')}
+												className="cursor-pointer custom-edit-icon-style"
+											/>
+
+											<Delete
+												onClick={() => handleDeleteGds(n, 'deleteGds')}
+												className="cursor-pointer custom-delete-icon-style"
+											/>
+										</div>
 									</TableCell>
 								</TableRow>
 							);
@@ -233,7 +222,7 @@ function PermissionsTable(props) {
 
 			<div id="pagiContainer">
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
+					// 			// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -249,7 +238,7 @@ function PermissionsTable(props) {
 					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
@@ -266,4 +255,4 @@ function PermissionsTable(props) {
 	);
 }
 
-export default withRouter(PermissionsTable);
+export default withRouter(GdssTable);

@@ -5,10 +5,10 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
-import { useDeletePermissionsMutation } from '../PermissionsApi';
+import { useDeleteGdssMutation } from '../GdssApi';
 
 /**
- * The permissions table head component.
+ * The departments table head component.
  */
 
 const rows = [
@@ -27,34 +27,48 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'note',
+		align: 'left',
+		disablePadding: false,
+		label: 'Note',
+		sort: true
+	},
+	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
 	}
 ];
 
-function PermissionsTableHead(props) {
-	const { selectedPermissionIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
-	const [removePermissions] = useDeletePermissionsMutation();
-	const numSelected = selectedPermissionIds.length;
-	const [selectedPermissionsMenu, setSelectedPermissionsMenu] = useState(null);
+function GdssTableHead(props) {
+	const { selectedGdsIds, tableOrder, onRequestSort } = props;
+
+	const [removeGdss] = useDeleteGdssMutation();
+	const numSelected = selectedGdsIds.length;
+	const [selectedGdssMenu, setSelectedGdssMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedPermissionsMenu(event) {
-		setSelectedPermissionsMenu(event.currentTarget);
-	}
-
-	function closeSelectedPermissionsMenu() {
-		setSelectedPermissionsMenu(null);
+	function openSelectedGdssMenu(event) {
+		setSelectedGdssMenu(event.currentTarget);
 	}
 
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
+				{/* <TableCell
+					sx={{
+						backgroundColor: (theme) =>
+							theme.palette.mode === 'light'
+								? lighten(theme.palette.background.default, 0.4)
+								: lighten(theme.palette.background.default, 0.02)
+					}}
+					padding="none"
+					className="w-40 md:w-64 text-center z-99"
+				/> */}
 				{rows.map((row, index, array) => {
 					return (
 						<TableCell
@@ -100,4 +114,4 @@ function PermissionsTableHead(props) {
 	);
 }
 
-export default PermissionsTableHead;
+export default GdssTableHead;

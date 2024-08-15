@@ -1577,7 +1577,7 @@ export const GET_GDSS = `${BASE_URL}/gds/api/v1/gds/all/`;
 export const GET_GDSS_WITHOUT_PAGINATION = `${BASE_URL}/gds/api/v1/gds/without_pagination/all/`;
 
 export const GET_GDSID = `${BASE_URL}/gds/api/v1/gds/`;
-export const GET_GDS_CHECK_DUPLECATE = `${BASE_URL}/gds/api/v1/gds/check_gds_name/`;
+export const CHECK_GDS_NAME_DUPLECATE = `${BASE_URL}/gds/api/v1/gds/check_gds_name/`;
 
 export const UPDATE_GDS = `${BASE_URL}/gds/api/v1/gds/update/`;
 

@@ -16,7 +16,6 @@ import ColumnAppConfig from '../rams/ColumnsManagement/ColumnAppConfig';
 import DepartmentAppConfig from '../rams/DepartmentsManagement/DepartmentAppConfig';
 import DesignationAppConfig from '../rams/DesignationsManagement/DesignationAppConfig';
 import MenuAppConfig from '../rams/MenusManagement/MenuAppConfig';
-import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import RoleMenuAppConfig from '../rams/RoleMenusManagement/RoleMenuAppConfig';
 import SupportAppConfig from '../rams/SupportsManagement/SupportAppConfig';
@@ -180,7 +179,7 @@ const appsConfigs = [
 	DesignationAppConfig,
 	DocmentSendAppConfig,
 	MenuAppConfig,
-	PermissionAppConfig,
+	// PermissionAppConfig,
 	RoleAppConfig,
 	PassengerAppConfig,
 	FeatureDetailAppConfig,
