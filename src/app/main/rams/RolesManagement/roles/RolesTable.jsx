@@ -12,52 +12,32 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { Delete, Edit } from '@mui/icons-material';
-import { getBranches, getCities, getCountries, getRoles, getThanas } from 'app/store/dataSlice';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 import RolesTableHead from './RolesTableHead';
 import { selectFilteredRoles, useGetRolesQuery } from '../RolesApi';
 
-/**
- * The roles table.
- */
 function RolesTable(props) {
 	const dispatch = useDispatch();
+
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-
 	const { data, isLoading, refetch } = useGetRolesQuery({ ...pageAndSize, searchKey });
-
-	console.log('sdsdsds', data);
-
 	const totalData = useSelector(selectFilteredRoles(data));
+	console.log('totalData', totalData);
 	const roles = useSelector(selectFilteredRoles(data?.roles));
-	const thanas = useSelector((state) => state.data.thanas);
-	const branches = useSelector((state) => state.data.branches);
-	const cities = useSelector((state) => state.data.cities);
-	const countries = useSelector((state) => state.data.countries);
-	const role = useSelector((state) => state.data.roles);
-	console.log('rolesss', totalData);
 	let serialNumber = 1;
 
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 
 	useEffect(() => {
 		refetch({ searchKey });
 	}, [searchKey]);
-	useEffect(() => {
-		dispatch(getBranches());
-		dispatch(getThanas());
-		dispatch(getRoles());
-		dispatch(getCities());
-		dispatch(getCountries());
-	}, []);
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({
@@ -145,7 +125,7 @@ function RolesTable(props) {
 		);
 	}
 
-	if (roles?.length === 0) {
+	if (roles.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -175,7 +155,7 @@ function RolesTable(props) {
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={roles?.length}
+						rowCount={roles.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
@@ -184,7 +164,7 @@ function RolesTable(props) {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
-									className="h-20 cursor-pointer "
+									className="h-20 cursor-pointer"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -193,36 +173,46 @@ function RolesTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64"
+										className="w-40 w-1/5 md:w-64 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
+										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}{' '}
 									</TableCell>
+
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
 										component="th"
 										scope="row"
 									>
 										{n.name}
 									</TableCell>
+
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 w-1/4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
-										<Edit
-											onClick={(event) => handleUpdateRole(n, 'updateRole')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+										{n.note}
+									</TableCell>
 
-										<Delete
-											onClick={(event) => handleDeleteRole(n, 'deleteRole')}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
+									<TableCell
+										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
+										align="center"
+										component="th"
+										scope="row"
+									>
+										<div>
+											<Edit
+												onClick={() => handleUpdateRole(n, 'updateRole')}
+												className="cursor-pointer custom-edit-icon-style"
+											/>
+
+											<Delete
+												onClick={() => handleDeleteRole(n, 'deleteRole')}
+												className="cursor-pointer custom-delete-icon-style"
+											/>
+										</div>
 									</TableCell>
 								</TableRow>
 							);
@@ -233,7 +223,7 @@ function RolesTable(props) {
 
 			<div id="pagiContainer">
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
+					// 			// classes={{ ul: 'flex-nowrap' }}
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -249,7 +239,7 @@ function RolesTable(props) {
 					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{

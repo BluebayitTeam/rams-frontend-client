@@ -5,7 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
-import { useDeleteGdssMutation } from '../GdssApi';
+import { useDeletePermissionsMutation } from '../PermissionsApi';
 
 /**
  * The departments table head component.
@@ -42,18 +42,18 @@ const rows = [
 	}
 ];
 
-function GdssTableHead(props) {
-	const { selectedGdsIds, tableOrder, onRequestSort } = props;
+function PermissionsTableHead(props) {
+	const { selectedPermissionIds, tableOrder, onRequestSort } = props;
 
-	const [removeGdss] = useDeleteGdssMutation();
-	const numSelected = selectedGdsIds.length;
-	const [selectedGdssMenu, setSelectedGdssMenu] = useState(null);
+	const [removePermissions] = useDeletePermissionsMutation();
+	const numSelected = selectedPermissionIds.length;
+	const [selectedPermissionsMenu, setSelectedPermissionsMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedGdssMenu(event) {
-		setSelectedGdssMenu(event.currentTarget);
+	function openSelectedPermissionsMenu(event) {
+		setSelectedPermissionsMenu(event.currentTarget);
 	}
 
 	return (
@@ -114,4 +114,4 @@ function GdssTableHead(props) {
 	);
 }
 
-export default GdssTableHead;
+export default PermissionsTableHead;

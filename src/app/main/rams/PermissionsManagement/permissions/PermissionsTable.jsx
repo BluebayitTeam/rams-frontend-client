@@ -15,19 +15,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import GdssTableHead from './GdssTableHead';
-import { selectFilteredGdss, useGetGdssQuery } from '../GdssApi';
+import PermissionsTableHead from './PermissionsTableHead';
+import { selectFilteredPermissions, useGetPermissionsQuery } from '../PermissionsApi';
 
-function GdssTable(props) {
+function PermissionsTable(props) {
 	const dispatch = useDispatch();
 
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetGdssQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredGdss(data));
-	const gdss = useSelector(selectFilteredGdss(data?.gdses));
+	const { data, isLoading, refetch } = useGetPermissionsQuery({ ...pageAndSize, searchKey });
+	const totalData = useSelector(selectFilteredPermissions(data));
+	console.log('totalData', totalData);
+	const permissions = useSelector(selectFilteredPermissions(data?.permissions));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -56,7 +57,7 @@ function GdssTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(gdss.map((n) => n.id));
+			setSelected(permissions.map((n) => n.id));
 			return;
 		}
 
@@ -68,19 +69,19 @@ function GdssTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/gds/gdss/${item.id}/${item.handle}`);
+		navigate(`/apps/permission/permissions/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateGds(item, event) {
-		localStorage.removeItem('deleteGds');
-		localStorage.setItem('updateGds', event);
-		navigate(`/apps/gds/gdss/${item.id}/${item.handle}`);
+	function handleUpdatePermission(item, event) {
+		localStorage.removeItem('deletePermission');
+		localStorage.setItem('updatePermission', event);
+		navigate(`/apps/permission/permissions/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteGds(item, event) {
-		localStorage.removeItem('updateGds');
-		localStorage.setItem('deleteGds', event);
-		navigate(`/apps/gds/gdss/${item.id}/${item.handle}`);
+	function handleDeletePermission(item, event) {
+		localStorage.removeItem('updatePermission');
+		localStorage.setItem('deletePermission', event);
+		navigate(`/apps/permission/permissions/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -124,7 +125,7 @@ function GdssTable(props) {
 		);
 	}
 
-	if (gdss.length === 0) {
+	if (permissions.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -135,7 +136,7 @@ function GdssTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no gdss!
+					There are no permissions!
 				</Typography>
 			</motion.div>
 		);
@@ -149,17 +150,17 @@ function GdssTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<GdssTableHead
-						selectedGdsIds={selected}
+					<PermissionsTableHead
+						selectedPermissionIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={gdss.length}
+						rowCount={permissions.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(gdss, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(permissions, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -203,12 +204,12 @@ function GdssTable(props) {
 									>
 										<div>
 											<Edit
-												onClick={() => handleUpdateGds(n, 'updateGds')}
+												onClick={() => handleUpdatePermission(n, 'updatePermission')}
 												className="cursor-pointer custom-edit-icon-style"
 											/>
 
 											<Delete
-												onClick={() => handleDeleteGds(n, 'deleteGds')}
+												onClick={() => handleDeletePermission(n, 'deletePermission')}
 												className="cursor-pointer custom-delete-icon-style"
 											/>
 										</div>
@@ -255,4 +256,4 @@ function GdssTable(props) {
 	);
 }
 
-export default withRouter(GdssTable);
+export default withRouter(PermissionsTable);

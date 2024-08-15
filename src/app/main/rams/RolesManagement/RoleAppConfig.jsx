@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import RoleApp from './RoleApp';
-import Roles from './roles/Roles';
 import Role from './role/Role';
+import Roles from './roles/Roles';
 
 /**
  * The E-Commerce app configuration.

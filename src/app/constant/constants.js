@@ -213,6 +213,7 @@ export const GET_PERMISSIONS = `${BASE_URL}/permission/api/v1/permission/all/`;
 export const GET_PERMISSIONS_WITHOUT_PAGINATION = `${BASE_URL}/permission/api/v1/permission/without_pagination/all/`;
 
 export const GET_PERMISSION_BY_ID = `${BASE_URL}/permission/api/v1/permission/`;
+export const CHECK_PERMISSION_NAME_DUPLECATE = `${BASE_URL}/permission/api/v1/permission/checkPermissionName/`;
 
 export const UPDATE_PERMISSION = `${BASE_URL}/permission/api/v1/permission/update/`;
 

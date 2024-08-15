@@ -16,7 +16,6 @@ import ColumnAppConfig from '../rams/ColumnsManagement/ColumnAppConfig';
 import DepartmentAppConfig from '../rams/DepartmentsManagement/DepartmentAppConfig';
 import DesignationAppConfig from '../rams/DesignationsManagement/DesignationAppConfig';
 import MenuAppConfig from '../rams/MenusManagement/MenuAppConfig';
-import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import RoleMenuAppConfig from '../rams/RoleMenusManagement/RoleMenuAppConfig';
 import SupportAppConfig from '../rams/SupportsManagement/SupportAppConfig';
 import PaymentDetailAppConfig from '../rams/PaymentDetailsManagement/PaymentDetailAppConfig';
@@ -94,6 +93,7 @@ import FemalefingerletterAppConfig from '../rams/FemalefingerlettersManagement/F
 import BmetVerifyAppConfig from '../rams/BmetVerifysManagement/BmetVerifyAppConfig';
 import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
 import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
+import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 
 /**
  * The list of application configurations.
@@ -179,8 +179,8 @@ const appsConfigs = [
 	DesignationAppConfig,
 	DocmentSendAppConfig,
 	MenuAppConfig,
-	// PermissionAppConfig,
-	RoleAppConfig,
+	PermissionAppConfig,
+	// RoleAppConfig,
 	PassengerAppConfig,
 	FeatureDetailAppConfig,
 	FlightAppConfig,

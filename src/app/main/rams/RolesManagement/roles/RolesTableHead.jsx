@@ -8,7 +8,7 @@ import { lighten } from '@mui/material/styles';
 import { useDeleteRolesMutation } from '../RolesApi';
 
 /**
- * The roles table head component.
+ * The departments table head component.
  */
 
 const rows = [
@@ -27,8 +27,15 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'note',
+		align: 'left',
+		disablePadding: false,
+		label: 'Note',
+		sort: true
+	},
+	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true
@@ -36,7 +43,8 @@ const rows = [
 ];
 
 function RolesTableHead(props) {
-	const { selectedRoleIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+	const { selectedRoleIds, tableOrder, onRequestSort } = props;
+
 	const [removeRoles] = useDeleteRolesMutation();
 	const numSelected = selectedRoleIds.length;
 	const [selectedRolesMenu, setSelectedRolesMenu] = useState(null);
@@ -48,13 +56,19 @@ function RolesTableHead(props) {
 		setSelectedRolesMenu(event.currentTarget);
 	}
 
-	function closeSelectedRolesMenu() {
-		setSelectedRolesMenu(null);
-	}
-
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
+				{/* <TableCell
+					sx={{
+						backgroundColor: (theme) =>
+							theme.palette.mode === 'light'
+								? lighten(theme.palette.background.default, 0.4)
+								: lighten(theme.palette.background.default, 0.02)
+					}}
+					padding="none"
+					className="w-40 md:w-64 text-center z-99"
+				/> */}
 				{rows.map((row, index, array) => {
 					return (
 						<TableCell

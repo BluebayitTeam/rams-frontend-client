@@ -101,7 +101,7 @@ function PermissionHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/permission-management/permissions"
+						to="/apps/permission/permissions"
 						color="inherit"
 					>
 						<Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>

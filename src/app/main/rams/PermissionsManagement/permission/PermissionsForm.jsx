@@ -1,19 +1,20 @@
+import axios from 'axios';
 import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router';
-import CustomTextField from 'src/app/@components/CustomTextField';
-import { CHECK_GDS_NAME_DUPLECATE } from 'src/app/constant/constants';
 // Ensure lodash is installed
-import axios from 'axios';
+import CustomTextField from 'src/app/@components/CustomTextField';
+import { CHECK_PERMISSION_NAME_DUPLECATE } from 'src/app/constant/constants';
 
 function PermissionForm(props) {
 	const methods = useFormContext();
 	const { setError } = methods;
 	const routeParams = useParams();
-	const { PermissionId } = routeParams;
+	const { permissionId } = routeParams;
+	console.log('routeParams', routeParams);
 
 	const handleCheckPermissionName = async (name) => {
 		const response = await axios.get(
-			`${CHECK_GDS_NAME_DUPLECATE}?name=${name}&id=${PermissionId === 'new' ? '' : PermissionId}&type=${PermissionId === 'new' ? 'create' : 'update'}`
+			`${CHECK_PERMISSION_NAME_DUPLECATE}?name=${name}&id=${permissionId === 'new' ? '' : permissionId}&type=${permissionId === 'new' ? 'create' : 'update'}`
 		);
 
 		if (response?.data.name_exists) {

@@ -9,10 +9,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import PermissionHeader from './PermissionHeader';
-import PermissionModel from './models/PermissionModel';
 import { useGetPermissionQuery } from '../PermissionsApi';
-import PermissionForm from './PermissionForm';
+import PermissionModel from './models/PermissionModel';
+import PermissionHeader from './PermissionHeader';
+import PermissionForm from './PermissionsForm';
+
 /**
  * Form Validation Schema
  */
