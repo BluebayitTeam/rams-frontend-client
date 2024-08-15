@@ -1,7 +1,9 @@
+import axios from 'axios';
 import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router';
 // Ensure lodash is installed
 import CustomTextField from 'src/app/@components/CustomTextField';
+import { CHECK_ROLE_NAME_DUPLECATE } from 'src/app/constant/constants';
 
 function RoleForm(props) {
 	const methods = useFormContext();
@@ -9,18 +11,18 @@ function RoleForm(props) {
 	const routeParams = useParams();
 	const { RoleId } = routeParams;
 
-	// const handleCheckRoleName = async (name) => {
-	// 	const response = await axios.get(
-	// 		`${CHECK_GDS_NAME_DUPLECATE}?name=${name}&id=${RoleId === 'new' ? '' : RoleId}&type=${RoleId === 'new' ? 'create' : 'update'}`
-	// 	);
+	const handleCheckRoleName = async (name) => {
+		const response = await axios.get(
+			`${CHECK_ROLE_NAME_DUPLECATE}?name=${name}&id=${RoleId === 'new' ? '' : RoleId}&type=${RoleId === 'new' ? 'create' : 'update'}`
+		);
 
-	// 	if (response?.data.name_exists) {
-	// 		setError('name', {
-	// 			type: 'manual',
-	// 			message: 'Name already exists'
-	// 		});
-	// 	}
-	// };
+		if (response?.data.name_exists) {
+			setError('name', {
+				type: 'manual',
+				message: 'Name already exists'
+			});
+		}
+	};
 
 	return (
 		<div>
@@ -28,9 +30,9 @@ function RoleForm(props) {
 				name="name"
 				label="Name"
 				required
-				// onChange={(e) => {
-				// 	handleCheckRoleName(e.target.value);
-				// }}
+				onChange={(e) => {
+					handleCheckRoleName(e.target.value);
+				}}
 			/>
 		</div>
 	);

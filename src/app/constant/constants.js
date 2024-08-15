@@ -213,6 +213,7 @@ export const GET_PERMISSIONS = `${BASE_URL}/permission/api/v1/permission/all/`;
 export const GET_PERMISSIONS_WITHOUT_PAGINATION = `${BASE_URL}/permission/api/v1/permission/without_pagination/all/`;
 
 export const GET_PERMISSION_BY_ID = `${BASE_URL}/permission/api/v1/permission/`;
+
 export const CHECK_PERMISSION_NAME_DUPLECATE = `${BASE_URL}/permission/api/v1/permission/checkPermissionName/`;
 
 export const UPDATE_PERMISSION = `${BASE_URL}/permission/api/v1/permission/update/`;
@@ -414,6 +415,8 @@ export const UPDATE_ROLE = `${BASE_URL}/role/api/v1/role/update/`;
 export const DELETE_ROLE = `${BASE_URL}/role/api/v1/role/delete/`;
 
 export const SEARCH_ROLE = `${BASE_URL}/role/api/v1/role/search/`;
+
+export const CHECK_ROLE_NAME_DUPLECATE = `${BASE_URL}//role/api/v1/role/checkRoleName/`;
 
 //  permission
 //  export const GET_PERMISSIONS = `${BASE_URL}/permissions/api/v1/permissions/all/`;
