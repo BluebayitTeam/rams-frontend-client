@@ -10,7 +10,6 @@ import { getReportMakeStyles } from 'src/app/main/rams/ReportUtilities/reportMak
 import DownloadIcon from '@mui/icons-material/Download';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DifferenceIcon from '@mui/icons-material/Difference';
-import { useReactToPrint } from 'react-to-print';
 import html2PDF from 'jspdf-html2canvas';
 import Pagination from './Pagination';
 import ColumnLabel from './ColumnLabel';
@@ -38,8 +37,7 @@ function ReportPaginationAndDownload({
 	handleGetData,
 	handleGetAllData,
 	tableColumns,
-	dispatchTableColumns,
-	componentRef
+	dispatchTableColumns
 }) {
 	const classes = useStyles();
 
@@ -48,11 +46,6 @@ function ReportPaginationAndDownload({
 	const [inDowloadPdf, setInDowloadPdf] = useState(false);
 	const [inDowloadExcel, setInDowloadExcel] = useState(false);
 	const [showClmSelectOption, setShowClmSelectOption] = useState(false);
-
-	const printAction = useReactToPrint({
-		content: () => componentRef.current,
-		onAfterPrint: () => setInPrint(false)
-	});
 
 	const pdfDownloadAction = () => {
 		html2PDF(downloadPage, {
@@ -187,8 +180,8 @@ function ReportPaginationAndDownload({
 					id="test-table-xls-button"
 					className="download-table-xls-button"
 					table="table-to-xls"
-					filename="tablexls"
-					sheet="tablexls"
+					filename="AgentReports"
+					sheet="AgentReportsSheet"
 					buttonText="Download as XLS"
 				/>
 			</div>

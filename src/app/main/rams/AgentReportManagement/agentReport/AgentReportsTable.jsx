@@ -13,6 +13,7 @@ import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColum
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import { unstable_batchedUpdates } from 'react-dom';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+import { useReactToPrint } from 'react-to-print';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import AgentFilterMenu from './AgentFilterMenu';
 import { selectFilteredAgentReports, useGetAgentAllReportsQuery, useGetAgentReportsQuery } from '../AgentReportsApi';
@@ -55,7 +56,7 @@ function AgentReportsTable(props) {
 	console.log('inShowAllMode', inShowAllMode);
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
-	const componentRef = useRef();
+	const componentRef = useRef(null);
 
 	const { data, isLoading, refetch } = inShowAllMode
 		? useGetAgentAllReportsQuery({ ...getValues() })
@@ -66,12 +67,12 @@ function AgentReportsTable(props) {
 	};
 
 	const handleExelDownload = () => {
-		// Your logic to handle Excel download
+		document.getElementById('test-table-xls-button').click();
 	};
 
-	const handlePrint = () => {
-		// Your logic to handle print
-	};
+	const handlePrint = useReactToPrint({
+		content: () => componentRef.current
+	});
 
 	const handleGetAgents = (newPage, callBack) => {
 		debugger;
@@ -142,8 +143,8 @@ function AgentReportsTable(props) {
 			/>
 
 			<table
-				id="table-to-xls"
-				className="w-full"
+				id="table-to-xls "
+				className="w-full "
 				style={{ minHeight: '270px' }}
 			>
 				<div
