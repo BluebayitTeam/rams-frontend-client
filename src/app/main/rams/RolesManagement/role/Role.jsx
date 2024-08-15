@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { useGetRoleQuery } from '../RolesApi';
 import RoleModel from './models/RoleModel';
 import RoleHeader from './RoleHeader';
-import RoleForm from './RolesForm';
+import RoleForm from './RoleForm';
 
 /**
  * Form Validation Schema

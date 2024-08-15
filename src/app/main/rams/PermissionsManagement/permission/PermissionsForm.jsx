@@ -10,7 +10,6 @@ function PermissionForm(props) {
 	const { setError } = methods;
 	const routeParams = useParams();
 	const { permissionId } = routeParams;
-	console.log('routeParams', routeParams);
 
 	const handleCheckPermissionName = async (name) => {
 		const response = await axios.get(

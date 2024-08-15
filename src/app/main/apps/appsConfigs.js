@@ -94,6 +94,7 @@ import BmetVerifyAppConfig from '../rams/BmetVerifysManagement/BmetVerifyAppConf
 import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
 import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
+import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 
 /**
  * The list of application configurations.
@@ -180,7 +181,7 @@ const appsConfigs = [
 	DocmentSendAppConfig,
 	MenuAppConfig,
 	PermissionAppConfig,
-	// RoleAppConfig,
+	RoleAppConfig,
 	PassengerAppConfig,
 	FeatureDetailAppConfig,
 	FlightAppConfig,
