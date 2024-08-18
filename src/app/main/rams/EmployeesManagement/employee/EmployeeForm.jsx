@@ -111,6 +111,7 @@ function EmployeeForm(props) {
 		}
 	};
 	const handleCheckPhone = async (phoneNumber) => {
+		// debugger;
 		const countryCode = getCountryCode1;
 
 		const formattedPhoneNumber = `${countryCode}${phoneNumber}`;
@@ -119,7 +120,7 @@ function EmployeeForm(props) {
 		);
 
 		if (response?.data.primary_phone_exists) {
-			setError('phone', {
+			setError('primary_phone', {
 				type: 'manual',
 				message: 'Phone number already exists'
 			});
