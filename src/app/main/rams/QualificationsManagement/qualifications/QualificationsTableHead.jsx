@@ -31,8 +31,43 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'degree_name',
+		align: 'left',
+		disablePadding: false,
+		label: 'Degree Name',
+		sort: true
+	},
+	{
+		id: 'passign_year',
+		align: 'left',
+		disablePadding: false,
+		label: 'Passign Year',
+		sort: true
+	},
+	{
+		id: 'board',
+		align: 'left',
+		disablePadding: false,
+		label: 'Board',
+		sort: true
+	},
+	{
+		id: 'institute_name',
+		align: 'left',
+		disablePadding: false,
+		label: 'Institute Name',
+		sort: true
+	},
+	{
+		id: 'grade',
+		align: 'left',
+		disablePadding: false,
+		label: 'Grade',
+		sort: true
+	},
+	{
 		id: 'action',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Action',
 		sort: true

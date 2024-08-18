@@ -236,7 +236,8 @@ function EmployeeForm(props) {
 										</InputAdornment>
 									)
 								}}
-								InputLabelProps={field.value && { shrink: true }}
+								InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+								required
 							/>
 						)}
 					/>
@@ -268,7 +269,8 @@ function EmployeeForm(props) {
 										</InputAdornment>
 									)
 								}}
-								InputLabelProps={field.value && { shrink: true }}
+								InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+								required
 							/>
 						)}
 					/>
@@ -282,6 +284,7 @@ function EmployeeForm(props) {
 				countryCodeLabel="Country Code"
 				phoneName="primary_phone"
 				phoneLabel="Phone"
+				required
 			/>
 			{/* <CustomPhoneWithCountryCode
 				getCountryCode1={getCountryCode2}

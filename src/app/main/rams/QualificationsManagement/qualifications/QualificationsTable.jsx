@@ -33,6 +33,7 @@ function QualificationsTable(props) {
 
 	const totalData = useSelector(selectFilteredQualifications(data));
 	const qualifications = useSelector(selectFilteredQualifications(data?.qualifications || []));
+	const employees = useSelector((state) => state.data.employees);
 
 	let serialNumber = 1;
 
@@ -257,12 +258,12 @@ function QualificationsTable(props) {
 										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Edit
-											onClick={(event) => handleUpdateQualification(n, 'updateQualification')}
+											onClick={() => handleUpdateQualification(n, 'updateQualification')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteQualification(n, 'deleteQualification')}
+											onClick={() => handleDeleteQualification(n, 'deleteQualification')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>

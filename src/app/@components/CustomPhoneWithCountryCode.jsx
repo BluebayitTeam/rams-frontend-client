@@ -21,6 +21,7 @@ function CustomPhoneWithCountryCode({
 			<Controller
 				name={countryName}
 				control={control}
+				rules={{ required: true }} // Mark the field as required
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
@@ -81,6 +82,7 @@ function CustomPhoneWithCountryCode({
 			<Controller
 				name={phoneName}
 				control={control}
+				rules={{ required: true }} // Mark the field as required
 				render={({ field }) => (
 					<TextField
 						{...field}
@@ -90,7 +92,7 @@ function CustomPhoneWithCountryCode({
 						id="primary_phone"
 						variant="outlined"
 						fullWidth
-						InputLabelProps={field.value && { shrink: true }}
+						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 						onKeyDown={handleSubmitOnKeyDownEnter}
 					/>
 				)}
