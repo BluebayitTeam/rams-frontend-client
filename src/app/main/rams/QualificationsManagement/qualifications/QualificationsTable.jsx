@@ -13,7 +13,7 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import QualificationsTableHead from './QualificationsTableHead';
 import { selectFilteredQualifications, useGetQualificationsQuery } from '../QualificationsApi';
@@ -172,7 +172,7 @@ function QualificationsTable(props) {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
-									className="h-20 cursor-pointer"
+									className="h-20 cursor-pointer border-t-1  border-gray-200"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -181,19 +181,7 @@ function QualificationsTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64 text-center"
-										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
-
-									<TableCell
-										className="w-40 md:w-64"
+										className="w-40 md:w-64 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
@@ -201,7 +189,7 @@ function QualificationsTable(props) {
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap"
+										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
@@ -212,7 +200,7 @@ function QualificationsTable(props) {
 									</TableCell>
 
 									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap"
+										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
@@ -220,7 +208,7 @@ function QualificationsTable(props) {
 									</TableCell>
 
 									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap"
+										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
@@ -228,7 +216,7 @@ function QualificationsTable(props) {
 									</TableCell>
 
 									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap"
+										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
@@ -236,7 +224,7 @@ function QualificationsTable(props) {
 									</TableCell>
 
 									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap"
+										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
@@ -244,14 +232,14 @@ function QualificationsTable(props) {
 									</TableCell>
 
 									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap"
+										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
 										{n.grade}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 										align="right"
