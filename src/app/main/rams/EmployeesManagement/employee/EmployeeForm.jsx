@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { FormControl } from '@mui/base';
-import { Autocomplete, Box, Checkbox, FormControlLabel, Icon, IconButton, InputAdornment } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, Icon, IconButton, InputAdornment } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
 	getBranches,
@@ -18,13 +18,13 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import countryCodes from 'src/app/@data/countrycodes';
 import { genders } from 'src/app/@data/data';
 
 import { BASE_URL } from 'src/app/constant/constants';
 import FileUpload from 'src/app/@components/FileUploader';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { useParams } from 'react-router';
+import CustomPhoneWithCountryCode from 'src/app/@components/CustomPhoneWithCountryCode';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -275,168 +275,22 @@ function EmployeeForm(props) {
 				</>
 			)}
 
-			<Box style={{ display: 'flex' }}>
-				<Controller
-					name="country_code1"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<Autocomplete
-							className="mt-8 mb-16 "
-							id="country-select-demo"
-							sx={{ width: 300 }}
-							value={value ? countryCodes.find((country) => country.value === value) : null}
-							options={countryCodes}
-							autoHighlight
-							error={!value}
-							getOptionLabel={(option) => option.label}
-							renderOption={(prop, option) => {
-								return (
-									<Box
-										component="li"
-										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-										{...prop}
-									>
-										<img
-											loading="lazy"
-											width="20"
-											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
-											alt=""
-										/>
-										{option.label} ({option.code}) +{option.value}
-									</Box>
-								);
-							}}
-							onChange={(event, newValue) => {
-								onChange(newValue?.value);
-								handleChnageCountry(newValue?.label);
-							}}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label="Choose a country"
-									variant="outlined"
-									error={!value}
-									style={{ width: '250px' }}
-									inputProps={{
-										...params.inputProps,
-										autoComplete: 'new-password'
-									}}
-								/>
-							)}
-						/>
-					)}
-				/>
-				<TextField
-					name="show_country_code1"
-					id="filled-read-only-input"
-					label="Country Code"
-					style={{ width: '150px' }}
-					value={getCountryCode1 || ''}
-					className="mt-8 mb-16"
-					InputLabelProps={{ shrink: true }}
-					InputProps={{
-						readOnly: true
-					}}
-					variant="outlined"
-				/>
-				<Controller
-					name="primary_phone"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							label="Primary Phone"
-							id="primary_phone"
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						/>
-					)}
-				/>
-			</Box>
-			<Box style={{ display: 'flex' }}>
-				<Controller
-					name="country_code2"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<Autocomplete
-							className="mt-8 mb-16 "
-							id="country-select-demo"
-							sx={{ width: 300 }}
-							value={value ? countryCodes.find((country) => country.value === value) : null}
-							options={countryCodes}
-							autoHighlight
-							error={!value}
-							getOptionLabel={(option) => option.label}
-							renderOption={(prop, option) => {
-								return (
-									<Box
-										component="li"
-										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-										{...prop}
-									>
-										<img
-											loading="lazy"
-											width="20"
-											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
-											alt=""
-										/>
-										{option.label} ({option.code}) +{option.value}
-									</Box>
-								);
-							}}
-							onChange={(event, newValue) => {
-								onChange(newValue?.value);
-								handleChnageCountry(newValue?.label);
-							}}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label="Choose a country"
-									variant="outlined"
-									error={!value}
-									style={{ width: '250px' }}
-									inputProps={{
-										...params.inputProps,
-										autoComplete: 'new-password'
-									}}
-								/>
-							)}
-						/>
-					)}
-				/>
-				<TextField
-					name="show_country_code2"
-					id="filled-read-only-input"
-					label="Country Code"
-					style={{ width: '150px' }}
-					value={getCountryCode2 || ''}
-					className="mt-8 mb-16"
-					InputLabelProps={{ shrink: true }}
-					InputProps={{
-						readOnly: true
-					}}
-					variant="outlined"
-				/>
-				<Controller
-					name="primary_phone"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							label="Primary Phone"
-							id="primary_phone"
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						/>
-					)}
-				/>
-			</Box>
+			<CustomPhoneWithCountryCode
+				getCountryCode1={getCountryCode1}
+				countryName="country_code1"
+				countryLabel="Select Country"
+				countryCodeLabel="Country Code"
+				phoneName="primary_phone"
+				phoneLabel="Phone"
+			/>
+			{/* <CustomPhoneWithCountryCode
+				getCountryCode1={getCountryCode2}
+				countryName="country_code2"
+				countryLabel="Select Country"
+				countryCodeLabel="Country Code"
+				phoneName="Secondary Phone"
+				phoneLabel="Phone"
+			/> */}
 
 			<Controller
 				name="gender"

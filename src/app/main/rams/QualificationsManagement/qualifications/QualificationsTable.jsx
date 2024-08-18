@@ -32,7 +32,7 @@ function QualificationsTable(props) {
 	console.log('sdsdsds', data);
 
 	const totalData = useSelector(selectFilteredQualifications(data));
-	const qualifications = useSelector(selectFilteredQualifications(data?.qualifications));
+	const qualifications = useSelector(selectFilteredQualifications(data?.qualifications || []));
 
 	let serialNumber = 1;
 
@@ -200,11 +200,54 @@ function QualificationsTable(props) {
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-12 whitespace-nowrap"
 										component="th"
 										scope="row"
 									>
-										{n.name}
+										{_.isEmpty(employees) ||
+											employees.find((employee) => employee.id === n.employee.id).first_name}{' '}
+										{_.isEmpty(employees) ||
+											employees.find((employee) => employee.id === n.employee.id).last_name}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.degree_name}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.passign_year}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.board}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.institute_name}
+									</TableCell>
+
+									<TableCell
+										className="p-4 md:p-12 whitespace-nowrap"
+										component="th"
+										scope="row"
+									>
+										{n.grade}
 									</TableCell>
 									<TableCell
 										className="p-4 md:p-16"

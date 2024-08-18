@@ -21,142 +21,158 @@ import PersonalInfo from './tabs/PersonalInfo';
  * Form Validation Schema
  */
 const schema = z
-  .object({
-    first_name: z
-      .string()
-      .nonempty('You must enter an employee name')
-      .min(5, 'The employee name must be at least 5 characters'),
+	.object({
+		first_name: z
+			.string()
+			.nonempty('You must enter an employee name')
+			.min(5, 'The employee name must be at least 5 characters'),
 
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    confirmPassword: z
-      .string()
-      .min(6, 'Password must be at least 6 characters'),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords must match',
-    path: ['confirmPassword'],
-  });
+		password: z.string().min(6, 'Password must be at least 6 characters'),
+		confirmPassword: z.string().min(6, 'Password must be at least 6 characters')
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: 'Passwords must match',
+		path: ['confirmPassword']
+	});
 
 function Employee() {
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-  const routeParams = useParams();
-  const { employeeId } = routeParams;
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const routeParams = useParams();
+	const { employeeId } = routeParams;
+	console.log('employeeId', employeeId);
+	const {
+		data: employee,
+		isLoading,
+		isError
+	} = useGetEmployeeQuery(employeeId, {
+		skip: !employeeId || employeeId === 'new'
+	});
 
-  const {
-    data: employee,
-    isLoading,
-    isError,
-  } = useGetEmployeeQuery(employeeId, {
-    skip: !employeeId || employeeId === 'new',
-  });
+	const [tabValue, setTabValue] = useState(0);
 
-  const [tabValue, setTabValue] = useState(0);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: zodResolver(schema)
+	});
+	const { reset, watch } = methods;
 
-  const methods = useForm({
-    mode: 'onChange',
-    defaultValues: {},
-    resolver: zodResolver(schema),
-  });
-  const { reset, watch } = methods;
+	useEffect(() => {
+		if (employeeId === 'new') {
+			reset(EmployeeModel({}));
+		}
+	}, [employeeId, reset]);
 
-  useEffect(() => {
-    if (employeeId === 'new') {
-      reset(EmployeeModel({}));
-    }
-  }, [employeeId, reset]);
+	useEffect(() => {
+		if (employee) {
+			reset({
+				...employee,
+				branch: employee.branch?.id,
+				role: employee.role?.id,
+				department: employee.department?.id,
+				country: employee.country?.id
+			});
+		}
+	}, [employee, reset, employee?.id]);
 
-  useEffect(() => {
-    if (employee) {
-      reset({
-        ...employee,
-        branch: employee.branch.id,
-        role: employee.role.id,
-        department: employee.department.id,
-        country: employee.country.id,
-      });
-    }
-  }, [employee, reset, employee?.id]);
+	function handleTabChange(event, value) {
+		setTabValue(value);
+	}
 
-  function handleTabChange(event, value) {
-    setTabValue(value);
-  }
+	if (isLoading) {
+		return <FuseLoading />;
+	}
 
-  if (isLoading) {
-    return <FuseLoading />;
-  }
+	if (isError && employeeId !== 'new') {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography
+					color="text.secondary"
+					variant="h5"
+				>
+					There is no such employee!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/employee/employee"
+					color="inherit"
+				>
+					Go to Employees Page
+				</Button>
+			</motion.div>
+		);
+	}
 
-  if (isError && employeeId !== 'new') {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className='flex flex-col flex-1 items-center justify-center h-full'>
-        <Typography color='text.secondary' variant='h5'>
-          There is no such employee!
-        </Typography>
-        <Button
-          className='mt-24'
-          component={Link}
-          variant='outlined'
-          to='/apps/employee/employee'
-          color='inherit'>
-          Go to Employees Page
-        </Button>
-      </motion.div>
-    );
-  }
+	return (
+		<FormProvider {...methods}>
+			<FusePageCarded
+				classes={{
+					toolbar: 'p-0',
+					header: 'min-h-80 h-80'
+				}}
+				contentToolbar={
+					<Tabs
+						value={tabValue}
+						onChange={handleTabChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="scrollable"
+						scrollButtons="auto"
+						classes={{ root: 'w-full h-64' }}
+					>
+						<Tab
+							className="h-64"
+							label="Basic Info"
+						/>
+						<Tab
+							className="h-64"
+							label="Personal Info"
+						/>
+					</Tabs>
+				}
+				header={<EmployeeHeader />}
+				content={
+					<>
+						<Tabs
+							value={tabValue}
+							onChange={handleTabChange}
+							indicatorColor="secondary"
+							textColor="secondary"
+							variant="scrollable"
+							scrollButtons="auto"
+							classes={{ root: 'w-full h-64 border-b-1' }}
+						>
+							<Tab
+								className="h-64"
+								label="Basic Info"
+							/>
 
-  return (
-    <FormProvider {...methods}>
-      <FusePageCarded
-        classes={{
-          toolbar: 'p-0',
-          header: 'min-h-80 h-80',
-        }}
-        contentToolbar={
-          <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            indicatorColor='primary'
-            textColor='primary'
-            variant='scrollable'
-            scrollButtons='auto'
-            classes={{ root: 'w-full h-64' }}>
-            <Tab className='h-64' label='Basic Info' />
-            <Tab className='h-64' label='Personal Info' />
-          </Tabs>
-        }
-        header={<EmployeeHeader />}
-        content={
-          <>
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor='secondary'
-              textColor='secondary'
-              variant='scrollable'
-              scrollButtons='auto'
-              classes={{ root: 'w-full h-64 border-b-1' }}>
-              <Tab className='h-64' label='Basic Info' />
-              {employeeId === 'new' && (
-                <Tab className='h-64' label='Personal Info' />
-              )}
-            </Tabs>
-            <div className='p-16'>
-              <div className={tabValue !== 0 ? 'hidden' : ''}>
-                <EmployeeForm employeeId={employeeId} />
-              </div>
+							<Tab
+								className="h-64"
+								label="Personal Info"
+							/>
+						</Tabs>
+						<div className="p-16">
+							<div className={tabValue !== 0 ? 'hidden' : ''}>
+								<EmployeeForm employeeId={employeeId} />
+							</div>
 
-              <div className={tabValue !== 1 ? 'hidden' : ''}>
-                <PersonalInfo />
-              </div>
-            </div>
-          </>
-        }
-        innerScroll
-      />
-    </FormProvider>
-  );
+							<div className={tabValue !== 1 ? 'hidden' : ''}>
+								<PersonalInfo />
+							</div>
+						</div>
+					</>
+				}
+				innerScroll
+			/>
+		</FormProvider>
+	);
 }
 
 export default Employee;
