@@ -203,12 +203,12 @@ function DepartmentsTable(props) {
 										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Edit
-											onClick={(event) => handleUpdateDepartment(n, 'updateDepartment')}
+											onClick={() => handleUpdateDepartment(n, 'updateDepartment')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteDepartment(n, 'deleteDepartment')}
+											onClick={() => handleDeleteDepartment(n, 'deleteDepartment')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
