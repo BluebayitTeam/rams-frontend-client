@@ -111,9 +111,7 @@ function EmployeeForm(props) {
 		}
 	};
 	const handleCheckPhone = async (phoneNumber) => {
-		// Assuming getCountryCode1 is a function or variable that returns the current country code
-		const countryCode = getCountryCode1; // Get the current country code
-		// Ensure the country code has a + prepended
+		const countryCode = getCountryCode1;
 
 		const formattedPhoneNumber = `${countryCode}${phoneNumber}`;
 		const response = await axios.get(
