@@ -38,7 +38,8 @@ export const GET_EMPLOYEE_USERS_WITHOUT_PAGINATION = `${BASE_URL}/user/api/v1/us
 
 export const CHECK_EMAIL = `${BASE_URL}/user/api/v1/user/check_email_when_create/`;
 
-export const CHECK_PRIMARY_PHONE = `${BASE_URL}/user/api/v1/user/check_primary_phone_when_create/`;
+export const CHECK_PRIMARY_PHONE = `${BASE_URL}/user/api/v1/user/check_primary_phone/
+`;
 
 export const CHECK_SECONDARY_PHONE = `${BASE_URL}/user/api/v1/user/check_secondary_phone_when_create/`;
 
@@ -2252,6 +2253,10 @@ export const UPDATE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/update/`;
 export const DELETE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/delete/`;
 
 export const SEARCH_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/search/`;
+
+export const CHECK_USERNAME_EMPLOYEE = `${BASE_URL}/user/api/v1/user/check_username/`;
+
+export const CHECK_EMAIL_EMPLOYEE = `${BASE_URL}/user/api/v1/user/check_email/`;
 
 //  PAYMENT_DETAIL
 export const CREATE_PAYMENT_DETAIL = `${BASE_URL}/payment/api/v1/payment/create/`;

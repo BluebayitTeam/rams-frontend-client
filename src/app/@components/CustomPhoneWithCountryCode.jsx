@@ -12,7 +12,8 @@ function CustomPhoneWithCountryCode({
 	countryLabel = 'Choose a country',
 	countryCodeLabel = 'Country Code',
 	phoneName = 'phone',
-	phoneLabel = 'Phone'
+	phoneLabel = 'Phone',
+	onChange // Add onChange as a prop
 }) {
 	const methods = useFormContext();
 	const { control } = methods;
@@ -21,7 +22,6 @@ function CustomPhoneWithCountryCode({
 			<Controller
 				name={countryName}
 				control={control}
-				rules={{ required: true }} // Mark the field as required
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						className="mt-8 mb-16"
@@ -47,9 +47,7 @@ function CustomPhoneWithCountryCode({
 								{option.label} ({option.code}) +{option.value}
 							</Box>
 						)}
-						onChange={(event, newValue) => {
-							onChange(newValue?.value);
-						}}
+						onChange={(event) => onChange(event, { value: event.target.value })}
 						renderInput={(params) => (
 							<TextField
 								{...params}
@@ -82,7 +80,6 @@ function CustomPhoneWithCountryCode({
 			<Controller
 				name={phoneName}
 				control={control}
-				rules={{ required: true }} // Mark the field as required
 				render={({ field }) => (
 					<TextField
 						{...field}
@@ -92,8 +89,13 @@ function CustomPhoneWithCountryCode({
 						id="primary_phone"
 						variant="outlined"
 						fullWidth
-						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+						InputLabelProps={field.value && { shrink: true }}
 						onKeyDown={handleSubmitOnKeyDownEnter}
+						onChange={(e) => {
+							field.onChange(e); // Call the original onChange from React Hook Form
+
+							if (onChange) onChange(e); // Call the custom onChange if provided
+						}}
 					/>
 				)}
 			/>

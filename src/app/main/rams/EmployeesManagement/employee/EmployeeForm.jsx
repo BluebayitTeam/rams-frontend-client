@@ -20,11 +20,17 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { genders } from 'src/app/@data/data';
 
-import { BASE_URL } from 'src/app/constant/constants';
+import {
+	BASE_URL,
+	CHECK_EMAIL_EMPLOYEE,
+	CHECK_PRIMARY_PHONE,
+	CHECK_USERNAME_EMPLOYEE
+} from 'src/app/constant/constants';
 import FileUpload from 'src/app/@components/FileUploader';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { useParams } from 'react-router';
 import CustomPhoneWithCountryCode from 'src/app/@components/CustomPhoneWithCountryCode';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -43,8 +49,7 @@ function EmployeeForm(props) {
 	const routeParams = useParams();
 	const classes = useStyles(props);
 	const { employeeId } = routeParams;
-	const { control, formState, watch, setValue, getValues } = methods;
-	console.log('getValues', getValues());
+	const { control, formState, watch, setValue, getValues, setError } = methods;
 	const { errors } = formState;
 	const thanas = useSelector((state) => state.data.thanas);
 	const branches = useSelector((state) => state.data.branches);
@@ -55,7 +60,7 @@ function EmployeeForm(props) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const getCountryCode1 = watch('country_code1');
-	const getCountryCode2 = watch('country_code2');
+	// const getCountryCode2 = watch('country_code2');
 	const [file, setFile] = useState(null);
 
 	useEffect(() => {
@@ -78,6 +83,49 @@ function EmployeeForm(props) {
 	const handleChnageCountry = (selectedCountry) => {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
+	};
+
+	const handleCheckUserName = async (name) => {
+		const response = await axios.get(
+			`${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+		);
+
+		if (response?.data.username_exists) {
+			setError('username', {
+				type: 'manual',
+				message: 'User Name Already Exists'
+			});
+		}
+	};
+
+	const handleCheckEmail = async (name) => {
+		const response = await axios.get(
+			`${CHECK_EMAIL_EMPLOYEE}?email=${name}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+		);
+
+		if (response?.data.email_exists) {
+			setError('email', {
+				type: 'manual',
+				message: 'User Name Already Exists'
+			});
+		}
+	};
+	const handleCheckPhone = async (phoneNumber) => {
+		// Assuming getCountryCode1 is a function or variable that returns the current country code
+		const countryCode = getCountryCode1; // Get the current country code
+		// Ensure the country code has a + prepended
+
+		const formattedPhoneNumber = `${countryCode}${phoneNumber}`;
+		const response = await axios.get(
+			`${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+		);
+
+		if (response?.data.primary_phone_exists) {
+			setError('phone', {
+				type: 'manual',
+				message: 'Phone number already exists'
+			});
+		}
 	};
 
 	return (
@@ -168,12 +216,17 @@ function EmployeeForm(props) {
 						{...field}
 						className="mt-8 mb-16"
 						helperText={errors?.username?.message}
-						// onBlur={(event) => handleOnChange('username', event)}
+						FormHelperTextProps={{ style: { color: 'red' } }}
 						label="User Name"
 						id="userName"
 						variant="outlined"
 						fullWidth
 						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+						required
+						onChange={(e) => {
+							field.onChange(e); // Ensure the field value is updated
+							handleCheckUserName(e.target.value);
+						}}
 					/>
 				)}
 			/>
@@ -187,7 +240,11 @@ function EmployeeForm(props) {
 						type="text"
 						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
 						helperText={errors?.email?.message}
+						FormHelperTextProps={{ style: { color: 'red' } }}
 						// onBlur={(event) => handleOnChange('email', event)}
+						onChange={(e) => {
+							handleCheckEmail(e.target.value);
+						}}
 						label="Email"
 						InputProps={{
 							endAdornment: (
@@ -284,8 +341,12 @@ function EmployeeForm(props) {
 				countryCodeLabel="Country Code"
 				phoneName="primary_phone"
 				phoneLabel="Phone"
+				onChange={(e) => {
+					handleCheckPhone(e.target.value);
+				}}
 				required
 			/>
+
 			{/* <CustomPhoneWithCountryCode
 				getCountryCode1={getCountryCode2}
 				countryName="country_code2"
