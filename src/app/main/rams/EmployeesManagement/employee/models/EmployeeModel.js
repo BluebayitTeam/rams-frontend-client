@@ -5,9 +5,9 @@ const EmployeeModel = (data) =>
 		first_name: '',
 		logo: '',
 		country_code1: '+880',
-		country_code2: '+880',
+
 		show_country_code1: '+880',
-		show_country_code2: '+880',
+
 		is_employee_active: true
 	});
 export default EmployeeModel;
