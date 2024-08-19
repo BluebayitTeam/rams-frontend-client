@@ -6,14 +6,13 @@ import countryCodes from '../@data/countrycodes';
 
 function CustomPhoneWithCountryCode({
 	getCountryCode1,
-	errors,
 	handleSubmitOnKeyDownEnter,
 	countryName = 'country_code1',
 	countryLabel = 'Choose a country',
 	countryCodeLabel = 'Country Code',
 	phoneName = 'phone',
 	phoneLabel = 'Phone',
-	onChange // Add onChange as a prop
+	onChange
 }) {
 	const methods = useFormContext();
 	const { control } = methods;
@@ -47,7 +46,11 @@ function CustomPhoneWithCountryCode({
 								{option.label} ({option.code}) +{option.value}
 							</Box>
 						)}
-						onChange={(event) => onChange(event, { value: event.target.value })}
+						onChange={(event, newValue) => {
+							onChange(newValue ? newValue.value : ''); // Update the form value with the selected country's value
+
+							if (onChange) onChange(event); // Call the custom onChange if provided
+						}}
 						renderInput={(params) => (
 							<TextField
 								{...params}
