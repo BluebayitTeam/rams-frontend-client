@@ -111,7 +111,6 @@ function EmployeeForm(props) {
 		}
 	};
 	const handleCheckPhone = async (phoneNumber) => {
-		// debugger;
 		const countryCode = getCountryCode1;
 
 		const formattedPhoneNumber = `${countryCode}${phoneNumber}`;
@@ -119,7 +118,7 @@ function EmployeeForm(props) {
 			`${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
 		);
 
-		if (response?.data.primary_phone_exists) {
+		if (response?.data?.primary_phone_exists) {
 			setError('primary_phone', {
 				type: 'manual',
 				message: 'Phone number already exists'
@@ -341,7 +340,7 @@ function EmployeeForm(props) {
 				phoneName="primary_phone"
 				phoneLabel="Phone"
 				onChange={(e) => {
-					handleCheckPhone(e.target.value);
+					handleCheckPhone(e.target.value, setError);
 				}}
 				required
 			/>

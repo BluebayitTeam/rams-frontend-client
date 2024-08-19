@@ -80,17 +80,18 @@ function CustomPhoneWithCountryCode({
 			<Controller
 				name={phoneName}
 				control={control}
-				render={({ field }) => (
+				render={({ field, fieldState: { error } }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						helperText={errors?.[phoneName]?.message}
+						helperText={error ? error.message : ''}
 						label={phoneLabel}
 						id="primary_phone"
 						variant="outlined"
 						fullWidth
-						InputLabelProps={field.value && { shrink: true }}
+						InputLabelProps={{ shrink: !!field.value }}
 						onKeyDown={handleSubmitOnKeyDownEnter}
+						error={!!error} // Set error state if there's an error
 						onChange={(e) => {
 							field.onChange(e); // Call the original onChange from React Hook Form
 
