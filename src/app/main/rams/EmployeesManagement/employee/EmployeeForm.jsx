@@ -31,6 +31,7 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { useParams } from 'react-router';
 import CustomPhoneWithCountryCode from 'src/app/@components/CustomPhoneWithCountryCode';
 import axios from 'axios';
+import CustomTextField from 'src/app/@components/CustomTextField';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -49,7 +50,9 @@ function EmployeeForm(props) {
 	const routeParams = useParams();
 	const classes = useStyles(props);
 	const { employeeId } = routeParams;
-	const { control, formState, watch, setValue, getValues, setError } = methods;
+	const { control, formState, watch, setValue, getValues, setError, clearErrors } = methods;
+
+	console.log('getValues', getValues());
 	const { errors } = formState;
 	const thanas = useSelector((state) => state.data.thanas);
 	const branches = useSelector((state) => state.data.branches);
@@ -98,31 +101,52 @@ function EmployeeForm(props) {
 		}
 	};
 
-	const handleCheckEmail = async (name) => {
-		const response = await axios.get(
-			`${CHECK_EMAIL_EMPLOYEE}?email=${name}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
-		);
-
-		if (response?.data.email_exists) {
+	const handleCheckEmail = async (email) => {
+		if (!email.trim()) {
+			// Optionally clear the email error if it's empty
 			setError('email', {
 				type: 'manual',
-				message: 'User Name Already Exists'
+				message: 'Email cannot be empty'
 			});
+			return;
+		}
+
+		try {
+			const response = await axios.get(
+				`${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+			);
+
+			if (response?.data.email_exists) {
+				setError('email', {
+					type: 'manual',
+					message: 'Email Already Exists'
+				});
+			} else {
+				// Optionally clear the error if the email doesn't exist
+				clearErrors('email');
+			}
+		} catch (error) {
+			// Handle error, possibly log it or show a user-friendly message
+			console.error('Error checking email:', error);
 		}
 	};
-	const handleCheckPhone = async (phoneNumber) => {
-		const countryCode = getCountryCode1;
 
-		const formattedPhoneNumber = `${countryCode}${phoneNumber}`;
-		const response = await axios.get(
-			`${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
-		);
+	const handleCheckPhone = async () => {
+		const formattedPhoneNumber = `${watch('country_code1')}${watch('primary_phone')}`;
+		try {
+			const response = await axios.get(
+				`${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+			);
 
-		if (response?.data?.primary_phone_exists) {
-			setError('primary_phone', {
-				type: 'manual',
-				message: 'Phone number already exists'
-			});
+			if (response?.data?.primary_phone_exists) {
+				setError('primary_phone', {
+					type: 'manual',
+					message: 'Phone number already exists'
+				});
+			}
+		} catch (error) {
+			console.error('Error checking phone number:', error);
+			// Handle errors if needed
 		}
 	};
 
@@ -206,7 +230,7 @@ function EmployeeForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+			{/* <Controller
 				name="username"
 				control={control}
 				render={({ field }) => (
@@ -227,39 +251,24 @@ function EmployeeForm(props) {
 						}}
 					/>
 				)}
+			/> */}
+
+			<CustomTextField
+				name="username"
+				label="UserName"
+				required
+				onChange={(e) => {
+					handleCheckUserName(e.target.value);
+				}}
 			/>
-			<Controller
+
+			<CustomTextField
 				name="email"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						type="text"
-						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						helperText={errors?.email?.message}
-						FormHelperTextProps={{ style: { color: 'red' } }}
-						// onBlur={(event) => handleOnChange('email', event)}
-						onChange={(e) => {
-							handleCheckEmail(e.target.value);
-						}}
-						label="Email"
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<Icon
-										className="text-20"
-										color="action"
-									>
-										user
-									</Icon>
-								</InputAdornment>
-							)
-						}}
-						variant="outlined"
-						fullWidth
-					/>
-				)}
+				label="Email"
+				required
+				onChange={(e) => {
+					handleCheckEmail(e.target.value);
+				}}
 			/>
 			{employeeId === 'new' && (
 				<>
@@ -339,12 +348,8 @@ function EmployeeForm(props) {
 				countryCodeLabel="Country Code"
 				phoneName="primary_phone"
 				phoneLabel="Phone"
-				onChange={(newValue) => {
-					if (newValue) {
-						handleCheckPhone(newValue.value, setError);
-					} else {
-						handleCheckPhone('', setError);
-					}
+				onChange={() => {
+					handleCheckPhone();
 				}}
 				required
 			/>

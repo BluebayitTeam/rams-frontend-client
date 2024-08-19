@@ -26,6 +26,15 @@ const schema = z
 			.string()
 			.nonempty('You must enter an employee name')
 			.min(5, 'The employee name must be at least 5 characters'),
+		username: z
+			.string()
+			.nonempty('You must enter a username')
+			.min(5, 'The username must be at least 5 characters long')
+			.regex(/^[a-zA-Z0-9_]+$/, 'The username can only contain letters, numbers, and underscores'),
+		email: z
+			.string()
+			.nonempty('You must enter an email address') // Ensures the string is not empty
+			.email('You must enter a valid email address'), // Validates the email format
 
 		password: z.string().min(6, 'Password must be at least 6 characters'),
 		confirmPassword: z.string().min(6, 'Password must be at least 6 characters')

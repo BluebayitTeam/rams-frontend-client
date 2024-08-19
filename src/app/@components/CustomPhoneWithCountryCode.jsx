@@ -97,6 +97,7 @@ function CustomPhoneWithCountryCode({
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
+						style={{ marginTop: error && '23px' }}
 						helperText={error ? error.message : ''}
 						label={phoneLabel}
 						id="primary_phone"
@@ -104,6 +105,12 @@ function CustomPhoneWithCountryCode({
 						fullWidth
 						InputLabelProps={{ shrink: !!field.value }}
 						error={!!error} // Set error state if there's an error
+						onChange={(e) => {
+							field.onChange(e); // Call the original onChange from React Hook Form
+
+							if (onChange) onChange(e); // Call the custom onChange if provided
+						}}
+						FormHelperTextProps={{ style: { marginTop: 0 } }} // Prevent margin collapse
 					/>
 				)}
 			/>
