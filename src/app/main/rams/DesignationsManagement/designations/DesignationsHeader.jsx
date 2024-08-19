@@ -8,7 +8,6 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useEffect } from 'react';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import { useSelector } from 'react-redux';
-import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 
@@ -61,11 +60,6 @@ function DesignationsHeader(props) {
 					/>
 				</Paper>
 
-				<ViewWeek
-					onClick={() => navigate(`/apps/column/columns/Designations`)}
-					className="cursor-pointer mr-10 "
-					style={{ color: 'green', marginLeft: '45%', fontSize: '40px' }}
-				/>
 				<motion.div
 					className="flex flex-grow-0"
 					initial={{ opacity: 0, x: 20 }}
