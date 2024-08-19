@@ -343,7 +343,7 @@ function EmployeeForm(props) {
 					if (newValue) {
 						handleCheckPhone(newValue.value, setError);
 					} else {
-						handleCheckPhone('', setError); // Handle case where no country is selected
+						handleCheckPhone('', setError);
 					}
 				}}
 				required
