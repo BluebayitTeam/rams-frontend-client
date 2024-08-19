@@ -339,8 +339,12 @@ function EmployeeForm(props) {
 				countryCodeLabel="Country Code"
 				phoneName="primary_phone"
 				phoneLabel="Phone"
-				onChange={(e) => {
-					handleCheckPhone(e.target.value, setError);
+				onChange={(newValue) => {
+					if (newValue) {
+						handleCheckPhone(newValue.value, setError);
+					} else {
+						handleCheckPhone('', setError); // Handle case where no country is selected
+					}
 				}}
 				required
 			/>

@@ -2,7 +2,6 @@ import _ from '@lodash';
 
 const EmployeeModel = (data) =>
 	_.defaults(data || {}, {
-		id: _.uniqueId('employee-'),
 		first_name: '',
 		logo: '',
 		country_code1: '+880',
