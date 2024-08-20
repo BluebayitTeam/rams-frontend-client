@@ -59,6 +59,9 @@ const schema = z.object({
  */
 function TaskForm() {
 	const routeParams = useParams();
+	// const methods = useFormContext();
+	// const { control, formState, watch, setValue, getValues } = methods;
+	console.log('routeParams', routeParams);
 	const taskId = routeParams?.id;
 	const taskType = routeParams?.type;
 	const { data: task, isError } = useGetTasksItemQuery(taskId, {
@@ -67,6 +70,7 @@ function TaskForm() {
 	const { data: tags } = useGetTasksTagsQuery();
 	const [updateTask] = useUpdateTasksItemMutation();
 	const [createTask] = useCreateTasksItemMutation();
+	console.log('createTask', createTask);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -80,13 +84,13 @@ function TaskForm() {
 		dispatch(getEmployees());
 		dispatch(ToDoTaskType());
 	}, [dispatch]);
-	const { control, watch, reset, handleSubmit, formState } = useForm({
+	const { control, watch, reset, handleSubmit, formState, getValues } = useForm({
 		mode: 'onChange',
 		resolver: zodResolver(schema)
 	});
 	const { isValid, errors } = formState;
 	const form = watch();
-
+	console.log('getValues', getValues());
 	/**
 	 * Auto-save on form change
 	 */

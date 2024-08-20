@@ -12,6 +12,8 @@ const TaskModel = (data) =>
 		priority: 0,
 		tags: [],
 		assignedTo: null,
+		user: [],
+		task_type: [],
 		subTasks: [],
 		order: 1
 	});
