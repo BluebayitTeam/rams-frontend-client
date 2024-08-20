@@ -90,7 +90,7 @@ function TaskForm() {
 	});
 	const { isValid, errors } = formState;
 	const form = watch();
-	console.log('getValues', getValues());
+	// console.log('getValues', getValues());
 	/**
 	 * Auto-save on form change
 	 */
@@ -122,8 +122,8 @@ function TaskForm() {
 	/**
 	 * Form submit for new task
 	 */
-	function onSubmitNew(data) {
-		createTask(data)
+	function onSubmitNew() {
+		createTask(getValues())
 			.unwrap()
 			.then((newTask) => {
 				navigate(`/apps/tasks/${newTask?.id}`);

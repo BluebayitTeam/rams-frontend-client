@@ -6,10 +6,10 @@ import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
 import Swal from 'sweetalert2';
-import { useDeleteTodosMutation } from '../TodosApi';
+import { useDeleteTodotasktypesMutation } from '../TodotasktypesApi';
 
 /**
- * The todos table head component.
+ * The todotasktypes table head component.
  */
 
 const rows = [
@@ -36,30 +36,30 @@ const rows = [
 	}
 ];
 
-function TodosTableHead(props) {
-	const { selectedTodoIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
+function TodotasktypesTableHead(props) {
+	const { selectedTodotasktypeIds, tableOrder, onSelectAllClick, onRequestSort, rowCount, onMenuItemClick } = props;
 
 	console.log('onMenuItemClick', onMenuItemClick);
 
-	console.log('selectedTodoIds', selectedTodoIds);
+	console.log('selectedTodotasktypeIds', selectedTodotasktypeIds);
 
-	const [removeTodos] = useDeleteTodosMutation();
-	const numSelected = selectedTodoIds.length;
-	const [selectedTodosMenu, setSelectedTodosMenu] = useState(null);
+	const [removeTodotasktypes] = useDeleteTodotasktypesMutation();
+	const numSelected = selectedTodotasktypeIds.length;
+	const [selectedTodotasktypesMenu, setSelectedTodotasktypesMenu] = useState(null);
 	const createSortHandler = (event, property) => {
 		onRequestSort(event, property);
 	};
 
-	function openSelectedTodosMenu(event) {
-		setSelectedTodosMenu(event.currentTarget);
+	function openSelectedTodotasktypesMenu(event) {
+		setSelectedTodotasktypesMenu(event.currentTarget);
 	}
 
-	function closeSelectedTodosMenu() {
-		setSelectedTodosMenu(null);
+	function closeSelectedTodotasktypesMenu() {
+		setSelectedTodotasktypesMenu(null);
 	}
 
 	function handleDeleteMultipleItem() {
-		removeTodos(selectedTodoIds).then((data) => {
+		removeTodotasktypes(selectedTodotasktypeIds).then((data) => {
 			Swal.fire({
 				position: 'top-center',
 				icon: 'success',
@@ -118,4 +118,4 @@ function TodosTableHead(props) {
 	);
 }
 
-export default TodosTableHead;
+export default TodotasktypesTableHead;

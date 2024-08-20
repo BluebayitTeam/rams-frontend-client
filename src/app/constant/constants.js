@@ -1415,7 +1415,7 @@ export const TODO_TASK_TYPE = `${BASE_URL}/task_type/api/v1/task_type/all/`;
 export const ALL_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/all/`;
 export const UPDATE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/update/`;
 export const DELETE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/delete/`;
-export const GET_TODOS_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/all/`;
+export const GET_TODOS_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/`;
 
 // Todo-=Task-Type
 
@@ -1428,6 +1428,8 @@ export const GET_TODOTASKTYPE_BY_ID = `${BASE_URL}/task_type/api/v1/task_type/`;
 export const UPDATE_TODOTASKTYPE = `${BASE_URL}/task_type/api/v1/task_type/update/`;
 
 export const DELETE_TODOTASKTYPE = `${BASE_URL}/task_type/api/v1/task_type/delete/`;
+
+export const DELETE_TODOTASKTYPE_MULTIPLE = `${BASE_URL}/task_type/api/v1/task_type/delete/`;
 
 // export const SEARCH_TODOTASKTYPE= `${BASE_URL}/profession/api/v1/profession/search/`;
 

@@ -1,13 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
-import TodosHeader from './TodosHeader';
-import TodosTable from './TodosTable';
+import TodotasktypesHeader from './TodotasktypesHeader';
+import TodotasktypesTable from './TodotasktypesTable';
 
 /**
- * The todos page.
+ * The todotasktypes page.
  */
-function Todos() {
+function Todotasktypes() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
 	const [searchKey, setSearchKey] = useState('');
@@ -19,13 +19,13 @@ function Todos() {
 				header: 'min-h-80 h-80'
 			}}
 			header={
-				<TodosHeader
+				<TodotasktypesHeader
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
 			}
 			content={
-				<TodosTable
+				<TodotasktypesTable
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
@@ -35,4 +35,4 @@ function Todos() {
 	);
 }
 
-export default Todos;
+export default Todotasktypes;

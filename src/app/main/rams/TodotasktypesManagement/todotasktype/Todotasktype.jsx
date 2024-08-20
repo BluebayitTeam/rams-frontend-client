@@ -9,30 +9,33 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import TodoHeader from './TodoHeader';
-import TodoModel from './models/TodoModel';
-import { useGetTodoQuery } from '../TodosApi';
-import TodoForm from './TodoForm';
+import TodotasktypeHeader from './TodotasktypeHeader';
+import TodotasktypeModel from './models/TodotasktypeModel';
+import { useGetTodotasktypeQuery } from '../TodotasktypesApi';
+import TodotasktypeForm from './TodotasktypeForm';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z.string().nonempty('You must enter a todo name').min(5, 'The todo name must be at least 5 characters')
+	first_name: z
+		.string()
+		.nonempty('You must enter a todotasktype name')
+		.min(5, 'The todotasktype name must be at least 5 characters')
 });
 
-function Todo() {
+function Todotasktype() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { todoId } = routeParams;
+	const { todotasktypeId } = routeParams;
 
 	const {
-		data: todo,
+		data: todotasktype,
 		isLoading,
 		isError
-	} = useGetTodoQuery(todoId, {
-		skip: !todoId || todoId === 'new'
+	} = useGetTodotasktypeQuery(todotasktypeId, {
+		skip: !todotasktypeId || todotasktypeId === 'new'
 	});
-	console.log('todoId', todo, todoId);
+	console.log('todotasktypeId', todotasktype, todotasktypeId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -43,16 +46,16 @@ function Todo() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (todoId === 'new') {
-			reset(TodoModel({}));
+		if (todotasktypeId === 'new') {
+			reset(TodotasktypeModel({}));
 		}
-	}, [todoId, reset]);
+	}, [todotasktypeId, reset]);
 
 	useEffect(() => {
-		if (todo) {
-			reset({ ...todo });
+		if (todotasktype) {
+			reset({ ...todotasktype });
 		}
-	}, [todo, reset, todo?.id]);
+	}, [todotasktype, reset, todotasktype?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -63,9 +66,9 @@ function Todo() {
 	}
 
 	/**
-	 * Show Message if the requested todos is not exists
+	 * Show Message if the requested todotasktypes is not exists
 	 */
-	if (isError && todoId !== 'new') {
+	if (isError && todotasktypeId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -76,16 +79,16 @@ function Todo() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such todo!
+					There is no such todotasktype!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/todo/todos"
+					to="/apps/todotasktype/todotasktypes"
 					color="inherit"
 				>
-					Go to Todos Page
+					Go to Todotasktypes Page
 				</Button>
 			</motion.div>
 		);
@@ -94,11 +97,11 @@ function Todo() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<TodoHeader />}
+				header={<TodotasktypeHeader />}
 				content={
 					<div className="p-16 ">
 						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<TodoForm todoId={todoId} />
+							<TodotasktypeForm todotasktypeId={todotasktypeId} />
 						</div>
 					</div>
 				}
@@ -108,4 +111,4 @@ function Todo() {
 	);
 }
 
-export default Todo;
+export default Todotasktype;

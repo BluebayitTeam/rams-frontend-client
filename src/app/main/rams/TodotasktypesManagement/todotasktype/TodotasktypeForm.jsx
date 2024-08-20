@@ -2,7 +2,7 @@ import TextField from '@mui/material/TextField';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-function TodoForm(props) {
+function TodotasktypeForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { control, formState, watch } = methods;
@@ -32,4 +32,4 @@ function TodoForm(props) {
 	);
 }
 
-export default TodoForm;
+export default TodotasktypeForm;

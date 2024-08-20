@@ -15,21 +15,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import TodosTableHead from './TodosTableHead';
-import { selectFilteredTodos, useGetTodosQuery } from '../TodosApi';
+import TodotasktypesTableHead from './TodotasktypesTableHead';
+import { selectFilteredTodotasktypes, useGetTodotasktypesQuery } from '../TodotasktypesApi';
 
 /**
- * The todos table.
+ * The todotasktypes table.
  */
-function TodosTable(props) {
+function TodotasktypesTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetTodosQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredTodos(data));
-	const todos = useSelector(selectFilteredTodos(data?.todos || []));
+	const { data, isLoading, refetch } = useGetTodotasktypesQuery({ ...pageAndSize, searchKey });
+	const totalData = useSelector(selectFilteredTodotasktypes(data));
+	const todotasktypes = useSelector(selectFilteredTodotasktypes(data?.task_types));
 	let serialNumber = 1;
 
 	useEffect(() => {
@@ -59,7 +59,7 @@ function TodosTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(todos.map((n) => n.id));
+			setSelected(todotasktypes.map((n) => n.id));
 			return;
 		}
 
@@ -71,19 +71,19 @@ function TodosTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/todo/todos/${item.id}/${item.handle}`);
+		navigate(`/apps/todotasktype/todotasktypes/${item.id}/${item.handle}`);
 	}
 
-	function handleUpdateTodo(item, event) {
-		localStorage.removeItem('deleteTodo');
-		localStorage.setItem('updateTodo', event);
-		navigate(`/apps/todo/todos/${item.id}/${item.handle}`);
+	function handleUpdateTodotasktype(item, event) {
+		localStorage.removeItem('deleteTodotasktype');
+		localStorage.setItem('updateTodotasktype', event);
+		navigate(`/apps/todotasktype/todotasktypes/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteTodo(item, event) {
-		localStorage.removeItem('updateTodo');
-		localStorage.setItem('deleteTodo', event);
-		navigate(`/apps/todo/todos/${item.id}/${item.handle}`);
+	function handleDeleteTodotasktype(item, event) {
+		localStorage.removeItem('updateTodotasktype');
+		localStorage.setItem('deleteTodotasktype', event);
+		navigate(`/apps/todotasktype/todotasktypes/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -127,7 +127,7 @@ function TodosTable(props) {
 		);
 	}
 
-	if (todos?.length === 0) {
+	if (todotasktypes?.length === 0) {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ function TodosTable(props) {
 					color="text.secondary"
 					variant="h5"
 				>
-					There are no todos!
+					There are no todotasktypes!
 				</Typography>
 			</motion.div>
 		);
@@ -152,17 +152,17 @@ function TodosTable(props) {
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
 				>
-					<TodosTableHead
-						selectedTodoIds={selected}
+					<TodotasktypesTableHead
+						selectedTodotasktypeIds={selected}
 						tableOrder={tableOrder}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={todos.length}
+						rowCount={todotasktypes.length}
 						onMenuItemClick={handleDeselect}
 					/>
 
 					<TableBody>
-						{_.orderBy(todos, [tableOrder.id], [tableOrder.direction]).map((n) => {
+						{_.orderBy(todotasktypes, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
@@ -197,12 +197,12 @@ function TodosTable(props) {
 										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Edit
-											onClick={() => handleUpdateTodo(n, 'updateTodo')}
+											onClick={() => handleUpdateTodotasktype(n, 'updateTodotasktype')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={() => handleDeleteTodo(n, 'deleteTodo')}
+											onClick={() => handleDeleteTodotasktype(n, 'deleteTodotasktype')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>
@@ -231,7 +231,7 @@ function TodosTable(props) {
 					className="shrink-0 border-t-1"
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
+					count={totalData?.total_elements}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
@@ -248,4 +248,4 @@ function TodosTable(props) {
 	);
 }
 
-export default withRouter(TodosTable);
+export default withRouter(TodotasktypesTable);
