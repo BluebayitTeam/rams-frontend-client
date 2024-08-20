@@ -31,26 +31,26 @@ import TaskModel from '../models/TaskModel';
 /**
  * Form Validation Schema
  */
-const subTaskSchema = z.object({
-	id: z.string().nonempty(),
-	title: z.string().nonempty(),
-	is_completed: z.boolean(),
-	is_emergency: z.boolean()
-});
+// const subTaskSchema = z.object({
+// 	id: z.string().nonempty(),
+// 	title: z.string().nonempty(),
+// 	is_completed: z.boolean(),
+// 	is_emergency: z.boolean()
+// });
 
 const schema = z.object({
 	id: z.string().optional(),
 	type: z.string().nonempty(),
 	title: z.string().nonempty('You must enter a title'),
 	notes: z.string().nullable().optional(),
-	is_completed: z.boolean(),
-	is_emergency: z.boolean(),
+	// is_completed: z.boolean(),
+	// is_emergency: z.boolean(),
 	from_date: z.string().nullable().optional(),
 	to_date: z.string().nullable().optional(),
-	priority: z.number(),
-	tags: z.array(z.string()).optional(),
-	assignedTo: z.string().nullable().optional(),
-	subTasks: z.array(subTaskSchema).optional(),
+	// priority: z.number(),
+	// tags: z.array(z.string()).optional(),
+	// assignedTo: z.string().nullable().optional(),
+	// subTasks: z.array(subTaskSchema).optional(),
 	order: z.number()
 });
 
@@ -210,6 +210,11 @@ function TaskForm() {
 							multiline
 							minRows={3}
 							maxRows={10}
+							InputLabelProps={{
+								style: { color: 'red' },
+								shrink: Boolean(field.value) // Use field.value instead of value
+							}}
+							required
 						/>
 					)}
 				/>
@@ -224,6 +229,7 @@ function TaskForm() {
 								freeSolo
 								value={value ? employees.find((data) => data.id === value) : null}
 								options={employees}
+								required
 								getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
@@ -236,8 +242,10 @@ function TaskForm() {
 										helperText={errors?.user?.message}
 										variant="outlined"
 										autoFocus
-										InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
+										InputLabelProps={{
+											style: { color: 'red' },
+											shrink: Boolean(value)
+										}}
 										//
 									/>
 								)}
@@ -253,6 +261,7 @@ function TaskForm() {
 								freeSolo
 								value={value ? taskTypes.find((data) => data.id === value) : null}
 								options={taskTypes}
+								required
 								getOptionLabel={(option) => `${option.title}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
@@ -260,12 +269,14 @@ function TaskForm() {
 								renderInput={(params) => (
 									<TextField
 										{...params}
-										// placeholder="Select User"
 										label="Task Types"
 										helperText={errors?.taskTypes?.message}
 										variant="outlined"
 										autoFocus
-										InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+										InputLabelProps={{
+											style: { color: 'red' },
+											shrink: Boolean(value)
+										}}
 									/>
 								)}
 							/>
@@ -276,6 +287,7 @@ function TaskForm() {
 					<Controller
 						control={control}
 						name="from_date"
+						required
 						render={({ field: { value, onChange } }) => (
 							<DateTimePicker
 								className="w-full"
@@ -302,6 +314,7 @@ function TaskForm() {
 					<Controller
 						control={control}
 						name="to_date"
+						required
 						render={({ field: { value, onChange } }) => (
 							<DateTimePicker
 								className="w-full"
