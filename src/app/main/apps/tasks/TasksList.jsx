@@ -1,31 +1,34 @@
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useGetTasksQuery, useReorderTasksMutation } from './TasksApi';
 import TaskListItem from './TaskListItem';
-import SectionListItem from './SectionListItem';
-import { selectRemainingTasks, selectTasksList, useGetTasksQuery, useReorderTasksMutation } from './TasksApi';
 
 /**
  * The tasks list.
  */
-function TasksList() {
-	const { data, isLoading } = useGetTasksQuery();
-	console.log('ckhkhdskhfkdf', 'data');
+function TasksList(props) {
+	const { searchKey } = props;
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+	const { data, error, isLoading } = useGetTasksQuery({ ...pageAndSize, searchKey });
 
-	const totalData = useSelector((state) => selectTasksList(state, data));
-	const tasks = useSelector((state) => selectRemainingTasks(state, data?.todo_tasks || []));
-
+	// Initialize the tasks state with an empty array
+	const [tasks, setTasks] = useState([]);
+	console.log('tasks', tasks);
+	// Update the tasks state when data is fetched
+	useEffect(() => {
+		if (data?.todo_tasks) {
+			setTasks(data.todo_tasks);
+		}
+	}, [data]);
 	const [reorderList] = useReorderTasksMutation();
-	console.log('dsfjhsdjkfdjskfh', tasks);
 
 	if (isLoading) {
 		return <FuseLoading />;
 	}
 
-	// Check if tasks is undefined or has a length of 0
-	if (!tasks || tasks.length === 0) {
+	if (tasks.length === 0) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<Typography
@@ -60,7 +63,7 @@ function TasksList() {
 
 	return (
 		<List className="w-full m-0 p-0">
-			<DragDropContext onDragEnd={onDragEnd}>
+			{/* <DragDropContext onDragEnd={onDragEnd}>
 				<Droppable
 					droppableId="list"
 					type="list"
@@ -76,6 +79,7 @@ function TasksList() {
 												data={item}
 												index={index}
 												key={item.id}
+												// todo_tasks={todo_tasks}
 											/>
 										);
 									}
@@ -97,7 +101,17 @@ function TasksList() {
 						</>
 					)}
 				</Droppable>
-			</DragDropContext>
+			</DragDropContext> */}
+
+			{tasks.map((item, index) => {
+				<TaskListItem
+					data={item}
+					index={index}
+					key={item.id}
+					// todo_tasks={todo_tasks}
+				/>;
+				return null;
+			})}
 		</List>
 	);
 }

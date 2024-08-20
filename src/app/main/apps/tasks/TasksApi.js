@@ -1,7 +1,13 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { DELETE_TODO_TASK, GET_TODOS_TASK, POST_TODO_TASK, UPDATE_TODO_TASK } from 'src/app/constant/constants';
+import {
+	ALL_TODO_TASK,
+	DELETE_TODO_TASK,
+	GET_TODOS_TASK,
+	POST_TODO_TASK,
+	UPDATE_TODO_TASK
+} from 'src/app/constant/constants';
 
 export const addTagTypes = ['tasks_list', 'tasks_item', 'tasks_tags'];
 const TasksApi = api
@@ -11,9 +17,13 @@ const TasksApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getTasks: build.query({
-				query: ({ page, size, searchKey }) => ({ url: GET_TODOS_TASK, params: { page, size, searchKey } }),
+				query: ({ page, size, searchKey }) => ({
+					url: ALL_TODO_TASK,
+					params: { page, size, searchKey }
+				}),
 				providesTags: ['tasks_list']
 			}),
+
 			reorderTasks: build.mutation({
 				query: ({ startIndex, endIndex }) => ({
 					url: GET_TODOS_TASK,
@@ -48,7 +58,7 @@ const TasksApi = api
 				invalidatesTags: ['tasks_list']
 			}),
 			getTasksItem: build.query({
-				query: (taskId) => ({ url: `${GET_TODOS_TASK}${taskId}` }),
+				query: (taskId) => ({ url: `${ALL_TODO_TASK}${taskId}` }),
 				providesTags: ['tasks_item']
 			}),
 			deleteTasksItem: build.mutation({
@@ -92,7 +102,8 @@ export const {
 	useCreateTasksTagMutation,
 	useReorderTasksMutation
 } = TasksApi;
-export const selectTasksList = (state) => TasksApi.endpoints.getTasks.select()(state)?.data ?? [];
+export const selectTasksList = (state) => TasksApi.endpoints.getTasks.select()(state)?.data?.tasks ?? [];
+
 export const selectRemainingTasks = createSelector([selectTasksList], (tasks) => {
-	return tasks.filter((item) => item.type === 'task' && !item.completed).length;
+	return tasks.filter((item) => item.type === 'task' && !item.completed);
 });

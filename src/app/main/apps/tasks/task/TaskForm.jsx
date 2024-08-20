@@ -68,9 +68,9 @@ function TaskForm() {
 		skip: !taskId || taskId === 'new'
 	});
 	const { data: tags } = useGetTasksTagsQuery();
+
 	const [updateTask] = useUpdateTasksItemMutation();
 	const [createTask] = useCreateTasksItemMutation();
-	console.log('createTask', createTask);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
