@@ -333,7 +333,7 @@ function TaskForm() {
 						<TextField
 							className="mt-32"
 							{...field}
-							label="Notes"
+							label="Note"
 							placeholder="Notes"
 							id="notes"
 							error={!!errors.notes}
