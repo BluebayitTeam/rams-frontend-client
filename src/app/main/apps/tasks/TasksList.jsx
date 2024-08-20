@@ -12,6 +12,7 @@ import { selectRemainingTasks, selectTasksList, useGetTasksQuery, useReorderTask
  */
 function TasksList() {
 	const { data, isLoading } = useGetTasksQuery();
+
 	const totalData = useSelector((state) => selectTasksList(state, data));
 	const tasks = useSelector((state) => selectRemainingTasks(state, data?.todo_tasks || []));
 

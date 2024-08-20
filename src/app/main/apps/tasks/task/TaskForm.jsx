@@ -15,7 +15,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getEmployees } from 'app/store/dataSlice';
+import { getEmployees, ToDoTaskType } from 'app/store/dataSlice';
 import { useSelector } from 'react-redux';
 import { Autocomplete } from '@mui/material';
 import FormActionsMenu from './FormActionsMenu';
@@ -71,11 +71,14 @@ function TaskForm() {
 	const navigate = useNavigate();
 
 	const employees = useSelector((state) => state.data.employees);
+	const taskTypes = useSelector((state) => state.data.taskTypes);
+	// console.log('tags', tags);
 
 	console.log('employees', employees);
 
 	useEffect(() => {
 		dispatch(getEmployees());
+		dispatch(ToDoTaskType());
 	}, [dispatch]);
 	const { control, watch, reset, handleSubmit, formState } = useForm({
 		mode: 'onChange',
@@ -208,14 +211,6 @@ function TaskForm() {
 				/>
 
 				<div className="flex w-full space-x-16 mt-32 mb-16 items-center">
-					{/* <CustomDropdownField
-						name="user"
-						label="User"
-						options={employees}
-						optionLabelFormat={(option) => `${option.first_name} - ${option.last_name}`}
-						required
-					/> */}
-
 					<Controller
 						name="user"
 						control={control}
@@ -245,32 +240,33 @@ function TaskForm() {
 							/>
 						)}
 					/>
-
-					{/* <Controller
+					<Controller
+						name="task_type"
 						control={control}
-						name="to_date"
-						render={({ field: { value, onChange } }) => (
-							<DateTimePicker
-								className="w-full"
-								value={value ? new Date(value) : null}
-								onChange={(date) => onChange(date?.toISOString())}
-								slotProps={{
-									textField: {
-										id: 'to_date',
-										label: 'To Date',
-										InputLabelProps: {
-											shrink: true
-										},
-										fullWidth: true,
-										variant: 'outlined'
-									},
-									actionBar: {
-										actions: ['clear', 'today']
-									}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								className="mt-8 mb-16 w-full"
+								freeSolo
+								value={value ? taskTypes.find((data) => data.id === value) : null}
+								options={taskTypes}
+								getOptionLabel={(option) => `${option.title}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
 								}}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										// placeholder="Select User"
+										label="Task Types"
+										helperText={errors?.taskTypes?.message}
+										variant="outlined"
+										autoFocus
+										InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+									/>
+								)}
 							/>
 						)}
-					/> */}
+					/>
 				</div>
 				<div className="flex w-full space-x-16 mt-32 mb-16 items-center">
 					<Controller
@@ -365,7 +361,7 @@ function TaskForm() {
 						onClick={handleSubmit(onSubmitNew)}
 						variant="contained"
 						color="secondary"
-						disabled={!isValid}
+						// disabled={!isValid}
 					>
 						Create Task
 					</Button>
