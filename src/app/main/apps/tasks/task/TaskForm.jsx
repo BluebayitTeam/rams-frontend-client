@@ -328,7 +328,7 @@ function TaskForm() {
 
 				<Controller
 					control={control}
-					name="notes"
+					name="note"
 					render={({ field }) => (
 						<TextField
 							className="mt-32"
