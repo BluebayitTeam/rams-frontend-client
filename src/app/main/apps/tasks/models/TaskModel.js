@@ -6,7 +6,7 @@ const TaskModel = (data) =>
 	_.defaults(data || {}, {
 		type: 'task',
 		title: '',
-		notes: '',
+		note: '',
 		completed: false,
 		dueDate: null,
 		priority: 0,
