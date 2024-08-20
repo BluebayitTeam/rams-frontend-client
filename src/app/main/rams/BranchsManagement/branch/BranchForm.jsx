@@ -7,7 +7,7 @@ import CustomTextField from 'src/app/@components/CustomTextField';
 
 function BranchForm(props) {
 	const dispatch = useDispatch();
-	const { thanas, cities, countries } = useSelector((state) => state.data);
+	const { cities, countries } = useSelector((state) => state.data);
 	useEffect(() => {
 		dispatch(getThanas());
 		dispatch(getCountries());

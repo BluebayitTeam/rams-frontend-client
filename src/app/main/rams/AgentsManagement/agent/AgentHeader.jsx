@@ -6,7 +6,6 @@ import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { useCreateAgentMutation, useDeleteAgentMutation, useUpdateAgentMutation } from '../AgentsApi';
@@ -98,7 +97,7 @@ function AgentHeader() {
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/logos/user.jpg"
+								src="/public/assets/images/logos/user.jpg"
 								alt={name}
 							/>
 						)}
@@ -127,21 +126,11 @@ function AgentHeader() {
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 			>
 				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
-					<Typography
-						className="mt-6"
-						variant="subtitle2"
-					>
-						Do you want to remove this agent?
-					</Typography>
-				)}
-				{handleDelete === 'deleteAgent' && agentId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-1 "
 						variant="contained"
 						color="secondary"
 						onClick={handleRemoveAgent}
-						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						// style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>

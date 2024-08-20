@@ -8,56 +8,52 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import {
-	useCreateDepartmentMutation,
-	useDeleteDepartmentMutation,
-	useUpdateDepartmentMutation
-} from '../DepartmentsApi';
+import { useCreateTodoMutation, useDeleteTodoMutation, useUpdateTodoMutation } from '../TodosApi';
 
 /**
- * The department header.
+ * The todo header.
  */
-function DepartmentHeader() {
+function TodoHeader() {
 	const routeParams = useParams();
-	const { departmentId } = routeParams;
-	const [createDepartment] = useCreateDepartmentMutation();
-	const [saveDepartment] = useUpdateDepartmentMutation();
-	const [removeDepartment] = useDeleteDepartmentMutation();
+	const { todoId } = routeParams;
+	const [createTodo] = useCreateTodoMutation();
+	const [saveTodo] = useUpdateTodoMutation();
+	const [removeTodo] = useDeleteTodoMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteDepartment');
-	const handleUpdate = localStorage.getItem('updateDepartment');
+	const handleDelete = localStorage.getItem('deleteTodo');
+	const handleUpdate = localStorage.getItem('updateTodo');
 
-	function handleUpdateDepartment() {
-		saveDepartment(getValues()).then((data) => {
+	function handleUpdateTodo() {
+		saveTodo(getValues()).then((data) => {
 			UpdatedSuccessfully();
-			navigate(`/apps/department/departments`);
+			navigate(`/apps/todo/todos`);
 		});
 	}
 
-	function handleCreateDepartment() {
-		createDepartment(getValues())
+	function handleCreateTodo() {
+		createTodo(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/department/departments`);
+				navigate(`/apps/todo/todos`);
 			});
 	}
 
-	function handleRemoveDepartment(dispatch) {
-		removeDepartment(departmentId);
+	function handleRemoveTodo(dispatch) {
+		removeTodo(todoId);
 		DeletedSuccessfully();
-		navigate('/apps/department/departments');
+		navigate('/apps/todo/todos');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/department/departments`);
+		navigate(`/apps/todo/todos`);
 	}
 
 	return (
@@ -71,7 +67,7 @@ function DepartmentHeader() {
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/department/departments"
+						to="/apps/todo/todos"
 						color="inherit"
 					>
 						<FuseSvgIcon size={20}>
@@ -79,7 +75,7 @@ function DepartmentHeader() {
 								? 'heroicons-outline:arrow-sm-left'
 								: 'heroicons-outline:arrow-sm-right'}
 						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Departments</span>
+						<span className="flex mx-4 font-medium">Todos</span>
 					</Typography>
 				</motion.div>
 			</div>
@@ -89,50 +85,48 @@ function DepartmentHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{handleDelete === 'deleteDepartment' && departmentId !== 'new' && (
+				{handleDelete === 'deleteTodo' && todoId !== 'new' && (
 					<Typography
 						className="mt-6"
 						variant="subtitle2"
 					>
-						Do you want to remove this department?
+						Do you want to remove this todo?
 					</Typography>
 				)}
-				{handleDelete === 'deleteDepartment' && departmentId !== 'new' && (
+				{handleDelete === 'deleteTodo' && todoId !== 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
-						onClick={handleRemoveDepartment}
+						onClick={handleRemoveTodo}
 						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
 						style={{ backgroundColor: '#ea5b78', color: 'white' }}
 					>
 						Remove
 					</Button>
 				)}
-				{departmentId === 'new' && (
+				{todoId === 'new' && (
 					<Button
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="secondary"
 						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateDepartment}
+						onClick={handleCreateTodo}
 					>
 						Save
 					</Button>
 				)}
-				{handleDelete !== 'deleteDepartment' &&
-					handleUpdate === 'updateDepartment' &&
-					departmentId !== 'new' && (
-						<Button
-							className="whitespace-nowrap mx-4"
-							color="secondary"
-							variant="contained"
-							style={{ backgroundColor: '#4dc08e', color: 'white' }}
-							onClick={handleUpdateDepartment}
-						>
-							Update
-						</Button>
-					)}
+				{handleDelete !== 'deleteTodo' && handleUpdate === 'updateTodo' && todoId !== 'new' && (
+					<Button
+						className="whitespace-nowrap mx-4"
+						color="secondary"
+						variant="contained"
+						style={{ backgroundColor: '#4dc08e', color: 'white' }}
+						onClick={handleUpdateTodo}
+					>
+						Update
+					</Button>
+				)}
 				<Button
 					className="whitespace-nowrap mx-4"
 					variant="contained"
@@ -146,4 +140,4 @@ function DepartmentHeader() {
 	);
 }
 
-export default DepartmentHeader;
+export default TodoHeader;

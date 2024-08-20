@@ -11,6 +11,7 @@ import { useGetTasksQuery } from './TasksApi';
  */
 function TasksHeader() {
 	const { data: tasks } = useGetTasksQuery();
+	console.log('djjgjdsfgdsgf', tasks);
 	const remainingTasks = _.filter(tasks, (item) => item.type === 'task' && !item.completed).length;
 	return (
 		<div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 p-24 sm:p-32 w-full border-b-1 justify-between">

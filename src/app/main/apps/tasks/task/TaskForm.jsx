@@ -4,21 +4,20 @@ import { useAppDispatch } from 'app/store/store';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import FuseLoading from '@fuse/core/FuseLoading';
-import _ from '@lodash';
+import _ from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
 import Box from '@mui/system/Box';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import Autocomplete from '@mui/material/Autocomplete/Autocomplete';
-import Checkbox from '@mui/material/Checkbox/Checkbox';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import IconButton from '@mui/material/IconButton';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import TaskPrioritySelector from './TaskPrioritySelector';
+import { getEmployees } from 'app/store/dataSlice';
+import { useSelector } from 'react-redux';
+import { Autocomplete } from '@mui/material';
 import FormActionsMenu from './FormActionsMenu';
 import {
 	useCreateTasksItemMutation,
@@ -28,36 +27,41 @@ import {
 } from '../TasksApi';
 import SectionModel from '../models/SectionModel';
 import TaskModel from '../models/TaskModel';
+
 /**
  * Form Validation Schema
  */
 const subTaskSchema = z.object({
 	id: z.string().nonempty(),
 	title: z.string().nonempty(),
-	completed: z.boolean()
+	is_completed: z.boolean(),
+	is_emergency: z.boolean()
 });
+
 const schema = z.object({
 	id: z.string().optional(),
 	type: z.string().nonempty(),
 	title: z.string().nonempty('You must enter a title'),
 	notes: z.string().nullable().optional(),
-	completed: z.boolean(),
-	dueDate: z.string().nullable().optional(),
+	is_completed: z.boolean(),
+	is_emergency: z.boolean(),
+	from_date: z.string().nullable().optional(),
+	to_date: z.string().nullable().optional(),
 	priority: z.number(),
-	tags: z.array(z.string()),
+	tags: z.array(z.string()).optional(),
 	assignedTo: z.string().nullable().optional(),
 	subTasks: z.array(subTaskSchema).optional(),
 	order: z.number()
 });
 
 /**
- * The task form.
+ * The task form component
  */
 function TaskForm() {
 	const routeParams = useParams();
 	const taskId = routeParams?.id;
 	const taskType = routeParams?.type;
-	const { data: task, isError } = useGetTasksItemQuery(routeParams.id, {
+	const { data: task, isError } = useGetTasksItemQuery(taskId, {
 		skip: !taskId || taskId === 'new'
 	});
 	const { data: tags } = useGetTasksTagsQuery();
@@ -65,27 +69,35 @@ function TaskForm() {
 	const [createTask] = useCreateTasksItemMutation();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+
+	const employees = useSelector((state) => state.data.employees);
+
+	console.log('employees', employees);
+
+	useEffect(() => {
+		dispatch(getEmployees());
+	}, [dispatch]);
 	const { control, watch, reset, handleSubmit, formState } = useForm({
 		mode: 'onChange',
 		resolver: zodResolver(schema)
 	});
-	const { isValid, dirtyFields, errors } = formState;
+	const { isValid, errors } = formState;
 	const form = watch();
+
 	/**
-	 * Update Task
+	 * Auto-save on form change
 	 */
 	useDeepCompareEffect(() => {
-		if (!(!isValid || _.isEmpty(form) || !task || routeParams.id === 'new') && !_.isEqual(task, form)) {
+		if (isValid && !_.isEmpty(form) && task && taskId !== 'new' && !_.isEqual(task, form)) {
 			onSubmit(form);
 		}
-	}, [form, isValid]);
+	}, [form, isValid, task]);
+
 	useEffect(() => {
 		if (taskId === 'new') {
 			if (taskType === 'section') {
 				reset(SectionModel({}));
-			}
-
-			if (taskType === 'task') {
+			} else if (taskType === 'task') {
 				reset(TaskModel({}));
 			}
 		} else {
@@ -94,12 +106,15 @@ function TaskForm() {
 	}, [task, reset, taskId, taskType]);
 
 	/**
-	 * Form Submit
+	 * Form submit for existing task
 	 */
 	function onSubmit(data) {
 		updateTask(data);
 	}
 
+	/**
+	 * Form submit for new task
+	 */
 	function onSubmitNew(data) {
 		createTask(data)
 			.unwrap()
@@ -129,7 +144,7 @@ function TaskForm() {
 				<div className="flex items-center justify-between border-b-1 w-full py-24 mt-16 mb-32">
 					<Controller
 						control={control}
-						name="completed"
+						name="is_completed"
 						render={({ field: { value, onChange } }) => (
 							<Button
 								className="font-semibold"
@@ -138,14 +153,29 @@ function TaskForm() {
 								<Box sx={{ color: value ? 'secondary.main' : 'text.disabled' }}>
 									<FuseSvgIcon>heroicons-outline:check-circle</FuseSvgIcon>
 								</Box>
-								<span className="mx-8">
-									{task?.completed ? 'MARK AS INCOMPLETE' : 'MARK AS COMPLETE'}
-								</span>
+								<span className="mx-8">{value ? 'MARK AS INCOMPLETE' : 'MARK AS COMPLETE'}</span>
 							</Button>
 						)}
 					/>
+
+					<Controller
+						control={control}
+						name="is_emergency"
+						render={({ field: { value, onChange } }) => (
+							<Button
+								className="font-semibold"
+								onClick={() => onChange(!value)}
+							>
+								<Box sx={{ color: value ? 'secondary.main' : 'text.disabled' }}>
+									<FuseSvgIcon>heroicons-outline:exclamation-circle</FuseSvgIcon>
+								</Box>
+								<span className="mx-8">{value ? 'MARK AS NOT EMERGENCY' : 'MARK AS EMERGENCY'}</span>
+							</Button>
+						)}
+					/>
+
 					<div className="flex items-center">
-						{routeParams?.id !== 'new' && <FormActionsMenu taskId={task?.id} />}
+						{taskId !== 'new' && <FormActionsMenu taskId={task?.id} />}
 						<IconButton
 							component={NavLinkAdapter}
 							to="/apps/tasks"
@@ -163,7 +193,7 @@ function TaskForm() {
 						<TextField
 							className="mt-32 max-h-auto"
 							{...field}
-							label={`${_.upperFirst(form.type)} title`}
+							label={`${_.upperFirst(taskType)} Title`}
 							placeholder="Job title"
 							id="title"
 							error={!!errors.title}
@@ -177,60 +207,110 @@ function TaskForm() {
 					)}
 				/>
 
-				<Controller
-					control={control}
-					name="tags"
-					render={({ field: { onChange, value } }) => (
-						<Autocomplete
-							multiple
-							id="tags"
-							className="mt-32"
-							options={tags || []}
-							disableCloseOnSelect
-							getOptionLabel={(option) => option?.title}
-							renderOption={(_props, option, { selected }) => (
-								<li {..._props}>
-									<Checkbox
-										style={{ marginRight: 8 }}
-										checked={selected}
+				<div className="flex w-full space-x-16 mt-32 mb-16 items-center">
+					{/* <CustomDropdownField
+						name="user"
+						label="User"
+						options={employees}
+						optionLabelFormat={(option) => `${option.first_name} - ${option.last_name}`}
+						required
+					/> */}
+
+					<Controller
+						name="user"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								className="mt-8 mb-16 w-full"
+								freeSolo
+								value={value ? employees.find((data) => data.id === value) : null}
+								options={employees}
+								getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+								onChange={(event, newValue) => {
+									onChange(newValue?.id);
+								}}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										placeholder="Select User"
+										label="User"
+										helperText={errors?.user?.message}
+										variant="outlined"
+										autoFocus
+										InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
+
+										//
 									/>
-									{option?.title}
-								</li>
-							)}
-							value={value ? value.map((id) => _.find(tags, { id })) : []}
-							onChange={(event, newValue) => {
-								onChange(newValue.map((item) => item.id));
-							}}
-							fullWidth
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label="Tags"
-									placeholder="Tags"
-								/>
-							)}
-						/>
-					)}
-				/>
+								)}
+							/>
+						)}
+					/>
+
+					{/* <Controller
+						control={control}
+						name="to_date"
+						render={({ field: { value, onChange } }) => (
+							<DateTimePicker
+								className="w-full"
+								value={value ? new Date(value) : null}
+								onChange={(date) => onChange(date?.toISOString())}
+								slotProps={{
+									textField: {
+										id: 'to_date',
+										label: 'To Date',
+										InputLabelProps: {
+											shrink: true
+										},
+										fullWidth: true,
+										variant: 'outlined'
+									},
+									actionBar: {
+										actions: ['clear', 'today']
+									}
+								}}
+							/>
+						)}
+					/> */}
+				</div>
 				<div className="flex w-full space-x-16 mt-32 mb-16 items-center">
 					<Controller
 						control={control}
-						name="priority"
-						render={({ field }) => <TaskPrioritySelector {...field} />}
+						name="from_date"
+						render={({ field: { value, onChange } }) => (
+							<DateTimePicker
+								className="w-full"
+								value={value ? new Date(value) : null}
+								onChange={(date) => onChange(date?.toISOString())}
+								slotProps={{
+									textField: {
+										id: 'from_date',
+										label: 'From Date',
+										InputLabelProps: {
+											shrink: true
+										},
+										fullWidth: true,
+										variant: 'outlined'
+									},
+									actionBar: {
+										actions: ['clear', 'today']
+									}
+								}}
+							/>
+						)}
 					/>
 
 					<Controller
 						control={control}
-						name="dueDate"
+						name="to_date"
 						render={({ field: { value, onChange } }) => (
 							<DateTimePicker
 								className="w-full"
-								value={new Date(value)}
-								onChange={onChange}
+								value={value ? new Date(value) : null}
+								onChange={(date) => onChange(date?.toISOString())}
 								slotProps={{
 									textField: {
-										id: 'due-date',
-										label: 'Due date',
+										id: 'to_date',
+										label: 'To Date',
 										InputLabelProps: {
 											shrink: true
 										},
@@ -261,44 +341,33 @@ function TaskForm() {
 							variant="outlined"
 							fullWidth
 							multiline
-							minRows={5}
+							minRows={3}
 							maxRows={10}
-							InputProps={{
-								className: 'max-h-min h-min items-start',
-								startAdornment: (
-									<InputAdornment
-										className="mt-16"
-										position="start"
-									>
-										<FuseSvgIcon size={20}>heroicons-solid:menu-alt-2</FuseSvgIcon>
-									</InputAdornment>
-								)
-							}}
 						/>
 					)}
 				/>
 			</div>
-			{routeParams.id === 'new' && (
+
+			{taskId === 'new' && (
 				<Box
-					className="flex items-center mt-40 py-14 pr-16 pl-4 sm:pr-48 sm:pl-36 border-t"
-					sx={{ backgroundColor: 'background.default' }}
+					sx={{
+						position: 'sticky',
+						bottom: 0,
+						padding: 2,
+						display: 'flex',
+						justifyContent: 'center',
+						borderTop: '1px solid',
+						backgroundColor: 'background.paper'
+					}}
 				>
 					<Button
-						onClick={() => {
-							navigate(-1);
-						}}
-						className="ml-auto"
-					>
-						Cancel
-					</Button>
-					<Button
-						className="ml-8"
+						className="mx-auto mb-40"
+						onClick={handleSubmit(onSubmitNew)}
 						variant="contained"
 						color="secondary"
-						disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleSubmit(onSubmitNew)}
+						disabled={!isValid}
 					>
-						Create
+						Create Task
 					</Button>
 				</Box>
 			)}

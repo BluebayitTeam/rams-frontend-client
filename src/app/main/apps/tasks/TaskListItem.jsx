@@ -16,6 +16,7 @@ import { useUpdateTasksItemMutation } from './TasksApi';
  */
 function TaskListItem(props) {
 	const { data, index } = props;
+	console.log('data', data);
 	const [updateTask] = useUpdateTasksItemMutation();
 	return (
 		<Draggable

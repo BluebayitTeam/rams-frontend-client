@@ -95,6 +95,7 @@ import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
 import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
+import TodoAppConfig from '../rams/TodosManagement/TodoAppConfig';
 
 /**
  * The list of application configurations.
@@ -137,6 +138,7 @@ const appsConfigs = [
 	UserAppConfig,
 	TrainingAppConfig,
 	ThailandVisaAppConfig,
+	TodoAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
 	QualificationAppConfig,
