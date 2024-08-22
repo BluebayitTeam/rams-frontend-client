@@ -59,9 +59,7 @@ const schema = z.object({
  */
 function TaskForm() {
 	const routeParams = useParams();
-	// const methods = useFormContext();
-	// const { control, formState, watch, setValue, getValues } = methods;
-	console.log('routeParams', routeParams);
+
 	const taskId = routeParams?.id;
 	const taskType = routeParams?.type;
 	const { data: task, isError } = useGetTasksItemQuery(taskId, {
@@ -76,9 +74,6 @@ function TaskForm() {
 
 	const employees = useSelector((state) => state.data.employees);
 	const taskTypes = useSelector((state) => state.data.taskTypes);
-	// console.log('tags', tags);
-
-	console.log('employees', employees);
 
 	useEffect(() => {
 		dispatch(getEmployees());
@@ -90,7 +85,7 @@ function TaskForm() {
 	});
 	const { isValid, errors } = formState;
 	const form = watch();
-	// console.log('getValues', getValues());
+
 	/**
 	 * Auto-save on form change
 	 */
