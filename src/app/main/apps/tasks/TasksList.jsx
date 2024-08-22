@@ -2,6 +2,7 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useEffect, useState } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useGetTasksQuery, useReorderTasksMutation } from './TasksApi';
 import TaskListItem from './TaskListItem';
 
@@ -15,11 +16,12 @@ function TasksList(props) {
 
 	// Initialize the tasks state with an empty array
 	const [tasks, setTasks] = useState([]);
-	console.log('tasks', tasks);
 	// Update the tasks state when data is fetched
 	useEffect(() => {
-		if (data?.todo_tasks) {
-			setTasks(data.todo_tasks);
+		const todos = data?.todo_tasks;
+
+		if (todos) {
+			setTasks(todos);
 		}
 	}, [data]);
 	const [reorderList] = useReorderTasksMutation();
@@ -63,55 +65,29 @@ function TasksList(props) {
 
 	return (
 		<List className="w-full m-0 p-0">
-			{/* <DragDropContext onDragEnd={onDragEnd}>
-				<Droppable
-					droppableId="list"
-					type="list"
-					direction="vertical"
-				>
+			<DragDropContext onDragEnd={onDragEnd}>
+				<Droppable droppableId="tasks">
 					{(provided) => (
-						<>
-							<div ref={provided.innerRef}>
-								{tasks.map((item, index) => {
-									if (item.type === 'task') {
-										return (
-											<TaskListItem
-												data={item}
-												index={index}
-												key={item.id}
-												// todo_tasks={todo_tasks}
-											/>
-										);
-									}
-
-									if (item.type === 'section') {
-										return (
-											<SectionListItem
-												key={item.id}
-												index={index}
-												data={item}
-											/>
-										);
-									}
-
-									return null;
-								})}
-							</div>
+						<div
+							{...provided.droppableProps}
+							ref={provided.innerRef}
+						>
+							{tasks.length > 0 ? (
+								tasks.map((item, index) => (
+									<TaskListItem
+										key={item.id}
+										item={item}
+										index={index}
+									/>
+								))
+							) : (
+								<p>No tasks available</p>
+							)}
 							{provided.placeholder}
-						</>
+						</div>
 					)}
 				</Droppable>
-			</DragDropContext> */}
-
-			{tasks.map((item, index) => {
-				<TaskListItem
-					data={item}
-					index={index}
-					key={item.id}
-					// todo_tasks={todo_tasks}
-				/>;
-				return null;
-			})}
+			</DragDropContext>
 		</List>
 	);
 }
