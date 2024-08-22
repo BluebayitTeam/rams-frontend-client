@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
@@ -17,6 +18,14 @@ import { useUpdateTasksItemMutation } from './TasksApi';
 function TaskListItem(props) {
 	const { item, index } = props;
 	const [updateTask] = useUpdateTasksItemMutation();
+	const [showDetails, setShowDetails] = useState(false);
+
+	const handleToggleDetails = (ev) => {
+		ev.preventDefault();
+		ev.stopPropagation();
+		setShowDetails(!showDetails);
+	};
+
 	return (
 		<Draggable
 			draggableId={item.id}
@@ -60,20 +69,8 @@ function TaskListItem(props) {
 							classes={{ root: 'm-0', primary: 'truncate' }}
 							primary={item.title}
 						/>
-						<div className="flex items-center">
-							<div>
-								{item.priority === 0 && (
-									<FuseSvgIcon className="text-green icon-size-16 mx-12">
-										heroicons-outline:arrow-narrow-down
-									</FuseSvgIcon>
-								)}
-								{item.priority === 2 && (
-									<FuseSvgIcon className="text-red icon-size-16 mx-12">
-										heroicons-outline:arrow-narrow-up
-									</FuseSvgIcon>
-								)}
-							</div>
 
+						<div className="flex items-center">
 							{item.from_date && (
 								<Typography
 									className="text-12 whitespace-nowrap"
@@ -83,7 +80,32 @@ function TaskListItem(props) {
 								</Typography>
 							)}
 						</div>
+
+						{/* Toggle details button */}
+						<IconButton onClick={handleToggleDetails}>
+							<FuseSvgIcon>heroicons-outline:chevron-down</FuseSvgIcon>
+						</IconButton>
 					</ListItem>
+
+					{/* Render additional data */}
+					{showDetails && (
+						<div className="px-40 py-12">
+							<Typography
+								variant="body2"
+								color="text.secondary"
+							>
+								Description: {item.description || 'No description available.'}
+							</Typography>
+							<Typography
+								variant="body2"
+								color="text.secondary"
+							>
+								Due Date: {item.due_date ? format(new Date(item.due_date), 'PP') : 'No due date.'}
+							</Typography>
+							{/* Add more fields as needed */}
+						</div>
+					)}
+
 					<Divider />
 				</>
 			)}

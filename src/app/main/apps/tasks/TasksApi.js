@@ -58,7 +58,7 @@ const TasksApi = api
 				invalidatesTags: ['tasks_list']
 			}),
 			getTasksItem: build.query({
-				query: (taskId) => ({ url: `${ALL_TODO_TASK}${taskId}` }),
+				query: (taskId) => ({ url: `${GET_TODOS_TASK}${taskId}` }),
 				providesTags: ['tasks_item']
 			}),
 			deleteTasksItem: build.mutation({
