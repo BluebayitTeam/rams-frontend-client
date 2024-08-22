@@ -132,7 +132,8 @@ function TaskListItem(props) {
 	const { item, index } = props;
 	const [updateTask] = useUpdateTasksItemMutation();
 	const [showDetails, setShowDetails] = useState(false);
-
+	// const methods = useFormContext();
+	// const { getValues } = methods;
 	const handleToggleDetails = (ev) => {
 		ev.preventDefault();
 		ev.stopPropagation();
@@ -144,7 +145,7 @@ function TaskListItem(props) {
 		ev.stopPropagation();
 
 		try {
-			const updatedItem = { ...item, completed: !item.completed };
+			const updatedItem = { ...item, is_completed: !item.is_completed };
 			const result = await updateTask(updatedItem).unwrap();
 			console.log('Task updated successfully:', result);
 		} catch (error) {
@@ -181,7 +182,7 @@ function TaskListItem(props) {
 						</div>
 						<ListItemIcon className="min-w-40 -ml-10 mr-8">
 							<IconButton
-								sx={{ color: item.completed ? 'secondary.main' : 'text.disabled' }}
+								sx={{ color: item.is_completed ? 'secondary.main' : 'text.disabled' }}
 								onClick={handleUpdateTask}
 							>
 								<FuseSvgIcon>heroicons-outline:check-circle</FuseSvgIcon>

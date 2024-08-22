@@ -65,9 +65,6 @@ function TaskForm() {
 
 	const employees = useSelector((state) => state.data.employees);
 	const taskTypes = useSelector((state) => state.data.taskTypes);
-	// console.log('tags', tags);
-
-	console.log('employees', employees);
 
 	useEffect(() => {
 		dispatch(getEmployees());
@@ -116,9 +113,6 @@ function TaskForm() {
 			.unwrap()
 			.then(() => {
 				navigate(`/apps/tasks`);
-			})
-			.catch((rejected) => {
-				dispatch(showMessage({ message: `Error creating task item ${rejected}`, variant: 'error' }));
 			});
 	}
 
