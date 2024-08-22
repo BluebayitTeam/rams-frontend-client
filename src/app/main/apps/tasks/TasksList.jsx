@@ -1,9 +1,10 @@
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useGetTasksQuery, useReorderTasksMutation } from './TasksApi';
+import { useSelector } from 'react-redux';
+import { selectTasksList, useGetTasksQuery, useReorderTasksMutation } from './TasksApi';
 import TaskListItem from './TaskListItem';
 
 /**
@@ -12,18 +13,10 @@ import TaskListItem from './TaskListItem';
 function TasksList(props) {
 	const { searchKey } = props;
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, error, isLoading } = useGetTasksQuery({ ...pageAndSize, searchKey });
+	const { data, isLoading } = useGetTasksQuery({ ...pageAndSize, searchKey });
 
-	// Initialize the tasks state with an empty array
-	const [tasks, setTasks] = useState([]);
-	// Update the tasks state when data is fetched
-	useEffect(() => {
-		const todos = data?.todo_tasks;
+	const tasks = useSelector(selectTasksList(data?.todo_tasks));
 
-		if (todos) {
-			setTasks(todos);
-		}
-	}, [data]);
 	const [reorderList] = useReorderTasksMutation();
 
 	if (isLoading) {

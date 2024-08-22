@@ -8,6 +8,8 @@ import {
 	POST_TODO_TASK,
 	UPDATE_TODO_TASK
 } from 'src/app/constant/constants';
+import FuseUtils from '@fuse/utils/FuseUtils';
+import { selectSearchText } from '../contacts/store/searchTextSlice';
 
 export const addTagTypes = ['tasks_list', 'tasks_item', 'tasks_tags'];
 const TasksApi = api
@@ -102,8 +104,17 @@ export const {
 	useCreateTasksTagMutation,
 	useReorderTasksMutation
 } = TasksApi;
-export const selectTasksList = (state) => TasksApi.endpoints.getTasks.select()(state)?.data?.tasks ?? [];
+// export const selectTasksList = (state) => TasksApi.endpoints.getTasks.select()(state)?.data?.tasks ?? [];
 
-export const selectRemainingTasks = createSelector([selectTasksList], (tasks) => {
-	return tasks.filter((item) => item.type === 'task' && !item.completed);
-});
+// export const selectRemainingTasks = createSelector([selectTasksList], (tasks) => {
+// 	return tasks.filter((item) => item.type === 'task' && !item.completed);
+// });
+
+export const selectTasksList = (tasks) =>
+	createSelector([selectSearchText], (searchText) => {
+		if (searchText?.length === 0) {
+			return tasks;
+		}
+
+		return FuseUtils.filterArrayByString(tasks, searchText);
+	});
