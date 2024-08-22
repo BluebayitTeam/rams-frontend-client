@@ -373,7 +373,7 @@ function TaskForm() {
 						onClick={handleSubmit(onSubmitNew)}
 						variant="contained"
 						color="secondary"
-						// disabled={!isValid}
+						disabled={!isValid}
 					>
 						Create Task
 					</Button>

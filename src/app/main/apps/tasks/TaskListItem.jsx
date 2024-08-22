@@ -94,15 +94,14 @@ function TaskListItem(props) {
 								variant="body2"
 								color="text.secondary"
 							>
-								Description: {item.description || 'No description available.'}
+								Description: {item.note || 'No description available.'}
 							</Typography>
 							<Typography
 								variant="body2"
 								color="text.secondary"
 							>
-								Due Date: {item.due_date ? format(new Date(item.due_date), 'PP') : 'No due date.'}
+								Due Date: {item.to_date ? format(new Date(item.to_date), 'PP') : 'No due date.'}
 							</Typography>
-							{/* Add more fields as needed */}
 						</div>
 					)}
 
