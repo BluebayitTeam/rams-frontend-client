@@ -11,7 +11,7 @@ import { useGetTasksQuery } from './TasksApi';
  */
 function TasksHeader() {
 	const { data: tasks } = useGetTasksQuery();
-	console.log('djjgjdsfgdsgf', tasks);
+	// console.log('djjgjdsfgdsgf', tasks);
 	const remainingTasks = _.filter(tasks, (item) => item.type === 'task' && !item.completed).length;
 	return (
 		<div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 p-24 sm:p-32 w-full border-b-1 justify-between">
@@ -39,14 +39,6 @@ function TasksHeader() {
 			</div>
 
 			<div className="flex items-center -mx-8">
-				<Button
-					className="mx-8 whitespace-nowrap"
-					component={NavLinkAdapter}
-					to="new/section"
-				>
-					<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-					<span className="mx-8">Add Section</span>
-				</Button>
 				<Button
 					className="mx-8 whitespace-nowrap"
 					variant="contained"
