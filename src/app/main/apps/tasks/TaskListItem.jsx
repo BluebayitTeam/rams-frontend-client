@@ -209,16 +209,33 @@ function TaskListItem(props) {
 					</ListItem>
 
 					{showDetails && (
-						<div className="px-40 py-12">
+						<div className="px-40 py-12 mb-2">
 							<Typography
-								variant="body2"
+								variant="body1"
 								color="text.secondary"
+								className="mb-2"
 							>
-								Description: {item.note || 'No description available.'}
+								User:{' '}
+								{item?.user ? `${item.user.first_name} ${item.user.last_name}` : 'No user available.'}
 							</Typography>
 							<Typography
 								variant="body2"
 								color="text.secondary"
+								className="mb-2"
+							>
+								Description: {item.note || 'No description available.'}
+							</Typography>{' '}
+							<Typography
+								variant="body2"
+								color="text.secondary"
+								className="mb-2"
+							>
+								Type: {item.task_type.name || 'No task_type available.'}
+							</Typography>
+							<Typography
+								variant="body2"
+								color="text.secondary"
+								className="mb-2"
 							>
 								Due Date: {item.to_date ? format(new Date(item.to_date), 'PP') : 'No due date.'}
 							</Typography>

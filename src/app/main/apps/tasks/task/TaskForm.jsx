@@ -18,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getEmployees, ToDoTaskType } from 'app/store/dataSlice';
 import { useSelector } from 'react-redux';
 import { Autocomplete } from '@mui/material';
+import { UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import FormActionsMenu from './FormActionsMenu';
 import {
 	useCreateTasksItemMutation,
@@ -113,12 +114,20 @@ function TaskForm() {
 	function onSubmitNew() {
 		createTask(getValues())
 			.unwrap()
-			.then((newTask) => {
-				navigate(`/apps/tasks/${newTask?.id}`);
+			.then(() => {
+				navigate(`/apps/tasks`);
 			})
 			.catch((rejected) => {
 				dispatch(showMessage({ message: `Error creating task item ${rejected}`, variant: 'error' }));
 			});
+	}
+
+	function handleUpdateAgent() {
+		updateTask(getValues()).then(() => {
+			UpdatedSuccessfully();
+
+			navigate(`/apps/tasks`);
+		});
 	}
 
 	if (isError && taskId !== 'new') {
@@ -340,7 +349,7 @@ function TaskForm() {
 				/>
 			</div>
 
-			{taskId === 'new' && (
+			{taskId === 'new' ? (
 				<Box
 					sx={{
 						position: 'sticky',
@@ -360,6 +369,28 @@ function TaskForm() {
 						// disabled={!isValid}
 					>
 						Create Task
+					</Button>
+				</Box>
+			) : (
+				<Box
+					sx={{
+						position: 'sticky',
+						bottom: 0,
+						padding: 2,
+						display: 'flex',
+						justifyContent: 'center',
+						borderTop: '1px solid',
+						backgroundColor: 'background.paper'
+					}}
+				>
+					<Button
+						className="mx-auto mb-40"
+						onClick={handleUpdateAgent}
+						variant="contained"
+						color="primary"
+						// disabled={!isValid}
+					>
+						Update Task
 					</Button>
 				</Box>
 			)}
