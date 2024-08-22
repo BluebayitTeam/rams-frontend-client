@@ -81,13 +81,11 @@ function TaskListItem(props) {
 							)}
 						</div>
 
-						{/* Toggle details button */}
 						<IconButton onClick={handleToggleDetails}>
 							<FuseSvgIcon>heroicons-outline:chevron-down</FuseSvgIcon>
 						</IconButton>
 					</ListItem>
 
-					{/* Render additional data */}
 					{showDetails && (
 						<div className="px-40 py-12">
 							<Typography
