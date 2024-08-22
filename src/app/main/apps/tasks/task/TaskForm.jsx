@@ -194,29 +194,22 @@ function TaskForm() {
 				</div>
 
 				<Controller
-					control={control}
 					name="title"
-					render={({ field }) => (
-						<TextField
-							className="mt-32 max-h-auto"
-							{...field}
-							label={`${_.upperFirst(taskType)} Title`}
-							placeholder="Job title"
-							id="title"
-							error={!!errors.title}
-							helperText={errors?.title?.message}
-							variant="outlined"
-							fullWidth
-							multiline
-							minRows={3}
-							maxRows={10}
-							InputLabelProps={{
-								style: { color: 'red' },
-								shrink: Boolean(field.value) // Use field.value instead of value
-							}}
-							required
-						/>
-					)}
+					control={control}
+					render={({ field }) => {
+						return (
+							<TextField
+								{...field}
+								className="mt-8 mb-16  "
+								helperText={<span style={{ color: 'red' }}>{errors?.title?.message}</span>}
+								label="Title"
+								id="title"
+								variant="outlined"
+								InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+								fullWidth
+							/>
+						);
+					}}
 				/>
 
 				<div className="flex w-full space-x-16 mt-32 mb-16 items-center">
@@ -230,7 +223,7 @@ function TaskForm() {
 								value={value ? employees.find((data) => data.id === value) : null}
 								options={employees}
 								required
-								getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
+								getOptionLabel={(option) => `${option.title} ${option.last_name}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 								}}
