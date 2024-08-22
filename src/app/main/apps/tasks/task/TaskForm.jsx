@@ -31,26 +31,16 @@ import TaskModel from '../models/TaskModel';
 /**
  * Form Validation Schema
  */
-// const subTaskSchema = z.object({
-// 	id: z.string().nonempty(),
-// 	title: z.string().nonempty(),
-// 	is_completed: z.boolean(),
-// 	is_emergency: z.boolean()
-// });
 
 const schema = z.object({
 	id: z.string().optional(),
 	type: z.string().nonempty(),
 	title: z.string().nonempty('You must enter a title'),
 	notes: z.string().nullable().optional(),
-	// is_completed: z.boolean(),
-	// is_emergency: z.boolean(),
+
 	from_date: z.string().nullable().optional(),
 	to_date: z.string().nullable().optional(),
-	// priority: z.number(),
-	// tags: z.array(z.string()).optional(),
-	// assignedTo: z.string().nullable().optional(),
-	// subTasks: z.array(subTaskSchema).optional(),
+
 	order: z.number()
 });
 
@@ -59,9 +49,7 @@ const schema = z.object({
  */
 function TaskForm() {
 	const routeParams = useParams();
-	// const methods = useFormContext();
-	// const { control, formState, watch, setValue, getValues } = methods;
-	console.log('routeParams', routeParams);
+
 	const taskId = routeParams?.id;
 	const taskType = routeParams?.type;
 	const { data: task, isError } = useGetTasksItemQuery(taskId, {
@@ -90,7 +78,7 @@ function TaskForm() {
 	});
 	const { isValid, errors } = formState;
 	const form = watch();
-	// console.log('getValues', getValues());
+
 	/**
 	 * Auto-save on form change
 	 */
@@ -223,7 +211,7 @@ function TaskForm() {
 								value={value ? employees.find((data) => data.id === value) : null}
 								options={employees}
 								required
-								getOptionLabel={(option) => `${option.title} ${option.last_name}`}
+								getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
 								onChange={(event, newValue) => {
 									onChange(newValue?.id);
 								}}
@@ -234,12 +222,10 @@ function TaskForm() {
 										label="User"
 										helperText={errors?.user?.message}
 										variant="outlined"
-										autoFocus
 										InputLabelProps={{
 											style: { color: 'red' },
 											shrink: Boolean(value)
 										}}
-										//
 									/>
 								)}
 							/>
