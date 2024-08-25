@@ -1,11 +1,10 @@
-import { motion } from 'framer-motion';
 import { Checkbox } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { selectSelectedLabels, toggleSelectedLabels } from './store/selectedLabelsSlice';
+import { selectSelectedLabels, toggleSelectedLabels, setSelectedLabels } from './store/selectedLabelsSlice';
 import { useGetCalendarLabelsQuery } from './CalendarApi';
 
 /**
@@ -13,22 +12,20 @@ import { useGetCalendarLabelsQuery } from './CalendarApi';
  */
 function CalendarAppSidebar() {
 	const selectedLabels = useSelector(selectSelectedLabels);
-	// console.log('selectedLabels', selectedLabels);
 	const dispatch = useAppDispatch();
 
-	const [openDialog, setOpenDialog] = useState(false);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const [labels, setLabels] = useState([]); // State to store fetched labels
+	const [labels, setLabels] = useState([]);
 
-	// Fetch data using the query
-	const { data } = useGetCalendarLabelsQuery({ ...pageAndSize });
+	const { data } = useGetCalendarLabelsQuery({ page: 1, size: 25 });
 
-	// Use useEffect to update labels state when data changes
 	useEffect(() => {
 		if (data?.task_types) {
-			setLabels(data?.task_types);
+			setLabels(data.task_types);
+
+			const allLabelIds = data.task_types.map((label) => label.id);
+			dispatch(setSelectedLabels(allLabelIds));
 		}
-	}, [data]);
+	}, [data, dispatch]);
 
 	const handleCheckboxChange = (labelId) => {
 		dispatch(toggleSelectedLabels(labelId));
@@ -36,13 +33,7 @@ function CalendarAppSidebar() {
 
 	return (
 		<div className="flex flex-col flex-auto min-h-full p-32">
-			<motion.span
-				initial={{ x: -20 }}
-				animate={{ x: 0, transition: { delay: 0.2 } }}
-				className="pb-24 text-4xl font-extrabold tracking-tight"
-			>
-				Calendar
-			</motion.span>
+			<Typography className="pb-24 text-4xl font-extrabold tracking-tight">Calendar</Typography>
 
 			<div className="group flex items-center justify-between mb-12">
 				<Typography
@@ -53,7 +44,7 @@ function CalendarAppSidebar() {
 				</Typography>
 			</div>
 
-			{labels?.map((label) => (
+			{labels.map((label) => (
 				<div
 					key={label.id}
 					className="group flex items-center mt-8 space-x-8 h-24 w-full"
