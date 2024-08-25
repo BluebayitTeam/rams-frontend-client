@@ -4,8 +4,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { selectSelectedLabels, toggleSelectedLabels } from './store/selectedLabelsSlice';
-import { useGetCalendarLabelsQuery } from './CalendarApi';
+import { selectFilteredEvents, useGetCalendarLabelsQuery } from './CalendarApi';
 import LabelsDialog from './dialogs/labels/LabelsDialog';
 
 /**
@@ -14,7 +15,22 @@ import LabelsDialog from './dialogs/labels/LabelsDialog';
 function CalendarAppSidebar() {
 	const selectedLabels = useSelector(selectSelectedLabels);
 	const dispatch = useAppDispatch();
-	const { data: labels } = useGetCalendarLabelsQuery();
+
+	const [openDialog, setOpenDialog] = useState(false);
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+
+	// Fetch data using the query
+	const { data } = useGetCalendarLabelsQuery({ ...pageAndSize });
+
+	// Ensure data and task_types are defined
+	const labels = useSelector(selectFilteredEvents(data?.task_types || []));
+	console.log('labels', data);
+
+	const handleCheckboxChange = (labelId) => {
+		console.log('labelId', labelId);
+		dispatch(toggleSelectedLabels(labelId));
+	};
+
 	return (
 		<div className="flex flex-col flex-auto min-h-full p-32">
 			<motion.span
@@ -45,9 +61,7 @@ function CalendarAppSidebar() {
 						color="default"
 						className="p-0"
 						checked={selectedLabels.includes(label.id)}
-						onChange={() => {
-							dispatch(toggleSelectedLabels(label.id));
-						}}
+						onChange={() => handleCheckboxChange(label.id)}
 					/>
 
 					<Box
@@ -55,7 +69,7 @@ function CalendarAppSidebar() {
 						sx={{ backgroundColor: label.color }}
 					/>
 
-					<Typography className="flex flex-1 leading-none">{label.title}</Typography>
+					<Typography className="flex flex-1 leading-none">{label.name}</Typography>
 				</div>
 			))}
 		</div>

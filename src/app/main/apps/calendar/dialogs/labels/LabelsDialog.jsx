@@ -4,16 +4,25 @@ import List from '@mui/material/List';
 import { IconButton } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import NewLabelForm from './NewLabelForm';
 import LabelItemForm from './LabelItemForm';
-import { useGetCalendarLabelsQuery } from '../../CalendarApi';
+import { selectFilteredEvents, useGetCalendarLabelsQuery } from '../../CalendarApi';
 
 /**
  * The labels dialog.
  */
-function LabelsDialog() {
+function LabelsDialog(props) {
+	const { searchKey } = props;
+
 	const [openDialog, setOpenDialog] = useState(false);
-	const { data: labels } = useGetCalendarLabelsQuery();
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+
+	// Fetch data using the query
+	const { data } = useGetCalendarLabelsQuery({ ...pageAndSize, searchKey });
+
+	// Ensure data and task_types are defined
+	const labels = useSelector(selectFilteredEvents(data?.task_types || []));
 
 	function handleOpenDialog() {
 		setOpenDialog(true);

@@ -2,15 +2,19 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import { useGetCalendarLabelsQuery } from './CalendarApi';
 /**
  * The event label select.
  */
 const EventLabelSelect = forwardRef((props, ref) => {
-	const { value, onChange, className } = props;
-	const { data: labels } = useGetCalendarLabelsQuery();
+	const { value, onChange, className, searchKey } = props;
+	const [pageSize, setPageSize] = useState({ page: 1, size: 25 });
+
+	const { data: labels } = useGetCalendarLabelsQuery({ ...pageSize, searchKey });
+	console.log('dfjgdjfghdjfkghkdhkdfhkdfhdkfh', labels);
+
 	const handleChange = (event) => {
 		onChange(event.target.value);
 	};
