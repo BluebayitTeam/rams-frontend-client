@@ -42,7 +42,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 		'& .fc-col-header-cell-cushion': {
 			color: theme.palette.text.secondary,
 			fontWeight: 500,
-			fontSize: 52,
+			fontSize: 12,
 			textTransform: 'uppercase'
 		}
 	},
@@ -105,7 +105,8 @@ function CalendarApp(props) {
 	const events =
 		data?.todo_tasks.map((task) => ({
 			id: task.id,
-			title: task.task_type.name,
+			title: task.title,
+			// title: task.task_type.name,
 			start: task.from_date,
 			end: task.to_date,
 			allDay: false,
