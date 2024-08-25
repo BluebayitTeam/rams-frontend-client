@@ -94,8 +94,12 @@ function CalendarApp(props) {
 	const { searchKey } = props;
 	const [currentDate, setCurrentDate] = useState();
 	const dispatch = useAppDispatch();
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading } = useGetCalendarEventsQuery({ ...pageAndSize, searchKey });
+	const [yearMonth, setYearMonth] = useState({ year: 2024, month: 'August' });
+	const { data, isLoading, refetch } = useGetCalendarEventsQuery(
+		{ ...yearMonth, searchKey },
+		{ refetchOnMountOrArgChange: true }
+	);
+
 	const calendarRef = useRef(null);
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isMobile);
@@ -106,7 +110,6 @@ function CalendarApp(props) {
 		data?.todo_tasks.map((task) => ({
 			id: task.id,
 			title: task.title,
-			// title: task.task_type.name,
 			start: task.from_date,
 			end: task.to_date,
 			allDay: false,
@@ -123,12 +126,26 @@ function CalendarApp(props) {
 	useEffect(() => {
 		setLeftSidebarOpen(!isMobile);
 	}, [isMobile]);
+
+	useEffect(() => {
+		// Force refetch on first render or when yearMonth/searchKey changes
+		refetch();
+	}, [yearMonth, searchKey, refetch]);
+
 	useEffect(() => {
 		// Correct calendar dimensions after sidebar toggles
 		setTimeout(() => {
 			calendarRef.current?.getApi()?.updateSize();
 		}, 300);
 	}, [leftSidebarOpen]);
+
+	useEffect(() => {
+		// Ensure calendar events are updated when new data is fetched
+		if (calendarRef.current) {
+			calendarRef.current.getApi().removeAllEvents();
+			calendarRef.current.getApi().addEventSource(events);
+		}
+	}, [data, events]);
 
 	const handleDateSelect = (selectInfo) => {
 		dispatch(openNewEventDialog(selectInfo));
@@ -156,17 +173,14 @@ function CalendarApp(props) {
 	};
 
 	const handleEventAdd = (addInfo) => {
-		// eslint-disable-next-line no-console
 		console.info(addInfo);
 	};
 
 	const handleEventChange = (changeInfo) => {
-		// eslint-disable-next-line no-console
 		console.info(changeInfo);
 	};
 
 	const handleEventRemove = (removeInfo) => {
-		// eslint-disable-next-line no-console
 		console.info(removeInfo);
 	};
 
@@ -201,7 +215,6 @@ function CalendarApp(props) {
 						datesSet={handleDates}
 						select={handleDateSelect}
 						events={events}
-						// eslint-disable-next-line react/no-unstable-nested-components
 						eventContent={(eventInfo) => {
 							const eventIndex = eventInfo.event.id % colors.length;
 							const eventColor = colors[eventIndex];

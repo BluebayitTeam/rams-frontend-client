@@ -69,7 +69,7 @@ function TaskForm() {
 	useEffect(() => {
 		dispatch(getEmployees());
 		dispatch(ToDoTaskType());
-	}, [dispatch]);
+	}, []);
 	const { control, watch, reset, handleSubmit, formState, getValues } = useForm({
 		mode: 'onChange',
 		resolver: zodResolver(schema)

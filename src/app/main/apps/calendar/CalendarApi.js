@@ -13,9 +13,9 @@ const CalendarApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getCalendarEvents: build.query({
-				query: ({ page, size, searchKey }) => ({
+				query: ({ year, month, searchKey }) => ({
 					url: ALL_TODO_TASK,
-					params: { page, size, searchKey }
+					params: { year, month, searchKey }
 				}),
 				providesTags: ['calendar_events']
 			}),
@@ -93,10 +93,6 @@ export const {
 	useDeleteCalendarLabelMutation
 } = CalendarApi;
 export default CalendarApi;
-// export const selectFilteredEvents = (events) =>
-// 	createSelector([selectSelectedLabels], (selectedLabels) => {
-// 		return events.filter((item) => selectedLabels.includes(item?.extendedProps?.label));
-// 	});
 
 export const selectFilteredEvents = (events) =>
 	createSelector([selectSelectedLabels], (searchText) => {
