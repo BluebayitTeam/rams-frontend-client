@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { selectSelectedLabels } from './store/selectedLabelsSlice';
+import { selectSelectedLabels, toggleSelectedLabels } from './store/selectedLabelsSlice';
 import { useGetCalendarLabelsQuery } from './CalendarApi';
 
 /**
@@ -13,6 +13,7 @@ import { useGetCalendarLabelsQuery } from './CalendarApi';
  */
 function CalendarAppSidebar() {
 	const selectedLabels = useSelector(selectSelectedLabels);
+	// console.log('selectedLabels', selectedLabels);
 	const dispatch = useAppDispatch();
 
 	const [openDialog, setOpenDialog] = useState(false);
@@ -25,13 +26,12 @@ function CalendarAppSidebar() {
 	// Use useEffect to update labels state when data changes
 	useEffect(() => {
 		if (data?.task_types) {
-			setLabels(data?.task_types); // Update labels state with fetched data
+			setLabels(data?.task_types);
 		}
 	}, [data]);
 
 	const handleCheckboxChange = (labelId) => {
-		console.log('labelId', labelId);
-		// dispatch(toggleSelectedLabels(labelId));
+		dispatch(toggleSelectedLabels(labelId));
 	};
 
 	return (
