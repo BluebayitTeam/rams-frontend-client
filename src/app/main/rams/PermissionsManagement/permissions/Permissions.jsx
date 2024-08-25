@@ -5,7 +5,7 @@ import PermissionsHeader from './PermissionsHeader';
 import PermissionsTable from './PermissionsTable';
 
 /**
- * The permissions page.
+ * The Permissions page.
  */
 function Permissions() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));

@@ -11,6 +11,8 @@ const SectionModel = (data) =>
 		dueDate: null,
 		priority: 0,
 		tags: [],
+		user: [],
+		task_type: [],
 		assignedTo: null,
 		subTasks: [],
 		order: 1

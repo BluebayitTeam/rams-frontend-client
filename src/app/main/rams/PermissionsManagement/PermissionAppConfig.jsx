@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import PermissionApp from './PermissionApp';
-import Permissions from './permissions/Permissions';
 import Permission from './permission/Permission';
+import Permissions from './permissions/Permissions';
 
 /**
  * The E-Commerce app configuration.

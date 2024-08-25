@@ -8,6 +8,7 @@ function CustomTextField({
 	className = 'mt-8 mb-16',
 	fullWidth = true,
 	inputLabelProps = {},
+	onChange, // Add onChange as a prop
 	...props
 }) {
 	const methods = useFormContext();
@@ -36,6 +37,11 @@ function CustomTextField({
 							}
 							fullWidth={fullWidth}
 							error={!!error} // Set error state if there's an error
+							onChange={(e) => {
+								field.onChange(e); // Call the original onChange from React Hook Form
+
+								if (onChange) onChange(e); // Call the custom onChange if provided
+							}}
 							{...props} // Spread other props like 'required'
 						/>
 					);

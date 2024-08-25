@@ -13,7 +13,7 @@ import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import DepartmentsTableHead from './DepartmentsTableHead';
 import { selectFilteredDepartments, useGetDepartmentsQuery } from '../DepartmentsApi';
@@ -166,7 +166,7 @@ function DepartmentsTable(props) {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
-									className="h-20 cursor-pointer"
+									className="h-20 cursor-pointer border-t-1  border-gray-200"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -175,19 +175,7 @@ function DepartmentsTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64 text-center"
-										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
-
-									<TableCell
-										className="w-40 md:w-64"
+										className="w-40 md:w-64 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
@@ -195,26 +183,26 @@ function DepartmentsTable(props) {
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
 										{n.name}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 										align="right"
 										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
 									>
 										<Edit
-											onClick={(event) => handleUpdateDepartment(n, 'updateDepartment')}
+											onClick={() => handleUpdateDepartment(n, 'updateDepartment')}
 											className="cursor-pointer custom-edit-icon-style"
 										/>
 
 										<Delete
-											onClick={(event) => handleDeleteDepartment(n, 'deleteDepartment')}
+											onClick={() => handleDeleteDepartment(n, 'deleteDepartment')}
 											className="cursor-pointer custom-delete-icon-style"
 										/>
 									</TableCell>

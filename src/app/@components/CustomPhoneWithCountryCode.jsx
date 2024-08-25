@@ -6,27 +6,41 @@ import countryCodes from '../@data/countrycodes';
 
 function CustomPhoneWithCountryCode({
 	getCountryCode1,
-	errors,
-	handleSubmitOnKeyDownEnter,
 	countryName = 'country_code1',
-	countryLabel = 'Choose a country',
+	countryLabel = 'Select Country',
 	countryCodeLabel = 'Country Code',
 	phoneName = 'phone',
-	phoneLabel = 'Phone'
+	phoneLabel = 'Phone',
+	onChange // Ensure onChange is a function
 }) {
 	const methods = useFormContext();
-	const { control } = methods;
+	const { control, setValue } = methods;
+
+	const handleCountryChange = (event, newValue) => {
+		if (newValue) {
+			const newValueCode = newValue.value || '';
+			setValue(countryName, newValueCode, { shouldValidate: true });
+
+			if (onChange) onChange(newValue); // Call the custom onChange if provided
+		} else {
+			setValue(countryName, '', { shouldValidate: true });
+
+			if (onChange) onChange(null); // Call the custom onChange if provided
+		}
+	};
+
 	return (
-		<Box style={{ display: 'flex' }}>
+		<Box style={{ display: 'flex', alignItems: 'center' }}>
 			<Controller
 				name={countryName}
 				control={control}
-				render={({ field: { onChange, value } }) => (
+				render={({ field }) => (
 					<Autocomplete
+						{...field}
 						className="mt-8 mb-16"
 						id="country-select-demo"
 						sx={{ width: 500 }}
-						value={value ? countryCodes.find((country) => country.value === value) : null}
+						value={countryCodes.find((country) => country.value === field.value) || null}
 						options={countryCodes}
 						autoHighlight
 						getOptionLabel={(option) => option.label}
@@ -46,9 +60,7 @@ function CustomPhoneWithCountryCode({
 								{option.label} ({option.code}) +{option.value}
 							</Box>
 						)}
-						onChange={(event, newValue) => {
-							onChange(newValue?.value);
-						}}
+						onChange={handleCountryChange}
 						renderInput={(params) => (
 							<TextField
 								{...params}
@@ -81,17 +93,24 @@ function CustomPhoneWithCountryCode({
 			<Controller
 				name={phoneName}
 				control={control}
-				render={({ field }) => (
+				render={({ field, fieldState: { error } }) => (
 					<TextField
 						{...field}
 						className="mt-8 mb-16"
-						helperText={errors?.[phoneName]?.message}
+						style={{ marginTop: error && '23px' }}
+						helperText={error ? error.message : ''}
 						label={phoneLabel}
 						id="primary_phone"
 						variant="outlined"
 						fullWidth
-						InputLabelProps={field.value && { shrink: true }}
-						onKeyDown={handleSubmitOnKeyDownEnter}
+						InputLabelProps={{ shrink: !!field.value }}
+						error={!!error} // Set error state if there's an error
+						onChange={(e) => {
+							field.onChange(e); // Call the original onChange from React Hook Form
+
+							if (onChange) onChange(e); // Call the custom onChange if provided
+						}}
+						FormHelperTextProps={{ style: { marginTop: 0 } }} // Prevent margin collapse
 					/>
 				)}
 			/>

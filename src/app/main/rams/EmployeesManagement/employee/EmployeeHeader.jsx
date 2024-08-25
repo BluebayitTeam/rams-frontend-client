@@ -98,7 +98,7 @@ function EmployeeHeader() {
 						) : (
 							<img
 								className="w-32 sm:w-48 rounded"
-								src="assets/logos/user.jpg"
+								src="/public/assets/images/logos/user.jpg"
 								alt={name}
 							/>
 						)}
@@ -161,11 +161,13 @@ function EmployeeHeader() {
 						className="whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300"
 						color="secondary"
 						variant="contained"
+						// disabled={_.isEmpty(dirtyFields) || isValid}
 						onClick={handleUpdateEmployee}
 					>
 						Update
 					</Button>
 				)}
+
 				<Button
 					className="whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300"
 					variant="contained"

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 /* eslint-disable jsx-a11y/alt-text */
 import { FormControl } from '@mui/base';
-import { Autocomplete, Box, Checkbox, FormControlLabel, Icon, IconButton, InputAdornment } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, Icon, IconButton, InputAdornment } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import {
 	getBranches,
@@ -18,13 +18,20 @@ import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import countryCodes from 'src/app/@data/countrycodes';
 import { genders } from 'src/app/@data/data';
 
-import { BASE_URL } from 'src/app/constant/constants';
+import {
+	BASE_URL,
+	CHECK_EMAIL_EMPLOYEE,
+	CHECK_PRIMARY_PHONE,
+	CHECK_USERNAME_EMPLOYEE
+} from 'src/app/constant/constants';
 import FileUpload from 'src/app/@components/FileUploader';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { useParams } from 'react-router';
+import CustomPhoneWithCountryCode from 'src/app/@components/CustomPhoneWithCountryCode';
+import axios from 'axios';
+import CustomTextField from 'src/app/@components/CustomTextField';
 
 const useStyles = makeStyles((theme) => ({
 	hidden: {
@@ -43,7 +50,8 @@ function EmployeeForm(props) {
 	const routeParams = useParams();
 	const classes = useStyles(props);
 	const { employeeId } = routeParams;
-	const { control, formState, watch, setValue, getValues } = methods;
+	const { control, formState, watch, setValue, getValues, setError, clearErrors } = methods;
+
 	console.log('getValues', getValues());
 	const { errors } = formState;
 	const thanas = useSelector((state) => state.data.thanas);
@@ -55,7 +63,7 @@ function EmployeeForm(props) {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const getCountryCode1 = watch('country_code1');
-	const getCountryCode2 = watch('country_code2');
+	// const getCountryCode2 = watch('country_code2');
 	const [file, setFile] = useState(null);
 
 	useEffect(() => {
@@ -78,6 +86,68 @@ function EmployeeForm(props) {
 	const handleChnageCountry = (selectedCountry) => {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
+	};
+
+	const handleCheckUserName = async (name) => {
+		const response = await axios.get(
+			`${CHECK_USERNAME_EMPLOYEE}?username=${name}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+		);
+
+		if (response?.data.username_exists) {
+			setError('username', {
+				type: 'manual',
+				message: 'User Name Already Exists'
+			});
+		}
+	};
+
+	const handleCheckEmail = async (email) => {
+		if (!email.trim()) {
+			// Optionally clear the email error if it's empty
+			setError('email', {
+				type: 'manual',
+				message: 'Email cannot be empty'
+			});
+			return;
+		}
+
+		try {
+			const response = await axios.get(
+				`${CHECK_EMAIL_EMPLOYEE}?email=${email}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+			);
+
+			if (response?.data.email_exists) {
+				setError('email', {
+					type: 'manual',
+					message: 'Email Already Exists'
+				});
+			} else {
+				// Optionally clear the error if the email doesn't exist
+				clearErrors('email');
+			}
+		} catch (error) {
+			// Handle error, possibly log it or show a user-friendly message
+			console.error('Error checking email:', error);
+		}
+	};
+
+	const handleCheckPhone = async () => {
+		const formattedPhoneNumber = `${watch('country_code1')}${watch('primary_phone')}`;
+		try {
+			const response = await axios.get(
+				`${CHECK_PRIMARY_PHONE}?primary_phone=${formattedPhoneNumber}&id=${employeeId === 'new' ? '' : employeeId}&type=${employeeId === 'new' ? 'create' : 'update'}`
+			);
+
+			if (response?.data?.primary_phone_exists) {
+				setError('primary_phone', {
+					type: 'manual',
+					message: 'Phone number already exists'
+				});
+			}
+		} catch (error) {
+			console.error('Error checking phone number:', error);
+			// Handle errors if needed
+		}
 	};
 
 	return (
@@ -160,7 +230,7 @@ function EmployeeForm(props) {
 					/>
 				)}
 			/>
-			<Controller
+			{/* <Controller
 				name="username"
 				control={control}
 				render={({ field }) => (
@@ -168,43 +238,37 @@ function EmployeeForm(props) {
 						{...field}
 						className="mt-8 mb-16"
 						helperText={errors?.username?.message}
-						// onBlur={(event) => handleOnChange('username', event)}
+						FormHelperTextProps={{ style: { color: 'red' } }}
 						label="User Name"
 						id="userName"
 						variant="outlined"
 						fullWidth
 						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-					/>
-				)}
-			/>
-			<Controller
-				name="email"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						type="text"
-						InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						helperText={errors?.email?.message}
-						// onBlur={(event) => handleOnChange('email', event)}
-						label="Email"
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<Icon
-										className="text-20"
-										color="action"
-									>
-										user
-									</Icon>
-								</InputAdornment>
-							)
+						required
+						onChange={(e) => {
+							field.onChange(e); // Ensure the field value is updated
+							handleCheckUserName(e.target.value);
 						}}
-						variant="outlined"
-						fullWidth
 					/>
 				)}
+			/> */}
+
+			<CustomTextField
+				name="username"
+				label="UserName"
+				required
+				onChange={(e) => {
+					handleCheckUserName(e.target.value);
+				}}
+			/>
+
+			<CustomTextField
+				name="email"
+				label="Email"
+				required
+				onChange={(e) => {
+					handleCheckEmail(e.target.value);
+				}}
 			/>
 			{employeeId === 'new' && (
 				<>
@@ -236,7 +300,8 @@ function EmployeeForm(props) {
 										</InputAdornment>
 									)
 								}}
-								InputLabelProps={field.value && { shrink: true }}
+								InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+								required
 							/>
 						)}
 					/>
@@ -268,175 +333,35 @@ function EmployeeForm(props) {
 										</InputAdornment>
 									)
 								}}
-								InputLabelProps={field.value && { shrink: true }}
+								InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
+								required
 							/>
 						)}
 					/>
 				</>
 			)}
 
-			<Box style={{ display: 'flex' }}>
-				<Controller
-					name="country_code1"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<Autocomplete
-							className="mt-8 mb-16 "
-							id="country-select-demo"
-							sx={{ width: 300 }}
-							value={value ? countryCodes.find((country) => country.value === value) : null}
-							options={countryCodes}
-							autoHighlight
-							error={!value}
-							getOptionLabel={(option) => option.label}
-							renderOption={(prop, option) => {
-								return (
-									<Box
-										component="li"
-										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-										{...prop}
-									>
-										<img
-											loading="lazy"
-											width="20"
-											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
-											alt=""
-										/>
-										{option.label} ({option.code}) +{option.value}
-									</Box>
-								);
-							}}
-							onChange={(event, newValue) => {
-								onChange(newValue?.value);
-								handleChnageCountry(newValue?.label);
-							}}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label="Choose a country"
-									variant="outlined"
-									error={!value}
-									style={{ width: '250px' }}
-									inputProps={{
-										...params.inputProps,
-										autoComplete: 'new-password'
-									}}
-								/>
-							)}
-						/>
-					)}
-				/>
-				<TextField
-					name="show_country_code1"
-					id="filled-read-only-input"
-					label="Country Code"
-					style={{ width: '150px' }}
-					value={getCountryCode1 || ''}
-					className="mt-8 mb-16"
-					InputLabelProps={{ shrink: true }}
-					InputProps={{
-						readOnly: true
-					}}
-					variant="outlined"
-				/>
-				<Controller
-					name="primary_phone"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							label="Primary Phone"
-							id="primary_phone"
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						/>
-					)}
-				/>
-			</Box>
-			<Box style={{ display: 'flex' }}>
-				<Controller
-					name="country_code2"
-					control={control}
-					render={({ field: { onChange, value } }) => (
-						<Autocomplete
-							className="mt-8 mb-16 "
-							id="country-select-demo"
-							sx={{ width: 300 }}
-							value={value ? countryCodes.find((country) => country.value === value) : null}
-							options={countryCodes}
-							autoHighlight
-							error={!value}
-							getOptionLabel={(option) => option.label}
-							renderOption={(prop, option) => {
-								return (
-									<Box
-										component="li"
-										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-										{...prop}
-									>
-										<img
-											loading="lazy"
-											width="20"
-											src={`https://flagcdn.com/w20/${option?.code?.toLowerCase()}.png`}
-											srcSet={`https://flagcdn.com/w40/${option?.code?.toLowerCase()}.png 2x`}
-											alt=""
-										/>
-										{option.label} ({option.code}) +{option.value}
-									</Box>
-								);
-							}}
-							onChange={(event, newValue) => {
-								onChange(newValue?.value);
-								handleChnageCountry(newValue?.label);
-							}}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label="Choose a country"
-									variant="outlined"
-									error={!value}
-									style={{ width: '250px' }}
-									inputProps={{
-										...params.inputProps,
-										autoComplete: 'new-password'
-									}}
-								/>
-							)}
-						/>
-					)}
-				/>
-				<TextField
-					name="show_country_code2"
-					id="filled-read-only-input"
-					label="Country Code"
-					style={{ width: '150px' }}
-					value={getCountryCode2 || ''}
-					className="mt-8 mb-16"
-					InputLabelProps={{ shrink: true }}
-					InputProps={{
-						readOnly: true
-					}}
-					variant="outlined"
-				/>
-				<Controller
-					name="primary_phone"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							label="Primary Phone"
-							id="primary_phone"
-							variant="outlined"
-							fullWidth
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-						/>
-					)}
-				/>
-			</Box>
+			<CustomPhoneWithCountryCode
+				getCountryCode1={getCountryCode1}
+				countryName="country_code1"
+				countryLabel="Select Country"
+				countryCodeLabel="Country Code"
+				phoneName="primary_phone"
+				phoneLabel="Phone"
+				onChange={() => {
+					handleCheckPhone();
+				}}
+				required
+			/>
+
+			{/* <CustomPhoneWithCountryCode
+				getCountryCode1={getCountryCode2}
+				countryName="country_code2"
+				countryLabel="Select Country"
+				countryCodeLabel="Country Code"
+				phoneName="Secondary Phone"
+				phoneLabel="Phone"
+			/> */}
 
 			<Controller
 				name="gender"

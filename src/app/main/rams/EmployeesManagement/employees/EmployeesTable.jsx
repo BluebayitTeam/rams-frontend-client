@@ -280,7 +280,7 @@ function EmployeesTable(props) {
 																	src={
 																		n[key]
 																			? `${BASE_URL}${n[key]}`
-																			: 'assets/logos/user.jpg'
+																			: '/public/assets/images/logos/user.jpg'
 																	}
 																	style={{
 																		height: '40px',

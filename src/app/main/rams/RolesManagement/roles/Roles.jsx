@@ -5,7 +5,7 @@ import RolesHeader from './RolesHeader';
 import RolesTable from './RolesTable';
 
 /**
- * The roles page.
+ * The Roles page.
  */
 function Roles() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));

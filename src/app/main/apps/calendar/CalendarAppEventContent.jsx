@@ -3,17 +3,21 @@ import _ from '@lodash';
 import Box from '@mui/material/Box';
 import clsx from 'clsx';
 import Typography from '@mui/material/Typography';
-import { useGetCalendarLabelsQuery } from './CalendarApi';
+import { useState } from 'react';
+import { useGetCalendarEventsQuery } from './CalendarApi';
 
 /**
  * The event content for the calendar app.
  */
 function CalendarAppEventContent(props) {
-	const { eventInfo } = props;
+	const { eventInfo, searchKey } = props;
 	const theme = useTheme();
-	const { data: labels } = useGetCalendarLabelsQuery();
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+	const { data, isLoading } = useGetCalendarEventsQuery({ ...pageAndSize, searchKey });
+	console.log('sdfhdksfhdksf', data);
 	const labelId = eventInfo.event.extendedProps.label;
-	const label = _.find(labels, { id: labelId });
+	console.log('sdfhdksfhdksf', labelId);
+	const label = _.find(data, { id: labelId });
 	return (
 		<Box
 			sx={{

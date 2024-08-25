@@ -1355,7 +1355,7 @@ const navigationConfig = [
 				translate: 'Male Finger Letter',
 				display_order: 5,
 				type: 'item',
-				url: '/apps/malefingerletter-management/malefingerletter-form',
+				url: '/apps/malefingerletter/malefingerletters',
 				exact: true
 			},
 			{
@@ -1364,7 +1364,7 @@ const navigationConfig = [
 				translate: 'Female Finger Letter',
 				display_order: 6,
 				type: 'item',
-				url: '/apps/femalefingerletter-management/femalefingerletter-form',
+				url: '/apps/femalefingerletter/femalefingerletters',
 				exact: true
 			}
 		]
@@ -1493,7 +1493,7 @@ const navigationConfig = [
 				translate: 'Airway',
 				display_order: 1,
 				type: 'item',
-				url: '/apps/airway-management/airways',
+				url: '/apps/airway/airways',
 				exact: true
 			},
 
@@ -1503,7 +1503,7 @@ const navigationConfig = [
 				translate: 'GDS',
 				display_order: 2,
 				type: 'item',
-				url: '/apps/gds-management/gdss',
+				url: '/apps/gds/gdss',
 				exact: true
 			}
 		]

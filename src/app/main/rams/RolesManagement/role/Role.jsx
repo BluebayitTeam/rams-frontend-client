@@ -9,10 +9,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import RoleHeader from './RoleHeader';
-import RoleModel from './models/RoleModel';
 import { useGetRoleQuery } from '../RolesApi';
+import RoleModel from './models/RoleModel';
+import RoleHeader from './RoleHeader';
 import RoleForm from './RoleForm';
+
 /**
  * Form Validation Schema
  */

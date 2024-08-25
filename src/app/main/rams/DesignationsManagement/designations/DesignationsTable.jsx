@@ -167,7 +167,7 @@ function DesignationsTable(props) {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
 								<TableRow
-									className="h-20 cursor-pointer "
+									className="h-20 cursor-pointer border-t-1  border-gray-200"
 									hover
 									role="checkbox"
 									aria-checked={isSelected}
@@ -176,7 +176,7 @@ function DesignationsTable(props) {
 									selected={isSelected}
 								>
 									<TableCell
-										className="w-40 md:w-64"
+										className="w-40 md:w-64 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
@@ -184,14 +184,14 @@ function DesignationsTable(props) {
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 									>
 										{n.name}
 									</TableCell>
 									<TableCell
-										className="p-4 md:p-16"
+										className="p-4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 										align="right"

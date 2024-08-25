@@ -1,16 +1,23 @@
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import FuseLoading from '@fuse/core/FuseLoading';
+import { useState } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { useSelector } from 'react-redux';
+import { selectTasksList, useGetTasksQuery, useReorderTasksMutation } from './TasksApi';
 import TaskListItem from './TaskListItem';
-import SectionListItem from './SectionListItem';
-import { useGetTasksQuery, useReorderTasksMutation } from './TasksApi';
 
 /**
  * The tasks list.
  */
-function TasksList() {
-	const { data: tasks, isLoading } = useGetTasksQuery();
+function TasksList(props) {
+	const { searchKey } = props;
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+	const { data, isLoading } = useGetTasksQuery({ ...pageAndSize, searchKey });
+	console.log('sadsfgsdjfgsdjf', data);
+
+	const tasks = useSelector(selectTasksList(data?.todo_tasks));
+
 	const [reorderList] = useReorderTasksMutation();
 
 	if (isLoading) {
@@ -53,40 +60,25 @@ function TasksList() {
 	return (
 		<List className="w-full m-0 p-0">
 			<DragDropContext onDragEnd={onDragEnd}>
-				<Droppable
-					droppableId="list"
-					type="list"
-					direction="vertical"
-				>
+				<Droppable droppableId="tasks">
 					{(provided) => (
-						<>
-							<div ref={provided.innerRef}>
-								{tasks.map((item, index) => {
-									if (item.type === 'task') {
-										return (
-											<TaskListItem
-												data={item}
-												index={index}
-												key={item.id}
-											/>
-										);
-									}
-
-									if (item.type === 'section') {
-										return (
-											<SectionListItem
-												key={item.id}
-												index={index}
-												data={item}
-											/>
-										);
-									}
-
-									return null;
-								})}
-							</div>
+						<div
+							{...provided.droppableProps}
+							ref={provided.innerRef}
+						>
+							{tasks.length > 0 ? (
+								tasks.map((item, index) => (
+									<TaskListItem
+										key={item.id}
+										item={item}
+										index={index}
+									/>
+								))
+							) : (
+								<p>No tasks available</p>
+							)}
 							{provided.placeholder}
-						</>
+						</div>
 					)}
 				</Droppable>
 			</DragDropContext>

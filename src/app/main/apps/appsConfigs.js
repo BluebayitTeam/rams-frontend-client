@@ -16,8 +16,6 @@ import ColumnAppConfig from '../rams/ColumnsManagement/ColumnAppConfig';
 import DepartmentAppConfig from '../rams/DepartmentsManagement/DepartmentAppConfig';
 import DesignationAppConfig from '../rams/DesignationsManagement/DesignationAppConfig';
 import MenuAppConfig from '../rams/MenusManagement/MenuAppConfig';
-import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
-import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import RoleMenuAppConfig from '../rams/RoleMenusManagement/RoleMenuAppConfig';
 import SupportAppConfig from '../rams/SupportsManagement/SupportAppConfig';
 import PaymentDetailAppConfig from '../rams/PaymentDetailsManagement/PaymentDetailAppConfig';
@@ -90,6 +88,14 @@ import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppCo
 import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/FormContentDetailAppConfig';
 import MaletrainingAppConfig from '../rams/MaletrainingsManagement/MaletrainingAppConfig';
 import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/FemaletrainingAppConfig';
+import MalefingerletterAppConfig from '../rams/MalefingerlettersManagement/MalefingerletterAppConfig';
+import FemalefingerletterAppConfig from '../rams/FemalefingerlettersManagement/FemalefingerletterAppConfig';
+import BmetVerifyAppConfig from '../rams/BmetVerifysManagement/BmetVerifyAppConfig';
+import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
+import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
+import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
+import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
+import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 
 /**
  * The list of application configurations.
@@ -97,11 +103,14 @@ import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/Femaletra
 const appsConfigs = [
 	BmetAppConfig,
 	BmetContractAppConfig,
-	// BmetVerifyAppConfig,
+	BmetVerifyAppConfig,
+	AirwayAppConfig,
 	BranchAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
+	FemalefingerletterAppConfig,
 	MessengerAppConfig,
+	MalefingerletterAppConfig,
 	MultipleStatusUpdateAppConfig,
 	MalaysiaVisaAppConfig,
 	ContactsAppConfig,
@@ -119,6 +128,7 @@ const appsConfigs = [
 	MaletrainingAppConfig,
 	FemaletrainingAppConfig,
 	DepartureAppConfig,
+	GdsAppConfig,
 	FormContentDetailAppConfig,
 	FingerAppConfig,
 	ProfileAppConfig,
@@ -128,6 +138,7 @@ const appsConfigs = [
 	UserAppConfig,
 	TrainingAppConfig,
 	ThailandVisaAppConfig,
+	TodotasktypeAppConfig,
 	AgentAppConfig,
 	DemandAppConfig,
 	QualificationAppConfig,

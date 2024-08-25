@@ -14,6 +14,9 @@ import { makeStyles } from '@mui/styles';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { maritalStatuses } from 'src/app/@data/data';
+import CustomDropdownField from 'src/app/@components/CustomDropdownField';
+import { useEffect } from 'react';
+import { getDesignations } from 'app/store/dataSlice';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
@@ -48,6 +51,11 @@ function PersonalInfo(props) {
   const { employeeId } = routeParams;
   const dispatch = useDispatch();
 
+  useEffect(() => {
+		dispatch(getDesignations());
+	
+	}, []);
+
   return (
     <div>
       <Controller
@@ -70,14 +78,14 @@ function PersonalInfo(props) {
         }}
       />
 
-      <Controller
+      {/* <Controller
         name='designation'
         control={control}
         render={({ field: { onChange, value, name } }) => (
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
-            value={value ? designations.find((data) => data.id == value) : null}
+            value={value ? designations.find((data) => data.id === value) : null}
             options={designations}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {
@@ -87,7 +95,7 @@ function PersonalInfo(props) {
               <TextField
                 {...params}
                 placeholder='Select Designation'
-                label='Designation'
+                label='designation'
                 error={!!errors.designation}
                 helperText={errors?.designation?.message}
                 variant='outlined'
@@ -100,17 +108,25 @@ function PersonalInfo(props) {
             )}
           />
         )}
-      />
+      /> */}
+
+      <CustomDropdownField
+					name="designation"
+					label="Designation"
+					options={designations}
+					optionLabelFormat={(option) => `${option.name}`}
+					required
+				/>
 
       <Controller
         name='marital_status'
         control={control}
-        render={({ field: { onChange, value, name } }) => (
+        render={({ field: { onChange, value,  } }) => (
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
             value={
-              value ? maritalStatuses.find((data) => data.id == value) : null
+              value ? maritalStatuses.find((data) => data.id === value) : null
             }
             options={maritalStatuses}
             getOptionLabel={(option) => `${option.name}`}

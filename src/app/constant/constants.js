@@ -2,13 +2,11 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export const BASE_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.68.132:8006';
+export const BASE_URL = isProduction ? 'https://rl1010api.ramsbd.net' : 'http://192.168.68.137:8006';
 
 // added by live api
 
-// export const BASE_URL = isProduction
-//   ? 'https://rl7811api.ramsbd.net'
-//   : 'http://92.204.172.226:8000';
+// export const BASE_URL = isProduction ? 'https://rl1010api.ramsbd.net' : 'https://rl1010api.ramsbd.net/';
 
 export const CLIENT_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.119:3000';
 export const ADMIN_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.117:8008';
@@ -38,7 +36,8 @@ export const GET_EMPLOYEE_USERS_WITHOUT_PAGINATION = `${BASE_URL}/user/api/v1/us
 
 export const CHECK_EMAIL = `${BASE_URL}/user/api/v1/user/check_email_when_create/`;
 
-export const CHECK_PRIMARY_PHONE = `${BASE_URL}/user/api/v1/user/check_primary_phone_when_create/`;
+export const CHECK_PRIMARY_PHONE = `${BASE_URL}/user/api/v1/user/check_primary_phone/
+`;
 
 export const CHECK_SECONDARY_PHONE = `${BASE_URL}/user/api/v1/user/check_secondary_phone_when_create/`;
 
@@ -213,6 +212,8 @@ export const GET_PERMISSIONS = `${BASE_URL}/permission/api/v1/permission/all/`;
 export const GET_PERMISSIONS_WITHOUT_PAGINATION = `${BASE_URL}/permission/api/v1/permission/without_pagination/all/`;
 
 export const GET_PERMISSION_BY_ID = `${BASE_URL}/permission/api/v1/permission/`;
+
+export const CHECK_PERMISSION_NAME_DUPLECATE = `${BASE_URL}/permission/api/v1/permission/checkPermissionName/`;
 
 export const UPDATE_PERMISSION = `${BASE_URL}/permission/api/v1/permission/update/`;
 
@@ -413,6 +414,8 @@ export const UPDATE_ROLE = `${BASE_URL}/role/api/v1/role/update/`;
 export const DELETE_ROLE = `${BASE_URL}/role/api/v1/role/delete/`;
 
 export const SEARCH_ROLE = `${BASE_URL}/role/api/v1/role/search/`;
+
+export const CHECK_ROLE_NAME_DUPLECATE = `${BASE_URL}//role/api/v1/role/checkRoleName/`;
 
 //  permission
 //  export const GET_PERMISSIONS = `${BASE_URL}/permissions/api/v1/permissions/all/`;
@@ -1412,8 +1415,9 @@ export const TODO_TASK_TYPE = `${BASE_URL}/task_type/api/v1/task_type/all/`;
 export const ALL_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/all/`;
 export const UPDATE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/update/`;
 export const DELETE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/delete/`;
+export const GET_TODOS_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/`;
 
-// Todo-=Task-Type
+// Todo-Task-Type
 
 export const CREATE_TODOTASKTYPE = `${BASE_URL}/task_type/api/v1/task_type/create/`;
 
@@ -1424,6 +1428,8 @@ export const GET_TODOTASKTYPE_BY_ID = `${BASE_URL}/task_type/api/v1/task_type/`;
 export const UPDATE_TODOTASKTYPE = `${BASE_URL}/task_type/api/v1/task_type/update/`;
 
 export const DELETE_TODOTASKTYPE = `${BASE_URL}/task_type/api/v1/task_type/delete/`;
+
+export const DELETE_TODOTASKTYPE_MULTIPLE = `${BASE_URL}/task_type/api/v1/task_type/delete/`;
 
 // export const SEARCH_TODOTASKTYPE= `${BASE_URL}/profession/api/v1/profession/search/`;
 
@@ -1565,6 +1571,7 @@ export const GET_AIRWAYID = `${BASE_URL}/airway/api/v1/airway/`;
 export const UPDATE_AIRWAY = `${BASE_URL}/airway/api/v1/airway/update/`;
 
 export const DELETE_AIRWAY = `${BASE_URL}/airway/api/v1/airway/delete/`;
+export const DELETE_AIRWAY_MULTIPLE = `${BASE_URL}/airway/api/v1/airway/delete/`;
 
 export const SEARCH_AIRWAY = `${BASE_URL}/airway/api/v1/airway/search/`;
 
@@ -1576,10 +1583,12 @@ export const GET_GDSS = `${BASE_URL}/gds/api/v1/gds/all/`;
 export const GET_GDSS_WITHOUT_PAGINATION = `${BASE_URL}/gds/api/v1/gds/without_pagination/all/`;
 
 export const GET_GDSID = `${BASE_URL}/gds/api/v1/gds/`;
+export const CHECK_GDS_NAME_DUPLECATE = `${BASE_URL}/gds/api/v1/gds/check_gds_name/`;
 
 export const UPDATE_GDS = `${BASE_URL}/gds/api/v1/gds/update/`;
 
 export const DELETE_GDS = `${BASE_URL}/gds/api/v1/gds/delete/`;
+export const DELETE_GDS_MULTIPLE = `${BASE_URL}/gds/api/v1/gds/delete/`;
 
 export const SEARCH_GDS = `${BASE_URL}/gds/api/v1/gds/search/`;
 
@@ -2245,6 +2254,10 @@ export const UPDATE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/update/`;
 export const DELETE_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/delete/`;
 
 export const SEARCH_EMPLOYEE = `${BASE_URL}/employee/api/v1/employee/search/`;
+
+export const CHECK_USERNAME_EMPLOYEE = `${BASE_URL}/user/api/v1/user/check_username/`;
+
+export const CHECK_EMAIL_EMPLOYEE = `${BASE_URL}/user/api/v1/user/check_email/`;
 
 //  PAYMENT_DETAIL
 export const CREATE_PAYMENT_DETAIL = `${BASE_URL}/payment/api/v1/payment/create/`;

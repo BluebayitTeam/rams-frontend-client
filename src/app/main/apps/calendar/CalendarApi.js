@@ -1,6 +1,8 @@
 import { apiService as api } from 'app/store/apiService';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { createSelector } from '@reduxjs/toolkit';
+import { ALL_TODO_TASK } from 'src/app/constant/constants';
+import FuseUtils from '@fuse/utils/FuseUtils';
 import { selectSelectedLabels, setSelectedLabels } from './store/selectedLabelsSlice';
 
 export const addTagTypes = ['calendar_events', 'calendar_event', 'calendar_labels', 'calendar_label'];
@@ -11,7 +13,10 @@ const CalendarApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getCalendarEvents: build.query({
-				query: () => ({ url: `/mock-api/calendar/events` }),
+				query: ({ page, size, searchKey }) => ({
+					url: ALL_TODO_TASK,
+					params: { page, size, searchKey }
+				}),
 				providesTags: ['calendar_events']
 			}),
 			createCalendarEvent: build.mutation({
@@ -88,7 +93,16 @@ export const {
 	useDeleteCalendarLabelMutation
 } = CalendarApi;
 export default CalendarApi;
+// export const selectFilteredEvents = (events) =>
+// 	createSelector([selectSelectedLabels], (selectedLabels) => {
+// 		return events.filter((item) => selectedLabels.includes(item?.extendedProps?.label));
+// 	});
+
 export const selectFilteredEvents = (events) =>
-	createSelector([selectSelectedLabels], (selectedLabels) => {
-		return events.filter((item) => selectedLabels.includes(item?.extendedProps?.label));
+	createSelector([selectSelectedLabels], (searchText) => {
+		if (searchText?.length === 0) {
+			return events;
+		}
+
+		return FuseUtils.filterArrayByString(events, searchText);
 	});

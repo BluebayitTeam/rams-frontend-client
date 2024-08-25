@@ -13,7 +13,6 @@ import CalendarHeader from './CalendarHeader';
 import EventDialog from './dialogs/event/EventDialog';
 import { openEditEventDialog, openNewEventDialog } from './store/eventDialogSlice';
 import CalendarAppSidebar from './CalendarAppSidebar';
-import CalendarAppEventContent from './CalendarAppEventContent';
 import { useGetCalendarEventsQuery, useUpdateCalendarEventMutation } from './CalendarApi';
 import reducer from './store';
 
@@ -91,26 +90,50 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 /**
  * The calendar app.
  */
-function CalendarApp() {
+function CalendarApp(props) {
+	const { searchKey } = props;
 	const [currentDate, setCurrentDate] = useState();
 	const dispatch = useAppDispatch();
-	const { data: events, isLoading } = useGetCalendarEventsQuery();
+	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+	const { data, isLoading } = useGetCalendarEventsQuery({ ...pageAndSize, searchKey });
 	const calendarRef = useRef(null);
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isMobile);
 	const [updateEvent] = useUpdateCalendarEventMutation();
+	const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
+
+	const events =
+		data?.todo_tasks.map((task) => ({
+			id: task.id,
+			title: task.title,
+			// title: task.task_type.name,
+			start: task.from_date,
+			end: task.to_date,
+			allDay: false,
+			extendedProps: {
+				is_completed: task.is_completed,
+				is_emergency: task.is_emergency,
+				note: task.note,
+				user: task.user,
+				created_by: task.created_by,
+				updated_by: task.updated_by
+			}
+		})) || [];
+
 	useEffect(() => {
 		setLeftSidebarOpen(!isMobile);
 	}, [isMobile]);
 	useEffect(() => {
-		// Correct calendar dimentions after sidebar toggles
+		// Correct calendar dimensions after sidebar toggles
 		setTimeout(() => {
 			calendarRef.current?.getApi()?.updateSize();
 		}, 300);
 	}, [leftSidebarOpen]);
+
 	const handleDateSelect = (selectInfo) => {
 		dispatch(openNewEventDialog(selectInfo));
 	};
+
 	const handleEventDrop = (eventDropInfo) => {
 		const { id, title, allDay, start, end, extendedProps } = eventDropInfo.event;
 		updateEvent({
@@ -122,21 +145,26 @@ function CalendarApp() {
 			extendedProps
 		});
 	};
+
 	const handleEventClick = (clickInfo) => {
 		clickInfo.jsEvent.preventDefault();
 		dispatch(openEditEventDialog(clickInfo));
 	};
+
 	const handleDates = (rangeInfo) => {
 		setCurrentDate(rangeInfo);
 	};
+
 	const handleEventAdd = (addInfo) => {
 		// eslint-disable-next-line no-console
 		console.info(addInfo);
 	};
+
 	const handleEventChange = (changeInfo) => {
 		// eslint-disable-next-line no-console
 		console.info(changeInfo);
 	};
+
 	const handleEventRemove = (removeInfo) => {
 		// eslint-disable-next-line no-console
 		console.info(removeInfo);
@@ -174,13 +202,30 @@ function CalendarApp() {
 						select={handleDateSelect}
 						events={events}
 						// eslint-disable-next-line react/no-unstable-nested-components
-						eventContent={(eventInfo) => <CalendarAppEventContent eventInfo={eventInfo} />}
+						eventContent={(eventInfo) => {
+							const eventIndex = eventInfo.event.id % colors.length;
+							const eventColor = colors[eventIndex];
+
+							return (
+								<div
+									style={{
+										color: 'white',
+										backgroundColor: eventColor,
+										padding: '10px',
+										borderRadius: '3px',
+										width: '160px'
+									}}
+								>
+									<strong>{eventInfo.event.title}</strong>
+								</div>
+							);
+						}}
 						eventClick={handleEventClick}
 						eventAdd={handleEventAdd}
 						eventChange={handleEventChange}
 						eventRemove={handleEventRemove}
 						eventDrop={handleEventDrop}
-						initialDate={new Date(2022, 3, 1)}
+						initialDate={new Date(2024, 3, 1)}
 						ref={calendarRef}
 					/>
 				}

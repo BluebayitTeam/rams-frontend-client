@@ -1,32 +1,38 @@
-import TextField from '@mui/material/TextField';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router';
+// Ensure lodash is installed
+import CustomTextField from 'src/app/@components/CustomTextField';
+import { CHECK_ROLE_NAME_DUPLECATE } from 'src/app/constant/constants';
 
 function RoleForm(props) {
-	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch } = methods;
-	const { errors } = formState;
+	const { setError } = methods;
+	const routeParams = useParams();
+	const { roleId } = routeParams;
+
+	const handleCheckRoleName = async (name) => {
+		const response = await axios.get(
+			`${CHECK_ROLE_NAME_DUPLECATE}?name=${name}&id=${roleId === 'new' ? '' : roleId}&type=${roleId === 'new' ? 'create' : 'update'}`
+		);
+
+		if (response?.data.name_exists) {
+			setError('name', {
+				type: 'manual',
+				message: 'Name already exists'
+			});
+		}
+	};
 
 	return (
 		<div>
-			<Controller
+			<CustomTextField
 				name="name"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="Name"
-						autoFocus
-						id="name"
-						variant="outlined"
-						fullWidth
-						error={!!errors.name}
-						helperText={errors?.name?.message}
-					/>
-				)}
+				label="Name"
+				required
+				onChange={(e) => {
+					handleCheckRoleName(e.target.value);
+				}}
 			/>
 		</div>
 	);

@@ -4,17 +4,22 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import _ from '@lodash';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+	AddedSuccessfully,
+	CustomNotification,
+	DeletedSuccessfully,
+	UpdatedSuccessfully
+} from 'src/app/@customHooks/notificationAlert';
+import { useDispatch } from 'react-redux';
 import { useCreateRoleMutation, useDeleteRoleMutation, useUpdateRoleMutation } from '../RolesApi';
 
 /**
  * The role header.
  */
 function RoleHeader() {
+	const dispatch = useDispatch();
+
 	const routeParams = useParams();
 	const { roleId } = routeParams;
 	const [createRole] = useCreateRoleMutation();
@@ -32,7 +37,6 @@ function RoleHeader() {
 	function handleUpdateRole() {
 		saveRole(getValues()).then((data) => {
 			UpdatedSuccessfully();
-
 			navigate(`/apps/role/roles`);
 		});
 	}
@@ -47,11 +51,35 @@ function RoleHeader() {
 			});
 	}
 
-	function handleRemoveRole(dispatch) {
-		removeRole(roleId);
-		DeletedSuccessfully();
-		navigate('/apps/role/roles');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+	// function handleRemoveRole(dispatch) {
+	// 	debugger;
+	// 	try {
+	// 		removeRole(roleId);
+
+	// 		if (roleId) {
+	// 			DeletedSuccessfully();
+	// 		}
+
+	// 		navigate('/apps/role/roles');
+	// 	} catch (error) {
+	// 		// Handle the error here
+	// 		console.error('Errodfsdfdsfsdfsdfdsr', error);
+	// 	}
+	// }
+
+	function handleRemoveRole() {
+		removeRole(roleId)
+			.unwrap()
+			.then((data) => {
+				if (data) {
+					DeletedSuccessfully();
+				}
+
+				navigate('/apps/role/roles');
+			})
+			.catch((error) => {
+				CustomNotification('error', `${error.response.data.detail}`);
+			});
 	}
 
 	function handleCancel() {
@@ -60,24 +88,20 @@ function RoleHeader() {
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
-			<div className="flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
+			<div className="flex flex-col items-start max-w-full min-w-0">
 				<motion.div
-					initial={{ x: 20, opacity: 0 }}
-					animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
+					initial={{ x: 20, oparole: 0 }}
+					animate={{ x: 0, oparole: 1, transition: { delay: 0.3 } }}
 				>
 					<Typography
 						className="flex items-center sm:mb-12"
 						component={Link}
 						role="button"
-						to="/apps/role/roles"
+						to="/apps/role-management/roles"
 						color="inherit"
 					>
-						<FuseSvgIcon size={20}>
-							{theme.direction === 'ltr'
-								? 'heroicons-outline:arrow-sm-left'
-								: 'heroicons-outline:arrow-sm-right'}
-						</FuseSvgIcon>
-						<span className="flex mx-4 font-medium">Roles</span>
+						<Icon className="text-20">{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}</Icon>
+						<span className="hidden sm:flex mx-4 font-medium">Roles</span>
 					</Typography>
 				</motion.div>
 
@@ -86,36 +110,23 @@ function RoleHeader() {
 						className="hidden sm:flex"
 						initial={{ scale: 0 }}
 						animate={{ scale: 1, transition: { delay: 0.3 } }}
-					>
-						{images && images.length > 0 && featuredImageId ? (
-							<img
-								className="w-32 sm:w-48 rounded"
-								src={_.find(images, { id: featuredImageId })?.url}
-								alt={name}
-							/>
-						) : (
-							<img
-								className="w-32 sm:w-48 rounded"
-								src="assets/images/apps/ecommerce/role-image-placeholder.png"
-								alt={name}
-							/>
-						)}
-					</motion.div>
-					<motion.div
-						className="flex flex-col min-w-0 mx-8 sm:mx-16"
-						initial={{ x: -20 }}
-						animate={{ x: 0, transition: { delay: 0.3 } }}
-					>
-						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'New Role'}
-						</Typography>
-						<Typography
-							variant="caption"
-							className="font-medium"
+					/>
+					<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
+						<motion.div
+							initial={{ x: -20 }}
+							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
-							Role Detail
-						</Typography>
-					</motion.div>
+							<Typography className="text-16 sm:text-20 truncate font-semibold">
+								{name || 'Create New'}
+							</Typography>
+							<Typography
+								variant="caption"
+								className="font-medium"
+							>
+								Role Detail
+							</Typography>
+						</motion.div>
+					</div>
 				</div>
 			</div>
 

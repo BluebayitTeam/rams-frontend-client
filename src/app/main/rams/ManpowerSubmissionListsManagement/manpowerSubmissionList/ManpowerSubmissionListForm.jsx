@@ -69,9 +69,7 @@ function ManpowerSubmissionListForm(props) {
 				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 			})
 			.catch((error) => {
-				if (error && error.response && error.response.data) {
-					CustomNotification('error', `${error.response.data.passenger}`);
-				}
+				CustomNotification('error', `${error.response.data.passenger}`);
 			});
 	}
 
