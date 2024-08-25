@@ -42,7 +42,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 		'& .fc-col-header-cell-cushion': {
 			color: theme.palette.text.secondary,
 			fontWeight: 500,
-			fontSize: 12,
+			fontSize: 52,
 			textTransform: 'uppercase'
 		}
 	},
@@ -100,12 +100,12 @@ function CalendarApp(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isMobile);
 	const [updateEvent] = useUpdateCalendarEventMutation();
-	const colors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33A1']; // Array of colors
+	const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
 
 	const events =
 		data?.todo_tasks.map((task) => ({
 			id: task.id,
-			title: task.task_type.name, // Display the task type name
+			title: task.task_type.name,
 			start: task.from_date,
 			end: task.to_date,
 			allDay: false,
@@ -202,7 +202,7 @@ function CalendarApp(props) {
 						events={events}
 						// eslint-disable-next-line react/no-unstable-nested-components
 						eventContent={(eventInfo) => {
-							const eventIndex = eventInfo.event.id % colors.length; // Determine color index based on event ID
+							const eventIndex = eventInfo.event.id % colors.length;
 							const eventColor = colors[eventIndex];
 
 							return (
@@ -210,13 +210,12 @@ function CalendarApp(props) {
 									style={{
 										color: 'white',
 										backgroundColor: eventColor,
-										padding: '4px',
-										borderRadius: '4px'
+										padding: '10px',
+										borderRadius: '3px',
+										width: '160px'
 									}}
 								>
 									<strong>{eventInfo.event.title}</strong>
-									{/* <br />
-									<em>{eventInfo.event.startStr}</em> */}
 								</div>
 							);
 						}}
