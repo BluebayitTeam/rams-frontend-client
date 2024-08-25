@@ -4,10 +4,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
-import { selectSelectedLabels, toggleSelectedLabels } from './store/selectedLabelsSlice';
-import { selectFilteredEvents, useGetCalendarLabelsQuery } from './CalendarApi';
-import LabelsDialog from './dialogs/labels/LabelsDialog';
+import { useState, useEffect } from 'react';
+import { selectSelectedLabels } from './store/selectedLabelsSlice';
+import { useGetCalendarLabelsQuery } from './CalendarApi';
 
 /**
  * The calendar app sidebar.
@@ -18,17 +17,21 @@ function CalendarAppSidebar() {
 
 	const [openDialog, setOpenDialog] = useState(false);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+	const [labels, setLabels] = useState([]); // State to store fetched labels
 
 	// Fetch data using the query
 	const { data } = useGetCalendarLabelsQuery({ ...pageAndSize });
 
-	// Ensure data and task_types are defined
-	const labels = useSelector(selectFilteredEvents(data?.task_types || []));
-	console.log('labels', data);
+	// Use useEffect to update labels state when data changes
+	useEffect(() => {
+		if (data?.task_types) {
+			setLabels(data?.task_types); // Update labels state with fetched data
+		}
+	}, [data]);
 
 	const handleCheckboxChange = (labelId) => {
 		console.log('labelId', labelId);
-		dispatch(toggleSelectedLabels(labelId));
+		// dispatch(toggleSelectedLabels(labelId));
 	};
 
 	return (
@@ -48,8 +51,6 @@ function CalendarAppSidebar() {
 				>
 					LABELS
 				</Typography>
-
-				<LabelsDialog />
 			</div>
 
 			{labels?.map((label) => (
