@@ -44,22 +44,29 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Keyword({
-	name,
-	label,
-	domEl,
-	icon,
-	type = 'text',
-	setReRender,
-	onClick = () => null,
-	hideRemoveAction
-} = {}) {
+function Keyword({ name, label, domEl, icon, type = 'text', onClick = () => null, hideRemoveAction } = {}) {
 	const classes = useStyles();
 	const methods = useFormContext();
 	const { getValues, setValue } = methods;
 	const values = getValues();
 
 	const [Label] = useState(label || fillUnderscoreBySpace(name));
+
+	const handleRemove = () => {
+		// Clear the value of the form field
+		setValue(`${name}`, '');
+
+		// If it's a text field, clear the DOM element's value
+		if (type === 'text' && domEl?.current) {
+			domEl.current.value = '';
+		} else if (type === 'select') {
+			// Clear the associated name for select type
+			setValue(`${name}Name`, '');
+		}
+
+		// Call the onClick function
+		onClick();
+	};
 
 	return (
 		<>
@@ -79,21 +86,10 @@ function Keyword({
 									? values[`${name}`]
 									: values[`${name}Name`]}
 						</p>
-						{hideRemoveAction || (
+						{!hideRemoveAction && (
 							<Icon
 								className="ml-10 cursor-pointer"
-								onClick={() => {
-									setValue(`${name}`, '');
-
-									if (type === 'text') {
-										domEl.current.value = '';
-									} else if (type === 'select') {
-										setValue(`${name}Name`, '');
-									}
-
-									onClick();
-									setReRender(Math.random());
-								}}
+								onClick={handleRemove}
 							>
 								highlight_off_sharp
 							</Icon>

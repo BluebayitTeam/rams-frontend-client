@@ -41,9 +41,9 @@ function AgentReportsTable(props) {
 		defaultValues: {},
 		resolver: zodResolver(schema) // Use zodResolver for form validation
 	});
-	const { control, formState, watch, getValues } = methods;
+	const { control, getValues } = methods;
 
-	const [modifiedAgentData, setModifiedAgentData, setSortBy] = useReportData();
+	const [modifiedAgentData, setModifiedAgentData] = useReportData();
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
 	const dispatch = useDispatch();
@@ -52,62 +52,64 @@ function AgentReportsTable(props) {
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
-
-	console.log('inShowAllMode', inShowAllMode);
-
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
+
 	const componentRef = useRef(null);
 
 	const { data, isLoading, refetch } = inShowAllMode
-		? useGetAgentAllReportsQuery({ ...getValues() })
-		: useGetAgentReportsQuery({ ...getValues(), page, size });
+		? useGetAgentAllReportsQuery({ ...getValues() }, { skip: true })
+		: useGetAgentReportsQuery({ ...getValues(), page, size }, { skip: true });
+
 	const totalData = useSelector(selectFilteredAgentReports(data));
+
+	// Function to handle PDF download
 	const handlePdfDownload = () => {
 		// Your logic to handle PDF download
 	};
 
+	// Function to handle Excel download
 	const handleExelDownload = () => {
 		document.getElementById('test-table-xls-button').click();
 	};
 
+	// Function to handle Print
 	const handlePrint = useReactToPrint({
 		content: () => componentRef.current
 	});
 
+	// Function to handle data fetch and pagination
 	const handleGetAgents = (newPage, callBack) => {
-		debugger;
+		const formValues = getValues();
 		setPage(newPage || 1);
-		refetch({ ...getValues(), page: newPage || 1, size });
-		unstable_batchedUpdates(() => {
-			callBack && callBack(totalData);
-			setModifiedAgentData(totalData?.agents || []);
-			setInSiglePageMode(false);
-			setInShowAllMode(false);
-			const { totalPages, totalElements } = getPaginationData(totalData?.agents, size, newPage || 1);
-			setPage(page || 1);
-			setSize(size || 25);
-			setTotalPages(totalPages);
-			setTotalElements(totalElements);
+		refetch({ ...formValues, page: newPage || 1, size }).then((response) => {
+			unstable_batchedUpdates(() => {
+				callBack && callBack(response?.data);
+				setModifiedAgentData(response?.data?.agents || []);
+				setInSiglePageMode(false);
+				setInShowAllMode(false);
+				const { totalPages, totalElements } = getPaginationData(response?.data?.agents, size, newPage || 1);
+				setTotalPages(totalPages);
+				setTotalElements(totalElements);
+			});
 		});
 	};
 
+	// Function to handle fetching all agents
 	const handleGetAllAgents = (callBack, callBackAfterStateUpdated) => {
-		refetch(getValues());
-		unstable_batchedUpdates(() => {
-			callBack && callBack(totalData);
-			setModifiedAgentData(totalData?.agents || []);
-			setInSiglePageMode(false);
-			setInShowAllMode(true);
-			// get pagination data
-			const { totalPages, totalElements } = getPaginationData(totalData?.agents, size, page);
-			setPage(page || 1);
-			setSize(size || 25);
-			setTotalPages(totalPages);
-			setTotalElements(totalElements);
+		const formValues = getValues();
+		refetch({ ...formValues }).then((response) => {
+			unstable_batchedUpdates(() => {
+				callBack && callBack(response?.data);
+				setModifiedAgentData(response?.data?.agents || []);
+				setInSiglePageMode(false);
+				setInShowAllMode(true);
+				const { totalPages, totalElements } = getPaginationData(response?.data?.agents, size, page);
+				setTotalPages(totalPages);
+				setTotalElements(totalElements);
+			});
+			callBackAfterStateUpdated && callBackAfterStateUpdated(response?.data);
 		});
-		callBackAfterStateUpdated && callBackAfterStateUpdated(totalData);
 	};
-	console.log(`modifiedAgentData`, modifiedAgentData);
 
 	return (
 		<div className={classes.headContainer}>
@@ -143,8 +145,8 @@ function AgentReportsTable(props) {
 			/>
 
 			<table
-				id="table-to-xls "
-				className="w-full "
+				id="table-to-xls"
+				className="w-full"
 				style={{ minHeight: '270px' }}
 			>
 				<div
@@ -152,18 +154,17 @@ function AgentReportsTable(props) {
 					id="downloadPage"
 				>
 					{/* each single page (table) */}
-					{modifiedAgentData.map((agent) => (
+					{modifiedAgentData.map((agent, index) => (
 						<SinglePage
+							key={index}
 							classes={classes}
-							//   generalData={generalData}
 							reportTitle="Agent Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							data={agent}
-							serialNumber={agent.page * agent.size - agent.size + 1}
+							serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
 							setPage={setPage}
-							//   inSiglePageMode={inSiglePageMode}
-							setSortBy={setSortBy}
+							// setSortBy={setSortBy}
 						/>
 					))}
 				</div>
