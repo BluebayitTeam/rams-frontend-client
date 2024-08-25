@@ -1,9 +1,9 @@
 import _ from '@lodash';
 import FuseUtils from '@fuse/utils';
-import mockApi from '../mock-api.json';
+import { ALL_TODO_TASK } from 'src/app/constant/constants';
 
-const eventsDB = mockApi.components.examples.calendar_events.value;
-const labelsDB = mockApi.components.examples.calendar_labels.value;
+const eventsDB = ALL_TODO_TASK?.calendar_events?.value;
+const labelsDB = ALL_TODO_TASK?.calendar_labels?.value;
 export const calendarApiMocks = (mock) => {
 	mock.onGet('/calendar/labels').reply(() => {
 		return [200, labelsDB];

@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import Button from '@mui/material/Button';
 import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import _ from '@lodash';
 import { useGetTasksQuery } from './TasksApi';
 
 /**
@@ -11,10 +10,10 @@ import { useGetTasksQuery } from './TasksApi';
  */
 function TasksHeader() {
 	const { data: tasks } = useGetTasksQuery();
-	// console.log('djjgjdsfgdsgf', tasks);
-	const remainingTasks = _.filter(tasks, (item) => item.type === 'task' && !item.completed).length;
+
+	// const remainingTasks = _.filter(tasks, (item) => item.type === 'task' && !item.completed).length;
 	return (
-		<div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 p-24 sm:p-32 w-full border-b-1 justify-between">
+		<div className="sticky top-0 flex flex-col sm:flex-row space-y-16 sm:space-y-0 p-24 sm:p-32 w-full border-b-1 justify-between bg-white z-10">
 			<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-12">
 				<motion.span
 					initial={{ x: -20 }}
@@ -25,17 +24,17 @@ function TasksHeader() {
 					</Typography>
 				</motion.span>
 
-				<motion.span
-					initial={{ y: -20, opacity: 0 }}
-					animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-				>
-					<Typography
-						className="text-14 font-medium ml-2"
-						color="text.secondary"
-					>
-						{`${remainingTasks} remaining tasks`}
-					</Typography>
-				</motion.span>
+				{/* <motion.span
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+    >
+      <Typography
+        className="text-14 font-medium ml-2"
+        color="text.secondary"
+      >
+        {`${remainingTasks} remaining tasks`}
+      </Typography>
+    </motion.span> */}
 			</div>
 
 			<div className="flex items-center -mx-8">

@@ -76,6 +76,7 @@ function TaskForm() {
 	});
 	const { isValid, errors } = formState;
 	const form = watch();
+	console.log('getValues', getValues());
 
 	/**
 	 * Auto-save on form change
@@ -151,7 +152,7 @@ function TaskForm() {
 								<Box sx={{ color: value ? 'secondary.main' : 'text.disabled' }}>
 									<FuseSvgIcon>heroicons-outline:check-circle</FuseSvgIcon>
 								</Box>
-								<span className="mx-8">{value ? 'MARK AS INCOMPLETE' : 'MARK AS COMPLETE'}</span>
+								<span className="mx-8">{value ? 'INCOMPLETE TASK' : 'COMPLETE TASK'}</span>
 							</Button>
 						)}
 					/>
@@ -167,7 +168,7 @@ function TaskForm() {
 								<Box sx={{ color: value ? 'secondary.main' : 'text.disabled' }}>
 									<FuseSvgIcon>heroicons-outline:exclamation-circle</FuseSvgIcon>
 								</Box>
-								<span className="mx-8">{value ? 'MARK AS NOT EMERGENCY' : 'MARK AS EMERGENCY'}</span>
+								<span className="mx-8">{value ? 'NOT EMERGENCY' : 'AS EMERGENCY'}</span>
 							</Button>
 						)}
 					/>
@@ -360,7 +361,7 @@ function TaskForm() {
 						onClick={handleSubmit(onSubmitNew)}
 						variant="contained"
 						color="secondary"
-						// disabled={!isValid}
+						disabled={!isValid}
 					>
 						Create Task
 					</Button>
