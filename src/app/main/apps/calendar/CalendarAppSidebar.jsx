@@ -40,7 +40,7 @@ function CalendarAppSidebar() {
 					className="text-15 font-600 leading-none"
 					color="secondary.main"
 				>
-					LABELS
+					Task
 				</Typography>
 			</div>
 

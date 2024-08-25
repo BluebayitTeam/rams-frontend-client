@@ -95,13 +95,14 @@ function CalendarApp(props) {
 	const { searchKey } = props;
 	const [currentDate, setCurrentDate] = useState();
 	const dispatch = useAppDispatch();
-	const [yearMonth, setYearMonth] = useState({ year: 2024, month: 'August' });
+	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
 	const { data, isLoading, refetch } = useGetCalendarEventsQuery(
 		{ ...yearMonth, searchKey },
 		{ refetchOnMountOrArgChange: true }
 	);
 
 	const calendarRef = useRef(null);
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isMobile);
 	const [updateEvent] = useUpdateCalendarEventMutation();
@@ -189,6 +190,13 @@ function CalendarApp(props) {
 		setLeftSidebarOpen(!leftSidebarOpen);
 	}
 
+	// Compute initial date
+	const computeInitialDate = () => {
+		// Example: Set the initial date to the first day of the current month
+		const now = new Date();
+		return new Date(now.getFullYear(), now.getMonth(), 1);
+	};
+
 	if (isLoading) {
 		return <FuseLoading />;
 	}
@@ -239,7 +247,7 @@ function CalendarApp(props) {
 						eventChange={handleEventChange}
 						eventRemove={handleEventRemove}
 						eventDrop={handleEventDrop}
-						initialDate={new Date(2024, 3, 1)}
+						initialDate={computeInitialDate()}
 						ref={calendarRef}
 					/>
 				}
