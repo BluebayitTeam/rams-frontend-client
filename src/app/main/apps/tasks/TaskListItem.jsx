@@ -145,7 +145,15 @@ function TaskListItem(props) {
 		ev.stopPropagation();
 
 		try {
-			const updatedItem = { ...item, is_completed: !item.is_completed };
+			const updatedItem = {
+				...item,
+				// user: item.user.id,
+				// created_by: item.created_by.id,
+				// task_type: item.task_type.id,
+				// updated_by: item.updated_by.id,
+
+				is_completed: !item.is_completed
+			};
 			const result = await updateTask(updatedItem).unwrap();
 			console.log('Task updated successfully:', result);
 		} catch (error) {
@@ -186,6 +194,14 @@ function TaskListItem(props) {
 								onClick={handleUpdateTask}
 							>
 								<FuseSvgIcon>heroicons-outline:check-circle</FuseSvgIcon>
+							</IconButton>
+						</ListItemIcon>
+						<ListItemIcon className="min-w-40 -ml-10 mr-8">
+							<IconButton
+								sx={{ color: item.is_emergency ? 'secondary.main' : 'text.disabled' }}
+								onClick={handleUpdateTask}
+							>
+								<FuseSvgIcon>heroicons-outline:exclamation-circle</FuseSvgIcon>
 							</IconButton>
 						</ListItemIcon>
 						<ListItemText
