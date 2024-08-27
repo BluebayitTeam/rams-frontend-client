@@ -109,7 +109,7 @@ function CalendarApp(props) {
 	const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
 
 	const events =
-		data?.todo_tasks.map((task) => ({
+		data?.todo_tasks?.map((task) => ({
 			id: task.id,
 			title: task.title,
 			start: task.from_date,
@@ -126,7 +126,6 @@ function CalendarApp(props) {
 		})) || [];
 
 	useEffect(() => {
-		// Set initial year and month based on the current date
 		const now = new Date();
 		setYearMonth({
 			year: now.getFullYear().toString(),
@@ -139,19 +138,16 @@ function CalendarApp(props) {
 	}, [isMobile]);
 
 	useEffect(() => {
-		// Force refetch on first render or when yearMonth/searchKey changes
 		refetch();
 	}, [yearMonth, searchKey, refetch]);
 
 	useEffect(() => {
-		// Correct calendar dimensions after sidebar toggles
 		setTimeout(() => {
 			calendarRef.current?.getApi()?.updateSize();
 		}, 300);
 	}, [leftSidebarOpen]);
 
 	useEffect(() => {
-		// Ensure calendar events are updated when new data is fetched
 		if (calendarRef.current) {
 			calendarRef.current.getApi().removeAllEvents();
 			calendarRef.current.getApi().addEventSource(events);
@@ -256,7 +252,6 @@ function CalendarApp(props) {
 							}
 						]}
 						eventContent={(eventInfo) => {
-							console.log('Event Info:', eventInfo.event); // Debugging log
 							const eventIndex = eventInfo.event.id % colors.length;
 							const eventColor = colors[eventIndex];
 

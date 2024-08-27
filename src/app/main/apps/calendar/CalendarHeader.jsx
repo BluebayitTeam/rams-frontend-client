@@ -6,8 +6,10 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { openNewEventDialog } from './store/eventDialogSlice';
 import CalendarViewMenu from './CalendarViewMenu';
+import { useGetCalendarEventsQuery } from './CalendarApi';
 
 /**
  * The calendar header.
@@ -15,6 +17,11 @@ import CalendarViewMenu from './CalendarViewMenu';
 function CalendarHeader(props) {
 	const { calendarRef, currentDate, onToggleLeftSidebar } = props;
 	const mainTheme = useSelector(selectMainTheme);
+	const [taskTypesData, setTaskTypesData] = useState(null);
+
+	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
+	const { data } = useGetCalendarEventsQuery({ ...yearMonth });
+
 	const calendarApi = () => calendarRef.current.getApi();
 	const dispatch = useAppDispatch();
 
