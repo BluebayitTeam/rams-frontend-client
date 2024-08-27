@@ -1,9 +1,12 @@
+/* eslint-disable consistent-return */
 import { Checkbox } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { ALL_TODO_TASK } from 'src/app/constant/constants';
 import { selectSelectedLabels, toggleSelectedLabels, setSelectedLabels } from './store/selectedLabelsSlice';
 import { useGetCalendarLabelsQuery } from './CalendarApi';
 
@@ -27,8 +30,28 @@ function CalendarAppSidebar() {
 		}
 	}, [data, dispatch]);
 
-	const handleCheckboxChange = (labelId) => {
-		dispatch(toggleSelectedLabels(labelId));
+	const apiCall = async (labelId) => {
+		try {
+			const response = await axios.post(`${ALL_TODO_TASK}${labelId}`, { labelId });
+			return response.data;
+		} catch (error) {
+			console.error('Error during API call:', error);
+		}
+	};
+
+	const handleCheckboxChange = async (labelId) => {
+		try {
+			// Dispatch action to toggle the selected label
+			dispatch(toggleSelectedLabels(labelId));
+
+			// Make the API call with the labelId
+			const response = await apiCall(labelId);
+
+			// You can handle the response here if needed
+			console.log('API call response:', response);
+		} catch (error) {
+			console.error('Error during handleCheckboxChange:', error);
+		}
 	};
 
 	return (

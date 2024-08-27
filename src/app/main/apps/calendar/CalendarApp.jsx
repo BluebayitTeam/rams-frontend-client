@@ -22,14 +22,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 		color: `${theme.palette.text.primary}!important`,
 		textDecoration: 'none!important'
 	},
-	'&  .fc-media-screen': {
+	'& .fc-media-screen': {
 		minHeight: '100%',
 		width: '100%'
 	},
 	'& .fc-scrollgrid, & .fc-theme-standard td, & .fc-theme-standard th': {
 		borderColor: `${theme.palette.divider}!important`
 	},
-	'&  .fc-scrollgrid-section > td': {
+	'& .fc-scrollgrid-section > td': {
 		border: 0
 	},
 	'& .fc-daygrid-day': {
@@ -47,7 +47,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 			textTransform: 'uppercase'
 		}
 	},
-	'& .fc-view ': {
+	'& .fc-view': {
 		'& > .fc-scrollgrid': {
 			border: 0
 		}
@@ -126,6 +126,15 @@ function CalendarApp(props) {
 		})) || [];
 
 	useEffect(() => {
+		// Set initial year and month based on the current date
+		const now = new Date();
+		setYearMonth({
+			year: now.getFullYear().toString(),
+			month: (now.getMonth() + 1).toString().padStart(2, '0')
+		});
+	}, []);
+
+	useEffect(() => {
 		setLeftSidebarOpen(!isMobile);
 	}, [isMobile]);
 
@@ -175,24 +184,42 @@ function CalendarApp(props) {
 	};
 
 	const handleEventAdd = (addInfo) => {
-		console.info(addInfo);
+		console.info('Event Added:', addInfo);
 	};
 
 	const handleEventChange = (changeInfo) => {
-		console.info(changeInfo);
+		console.info('Event Changed:', changeInfo);
 	};
 
 	const handleEventRemove = (removeInfo) => {
-		console.info(removeInfo);
+		console.info('Event Removed:', removeInfo);
 	};
 
 	function handleToggleLeftSidebar() {
 		setLeftSidebarOpen(!leftSidebarOpen);
 	}
 
+	// Function to get month name
+	const getMonthName = (month) => {
+		const months = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+		];
+		return months[month - 1]; // month is 1-indexed
+	};
+
 	// Compute initial date
 	const computeInitialDate = () => {
-		// Example: Set the initial date to the first day of the current month
 		const now = new Date();
 		return new Date(now.getFullYear(), now.getMonth(), 1);
 	};
@@ -223,8 +250,13 @@ function CalendarApp(props) {
 						weekends
 						datesSet={handleDates}
 						select={handleDateSelect}
-						events={events}
+						eventSources={[
+							{
+								events
+							}
+						]}
 						eventContent={(eventInfo) => {
+							console.log('Event Info:', eventInfo.event); // Debugging log
 							const eventIndex = eventInfo.event.id % colors.length;
 							const eventColor = colors[eventIndex];
 
@@ -254,8 +286,6 @@ function CalendarApp(props) {
 				leftSidebarContent={<CalendarAppSidebar />}
 				leftSidebarOpen={leftSidebarOpen}
 				leftSidebarOnClose={() => setLeftSidebarOpen(false)}
-				leftSidebarWidth={240}
-				scroll="content"
 			/>
 			<EventDialog />
 		</>
