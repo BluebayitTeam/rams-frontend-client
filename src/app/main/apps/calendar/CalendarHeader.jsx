@@ -17,7 +17,6 @@ import { useGetCalendarEventsQuery } from './CalendarApi';
 function CalendarHeader(props) {
 	const { calendarRef, currentDate, onToggleLeftSidebar } = props;
 	const mainTheme = useSelector(selectMainTheme);
-	const [taskTypesData, setTaskTypesData] = useState(null);
 
 	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
 	const { data } = useGetCalendarEventsQuery({ ...yearMonth });
