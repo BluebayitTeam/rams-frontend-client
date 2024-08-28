@@ -164,10 +164,6 @@ function CalendarApp(props) {
 		dispatch(openEditEventDialog(clickInfo));
 	};
 
-	// const handleDates = (rangeInfo) => {
-	// 	setCurrentDate(rangeInfo);
-	// };
-
 	const handleEventAdd = (addInfo) => {
 		console.info('Event Added:', addInfo);
 	};
