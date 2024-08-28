@@ -11,7 +11,6 @@ import { useAppDispatch } from 'app/store/store';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
 import CalendarHeader from './CalendarHeader';
-import EventDialog from './dialogs/event/EventDialog';
 import { openEditEventDialog, openNewEventDialog } from './store/eventDialogSlice';
 import CalendarAppSidebar from './CalendarAppSidebar';
 import { useGetCalendarEventsQuery, useUpdateCalendarEventMutation } from './CalendarApi';
@@ -88,9 +87,6 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	}
 }));
 
-/**
- * The calendar app.
- */
 function CalendarApp(props) {
 	const { searchKey } = props;
 	const [currentDate, setCurrentDate] = useState();
@@ -107,6 +103,14 @@ function CalendarApp(props) {
 	const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isMobile);
 	const [updateEvent] = useUpdateCalendarEventMutation();
 	const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
+
+	useEffect(() => {
+		setLeftSidebarOpen(!isMobile);
+	}, [isMobile]);
+
+	useEffect(() => {
+		refetch();
+	}, [yearMonth, searchKey, refetch]);
 
 	const events =
 		data?.todo_tasks?.map((task) => ({
@@ -126,33 +130,12 @@ function CalendarApp(props) {
 		})) || [];
 
 	useEffect(() => {
-		const now = new Date();
-		setYearMonth({
-			year: now.getFullYear().toString(),
-			month: (now.getMonth() + 1).toString().padStart(2, '0')
-		});
-	}, []);
-
-	useEffect(() => {
-		setLeftSidebarOpen(!isMobile);
-	}, [isMobile]);
-
-	useEffect(() => {
-		refetch();
-	}, [yearMonth, searchKey, refetch]);
-
-	useEffect(() => {
-		setTimeout(() => {
-			calendarRef.current?.getApi()?.updateSize();
-		}, 300);
-	}, [leftSidebarOpen]);
-
-	useEffect(() => {
 		if (calendarRef.current) {
-			calendarRef.current.getApi().removeAllEvents();
-			calendarRef.current.getApi().addEventSource(events);
+			const calendarApi = calendarRef.current.getApi();
+			calendarApi.removeAllEvents();
+			calendarApi.addEventSource(events);
 		}
-	}, [data, events]);
+	}, [events]);
 
 	const handleDateSelect = (selectInfo) => {
 		dispatch(openNewEventDialog(selectInfo));
@@ -195,26 +178,6 @@ function CalendarApp(props) {
 		setLeftSidebarOpen(!leftSidebarOpen);
 	}
 
-	// Function to get month name
-	const getMonthName = (month) => {
-		const months = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		];
-		return months[month - 1]; // month is 1-indexed
-	};
-
-	// Compute initial date
 	const computeInitialDate = () => {
 		const now = new Date();
 		return new Date(now.getFullYear(), now.getMonth(), 1);
@@ -246,11 +209,7 @@ function CalendarApp(props) {
 						weekends
 						datesSet={handleDates}
 						select={handleDateSelect}
-						eventSources={[
-							{
-								events
-							}
-						]}
+						eventSources={[{ events }]}
 						eventContent={(eventInfo) => {
 							const eventIndex = eventInfo.event.id % colors.length;
 							const eventColor = colors[eventIndex];
@@ -282,7 +241,7 @@ function CalendarApp(props) {
 				leftSidebarOpen={leftSidebarOpen}
 				leftSidebarOnClose={() => setLeftSidebarOpen(false)}
 			/>
-			<EventDialog />
+			{/* <EventDialog /> */}
 		</>
 	);
 }
