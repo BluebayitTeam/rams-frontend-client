@@ -6,38 +6,56 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useSelector } from 'react-redux';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { openNewEventDialog } from './store/eventDialogSlice';
 import CalendarViewMenu from './CalendarViewMenu';
 import { useGetCalendarEventsQuery } from './CalendarApi';
 
 function CalendarHeader(props) {
-	const { calendarRef, currentDate, onToggleLeftSidebar } = props;
+	const { calendarRef, currentDate, onToggleLeftSidebar, yearMonth } = props;
+	console.log('dfkdfdksfdskfhdskj', yearMonth);
+	const { year, month } = yearMonth;
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useAppDispatch();
 
-	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
+	// const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
 
 	const { data, refetch } = useGetCalendarEventsQuery(yearMonth, {
 		skip: !yearMonth.year || !yearMonth.month
 	});
-	console.log('sdklfklsdjkldsfjfdklj', data);
+	console.log('Fetched calendar events:', data);
 
-	const calendarApi = useCallback(() => calendarRef.current.getApi(), [calendarRef]);
+	// Safely get the calendar API
+	const calendarApi = useCallback(() => {
+		if (calendarRef.current) {
+			return calendarRef.current.getApi();
+		}
 
+		return null;
+	}, [calendarRef]);
+
+	// Update year and month based on the current calendar view date
 	const updateYearMonth = useCallback(() => {
-		const currentViewDate = calendarApi().getDate();
-		const year = currentViewDate.getFullYear();
-		const month = currentViewDate.getMonth() + 1;
-		setYearMonth({ year, month });
+		const currentApi = calendarApi();
+
+		if (currentApi) {
+			const currentViewDate = currentApi.getDate();
+			const year = currentViewDate.getFullYear();
+			const month = currentViewDate.getMonth() + 1;
+			// setYearMonth({ year, month });
+		}
 	}, [calendarApi]);
 
+	// Debounced function to update the year and month
 	const debouncedUpdateYearMonth = useCallback(debounce(updateYearMonth, 200), [updateYearMonth]);
 
+	// Handle navigation to the previous or next month
 	const handleNavigation = useCallback(
 		(direction) => {
 			const currentApi = calendarApi();
+
+			if (!currentApi) return;
 
 			if (direction === 'prev') {
 				currentApi.prev();
@@ -51,12 +69,14 @@ function CalendarHeader(props) {
 		[calendarApi, debouncedUpdateYearMonth]
 	);
 
+	// Refetch events when the year or month changes
 	useEffect(() => {
 		if (yearMonth.year && yearMonth.month !== '') {
 			refetch();
 		}
 	}, [yearMonth, refetch]);
 
+	// Initialize the year and month when the component mounts
 	useEffect(() => {
 		updateYearMonth();
 	}, [updateYearMonth]);
@@ -113,8 +133,12 @@ function CalendarHeader(props) {
 								<IconButton
 									aria-label="today"
 									onClick={() => {
-										calendarApi().today();
-										updateYearMonth();
+										const currentApi = calendarApi();
+
+										if (currentApi) {
+											currentApi.today();
+											updateYearMonth();
+										}
 									}}
 									size="large"
 								>
@@ -147,10 +171,7 @@ function CalendarHeader(props) {
 					<FuseSvgIcon>heroicons-outline:plus-circle</FuseSvgIcon>
 				</IconButton>
 
-				<CalendarViewMenu
-					currentDate={currentDate}
-					// onChange={_handleViewChange}
-				/>
+				<CalendarViewMenu currentDate={currentDate} />
 			</motion.div>
 		</div>
 	);

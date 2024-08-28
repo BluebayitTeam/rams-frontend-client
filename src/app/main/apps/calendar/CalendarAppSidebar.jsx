@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import { Checkbox } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -20,7 +19,7 @@ function CalendarAppSidebar({ yearMonth }) {
 	const [labels, setLabels] = useState([]);
 
 	const { year, month } = yearMonth; // Destructure yearMonth prop
-	// console.log('vcvcvcvcv', year, month);
+
 	const { data } = useGetCalendarLabelsQuery({ year, size: 25 });
 
 	useEffect(() => {
@@ -34,22 +33,16 @@ function CalendarAppSidebar({ yearMonth }) {
 			dispatch(setSelectedLabels(allLabelIds));
 
 			// Fetch data for each label ID
-			allLabelIds.forEach((labelId) => {
-				apiCall(labelId)
-					.then((result) => {
-						console.log('API Result for labelId', labelId, ':', result);
-					})
-					.catch((error) => {
-						console.error('Error during API call for labelId', labelId, ':', error);
-					});
-			});
+			fetchDataForLabels(allLabelIds);
 		}
 	}, [data, dispatch, year, month]);
 
-	const apiCall = async (labelId) => {
+	const fetchDataForLabels = async (labelIds) => {
 		try {
-			const response = await axios.get(`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelId}`);
-			return response.data;
+			const response = await axios.get(
+				`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelIds.join(',')}`
+			);
+			console.log('API Result:', response.data);
 		} catch (error) {
 			console.error('Error during API call:', error);
 		}
@@ -58,7 +51,10 @@ function CalendarAppSidebar({ yearMonth }) {
 	const handleCheckboxChange = async (labelId) => {
 		try {
 			dispatch(toggleSelectedLabels(labelId));
-			const response = await apiCall(labelId);
+			const updatedLabels = selectedLabels.includes(labelId)
+				? selectedLabels.filter((id) => id !== labelId)
+				: [...selectedLabels, labelId];
+			await fetchDataForLabels(updatedLabels);
 		} catch (error) {
 			console.error('Error during handleCheckboxChange:', error);
 		}
