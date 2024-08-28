@@ -91,7 +91,13 @@ function CalendarApp(props) {
 	const { searchKey } = props;
 	const [currentDate, setCurrentDate] = useState();
 	const dispatch = useAppDispatch();
-	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
+	const [yearMonth, setYearMonth] = useState(() => {
+		const now = new Date();
+		return {
+			year: now.getFullYear().toString(),
+			month: (now.getMonth() + 1).toString().padStart(2, '0')
+		};
+	});
 	const { data, isLoading, refetch } = useGetCalendarEventsQuery(
 		{ ...yearMonth, searchKey },
 		{ refetchOnMountOrArgChange: true }
@@ -158,9 +164,9 @@ function CalendarApp(props) {
 		dispatch(openEditEventDialog(clickInfo));
 	};
 
-	const handleDates = (rangeInfo) => {
-		setCurrentDate(rangeInfo);
-	};
+	// const handleDates = (rangeInfo) => {
+	// 	setCurrentDate(rangeInfo);
+	// };
 
 	const handleEventAdd = (addInfo) => {
 		console.info('Event Added:', addInfo);
@@ -186,6 +192,16 @@ function CalendarApp(props) {
 	if (isLoading) {
 		return <FuseLoading />;
 	}
+
+	const handleDates = (rangeInfo) => {
+		setCurrentDate(rangeInfo);
+
+		const startDate = new Date(rangeInfo.startStr);
+		setYearMonth({
+			year: startDate.getFullYear().toString(),
+			month: (startDate.getMonth() + 1).toString().padStart(2, '0')
+		});
+	};
 
 	return (
 		<>
@@ -237,7 +253,7 @@ function CalendarApp(props) {
 						ref={calendarRef}
 					/>
 				}
-				leftSidebarContent={<CalendarAppSidebar />}
+				leftSidebarContent={<CalendarAppSidebar yearMonth={yearMonth} />}
 				leftSidebarOpen={leftSidebarOpen}
 				leftSidebarOnClose={() => setLeftSidebarOpen(false)}
 			/>

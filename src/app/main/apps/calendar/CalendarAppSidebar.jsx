@@ -13,27 +13,27 @@ import { useGetCalendarLabelsQuery } from './CalendarApi';
 /**
  * The calendar app sidebar.
  */
-function CalendarAppSidebar() {
+function CalendarAppSidebar({ yearMonth }) {
+	console.log('yearMonth', yearMonth);
 	const selectedLabels = useSelector(selectSelectedLabels);
 	const dispatch = useAppDispatch();
-
 	const [labels, setLabels] = useState([]);
-	const [year, setYear] = useState(new Date().getFullYear());
-	const [month, setMonth] = useState(new Date().getMonth() + 1);
 
+	const { year, month } = yearMonth; // Destructure yearMonth prop
+	// console.log('vcvcvcvcv', year, month);
 	const { data } = useGetCalendarLabelsQuery({ year, size: 25 });
-	console.log('fdsfdsf', data);
 
 	useEffect(() => {
 		if (data?.task_types) {
 			setLabels(data.task_types);
-
 			const allLabelIds = data.task_types.map((label) => label.id);
 			dispatch(setSelectedLabels(allLabelIds));
 		}
-	}, [data, dispatch]);
+	}, [data, dispatch, year, month]);
 
 	const apiCall = async (labelId) => {
+		console.log('Year:', year, 'Month:', month); // Debugging
+
 		try {
 			const response = await axios.get(`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelId}`);
 			return response.data;
@@ -51,19 +51,9 @@ function CalendarAppSidebar() {
 		}
 	};
 
-	// Example functions to update year and month; you might want to use these or similar functions
-	const handleYearChange = (newYear) => {
-		setYear(newYear);
-	};
-
-	const handleMonthChange = (newMonth) => {
-		setMonth(newMonth);
-	};
-
 	return (
 		<div className="flex flex-col flex-auto min-h-full p-32">
 			<Typography className="pb-24 text-4xl font-extrabold tracking-tight">Calendar</Typography>
-
 			<div className="group flex items-center justify-between mb-12">
 				<Typography
 					className="text-15 font-600 leading-none"
@@ -72,7 +62,6 @@ function CalendarAppSidebar() {
 					Task
 				</Typography>
 			</div>
-
 			{labels.map((label) => (
 				<div
 					key={label.id}
@@ -84,12 +73,10 @@ function CalendarAppSidebar() {
 						checked={selectedLabels.includes(label.id)}
 						onChange={() => handleCheckboxChange(label.id)}
 					/>
-
 					<Box
 						className="w-12 h-12 shrink-0 rounded-full"
 						sx={{ backgroundColor: label.color }}
 					/>
-
 					<Typography className="flex flex-1 leading-none">{label.name}</Typography>
 				</div>
 			))}
