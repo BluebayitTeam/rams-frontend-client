@@ -14,10 +14,11 @@ function CalendarAppEventContent(props) {
 	const theme = useTheme();
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 	const { data, isLoading } = useGetCalendarEventsQuery({ ...pageAndSize, searchKey });
-	console.log('sdfhdksfhdksf', data);
+
 	const labelId = eventInfo.event.extendedProps.label;
-	console.log('sdfhdksfhdksf', labelId);
+
 	const label = _.find(data, { id: labelId });
+	console.log('', label);
 	return (
 		<Box
 			sx={{

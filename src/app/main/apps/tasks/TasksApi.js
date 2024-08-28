@@ -104,11 +104,6 @@ export const {
 	useCreateTasksTagMutation,
 	useReorderTasksMutation
 } = TasksApi;
-// export const selectTasksList = (state) => TasksApi.endpoints.getTasks.select()(state)?.data?.tasks ?? [];
-
-// export const selectRemainingTasks = createSelector([selectTasksList], (tasks) => {
-// 	return tasks.filter((item) => item.type === 'task' && !item.completed);
-// });
 
 export const selectTasksList = (tasks) =>
 	createSelector([selectSearchText], (searchText) => {

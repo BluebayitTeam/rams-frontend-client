@@ -1,12 +1,13 @@
-import { motion } from 'framer-motion';
 import { Checkbox } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
-import { selectSelectedLabels, toggleSelectedLabels } from './store/selectedLabelsSlice';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { ALL_TODO_TASK } from 'src/app/constant/constants';
+import { selectSelectedLabels, toggleSelectedLabels, setSelectedLabels } from './store/selectedLabelsSlice';
 import { useGetCalendarLabelsQuery } from './CalendarApi';
-import LabelsDialog from './dialogs/labels/LabelsDialog';
 
 /**
  * The calendar app sidebar.
@@ -14,29 +15,65 @@ import LabelsDialog from './dialogs/labels/LabelsDialog';
 function CalendarAppSidebar() {
 	const selectedLabels = useSelector(selectSelectedLabels);
 	const dispatch = useAppDispatch();
-	const { data: labels } = useGetCalendarLabelsQuery();
+
+	const [labels, setLabels] = useState([]);
+	const [year, setYear] = useState(new Date().getFullYear());
+	const [month, setMonth] = useState(new Date().getMonth() + 1);
+
+	const { data } = useGetCalendarLabelsQuery({ year, size: 25 });
+
+	useEffect(() => {
+		if (data?.task_types) {
+			console.log('task_types', data?.task_types);
+			setLabels(data.task_types);
+
+			const allLabelIds = data.task_types.map((label) => label.id);
+			dispatch(setSelectedLabels(allLabelIds));
+		}
+	}, [data, dispatch]);
+
+	const apiCall = async (labelId) => {
+		try {
+			const response = await axios.get(`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelId}`);
+			return response.data;
+		} catch (error) {
+			console.error('Error during API call:', error);
+		}
+	};
+
+	const handleCheckboxChange = async (labelId) => {
+		try {
+			dispatch(toggleSelectedLabels(labelId));
+			const response = await apiCall(labelId);
+			console.log('API call response:', response);
+		} catch (error) {
+			console.error('Error during handleCheckboxChange:', error);
+		}
+	};
+
+	// Example functions to update year and month; you might want to use these or similar functions
+	const handleYearChange = (newYear) => {
+		setYear(newYear);
+	};
+
+	const handleMonthChange = (newMonth) => {
+		setMonth(newMonth);
+	};
+
 	return (
 		<div className="flex flex-col flex-auto min-h-full p-32">
-			<motion.span
-				initial={{ x: -20 }}
-				animate={{ x: 0, transition: { delay: 0.2 } }}
-				className="pb-24 text-4xl font-extrabold tracking-tight"
-			>
-				Calendar
-			</motion.span>
+			<Typography className="pb-24 text-4xl font-extrabold tracking-tight">Calendar</Typography>
 
 			<div className="group flex items-center justify-between mb-12">
 				<Typography
 					className="text-15 font-600 leading-none"
 					color="secondary.main"
 				>
-					LABELS
+					Task
 				</Typography>
-
-				<LabelsDialog />
 			</div>
 
-			{labels?.map((label) => (
+			{labels.map((label) => (
 				<div
 					key={label.id}
 					className="group flex items-center mt-8 space-x-8 h-24 w-full"
@@ -45,9 +82,7 @@ function CalendarAppSidebar() {
 						color="default"
 						className="p-0"
 						checked={selectedLabels.includes(label.id)}
-						onChange={() => {
-							dispatch(toggleSelectedLabels(label.id));
-						}}
+						onChange={() => handleCheckboxChange(label.id)}
 					/>
 
 					<Box
@@ -55,7 +90,7 @@ function CalendarAppSidebar() {
 						sx={{ backgroundColor: label.color }}
 					/>
 
-					<Typography className="flex flex-1 leading-none">{label.title}</Typography>
+					<Typography className="flex flex-1 leading-none">{label.name}</Typography>
 				</div>
 			))}
 		</div>

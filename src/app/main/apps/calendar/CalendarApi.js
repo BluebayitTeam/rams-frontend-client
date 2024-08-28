@@ -1,9 +1,8 @@
 import { apiService as api } from 'app/store/apiService';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { createSelector } from '@reduxjs/toolkit';
-import { ALL_TODO_TASK } from 'src/app/constant/constants';
+import { ALL_TODO_TASK, GET_TODOTASKTYPES } from 'src/app/constant/constants';
 import FuseUtils from '@fuse/utils/FuseUtils';
-import { selectSelectedLabels, setSelectedLabels } from './store/selectedLabelsSlice';
+import { selectSelectedLabels } from './store/selectedLabelsSlice';
 
 export const addTagTypes = ['calendar_events', 'calendar_event', 'calendar_labels', 'calendar_label'];
 const CalendarApi = api
@@ -13,9 +12,9 @@ const CalendarApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getCalendarEvents: build.query({
-				query: ({ page, size, searchKey }) => ({
+				query: ({ year, month, searchKey }) => ({
 					url: ALL_TODO_TASK,
-					params: { page, size, searchKey }
+					params: { year, month, searchKey }
 				}),
 				providesTags: ['calendar_events']
 			}),
@@ -42,17 +41,10 @@ const CalendarApi = api
 				}),
 				invalidatesTags: ['calendar_event', 'calendar_events']
 			}),
+
 			getCalendarLabels: build.query({
-				query: () => ({ url: `/mock-api/calendar/labels` }),
-				providesTags: ['calendar_labels'],
-				async onQueryStarted(id, { dispatch, queryFulfilled }) {
-					try {
-						const { data: labels } = await queryFulfilled;
-						dispatch(setSelectedLabels(labels.map((item) => item.id)));
-					} catch (err) {
-						dispatch(showMessage({ message: 'Error loading Labels!' }));
-					}
-				}
+				query: ({ page, size }) => ({ url: GET_TODOTASKTYPES, params: { page, size } }),
+				providesTags: ['calendar_labels']
 			}),
 			createCalendarLabel: build.mutation({
 				query: (Label) => {
@@ -93,10 +85,6 @@ export const {
 	useDeleteCalendarLabelMutation
 } = CalendarApi;
 export default CalendarApi;
-// export const selectFilteredEvents = (events) =>
-// 	createSelector([selectSelectedLabels], (selectedLabels) => {
-// 		return events.filter((item) => selectedLabels.includes(item?.extendedProps?.label));
-// 	});
 
 export const selectFilteredEvents = (events) =>
 	createSelector([selectSelectedLabels], (searchText) => {

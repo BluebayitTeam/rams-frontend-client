@@ -6,21 +6,59 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useSelector } from 'react-redux';
+import { useState, useEffect, useCallback } from 'react';
+import debounce from 'lodash.debounce';
 import { openNewEventDialog } from './store/eventDialogSlice';
 import CalendarViewMenu from './CalendarViewMenu';
+import { useGetCalendarEventsQuery } from './CalendarApi';
 
-/**
- * The calendar header.
- */
 function CalendarHeader(props) {
 	const { calendarRef, currentDate, onToggleLeftSidebar } = props;
 	const mainTheme = useSelector(selectMainTheme);
-	const calendarApi = () => calendarRef.current.getApi();
 	const dispatch = useAppDispatch();
 
-	function handleViewChange(viewType) {
-		calendarApi().changeView(viewType);
-	}
+	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
+
+	const { data, refetch } = useGetCalendarEventsQuery(yearMonth, {
+		skip: !yearMonth.year || !yearMonth.month
+	});
+
+	const calendarApi = useCallback(() => calendarRef.current.getApi(), [calendarRef]);
+
+	const updateYearMonth = useCallback(() => {
+		const currentViewDate = calendarApi().getDate();
+		const year = currentViewDate.getFullYear();
+		const month = currentViewDate.getMonth() + 1; // Keep as is to get zero-based month
+		setYearMonth({ year, month });
+	}, [calendarApi]);
+
+	const debouncedUpdateYearMonth = useCallback(debounce(updateYearMonth, 200), [updateYearMonth]);
+
+	const handleNavigation = useCallback(
+		(direction) => {
+			const currentApi = calendarApi();
+
+			if (direction === 'prev') {
+				currentApi.prev();
+			} else {
+				currentApi.next();
+			}
+
+			// Ensure the state update happens after the view change
+			debouncedUpdateYearMonth();
+		},
+		[calendarApi, debouncedUpdateYearMonth]
+	);
+
+	useEffect(() => {
+		if (yearMonth.year && yearMonth.month !== '') {
+			refetch();
+		}
+	}, [yearMonth, refetch]);
+
+	useEffect(() => {
+		updateYearMonth();
+	}, [updateYearMonth]);
 
 	return (
 		<div className="flex flex-col md:flex-row w-full p-12 justify-between z-10 container">
@@ -43,7 +81,7 @@ function CalendarHeader(props) {
 					<Tooltip title="Previous">
 						<IconButton
 							aria-label="Previous"
-							onClick={() => calendarApi().prev()}
+							onClick={() => handleNavigation('prev')}
 						>
 							<FuseSvgIcon size={20}>
 								{mainTheme.direction === 'ltr'
@@ -55,7 +93,7 @@ function CalendarHeader(props) {
 					<Tooltip title="Next">
 						<IconButton
 							aria-label="Next"
-							onClick={() => calendarApi().next()}
+							onClick={() => handleNavigation('next')}
 						>
 							<FuseSvgIcon size={20}>
 								{mainTheme.direction === 'ltr'
@@ -73,7 +111,10 @@ function CalendarHeader(props) {
 							>
 								<IconButton
 									aria-label="today"
-									onClick={() => calendarApi().today()}
+									onClick={() => {
+										calendarApi().today();
+										updateYearMonth();
+									}}
 									size="large"
 								>
 									<FuseSvgIcon>heroicons-outline:calendar</FuseSvgIcon>
@@ -107,7 +148,7 @@ function CalendarHeader(props) {
 
 				<CalendarViewMenu
 					currentDate={currentDate}
-					onChange={handleViewChange}
+					// onChange={_handleViewChange}
 				/>
 			</motion.div>
 		</div>

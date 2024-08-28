@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import { styled } from '@mui/material/styles';
 import { useEffect, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
@@ -10,7 +11,6 @@ import { useAppDispatch } from 'app/store/store';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
 import CalendarHeader from './CalendarHeader';
-import EventDialog from './dialogs/event/EventDialog';
 import { openEditEventDialog, openNewEventDialog } from './store/eventDialogSlice';
 import CalendarAppSidebar from './CalendarAppSidebar';
 import { useGetCalendarEventsQuery, useUpdateCalendarEventMutation } from './CalendarApi';
@@ -21,14 +21,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 		color: `${theme.palette.text.primary}!important`,
 		textDecoration: 'none!important'
 	},
-	'&  .fc-media-screen': {
+	'& .fc-media-screen': {
 		minHeight: '100%',
 		width: '100%'
 	},
 	'& .fc-scrollgrid, & .fc-theme-standard td, & .fc-theme-standard th': {
 		borderColor: `${theme.palette.divider}!important`
 	},
-	'&  .fc-scrollgrid-section > td': {
+	'& .fc-scrollgrid-section > td': {
 		border: 0
 	},
 	'& .fc-daygrid-day': {
@@ -46,7 +46,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 			textTransform: 'uppercase'
 		}
 	},
-	'& .fc-view ': {
+	'& .fc-view': {
 		'& > .fc-scrollgrid': {
 			border: 0
 		}
@@ -87,26 +87,35 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	}
 }));
 
-/**
- * The calendar app.
- */
 function CalendarApp(props) {
 	const { searchKey } = props;
 	const [currentDate, setCurrentDate] = useState();
 	const dispatch = useAppDispatch();
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading } = useGetCalendarEventsQuery({ ...pageAndSize, searchKey });
+	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
+	const { data, isLoading, refetch } = useGetCalendarEventsQuery(
+		{ ...yearMonth, searchKey },
+		{ refetchOnMountOrArgChange: true }
+	);
+
 	const calendarRef = useRef(null);
+
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isMobile);
 	const [updateEvent] = useUpdateCalendarEventMutation();
 	const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
 
+	useEffect(() => {
+		setLeftSidebarOpen(!isMobile);
+	}, [isMobile]);
+
+	useEffect(() => {
+		refetch();
+	}, [yearMonth, searchKey, refetch]);
+
 	const events =
-		data?.todo_tasks.map((task) => ({
+		data?.todo_tasks?.map((task) => ({
 			id: task.id,
 			title: task.title,
-			// title: task.task_type.name,
 			start: task.from_date,
 			end: task.to_date,
 			allDay: false,
@@ -121,14 +130,12 @@ function CalendarApp(props) {
 		})) || [];
 
 	useEffect(() => {
-		setLeftSidebarOpen(!isMobile);
-	}, [isMobile]);
-	useEffect(() => {
-		// Correct calendar dimensions after sidebar toggles
-		setTimeout(() => {
-			calendarRef.current?.getApi()?.updateSize();
-		}, 300);
-	}, [leftSidebarOpen]);
+		if (calendarRef.current) {
+			const calendarApi = calendarRef.current.getApi();
+			calendarApi.removeAllEvents();
+			calendarApi.addEventSource(events);
+		}
+	}, [events]);
 
 	const handleDateSelect = (selectInfo) => {
 		dispatch(openNewEventDialog(selectInfo));
@@ -156,23 +163,25 @@ function CalendarApp(props) {
 	};
 
 	const handleEventAdd = (addInfo) => {
-		// eslint-disable-next-line no-console
-		console.info(addInfo);
+		console.info('Event Added:', addInfo);
 	};
 
 	const handleEventChange = (changeInfo) => {
-		// eslint-disable-next-line no-console
-		console.info(changeInfo);
+		console.info('Event Changed:', changeInfo);
 	};
 
 	const handleEventRemove = (removeInfo) => {
-		// eslint-disable-next-line no-console
-		console.info(removeInfo);
+		console.info('Event Removed:', removeInfo);
 	};
 
 	function handleToggleLeftSidebar() {
 		setLeftSidebarOpen(!leftSidebarOpen);
 	}
+
+	const computeInitialDate = () => {
+		const now = new Date();
+		return new Date(now.getFullYear(), now.getMonth(), 1);
+	};
 
 	if (isLoading) {
 		return <FuseLoading />;
@@ -200,8 +209,7 @@ function CalendarApp(props) {
 						weekends
 						datesSet={handleDates}
 						select={handleDateSelect}
-						events={events}
-						// eslint-disable-next-line react/no-unstable-nested-components
+						eventSources={[{ events }]}
 						eventContent={(eventInfo) => {
 							const eventIndex = eventInfo.event.id % colors.length;
 							const eventColor = colors[eventIndex];
@@ -225,17 +233,15 @@ function CalendarApp(props) {
 						eventChange={handleEventChange}
 						eventRemove={handleEventRemove}
 						eventDrop={handleEventDrop}
-						initialDate={new Date(2024, 3, 1)}
+						initialDate={computeInitialDate()}
 						ref={calendarRef}
 					/>
 				}
 				leftSidebarContent={<CalendarAppSidebar />}
 				leftSidebarOpen={leftSidebarOpen}
 				leftSidebarOnClose={() => setLeftSidebarOpen(false)}
-				leftSidebarWidth={240}
-				scroll="content"
 			/>
-			<EventDialog />
+			{/* <EventDialog /> */}
 		</>
 	);
 }
