@@ -25,15 +25,14 @@ function CalendarAppSidebar({ yearMonth }) {
 
 	useEffect(() => {
 		if (data?.task_types) {
+			console.log('xcxcchhhkh', data?.task_types);
 			setLabels(data.task_types);
-			const allLabelIds = data.task_types.map((label) => label.id);
+			const allLabelIds = data.task_types.map((label) => console.log('xvccxjkvhcxjkhvk', label.id));
 			dispatch(setSelectedLabels(allLabelIds));
 		}
 	}, [data, dispatch, year, month]);
 
 	const apiCall = async (labelId) => {
-		console.log('Year:', year, 'Month:', month); // Debugging
-
 		try {
 			const response = await axios.get(`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelId}`);
 			return response.data;
