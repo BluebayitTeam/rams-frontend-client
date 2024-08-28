@@ -22,13 +22,14 @@ function CalendarHeader(props) {
 	const { data, refetch } = useGetCalendarEventsQuery(yearMonth, {
 		skip: !yearMonth.year || !yearMonth.month
 	});
+	console.log('sdklfklsdjkldsfjfdklj', data);
 
 	const calendarApi = useCallback(() => calendarRef.current.getApi(), [calendarRef]);
 
 	const updateYearMonth = useCallback(() => {
 		const currentViewDate = calendarApi().getDate();
 		const year = currentViewDate.getFullYear();
-		const month = currentViewDate.getMonth() + 1; // Keep as is to get zero-based month
+		const month = currentViewDate.getMonth() + 1;
 		setYearMonth({ year, month });
 	}, [calendarApi]);
 

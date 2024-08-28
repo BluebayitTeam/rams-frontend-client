@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { Checkbox } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -21,10 +22,10 @@ function CalendarAppSidebar() {
 	const [month, setMonth] = useState(new Date().getMonth() + 1);
 
 	const { data } = useGetCalendarLabelsQuery({ year, size: 25 });
+	console.log('fdsfdsf', data);
 
 	useEffect(() => {
 		if (data?.task_types) {
-			console.log('task_types', data?.task_types);
 			setLabels(data.task_types);
 
 			const allLabelIds = data.task_types.map((label) => label.id);
@@ -45,7 +46,6 @@ function CalendarAppSidebar() {
 		try {
 			dispatch(toggleSelectedLabels(labelId));
 			const response = await apiCall(labelId);
-			console.log('API call response:', response);
 		} catch (error) {
 			console.error('Error during handleCheckboxChange:', error);
 		}
