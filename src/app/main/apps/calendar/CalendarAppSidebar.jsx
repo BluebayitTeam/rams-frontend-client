@@ -24,11 +24,9 @@ function CalendarAppSidebar({ yearMonth }) {
 
 	useEffect(() => {
 		if (data?.task_types) {
-			console.log('Task Types:', data.task_types);
 			setLabels(data.task_types);
 
 			const allLabelIds = data.task_types.map((label) => label.id);
-			console.log('LabelIDs:', allLabelIds);
 
 			dispatch(setSelectedLabels(allLabelIds));
 
@@ -42,7 +40,6 @@ function CalendarAppSidebar({ yearMonth }) {
 			const response = await axios.get(
 				`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelIds.join(',')}`
 			);
-			console.log('API Result:', response.data);
 		} catch (error) {
 			console.error('Error during API call:', error);
 		}
