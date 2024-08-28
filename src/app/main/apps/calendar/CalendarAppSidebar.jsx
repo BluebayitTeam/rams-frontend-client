@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import { Checkbox } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -18,11 +17,14 @@ function CalendarAppSidebar() {
 	const dispatch = useAppDispatch();
 
 	const [labels, setLabels] = useState([]);
+	const [year, setYear] = useState(new Date().getFullYear());
+	const [month, setMonth] = useState(new Date().getMonth() + 1);
 
-	const { data } = useGetCalendarLabelsQuery({ page: 1, size: 25 });
+	const { data } = useGetCalendarLabelsQuery({ year, size: 25 });
 
 	useEffect(() => {
 		if (data?.task_types) {
+			console.log('task_types', data?.task_types);
 			setLabels(data.task_types);
 
 			const allLabelIds = data.task_types.map((label) => label.id);
@@ -32,7 +34,7 @@ function CalendarAppSidebar() {
 
 	const apiCall = async (labelId) => {
 		try {
-			const response = await axios.post(`${ALL_TODO_TASK}${labelId}`, { labelId });
+			const response = await axios.get(`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelId}`);
 			return response.data;
 		} catch (error) {
 			console.error('Error during API call:', error);
@@ -41,17 +43,21 @@ function CalendarAppSidebar() {
 
 	const handleCheckboxChange = async (labelId) => {
 		try {
-			// Dispatch action to toggle the selected label
 			dispatch(toggleSelectedLabels(labelId));
-
-			// Make the API call with the labelId
 			const response = await apiCall(labelId);
-
-			// You can handle the response here if needed
 			console.log('API call response:', response);
 		} catch (error) {
 			console.error('Error during handleCheckboxChange:', error);
 		}
+	};
+
+	// Example functions to update year and month; you might want to use these or similar functions
+	const handleYearChange = (newYear) => {
+		setYear(newYear);
+	};
+
+	const handleMonthChange = (newMonth) => {
+		setMonth(newMonth);
 	};
 
 	return (
