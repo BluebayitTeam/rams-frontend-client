@@ -25,10 +25,24 @@ function CalendarAppSidebar({ yearMonth }) {
 
 	useEffect(() => {
 		if (data?.task_types) {
-			console.log('xcxcchhhkh', data?.task_types);
+			console.log('Task Types:', data.task_types);
 			setLabels(data.task_types);
-			const allLabelIds = data.task_types.map((label) => console.log('xvccxjkvhcxjkhvk', label.id));
+
+			const allLabelIds = data.task_types.map((label) => label.id);
+			console.log('LabelIDs:', allLabelIds);
+
 			dispatch(setSelectedLabels(allLabelIds));
+
+			// Fetch data for each label ID
+			allLabelIds.forEach((labelId) => {
+				apiCall(labelId)
+					.then((result) => {
+						console.log('API Result for labelId', labelId, ':', result);
+					})
+					.catch((error) => {
+						console.error('Error during API call for labelId', labelId, ':', error);
+					});
+			});
 		}
 	}, [data, dispatch, year, month]);
 
