@@ -1,6 +1,6 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
-import { ALL_TODO_TASK, TASK_TYPE } from 'src/app/constant/constants';
+import { ALL_TODO_TASK_FOR_CALENDER, TASK_TYPE } from 'src/app/constant/constants';
 import FuseUtils from '@fuse/utils/FuseUtils';
 import { selectSelectedLabels } from './store/selectedLabelsSlice';
 
@@ -12,9 +12,9 @@ const CalendarApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getCalendarEvents: build.query({
-				query: ({ year, month, searchKey }) => ({
-					url: ALL_TODO_TASK,
-					params: { year, month, searchKey }
+				query: ({ year, month, task_type }) => ({
+					url: ALL_TODO_TASK_FOR_CALENDER,
+					params: { year, month, task_type }
 				}),
 				providesTags: ['calendar_events']
 			}),

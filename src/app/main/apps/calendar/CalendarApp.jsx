@@ -10,7 +10,7 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useAppDispatch } from 'app/store/store';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
-import { ALL_TODO_TASK } from 'src/app/constant/constants';
+import { ALL_TODO_TASK_FOR_CALENDER } from 'src/app/constant/constants';
 import axios from 'axios';
 import CalendarHeader from './CalendarHeader';
 import { openEditEventDialog, openNewEventDialog } from './store/eventDialogSlice';
@@ -94,6 +94,7 @@ function CalendarApp(props) {
 	const [currentDate, setCurrentDate] = useState();
 	const dispatch = useAppDispatch();
 	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
+	// const [taskType, setTaskType] = useState({ task_type });
 	const [events, setEvents] = useState([]);
 	const { data, isLoading, refetch } = useGetCalendarEventsQuery(
 		{ ...yearMonth, searchKey },
@@ -118,7 +119,7 @@ function CalendarApp(props) {
 	const fetchDataForLabels = async (labelIds) => {
 		try {
 			const response = await axios.get(
-				`${ALL_TODO_TASK}?year=${yearMonth.year}&month=${yearMonth.month}&task_type=${labelIds.join(',')}`
+				`${ALL_TODO_TASK_FOR_CALENDER}?year=${yearMonth.year}&month=${yearMonth.month}&task_type=${labelIds.join(',')}`
 			);
 
 			setEvents(
@@ -282,45 +283,6 @@ function CalendarApp(props) {
 			leftSidebarOpen={leftSidebarOpen}
 			leftSidebarOnClose={() => setLeftSidebarOpen(false)}
 		/>
-
-		// <Root
-		// 	header={
-		// 		<CalendarHeader
-		// 			calendarRef={calendarRef}
-		// 			currentDate={currentDate}
-		// 			onToggleLeftSidebar={handleToggleLeftSidebar}
-		// 		/>
-		// 	}
-		// 	content={
-		// 		<FullCalendar
-		// 			plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-		// 			headerToolbar={false}
-		// 			initialView="dayGridMonth"
-		// 			editable
-		// 			selectable
-		// 			selectMirror
-		// 			dayMaxEvents
-		// 			weekends
-		// 			datesSet={handleDates}
-		// 			select={handleDateSelect}
-		// 			events={events}
-		// 			// eslint-disable-next-line react/no-unstable-nested-components
-		// 			eventContent={(eventInfo) => <CalendarAppEventContent eventInfo={eventInfo} />}
-		// 			eventClick={handleEventClick}
-		// 			eventAdd={handleEventAdd}
-		// 			eventChange={handleEventChange}
-		// 			eventRemove={handleEventRemove}
-		// 			eventDrop={handleEventDrop}
-		// 			initialDate={new Date(2022, 3, 1)}
-		// 			ref={calendarRef}
-		// 		/>
-		// 	}
-		// 	leftSidebarContent={<CalendarAppSidebar />}
-		// 	leftSidebarOpen={leftSidebarOpen}
-		// 	leftSidebarOnClose={() => setLeftSidebarOpen(false)}
-		// 	leftSidebarWidth={240}
-		// 	scroll="content"
-		// />
 	);
 }
 
