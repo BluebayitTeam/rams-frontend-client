@@ -10,6 +10,8 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useAppDispatch } from 'app/store/store';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
+import { ALL_TODO_TASK_FOR_CALENDER } from 'src/app/constant/constants';
+import axios from 'axios';
 import CalendarHeader from './CalendarHeader';
 import { openEditEventDialog, openNewEventDialog } from './store/eventDialogSlice';
 import CalendarAppSidebar from './CalendarAppSidebar';
@@ -92,6 +94,8 @@ function CalendarApp(props) {
 	const [currentDate, setCurrentDate] = useState();
 	const dispatch = useAppDispatch();
 	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
+	// const [taskType, setTaskType] = useState({ task_type });
+	const [events, setEvents] = useState([]);
 	const { data, isLoading, refetch } = useGetCalendarEventsQuery(
 		{ ...yearMonth, searchKey },
 		{ refetchOnMountOrArgChange: true }
@@ -112,22 +116,53 @@ function CalendarApp(props) {
 		refetch();
 	}, [yearMonth, searchKey, refetch]);
 
-	const events =
-		data?.todo_tasks?.map((task) => ({
-			id: task.id,
-			title: task.title,
-			start: task.from_date,
-			end: task.to_date,
-			allDay: false,
-			extendedProps: {
-				is_completed: task.is_completed,
-				is_emergency: task.is_emergency,
-				note: task.note,
-				user: task.user,
-				created_by: task.created_by,
-				updated_by: task.updated_by
-			}
-		})) || [];
+	const fetchDataForLabels = async (labelIds) => {
+		try {
+			const response = await axios.get(
+				`${ALL_TODO_TASK_FOR_CALENDER}?year=${yearMonth.year}&month=${yearMonth.month}&task_type=${labelIds.join(',')}`
+			);
+
+			setEvents(
+				response?.data?.todo_tasks?.map((task) => ({
+					id: task.id,
+					title: task.title,
+					start: task.from_date, // Event start date
+					end: task.to_date, // Event end date
+					allDay: false,
+					extendedProps: {
+						is_completed: task.is_completed,
+						is_emergency: task.is_emergency,
+						note: task.note,
+						user: task.user,
+						created_by: task.created_by,
+						updated_by: task.updated_by
+					}
+				}))
+			);
+		} catch (error) {
+			console.error('Error during API call:', error);
+		}
+	};
+
+	useEffect(() => {
+		setEvents(
+			data?.todo_tasks?.map((task) => ({
+				id: task.id,
+				title: task.title,
+				start: task.from_date,
+				end: task.to_date,
+				allDay: false,
+				extendedProps: {
+					is_completed: task.is_completed,
+					is_emergency: task.is_emergency,
+					note: task.note,
+					user: task.user,
+					created_by: task.created_by,
+					updated_by: task.updated_by
+				}
+			}))
+		);
+	}, [data]);
 
 	useEffect(() => {
 		if (calendarRef.current) {
@@ -188,61 +223,66 @@ function CalendarApp(props) {
 	}
 
 	return (
-		<>
-			<Root
-				header={
-					<CalendarHeader
-						calendarRef={calendarRef}
-						currentDate={currentDate}
-						onToggleLeftSidebar={handleToggleLeftSidebar}
-					/>
-				}
-				content={
-					<FullCalendar
-						plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-						headerToolbar={false}
-						initialView="dayGridMonth"
-						editable
-						selectable
-						selectMirror
-						dayMaxEvents
-						weekends
-						datesSet={handleDates}
-						select={handleDateSelect}
-						eventSources={[{ events }]}
-						eventContent={(eventInfo) => {
-							const eventIndex = eventInfo.event.id % colors.length;
-							const eventColor = colors[eventIndex];
+		<Root
+			header={
+				<CalendarHeader
+					calendarRef={calendarRef}
+					currentDate={currentDate}
+					onToggleLeftSidebar={handleToggleLeftSidebar}
+					yearMonth={yearMonth}
+					setYearMonth={setYearMonth}
+				/>
+			}
+			content={
+				<FullCalendar
+					plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+					headerToolbar={false}
+					initialView="dayGridMonth"
+					editable
+					selectable
+					selectMirror
+					dayMaxEvents={3}
+					weekends
+					datesSet={handleDates}
+					select={handleDateSelect}
+					eventSources={[{ events }]}
+					eventContent={(eventInfo) => {
+						const eventIndex = eventInfo.event.id % colors.length;
+						const eventColor = colors[eventIndex];
 
-							return (
-								<div
-									style={{
-										color: 'white',
-										backgroundColor: eventColor,
-										padding: '10px',
-										borderRadius: '3px',
-										width: '160px'
-									}}
-								>
-									<strong>{eventInfo.event.title}</strong>
-								</div>
-							);
-						}}
-						eventClick={handleEventClick}
-						eventAdd={handleEventAdd}
-						eventChange={handleEventChange}
-						eventRemove={handleEventRemove}
-						eventDrop={handleEventDrop}
-						initialDate={computeInitialDate()}
-						ref={calendarRef}
-					/>
-				}
-				leftSidebarContent={<CalendarAppSidebar />}
-				leftSidebarOpen={leftSidebarOpen}
-				leftSidebarOnClose={() => setLeftSidebarOpen(false)}
-			/>
-			{/* <EventDialog /> */}
-		</>
+						return (
+							<div
+								style={{
+									color: 'white',
+									backgroundColor: eventColor,
+									padding: '10px',
+									borderRadius: '3px',
+									width: '160px'
+								}}
+							>
+								<strong>{eventInfo.event.title}</strong>
+							</div>
+						);
+					}}
+					eventClick={handleEventClick}
+					eventAdd={handleEventAdd}
+					eventChange={handleEventChange}
+					eventRemove={handleEventRemove}
+					eventDrop={handleEventDrop}
+					initialDate={computeInitialDate()}
+					ref={calendarRef}
+				/>
+			}
+			leftSidebarContent={
+				<CalendarAppSidebar
+					yearMonth={yearMonth}
+					setYearMonth={setYearMonth}
+					fetchDataForLabels={fetchDataForLabels}
+				/>
+			}
+			leftSidebarOpen={leftSidebarOpen}
+			leftSidebarOnClose={() => setLeftSidebarOpen(false)}
+		/>
 	);
 }
 

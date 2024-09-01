@@ -4,66 +4,48 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { ALL_TODO_TASK } from 'src/app/constant/constants';
 import { selectSelectedLabels, toggleSelectedLabels, setSelectedLabels } from './store/selectedLabelsSlice';
 import { useGetCalendarLabelsQuery } from './CalendarApi';
 
 /**
  * The calendar app sidebar.
  */
-function CalendarAppSidebar() {
+function CalendarAppSidebar({ yearMonth, fetchDataForLabels }) {
 	const selectedLabels = useSelector(selectSelectedLabels);
 	const dispatch = useAppDispatch();
-
 	const [labels, setLabels] = useState([]);
-	const [year, setYear] = useState(new Date().getFullYear());
-	const [month, setMonth] = useState(new Date().getMonth() + 1);
 
-	const { data } = useGetCalendarLabelsQuery({ year, size: 25 });
+	const { year, month } = yearMonth;
+
+	const { data } = useGetCalendarLabelsQuery({ year, month });
 
 	useEffect(() => {
 		if (data?.task_types) {
-			console.log('task_types', data?.task_types);
 			setLabels(data.task_types);
 
 			const allLabelIds = data.task_types.map((label) => label.id);
-			dispatch(setSelectedLabels(allLabelIds));
-		}
-	}, [data, dispatch]);
 
-	const apiCall = async (labelId) => {
-		try {
-			const response = await axios.get(`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelId}`);
-			return response.data;
-		} catch (error) {
-			console.error('Error during API call:', error);
+			dispatch(setSelectedLabels(allLabelIds));
+
+			fetchDataForLabels(allLabelIds);
 		}
-	};
+	}, [data, dispatch, year, month]);
 
 	const handleCheckboxChange = async (labelId) => {
 		try {
 			dispatch(toggleSelectedLabels(labelId));
-			const response = await apiCall(labelId);
-			console.log('API call response:', response);
+			const updatedLabels = selectedLabels.includes(labelId)
+				? selectedLabels.filter((id) => id !== labelId)
+				: [...selectedLabels, labelId];
+			await fetchDataForLabels(updatedLabels);
 		} catch (error) {
 			console.error('Error during handleCheckboxChange:', error);
 		}
 	};
 
-	// Example functions to update year and month; you might want to use these or similar functions
-	const handleYearChange = (newYear) => {
-		setYear(newYear);
-	};
-
-	const handleMonthChange = (newMonth) => {
-		setMonth(newMonth);
-	};
-
 	return (
 		<div className="flex flex-col flex-auto min-h-full p-32">
 			<Typography className="pb-24 text-4xl font-extrabold tracking-tight">Calendar</Typography>
-
 			<div className="group flex items-center justify-between mb-12">
 				<Typography
 					className="text-15 font-600 leading-none"
@@ -72,7 +54,6 @@ function CalendarAppSidebar() {
 					Task
 				</Typography>
 			</div>
-
 			{labels.map((label) => (
 				<div
 					key={label.id}
@@ -84,12 +65,10 @@ function CalendarAppSidebar() {
 						checked={selectedLabels.includes(label.id)}
 						onChange={() => handleCheckboxChange(label.id)}
 					/>
-
 					<Box
 						className="w-12 h-12 shrink-0 rounded-full"
 						sx={{ backgroundColor: label.color }}
 					/>
-
 					<Typography className="flex flex-1 leading-none">{label.name}</Typography>
 				</div>
 			))}

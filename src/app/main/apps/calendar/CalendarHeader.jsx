@@ -6,31 +6,40 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useSelector } from 'react-redux';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { openNewEventDialog } from './store/eventDialogSlice';
 import CalendarViewMenu from './CalendarViewMenu';
 import { useGetCalendarEventsQuery } from './CalendarApi';
 
 function CalendarHeader(props) {
-	const { calendarRef, currentDate, onToggleLeftSidebar } = props;
+	const { calendarRef, currentDate, onToggleLeftSidebar, yearMonth, setYearMonth } = props;
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useAppDispatch();
-
-	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
 
 	const { data, refetch } = useGetCalendarEventsQuery(yearMonth, {
 		skip: !yearMonth.year || !yearMonth.month
 	});
 
-	const calendarApi = useCallback(() => calendarRef.current.getApi(), [calendarRef]);
+	const calendarApi = useCallback(() => {
+		// Check if calendarRef.current exists before trying to get the API
+		if (calendarRef.current) {
+			return calendarRef.current.getApi();
+		}
+
+		return null;
+	}, [calendarRef]);
 
 	const updateYearMonth = useCallback(() => {
-		const currentViewDate = calendarApi().getDate();
-		const year = currentViewDate.getFullYear();
-		const month = currentViewDate.getMonth() + 1; // Keep as is to get zero-based month
-		setYearMonth({ year, month });
-	}, [calendarApi]);
+		const currentApi = calendarApi();
+
+		if (currentApi) {
+			const currentViewDate = currentApi.getDate();
+			const year = currentViewDate.getFullYear();
+			const month = currentViewDate.getMonth() + 1;
+			setYearMonth({ year, month });
+		}
+	}, [calendarApi, setYearMonth]);
 
 	const debouncedUpdateYearMonth = useCallback(debounce(updateYearMonth, 200), [updateYearMonth]);
 
@@ -38,14 +47,15 @@ function CalendarHeader(props) {
 		(direction) => {
 			const currentApi = calendarApi();
 
-			if (direction === 'prev') {
-				currentApi.prev();
-			} else {
-				currentApi.next();
-			}
+			if (currentApi) {
+				if (direction === 'prev') {
+					currentApi.prev();
+				} else {
+					currentApi.next();
+				}
 
-			// Ensure the state update happens after the view change
-			debouncedUpdateYearMonth();
+				debouncedUpdateYearMonth();
+			}
 		},
 		[calendarApi, debouncedUpdateYearMonth]
 	);
@@ -112,8 +122,12 @@ function CalendarHeader(props) {
 								<IconButton
 									aria-label="today"
 									onClick={() => {
-										calendarApi().today();
-										updateYearMonth();
+										const currentApi = calendarApi();
+
+										if (currentApi) {
+											currentApi.today();
+											updateYearMonth();
+										}
 									}}
 									size="large"
 								>
@@ -146,10 +160,7 @@ function CalendarHeader(props) {
 					<FuseSvgIcon>heroicons-outline:plus-circle</FuseSvgIcon>
 				</IconButton>
 
-				<CalendarViewMenu
-					currentDate={currentDate}
-					// onChange={_handleViewChange}
-				/>
+				<CalendarViewMenu currentDate={currentDate} />
 			</motion.div>
 		</div>
 	);
