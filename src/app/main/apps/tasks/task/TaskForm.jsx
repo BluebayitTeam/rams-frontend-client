@@ -301,18 +301,22 @@ function TaskForm() {
 				/>
 			</div>
 			<Controller
-				name="notes"
 				control={control}
+				name="note"
 				render={({ field }) => (
 					<TextField
+						className="mt-32"
 						{...field}
-						className="mt-8 mb-16"
-						label="Notes"
-						multiline
-						rows={4}
+						label="Note"
+						placeholder="Notes"
+						id="notes"
+						error={!!errors.notes}
+						helperText={errors?.notes?.message}
 						variant="outlined"
 						fullWidth
-						helperText={errors?.notes?.message}
+						multiline
+						minRows={3}
+						maxRows={10}
 					/>
 				)}
 			/>
