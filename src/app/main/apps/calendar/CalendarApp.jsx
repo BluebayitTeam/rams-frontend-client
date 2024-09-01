@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
 import { styled } from '@mui/material/styles';
 import { useEffect, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
@@ -10,27 +9,29 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useAppDispatch } from 'app/store/store';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
-import { ALL_TODO_TASK_FOR_CALENDER } from 'src/app/constant/constants';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 import CalendarHeader from './CalendarHeader';
+import EventDialog from './dialogs/event/EventDialog';
 import { openEditEventDialog, openNewEventDialog } from './store/eventDialogSlice';
 import CalendarAppSidebar from './CalendarAppSidebar';
+import CalendarAppEventContent from './CalendarAppEventContent';
 import { useGetCalendarEventsQuery, useUpdateCalendarEventMutation } from './CalendarApi';
 import reducer from './store';
+import { selectSelectedLabels } from './store/selectedLabelsSlice';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& a': {
 		color: `${theme.palette.text.primary}!important`,
 		textDecoration: 'none!important'
 	},
-	'& .fc-media-screen': {
+	'&  .fc-media-screen': {
 		minHeight: '100%',
 		width: '100%'
 	},
 	'& .fc-scrollgrid, & .fc-theme-standard td, & .fc-theme-standard th': {
 		borderColor: `${theme.palette.divider}!important`
 	},
-	'& .fc-scrollgrid-section > td': {
+	'&  .fc-scrollgrid-section > td': {
 		border: 0
 	},
 	'& .fc-daygrid-day': {
@@ -48,7 +49,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 			textTransform: 'uppercase'
 		}
 	},
-	'& .fc-view': {
+	'& .fc-view ': {
 		'& > .fc-scrollgrid': {
 			border: 0
 		}
@@ -89,92 +90,67 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	}
 }));
 
-function CalendarApp(props) {
-	const { searchKey } = props;
+/**
+ * The calendar app.
+ */
+function CalendarApp() {
 	const [currentDate, setCurrentDate] = useState();
+	const selectedLabels = useSelector(selectSelectedLabels);
 	const dispatch = useAppDispatch();
-	const [yearMonth, setYearMonth] = useState({ year: '', month: '' });
-	// const [taskType, setTaskType] = useState({ task_type });
-	const [events, setEvents] = useState([]);
-	const { data, isLoading, refetch } = useGetCalendarEventsQuery(
-		{ ...yearMonth, searchKey },
-		{ refetchOnMountOrArgChange: true }
-	);
+	const getMonthYearFromTitle = (title) => {
+		if (!title) return { month: '', year: '' };
+
+		const monthYearMapping = {
+			January: 1,
+			February: 2,
+			March: 3,
+			April: 4,
+			May: 5,
+			June: 6,
+			July: 7,
+			August: 8,
+			September: 9,
+			October: 10,
+			November: 11,
+			December: 12
+		};
+
+		const [monthName, year] = title.split(' ');
+		const month = monthYearMapping[monthName];
+
+		return {
+			month,
+			year: parseInt(year, 10) // Ensure year is a number
+		};
+	};
+
+	// Get month and year from currentDate.view.title
+	const { month, year } = getMonthYearFromTitle(currentDate?.view?.title);
+
+	const { data: events, isLoading } = useGetCalendarEventsQuery({
+		month,
+		year,
+		selectedLabels
+	});
 
 	const calendarRef = useRef(null);
-
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isMobile);
 	const [updateEvent] = useUpdateCalendarEventMutation();
-	const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
-
 	useEffect(() => {
 		setLeftSidebarOpen(!isMobile);
 	}, [isMobile]);
-
 	useEffect(() => {
-		refetch();
-	}, [yearMonth, searchKey, refetch]);
-
-	const fetchDataForLabels = async (labelIds) => {
-		try {
-			const response = await axios.get(
-				`${ALL_TODO_TASK_FOR_CALENDER}?year=${yearMonth.year}&month=${yearMonth.month}&task_type=${labelIds.join(',')}`
-			);
-
-			setEvents(
-				response?.data?.todo_tasks?.map((task) => ({
-					id: task.id,
-					title: task.title,
-					start: task.from_date, // Event start date
-					end: task.to_date, // Event end date
-					allDay: false,
-					extendedProps: {
-						is_completed: task.is_completed,
-						is_emergency: task.is_emergency,
-						note: task.note,
-						user: task.user,
-						created_by: task.created_by,
-						updated_by: task.updated_by
-					}
-				}))
-			);
-		} catch (error) {
-			console.error('Error during API call:', error);
-		}
-	};
-
-	useEffect(() => {
-		setEvents(
-			data?.todo_tasks?.map((task) => ({
-				id: task.id,
-				title: task.title,
-				start: task.from_date,
-				end: task.to_date,
-				allDay: false,
-				extendedProps: {
-					is_completed: task.is_completed,
-					is_emergency: task.is_emergency,
-					note: task.note,
-					user: task.user,
-					created_by: task.created_by,
-					updated_by: task.updated_by
-				}
-			}))
-		);
-	}, [data]);
-
-	useEffect(() => {
-		if (calendarRef.current) {
-			const calendarApi = calendarRef.current.getApi();
-			calendarApi.removeAllEvents();
-			calendarApi.addEventSource(events);
-		}
-	}, [events]);
-
+		// Correct calendar dimentions after sidebar toggles
+		setTimeout(() => {
+			calendarRef.current?.getApi()?.updateSize();
+		}, 300);
+	}, [leftSidebarOpen]);
 	const handleDateSelect = (selectInfo) => {
 		dispatch(openNewEventDialog(selectInfo));
 	};
+	const todayDate = new Date();
+	const today = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
 
 	const handleEventDrop = (eventDropInfo) => {
 		const { id, title, allDay, start, end, extendedProps } = eventDropInfo.event;
@@ -187,102 +163,76 @@ function CalendarApp(props) {
 			extendedProps
 		});
 	};
-
 	const handleEventClick = (clickInfo) => {
 		clickInfo.jsEvent.preventDefault();
 		dispatch(openEditEventDialog(clickInfo));
 	};
-
 	const handleDates = (rangeInfo) => {
 		setCurrentDate(rangeInfo);
 	};
-
 	const handleEventAdd = (addInfo) => {
-		console.info('Event Added:', addInfo);
+		// eslint-disable-next-line no-console
+		console.info(addInfo);
 	};
-
 	const handleEventChange = (changeInfo) => {
-		console.info('Event Changed:', changeInfo);
+		// eslint-disable-next-line no-console
+		console.info(changeInfo);
 	};
-
 	const handleEventRemove = (removeInfo) => {
-		console.info('Event Removed:', removeInfo);
+		// eslint-disable-next-line no-console
+		console.info(removeInfo);
 	};
 
 	function handleToggleLeftSidebar() {
 		setLeftSidebarOpen(!leftSidebarOpen);
 	}
 
-	const computeInitialDate = () => {
-		const now = new Date();
-		return new Date(now.getFullYear(), now.getMonth(), 1);
-	};
-
 	if (isLoading) {
 		return <FuseLoading />;
 	}
 
 	return (
-		<Root
-			header={
-				<CalendarHeader
-					calendarRef={calendarRef}
-					currentDate={currentDate}
-					onToggleLeftSidebar={handleToggleLeftSidebar}
-					yearMonth={yearMonth}
-					setYearMonth={setYearMonth}
-				/>
-			}
-			content={
-				<FullCalendar
-					plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-					headerToolbar={false}
-					initialView="dayGridMonth"
-					editable
-					selectable
-					selectMirror
-					dayMaxEvents={3}
-					weekends
-					datesSet={handleDates}
-					select={handleDateSelect}
-					eventSources={[{ events }]}
-					eventContent={(eventInfo) => {
-						const eventIndex = eventInfo.event.id % colors.length;
-						const eventColor = colors[eventIndex];
-
-						return (
-							<div
-								style={{
-									color: 'white',
-									backgroundColor: eventColor,
-									padding: '10px',
-									borderRadius: '3px',
-									width: '160px'
-								}}
-							>
-								<strong>{eventInfo.event.title}</strong>
-							</div>
-						);
-					}}
-					eventClick={handleEventClick}
-					eventAdd={handleEventAdd}
-					eventChange={handleEventChange}
-					eventRemove={handleEventRemove}
-					eventDrop={handleEventDrop}
-					initialDate={computeInitialDate()}
-					ref={calendarRef}
-				/>
-			}
-			leftSidebarContent={
-				<CalendarAppSidebar
-					yearMonth={yearMonth}
-					setYearMonth={setYearMonth}
-					fetchDataForLabels={fetchDataForLabels}
-				/>
-			}
-			leftSidebarOpen={leftSidebarOpen}
-			leftSidebarOnClose={() => setLeftSidebarOpen(false)}
-		/>
+		<>
+			<Root
+				header={
+					<CalendarHeader
+						calendarRef={calendarRef}
+						currentDate={currentDate}
+						onToggleLeftSidebar={handleToggleLeftSidebar}
+					/>
+				}
+				content={
+					<FullCalendar
+						plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+						headerToolbar={false}
+						initialView="dayGridMonth"
+						editable
+						selectable
+						selectMirror
+						dayMaxEvents
+						weekends
+						datesSet={handleDates}
+						select={handleDateSelect}
+						events={events}
+						// eslint-disable-next-line react/no-unstable-nested-components
+						eventContent={(eventInfo) => <CalendarAppEventContent eventInfo={eventInfo} />}
+						eventClick={handleEventClick}
+						eventAdd={handleEventAdd}
+						eventChange={handleEventChange}
+						eventRemove={handleEventRemove}
+						eventDrop={handleEventDrop}
+						initialDate={today}
+						ref={calendarRef}
+					/>
+				}
+				leftSidebarContent={<CalendarAppSidebar />}
+				leftSidebarOpen={leftSidebarOpen}
+				leftSidebarOnClose={() => setLeftSidebarOpen(false)}
+				leftSidebarWidth={240}
+				scroll="content"
+			/>
+			<EventDialog />
+		</>
 	);
 }
 

@@ -104,7 +104,7 @@ function NewLabelForm(props) {
 						className={clsx('flex flex-1')}
 						error={!!errors.title}
 						helperText={errors?.title?.message}
-						placeholder={label.name}
+						placeholder="Create new label"
 						variant="outlined"
 						InputProps={{
 							startAdornment: (

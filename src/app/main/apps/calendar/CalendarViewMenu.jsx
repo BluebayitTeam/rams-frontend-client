@@ -24,6 +24,8 @@ const viewNamesObj = {
  * The calendar view menu.
  */
 function CalendarViewMenu(props) {
+	console.log('props2', props);
+
 	const { className, currentDate, onChange } = props;
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
@@ -48,8 +50,8 @@ function CalendarViewMenu(props) {
 			>
 				{currentDate &&
 					currentDate.view &&
-					viewNamesObj[currentDate.view.type] &&
-					viewNamesObj[currentDate.view.type].title}
+					viewNamesObj[currentDate.view?.type] &&
+					viewNamesObj[currentDate.view?.type]?.title}
 			</Button>
 			<Menu
 				id="view-select-menu"

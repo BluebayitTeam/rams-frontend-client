@@ -1,13 +1,8 @@
 import { Controller, useForm } from 'react-hook-form';
 import FuseUtils from '@fuse/utils/FuseUtils';
-import Button from '@mui/material/Button';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import IconButton from '@mui/material/IconButton';
-import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useCallback, useEffect } from 'react';
-import _ from '@lodash';
 import { Popover } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useAppDispatch } from 'app/store/store';
@@ -223,7 +218,7 @@ function EventDialog() {
 							/>
 						</div>
 
-						<Controller
+						{/* <Controller
 							name="allDay"
 							control={control}
 							render={({ field: { onChange, value } }) => (
@@ -241,7 +236,7 @@ function EventDialog() {
 									}
 								/>
 							)}
-						/>
+						/> */}
 					</div>
 				</div>
 
@@ -291,38 +286,6 @@ function EventDialog() {
 						)}
 					/>
 				</div>
-
-				{eventDialog.type === 'new' ? (
-					<div className="flex items-center space-x-8">
-						<div className="flex flex-1" />
-						<Button
-							variant="contained"
-							color="primary"
-							onClick={onSubmit}
-							disabled={_.isEmpty(dirtyFields) || !isValid}
-						>
-							Add
-						</Button>
-					</div>
-				) : (
-					<div className="flex items-center space-x-8">
-						<div className="flex flex-1" />
-						<IconButton
-							onClick={handleRemove}
-							size="large"
-						>
-							<FuseSvgIcon>heroicons-outline:trash</FuseSvgIcon>
-						</IconButton>
-						<Button
-							variant="contained"
-							color="primary"
-							onClick={onSubmit}
-							disabled={_.isEmpty(dirtyFields) || !isValid}
-						>
-							Save
-						</Button>
-					</div>
-				)}
 			</div>
 		</Popover>
 	);
