@@ -8,7 +8,6 @@ import BallotIcon from '@mui/icons-material/Ballot';
 import { makeStyles } from '@mui/styles';
 import { getReportMakeStyles } from 'src/app/main/rams/ReportUtilities/reportMakeStyls';
 import DownloadIcon from '@mui/icons-material/Download';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DifferenceIcon from '@mui/icons-material/Difference';
 import html2PDF from 'jspdf-html2canvas';
 import Pagination from './Pagination';
@@ -40,7 +39,7 @@ function ReportPaginationAndDownload({
 	dispatchTableColumns
 }) {
 	const classes = useStyles();
-
+	console.log('totalPages,totalElements', totalPages, totalElements);
 	const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inDowloadPdf, setInDowloadPdf] = useState(false);
@@ -93,19 +92,6 @@ function ReportPaginationAndDownload({
 					<div className="downloadOptions shadow-4">
 						<div
 							className="cursor-pointer downloadContainer shadow-4"
-							style={{ width: '150px', margin: '10px' }}
-							onClick={() => {
-								setInDowloadPdf(true);
-								handlePdfDownload();
-							}}
-						>
-							<PictureAsPdfIcon />
-							<b className="text-nowrap">Download PDF</b>
-							<DownloadIcon />
-						</div>
-
-						<div
-							className="cursor-pointer downloadContainer shadow-4"
 							style={{ width: '160px', margin: '0px 10px 10px 10px' }}
 							onClick={() => {
 								setInDowloadExcel(true);
@@ -113,7 +99,7 @@ function ReportPaginationAndDownload({
 							}}
 						>
 							<DifferenceIcon />
-							<b>Download Excel</b>
+							<span>Download Excel</span>
 							<DownloadIcon />
 						</div>
 					</div>
