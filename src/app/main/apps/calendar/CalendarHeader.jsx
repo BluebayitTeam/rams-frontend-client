@@ -6,19 +6,23 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from 'app/store/store';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useSelector } from 'react-redux';
-import { useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { openNewEventDialog } from './store/eventDialogSlice';
 import CalendarViewMenu from './CalendarViewMenu';
 import { useGetCalendarEventsQuery } from './CalendarApi';
 
-function CalendarHeader({ calendarRef, currentDate, onToggleLeftSidebar, yearMonth }) {
-	const { year, month } = yearMonth;
+function CalendarHeader(props) {
+	const { calendarRef, currentDate, onToggleLeftSidebar, yearMonth, setYearMonth } = props;
 	const mainTheme = useSelector(selectMainTheme);
 	const dispatch = useAppDispatch();
-	const { refetch } = useGetCalendarEventsQuery(year);
+
+	const { data, refetch } = useGetCalendarEventsQuery(yearMonth, {
+		skip: !yearMonth.year || !yearMonth.month
+	});
 
 	const calendarApi = useCallback(() => {
+		// Check if calendarRef.current exists before trying to get the API
 		if (calendarRef.current) {
 			return calendarRef.current.getApi();
 		}
@@ -31,14 +35,11 @@ function CalendarHeader({ calendarRef, currentDate, onToggleLeftSidebar, yearMon
 
 		if (currentApi) {
 			const currentViewDate = currentApi.getDate();
-			console.log(
-				'Updated Year:',
-				currentViewDate.getFullYear(),
-				'Updated Month:',
-				currentViewDate.getMonth() + 1
-			);
+			const year = currentViewDate.getFullYear();
+			const month = currentViewDate.getMonth() + 1;
+			setYearMonth({ year, month });
 		}
-	}, [calendarApi]);
+	}, [calendarApi, setYearMonth]);
 
 	const debouncedUpdateYearMonth = useCallback(debounce(updateYearMonth, 200), [updateYearMonth]);
 
@@ -46,34 +47,46 @@ function CalendarHeader({ calendarRef, currentDate, onToggleLeftSidebar, yearMon
 		(direction) => {
 			const currentApi = calendarApi();
 
-			if (!currentApi) return;
+			if (currentApi) {
+				if (direction === 'prev') {
+					currentApi.prev();
+				} else {
+					currentApi.next();
+				}
 
-			if (direction === 'prev') {
-				currentApi.prev();
-			} else {
-				currentApi.next();
+				debouncedUpdateYearMonth();
 			}
-
-			debouncedUpdateYearMonth();
 		},
 		[calendarApi, debouncedUpdateYearMonth]
 	);
+
+	useEffect(() => {
+		if (yearMonth.year && yearMonth.month !== '') {
+			refetch();
+		}
+	}, [yearMonth, refetch]);
+
+	useEffect(() => {
+		updateYearMonth();
+	}, [updateYearMonth]);
 
 	return (
 		<div className="flex flex-col md:flex-row w-full p-12 justify-between z-10 container">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center">
 					<IconButton
-						onClick={onToggleLeftSidebar}
+						onClick={() => onToggleLeftSidebar()}
 						aria-label="open left sidebar"
 						size="small"
 					>
 						<FuseSvgIcon>heroicons-outline:menu</FuseSvgIcon>
 					</IconButton>
+
 					<Typography className="hidden sm:flex text-2xl font-semibold tracking-tight whitespace-nowrap mx-16">
 						{currentDate?.view.title}
 					</Typography>
 				</div>
+
 				<div className="flex items-center">
 					<Tooltip title="Previous">
 						<IconButton
@@ -99,6 +112,7 @@ function CalendarHeader({ calendarRef, currentDate, onToggleLeftSidebar, yearMon
 							</FuseSvgIcon>
 						</IconButton>
 					</Tooltip>
+
 					<Tooltip title="Today">
 						<div>
 							<motion.div
@@ -124,6 +138,7 @@ function CalendarHeader({ calendarRef, currentDate, onToggleLeftSidebar, yearMon
 					</Tooltip>
 				</div>
 			</div>
+
 			<motion.div
 				className="flex items-center justify-end md:justify-center"
 				initial={{ opacity: 0 }}
@@ -133,11 +148,18 @@ function CalendarHeader({ calendarRef, currentDate, onToggleLeftSidebar, yearMon
 					className="mx-8"
 					aria-label="add"
 					onClick={(ev) =>
-						dispatch(openNewEventDialog({ jsEvent: ev.nativeEvent, start: new Date(), end: new Date() }))
+						dispatch(
+							openNewEventDialog({
+								jsEvent: ev.nativeEvent,
+								start: new Date(),
+								end: new Date()
+							})
+						)
 					}
 				>
 					<FuseSvgIcon>heroicons-outline:plus-circle</FuseSvgIcon>
 				</IconButton>
+
 				<CalendarViewMenu currentDate={currentDate} />
 			</motion.div>
 		</div>

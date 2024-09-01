@@ -1412,6 +1412,7 @@ export const UNREAD_MESSAGES_WITH_ALL_USERS = `${BASE_URL}/message/api/v1/messag
 // todo_task
 export const POST_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/create/`;
 export const TODO_TASK_TYPE = `${BASE_URL}/task_type/api/v1/task_type/all/`;
+export const TASK_TYPE = `${BASE_URL}/task_type/api/v1/task_type/by_month/all/`;
 export const ALL_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/all/`;
 export const UPDATE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/update/`;
 export const DELETE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/delete/`;

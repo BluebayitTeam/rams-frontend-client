@@ -4,23 +4,20 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from 'app/store/store';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { ALL_TODO_TASK } from 'src/app/constant/constants';
 import { selectSelectedLabels, toggleSelectedLabels, setSelectedLabels } from './store/selectedLabelsSlice';
 import { useGetCalendarLabelsQuery } from './CalendarApi';
 
 /**
  * The calendar app sidebar.
  */
-function CalendarAppSidebar({ yearMonth }) {
-	console.log('yearMonth', yearMonth);
+function CalendarAppSidebar({ yearMonth, fetchDataForLabels }) {
 	const selectedLabels = useSelector(selectSelectedLabels);
 	const dispatch = useAppDispatch();
 	const [labels, setLabels] = useState([]);
 
-	const { year, month } = yearMonth; // Destructure yearMonth prop
+	const { year, month } = yearMonth;
 
-	const { data } = useGetCalendarLabelsQuery({ year, size: 25 });
+	const { data } = useGetCalendarLabelsQuery({ year, month });
 
 	useEffect(() => {
 		if (data?.task_types) {
@@ -30,20 +27,9 @@ function CalendarAppSidebar({ yearMonth }) {
 
 			dispatch(setSelectedLabels(allLabelIds));
 
-			// Fetch data for each label ID
 			fetchDataForLabels(allLabelIds);
 		}
 	}, [data, dispatch, year, month]);
-
-	const fetchDataForLabels = async (labelIds) => {
-		try {
-			const response = await axios.get(
-				`${ALL_TODO_TASK}?year=${year}&month=${month}&task_type=${labelIds.join(',')}`
-			);
-		} catch (error) {
-			console.error('Error during API call:', error);
-		}
-	};
 
 	const handleCheckboxChange = async (labelId) => {
 		try {

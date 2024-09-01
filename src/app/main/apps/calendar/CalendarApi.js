@@ -1,6 +1,6 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
-import { ALL_TODO_TASK, GET_TODOTASKTYPES } from 'src/app/constant/constants';
+import { ALL_TODO_TASK, TASK_TYPE } from 'src/app/constant/constants';
 import FuseUtils from '@fuse/utils/FuseUtils';
 import { selectSelectedLabels } from './store/selectedLabelsSlice';
 
@@ -43,9 +43,10 @@ const CalendarApi = api
 			}),
 
 			getCalendarLabels: build.query({
-				query: ({ page, size }) => ({ url: GET_TODOTASKTYPES, params: { page, size } }),
+				query: ({ year, month }) => ({ url: TASK_TYPE, params: { year, month } }),
 				providesTags: ['calendar_labels']
 			}),
+
 			createCalendarLabel: build.mutation({
 				query: (Label) => {
 					return {
