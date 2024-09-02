@@ -32,7 +32,6 @@ function ManpowerSubmissionList(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { manpowerSubmissionListId } = routeParams;
-	console.log('manpowerSubmissionListId', manpowerSubmissionListId);
 
 	const {
 		data: manpowerSubmissionList,
@@ -41,7 +40,6 @@ function ManpowerSubmissionList(props) {
 	} = useGetManpowerSubmissionListQuery(manpowerSubmissionListId, {
 		skip: !manpowerSubmissionListId || manpowerSubmissionListId === 'new'
 	});
-	// console.log('manpowerSubmissionListId', manpowerSubmissionList, manpowerSubmissionListId);
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
@@ -57,9 +55,7 @@ function ManpowerSubmissionList(props) {
 	const passenger = watch('passenger');
 	const manPowerDate = watch('man_power_date');
 
-	console.log('manPowerDate', manPowerDate);
-
-	const { data, isFetching, error } = useGetManpowerSubmissionListsQuery({
+	const { data } = useGetManpowerSubmissionListsQuery({
 		passenger,
 		manPowerDate
 	});
@@ -143,6 +139,8 @@ function ManpowerSubmissionList(props) {
 							handleSearchPassengerClick={handleSearchPassengerClick}
 							handleSearchManPowerDateClick={handleSearchManPowerDateClick}
 						/>
+						<br />
+						<br />
 						<br />
 						<br />
 						<br />

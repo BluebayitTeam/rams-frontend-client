@@ -2,8 +2,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
 import { useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import { useDispatch } from 'react-redux';
@@ -11,6 +9,7 @@ import moment from 'moment';
 import { TableHead } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { Delete } from '@mui/icons-material';
+import { Interweave } from 'interweave';
 
 /**
  * The manpowerSubmissionLists table.
@@ -44,7 +43,6 @@ function ManpowerSubmissionListsTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 
 	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
-	console.log('dfjdfksdhfksdhf', formContentFooterData);
 
 	// const { data, refetch } = useGetManpowerSubmissionListsQuery({ ...getValues(), manPowerDate }, { enabled: false });
 
@@ -77,7 +75,7 @@ function ManpowerSubmissionListsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(manpowerSubmissionLists.map((n) => n.id));
+			setSelected(data.map((n) => n.id));
 			return;
 		}
 
@@ -137,28 +135,28 @@ function ManpowerSubmissionListsTable(props) {
 		setPageAndSize({ ...pageAndSize, size: event.target.value });
 	}
 
-	function handleDeleteAgent(item, event) {
-		localStorage.removeItem('updateAgent');
-		localStorage.setItem('deleteAgent', event);
-		navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
-	}
+	// function handleDeleteAgent(item, event) {
+	// 	localStorage.removeItem('updateAgent');
+	// 	localStorage.setItem('deleteAgent', event);
+	// 	navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+	// }
 
-	if (data?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no manpowerSubmissionLists!
-				</Typography>
-			</motion.div>
-		);
-	}
+	// if (data?.length === 0) {
+	// 	return (
+	// 		<motion.div
+	// 			initial={{ opacity: 0 }}
+	// 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
+	// 			className="flex flex-1 items-center justify-center h-full"
+	// 		>
+	// 			<Typography
+	// 				color="text.secondary"
+	// 				variant="h5"
+	// 			>
+	// 				There are no manpowerSubmissionLists!
+	// 			</Typography>
+	// 		</motion.div>
+	// 	);
+	// }
 
 	return (
 		<div>
