@@ -1,21 +1,16 @@
 /* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import _ from '@lodash';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Checkbox, Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import ManpowerSubmissionListsTableHead from './ManpowerSubmissionListsTableHead';
+import moment from 'moment';
+import { TableHead } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 import {
 	selectFilteredManpowerSubmissionLists,
 	useGetManpowerSubmissionListsQuery
@@ -26,15 +21,34 @@ import {
  */
 function ManpowerSubmissionListsTable(props) {
 	const dispatch = useDispatch();
-	const { navigate, searchKey } = props;
+	const {
+		navigate,
+		searchKey,
+		classes,
+		reportTitle,
+		tableColumns,
+		dispatchTableColumns,
+		generalData,
+
+		inSiglePageMode,
+		setSortBy,
+		setSortBySubKey,
+		dragAndDropRow,
+		printableFormat
+	} = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+
 	const { data, isLoading, refetch } = useGetManpowerSubmissionListsQuery({ ...pageAndSize, searchKey });
+
+	console.log('dfsdfgsdjfgsdjfgjsdgf', data);
+
 	const totalData = useSelector(selectFilteredManpowerSubmissionLists(data));
 	const manpowerSubmissionLists = useSelector(selectFilteredManpowerSubmissionLists(data?.manpowerSubmissionLists));
-	let serialNumber = 1;
-
+	// const serialNumber = 1;
+	const methods = useFormContext();
+	const { formState, watch, getValues, reset } = methods;
 	useEffect(() => {
 		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
@@ -122,14 +136,6 @@ function ManpowerSubmissionListsTable(props) {
 		setPageAndSize({ ...pageAndSize, size: event.target.value });
 	}
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
-
 	if (manpowerSubmissionLists?.length === 0) {
 		return (
 			<motion.div
@@ -148,120 +154,239 @@ function ManpowerSubmissionListsTable(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
+		<div>
+			<div>
+				<div
+					className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}
+					onMouseOver={() => {
+						inSiglePageMode || setPage(data.page);
+					}}
 				>
-					<ManpowerSubmissionListsTableHead
-						selectedManpowerSubmissionListIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={manpowerSubmissionLists.length}
-						onMenuItemClick={handleDeselect}
-					/>
+					<div className={classes.pageHead}>
+						<h2 className="title  pl-0 md:-pl-20">{reportTitle}</h2>
+					</div>
 
-					<TableBody>
-						{_.orderBy(manpowerSubmissionLists, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
+					<h1 style={{ textDecoration: 'underline', textAlign: 'center' }}>
+						একক বহির্গমন ছাড়পএরের আবেদন ফরম{' '}
+					</h1>
+					<br />
+
+					<table
+						width="100%"
+						align="center"
+						className="px-32 w-11/12	"
+					>
+						<tr>
+							<td>
+								নিয়োগকারী দেশের নাম :
+								<span style={{ fontWeight: 'bold' }}> {data?.data?.[0]?.country}</span>
+							</td>
+
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>
+								জমাদানকারী রিক্রটিং এজেন্সীর নাম :{' '}
+								<span style={{ fontWeight: 'bold' }}>{getValues()?.agency_info?.name_bangla}</span>
+							</td>
+							<td style={{ textAlign: 'center' }}>
+								লাইসেন্স নম্বর :{' '}
+								<span style={{ fontWeight: 'bold' }}>
+									{' '}
+									আর এল-
+									{getValues()
+										?.agency_info?.rl_no?.toString()
+										.replace(/[0-9]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) + 2486))}
+								</span>
+							</td>
+							<td style={{ textAlign: 'right' }}>
+								{/* জমার তারিখ :<span style={{ fontWeight: 'bold' }}>{data?.data?.[0]?.man_power_date}</span> */}
+								জমার তারিখ :
+								<span style={{ fontWeight: 'bold', paddingRight: '10px' }}>
+									{moment(new Date(data?.data?.[0]?.man_power_date)).format('DD-MM-YYYY')}
+								</span>
+							</td>
+						</tr>
+					</table>
+
+					<Table
+						aria-label="simple table"
+						className={classes.table}
+						style={{ border: '1px solid black', width: '1000px' }}
+					>
+						<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
+							<TableRow>
+								{tableColumns.map((column, indx) => {
+									return column.show ? (
+										<TableCell
+											key={column.id}
+											align="center"
+											style={{ border: '1px solid black', padding: '0px 5px' }}
+											className="tableCellHead"
+											onDrop={(e) =>
+												dispatchTableColumns({
+													type: 'dragAndDrop',
+													// dragger: e.dataTransfer.getData('draggerLebel'),
+													dropper: column.id
+												})
+											}
+											onDragOver={(e) => e.preventDefault()}
+										>
+											<div
+												// draggable={true}
+												onDragStart={(e) => e.dataTransfer.setData('draggerLebel', column.id)}
+												onClick={() => {
+													if (column.sortAction !== false) {
+														setSortBy(data.sortBy === column.name ? '' : column.name);
+														setSortBySubKey &&
+															column.subName &&
+															setSortBySubKey(column.subName);
+													}
+												}}
+												style={{
+													margin: indx === 0 && '0px -5px 0px 5px'
+												}}
+											>
+												{column.label}
+												{/* <FontAwesomeIcon
+												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
+												style={{
+													transform:
+														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
+												}}
+												icon={faArrowUp}
+											/> */}
+											</div>
+										</TableCell>
+									) : null;
+								})}
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{data?.data?.map((dataArr, idx) => (
 								<TableRow
-									className="h-20 cursor-pointer"
+									key={dataArr.id}
+									className="tableRow cursor-pointer"
 									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
+									onDrop={(e) =>
+										dragAndDropRow(
+											e.dataTransfer.getData('draggerId'),
+											data.size * (data.page - 1) + idx
+										)
+									}
+									onDragOver={(e) => e.preventDefault()}
+									draggable
+									onDragStart={(e) => e.dataTransfer.setData('draggerId', idx)}
 								>
-									<TableCell
-										className="w-40 md:w-64 text-center"
-										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
+									{tableColumns.map((column) => {
+										return column.show ? (
+											<TableCell
+												align="center"
+												className="tableCell"
+												style={{ border: '1px solid black', padding: '0px 5px' }}
+											>
+												<div>
+													{column?.subName
+														? dataArr?.[column.name]?.[column?.subName]
+														: column.type === 'date'
+															? dataArr?.[column.name]
+																? moment(new Date(dataArr?.[column.name])).format(
+																		'DD-MM-YYYY'
+																	)
+																: ''
+															: column.name
+																? dataArr?.[column.name]
+																: column?.isSerialNo
+																	? dataArr.hideSerialNo || pageBasedSerialNo++
+																	: dataArr.getterMethod
+																		? dataArr.getterMethod(dataArr)
+																		: column.getterMethod
+																			? column.getterMethod(dataArr)
+																			: ''}
+												</div>
+											</TableCell>
+										) : null;
+									})}
 
 									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										align="center"
+										className="tableCell"
+										style={{
+											border: '1px solid black',
+											padding: '0px 6px 0 6px',
+											display: printableFormat ? 'none' : 'block'
+										}}
 									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n.name}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Edit
-											onClick={(event) =>
-												handleUpdateManpowerSubmissionList(n, 'updateManpowerSubmissionList')
-											}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
-
-										<Delete
-											onClick={(event) =>
-												handleDeleteManpowerSubmissionList(n, 'deleteManpowerSubmissionList')
-											}
-											className="cursor-pointer custom-delete-icon-style"
+										<DeleteIcon
+											onClick={() => {
+												deleteManpowerSubmissionList(dataArr?.id);
+											}}
+											className="cursor-pointer"
+											style={{ color: 'red' }}
 										/>
 									</TableCell>
 								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
+							))}
+						</TableBody>
+					</Table>
 
-			<div id="pagiContainer">
-				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
+					<p style={{ margin: '10px' }}>
+						<span style={{ fontWeight: 'bold' }}>এজেন্সীর অঙ্গীকার নামা : </span>বর্ণিত কর্মী গ্রুপ ভিসার
+						অন্তর্ভুক্ত নয় কর্মীর/কর্মীদের পাসপোর্ট ,ভিসা ,চাকরীর চুক্তি পএরে বর্নিত বেতন ও শর্তাদি সঠিক আছে
+						উক্ত বিষয়ে নিক্রটিং কারনে কর্মীর/কর্মীদের কোন প্রকার সমস্যা হইলে আমার
+						<span style={{ fontWeight: 'bold' }}>
+							{getValues()?.agency_info?.name_bangla}(আর এল-
+							{getValues()
+								?.agency_info?.rl_no?.toString()
+								.replace(/[0-9]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) + 2486))}
+							)
+						</span>
+						সম্পূর্ন দায় দায়িত্ব গ্রহন ও কর্মীর/কর্মীদের ক্ষতিপূরণ দান করিতে বাধ্য থাকিবো
+					</p>
 
-				<TablePagination
-					className="shrink-0 border-t-1"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
+					{/* <Interweave
+						allowAttributes
+						allowElements
+						disableLineBreaks
+						content={formContentFooterData}
+					/> */}
+					<br />
+				</div>
+
+				<table
+					// className={classes.pageBottmContainer}
+					style={{ backgroundColor: 'white' }}
+				>
+					<tbody>
+						<tr>
+							<td style={{ textAlign: 'center' }}>
+								পরীক্ষিতি হয়েছে <br />
+								কাগজপএ সঠিক আছে
+							</td>
+							<td style={{ textAlign: 'center' }}>বর্ণিত তথ্য যথাযথ আছে</td>
+							<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
+							<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
+							<td style={{ textAlign: 'center' }}>
+								এজেন্সী মালিক/প্রতিনিধিরি <br /> স্বাক্ষর প্রস্তাবমত
+							</td>
+						</tr>
+						<tr>
+							<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
+							<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
+							<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
+							<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
+							<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style={{ textAlign: 'center' }}>সহকারীর স্বাক্ষর</td>
+							<td style={{ textAlign: 'center' }}>সহকারী পরিচালকের স্বাক্ষর</td>
+							<td style={{ textAlign: 'center' }}>উপ-পরিচালকের স্বাক্ষর</td>
+							<td style={{ textAlign: 'center' }}>পরিচালকের স্বাক্ষর</td>
+							<td style={{ textAlign: 'center' }}>মহা পরিচালকের স্বাক্ষর</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	);

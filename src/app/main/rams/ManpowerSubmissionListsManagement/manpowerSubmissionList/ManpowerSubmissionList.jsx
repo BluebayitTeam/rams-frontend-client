@@ -13,6 +13,7 @@ import ManpowerSubmissionListHeader from './ManpowerSubmissionListHeader';
 import ManpowerSubmissionListModel from './models/ManpowerSubmissionListModel';
 import { useGetManpowerSubmissionListQuery } from '../ManpowerSubmissionListsApi';
 import ManpowerSubmissionListForm from './ManpowerSubmissionListForm';
+import ManpowerSubmissionLists from '../manpowerSubmissionLists/ManpowerSubmissionLists';
 /**
  * Form Validation Schema
  */
@@ -101,9 +102,12 @@ function ManpowerSubmissionList() {
 				header={<ManpowerSubmissionListHeader />}
 				content={
 					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<ManpowerSubmissionListForm manpowerSubmissionListId={manpowerSubmissionListId} />
-						</div>
+						<ManpowerSubmissionListForm manpowerSubmissionListId={manpowerSubmissionListId} />
+						<br />
+						<br />
+						<br />
+						<br />
+						<ManpowerSubmissionLists />
 					</div>
 				}
 				scroll={isMobile ? 'normal' : 'content'}
