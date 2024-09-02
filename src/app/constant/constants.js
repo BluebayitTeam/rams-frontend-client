@@ -1421,7 +1421,7 @@ export const UPDATE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/update/`
 export const DELETE_TODO_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/delete/`;
 export const GET_TODOS_TASK = `${BASE_URL}/todo_task/api/v1/todo_task/`;
 
-export const TASK_TYPE = `${BASE_URL}/task_type/api/v1/task_type/by_month/all/`;
+export const TASK_TYPE_LABELS = `${BASE_URL}/task_type/api/v1/task_type/by_month/all/`;
 
 // Todo-Task-Type
 
