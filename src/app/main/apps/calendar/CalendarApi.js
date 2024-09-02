@@ -60,37 +60,11 @@ const CalendarApi = api
 			getCalendarLabels: build.query({
 				query: () => ({ url: GET_TODOTASKTYPES }),
 				transformResponse: (response) => {
-					// Extract and transform the task types to match the expected label format
-					const myColorCode = [
-						'#2C3E50',
-						'#34495E',
-						'#1ABC9C',
-						'#16A085',
-						'#27AE60',
-						'#2ECC71',
-						'#3498DB',
-						'#2980B9',
-						'#9B59B6',
-						'#8E44AD',
-						'#F39C12',
-						'#E67E22',
-						'#D35400',
-						'#C0392B',
-						'#E74C3C',
-						'#95A5A6',
-						'#7F8C8D',
-						'#BDC3C7',
-						'#F1C40F',
-						'#F4A261',
-						'#5D6D7E'
-					];
-
 					return response.task_types.map((taskType) => {
-						const randomIndex = Math.floor(Math.random() * myColorCode.length);
 						return {
 							id: taskType.id,
-							color: myColorCode[randomIndex], // Assign a random color from the array
-							title: taskType.name // Assign the task type name to the title
+							color: taskType?.color || '#161616ff',
+							title: taskType.name
 						};
 					});
 				},

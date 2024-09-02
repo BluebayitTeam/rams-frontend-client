@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 function Keyword({ name, label, domEl, icon, type = 'text', onClick = () => null, hideRemoveAction } = {}) {
 	const classes = useStyles();
 	const methods = useFormContext();
-	const { getValues, setValue } = methods;
+	const { getValues, setValue, reset } = methods;
 	const values = getValues();
 
 	const [Label] = useState(label || fillUnderscoreBySpace(name));
@@ -62,6 +62,10 @@ function Keyword({ name, label, domEl, icon, type = 'text', onClick = () => null
 		} else if (type === 'select') {
 			// Clear the associated name for select type
 			setValue(`${name}Name`, '');
+			reset({
+				...getValues(),
+				[`${name}`]: ''
+			});
 		}
 
 		// Call the onClick function

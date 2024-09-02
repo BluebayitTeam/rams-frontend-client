@@ -116,7 +116,7 @@ function ReportSelect({ name, label, options = [], icon, width, setReRender, onE
 						value={value ? options.find((data) => data.id == value) : null}
 						getOptionLabel={(option) => `${option.name}`}
 						onChange={(_event, newValue) => {
-							onChange(newValue?.id);
+							onChange(newValue?.id || '');
 							onEnter();
 							setValue(`${name}Name`, newValue?.name || '');
 						}}

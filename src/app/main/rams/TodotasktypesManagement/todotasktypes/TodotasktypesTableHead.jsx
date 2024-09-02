@@ -28,6 +28,13 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'color',
+		align: 'left',
+		disablePadding: false,
+		label: 'Color',
+		sort: true
+	},
+	{
 		id: 'action',
 		align: 'right',
 		disablePadding: false,

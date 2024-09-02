@@ -45,6 +45,7 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 		dispatch(getGroups());
 	}, [dispatch]);
 
+	console.log('sadhbjkasbdkj', getValues());
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">

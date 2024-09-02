@@ -1,33 +1,46 @@
-import TextField from '@mui/material/TextField';
-import { Controller, useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useFormContext } from 'react-hook-form';
+import InputColor from 'react-input-color';
+import CustomTextField from 'src/app/@components/CustomTextField';
 
 function TodotasktypeForm(props) {
-	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { control, formState, watch } = methods;
-	const { errors } = formState;
+	const { setValue, watch } = methods;
 
 	return (
 		<div>
-			<Controller
+			<CustomTextField
 				name="name"
-				control={control}
-				render={({ field }) => (
-					<TextField
-						{...field}
-						className="mt-8 mb-16"
-						required
-						label="Name"
-						autoFocus
-						id="name"
-						variant="outlined"
-						fullWidth
-						error={!!errors.name}
-						helperText={errors?.name?.message}
-					/>
-				)}
+				label="Name"
+				required
 			/>
+			<div className="flex">
+				<div className="w-5/6">
+					<CustomTextField
+						name="color"
+						label="Color Code"
+						required
+					/>
+				</div>
+				<div
+					className="rounded "
+					style={{
+						height: '50px',
+						width: '50px',
+						marginLeft: '10px',
+						marginTop: '10px',
+						backgroundColor: watch('color') || 'white'
+					}}
+				/>
+			</div>
+
+			<div className="flex">
+				<h4 style={{ marginRight: '15px' }}>Choose Color:</h4>
+				<InputColor
+					initialValue=" "
+					onChange={(color) => setValue('color', color.hex)}
+					placement="right"
+				/>
+			</div>
 		</div>
 	);
 }

@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useReducer, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
@@ -68,6 +68,10 @@ function AgentReportsTable(props) {
 
 	const { refetch: refetchAll } = useGetAgentAllReportsQuery({ ...getValues() }, { enabled: false });
 	const totalData = useSelector(selectFilteredAgentReports(data));
+
+	useEffect(() => {
+		setModifiedAgentData(totalData?.agents);
+	}, [totalData]);
 
 	// Function to handle Excel download
 	const handleExelDownload = () => {

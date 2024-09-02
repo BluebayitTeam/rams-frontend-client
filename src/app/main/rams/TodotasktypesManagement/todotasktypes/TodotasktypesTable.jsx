@@ -178,7 +178,12 @@ function TodotasktypesTable(props) {
 										className="w-40 md:w-64 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											left: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
 									</TableCell>
@@ -188,13 +193,32 @@ function TodotasktypesTable(props) {
 										scope="row"
 									>
 										{n.name}
+									</TableCell>{' '}
+									<TableCell
+										className="p-4 md:p-16 border-t-1  border-gray-200"
+										component="th"
+										scope="row"
+									>
+										<div
+											className="rounded "
+											style={{
+												height: '40px',
+												width: '40px',
+												backgroundColor: n?.color || 'white'
+											}}
+										/>
 									</TableCell>
 									<TableCell
 										className="p-4 md:p-16 border-t-1  border-gray-200"
 										component="th"
 										scope="row"
 										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
+										style={{
+											position: 'sticky',
+											right: 0,
+											zIndex: 1,
+											backgroundColor: '#fff'
+										}}
 									>
 										<Edit
 											onClick={() => handleUpdateTodotasktype(n, 'updateTodotasktype')}
