@@ -40,31 +40,24 @@ const initialTableColumnsState = [
 	{ id: 12, label: 'কল্যাণ ফ্রি এর পরিমাণ', name: 'efg', show: true }
 ];
 
-function ManpowerSubmissionLists() {
-	const classes = useStyles();
+function ManpowerSubmissionLists({ data }) {
+	// const { data } = props;
 	const methods = useForm();
 	const { getValues, refetch, refetchAll } = methods;
+	console.log('ManpowerSubmissionListsData', data);
+	const classes = useStyles();
 
 	const { authTOKEN } = useUserInfo();
 
 	const [generalData, setGeneralData] = useState({});
 
-	// const manpowerSbLists = useSelector(
-	// 	({ manpowerSubmissionListManagement }) => manpowerSubmissionListManagement.manpowerSubmissionList
-	// );
-	const [manPowerDate, setManPowerDate] = useState({});
-	// const { data, refetchAll } = useGetManpowerSubmissionListsQuery(
-	// 	{ ...getValues(), manPowerDate },
-	// 	{ enabled: false }
-	// );
-
-	const [manpowerSbLists, subManpowerSbLists] = useState('');
-	console.log('sdjfdsfsfdsdsdds', manpowerSbLists);
+	const [manpowerSbLists, subManpowerSbLists] = useState([{ data }]);
 
 	const [modifiedManpowerSbListData, setModifiedManpowerSbListData, setSortBy, setSortBySubKey, dragAndDropRow] =
 		useReportData();
 	useEffect(() => {
-		const manpowerSubLsts = Array.isArray(manpowerSbLists) ? manpowerSbLists : [];
+		console.log('Received manpowerSbLists:', manpowerSbLists);
+		const manpowerSubLsts = manpowerSbLists;
 		const modifiedData = manpowerSubLsts.map((manpowerSub) => ({
 			id: manpowerSub?.man_power_list?.id,
 			profession: manpowerSub?.visa_entry?.profession_english,
@@ -86,8 +79,12 @@ function ManpowerSubmissionLists() {
 			rl_no: manpowerSub?.man_power?.recruiting_agency?.rl_no,
 			man_power_date: manpowerSub?.man_power_list?.man_power_date
 		}));
+		console.log('Modified Manpower Submission List Data:', modifiedData);
 		setModifiedManpowerSbListData(modifiedData);
 	}, [manpowerSbLists]);
+
+	// Inside the return statement, before rendering
+	console.log('Rendering Modified Manpower Data:', modifiedManpowerSbListData);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [printableFormat, setPrintableFormat] = useState(false);
@@ -116,6 +113,8 @@ function ManpowerSubmissionLists() {
 	const componentRef = useRef();
 
 	const [modifiedManpowerData, setmodifiedManpowerData] = useReportData();
+
+	console.log('modifiedManpowerData', modifiedManpowerData);
 
 	// Function to handle Excel download
 	const handleExelDownload = () => {

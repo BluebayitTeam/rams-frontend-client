@@ -11,7 +11,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import ManpowerSubmissionListHeader from './ManpowerSubmissionListHeader';
 import ManpowerSubmissionListModel from './models/ManpowerSubmissionListModel';
-import { useGetManpowerSubmissionListQuery } from '../ManpowerSubmissionListsApi';
+import {
+	selectFilteredManpowerSubmissionLists,
+	useGetManpowerSubmissionListQuery,
+	useGetManpowerSubmissionListsQuery
+} from '../ManpowerSubmissionListsApi';
 import ManpowerSubmissionListForm from './ManpowerSubmissionListForm';
 import ManpowerSubmissionLists from '../manpowerSubmissionLists/ManpowerSubmissionLists';
 /**
@@ -24,7 +28,7 @@ const schema = z.object({
 		.min(5, 'The manpowerSubmissionList name must be at least 5 characters')
 });
 
-function ManpowerSubmissionList() {
+function ManpowerSubmissionList(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { manpowerSubmissionListId } = routeParams;
@@ -42,11 +46,43 @@ function ManpowerSubmissionList() {
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: {
+			man_power_date: ''
+		},
 		resolver: zodResolver(schema)
 	});
 	const { reset, watch } = methods;
 	const form = watch();
+
+	const passenger = watch('passenger');
+	const manPowerDate = watch('man_power_date');
+
+	console.log('manPowerDate', manPowerDate);
+
+	const { data, isFetching, error } = useGetManpowerSubmissionListsQuery({
+		passenger,
+		manPowerDate
+	});
+
+	function handleSearchPassengerClick() {
+		const selectedPassenger = watch('passenger');
+		console.log('selectedPassenger', selectedPassenger);
+
+		if (selectedPassenger) {
+			selectFilteredManpowerSubmissionLists({ passenger: selectedPassenger.passenger_id });
+		}
+	}
+
+	function handleSearchManPowerDateClick() {
+		const selectedManPowerDate = watch('man_power_date');
+		console.log('selectedDate', selectedManPowerDate);
+
+		if (selectedManPowerDate) {
+			selectFilteredManpowerSubmissionLists({ manPowerDate: selectedManPowerDate });
+		}
+	}
+
+	console.log('fdksdfhsdkfhsdkf', data);
 	useEffect(() => {
 		if (manpowerSubmissionListId === 'new') {
 			reset(ManpowerSubmissionListModel({}));
@@ -102,12 +138,16 @@ function ManpowerSubmissionList() {
 				header={<ManpowerSubmissionListHeader />}
 				content={
 					<div className="p-16 ">
-						<ManpowerSubmissionListForm manpowerSubmissionListId={manpowerSubmissionListId} />
+						<ManpowerSubmissionListForm
+							manpowerSubmissionListId={manpowerSubmissionListId}
+							handleSearchPassengerClick={handleSearchPassengerClick}
+							handleSearchManPowerDateClick={handleSearchManPowerDateClick}
+						/>
 						<br />
 						<br />
 						<br />
 						<br />
-						<ManpowerSubmissionLists />
+						<ManpowerSubmissionLists data={data} />
 					</div>
 				}
 				scroll={isMobile ? 'normal' : 'content'}
