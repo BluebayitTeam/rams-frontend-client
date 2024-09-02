@@ -31,6 +31,7 @@ function ReportPaginationAndDownload({
 	onNextPage,
 	onLastPage,
 	handlePdfDownload,
+	filename,
 	handleExelDownload,
 	handlePrint,
 	handleGetData,
@@ -166,8 +167,8 @@ function ReportPaginationAndDownload({
 					id="test-table-xls-button"
 					className="download-table-xls-button"
 					table="table-to-xls"
-					filename="AgentReports"
-					sheet="AgentReportsSheet"
+					filename={filename}
+					sheet={filename}
 					buttonText="Download as XLS"
 				/>
 			</div>

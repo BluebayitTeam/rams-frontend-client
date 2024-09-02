@@ -171,6 +171,7 @@ function AgentReportsTable(props) {
 				handleGetAllData={handleGetAllAgents}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
+				filename="AgentReport"
 			/>
 
 			<table
@@ -191,6 +192,7 @@ function AgentReportsTable(props) {
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							data={agent}
+							totalColumn={initialTableColumnsState?.length}
 							serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
 							setPage={setPage}
 							// setSortBy={setSortBy}

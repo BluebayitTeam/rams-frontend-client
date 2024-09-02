@@ -14,6 +14,7 @@ function SinglePage({
 	filteredData,
 	dispatchTableColumns,
 	data,
+	totalColumn,
 	serialNumber,
 	setPage,
 	inSiglePageMode,
@@ -58,15 +59,16 @@ function SinglePage({
 					</div>
 				</div>
 
-				<div className={classes.pageHead}>
-					<h1 className="title  pl-0 md:-pl-20">
-						<u>{reportTitle}</u>
-					</h1>
-				</div>
-				{/* <div className={classes.pageHead}>
-					<p className="title  pl-0 md:-pl-20">{FilteredCriteria}</p>
-				</div> */}
-
+				<Table>
+					<TableHead>
+						<TableCell
+							className=" text-24 text-center"
+							colspan={totalColumn}
+						>
+							{reportTitle}
+						</TableCell>
+					</TableHead>
+				</Table>
 				<Table
 					aria-label="simple table"
 					className={`${classes.table} w-fit `}
