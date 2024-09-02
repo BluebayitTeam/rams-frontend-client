@@ -12,7 +12,6 @@ import { useReactToPrint } from 'react-to-print';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ManpowerSubmissionListsTable from './ManpowerSubmissionListsTable';
-import { useGetManpowerSubmissionListsQuery } from '../ManpowerSubmissionListsApi';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
@@ -44,7 +43,7 @@ const initialTableColumnsState = [
 function ManpowerSubmissionLists() {
 	const classes = useStyles();
 	const methods = useForm();
-	const { getValues } = methods;
+	const { getValues, refetch, refetchAll } = methods;
 
 	const { authTOKEN } = useUserInfo();
 
@@ -54,11 +53,13 @@ function ManpowerSubmissionLists() {
 	// 	({ manpowerSubmissionListManagement }) => manpowerSubmissionListManagement.manpowerSubmissionList
 	// );
 	const [manPowerDate, setManPowerDate] = useState({});
-	const { data, refetch } = useGetManpowerSubmissionListsQuery({ ...getValues(), manPowerDate }, { enabled: false });
-
-	console.log('sdjfdsfsfdsdsdds', data);
+	// const { data, refetchAll } = useGetManpowerSubmissionListsQuery(
+	// 	{ ...getValues(), manPowerDate },
+	// 	{ enabled: false }
+	// );
 
 	const [manpowerSbLists, subManpowerSbLists] = useState('');
+	console.log('sdjfdsfsfdsdsdds', manpowerSbLists);
 
 	const [modifiedManpowerSbListData, setModifiedManpowerSbListData, setSortBy, setSortBySubKey, dragAndDropRow] =
 		useReportData();
@@ -90,9 +91,7 @@ function ManpowerSubmissionLists() {
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [printableFormat, setPrintableFormat] = useState(false);
-	const handlePrintableFormat = (event) => {
-		setPrintableFormat(event.target.checked);
-	};
+
 	// tools state
 
 	// const [inPrint, setInPrint] = useState(false);
@@ -142,21 +141,21 @@ function ManpowerSubmissionLists() {
 						callBack(response.data);
 					}
 
-					const agentsData = response.data.agents || [];
-					setmodifiedManpowerData(agentsData);
+					const manpowersData = response.data.manpowers || [];
+					setmodifiedManpowerData(manpowersData);
 					setInShowAllMode(false);
 
-					// const { totalPages, totalElements } = getPaginationData(agentsData, size, page);
+					// const { totalPages, totalElements } = getPaginationData(manpowersData, size, page);
 					setTotalPages(response.data?.total_pages);
 					setTotalElements(response.data?.total_elements);
 				});
 			}
 		} catch (error) {
-			console.error('Error fetching agents:', error);
+			console.error('Error fetching manpowers:', error);
 		}
 	};
 
-	const handleGetAllAgents = async (callBack, callBackAfterStateUpdated) => {
+	const handleGetAllManpowers = async (callBack, callBackAfterStateUpdated) => {
 		try {
 			const formValues = getValues();
 
@@ -168,10 +167,10 @@ function ManpowerSubmissionLists() {
 						callBack(response.data);
 					}
 
-					setmodifiedManpowerData(response.data.agents || []);
+					setmodifiedManpowerData(response.data.manpowers || []);
 					setInShowAllMode(true);
 
-					const { totalPages, totalElements } = getPaginationData(response.data.agents, size, page);
+					const { totalPages, totalElements } = getPaginationData(response.data.manpowers, size, page);
 					setTotalPages(totalPages);
 					setTotalElements(totalElements);
 				});
@@ -181,7 +180,7 @@ function ManpowerSubmissionLists() {
 				}
 			}
 		} catch (error) {
-			console.error('Error fetching all agents:', error);
+			console.error('Error fetching all manpowers:', error);
 		}
 	};
 	return (
@@ -203,7 +202,7 @@ function ManpowerSubmissionLists() {
 				handleExelDownload={handleExelDownload}
 				handlePrint={handlePrint}
 				handleGetData={handleGetManpowers}
-				handleGetAllData={handleGetAllAgents}
+				handleGetAllData={handleGetAllManpowers}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
 			/>

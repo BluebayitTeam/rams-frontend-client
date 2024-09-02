@@ -21,12 +21,16 @@ const ManpowerSubmissionListApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getManpowerSubmissionLists: build.query({
-				query: ({ manPowerDate }) => ({
+				query: ({ manPowerDate, passenger }) => ({
 					url: MANPOWERSBLISTS_BY_DATE,
-					params: { manPowerDate }
+					params: {
+						man_power_date: manPowerDate,
+						passenger
+					}
 				}),
 				providesTags: ['manpowerSubmissionLists']
 			}),
+
 			deleteManpowerSubmissionLists: build.mutation({
 				query: (manpowerSubmissionListIds) => ({
 					url: DELETE_MANPOWERLIST,
