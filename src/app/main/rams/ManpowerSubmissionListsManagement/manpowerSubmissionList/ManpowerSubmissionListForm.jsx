@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { getAgencys, getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
@@ -11,7 +11,9 @@ import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
+import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
+import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import { useCreateManpowerSubmissionListMutation } from '../ManpowerSubmissionListsApi';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,12 +47,21 @@ function ManpowerSubmissionListForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
-	console.log('getValues', getValues());
+	const routeParams = useParams();
+
+	const [manpowerSubmissionListId, setmanpowerSubmissionListId] = useState('');
+
+	// const { data } = useGetManpowerSubmissionListQuery(manpowerSubmissionListId, {
+	// 	skip: !manpowerSubmissionListId
+	// });
+
+	// console.log('fdfkdfdfdfd', data);
 	const { errors } = formState;
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 	const navigate = useNavigate();
 	const classes = useStyles({ isPassenger: watch('passenger') });
+
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getAgencys());
@@ -76,6 +87,21 @@ function ManpowerSubmissionListForm(props) {
 	function handleCancel() {
 		reset({});
 	}
+
+	useEffect(() => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+
+		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_FOOTER}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) =>
+				sessionStorage.setItem('formContentFooterData', data?.formcontent_detail[0]?.details || '')
+			);
+	}, []);
 
 	return (
 		<div>
@@ -107,8 +133,7 @@ function ManpowerSubmissionListForm(props) {
 				<div
 					className={classes.searchContainer}
 					onClick={() =>
-						watch('passenger') &&
-						dispatch(useGetManpowerSubmissionListQuery({ passenger: watch('passenger') }))
+						watch('passenger') && dispatch(getManpowerSubmissionList({ passenger: watch('passenger') }))
 					}
 				>
 					<Search />

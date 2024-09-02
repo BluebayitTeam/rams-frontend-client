@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 /* eslint-disable no-nested-ternary */
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -38,19 +40,19 @@ function ManpowerSubmissionListsTable(props) {
 	} = props;
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+	const [passenger, setPassenger] = useState('');
 
-	const { data, isLoading, refetch } = useGetManpowerSubmissionListsQuery({ ...pageAndSize, searchKey });
-
-	console.log('dfsdfgsdjfgsdjfgjsdgf', data);
+	const { data } = useGetManpowerSubmissionListsQuery({ ...getValues(), manPowerDate }, { enabled: false });
+	console.log('manpowers', data);
 
 	const totalData = useSelector(selectFilteredManpowerSubmissionLists(data));
-	const manpowerSubmissionLists = useSelector(selectFilteredManpowerSubmissionLists(data?.manpowerSubmissionLists));
+	const manpowerSubmissionLists = useSelector(selectFilteredManpowerSubmissionLists(data?.man_power_date));
+	console.log('dfsdfgsdjfgsdjfgjsdgf', manpowerSubmissionLists);
+
 	// const serialNumber = 1;
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 
@@ -249,14 +251,6 @@ function ManpowerSubmissionListsTable(props) {
 												}}
 											>
 												{column.label}
-												{/* <FontAwesomeIcon
-												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
-												style={{
-													transform:
-														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
-												}}
-												icon={faArrowUp}
-											/> */}
 											</div>
 										</TableCell>
 									) : null;
