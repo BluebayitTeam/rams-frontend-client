@@ -42,8 +42,8 @@ function ManpowerSubmissionListsTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [passenger, setPassenger] = useState('');
 
-	const { data } = useGetManpowerSubmissionListsQuery({ ...getValues(), manPowerDate }, { enabled: false });
-	console.log('manpowers', data);
+	const { data, refetch } = useGetManpowerSubmissionListsQuery({ ...getValues(), manPowerDate }, { enabled: false });
+	// console.log('manpowers', data);
 
 	const totalData = useSelector(selectFilteredManpowerSubmissionLists(data));
 	const manpowerSubmissionLists = useSelector(selectFilteredManpowerSubmissionLists(data?.man_power_date));
