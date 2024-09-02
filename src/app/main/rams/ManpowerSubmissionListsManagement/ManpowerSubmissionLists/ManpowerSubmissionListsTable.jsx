@@ -1,22 +1,15 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable jsx-a11y/mouse-events-have-key-events */
-/* eslint-disable no-nested-ternary */
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { TableHead } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import {
-	selectFilteredManpowerSubmissionLists,
-	useGetManpowerSubmissionListsQuery
-} from '../ManpowerSubmissionListsApi';
+import { Delete } from '@mui/icons-material';
+import { Interweave } from 'interweave';
 
 /**
  * The manpowerSubmissionLists table.
@@ -31,34 +24,38 @@ function ManpowerSubmissionListsTable(props) {
 		tableColumns,
 		dispatchTableColumns,
 		generalData,
-
+		serialNumber,
 		inSiglePageMode,
 		setSortBy,
 		setSortBySubKey,
 		dragAndDropRow,
-		printableFormat
+		printableFormat,
+		data
 	} = props;
+	let pageBasedSerialNo = serialNumber;
+
+	console.log('gjfdlkgjldfjgldfgjldfjg', data);
+
+	const methods = useFormContext();
+	const { formState, watch, getValues, reset } = methods; // Make sure this is at the top
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const [passenger, setPassenger] = useState('');
 
-	const { data, refetch } = useGetManpowerSubmissionListsQuery({ ...getValues(), manPowerDate }, { enabled: false });
-	// console.log('manpowers', data);
+	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
 
-	const totalData = useSelector(selectFilteredManpowerSubmissionLists(data));
-	const manpowerSubmissionLists = useSelector(selectFilteredManpowerSubmissionLists(data?.man_power_date));
-	console.log('dfsdfgsdjfgsdjfgjsdgf', manpowerSubmissionLists);
+	// const { data, refetch } = useGetManpowerSubmissionListsQuery({ ...getValues(), manPowerDate }, { enabled: false });
 
-	// const serialNumber = 1;
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	useEffect(() => {
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
+	// const manpowerSubmissionLists = useSelector(selectFilteredManpowerSubmissionLists(data || []));
 
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
+	// useEffect(() => {
+	// 	refetch({ page, rowsPerPage });
+	// }, [page, rowsPerPage]);
+
+	// useEffect(() => {
+	// 	refetch({ searchKey });
+	// }, [searchKey]);
+
 	const [selected, setSelected] = useState([]);
 
 	const [tableOrder, setTableOrder] = useState({
@@ -78,7 +75,7 @@ function ManpowerSubmissionListsTable(props) {
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
-			setSelected(manpowerSubmissionLists.map((n) => n.id));
+			setSelected(data.map((n) => n.id));
 			return;
 		}
 
@@ -90,7 +87,7 @@ function ManpowerSubmissionListsTable(props) {
 	}
 
 	function handleClick(item) {
-		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/${item.id}/${item.handle}`);
+		navigate(`/apps/manpowerSubmissionList/data/${item.id}/${item.handle}`);
 	}
 
 	function handleUpdateManpowerSubmissionList(item, event) {
@@ -99,7 +96,7 @@ function ManpowerSubmissionListsTable(props) {
 		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/${item.id}/${item.handle}`);
 	}
 
-	function handleDeleteManpowerSubmissionList(item, event) {
+	function deleteManpowerSubmissionList(item, event) {
 		localStorage.removeItem('updateManpowerSubmissionList');
 		localStorage.setItem('deleteManpowerSubmissionList', event);
 		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/${item.id}/${item.handle}`);
@@ -138,22 +135,28 @@ function ManpowerSubmissionListsTable(props) {
 		setPageAndSize({ ...pageAndSize, size: event.target.value });
 	}
 
-	if (manpowerSubmissionLists?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no manpowerSubmissionLists!
-				</Typography>
-			</motion.div>
-		);
-	}
+	// function handleDeleteAgent(item, event) {
+	// 	localStorage.removeItem('updateAgent');
+	// 	localStorage.setItem('deleteAgent', event);
+	// 	navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
+	// }
+
+	// if (data?.length === 0) {
+	// 	return (
+	// 		<motion.div
+	// 			initial={{ opacity: 0 }}
+	// 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
+	// 			className="flex flex-1 items-center justify-center h-full"
+	// 		>
+	// 			<Typography
+	// 				color="text.secondary"
+	// 				variant="h5"
+	// 			>
+	// 				There are no manpowerSubmissionLists!
+	// 			</Typography>
+	// 		</motion.div>
+	// 	);
+	// }
 
 	return (
 		<div>
@@ -251,6 +254,14 @@ function ManpowerSubmissionListsTable(props) {
 												}}
 											>
 												{column.label}
+												{/* <FontAwesomeIcon
+												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
+												style={{
+													transform:
+														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
+												}}
+												icon={faArrowUp}
+											/> */}
 											</div>
 										</TableCell>
 									) : null;
@@ -312,7 +323,7 @@ function ManpowerSubmissionListsTable(props) {
 											display: printableFormat ? 'none' : 'block'
 										}}
 									>
-										<DeleteIcon
+										<Delete
 											onClick={() => {
 												deleteManpowerSubmissionList(dataArr?.id);
 											}}
@@ -339,17 +350,17 @@ function ManpowerSubmissionListsTable(props) {
 						সম্পূর্ন দায় দায়িত্ব গ্রহন ও কর্মীর/কর্মীদের ক্ষতিপূরণ দান করিতে বাধ্য থাকিবো
 					</p>
 
-					{/* <Interweave
+					<Interweave
 						allowAttributes
 						allowElements
 						disableLineBreaks
 						content={formContentFooterData}
-					/> */}
+					/>
 					<br />
 				</div>
 
 				<table
-					// className={classes.pageBottmContainer}
+					className={classes.pageBottmContainer}
 					style={{ backgroundColor: 'white' }}
 				>
 					<tbody>

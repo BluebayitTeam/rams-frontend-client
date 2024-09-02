@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { getAgencys, getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
@@ -11,7 +11,7 @@ import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import { useCreateManpowerSubmissionListMutation } from '../ManpowerSubmissionListsApi';
@@ -43,19 +43,11 @@ const useStyles = makeStyles((theme) => ({
 	})
 }));
 
-function ManpowerSubmissionListForm(props) {
+function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchManPowerDateClick }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
-	const routeParams = useParams();
 
-	const [manpowerSubmissionListId, setmanpowerSubmissionListId] = useState('');
-
-	// const { data } = useGetManpowerSubmissionListQuery(manpowerSubmissionListId, {
-	// 	skip: !manpowerSubmissionListId
-	// });
-
-	// console.log('fdfkdfdfdfd', data);
 	const { errors } = formState;
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
@@ -132,9 +124,7 @@ function ManpowerSubmissionListForm(props) {
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={() =>
-						watch('passenger') && dispatch(getManpowerSubmissionList({ passenger: watch('passenger') }))
-					}
+					onClick={handleSearchPassengerClick} // Call the handleSearchPassengerClick function on click
 				>
 					<Search />
 				</div>
@@ -151,10 +141,7 @@ function ManpowerSubmissionListForm(props) {
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={() =>
-						watch('man_power_date') &&
-						dispatch(getManpowerSubmissionList({ man_power_date: watch('man_power_date') }))
-					}
+					onClick={handleSearchManPowerDateClick}
 				>
 					<Search />
 				</div>
