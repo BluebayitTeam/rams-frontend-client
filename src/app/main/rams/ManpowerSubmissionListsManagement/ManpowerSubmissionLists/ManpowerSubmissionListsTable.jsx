@@ -23,7 +23,7 @@ function ManpowerSubmissionListsTable(props) {
 		reportTitle,
 		tableColumns,
 		dispatchTableColumns,
-		generalData,
+
 		serialNumber,
 		inSiglePageMode,
 		setSortBy,
