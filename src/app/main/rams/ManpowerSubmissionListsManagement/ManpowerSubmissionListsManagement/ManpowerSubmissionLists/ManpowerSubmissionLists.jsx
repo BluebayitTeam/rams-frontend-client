@@ -1,12 +1,15 @@
 /* eslint-disable array-callback-return */
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
+import { GET_SITESETTINGS } from 'src/app/constant/constants';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useUserInfo from 'src/app/@customHooks/useUserInfo';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import { useForm } from 'react-hook-form';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
+import { unstable_batchedUpdates } from 'react-dom';
 import { useReactToPrint } from 'react-to-print';
+import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ManpowerSubmissionListsTable from './ManpowerSubmissionListsTable';
 
@@ -54,10 +57,14 @@ function ManpowerSubmissionLists({ data, tabileShow, setTabileShow }) {
 
 	const [generalData, setGeneralData] = useState({});
 
+	const [manpowerSbLists, subManpowerSbLists] = useState([{ data }]);
+
 	const [modifiedManpowerSbListData, setModifiedManpowerSbListData, setSortBy, setSortBySubKey, dragAndDropRow] =
 		useReportData();
 	useEffect(() => {
-		const modifiedData = data?.map((manpowerSub) => ({
+		console.log('Received manpowerSbLists:', manpowerSbLists);
+		const manpowerSubLsts = manpowerSbLists;
+		const modifiedData = manpowerSubLsts.map((manpowerSub) => ({
 			id: manpowerSub?.man_power_list?.id,
 			profession: manpowerSub?.visa_entry?.profession_english,
 			visa_no: manpowerSub?.visa_entry?.visa_number,
@@ -78,9 +85,9 @@ function ManpowerSubmissionLists({ data, tabileShow, setTabileShow }) {
 			rl_no: manpowerSub?.man_power?.recruiting_agency?.rl_no,
 			man_power_date: manpowerSub?.man_power_list?.man_power_date
 		}));
-
+		console.log('Modified Manpower Submission List Data:', modifiedData);
 		setModifiedManpowerSbListData(modifiedData);
-	}, [data]);
+	}, [manpowerSbLists]);
 
 	// Inside the return statement, before rendering
 	console.log('Rendering Modified Manpower Data:', modifiedManpowerSbListData);
@@ -97,11 +104,23 @@ function ManpowerSubmissionLists({ data, tabileShow, setTabileShow }) {
 	// pagination state
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(25);
+	const [totalPages, setTotalPages] = useState(0);
+	const [totalElements, setTotalElements] = useState(0);
+
+	// get general setting data
+	useEffect(() => {
+		fetch(`${GET_SITESETTINGS}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) => setGeneralData(data.general_settings[0] || {}))
+			.catch(() => setGeneralData({}));
+	}, []);
 
 	// print dom ref
 	const componentRef = useRef();
 
 	const [modifiedManpowerData, setmodifiedManpowerData] = useReportData();
+
+	console.log('modifiedManpowerData', modifiedManpowerData);
 
 	// Function to handle Excel download
 	const handleExelDownload = () => {
@@ -113,6 +132,62 @@ function ManpowerSubmissionLists({ data, tabileShow, setTabileShow }) {
 		content: () => componentRef.current
 	});
 
+	const handleGetManpowers = async (newPage, callBack) => {
+		try {
+			const formValues = getValues();
+			const page = newPage || 1;
+			setPage(page);
+
+			const response = await refetch({ ...formValues, page, size }); // Manually trigger the query
+
+			if (response?.data) {
+				unstable_batchedUpdates(() => {
+					if (callBack) {
+						callBack(response.data);
+					}
+
+					const manpowersData = response.data.manpowers || [];
+					setmodifiedManpowerData(manpowersData);
+					setInShowAllMode(false);
+
+					// const { totalPages, totalElements } = getPaginationData(manpowersData, size, page);
+					setTotalPages(response.data?.total_pages);
+					setTotalElements(response.data?.total_elements);
+				});
+			}
+		} catch (error) {
+			console.error('Error fetching manpowers:', error);
+		}
+	};
+
+	const handleGetAllManpowers = async (callBack, callBackAfterStateUpdated) => {
+		try {
+			const formValues = getValues();
+
+			const response = await refetchAll({ ...formValues }); // Manually trigger the query
+
+			if (response?.data) {
+				unstable_batchedUpdates(() => {
+					if (callBack) {
+						callBack(response.data);
+					}
+
+					setmodifiedManpowerData(response.data.manpowers || []);
+					setInShowAllMode(true);
+
+					const { totalPages, totalElements } = getPaginationData(response.data.manpowers, size, page);
+					setTotalPages(totalPages);
+					setTotalElements(totalElements);
+				});
+
+				if (callBackAfterStateUpdated) {
+					callBackAfterStateUpdated(response.data);
+				}
+			}
+		} catch (error) {
+			console.error('Error fetching all manpowers:', error);
+		}
+	};
 	return (
 		<>
 			<ReportPaginationAndDownload
@@ -123,9 +198,16 @@ function ManpowerSubmissionLists({ data, tabileShow, setTabileShow }) {
 				inShowAllMode={inShowAllMode}
 				setInShowAllMode={setInShowAllMode}
 				componentRef={componentRef}
+				totalPages={totalPages}
+				totalElements={totalElements}
+				onFirstPage={() => handleGetManpowers(1)}
+				onPreviousPage={() => handleGetManpowers(page - 1)}
+				onNextPage={() => handleGetManpowers(page + 1)}
+				onLastPage={() => handleGetManpowers(totalPages)}
 				handleExelDownload={handleExelDownload}
 				handlePrint={handlePrint}
-				handleGetAllData={data}
+				handleGetData={handleGetManpowers}
+				handleGetAllData={handleGetAllManpowers}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
 			/>

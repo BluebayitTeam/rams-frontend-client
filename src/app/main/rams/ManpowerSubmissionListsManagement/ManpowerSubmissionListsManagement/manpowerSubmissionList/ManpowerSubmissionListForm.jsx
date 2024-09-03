@@ -110,7 +110,7 @@ function ManpowerSubmissionListForm({
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={handleSearchPassengerClick} // Call the handleSearchPassengerClick function on click
+					onClick={handleSearchPassengerClick}
 				>
 					<Search />
 				</div>

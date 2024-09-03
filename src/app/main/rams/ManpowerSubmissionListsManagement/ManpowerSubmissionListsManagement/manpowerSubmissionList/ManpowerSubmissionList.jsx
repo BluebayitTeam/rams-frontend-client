@@ -18,7 +18,7 @@ import ManpowerSubmissionLists from '../manpowerSubmissionLists/ManpowerSubmissi
 /**
  * Form Validation Schema
  */
-const schema = z.object();
+const schema = z.object({});
 
 function ManpowerSubmissionList(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -38,10 +38,28 @@ function ManpowerSubmissionList(props) {
 
 	const navigate = useNavigate();
 
-	const { data } = useGetManpowerSubmissionListsQuery({
+	const { data, refetch: getPassengerList } = useGetManpowerSubmissionListsQuery({
 		passenger,
 		manPowerDate
 	});
+
+	function handleSearchPassengerClick() {
+		const selectedPassenger = watch('passenger');
+
+		if (selectedPassenger) {
+			refetch({
+				passenger: selectedPassenger.passenger_id
+			});
+
+			// Show the table after data is fetched
+			setTabileShow(true);
+		} else {
+			// Hide the table if no passenger is selected
+			setTabileShow(false);
+		}
+	}
+
+	console.log('manpowerSubmissionListDtatalist', data);
 
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
@@ -62,19 +80,6 @@ function ManpowerSubmissionList(props) {
 			});
 	}
 
-	function handleSearchPassengerClick() {
-		const selectedPassenger = watch('passenger');
-
-		if (selectedPassenger) {
-			selectFilteredManpowerSubmissionLists({
-				passenger: selectedPassenger.passenger_id
-			});
-			setTabileShow(true);
-		} else {
-			setTabileShow(false);
-		}
-	}
-
 	// For debugging purposes
 
 	function handleSearchManPowerDateClick() {
@@ -88,11 +93,55 @@ function ManpowerSubmissionList(props) {
 		}
 	}
 
+	console.log('fdksdfhsdkfhsdkf', data);
 	useEffect(() => {
 		if (manpowerSubmissionListId === 'new') {
 			reset(ManpowerSubmissionListModel({}));
 		}
 	}, [manpowerSubmissionListId, reset]);
+
+	// useEffect(() => {
+	// 	if (manpowerSubmissionList) {
+	// 		reset({ ...manpowerSubmissionList });
+	// 	}
+	// }, [manpowerSubmissionList, reset, manpowerSubmissionList?.id]);
+
+	// function handleTabChange(event, value) {
+	// 	setTabValue(value);
+	// }
+
+	// if (isLoading) {
+	// 	return <FuseLoading />;
+	// }
+
+	/**
+	 * Show Message if the requested manpowerSubmissionLists is not exists
+	 */
+	// if (isError && manpowerSubmissionListId !== 'new') {
+	// 	return (
+	// 		<motion.div
+	// 			initial={{ opacity: 0 }}
+	// 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
+	// 			className="flex flex-col flex-1 items-center justify-center h-full"
+	// 		>
+	// 			<Typography
+	// 				color="text.secondary"
+	// 				variant="h5"
+	// 			>
+	// 				There is no such manpowerSubmissionList!
+	// 			</Typography>
+	// 			<Button
+	// 				className="mt-24"
+	// 				component={Link}
+	// 				variant="outlined"
+	// 				to="/apps/manpowerSubmissionList/manpowerSubmissionLists"
+	// 				color="inherit"
+	// 			>
+	// 				Go to ManpowerSubmissionLists Page
+	// 			</Button>
+	// 		</motion.div>
+	// 	);
+	// }
 
 	return (
 		<FormProvider {...methods}>
