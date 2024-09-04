@@ -3,7 +3,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	CREATE_MANPOWERLIST,
-	DELETE_DEPARTMENT,
 	DELETE_MANPOWERLIST,
 	MANPOWERLIST_BY_PASSENGER_ID,
 	MANPOWERSBLISTS_BY_DATE,
@@ -32,10 +31,9 @@ const ManpowerSubmissionListApi = api
 			}),
 
 			deleteManpowerSubmissionLists: build.mutation({
-				query: (manpowerSubmissionListIds) => ({
-					url: DELETE_MANPOWERLIST,
-					method: 'DELETE',
-					data: { ids: manpowerSubmissionListIds }
+				query: (manpowerSubmissionListId) => ({
+					url: `${DELETE_MANPOWERLIST}${manpowerSubmissionListId}`,
+					method: 'DELETE'
 				}),
 				invalidatesTags: ['manpowerSubmissionLists']
 			}),
@@ -60,14 +58,14 @@ const ManpowerSubmissionListApi = api
 					data: jsonToFormData(manpowerSubmissionList)
 				}),
 				invalidatesTags: ['manpowerSubmissionLists']
-			}),
-			deleteManpowerSubmissionList: build.mutation({
-				query: (manpowerSubmissionListId) => ({
-					url: `${DELETE_DEPARTMENT}${manpowerSubmissionListId}`,
-					method: 'DELETE'
-				}),
-				invalidatesTags: ['manpowerSubmissionLists']
 			})
+			// deleteManpowerSubmissionList: build.mutation({
+			// 	query: (manpowerSubmissionListId) => ({
+			// 		url: `${DELETE_MANPOWERLIST}${manpowerSubmissionListId}`,
+			// 		method: 'DELETE'
+			// 	}),
+			// 	invalidatesTags: ['manpowerSubmissionLists']
+			// })
 		}),
 		overrideExisting: false
 	});

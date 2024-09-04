@@ -1,13 +1,12 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import ManpowerSubmissionListHeader from './ManpowerSubmissionListHeader';
-import ManpowerSubmissionListModel from './models/ManpowerSubmissionListModel';
 import {
 	selectFilteredManpowerSubmissionLists,
 	useCreateManpowerSubmissionListMutation,
@@ -22,8 +21,7 @@ const schema = z.object();
 
 function ManpowerSubmissionList(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { manpowerSubmissionListId } = routeParams;
+
 	const [tabileShow, setTabileShow] = useState(false);
 
 	const methods = useForm({
@@ -42,6 +40,8 @@ function ManpowerSubmissionList(props) {
 		passenger,
 		manPowerDate
 	});
+
+	const manpowerSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
 
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
@@ -88,11 +88,11 @@ function ManpowerSubmissionList(props) {
 		}
 	}
 
-	useEffect(() => {
-		if (manpowerSubmissionListId === 'new') {
-			reset(ManpowerSubmissionListModel({}));
-		}
-	}, [manpowerSubmissionListId, reset]);
+	// useEffect(() => {
+	// 	if (manpowerSubmissionListId === 'new') {
+	// 		reset(ManpowerSubmissionListModel({}));
+	// 	}
+	// }, [manpowerSubmissionListId, reset]);
 
 	return (
 		<FormProvider {...methods}>
@@ -115,6 +115,7 @@ function ManpowerSubmissionList(props) {
 						<ManpowerSubmissionLists
 							data={data}
 							tabileShow={tabileShow}
+							manpowerSubmissionListId={manpowerSubmissionListId}
 						/>
 					</div>
 				}

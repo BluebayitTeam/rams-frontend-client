@@ -43,7 +43,7 @@ const initialTableColumnsState = [
 	{ id: 12, label: 'কল্যাণ ফ্রি এর পরিমাণ', name: 'efg', show: true }
 ];
 
-function ManpowerSubmissionLists({ data, tabileShow, setTabileShow }) {
+function ManpowerSubmissionLists({ data, tabileShow, manpowerSubmissionListId }) {
 	// const { data } = props;
 	const methods = useForm();
 	const { getValues, refetch, refetchAll } = methods;
@@ -154,6 +154,7 @@ function ManpowerSubmissionLists({ data, tabileShow, setTabileShow }) {
 							setSortBySubKey={setSortBySubKey}
 							dragAndDropRow={dragAndDropRow}
 							tabileShow={tabileShow}
+							manpowerSubmissionListId={manpowerSubmissionListId}
 						/>
 					))}
 				</div>
