@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import ManpowerSubmissionListHeader from './ManpowerSubmissionListHeader';
 import {
 	selectFilteredManpowerSubmissionLists,
@@ -36,7 +36,7 @@ function ManpowerSubmissionList(props) {
 
 	const navigate = useNavigate();
 
-	const { data } = useGetManpowerSubmissionListsQuery({
+	const { data, refetch } = useGetManpowerSubmissionListsQuery({
 		passenger,
 		manPowerDate
 	});
@@ -46,11 +46,12 @@ function ManpowerSubmissionList(props) {
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
 	function handleCreateManpowerSubmissionList() {
-		createManpowerSubmissionList(getValues())
+		createManpowerSubmissionList()
 			.unwrap()
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
+					// refetch();
 				}
 
 				setTabileShow(true);
@@ -58,7 +59,7 @@ function ManpowerSubmissionList(props) {
 				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 			})
 			.catch((error) => {
-				CustomNotification('errorhfghgfhg', `${error.response.data.passenger}`);
+				CustomNotification('error', `${error.response.data.passenger}`);
 			});
 	}
 
@@ -87,12 +88,6 @@ function ManpowerSubmissionList(props) {
 			setTabileShow(true);
 		}
 	}
-
-	// useEffect(() => {
-	// 	if (manpowerSubmissionListId === 'new') {
-	// 		reset(ManpowerSubmissionListModel({}));
-	// 	}
-	// }, [manpowerSubmissionListId, reset]);
 
 	return (
 		<FormProvider {...methods}>
