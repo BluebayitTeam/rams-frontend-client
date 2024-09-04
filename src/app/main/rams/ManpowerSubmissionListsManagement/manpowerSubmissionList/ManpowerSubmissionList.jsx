@@ -46,19 +46,25 @@ function ManpowerSubmissionList(props) {
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
 	function handleCreateManpowerSubmissionList() {
-		createManpowerSubmissionList()
+		createManpowerSubmissionList(getValues())
 			.unwrap()
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
-					// refetch();
+
+					// Pass only manPowerDate to refetch
+					refetch({
+						manPowerDate: getValues().manPowerDate
+					});
 				}
 
 				setTabileShow(true);
 
+				// Navigate to the new page
 				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 			})
 			.catch((error) => {
+				// Show a custom error notification
 				CustomNotification('error', `${error.response.data.passenger}`);
 			});
 	}
