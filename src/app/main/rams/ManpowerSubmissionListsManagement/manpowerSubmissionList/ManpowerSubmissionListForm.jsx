@@ -108,8 +108,11 @@ function ManpowerSubmissionListForm({
 						}
 					/>
 				</div>
-				<div className={classes.searchContainer}>
-					<Search onClick={() => handleSearchPassengerClick()} />
+				<div
+					className={classes.searchContainer}
+					onClick={handleSearchPassengerClick}
+				>
+					<Search />
 				</div>
 			</div>
 
@@ -122,8 +125,11 @@ function ManpowerSubmissionListForm({
 						placeholder="DD-MM-YYYY"
 					/>
 				</div>
-				<div className={classes.searchContainer}>
-					<Search onClick={() => handleSearchManPowerDateClick()} />
+				<div
+					className={classes.searchContainer}
+					onClick={handleSearchManPowerDateClick}
+				>
+					<Search />
 				</div>
 			</div>
 
@@ -132,7 +138,7 @@ function ManpowerSubmissionListForm({
 				variant="contained"
 				color="secondary"
 				// disabled={_.isEmpty(dirtyFields) || !isValid}
-				onClick={() => handleCreateManpowerSubmissionList()}
+				onClick={handleCreateManpowerSubmissionList}
 			>
 				Save
 			</Button>
@@ -141,7 +147,7 @@ function ManpowerSubmissionListForm({
 				className="whitespace-nowrap mx-4"
 				variant="contained"
 				style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-				onClick={() => handleCancel()}
+				onClick={handleCancel}
 			>
 				Cancel
 			</Button>

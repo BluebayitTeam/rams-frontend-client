@@ -1,12 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
+import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import ManpowerSubmissionListHeader from './ManpowerSubmissionListHeader';
+import ManpowerSubmissionListModel from './models/ManpowerSubmissionListModel';
 import {
 	selectFilteredManpowerSubmissionLists,
 	useCreateManpowerSubmissionListMutation,
@@ -17,11 +18,12 @@ import ManpowerSubmissionLists from '../manpowerSubmissionLists/ManpowerSubmissi
 /**
  * Form Validation Schema
  */
-const schema = z.object();
+const schema = z.object({});
 
 function ManpowerSubmissionList(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-
+	const routeParams = useParams();
+	const { manpowerSubmissionListId } = routeParams;
 	const [tabileShow, setTabileShow] = useState(false);
 
 	const methods = useForm({
@@ -36,12 +38,28 @@ function ManpowerSubmissionList(props) {
 
 	const navigate = useNavigate();
 
-	const { data, refetch } = useGetManpowerSubmissionListsQuery({
+	const { data, refetch: getPassengerList } = useGetManpowerSubmissionListsQuery({
 		passenger,
 		manPowerDate
 	});
 
-	const manpowerSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
+	function handleSearchPassengerClick() {
+		const selectedPassenger = watch('passenger');
+
+		if (selectedPassenger) {
+			refetch({
+				passenger: selectedPassenger.passenger_id
+			});
+
+			// Show the table after data is fetched
+			setTabileShow(true);
+		} else {
+			// Hide the table if no passenger is selected
+			setTabileShow(false);
+		}
+	}
+
+	console.log('manpowerSubmissionListDtatalist', data);
 
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
@@ -51,35 +69,15 @@ function ManpowerSubmissionList(props) {
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
-
-					// Pass only manPowerDate to refetch
-					refetch({
-						manPowerDate: getValues().manPowerDate
-					});
 				}
 
 				setTabileShow(true);
 
-				// Navigate to the new page
 				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 			})
 			.catch((error) => {
-				// Show a custom error notification
-				CustomNotification('error', `${error.response.data.passenger}`);
+				CustomNotification('errorhfghgfhg', `${error.response.data.passenger}`);
 			});
-	}
-
-	function handleSearchPassengerClick() {
-		const selectedPassenger = watch('passenger');
-
-		if (selectedPassenger) {
-			selectFilteredManpowerSubmissionLists({
-				passenger: selectedPassenger.passenger_id
-			});
-			setTabileShow(true);
-		} else {
-			setTabileShow(false);
-		}
 	}
 
 	// For debugging purposes
@@ -94,6 +92,56 @@ function ManpowerSubmissionList(props) {
 			setTabileShow(true);
 		}
 	}
+
+	console.log('fdksdfhsdkfhsdkf', data);
+	useEffect(() => {
+		if (manpowerSubmissionListId === 'new') {
+			reset(ManpowerSubmissionListModel({}));
+		}
+	}, [manpowerSubmissionListId, reset]);
+
+	// useEffect(() => {
+	// 	if (manpowerSubmissionList) {
+	// 		reset({ ...manpowerSubmissionList });
+	// 	}
+	// }, [manpowerSubmissionList, reset, manpowerSubmissionList?.id]);
+
+	// function handleTabChange(event, value) {
+	// 	setTabValue(value);
+	// }
+
+	// if (isLoading) {
+	// 	return <FuseLoading />;
+	// }
+
+	/**
+	 * Show Message if the requested manpowerSubmissionLists is not exists
+	 */
+	// if (isError && manpowerSubmissionListId !== 'new') {
+	// 	return (
+	// 		<motion.div
+	// 			initial={{ opacity: 0 }}
+	// 			animate={{ opacity: 1, transition: { delay: 0.1 } }}
+	// 			className="flex flex-col flex-1 items-center justify-center h-full"
+	// 		>
+	// 			<Typography
+	// 				color="text.secondary"
+	// 				variant="h5"
+	// 			>
+	// 				There is no such manpowerSubmissionList!
+	// 			</Typography>
+	// 			<Button
+	// 				className="mt-24"
+	// 				component={Link}
+	// 				variant="outlined"
+	// 				to="/apps/manpowerSubmissionList/manpowerSubmissionLists"
+	// 				color="inherit"
+	// 			>
+	// 				Go to ManpowerSubmissionLists Page
+	// 			</Button>
+	// 		</motion.div>
+	// 	);
+	// }
 
 	return (
 		<FormProvider {...methods}>
@@ -116,7 +164,6 @@ function ManpowerSubmissionList(props) {
 						<ManpowerSubmissionLists
 							data={data}
 							tabileShow={tabileShow}
-							manpowerSubmissionListId={manpowerSubmissionListId}
 						/>
 					</div>
 				}

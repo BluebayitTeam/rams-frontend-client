@@ -3,12 +3,14 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	CREATE_MANPOWERLIST,
+	DELETE_DEPARTMENT,
 	DELETE_MANPOWERLIST,
 	MANPOWERLIST_BY_PASSENGER_ID,
 	MANPOWERSBLISTS_BY_DATE,
 	UPDATE_MANPOWERLIST
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
 import ManpowerSubmissionListModel from './manpowerSubmissionList/models/ManpowerSubmissionListModel';
 
@@ -27,13 +29,21 @@ const ManpowerSubmissionListApi = api
 						passenger
 					}
 				}),
+				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
+					try {
+						await queryFulfilled;
+					} catch (error) {
+						CustomNotification('error', error?.error?.response?.data?.detail);
+					}
+				},
 				providesTags: ['manpowerSubmissionLists']
 			}),
 
 			deleteManpowerSubmissionLists: build.mutation({
-				query: (manpowerSubmissionListId) => ({
-					url: `${DELETE_MANPOWERLIST}${manpowerSubmissionListId}`,
-					method: 'DELETE'
+				query: (manpowerSubmissionListIds) => ({
+					url: DELETE_MANPOWERLIST,
+					method: 'DELETE',
+					data: { ids: manpowerSubmissionListIds }
 				}),
 				invalidatesTags: ['manpowerSubmissionLists']
 			}),
@@ -58,14 +68,14 @@ const ManpowerSubmissionListApi = api
 					data: jsonToFormData(manpowerSubmissionList)
 				}),
 				invalidatesTags: ['manpowerSubmissionLists']
+			}),
+			deleteManpowerSubmissionList: build.mutation({
+				query: (manpowerSubmissionListId) => ({
+					url: `${DELETE_DEPARTMENT}${manpowerSubmissionListId}`,
+					method: 'DELETE'
+				}),
+				invalidatesTags: ['manpowerSubmissionLists']
 			})
-			// deleteManpowerSubmissionList: build.mutation({
-			// 	query: (manpowerSubmissionListId) => ({
-			// 		url: `${DELETE_MANPOWERLIST}${manpowerSubmissionListId}`,
-			// 		method: 'DELETE'
-			// 	}),
-			// 	invalidatesTags: ['manpowerSubmissionLists']
-			// })
 		}),
 		overrideExisting: false
 	});
