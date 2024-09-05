@@ -9,6 +9,7 @@ import {
 	UPDATE_MANPOWERLIST
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
 import ManpowerSubmissionListModel from './manpowerSubmissionList/models/ManpowerSubmissionListModel';
 
@@ -27,13 +28,13 @@ const ManpowerSubmissionListApi = api
 						passenger
 					}
 				}),
-				// async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
-				// 	try {
-				// 		await queryFulfilled;
-				// 	} catch (error) {
-				// 		CustomNotification('error', error?.error?.response?.data?.detail);
-				// 	}
-				// },
+				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
+					try {
+						await queryFulfilled;
+					} catch (error) {
+						CustomNotification('error', error?.error?.response?.data?.detail);
+					}
+				},
 				providesTags: ['manpowerSubmissionLists']
 			}),
 

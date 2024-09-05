@@ -19,7 +19,7 @@ import ManpowerSubmissionLists from '../manpowerSubmissionLists/ManpowerSubmissi
  */
 const schema = z.object({});
 
-function ManpowerSubmissionList(props) {
+function ManpowerSubmissionList() {
 	const emptyValue = {
 		agency: '',
 		passenger: '',
@@ -63,28 +63,23 @@ function ManpowerSubmissionList(props) {
 	// console.log('refetch2', data2);
 
 	function handleSearchPassengerClick() {
-		// Check if both passenger and date are valid
 		setSelectedPassenger(passenger);
 
-		setTabileShow(true); // Set to true
+		setTabileShow(true);
 	}
-
-	console.log('fkldjlfjdslfjdsf', tabileShow);
 
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
 	function handleCreateManpowerSubmissionList() {
-		createManpowerSubmissionList();
 		createManpowerSubmissionList(getValues())
 			.unwrap()
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
+					setTabileShow(true);
+
+					navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 				}
-
-				setTabileShow(true);
-
-				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 			})
 			.catch((error) => {
 				CustomNotification('error', `${error.response.data.passenger}`);
