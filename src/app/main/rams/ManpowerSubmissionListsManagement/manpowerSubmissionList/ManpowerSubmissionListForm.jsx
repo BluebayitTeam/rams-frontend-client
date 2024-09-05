@@ -44,13 +44,13 @@ const useStyles = makeStyles((theme) => ({
 function ManpowerSubmissionListForm({
 	handleSearchPassengerClick,
 	handleSearchManPowerDateClick,
-	handleCreateManpowerSubmissionList
+	handleCreateManpowerSubmissionList,
+	handleCancel
 }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
+	const { watch } = methods;
 
-	const { errors } = formState;
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
 
 	const classes = useStyles({ isPassenger: watch('passenger') });
@@ -61,10 +61,6 @@ function ManpowerSubmissionListForm({
 		dispatch(getCountries());
 		dispatch(getCurrentStatuss());
 	}, []);
-
-	function handleCancel() {
-		reset({});
-	}
 
 	useEffect(() => {
 		const authTOKEN = {
@@ -110,7 +106,7 @@ function ManpowerSubmissionListForm({
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={handleSearchPassengerClick}
+					onClick={() => handleSearchPassengerClick()}
 				>
 					<Search />
 				</div>
@@ -127,7 +123,7 @@ function ManpowerSubmissionListForm({
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={handleSearchManPowerDateClick}
+					onClick={() => handleSearchManPowerDateClick()}
 				>
 					<Search />
 				</div>
@@ -138,7 +134,7 @@ function ManpowerSubmissionListForm({
 				variant="contained"
 				color="secondary"
 				// disabled={_.isEmpty(dirtyFields) || !isValid}
-				onClick={handleCreateManpowerSubmissionList}
+				onClick={() => handleCreateManpowerSubmissionList()}
 			>
 				Save
 			</Button>
@@ -147,7 +143,7 @@ function ManpowerSubmissionListForm({
 				className="whitespace-nowrap mx-4"
 				variant="contained"
 				style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-				onClick={handleCancel}
+				onClick={() => handleCancel()}
 			>
 				Cancel
 			</Button>

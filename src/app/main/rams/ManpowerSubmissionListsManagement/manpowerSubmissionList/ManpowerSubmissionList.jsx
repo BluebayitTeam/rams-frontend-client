@@ -1,6 +1,6 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,17 +21,28 @@ import ManpowerSubmissionLists from '../manpowerSubmissionLists/ManpowerSubmissi
 const schema = z.object({});
 
 function ManpowerSubmissionList(props) {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { manpowerSubmissionListId } = routeParams;
-	const [tabileShow, setTabileShow] = useState(false);
+	const emptyValue = {
+		agency: '',
+		passenger: '',
 
+		country: '',
+		man_power_date: ''
+	};
+
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const [tabileShow, setTabileShow] = useState(false);
+	const [formKey, setFormKey] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
-		defaultValues: {},
+		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
 	const { reset, watch, getValues } = methods;
+
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
 
 	const passenger = watch('passenger');
 	const manPowerDate = watch('man_power_date');
@@ -42,10 +53,13 @@ function ManpowerSubmissionList(props) {
 		passenger,
 		manPowerDate
 	});
+	const manpowerSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
 
-	const { refetch: refetch2 } = useGetManpowerSubmissionListsQuery({
+	const { data: data2, refetch: refetch2 } = useGetManpowerSubmissionListsQuery({
 		manPowerDate
 	});
+
+	// console.log('refetch2', data2);
 
 	function handleSearchPassengerClick() {
 		const selectedPassenger = watch('passenger');
@@ -87,6 +101,12 @@ function ManpowerSubmissionList(props) {
 			});
 	}
 
+	function handleCancel() {
+		handleReset({
+			...emptyValue
+		});
+	}
+
 	// For debugging purposes
 
 	function handleSearchManPowerDateClick() {
@@ -107,7 +127,10 @@ function ManpowerSubmissionList(props) {
 	}, [manpowerSubmissionListId, reset]);
 
 	return (
-		<FormProvider {...methods}>
+		<FormProvider
+			{...methods}
+			key={formKey}
+		>
 			<FusePageCarded
 				header={<ManpowerSubmissionListHeader />}
 				content={
@@ -117,6 +140,7 @@ function ManpowerSubmissionList(props) {
 							handleSearchPassengerClick={handleSearchPassengerClick}
 							handleSearchManPowerDateClick={handleSearchManPowerDateClick}
 							handleCreateManpowerSubmissionList={handleCreateManpowerSubmissionList}
+							handleCancel={handleCancel}
 						/>
 						<br />
 						<br />
@@ -126,7 +150,11 @@ function ManpowerSubmissionList(props) {
 						<br />
 						<ManpowerSubmissionLists
 							data={data}
+							data2={data2}
 							tabileShow={tabileShow}
+							manpowerSubmissionListId={manpowerSubmissionListId}
+							handleReset={handleReset}
+							emptyValue={emptyValue}
 						/>
 					</div>
 				}
