@@ -80,10 +80,6 @@ function ManpowerSubmissionList(props) {
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
-
-					// refetch2({
-					// 	manPowerDate: getValues().manPowerDate
-					// });
 				}
 
 				setTabileShow(true);
