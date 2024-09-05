@@ -128,7 +128,6 @@ function ManpowerSubmissionList() {
 						<br />
 						<ManpowerSubmissionLists
 							data={data}
-							// data2={data2}
 							tabileShow={tabileShow}
 							manpowerSubmissionListId={manpowerSubmissionListId}
 							handleReset={handleReset}
