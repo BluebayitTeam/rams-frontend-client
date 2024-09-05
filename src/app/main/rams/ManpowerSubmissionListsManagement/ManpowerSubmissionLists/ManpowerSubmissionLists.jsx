@@ -43,7 +43,7 @@ const initialTableColumnsState = [
 	{ id: 12, label: 'কল্যাণ ফ্রি এর পরিমাণ', name: 'efg', show: true }
 ];
 
-function ManpowerSubmissionLists({ data2, tabileShow, manpowerSubmissionListId, handleReset, emptyValue }) {
+function ManpowerSubmissionLists({ data, tabileShow, manpowerSubmissionListId, handleReset, emptyValue }) {
 	// const { data } = props;
 	const methods = useForm();
 	// const { getValues, refetch, refetchAll } = methods;
@@ -56,7 +56,7 @@ function ManpowerSubmissionLists({ data2, tabileShow, manpowerSubmissionListId, 
 	const [modifiedManpowerSbListData, setModifiedManpowerSbListData, setSortBy, setSortBySubKey, dragAndDropRow] =
 		useReportData();
 	useEffect(() => {
-		const modifiedData = data2?.map((manpowerSub) => ({
+		const modifiedData = data?.map((manpowerSub) => ({
 			id: manpowerSub?.man_power_list?.id,
 			profession: manpowerSub?.visa_entry?.profession_english,
 			visa_no: manpowerSub?.visa_entry?.visa_number,
@@ -79,7 +79,7 @@ function ManpowerSubmissionLists({ data2, tabileShow, manpowerSubmissionListId, 
 		}));
 
 		setModifiedManpowerSbListData(modifiedData);
-	}, [data2]);
+	}, [data]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [printableFormat, setPrintableFormat] = useState(false);
@@ -117,7 +117,7 @@ function ManpowerSubmissionLists({ data2, tabileShow, manpowerSubmissionListId, 
 				componentRef={componentRef}
 				handleExelDownload={handleExelDownload}
 				handlePrint={handlePrint}
-				handleGetAllData={data2}
+				handleGetAllData={data}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
 			/>
@@ -145,7 +145,7 @@ function ManpowerSubmissionLists({ data2, tabileShow, manpowerSubmissionListId, 
 							setSortBySubKey={setSortBySubKey}
 							dragAndDropRow={dragAndDropRow}
 							tabileShow={tabileShow}
-							data2={data2}
+							data2={data}
 							manpowerSubmissionListId={manpowerSubmissionListId}
 							handleReset={handleReset}
 							emptyValue={emptyValue}

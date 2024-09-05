@@ -36,12 +36,10 @@ function ManpowerSubmissionListsTable(props) {
 		printableFormat,
 		data,
 		manpowerSubmissionListId,
-		tabileShow,
-		handleReset,
-		emptyValue
+		tabileShow
 	} = props;
 	let pageBasedSerialNo = serialNumber;
-
+	console.log('tabileShowfgjfjgfjg', tabileShow);
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 
@@ -84,12 +82,6 @@ function ManpowerSubmissionListsTable(props) {
 
 		setSelected(newSelected);
 	}
-
-	// function handleDeleteAgent(item, event) {
-	// 	localStorage.removeItem('updateAgent');
-	// 	localStorage.setItem('deleteAgent', event);
-	// 	navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
-	// }
 
 	return (
 		<div>
@@ -177,9 +169,10 @@ function ManpowerSubmissionListsTable(props) {
 												onDragOver={(e) => e.preventDefault()}
 											>
 												<div
-													onDragStart={(e) =>
-														e.dataTransfer.setData('draggerLebel', column.id)
-													}
+													onDragStart={(e) => {
+														console.log('Dragging row with index:', idx);
+														e.dataTransfer.setData('draggerId', idx);
+													}}
 													onClick={() => {
 														if (column.sortAction !== false) {
 															setSortBy(data.sortBy === column.name ? '' : column.name);

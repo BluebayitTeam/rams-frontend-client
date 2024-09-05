@@ -9,7 +9,6 @@ import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/noti
 import ManpowerSubmissionListHeader from './ManpowerSubmissionListHeader';
 import ManpowerSubmissionListModel from './models/ManpowerSubmissionListModel';
 import {
-	selectFilteredManpowerSubmissionLists,
 	useCreateManpowerSubmissionListMutation,
 	useGetManpowerSubmissionListsQuery
 } from '../ManpowerSubmissionListsApi';
@@ -31,6 +30,8 @@ function ManpowerSubmissionList(props) {
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [tabileShow, setTabileShow] = useState(false);
+	const [selectedPassenger, setSelectedPassenger] = useState(null);
+	const [selectedDate, setSelectedDate] = useState(null);
 	const [formKey, setFormKey] = useState(0);
 	const methods = useForm({
 		mode: 'onChange',
@@ -41,7 +42,7 @@ function ManpowerSubmissionList(props) {
 
 	const handleReset = (defaultValues) => {
 		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+		setFormKey((prevKey) => prevKey + 1);
 	};
 
 	const passenger = watch('passenger');
@@ -49,31 +50,26 @@ function ManpowerSubmissionList(props) {
 
 	const navigate = useNavigate();
 
-	const { data, refetch } = useGetManpowerSubmissionListsQuery({
-		passenger,
-		manPowerDate
+	const { data } = useGetManpowerSubmissionListsQuery({
+		passenger: selectedPassenger,
+		manPowerDate: selectedDate
 	});
 	const manpowerSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
 
-	const { data: data2, refetch: refetch2 } = useGetManpowerSubmissionListsQuery({
-		manPowerDate
-	});
+	// const { data: data2, refetch: refetch2 } = useGetManpowerSubmissionListsQuery({
+	// 	manPowerDate
+	// });
 
 	// console.log('refetch2', data2);
 
 	function handleSearchPassengerClick() {
-		const selectedPassenger = watch('passenger');
+		// Check if both passenger and date are valid
+		setSelectedPassenger(passenger);
 
-		if (selectedPassenger) {
-			refetch({
-				passenger: selectedPassenger.passenger_id
-			});
-
-			setTabileShow(true);
-		} else {
-			setTabileShow(false);
-		}
+		setTabileShow(true); // Set to true
 	}
+
+	console.log('fkldjlfjdslfjdsf', tabileShow);
 
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
 
@@ -85,18 +81,16 @@ function ManpowerSubmissionList(props) {
 				if (data) {
 					AddedSuccessfully();
 
-					refetch2({
-						manPowerDate: getValues().manPowerDate
-					});
+					// refetch2({
+					// 	manPowerDate: getValues().manPowerDate
+					// });
 				}
 
 				setTabileShow(true);
 
-				// Navigate to the new page
 				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 			})
 			.catch((error) => {
-				// Show a custom error notification
 				CustomNotification('error', `${error.response.data.passenger}`);
 			});
 	}
@@ -107,17 +101,10 @@ function ManpowerSubmissionList(props) {
 		});
 	}
 
-	// For debugging purposes
-
 	function handleSearchManPowerDateClick() {
-		const selectedManPowerDate = watch('man_power_date');
-
-		if (selectedManPowerDate) {
-			selectFilteredManpowerSubmissionLists({
-				manPowerDate: selectedManPowerDate
-			});
-			setTabileShow(true);
-		}
+		setSelectedPassenger(passenger);
+		setSelectedDate(manPowerDate);
+		setTabileShow(true);
 	}
 
 	useEffect(() => {
@@ -150,7 +137,7 @@ function ManpowerSubmissionList(props) {
 						<br />
 						<ManpowerSubmissionLists
 							data={data}
-							data2={data2}
+							// data2={data2}
 							tabileShow={tabileShow}
 							manpowerSubmissionListId={manpowerSubmissionListId}
 							handleReset={handleReset}
