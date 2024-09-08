@@ -29,7 +29,7 @@ function ManpowerSubmissionList() {
 	};
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const [tabileShow, setTabileShow] = useState(false);
+	const [tabileShow, setTableShow] = useState(false);
 	const [selectedPassenger, setSelectedPassenger] = useState(null);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [formKey, setFormKey] = useState(0);
@@ -67,7 +67,7 @@ function ManpowerSubmissionList() {
 		setSelectedPassenger(passenger);
 		setHideTabile(false);
 
-		setTabileShow(true);
+		setTableShow(true);
 	}
 
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
@@ -78,7 +78,7 @@ function ManpowerSubmissionList() {
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
-					setTabileShow(true);
+					setTableShow(true);
 					setHideTabile(false);
 
 					navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
@@ -99,7 +99,7 @@ function ManpowerSubmissionList() {
 	function handleSearchManPowerDateClick() {
 		setSelectedPassenger(passenger);
 		setSelectedDate(manPowerDate);
-		setTabileShow(true);
+		setTableShow(true);
 		setHideTabile(false);
 	}
 

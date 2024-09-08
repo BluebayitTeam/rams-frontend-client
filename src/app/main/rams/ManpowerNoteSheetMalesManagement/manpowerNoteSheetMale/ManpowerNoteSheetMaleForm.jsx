@@ -1,21 +1,17 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Print } from '@mui/icons-material';
 
 import moment from 'moment';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 import { NOTE_SHEET_FOOTER, NOTE_SHEET_HEADER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import { Interweave } from 'interweave';
-import { GET_FORM_CONTENT_DETAILS_BY_TITLE, GET_SITESETTINGS } from 'src/app/constant/constants';
-import { getPassengers } from 'app/store/dataSlice';
+import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
@@ -113,11 +109,6 @@ const initialTableColumnsState3 = [
 function ManpowerNoteSheetMaleForm(props) {
 	const methods = useFormContext();
 	const { watch } = methods;
-	const [generalData, setGeneralData] = useState({});
-	const routeParams = useParams();
-	const [manpowerNoteSheetMaleId, setManpowerNoteSheetMaleId] = useState('');
-	const [showPrint, setShowPrint] = useState(false);
-	const Comment = '';
 	const [formData, setFormData] = useState({
 		passenger: '',
 		center_name: '',
@@ -125,12 +116,13 @@ function ManpowerNoteSheetMaleForm(props) {
 	});
 
 	const classes = useStyles();
-	const dispatch = useDispatch();
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(25);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(null);
+	const [header, setHeader] = useState('');
+	const [footer, SetFooter] = useState('null');
 	const manPowerDate = watch('man_power_date');
 
 	// Function to handle Excel download
@@ -143,33 +135,9 @@ function ManpowerNoteSheetMaleForm(props) {
 		content: () => componentRef.current
 	});
 
-	const { data, refetch } = useGetManpowerNoteSheetMaleQuery({
+	const { data } = useGetManpowerNoteSheetMaleQuery({
 		manPowerDate: selectedDate
 	});
-
-	const passengers = useSelector((state) => state.data.passengers);
-
-	useEffect(() => {
-		fetch(`${GET_SITESETTINGS}`)
-			.then((response) => response.json())
-			.then((data) => setGeneralData(data.general_settings[0] || {}));
-	}, []);
-
-	useEffect(() => {
-		dispatch(getPassengers());
-	}, [dispatch]);
-
-	// useEffect(() => {
-	//   if (_.isEmpty(manpowerNoteSheetMale)) {
-	//     setShowPrint(false);
-	//   } else {
-	//     setShowPrint(true);
-	//   }
-
-	//   if (routeParams.manpowerNoteSheetMaleId !== "manpowerNoteSheetMale-form") {
-	//     setManpowerNoteSheetMaleId(routeParams.manpowerNoteSheetMaleId);
-	//   }
-	// }, [manpowerNoteSheetMale, routeParams.manpowerNoteSheetMaleId]);
 
 	const componentRef = useRef();
 
@@ -183,10 +151,6 @@ function ManpowerNoteSheetMaleForm(props) {
 
 	const [modifiedManpowerNtSheetData, setModifiedManpowerNtSheetData, setSortBy, setSortBySubKey, dragAndDropRow] =
 		useReportData();
-
-	const Country = data?.length > 0 ? data[0]?.man_power_list?.country?.name : '';
-
-	console.log('modifiedManpowerNtSheetData', modifiedManpowerNtSheetData);
 
 	useEffect(() => {
 		const modifiedData = [];
@@ -211,8 +175,6 @@ function ManpowerNoteSheetMaleForm(props) {
 		setModifiedManpowerNtSheetData(modifiedData);
 	}, [data]);
 
-	const [tabileShow, setTabileShow] = useState(false);
-
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -223,20 +185,15 @@ function ManpowerNoteSheetMaleForm(props) {
 
 		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_HEADER}`, authTOKEN)
 			.then((response) => response.json())
-			.then((data) =>
-				sessionStorage.setItem('formContentHeaderData', data?.formcontent_detail[0]?.details || '')
-			);
+			.then((data) => setHeader(data?.formcontent_detail[0]?.details || ''));
 
 		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_FOOTER}`, authTOKEN)
 			.then((response) => response.json())
-			.then((data) =>
-				sessionStorage.setItem('formContentFooterData', data?.formcontent_detail[0]?.details || '')
-			);
+			.then((data) => SetFooter(data?.formcontent_detail[0]?.details || ''));
 	}, []);
 
 	function handleSearchManPowerDateClick() {
 		setSelectedDate(manPowerDate);
-		setTabileShow(true);
 	}
 
 	return (
@@ -263,23 +220,6 @@ function ManpowerNoteSheetMaleForm(props) {
 					>
 						Search
 					</button>
-					{showPrint ? (
-						<button
-							style={{
-								background: 'white',
-								border: '1px solid grey',
-								borderRadius: '4px',
-								padding: '0px 5px',
-								height: '35px',
-								marginLeft: '30px'
-							}}
-							onClick={() => printAction()}
-						>
-							<Print />
-						</button>
-					) : (
-						''
-					)}
 				</div>
 			</div>
 
@@ -287,7 +227,7 @@ function ManpowerNoteSheetMaleForm(props) {
 
 			<br />
 			<br />
-			{tabileShow && (
+			{modifiedManpowerNtSheetData.length > 0 && (
 				<div className={classes.container}>
 					<ReportPaginationAndDownload
 						page={page}
@@ -317,14 +257,12 @@ function ManpowerNoteSheetMaleForm(props) {
 						>
 							<div>
 								<div className="p-14">
-									{modifiedManpowerNtSheetData.length > 0 && (
-										<Interweave
-											allowAttributes
-											allowElements
-											disableLineBreaks
-											content={sessionStorage.getItem('formContentHeaderData')}
-										/>
-									)}
+									<Interweave
+										allowAttributes
+										allowElements
+										disableLineBreaks
+										content={header}
+									/>
 								</div>
 								{/* each single page (table) */}
 								{modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
@@ -344,13 +282,7 @@ function ManpowerNoteSheetMaleForm(props) {
 								))}
 							</div>
 						</table>
-						<p
-							style={{
-								display: modifiedManpowerNtSheetData.length > 0 ? 'block' : 'none'
-							}}
-						>
-							১৪৩/প্রশিক্ষণ সনদের বিবরনঃ
-						</p>
+						<p>১৪৩/প্রশিক্ষণ সনদের বিবরনঃ</p>
 
 						<div>
 							{/* each single page (table) */}
@@ -371,13 +303,7 @@ function ManpowerNoteSheetMaleForm(props) {
 							))}
 						</div>
 
-						<p
-							style={{
-								display: modifiedManpowerNtSheetData.length > 0 ? 'block' : 'none'
-							}}
-						>
-							১৪৪/ ব্যাংক অ্যাকাউন্ট ও মেডিকেল সেন্টারের বিবরনঃ
-						</p>
+						<p>১৪৪/ ব্যাংক অ্যাকাউন্ট ও মেডিকেল সেন্টারের বিবরনঃ</p>
 
 						<div>
 							{/* each single page (table) */}
@@ -405,7 +331,7 @@ function ManpowerNoteSheetMaleForm(props) {
 									allowElements
 									disableLineBreaks
 									className="p-14"
-									content={sessionStorage.getItem('formContentFooterData')}
+									content={footer}
 								/>
 							)}
 						</div>

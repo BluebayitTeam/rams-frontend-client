@@ -17,7 +17,7 @@ const ManpowerNoteSheetMaleApi = api
 				query: ({ manPowerDate }) => ({
 					url: MANPOWERSBLISTS_BY_DATE,
 					params: {
-						man_power_date: manPowerDate
+						man_power_date: manPowerDate || ''
 					}
 				}),
 				async onQueryStarted({ manPowerDate }, { queryFulfilled }) {

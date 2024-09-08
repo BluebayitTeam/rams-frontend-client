@@ -24,7 +24,7 @@ function ManpowerSubmissionList(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { manpowerSubmissionListId } = routeParams;
-	const [tabileShow, setTabileShow] = useState(false);
+	const [tabileShow, setTableShow] = useState(false);
 
 	const methods = useForm({
 		mode: 'onChange',
@@ -52,10 +52,10 @@ function ManpowerSubmissionList(props) {
 			});
 
 			// Show the table after data is fetched
-			setTabileShow(true);
+			setTableShow(true);
 		} else {
 			// Hide the table if no passenger is selected
-			setTabileShow(false);
+			setTableShow(false);
 		}
 	}
 
@@ -71,7 +71,7 @@ function ManpowerSubmissionList(props) {
 					AddedSuccessfully();
 				}
 
-				setTabileShow(true);
+				setTableShow(true);
 
 				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 			})
@@ -89,7 +89,7 @@ function ManpowerSubmissionList(props) {
 			selectFilteredManpowerSubmissionLists({
 				manPowerDate: selectedManPowerDate
 			});
-			setTabileShow(true);
+			setTableShow(true);
 		}
 	}
 

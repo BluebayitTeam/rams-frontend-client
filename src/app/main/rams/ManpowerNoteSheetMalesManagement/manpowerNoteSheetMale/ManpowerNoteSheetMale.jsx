@@ -23,7 +23,6 @@ function ManpowerNoteSheetMale() {
 	const routeParams = useParams();
 	const { manpowerNoteSheetMaleId } = routeParams;
 
-	const [tabValue, setTabValue] = useState(0);
 	const [formKey, setFormKey] = useState(0);
 
 	const methods = useForm({
