@@ -96,6 +96,7 @@ import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
+import ManpowerNoteSheetMaleAppConfig from '../rams/ManpowerNoteSheetMalesManagement/ManpowerNoteSheetMaleAppConfig';
 
 /**
  * The list of application configurations.
@@ -110,6 +111,7 @@ const appsConfigs = [
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,
 	MessengerAppConfig,
+	ManpowerNoteSheetMaleAppConfig,
 	MalefingerletterAppConfig,
 	MultipleStatusUpdateAppConfig,
 	MalaysiaVisaAppConfig,
