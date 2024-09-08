@@ -27,7 +27,7 @@ function ManpowerSubmissionListsTable(props) {
 		reportTitle,
 		tableColumns,
 		dispatchTableColumns,
-		refetch2,
+		hideTabile,
 		serialNumber,
 		inSiglePageMode,
 		setSortBy,
@@ -85,7 +85,7 @@ function ManpowerSubmissionListsTable(props) {
 
 	return (
 		<div>
-			{tabileShow && (
+			{tabileShow && !hideTabile && (
 				<div>
 					<div
 						className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}

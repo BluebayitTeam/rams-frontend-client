@@ -11,7 +11,7 @@ export const getReportMakeStyles = (theme) => ({
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		marginBottom: '20px',
-		// padding: '15px',
+		padding: '15px',
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between'

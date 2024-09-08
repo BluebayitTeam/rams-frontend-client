@@ -1,6 +1,6 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,15 +33,20 @@ function ManpowerSubmissionList() {
 	const [selectedPassenger, setSelectedPassenger] = useState(null);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [formKey, setFormKey] = useState(0);
+	const [hideTabile, setHideTabile] = useState(false);
+	const routeParams = useParams();
+	// const { manpowerSubmissionListId } = routeParams;
+	// console.log("manpowerSubmissionListId", routeParams);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
-	const { reset, watch, getValues } = methods;
+	const { reset, watch, getValues, setValue } = methods;
 
 	const handleReset = (defaultValues) => {
 		reset(defaultValues);
+
 		setFormKey((prevKey) => prevKey + 1);
 	};
 
@@ -50,20 +55,17 @@ function ManpowerSubmissionList() {
 
 	const navigate = useNavigate();
 
-	const { data } = useGetManpowerSubmissionListsQuery({
+	const { data, refetch } = useGetManpowerSubmissionListsQuery({
 		passenger: selectedPassenger,
 		manPowerDate: selectedDate
 	});
 	const manpowerSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
 
-	// const { data: data2, refetch: refetch2 } = useGetManpowerSubmissionListsQuery({
-	// 	manPowerDate
-	// });
-
-	// console.log('refetch2', data2);
+	console.log('refetch', refetch);
 
 	function handleSearchPassengerClick() {
 		setSelectedPassenger(passenger);
+		setHideTabile(false);
 
 		setTabileShow(true);
 	}
@@ -77,6 +79,7 @@ function ManpowerSubmissionList() {
 				if (data) {
 					AddedSuccessfully();
 					setTabileShow(true);
+					setHideTabile(false);
 
 					navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 				}
@@ -90,12 +93,14 @@ function ManpowerSubmissionList() {
 		handleReset({
 			...emptyValue
 		});
+		setHideTabile(true);
 	}
 
 	function handleSearchManPowerDateClick() {
 		setSelectedPassenger(passenger);
 		setSelectedDate(manPowerDate);
 		setTabileShow(true);
+		setHideTabile(false);
 	}
 
 	useEffect(() => {
@@ -121,17 +126,19 @@ function ManpowerSubmissionList() {
 							handleCancel={handleCancel}
 						/>
 						<br />
-						<br />
-						<br />
-						<br />
-						<br />
-						<br />
+
 						<ManpowerSubmissionLists
 							data={data}
 							tabileShow={tabileShow}
 							manpowerSubmissionListId={manpowerSubmissionListId}
 							handleReset={handleReset}
 							emptyValue={emptyValue}
+							hideTabile={hideTabile}
+							refetch={refetch}
+							selectedDate={selectedDate}
+							selectedPassenger={selectedPassenger}
+							passenger={passenger}
+							manPowerDate={manPowerDate}
 						/>
 					</div>
 				}

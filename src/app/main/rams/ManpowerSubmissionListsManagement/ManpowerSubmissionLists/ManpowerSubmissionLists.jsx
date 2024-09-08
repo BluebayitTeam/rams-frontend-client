@@ -7,6 +7,7 @@ import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/Re
 import { useForm } from 'react-hook-form';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import { useReactToPrint } from 'react-to-print';
+import { Checkbox } from '@mui/material';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ManpowerSubmissionListsTable from './ManpowerSubmissionListsTable';
 
@@ -43,10 +44,20 @@ const initialTableColumnsState = [
 	{ id: 12, label: 'কল্যাণ ফ্রি এর পরিমাণ', name: 'efg', show: true }
 ];
 
-function ManpowerSubmissionLists({ data, tabileShow, manpowerSubmissionListId, handleReset, emptyValue }) {
-	// const { data } = props;
+function ManpowerSubmissionLists({
+	data,
+	tabileShow,
+	hideTabile,
+	manpowerSubmissionListId,
+	handleReset,
+	refetch,
+	emptyValue,
+	selectedDate,
+	selectedPassenger,
+	passenger,
+	manPowerDate
+}) {
 	const methods = useForm();
-	// const { getValues, refetch, refetchAll } = methods;
 	const classes = useStyles();
 
 	const { authTOKEN } = useUserInfo();
@@ -84,6 +95,10 @@ function ManpowerSubmissionLists({ data, tabileShow, manpowerSubmissionListId, h
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [printableFormat, setPrintableFormat] = useState(false);
 
+	const handlePrintableFormat = (event) => {
+		setPrintableFormat(event.target.checked);
+	};
+
 	// const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -107,6 +122,13 @@ function ManpowerSubmissionLists({ data, tabileShow, manpowerSubmissionListId, h
 
 	return (
 		<>
+			<Checkbox
+				printableFormat={printableFormat}
+				onChange={handlePrintableFormat}
+				className="ml-96"
+				inputProps={{ 'aria-label': 'controlled' }}
+			/>
+			Printable Format
 			<ReportPaginationAndDownload
 				page={page}
 				size={size}
@@ -120,8 +142,8 @@ function ManpowerSubmissionLists({ data, tabileShow, manpowerSubmissionListId, h
 				handleGetAllData={data}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
+				dragAndDropRow={dragAndDropRow}
 			/>
-
 			<table
 				id="table-to-xls"
 				className="w-full"
@@ -149,6 +171,12 @@ function ManpowerSubmissionLists({ data, tabileShow, manpowerSubmissionListId, h
 							manpowerSubmissionListId={manpowerSubmissionListId}
 							handleReset={handleReset}
 							emptyValue={emptyValue}
+							refetch={refetch}
+							hideTabile={hideTabile}
+							selectedDate={selectedDate}
+							selectedPassenger={selectedPassenger}
+							passenger={passenger}
+							manPowerDate={manPowerDate}
 						/>
 					))}
 				</div>

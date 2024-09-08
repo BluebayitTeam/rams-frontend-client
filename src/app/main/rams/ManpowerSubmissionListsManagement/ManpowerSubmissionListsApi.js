@@ -20,19 +20,50 @@ const ManpowerSubmissionListApi = api
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
+			// getManpowerSubmissionLists: build.query({
+			// 	query: ({ manPowerDate, passenger }) => ({
+			// 		url: MANPOWERSBLISTS_BY_DATE,
+			// 		params: {
+			// 			man_power_date: manPowerDate,
+			// 			passenger
+			// 		}
+			// 	}),
+			// 	async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
+			// 		try {
+			// 			await queryFulfilled;
+			// 		} catch (error) {
+			// 			console.log('sddsfdsfdsfdsfds', error);
+			// 			// CustomNotification('error', error?.error?.response?.data?.detail);
+			// 		}
+			// 	},
+			// 	providesTags: ['manpowerSubmissionLists']
+			// }),
+
 			getManpowerSubmissionLists: build.query({
-				query: ({ manPowerDate, passenger }) => ({
-					url: MANPOWERSBLISTS_BY_DATE,
-					params: {
-						man_power_date: manPowerDate,
-						passenger
+				query: ({ manPowerDate, passenger }) => {
+					if (!manPowerDate && !passenger) {
+						return { url: null }; // Avoid calling the API when both values are empty
 					}
-				}),
+
+					return {
+						url: MANPOWERSBLISTS_BY_DATE,
+						params: {
+							man_power_date: manPowerDate,
+							passenger
+						}
+					};
+				},
 				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
 					try {
-						await queryFulfilled;
+						const { data } = await queryFulfilled;
+
+						// Check if the response is an empty array
+						if (Array.isArray(data) && data.length === 0) {
+							CustomNotification('error', 'There are no manpower records');
+						}
 					} catch (error) {
-						CustomNotification('error', error?.error?.response?.data?.detail);
+						console.log('Error:', error);
+						// CustomNotification('error', error?.error?.response?.data?.detail);
 					}
 				},
 				providesTags: ['manpowerSubmissionLists']

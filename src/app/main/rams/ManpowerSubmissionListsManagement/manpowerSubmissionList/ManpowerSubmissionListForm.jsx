@@ -3,12 +3,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { getAgencys, getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import { makeStyles } from '@mui/styles';
 import { Search } from '@mui/icons-material';
-import { Autocomplete, Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
@@ -103,41 +103,14 @@ function ManpowerSubmissionListForm({
 							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
 						}
 					/>
-					{/* <Controller
-						name="passenger"
-						control={control}
-						render={({ field: { onClick, value } }) => (
-							<Autocomplete
-								className="mt-8 mb-16"
-								freeSolo
-								value={value ? passengers.find((data) => data.id === value) : null}
-								options={passengers}
-								getOptionLabel={(option) =>
-									`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-								}
-								onClick={(event, newValue) => {
-									onClick(newValue?.id);
-								}}
-								renderInput={(params) => (
-									<TextField
-										{...params}
-										placeholder="Select Passengers"
-										label="Passenger"
-										helperText={errors?.passenger?.message}
-										variant="outlined"
-										autoFocus
-										InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-									/>
-								)}
-							/>
-						)}
-					/> */}
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={() => handleSearchPassengerClick()}
+					onClick={() => {
+						handleSearchPassengerClick();
+					}}
 				>
-					<Search />
+					<Search className="cursor-pointer" />
 				</div>
 			</div>
 
@@ -152,9 +125,11 @@ function ManpowerSubmissionListForm({
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={() => handleSearchManPowerDateClick()}
+					onClick={() => {
+						handleSearchManPowerDateClick();
+					}}
 				>
-					<Search />
+					<Search className="cursor-pointer" />
 				</div>
 			</div>
 
@@ -163,7 +138,9 @@ function ManpowerSubmissionListForm({
 				variant="contained"
 				color="secondary"
 				// disabled={_.isEmpty(dirtyFields) || !isValid}
-				onClick={() => handleCreateManpowerSubmissionList()}
+				onClick={() => {
+					handleCreateManpowerSubmissionList();
+				}}
 			>
 				Save
 			</Button>
