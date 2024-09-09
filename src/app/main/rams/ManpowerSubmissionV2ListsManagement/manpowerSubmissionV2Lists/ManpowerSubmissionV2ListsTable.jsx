@@ -13,18 +13,18 @@ import { useFormContext } from 'react-hook-form';
 import { Delete } from '@mui/icons-material';
 import { Interweave } from 'interweave';
 import { DeletedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useDeleteManpowerSubmissionListsMutation } from '../ManpowerSubmissionListsApi';
+import { useDeleteManpowerSubmissionV2ListsMutation } from '../ManpowerSubmissionV2ListsApi';
 
 /**
- * The manpowerSubmissionLists table.
+ * The manpowerSubmissionV2Lists table.
  */
-function ManpowerSubmissionListsTable(props) {
+function ManpowerSubmissionV2ListsTable(props) {
 	const dispatch = useDispatch();
 	const {
 		navigate,
 
 		classes,
-		reportTitle,
+
 		tableColumns,
 		dispatchTableColumns,
 		hideTabile,
@@ -35,7 +35,7 @@ function ManpowerSubmissionListsTable(props) {
 		dragAndDropRow,
 		printableFormat,
 		data,
-		manpowerSubmissionListId,
+		manpowerSubmissionV2ListId,
 		tabileShow
 	} = props;
 	let pageBasedSerialNo = serialNumber;
@@ -46,16 +46,16 @@ function ManpowerSubmissionListsTable(props) {
 
 	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
 
-	const [removeManpowerSubmissionLists] = useDeleteManpowerSubmissionListsMutation();
+	const [removeManpowerSubmissionV2Lists] = useDeleteManpowerSubmissionV2ListsMutation();
 
 	const [selected, setSelected] = useState([]);
 
-	function deleteManpowerSubmissionList(item, event) {
-		removeManpowerSubmissionLists(manpowerSubmissionListId);
+	function deleteManpowerSubmissionV2List(item, event) {
+		removeManpowerSubmissionV2Lists(manpowerSubmissionV2ListId);
 
 		DeletedSuccessfully();
 
-		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/${item.id}/${item.handle}`);
+		navigate(`/apps/manpowerSubmissionV2List/manpowerSubmissionV2Lists/${item.id}/${item.handle}`);
 	}
 
 	function handleCheck(event, id) {
@@ -241,7 +241,7 @@ function ManpowerSubmissionListsTable(props) {
 										>
 											<Delete
 												onClick={() => {
-													deleteManpowerSubmissionList(dataArr?.id);
+													deleteManpowerSubmissionV2List(dataArr?.id);
 												}}
 												className="cursor-pointer"
 												style={{ color: 'red' }}
@@ -315,4 +315,4 @@ function ManpowerSubmissionListsTable(props) {
 	);
 }
 
-export default withRouter(ManpowerSubmissionListsTable);
+export default withRouter(ManpowerSubmissionV2ListsTable);

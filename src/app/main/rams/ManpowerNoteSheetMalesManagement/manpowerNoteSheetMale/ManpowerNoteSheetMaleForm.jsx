@@ -239,7 +239,6 @@ function ManpowerNoteSheetMaleForm(props) {
 						componentRef={componentRef}
 						handleExelDownload={handleExelDownload}
 						handlePrint={handlePrint}
-						// handleGetAllData={data}
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
 						dragAndDropRow={dragAndDropRow}
