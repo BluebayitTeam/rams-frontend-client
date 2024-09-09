@@ -37,7 +37,7 @@ function ManpowerSubmissionV2ListsTable(props) {
 		printableFormat,
 		data,
 		manpowerSubmissionV2ListId,
-		tabileShow,
+		tableShow,
 		setPage
 	} = props;
 	let pageBasedSerialNo = serialNumber;

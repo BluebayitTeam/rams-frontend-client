@@ -24,7 +24,7 @@ const ManpowerSubmissionListApi = api
 				query: ({ manPowerDate, passenger }) => ({
 					url: MANPOWERSBLISTS_BY_DATE,
 					params: {
-						man_power_date: manPowerDate,
+						man_power_date: manPowerDate || '',
 						passenger
 					}
 				}),

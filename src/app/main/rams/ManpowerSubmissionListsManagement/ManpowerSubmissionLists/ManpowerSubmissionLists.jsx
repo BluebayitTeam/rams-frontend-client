@@ -46,7 +46,7 @@ const initialTableColumnsState = [
 
 function ManpowerSubmissionLists({
 	data,
-	tabileShow,
+	tableShow,
 	hideTabile,
 	manpowerSubmissionListId,
 	handleReset,
@@ -166,7 +166,7 @@ function ManpowerSubmissionLists({
 							setSortBy={setSortBy}
 							setSortBySubKey={setSortBySubKey}
 							dragAndDropRow={dragAndDropRow}
-							tabileShow={tabileShow}
+							tableShow={tableShow}
 							data2={data}
 							manpowerSubmissionListId={manpowerSubmissionListId}
 							handleReset={handleReset}

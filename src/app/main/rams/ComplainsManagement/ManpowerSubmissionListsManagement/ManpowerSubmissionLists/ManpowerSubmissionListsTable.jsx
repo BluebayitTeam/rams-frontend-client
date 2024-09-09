@@ -33,7 +33,7 @@ function ManpowerSubmissionListsTable(props) {
     dragAndDropRow,
     printableFormat,
     data,
-    tabileShow,
+    tableShow,
   } = props;
   let pageBasedSerialNo = serialNumber;
 
@@ -88,7 +88,7 @@ function ManpowerSubmissionListsTable(props) {
 
   return (
     <div>
-      {tabileShow && (
+      {tableShow && (
         <div>
           <div
             className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}

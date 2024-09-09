@@ -35,14 +35,15 @@ function ManpowerSubmissionListsTable(props) {
 		dragAndDropRow,
 		printableFormat,
 		data,
+		setPage,
 		manpowerSubmissionListId,
-		tabileShow
+		tableShow
 	} = props;
 	let pageBasedSerialNo = serialNumber;
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 
-	const [page, setPage] = useState(0);
+	console.log('dfdfdsfdsfsdfsdfsdkfk', tableShow);
 
 	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
 
@@ -77,7 +78,7 @@ function ManpowerSubmissionListsTable(props) {
 
 	return (
 		<div>
-			{tabileShow && !hideTabile && (
+			{tableShow && (
 				<div>
 					<div
 						className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}

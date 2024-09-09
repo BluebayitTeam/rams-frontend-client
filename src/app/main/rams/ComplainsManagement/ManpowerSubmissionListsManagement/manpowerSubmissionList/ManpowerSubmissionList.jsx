@@ -24,7 +24,7 @@ function ManpowerSubmissionList(props) {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
 	const { manpowerSubmissionListId } = routeParams;
-	const [tabileShow, setTableShow] = useState(false);
+	const [tableShow, setTableShow] = useState(false);
 
 	const methods = useForm({
 		mode: 'onChange',
@@ -163,7 +163,7 @@ function ManpowerSubmissionList(props) {
 						<br />
 						<ManpowerSubmissionLists
 							data={data}
-							tabileShow={tabileShow}
+							tableShow={tableShow}
 						/>
 					</div>
 				}

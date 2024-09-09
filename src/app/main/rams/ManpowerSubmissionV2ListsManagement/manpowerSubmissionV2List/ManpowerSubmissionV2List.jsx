@@ -29,7 +29,7 @@ function ManpowerSubmissionV2List() {
 	};
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const [tabileShow, setTableShow] = useState(false);
+	const [tableShow, setTableShow] = useState(false);
 	const [selectedPassenger, setSelectedPassenger] = useState(null);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [formKey, setFormKey] = useState(0);
@@ -129,7 +129,7 @@ function ManpowerSubmissionV2List() {
 
 						<ManpowerSubmissionV2Lists
 							data={data}
-							tabileShow={tabileShow}
+							tableShow={tableShow}
 							manpowerSubmissionV2ListId={manpowerSubmissionV2ListId}
 							handleReset={handleReset}
 							emptyValue={emptyValue}
