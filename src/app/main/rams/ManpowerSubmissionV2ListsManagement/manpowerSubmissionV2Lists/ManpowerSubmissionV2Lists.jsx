@@ -2,9 +2,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useUserInfo from 'src/app/@customHooks/useUserInfo';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import { useForm } from 'react-hook-form';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import { useReactToPrint } from 'react-to-print';
 import { Checkbox } from '@mui/material';
@@ -45,10 +43,7 @@ function ManpowerSubmissionV2Lists({
 	passenger,
 	manPowerDate
 }) {
-	const methods = useForm();
 	const classes = useStyles();
-
-	const { authTOKEN } = useUserInfo();
 
 	const [generalData, setGeneralData] = useState({});
 

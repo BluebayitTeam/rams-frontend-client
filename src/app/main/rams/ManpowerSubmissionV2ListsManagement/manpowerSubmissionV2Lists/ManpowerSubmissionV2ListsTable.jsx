@@ -78,18 +78,20 @@ function ManpowerSubmissionV2ListsTable(props) {
 		<div>
 			<div
 				key={`div-${startRowIndex}`}
-				className=" text-center"
+				className="text-center"
 				style={{
-					justifyContent: 'center',
 					display: 'flex',
-					alignItems: 'center',
+					flexDirection: 'column',
 					width: '100%',
-					flexDirection: 'column'
+					alignItems: 'center'
 				}}
 			>
-				<table className="px-10  w-full">
+				<table
+					className="px-10 w-full"
+					style={{ tableLayout: 'fixed', borderCollapse: 'collapse' }}
+				>
 					<tbody>
-						{columns.map((column, columnIndex) => (
+						{columns.map((column) => (
 							<tr key={column}>
 								<td className="whitespace-nowrap border-1 border-current p-2 px-5">
 									<strong>
@@ -136,7 +138,6 @@ function ManpowerSubmissionV2ListsTable(props) {
 								}}
 								style={{ padding: '10px' }}
 							>
-								<br />
 								<Interweave
 									allowAttributes
 									allowElements
@@ -146,8 +147,7 @@ function ManpowerSubmissionV2ListsTable(props) {
 
 								<Table
 									aria-label="simple table"
-									className={classes.table}
-									style={{ border: '1px solid black' }}
+									style={{ border: '1px solid red', paddingRight: '20px', paddingLeft: '20px' }}
 								>
 									<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
 										<TableRow>
@@ -156,7 +156,11 @@ function ManpowerSubmissionV2ListsTable(props) {
 													<TableCell
 														key={column.sl}
 														align="center"
-														style={{ border: '1px solid black', padding: '0px 5px' }}
+														style={{
+															border: '1px solid black',
+															padding: '0px 5px',
+															width: '150px'
+														}}
 														className="tableCellHead"
 														onDrop={(e) =>
 															dispatchTableColumns({
@@ -212,7 +216,11 @@ function ManpowerSubmissionV2ListsTable(props) {
 														<TableCell
 															align="center"
 															className="tableCell"
-															style={{ border: '1px solid black', padding: '0px 5px' }}
+															style={{
+																border: '1px solid black',
+																padding: '0px 5px',
+																width: '150px'
+															}}
 														>
 															<div>
 																{column?.subName
@@ -261,24 +269,22 @@ function ManpowerSubmissionV2ListsTable(props) {
 								</Table>
 
 								<br />
-								<Interweave
-									allowAttributes
-									allowElements
-									disableLineBreaks
-									content={formContentFooterData}
-								/>
-								<br />
 							</div>
+							<Interweave
+								allowAttributes
+								allowElements
+								disableLineBreaks
+								content={formContentFooterData}
+							/>
+							<br />
 						</div>
 					) : (
 						<div>
 							<div
 								className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
-								onMouseOver={() => {
-									inSiglePageMode || setPage(data.page);
-								}}
-								style={{ padding: '40px' }}
+								style={{ padding: '10px' }}
 							>
+								{/* Header */}
 								<Interweave
 									allowAttributes
 									allowElements
@@ -286,9 +292,12 @@ function ManpowerSubmissionV2ListsTable(props) {
 									content={formContentHeaderData}
 								/>
 
+								{/* Paginated Tables */}
 								{[...Array(numberOfTables)].map((_, tableIndex) =>
 									createTable(tableIndex * rowsPerPage)
 								)}
+
+								{/* Footer */}
 								<Interweave
 									allowAttributes
 									allowElements

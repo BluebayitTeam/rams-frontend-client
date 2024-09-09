@@ -10,9 +10,11 @@ import { makeStyles } from '@mui/styles';
 import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
-import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
+import {
+	MANPOWER_SUBMISSION_LIST_FOOTER_V2,
+	MANPOWER_SUBMISSION_LIST_HEADER_V2
+} from 'src/app/constant/FormContentTitle/formContentTitle';
 
 const useStyles = makeStyles((theme) => ({
 	searchContainer: ({ isPassenger }) => ({
@@ -70,13 +72,17 @@ function ManpowerSubmissionV2ListForm({
 			}
 		};
 
-		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_FOOTER}`, authTOKEN)
+		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_FOOTER_V2}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) =>
 				sessionStorage.setItem('formContentFooterData', data?.formcontent_detail[0]?.details || '')
 			);
+		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_HEADER_V2}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) =>
+				sessionStorage.setItem('formContentHeaderData', data?.formcontent_detail[0]?.details || '')
+			);
 	}, []);
-
 	return (
 		<div>
 			<CustomDropdownField
