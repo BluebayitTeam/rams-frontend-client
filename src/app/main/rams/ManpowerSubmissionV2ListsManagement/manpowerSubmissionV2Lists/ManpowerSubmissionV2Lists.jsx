@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import { useReactToPrint } from 'react-to-print';
 import { Checkbox } from '@mui/material';
+import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ManpowerSubmissionV2ListsTable from './ManpowerSubmissionV2ListsTable';
 
@@ -16,32 +17,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialTableColumnsState = [
-	{
-		id: 1,
-		label: 'ক্রমিক নং',
-		sortAction: false,
-		isSerialNo: true,
-		show: true
-	},
-	{
-		id: 2,
-		label: 'বিদেশগামী কর্মীর নাম',
-		name: 'passenger_name',
-		show: true,
-		style: {
-			whiteSpace: 'wrap'
-		}
-	},
-	{ id: 3, label: 'পাসপোর্ট নম্বার', name: 'passport_no', show: true },
-	{ id: 4, label: 'ফিঙ্গার নং.', name: 'registration_id', show: true },
-	{ id: 5, label: 'ভিসা নম্বর ', name: 'visa_no', show: true },
-	{ id: 6, label: 'নিয়োগকারীর নাম', name: 'sponsor_name', show: true },
-	{ id: 7, label: 'পদের নাম', name: 'profession', show: true },
-	{ id: 8, label: 'আয়করের পরিমাণ ', name: 'Payment', show: true },
-	{ id: 9, label: 'আহার ', name: 'Food', show: true },
-	{ id: 10, label: 'বি/ভাড়া', name: 'home_rent', show: true },
-	{ id: 11, label: 'আয়করের পরিমাণ', name: 'abcd', show: true },
-	{ id: 12, label: 'কল্যাণ ফ্রি এর পরিমাণ', name: 'efg', show: true }
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Company Name', name: 'comapany_name', show: true },
+	{ id: 2, label: 'Employee Name', name: 'employee_name', show: true },
+	{ id: 3, label: 'Job Post', name: 'job_post', show: true },
+	{ id: 4, label: 'Salary', name: 'salary', show: true },
+	{ id: 5, label: 'Reg.ID No', name: 'reg_id_no', show: true },
+	{ id: 6, label: 'Visa Number', name: 'visa_number', show: true },
+	{ id: 7, label: 'Visa Issue Date', name: 'visa_issue_date', show: true },
+	{ id: 8, label: 'Visa Expiry Date', name: 'visa_expirt_date', show: true },
+	{ id: 9, label: 'Passport No', name: 'passport_no', show: true },
+	{ id: 10, label: 'Passport Issue Date', name: 'passport_issue_date', show: true },
+	{ id: 11, label: 'Passport Expiry Date', name: 'passport_expiry_date', show: true },
+	{ id: 12, label: 'Date of Birth', name: 'date_of_birth', show: true }
 ];
 
 function ManpowerSubmissionV2Lists({
@@ -68,25 +56,29 @@ function ManpowerSubmissionV2Lists({
 		useReportData();
 	useEffect(() => {
 		const modifiedData = data?.map((manpowerSub) => ({
-			id: manpowerSub?.man_power_list?.id,
-			profession: manpowerSub?.visa_entry?.profession_english,
-			visa_no: manpowerSub?.visa_entry?.visa_number,
-			sponsor_name: manpowerSub?.visa_entry?.sponsor_name_english,
-			sponsor_id: manpowerSub?.manpower_entry?.sponsor_id_no,
+			sl: manpowerSub?.man_power_list?.id,
+			comapny_name: manpowerSub?.visa_entry?.demand?.company_name,
+			employee_name: manpowerSub?.passenger?.passenger_name,
+			job_post: manpowerSub?.embassy?.profession_english,
+			salary: manpowerSub?.embassy?.salary,
+			reg_id_no: manpowerSub?.man_power?.registration_id,
+			visa_nimber: manpowerSub?.visa_entry?.visa_nimber,
+			visa_issue_date: manpowerSub?.visa_entry?.visa_issue_date
+				? moment(new Date(manpowerSub?.visa_entry?.visa_issue_date)).format('DD-MM-YYYY')
+				: '',
+			visa_expiry_date: manpowerSub?.visa_entry?.visa_expiry_date
+				? moment(new Date(manpowerSub?.visa_entry?.visa_expiry_date)).format('DD-MM-YYYY')
+				: '',
 			passport_no: manpowerSub?.passenger?.passport_no,
-			office_sl: manpowerSub?.passenger?.office_serial,
-			passenger_name: manpowerSub?.passenger?.passenger_name,
-			reference: manpowerSub?.agent?.username,
-			registration_id: manpowerSub?.man_power?.registration_id,
-			Payment: '1000',
-			Food: 'Self',
-			home_rent: 'Free',
-			abcd: '500',
-			efg: '3500',
-			country: manpowerSub?.man_power_list?.country?.name,
-			agency: manpowerSub?.man_power_list?.agency?.name,
-			rl_no: manpowerSub?.man_power?.recruiting_agency?.rl_no,
-			man_power_date: manpowerSub?.man_power_list?.man_power_date
+			passport_issue_date: manpowerSub?.passenger?.passport_issue_date
+				? moment(new Date(manpowerSub?.passenger?.passport_issue_date)).format('DD-MM-YYYY')
+				: '',
+			passport_expiry_date: manpowerSub?.passenger?.passport_expiry_date
+				? moment(new Date(manpowerSub?.passenger?.passport_expiry_date)).format('DD-MM-YYYY')
+				: '',
+			date_of_birth: manpowerSub?.passenger?.date_of_birth
+				? moment(new Date(manpowerSub?.passenger?.date_of_birth)).format('DD-MM-YYYY')
+				: ''
 		}));
 
 		setModifiedManpowerSbListData(modifiedData);

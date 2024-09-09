@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import Table from '@mui/material/Table';
@@ -10,9 +11,9 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { TableHead } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import { Delete } from '@mui/icons-material';
 import { Interweave } from 'interweave';
 import { DeletedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { Delete } from '@mui/icons-material';
 import { useDeleteManpowerSubmissionV2ListsMutation } from '../ManpowerSubmissionV2ListsApi';
 
 /**
@@ -36,15 +37,28 @@ function ManpowerSubmissionV2ListsTable(props) {
 		printableFormat,
 		data,
 		manpowerSubmissionV2ListId,
-		tabileShow
+		tabileShow,
+		setPage
 	} = props;
 	let pageBasedSerialNo = serialNumber;
+
+	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
+	const formContentHeaderData = sessionStorage.getItem('formContentHeaderData');
+
 	const methods = useFormContext();
 	const { formState, watch, getValues, reset } = methods;
 
-	const [page, setPage] = useState(0);
+	if (!data?.data || data.data.length === 0) {
+		return <p>No data available</p>;
+	}
 
-	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
+	const columns = Object.keys(data.data[0]);
+	const chunkSize = 8;
+	const columnChunks = [];
+
+	for (let i = 0; i < columns.length; i += chunkSize) {
+		columnChunks.push(columns.slice(i, i + chunkSize));
+	}
 
 	const [removeManpowerSubmissionV2Lists] = useDeleteManpowerSubmissionV2ListsMutation();
 
@@ -58,110 +72,107 @@ function ManpowerSubmissionV2ListsTable(props) {
 		navigate(`/apps/manpowerSubmissionV2List/manpowerSubmissionV2Lists/${item.id}/${item.handle}`);
 	}
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+	const rowsPerPage = 8;
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+	const createTable = (startRowIndex) => (
+		<div>
+			<div
+				key={`div-${startRowIndex}`}
+				className=" text-center"
+				style={{
+					justifyContent: 'center',
+					display: 'flex',
+					alignItems: 'center',
+					width: '100%',
+					flexDirection: 'column'
+				}}
+			>
+				<table className="px-10  w-full">
+					<tbody>
+						{columns.map((column, columnIndex) => (
+							<tr key={column}>
+								<td className="whitespace-nowrap border-1 border-current p-2 px-5">
+									<strong>
+										{column?.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+									</strong>
+								</td>
+								{data?.data?.slice(startRowIndex, startRowIndex + rowsPerPage).map((row, rowIndex) => (
+									<td
+										className="whitespace-nowrap border-1 border-current p-2 px-5"
+										key={`${column}-${rowIndex}`}
+									>
+										{column === 'sl' ? (
+											startRowIndex + rowIndex + 1
+										) : column === 'employee_name' ||
+										  column === 'passport_no' ||
+										  column === 'passport_expiry_date' ||
+										  column === 'reg_id_no' ? (
+											<b>{row[column]}</b>
+										) : (
+											row[column]
+										)}
+									</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	);
 
-		setSelected(newSelected);
-	}
+	const numberOfTables = Math.ceil((data?.data?.length ?? 0) / rowsPerPage);
+
+	// const pageStyle = {
+	// 	padding: '10px',
+	// 	breakBefore: 'always' // Force a page break before each container
+	// };
 
 	return (
 		<div>
-			{tabileShow && !hideTabile && (
+			{!printableFormat ? (
 				<div>
 					<div
-						className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}
+						className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
 						onMouseOver={() => {
 							inSiglePageMode || setPage(data.page);
 						}}
+						style={{ padding: '10px' }}
 					>
-						<table
-							width="100%"
-							align="center"
-							className="px-32 w-11/12"
-						>
-							<tr>
-								<td
-									colSpan="3"
-									style={{ textAlign: 'center', marginTop: 20 }}
-								>
-									<h1 style={{ textDecoration: 'underline' }}>একক বহির্গমন ছাড়পএরের আবেদন ফরম</h1>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									নিয়োগকারী দেশের নাম :
-									<span style={{ fontWeight: 'bold' }}> {data?.data?.[0]?.country}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									জমাদানকারী রিক্রটিং এজেন্সীর নাম :{' '}
-									<span style={{ fontWeight: 'bold' }}>{getValues()?.agency_info?.name_bangla}</span>
-								</td>
-								<td style={{ textAlign: 'center' }}>
-									লাইসেন্স নম্বর :{' '}
-									<span style={{ fontWeight: 'bold' }}>
-										{' '}
-										আর এল-
-										{getValues()
-											?.agency_info?.rl_no?.toString()
-											.replace(/[0-9]/g, (digit) =>
-												String.fromCharCode(digit.charCodeAt(0) + 2486)
-											)}
-									</span>
-								</td>
-								<td style={{ textAlign: 'right' }}>
-									জমার তারিখ :
-									<span style={{ fontWeight: 'bold', paddingRight: '10px' }}>
-										{moment(new Date(data?.[0]?.man_power_list?.man_power_date)).format(
-											'DD-MM-YYYY'
-										)}
-									</span>
-								</td>
-							</tr>
-						</table>
+						<br />
+						<Interweave
+							allowAttributes
+							allowElements
+							disableLineBreaks
+							content={formContentHeaderData}
+						/>
 
 						<Table
 							aria-label="simple table"
 							className={classes.table}
-							style={{ border: '1px solid black', width: '1000px', marginTop: 10 }}
+							style={{ border: '1px solid black' }}
 						>
 							<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
 								<TableRow>
 									{tableColumns.map((column, indx) => {
 										return column.show ? (
 											<TableCell
-												key={column.id}
+												key={column.sl}
 												align="center"
-												style={{
-													border: '1px solid black',
-													padding: '0px 5px'
-												}}
+												style={{ border: '1px solid black', padding: '0px 5px' }}
 												className="tableCellHead"
 												onDrop={(e) =>
 													dispatchTableColumns({
 														type: 'dragAndDrop',
-														dropper: column.id
+														dropper: column.sl
 													})
 												}
 												onDragOver={(e) => e.preventDefault()}
 											>
 												<div
-													onDragStart={(e) => {
-														console.log('Dragging row with index:', idx);
-														e.dataTransfer.setData('draggerId', idx);
-													}}
+													onDragStart={(e) =>
+														e.dataTransfer.setData('draggerLebel', column.sl)
+													}
 													onClick={() => {
 														if (column.sortAction !== false) {
 															setSortBy(data.sortBy === column.name ? '' : column.name);
@@ -184,7 +195,7 @@ function ManpowerSubmissionV2ListsTable(props) {
 							<TableBody>
 								{data?.data?.map((dataArr, idx) => (
 									<TableRow
-										key={dataArr.id}
+										key={dataArr.sl}
 										className="tableRow cursor-pointer"
 										hover
 										onDrop={(e) =>
@@ -202,14 +213,11 @@ function ManpowerSubmissionV2ListsTable(props) {
 												<TableCell
 													align="center"
 													className="tableCell"
-													style={{
-														border: '1px solid black',
-														padding: '0px 5px'
-													}}
+													style={{ border: '1px solid black', padding: '0px 5px' }}
 												>
 													<div>
 														{column?.subName
-															? dataArr?.[column?.name]?.[column?.subName]
+															? dataArr?.[column.name]?.[column?.subName]
 															: column.type === 'date'
 																? dataArr?.[column.name]
 																	? moment(new Date(dataArr?.[column.name])).format(
@@ -252,62 +260,39 @@ function ManpowerSubmissionV2ListsTable(props) {
 							</TableBody>
 						</Table>
 
-						<p style={{ marginTop: '15px' }}>
-							<span style={{ fontWeight: 'bold' }}>এজেন্সীর অঙ্গীকার নামা :</span>
-							বর্ণিত কর্মী গ্রুপ ভিসার অন্তর্ভুক্ত নয় কর্মীর/কর্মীদের পাসপোর্ট, ভিসা, চাকরীর চুক্তি পএরে
-							বর্নিত বেতন ও শর্তাদি সঠিক আছে উক্ত বিষয়ে নিক্রটিং কারনে কর্মীর/কর্মীদের কোন প্রকার সমস্যা
-							হইলে আমার
-							<span style={{ fontWeight: 'bold' }}>
-								{getValues()?.agency_info?.name_bangla}(আর এল-
-								{getValues()
-									?.agency_info?.rl_no?.toString()
-									.replace(/[0-9]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) + 2486))}
-								)
-							</span>
-							সম্পূর্ন দায় দায়িত্ব গ্রহন ও কর্মীর/কর্মীদের ক্ষতিপূরণ দান করিতে বাধ্য থাকিবো
-						</p>
-
+						<br />
 						<Interweave
 							allowAttributes
 							allowElements
 							disableLineBreaks
 							content={formContentFooterData}
 						/>
+						<br />
+					</div>
+				</div>
+			) : (
+				<div>
+					<div
+						className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
+						onMouseOver={() => {
+							inSiglePageMode || setPage(data.page);
+						}}
+						style={{ padding: '40px' }}
+					>
+						<Interweave
+							allowAttributes
+							allowElements
+							disableLineBreaks
+							content={formContentHeaderData}
+						/>
 
-						<table
-							className={classes.pageBottmContainer}
-							style={{ backgroundColor: 'white', marginTop: 15 }}
-						>
-							<tbody>
-								<tr>
-									<td style={{ textAlign: 'center' }}>
-										পরীক্ষিতি হয়েছে <br />
-										কাগজপএ সঠিক আছে
-									</td>
-									<td style={{ textAlign: 'center' }}>বর্ণিত তথ্য যথাযথ আছে</td>
-									<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
-									<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
-									<td style={{ textAlign: 'center' }}>
-										এজেন্সী মালিক/প্রতিনিধিরি
-										<br /> স্বাক্ষর প্রস্তাবমত
-									</td>
-								</tr>
-								<tr>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-								</tr>
-								<tr>
-									<td style={{ textAlign: 'center' }}>সহকারীর স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>সহকারী পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>উপ-পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>মহা পরিচালকের স্বাক্ষর</td>
-								</tr>
-							</tbody>
-						</table>
+						{[...Array(numberOfTables)].map((_, tableIndex) => createTable(tableIndex * rowsPerPage))}
+						<Interweave
+							allowAttributes
+							allowElements
+							disableLineBreaks
+							content={formContentFooterData}
+						/>
 					</div>
 				</div>
 			)}

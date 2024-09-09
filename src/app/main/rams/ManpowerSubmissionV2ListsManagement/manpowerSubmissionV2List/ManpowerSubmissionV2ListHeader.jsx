@@ -14,7 +14,6 @@ function ManpowerSubmissionV2ListHeader() {
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
-	const { name } = watch();
 
 	return (
 		<div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
@@ -26,7 +25,7 @@ function ManpowerSubmissionV2ListHeader() {
 						animate={{ x: 0, transition: { delay: 0.3 } }}
 					>
 						<Typography className="text-16 sm:text-20 truncate font-semibold">
-							{name || 'Create New Manpower Submission List'}
+							Create New Manpower Submission V2 List
 						</Typography>
 					</motion.div>
 				</div>

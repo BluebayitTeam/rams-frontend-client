@@ -97,6 +97,7 @@ import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConf
 import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 import ManpowerNoteSheetMaleAppConfig from '../rams/ManpowerNoteSheetMalesManagement/ManpowerNoteSheetMaleAppConfig';
+import ManpowerSubmissionV2ListAppConfig from '../rams/ManpowerSubmissionV2ListsManagement/ManpowerSubmissionV2ListAppConfig';
 
 /**
  * The list of application configurations.
@@ -112,7 +113,7 @@ const appsConfigs = [
 	FemalefingerletterAppConfig,
 	MessengerAppConfig,
 	ManpowerNoteSheetMaleAppConfig,
-	// ManpowerSubmissionV2ListAppConfig,
+	ManpowerSubmissionV2ListAppConfig,
 	MalefingerletterAppConfig,
 	MultipleStatusUpdateAppConfig,
 	MalaysiaVisaAppConfig,
