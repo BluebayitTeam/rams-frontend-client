@@ -78,7 +78,7 @@ function ManpowerSubmissionListsTable(props) {
 
 	return (
 		<div>
-			{tableShow && (
+			{!hideTabile && (
 				<div>
 					<div
 						className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}

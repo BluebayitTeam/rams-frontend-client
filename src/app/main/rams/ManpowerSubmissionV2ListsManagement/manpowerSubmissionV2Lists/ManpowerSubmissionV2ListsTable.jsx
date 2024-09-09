@@ -11,9 +11,9 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { TableHead } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import { Interweave } from 'interweave';
 import { DeletedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { Delete } from '@mui/icons-material';
+import { Interweave } from 'interweave';
 import { useDeleteManpowerSubmissionV2ListsMutation } from '../ManpowerSubmissionV2ListsApi';
 
 /**
@@ -123,177 +123,181 @@ function ManpowerSubmissionV2ListsTable(props) {
 
 	const numberOfTables = Math.ceil((data?.data?.length ?? 0) / rowsPerPage);
 
-	// const pageStyle = {
-	// 	padding: '10px',
-	// 	breakBefore: 'always' // Force a page break before each container
-	// };
-
 	return (
 		<div>
-			{!printableFormat ? (
+			{!hideTabile && (
 				<div>
-					<div
-						className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
-						onMouseOver={() => {
-							inSiglePageMode || setPage(data.page);
-						}}
-						style={{ padding: '10px' }}
-					>
-						<br />
-						<Interweave
-							allowAttributes
-							allowElements
-							disableLineBreaks
-							content={formContentHeaderData}
-						/>
+					{!printableFormat ? (
+						<div>
+							<div
+								className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
+								onMouseOver={() => {
+									inSiglePageMode || setPage(data.page);
+								}}
+								style={{ padding: '10px' }}
+							>
+								<br />
+								<Interweave
+									allowAttributes
+									allowElements
+									disableLineBreaks
+									content={formContentHeaderData}
+								/>
 
-						<Table
-							aria-label="simple table"
-							className={classes.table}
-							style={{ border: '1px solid black' }}
-						>
-							<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
-								<TableRow>
-									{tableColumns.map((column, indx) => {
-										return column.show ? (
-											<TableCell
-												key={column.sl}
-												align="center"
-												style={{ border: '1px solid black', padding: '0px 5px' }}
-												className="tableCellHead"
+								<Table
+									aria-label="simple table"
+									className={classes.table}
+									style={{ border: '1px solid black' }}
+								>
+									<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
+										<TableRow>
+											{tableColumns.map((column, indx) => {
+												return column.show ? (
+													<TableCell
+														key={column.sl}
+														align="center"
+														style={{ border: '1px solid black', padding: '0px 5px' }}
+														className="tableCellHead"
+														onDrop={(e) =>
+															dispatchTableColumns({
+																type: 'dragAndDrop',
+																dropper: column.sl
+															})
+														}
+														onDragOver={(e) => e.preventDefault()}
+													>
+														<div
+															onDragStart={(e) =>
+																e.dataTransfer.setData('draggerLebel', column.sl)
+															}
+															onClick={() => {
+																if (column.sortAction !== false) {
+																	setSortBy(
+																		data.sortBy === column.name ? '' : column.name
+																	);
+																	setSortBySubKey &&
+																		column.subName &&
+																		setSortBySubKey(column.subName);
+																}
+															}}
+															style={{
+																margin: indx === 0 && '0px -5px 0px 5px'
+															}}
+														>
+															{column.label}
+														</div>
+													</TableCell>
+												) : null;
+											})}
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{data?.data?.map((dataArr, idx) => (
+											<TableRow
+												key={dataArr.sl}
+												className="tableRow cursor-pointer"
+												hover
 												onDrop={(e) =>
-													dispatchTableColumns({
-														type: 'dragAndDrop',
-														dropper: column.sl
-													})
+													dragAndDropRow(
+														e.dataTransfer.getData('draggerId'),
+														data.size * (data.page - 1) + idx
+													)
 												}
 												onDragOver={(e) => e.preventDefault()}
+												draggable
+												onDragStart={(e) => e.dataTransfer.setData('draggerId', idx)}
 											>
-												<div
-													onDragStart={(e) =>
-														e.dataTransfer.setData('draggerLebel', column.sl)
-													}
-													onClick={() => {
-														if (column.sortAction !== false) {
-															setSortBy(data.sortBy === column.name ? '' : column.name);
-															setSortBySubKey &&
-																column.subName &&
-																setSortBySubKey(column.subName);
-														}
-													}}
-													style={{
-														margin: indx === 0 && '0px -5px 0px 5px'
-													}}
-												>
-													{column.label}
-												</div>
-											</TableCell>
-										) : null;
-									})}
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{data?.data?.map((dataArr, idx) => (
-									<TableRow
-										key={dataArr.sl}
-										className="tableRow cursor-pointer"
-										hover
-										onDrop={(e) =>
-											dragAndDropRow(
-												e.dataTransfer.getData('draggerId'),
-												data.size * (data.page - 1) + idx
-											)
-										}
-										onDragOver={(e) => e.preventDefault()}
-										draggable
-										onDragStart={(e) => e.dataTransfer.setData('draggerId', idx)}
-									>
-										{tableColumns.map((column) => {
-											return column.show ? (
+												{tableColumns.map((column) => {
+													return column.show ? (
+														<TableCell
+															align="center"
+															className="tableCell"
+															style={{ border: '1px solid black', padding: '0px 5px' }}
+														>
+															<div>
+																{column?.subName
+																	? dataArr?.[column.name]?.[column?.subName]
+																	: column.type === 'date'
+																		? dataArr?.[column.name]
+																			? moment(
+																					new Date(dataArr?.[column.name])
+																				).format('DD-MM-YYYY')
+																			: ''
+																		: column.name
+																			? dataArr?.[column.name]
+																			: column?.isSerialNo
+																				? dataArr.hideSerialNo ||
+																					pageBasedSerialNo++
+																				: dataArr.getterMethod
+																					? dataArr.getterMethod(dataArr)
+																					: column.getterMethod
+																						? column.getterMethod(dataArr)
+																						: ''}
+															</div>
+														</TableCell>
+													) : null;
+												})}
+
 												<TableCell
 													align="center"
 													className="tableCell"
-													style={{ border: '1px solid black', padding: '0px 5px' }}
+													style={{
+														border: '1px solid black',
+														padding: '0px 6px 0 6px',
+														display: printableFormat ? 'none' : 'block'
+													}}
 												>
-													<div>
-														{column?.subName
-															? dataArr?.[column.name]?.[column?.subName]
-															: column.type === 'date'
-																? dataArr?.[column.name]
-																	? moment(new Date(dataArr?.[column.name])).format(
-																			'DD-MM-YYYY'
-																		)
-																	: ''
-																: column.name
-																	? dataArr?.[column.name]
-																	: column?.isSerialNo
-																		? dataArr.hideSerialNo || pageBasedSerialNo++
-																		: dataArr.getterMethod
-																			? dataArr.getterMethod(dataArr)
-																			: column.getterMethod
-																				? column.getterMethod(dataArr)
-																				: ''}
-													</div>
+													<Delete
+														onClick={() => {
+															deleteManpowerSubmissionV2List(dataArr?.id);
+														}}
+														className="cursor-pointer"
+														style={{ color: 'red' }}
+													/>
 												</TableCell>
-											) : null;
-										})}
+											</TableRow>
+										))}
+									</TableBody>
+								</Table>
 
-										<TableCell
-											align="center"
-											className="tableCell"
-											style={{
-												border: '1px solid black',
-												padding: '0px 6px 0 6px',
-												display: printableFormat ? 'none' : 'block'
-											}}
-										>
-											<Delete
-												onClick={() => {
-													deleteManpowerSubmissionV2List(dataArr?.id);
-												}}
-												className="cursor-pointer"
-												style={{ color: 'red' }}
-											/>
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+								<br />
+								<Interweave
+									allowAttributes
+									allowElements
+									disableLineBreaks
+									content={formContentFooterData}
+								/>
+								<br />
+							</div>
+						</div>
+					) : (
+						<div>
+							<div
+								className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
+								onMouseOver={() => {
+									inSiglePageMode || setPage(data.page);
+								}}
+								style={{ padding: '40px' }}
+							>
+								<Interweave
+									allowAttributes
+									allowElements
+									disableLineBreaks
+									content={formContentHeaderData}
+								/>
 
-						<br />
-						<Interweave
-							allowAttributes
-							allowElements
-							disableLineBreaks
-							content={formContentFooterData}
-						/>
-						<br />
-					</div>
-				</div>
-			) : (
-				<div>
-					<div
-						className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
-						onMouseOver={() => {
-							inSiglePageMode || setPage(data.page);
-						}}
-						style={{ padding: '40px' }}
-					>
-						<Interweave
-							allowAttributes
-							allowElements
-							disableLineBreaks
-							content={formContentHeaderData}
-						/>
-
-						{[...Array(numberOfTables)].map((_, tableIndex) => createTable(tableIndex * rowsPerPage))}
-						<Interweave
-							allowAttributes
-							allowElements
-							disableLineBreaks
-							content={formContentFooterData}
-						/>
-					</div>
+								{[...Array(numberOfTables)].map((_, tableIndex) =>
+									createTable(tableIndex * rowsPerPage)
+								)}
+								<Interweave
+									allowAttributes
+									allowElements
+									disableLineBreaks
+									content={formContentFooterData}
+								/>
+							</div>
+						</div>
+					)}
 				</div>
 			)}
 		</div>

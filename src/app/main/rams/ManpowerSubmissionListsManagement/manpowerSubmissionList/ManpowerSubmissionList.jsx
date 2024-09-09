@@ -78,6 +78,8 @@ function ManpowerSubmissionList() {
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
+
+					setHideTabile(false);
 					setTableShow(true);
 
 					navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
