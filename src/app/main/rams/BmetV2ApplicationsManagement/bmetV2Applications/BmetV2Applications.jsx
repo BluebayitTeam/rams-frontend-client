@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-/* eslint-disable array-callback-return */
+
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
@@ -34,7 +33,7 @@ function BmetV2Applications({
 	selectedDate,
 	selectedPassenger,
 	passenger,
-	manPowerDate
+	bmetV2ApplicationDate
 }) {
 	const classes = useStyles();
 
@@ -137,7 +136,7 @@ function BmetV2Applications({
 							selectedDate={selectedDate}
 							selectedPassenger={selectedPassenger}
 							passenger={passenger}
-							manPowerDate={manPowerDate}
+							bmetV2ApplicationDate={bmetV2ApplicationDate}
 						/>
 					))}
 				</div>

@@ -1,10 +1,6 @@
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-undef */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import { useEffect } from 'react';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import CustomTextField from 'src/app/@components/CustomTextField';

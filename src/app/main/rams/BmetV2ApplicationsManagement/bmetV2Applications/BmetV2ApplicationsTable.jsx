@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable jsx-a11y/mouse-events-have-key-events */
+
 import withRouter from '@fuse/core/withRouter';
 import { useFormContext } from 'react-hook-form';
 
@@ -28,15 +27,7 @@ function BmetV2ApplicationsTable(props) {
 			<div>
 				<div className={classes.pageHead}>
 					<h2 className="title  pl-0 md:-pl-20">{reportTitle}</h2>
-					{/* <div className="logoContainer pr-0 md:-pr-20">
-						<img
-							style={{
-								visibility: generalData.logo ? 'visible' : 'hidden'
-							}}
-							src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-							alt="Not found"
-						/>
-					</div> */}
+					
 				</div>
 
 				{/* Application  */}

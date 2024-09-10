@@ -34,15 +34,15 @@ function BmetV2Application() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 
-	const manPowerDate = watch('man_power_date');
+	const bmetV2ApplicationDate = watch('man_power_date');
 
 	const { data } = useGetBmetV2ApplicationsQuery({
-		manPowerDate: selectedDate
+		bmetV2ApplicationDate: selectedDate
 	});
 	const bmetV2ApplicationId = data && data.length > 0 ? data[0].man_power_list.id : null;
 
 	function handleSearchManPowerDateClick() {
-		setSelectedDate(manPowerDate);
+		setSelectedDate(bmetV2ApplicationDate);
 	}
 
 	useEffect(() => {
@@ -71,7 +71,7 @@ function BmetV2Application() {
 							handleReset={handleReset}
 							emptyValue={emptyValue}
 							selectedDate={selectedDate}
-							manPowerDate={manPowerDate}
+							bmetV2ApplicationDate={bmetV2ApplicationDate}
 						/>
 					</div>
 				}
