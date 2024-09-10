@@ -77,7 +77,7 @@ function ReportPaginationAndDownload({
       {/* Pagination */}
       {!hideSection?.includes('pagination') && (
         <Pagination
-          page={page}
+          page={page }
           size={size}
           totalPages={totalPages || 0}
           totalElements={totalElements || 0}
@@ -149,7 +149,8 @@ function ReportPaginationAndDownload({
             className='cursor-pointer inside icon'
             style={{
               margin: '0px',
-              padding: '6px',
+				padding: '6px',
+			  
               border: showClmSelectOption && '1px solid',
             }}
             onClick={() => setShowClmSelectOption(true)}
