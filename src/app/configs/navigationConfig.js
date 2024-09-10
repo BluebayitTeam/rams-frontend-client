@@ -1295,7 +1295,7 @@ const navigationConfig = [
 				translate: 'BMET Application V2',
 				display_order: 20,
 				type: 'item',
-				url: '/apps/bmetApplicationv2/bmetApplications/new',
+				url: '/apps/bmetV2Application/bmetV2Applications/new',
 				exact: true
 			}
 		]
