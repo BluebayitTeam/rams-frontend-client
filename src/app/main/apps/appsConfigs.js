@@ -98,6 +98,7 @@ import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 import ManpowerNoteSheetMaleAppConfig from '../rams/ManpowerNoteSheetMalesManagement/ManpowerNoteSheetMaleAppConfig';
 import ManpowerSubmissionV2ListAppConfig from '../rams/ManpowerSubmissionV2ListsManagement/ManpowerSubmissionV2ListAppConfig';
+import ManpowerNoteSheetAppConfig from '../rams/ManpowerNoteSheetsManagement/ManpowerNoteSheetAppConfig';
 
 /**
  * The list of application configurations.
@@ -118,6 +119,7 @@ const appsConfigs = [
 	MultipleStatusUpdateAppConfig,
 	MalaysiaVisaAppConfig,
 	ContactsAppConfig,
+	ManpowerNoteSheetAppConfig,
 	ECommerceAppConfig,
 	FileManagerAppConfig,
 	HelpCenterAppConfig,

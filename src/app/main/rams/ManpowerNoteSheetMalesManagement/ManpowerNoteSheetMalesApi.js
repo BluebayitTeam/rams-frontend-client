@@ -14,27 +14,31 @@ const ManpowerNoteSheetMaleApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getManpowerNoteSheetMale: build.query({
-				query: ({ manPowerDate }) => ({
-					url: MANPOWERSBLISTS_BY_DATE,
-					params: {
-						man_power_date: manPowerDate || ''
+				query: ({ manPowerDate }) => {
+					if (!manPowerDate) {
+						return { url: null };
 					}
-				}),
-				async onQueryStarted({ manPowerDate }, { queryFulfilled }) {
+
+					return {
+						url: MANPOWERSBLISTS_BY_DATE,
+						params: {
+							man_power_date: manPowerDate || ''
+						}
+					};
+				},
+				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
 					try {
-						await queryFulfilled;
+						const { data } = await queryFulfilled;
+
+						// Check if the response is an empty array
+						if (Array.isArray(data) && data.length === 0) {
+							CustomNotification('error', 'There are no manpower records');
+						}
 					} catch (error) {
-						CustomNotification('error', error?.error?.response?.data?.detail);
+						console.log('Error:', error);
 					}
 				},
-				providesTags: ['manpowerNoteSheetMales'],
-				async onQueryStarted(manpowerNoteSheetMaleId, { queryFulfilled }) {
-					try {
-						await queryFulfilled;
-					} catch (error) {
-						CustomNotification('error', `${error?.error?.response?.data?.detail}`);
-					}
-				}
+				providesTags: ['manpowerNoteSheetMales']
 			})
 		}),
 		overrideExisting: false
