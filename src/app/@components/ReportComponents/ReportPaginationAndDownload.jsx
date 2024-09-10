@@ -36,7 +36,8 @@ function ReportPaginationAndDownload({
 	handleGetData,
 	handleGetAllData,
 	tableColumns,
-	dispatchTableColumns
+	dispatchTableColumns,
+	hideSection
 }) {
 	const classes = useStyles();
 	console.log('totalPages,totalElements', totalPages, totalElements);
@@ -70,109 +71,117 @@ function ReportPaginationAndDownload({
 	}, []);
 
 	return (
-		<div
-			className={`${classes.menubar} justify-start md:justify-center`}
-			style={{ backgroundColor: '#c2c7f1' }}
-		>
-			{/* Pagination */}
-			<Pagination
-				page={page}
-				size={size}
-				totalPages={totalPages || 0}
-				totalElements={totalElements || 0}
-				onClickFirstPage={onFirstPage}
-				onClickPreviousPage={onPreviousPage}
-				onClickNextPage={onNextPage}
-				onClickLastPage={onLastPage}
-			/>
+    <div
+      className={`${classes.menubar} justify-start md:justify-center`}
+      style={{ backgroundColor: '#c2c7f1' }}>
+      {/* Pagination */}
+      {!hideSection.includes('pagination') && (
+        <Pagination
+          page={page}
+          size={size}
+          totalPages={totalPages || 0}
+          totalElements={totalElements || 0}
+          onClickFirstPage={onFirstPage}
+          onClickPreviousPage={onPreviousPage}
+          onClickNextPage={onNextPage}
+          onClickLastPage={onLastPage}
+        />
+      )}
+      {!hideSection.includes('download') && (
+        <div className='downloadIcon'>
+          <div className='downloadOptionContainer'>
+            <div className='indicator' />
+            <div className='downloadOptions shadow-4'>
+              <div
+                className='cursor-pointer downloadContainer shadow-4'
+                style={{ width: '160px', margin: '0px 10px 10px 10px' }}
+                onClick={() => {
+                  setInDowloadExcel(true);
+                  handleExelDownload();
+                }}>
+                <DifferenceIcon />
+                <span>Download Excel</span>
+                <DownloadIcon />
+              </div>
+            </div>
+          </div>
+          <DownloadIcon
+            className='cursor-pointer inside icon'
+            style={{
+              margin: '0px',
+              border: (inDowloadPdf || inDowloadExcel) && '1px solid',
+            }}
+          />
+        </div>
+      )}
 
-			<div className="downloadIcon">
-				<div className="downloadOptionContainer">
-					<div className="indicator" />
-					<div className="downloadOptions shadow-4">
-						<div
-							className="cursor-pointer downloadContainer shadow-4"
-							style={{ width: '160px', margin: '0px 10px 10px 10px' }}
-							onClick={() => {
-								setInDowloadExcel(true);
-								handleExelDownload();
-							}}
-						>
-							<DifferenceIcon />
-							<span>Download Excel</span>
-							<DownloadIcon />
-						</div>
-					</div>
-				</div>
-				<DownloadIcon
-					className="cursor-pointer inside icon"
-					style={{
-						margin: '0px',
-						border: (inDowloadPdf || inDowloadExcel) && '1px solid'
-					}}
-				/>
-			</div>
+      {!hideSection.includes('print') && (
+        <PrintSharpIcon
+          className='cursor-pointer inside icon'
+          style={{ padding: '6px', border: inPrint && '1px solid' }}
+          onClick={() => {
+            setInPrint(true);
+            handlePrint();
+          }}
+        />
+      )}
 
-			<PrintSharpIcon
-				className="cursor-pointer inside icon"
-				style={{ padding: '6px', border: inPrint && '1px solid' }}
-				onClick={() => {
-					setInPrint(true);
-					handlePrint();
-				}}
-			/>
+      {!hideSection.includes('pg') && (
+        <ImportContactsSharpIcon
+          className='cursor-pointer inside icon'
+          style={{ padding: '8px', border: !inShowAllMode && '1px solid' }}
+          onClick={() => handleGetData()}
+        />
+      )}
 
-			<ImportContactsSharpIcon
-				className="cursor-pointer inside icon"
-				style={{ padding: '8px', border: !inShowAllMode && '1px solid' }}
-				onClick={() => handleGetData()}
-			/>
+      {!hideSection.includes('wp') && (
+        <BallotIcon
+          className='cursor-pointer inside icon'
+          style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
+          onClick={() => handleGetAllData()}
+        />
+      )}
 
-			<BallotIcon
-				className="cursor-pointer inside icon"
-				style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-				onClick={() => handleGetAllData()}
-			/>
+      {!hideSection.includes('column') && (
+        <div className='columnSelectContainer'>
+          <DensitySmallIcon
+            id='insideClmSelect'
+            className='cursor-pointer inside icon'
+            style={{
+              margin: '0px',
+              padding: '6px',
+              border: showClmSelectOption && '1px solid',
+            }}
+            onClick={() => setShowClmSelectOption(true)}
+          />
 
-			<div className="columnSelectContainer">
-				<DensitySmallIcon
-					id="insideClmSelect"
-					className="cursor-pointer inside icon"
-					style={{
-						margin: '0px',
-						padding: '6px',
-						border: showClmSelectOption && '1px solid'
-					}}
-					onClick={() => setShowClmSelectOption(true)}
-				/>
+          <div
+            id='insideClmSelect'
+            className={`allColumnContainer shadow-5 ${showClmSelectOption ? 'block' : 'hidden'}`}>
+            {tableColumns.map((column) => (
+              <ColumnLabel
+                key={column.name}
+                column={column}
+                dispatchTableColumns={dispatchTableColumns}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
-				<div
-					id="insideClmSelect"
-					className={`allColumnContainer shadow-5 ${showClmSelectOption ? 'block' : 'hidden'}`}
-				>
-					{tableColumns.map((column) => (
-						<ColumnLabel
-							key={column.name}
-							column={column}
-							dispatchTableColumns={dispatchTableColumns}
-						/>
-					))}
-				</div>
-			</div>
-
-			{/* Excel Converter */}
-			<div className="hidden">
-				<ReactHtmlTableToExcel
-					id="test-table-xls-button"
-					className="download-table-xls-button"
-					table="table-to-xls"
-					filename="AgentReports"
-					sheet="AgentReportsSheet"
-					buttonText="Download as XLS"
-				/>
-			</div>
-		</div>
-	);
+      {/* Excel Converter */}
+      <div className='hidden'>
+        <ReactHtmlTableToExcel
+          id='test-table-xls-button'
+          className='download-table-xls-button'
+          table='table-to-xls'
+          filename='AgentReports'
+          sheet='AgentReportsSheet'
+          buttonText='Download as XLS'
+        />
+      </div>
+    </div>
+  );
 }
 
 export default ReportPaginationAndDownload;
