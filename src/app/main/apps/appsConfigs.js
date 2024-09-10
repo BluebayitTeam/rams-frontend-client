@@ -112,7 +112,7 @@ const appsConfigs = [
 	BmetVerifyAppConfig,
 	AirwayAppConfig,
 	BranchAppConfig,
-	BmetV2ApplicationAppConfig,
+	// BmetV2ApplicationAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,
