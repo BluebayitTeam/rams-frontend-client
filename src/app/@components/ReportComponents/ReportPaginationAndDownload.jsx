@@ -75,7 +75,7 @@ function ReportPaginationAndDownload({
       className={`${classes.menubar} justify-start md:justify-center`}
       style={{ backgroundColor: '#c2c7f1' }}>
       {/* Pagination */}
-      {!hideSection.includes('pagination') && (
+      {!hideSection?.includes('pagination') && (
         <Pagination
           page={page}
           size={size}
@@ -87,7 +87,7 @@ function ReportPaginationAndDownload({
           onClickLastPage={onLastPage}
         />
       )}
-      {!hideSection.includes('download') && (
+      {!hideSection?.includes('download') && (
         <div className='downloadIcon'>
           <div className='downloadOptionContainer'>
             <div className='indicator' />
@@ -115,7 +115,7 @@ function ReportPaginationAndDownload({
         </div>
       )}
 
-      {!hideSection.includes('print') && (
+      {!hideSection?.includes('print') && (
         <PrintSharpIcon
           className='cursor-pointer inside icon'
           style={{ padding: '6px', border: inPrint && '1px solid' }}
@@ -126,7 +126,7 @@ function ReportPaginationAndDownload({
         />
       )}
 
-      {!hideSection.includes('pg') && (
+      {!hideSection?.includes('pg') && (
         <ImportContactsSharpIcon
           className='cursor-pointer inside icon'
           style={{ padding: '8px', border: !inShowAllMode && '1px solid' }}
@@ -134,7 +134,7 @@ function ReportPaginationAndDownload({
         />
       )}
 
-      {!hideSection.includes('wp') && (
+      {!hideSection?.includes('wp') && (
         <BallotIcon
           className='cursor-pointer inside icon'
           style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
@@ -142,7 +142,7 @@ function ReportPaginationAndDownload({
         />
       )}
 
-      {!hideSection.includes('column') && (
+      {!hideSection?.includes('column') && (
         <div className='columnSelectContainer'>
           <DensitySmallIcon
             id='insideClmSelect'
