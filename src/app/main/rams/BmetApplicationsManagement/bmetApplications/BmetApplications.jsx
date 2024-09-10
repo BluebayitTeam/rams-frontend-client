@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable array-callback-return */
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
@@ -68,7 +69,6 @@ function BmetApplications({
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
-	// const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 

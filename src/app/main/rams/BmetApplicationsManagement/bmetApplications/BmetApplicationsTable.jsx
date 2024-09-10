@@ -3,9 +3,6 @@
 import withRouter from '@fuse/core/withRouter';
 import { useFormContext } from 'react-hook-form';
 
-/**
- * The bmetApplications table.
- */
 function BmetApplicationsTable(props) {
 	const {
 		reportTitle,
@@ -19,7 +16,6 @@ function BmetApplicationsTable(props) {
 	const methods = useFormContext();
 	const { watch } = methods;
 	const Gender = watch('gender');
-	console.log('Gender', Gender);
 
 	return (
 		<div

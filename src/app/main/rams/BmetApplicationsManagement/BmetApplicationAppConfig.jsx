@@ -3,9 +3,6 @@ import BmetApplicationApp from './BmetApplicationApp';
 import BmetApplications from './bmetApplications/BmetApplications';
 import BmetApplication from './bmetApplication/BmetApplication';
 
-/**
- * The E-Commerce app configuration.
- */
 const BmetApplicationAppConfig = {
 	settings: {
 		layout: {}

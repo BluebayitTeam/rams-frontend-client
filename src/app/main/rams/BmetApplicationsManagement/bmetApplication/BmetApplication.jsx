@@ -9,9 +9,7 @@ import BmetApplicationModel from './models/BmetApplicationModel';
 import { useGetBmetApplicationsQuery } from '../BmetApplicationsApi';
 import BmetApplicationForm from './BmetApplicationForm';
 import BmetApplications from '../bmetApplications/BmetApplications';
-/**
- * Form Validation Schema
- */
+
 const schema = z.object({});
 
 function BmetApplication() {
@@ -20,10 +18,8 @@ function BmetApplication() {
 	};
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const [tableShow, setTableShow] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [formKey, setFormKey] = useState(0);
-	const [hideTabile, setHideTabile] = useState(false);
 
 	const methods = useForm({
 		mode: 'onChange',
@@ -40,22 +36,13 @@ function BmetApplication() {
 
 	const manPowerDate = watch('man_power_date');
 
-	const { data, refetch } = useGetBmetApplicationsQuery({
+	const { data } = useGetBmetApplicationsQuery({
 		manPowerDate: selectedDate
 	});
 	const bmetApplicationId = data && data.length > 0 ? data[0].man_power_list.id : null;
 
-	function handleCancel() {
-		handleReset({
-			...emptyValue
-		});
-		setHideTabile(true);
-	}
-
 	function handleSearchManPowerDateClick() {
 		setSelectedDate(manPowerDate);
-		setTableShow(true);
-		setHideTabile(false);
 	}
 
 	useEffect(() => {

@@ -3,39 +3,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useEffect } from 'react';
-import { makeStyles } from '@mui/styles';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import CustomTextField from 'src/app/@components/CustomTextField';
-
-const useStyles = makeStyles((theme) => ({
-	searchContainer: ({ isPassenger }) => ({
-		color: theme.palette.primary.main,
-		background: 'transparent',
-		borderColor: theme.palette.primary.main,
-		cursor: isPassenger && 'pointer',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		border: '1px solid',
-		height: '52px',
-		width: '52px',
-		marginTop: '8px',
-		borderRadius: '5px',
-		'&:hover': {
-			color: isPassenger ? theme.palette.primary.dark : theme.palette.primary.main,
-			background: isPassenger ? theme.palette.primary.light : 'transparent',
-			borderColor: isPassenger ? theme.palette.primary.dark : theme.palette.primary.main
-		},
-		'&:active': {
-			color: isPassenger ? theme.palette.primary.light : theme.palette.primary.main,
-			background: isPassenger ? theme.palette.primary.dark : 'transparent',
-			borderColor: isPassenger ? theme.palette.primary.light : theme.palette.primary.main
-		}
-	})
-}));
 
 function BmetApplicationForm({ handleSearchManPowerDateClick }) {
 	useEffect(() => {
