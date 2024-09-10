@@ -99,6 +99,7 @@ import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeA
 import ManpowerNoteSheetMaleAppConfig from '../rams/ManpowerNoteSheetMalesManagement/ManpowerNoteSheetMaleAppConfig';
 import ManpowerSubmissionV2ListAppConfig from '../rams/ManpowerSubmissionV2ListsManagement/ManpowerSubmissionV2ListAppConfig';
 import ManpowerNoteSheetAppConfig from '../rams/ManpowerNoteSheetsManagement/ManpowerNoteSheetAppConfig';
+import BmetApplicationAppConfig from '../rams/BmetApplicationsManagement/BmetApplicationAppConfig';
 
 /**
  * The list of application configurations.
@@ -120,6 +121,7 @@ const appsConfigs = [
 	MalaysiaVisaAppConfig,
 	ContactsAppConfig,
 	ManpowerNoteSheetAppConfig,
+	BmetApplicationAppConfig,
 	ECommerceAppConfig,
 	FileManagerAppConfig,
 	HelpCenterAppConfig,

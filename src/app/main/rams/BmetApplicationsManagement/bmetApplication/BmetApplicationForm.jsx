@@ -5,14 +5,13 @@ import { getAgencys, getCountries, getCurrentStatuss, getPassengers } from 'app/
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import { makeStyles } from '@mui/styles';
 import { Search } from '@mui/icons-material';
-import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
+import CustomTextField from 'src/app/@components/CustomTextField';
 
 const useStyles = makeStyles((theme) => ({
 	searchContainer: ({ isPassenger }) => ({
@@ -78,51 +77,97 @@ function BmetApplicationForm({
 	}, []);
 
 	return (
+		// <div>
+		// 	<CustomDropdownField
+		// 		name="agency"
+		// 		label="Agency"
+		// 		options={agencies}
+		// 		optionLabelFormat={(option) => `${option?.name}`}
+		// 		// onChange={(newValue) => setValue('agency_info', newValue)}
+		// 	/>
+		// 	<CustomDropdownField
+		// 		name="country"
+		// 		label="Country"
+		// 		options={countries}
+		// 		optionLabelFormat={(option) => `${option?.name}`}
+		// 	/>
+
+		// 	<div className="flex flex-nowrap">
+		// 		<div className="w-full">
+		// 			<CustomDropdownField
+		// 				name="passenger"
+		// 				label="Passenger"
+		// 				options={passengers}
+		// 				optionLabelFormat={(option) =>
+		// 					`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+		// 				}
+		// 			/>
+		// 		</div>
+		// 		<div
+		// 			className={classes.searchContainer}
+		// 			onClick={() => {
+		// 				handleSearchPassengerClick();
+		// 			}}
+		// 		>
+		// 			<Search className="cursor-pointer" />
+		// 		</div>
+		// 	</div>
+
+		// 	<div className="flex flex-nowrap">
+		// 		<div className="w-full">
+		// 			<CustomDatePicker
+		// 				name="man_power_date"
+		// 				label="Manpower Date"
+		// 				required
+		// 				placeholder="DD-MM-YYYY"
+		// 			/>
+		// 		</div>
+		// 		<div
+		// 			className={classes.searchContainer}
+		// 			onClick={() => {
+		// 				handleSearchManPowerDateClick();
+		// 			}}
+		// 		>
+		// 			<Search className="cursor-pointer" />
+		// 		</div>
+		// 	</div>
+
+		// 	<Button
+		// 		className="whitespace-nowrap mx-4"
+		// 		variant="contained"
+		// 		color="secondary"
+		// 		// disabled={_.isEmpty(dirtyFields) || !isValid}
+		// 		onClick={() => {
+		// 			handleCreateBmetApplication();
+		// 		}}
+		// 	>
+		// 		Save
+		// 	</Button>
+
+		// 	<Button
+		// 		className="whitespace-nowrap mx-4"
+		// 		variant="contained"
+		// 		style={{ backgroundColor: '#FFAA4C', color: 'white' }}
+		// 		onClick={() => handleCancel()}
+		// 	>
+		// 		Cancel
+		// 	</Button>
+		// </div>
+
 		<div>
-			<CustomDropdownField
-				name="agency"
-				label="Agency"
-				options={agencies}
-				optionLabelFormat={(option) => `${option?.name}`}
-				// onChange={(newValue) => setValue('agency_info', newValue)}
-			/>
-			<CustomDropdownField
-				name="country"
-				label="Country"
-				options={countries}
-				optionLabelFormat={(option) => `${option?.name}`}
-			/>
-
 			<div className="flex flex-nowrap">
-				<div className="w-full">
-					<CustomDropdownField
-						name="passenger"
-						label="Passenger"
-						options={passengers}
-						optionLabelFormat={(option) =>
-							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-						}
-					/>
-				</div>
-				<div
-					className={classes.searchContainer}
-					onClick={() => {
-						handleSearchPassengerClick();
-					}}
-				>
-					<Search className="cursor-pointer" />
-				</div>
-			</div>
+				<CustomDatePicker
+					name="man_power_date"
+					label="Manpower Date"
+					required
+					placeholder="DD-MM-YYYY"
+				/>
 
-			<div className="flex flex-nowrap">
-				<div className="w-full">
-					<CustomDatePicker
-						name="man_power_date"
-						label="Manpower Date"
-						required
-						placeholder="DD-MM-YYYY"
-					/>
-				</div>
+				<CustomTextField
+					name="gender"
+					label="Gender"
+					required
+				/>
 				<div
 					className={classes.searchContainer}
 					onClick={() => {
@@ -132,27 +177,6 @@ function BmetApplicationForm({
 					<Search className="cursor-pointer" />
 				</div>
 			</div>
-
-			<Button
-				className="whitespace-nowrap mx-4"
-				variant="contained"
-				color="secondary"
-				// disabled={_.isEmpty(dirtyFields) || !isValid}
-				onClick={() => {
-					handleCreateBmetApplication();
-				}}
-			>
-				Save
-			</Button>
-
-			<Button
-				className="whitespace-nowrap mx-4"
-				variant="contained"
-				style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-				onClick={() => handleCancel()}
-			>
-				Cancel
-			</Button>
 		</div>
 	);
 }

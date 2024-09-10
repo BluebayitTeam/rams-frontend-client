@@ -20,25 +20,6 @@ const BmetApplicationApi = api
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			// getBmetApplications: build.query({
-			// 	query: ({ manPowerDate, passenger }) => ({
-			// 		url: MANPOWERSBLISTS_BY_DATE,
-			// 		params: {
-			// 			man_power_date: manPowerDate,
-			// 			passenger
-			// 		}
-			// 	}),
-			// 	async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
-			// 		try {
-			// 			await queryFulfilled;
-			// 		} catch (error) {
-			// 			console.log('sddsfdsfdsfdsfds', error);
-			// 			// CustomNotification('error', error?.error?.response?.data?.detail);
-			// 		}
-			// 	},
-			// 	providesTags: ['bmetApplications']
-			// }),
-
 			getBmetApplications: build.query({
 				query: ({ manPowerDate, passenger }) => {
 					if (!manPowerDate && !passenger) {
