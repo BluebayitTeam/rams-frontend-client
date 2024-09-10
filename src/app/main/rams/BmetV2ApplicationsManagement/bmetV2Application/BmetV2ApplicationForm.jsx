@@ -5,22 +5,34 @@ import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import CustomTextField from 'src/app/@components/CustomTextField';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
+import { useSelector } from 'react-redux';
+import { getAgencys } from 'app/store/dataSlice';
+import { useDispatch } from 'react-redux';
 
 function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
-	useEffect(() => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
+		const dispatch = useDispatch();
 
-		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_FOOTER}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) =>
-				sessionStorage.setItem('formContentFooterData', data?.formcontent_detail[0]?.details || '')
-			);
+	const { agencies } = useSelector((state) => state.data);
+	useEffect(() => {
+		
+		dispatch(getAgencys());
+		
 	}, []);
+
+	// useEffect(() => {
+	// 	const authTOKEN = {
+	// 		headers: {
+	// 			'Content-type': 'application/json',
+	// 			Authorization: localStorage.getItem('jwt_access_token')
+	// 		}
+	// 	};
+
+	// 	fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_FOOTER}`, authTOKEN)
+	// 		.then((response) => response.json())
+	// 		.then((data) =>
+	// 			sessionStorage.setItem('formContentFooterData', data?.formcontent_detail[0]?.details || '')
+	// 		);
+	// }, []);
 
 	return (
 		<div>
@@ -33,6 +45,7 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 				options={agencies}
 				optionLabelFormat={(option) => `${option?.name}`}
 					/>
+					</div>
 					
 				<div className="w-full">
 					<CustomDatePicker
@@ -42,7 +55,7 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 					/>
 				</div>
 				
-				</div>
+				
 
 				<div className="w-full">
 					<CustomTextField
