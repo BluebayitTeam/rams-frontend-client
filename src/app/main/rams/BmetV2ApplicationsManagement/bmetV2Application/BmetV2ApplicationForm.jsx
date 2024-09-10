@@ -4,6 +4,7 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import CustomTextField from 'src/app/@components/CustomTextField';
+import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 
 function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 	useEffect(() => {
@@ -24,12 +25,23 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 	return (
 		<div>
 			<div className="flex flex-nowrap ">
+				
+				<div className="w-full">
+					<CustomDropdownField
+				name="agency"
+				label="Agency"
+				options={agencies}
+				optionLabelFormat={(option) => `${option?.name}`}
+					/>
+					
 				<div className="w-full">
 					<CustomDatePicker
 						name="man_power_date"
 						label="Manpower Date"
 						placeholder="DD-MM-YYYY"
 					/>
+				</div>
+				
 				</div>
 
 				<div className="w-full">

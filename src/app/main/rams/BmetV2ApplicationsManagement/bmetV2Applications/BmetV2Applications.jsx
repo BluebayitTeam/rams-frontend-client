@@ -44,23 +44,23 @@ function BmetV2Applications({
 	useEffect(() => {
 		const modifiedData = data?.map((manpowerSub) => ({
 			profession: manpowerSub?.embassy?.profession?.name,
-			visa_no: manpowerSub?.visa_entry?.visa_number,
-			sponsor_name: manpowerSub?.visa_entry?.sponsor_name_english,
-			sponsor_id: manpowerSub?.manpower_entry?.sponsor_id_no,
-			passport_no: manpowerSub?.passenger?.passport_no,
-			office_sl: manpowerSub?.passenger?.office_serial,
-			passenger_name: manpowerSub?.passenger?.passenger_name,
-			reference: manpowerSub?.agent?.username,
-			registration_id: manpowerSub?.man_power?.registration_id,
-			Payment: '1000',
-			Food: 'Self',
-			home_rent: 'Free',
-			abcd: '500',
-			efg: '3500',
-			country: manpowerSub?.man_power_list?.country?.name,
-			agency: manpowerSub?.man_power_list?.agency?.name,
-			rl_no: manpowerSub?.man_power?.recruiting_agency?.rl_no,
-			man_power_date: manpowerSub?.man_power_list?.man_power_date
+				visa_no: manpowerSub?.visa_entry?.visa_number,
+				sponsor_name: manpowerSub?.visa_entry?.sponsor_name_english,
+				sponsor_id: manpowerSub?.manpower_entry?.sponsor_id_no,
+				passport_no: manpowerSub?.passenger?.passport_no,
+				office_sl: manpowerSub?.passenger?.office_serial,
+				passenger_name: manpowerSub?.passenger?.passenger_name,
+				reference: manpowerSub?.agent?.username,
+				registration_id: manpowerSub?.man_power?.registration_id,
+				Payment: '1000',
+				Food: 'Self',
+				home_rent: 'Free',
+				abcd: '500',
+				efg: '3500',
+				country: manpowerSub?.man_power_list?.country?.name,
+				agency: manpowerSub?.man_power_list?.agency?.name,
+				rl_no: manpowerSub?.man_power?.recruiting_agency?.rl_no,
+				man_power_date: manpowerSub?.man_power_list?.man_power_date
 		}));
 
 		setModifiedManpowerSbListData(modifiedData);

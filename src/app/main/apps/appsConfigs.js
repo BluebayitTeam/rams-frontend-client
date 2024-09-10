@@ -101,6 +101,7 @@ import ManpowerSubmissionV2ListAppConfig from '../rams/ManpowerSubmissionV2Lists
 import ManpowerNoteSheetAppConfig from '../rams/ManpowerNoteSheetsManagement/ManpowerNoteSheetAppConfig';
 import BmetApplicationAppConfig from '../rams/BmetApplicationsManagement/BmetApplicationAppConfig';
 import ManpowerNoteSheetFemaleAppConfig from '../rams/ManpowerNoteSheetFemalesManagement/ManpowerNoteSheetFemaleAppConfig';
+import BmetV2ApplicationAppConfig from '../rams/BmetV2ApplicationsManagement/BmetV2ApplicationAppConfig';
 
 /**
  * The list of application configurations.
@@ -111,6 +112,7 @@ const appsConfigs = [
 	BmetVerifyAppConfig,
 	AirwayAppConfig,
 	BranchAppConfig,
+	BmetV2ApplicationAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,
