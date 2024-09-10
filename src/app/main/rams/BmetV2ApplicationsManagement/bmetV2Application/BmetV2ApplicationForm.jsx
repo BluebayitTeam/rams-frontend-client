@@ -19,24 +19,11 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 		
 	}, []);
 
-	// useEffect(() => {
-	// 	const authTOKEN = {
-	// 		headers: {
-	// 			'Content-type': 'application/json',
-	// 			Authorization: localStorage.getItem('jwt_access_token')
-	// 		}
-	// 	};
-
-	// 	fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_FOOTER}`, authTOKEN)
-	// 		.then((response) => response.json())
-	// 		.then((data) =>
-	// 			sessionStorage.setItem('formContentFooterData', data?.formcontent_detail[0]?.details || '')
-	// 		);
-	// }, []);
+	
 
 	return (
 		<div>
-			<div className="flex flex-nowrap ">
+			<div className="flex flex-nowrap gap-7 ">
 				
 				<div className="w-full">
 					<CustomDropdownField

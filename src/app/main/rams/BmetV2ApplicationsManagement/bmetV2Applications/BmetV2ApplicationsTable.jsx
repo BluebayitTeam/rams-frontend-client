@@ -1,5 +1,6 @@
 
 import withRouter from '@fuse/core/withRouter';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
 function BmetV2ApplicationsTable(props) {
@@ -8,7 +9,7 @@ function BmetV2ApplicationsTable(props) {
 		classes,
 		generalData,
 		inSiglePageMode,
-
+        extraData,
 		data,
 		setPage
 	} = props;
@@ -46,7 +47,7 @@ function BmetV2ApplicationsTable(props) {
 					{data?.data?.length
 						?.toString()
 						.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 2486))}{' '}
-					জন {extraData?.gender} কর্মীর একক বহির্গমন ছাড়পএ প্রদানের আবেদন।
+					জন {Gender} কর্মীর একক বহির্গমন ছাড়পএ প্রদানের আবেদন।
 					<br />
 					জনাব,
 					<br />
