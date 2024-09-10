@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
-import { useParams } from 'react-router';
 import { PictureAsPdf } from '@mui/icons-material';
 import { BASE_URL } from 'src/app/constant/constants';
 import clsx from 'clsx';
@@ -38,10 +37,8 @@ function ManPowerForm(props) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
 	const classes = useStyles(props);
-	const { control, formState, watch, setValue, setError, getValues, reset } = methods;
+	const { control, formState, watch, setValue, getValues } = methods;
 	const { errors } = formState;
-	const routeParams = useParams();
-	const { manPowerId } = routeParams;
 	const recruitingAgencys = useSelector((state) => state.data.recruitingAgencys);
 	const manpowers = useSelector((state) => state.data.manpowers);
 	const currentStatuss = useSelector((state) => state.data.currentStatuss);
@@ -49,7 +46,6 @@ function ManPowerForm(props) {
 	const doc1File = watch('smart_card_image') || '';
 
 	const [previewDoc1Image, setPreviewDoc1Image] = useState('');
-	const [reload, setReload] = useState(false);
 	const fileInputdoc1Ref = useRef(null);
 	useEffect(() => {
 		dispatch(getPassengers());
@@ -72,8 +68,6 @@ function ManPowerForm(props) {
 		if (fileInputdoc1Ref.current) {
 			fileInputdoc1Ref.current.value = '';
 		}
-
-		console.log('sfsdferwer', getValues());
 	};
 
 	return (
@@ -141,7 +135,6 @@ function ManPowerForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -163,7 +156,6 @@ function ManPowerForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}
@@ -185,7 +177,6 @@ function ManPowerForm(props) {
 							variant="outlined"
 							InputLabelProps={field.value && { shrink: true }}
 							fullWidth
-							// onKeyDown={handleSubmitOnKeyDownEnter}
 						/>
 					);
 				}}

@@ -5,15 +5,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import ManpowerNoteSheetModel from './models/ManpowerNoteSheetModel';
 import ManpowerNoteSheetHeader from './ManpowerNoteSheetHeader';
+import ManpowerNoteSheetModel from './models/ManpowerNoteSheetModel';
 import ManpowerNoteSheetForm from './ManpowerNoteSheetForm';
-
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
+	man_power_date: z
 		.string()
 		.nonempty('You must enter a manpowerNoteSheet name')
 		.min(5, 'The manpowerNoteSheet name must be at least 5 characters')
@@ -24,7 +23,6 @@ function ManpowerNoteSheet() {
 	const routeParams = useParams();
 	const { manpowerNoteSheetId } = routeParams;
 
-	const [tabValue, setTabValue] = useState(0);
 	const [formKey, setFormKey] = useState(0);
 
 	const methods = useForm({
@@ -32,8 +30,7 @@ function ManpowerNoteSheet() {
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
-	const { reset, watch } = methods;
-	const form = watch();
+	const { reset } = methods;
 	useEffect(() => {
 		if (manpowerNoteSheetId === 'new') {
 			reset(ManpowerNoteSheetModel({}));
@@ -43,6 +40,7 @@ function ManpowerNoteSheet() {
 		reset({});
 		setFormKey((prevKey) => prevKey + 1);
 	};
+
 	return (
 		<FormProvider
 			{...methods}

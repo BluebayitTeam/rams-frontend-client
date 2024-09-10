@@ -49,7 +49,7 @@ module.exports = {
 				avoidEscape: true
 			}
 		],
-	
+
 		'padding-line-between-statements': [
 			'warn',
 			{ blankLine: 'always', prev: 'function', next: '*' },
@@ -66,7 +66,7 @@ module.exports = {
 		// This rule is already covered by the TypeScript compiler.
 		'import/default': 'off',
 		// This rule is already covered by the TypeScript compiler.
-		'import/no-unresolved': 'off',
+		'import/no-unresolved': 'on',
 		'operator-linebreak': 'off',
 		'no-param-reassign': 'off',
 		'implicit-arrow-linebreak': 'off',
@@ -82,7 +82,7 @@ module.exports = {
 		'max-classes-per-file': 'off',
 		'react/jsx-filename-extension': 'off',
 		'import/extensions': 'off',
-		'no-unused-vars': 'off',
+		'no-unused-vars': 'on',
 		'unused-imports/no-unused-imports': 'error',
 		'unused-imports/no-unused-vars': [
 			'warn',

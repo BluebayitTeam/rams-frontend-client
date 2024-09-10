@@ -54,7 +54,26 @@ const useReportData = ({ initialData = [], row = 25, extraRowCount = 0 } = {}) =
 		modifyData(orginalArray);
 	}, [sortBy]);
 
-	return [data, modifyData, setSortBy, setSortBySubKey];
+	const dragAndDropRow = (draggerId, droperId) => {
+		const newState = [...orginalArray];
+
+		const dropperIndex = droperId;
+		const draggerIndex = parseInt(draggerId);
+
+		if ((dropperIndex === 0 || dropperIndex) && (draggerIndex === 0 || draggerIndex)) {
+			if (dropperIndex < draggerIndex) {
+				newState.splice(dropperIndex, 0, newState[draggerIndex]);
+				newState.splice(draggerIndex + 1, 1);
+				modifyData(newState);
+			} else if (dropperIndex > draggerIndex) {
+				newState.splice(dropperIndex + 1, 0, newState[draggerIndex]);
+				newState.splice(draggerIndex, 1);
+				modifyData(newState);
+			}
+		}
+	};
+
+	return [data, modifyData, setSortBy, setSortBySubKey, dragAndDropRow];
 };
 
 export default useReportData;

@@ -96,6 +96,12 @@ import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
+import ManpowerNoteSheetMaleAppConfig from '../rams/ManpowerNoteSheetMalesManagement/ManpowerNoteSheetMaleAppConfig';
+import ManpowerSubmissionV2ListAppConfig from '../rams/ManpowerSubmissionV2ListsManagement/ManpowerSubmissionV2ListAppConfig';
+import ManpowerNoteSheetAppConfig from '../rams/ManpowerNoteSheetsManagement/ManpowerNoteSheetAppConfig';
+import BmetApplicationAppConfig from '../rams/BmetApplicationsManagement/BmetApplicationAppConfig';
+import ManpowerNoteSheetFemaleAppConfig from '../rams/ManpowerNoteSheetFemalesManagement/ManpowerNoteSheetFemaleAppConfig';
+import BmetV2ApplicationAppConfig from '../rams/BmetV2ApplicationsManagement/BmetV2ApplicationAppConfig';
 
 /**
  * The list of application configurations.
@@ -106,14 +112,20 @@ const appsConfigs = [
 	BmetVerifyAppConfig,
 	AirwayAppConfig,
 	BranchAppConfig,
+	BmetV2ApplicationAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,
 	MessengerAppConfig,
+	ManpowerNoteSheetFemaleAppConfig,
+	ManpowerNoteSheetMaleAppConfig,
+	ManpowerSubmissionV2ListAppConfig,
 	MalefingerletterAppConfig,
 	MultipleStatusUpdateAppConfig,
 	MalaysiaVisaAppConfig,
 	ContactsAppConfig,
+	ManpowerNoteSheetAppConfig,
+	BmetApplicationAppConfig,
 	ECommerceAppConfig,
 	FileManagerAppConfig,
 	HelpCenterAppConfig,

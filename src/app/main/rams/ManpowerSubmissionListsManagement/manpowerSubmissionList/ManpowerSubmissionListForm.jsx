@@ -10,11 +10,9 @@ import { makeStyles } from '@mui/styles';
 import { Search } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
-import { useNavigate } from 'react-router';
+
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
-import { useCreateManpowerSubmissionListMutation } from '../ManpowerSubmissionListsApi';
 
 const useStyles = makeStyles((theme) => ({
 	searchContainer: ({ isPassenger }) => ({
@@ -43,15 +41,18 @@ const useStyles = makeStyles((theme) => ({
 	})
 }));
 
-function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchManPowerDateClick }) {
+function ManpowerSubmissionListForm({
+	handleSearchPassengerClick,
+	handleSearchManPowerDateClick,
+	handleCreateManpowerSubmissionList,
+	handleCancel
+}) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
+	const { watch } = methods;
 
-	const { errors } = formState;
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
-	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
-	const navigate = useNavigate();
+
 	const classes = useStyles({ isPassenger: watch('passenger') });
 
 	useEffect(() => {
@@ -60,25 +61,6 @@ function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchMa
 		dispatch(getCountries());
 		dispatch(getCurrentStatuss());
 	}, []);
-
-	function handleCreateManpowerSubmissionList() {
-		createManpowerSubmissionList(getValues())
-			.unwrap()
-			.then((data) => {
-				if (data) {
-					AddedSuccessfully();
-				}
-
-				navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
-			})
-			.catch((error) => {
-				CustomNotification('error', `${error.response.data.passenger}`);
-			});
-	}
-
-	function handleCancel() {
-		reset({});
-	}
 
 	useEffect(() => {
 		const authTOKEN = {
@@ -102,7 +84,6 @@ function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchMa
 				label="Agency"
 				options={agencies}
 				optionLabelFormat={(option) => `${option?.name}`}
-				// onChange={(newValue) => setValue('agency_info', newValue)}
 			/>
 			<CustomDropdownField
 				name="country"
@@ -124,9 +105,11 @@ function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchMa
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={handleSearchPassengerClick} // Call the handleSearchPassengerClick function on click
+					onClick={() => {
+						handleSearchPassengerClick();
+					}}
 				>
-					<Search />
+					<Search className="cursor-pointer" />
 				</div>
 			</div>
 
@@ -141,9 +124,11 @@ function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchMa
 				</div>
 				<div
 					className={classes.searchContainer}
-					onClick={handleSearchManPowerDateClick}
+					onClick={() => {
+						handleSearchManPowerDateClick();
+					}}
 				>
-					<Search />
+					<Search className="cursor-pointer" />
 				</div>
 			</div>
 
@@ -151,8 +136,9 @@ function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchMa
 				className="whitespace-nowrap mx-4"
 				variant="contained"
 				color="secondary"
-				// disabled={_.isEmpty(dirtyFields) || !isValid}
-				onClick={handleCreateManpowerSubmissionList}
+				onClick={() => {
+					handleCreateManpowerSubmissionList();
+				}}
 			>
 				Save
 			</Button>
@@ -161,7 +147,7 @@ function ManpowerSubmissionListForm({ handleSearchPassengerClick, handleSearchMa
 				className="whitespace-nowrap mx-4"
 				variant="contained"
 				style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-				onClick={handleCancel}
+				onClick={() => handleCancel()}
 			>
 				Cancel
 			</Button>

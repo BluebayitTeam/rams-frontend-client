@@ -3,13 +3,13 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	CREATE_MANPOWERLIST,
-	DELETE_DEPARTMENT,
 	DELETE_MANPOWERLIST,
 	MANPOWERLIST_BY_PASSENGER_ID,
 	MANPOWERSBLISTS_BY_DATE,
 	UPDATE_MANPOWERLIST
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
 import ManpowerSubmissionListModel from './manpowerSubmissionList/models/ManpowerSubmissionListModel';
 
@@ -21,21 +21,38 @@ const ManpowerSubmissionListApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getManpowerSubmissionLists: build.query({
-				query: ({ manPowerDate, passenger }) => ({
-					url: MANPOWERSBLISTS_BY_DATE,
-					params: {
-						man_power_date: manPowerDate,
-						passenger
+				query: ({ manPowerDate, passenger }) => {
+					if (!manPowerDate && !passenger) {
+						return { url: null };
 					}
-				}),
+
+					return {
+						url: MANPOWERSBLISTS_BY_DATE,
+						params: {
+							man_power_date: manPowerDate,
+							passenger
+						}
+					};
+				},
+				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
+					try {
+						const { data } = await queryFulfilled;
+
+						// Check if the response is an empty array
+						if (Array.isArray(data) && data.length === 0) {
+							CustomNotification('error', 'There are no manpower records');
+						}
+					} catch (error) {
+						console.log('Error:', error);
+					}
+				},
 				providesTags: ['manpowerSubmissionLists']
 			}),
 
 			deleteManpowerSubmissionLists: build.mutation({
-				query: (manpowerSubmissionListIds) => ({
-					url: DELETE_MANPOWERLIST,
-					method: 'DELETE',
-					data: { ids: manpowerSubmissionListIds }
+				query: (manpowerSubmissionListId) => ({
+					url: `${DELETE_MANPOWERLIST}${manpowerSubmissionListId}`,
+					method: 'DELETE'
 				}),
 				invalidatesTags: ['manpowerSubmissionLists']
 			}),
@@ -58,13 +75,6 @@ const ManpowerSubmissionListApi = api
 					url: `${UPDATE_MANPOWERLIST}${manpowerSubmissionList.id}`,
 					method: 'PUT',
 					data: jsonToFormData(manpowerSubmissionList)
-				}),
-				invalidatesTags: ['manpowerSubmissionLists']
-			}),
-			deleteManpowerSubmissionList: build.mutation({
-				query: (manpowerSubmissionListId) => ({
-					url: `${DELETE_DEPARTMENT}${manpowerSubmissionListId}`,
-					method: 'DELETE'
 				}),
 				invalidatesTags: ['manpowerSubmissionLists']
 			})

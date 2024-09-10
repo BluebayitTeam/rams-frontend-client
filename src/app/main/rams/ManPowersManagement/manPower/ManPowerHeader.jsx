@@ -33,7 +33,6 @@ function ManPowerHeader({ handleReset, emptyValue }) {
 	const handleUpdate = localStorage.getItem('updateManPower');
 	const passengers = useSelector((state) => state.data.passengers);
 	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
 
 	function handleUpdateManPower() {
 		saveManPower(getValues())
@@ -49,12 +48,10 @@ function ManPowerHeader({ handleReset, emptyValue }) {
 							man_power_status: doneNotDone.find((data) => data.default)?.id
 						});
 
-						console.log('sklfjjdf', getValues());
 						UpdatedSuccessfully();
 						navigate('/apps/manPower-management/manPowers/new');
 					}
 				} else {
-					// Handle cases where res.data.id is not present
 					console.error('Update failed: No id in response data');
 				}
 			})
@@ -66,24 +63,22 @@ function ManPowerHeader({ handleReset, emptyValue }) {
 	}
 
 	function handleCreateManPower() {
-		createManPower(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'saveManPower');
+		createManPower(getValues()).then((res) => {
+			if (res) {
+				if (fromSearch) {
+					history.goBack();
+				} else {
+					localStorage.setItem('medicalAlert', 'saveManPower');
 
-						handleReset({
-							...emptyValue,
-							man_power_status: doneNotDone.find((data) => data.default)?.id
-						});
-						navigate('/apps/manPower-management/manPowers/new');
-						AddedSuccessfully();
-					}
+					handleReset({
+						...emptyValue,
+						man_power_status: doneNotDone.find((data) => data.default)?.id
+					});
+					navigate('/apps/manPower-management/manPowers/new');
+					AddedSuccessfully();
 				}
-			});
+			}
+		});
 	}
 
 	function handleRemoveManPower() {

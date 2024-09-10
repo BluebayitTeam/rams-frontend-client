@@ -1,15 +1,7 @@
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
-import { useParams } from 'react-router-dom';
 
-/**
- * The manpowerNoteSheet header.
- */
-function ManpowerNoteSheetHeader() {
-	const routeParams = useParams();
-	const data = {};
-	const name = data?.passenger?.[0]?.passenger_name;
-
+function ManpowerNoteSheetMaleHeader() {
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex flex-col items-start max-w-full min-w-0">
@@ -20,7 +12,7 @@ function ManpowerNoteSheetHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								{name || 'Note Sheet Group'}
+								Note Sheet Group
 							</Typography>
 						</motion.div>
 					</div>
@@ -30,4 +22,4 @@ function ManpowerNoteSheetHeader() {
 	);
 }
 
-export default ManpowerNoteSheetHeader;
+export default ManpowerNoteSheetMaleHeader;

@@ -366,7 +366,7 @@ const navigationConfig = [
 				translate: 'Auto Status Update',
 				display_order: 1,
 				type: 'item',
-				url: '/apps/autoStatusUpdate-management/new',
+				url: '/apps/autoStatusUpdate/new',
 				exact: true
 			},
 			{
@@ -393,7 +393,7 @@ const navigationConfig = [
 				translate: 'Mofa',
 				display_order: 4,
 				type: 'item',
-				url: '/apps/mofa-management/mofas/new',
+				url: '/apps/mofa/mofas/new',
 				exact: true
 			},
 			{
@@ -402,7 +402,7 @@ const navigationConfig = [
 				translate: 'Musaned Okala',
 				display_order: 5,
 				type: 'item',
-				url: '/apps/musanedOkala-management/musanedOkalas/new',
+				url: '/apps/musanedOkala/musanedOkalas/new',
 				exact: true
 			},
 
@@ -412,7 +412,7 @@ const navigationConfig = [
 				translate: 'Malaysia Status',
 				display_order: 6,
 				type: 'item',
-				url: '/apps/callingEmbAttestation-management/callingEmbAttestations/new',
+				url: '/apps/callingEmbAttestation/callingEmbAttestations/new',
 				exact: true
 			},
 
@@ -422,7 +422,7 @@ const navigationConfig = [
 				translate: 'Embassy',
 				display_order: 7,
 				type: 'item',
-				url: '/apps/embassy-management/embassys/new',
+				url: '/apps/embassy/embassys/new',
 				exact: true
 			},
 			{
@@ -431,7 +431,7 @@ const navigationConfig = [
 				translate: 'Training',
 				display_order: 8,
 				type: 'item',
-				url: '/apps/training-management/trainings/new',
+				url: '/apps/training/trainings/new',
 				exact: true
 			},
 			{
@@ -440,7 +440,7 @@ const navigationConfig = [
 				translate: 'Manpower',
 				display_order: 9,
 				type: 'item',
-				url: '/apps/manPower-management/manPowers/new',
+				url: '/apps/manPower/manPowers/new',
 				exact: true
 			},
 
@@ -450,7 +450,7 @@ const navigationConfig = [
 				translate: 'Flight',
 				display_order: 10,
 				type: 'item',
-				url: '/apps/flight-management/flights/new',
+				url: '/apps/flight/flights/new',
 				exact: true
 			},
 
@@ -460,7 +460,7 @@ const navigationConfig = [
 				translate: 'Visa Cancel List',
 				display_order: 11,
 				type: 'item',
-				url: '/apps/visaCancelList-management/visaCancelLists/new',
+				url: '/apps/visaCancelList/visaCancelLists/new',
 				exact: true
 			},
 			{
@@ -469,7 +469,7 @@ const navigationConfig = [
 				translate: 'Visa Reissue List',
 				display_order: 12,
 				type: 'item',
-				url: '/apps/visaReissueList-management/visaReissueLists/new',
+				url: '/apps/visaReissueList/visaReissueLists/new',
 				exact: true
 			},
 
@@ -498,7 +498,7 @@ const navigationConfig = [
 				translate: 'Multiple Status Update',
 				display_order: 15,
 				type: 'item',
-				url: '/apps/multipleStatusUpdate-management/new',
+				url: '/apps/multipleStatusUpdate/new',
 				exact: true
 			},
 			{
@@ -507,7 +507,7 @@ const navigationConfig = [
 				translate: 'Multiple Visa Entry',
 				display_order: 16,
 				type: 'item',
-				url: '/apps/multipleVisaEntry-management/multipleVisaEntrys/new',
+				url: '/apps/multipleVisaEntry/multipleVisaEntrys/new',
 				exact: true
 			}
 		]
@@ -527,7 +527,7 @@ const navigationConfig = [
 				title: 'Post Date Cheque',
 				translate: 'Post Date Cheque',
 				type: 'item',
-				url: '/apps/postDateCheck-management/postDateChecks',
+				url: '/apps/postDateCheck/postDateChecks',
 				exact: true,
 				display_order: 1
 			},
@@ -536,7 +536,7 @@ const navigationConfig = [
 				title: 'Post Date Payorder',
 				translate: 'Post Date Payorder',
 				type: 'item',
-				url: '/apps/payorderClearing-management/payorderClearings',
+				url: '/apps/payorderClearing/payorderClearings',
 				exact: true,
 				display_order: 14
 			},
@@ -546,7 +546,7 @@ const navigationConfig = [
 				translate: 'Group',
 				display_order: 1,
 				type: 'item',
-				url: '/apps/group-management/groups',
+				url: '/apps/group/groups',
 				exact: true
 			},
 			{
@@ -555,7 +555,7 @@ const navigationConfig = [
 				translate: 'Ledger',
 				display_order: 2,
 				type: 'item',
-				url: '/apps/ledger-management/ledgers',
+				url: '/apps/ledger/ledgers',
 				exact: true
 			},
 
@@ -565,7 +565,7 @@ const navigationConfig = [
 				translate: 'Authorize',
 				display_order: 3,
 				type: 'item',
-				url: '/apps/authorize-management/authorizes',
+				url: '/apps/authorize/authorizes',
 				exact: true
 			},
 			{
@@ -574,7 +574,7 @@ const navigationConfig = [
 				translate: 'Sub Ledger',
 				display_order: 4,
 				type: 'item',
-				url: '/apps/subLedger-management/subLedgers',
+				url: '/apps/subLedger/subLedgers',
 				exact: true
 			},
 			{
@@ -583,7 +583,7 @@ const navigationConfig = [
 				translate: 'Payment Voucher',
 				display_order: 5,
 				type: 'item',
-				url: '/apps/paymentVoucher-management/paymentVouchers',
+				url: '/apps/paymentVoucher/paymentVouchers',
 				exact: true
 			},
 			{
@@ -592,7 +592,7 @@ const navigationConfig = [
 				translate: 'Receipt Voucher',
 				display_order: 6,
 				type: 'item',
-				url: '/apps/receiptVoucher-management/receiptVouchers',
+				url: '/apps/receiptVoucher/receiptVouchers',
 				exact: true
 			},
 			{
@@ -601,7 +601,7 @@ const navigationConfig = [
 				translate: 'Receivable Bill',
 				display_order: 7,
 				type: 'item',
-				url: '/apps/receivableBill-management/receivableBills',
+				url: '/apps/receivableBill/receivableBills',
 				exact: true
 			},
 			{
@@ -610,7 +610,7 @@ const navigationConfig = [
 				translate: 'Payable Bill',
 				display_order: 8,
 				type: 'item',
-				url: '/apps/payableBill-management/payableBills',
+				url: '/apps/payableBill/payableBills',
 				exact: true
 			},
 			{
@@ -619,7 +619,7 @@ const navigationConfig = [
 				translate: 'Contra',
 				display_order: 9,
 				type: 'item',
-				url: '/apps/contra-management/contras',
+				url: '/apps/contra/contras',
 				exact: true
 			},
 			{
@@ -1204,7 +1204,7 @@ const navigationConfig = [
 				translate: 'Manpower Note Sheet Male',
 				display_order: 10,
 				type: 'item',
-				url: '/apps/manpowerNoteSheetMale-management/manpowerNoteSheetMale/new',
+				url: '/apps/manpowerNoteSheetMale/manpowerNoteSheetMales/new',
 				exact: true
 			},
 			{
@@ -1213,7 +1213,7 @@ const navigationConfig = [
 				translate: 'Manpower Note Sheet Female',
 				display_order: 11,
 				type: 'item',
-				url: '/apps/manpowerNoteSheetFemale-management/manpowerNoteSheetFemale/new',
+				url: '/apps/manpowerNoteSheetFemale/manpowerNoteSheetFemales/new',
 				exact: true
 			},
 
@@ -1241,7 +1241,7 @@ const navigationConfig = [
 				translate: 'Visa Submission List',
 				display_order: 14,
 				type: 'item',
-				url: '/apps/visaSubmissionList-management/visaSubmissionList/new',
+				url: '/apps/visaSubmissionList/visaSubmissionLists/new',
 				exact: true
 			},
 			{
@@ -1259,7 +1259,7 @@ const navigationConfig = [
 				translate: 'Manpower Submission List V2',
 				display_order: 16,
 				type: 'item',
-				url: '/apps/manpowerSubmissionV2List-management/manpowerSubmissionV2List/new',
+				url: '/apps/manpowerSubmissionV2List/manpowerSubmissionV2Lists/new',
 				exact: true
 			},
 			{
@@ -1268,7 +1268,7 @@ const navigationConfig = [
 				translate: 'BMET Stamp Form',
 				display_order: 17,
 				type: 'item',
-				url: '/apps/bmetStamp-management/bmetStamp/new',
+				url: '/apps/bmetStamp/bmetStamps/new',
 				exact: true
 			},
 			{
@@ -1286,7 +1286,7 @@ const navigationConfig = [
 				translate: 'BMET Application',
 				display_order: 19,
 				type: 'item',
-				url: '/apps/bmetApplication-management/bmetApplication/new',
+				url: '/apps/bmetApplication/bmetApplications/new',
 				exact: true
 			},
 			{
@@ -1295,7 +1295,7 @@ const navigationConfig = [
 				translate: 'BMET Application V2',
 				display_order: 20,
 				type: 'item',
-				url: '/apps/bmetApplication-management-v2/bmetApplication/new',
+				url: '/apps/bmetV2Application/bmetV2Applications/new',
 				exact: true
 			}
 		]

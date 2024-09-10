@@ -1,7 +1,7 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import { MANPOWERNTSHEETS_BY_DATE } from 'src/app/constant/constants';
+import { MANPOWERSBLISTS_BY_DATE } from 'src/app/constant/constants';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -14,20 +14,32 @@ const ManpowerNoteSheetApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getManpowerNoteSheet: build.query({
-				query: (manpowerNoteSheetId) => ({
-					url: `${MANPOWERNTSHEETS_BY_DATE}${manpowerNoteSheetId}`
-				}),
-				providesTags: ['manpowerNoteSheets'],
-				async onQueryStarted(manpowerNoteSheetId, { queryFulfilled }) {
-					try {
-						await queryFulfilled;
-					} catch (error) {
-						CustomNotification('error', `${error?.error?.response?.data?.detail}`);
+				query: ({ manPowerDate }) => {
+					if (!manPowerDate) {
+						return { url: null };
 					}
-				}
+
+					return {
+						url: MANPOWERSBLISTS_BY_DATE,
+						params: {
+							man_power_date: manPowerDate || ''
+						}
+					};
+				},
+				async onQueryStarted({ manPowerDate }, { queryFulfilled }) {
+					try {
+						const { data } = await queryFulfilled;
+
+						if (Array.isArray(data) && data.length === 0) {
+							CustomNotification('error', 'There are no manpower records');
+						}
+					} catch (error) {
+						console.log('Error:', error);
+					}
+				},
+				providesTags: ['manpowerNoteSheets']
 			})
-		}),
-		overrideExisting: false
+		})
 	});
 
 export default ManpowerNoteSheetApi;

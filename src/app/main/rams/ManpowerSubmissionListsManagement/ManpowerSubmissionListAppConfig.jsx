@@ -3,9 +3,6 @@ import ManpowerSubmissionListApp from './ManpowerSubmissionListApp';
 import ManpowerSubmissionLists from './manpowerSubmissionLists/ManpowerSubmissionLists';
 import ManpowerSubmissionList from './manpowerSubmissionList/ManpowerSubmissionList';
 
-/**
- * The E-Commerce app configuration.
- */
 const ManpowerSubmissionListAppConfig = {
 	settings: {
 		layout: {}
