@@ -36,7 +36,7 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 
 	return (
 		<div>
-			<div className="flex flex-nowrap ">
+			<div className="flex flex-nowrap gap-7 ">
 				
 				<div className="w-full">
 					<CustomDropdownField

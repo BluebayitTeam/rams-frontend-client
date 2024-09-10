@@ -7,6 +7,7 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import { useReactToPrint } from 'react-to-print';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import BmetV2ApplicationsTable from './BmetV2ApplicationsTable';
+import { useFormContext } from 'react-hook-form';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
@@ -67,6 +68,8 @@ function BmetV2Applications({
 	}, [data]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
+	const methods = useFormContext();
+	const { getValues } = methods;
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -137,6 +140,7 @@ function BmetV2Applications({
 							selectedPassenger={selectedPassenger}
 							passenger={passenger}
 							bmetV2ApplicationDate={bmetV2ApplicationDate}
+							extraData={getValues()}
 						/>
 					))}
 				</div>
