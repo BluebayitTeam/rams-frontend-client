@@ -223,8 +223,6 @@ function ManpowerNoteSheetFemaleForm(props) {
 				</div>
 			</div>
 
-			{/* Printable Format */}
-
 			<br />
 			<br />
 			{modifiedManpowerNtSheetData.length > 0 && (
@@ -239,7 +237,6 @@ function ManpowerNoteSheetFemaleForm(props) {
 						componentRef={componentRef}
 						handleExelDownload={handleExelDownload}
 						handlePrint={handlePrint}
-						// handleGetAllData={data}
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
 						dragAndDropRow={dragAndDropRow}
@@ -264,7 +261,6 @@ function ManpowerNoteSheetFemaleForm(props) {
 										content={header}
 									/>
 								</div>
-								{/* each single page (table) */}
 								{modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
 									<SinglePageOnlyTable
 										key={index}
@@ -273,11 +269,10 @@ function ManpowerNoteSheetFemaleForm(props) {
 										tableColumns={tableColumns}
 										dispatchTableColumns={dispatchTableColumns}
 										data={manpowerNtSheet}
-										serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+										serialNumber={index + 1 + (page - 1) * size}
 										setPage={setPage}
 										setSortBySubKey={setSortBySubKey}
 										dragAndDropRow={dragAndDropRow}
-										// setSortBy={setSortBy}
 									/>
 								))}
 							</div>
@@ -285,7 +280,6 @@ function ManpowerNoteSheetFemaleForm(props) {
 						<p>১৪৩/প্রশিক্ষণ সনদের বিবরনঃ</p>
 
 						<div>
-							{/* each single page (table) */}
 							{modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
 								<SinglePageOnlyTable
 									key={index}
@@ -294,11 +288,10 @@ function ManpowerNoteSheetFemaleForm(props) {
 									tableColumns={tableColumns2}
 									dispatchTableColumns={dispatchTableColumns2}
 									data={manpowerNtSheet}
-									serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+									serialNumber={index + 1 + (page - 1) * size}
 									setPage={setPage}
 									setSortBySubKey={setSortBySubKey}
 									dragAndDropRow={dragAndDropRow}
-									// setSortBy={setSortBy}
 								/>
 							))}
 						</div>
@@ -306,7 +299,6 @@ function ManpowerNoteSheetFemaleForm(props) {
 						<p>১৪৪/ ব্যাংক অ্যাকাউন্ট ও মেডিকেল সেন্টারের বিবরনঃ</p>
 
 						<div>
-							{/* each single page (table) */}
 							{modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
 								<SinglePageOnlyTable
 									key={index}
@@ -315,11 +307,10 @@ function ManpowerNoteSheetFemaleForm(props) {
 									tableColumns={tableColumns3}
 									dispatchTableColumns={dispatchTableColumns3}
 									data={manpowerNtSheet}
-									serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+									serialNumber={index + 1 + (page - 1) * size}
 									setPage={setPage}
 									setSortBySubKey={setSortBySubKey}
 									dragAndDropRow={dragAndDropRow}
-									// setSortBy={setSortBy}
 								/>
 							))}
 						</div>

@@ -6,7 +6,6 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
-import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { TableHead } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
@@ -19,12 +18,11 @@ import { useDeleteManpowerSubmissionListsMutation } from '../ManpowerSubmissionL
  * The manpowerSubmissionLists table.
  */
 function ManpowerSubmissionListsTable(props) {
-	const dispatch = useDispatch();
 	const {
 		navigate,
 
 		classes,
-		reportTitle,
+
 		tableColumns,
 		dispatchTableColumns,
 		hideTabile,
@@ -36,14 +34,11 @@ function ManpowerSubmissionListsTable(props) {
 		printableFormat,
 		data,
 		setPage,
-		manpowerSubmissionListId,
-		tableShow
+		manpowerSubmissionListId
 	} = props;
 	let pageBasedSerialNo = serialNumber;
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-
-	console.log('dfdfdsfdsfsdfsdfsdkfk', tableShow);
+	const { getValues } = methods;
 
 	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
 
@@ -57,23 +52,6 @@ function ManpowerSubmissionListsTable(props) {
 		DeletedSuccessfully();
 
 		navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/${item.id}/${item.handle}`);
-	}
-
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-
-		setSelected(newSelected);
 	}
 
 	return (

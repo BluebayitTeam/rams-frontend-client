@@ -1,17 +1,9 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import {
-	CREATE_MANPOWERLIST,
-	DELETE_MANPOWERLIST,
-	MANPOWERLIST_BY_PASSENGER_ID,
-	MANPOWERSBLISTS_BY_DATE,
-	UPDATE_MANPOWERLIST
-} from 'src/app/constant/constants';
-import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { MANPOWERSBLISTS_BY_DATE } from 'src/app/constant/constants';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
 import { selectSearchText } from './store/searchTextSlice';
-import BmetApplicationModel from './bmetApplication/models/BmetApplicationModel';
 
 export const addTagTypes = ['bmetApplications'];
 const BmetApplicationApi = api
@@ -21,16 +13,15 @@ const BmetApplicationApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getBmetApplications: build.query({
-				query: ({ manPowerDate, passenger }) => {
-					if (!manPowerDate && !passenger) {
-						return { url: null }; // Avoid calling the API when both values are empty
+				query: ({ manPowerDate }) => {
+					if (!manPowerDate) {
+						return { url: null };
 					}
 
 					return {
 						url: MANPOWERSBLISTS_BY_DATE,
 						params: {
-							man_power_date: manPowerDate,
-							passenger
+							man_power_date: manPowerDate
 						}
 					};
 				},
@@ -48,50 +39,12 @@ const BmetApplicationApi = api
 					}
 				},
 				providesTags: ['bmetApplications']
-			}),
-
-			deleteBmetApplications: build.mutation({
-				query: (bmetApplicationId) => ({
-					url: `${DELETE_MANPOWERLIST}${bmetApplicationId}`,
-					method: 'DELETE'
-				}),
-				invalidatesTags: ['bmetApplications']
-			}),
-			getBmetApplication: build.query({
-				query: (bmetApplicationId) => ({
-					url: `${MANPOWERLIST_BY_PASSENGER_ID}${bmetApplicationId}`
-				}),
-				providesTags: ['bmetApplications']
-			}),
-			createBmetApplication: build.mutation({
-				query: (newBmetApplication) => ({
-					url: CREATE_MANPOWERLIST,
-					method: 'POST',
-					data: jsonToFormData(BmetApplicationModel(newBmetApplication))
-				}),
-				invalidatesTags: ['bmetApplications']
-			}),
-			updateBmetApplication: build.mutation({
-				query: (bmetApplication) => ({
-					url: `${UPDATE_MANPOWERLIST}${bmetApplication.id}`,
-					method: 'PUT',
-					data: jsonToFormData(bmetApplication)
-				}),
-				invalidatesTags: ['bmetApplications']
 			})
 		}),
 		overrideExisting: false
 	});
 export default BmetApplicationApi;
-export const {
-	useGetBmetApplicationsQuery,
-	useDeleteBmetApplicationsMutation,
-	useGetBmetApplicationQuery,
-	useUpdateBmetApplicationMutation,
-	useDeleteBmetApplicationMutation,
-
-	useCreateBmetApplicationMutation
-} = BmetApplicationApi;
+export const { useGetBmetApplicationsQuery } = BmetApplicationApi;
 
 export const selectFilteredBmetApplications = (bmetApplications) =>
 	createSelector([selectSearchText], (searchText) => {

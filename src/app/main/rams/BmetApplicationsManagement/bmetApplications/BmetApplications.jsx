@@ -2,12 +2,9 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
-import useUserInfo from 'src/app/@customHooks/useUserInfo';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import { useForm } from 'react-hook-form';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import { useReactToPrint } from 'react-to-print';
-import { Checkbox } from '@mui/material';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import BmetApplicationsTable from './BmetApplicationsTable';
 
@@ -16,32 +13,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialTableColumnsState = [
-	{
-		id: 1,
-		label: 'ক্রমিক নং',
-		sortAction: false,
-		isSerialNo: true,
-		show: true
-	},
-	{
-		id: 2,
-		label: 'বিদেশগামী কর্মীর নাম',
-		name: 'passenger_name',
-		show: true,
-		style: {
-			whiteSpace: 'wrap'
-		}
-	},
+	{ id: 1, label: 'ক্রমিক নং', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'কর্মীর নাম ,ঠিকানা,মোবাইল নং(নিজ ও নিকট আত্মীয়)', name: 'passenger_name', show: true },
 	{ id: 3, label: 'পাসপোর্ট নম্বার', name: 'passport_no', show: true },
-	{ id: 4, label: 'ফিঙ্গার নং.', name: 'registration_id', show: true },
+	{ id: 4, label: 'নিয়োগকর্তার নাম,ঠিকানা ও টেলিফোন নম্বর', name: 'sponsor_name', show: true },
 	{ id: 5, label: 'ভিসা নম্বর ', name: 'visa_no', show: true },
-	{ id: 6, label: 'নিয়োগকারীর নাম', name: 'sponsor_name', show: true },
-	{ id: 7, label: 'পদের নাম', name: 'profession', show: true },
-	{ id: 8, label: 'আয়করের পরিমাণ ', name: 'Payment', show: true },
-	{ id: 9, label: 'আহার ', name: 'Food', show: true },
-	{ id: 10, label: 'বি/ভাড়া', name: 'home_rent', show: true },
-	{ id: 11, label: 'আয়করের পরিমাণ', name: 'abcd', show: true },
-	{ id: 12, label: 'কল্যাণ ফ্রি এর পরিমাণ', name: 'efg', show: true }
+	{ id: 6, label: 'পদের নাম', name: 'profession', show: true },
+	{ id: 7, label: 'অভিবাসন ব্যয় ', name: 'Payment', show: true }
 ];
 
 function BmetApplications({
@@ -57,10 +35,7 @@ function BmetApplications({
 	passenger,
 	manPowerDate
 }) {
-	const methods = useForm();
 	const classes = useStyles();
-
-	const { authTOKEN } = useUserInfo();
 
 	const [generalData, setGeneralData] = useState({});
 
@@ -68,8 +43,7 @@ function BmetApplications({
 		useReportData();
 	useEffect(() => {
 		const modifiedData = data?.map((manpowerSub) => ({
-			id: manpowerSub?.man_power_list?.id,
-			profession: manpowerSub?.visa_entry?.profession_english,
+			profession: manpowerSub?.embassy?.profession?.name,
 			visa_no: manpowerSub?.visa_entry?.visa_number,
 			sponsor_name: manpowerSub?.visa_entry?.sponsor_name_english,
 			sponsor_id: manpowerSub?.manpower_entry?.sponsor_id_no,
@@ -93,11 +67,6 @@ function BmetApplications({
 	}, [data]);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
-	const [printableFormat, setPrintableFormat] = useState(false);
-
-	const handlePrintableFormat = (event) => {
-		setPrintableFormat(event.target.checked);
-	};
 
 	// const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
@@ -122,13 +91,6 @@ function BmetApplications({
 
 	return (
 		<>
-			<Checkbox
-				printableFormat={printableFormat}
-				onChange={handlePrintableFormat}
-				className="ml-96"
-				inputProps={{ 'aria-label': 'controlled' }}
-			/>
-			Printable Format
 			<ReportPaginationAndDownload
 				page={page}
 				size={size}
@@ -159,7 +121,6 @@ function BmetApplications({
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							data={manpowerSbList}
-							printableFormat={printableFormat}
 							serialNumber={manpowerSbList.page * manpowerSbList.size - manpowerSbList.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}

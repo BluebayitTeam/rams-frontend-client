@@ -1,12 +1,9 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { getAgencys, getCountries, getCurrentStatuss, getPassengers } from 'app/store/dataSlice';
 import { useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import { Search } from '@mui/icons-material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
@@ -40,27 +37,7 @@ const useStyles = makeStyles((theme) => ({
 	})
 }));
 
-function BmetApplicationForm({
-	handleSearchPassengerClick,
-	handleSearchManPowerDateClick,
-	handleCreateBmetApplication,
-	handleCancel
-}) {
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-	const { watch, control, errors } = methods;
-
-	const { agencies, countries, passengers } = useSelector((state) => state.data);
-
-	const classes = useStyles({ isPassenger: watch('passenger') });
-
-	useEffect(() => {
-		dispatch(getPassengers());
-		dispatch(getAgencys());
-		dispatch(getCountries());
-		dispatch(getCurrentStatuss());
-	}, []);
-
+function BmetApplicationForm({ handleSearchManPowerDateClick }) {
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -77,105 +54,40 @@ function BmetApplicationForm({
 	}, []);
 
 	return (
-		// <div>
-		// 	<CustomDropdownField
-		// 		name="agency"
-		// 		label="Agency"
-		// 		options={agencies}
-		// 		optionLabelFormat={(option) => `${option?.name}`}
-		// 		// onChange={(newValue) => setValue('agency_info', newValue)}
-		// 	/>
-		// 	<CustomDropdownField
-		// 		name="country"
-		// 		label="Country"
-		// 		options={countries}
-		// 		optionLabelFormat={(option) => `${option?.name}`}
-		// 	/>
-
-		// 	<div className="flex flex-nowrap">
-		// 		<div className="w-full">
-		// 			<CustomDropdownField
-		// 				name="passenger"
-		// 				label="Passenger"
-		// 				options={passengers}
-		// 				optionLabelFormat={(option) =>
-		// 					`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-		// 				}
-		// 			/>
-		// 		</div>
-		// 		<div
-		// 			className={classes.searchContainer}
-		// 			onClick={() => {
-		// 				handleSearchPassengerClick();
-		// 			}}
-		// 		>
-		// 			<Search className="cursor-pointer" />
-		// 		</div>
-		// 	</div>
-
-		// 	<div className="flex flex-nowrap">
-		// 		<div className="w-full">
-		// 			<CustomDatePicker
-		// 				name="man_power_date"
-		// 				label="Manpower Date"
-		// 				required
-		// 				placeholder="DD-MM-YYYY"
-		// 			/>
-		// 		</div>
-		// 		<div
-		// 			className={classes.searchContainer}
-		// 			onClick={() => {
-		// 				handleSearchManPowerDateClick();
-		// 			}}
-		// 		>
-		// 			<Search className="cursor-pointer" />
-		// 		</div>
-		// 	</div>
-
-		// 	<Button
-		// 		className="whitespace-nowrap mx-4"
-		// 		variant="contained"
-		// 		color="secondary"
-		// 		// disabled={_.isEmpty(dirtyFields) || !isValid}
-		// 		onClick={() => {
-		// 			handleCreateBmetApplication();
-		// 		}}
-		// 	>
-		// 		Save
-		// 	</Button>
-
-		// 	<Button
-		// 		className="whitespace-nowrap mx-4"
-		// 		variant="contained"
-		// 		style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-		// 		onClick={() => handleCancel()}
-		// 	>
-		// 		Cancel
-		// 	</Button>
-		// </div>
-
 		<div>
-			<div className="flex flex-nowrap">
-				<CustomDatePicker
-					name="man_power_date"
-					label="Manpower Date"
-					required
-					placeholder="DD-MM-YYYY"
-				/>
+			<div className="flex flex-nowrap ">
+				<div className="w-full">
+					<CustomDatePicker
+						name="man_power_date"
+						label="Manpower Date"
+						placeholder="DD-MM-YYYY"
+					/>
+				</div>
 
-				<CustomTextField
-					name="gender"
-					label="Gender"
-					required
-				/>
-				<div
-					className={classes.searchContainer}
+				<div className="w-full">
+					<CustomTextField
+						name="gender"
+						label="Gender"
+					/>
+				</div>
+			</div>
+
+			<div>
+				<button
+					style={{
+						background: 'white',
+						border: '1px solid grey',
+						borderRadius: '4px',
+						padding: '0px 5px',
+						height: '35px',
+						marginLeft: '30px'
+					}}
 					onClick={() => {
 						handleSearchManPowerDateClick();
 					}}
 				>
-					<Search className="cursor-pointer" />
-				</div>
+					Search
+				</button>
 			</div>
 		</div>
 	);

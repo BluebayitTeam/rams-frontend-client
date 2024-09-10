@@ -106,19 +106,13 @@ const initialTableColumnsState3 = [
 	}
 ];
 
-function ManpowerNoteSheetMaleForm(props) {
+function ManpowerNoteSheetMaleForm() {
 	const methods = useFormContext();
 	const { watch } = methods;
-	const [formData, setFormData] = useState({
-		passenger: '',
-		center_name: '',
-		district: ''
-	});
 
 	const classes = useStyles();
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(25);
-	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [header, setHeader] = useState('');
@@ -140,10 +134,6 @@ function ManpowerNoteSheetMaleForm(props) {
 	});
 
 	const componentRef = useRef();
-
-	const printAction = useReactToPrint({
-		content: () => componentRef.current
-	});
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [tableColumns2, dispatchTableColumns2] = useReducer(tableColumnsReducer, initialTableColumnsState2);

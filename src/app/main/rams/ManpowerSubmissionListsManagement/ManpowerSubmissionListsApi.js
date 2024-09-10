@@ -20,29 +20,10 @@ const ManpowerSubmissionListApi = api
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			// getManpowerSubmissionLists: build.query({
-			// 	query: ({ manPowerDate, passenger }) => ({
-			// 		url: MANPOWERSBLISTS_BY_DATE,
-			// 		params: {
-			// 			man_power_date: manPowerDate,
-			// 			passenger
-			// 		}
-			// 	}),
-			// 	async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
-			// 		try {
-			// 			await queryFulfilled;
-			// 		} catch (error) {
-			// 			console.log('sddsfdsfdsfdsfds', error);
-			// 			// CustomNotification('error', error?.error?.response?.data?.detail);
-			// 		}
-			// 	},
-			// 	providesTags: ['manpowerSubmissionLists']
-			// }),
-
 			getManpowerSubmissionLists: build.query({
 				query: ({ manPowerDate, passenger }) => {
 					if (!manPowerDate && !passenger) {
-						return { url: null }; // Avoid calling the API when both values are empty
+						return { url: null };
 					}
 
 					return {
@@ -63,7 +44,6 @@ const ManpowerSubmissionListApi = api
 						}
 					} catch (error) {
 						console.log('Error:', error);
-						// CustomNotification('error', error?.error?.response?.data?.detail);
 					}
 				},
 				providesTags: ['manpowerSubmissionLists']

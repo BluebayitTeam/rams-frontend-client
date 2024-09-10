@@ -1,6 +1,6 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,9 +14,7 @@ import {
 } from '../ManpowerSubmissionListsApi';
 import ManpowerSubmissionListForm from './ManpowerSubmissionListForm';
 import ManpowerSubmissionLists from '../manpowerSubmissionLists/ManpowerSubmissionLists';
-/**
- * Form Validation Schema
- */
+
 const schema = z.object({});
 
 function ManpowerSubmissionList() {
@@ -34,15 +32,13 @@ function ManpowerSubmissionList() {
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [formKey, setFormKey] = useState(0);
 	const [hideTabile, setHideTabile] = useState(false);
-	const routeParams = useParams();
 
-	console.log('tableShow', tableShow);
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: emptyValue,
 		resolver: zodResolver(schema)
 	});
-	const { reset, watch, getValues, setValue } = methods;
+	const { reset, watch, getValues } = methods;
 
 	const handleReset = (defaultValues) => {
 		reset(defaultValues);
@@ -60,8 +56,6 @@ function ManpowerSubmissionList() {
 		manPowerDate: selectedDate
 	});
 	const manpowerSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
-
-	console.log('refetch', refetch);
 
 	function handleSearchPassengerClick() {
 		setSelectedPassenger(passenger);

@@ -1,7 +1,7 @@
-import _ from "@lodash";
+import _ from '@lodash';
 
 const ManpowerNoteSheetFemaleModel = (data) =>
-  _.defaults(data || {}, {
-    visa_entry: "",
-  });
+	_.defaults(data || {}, {
+		man_power_date: ''
+	});
 export default ManpowerNoteSheetFemaleModel;

@@ -1,317 +1,107 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import { useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
-import { useDispatch } from 'react-redux';
-import moment from 'moment';
-import { TableHead } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import { Delete } from '@mui/icons-material';
-import { Interweave } from 'interweave';
-import { DeletedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useDeleteBmetApplicationsMutation } from '../BmetApplicationsApi';
 
 /**
  * The bmetApplications table.
  */
 function BmetApplicationsTable(props) {
-	const dispatch = useDispatch();
 	const {
-		navigate,
-
-		classes,
 		reportTitle,
-		tableColumns,
-		dispatchTableColumns,
-		hideTabile,
-		serialNumber,
+		classes,
+		generalData,
 		inSiglePageMode,
-		setSortBy,
-		setSortBySubKey,
-		dragAndDropRow,
-		printableFormat,
+
 		data,
-		setPage,
-		bmetApplicationId,
-		tableShow
+		setPage
 	} = props;
-	let pageBasedSerialNo = serialNumber;
 	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-
-	console.log('dfdfdsfdsfsdfsdfsdkfk', tableShow);
-
-	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
-
-	const [removeBmetApplications] = useDeleteBmetApplicationsMutation();
-
-	const [selected, setSelected] = useState([]);
-
-	function deleteBmetApplication(item, event) {
-		removeBmetApplications(bmetApplicationId);
-
-		DeletedSuccessfully();
-
-		navigate(`/apps/bmetApplication/bmetApplications/${item.id}/${item.handle}`);
-	}
-
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-
-		setSelected(newSelected);
-	}
+	const { watch } = methods;
+	const Gender = watch('gender');
+	console.log('Gender', Gender);
 
 	return (
-		<div>
-			{!hideTabile && (
-				<div>
-					<div
-						className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}
-						onMouseOver={() => {
-							inSiglePageMode || setPage(data.page);
-						}}
-					>
-						<table
-							width="100%"
-							align="center"
-							className="px-32 w-11/12"
-						>
-							<tr>
-								<td
-									colSpan="3"
-									style={{ textAlign: 'center', marginTop: 20 }}
-								>
-									<h1 style={{ textDecoration: 'underline' }}>একক বহির্গমন ছাড়পএরের আবেদন ফরম</h1>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									নিয়োগকারী দেশের নাম :
-									<span style={{ fontWeight: 'bold' }}> {data?.data?.[0]?.country}</span>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									জমাদানকারী রিক্রটিং এজেন্সীর নাম :{' '}
-									<span style={{ fontWeight: 'bold' }}>{getValues()?.agency_info?.name_bangla}</span>
-								</td>
-								<td style={{ textAlign: 'center' }}>
-									লাইসেন্স নম্বর :{' '}
-									<span style={{ fontWeight: 'bold' }}>
-										{' '}
-										আর এল-
-										{getValues()
-											?.agency_info?.rl_no?.toString()
-											.replace(/[0-9]/g, (digit) =>
-												String.fromCharCode(digit.charCodeAt(0) + 2486)
-											)}
-									</span>
-								</td>
-								<td style={{ textAlign: 'right' }}>
-									জমার তারিখ :
-									<span style={{ fontWeight: 'bold', paddingRight: '10px' }}>
-										{moment(new Date(data?.[0]?.man_power_list?.man_power_date)).format(
-											'DD-MM-YYYY'
-										)}
-									</span>
-								</td>
-							</tr>
-						</table>
-
-						<Table
-							aria-label="simple table"
-							className={classes.table}
-							style={{ border: '1px solid black', width: '1000px', marginTop: 10 }}
-						>
-							<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
-								<TableRow>
-									{tableColumns.map((column, indx) => {
-										return column.show ? (
-											<TableCell
-												key={column.id}
-												align="center"
-												style={{
-													border: '1px solid black',
-													padding: '0px 5px'
-												}}
-												className="tableCellHead"
-												onDrop={(e) =>
-													dispatchTableColumns({
-														type: 'dragAndDrop',
-														dropper: column.id
-													})
-												}
-												onDragOver={(e) => e.preventDefault()}
-											>
-												<div
-													onDragStart={(e) => {
-														console.log('Dragging row with index:', idx);
-														e.dataTransfer.setData('draggerId', idx);
-													}}
-													onClick={() => {
-														if (column.sortAction !== false) {
-															setSortBy(data.sortBy === column.name ? '' : column.name);
-															setSortBySubKey &&
-																column.subName &&
-																setSortBySubKey(column.subName);
-														}
-													}}
-													style={{
-														margin: indx === 0 && '0px -5px 0px 5px'
-													}}
-												>
-													{column.label}
-												</div>
-											</TableCell>
-										) : null;
-									})}
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{data?.data?.map((dataArr, idx) => (
-									<TableRow
-										key={dataArr.id}
-										className="tableRow cursor-pointer"
-										hover
-										onDrop={(e) =>
-											dragAndDropRow(
-												e.dataTransfer.getData('draggerId'),
-												data.size * (data.page - 1) + idx
-											)
-										}
-										onDragOver={(e) => e.preventDefault()}
-										draggable
-										onDragStart={(e) => e.dataTransfer.setData('draggerId', idx)}
-									>
-										{tableColumns.map((column) => {
-											return column.show ? (
-												<TableCell
-													align="center"
-													className="tableCell"
-													style={{
-														border: '1px solid black',
-														padding: '0px 5px'
-													}}
-												>
-													<div>
-														{column?.subName
-															? dataArr?.[column?.name]?.[column?.subName]
-															: column.type === 'date'
-																? dataArr?.[column.name]
-																	? moment(new Date(dataArr?.[column.name])).format(
-																			'DD-MM-YYYY'
-																		)
-																	: ''
-																: column.name
-																	? dataArr?.[column.name]
-																	: column?.isSerialNo
-																		? dataArr.hideSerialNo || pageBasedSerialNo++
-																		: dataArr.getterMethod
-																			? dataArr.getterMethod(dataArr)
-																			: column.getterMethod
-																				? column.getterMethod(dataArr)
-																				: ''}
-													</div>
-												</TableCell>
-											) : null;
-										})}
-
-										<TableCell
-											align="center"
-											className="tableCell"
-											style={{
-												border: '1px solid black',
-												padding: '0px 6px 0 6px',
-												display: printableFormat ? 'none' : 'block'
-											}}
-										>
-											<Delete
-												onClick={() => {
-													deleteBmetApplication(dataArr?.id);
-												}}
-												className="cursor-pointer"
-												style={{ color: 'red' }}
-											/>
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-
-						<p style={{ marginTop: '15px' }}>
-							<span style={{ fontWeight: 'bold' }}>এজেন্সীর অঙ্গীকার নামা :</span>
-							বর্ণিত কর্মী গ্রুপ ভিসার অন্তর্ভুক্ত নয় কর্মীর/কর্মীদের পাসপোর্ট, ভিসা, চাকরীর চুক্তি পএরে
-							বর্নিত বেতন ও শর্তাদি সঠিক আছে উক্ত বিষয়ে নিক্রটিং কারনে কর্মীর/কর্মীদের কোন প্রকার সমস্যা
-							হইলে আমার
-							<span style={{ fontWeight: 'bold' }}>
-								{getValues()?.agency_info?.name_bangla}(আর এল-
-								{getValues()
-									?.agency_info?.rl_no?.toString()
-									.replace(/[0-9]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) + 2486))}
-								)
-							</span>
-							সম্পূর্ন দায় দায়িত্ব গ্রহন ও কর্মীর/কর্মীদের ক্ষতিপূরণ দান করিতে বাধ্য থাকিবো
-						</p>
-
-						<Interweave
-							allowAttributes
-							allowElements
-							disableLineBreaks
-							content={formContentFooterData}
+		<div
+			className={`${classes.pageContainer} printPageContainer print:h-screen  w-full mb-0`}
+			onMouseOver={() => {
+				inSiglePageMode || setPage(data.page);
+			}}
+			style={{ padding: '50px' }}
+		>
+			<div>
+				<div className={classes.pageHead}>
+					<h2 className="title  pl-0 md:-pl-20">{reportTitle}</h2>
+					{/* <div className="logoContainer pr-0 md:-pr-20">
+						<img
+							style={{
+								visibility: generalData.logo ? 'visible' : 'hidden'
+							}}
+							src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
+							alt="Not found"
 						/>
-
-						<table
-							className={classes.pageBottmContainer}
-							style={{ backgroundColor: 'white', marginTop: 15 }}
-						>
-							<tbody>
-								<tr>
-									<td style={{ textAlign: 'center' }}>
-										পরীক্ষিতি হয়েছে <br />
-										কাগজপএ সঠিক আছে
-									</td>
-									<td style={{ textAlign: 'center' }}>বর্ণিত তথ্য যথাযথ আছে</td>
-									<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
-									<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
-									<td style={{ textAlign: 'center' }}>
-										এজেন্সী মালিক/প্রতিনিধিরি
-										<br /> স্বাক্ষর প্রস্তাবমত
-									</td>
-								</tr>
-								<tr>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-								</tr>
-								<tr>
-									<td style={{ textAlign: 'center' }}>সহকারীর স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>সহকারী পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>উপ-পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>মহা পরিচালকের স্বাক্ষর</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+					</div> */}
 				</div>
-			)}
+
+				{/* Application  */}
+				<div
+					style={{ fontSize: '15px', lineHeight: '25px' }}
+					className="text-justify	"
+				>
+					বরাবর
+					<br />
+					মহাপরিচালক
+					<br />
+					জনশক্তি,কর্মসংস্থান ও প্রশিক্ষন ব্যুারো
+					<br />
+					৮৯/২,কাকরাইল,ঢাকা।
+					<br />
+					দৃষ্টি আকর্ষন :পরিচালক (বহির্গমন)
+					<br />
+					<br />
+					বিষয়:সত্যায়ীত/অসত্যায়ীত ভিসায় {data?.data.length} জন {Gender} কর্মীর একক বহির্গমন ছাড়পএ প্রদানের
+					আবেদন।
+					<br />
+					<br />
+					জনাব,
+					<br />
+					বিনীত নিবেদন এই যে, সৌদি গমনেচ্ছু {data?.data.length} জন পুরুষ কর্মী তাদের স্ব-উদ্যেগে সংগৃহীত
+					ভিসা,মুল পাসপোর্টসহ অন্যান্য কাগজপএাদি আমার রিক্রটিং এজেন্সি {generalData?.agency_name_bangla}{' '}
+					(আর,এল নং-{generalData?.rl_no}) এর মাধ্যমে বহির্গমন ছাড়পএ গ্রহনের জন্য জমা দিয়েছি।কর্মীদেও নিকট হতে
+					প্রাপ্ত ভিসাসহ নিম্নে বর্নিত কাগজপএাদি একসাথে দাখিল করিলাম ভিসাগুলো আমার অফিসে অনলাইনে পরিক্ষান্তে
+					সঠিক পাওয়া গিয়েছে। উল্লেখ্য যে,সৌদি আরব গামী ভিসাগুলো ২৫ এর অধিক বা গ্রুফ ভিসা নহে ্এবং কর্মীদের সকল
+					দায়-দায়িত্ব রিক্রটিং এজেন্সি বহন করিবে। উপস্থিত কর্মীগনের ভিসাগুলো Employement ভিসা। যাহার মেয়াদ ২
+					বৎসর এবং পরবর্তীতে নবায়ন যোগ্য। কর্মীগনের বেতন, ভাতাদি,থাকা খাওয়া,সামাজিক নিরাপওা বা অন্য কোন কারনে
+					চাকরীতে অসুবিধা হলে তাহার সকল দায়িত্ব আমার রি/এজেন্সি বহন করিতে বাধ্য থাকিবে।
+					<br />
+					<br />
+					<b>
+						অতএব মহোদয় সমীপে বিনীত আরজ সৌদি আরব গমনেচ্ছুক {data?.data.length} জন পুরুস কর্মীর অনুকুলে একক
+						বহির্গমন ছাড়পএ প্রদানের বিষয় সদয় মর্জি হয়।
+					</b>
+					<br />
+					<br />
+					সংযুক্তি :
+					<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ১) ৩০০ টাকা নন-জুডিশিয়াল স্ট্যাম্পে অঙ্গীকারনামা। <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ২) পাসপোর্ট,চুক্তিপএ ও ভিসার ফটোকপি। <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ৩) পে-অর্ডার ও চারানের মুল কপি। <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ৪) প্রশিক্ষনগন সনদেও মুলকপি। <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ৫) উপস্থাপিত (Put up) তালিকা। <br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ৬) কর্মীর ডাটা শীট। <br />
+					<br />
+					মালিকের নামঃ {generalData?.owner_name}
+					<br />
+					মালিকের স্বক্ষর ও সীলঃ
+					<br />
+					<br />
+					<br />
+					তারিখঃ
+					<br />
+					প্রতিনিধিঃ
+					<br />
+				</div>
+			</div>
 		</div>
 	);
 }

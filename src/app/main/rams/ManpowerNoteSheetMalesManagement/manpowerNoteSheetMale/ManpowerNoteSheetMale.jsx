@@ -12,7 +12,7 @@ import ManpowerNoteSheetMaleForm from './ManpowerNoteSheetMaleForm';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
+	man_power_date: z
 		.string()
 		.nonempty('You must enter a manpowerNoteSheetMale name')
 		.min(5, 'The manpowerNoteSheetMale name must be at least 5 characters')
@@ -30,8 +30,7 @@ function ManpowerNoteSheetMale() {
 		defaultValues: {},
 		resolver: zodResolver(schema)
 	});
-	const { reset, watch } = methods;
-	const form = watch();
+	const { reset } = methods;
 	useEffect(() => {
 		if (manpowerNoteSheetMaleId === 'new') {
 			reset(ManpowerNoteSheetMaleModel({}));

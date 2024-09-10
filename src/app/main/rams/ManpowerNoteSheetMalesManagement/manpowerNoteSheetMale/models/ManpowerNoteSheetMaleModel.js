@@ -1,7 +1,7 @@
-import _ from "@lodash";
+import _ from '@lodash';
 
 const MaletrainingModel = (data) =>
-  _.defaults(data || {}, {
-    man_power_date: "",
-  });
+	_.defaults(data || {}, {
+		man_power_date: ''
+	});
 export default MaletrainingModel;

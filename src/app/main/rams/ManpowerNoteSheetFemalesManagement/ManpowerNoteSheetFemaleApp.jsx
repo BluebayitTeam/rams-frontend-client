@@ -1,12 +1,9 @@
-import { Outlet } from "react-router";
-import withReducer from "app/store/withReducer";
-import reducer from "./store";
+import { Outlet } from 'react-router';
+import withReducer from 'app/store/withReducer';
+import reducer from './store';
 
 function ManpowerNoteSheetFemaleApp() {
-  return <Outlet />;
+	return <Outlet />;
 }
 
-export default withReducer(
-  "ManpowerNoteSheetFemaleApp",
-  reducer
-)(ManpowerNoteSheetFemaleApp);
+export default withReducer('ManpowerNoteSheetFemaleApp', reducer)(ManpowerNoteSheetFemaleApp);

@@ -2,9 +2,6 @@ import { Navigate } from 'react-router-dom';
 import ManpowerNoteSheetApp from './ManpowerNoteSheetApp';
 import ManpowerNoteSheet from './manpowerNoteSheet/ManpowerNoteSheet';
 
-/**
- * The E-Commerce app configuration.
- */
 const ManpowerNoteSheetAppConfig = {
 	settings: {
 		layout: {}

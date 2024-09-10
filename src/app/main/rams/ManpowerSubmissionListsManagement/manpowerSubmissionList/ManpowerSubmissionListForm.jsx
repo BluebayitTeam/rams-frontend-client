@@ -49,7 +49,7 @@ function ManpowerSubmissionListForm({
 }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { watch, control, errors } = methods;
+	const { watch } = methods;
 
 	const { agencies, countries, passengers } = useSelector((state) => state.data);
 
@@ -84,7 +84,6 @@ function ManpowerSubmissionListForm({
 				label="Agency"
 				options={agencies}
 				optionLabelFormat={(option) => `${option?.name}`}
-				// onChange={(newValue) => setValue('agency_info', newValue)}
 			/>
 			<CustomDropdownField
 				name="country"
@@ -137,7 +136,6 @@ function ManpowerSubmissionListForm({
 				className="whitespace-nowrap mx-4"
 				variant="contained"
 				color="secondary"
-				// disabled={_.isEmpty(dirtyFields) || !isValid}
 				onClick={() => {
 					handleCreateManpowerSubmissionList();
 				}}

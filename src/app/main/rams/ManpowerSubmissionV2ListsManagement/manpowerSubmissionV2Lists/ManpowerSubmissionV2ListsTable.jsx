@@ -1,25 +1,19 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import { useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
-import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { TableHead } from '@mui/material';
-import { useFormContext } from 'react-hook-form';
 import { DeletedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import { Delete } from '@mui/icons-material';
 import { Interweave } from 'interweave';
 import { useDeleteManpowerSubmissionV2ListsMutation } from '../ManpowerSubmissionV2ListsApi';
 
-/**
- * The manpowerSubmissionV2Lists table.
- */
 function ManpowerSubmissionV2ListsTable(props) {
-	const dispatch = useDispatch();
 	const {
 		navigate,
 		classes,
@@ -34,16 +28,12 @@ function ManpowerSubmissionV2ListsTable(props) {
 		printableFormat,
 		data,
 		manpowerSubmissionV2ListId,
-		tableShow,
 		setPage
 	} = props;
 	let pageBasedSerialNo = serialNumber;
 
 	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
 	const formContentHeaderData = sessionStorage.getItem('formContentHeaderData');
-
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
 
 	if (!data?.data || data.data.length === 0) {
 		return <p>No data available</p>;
@@ -53,8 +43,6 @@ function ManpowerSubmissionV2ListsTable(props) {
 	const rowsPerPage = 8;
 
 	const [removeManpowerSubmissionV2Lists] = useDeleteManpowerSubmissionV2ListsMutation();
-
-	const [selected, setSelected] = useState([]);
 
 	function deleteManpowerSubmissionV2List(item) {
 		removeManpowerSubmissionV2Lists(manpowerSubmissionV2ListId);

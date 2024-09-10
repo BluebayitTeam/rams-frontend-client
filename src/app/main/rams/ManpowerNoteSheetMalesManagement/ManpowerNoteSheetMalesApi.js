@@ -26,11 +26,10 @@ const ManpowerNoteSheetMaleApi = api
 						}
 					};
 				},
-				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
+				async onQueryStarted({ manPowerDate }, { queryFulfilled }) {
 					try {
 						const { data } = await queryFulfilled;
 
-						// Check if the response is an empty array
 						if (Array.isArray(data) && data.length === 0) {
 							CustomNotification('error', 'There are no manpower records');
 						}

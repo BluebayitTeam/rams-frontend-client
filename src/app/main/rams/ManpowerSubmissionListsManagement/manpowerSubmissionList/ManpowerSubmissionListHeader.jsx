@@ -2,17 +2,10 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 
-/**
- * The manpowerSubmissionList header.
- */
 function ManpowerSubmissionListHeader() {
-	const routeParams = useParams();
-	const { manpowerSubmissionListId } = routeParams;
 	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
+	const { watch } = methods;
 	const theme = useTheme();
 	const { name } = watch();
 
@@ -31,65 +24,6 @@ function ManpowerSubmissionListHeader() {
 					</motion.div>
 				</div>
 			</div>
-
-			{/* <motion.div
-				className="flex"
-				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-			>
-				{handleDelete === 'deleteManpowerSubmissionList' && manpowerSubmissionListId !== 'new' && (
-					<Typography
-						className="mt-6"
-						variant="subtitle2"
-					>
-						Do you want to remove this manpowerSubmissionList?
-					</Typography>
-				)}
-				{handleDelete === 'deleteManpowerSubmissionList' && manpowerSubmissionListId !== 'new' && (
-					<Button
-						className="whitespace-nowrap mx-4"
-						variant="contained"
-						color="secondary"
-						onClick={handleRemoveManpowerSubmissionList}
-						startIcon={<Icon className="hidden sm:flex">delete</Icon>}
-						style={{ backgroundColor: '#ea5b78', color: 'white' }}
-					>
-						Remove
-					</Button>
-				)}
-				{manpowerSubmissionListId === 'new' && (
-					<Button
-						className="whitespace-nowrap mx-4"
-						variant="contained"
-						color="secondary"
-						// disabled={_.isEmpty(dirtyFields) || !isValid}
-						onClick={handleCreateManpowerSubmissionList}
-					>
-						Save
-					</Button>
-				)}
-				{handleDelete !== 'deleteManpowerSubmissionList' &&
-					handleUpdate === 'updateManpowerSubmissionList' &&
-					manpowerSubmissionListId !== 'new' && (
-						<Button
-							className="whitespace-nowrap mx-4"
-							color="secondary"
-							variant="contained"
-							style={{ backgroundColor: '#4dc08e', color: 'white' }}
-							onClick={handleUpdateManpowerSubmissionList}
-						>
-							Update
-						</Button>
-					)}
-				<Button
-					className="whitespace-nowrap mx-4"
-					variant="contained"
-					style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-					onClick={handleCancel}
-				>
-					Cancel
-				</Button>
-			</motion.div> */}
 		</div>
 	);
 }

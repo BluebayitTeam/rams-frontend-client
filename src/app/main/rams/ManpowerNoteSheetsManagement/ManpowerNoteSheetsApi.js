@@ -26,7 +26,7 @@ const ManpowerNoteSheetApi = api
 						}
 					};
 				},
-				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
+				async onQueryStarted({ manPowerDate }, { queryFulfilled }) {
 					try {
 						const { data } = await queryFulfilled;
 
