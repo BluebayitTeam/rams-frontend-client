@@ -105,6 +105,8 @@ function BmetApplications({
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
 				dragAndDropRow={dragAndDropRow}
+				// hideSection={['pagination']}
+
 			/>
 			<table
 				id="table-to-xls"
