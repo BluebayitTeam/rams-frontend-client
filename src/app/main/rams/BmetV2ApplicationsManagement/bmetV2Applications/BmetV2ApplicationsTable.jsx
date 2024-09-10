@@ -47,7 +47,7 @@ function BmetV2ApplicationsTable(props) {
 					{data?.data?.length
 						?.toString()
 						.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 2486))}{' '}
-					জন {gender} কর্মীর একক বহির্গমন ছাড়পএ প্রদানের আবেদন।
+					জন {Gender} কর্মীর একক বহির্গমন ছাড়পএ প্রদানের আবেদন।
 					<br />
 					জনাব,
 					<br />
