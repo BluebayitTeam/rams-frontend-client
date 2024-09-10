@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import Table from '@mui/material/Table';
@@ -23,9 +22,7 @@ function ManpowerSubmissionV2ListsTable(props) {
 	const dispatch = useDispatch();
 	const {
 		navigate,
-
 		classes,
-
 		tableColumns,
 		dispatchTableColumns,
 		hideTabile,
@@ -53,28 +50,21 @@ function ManpowerSubmissionV2ListsTable(props) {
 	}
 
 	const columns = Object.keys(data.data[0]);
-	const chunkSize = 8;
-	const columnChunks = [];
-
-	for (let i = 0; i < columns.length; i += chunkSize) {
-		columnChunks.push(columns.slice(i, i + chunkSize));
-	}
+	const rowsPerPage = 8;
 
 	const [removeManpowerSubmissionV2Lists] = useDeleteManpowerSubmissionV2ListsMutation();
 
 	const [selected, setSelected] = useState([]);
 
-	function deleteManpowerSubmissionV2List(item, event) {
+	function deleteManpowerSubmissionV2List(item) {
 		removeManpowerSubmissionV2Lists(manpowerSubmissionV2ListId);
-
 		DeletedSuccessfully();
-
 		navigate(`/apps/manpowerSubmissionV2List/manpowerSubmissionV2Lists/${item.id}/${item.handle}`);
 	}
 
-	const rowsPerPage = 8;
+	const numberOfTables = Math.ceil((data?.data?.length ?? 0) / rowsPerPage);
 
-	const createTable = (startRowIndex) => (
+	const renderTable = (startRowIndex) => (
 		<div>
 			<div
 				key={`div-${startRowIndex}`}
@@ -83,9 +73,24 @@ function ManpowerSubmissionV2ListsTable(props) {
 					display: 'flex',
 					flexDirection: 'column',
 					width: '100%',
-					alignItems: 'center'
+					alignItems: 'center',
+					marginTop: '10px'
 				}}
 			>
+				<br />
+				<br />
+				<br />
+
+				<Interweave
+					allowAttributes
+					allowElements
+					disableLineBreaks
+					content={formContentHeaderData}
+					style={{
+						marginBottom: '10px'
+					}}
+				/>
+				<br />
 				<table
 					className="px-10 w-full"
 					style={{ tableLayout: 'fixed', borderCollapse: 'collapse' }}
@@ -119,11 +124,26 @@ function ManpowerSubmissionV2ListsTable(props) {
 						))}
 					</tbody>
 				</table>
+				<br />
+				<br />
+				<br />
+				<br />
+				<div className="w-full px-52 py-10">
+					<Interweave
+						allowAttributes
+						allowElements
+						disableLineBreaks
+						content={formContentFooterData}
+					/>
+				</div>
+
+				<br />
+				<br />
+				<br />
+				<br />
 			</div>
 		</div>
 	);
-
-	const numberOfTables = Math.ceil((data?.data?.length ?? 0) / rowsPerPage);
 
 	return (
 		<div>
@@ -147,7 +167,11 @@ function ManpowerSubmissionV2ListsTable(props) {
 
 								<Table
 									aria-label="simple table"
-									style={{ border: '1px solid red', paddingRight: '20px', paddingLeft: '20px' }}
+									style={{
+										border: '1px solid red',
+										paddingRight: '20px',
+										paddingLeft: '20px'
+									}}
 								>
 									<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
 										<TableRow>
@@ -267,37 +291,8 @@ function ManpowerSubmissionV2ListsTable(props) {
 										))}
 									</TableBody>
 								</Table>
-
 								<br />
-							</div>
-							<Interweave
-								allowAttributes
-								allowElements
-								disableLineBreaks
-								content={formContentFooterData}
-							/>
-							<br />
-						</div>
-					) : (
-						<div>
-							<div
-								className={`${classes.pageContainer} printPageContainer print:h-screen overflow-hidden w-full mb-0`}
-								style={{ padding: '10px' }}
-							>
-								{/* Header */}
-								<Interweave
-									allowAttributes
-									allowElements
-									disableLineBreaks
-									content={formContentHeaderData}
-								/>
-
-								{/* Paginated Tables */}
-								{[...Array(numberOfTables)].map((_, tableIndex) =>
-									createTable(tableIndex * rowsPerPage)
-								)}
-
-								{/* Footer */}
+								<br />
 								<Interweave
 									allowAttributes
 									allowElements
@@ -305,6 +300,20 @@ function ManpowerSubmissionV2ListsTable(props) {
 									content={formContentFooterData}
 								/>
 							</div>
+						</div>
+					) : (
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								minHeight: '100vh', // Full-page height to ensure proper page break
+								justifyContent: 'space-between',
+								pageBreakAfter: 'always' // Ensure page breaks after each section
+							}}
+						>
+							<br />
+							<br />
+							{Array.from({ length: numberOfTables }, (_, index) => renderTable(index * rowsPerPage))}
 						</div>
 					)}
 				</div>
