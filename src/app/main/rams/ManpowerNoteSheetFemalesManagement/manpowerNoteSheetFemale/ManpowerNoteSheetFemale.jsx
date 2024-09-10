@@ -1,0 +1,67 @@
+import FusePageCarded from "@fuse/core/FusePageCarded";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { FormProvider, useForm } from "react-hook-form";
+import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import ManpowerNoteSheetFemaleModel from "./models/ManpowerNoteSheetModel";
+import ManpowerNoteSheetFemaleHeader from "./ManpowerNoteSheetFemaleHeader";
+import ManpowerNoteSheetFemaleForm from "./ManpowerNoteSheetFemaleForm";
+
+/**
+ * Form Validation Schema
+ */
+const schema = z.object({
+  first_name: z
+    .string()
+    .nonempty("You must enter a manpowerNoteSheetFemale name")
+    .min(5, "The manpowerNoteSheetFemale name must be at least 5 characters"),
+});
+
+function ManpowerNoteSheetFemale() {
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
+  const routeParams = useParams();
+  const { manpowerNoteSheetId } = routeParams;
+
+  const [formKey, setFormKey] = useState(0);
+
+  const methods = useForm({
+    mode: "onChange",
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (manpowerNoteSheetId === "new") {
+      reset(ManpowerNoteSheetFemaleModel({}));
+    }
+  }, [manpowerNoteSheetId, reset]);
+  const handleReset = () => {
+    reset({});
+    setFormKey((prevKey) => prevKey + 1);
+  };
+
+  return (
+    <FormProvider {...methods} key={formKey}>
+      <FusePageCarded
+        classes={{
+          toolbar: "p-0",
+          header: "min-h-80 h-80",
+        }}
+        header={<ManpowerNoteSheetFemaleHeader handleReset={handleReset} />}
+        content={
+          <div className="p-16 ">
+            <ManpowerNoteSheetFemaleForm
+              manpowerNoteSheetId={manpowerNoteSheetId}
+            />
+          </div>
+        }
+        innerScroll
+      />
+    </FormProvider>
+  );
+}
+
+export default ManpowerNoteSheetFemale;

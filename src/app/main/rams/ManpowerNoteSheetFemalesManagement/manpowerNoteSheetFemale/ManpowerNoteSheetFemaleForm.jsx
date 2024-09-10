@@ -9,14 +9,14 @@ import { useReactToPrint } from 'react-to-print';
 import moment from 'moment';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
-import { NOTE_SHEET_GROUP_FOOTER, NOTE_SHEET_GROUP_HEADER } from 'src/app/constant/FormContentTitle/formContentTitle';
+import { NOTE_SHEET_FEMALE_FOOTER, NOTE_SHEET_FEMALE_HEADER } from 'src/app/constant/FormContentTitle/formContentTitle';
 import { Interweave } from 'interweave';
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import SinglePageOnlyTable from 'src/app/@components/ReportComponents/SinglePageOnlyTable';
-import { useGetManpowerNoteSheetQuery } from '../ManpowerNoteSheetsApi';
+import { useGetManpowerNoteSheetFemaleQuery } from '../ManpowerNoteSheetFemalesApi';
 
 const useStyles = makeStyles(() => ({
 	textField: {
@@ -106,7 +106,7 @@ const initialTableColumnsState3 = [
 	}
 ];
 
-function ManpowerNoteSheetForm(props) {
+function ManpowerNoteSheetFemaleForm(props) {
 	const methods = useFormContext();
 	const { watch } = methods;
 	const [formData, setFormData] = useState({
@@ -135,7 +135,7 @@ function ManpowerNoteSheetForm(props) {
 		content: () => componentRef.current
 	});
 
-	const { data } = useGetManpowerNoteSheetQuery({
+	const { data } = useGetManpowerNoteSheetFemaleQuery({
 		manPowerDate: selectedDate
 	});
 
@@ -183,11 +183,11 @@ function ManpowerNoteSheetForm(props) {
 			}
 		};
 
-		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_GROUP_HEADER}`, authTOKEN)
+		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_FEMALE_HEADER}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => setHeader(data?.formcontent_detail[0]?.details || ''));
 
-		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_GROUP_FOOTER}`, authTOKEN)
+		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_FEMALE_FOOTER}`, authTOKEN)
 			.then((response) => response.json())
 			.then((data) => SetFooter(data?.formcontent_detail[0]?.details || ''));
 	}, []);
@@ -330,7 +330,7 @@ function ManpowerNoteSheetForm(props) {
 									allowAttributes
 									allowElements
 									disableLineBreaks
-									className="p-6"
+									className="p-14"
 									content={footer}
 								/>
 							)}
@@ -342,4 +342,4 @@ function ManpowerNoteSheetForm(props) {
 	);
 }
 
-export default ManpowerNoteSheetForm;
+export default ManpowerNoteSheetFemaleForm;
