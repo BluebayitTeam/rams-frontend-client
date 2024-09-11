@@ -66,13 +66,13 @@ function BmetStampsTable(props) {
         inSiglePageMode || setPage(data.page);
       }}
       style={{
-        padding: "20px",
+        padding: "10px",
         overflow: "hidden",
         pageBreakBefore: "always",
       
       }}
     >
-      <div style={{ paddingTop: "250px" }}>
+      <div style={{ paddingTop: "20px" }}>
         <h2 className="text-center">পাতা-১</h2> 
         <br />
         <div className={classes.pageHead}>
