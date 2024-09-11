@@ -105,14 +105,8 @@ function ListOfManpowerRefForm(props) {
     tableColumnsReducer,
     initialTableColumnsState
   );
-  const [tableColumns2, dispatchTableColumns2] = useReducer(
-    tableColumnsReducer,
-    initialTableColumnsState2
-  );
-  const [tableColumns3, dispatchTableColumns3] = useReducer(
-    tableColumnsReducer,
-    initialTableColumnsState3
-  );
+ 
+  
 
   const [
     modifiedManpowerNtSheetData,
@@ -189,6 +183,9 @@ function ListOfManpowerRefForm(props) {
               className="w-full"
               style={{ minHeight: "270px" }}
             >
+              <div>
+					<h1 className="text-center font-lg underline"> MANPOWER REF LIST</h1>
+				</div>
               <div>
                 {modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
                   <SinglePageOnlyTable
