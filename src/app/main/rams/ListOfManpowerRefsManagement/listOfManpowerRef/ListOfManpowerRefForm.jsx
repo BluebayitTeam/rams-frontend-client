@@ -19,7 +19,7 @@ import tableColumnsReducer from "src/app/@components/ReportComponents/tableColum
 import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
 import useReportData from "src/app/@components/ReportComponents/useReportData";
 import SinglePageOnlyTable from "src/app/@components/ReportComponents/SinglePageOnlyTable";
-import { useGetManpowerNoteSheetQuery } from "../ManpowerNoteSheetsApi";
+import { useGetListOfManpowerRefQuery } from "../ListOfManpowerRefsApi";
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -109,7 +109,7 @@ const initialTableColumnsState3 = [
   },
 ];
 
-function ManpowerNoteSheetForm(props) {
+function ListOfManpowerRefForm(props) {
   const methods = useFormContext();
   const { watch } = methods;
   const [formData, setFormData] = useState({
@@ -138,7 +138,7 @@ function ManpowerNoteSheetForm(props) {
     content: () => componentRef.current,
   });
 
-  const { data } = useGetManpowerNoteSheetQuery({
+  const { data } = useGetListOfManpowerRefQuery({
     manPowerDate: selectedDate,
   });
 
@@ -355,4 +355,4 @@ function ManpowerNoteSheetForm(props) {
   );
 }
 
-export default ManpowerNoteSheetForm;
+export default ListOfManpowerRefForm;
