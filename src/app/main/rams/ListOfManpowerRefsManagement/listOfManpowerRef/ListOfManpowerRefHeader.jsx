@@ -12,7 +12,7 @@ function ListOfManpowerRefMaleHeader() {
 							animate={{ x: 0, transition: { delay: 0.3 } }}
 						>
 							<Typography className="text-16 sm:text-20 truncate font-semibold">
-								Note Sheet Group
+								Manpower REF List
 							</Typography>
 						</motion.div>
 					</div>

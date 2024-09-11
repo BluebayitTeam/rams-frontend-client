@@ -20,41 +20,41 @@ import ReportPaginationAndDownload from "src/app/@components/ReportComponents/Re
 import useReportData from "src/app/@components/ReportComponents/useReportData";
 import SinglePageOnlyTable from "src/app/@components/ReportComponents/SinglePageOnlyTable";
 import { useGetListOfManpowerRefQuery } from "../ListOfManpowerRefsApi";
+import { Search } from "@mui/icons-material";
 
-const useStyles = makeStyles(() => ({
-  textField: {
-    "& > div": {
-      height: "35px",
+const useStyles = makeStyles((theme) => ({
+  searchContainer: ({ isPassenger }) => ({
+    color: theme.palette.primary.main,
+    background: "transparent",
+    borderColor: theme.palette.primary.main,
+    cursor: isPassenger && "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    border: "1px solid",
+    height: "52px",
+    width: "52px",
+    marginTop: "8px",
+    borderRadius: "5px",
+    "&:hover": {
+      color: isPassenger
+        ? theme.palette.primary.dark
+        : theme.palette.primary.main,
+      background: isPassenger ? theme.palette.primary.light : "transparent",
+      borderColor: isPassenger
+        ? theme.palette.primary.dark
+        : theme.palette.primary.main,
     },
-  },
-  container: {
-    padding: "0px 25px",
-    minWidth: "1000px",
-    "& *": {
-      boxSizing: "border-box",
+    "&:active": {
+      color: isPassenger
+        ? theme.palette.primary.light
+        : theme.palette.primary.main,
+      background: isPassenger ? theme.palette.primary.dark : "transparent",
+      borderColor: isPassenger
+        ? theme.palette.primary.light
+        : theme.palette.primary.main,
     },
-    "& .row": {
-      marginRight: "-15px",
-      marginLeft: "-15px",
-    },
-    "& .western": {
-      marginBottom: "5px",
-    },
-    "& .borderedTable": {
-      "& table, th, td": {
-        border: "1px solid white",
-      },
-      "& table": {
-        color: "black",
-        background: "white",
-        borderSpacing: 0,
-        borderCollapse: "collapse",
-        "& td, th": {
-          padding: "0px",
-        },
-      },
-    },
-  },
+  }),
 }));
 
 const initialTableColumnsState = [
@@ -220,28 +220,24 @@ function ListOfManpowerRefForm(props) {
 
   return (
     <>
-      <div>
-        <CustomDatePicker
-          name="man_power_date"
-          label="Manpower Date"
-          required
-          placeholder="DD-MM-YYYY"
-        />
+      <div className="flex flex-nowrap gap-10">
+       
+            <div className="w-full">
+          <CustomDatePicker
+            name="man_power_date"
+            label="Date"
+            placeholder="DD-MM-YYYY"
+          />
+        </div>
 
-        <div>
-          <button
-            style={{
-              background: "white",
-              border: "1px solid grey",
-              borderRadius: "4px",
-              padding: "0px 5px",
-              height: "35px",
-              marginLeft: "30px",
-            }}
-            onClick={() => handleSearchManPowerDateClick()}
-          >
-            Search
-          </button>
+       
+      
+
+         <div
+          className={classes.searchContainer}
+           onClick={() => handleSearchManPowerDateClick()}
+        >
+          <Search className="cursor-pointer" />
         </div>
       </div>
 
