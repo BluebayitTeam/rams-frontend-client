@@ -7,7 +7,7 @@ function BmetStampTable4({ classes, agencyInfo }) {
       className={`${classes.pageContainer} printPageContainer  overflow-hidden w-full mb-0`}
       style={{ padding: "10px" }}
     >
-      <div style={{ paddingTop: "100px" }}>
+      <div style={{ paddingTop: "10px" }}>
         <h2 className="text-center">পাতা-৪</h2>
 
         <span style={{ fontSize: "18px", lineHeight: "50px" }}>
@@ -18,18 +18,18 @@ function BmetStampTable4({ classes, agencyInfo }) {
           দায়-দায়িতব বহন করব এবং কর্মীদের অভিবাসন ব্যয়ের বেশিব্যয় গ্রহনকর
           হয়নি।
           <br />
-          <br />
+          
           উপযুক্ত অঙ্গীকার নামায় বর্ণিত বিষয়ের কোন ব্যাক্রিম ঘটলে প্রবাসী কল্যাণ
           ও বৈদেশিক কর্মসংস্থান মন্রণালয় অথবা জনশক্তিকর্মসংস্থান ও প্রশিক্ষন
           ব্যুরো আমার বা আমার রিক্রটিং এজেন্সীর বিরুদ্দে বৈদশিক কর্মসংস্থান ও
           অভিবাসী আইন-২০১৩ অনুযায়ী যে কোন ব্যবস্থা গ্রহন করতে পারবে।
           <br />
-          <br />
+          
           এই অঙ্গীকার নামায় আমি সেচ্ছায় , স্বঙ্গানে ,সুস্থ মস্তিকে এবং কাহারো
           দ্বারা প্ররোচিত না হয়ে স্বাক্ষর করলাম।
         </span>
         <br />
-        <br />
+        
         <p
           className="text-right"
           style={{ fontSize: "18px", lineHeight: "50px" }}

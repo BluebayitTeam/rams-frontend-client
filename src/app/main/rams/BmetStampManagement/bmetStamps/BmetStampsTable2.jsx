@@ -30,23 +30,23 @@ function BmetStampsTable2({
       }}
       style={{
         padding: "10px",
-        minHeight: "2000px",
-        maxHeight: "2000px",
+        minHeight: "1000px",
+        maxHeight: "1000px",
         display: "block",
       }}
     >
       <div>
-        <div className={classes.pageHead} style={{ paddingTop: "300px" }}>
+        <div className={classes.pageHead} style={{ paddingTop: "10px" }}>
           <h2 className="text-center">পাতা-২</h2>
-          <br />
-          <br />
+          
+         
         </div>
         <div className={classes.pageHead}>
           <h2 className="title  pl-0 md:-pl-20">প্রশিক্ষণ সনদের বিবরন</h2>
         </div>
 
         <br />
-        <br />
+       
         <Table
           aria-label="simple table"
           className={classes.table}
@@ -145,6 +145,7 @@ function BmetStampsTable2({
             ))}
           </TableBody>
         </Table>
+        <br />
         <p className="text-right">চলমান পাতা-২</p>
       </div>
     </div>

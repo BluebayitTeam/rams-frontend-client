@@ -156,7 +156,7 @@ function BmetStamps({
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
         dragAndDropRow={dragAndDropRow}
-        hideSection={["pagination", "download", "pg", "wp", "column"]}
+        hideSection={["pagination", "pg", "wp", ]}
       />
       <table id="table-to-xls" className="w-full">
         <div ref={componentRef} id="downloadPage">
@@ -194,8 +194,8 @@ function BmetStamps({
       </table>
 
       <div ref={componentRef} id="downloadPage" className="p-48">
-        <div style={{ minHeight: "2000px", maxHeight: "2000px" }}>
-          <table id="table-to-xls" className="w-full pt-30">
+        <div style={{ minHeight: "1800px", maxHeight: "1800px" }}>
+          <table id="table-to-xls" className="w-full pt-10">
             <div>
               {/* each single page (table) */}
               {modifiedManpowerSbListData.map((manpowerSbList) => (
@@ -221,7 +221,7 @@ function BmetStamps({
           </table>
         </div>
 
-        <div style={{ minHeight: "2000px", maxHeight: "2000px" }}>
+        <div style={{ minHeight: "1400px", maxHeight: "1400px" }}>
           <table id="table-to-xls" className="w-full">
             <div>
               {modifiedManpowerSbListData.map((manpowerSbList) => (
@@ -248,7 +248,7 @@ function BmetStamps({
           </table>
         </div>
 
-        <div style={{ minHeight: "1500px", maxHeight: "1500px" }}>
+        <div style={{ minHeight: "1400px", maxHeight: "1400px" }}>
           <table id="table-to-xls" className="w-full">
             <div>
               {modifiedManpowerSbListData.map((manpowerSbList) => (

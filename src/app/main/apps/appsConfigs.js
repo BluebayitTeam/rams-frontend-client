@@ -103,6 +103,7 @@ import BmetApplicationAppConfig from '../rams/BmetApplicationsManagement/BmetApp
 import ManpowerNoteSheetFemaleAppConfig from '../rams/ManpowerNoteSheetFemalesManagement/ManpowerNoteSheetFemaleAppConfig';
 import BmetV2ApplicationAppConfig from '../rams/BmetV2ApplicationsManagement/BmetV2ApplicationAppConfig';
 import ListOfManpowerRefAppConfig from '../rams/ListOfManpowerRefsManagement/ListOfManpowerRefAppConfig';
+import BmetStampAppConfig from '../rams/BmetStampManagement/BmetStampAppConfig';
 
 /**
  * The list of application configurations.
@@ -114,6 +115,7 @@ const appsConfigs = [
 	AirwayAppConfig,
 	BranchAppConfig,
 	// BmetV2ApplicationAppConfig,
+	BmetStampAppConfig,
 	CalendarAppConfig,
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,

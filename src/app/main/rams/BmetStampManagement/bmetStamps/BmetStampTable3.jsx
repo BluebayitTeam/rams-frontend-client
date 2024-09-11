@@ -6,7 +6,7 @@ function BmetStampTable3({ classes, data, country, agencyInfo }) {
       className={`${classes.pageContainer} printPageContainer  overflow-hidden w-full mb-0`}
       style={{ padding: "10px" }}
     >
-      <div style={{ paddingTop: "100px" }}>
+      <div style={{ paddingTop: "10px" }}>
         <h2 className="text-center">পাতা-৩</h2>
 
         <span style={{ fontSize: "18px", lineHeight: "50px" }}>
@@ -35,11 +35,11 @@ function BmetStampTable3({ classes, data, country, agencyInfo }) {
             )}{" "}
           জনের অধিক প্রেরণকরা হচ্ছেনা অথবা ভিসা গুলোগ্রুপ ভাঙ্গা হয়নি।
           <br />
-          <br />
+         
           উপযুক্ত কর্মীদের সৌদিআরব বিমানবন্দরে নিয়োগকর্তা বা নিয়োগকর্তার
           প্রতিনিধি গ্রহণকরবে মর্মে অঙ্গিকার করছি।
           <br />
-          <br />
+        
           বিদেশগমনের পর কোন কারণে কর্মীদের বিমান বন্দরহতে নিয়োগকর্তা গ্রহণ না
           করে অথবা কর্মীদের ভিসা জাল বলে প্রমানিত হয় অথবা অন্য কোন কারণে
           চাকুরীতে সমস্যার সৃষ্টি হয় তাহলে উক্ত কর্মীর/কর্মীদের সকল
@@ -48,6 +48,7 @@ function BmetStampTable3({ classes, data, country, agencyInfo }) {
           গ্রহনের পর সৌদি ব্যতীত অন্য কোন দেশে প্রেরণের অপচেষ্টা করব না মর্মে ও
           অঙ্গীকার করছি।
         </span>
+        <br />
         <p className="text-right">চলমান পাতা-৩</p>
       </div>
     </div>

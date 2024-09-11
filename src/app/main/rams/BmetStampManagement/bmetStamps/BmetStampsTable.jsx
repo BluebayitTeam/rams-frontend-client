@@ -66,14 +66,14 @@ function BmetStampsTable(props) {
         inSiglePageMode || setPage(data.page);
       }}
       style={{
-        padding: "10px",
+        padding: "20px",
         overflow: "hidden",
         pageBreakBefore: "always",
-        paddingTop: "100px",
+      
       }}
     >
-      <div style={{ paddingTop: "300px" }}>
-        <h2 className="text-center">পাতা-১</h2> <br />
+      <div style={{ paddingTop: "250px" }}>
+        <h2 className="text-center">পাতা-১</h2> 
         <br />
         <div className={classes.pageHead}>
           <h2 className="title  pl-0 md:-pl-20">{reportTitle}</h2>
@@ -87,8 +87,7 @@ function BmetStampsTable(props) {
           />
         </div>
         <br />
-        <br />
-        <br />
+       
         <Table
           aria-label="simple table"
           className={classes.table}
@@ -187,6 +186,7 @@ function BmetStampsTable(props) {
             ))}
           </TableBody>
         </Table>
+        <br />
         <p className="text-right">চলমান পাতা-১</p>
       </div>
     </div>
