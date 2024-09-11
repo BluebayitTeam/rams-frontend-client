@@ -13,6 +13,8 @@ import CustomDropdownField from "src/app/@components/CustomDropdownField";
 import { getAgencys, getCountries } from "app/store/dataSlice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { Controller, useFormContext } from "react-hook-form";
+import { Autocomplete, TextField } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   searchContainer: ({ isPassenger }) => ({
@@ -71,8 +73,9 @@ function BmetStampForm({ handleSearchManPowerDateClick }) {
       );
   }, []);
   const classes = useStyles({});
-	const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
+  const methods = useFormContext();  
+  const {setValue ,control,errors   } = methods;
 	const { agencies, countries} = useSelector((state) => state.data);
 
   useEffect(() => {
@@ -84,18 +87,26 @@ function BmetStampForm({ handleSearchManPowerDateClick }) {
   return (
     <div>
       <div >
-        <CustomDropdownField
-				name="agency"
-				label="Agency"
-				options={agencies}
-				optionLabelFormat={(option) => `${option?.name}`}
-			/>
+      
 			<CustomDropdownField
 				name="country"
 				label="Country"
 				options={countries}
-				optionLabelFormat={(option) => `${option?.name}`}
+          optionLabelFormat={(option) => `${option?.name}`}
+         onChange={(newValue) =>
+				  setValue('country_name', newValue)
+				}
+        />
+          <CustomDropdownField
+				name="agency"
+				label="Agency"
+				options={agencies}
+          optionLabelFormat={(option) => `${option?.name}`}
+           onChange={(newValue) =>
+				  setValue('agency_info', newValue)
+				}
 			/>
+      
         <div className="w-full flex flex-nowrap ">
           <CustomDatePicker
             name="man_power_date"

@@ -75,6 +75,7 @@ function BmetStamps({
   const methods = useFormContext();
 
   const { getValues } = methods;
+  console.log('getValues', getValues()?.agency_info);
   const [
     modifiedManpowerSbListData,
     setModifiedManpowerSbListData,

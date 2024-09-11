@@ -1,8 +1,12 @@
 import withRouter from "@fuse/core/withRouter";
+import { method } from "lodash";
+import { useFormContext } from "react-hook-form";
 
 function BmetStampTable3({ classes, data, country, agencyInfo }) {
-  
-  console.log('khkhgfkhgkfg',country)
+	const methods = useFormContext();
+  const { watch } = methods;
+ 
+  console.log('khkhgfkhgkfg',agencyInfo)
   return (
     <div
       className={`${classes.pageContainer} printPageContainer  overflow-hidden w-full mb-0`}
@@ -12,15 +16,15 @@ function BmetStampTable3({ classes, data, country, agencyInfo }) {
         <h2 className="text-center">পাতা-৩</h2>
 
         <span style={{ fontSize: "18px", lineHeight: "50px" }}>
-          আমি রিক্রটিং এজেন্সী মেসার্স {agencyInfo?.name_bangla} (আর এল নং{" "}
+          আমি রিক্রটিং এজেন্সী মেসার্স {agencyInfo?.name_bangla ||''} (আর এল নং{" "}
           {agencyInfo?.rl_no
             ?.toString()
             .replace(/[0-9]/g, (digit) =>
               String.fromCharCode(digit.charCodeAt(0) + 2486)
             )}
           ) এর স্বত্রাধিকারী/ব্যবস্থাপনা অংশীদার/ব্যবস্থাপনা পরিচালক এই মর্মে
-          অঙ্গীকার করছি যে, চাকুরীর উদ্দেশ্যে {country}
-          দেশের সৌদি নিয়োগকর্তার অধীনে বর্ণিত{" "}
+          অঙ্গীকার করছি যে, চাকুরীর উদ্দেশ্যে {country} 
+          {" "} দেশের সৌদি নিয়োগকর্তার অধীনে বর্ণিত{" "}
           {data?.data?.length
             ?.toString()
             .replace(/[0-9]/g, (digit) =>
