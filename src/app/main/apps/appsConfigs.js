@@ -104,6 +104,7 @@ import ManpowerNoteSheetFemaleAppConfig from '../rams/ManpowerNoteSheetFemalesMa
 import BmetV2ApplicationAppConfig from '../rams/BmetV2ApplicationsManagement/BmetV2ApplicationAppConfig';
 import ListOfManpowerRefAppConfig from '../rams/ListOfManpowerRefsManagement/ListOfManpowerRefAppConfig';
 import BmetStampAppConfig from '../rams/BmetStampManagement/BmetStampAppConfig';
+import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
 
 /**
  * The list of application configurations.
@@ -117,6 +118,7 @@ const appsConfigs = [
 	// BmetV2ApplicationAppConfig,
 	BmetStampAppConfig,
 	CalendarAppConfig,
+	VisaSubmissionListAppConfig,
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,
 	MessengerAppConfig,
