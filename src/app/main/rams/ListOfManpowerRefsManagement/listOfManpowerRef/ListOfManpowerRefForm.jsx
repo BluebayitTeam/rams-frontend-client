@@ -58,55 +58,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialTableColumnsState = [
-  {
-    id: 1,
-    label: "ক্রমিক নং",
-    sortAction: false,
-    isSerialNo: true,
-    show: true,
-  },
-  { id: 2, label: "কর্মীর নাম", name: "passenger_name", show: true },
-  { id: 3, label: "পাসপোর্ট নম্বার", name: "passport_no", show: true },
-  { id: 4, label: "জন্ম তারিখ.", name: "date_of_birth", show: true },
-  { id: 5, label: "ভিসা নম্বর ", name: "visa_no", show: true },
-  { id: 6, label: "স্বএ্যায়নের তারিখ ", name: "stamping_date", show: true },
-  { id: 7, label: "পদের নাম", name: "profession", show: true },
-  { id: 8, label: "নিয়োগকারীর নাম", name: "sponsor_name", show: true },
-];
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Name', name: 'passenger_name', show: true },
+	{ id: 3, label: 'Passport No', name: 'passport_no', show: true },
+	{ id: 4, label: 'Profession', name: 'profession', show: true },
 
-const initialTableColumnsState2 = [
-  {
-    id: 1,
-    label: "ক্রমিক নং",
-    sortAction: false,
-    isSerialNo: true,
-    show: true,
-  },
-  { id: 2, label: "কর্মীর নাম", name: "passenger_name", show: true },
-  { id: 3, label: "পাসপোর্ট নম্বার", name: "passport_no", show: true },
-  { id: 4, label: "সনদ নম্বর.", name: "certificate_no", show: true },
-  { id: 5, label: "ব্যাচ নম্বর ", name: "batch_number", show: true },
-  { id: 6, label: "সিরিয়াল নম্বর ", name: "serial_no", show: true },
-  { id: 7, label: "টি.টি.সির নাম", name: "training_center", show: true },
-];
-const initialTableColumnsState3 = [
-  {
-    id: 1,
-    label: "ক্রমিক নং",
-    sortAction: false,
-    isSerialNo: true,
-    show: true,
-  },
-  { id: 2, label: "কর্মীর নাম", name: "passenger_name", show: true },
-  { id: 3, label: "পাসপোর্ট নম্বার", name: "passport_no", show: true },
-  { id: 4, label: "ব্যাংকের নাম", name: "bank_name", show: true },
-  { id: 5, label: "অ্যাকাউন্ট নং", name: "account_no", show: true },
-  {
-    id: 6,
-    label: "মেডিকেল সেন্টারের নাম ",
-    name: "medical_center",
-    show: true,
-  },
+	{ id: 5, label: 'REF', name: 'agency', show: true }
 ];
 
 function ListOfManpowerRefForm(props) {
@@ -168,51 +125,19 @@ function ListOfManpowerRefForm(props) {
     const modifiedData = [];
     data?.map((manpowerSub) => {
       modifiedData.push({
-        passenger_name: manpowerSub?.passenger?.passenger_name,
-        passport_no: manpowerSub?.passenger?.passport_no,
-        date_of_birth: moment(
-          new Date(manpowerSub?.passenger?.date_of_birth)
-        ).format("DD-MM-YYYY"),
-        visa_no: manpowerSub?.visa_entry?.visa_number,
-        stamping_date: moment(
-          new Date(manpowerSub?.embassy?.stamping_date)
-        ).format("DD-MM-YYYY"),
         profession: manpowerSub?.embassy?.profession_english,
-        certificate_no: manpowerSub?.training?.certificate_no,
-        batch_number: manpowerSub?.training?.batch_number,
-        serial_no: manpowerSub?.training?.serial_no,
-        training_center: manpowerSub?.training?.training_center,
-        sponsor_name: manpowerSub?.visa_entry?.sponsor_name_english,
-        bank_name: manpowerSub?.man_power?.bank_name,
-        account_no: manpowerSub?.man_power?.bank_account_no,
-        medical_center: manpowerSub?.medical?.medical_center?.name,
+
+				passport_no: manpowerSub?.passenger?.passport_no,
+
+				passenger_name: manpowerSub?.passenger?.passenger_name,
+
+				agency: manpowerSub?.man_power_list?.agency?.name
       });
     });
     setModifiedManpowerNtSheetData(modifiedData);
   }, [data]);
 
-  useEffect(() => {
-    const authTOKEN = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: localStorage.getItem("jwt_access_token"),
-      },
-    };
-
-    fetch(
-      `${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_GROUP_HEADER}`,
-      authTOKEN
-    )
-      .then((response) => response.json())
-      .then((data) => setHeader(data?.formcontent_detail[0]?.details || ""));
-
-    fetch(
-      `${GET_FORM_CONTENT_DETAILS_BY_TITLE}${NOTE_SHEET_GROUP_FOOTER}`,
-      authTOKEN
-    )
-      .then((response) => response.json())
-      .then((data) => SetFooter(data?.formcontent_detail[0]?.details || ""));
-  }, []);
+ 
 
   function handleSearchManPowerDateClick() {
     setSelectedDate(manPowerDate);
@@ -221,19 +146,14 @@ function ListOfManpowerRefForm(props) {
   return (
     <>
       <div className="flex flex-nowrap gap-10">
-       
-            <div className="w-full">
+       <div className="w-full">
           <CustomDatePicker
             name="man_power_date"
             label="Date"
             placeholder="DD-MM-YYYY"
           />
         </div>
-
-       
-      
-
-         <div
+        <div
           className={classes.searchContainer}
            onClick={() => handleSearchManPowerDateClick()}
         >
@@ -241,7 +161,7 @@ function ListOfManpowerRefForm(props) {
         </div>
       </div>
 
-      {/* Printable Format */}
+     
 
       <br />
       <br />
@@ -270,15 +190,6 @@ function ListOfManpowerRefForm(props) {
               style={{ minHeight: "270px" }}
             >
               <div>
-                <div className="p-14">
-                  <Interweave
-                    allowAttributes
-                    allowElements
-                    disableLineBreaks
-                    content={header}
-                  />
-                </div>
-                {/* each single page (table) */}
                 {modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
                   <SinglePageOnlyTable
                     key={index}
@@ -295,55 +206,6 @@ function ListOfManpowerRefForm(props) {
                 ))}
               </div>
             </table>
-            <p>১৪৩/প্রশিক্ষণ সনদের বিবরনঃ</p>
-
-            <div>
-              {modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
-                <SinglePageOnlyTable
-                  key={index}
-                  classes={classes}
-                  reportTitle=""
-                  tableColumns={tableColumns2}
-                  dispatchTableColumns={dispatchTableColumns2}
-                  data={manpowerNtSheet}
-                  serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
-                  setPage={setPage}
-                  setSortBySubKey={setSortBySubKey}
-                  dragAndDropRow={dragAndDropRow}
-                />
-              ))}
-            </div>
-
-            <p>১৪৪/ ব্যাংক অ্যাকাউন্ট ও মেডিকেল সেন্টারের বিবরনঃ</p>
-
-            <div>
-              {modifiedManpowerNtSheetData.map((manpowerNtSheet, index) => (
-                <SinglePageOnlyTable
-                  key={index}
-                  classes={classes}
-                  reportTitle=""
-                  tableColumns={tableColumns3}
-                  dispatchTableColumns={dispatchTableColumns3}
-                  data={manpowerNtSheet}
-                  serialNumber={index + 1 + (page - 1) * size}
-                  setPage={setPage}
-                  setSortBySubKey={setSortBySubKey}
-                  dragAndDropRow={dragAndDropRow}
-                />
-              ))}
-            </div>
-
-            <div className="p-14">
-              {modifiedManpowerNtSheetData.length > 0 && (
-                <Interweave
-                  allowAttributes
-                  allowElements
-                  disableLineBreaks
-                  className="p-6"
-                  content={footer}
-                />
-              )}
-            </div>
           </div>
         </div>
       )}
