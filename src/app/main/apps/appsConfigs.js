@@ -202,7 +202,7 @@ const appsConfigs = [
 	FlightAppConfig,
 	GroupAppConfig,
 	LedgerAppConfig,
-	ListOfManpowerRefAppConfig,
+	// ListOfManpowerRefAppConfig,
 	SubLedgerAppConfig,
 	PaymentVoucherAppConfig,
 	ReceiptVoucherAppConfig,
