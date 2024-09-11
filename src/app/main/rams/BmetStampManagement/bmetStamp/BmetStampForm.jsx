@@ -9,6 +9,10 @@ import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from "src/app/constant/constants";
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from "src/app/constant/FormContentTitle/formContentTitle";
 import { makeStyles } from "@mui/styles";
 import { Search } from "@mui/icons-material";
+import CustomDropdownField from "src/app/@components/CustomDropdownField";
+import { getAgencys, getCountries } from "app/store/dataSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   searchContainer: ({ isPassenger }) => ({
@@ -67,19 +71,38 @@ function BmetStampForm({ handleSearchManPowerDateClick }) {
       );
   }, []);
   const classes = useStyles({});
+	const dispatch = useDispatch();
 
+	const { agencies, countries} = useSelector((state) => state.data);
+
+  useEffect(() => {
+	
+		dispatch(getAgencys());
+		dispatch(getCountries());
+	
+	}, []);
   return (
     <div>
-      <div className="flex flex-nowrap ">
-        <div className="w-full">
+      <div >
+        <CustomDropdownField
+				name="agency"
+				label="Agency"
+				options={agencies}
+				optionLabelFormat={(option) => `${option?.name}`}
+			/>
+			<CustomDropdownField
+				name="country"
+				label="Country"
+				options={countries}
+				optionLabelFormat={(option) => `${option?.name}`}
+			/>
+        <div className="w-full flex flex-nowrap ">
           <CustomDatePicker
             name="man_power_date"
             label="Manpower Date"
             placeholder="DD-MM-YYYY"
           />
-        </div>
-
-        <div
+          <div
           className={classes.searchContainer}
           onClick={() => {
             handleSearchManPowerDateClick();
@@ -87,6 +110,9 @@ function BmetStampForm({ handleSearchManPowerDateClick }) {
         >
           <Search className="cursor-pointer" />
         </div>
+        </div>
+
+        
       </div>
 
       <div></div>

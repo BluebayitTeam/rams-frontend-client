@@ -1,6 +1,8 @@
 import withRouter from "@fuse/core/withRouter";
 
 function BmetStampTable3({ classes, data, country, agencyInfo }) {
+  
+  console.log('khkhgfkhgkfg',country)
   return (
     <div
       className={`${classes.pageContainer} printPageContainer  overflow-hidden w-full mb-0`}
