@@ -105,7 +105,7 @@ function BmetApplications({
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
 				dragAndDropRow={dragAndDropRow}
-				// hideSection={['pagination']}
+				hideSection={['pagination','download','pg','wp','column']}
 
 			/>
 			<table

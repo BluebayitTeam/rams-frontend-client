@@ -102,6 +102,9 @@ import ManpowerNoteSheetAppConfig from '../rams/ManpowerNoteSheetsManagement/Man
 import BmetApplicationAppConfig from '../rams/BmetApplicationsManagement/BmetApplicationAppConfig';
 import ManpowerNoteSheetFemaleAppConfig from '../rams/ManpowerNoteSheetFemalesManagement/ManpowerNoteSheetFemaleAppConfig';
 import BmetV2ApplicationAppConfig from '../rams/BmetV2ApplicationsManagement/BmetV2ApplicationAppConfig';
+import ListOfManpowerRefAppConfig from '../rams/ListOfManpowerRefsManagement/ListOfManpowerRefAppConfig';
+import BmetStampAppConfig from '../rams/BmetStampManagement/BmetStampAppConfig';
+import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
 
 /**
  * The list of application configurations.
@@ -113,7 +116,9 @@ const appsConfigs = [
 	AirwayAppConfig,
 	BranchAppConfig,
 	// BmetV2ApplicationAppConfig,
+	BmetStampAppConfig,
 	CalendarAppConfig,
+	VisaSubmissionListAppConfig,
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,
 	MessengerAppConfig,
@@ -135,7 +140,7 @@ const appsConfigs = [
 	KsaVisaAppConfig,
 	KuwaitVisaAppConfig,
 	KsaVisaManualAppConfig,
-	// ManpowerNoteSheetAppConfig,
+	ManpowerNoteSheetAppConfig,
 	ManpowerSubmissionListAppConfig,
 	MaletrainingAppConfig,
 	FemaletrainingAppConfig,
@@ -201,6 +206,7 @@ const appsConfigs = [
 	FlightAppConfig,
 	GroupAppConfig,
 	LedgerAppConfig,
+	// ListOfManpowerRefAppConfig,
 	SubLedgerAppConfig,
 	PaymentVoucherAppConfig,
 	ReceiptVoucherAppConfig,
