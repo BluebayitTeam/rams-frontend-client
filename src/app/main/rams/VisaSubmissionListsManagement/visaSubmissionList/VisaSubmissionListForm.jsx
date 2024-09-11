@@ -76,41 +76,10 @@ function VisaSubmissionListForm({
 		dispatch(getAgencys());
 	}, []);
 
-	useEffect(() => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-
-		fetch(`${GET_FORM_CONTENT_DETAILS_BY_TITLE}${MANPOWER_SUBMISSION_LIST_FOOTER}`, authTOKEN)
-			.then((response) => response.json())
-			.then((data) =>
-				sessionStorage.setItem('formContentFooterData', data?.formcontent_detail[0]?.details || '')
-			);
-	}, []);
+	
 
 
-	function handleSaveNewVisaSubmissionList() {
-		dispatch(
-			saveVisaSubmissionList({
-				submission_date: getValues().submission_date,
-				agency: getValues().agency,
-				passenger: getValues().passenger,
-				list_type: 'new'
-			})
-		).then(res => {
-			if (res?.payload?.data?.id) {
-				dispatch(getVisaSubmissionList({ submission_date: getValues().submission_date }));
-			} else {
-				setError('passenger', {
-					type: 'manual',
-					message: `This Passenger has already assigned`
-				});
-			}
-		});
-	}
+	
 	function handleSaveCancelVisaSubmissionList() {
 		dispatch(
 			saveVisaSubmissionList({
@@ -141,81 +110,7 @@ function VisaSubmissionListForm({
 
 
 	return (
-		// <div>
-		// 	<CustomDropdownField
-		// 		name="agency"
-		// 		label="Agency"
-		// 		options={agencies}
-		// 		optionLabelFormat={(option) => `${option?.name}`}
-		// 	/>
-		// 	<CustomDropdownField
-		// 		name="country"
-		// 		label="Country"
-		// 		options={countries}
-		// 		optionLabelFormat={(option) => `${option?.name}`}
-		// 	/>
-
-		// 	<div className="flex flex-nowrap">
-		// 		<div className="w-full">
-		// 			<CustomDropdownField
-		// 				name="passenger"
-		// 				label="Passenger"
-		// 				options={passengers}
-		// 				optionLabelFormat={(option) =>
-		// 					`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-		// 				}
-		// 			/>
-		// 		</div>
-		// 		<div
-		// 			className={classes.searchContainer}
-		// 			onClick={() => {
-		// 				handleSearchPassengerClick();
-		// 			}}
-		// 		>
-		// 			<Search className="cursor-pointer" />
-		// 		</div>
-		// 	</div>
-
-		// 	<div className="flex flex-nowrap">
-		// 		<div className="w-full">
-		// 			<CustomDatePicker
-		// 				name="man_power_date"
-		// 				label="Manpower Date"
-		// 				required
-		// 				placeholder="DD-MM-YYYY"
-		// 			/>
-		// 		</div>
-		// 		<div
-		// 			className={classes.searchContainer}
-		// 			onClick={() => {
-		// 				handleSearchManPowerDateClick();
-		// 			}}
-		// 		>
-		// 			<Search className="cursor-pointer" />
-		// 		</div>
-		// 	</div>
-
-		// 	<Button
-		// 		className="whitespace-nowrap mx-4"
-		// 		variant="contained"
-		// 		color="secondary"
-		// 		onClick={() => {
-		// 			handleCreateVisaSubmissionList();
-		// 		}}
-		// 	>
-		// 		Save
-		// 	</Button>
-
-		// 	<Button
-		// 		className="whitespace-nowrap mx-4"
-		// 		variant="contained"
-		// 		style={{ backgroundColor: '#FFAA4C', color: 'white' }}
-		// 		onClick={() => handleCancel()}
-		// 	>
-		// 		Cancel
-		// 	</Button>
-		// </div>
-		<div>
+	    <div>
 			<div>
 				<Checkbox
 					cancelList={cancelList}
@@ -231,40 +126,7 @@ function VisaSubmissionListForm({
 				/>{' '}
 				New List
 			</div>
-			{/* <Controller
-				name="agency"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						id="agency"
-						value={value ? agencys.find(data => data.id == value) : null}
-						options={agencys}
-						getOptionLabel={option => `${option.name}`}
-						disabled={!!value}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-							setValue('agency_info', newValue);
-						}}
-						renderInput={params => (
-							<TextField
-								{...params}
-								placeholder="Select Agency"
-								label="Agency"
-								error={!!errors.agency}
-								helperText={errors?.agency?.message}
-								variant="outlined"
-								required
-								disabled={value}
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>{' '} */}
+			
 				 <CustomDropdownField
 				name="agency"
 				label="Agency"
@@ -307,58 +169,24 @@ function VisaSubmissionListForm({
 			</p>
 			<div style={{ display: newList ? 'block' : 'none' }}>
 				<div className="flex flex-nowrap">
-					{/* <Controller
-						name="passenger"
-						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								className="mt-8 mb-16"
-								freeSolo
-								fullWidth
-								autoHighlight
-								value={value ? passengers.find(data => data.id == value) : null}
-								options={passengers}
-								getOptionLabel={option =>
-									`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-								}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-								}}
-								renderInput={params => (
-									<TextField
-										{...params}
-										placeholder="Select Passenger"
-										label="Passenger"
-										id="passenger"
-										error={!!errors.passenger}
-										helperText={errors?.passenger?.message}
-										variant="outlined"
-										required
-										InputLabelProps={{
-											shrink: true
-										}}
-									/>
-								)}
-							/>
-						)}
-					/> */}
-
+					<div className='w-full'>
 					<CustomDropdownField
-				name="passenger"
-				label="Passenger"
-				options={agencies}
-				style={{ display: 'none' }}
-                optionLabelFormat={(option) => `${option?.name}`}
-                onChange={(newValue) =>
-				  setValue('agency_info', newValue)
-				}
-			/>
+						name="passenger"
+						label="Passenger"
+						options={passengers}
+						className="mt-8 mb-16 "
+						optionLabelFormat={(option) =>
+							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+						}
+					/> 	
+                </div>
+					
 
 					<div
 						className={classes.searchContainer}
-						onClick={() =>
-							watch('passenger') && dispatch(getVisaSubmissionList({ passenger: watch('passenger') }))
-						}
+						onClick={() => {
+						handleSearchManPowerDateClick();
+					}}
 					>
 						<Search />
 					</div>
@@ -369,7 +197,7 @@ function VisaSubmissionListForm({
 				style={{ display: newList ? 'block' : 'none' }}
 				variant="contained"
 				color="secondary"
-				onClick={handleSaveNewVisaSubmissionList}
+				onClick={()=>handleCreateVisaSubmissionList()}
 			>
 				Save
 			</Button>
@@ -378,40 +206,18 @@ function VisaSubmissionListForm({
 			</p>
 			<div style={{ display: cancelList ? 'block' : 'none' }}>
 				<div className="flex flex-nowrap">
-					{/* <Controller
+					
+					<div className='w-full'>
+					<CustomDropdownField
 						name="cancelpassenger"
-						control={control}
-						render={({ field: { onChange, value } }) => (
-							<Autocomplete
-								className="mt-8 mb-16"
-								freeSolo
-								fullWidth
-								autoHighlight
-								value={value ? passengers.find(data => data.id == value) : null}
-								options={passengers}
-								getOptionLabel={option =>
-									`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-								}
-								onChange={(event, newValue) => {
-									onChange(newValue?.id);
-								}}
-								renderInput={params => (
-									<TextField
-										{...params}
-										placeholder="Select Passenger"
-										label="Passenger"
-										error={!!errors.cancelpassenger}
-										helperText={errors?.cancelpassenger?.message}
-										variant="outlined"
-										required
-										InputLabelProps={{
-											shrink: true
-										}}
-									/>
-								)}
-							/>
-						)}
-					/> */}
+						label="cancelpassenger"
+						options={passengers}
+						className="mt-8 mb-16 "
+						optionLabelFormat={(option) =>
+							`${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
+						}
+						/>
+						</div>
 					<div
 						className={classes.searchContainer}
 						onClick={() =>

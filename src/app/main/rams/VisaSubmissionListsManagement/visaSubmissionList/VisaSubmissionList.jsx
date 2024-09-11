@@ -21,9 +21,7 @@ function VisaSubmissionList() {
 	const emptyValue = {
 		agency: '',
 		passenger: '',
-
-		country: '',
-		man_power_date: ''
+		submission_date: ''
 	};
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -47,14 +45,16 @@ function VisaSubmissionList() {
 	};
 
 	const passenger = watch('passenger');
-	const manPowerDate = watch('man_power_date');
+	const submissionDate = watch('submission_date');
 
-	const navigate = useNavigate();
+	const navigate = useNavigate(); 
 
 	const { data, refetch } = useGetVisaSubmissionListsQuery({
 		passenger: selectedPassenger,
-		manPowerDate: selectedDate
+		submissionDate: selectedDate
 	});
+	console.log('ljvclvjcxlvjjcv', data)
+	
 	const visaSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
 
 	function handleSearchPassengerClick() {
@@ -67,6 +67,7 @@ function VisaSubmissionList() {
 	const [createVisaSubmissionList] = useCreateVisaSubmissionListMutation();
 
 	function handleCreateVisaSubmissionList() {
+		console.log('check')
 		createVisaSubmissionList(getValues())
 			.unwrap()
 			.then((data) => {
@@ -93,7 +94,7 @@ function VisaSubmissionList() {
 
 	function handleSearchManPowerDateClick() {
 		setSelectedPassenger(passenger);
-		setSelectedDate(manPowerDate);
+		setSelectedDate(submissionDate);
 		setTableShow(true);
 		setHideTabile(false);
 	}
@@ -133,7 +134,7 @@ function VisaSubmissionList() {
 							selectedDate={selectedDate}
 							selectedPassenger={selectedPassenger}
 							passenger={passenger}
-							manPowerDate={manPowerDate}
+							submissionDate={submissionDate}
 						/>
 					</div>
 				}
