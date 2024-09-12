@@ -36,7 +36,8 @@ function VisaSubmissionListsTable(props) {
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-		dragAndDropRow,
+	dragAndDropRow,
+	visaSubmissionListId 
 	
 	} = props;
 	let pageBasedSerialNo = serialNumber;
@@ -50,6 +51,8 @@ function VisaSubmissionListsTable(props) {
 	const [selected, setSelected] = useState([]);
 
 	function deleteVisaSubmissionList(item, event) {
+		console.log('ljvclvjcxlvjjcv', visaSubmissionListId)
+
 		removeVisaSubmissionLists(visaSubmissionListId);
 
 		DeletedSuccessfully();

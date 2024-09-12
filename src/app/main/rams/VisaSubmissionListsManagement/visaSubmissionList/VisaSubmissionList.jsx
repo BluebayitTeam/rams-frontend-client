@@ -53,10 +53,10 @@ function VisaSubmissionList() {
 		passenger: selectedPassenger,
 		submissionDate: selectedDate 
 	});
-	console.log('ljvclvjcxlvjjcv', data)
 	
-const visaSubmissionListId = data && data.length > 0 && data[0]?.man_power_list?.id ? data[0].man_power_list.id : null;
-
+	
+	const visaSubmissionListId = data?.length > 0 ? data[0]?.visa_submission_list?.id: null;
+	
 	function handleSearchPassengerClick() {
 		setSelectedPassenger(passenger);
 		

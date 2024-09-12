@@ -5,6 +5,7 @@ import {
 	CREATE_MANPOWERLIST,
 	CREATE_VISASUBMISSIONLIST,
 	DELETE_MANPOWERLIST,
+	DELETE_VISASUBMISSIONLIST,
 	MANPOWERLIST_BY_PASSENGER_ID,
 	MANPOWERSBLISTS_BY_DATE,
 	UPDATE_MANPOWERLIST,
@@ -54,7 +55,7 @@ const VisaSubmissionListApi = api
 
 			deleteVisaSubmissionLists: build.mutation({
 				query: (visaSubmissionListId) => ({
-					url: `${DELETE_MANPOWERLIST}${visaSubmissionListId}`,
+					url: `${DELETE_VISASUBMISSIONLIST}${visaSubmissionListId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['visaSubmissionLists']
