@@ -19,22 +19,24 @@ import { useDeleteVisaSubmissionListsMutation } from '../VisaSubmissionListsApi'
  */
 function VisaSubmissionListsTable(props) {
 	const {
-		navigate,
-
-		classes,
-
-		tableColumns,
-		dispatchTableColumns,
-		hideTabile,
-		serialNumber,
-		inSiglePageMode,
-		setSortBy,
-		setSortBySubKey,
-		dragAndDropRow,
-		printableFormat,
-		data,
-		setPage,
-		visaSubmissionListId
+	classes,
+	reportTitle,
+	tableColumns,
+	tableColumns2,
+	dispatchTableColumns,
+	dispatchTableColumn2,
+	generalData,
+	data,
+	embPrint,
+	officePrint,
+	selectedValue,
+	data2,
+	serialNumber,
+	setPage,
+	inSiglePageMode,
+	setSortBy,
+	setSortBySubKey,
+	dragAndDropRow
 	} = props;
 	let pageBasedSerialNo = serialNumber;
 	const methods = useFormContext();
@@ -55,170 +57,247 @@ function VisaSubmissionListsTable(props) {
 	}
 
 	return (
-		<div>
-			{!hideTabile && (
+		<div
+			className={`${classes.pageContainer} printPageContainer  px-10 w-full mb-0`}
+			
+		>
+			<div style={{ padding: '24px' }}>
 				<div>
-					<div
-						className={`${classes.pageContainer} printPageContainer print:h-screen w-full mb-0 w-30`}
-						onMouseOver={() => {
-							inSiglePageMode || setPage(data.page);
-						}}
+					<Table
+						className="w-full"
+						style={{ width: '100%', visibility: data?.data?.length > 0 ? 'visible' : 'hidden' }}
 					>
-						<table
-							width="100%"
-							align="center"
-							className="px-32 w-11/12"
-						>
-							<tr>
-								<td
-									colSpan="3"
-									style={{ textAlign: 'center', marginTop: 20 }}
-								>
-									<h1 style={{ textDecoration: 'underline' }}>একক বহির্গমন ছাড়পএরের আবেদন ফরম</h1>
+						<TableBody>
+							<TableRow>
+								<td className="text-center text-lg " colspan="10">
+									بيان بالجوازات المقدمة
 								</td>
-							</tr>
-							<tr>
-								<td>
-									নিয়োগকারী দেশের নাম :
-									<span style={{ fontWeight: 'bold' }}> {data?.data?.[0]?.country}</span>
+							</TableRow>
+							<TableRow>
+								<td className="text-center text-base ">
+									الرقم :{' '}
+									{getValues()
+										?.agency_name?.rl_no?.toString()
+										.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 1632))}
 								</td>
-							</tr>
-							<tr>
-								<td>
-									জমাদানকারী রিক্রটিং এজেন্সীর নাম :{' '}
-									<span style={{ fontWeight: 'bold' }}>{getValues()?.agency_info?.name_bangla}</span>
+								<td className="text-center text-base ">
+									{getValues()
+										?.agency_name?.rl_no?.toString()
+										.replace(/[0-9]/g, digit =>
+											String.fromCharCode(digit.charCodeAt(0) + 1632)
+										)}{' '}
+									{getValues()?.agency_name?.name_arabic}
 								</td>
-								<td style={{ textAlign: 'center' }}>
-									লাইসেন্স নম্বর :{' '}
-									<span style={{ fontWeight: 'bold' }}>
-										{' '}
-										আর এল-
-										{getValues()
-											?.agency_info?.rl_no?.toString()
-											.replace(/[0-9]/g, (digit) =>
-												String.fromCharCode(digit.charCodeAt(0) + 2486)
-											)}
-									</span>
-								</td>
-								<td style={{ textAlign: 'right' }}>
-									জমার তারিখ :
-									<span style={{ fontWeight: 'bold', paddingRight: '10px' }}>
-										{moment(new Date(data?.[0]?.man_power_list?.man_power_date)).format(
-											'DD-MM-YYYY'
-										)}
-									</span>
-								</td>
-							</tr>
-						</table>
+								<td className="text-center text-base ">:اسم مقدم الجوازات</td>
+							</TableRow>
+						</TableBody>
+					</Table>
+					<Table className="w-full" style={{ visibility: data?.data?.length > 0 ? 'visible' : 'hidden' }}>
+						<TableBody>
+							<TableRow>
+								<td className="text-center text-base "> : التاريخ </td>
+								<td className="text-center text-base ">: التوقيع</td>
+							</TableRow>
+						</TableBody>
+					</Table>
+				</div>
 
-						<Table
-							aria-label="simple table"
-							className={classes.table}
-							style={{ border: '1px solid black', width: '1000px', marginTop: 10 }}
-						>
-							<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
-								<TableRow>
-									{tableColumns.map((column, indx) => {
-										return column.show ? (
-											<TableCell
-												key={column.id}
-												align="center"
-												style={{
-													border: '1px solid black',
-													padding: '0px 5px'
-												}}
-												className="tableCellHead"
-												onDrop={(e) =>
-													dispatchTableColumns({
-														type: 'dragAndDrop',
-														dropper: column.id
-													})
-												}
-												onDragOver={(e) => e.preventDefault()}
-											>
-												<div
-													onDragStart={(e) => {
-														console.log('Dragging row with index:', idx);
-														e.dataTransfer.setData('draggerId', idx);
-													}}
-													onClick={() => {
-														if (column.sortAction !== false) {
-															setSortBy(data.sortBy === column.name ? '' : column.name);
-															setSortBySubKey &&
-																column.subName &&
-																setSortBySubKey(column.subName);
-														}
-													}}
-													style={{
-														margin: indx === 0 && '0px -5px 0px 5px'
-													}}
-												>
-													{column.label}
-												</div>
-											</TableCell>
-										) : null;
-									})}
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{data?.data?.map((dataArr, idx) => (
+				<Table
+					aria-label="simple table"
+					className={`${classes.table} px-10`}
+					style={{ border: '1px solid black' }}
+				>
+					<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
+						<TableRow>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								{' '}
+								Profession <br /> المهنة
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								{' '}
+								Year <br /> عام
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								{' '}
+								Visa No <br /> رقم التاشيرة/مل{' '}
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								{' '}
+								Sponsor Name <br /> اسم الكفيل
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								{' '}
+								Possport No
+								<br /> الجوازات ارقام
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									display: selectedValue == 'emb' && 'none',
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								Sponsor ID <br />
+							</TableCell>
+
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									display: selectedValue == 'emb' && 'none',
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								Office SL
+								<br />
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									display: selectedValue == 'emb' && 'none',
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								Passenger Name
+								<br />
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									display: selectedValue == 'emb' && 'none',
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								Reference
+								<br />
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								{' '}
+								SL
+								<br /> التوقيع
+							</TableCell>
+							<TableCell
+								className="text-center tableCell font-bold	 border-black	"
+								style={{
+									display: (selectedValue == 'emb' || selectedValue == 'office') && 'none',
+									border: '1px solid black',
+									padding: '0px 6px 0 6px'
+								}}
+							>
+								Action
+							</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{data?.data?.map(
+							(dataArr, idx) =>
+								dataArr?.list_type == 'new' && (
 									<TableRow
 										key={dataArr.id}
 										className="tableRow cursor-pointer"
 										hover
-										onDrop={(e) =>
+										onDrop={e =>
 											dragAndDropRow(
 												e.dataTransfer.getData('draggerId'),
 												data.size * (data.page - 1) + idx
 											)
 										}
-										onDragOver={(e) => e.preventDefault()}
-										draggable
-										onDragStart={(e) => e.dataTransfer.setData('draggerId', idx)}
+										onDragOver={e => e.preventDefault()}
+										draggable={true}
+										onDragStart={e => e.dataTransfer.setData('draggerId', idx)}
 									>
-										{tableColumns.map((column) => {
+										{tableColumns.map(column => {
 											return column.show ? (
 												<TableCell
 													align="center"
 													className="tableCell"
 													style={{
+														display:
+															selectedValue == 'emb' &&
+															(column?.name == 'office_sl' ||
+																column?.name == 'reference' ||
+																column?.name == 'passenger_name' ||
+																column?.name == 'sponsor_id') &&
+															'none',
 														border: '1px solid black',
-														padding: '0px 5px'
+														padding: '0px 6px 0 6px'
 													}}
+													// style={{ border: '1px solid black', padding: '0px 6px 0 6px' }}
 												>
 													<div>
 														{column?.subName
-															? dataArr?.[column?.name]?.[column?.subName]
+															? dataArr?.[column.name]?.[column?.subName]
 															: column.type === 'date'
-																? dataArr?.[column.name]
-																	? moment(new Date(dataArr?.[column.name])).format(
-																			'DD-MM-YYYY'
-																		)
-																	: ''
-																: column.name
-																	? dataArr?.[column.name]
-																	: column?.isSerialNo
-																		? dataArr.hideSerialNo || pageBasedSerialNo++
-																		: dataArr.getterMethod
-																			? dataArr.getterMethod(dataArr)
-																			: column.getterMethod
-																				? column.getterMethod(dataArr)
-																				: ''}
+															? dataArr?.[column.name]
+																? moment(new Date(dataArr?.[column.name])).format(
+																		'DD-MM-YYYY'
+																  )
+																: ''
+															: column.name
+															? dataArr?.[column.name]
+															: column?.isSerialNo
+															? dataArr.hideSerialNo || pageBasedSerialNo++
+															: dataArr.getterMethod
+															? dataArr.getterMethod(dataArr)
+															: column.getterMethod
+															? column.getterMethod(dataArr)
+															: ''}
 													</div>
 												</TableCell>
 											) : null;
 										})}
-
 										<TableCell
 											align="center"
 											className="tableCell"
 											style={{
 												border: '1px solid black',
 												padding: '0px 6px 0 6px',
-												display: printableFormat ? 'none' : 'block'
+												display:
+													selectedValue == 'emb' || selectedValue == 'office'
+														? 'none'
+														: 'block'
 											}}
 										>
-											<Delete
+											<DeleteIcon
 												onClick={() => {
 													deleteVisaSubmissionList(dataArr?.id);
 												}}
@@ -227,69 +306,11 @@ function VisaSubmissionListsTable(props) {
 											/>
 										</TableCell>
 									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-
-						<p style={{ marginTop: '15px' }}>
-							<span style={{ fontWeight: 'bold' }}>এজেন্সীর অঙ্গীকার নামা :</span>
-							বর্ণিত কর্মী গ্রুপ ভিসার অন্তর্ভুক্ত নয় কর্মীর/কর্মীদের পাসপোর্ট, ভিসা, চাকরীর চুক্তি পএরে
-							বর্নিত বেতন ও শর্তাদি সঠিক আছে উক্ত বিষয়ে নিক্রটিং কারনে কর্মীর/কর্মীদের কোন প্রকার সমস্যা
-							হইলে আমার
-							<span style={{ fontWeight: 'bold' }}>
-								{getValues()?.agency_info?.name_bangla}(আর এল-
-								{getValues()
-									?.agency_info?.rl_no?.toString()
-									.replace(/[0-9]/g, (digit) => String.fromCharCode(digit.charCodeAt(0) + 2486))}
 								)
-							</span>
-							সম্পূর্ন দায় দায়িত্ব গ্রহন ও কর্মীর/কর্মীদের ক্ষতিপূরণ দান করিতে বাধ্য থাকিবো
-						</p>
-
-						<Interweave
-							allowAttributes
-							allowElements
-							disableLineBreaks
-							content={formContentFooterData}
-						/>
-
-						<table
-							className={classes.pageBottmContainer}
-							style={{ backgroundColor: 'white', marginTop: 15 }}
-						>
-							<tbody>
-								<tr>
-									<td style={{ textAlign: 'center' }}>
-										পরীক্ষিতি হয়েছে <br />
-										কাগজপএ সঠিক আছে
-									</td>
-									<td style={{ textAlign: 'center' }}>বর্ণিত তথ্য যথাযথ আছে</td>
-									<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
-									<td style={{ textAlign: 'center' }}>বহির্গমনের ছাড়পএ দেওয়া যায়</td>
-									<td style={{ textAlign: 'center' }}>
-										এজেন্সী মালিক/প্রতিনিধিরি
-										<br /> স্বাক্ষর প্রস্তাবমত
-									</td>
-								</tr>
-								<tr>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-									<td style={{ textAlign: 'center', height: '40px' }}>&nbsp;</td>
-								</tr>
-								<tr>
-									<td style={{ textAlign: 'center' }}>সহকারীর স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>সহকারী পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>উপ-পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>পরিচালকের স্বাক্ষর</td>
-									<td style={{ textAlign: 'center' }}>মহা পরিচালকের স্বাক্ষর</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			)}
+						)}
+					</TableBody>
+				</Table>
+			</div>
 		</div>
 	);
 }
