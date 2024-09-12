@@ -59,15 +59,13 @@ function VisaSubmissionList() {
 
 	function handleSearchPassengerClick() {
 		setSelectedPassenger(passenger);
-		setHideTabile(false);
-
-		setTableShow(true);
+		
 	}
 
 	const [createVisaSubmissionList] = useCreateVisaSubmissionListMutation();
 
 	function handleCreateVisaSubmissionList() {
-		console.log('check')
+		
 		createVisaSubmissionList(getValues())
 			.unwrap()
 			.then((data) => {
@@ -119,7 +117,6 @@ function VisaSubmissionList() {
 							handleSearchPassengerClick={handleSearchPassengerClick}
 							handleSearchManPowerDateClick={handleSearchManPowerDateClick}
 							handleCreateVisaSubmissionList={handleCreateVisaSubmissionList}
-							handleCancel={handleCancel}
 							handleReset={handleReset}
 						/>
 						<br />
