@@ -51,7 +51,7 @@ function VisaSubmissionListForm({
 }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { watch,getValues } = methods;
+	const { watch,getValues,setValue } = methods;
 
 	const { agencies, passengers } = useSelector((state) => state.data);
 	const [cancelList, setCancelList] = useState(false);
