@@ -9,6 +9,7 @@ import { Checkbox, Radio } from "@mui/material";
 import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import VisaSubmissionListsTable from "./VisaSubmissionListsTable";
 import moment from "moment";
+import VisaSubmissionListsCancelTable from "./VisaSubmissionListsCancelTable";
 
 const useStyles = makeStyles(theme => ({
 	...getReportMakeStyles(theme)
@@ -117,7 +118,7 @@ function VisaSubmissionLists({
   }, [data]);
 
 
-  console.log('modifiedManpowerSbListDataVisa',modifiedManpowerSbListData)
+  console.log('modifiedManpowerSbListDataVisa',modifiedVisaSbListData2)
 
  const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
   const [tableColumns2, dispatchTableColumns2] = useReducer(tableColumnsReducer, initialTableColumnsState2);
@@ -197,15 +198,7 @@ const TotalCancelList = Array.isArray(data)
 					inputProps={{ 'aria-label': 'controlled' }}
 				/>{' '}
 				<span className="mr-96">New List</span>
-				{/* <Checkbox
-					officePrint={officePrint}
-					onChange={handleofficePrint}
-					className="ml-96"
-					inputProps={{ 'aria-label': 'controlled' }}
-				/>{' '}
-				Office Print{' '}
-				<Checkbox embPrint={embPrint} onChange={handleembPrint} inputProps={{ 'aria-label': 'controlled' }} />{' '}
-				EMB Print */}
+				
 				<Radio
 					checked={selectedValue === 'delete'}
 					onChange={handleChange}
@@ -319,14 +312,12 @@ const TotalCancelList = Array.isArray(data)
 					{/* <div ref={componentRef} id="downloadPage"> */}
 					{/* each single page (table) */}
 
-					{/* {modifiedVisaSbListData2.map(visaSbList2 => (
+					{modifiedVisaSbListData2.map(visaSbList2 => (
 						<VisaSubmissionListsCancelTable
 							classes={classes}
-							generalData={generalData}
 							tableColumns2={tableColumns2}
 							dispatchTableColumns2={dispatchTableColumns2}
 							data2={visaSbList2}
-							inPrint={inPrint}
 							serialNumber={visaSbList2.page * visaSbList2.size - visaSbList2.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
@@ -337,7 +328,7 @@ const TotalCancelList = Array.isArray(data)
 							selectedValue={selectedValue}
 							embPrint={embPrint}
 						/>
-					))} */}
+					))}
 				</table>
 
 				<div
