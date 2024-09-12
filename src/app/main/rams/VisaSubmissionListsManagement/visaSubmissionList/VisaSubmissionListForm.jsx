@@ -46,7 +46,8 @@ const useStyles = makeStyles(theme => ({
 function VisaSubmissionListForm({
 	handleSearchPassengerClick,
 	handleSearchManPowerDateClick,
-	
+	handleCreateVisaSubmissionList,
+	handleCancelVisaSubmissionList
 }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
@@ -80,44 +81,7 @@ function VisaSubmissionListForm({
 	}, []);
 
 	
-function handleCreateVisaSubmissionList() {
-		createVisaSubmissionList(getValues())
-			.unwrap()
-			.then((data) => {
-				if (data) {
-					AddedSuccessfully();
-					
-                    navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
-				}
-			})
-			.catch((error) => {
-				CustomNotification('error', `${error.response.data.passenger}`);
-			});
-	}
 
-	
-  function handleCancelVisaSubmissionList() {
-    const submissionData = {
-    submission_date: getValues().submission_date,
-    agency: getValues().agency,
-    passenger: getValues("cancelpassenger"),
-    list_type: "cancel",
-    };
-
-    createVisaSubmissionList(submissionData)
-      .unwrap()
-      .then((submissionData) => {
-        if (submissionData) {
-			AddedSuccessfully();
-		
-          navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
-        }
-      })
-      .catch((error) => {
-    CustomNotification('CancelList', 'Cancel List Added Successfully');
-
-      });
-  }
 
 
 

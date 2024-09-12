@@ -54,6 +54,7 @@ function VisaSubmissionList() {
 		submissionDate: selectedDate 
 	});
 	
+
 	
 	const visaSubmissionListId = data?.length > 0 ? data[0]?.visa_submission_list?.id: null;
 	
@@ -61,27 +62,53 @@ function VisaSubmissionList() {
 		setSelectedPassenger(passenger);
 		
 	}
+	function handleSearchManPowerDateClick() {
+		setSelectedPassenger(passenger);
+		setSelectedDate(submissionDate);
+		
+	}
 
 	const [createVisaSubmissionList] = useCreateVisaSubmissionListMutation();
 
 	function handleCreateVisaSubmissionList() {
-		
 		createVisaSubmissionList(getValues())
 			.unwrap()
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
-
-					setHideTabile(false);
-					setTableShow(true);
-
-					navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
+					
+		            setSelectedDate(submissionDate);
+                    navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
 				}
 			})
 			.catch((error) => {
 				CustomNotification('error', `${error.response.data.passenger}`);
 			});
 	}
+
+	
+  function handleCancelVisaSubmissionList() {
+    const submissionData = {
+    submission_date: getValues().submission_date,
+    agency: getValues().agency,
+    passenger: getValues("cancelpassenger"),
+    list_type: "cancel",
+    };
+
+    createVisaSubmissionList(submissionData)
+      .unwrap()
+      .then((submissionData) => {
+        if (submissionData) {
+			AddedSuccessfully();
+			
+          navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
+        }
+      })
+      .catch((error) => {
+    CustomNotification('CancelList', 'Cancel List Added Successfully');
+
+      });
+  }
 
 	function handleCancel() {
 		console.log('test')
@@ -91,11 +118,7 @@ function VisaSubmissionList() {
 		
 	}
 
-	function handleSearchManPowerDateClick() {
-		setSelectedPassenger(passenger);
-		setSelectedDate(submissionDate);
-		
-	}
+	
 
 	useEffect(() => {
 		if (visaSubmissionListId === 'new') {
@@ -117,6 +140,7 @@ function VisaSubmissionList() {
 							handleSearchPassengerClick={handleSearchPassengerClick}
 							handleSearchManPowerDateClick={handleSearchManPowerDateClick}
 							handleCreateVisaSubmissionList={handleCreateVisaSubmissionList}
+							handleCancelVisaSubmissionList={handleCancelVisaSubmissionList}
 							handleReset={handleReset}
 						/>
 						<br />

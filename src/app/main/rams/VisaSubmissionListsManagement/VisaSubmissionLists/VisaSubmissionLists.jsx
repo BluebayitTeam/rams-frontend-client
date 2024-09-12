@@ -154,12 +154,14 @@ function VisaSubmissionLists({
 	};
 
 
-  const TotalNewList = data?.filter(element => {
-		return element.visa_submission_list.list_type == 'new';
-	}).length;
-	const TotalCancelList = data?.filter(element => {
-		return element.visa_submission_list.list_type == 'cancel';
-	}).length;
+ const TotalNewList = Array.isArray(data)
+  ? data.filter(element => element.visa_submission_list.list_type === 'new').length
+  : 0;
+
+const TotalCancelList = Array.isArray(data)
+  ? data.filter(element => element.visa_submission_list.list_type === 'cancel').length
+  : 0;
+
 
   return (
     <>
@@ -178,7 +180,7 @@ function VisaSubmissionLists({
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
         dragAndDropRow={dragAndDropRow}
-        hideSection={["pagination", "download", "pg", "wp", "column"]}
+        hideSection={["pagination",  "pg", "wp"]}
         />
         
         <div style={{ display: data?.length > 0 ? 'block' : 'none' }}>
@@ -277,19 +279,15 @@ function VisaSubmissionLists({
 					{/* <div ref={componentRef} id="downloadPage"> */}
 					{/* each single page (table) */}
 
-					 {modifiedManpowerSbListData.map((manpowerSbList) => (
+					 {modifiedManpowerSbListData.map((visaSbList) => (
             <VisaSubmissionListsTable
               classes={classes}
-              // generalData={generalData}
+            //   generalData={generalData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={manpowerSbList}
+              data={visaSbList}
               printableFormat={printableFormat}
-              serialNumber={
-                manpowerSbList.page * manpowerSbList.size -
-                manpowerSbList.size +
-                1
-              }
+              serialNumber={visaSbList.page * visaSbList.size -visaSbList.size +1}
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
               setSortBy={setSortBy}
@@ -305,10 +303,10 @@ function VisaSubmissionLists({
               selectedDate={selectedDate}
               selectedPassenger={selectedPassenger}
               passenger={passenger}
-               manPowerDate={manPowerDate}
-               officePrint={officePrint}
-							selectedValue={selectedValue}
-							embPrint={embPrint}
+             manPowerDate={manPowerDate}
+             officePrint={officePrint}
+			 selectedValue={selectedValue}
+			 embPrint={embPrint}
             />
           ))}
 					{/* </div> */}
