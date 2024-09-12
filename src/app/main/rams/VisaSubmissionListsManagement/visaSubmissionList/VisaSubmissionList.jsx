@@ -86,17 +86,17 @@ function VisaSubmissionList() {
 	}
 
 	function handleCancel() {
+		console.log('test')
 		handleReset({
 			...emptyValue
 		});
-		setHideTabile(true);
+		
 	}
 
 	function handleSearchManPowerDateClick() {
 		setSelectedPassenger(passenger);
 		setSelectedDate(submissionDate);
-		setTableShow(true);
-		setHideTabile(false);
+		
 	}
 
 	useEffect(() => {
@@ -111,7 +111,7 @@ function VisaSubmissionList() {
 			key={formKey}
 		>
 			<FusePageCarded
-				header={<VisaSubmissionListHeader />}
+				header={<VisaSubmissionListHeader handleCancel={handleCancel} />}
 				content={
 					<div className="p-16 ">
 						<VisaSubmissionListForm
@@ -120,6 +120,7 @@ function VisaSubmissionList() {
 							handleSearchManPowerDateClick={handleSearchManPowerDateClick}
 							handleCreateVisaSubmissionList={handleCreateVisaSubmissionList}
 							handleCancel={handleCancel}
+							handleReset={handleReset}
 						/>
 						<br />
 

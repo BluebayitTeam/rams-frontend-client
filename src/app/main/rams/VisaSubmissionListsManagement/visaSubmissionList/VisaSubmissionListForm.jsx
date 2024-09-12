@@ -47,7 +47,6 @@ function VisaSubmissionListForm({
 	handleSearchPassengerClick,
 	handleSearchManPowerDateClick,
 	
-	handleCancel
 }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
@@ -87,6 +86,7 @@ function handleCreateVisaSubmissionList() {
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
+					
                     navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
 				}
 			})
@@ -96,33 +96,29 @@ function handleCreateVisaSubmissionList() {
 	}
 
 	
-	function handleSaveCancelVisaSubmissionList() {
-		dispatch(
-			saveVisaSubmissionList({
-				submission_date: getValues().submission_date,
-				agency: getValues().agency,
-				passenger: getValues().cancelpassenger,
-				list_type: 'cancel'
-			})
-		).then(res => {
-			if (res?.payload?.data?.id) {
-				dispatch(getVisaSubmissionList({ submission_date: getValues().submission_date }));
+  function handleCancelVisaSubmissionList() {
+    const submissionData = {
+    submission_date: getValues().submission_date,
+    agency: getValues().agency,
+    passenger: getValues("cancelpassenger"),
+    list_type: "cancel",
+    };
 
-				dispatch(getVisaSubmissionList({ submission_date: getValues().submission_date })).then(res => {
-					if (res.payload?.data?.id) {
-						console.log(`clicked`);
-					} else if (res.payload?.data?.detail) {
-						setError('passenger', { type: 'manual', message: res.payload.data.detail });
-					}
-				});
-			} else {
-				setError('cancelpassenger', {
-					type: 'manual',
-					message: `This Passenger has already assigned`
-				});
-			}
-		});
-	}
+    createVisaSubmissionList(submissionData)
+      .unwrap()
+      .then((submissionData) => {
+        if (submissionData) {
+			AddedSuccessfully();
+		
+          navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
+        }
+      })
+      .catch((error) => {
+    CustomNotification('CancelList', 'Cancel List Added Successfully');
+
+      });
+  }
+
 
 
 	return (
@@ -249,7 +245,7 @@ function handleCreateVisaSubmissionList() {
 				className="whitespace-nowrap mx-4"
 				variant="contained"
 				color="secondary"
-				onClick={handleSaveCancelVisaSubmissionList}
+				onClick={handleCancelVisaSubmissionList}
 			>
 				Save
 			</Button>
