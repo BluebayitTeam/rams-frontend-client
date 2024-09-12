@@ -297,7 +297,7 @@ function VisaSubmissionListsTable(props) {
 														: 'block'
 											}}
 										>
-											<DeleteIcon
+											<Delete
 												onClick={() => {
 													deleteVisaSubmissionList(dataArr?.id);
 												}}

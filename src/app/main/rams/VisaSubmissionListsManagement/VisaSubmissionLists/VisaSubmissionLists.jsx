@@ -5,15 +5,14 @@ import tableColumnsReducer from "src/app/@components/ReportComponents/tableColum
 import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
 import useReportData from "src/app/@components/ReportComponents/useReportData";
 import { useReactToPrint } from "react-to-print";
-import { Checkbox } from "@mui/material";
+import { Checkbox, Radio } from "@mui/material";
 import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import VisaSubmissionListsTable from "./VisaSubmissionListsTable";
 import moment from "moment";
 
-const useStyles = makeStyles((theme) => ({
-  ...getReportMakeStyles(theme),
+const useStyles = makeStyles(theme => ({
+	...getReportMakeStyles(theme)
 }));
-
 const initialTableColumnsState = [
 		{ id: 1, label: 'Profession ', name: 'profession', show: true },
 		{ id: 2, label: 'Year ', name: 'year', show: true },
@@ -60,7 +59,9 @@ function VisaSubmissionLists({
 
 	const [newList, setNewList] = useState(true);
 	const [officePrint, setOfficePrint] = useState(false);
-	const [embPrint, setembPrint] = useState(false);
+  const [embPrint, setembPrint] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('delete');
+
 	const handlecancelList = event => {
 		setCancelList(event.target.checked);
 	};
@@ -147,15 +148,21 @@ function VisaSubmissionLists({
     content: () => componentRef.current,
   });
 
+  const handleChange = event => {
+		setSelectedValue(event.target.value);
+	};
+
+
+  const TotalNewList = data?.filter(element => {
+		return element.visa_submission_list.list_type == 'new';
+	}).length;
+	const TotalCancelList = data?.filter(element => {
+		return element.visa_submission_list.list_type == 'cancel';
+	}).length;
+
   return (
     <>
-      <Checkbox
-        printableFormat={printableFormat}
-        onChange={handlePrintableFormat}
-        className="ml-96"
-        inputProps={{ "aria-label": "controlled" }}
-      />
-      Printable Format
+  
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -171,8 +178,58 @@ function VisaSubmissionLists({
         dispatchTableColumns={dispatchTableColumns}
         dragAndDropRow={dragAndDropRow}
         hideSection={["pagination", "download", "pg", "wp", "column"]}
-      />
-      <table id="table-to-xls" className="w-full">
+        />
+        
+        <div style={{ display: data?.length > 0 ? 'block' : 'none' }}>
+				<Checkbox
+					cancelList={cancelList}
+					onChange={handlecancelList}
+					inputProps={{ 'aria-label': 'controlled' }}
+				/>{' '}
+				Cancel List
+				<Checkbox
+					defaultChecked
+					newList={newList}
+					onChange={handlenewList}
+					inputProps={{ 'aria-label': 'controlled' }}
+				/>{' '}
+				<span className="mr-96">New List</span>
+				{/* <Checkbox
+					officePrint={officePrint}
+					onChange={handleofficePrint}
+					className="ml-96"
+					inputProps={{ 'aria-label': 'controlled' }}
+				/>{' '}
+				Office Print{' '}
+				<Checkbox embPrint={embPrint} onChange={handleembPrint} inputProps={{ 'aria-label': 'controlled' }} />{' '}
+				EMB Print */}
+				<Radio
+					checked={selectedValue === 'delete'}
+					onChange={handleChange}
+					value="delete"
+					name="radio-button-demo"
+					inputProps={{ 'aria-label': 'Delete' }}
+				/>{' '}
+				Delete
+				<Radio
+					checked={selectedValue === 'office'}
+					onChange={handleChange}
+					value="office"
+					name="radio-button-demo"
+					inputProps={{ 'aria-label': 'Office' }}
+				/>
+				Office Print
+				<Radio
+					checked={selectedValue === 'emb'}
+					onChange={handleChange}
+					value="emb"
+					color="default"
+					name="radio-button-demo"
+					inputProps={{ 'aria-label': 'EMB' }}
+				/>
+				EMB Print
+			</div>
+      {/* <table id="table-to-xls" className="w-full">
         <div ref={componentRef} id="downloadPage">
           {modifiedManpowerSbListData.map((manpowerSbList) => (
             <VisaSubmissionListsTable
@@ -206,7 +263,104 @@ function VisaSubmissionLists({
             />
           ))}
         </div>
-      </table>
+        </table> */}
+
+
+
+        <div ref={componentRef} id="downloadPage">
+				<table
+					id="table-to-xls"
+					className="w-full"
+					style={{ display: newList == true ? 'block' : 'none', minHeight: '270px' }}
+				>
+					{/* <div ref={componentRef} id="downloadPage"> */}
+					{/* each single page (table) */}
+
+					 {modifiedManpowerSbListData.map((manpowerSbList) => (
+            <VisaSubmissionListsTable
+              classes={classes}
+              // generalData={generalData}
+              tableColumns={tableColumns}
+              dispatchTableColumns={dispatchTableColumns}
+              data={manpowerSbList}
+              printableFormat={printableFormat}
+              serialNumber={
+                manpowerSbList.page * manpowerSbList.size -
+                manpowerSbList.size +
+                1
+              }
+              setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              setSortBy={setSortBy}
+              setSortBySubKey={setSortBySubKey}
+              dragAndDropRow={dragAndDropRow}
+              tableShow={tableShow}
+              data2={data}
+              visaSubmissionListId={visaSubmissionListId}
+              handleReset={handleReset}
+              emptyValue={emptyValue}
+              refetch={refetch}
+              hideTabile={hideTabile}
+              selectedDate={selectedDate}
+              selectedPassenger={selectedPassenger}
+              passenger={passenger}
+              manPowerDate={manPowerDate}
+            />
+          ))}
+					{/* </div> */}
+				</table>
+				<table
+					id="table-to-xls"
+					className="w-full"
+					style={{ display: cancelList == true ? 'block' : 'none', minHeight: '270px' }}
+				>
+					{/* <div ref={componentRef} id="downloadPage"> */}
+					{/* each single page (table) */}
+
+					{/* {modifiedVisaSbListData2.map(visaSbList2 => (
+						<VisaSubmissionListsCancelTable
+							classes={classes}
+							generalData={generalData}
+							tableColumns2={tableColumns2}
+							dispatchTableColumns2={dispatchTableColumns2}
+							data2={visaSbList2}
+							inPrint={inPrint}
+							serialNumber={visaSbList2.page * visaSbList2.size - visaSbList2.size + 1}
+							setPage={setPage}
+							inSiglePageMode={inSiglePageMode}
+							setSortBy={setSortBy}
+							setSortBySubKey={setSortBySubKey}
+							dragAndDropRow2={dragAndDropRow2}
+							officePrint={officePrint}
+							selectedValue={selectedValue}
+							embPrint={embPrint}
+						/>
+					))} */}
+				</table>
+
+				<div
+					className="text-right mt-20 p-10"
+					style={{ display: modifiedManpowerSbListData?.length > 0 ? 'block' : 'none' }}
+				>
+					<p className="text-right">
+						{' '}
+						TOTAL:{' '}
+						{newList && cancelList
+							? TotalNewList + TotalCancelList
+							: newList && !cancelList
+							? TotalNewList
+							: !newList && cancelList
+							? TotalCancelList
+							: 0}{' '}
+						:المجوع
+					</p>
+					<br />
+					<p className="text-right">:المستلم</p> <br />
+					<p className="text-right">:المدقق</p> <br />
+					<p className="text-right">: المسئول</p> <br />
+				</div>
+			</div>
+       
     </>
   );
 }
