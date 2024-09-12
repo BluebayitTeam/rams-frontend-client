@@ -13,6 +13,8 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 import { GET_FORM_CONTENT_DETAILS_BY_TITLE } from 'src/app/constant/constants';
 import { MANPOWER_SUBMISSION_LIST_FOOTER } from 'src/app/constant/FormContentTitle/formContentTitle';
+import { useCreateVisaSubmissionListMutation } from '../VisaSubmissionListsApi';
+import { AddedSuccessfully, CustomNotification } from 'src/app/@customHooks/notificationAlert';
 
 const useStyles = makeStyles(theme => ({
 	searchContainer: ({ isPassenger }) => ({
@@ -44,17 +46,19 @@ const useStyles = makeStyles(theme => ({
 function VisaSubmissionListForm({
 	handleSearchPassengerClick,
 	handleSearchManPowerDateClick,
-	handleCreateVisaSubmissionList,
+	
 	handleCancel
 }) {
 	const dispatch = useDispatch();
 	const methods = useFormContext();
-	const { watch } = methods;
+	const { watch,getValues } = methods;
 
 	const { agencies, passengers } = useSelector((state) => state.data);
 	const [cancelList, setCancelList] = useState(false);
 	const [newList, setNewList] = useState(true);
-
+	
+	const [createVisaSubmissionList] = useCreateVisaSubmissionListMutation();
+	
 	const handlecancelList = event => {
 		setCancelList(event.target.checked);
 		dispatch(getVisaSubmissionList({ submission_date: watch('submission_date') }));
@@ -77,7 +81,19 @@ function VisaSubmissionListForm({
 	}, []);
 
 	
-
+function handleCreateVisaSubmissionList() {
+		createVisaSubmissionList(getValues())
+			.unwrap()
+			.then((data) => {
+				if (data) {
+					AddedSuccessfully();
+                    navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
+				}
+			})
+			.catch((error) => {
+				CustomNotification('error', `${error.response.data.passenger}`);
+			});
+	}
 
 	
 	function handleSaveCancelVisaSubmissionList() {
