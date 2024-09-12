@@ -96,26 +96,27 @@ function VisaSubmissionLists({
 
 
 
-  useEffect(() => {
-    const modifiedData = data?.map((visaSub) => ({
+ useEffect(() => {
+  if (Array.isArray(data)) {
+    const modifiedData = data.map((visaSub) => ({
       profession: visaSub?.visa_entry?.profession_arabic,
-				year: moment(new Date(visaSub?.visa_entry?.visa_issue_date)).format('DD-MM-YYYY'),
-				visa_no: visaSub?.visa_entry?.visa_number,
-				sponsor_id: visaSub?.visa_entry?.sponsor_id_no,
-				sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic,
-				passport_no: visaSub?.passenger?.passport_no,
-				office_sl: visaSub?.passenger?.passenger_id,
-				passenger_name: visaSub?.passenger?.passenger_name,
-				reference: visaSub?.agent?.username,
-				id: visaSub?.visa_submission_list?.id,
-				list_type: visaSub?.visa_submission_list?.list_type
+      year: moment(new Date(visaSub?.visa_entry?.visa_issue_date)).format('DD-MM-YYYY'),
+      visa_no: visaSub?.visa_entry?.visa_number,
+      sponsor_id: visaSub?.visa_entry?.sponsor_id_no,
+      sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic,
+      passport_no: visaSub?.passenger?.passport_no,
+      office_sl: visaSub?.passenger?.passenger_id,
+      passenger_name: visaSub?.passenger?.passenger_name,
+      reference: visaSub?.agent?.username,
+      id: visaSub?.visa_submission_list?.id,
+      list_type: visaSub?.visa_submission_list?.list_type
     }));
 
-
-
     setModifiedVisaSbListData(modifiedData);
-		setModifiedVisaSbListData2(modifiedData);
-  }, [data]);
+    setModifiedVisaSbListData2(modifiedData);
+  }
+}, [data]);
+
 
 
   console.log('modifiedManpowerSbListDataVisa',modifiedVisaSbListData2)
