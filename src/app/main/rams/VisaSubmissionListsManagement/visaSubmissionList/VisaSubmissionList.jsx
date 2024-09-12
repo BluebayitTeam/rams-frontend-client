@@ -100,7 +100,7 @@ function VisaSubmissionList() {
       .then((submissionData) => {
         if (submissionData) {
 			AddedSuccessfully();
-			
+			setSelectedDate(submissionDate);
           navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
         }
       })
