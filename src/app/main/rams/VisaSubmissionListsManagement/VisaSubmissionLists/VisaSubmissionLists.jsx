@@ -61,6 +61,7 @@ function VisaSubmissionLists({
 	const [officePrint, setOfficePrint] = useState(false);
   const [embPrint, setembPrint] = useState(false);
   const [selectedValue, setSelectedValue] = useState('delete');
+  console.log('selectedValue',selectedValue)
 
 	const handlecancelList = event => {
 		setCancelList(event.target.checked);
@@ -304,7 +305,10 @@ function VisaSubmissionLists({
               selectedDate={selectedDate}
               selectedPassenger={selectedPassenger}
               passenger={passenger}
-              manPowerDate={manPowerDate}
+               manPowerDate={manPowerDate}
+               officePrint={officePrint}
+							selectedValue={selectedValue}
+							embPrint={embPrint}
             />
           ))}
 					{/* </div> */}

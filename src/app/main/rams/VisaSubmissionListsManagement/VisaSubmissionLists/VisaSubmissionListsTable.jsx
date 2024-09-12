@@ -36,7 +36,8 @@ function VisaSubmissionListsTable(props) {
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-	dragAndDropRow
+		dragAndDropRow,
+	
 	} = props;
 	let pageBasedSerialNo = serialNumber;
 	const methods = useFormContext();
