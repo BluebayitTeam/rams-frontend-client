@@ -118,7 +118,7 @@ const appsConfigs = [
 	// BmetV2ApplicationAppConfig,
 	BmetStampAppConfig,
 	CalendarAppConfig,
-	// VisaSubmissionListAppConfig,
+	VisaSubmissionListAppConfig,
 	CvBankAppConfig,
 	FemalefingerletterAppConfig,
 	MessengerAppConfig,
