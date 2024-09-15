@@ -11,13 +11,12 @@ function BmetV2ApplicationsTable(props) {
 		inSiglePageMode,
         extraData,
 		data,
-		setPage,
-		agencyInfo
+		setPage
 	} = props;
 	const methods = useFormContext();
 	const { watch } = methods;
 	const Gender = watch('gender');
-console.log('extraData',extraData)
+
 	return (
 		<div
 			className={`${classes.pageContainer} printPageContainer print:h-screen  w-full mb-0`}
@@ -104,12 +103,11 @@ console.log('extraData',extraData)
 						?.toString()
 						.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 2486))}{' '}
 					জন পুরুষ কর্মী তাদের স্ব-উদ্যেগে সংগৃহীত ভিসা,মুল পাসপোর্টসহ অন্যান্য কাগজপএাদি আমার রিক্রটিং
-					এজেন্সি  {agencyInfo?.name_bangla ||''} (আর,এল নং-
-					{agencyInfo?.rl_no
-  ?.toString()
-  .replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 2486))
-}
- এর মাধ্যমে বহির্গমন ছাড়পএ গ্রহনের জন্য জমা দিয়েছি।কর্মীদেও নিকট হতে প্রাপ্ত ভিসাসহ নিম্নে বর্নিত
+					এজেন্সি {extraData?.agency_info?.name_bangla} (আর,এল নং-
+					{extraData?.agency_info?.rl_no
+						?.toString()
+						.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 2486))}
+					) এর মাধ্যমে বহির্গমন ছাড়পএ গ্রহনের জন্য জমা দিয়েছি।কর্মীদেও নিকট হতে প্রাপ্ত ভিসাসহ নিম্নে বর্নিত
 					কাগজপএাদি একসাথে দাখিল করিলাম ভিসাগুলো আমার অফিসে অনলাইনে পরিক্ষান্তে সঠিক পাওয়া গিয়েছে। উল্লেখ্য
 					যে,সৌদি আরব গামী ভিসাগুলো ২৫ এর অধিক বা গ্রুফ ভিসা নহে ্এবং কর্মীদের সকল দায়-দায়িত্ব রিক্রটিং
 					এজেন্সি বহন করিবে। উপস্থিত কর্মীগনের ভিসাগুলো Employement ভিসা। যাহার মেয়াদ ২ বৎসর এবং পরবর্তীতে

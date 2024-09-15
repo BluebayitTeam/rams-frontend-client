@@ -70,8 +70,7 @@ function BmetV2Applications({
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const methods = useFormContext();
 	const { getValues } = methods;
-
-	console.log('dfdsfjdslfjsd',getValues()?.agency_info)
+	
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -143,7 +142,7 @@ function BmetV2Applications({
 							passenger={passenger}
 							bmetV2ApplicationDate={bmetV2ApplicationDate}
 							extraData={getValues()}
-							agencyInfo={getValues()?.agency_info}
+							 agency={getValues()?.agency}
 						/>
 					))}
 				</div>

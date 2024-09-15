@@ -9,23 +9,33 @@ import BmetV2ApplicationModel from './models/BmetV2ApplicationModel';
 import { useGetBmetV2ApplicationsQuery } from '../BmetV2ApplicationsApi';
 import BmetV2ApplicationForm from './BmetV2ApplicationForm';
 import BmetV2Applications from '../bmetV2Applications/BmetV2Applications';
+import { useParams } from 'react-router';
 
-const schema = z.object({});
+
+
+
+
+const schema = z.object({
+  agency: z.number().int().nonnegative().gt(0, { message: "Agency must be selected" }),
+});
+
 
 function BmetV2Application() {
-	const emptyValue = {
-		man_power_date: ''
-	};
+	
+
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [formKey, setFormKey] = useState(0);
 
 	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: emptyValue,
-		resolver: zodResolver(schema)
-	});
+  mode: 'onChange',
+  defaultValues: {
+    agency: '',
+  },
+  resolver: zodResolver(schema),
+});
+
 	const { reset, watch } = methods;
 
 	const handleReset = (defaultValues) => {
@@ -43,10 +53,13 @@ function BmetV2Application() {
 
 	function handleSearchManPowerDateClick() {
 		setSelectedDate(bmetV2ApplicationDate);
+
+
 	}
 
 	useEffect(() => {
 		if (bmetV2ApplicationId === 'new') {
+			console.log('bmetV2ApplicationId',bmetV2ApplicationId)
 			reset(BmetV2ApplicationModel({}));
 		}
 	}, [bmetV2ApplicationId, reset]);
@@ -68,8 +81,6 @@ function BmetV2Application() {
 
 						<BmetV2Applications
 							data={data}
-							handleReset={handleReset}
-							emptyValue={emptyValue}
 							selectedDate={selectedDate}
 							bmetV2ApplicationDate={bmetV2ApplicationDate}
 						/>
