@@ -23,7 +23,7 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick,isButtonDisabled 
 	}, []);
 
 	const agency = watch('agency')
-	
+
 	
 
 	return (
@@ -36,7 +36,7 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick,isButtonDisabled 
               label="Agency"
               options={agencies}
               optionLabelFormat={(option) => `${option?.name}`}
-            //   error={errors?.agency?.message}
+              error={errors?.agency?.message}
               onChange={(newValue) => setValue('agency_info', newValue)}
 				/>
 			</div>
