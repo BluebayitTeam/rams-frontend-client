@@ -59,9 +59,7 @@ function ManpowerSubmissionV2List() {
 
 	function handleSearchPassengerClick() {
 		setSelectedPassenger(passenger);
-		setHideTabile(false);
-
-		setTableShow(true);
+		
 	}
 
 	const [createManpowerSubmissionV2List] = useCreateManpowerSubmissionV2ListMutation();
@@ -72,8 +70,8 @@ function ManpowerSubmissionV2List() {
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
-					setTableShow(true);
-					setHideTabile(false);
+		            setSelectedDate(manPowerDate);
+					// refetch();
 
 					navigate(`/apps/manpowerSubmissionV2List/manpowerSubmissionV2Lists/new`);
 				}
@@ -84,17 +82,23 @@ function ManpowerSubmissionV2List() {
 	}
 
 	function handleCancel() {
-		handleReset({
-			...emptyValue
-		});
-		setHideTabile(true);
-	}
+  // Reset form fields
+  handleReset({
+    ...emptyValue
+  });
+
+  refetch({
+    passenger: '',
+    manPowerDate: ''
+  });
+
+ 
+}
 
 	function handleSearchManPowerDateClick() {
 		setSelectedPassenger(passenger);
 		setSelectedDate(manPowerDate);
-		setTableShow(true);
-		setHideTabile(false);
+		
 	}
 
 	useEffect(() => {

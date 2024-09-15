@@ -14,6 +14,7 @@ const schema = z.object({});
 
 function BmetStamp() {
   const emptyValue = {
+    
     man_power_date: "",
   };
 

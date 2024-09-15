@@ -21,7 +21,7 @@ const BmetV2ApplicationApi = api
 					return {
 						url: MANPOWERSBLISTS_BY_DATE,
 						params: {
-							bmet_v2_application_date: bmetV2ApplicationDate
+							man_power_date: bmetV2ApplicationDate
 						}
 					};
 				},

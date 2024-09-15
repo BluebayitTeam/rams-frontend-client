@@ -59,9 +59,7 @@ function ManpowerSubmissionList() {
 
 	function handleSearchPassengerClick() {
 		setSelectedPassenger(passenger);
-		setHideTabile(false);
-
-		setTableShow(true);
+		
 	}
 
 	const [createManpowerSubmissionList] = useCreateManpowerSubmissionListMutation();
@@ -73,8 +71,8 @@ function ManpowerSubmissionList() {
 				if (data) {
 					AddedSuccessfully();
 
-					setHideTabile(false);
-					setTableShow(true);
+				    setSelectedDate(manPowerDate);
+
 
 					navigate(`/apps/manpowerSubmissionList/manpowerSubmissionLists/new`);
 				}
@@ -94,8 +92,7 @@ function ManpowerSubmissionList() {
 	function handleSearchManPowerDateClick() {
 		setSelectedPassenger(passenger);
 		setSelectedDate(manPowerDate);
-		setTableShow(true);
-		setHideTabile(false);
+		
 	}
 
 	useEffect(() => {

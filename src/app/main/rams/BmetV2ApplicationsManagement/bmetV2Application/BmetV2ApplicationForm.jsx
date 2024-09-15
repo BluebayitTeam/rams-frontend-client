@@ -8,13 +8,15 @@ import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import { useSelector } from 'react-redux';
 import { getAgencys } from 'app/store/dataSlice';
 import { useDispatch } from 'react-redux';
+import { useFormContext } from 'react-hook-form';
 
 function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 		const dispatch = useDispatch();
 
 	const { agencies } = useSelector((state) => state.data);
+	 const methods = useFormContext();  
+    const {setValue ,control,errors   } = methods;
 	useEffect(() => {
-		
 		dispatch(getAgencys());
 		
 	}, []);
@@ -31,6 +33,11 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
 				label="Agency"
 				options={agencies}
 				optionLabelFormat={(option) => `${option?.name}`}
+				options={agencies}
+               optionLabelFormat={(option) => `${option?.name}`}
+               onChange={(newValue) =>
+				  setValue('agency_info', newValue)
+				}
 					/>
 					</div>
 					
