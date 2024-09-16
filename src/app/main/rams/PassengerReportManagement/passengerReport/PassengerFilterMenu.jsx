@@ -55,7 +55,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
                   icon="person"
                   autocompleteStyle={{ width: '330px', margin: '0px 10px' }}
                   getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}  
-/>
+                  />
 
 
 				
