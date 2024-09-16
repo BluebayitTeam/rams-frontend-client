@@ -1,22 +1,22 @@
 import FusePageCarded from "@fuse/core/FusePageCarded";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
 import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import {
   AddedSuccessfully,
   CustomNotification,
 } from "src/app/@customHooks/notificationAlert";
-import ManpowerSubmissionV2ListHeader from "./ManpowerSubmissionV2ListHeader";
-import ManpowerSubmissionV2ListModel from "./models/ManpowerSubmissionV2List.Model";
+import { z } from "zod";
+import ManpowerSubmissionV2Lists from "../manpowerSubmissionV2Lists/ManpowerSubmissionV2Lists";
 import {
   useCreateManpowerSubmissionV2ListMutation,
   useGetManpowerSubmissionV2ListsQuery,
 } from "../ManpowerSubmissionV2ListsApi";
 import ManpowerSubmissionV2ListForm from "./ManpowerSubmissionV2ListForm";
-import ManpowerSubmissionV2Lists from "../manpowerSubmissionV2Lists/ManpowerSubmissionV2Lists";
+import ManpowerSubmissionV2ListHeader from "./ManpowerSubmissionV2ListHeader";
+import ManpowerSubmissionV2ListModel from "./models/ManpowerSubmissionV2List.Model";
 
 const schema = z.object({});
 
@@ -78,7 +78,7 @@ function ManpowerSubmissionV2List() {
       .then((data) => {
         if (data) {
           AddedSuccessfully();
-          setSelectedPassenger(passenger);
+          // setSelectedPassenger(passenger);
           setSelectedDate(manPowerDate);
 
           navigate(
