@@ -15,8 +15,8 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { selectFilteredAgentReports, useGetAgentAllReportsQuery, useGetAgentReportsQuery } from '../AgentReportsApi';
-import AgentFilterMenu from './AgentFilterMenu';
+import { selectFilteredPassengerReports, useGetAgentAllReportsQuery, useGetPassengerReportsQuery } from '../PassengerReportsApi';
+import AgentFilterMenu from './PassengerFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
@@ -34,7 +34,7 @@ const initialTableColumnsState = [
 	{ id: 6, label: 'Email', name: 'email', show: true }
 ];
 
-function AgentReportsTable(props) {
+function PassengerReportsTable(props) {
 	const classes = useStyles();
 	const methods = useForm({
 		mode: 'onChange',
@@ -64,10 +64,10 @@ function AgentReportsTable(props) {
 	const componentRef = useRef(null);
 
 	// Prevent automatic fetching by setting enabled: false
-	const { data, isLoading, refetch } = useGetAgentReportsQuery({ ...getValues(), page, size }, { enabled: false });
+	const { data, isLoading, refetch } = useGetPassengerReportsQuery({ ...getValues(), page, size }, { enabled: false });
 
 	const { refetch: refetchAll } = useGetAgentAllReportsQuery({ ...getValues() }, { enabled: false });
-	const totalData = useSelector(selectFilteredAgentReports(data));
+	const totalData = useSelector(selectFilteredPassengerReports(data));
 
 	useEffect(() => {
 		setModifiedAgentData(totalData?.agents);
@@ -171,8 +171,9 @@ function AgentReportsTable(props) {
 				handleGetAllData={handleGetAllAgents}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
-				filename="AgentReport"
-			/>
+				filename="PassengerReport"
+				hideSection={['pg','print','wp','download','column']}
+				/>
 
 			<table
 				id="table-to-xls"
@@ -188,7 +189,7 @@ function AgentReportsTable(props) {
 						<SinglePage
 							key={index}
 							classes={classes}
-							reportTitle="Agent Report"
+							// reportTitle="Agent Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							data={agent}
@@ -204,4 +205,4 @@ function AgentReportsTable(props) {
 	);
 }
 
-export default AgentReportsTable;
+export default PassengerReportsTable;

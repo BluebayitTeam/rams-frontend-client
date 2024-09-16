@@ -5,8 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
-import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
-import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
@@ -14,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents }) {
+function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllPassengers }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -29,15 +27,15 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 	// element refs
 	const userNameEl = useRef(null);
 	const primaryPhoneEl = useRef(null);
-	const agentCodeEl = useRef(null);
+	const passengerCodeEl = useRef(null);
 
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+		onEnter: () => (inShowAllMode ? handleGetAllPassengers() : handleGetPassengers())
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+		onClick: () => (inShowAllMode ? handleGetAllPassengers() : handleGetPassengers())
 	};
 
 	useEffect(() => {
@@ -61,58 +59,58 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 				/>
 
 				{/* group */}
-				<ReportSelect
+				{/* <ReportSelect
 					{...commonFieldProps}
 					name="group"
 					options={groups}
 					icon="groups"
 					width="40px"
-				/>
+				/> */}
 
 				{/* phone */}
-				<ReportTextField
+				{/* <ReportTextField
 					{...commonFieldProps}
 					name="primary_phone"
 					label="Phone"
 					domEl={primaryPhoneEl}
 					icon="phone"
 					width="45px"
-				/>
+				/> */}
 
 				{/* district */}
-				<ReportSelect
+				{/* <ReportSelect
 					{...commonFieldProps}
 					name="district"
 					options={cities}
 					icon="homeSharp"
 					width="45px"
-				/>
+				/> */}
 
-				{/* agent code */}
-				<ReportTextField
+				{/* passenger code */}
+				{/* <ReportTextField
 					{...commonFieldProps}
-					name="agent_code"
-					domEl={agentCodeEl}
+					name="passenger_code"
+					domEl={passengerCodeEl}
 					icon="qr_code_scanner_sharp"
 					width="77px"
-				/>
+				/> */}
 
 				{/* date from */}
-				<ReportDatePicker
+				{/* <ReportDatePicker
 					{...commonFieldProps}
 					name="date_after"
 					label="Date From"
 					maxDate={values.date_before || new Date()}
-				/>
+				/> */}
 
 				{/* date to */}
-				<ReportDatePicker
+				{/* <ReportDatePicker
 					{...commonFieldProps}
 					name="date_before"
 					label="Date To"
 					minDate={values.date_after}
 					maxDate={new Date()}
-				/>
+				/> */}
 			</div>
 
 			{/* keywords */}
@@ -126,53 +124,53 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 					icon="person"
 				/>
 
-				<Keyword
+				{/* <Keyword
 					{...commonKewordProps}
 					type="select"
 					name="group"
 					icon="groups"
-				/>
+				/> */}
 
-				<Keyword
+				{/* <Keyword
 					{...commonKewordProps}
 					type="text"
 					name="primary_phone"
 					label="Phone"
 					domEl={primaryPhoneEl}
 					icon="phone"
-				/>
+				/> */}
 
-				<Keyword
+				{/* <Keyword
 					{...commonKewordProps}
 					type="select"
 					name="district"
 					icon="homeSharp"
-				/>
+				/> */}
 
-				<Keyword
+				{/* <Keyword
 					{...commonKewordProps}
 					type="text"
-					name="agent_code"
-					domEl={agentCodeEl}
+					name="passenger_code"
+					domEl={passengerCodeEl}
 					icon="qr_code_scanner_sharp"
-				/>
+				/> */}
 
-				<Keyword
+				{/* <Keyword
 					{...commonKewordProps}
 					type="date"
 					name="date_after"
 					label="Date From"
-				/>
+				/> */}
 
-				<Keyword
+				{/* <Keyword
 					{...commonKewordProps}
 					type="date"
 					name="date_before"
 					label="Date To"
-				/>
+				/> */}
 			</div>
 		</div>
 	);
 }
 
-export default AgentFilterMenu;
+export default PassengerFilterMenu;
