@@ -61,12 +61,15 @@ function ManpowerSubmissionV2List() {
   const manpowerSubmissionV2ListId =
     data && data.length > 0 ? data[0].man_power_list.id : null;
 
-  function handleSearchPassengerClick() {
-    setSelectedPassenger(passenger);
-    setSelectedDate("");
-    setHideTabile(false);
-
-    // setTableShow(true);
+    function handleSearchPassengerClick() {
+      if (passenger) { 
+          setSelectedPassenger(passenger);
+          setSelectedDate(""); 
+          setHideTabile(false);
+      } else {
+          
+          console.log("No passenger selected. Showing previous data.");
+      }
   }
 
   const [createManpowerSubmissionV2List] =
@@ -99,10 +102,13 @@ function ManpowerSubmissionV2List() {
   }
 
   function handleSearchManPowerDateClick() {
-    setSelectedPassenger("");
-    setSelectedDate(manPowerDate);
-    // setTableShow(true);
-    setHideTabile(false);
+    if (manPowerDate) {
+      setSelectedPassenger("");
+      setSelectedDate(manPowerDate);
+      setHideTabile(false);
+  } else {
+      console.log("No passenger selected. Showing previous data.");
+  }
   }
 
   useEffect(() => {

@@ -61,13 +61,17 @@ function ManpowerSubmissionList() {
   const manpowerSubmissionListId =
     data && data.length > 0 ? data[0].man_power_list.id : null;
 
-  function handleSearchPassengerClick() {
-    setSelectedPassenger(passenger);
-    setSelectedDate("");
-    setHideTabile(false);
-
-    // setTableShow(true);
+    function handleSearchPassengerClick() {
+      if (passenger) { // Only update if a passenger is selected
+          setSelectedPassenger(passenger);
+          setSelectedDate(""); 
+          setHideTabile(false);
+      } else {
+          // Optional: You can add a fallback logic or a warning message here if no passenger is selected.
+          console.log("No passenger selected. Showing previous data.");
+      }
   }
+  
 
   const [createManpowerSubmissionList] =
     useCreateManpowerSubmissionListMutation();
@@ -96,9 +100,13 @@ function ManpowerSubmissionList() {
   }
 
   function handleSearchManPowerDateClick() {
-    setSelectedPassenger("");
-    setSelectedDate(manPowerDate);
-    setHideTabile(false);
+    if (manPowerDate) {
+      setSelectedPassenger("");
+      setSelectedDate(manPowerDate);
+      setHideTabile(false);
+  } else {
+      console.log("No passenger selected. Showing previous data.");
+  }
   }
 
   useEffect(() => {
