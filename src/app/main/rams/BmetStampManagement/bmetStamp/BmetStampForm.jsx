@@ -99,7 +99,7 @@ function BmetStampForm({ handleSearchManPowerDateClick }) {
         />
           <CustomDropdownField
 				name="agency"
-				label="Recruiting Agencys"
+				label="Agency"
 				options={agencies}
           optionLabelFormat={(option) => `${option?.name}`}
            onChange={(newValue) =>

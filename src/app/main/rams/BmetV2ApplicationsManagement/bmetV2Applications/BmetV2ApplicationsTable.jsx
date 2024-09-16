@@ -103,8 +103,8 @@ function BmetV2ApplicationsTable(props) {
 						?.toString()
 						.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 2486))}{' '}
 					জন পুরুষ কর্মী তাদের স্ব-উদ্যেগে সংগৃহীত ভিসা,মুল পাসপোর্টসহ অন্যান্য কাগজপএাদি আমার রিক্রটিং
-					এজেন্সি {extraData?.agency_info?.name_bangla} (আর,এল নং-
-					{extraData?.agency_info?.rl_no
+					এজেন্সি {extraData?.agency?.name_bangla} (আর,এল নং-
+					{extraData?.agency?.rl_no
 						?.toString()
 						.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 2486))}
 					) এর মাধ্যমে বহির্গমন ছাড়পএ গ্রহনের জন্য জমা দিয়েছি।কর্মীদেও নিকট হতে প্রাপ্ত ভিসাসহ নিম্নে বর্নিত

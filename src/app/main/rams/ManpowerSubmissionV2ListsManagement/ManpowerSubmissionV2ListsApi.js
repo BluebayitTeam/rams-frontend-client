@@ -23,7 +23,7 @@ const ManpowerSubmissionV2ListApi = api
 			getManpowerSubmissionV2Lists: build.query({
 				query: ({ manPowerDate, passenger }) => {
 					if (!manPowerDate && !passenger) {
-						return { url: null }; 
+						return { url: null }; // Avoid calling the API when both values are empty
 					}
 
 					return {
