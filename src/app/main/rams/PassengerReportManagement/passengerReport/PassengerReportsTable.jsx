@@ -189,7 +189,7 @@ function PassengerReportsTable(props) {
 						<SinglePage
 							key={index}
 							classes={classes}
-							// reportTitle="Agent Report"
+							reportTitle="Agent Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							data={agent}

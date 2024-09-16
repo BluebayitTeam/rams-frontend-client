@@ -4,8 +4,8 @@ import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import moment from 'moment';
 // import '../../../Print.css';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 import { useEffect, useState } from 'react';
+import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 
 function SinglePage({
 	classes,

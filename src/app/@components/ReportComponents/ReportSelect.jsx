@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import fillUnderscoreBySpace from 'src/app/@helpers/fillUnderscoreBySpace';
 
+
+
+
 const useStyles = makeStyles((theme) => ({
 	fieldContainer: {
 		display: 'flex',
@@ -48,90 +51,104 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ReportSelect({ name, label, options = [], icon, width, setReRender, onEnter = () => null } = {}) {
-	const classes = useStyles();
+function ReportSelect({ 
+    name, 
+    label, 
+    options = [], 
+    icon, 
+    width, 
+    setReRender, 
+    onEnter = () => null, 
+	autocompleteStyle = {}, // New prop for dynamic styles
 
-	const methods = useFormContext();
-	const { getValues, setValue, control } = methods;
-	const values = getValues();
+    getOptionLabel = (option) => option.name  // Default to option.name
+} = {}) {
+    const classes = useStyles();
 
-	const isFocused = values[`${name}Focused`];
+    const methods = useFormContext();
+    const { getValues, setValue, control } = methods;
+    const values = getValues();
 
-	const [Label] = useState(label || fillUnderscoreBySpace(name));
+    const isFocused = values[`${name}Focused`];
 
-	return (
-		<div className={classes.fieldContainer}>
-			<Icon>{icon}</Icon>
+    const [Label] = useState(label || fillUnderscoreBySpace(name));
 
-			<div
-				className="selectLabel"
-				style={{
-					width: isFocused ? '0px' : width,
-					margin: isFocused ? '0px' : '2px 5px 0px 10px'
-				}}
-				onClick={() => {
-					setValue(`${name}Focused`, true);
-					setReRender(Math.random());
-					setTimeout(() => document.getElementById(`${name}groupEl`).focus(), 300);
-				}}
-			>
-				{Label}
-			</div>
+    return (
+        <div className={classes.fieldContainer}>
+            <Icon>{icon}</Icon>
 
-			<Icon
-				className="selectOpenIcon cursor-pointer"
-				style={{
-					width: isFocused ? '0px' : '15px',
-					margin: isFocused ? '0px' : '2px 10px 0px 0px'
-				}}
-				onClick={() => {
-					setValue(`${name}Focused`, true);
-					setReRender(Math.random());
-					setTimeout(() => document.getElementById(`${name}groupEl`).focus(), 300);
-				}}
-			>
-				arrow_drop_down_icon
-			</Icon>
+            <div
+                className="selectLabel"
+                style={{
+                    width: isFocused ? '0px' : width,
+                    margin: isFocused ? '0px' : '2px 5px 0px 10px'
+                }}
+                onClick={() => {
+                    setValue(`${name}Focused`, true);
+                    setReRender(Math.random());
+                    setTimeout(() => document.getElementById(`${name}groupEl`).focus(), 300);
+                }}
+            >
+                {Label}
+            </div>
 
-			<Controller
-				name={`${name}`}
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						id={`${name}groupEl`}
-						className="mb-3 selectField"
-						style={{
-							width: isFocused ? '130px' : '0px',
-							margin: isFocused ? '0px 10px' : '0px',
-							display: isFocused ? 'block' : 'none'
-						}}
-						classes={{ endAdornment: 'endAdornment' }}
-						openOnFocus
-						onClose={() => {
-							setValue(`${name}Focused`, false);
-							setReRender(Math.random());
-						}}
-						freeSolo
-						options={options}
-						value={value ? options.find((data) => data.id == value) : null}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(_event, newValue) => {
-							onChange(newValue?.id || '');
-							onEnter();
-							setValue(`${name}Name`, newValue?.name || '');
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								className="textFieldUnderSelect"
-								placeholder={`Select ${Label}`}
-							/>
-						)}
-					/>
-				)}
-			/>
-		</div>
-	);
+            <Icon
+                className="selectOpenIcon cursor-pointer"
+                style={{
+                    width: isFocused ? '0px' : '15px',
+                    margin: isFocused ? '0px' : '2px 10px 0px 0px'
+                }}
+                onClick={() => {
+                    setValue(`${name}Focused`, true);
+                    setReRender(Math.random());
+                    setTimeout(() => document.getElementById(`${name}groupEl`).focus(), 300);
+                }}
+            >
+                arrow_drop_down_icon
+            </Icon>
+
+            <Controller
+                name={`${name}`}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                    <Autocomplete
+                        id={`${name}groupEl`}
+                        className="mb-3 selectField"
+                        style={{
+                            width: isFocused ? autocompleteStyle.width || '130px' : '0px',
+                            margin: isFocused ? autocompleteStyle.margin || '0px 10px' : '0px',
+                            display: isFocused ? 'block' : 'none',
+                            overflow: 'hidden',
+                            transition: '0.3s',
+                        }}
+                        classes={{ endAdornment: 'endAdornment' }}
+                        openOnFocus
+                        onClose={() => {
+                            setValue(`${name}Focused`, false);
+                            setReRender(Math.random());
+                        }}
+                        freeSolo
+                        options={options}
+                        value={value ? options.find((data) => data.id == value) : null}
+                        getOptionLabel={(option) => getOptionLabel(option)} // Use dynamic or default option name
+                        onChange={(_event, newValue) => {
+                            onChange(newValue?.id || '');
+                            // onEnter();
+                            setValue(`${name}Name`, newValue?.name || '');
+                        }}
+
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                className="textFieldUnderSelect"
+                                placeholder={`Select ${Label}`}
+                            />
+                        )}
+                    />
+                )}
+            />
+        </div>
+    );
 }
 
 export default ReportSelect;
