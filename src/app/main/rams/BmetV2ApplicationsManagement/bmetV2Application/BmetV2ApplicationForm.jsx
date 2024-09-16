@@ -1,9 +1,9 @@
+import { getAgencys } from "app/store/dataSlice";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import CustomDatePicker from "src/app/@components/CustomDatePicker";
 import CustomDropdownField from "src/app/@components/CustomDropdownField";
-import { useSelector, useDispatch } from "react-redux";
-import { getAgencys } from "app/store/dataSlice";
 import CustomTextField from "src/app/@components/CustomTextField";
 
 function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
@@ -12,7 +12,6 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
     formState: { errors },
   } = useFormContext();
 
-  console.log("fhfhfffhfh", errors?.man_power_date?.message);
 
   const { agencies } = useSelector((state) => state.data);
   useEffect(() => {
@@ -47,7 +46,6 @@ function BmetV2ApplicationForm({ handleSearchManPowerDateClick }) {
             name="gender"
             label="Gender"
             error={errors.gender?.message}
-            required
           />
         </div>
       </div>
