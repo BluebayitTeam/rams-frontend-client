@@ -13,6 +13,7 @@ import ComplainHeader from './ComplainHeader';
 import ComplainModel from './models/ComplainModel';
 import { useGetComplainQuery } from '../ComplainsApi';
 import ComplainForm from './ComplainForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -98,22 +99,24 @@ function Complain() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<ComplainHeader />}
-				content={
-					<div className="p-16">
-						<ComplainForm complainId={complainId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('COMPLAIN_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<ComplainHeader />}
+          content={
+            <div className='p-16'>
+              <ComplainForm complainId={complainId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Complain;

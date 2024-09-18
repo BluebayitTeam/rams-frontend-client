@@ -29,6 +29,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import PrintFemaleCv from '@fuse/utils/Print/PrintFemaleCv';
 import CvFemalesTableHead from './CvFemalesTableHead';
 import { selectFilteredCvFemales, useGetCvFemalesQuery } from '../CvFemalesApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 // import PrintVoucher from '../PrintVoucher';
 function CvFemalesTable(props) {
@@ -229,122 +230,132 @@ function CvFemalesTable(props) {
 						{_.orderBy(femaleCvs, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-								<TableRow
-									className="h-20 cursor-pointer border-t-1  border-gray-200"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 md:w-64 border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										{serialNumber++}
-									</TableCell>
+                <TableRow
+                  className='h-20 cursor-pointer border-t-1  border-gray-200'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 md:w-64 border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {serialNumber++}
+                  </TableCell>
 
-									{Object.entries(n).map(
-										([key, value]) =>
-											key !== 'id' &&
-											key !== 'random_number' && (
-												<TableCell
-													className="p-4 md:p-16 border-t-1 border-gray-200"
-													component="th"
-													scope="row"
-													key={key}
-												>
-													{key === 'image' ? (
-														n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
-															<PictureAsPdf
-																style={{
-																	color: 'red',
-																	cursor: 'pointer',
-																	display: 'block',
-																	fontSize: '35px'
-																}}
-																onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-															/>
-														) : ['doc', 'docx'].includes(
-																n[key]?.split('.').pop()?.toLowerCase()
-														  ) ? (
-															<DescriptionIcon
-																style={{
-																	color: 'blue',
-																	cursor: 'pointer',
-																	display: 'block',
-																	fontSize: '35px'
-																}}
-																onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-															/>
-														) : (
-															<img
-																onClick={() =>
-																	n.file && showImage(`${BASE_URL}${n[key]}`)
-																}
-																src={
-																	n[key]
-																		? `${BASE_URL}${n[key]}`
-																		: 'assets/logos/user.jpg'
-																}
-																style={{
-																	height: '40px',
-																	width: '40px',
-																	borderRadius: '50%'
-																}}
-																alt="uploaded file"
-															/>
-														)
-													) : (key === 'created_at' || key === 'flight_date') && n[key] ? (
-														moment(new Date(n[key])).format('DD-MM-YYYY')
-													) : (key === 'is_debtor' || key === 'is_paid') &&
-													  n[key] !== undefined ? (
-														n[key] ? (
-															'Yes'
-														) : (
-															'No'
-														)
-													) : (
-														value
-													)}
-												</TableCell>
-											)
-									)}
-									<TableCell
-										className="p-4 md:p-16 whitespace-nowrap border-t-1 border-gray-200"
-										component="th"
-										scope="row"
-										align="right"
-										style={{
-											position: 'sticky',
-											right: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										<PrintIcon
-											className="cursor-pointer custom-print-icon-style text-3xl"
-											onClick={() => printFemaleCvRef.current.doPrint(n)}
-										/>
-										<Edit
-											onClick={() => handleUpdateCvFemale(n, 'updateCvFemale')}
-											className="cursor-pointer custom-edit-icon-style text-3xl"
-										/>
-										<Delete
-											onClick={() => handleDeleteCvFemale(n, 'deleteCvFemale')}
-											className="cursor-pointer custom-delete-icon-style text-3xl	"
-										/>
-									</TableCell>
-								</TableRow>
-							);
+                  {Object.entries(n).map(
+                    ([key, value]) =>
+                      key !== 'id' &&
+                      key !== 'random_number' && (
+                        <TableCell
+                          className='p-4 md:p-16 border-t-1 border-gray-200'
+                          component='th'
+                          scope='row'
+                          key={key}>
+                          {key === 'image' ? (
+                            n[key]?.split('.').pop()?.toLowerCase() ===
+                            'pdf' ? (
+                              <PictureAsPdf
+                                style={{
+                                  color: 'red',
+                                  cursor: 'pointer',
+                                  display: 'block',
+                                  fontSize: '35px',
+                                }}
+                                onClick={() =>
+                                  window.open(`${BASE_URL}${n[key]}`)
+                                }
+                              />
+                            ) : ['doc', 'docx'].includes(
+                                n[key]?.split('.').pop()?.toLowerCase()
+                              ) ? (
+                              <DescriptionIcon
+                                style={{
+                                  color: 'blue',
+                                  cursor: 'pointer',
+                                  display: 'block',
+                                  fontSize: '35px',
+                                }}
+                                onClick={() =>
+                                  window.open(`${BASE_URL}${n[key]}`)
+                                }
+                              />
+                            ) : (
+                              <img
+                                onClick={() =>
+                                  n.file && showImage(`${BASE_URL}${n[key]}`)
+                                }
+                                src={
+                                  n[key]
+                                    ? `${BASE_URL}${n[key]}`
+                                    : 'assets/logos/user.jpg'
+                                }
+                                style={{
+                                  height: '40px',
+                                  width: '40px',
+                                  borderRadius: '50%',
+                                }}
+                                alt='uploaded file'
+                              />
+                            )
+                          ) : (key === 'created_at' || key === 'flight_date') &&
+                            n[key] ? (
+                            moment(new Date(n[key])).format('DD-MM-YYYY')
+                          ) : (key === 'is_debtor' || key === 'is_paid') &&
+                            n[key] !== undefined ? (
+                            n[key] ? (
+                              'Yes'
+                            ) : (
+                              'No'
+                            )
+                          ) : (
+                            value
+                          )}
+                        </TableCell>
+                      )
+                  )}
+                  <TableCell
+                    className='p-4 md:p-16 whitespace-nowrap border-t-1 border-gray-200'
+                    component='th'
+                    scope='row'
+                    align='right'
+                    style={{
+                      position: 'sticky',
+                      right: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    <PrintIcon
+                      className='cursor-pointer custom-print-icon-style text-3xl'
+                      onClick={() => printFemaleCvRef.current.doPrint(n)}
+                    />
+                    {hasPermission('FEMALE_CV_UPDATE') && (
+                      <Edit
+                        onClick={() =>
+                          handleUpdateCvFemale(n, 'updateCvFemale')
+                        }
+                        className='cursor-pointer custom-edit-icon-style text-3xl'
+                      />
+                    )}
+                    {hasPermission('FEMALE_CV_DELETE') && (
+                      <Delete
+                        onClick={() =>
+                          handleDeleteCvFemale(n, 'deleteCvFemale')
+                        }
+                        className='cursor-pointer custom-delete-icon-style text-3xl	'
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
 						})}
 					</TableBody>
 				</Table>

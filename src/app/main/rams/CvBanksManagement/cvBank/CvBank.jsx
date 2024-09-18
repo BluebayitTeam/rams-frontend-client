@@ -15,6 +15,7 @@ import CvBankHeader from './CvBankHeader';
 import CvBankModel from './models/CvBankModel';
 import { useGetCvBankQuery } from '../CvBanksApi';
 import CvBankForm from './CvBankForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * Form Validation Schema
@@ -101,44 +102,39 @@ function CvBank() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab
-							className="h-64"
-							label="Basic Info"
-						/>
-						<Tab
-							className="h-64"
-							label="Opening Balance"
-						/>
-					</Tabs>
-				}
-				header={<CvBankHeader />}
-				content={
-					<div className="p-16">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<CvBankForm cvBankId={cvBankId} />
-						</div>
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('CVBANK_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab className='h-64' label='Basic Info' />
+              <Tab className='h-64' label='Opening Balance' />
+            </Tabs>
+          }
+          header={<CvBankHeader />}
+          content={
+            <div className='p-16'>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <CvBankForm cvBankId={cvBankId} />
+              </div>
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default CvBank;

@@ -16,6 +16,7 @@ import EmployeeModel from './models/EmployeeModel';
 import { useGetEmployeeQuery } from '../EmployeesApi';
 import EmployeeForm from './EmployeeForm';
 import PersonalInfo from './tabs/PersonalInfo';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 // import OpeningBalance from './tabs/OpeningBalance';
 /**
  * Form Validation Schema
@@ -119,69 +120,57 @@ function Employee() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab
-							className="h-64"
-							label="Basic Info"
-						/>
-						<Tab
-							className="h-64"
-							label="Personal Info"
-						/>
-					</Tabs>
-				}
-				header={<EmployeeHeader />}
-				content={
-					<>
-						<Tabs
-							value={tabValue}
-							onChange={handleTabChange}
-							indicatorColor="secondary"
-							textColor="secondary"
-							variant="scrollable"
-							scrollButtons="auto"
-							classes={{ root: 'w-full h-64 border-b-1' }}
-						>
-							<Tab
-								className="h-64"
-								label="Basic Info"
-							/>
+    <FormProvider {...methods}>
+      {hasPermission('EMPLOYEE_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab className='h-64' label='Basic Info' />
+              <Tab className='h-64' label='Personal Info' />
+            </Tabs>
+          }
+          header={<EmployeeHeader />}
+          content={
+            <>
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                indicatorColor='secondary'
+                textColor='secondary'
+                variant='scrollable'
+                scrollButtons='auto'
+                classes={{ root: 'w-full h-64 border-b-1' }}>
+                <Tab className='h-64' label='Basic Info' />
 
-							<Tab
-								className="h-64"
-								label="Personal Info"
-							/>
-						</Tabs>
-						<div className="p-16">
-							<div className={tabValue !== 0 ? 'hidden' : ''}>
-								<EmployeeForm employeeId={employeeId} />
-							</div>
+                <Tab className='h-64' label='Personal Info' />
+              </Tabs>
+              <div className='p-16'>
+                <div className={tabValue !== 0 ? 'hidden' : ''}>
+                  <EmployeeForm employeeId={employeeId} />
+                </div>
 
-							<div className={tabValue !== 1 ? 'hidden' : ''}>
-								<PersonalInfo />
-							</div>
-						</div>
-					</>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+                <div className={tabValue !== 1 ? 'hidden' : ''}>
+                  <PersonalInfo />
+                </div>
+              </div>
+            </>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Employee;

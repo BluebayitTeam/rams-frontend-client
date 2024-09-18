@@ -3,6 +3,7 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
 import DesignationsHeader from './DesignationsHeader';
 import DesignationsTable from './DesignationsTable';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The designations page.
@@ -19,13 +20,13 @@ function Designations() {
 				header: 'min-h-80 h-80'
 			}}
 			header={
-				<DesignationsHeader
+				hasPermission('DESIGNATION_LIST') && <DesignationsHeader
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>
 			}
 			content={
-				<DesignationsTable
+				hasPermission('DESIGNATION_LIST') && <DesignationsTable
 					searchKey={searchKey}
 					setSearchKey={setSearchKey}
 				/>

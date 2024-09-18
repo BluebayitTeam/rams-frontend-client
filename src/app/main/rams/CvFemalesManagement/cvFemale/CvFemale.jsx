@@ -15,6 +15,7 @@ import CvFemaleHeader from './CvFemaleHeader';
 import CvFemaleModel from './models/CvFemaleModel';
 import { useGetCvFemaleQuery } from '../CvFemalesApi';
 import CvFemaleForm from './CvFemaleForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * Form Validation Schema
@@ -103,44 +104,39 @@ function CvFemale() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab
-							className="h-64"
-							label="Basic Info"
-						/>
-						<Tab
-							className="h-64"
-							label="Opening Balance"
-						/>
-					</Tabs>
-				}
-				header={<CvFemaleHeader />}
-				content={
-					<div className="p-16">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<CvFemaleForm cvFemaleId={cvFemaleId} />
-						</div>
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('FEMALE_CV_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab className='h-64' label='Basic Info' />
+              <Tab className='h-64' label='Opening Balance' />
+            </Tabs>
+          }
+          header={<CvFemaleHeader />}
+          content={
+            <div className='p-16'>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <CvFemaleForm cvFemaleId={cvFemaleId} />
+              </div>
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default CvFemale;

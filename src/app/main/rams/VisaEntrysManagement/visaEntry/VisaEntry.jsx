@@ -12,6 +12,7 @@ import VisaEntryHeader from './VisaEntryHeader';
 import VisaEntryModel from './models/VisaEntryModel';
 import { useGetVisaEntryQuery } from '../VisaEntrysApi';
 import VisaEntryForm from './VisaEntryForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -96,22 +97,24 @@ function VisaEntry() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<VisaEntryHeader />}
-				content={
-					<div className="p-16 ">
-						<VisaEntryForm visaEntryId={visaEntryId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('VISA_ENTRY_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<VisaEntryHeader />}
+          content={
+            <div className='p-16 '>
+              <VisaEntryForm visaEntryId={visaEntryId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default VisaEntry;

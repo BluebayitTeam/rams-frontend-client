@@ -15,6 +15,7 @@ import CvMaleHeader from './CvMaleHeader';
 import CvMaleModel from './models/CvMaleModel';
 import { useGetCvMaleQuery } from '../CvMalesApi';
 import CvMaleForm from './CvMaleForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * Form Validation Schema
@@ -103,44 +104,39 @@ function CvMale() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab
-							className="h-64"
-							label="Basic Info"
-						/>
-						<Tab
-							className="h-64"
-							label="Opening Balance"
-						/>
-					</Tabs>
-				}
-				header={<CvMaleHeader />}
-				content={
-					<div className="p-16">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<CvMaleForm cvMaleId={cvMaleId} />
-						</div>
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('MALE_CV_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab className='h-64' label='Basic Info' />
+              <Tab className='h-64' label='Opening Balance' />
+            </Tabs>
+          }
+          header={<CvMaleHeader />}
+          content={
+            <div className='p-16'>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <CvMaleForm cvMaleId={cvMaleId} />
+              </div>
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default CvMale;

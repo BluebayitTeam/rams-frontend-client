@@ -16,6 +16,7 @@ import AgentModel from './models/AgentModel';
 import { useGetAgentQuery } from '../AgentsApi';
 import AgentForm from './AgentForm';
 import OpeningBalance from './tabs/OpeningBalance';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -109,70 +110,58 @@ function Agent() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab
-							className="h-64"
-							label="Basic Info"
-						/>
-						<Tab
-							className="h-64"
-							label="Opening Balance"
-						/>
-					</Tabs>
-				}
-				header={<AgentHeader />}
-				content={
-					<>
-						<Tabs
-							value={tabValue}
-							onChange={handleTabChange}
-							indicatorColor="secondary"
-							textColor="secondary"
-							variant="scrollable"
-							scrollButtons="auto"
-							classes={{ root: 'w-full h-64 border-b-1' }}
-						>
-							<Tab
-								className="h-64"
-								label="Basic Info"
-							/>
-							{agentId !== 'new' && (
-								<Tab
-									className="h-64"
-									label="Opening Balance"
-								/>
-							)}
-						</Tabs>
-						<div className="p-16">
-							<div className={tabValue !== 0 ? 'hidden' : ''}>
-								<AgentForm agentId={agentId} />
-							</div>
+    <FormProvider {...methods}>
+      {hasPermission('AGENT_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab className='h-64' label='Basic Info' />
+              <Tab className='h-64' label='Opening Balance' />
+            </Tabs>
+          }
+          header={<AgentHeader />}
+          content={
+            <>
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                indicatorColor='secondary'
+                textColor='secondary'
+                variant='scrollable'
+                scrollButtons='auto'
+                classes={{ root: 'w-full h-64 border-b-1' }}>
+                <Tab className='h-64' label='Basic Info' />
+                {agentId !== 'new' && (
+                  <Tab className='h-64' label='Opening Balance' />
+                )}
+              </Tabs>
+              <div className='p-16'>
+                <div className={tabValue !== 0 ? 'hidden' : ''}>
+                  <AgentForm agentId={agentId} />
+                </div>
 
-							<div className={tabValue !== 1 ? 'hidden' : ''}>
-								<OpeningBalance />
-							</div>
-						</div>
-					</>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+                <div className={tabValue !== 1 ? 'hidden' : ''}>
+                  <OpeningBalance />
+                </div>
+              </div>
+            </>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Agent;

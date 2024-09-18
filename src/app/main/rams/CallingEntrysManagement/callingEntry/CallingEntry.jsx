@@ -98,22 +98,24 @@ function CallingEntry() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<CallingEntryHeader />}
-				content={
-					<div className="p-16 ">
-						<CallingEntryForm callingEntryId={callingEntryId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('CALLING_ENTRY_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<CallingEntryHeader />}
+          content={
+            <div className='p-16 '>
+              <CallingEntryForm callingEntryId={callingEntryId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default CallingEntry;

@@ -61,6 +61,8 @@ export const setMenuItem = () => (dispatch) => {
 
 	if (localStorage.getItem('jwt_access_token')) {
 		axios.get(`${MENU_ITEMS}`, authToken).then((data) => {
+			localStorage.setItem('basgdiuasbdiasdkj', JSON.stringify(data?.data?.permissions));
+
 			dispatch(resetNavigation(navigationAdapter.upsertMany(emptyInitialState, data?.data?.menu_items)));
 		});
 	} else {

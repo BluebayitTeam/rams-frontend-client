@@ -14,6 +14,7 @@ import PassengerHeader from './PassengerHeader';
 import PassengerModel from './models/PassengerModel';
 import { useGetPassengerQuery } from '../PassengersApi';
 import PassengerForm from './PassengerForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -109,20 +110,22 @@ function Passenger() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<PassengerHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<PassengerForm passengerId={passengerId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('PASSENGER_DETAILS') && (
+        <FusePageCarded
+          header={<PassengerHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <PassengerForm passengerId={passengerId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Passenger;

@@ -13,6 +13,7 @@ import DemandHeader from './DemandHeader';
 import DemandModel from './models/DemandModel';
 import { useGetDemandQuery } from '../DemandsApi';
 import DemandForm from './DemandForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,22 +96,24 @@ function Demand() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<DemandHeader />}
-				content={
-					<div className="p-16 ">
-						<DemandForm demandId={demandId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('DEMAND_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<DemandHeader />}
+          content={
+            <div className='p-16 '>
+              <DemandForm demandId={demandId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Demand;

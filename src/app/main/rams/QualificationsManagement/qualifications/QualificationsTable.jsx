@@ -171,92 +171,107 @@ function QualificationsTable(props) {
 						{_.orderBy(qualifications, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-								<TableRow
-									className="h-20 cursor-pointer border-t-1  border-gray-200"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 md:w-64 border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{_.isEmpty(employees) ||
-											employees.find((employee) => employee.id === n.employee.id).first_name}{' '}
-										{_.isEmpty(employees) ||
-											employees.find((employee) => employee.id === n.employee.id).last_name}
-									</TableCell>
+                <TableRow
+                  className='h-20 cursor-pointer border-t-1  border-gray-200'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 md:w-64 border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {_.isEmpty(employees) ||
+                      employees.find(
+                        (employee) => employee.id === n.employee.id
+                      ).first_name}{' '}
+                    {_.isEmpty(employees) ||
+                      employees.find(
+                        (employee) => employee.id === n.employee.id
+                      ).last_name}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{n.degree_name}
-									</TableCell>
+                  <TableCell
+                    className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {n.degree_name}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{n.passign_year}
-									</TableCell>
+                  <TableCell
+                    className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {n.passign_year}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{n.board}
-									</TableCell>
+                  <TableCell
+                    className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {n.board}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{n.institute_name}
-									</TableCell>
+                  <TableCell
+                    className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {n.institute_name}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{n.grade}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16 border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Edit
-											onClick={() => handleUpdateQualification(n, 'updateQualification')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+                  <TableCell
+                    className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {n.grade}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-16 border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'
+                    align='right'
+                    style={{
+                      position: 'sticky',
+                      right: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {hasPermission('QUALIFICATION_UPDATE') && (
+                      <Edit
+                        onClick={() =>
+                          handleUpdateQualification(n, 'updateQualification')
+                        }
+                        className='cursor-pointer custom-edit-icon-style'
+                      />
+                    )}
 
-										<Delete
-											onClick={() => handleDeleteQualification(n, 'deleteQualification')}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
-									</TableCell>
-								</TableRow>
-							);
+                    {hasPermission('QUALIFICATION_DELETE') && (
+                      <Delete
+                        onClick={() =>
+                          handleDeleteQualification(n, 'deleteQualification')
+                        }
+                        className='cursor-pointer custom-delete-icon-style'
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
 						})}
 					</TableBody>
 				</Table>

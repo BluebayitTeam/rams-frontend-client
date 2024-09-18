@@ -13,6 +13,7 @@ import QualificationHeader from './QualificationHeader';
 import QualificationModel from './models/QualificationModel';
 import { useGetQualificationQuery } from '../QualificationsApi';
 import QualificationForm from './QualificationForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -92,20 +93,22 @@ function Qualification() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<QualificationHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<QualificationForm qualificationId={qualificationId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('QUALIFICATION_DETAILS') && (
+        <FusePageCarded
+          header={<QualificationHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <QualificationForm qualificationId={qualificationId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Qualification;

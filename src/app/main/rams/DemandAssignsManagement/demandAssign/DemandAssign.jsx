@@ -8,6 +8,7 @@ import { z } from 'zod';
 import DemandAssignHeader from './DemandAssignHeader';
 import DemandAssignModel from './models/DemandAssignModel';
 import DemandAssignForm from './DemandAssignForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,24 @@ function DemandAssign() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<DemandAssignHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<DemandAssignForm demandAssignId={demandAssignId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('DEMAND_ASSIGN_CREATE') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<DemandAssignHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <DemandAssignForm demandAssignId={demandAssignId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default DemandAssign;

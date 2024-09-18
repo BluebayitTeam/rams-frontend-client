@@ -13,6 +13,7 @@ import EvisaEntryHeader from './EvisaEntryHeader';
 import EvisaEntryModel from './models/EvisaEntryModel';
 import { useGetEvisaEntryQuery } from '../EvisaEntrysApi';
 import EvisaEntryForm from './EvisaEntryForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -98,22 +99,24 @@ function EvisaEntry() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<EvisaEntryHeader />}
-				content={
-					<div className="p-16 ">
-						<EvisaEntryForm evisaEntryId={evisaEntryId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('EVISA_ENTRY_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<EvisaEntryHeader />}
+          content={
+            <div className='p-16 '>
+              <EvisaEntryForm evisaEntryId={evisaEntryId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default EvisaEntry;

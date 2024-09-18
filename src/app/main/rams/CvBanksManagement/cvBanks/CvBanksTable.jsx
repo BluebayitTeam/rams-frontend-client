@@ -23,6 +23,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import PrintCvBank from '@fuse/utils/Print/PrintCvBank';
 import CvBanksTableHead from './CvBanksTableHead';
 import { selectFilteredCvBanks, useGetCvBanksQuery } from '../CvBanksApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 function CvBanksTable(props) {
 	const { navigate, searchKey } = props;
@@ -223,129 +224,143 @@ function CvBanksTable(props) {
 							.map((n, index) => {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
-									<TableRow
-										className="h-20 cursor-pointer border-t-1  border-gray-200"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-									>
-										<TableCell
-											className="w-40 md:w-64 border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											style={{
-												position: 'sticky',
-												left: 0,
-												zIndex: 1,
-												backgroundColor: '#fff'
-											}}
-										>
-											{page * rowsPerPage + index + 1}
-										</TableCell>
+                  <TableRow
+                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    hover
+                    role='checkbox'
+                    aria-checked={isSelected}
+                    tabIndex={-1}
+                    key={n.id}
+                    selected={isSelected}>
+                    <TableCell
+                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      {page * rowsPerPage + index + 1}
+                    </TableCell>
 
-										{Object.entries(n).map(
-											([key, value]) =>
-												key !== 'id' &&
-												key !== 'random_number' && (
-													<TableCell
-														className="p-4 md:p-16 border-t-1 border-gray-200"
-														component="th"
-														scope="row"
-														key={key}
-													>
-														{key === 'file' ? (
-															n[key]?.split('.').pop()?.toLowerCase() === 'pdf' ? (
-																<PictureAsPdf
-																	style={{
-																		color: 'red',
-																		cursor: 'pointer',
-																		display: 'block',
-																		fontSize: '35px'
-																	}}
-																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-																/>
-															) : ['doc', 'docx'].includes(
-																	n[key]?.split('.').pop()?.toLowerCase()
-															  ) ? (
-																<DescriptionIcon
-																	style={{
-																		color: 'blue',
-																		cursor: 'pointer',
-																		display: 'block',
-																		fontSize: '35px'
-																	}}
-																	onClick={() => window.open(`${BASE_URL}${n[key]}`)}
-																/>
-															) : (
-																<img
-																	onClick={() =>
-																		n.file && showImage(`${BASE_URL}${n[key]}`)
-																	}
-																	src={
-																		n[key]
-																			? `${BASE_URL}${n[key]}`
-																			: 'assets/logos/user.jpg'
-																	}
-																	style={{
-																		height: '40px',
-																		width: '40px',
-																		borderRadius: '50%'
-																	}}
-																	alt="uploaded file"
-																/>
-															)
-														) : (key === 'created_at' || key === 'passport_issue_date') &&
-														  n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'updated_at' || key === 'passport_issue_date') &&
-														  n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'created_at' || key === 'passport_expiry_date') &&
-														  n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'updated_at' || key === 'passport_expiry_date') &&
-														  n[key] ? (
-															moment(new Date(n[key])).format('DD-MM-YYYY')
-														) : (key === 'is_debtor' || key === 'is_paid') &&
-														  n[key] !== undefined ? (
-															n[key] ? (
-																'Yes'
-															) : (
-																'No'
-															)
-														) : (
-															value
-														)}
-													</TableCell>
-												)
-										)}
+                    {Object.entries(n).map(
+                      ([key, value]) =>
+                        key !== 'id' &&
+                        key !== 'random_number' && (
+                          <TableCell
+                            className='p-4 md:p-16 border-t-1 border-gray-200'
+                            component='th'
+                            scope='row'
+                            key={key}>
+                            {key === 'file' ? (
+                              n[key]?.split('.').pop()?.toLowerCase() ===
+                              'pdf' ? (
+                                <PictureAsPdf
+                                  style={{
+                                    color: 'red',
+                                    cursor: 'pointer',
+                                    display: 'block',
+                                    fontSize: '35px',
+                                  }}
+                                  onClick={() =>
+                                    window.open(`${BASE_URL}${n[key]}`)
+                                  }
+                                />
+                              ) : ['doc', 'docx'].includes(
+                                  n[key]?.split('.').pop()?.toLowerCase()
+                                ) ? (
+                                <DescriptionIcon
+                                  style={{
+                                    color: 'blue',
+                                    cursor: 'pointer',
+                                    display: 'block',
+                                    fontSize: '35px',
+                                  }}
+                                  onClick={() =>
+                                    window.open(`${BASE_URL}${n[key]}`)
+                                  }
+                                />
+                              ) : (
+                                <img
+                                  onClick={() =>
+                                    n.file && showImage(`${BASE_URL}${n[key]}`)
+                                  }
+                                  src={
+                                    n[key]
+                                      ? `${BASE_URL}${n[key]}`
+                                      : 'assets/logos/user.jpg'
+                                  }
+                                  style={{
+                                    height: '40px',
+                                    width: '40px',
+                                    borderRadius: '50%',
+                                  }}
+                                  alt='uploaded file'
+                                />
+                              )
+                            ) : (key === 'created_at' ||
+                                key === 'passport_issue_date') &&
+                              n[key] ? (
+                              moment(new Date(n[key])).format('DD-MM-YYYY')
+                            ) : (key === 'updated_at' ||
+                                key === 'passport_issue_date') &&
+                              n[key] ? (
+                              moment(new Date(n[key])).format('DD-MM-YYYY')
+                            ) : (key === 'created_at' ||
+                                key === 'passport_expiry_date') &&
+                              n[key] ? (
+                              moment(new Date(n[key])).format('DD-MM-YYYY')
+                            ) : (key === 'updated_at' ||
+                                key === 'passport_expiry_date') &&
+                              n[key] ? (
+                              moment(new Date(n[key])).format('DD-MM-YYYY')
+                            ) : (key === 'is_debtor' || key === 'is_paid') &&
+                              n[key] !== undefined ? (
+                              n[key] ? (
+                                'Yes'
+                              ) : (
+                                'No'
+                              )
+                            ) : (
+                              value
+                            )}
+                          </TableCell>
+                        )
+                    )}
 
-										<TableCell
-											className="p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200"
-											component="th"
-											scope="row"
-											align="right"
-											style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-										>
-											<PrintIcon
-												className="cursor-pointer custom-print-icon-style text-3xl"
-												onClick={() => printCvBankRef.current.doPrint(n)}
-											/>
-											<Edit
-												onClick={() => handleUpdateCvBank(n, 'updateCvBank')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+                    <TableCell
+                      className='p-4 md:p-16 whitespace-nowrap border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      align='right'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      <PrintIcon
+                        className='cursor-pointer custom-print-icon-style text-3xl'
+                        onClick={() => printCvBankRef.current.doPrint(n)}
+                      />
+                      {hasPermission('CVBANK_UPDATE') && (
+                        <Edit
+                          onClick={() => handleUpdateCvBank(n, 'updateCvBank')}
+                          className='cursor-pointer custom-edit-icon-style'
+                        />
+                      )}
 
-											<Delete
-												onClick={() => handleDeleteCvBank(n, 'deleteCvBank')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</TableCell>
-									</TableRow>
-								);
+                      {hasPermission('CVBANK_DELETE') && (
+                        <Delete
+                          onClick={() => handleDeleteCvBank(n, 'deleteCvBank')}
+                          className='cursor-pointer custom-delete-icon-style'
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
 							})}
 					</TableBody>
 				</Table>

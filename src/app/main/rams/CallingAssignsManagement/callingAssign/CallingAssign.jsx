@@ -8,6 +8,7 @@ import { z } from 'zod';
 import CallingAssignHeader from './CallingAssignHeader';
 import CallingAssignModel from './models/CallingAssignModel';
 import CallingAssignForm from './CallingAssignForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,24 @@ function CallingAssign() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<CallingAssignHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<CallingAssignForm callingAssignId={callingAssignId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('CALLING_ASSIGN_CREATE') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<CallingAssignHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <CallingAssignForm callingAssignId={callingAssignId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default CallingAssign;

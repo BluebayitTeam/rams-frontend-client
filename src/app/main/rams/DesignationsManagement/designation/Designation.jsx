@@ -13,6 +13,7 @@ import DesignationHeader from './DesignationHeader';
 import DesignationModel from './models/DesignationModel';
 import { useGetDesignationQuery } from '../DesignationsApi';
 import DesignationForm from './DesignationForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function Designation() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<DesignationHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<DesignationForm designationId={designationId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('DESIGNATION_DETAILS') && (
+        <FusePageCarded
+          header={<DesignationHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <DesignationForm designationId={designationId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Designation;

@@ -13,6 +13,7 @@ import DepartmentHeader from './DepartmentHeader';
 import DepartmentModel from './models/DepartmentModel';
 import { useGetDepartmentQuery } from '../DepartmentsApi';
 import DepartmentForm from './DepartmentForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function Department() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<DepartmentHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<DepartmentForm departmentId={departmentId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('DEPARTURE_DETAILS') && (
+        <FusePageCarded
+          header={<DepartmentHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <DepartmentForm departmentId={departmentId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Department;
