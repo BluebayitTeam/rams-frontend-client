@@ -49,7 +49,6 @@ function Keyword({ name, label, domEl, icon, type = 'text', onClick = () => null
 	const methods = useFormContext();
 	const { getValues, setValue, reset } = methods;
 	const values = getValues();
-	
 
 	const [Label] = useState(label || fillUnderscoreBySpace(name));
 
@@ -72,6 +71,8 @@ function Keyword({ name, label, domEl, icon, type = 'text', onClick = () => null
 		// Call the onClick function
 		onClick();
 	};
+
+	console.log('dfdfdfdfdf', values);
 
 	return (
 		<>

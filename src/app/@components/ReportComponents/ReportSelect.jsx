@@ -65,7 +65,7 @@ function ReportSelect({
 } = {}) {
 	const classes = useStyles();
 	const methods = useFormContext();
-	const { getValues, setValue, control } = methods;
+	const { getValues, setValue, control} = methods;
 	const values = getValues();
 	const isFocused = values[`${name}Focused`];
 	const [Label] = useState(label || fillUnderscoreBySpace(name));
@@ -98,6 +98,7 @@ function ReportSelect({
 				onClick={() => {
 					setValue(`${name}Focused`, true);
 					setReRender(Math.random());
+					
 					setTimeout(() => document.getElementById(`${name}groupEl`).focus(), 300);
 				}}
 			>
@@ -123,6 +124,7 @@ function ReportSelect({
 						onClose={() => {
 							setValue(`${name}Focused`, false);
 							setReRender(Math.random());
+							 
 						}}
 						freeSolo
 						options={options}
@@ -131,6 +133,7 @@ function ReportSelect({
 						onChange={(_event, newValue) => {
 							if (customOnChange) {
 								customOnChange(_event, newValue); 
+								
 							} else {
 								onChange(newValue?.id || ''); 
 								setValue(`${name}Name`, newValue?.name || '');
