@@ -12,67 +12,71 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllPassengers }) {
+function PassengerFilterMenu({ inShowAllMode, handleGetPassengers }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const methods = useFormContext();
-	const { getValues } = methods;
+	const { getValues,setValue } = methods;
+	
 
 	const theme = useTheme();
-	const { passengers} = useSelector((state) => state.data);
+	const { passengers } = useSelector((state) => state.data);
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
 
-	
-
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllPassengers() : handleGetPassengers())
+		onEnter: () => {
+			if (inShowAllMode) {
+				handleGetPassengers();
+			}
+		}
 	};
-	const commonKewordProps = {
+
+	const commonKeywordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllPassengers() : handleGetPassengers())
+		onClick: () => {
+			if (inShowAllMode) {
+				handleGetPassengers();
+			}
+		},
+	
 	};
 
 	useEffect(() => {
-		
 		dispatch(getPassengers());
 	}, [dispatch]);
 
-	console.log('sadhbjkasbdkj', getValues());
+	console.log('Passenger Values:', getValues());
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
 				{/* passenger name */}
 				<ReportSelect
-                 {...commonFieldProps}
-                  name="passenger"
-                  options={passengers}
-                  icon="person"
-                  autocompleteStyle={{ width: '330px', margin: '0px 10px' }}
-                  getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}  
-                  />
+	      {...commonFieldProps}
+	      name="passenger"
+	     options={passengers}
+	     icon="person"
+	     autocompleteStyle={{ width: '330px', margin: '0px 10px' }}
+	     getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
+	     onChange={(_event, newValue) => {
+		setValue('passengerName', newValue?.passenger_name || ''); 
+		  
+	}}
+/>
 
-
-				
 			</div>
 
 			{/* keywords */}
 			<div className="allKeyWrdContainer">
-				
-				
-
 				<Keyword
-					{...commonKewordProps}
+					{...commonKeywordProps}
 					type="select"
 					name="passenger"
 					icon="person"
+					
 				/>
-
-				
-
-			
 			</div>
 		</div>
 	);
