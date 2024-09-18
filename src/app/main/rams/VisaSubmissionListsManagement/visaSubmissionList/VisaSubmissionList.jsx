@@ -21,9 +21,7 @@ function VisaSubmissionList() {
 	const emptyValue = {
 		agency: '',
 		passenger: '',
-
-		country: '',
-		man_power_date: ''
+		submission_date: ''
 	};
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -47,21 +45,27 @@ function VisaSubmissionList() {
 	};
 
 	const passenger = watch('passenger');
-	const manPowerDate = watch('man_power_date');
+	const submissionDate = watch('submission_date');
 
-	const navigate = useNavigate();
+	const navigate = useNavigate(); 
 
 	const { data, refetch } = useGetVisaSubmissionListsQuery({
 		passenger: selectedPassenger,
-		manPowerDate: selectedDate
+		submissionDate: selectedDate 
 	});
-	const visaSubmissionListId = data && data.length > 0 ? data[0].man_power_list.id : null;
+	
 
+	
+	const visaSubmissionListId = data?.length > 0 ? data[0]?.visa_submission_list?.id: null;
+	
 	function handleSearchPassengerClick() {
 		setSelectedPassenger(passenger);
-		setHideTabile(false);
-
-		setTableShow(true);
+		
+	}
+	function handleSearchManPowerDateClick() {
+		setSelectedPassenger(passenger);
+		setSelectedDate(submissionDate);
+		
 	}
 
 	const [createVisaSubmissionList] = useCreateVisaSubmissionListMutation();
@@ -72,11 +76,9 @@ function VisaSubmissionList() {
 			.then((data) => {
 				if (data) {
 					AddedSuccessfully();
-
-					setHideTabile(false);
-					setTableShow(true);
-
-					navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
+					
+		            setSelectedDate(submissionDate);
+                    navigate(`/apps/visaSubmissionList/visaSubmissionLists/new`);
 				}
 			})
 			.catch((error) => {
@@ -84,19 +86,39 @@ function VisaSubmissionList() {
 			});
 	}
 
+	
+  function handleCancelVisaSubmissionList() {
+    const submissionData = {
+    submission_date: getValues().submission_date,
+    agency: getValues().agency,
+    passenger: getValues("cancelpassenger"),
+    list_type: "cancel",
+    };
+
+    createVisaSubmissionList(submissionData)
+      .unwrap()
+      .then((submissionData) => {
+        if (submissionData) {
+			AddedSuccessfully();
+			setSelectedDate(submissionDate);
+          navigate("/apps/visaSubmissionList/visaSubmissionLists/new");
+        }
+      })
+      .catch((error) => {
+    CustomNotification('CancelList', 'Cancel List Added Successfully');
+
+      });
+  }
+
 	function handleCancel() {
+		console.log('test')
 		handleReset({
 			...emptyValue
 		});
-		setHideTabile(true);
+		
 	}
 
-	function handleSearchManPowerDateClick() {
-		setSelectedPassenger(passenger);
-		setSelectedDate(manPowerDate);
-		setTableShow(true);
-		setHideTabile(false);
-	}
+	
 
 	useEffect(() => {
 		if (visaSubmissionListId === 'new') {
@@ -110,7 +132,7 @@ function VisaSubmissionList() {
 			key={formKey}
 		>
 			<FusePageCarded
-				header={<VisaSubmissionListHeader />}
+				header={<VisaSubmissionListHeader handleCancel={handleCancel} />}
 				content={
 					<div className="p-16 ">
 						<VisaSubmissionListForm
@@ -118,7 +140,8 @@ function VisaSubmissionList() {
 							handleSearchPassengerClick={handleSearchPassengerClick}
 							handleSearchManPowerDateClick={handleSearchManPowerDateClick}
 							handleCreateVisaSubmissionList={handleCreateVisaSubmissionList}
-							handleCancel={handleCancel}
+							handleCancelVisaSubmissionList={handleCancelVisaSubmissionList}
+							handleReset={handleReset}
 						/>
 						<br />
 
@@ -133,7 +156,7 @@ function VisaSubmissionList() {
 							selectedDate={selectedDate}
 							selectedPassenger={selectedPassenger}
 							passenger={passenger}
-							manPowerDate={manPowerDate}
+							submissionDate={submissionDate}
 						/>
 					</div>
 				}

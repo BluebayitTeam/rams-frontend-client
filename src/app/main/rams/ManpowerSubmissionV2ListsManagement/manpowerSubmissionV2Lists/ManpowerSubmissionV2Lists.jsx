@@ -157,7 +157,7 @@ function ManpowerSubmissionV2Lists({
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
         dragAndDropRow={dragAndDropRow}
-        hideSection={["pagination", "download", "pg", "wp", "column"]}
+        hideSection={['pagination','pg','wp']}
       />
       <table id="table-to-xls" className="w-full">
         <div ref={componentRef} id="downloadPage">

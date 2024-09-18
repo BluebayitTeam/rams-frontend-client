@@ -3,10 +3,15 @@ import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
 	CREATE_MANPOWERLIST,
+	CREATE_VISASUBMISSIONLIST,
 	DELETE_MANPOWERLIST,
+	DELETE_VISASUBMISSIONLIST,
 	MANPOWERLIST_BY_PASSENGER_ID,
 	MANPOWERSBLISTS_BY_DATE,
-	UPDATE_MANPOWERLIST
+	UPDATE_MANPOWERLIST,
+	UPDATE_VISASUBMISSIONLIST,
+	VISASBLISTS_BY_DATE,
+	VISASUBMISSIONLIST_BY_PASSENGER_ID
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
@@ -21,24 +26,23 @@ const VisaSubmissionListApi = api
 	.injectEndpoints({
 		endpoints: (build) => ({
 			getVisaSubmissionLists: build.query({
-				query: ({ manPowerDate, passenger }) => {
-					if (!manPowerDate && !passenger) {
+				query: ({ submissionDate, passenger }) => {
+					if (!submissionDate && !passenger) {
 						return { url: null };
 					}
 
 					return {
-						url: MANPOWERSBLISTS_BY_DATE,
+						url: VISASBLISTS_BY_DATE,
 						params: {
-							man_power_date: manPowerDate,
+							submission_date: submissionDate,
 							passenger
 						}
 					};
 				},
-				async onQueryStarted({ manPowerDate, passenger }, { queryFulfilled }) {
+				async onQueryStarted({ submissionDate, passenger }, { queryFulfilled }) {
 					try {
 						const { data } = await queryFulfilled;
 
-						// Check if the response is an empty array
 						if (Array.isArray(data) && data.length === 0) {
 							CustomNotification('error', 'There are no manpower records');
 						}
@@ -51,20 +55,20 @@ const VisaSubmissionListApi = api
 
 			deleteVisaSubmissionLists: build.mutation({
 				query: (visaSubmissionListId) => ({
-					url: `${DELETE_MANPOWERLIST}${visaSubmissionListId}`,
+					url: `${DELETE_VISASUBMISSIONLIST}${visaSubmissionListId}`,
 					method: 'DELETE'
 				}),
 				invalidatesTags: ['visaSubmissionLists']
 			}),
 			getVisaSubmissionList: build.query({
 				query: (visaSubmissionListId) => ({
-					url: `${MANPOWERLIST_BY_PASSENGER_ID}${visaSubmissionListId}`
+					url: `${VISASUBMISSIONLIST_BY_PASSENGER_ID}${visaSubmissionListId}`
 				}),
 				providesTags: ['visaSubmissionLists']
 			}),
 			createVisaSubmissionList: build.mutation({
 				query: (newVisaSubmissionList) => ({
-					url: CREATE_MANPOWERLIST,
+					url: CREATE_VISASUBMISSIONLIST,
 					method: 'POST',
 					data: jsonToFormData(VisaSubmissionListModel(newVisaSubmissionList))
 				}),
@@ -72,7 +76,7 @@ const VisaSubmissionListApi = api
 			}),
 			updateVisaSubmissionList: build.mutation({
 				query: (visaSubmissionList) => ({
-					url: `${UPDATE_MANPOWERLIST}${visaSubmissionList.id}`,
+					url: `${UPDATE_VISASUBMISSIONLIST}${visaSubmissionList.id}`,
 					method: 'PUT',
 					data: jsonToFormData(visaSubmissionList)
 				}),

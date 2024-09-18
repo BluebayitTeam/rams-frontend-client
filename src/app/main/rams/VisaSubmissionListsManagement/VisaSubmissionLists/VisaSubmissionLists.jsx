@@ -5,42 +5,42 @@ import tableColumnsReducer from "src/app/@components/ReportComponents/tableColum
 import ReportPaginationAndDownload from "src/app/@components/ReportComponents/ReportPaginationAndDownload";
 import useReportData from "src/app/@components/ReportComponents/useReportData";
 import { useReactToPrint } from "react-to-print";
-import { Checkbox } from "@mui/material";
+import { Checkbox, Radio } from "@mui/material";
 import { getReportMakeStyles } from "../../ReportUtilities/reportMakeStyls";
 import VisaSubmissionListsTable from "./VisaSubmissionListsTable";
+import moment from "moment";
+import VisaSubmissionListsCancelTable from "./VisaSubmissionListsCancelTable";
 
-const useStyles = makeStyles((theme) => ({
-  ...getReportMakeStyles(theme),
+const useStyles = makeStyles(theme => ({
+	...getReportMakeStyles(theme)
 }));
-
 const initialTableColumnsState = [
-  {
-    id: 1,
-    label: "ক্রমিক নং",
-    sortAction: false,
-    isSerialNo: true,
-    show: true,
-  },
-  {
-    id: 2,
-    label: "বিদেশগামী কর্মীর নাম",
-    name: "passenger_name",
-    show: true,
-    style: {
-      whiteSpace: "wrap",
-    },
-  },
-  { id: 3, label: "পাসপোর্ট নম্বার", name: "passport_no", show: true },
-  { id: 4, label: "ফিঙ্গার নং.", name: "registration_id", show: true },
-  { id: 5, label: "ভিসা নম্বর ", name: "visa_no", show: true },
-  { id: 6, label: "নিয়োগকারীর নাম", name: "sponsor_name", show: true },
-  { id: 7, label: "পদের নাম", name: "profession", show: true },
-  { id: 8, label: "আয়করের পরিমাণ ", name: "Payment", show: true },
-  { id: 9, label: "আহার ", name: "Food", show: true },
-  { id: 10, label: "বি/ভাড়া", name: "home_rent", show: true },
-  { id: 11, label: "আয়করের পরিমাণ", name: "abcd", show: true },
-  { id: 12, label: "কল্যাণ ফ্রি এর পরিমাণ", name: "efg", show: true },
-];
+		{ id: 1, label: 'Profession ', name: 'profession', show: true },
+		{ id: 2, label: 'Year ', name: 'year', show: true },
+		{ id: 3, label: 'Visa No  ', name: 'visa_no', show: true },
+		{ id: 4, label: 'Sponsor Name ', name: 'sponsor_name', show: true },
+		{ id: 5, label: 'Possport No  ', name: 'passport_no', show: true },
+		{ id: 6, label: 'Sponsor ID', name: 'sponsor_id', show: true },
+		{ id: 7, label: 'Office SL', name: 'office_sl', show: true },
+		{ id: 8, label: 'Passenger Name', name: 'passenger_name', show: true },
+		{ id: 9, label: 'Reference', name: 'reference', show: true },
+		// { id: 10, label: 'id', name: 'visa_submission_list', subName: 'id', show: false },
+		{ id: 11, label: 'SL', sortAction: false, isSerialNo: true, show: true }
+	];
+	const initialTableColumnsState2 = [
+		{ id: 1, label: 'Profession ', name: 'profession', show: true },
+		{ id: 2, label: 'Year ', name: 'year', show: true },
+		{ id: 3, label: 'Visa No  ', name: 'visa_no', show: true },
+		{ id: 4, label: 'Sponsor Name ', name: 'sponsor_name', show: true },
+		{ id: 5, label: 'Possport No  ', name: 'passport_no', show: true },
+		{ id: 6, label: 'Sponsor ID', name: 'sponsor_id', show: true },
+		{ id: 7, label: 'Office SL', name: 'office_sl', show: true },
+		{ id: 8, label: 'Passenger Name', name: 'passenger_name', show: true },
+		{ id: 9, label: 'Reference', name: 'reference', show: true },
+		// { id: 10, label: 'id', name: 'visa_submission_list', subName: 'id', show: false },
+
+		{ id: 11, label: 'SL', sortAction: false, isSerialNo: true, show: true }
+	];
 
 function VisaSubmissionLists({
   data,
@@ -55,47 +55,75 @@ function VisaSubmissionLists({
   passenger,
   manPowerDate,
 }) {
-  const classes = useStyles();
+ const classes = useStyles();
+	const [cancelList, setCancelList] = useState(false);
 
-  const [generalData, setGeneralData] = useState({});
+	const [newList, setNewList] = useState(true);
+	const [officePrint, setOfficePrint] = useState(false);
+  const [embPrint, setembPrint] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('delete');
+  console.log('selectedValue',selectedValue)
+
+	const handlecancelList = event => {
+		setCancelList(event.target.checked);
+	};
+	const handlenewList = event => {
+		setNewList(event.target.checked);
+	};
+	const handleembPrint = event => {
+		setembPrint(event.target.checked);
+		officePrint && setOfficePrint(false);
+	};
+	const handleofficePrint = event => {
+		setOfficePrint(event.target.checked);
+		embPrint && setembPrint(false);
+	};
 
   const [
     modifiedManpowerSbListData,
-    setModifiedManpowerSbListData,
+    setModifiedVisaSbListData ,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
   ] = useReportData();
-  useEffect(() => {
-    const modifiedData = data?.map((manpowerSub) => ({
-      id: manpowerSub?.man_power_list?.id,
-      profession: manpowerSub?.visa_entry?.profession_english,
-      visa_no: manpowerSub?.visa_entry?.visa_number,
-      sponsor_name: manpowerSub?.visa_entry?.sponsor_name_english,
-      sponsor_id: manpowerSub?.manpower_entry?.sponsor_id_no,
-      passport_no: manpowerSub?.passenger?.passport_no,
-      office_sl: manpowerSub?.passenger?.office_serial,
-      passenger_name: manpowerSub?.passenger?.passenger_name,
-      reference: manpowerSub?.agent?.username,
-      registration_id: manpowerSub?.man_power?.registration_id,
-      Payment: "1000",
-      Food: "Self",
-      home_rent: "Free",
-      abcd: "500",
-      efg: "3500",
-      country: manpowerSub?.man_power_list?.country?.name,
-      agency: manpowerSub?.man_power_list?.agency?.name,
-      rl_no: manpowerSub?.man_power?.recruiting_agency?.rl_no,
-      man_power_date: manpowerSub?.man_power_list?.man_power_date,
+  const [
+    modifiedVisaSbListData2,
+    setModifiedVisaSbListData2,
+    setSortBy2,
+    setSortBySubKey2,
+    dragAndDropRow2,
+  ] = useReportData();
+
+
+
+ useEffect(() => {
+  if (Array.isArray(data)) {
+    const modifiedData = data.map((visaSub) => ({
+      profession: visaSub?.visa_entry?.profession_arabic,
+      year: moment(new Date(visaSub?.visa_entry?.visa_issue_date)).format('DD-MM-YYYY'),
+      visa_no: visaSub?.visa_entry?.visa_number,
+      sponsor_id: visaSub?.visa_entry?.sponsor_id_no,
+      sponsor_name: visaSub?.visa_entry?.sponsor_name_arabic,
+      passport_no: visaSub?.passenger?.passport_no,
+      office_sl: visaSub?.passenger?.passenger_id,
+      passenger_name: visaSub?.passenger?.passenger_name,
+      reference: visaSub?.agent?.username,
+      id: visaSub?.visa_submission_list?.id,
+      list_type: visaSub?.visa_submission_list?.list_type
     }));
 
-    setModifiedManpowerSbListData(modifiedData);
-  }, [data]);
+    setModifiedVisaSbListData(modifiedData);
+    setModifiedVisaSbListData2(modifiedData);
+  }
+}, [data]);
 
-  const [tableColumns, dispatchTableColumns] = useReducer(
-    tableColumnsReducer,
-    initialTableColumnsState
-  );
+
+
+  console.log('modifiedManpowerSbListDataVisa',modifiedVisaSbListData2)
+
+ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
+  const [tableColumns2, dispatchTableColumns2] = useReducer(tableColumnsReducer, initialTableColumnsState2);
+  
   const [printableFormat, setPrintableFormat] = useState(false);
 
   const handlePrintableFormat = (event) => {
@@ -123,15 +151,23 @@ function VisaSubmissionLists({
     content: () => componentRef.current,
   });
 
+  const handleChange = event => {
+		setSelectedValue(event.target.value);
+	};
+
+
+ const TotalNewList = Array.isArray(data)
+  ? data.filter(element => element.visa_submission_list.list_type === 'new').length
+  : 0;
+
+const TotalCancelList = Array.isArray(data)
+  ? data.filter(element => element.visa_submission_list.list_type === 'cancel').length
+  : 0;
+
+
   return (
     <>
-      <Checkbox
-        printableFormat={printableFormat}
-        onChange={handlePrintableFormat}
-        className="ml-96"
-        inputProps={{ "aria-label": "controlled" }}
-      />
-      Printable Format
+  
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -146,14 +182,56 @@ function VisaSubmissionLists({
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
         dragAndDropRow={dragAndDropRow}
-        hideSection={["pagination", "download", "pg", "wp", "column"]}
-      />
-      <table id="table-to-xls" className="w-full">
+        hideSection={["pagination",  "pg", "wp"]}
+        />
+        
+        <div style={{ display: data?.length > 0 ? 'block' : 'none' }}>
+				<Checkbox
+					cancelList={cancelList}
+					onChange={handlecancelList}
+					inputProps={{ 'aria-label': 'controlled' }}
+				/>{' '}
+				Cancel List
+				<Checkbox
+					defaultChecked
+					newList={newList}
+					onChange={handlenewList}
+					inputProps={{ 'aria-label': 'controlled' }}
+				/>{' '}
+				<span className="mr-96">New List</span>
+				
+				<Radio
+					checked={selectedValue === 'delete'}
+					onChange={handleChange}
+					value="delete"
+					name="radio-button-demo"
+					inputProps={{ 'aria-label': 'Delete' }}
+				/>{' '}
+				Delete
+				<Radio
+					checked={selectedValue === 'office'}
+					onChange={handleChange}
+					value="office"
+					name="radio-button-demo"
+					inputProps={{ 'aria-label': 'Office' }}
+				/>
+				Office Print
+				<Radio
+					checked={selectedValue === 'emb'}
+					onChange={handleChange}
+					value="emb"
+					color="default"
+					name="radio-button-demo"
+					inputProps={{ 'aria-label': 'EMB' }}
+				/>
+				EMB Print
+			</div>
+      {/* <table id="table-to-xls" className="w-full">
         <div ref={componentRef} id="downloadPage">
           {modifiedManpowerSbListData.map((manpowerSbList) => (
             <VisaSubmissionListsTable
               classes={classes}
-              generalData={generalData}
+              // generalData={generalData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={manpowerSbList}
@@ -182,7 +260,101 @@ function VisaSubmissionLists({
             />
           ))}
         </div>
-      </table>
+        </table> */}
+
+
+
+        <div ref={componentRef} id="downloadPage">
+				<table
+					id="table-to-xls"
+					className="w-full"
+					style={{ display: newList == true ? 'block' : 'none', minHeight: '270px' }}
+				>
+					{/* <div ref={componentRef} id="downloadPage"> */}
+					{/* each single page (table) */}
+
+					 {modifiedManpowerSbListData.map((visaSbList) => (
+            <VisaSubmissionListsTable
+              classes={classes}
+            //   generalData={generalData}
+              tableColumns={tableColumns}
+              dispatchTableColumns={dispatchTableColumns}
+              data={visaSbList}
+              printableFormat={printableFormat}
+              serialNumber={visaSbList.page * visaSbList.size -visaSbList.size +1}
+              setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              setSortBy={setSortBy}
+              setSortBySubKey={setSortBySubKey}
+              dragAndDropRow={dragAndDropRow}
+              tableShow={tableShow}
+              data2={data}
+              visaSubmissionListId={visaSubmissionListId}
+              handleReset={handleReset}
+              emptyValue={emptyValue}
+              refetch={refetch}
+              hideTabile={hideTabile}
+              selectedDate={selectedDate}
+              selectedPassenger={selectedPassenger}
+              passenger={passenger}
+             manPowerDate={manPowerDate}
+             officePrint={officePrint}
+			 selectedValue={selectedValue}
+			 embPrint={embPrint}
+            />
+          ))}
+					{/* </div> */}
+				</table>
+				<table
+					id="table-to-xls"
+					className="w-full"
+					style={{ display: cancelList == true ? 'block' : 'none', minHeight: '270px' }}
+				>
+					{/* <div ref={componentRef} id="downloadPage"> */}
+					{/* each single page (table) */}
+
+					{modifiedVisaSbListData2.map(visaSbList2 => (
+						<VisaSubmissionListsCancelTable
+							classes={classes}
+							tableColumns2={tableColumns2}
+							dispatchTableColumns2={dispatchTableColumns2}
+							data2={visaSbList2}
+							serialNumber={visaSbList2.page * visaSbList2.size - visaSbList2.size + 1}
+							setPage={setPage}
+							inSiglePageMode={inSiglePageMode}
+							setSortBy={setSortBy}
+							setSortBySubKey={setSortBySubKey}
+							dragAndDropRow2={dragAndDropRow2}
+							officePrint={officePrint}
+							selectedValue={selectedValue}
+							embPrint={embPrint}
+						/>
+					))}
+				</table>
+
+				<div
+					className="text-right mt-20 p-10"
+					style={{ display: modifiedManpowerSbListData?.length > 0 ? 'block' : 'none' }}
+				>
+					<p className="text-right">
+						{' '}
+						TOTAL:{' '}
+						{newList && cancelList
+							? TotalNewList + TotalCancelList
+							: newList && !cancelList
+							? TotalNewList
+							: !newList && cancelList
+							? TotalCancelList
+							: 0}{' '}
+						:المجوع
+					</p>
+					<br />
+					<p className="text-right">:المستلم</p> <br />
+					<p className="text-right">:المدقق</p> <br />
+					<p className="text-right">: المسئول</p> <br />
+				</div>
+			</div>
+       
     </>
   );
 }

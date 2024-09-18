@@ -1,56 +1,39 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import { useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
 import moment from 'moment';
-import { TableHead } from '@mui/material';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Delete } from '@mui/icons-material';
-import { Interweave } from 'interweave';
-import { DeletedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { useDispatch } from 'react-redux';
+import { BASE_URL } from '../../../../constant/constants';
 import { useDeleteVisaSubmissionListsMutation } from '../VisaSubmissionListsApi';
+import { Delete } from '@mui/icons-material';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import withRouter from '@fuse/core/withRouter';
 
-/**
- * The visaSubmissionLists table.
- */
-function VisaSubmissionListsTable(props) {
-	const {
+function VisaSubmissionListsCancelTable({
 	classes,
 	reportTitle,
-	tableColumns,
 	tableColumns2,
-	dispatchTableColumns,
 	dispatchTableColumn2,
 	generalData,
-	data,
+	data2,
 	embPrint,
 	officePrint,
 	selectedValue,
-	data2,
 	serialNumber,
 	setPage,
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-	dragAndDropRow,
-	visaSubmissionListId 
-	
-	} = props;
+	dragAndDropRow2
+}) {
 	let pageBasedSerialNo = serialNumber;
-	const methods = useFormContext();
-	const { getValues } = methods;
 
-	const formContentFooterData = sessionStorage.getItem('formContentFooterData');
+	const dispatch = useDispatch();
+    const methods = useFormContext();
+    const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
 
-	const [removeVisaSubmissionLists] = useDeleteVisaSubmissionListsMutation();
-
-	const [selected, setSelected] = useState([]);
-
-	function deleteVisaSubmissionList(item, event) {
+    const { formState, watch, getValues, reset } = methods;
+    
+		function deleteVisaSubmissionList(item, event) {
 		console.log('ljvclvjcxlvjjcv', visaSubmissionListId)
 
 		removeVisaSubmissionLists(visaSubmissionListId);
@@ -59,70 +42,32 @@ function VisaSubmissionListsTable(props) {
 
 		navigate(`/apps/visaSubmissionList/visaSubmissionLists/${item.id}/${item.handle}`);
 	}
-
 	return (
 		<div
-			className={`${classes.pageContainer} printPageContainer  px-10 w-full mb-0`}
-			
+			className={`${classes.pageContainer} printPageContainer  overflow-hidden w-full mb-0`}
+			// onMouseOver={() => {
+			// 	inSiglePageMode || setPage(data.page);
+			// }}
 		>
-			<div style={{ padding: '24px' }}>
-				<div>
-					<Table
-						className="w-full"
-						style={{ width: '100%', visibility: data?.data?.length > 0 ? 'visible' : 'hidden' }}
-					>
-						<TableBody>
-							<TableRow>
-								<td className="text-center text-lg " colspan="10">
-									بيان بالجوازات المقدمة
-								</td>
-							</TableRow>
-							<TableRow>
-								<td className="text-center text-base ">
-									الرقم :{' '}
-									{getValues()
-										?.agency_name?.rl_no?.toString()
-										.replace(/[0-9]/g, digit => String.fromCharCode(digit.charCodeAt(0) + 1632))}
-								</td>
-								<td className="text-center text-base ">
-									{getValues()
-										?.agency_name?.rl_no?.toString()
-										.replace(/[0-9]/g, digit =>
-											String.fromCharCode(digit.charCodeAt(0) + 1632)
-										)}{' '}
-									{getValues()?.agency_name?.name_arabic}
-								</td>
-								<td className="text-center text-base ">:اسم مقدم الجوازات</td>
-							</TableRow>
-						</TableBody>
-					</Table>
-					<Table className="w-full" style={{ visibility: data?.data?.length > 0 ? 'visible' : 'hidden' }}>
-						<TableBody>
-							<TableRow>
-								<td className="text-center text-base "> : التاريخ </td>
-								<td className="text-center text-base ">: التوقيع</td>
-							</TableRow>
-						</TableBody>
-					</Table>
+			{/* Cancel List  */}
+			<div>
+				<div className={classes.pageHead}>
+					<h1 className="text-lg  text-center">إلغاء</h1>
 				</div>
 
-				<Table
-					aria-label="simple table"
-					className={`${classes.table} px-10`}
-					style={{ border: '1px solid black' }}
-				>
+				<Table aria-label="simple table" className={classes.table} style={{ border: '1px solid black' }}>
 					<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
 						<TableRow>
 							<TableCell
-								className="text-center tableCell font-bold	 border-black	"
+								className="text-center tableCell font-bold	 border-black"
 								style={{
 									border: '1px solid black',
 									padding: '0px 6px 0 6px'
 								}}
 							>
-								{' '}
 								Profession <br /> المهنة
 							</TableCell>
+
 							<TableCell
 								className="text-center tableCell font-bold	 border-black	"
 								style={{
@@ -130,7 +75,6 @@ function VisaSubmissionListsTable(props) {
 									padding: '0px 6px 0 6px'
 								}}
 							>
-								{' '}
 								Year <br /> عام
 							</TableCell>
 							<TableCell
@@ -140,7 +84,6 @@ function VisaSubmissionListsTable(props) {
 									padding: '0px 6px 0 6px'
 								}}
 							>
-								{' '}
 								Visa No <br /> رقم التاشيرة/مل{' '}
 							</TableCell>
 							<TableCell
@@ -150,7 +93,6 @@ function VisaSubmissionListsTable(props) {
 									padding: '0px 6px 0 6px'
 								}}
 							>
-								{' '}
 								Sponsor Name <br /> اسم الكفيل
 							</TableCell>
 							<TableCell
@@ -160,7 +102,6 @@ function VisaSubmissionListsTable(props) {
 									padding: '0px 6px 0 6px'
 								}}
 							>
-								{' '}
 								Possport No
 								<br /> الجوازات ارقام
 							</TableCell>
@@ -215,7 +156,6 @@ function VisaSubmissionListsTable(props) {
 									padding: '0px 6px 0 6px'
 								}}
 							>
-								{' '}
 								SL
 								<br /> التوقيع
 							</TableCell>
@@ -232,24 +172,24 @@ function VisaSubmissionListsTable(props) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{data?.data?.map(
+						{data2?.data?.map(
 							(dataArr, idx) =>
-								dataArr?.list_type == 'new' && (
+								dataArr?.list_type == 'cancel' && (
 									<TableRow
 										key={dataArr.id}
 										className="tableRow cursor-pointer"
 										hover
 										onDrop={e =>
-											dragAndDropRow(
+											dragAndDropRow2(
 												e.dataTransfer.getData('draggerId'),
-												data.size * (data.page - 1) + idx
+												data2.size * (data2.page - 1) + idx
 											)
 										}
 										onDragOver={e => e.preventDefault()}
 										draggable={true}
 										onDragStart={e => e.dataTransfer.setData('draggerId', idx)}
 									>
-										{tableColumns.map(column => {
+										{tableColumns2?.map(column => {
 											return column.show ? (
 												<TableCell
 													align="center"
@@ -315,8 +255,9 @@ function VisaSubmissionListsTable(props) {
 					</TableBody>
 				</Table>
 			</div>
+			
 		</div>
 	);
 }
 
-export default withRouter(VisaSubmissionListsTable);
+export default withRouter(VisaSubmissionListsCancelTable);

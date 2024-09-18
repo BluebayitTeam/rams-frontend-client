@@ -267,6 +267,7 @@ function ManpowerNoteSheetFemaleForm(props) {
             tableColumns={tableColumns}
             dispatchTableColumns={dispatchTableColumns}
             dragAndDropRow={dragAndDropRow}
+            hideSection={['pagination','pg','wp']}
           />
 
           <div ref={componentRef} id="downloadPage" className="p-14">
