@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllPassengers }) {
+function PassengerFilterMenu({ inShowAllMode, handleGetPassengers }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -28,12 +28,22 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllPassengers() : handleGetPassengers())
+		onEnter: () => {
+			if (inShowAllMode) {
+				handleGetPassengers();
+			}
+		}
 	};
+	
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllPassengers() : handleGetPassengers())
+		onClick: () => {
+			if (inShowAllMode) {
+				handleGetPassengers();
+			}
+		}
 	};
+	
 
 	useEffect(() => {
 		

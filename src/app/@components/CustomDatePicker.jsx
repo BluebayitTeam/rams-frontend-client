@@ -1,9 +1,9 @@
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -12,9 +12,10 @@ function CustomDatePicker({ name, label, required, placeholder }) {
 
 	return (
 		<Controller
-			name={name}
-			control={control}
-			render={({ field, fieldState: { error } }) => (
+		name={name}
+		control={control}
+		render={({ field, fieldState: { error } }) => {
+			return (
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
 					<DatePicker
 						className="w-full my-7"
@@ -29,9 +30,9 @@ function CustomDatePicker({ name, label, required, placeholder }) {
 								{...params}
 								className="mt-8 mb-16 w-full"
 								required={required}
-								error={!!error}
+								error={!!error} // Set the error prop if there's a validation error
 								label={label}
-								helperText={error ? error.message : ''}
+								helperText={error ? error.message : ''} // Display the error message in the helper text
 								placeholder={placeholder || 'DD/MM/YYYY'}
 								InputProps={{
 									startAdornment: (
@@ -44,11 +45,12 @@ function CustomDatePicker({ name, label, required, placeholder }) {
 							/>
 						)}
 						inputFormat="DD/MM/YYYY"
-						format="DD/MM/YYYY" // Set the input format to DD/MM/YYYY
 					/>
 				</LocalizationProvider>
-			)}
-		/>
+			);
+		}}
+	/>
+	
 	);
 }
 
