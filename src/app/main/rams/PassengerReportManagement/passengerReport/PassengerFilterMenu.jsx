@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { getPassengers } from 'app/store/dataSlice';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -24,10 +24,7 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const passengerCodeEl = useRef(null);
+	
 
 	const commonFieldProps = {
 		setReRender,
