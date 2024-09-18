@@ -9,6 +9,7 @@ import BmetStampModel from "./models/BmetStampModel";
 import { useGetBmetStampsQuery } from "../BmetStampsApi";
 import BmetStampForm from "./BmetStampForm";
 import BmetStamps from "../bmetStamps/BmetStamps";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 
 const schema = z.object({});
 
@@ -54,27 +55,29 @@ function BmetStamp() {
 
   return (
     <FormProvider {...methods} key={formKey}>
-      <FusePageCarded
-        header={<BmetStampHeader />}
-        content={
-          <div className="p-16 ">
-            <BmetStampForm
-              bmetStampId={bmetStampId}
-              handleSearchManPowerDateClick={handleSearchManPowerDateClick}
-            />
-            <br />
+      {hasPermission('BMET_STAMP_FORM') && (
+        <FusePageCarded
+          header={<BmetStampHeader />}
+          content={
+            <div className='p-16 '>
+              <BmetStampForm
+                bmetStampId={bmetStampId}
+                handleSearchManPowerDateClick={handleSearchManPowerDateClick}
+              />
+              <br />
 
-            <BmetStamps
-              data={data}
-              handleReset={handleReset}
-              emptyValue={emptyValue}
-              selectedDate={selectedDate}
-              manPowerDate={manPowerDate}
-            />
-          </div>
-        }
-        scroll={isMobile ? "normal" : "content"}
-      />
+              <BmetStamps
+                data={data}
+                handleReset={handleReset}
+                emptyValue={emptyValue}
+                selectedDate={selectedDate}
+                manPowerDate={manPowerDate}
+              />
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

@@ -8,6 +8,7 @@ import { z } from 'zod';
 import KuwaitVisaHeader from './KuwaitVisaHeader';
 import KuwaitVisaModel from './models/KuwaitVisaModel';
 import KuwaitVisaForm from './KuwaitVisaForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,24 @@ function KuwaitVisa() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<KuwaitVisaHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<KuwaitVisaForm kuwaitVisaId={kuwaitVisaId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('KUWAIT_VISA_FORM') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<KuwaitVisaHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <KuwaitVisaForm kuwaitVisaId={kuwaitVisaId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default KuwaitVisa;

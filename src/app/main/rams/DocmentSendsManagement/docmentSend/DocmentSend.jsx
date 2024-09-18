@@ -7,6 +7,7 @@ import { z } from 'zod';
 import DocmentSendHeader from './DocmentSendHeader';
 import DocmentSendModel from './models/DocmentSendModel';
 import DocmentSendForm from './DocmentSendForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -41,25 +42,24 @@ function DocmentSend() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<DocmentSendHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<DocmentSendForm docmentSendId={docmentSendId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('MAIL_DOCUMENT') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<DocmentSendHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <DocmentSendForm docmentSendId={docmentSendId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default DocmentSend;

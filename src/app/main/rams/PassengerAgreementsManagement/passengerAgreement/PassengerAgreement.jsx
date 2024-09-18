@@ -8,6 +8,7 @@ import { z } from 'zod';
 import PassengerAgreementHeader from './PassengerAgreementHeader';
 import PassengerAgreementModel from './models/PassengerAgreementModel';
 import PassengerAgreementForm from './PassengerAgreementForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,26 @@ function PassengerAgreement() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<PassengerAgreementHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<PassengerAgreementForm passengerAgreementId={passengerAgreementId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('PASSENGER_AGREEMENT_FORM') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<PassengerAgreementHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <PassengerAgreementForm
+                passengerAgreementId={passengerAgreementId}
+              />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default PassengerAgreement;

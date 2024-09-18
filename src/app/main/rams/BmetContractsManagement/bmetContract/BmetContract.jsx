@@ -9,6 +9,7 @@ import BmetContractHeader from './BmetContractHeader';
 
 import BmetContractForm from './BmetContractForm';
 import BmetContractModel from './models/BmetContractModel';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -44,25 +45,24 @@ function BmetContract() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<BmetContractHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<BmetContractForm bmetContractId={bmetContractId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('BMET_CONTRACT_FORM') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<BmetContractHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <BmetContractForm bmetContractId={bmetContractId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default BmetContract;

@@ -13,6 +13,7 @@ import MakeAListHeader from './MakeAListHeader';
 import MakeAListModel from './models/MakeAListModel';
 import { useGetMakeAListQuery } from '../MakeAListsApi';
 import MakeAListForm from './MakeAListForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -94,20 +95,22 @@ function MakeAList() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<MakeAListHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<MakeAListForm makeAListId={makeAListId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('MAKE_LIST_DETAILS') && (
+        <FusePageCarded
+          header={<MakeAListHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <MakeAListForm makeAListId={makeAListId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default MakeAList;

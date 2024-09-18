@@ -17,6 +17,7 @@ import CallingEmbAttestationHeader from './CallingEmbAttestationHeader';
 // import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
 import CallingEmbAttestationForm from './CallingEmbAttestationForm';
 import { useGetCallingEmbAttestationQuery } from '../CallingEmbAttestationsApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -168,211 +169,228 @@ function CallingEmbAttestation() {
 	}
 
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab label="Passenger Details" />
-						<Tab label="CallingEmbAttestation Information" />
-					</Tabs>
-				}
-				header={
-					<CallingEmbAttestationHeader
-						handleReset={handleReset}
-						emptyValue={emptyValue}
-					/>
-				}
-				content={
-					<div className="p-16">
-						{tabValue === 0 && (
-							<div className="p-16">
-								<div className="flex justify-center w-full px-16">
-									<Controller
-										name="passenger"
-										control={control}
-										render={({ field: { value } }) => (
-											<Autocomplete
-												className={`w-full max-w-320 h-48 ${classes.container}`}
-												freeSolo
-												autoHighlight
-												disabled={!!fromSearch}
-												value={value ? passengers.find((data) => data.id === value) : null}
-												options={passengers}
-												getOptionLabel={(option) =>
-													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
-												}
-												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															setValue('passenger', res.data?.id);
-															setValue('current_status', res.data?.current_status?.id);
-														});
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('CALLING_EMB_ATTESTATION_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab label='Passenger Details' />
+              <Tab label='CallingEmbAttestation Information' />
+            </Tabs>
+          }
+          header={
+            <CallingEmbAttestationHeader
+              handleReset={handleReset}
+              emptyValue={emptyValue}
+            />
+          }
+          content={
+            <div className='p-16'>
+              {tabValue === 0 && (
+                <div className='p-16'>
+                  <div className='flex justify-center w-full px-16'>
+                    <Controller
+                      name='passenger'
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <Autocomplete
+                          className={`w-full max-w-320 h-48 ${classes.container}`}
+                          freeSolo
+                          autoHighlight
+                          disabled={!!fromSearch}
+                          value={
+                            value
+                              ? passengers.find((data) => data.id === value)
+                              : null
+                          }
+                          options={passengers}
+                          getOptionLabel={(option) =>
+                            `${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
+                          }
+                          onChange={(event, newValue) => {
+                            const authTOKEN = {
+                              headers: {
+                                'Content-type': 'application/json',
+                                Authorization:
+                                  localStorage.getItem('jwt_access_token'),
+                              },
+                            };
+                            axios
+                              .get(
+                                `${GET_PASSENGER_BY_ID}${newValue?.id}`,
+                                authTOKEN
+                              )
+                              .then((res) => {
+                                setValue('passenger', res.data?.id);
+                                setValue(
+                                  'current_status',
+                                  res.data?.current_status?.id
+                                );
+                              });
 
-													if (newValue?.id) {
-														const authTOKEN = {
-															headers: {
-																'Content-type': 'application/json',
-																Authorization: localStorage.getItem('jwt_access_token')
-															}
-														};
-														axios
-															.get(
-																`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${newValue?.id}`,
-																authTOKEN
-															)
-															.then((res) => {
-																if (res.data.id) {
-																	handleReset({
-																		...setIdIfValueIsObject(res.data),
+                            if (newValue?.id) {
+                              const authTOKEN = {
+                                headers: {
+                                  'Content-type': 'application/json',
+                                  Authorization:
+                                    localStorage.getItem('jwt_access_token'),
+                                },
+                              };
+                              axios
+                                .get(
+                                  `${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${newValue?.id}`,
+                                  authTOKEN
+                                )
+                                .then((res) => {
+                                  if (res.data.id) {
+                                    handleReset({
+                                      ...setIdIfValueIsObject(res.data),
 
-																		interviewed_date: moment(
-																			new Date(res.data?.interviewed_date)
-																		).format('YYYY-MM-DD'),
-																		submitted_for_sev_date: moment(
-																			new Date(res.data?.submitted_for_sev_date)
-																		).format('YYYY-MM-DD'),
-																		sev_received_date: moment(
-																			new Date(res.data?.sev_received_date)
-																		).format('YYYY-MM-DD'),
-																		submitted_for_permission_immigration_clearance_date:
-																			moment(
-																				new Date(
-																					res.data?.submitted_for_permission_immigration_clearance_date
-																				)
-																			).format('YYYY-MM-DD'),
-																		immigration_clearance_date: moment(
-																			new Date(
-																				res.data?.immigration_clearance_date
-																			)
-																		).format('YYYY-MM-DD'),
-																		handover_passport_ticket_date: moment(
-																			new Date(
-																				res.data?.handover_passport_ticket_date
-																			)
-																		).format('YYYY-MM-DD'),
-																		accounts_cleared_date: moment(
-																			new Date(res.data?.accounts_cleared_date)
-																		).format('YYYY-MM-DD'),
-																		dispatched_date: moment(
-																			new Date(res.data?.dispatched_date)
-																		).format('YYYY-MM-DD'),
-																		repatriation_date: moment(
-																			new Date(res.data?.repatriation_date)
-																		).format('YYYY-MM-DD'),
+                                      interviewed_date: moment(
+                                        new Date(res.data?.interviewed_date)
+                                      ).format('YYYY-MM-DD'),
+                                      submitted_for_sev_date: moment(
+                                        new Date(
+                                          res.data?.submitted_for_sev_date
+                                        )
+                                      ).format('YYYY-MM-DD'),
+                                      sev_received_date: moment(
+                                        new Date(res.data?.sev_received_date)
+                                      ).format('YYYY-MM-DD'),
+                                      submitted_for_permission_immigration_clearance_date:
+                                        moment(
+                                          new Date(
+                                            res.data?.submitted_for_permission_immigration_clearance_date
+                                          )
+                                        ).format('YYYY-MM-DD'),
+                                      immigration_clearance_date: moment(
+                                        new Date(
+                                          res.data?.immigration_clearance_date
+                                        )
+                                      ).format('YYYY-MM-DD'),
+                                      handover_passport_ticket_date: moment(
+                                        new Date(
+                                          res.data?.handover_passport_ticket_date
+                                        )
+                                      ).format('YYYY-MM-DD'),
+                                      accounts_cleared_date: moment(
+                                        new Date(
+                                          res.data?.accounts_cleared_date
+                                        )
+                                      ).format('YYYY-MM-DD'),
+                                      dispatched_date: moment(
+                                        new Date(res.data?.dispatched_date)
+                                      ).format('YYYY-MM-DD'),
+                                      repatriation_date: moment(
+                                        new Date(res.data?.repatriation_date)
+                                      ).format('YYYY-MM-DD'),
 
-																		passenger: newValue?.id
-																	});
+                                      passenger: newValue?.id,
+                                    });
 
-																	navigate(
-																		`/apps/callingEmbAttestation-management/callingEmbAttestations/${newValue?.passenger?.id || newValue?.id}`
-																	);
-																} else {
-																	navigate(
-																		`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
-																	);
-																	handleReset({
-																		passenger: newValue?.id,
-																		emb_attestation_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		calling_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		bio_submitted_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id
-																	});
-																	getCurrentStatus(newValue?.id);
-																}
-															})
-															.catch(() => {
-																handleReset({
-																	passenger: newValue?.id,
-																	emb_attestation_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	calling_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	bio_submitted_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id
-																});
-																getCurrentStatus(newValue?.id);
+                                    navigate(
+                                      `/apps/callingEmbAttestation-management/callingEmbAttestations/${newValue?.passenger?.id || newValue?.id}`
+                                    );
+                                  } else {
+                                    navigate(
+                                      `/apps/callingEmbAttestation-management/callingEmbAttestations/new`
+                                    );
+                                    handleReset({
+                                      passenger: newValue?.id,
+                                      emb_attestation_status: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                      calling_status: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                      bio_submitted_status: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                    });
+                                    getCurrentStatus(newValue?.id);
+                                  }
+                                })
+                                .catch(() => {
+                                  handleReset({
+                                    passenger: newValue?.id,
+                                    emb_attestation_status: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                    calling_status: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                    bio_submitted_status: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                  });
+                                  getCurrentStatus(newValue?.id);
 
-																navigate(
-																	`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
-																);
-															});
-													} else {
-														handleReset({
-															passenger: newValue?.id,
-															emb_attestation_status: doneNotDone.find(
-																(data) => data.default
-															)?.id,
-															calling_status: doneNotDone.find((data) => data.default)
-																?.id,
-															bio_submitted_status: doneNotDone.find(
-																(data) => data.default
-															)?.id
-														});
-														getCurrentStatus(newValue?.id);
+                                  navigate(
+                                    `/apps/callingEmbAttestation-management/callingEmbAttestations/new`
+                                  );
+                                });
+                            } else {
+                              handleReset({
+                                passenger: newValue?.id,
+                                emb_attestation_status: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                                calling_status: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                                bio_submitted_status: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                              });
+                              getCurrentStatus(newValue?.id);
 
-														navigate(
-															`/apps/callingEmbAttestation-management/callingEmbAttestations/new`
-														);
-													}
-												}}
-												renderInput={(params) => (
-													<TextField
-														{...params}
-														className={classes.textField}
-														placeholder="Select Passenger"
-														label="Passenger"
-														required
-														helperText={errors?.passenger?.message}
-														variant="outlined"
-														autoFocus
-														InputLabelProps={
-															value ? { shrink: true } : { style: { color: 'red' } }
-														}
-													/>
-												)}
-											/>
-										)}
-									/>
-								</div>
-								<CallingEmbAttestationForm />
-							</div>
-						)}
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+                              navigate(
+                                `/apps/callingEmbAttestation-management/callingEmbAttestations/new`
+                              );
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              className={classes.textField}
+                              placeholder='Select Passenger'
+                              label='Passenger'
+                              required
+                              helperText={errors?.passenger?.message}
+                              variant='outlined'
+                              autoFocus
+                              InputLabelProps={
+                                value
+                                  ? { shrink: true }
+                                  : { style: { color: 'red' } }
+                              }
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                  <CallingEmbAttestationForm />
+                </div>
+              )}
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default CallingEmbAttestation;

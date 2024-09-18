@@ -8,6 +8,7 @@ import { z } from 'zod';
 import KsaVisaHeader from './KsaVisaHeader';
 import KsaVisaModel from './models/KsaVisaModel';
 import KsaVisaForm from './KsaVisaForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,24 @@ function KsaVisa() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<KsaVisaHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<KsaVisaForm ksaVisaId={ksaVisaId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('KSA_VISA_FORM') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<KsaVisaHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <KsaVisaForm ksaVisaId={ksaVisaId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default KsaVisa;

@@ -8,6 +8,7 @@ import { z } from 'zod';
 import ManpowerNoteSheetHeader from './ManpowerNoteSheetHeader';
 import ManpowerNoteSheetModel from './models/ManpowerNoteSheetModel';
 import ManpowerNoteSheetForm from './ManpowerNoteSheetForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -42,25 +43,26 @@ function ManpowerNoteSheet() {
 	};
 
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<ManpowerNoteSheetHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<ManpowerNoteSheetForm manpowerNoteSheetId={manpowerNoteSheetId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('MANPOWER_LIST_NOTESHEET_DATA') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<ManpowerNoteSheetHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <ManpowerNoteSheetForm
+                manpowerNoteSheetId={manpowerNoteSheetId}
+              />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default ManpowerNoteSheet;

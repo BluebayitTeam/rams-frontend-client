@@ -8,6 +8,7 @@ import { z } from 'zod';
 import ThailandVisaHeader from './ThailandVisaHeader';
 import ThailandVisaModel from './models/ThailandVisaModel';
 import ThailandVisaForm from './ThailandVisaForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,24 @@ function ThailandVisa() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<ThailandVisaHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<ThailandVisaForm thailandVisaId={thailandVisaId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('THAILAND_VISA_FORM') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<ThailandVisaHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <ThailandVisaForm thailandVisaId={thailandVisaId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default ThailandVisa;

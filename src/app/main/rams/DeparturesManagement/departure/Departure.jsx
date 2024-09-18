@@ -8,6 +8,7 @@ import { z } from 'zod';
 import DepartureHeader from './DepartureHeader';
 import DepartureModel from './models/DepartureModel';
 import DepartureForm from './DepartureForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,24 @@ function Departure() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<DepartureHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<DepartureForm departureId={departureId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('DEPARTURE_FORM') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<DepartureHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <DepartureForm departureId={departureId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Departure;

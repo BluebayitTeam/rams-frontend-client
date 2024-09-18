@@ -17,6 +17,7 @@ import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import OfficeWorkHeader from './OfficeWorkHeader';
 import { useGetOfficeWorkQuery } from '../OfficeWorksApi';
 import OfficeWorkForm from './OfficeWorkForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -148,170 +149,186 @@ function OfficeWork() {
 	}
 
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab label="Passenger Details" />
-						<Tab label="OfficeWork Information" />
-					</Tabs>
-				}
-				header={
-					<OfficeWorkHeader
-						handleReset={handleReset}
-						emptyValue={emptyValue}
-					/>
-				}
-				content={
-					<div className="p-16">
-						{tabValue === 0 && (
-							<div className="p-16">
-								<div className="flex justify-center w-full px-16">
-									<Controller
-										name="passenger"
-										control={control}
-										render={({ field: { value } }) => (
-											<Autocomplete
-												className={`w-full max-w-320 h-48 ${classes.container}`}
-												freeSolo
-												autoHighlight
-												disabled={!!fromSearch}
-												id="passenger"
-												value={value ? passengers.find((data) => data.id === value) : null}
-												options={passengers}
-												getOptionLabel={(option) =>
-													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
-												}
-												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															setValue('current_status', res.data?.current_status?.id);
-															setValue('passenger', res.data?.id);
-														});
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('OFFICE_WORK_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab label='Passenger Details' />
+              <Tab label='OfficeWork Information' />
+            </Tabs>
+          }
+          header={
+            <OfficeWorkHeader
+              handleReset={handleReset}
+              emptyValue={emptyValue}
+            />
+          }
+          content={
+            <div className='p-16'>
+              {tabValue === 0 && (
+                <div className='p-16'>
+                  <div className='flex justify-center w-full px-16'>
+                    <Controller
+                      name='passenger'
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <Autocomplete
+                          className={`w-full max-w-320 h-48 ${classes.container}`}
+                          freeSolo
+                          autoHighlight
+                          disabled={!!fromSearch}
+                          id='passenger'
+                          value={
+                            value
+                              ? passengers.find((data) => data.id === value)
+                              : null
+                          }
+                          options={passengers}
+                          getOptionLabel={(option) =>
+                            `${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
+                          }
+                          onChange={(event, newValue) => {
+                            const authTOKEN = {
+                              headers: {
+                                'Content-type': 'application/json',
+                                Authorization:
+                                  localStorage.getItem('jwt_access_token'),
+                              },
+                            };
+                            axios
+                              .get(
+                                `${GET_PASSENGER_BY_ID}${newValue?.id}`,
+                                authTOKEN
+                              )
+                              .then((res) => {
+                                setValue(
+                                  'current_status',
+                                  res.data?.current_status?.id
+                                );
+                                setValue('passenger', res.data?.id);
+                              });
 
-													if (newValue?.id) {
-														const authTOKEN = {
-															headers: {
-																'Content-type': 'application/json',
-																Authorization: localStorage.getItem('jwt_access_token')
-															}
-														};
-														axios
-															.get(
-																`${OFFICEWORK_BY_PASSENGER_ID}${newValue?.id}`,
-																authTOKEN
-															)
-															.then((res) => {
-																if (res.data.id) {
-																	handleReset({
-																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id
-																	});
-																	navigate(
-																		`/apps/officeWork/officeWorks/${
-																			newValue?.passenger?.id || newValue?.id
-																		}`
-																	);
-																} else {
-																	navigate(`/apps/officeWork/officeWorks/new`);
-																	handleReset({
-																		passenger: newValue?.id,
-																		police_clearance_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		driving_license_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id,
-																		finger_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id
-																	});
-																	getCurrentStatus(newValue?.id);
-																}
-															})
-															.catch(() => {
-																handleReset({
-																	passenger: newValue?.id,
-																	police_clearance_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	driving_license_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id,
-																	finger_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id
-																});
-																getCurrentStatus(newValue?.id);
+                            if (newValue?.id) {
+                              const authTOKEN = {
+                                headers: {
+                                  'Content-type': 'application/json',
+                                  Authorization:
+                                    localStorage.getItem('jwt_access_token'),
+                                },
+                              };
+                              axios
+                                .get(
+                                  `${OFFICEWORK_BY_PASSENGER_ID}${newValue?.id}`,
+                                  authTOKEN
+                                )
+                                .then((res) => {
+                                  if (res.data.id) {
+                                    handleReset({
+                                      ...setIdIfValueIsObject(res.data),
+                                      passenger: newValue?.id,
+                                    });
+                                    navigate(
+                                      `/apps/officeWork/officeWorks/${
+                                        newValue?.passenger?.id || newValue?.id
+                                      }`
+                                    );
+                                  } else {
+                                    navigate(
+                                      `/apps/officeWork/officeWorks/new`
+                                    );
+                                    handleReset({
+                                      passenger: newValue?.id,
+                                      police_clearance_status: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                      driving_license_status: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                      finger_status: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                    });
+                                    getCurrentStatus(newValue?.id);
+                                  }
+                                })
+                                .catch(() => {
+                                  handleReset({
+                                    passenger: newValue?.id,
+                                    police_clearance_status: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                    driving_license_status: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                    finger_status: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                  });
+                                  getCurrentStatus(newValue?.id);
 
-																navigate(`/apps/officeWork/officeWorks/new`);
-															});
-													} else {
-														navigate(`/apps/officeWork/officeWorks/new`);
-														handleReset({
-															passenger: newValue?.id,
-															police_clearance_status: doneNotDone.find(
-																(data) => data.default
-															)?.id,
-															driving_license_status: doneNotDone.find(
-																(data) => data.default
-															)?.id,
-															finger_status: doneNotDone.find((data) => data.default)?.id
-														});
-														getCurrentStatus(newValue?.id);
-													}
-												}}
-												renderInput={(params) => (
-													<TextField
-														{...params}
-														className={classes.textField}
-														placeholder="Select Passenger"
-														label="Passenger"
-														required
-														helperText={errors?.passenger?.message}
-														variant="outlined"
-														autoFocus
-														InputLabelProps={
-															value ? { shrink: true } : { style: { color: 'red' } }
-														}
-													/>
-												)}
-											/>
-										)}
-									/>
-								</div>
-								<OfficeWorkForm />
-							</div>
-						)}
-						{tabValue === 1 && <OfficeWorkForm officeWorkId={officeWorkId} />}
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+                                  navigate(`/apps/officeWork/officeWorks/new`);
+                                });
+                            } else {
+                              navigate(`/apps/officeWork/officeWorks/new`);
+                              handleReset({
+                                passenger: newValue?.id,
+                                police_clearance_status: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                                driving_license_status: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                                finger_status: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                              });
+                              getCurrentStatus(newValue?.id);
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              className={classes.textField}
+                              placeholder='Select Passenger'
+                              label='Passenger'
+                              required
+                              helperText={errors?.passenger?.message}
+                              variant='outlined'
+                              autoFocus
+                              InputLabelProps={
+                                value
+                                  ? { shrink: true }
+                                  : { style: { color: 'red' } }
+                              }
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                  <OfficeWorkForm />
+                </div>
+              )}
+              {tabValue === 1 && <OfficeWorkForm officeWorkId={officeWorkId} />}
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default OfficeWork;

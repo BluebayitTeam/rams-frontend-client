@@ -17,6 +17,7 @@ import moment from 'moment';
 import MedicalHeader from './MedicalHeader';
 import { useGetMedicalQuery } from '../MedicalsApi';
 import MedicalForm from './MedicalForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -153,168 +154,183 @@ function Medical() {
 	}
 
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab label="Passenger Details" />
-						<Tab label="Medical Information" />
-					</Tabs>
-				}
-				header={
-					<MedicalHeader
-						handleReset={handleReset}
-						emptyValue={emptyValue}
-					/>
-				}
-				content={
-					<div className="p-16">
-						{tabValue === 0 && (
-							<div className="p-16">
-								<div className="flex justify-center w-full px-16">
-									<Controller
-										name="passenger"
-										control={control}
-										render={({ field: { value } }) => (
-											<Autocomplete
-												className={`w-full max-w-320 h-48 ${classes.container}`}
-												freeSolo
-												autoHighlight
-												disabled={!!fromSearch}
-												value={value ? passengers.find((data) => data.id === value) : null}
-												options={passengers}
-												getOptionLabel={(option) =>
-													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
-												}
-												onChange={(event, newValue) => {
-													const authTOKEN = {
-														headers: {
-															'Content-type': 'application/json',
-															Authorization: localStorage.getItem('jwt_access_token')
-														}
-													};
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('MEDICAL_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab label='Passenger Details' />
+              <Tab label='Medical Information' />
+            </Tabs>
+          }
+          header={
+            <MedicalHeader handleReset={handleReset} emptyValue={emptyValue} />
+          }
+          content={
+            <div className='p-16'>
+              {tabValue === 0 && (
+                <div className='p-16'>
+                  <div className='flex justify-center w-full px-16'>
+                    <Controller
+                      name='passenger'
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <Autocomplete
+                          className={`w-full max-w-320 h-48 ${classes.container}`}
+                          freeSolo
+                          autoHighlight
+                          disabled={!!fromSearch}
+                          value={
+                            value
+                              ? passengers.find((data) => data.id === value)
+                              : null
+                          }
+                          options={passengers}
+                          getOptionLabel={(option) =>
+                            `${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
+                          }
+                          onChange={(event, newValue) => {
+                            const authTOKEN = {
+                              headers: {
+                                'Content-type': 'application/json',
+                                Authorization:
+                                  localStorage.getItem('jwt_access_token'),
+                              },
+                            };
 
-													axios
-														.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-														.then((res) => {
-															setValue('current_status', res.data?.current_status?.id);
-															setValue('passenger', res.data?.id);
-														});
+                            axios
+                              .get(
+                                `${GET_PASSENGER_BY_ID}${newValue?.id}`,
+                                authTOKEN
+                              )
+                              .then((res) => {
+                                setValue(
+                                  'current_status',
+                                  res.data?.current_status?.id
+                                );
+                                setValue('passenger', res.data?.id);
+                              });
 
-													if (newValue?.id) {
-														const authTOKEN = {
-															headers: {
-																'Content-type': 'application/json',
-																Authorization: localStorage.getItem('jwt_access_token')
-															}
-														};
-														axios
-															.get(`${MEDICAL_BY_PASSENGER_ID}${newValue?.id}`, authTOKEN)
-															.then((res) => {
-																if (res.data.id) {
-																	handleReset({
-																		...setIdIfValueIsObject(res.data),
-																		passenger: newValue?.id,
-																		medical_expiry_date: moment(
-																			new Date(res.data?.medical_expiry_date)
-																		).format('YYYY-MM-DD'),
-																		medical_issue_date: moment(
-																			new Date(res.data?.medical_issue_date)
-																		).format('YYYY-MM-DD'),
-																		medical_report_date: moment(
-																			new Date(res.data?.medical_report_date)
-																		).format('YYYY-MM-DD'),
-																		medical_exam_date: moment(
-																			new Date(res.data?.medical_exam_date)
-																		).format('YYYY-MM-DD')
-																	});
-																	navigate(
-																		`/apps/medical/medicals/${
-																			newValue?.newValue?.id || newValue?.id
-																		}`
-																	);
-																} else {
-																	navigate(`/apps/medical/medicals/new`);
-																	handleReset({
-																		passenger: newValue?.id,
-																		medical_result: medicalResults.find(
-																			(data) => data.default
-																		)?.id,
-																		medical_card: doneNotDone.find(
-																			(data) => data.default
-																		)?.id
-																	});
-																	getCurrentStatus(newValue?.id);
-																}
-															})
-															.catch(() => {
-																handleReset({
-																	passenger: newValue?.id,
-																	medical_result: medicalResults.find(
-																		(data) => data.default
-																	)?.id,
-																	medical_card: doneNotDone.find(
-																		(data) => data.default
-																	)?.id
-																});
-																getCurrentStatus(newValue?.id);
-																navigate(`/apps/medical/medicals/new`);
-															});
-													} else {
-														navigate(`/apps/medical/medicals/new`);
-														handleReset({
-															passenger: newValue?.id,
-															medical_result: medicalResults.find((data) => data.default)
-																?.id,
-															medical_card: doneNotDone.find((data) => data.default)?.id
-														});
-														getCurrentStatus(newValue?.id);
-													}
-												}}
-												renderInput={(params) => (
-													<TextField
-														{...params}
-														className={classes.textField}
-														placeholder="Select Passenger"
-														label="Passenger"
-														required
-														helperText={errors?.passenger?.message}
-														variant="outlined"
-														autoFocus
-														InputLabelProps={
-															value ? { shrink: true } : { style: { color: 'red' } }
-														}
-													/>
-												)}
-											/>
-										)}
-									/>
-								</div>
-								<MedicalForm />
-							</div>
-						)}
-						{tabValue === 1 && <MedicalForm medicalId={medicalId} />}
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+                            if (newValue?.id) {
+                              const authTOKEN = {
+                                headers: {
+                                  'Content-type': 'application/json',
+                                  Authorization:
+                                    localStorage.getItem('jwt_access_token'),
+                                },
+                              };
+                              axios
+                                .get(
+                                  `${MEDICAL_BY_PASSENGER_ID}${newValue?.id}`,
+                                  authTOKEN
+                                )
+                                .then((res) => {
+                                  if (res.data.id) {
+                                    handleReset({
+                                      ...setIdIfValueIsObject(res.data),
+                                      passenger: newValue?.id,
+                                      medical_expiry_date: moment(
+                                        new Date(res.data?.medical_expiry_date)
+                                      ).format('YYYY-MM-DD'),
+                                      medical_issue_date: moment(
+                                        new Date(res.data?.medical_issue_date)
+                                      ).format('YYYY-MM-DD'),
+                                      medical_report_date: moment(
+                                        new Date(res.data?.medical_report_date)
+                                      ).format('YYYY-MM-DD'),
+                                      medical_exam_date: moment(
+                                        new Date(res.data?.medical_exam_date)
+                                      ).format('YYYY-MM-DD'),
+                                    });
+                                    navigate(
+                                      `/apps/medical/medicals/${
+                                        newValue?.newValue?.id || newValue?.id
+                                      }`
+                                    );
+                                  } else {
+                                    navigate(`/apps/medical/medicals/new`);
+                                    handleReset({
+                                      passenger: newValue?.id,
+                                      medical_result: medicalResults.find(
+                                        (data) => data.default
+                                      )?.id,
+                                      medical_card: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                    });
+                                    getCurrentStatus(newValue?.id);
+                                  }
+                                })
+                                .catch(() => {
+                                  handleReset({
+                                    passenger: newValue?.id,
+                                    medical_result: medicalResults.find(
+                                      (data) => data.default
+                                    )?.id,
+                                    medical_card: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                  });
+                                  getCurrentStatus(newValue?.id);
+                                  navigate(`/apps/medical/medicals/new`);
+                                });
+                            } else {
+                              navigate(`/apps/medical/medicals/new`);
+                              handleReset({
+                                passenger: newValue?.id,
+                                medical_result: medicalResults.find(
+                                  (data) => data.default
+                                )?.id,
+                                medical_card: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                              });
+                              getCurrentStatus(newValue?.id);
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              className={classes.textField}
+                              placeholder='Select Passenger'
+                              label='Passenger'
+                              required
+                              helperText={errors?.passenger?.message}
+                              variant='outlined'
+                              autoFocus
+                              InputLabelProps={
+                                value
+                                  ? { shrink: true }
+                                  : { style: { color: 'red' } }
+                              }
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                  <MedicalForm />
+                </div>
+              )}
+              {tabValue === 1 && <MedicalForm medicalId={medicalId} />}
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Medical;

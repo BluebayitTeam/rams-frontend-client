@@ -8,6 +8,7 @@ import { z } from 'zod';
 import MalaysiaVisaHeader from './MalaysiaVisaHeader';
 import MalaysiaVisaModel from './models/MalaysiaVisaModel';
 import MalaysiaVisaForm from './MalaysiaVisaForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -43,25 +44,24 @@ function MalaysiaVisa() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<MalaysiaVisaHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<MalaysiaVisaForm malaysiaVisaId={malaysiaVisaId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('MALAYSIA_VISA_FORM') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<MalaysiaVisaHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <MalaysiaVisaForm malaysiaVisaId={malaysiaVisaId} />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default MalaysiaVisa;

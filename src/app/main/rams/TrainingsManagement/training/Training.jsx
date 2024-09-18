@@ -17,6 +17,7 @@ import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import TrainingHeader from './TrainingHeader';
 import { useGetTrainingQuery } from '../TrainingsApi';
 import TrainingForm from './TrainingForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -142,161 +143,169 @@ function Training() {
 	}
 
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				contentToolbar={
-					<Tabs
-						value={tabValue}
-						onChange={handleTabChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="scrollable"
-						scrollButtons="auto"
-						classes={{ root: 'w-full h-64' }}
-					>
-						<Tab label="Passenger Details" />
-						<Tab label="Training Information" />
-					</Tabs>
-				}
-				header={
-					<TrainingHeader
-						handleReset={handleReset}
-						emptyValue={emptyValue}
-					/>
-				}
-				content={
-					<div className="p-16">
-						{tabValue === 0 && (
-							<div className="p-16">
-								<div className="flex justify-center w-full px-16">
-									<Controller
-										name="passenger"
-										control={control}
-										render={({ field: { value } }) => (
-											<Autocomplete
-												className={`w-full max-w-320 h-48 ${classes.container}`}
-												freeSolo
-												autoHighlight
-												disabled={!!fromSearch}
-												value={value ? passengers.find((data) => data.id === value) : null}
-												options={passengers}
-												getOptionLabel={(option) =>
-													`${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
-												}
-												onChange={(event, newValue) => {
-													// const authTOKEN = {
-													// 	headers: {
-													// 		'Content-type': 'application/json',
-													// 		Authorization: localStorage.getItem('jwt_access_token')
-													// 	}
-													// };
-													// axios
-													// 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
-													// 	.then((res) => {
-													// 		setValue('passenger', res.data?.id);
-													// 		setValue('current_status', res.data?.current_status?.id);
-													// 	});
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('TRAINING_DETAILS') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          contentToolbar={
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              variant='scrollable'
+              scrollButtons='auto'
+              classes={{ root: 'w-full h-64' }}>
+              <Tab label='Passenger Details' />
+              <Tab label='Training Information' />
+            </Tabs>
+          }
+          header={
+            <TrainingHeader handleReset={handleReset} emptyValue={emptyValue} />
+          }
+          content={
+            <div className='p-16'>
+              {tabValue === 0 && (
+                <div className='p-16'>
+                  <div className='flex justify-center w-full px-16'>
+                    <Controller
+                      name='passenger'
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <Autocomplete
+                          className={`w-full max-w-320 h-48 ${classes.container}`}
+                          freeSolo
+                          autoHighlight
+                          disabled={!!fromSearch}
+                          value={
+                            value
+                              ? passengers.find((data) => data.id === value)
+                              : null
+                          }
+                          options={passengers}
+                          getOptionLabel={(option) =>
+                            `${option?.passenger_id} ${option?.office_serial} ${option?.passport_no} ${option?.passenger_name}`
+                          }
+                          onChange={(event, newValue) => {
+                            // const authTOKEN = {
+                            // 	headers: {
+                            // 		'Content-type': 'application/json',
+                            // 		Authorization: localStorage.getItem('jwt_access_token')
+                            // 	}
+                            // };
+                            // axios
+                            // 	.get(`${GET_PASSENGER_BY_ID}${newValue?.id}`, authTOKEN)
+                            // 	.then((res) => {
+                            // 		setValue('passenger', res.data?.id);
+                            // 		setValue('current_status', res.data?.current_status?.id);
+                            // 	});
 
-													if (newValue?.id) {
-														const authTOKEN = {
-															headers: {
-																'Content-type': 'application/json',
-																Authorization: localStorage.getItem('jwt_access_token')
-															}
-														};
-														axios
-															.get(
-																`${TRAINING_BY_PASSENGER_ID}${newValue?.id}`,
-																authTOKEN
-															)
-															.then((res) => {
-																if (res.data.id) {
-																	console.log('fromData', res.data);
-																	handleReset({
-																		...setIdIfValueIsObject({
-																			...res?.data,
-																			passenger: newValue?.id
+                            if (newValue?.id) {
+                              const authTOKEN = {
+                                headers: {
+                                  'Content-type': 'application/json',
+                                  Authorization:
+                                    localStorage.getItem('jwt_access_token'),
+                                },
+                              };
+                              axios
+                                .get(
+                                  `${TRAINING_BY_PASSENGER_ID}${newValue?.id}`,
+                                  authTOKEN
+                                )
+                                .then((res) => {
+                                  if (res.data.id) {
+                                    console.log('fromData', res.data);
+                                    handleReset({
+                                      ...setIdIfValueIsObject({
+                                        ...res?.data,
+                                        passenger: newValue?.id,
 
-																			// training_card_status: doneNotDone.find(
-																			// 	(data) => data.default
-																			// )?.id,
-																			// recruiting_agency:
-																			// 	res?.data?.recruiting_agency?.id
-																		})
-																	});
-																	navigate(
-																		`/apps/training-management/trainings/${
-																			newValue?.passenger?.id || newValue?.id
-																		}`
-																	);
-																} else {
-																	navigate(`/apps/training-management/trainings/new`);
-																	handleReset({
-																		passenger: newValue?.id,
-																		training_card_status: doneNotDone.find(
-																			(data) => data.default
-																		)?.id
-																	});
-																	getCurrentStatus(newValue?.id);
-																}
-															})
-															.catch(() => {
-																handleReset({
-																	passenger: newValue?.id,
-																	training_card_status: doneNotDone.find(
-																		(data) => data.default
-																	)?.id
-																});
-																getCurrentStatus(newValue?.id);
-																navigate(`/apps/training-management/trainings/new`);
-															});
-													} else {
-														handleReset({
-															passenger: newValue?.id,
-															training_card_status: doneNotDone.find(
-																(data) => data.default
-															)?.id
-														});
-														getCurrentStatus(newValue?.id);
-														navigate(`/apps/training-management/trainings/new`);
-													}
-												}}
-												renderInput={(params) => (
-													<TextField
-														{...params}
-														className={classes.textField}
-														placeholder="Select Passenger"
-														label="Passenger"
-														required
-														helperText={errors?.passenger?.message}
-														variant="outlined"
-														autoFocus
-														InputLabelProps={
-															value ? { shrink: true } : { style: { color: 'red' } }
-														}
-													/>
-												)}
-											/>
-										)}
-									/>
-								</div>
-								<TrainingForm />
-							</div>
-						)}
-						{tabValue === 1 && <TrainingForm trainingId={trainingId} />}
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+                                        // training_card_status: doneNotDone.find(
+                                        // 	(data) => data.default
+                                        // )?.id,
+                                        // recruiting_agency:
+                                        // 	res?.data?.recruiting_agency?.id
+                                      }),
+                                    });
+                                    navigate(
+                                      `/apps/training-management/trainings/${
+                                        newValue?.passenger?.id || newValue?.id
+                                      }`
+                                    );
+                                  } else {
+                                    navigate(
+                                      `/apps/training-management/trainings/new`
+                                    );
+                                    handleReset({
+                                      passenger: newValue?.id,
+                                      training_card_status: doneNotDone.find(
+                                        (data) => data.default
+                                      )?.id,
+                                    });
+                                    getCurrentStatus(newValue?.id);
+                                  }
+                                })
+                                .catch(() => {
+                                  handleReset({
+                                    passenger: newValue?.id,
+                                    training_card_status: doneNotDone.find(
+                                      (data) => data.default
+                                    )?.id,
+                                  });
+                                  getCurrentStatus(newValue?.id);
+                                  navigate(
+                                    `/apps/training-management/trainings/new`
+                                  );
+                                });
+                            } else {
+                              handleReset({
+                                passenger: newValue?.id,
+                                training_card_status: doneNotDone.find(
+                                  (data) => data.default
+                                )?.id,
+                              });
+                              getCurrentStatus(newValue?.id);
+                              navigate(
+                                `/apps/training-management/trainings/new`
+                              );
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              className={classes.textField}
+                              placeholder='Select Passenger'
+                              label='Passenger'
+                              required
+                              helperText={errors?.passenger?.message}
+                              variant='outlined'
+                              autoFocus
+                              InputLabelProps={
+                                value
+                                  ? { shrink: true }
+                                  : { style: { color: 'red' } }
+                              }
+                            />
+                          )}
+                        />
+                      )}
+                    />
+                  </div>
+                  <TrainingForm />
+                </div>
+              )}
+              {tabValue === 1 && <TrainingForm trainingId={trainingId} />}
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Training;

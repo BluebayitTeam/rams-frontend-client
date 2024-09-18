@@ -8,6 +8,7 @@ import { z } from 'zod';
 import ListOfManpowerRefHeader from './ListOfManpowerRefHeader';
 import ListOfManpowerRefModel from './models/ListOfManpowerRefModel';
 import ListOfManpowerRefForm from './ListOfManpowerRefForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -42,25 +43,26 @@ function ListOfManpowerRef() {
 	};
 
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				classes={{
-					toolbar: 'p-0',
-					header: 'min-h-80 h-80'
-				}}
-				header={<ListOfManpowerRefHeader handleReset={handleReset} />}
-				content={
-					<div className="p-16 ">
-						<ListOfManpowerRefForm listOfManpowerRefId={listOfManpowerRefId} />
-					</div>
-				}
-				innerScroll
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('BMET_APPLICATION') && (
+        <FusePageCarded
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<ListOfManpowerRefHeader handleReset={handleReset} />}
+          content={
+            <div className='p-16 '>
+              <ListOfManpowerRefForm
+                listOfManpowerRefId={listOfManpowerRefId}
+              />
+            </div>
+          }
+          innerScroll
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default ListOfManpowerRef;

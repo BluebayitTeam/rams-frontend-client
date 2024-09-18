@@ -11,6 +11,7 @@ import BmetV2ApplicationModel from "./models/BmetV2ApplicationModel";
 import { useGetBmetV2ApplicationsQuery } from "../BmetV2ApplicationsApi";
 import BmetV2ApplicationForm from "./BmetV2ApplicationForm";
 import BmetV2Applications from "../bmetV2Applications/BmetV2Applications";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 
 const schema = z.object({
   agency: z
@@ -70,26 +71,28 @@ function BmetV2Application() {
 
   return (
     <FormProvider {...methods} key={formKey}>
-      <FusePageCarded
-        header={<BmetV2ApplicationHeader />}
-        content={
-          <div className="p-16 ">
-            <BmetV2ApplicationForm
-              bmetV2ApplicationId={bmetV2ApplicationId}
-              handleSearchManPowerDateClick={handleSubmit(onSubmit)}
-            />
-            <br />
-            <BmetV2Applications
-              data={data}
-              handleReset={handleReset}
-              emptyValue={emptyValue}
-              selectedDate={selectedDate}
-              bmetV2ApplicationDate={bmetV2ApplicationDate}
-            />
-          </div>
-        }
-        scroll={isMobile ? "normal" : "content"}
-      />
+      {hasPermission('BMET_APPLICATION') && (
+        <FusePageCarded
+          header={<BmetV2ApplicationHeader />}
+          content={
+            <div className='p-16 '>
+              <BmetV2ApplicationForm
+                bmetV2ApplicationId={bmetV2ApplicationId}
+                handleSearchManPowerDateClick={handleSubmit(onSubmit)}
+              />
+              <br />
+              <BmetV2Applications
+                data={data}
+                handleReset={handleReset}
+                emptyValue={emptyValue}
+                selectedDate={selectedDate}
+                bmetV2ApplicationDate={bmetV2ApplicationDate}
+              />
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
     </FormProvider>
   );
 }

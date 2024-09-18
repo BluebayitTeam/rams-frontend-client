@@ -19,6 +19,7 @@ import moment from 'moment';
 import { Delete, Edit, ViewDay, ViewWeek, Visibility } from '@mui/icons-material';
 import MakeAListsTableHead from './MakeAListsTableHead';
 import { selectFilteredMakeALists, useGetMakeAListsQuery } from '../MakeAListsApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The makeALists table.
@@ -181,101 +182,100 @@ function MakeAListsTable(props) {
 						{_.orderBy(makeALists, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 md:w-64 text-center"
-										padding="none"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
+                <TableRow
+                  className='h-20 cursor-pointer'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 md:w-64 text-center'
+                    padding='none'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    <Checkbox
+                      checked={isSelected}
+                      onClick={(event) => event.stopPropagation()}
+                      onChange={(event) => handleCheck(event, n.id)}
+                    />
+                  </TableCell>
 
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n.make_date ? moment(n.make_date).format('DD-MM-YYYY') : 'Invalid Date'}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n.title}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n.note}
-									</TableCell>
-									<TableCell>
-										<div>
-											<ViewWeek
-												onClick={() => handleMakeAListColumn(n)}
-												className="cursor-pointer mr-14"
-												style={{ color: 'blue' }}
-											/>
-											<ViewDay
-												onClick={() => handleMakeAListRow(n)}
-												className="cursor-pointer mr-14"
-												style={{ color: 'orange' }}
-											/>
-											<Visibility
-												onClick={() => handleMakeAListReport(n)}
-												className="cursor-pointer mr-14"
-												style={{ color: '#00c7f3' }}
-											/>
+                  <TableCell
+                    className='w-40 md:w-64'
+                    component='th'
+                    scope='row'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n.make_date
+                      ? moment(n.make_date).format('DD-MM-YYYY')
+                      : 'Invalid Date'}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n.title}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n.note}
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      {hasPermission('MAKE_LIST_UPDATE') && (
+                        <ViewWeek
+                          onClick={() => handleMakeAListColumn(n)}
+                          className='cursor-pointer mr-14'
+                          style={{ color: 'blue' }}
+                        />
+                      )}
+                      {hasPermission('MAKE_LIST_UPDATE') && (
+                        <ViewDay
+                          onClick={() => handleMakeAListRow(n)}
+                          className='cursor-pointer mr-14'
+                          style={{ color: 'orange' }}
+                        />
+                      )}
+                      {hasPermission('MAKE_LIST_UPDATE') && (
+                        <Visibility
+                          onClick={() => handleMakeAListReport(n)}
+                          className='cursor-pointer mr-14'
+                          style={{ color: '#00c7f3' }}
+                        />
+                      )}
 
-											<Edit
-												onClick={() => handleUpdateMakeAList(n)}
-												className="cursor-pointer mr-14"
-												style={{ color: 'green' }}
-											/>
+                      {hasPermission('MAKE_LIST_UPDATE') && (
+                        <Edit
+                          onClick={() => handleUpdateMakeAList(n)}
+                          className='cursor-pointer mr-14'
+                          style={{ color: 'green' }}
+                        />
+                      )}
 
-											<Delete
-												onClick={() => handleDeleteMakeAList(n, 'Delete')}
-												className="cursor-pointer mr-15"
-												style={{
-													color: 'red'
-												}}
-											/>
-										</div>
-									</TableCell>
-								</TableRow>
-							);
+                      {hasPermission('MAKE_LIST_DELETE') && (
+                        <Delete
+                          onClick={() => handleDeleteMakeAList(n, 'Delete')}
+                          className='cursor-pointer mr-15'
+                          style={{
+                            color: 'red',
+                          }}
+                        />
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
 						})}
 					</TableBody>
 				</Table>
