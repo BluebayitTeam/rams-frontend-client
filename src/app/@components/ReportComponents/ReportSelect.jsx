@@ -56,6 +56,7 @@ function ReportSelect({
   width,
   setReRender,
   onEnter = () => null,
+  getOptionLabel = (option) => `${option.name}`, // Default to option.name
 } = {}) {
   const classes = useStyles();
 
@@ -126,7 +127,7 @@ function ReportSelect({
             freeSolo
             options={options}
             value={value ? options.find((data) => data.id == value) : null}
-            getOptionLabel={(option) => `${option.name}`}
+            getOptionLabel={getOptionLabel}
             onChange={(_event, newValue) => {
               onChange(newValue?.id || '');
               onEnter();

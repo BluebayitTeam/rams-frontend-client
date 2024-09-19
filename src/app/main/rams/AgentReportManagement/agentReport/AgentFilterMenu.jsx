@@ -49,131 +49,133 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
 
 	console.log('sadhbjkasbdkj', getValues());
 	return (
-		<div className={classes.filterMenuContainer}>
-			<div className="allFieldContainer borderTop mt-4">
-				{/* user name */}
-				<ReportTextField
-					{...commonFieldProps}
-					name="username"
-					label="User Name"
-					domEl={userNameEl}
-					icon="person"
-					width="75px"
-				/>
+    <div className={classes.filterMenuContainer}>
+      <div className='allFieldContainer borderTop mt-4'>
+        {/* user name */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='username'
+          label='User Name'
+          domEl={userNameEl}
+          icon='person'
+          width='75px'
+        />
 
-				{/* group */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="group"
-					options={groups}
-					icon="groups"
-					width="40px"
-				/>
+        {/* group */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='group'
+          options={groups}
+          icon='groups'
+          width='40px'
+        />
 
-				{/* phone */}
-				<ReportTextField
-					{...commonFieldProps}
-					name="primary_phone"
-					label="Phone"
-					domEl={primaryPhoneEl}
-					icon="phone"
-					width="45px"
-				/>
+        {/* phone */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='primary_phone'
+          label='Phone'
+          domEl={primaryPhoneEl}
+          icon='phone'
+          width='45px'
+        />
 
-				{/* district */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="district"
-					options={cities}
-					icon="homeSharp"
-					width="45px"
-				/>
+        {/* district */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='district'
+          options={cities}
+          icon='homeSharp'
+          width='45px'
+          getOptionLabel={(option) => `${option.name}- ${option.bn_name}`}
+        />
 
-				{/* agent code */}
-				<ReportTextField
-					{...commonFieldProps}
-					name="agent_code"
-					domEl={agentCodeEl}
-					icon="qr_code_scanner_sharp"
-					width="77px"
-				/>
+        {/* agent code */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='agent_code'
+          domEl={agentCodeEl}
+          icon='qr_code_scanner_sharp'
+          width='77px'
+        />
 
-				{/* date from */}
-				<ReportDatePicker
-					{...commonFieldProps}
-					name="date_after"
-					label="Date From"
-					maxDate={values.date_before || new Date()}
-				/>
+        {/* date from */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='date_after'
+          label='Date From'
+          maxDate={values.date_before || new Date()}
+        />
 
-				{/* date to */}
-				<ReportDatePicker
-					{...commonFieldProps}
-					name="date_before"
-					label="Date To"
-					minDate={values.date_after}
-					maxDate={new Date()}
-				/>
-			</div>
+        {/* date to */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='date_before'
+          label='Date To'
+          minDate={values.date_after}
+          maxDate={new Date()}
+        />
+      </div>
 
-			{/* keywords */}
-			<div className="allKeyWrdContainer">
-				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="username"
-					label="User Name"
-					domEl={userNameEl}
-					icon="person"
-				/>
+      {/* keywords */}
+      <div className='allKeyWrdContainer'>
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='username'
+          label='User Name'
+          domEl={userNameEl}
+          icon='person'
+        />
 
-				<Keyword
-					{...commonKewordProps}
-					type="select"
-					name="group"
-					icon="groups"
-				/>
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='group'
+          icon='groups'
+        />
 
-				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="primary_phone"
-					label="Phone"
-					domEl={primaryPhoneEl}
-					icon="phone"
-				/>
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='primary_phone'
+          label='Phone'
+          domEl={primaryPhoneEl}
+          icon='phone'
+        />
 
-				<Keyword
-					{...commonKewordProps}
-					type="select"
-					name="district"
-					icon="homeSharp"
-				/>
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='district'
+          icon='homeSharp'
+		  
+        />
 
-				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="agent_code"
-					domEl={agentCodeEl}
-					icon="qr_code_scanner_sharp"
-				/>
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='agent_code'
+          domEl={agentCodeEl}
+          icon='qr_code_scanner_sharp'
+        />
 
-				<Keyword
-					{...commonKewordProps}
-					type="date"
-					name="date_after"
-					label="Date From"
-				/>
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='date_after'
+          label='Date From'
+        />
 
-				<Keyword
-					{...commonKewordProps}
-					type="date"
-					name="date_before"
-					label="Date To"
-				/>
-			</div>
-		</div>
-	);
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='date_before'
+          label='Date To'
+        />
+      </div>
+    </div>
+  );
 }
 
 export default AgentFilterMenu;
