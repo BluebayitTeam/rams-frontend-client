@@ -92,14 +92,6 @@ function LedgerReportsTable(props) {
 	const componentRef = useRef(null);
 	
 	const { data, isLoading, refetch } = useGetLedgerReportsQuery({ ...getValues(), page, size }, { enabled: false });
-	
-
-
-console.log('dlsajdlasdjlasdjasldj',data)
-	
-
-
-
 	const { refetch: refetchAll } = useGetLedgerAllReportsQuery({ ...getValues() }, { enabled: false });
 	const totalData = useSelector(selectFilteredLedgerReports(data));
 
@@ -118,7 +110,7 @@ console.log('dlsajdlasdjlasdjasldj',data)
 	});
 
 	const handleGetLedgers = async (newPage, callBack) => {
-		// debugger;
+		
 		try {
 			const formValues = getValues();
 			const page = newPage || 1;
