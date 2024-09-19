@@ -3,12 +3,12 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
+	AGENT_FILTER_BY,
 	AGENT_FILTER_WITHOUT_PG,
 	CREATE_DEPARTMENT,
 	DELETE_DEPARTMENT,
 	DELETE_DEPARTMENT_MULTIPLE,
 	GET_DEPARTMENT_BY_ID,
-	GET_PASSENGER_LEDGER_REPORT,
 	UPDATE_DEPARTMENT
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
@@ -22,12 +22,12 @@ const PassengerReportApi = api
 		endpoints: (build) => ({
 			getPassengerReports: build.query({
 				query: (filterData) => ({
-					url: GET_PASSENGER_LEDGER_REPORT,
+					url: AGENT_FILTER_BY,
 					params: filterData
 				}),
 				providesTags: ['passengerReports']
 			}),
-			getAgentAllReports: build.query({
+			getPassengerAllReports: build.query({
 				query: (filterData) => ({
 					url: AGENT_FILTER_WITHOUT_PG,
 					params: filterData
@@ -77,7 +77,7 @@ const PassengerReportApi = api
 export default PassengerReportApi;
 export const {
 	useGetPassengerReportsQuery,
-	useGetAgentAllReportsQuery,
+	useGetPassengerAllReportsQuery,
 	useDeletePassengerReportsMutation,
 	useGetPassengerReportQuery,
 	useUpdatePassengerReportMutation,

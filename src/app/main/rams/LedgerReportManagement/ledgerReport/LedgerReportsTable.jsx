@@ -15,8 +15,8 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { selectFilteredPassengerReports, useGetPassengerAllReportsQuery, useGetPassengerReportsQuery } from '../PassengerReportsApi';
-import PassengerFilterMenu from './PassengerFilterMenu';
+import { selectFilteredLedgerReports, useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
+import LedgerFilterMenu from './LedgerFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
@@ -26,15 +26,43 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Name', name: 'username', show: true },
-	{ id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-	{ id: 4, label: 'District', name: 'city', subName: 'name', show: true },
-	{ id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-	{ id: 6, label: 'Email', name: 'email', show: true }
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true, style: { justifyContent: 'center' } },
+	{ id: 2, label: 'Log Date', name: 'log_date', show: true, type: 'date', style: { justifyContent: 'center' } },
+	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true, style: { justifyContent: 'center' } },
+	{ id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
+	{ id: 5, label: 'Details', name: 'details', show: true },
+
+	{
+		id: 6,
+		label: 'Credit',
+		name: 'credit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' },
+		type: 'amount'
+	},
+	{
+		id: 7,
+		label: 'Debit',
+		name: 'debit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' },
+		type: 'amount'
+	},
+
+	{
+		id: 8,
+		label: 'Balance',
+		name: 'balance',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' },
+		type: 'amount'
+	}
 ];
 
-function PassengerReportsTable(props) {
+function LedgerReportsTable(props) {
 	const classes = useStyles();
 	const methods = useForm({
 		mode: 'onChange',
@@ -43,11 +71,11 @@ function PassengerReportsTable(props) {
 	});
 	const dispatch = useDispatch();
 
-	const { control, getValues } = methods;
+	const { control, getValues,watch } = methods;
 
-	const [modifiedPassengerData, setModifiedPassengerData] = useReportData();
+	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
 
-	console.log('modifiedPassengerData', modifiedPassengerData);
+	console.log('modifiedLedgerData', modifiedLedgerData);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -57,22 +85,26 @@ function PassengerReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 
-	const passenger = watch("passenger");
-
-
+	console.log('inShowAllMode', inShowAllMode);
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
 	const componentRef = useRef(null);
+	
+	const { data, isLoading, refetch } = useGetLedgerReportsQuery({ ...getValues(), page, size }, { enabled: false });
+	
 
-	// Prevent automatic fetching by setting enabled: false
-	const { data, isLoading, refetch } = useGetPassengerReportsQuery({ ...getValues(), page, size }, { enabled: false });
 
-	const { refetch: refetchAll } = useGetPassengerAllReportsQuery({ ...getValues() }, { enabled: false });
-	const totalData = useSelector(selectFilteredPassengerReports(data));
+console.log('dlsajdlasdjlasdjasldj',data)
+	
+
+
+
+	const { refetch: refetchAll } = useGetLedgerAllReportsQuery({ ...getValues() }, { enabled: false });
+	const totalData = useSelector(selectFilteredLedgerReports(data));
 
 	useEffect(() => {
-		setModifiedPassengerData(totalData?.Passengers);
+		setModifiedLedgerData(totalData?.account_logs);
 	}, [totalData]);
 
 	// Function to handle Excel download
@@ -85,7 +117,7 @@ function PassengerReportsTable(props) {
 		content: () => componentRef.current
 	});
 
-	const handleGetPassengers = async (newPage, callBack) => {
+	const handleGetLedgers = async (newPage, callBack) => {
 		// debugger;
 		try {
 			const formValues = getValues();
@@ -100,21 +132,21 @@ function PassengerReportsTable(props) {
 						callBack(response.data);
 					}
 
-					const PassengersData = response.data.Passengers || [];
-					setModifiedPassengerData(PassengersData);
+					const ledgersData = response.data.ledgers || [];
+					setModifiedLedgerData(ledgersData);
 					setInShowAllMode(false);
 
-					// const { totalPages, totalElements } = getPaginationData(PassengersData, size, page);
+					// const { totalPages, totalElements } = getPaginationData(ledgersData, size, page);
 					setTotalPages(response.data?.total_pages);
 					setTotalElements(response.data?.total_elements);
 				});
 			}
 		} catch (error) {
-			console.error('Error fetching Passengers:', error);
+			console.error('Error fetching ledgers:', error);
 		}
 	};
 
-	const handleGetAllPassengers = async (callBack, callBackAfterStateUpdated) => {
+	const handleGetAllLedgers = async (callBack, callBackAfterStateUpdated) => {
 		try {
 			const formValues = getValues();
 
@@ -126,10 +158,10 @@ function PassengerReportsTable(props) {
 						callBack(response.data);
 					}
 
-					setModifiedPassengerData(response.data.Passengers || []);
+					setModifiedLedgerData(response.data.account_logs || []);
 					setInShowAllMode(true);
 
-					const { totalPages, totalElements } = getPaginationData(response.data.Passengers, size, page);
+					const { totalPages, totalElements } = getPaginationData(response.data.account_logs, size, page);
 					setTotalPages(totalPages);
 					setTotalElements(totalElements);
 				});
@@ -139,7 +171,7 @@ function PassengerReportsTable(props) {
 				}
 			}
 		} catch (error) {
-			console.error('Error fetching all Passengers:', error);
+			console.error('Error fetching all ledgers:', error);
 		}
 	};
 
@@ -147,10 +179,10 @@ function PassengerReportsTable(props) {
 		<div className={classes.headContainer}>
 			{/* Filter */}
 			<FormProvider {...methods}>
-				<PassengerFilterMenu
+				<LedgerFilterMenu
 					inShowAllMode={inShowAllMode}
-					handleGetPassengers={handleGetPassengers}
-					handleGetAllPassengers={handleGetAllPassengers}
+					handleGetLedgers={handleGetLedgers}
+					handleGetAllLedgers={handleGetAllLedgers}
 				/>
 			</FormProvider>
 			<ReportPaginationAndDownload
@@ -163,17 +195,17 @@ function PassengerReportsTable(props) {
 				componentRef={componentRef}
 				totalPages={totalPages}
 				totalElements={totalElements}
-				onFirstPage={() => handleGetPassengers(1)}
-				onPreviousPage={() => handleGetPassengers(page - 1)}
-				onNextPage={() => handleGetPassengers(page + 1)}
-				onLastPage={() => handleGetPassengers(totalPages)}
+				onFirstPage={() => handleGetLedgers(1)}
+				onPreviousPage={() => handleGetLedgers(page - 1)}
+				onNextPage={() => handleGetLedgers(page + 1)}
+				onLastPage={() => handleGetLedgers(totalPages)}
 				handleExelDownload={handleExelDownload}
 				handlePrint={handlePrint}
-				handleGetData={handleGetPassengers}
-				handleGetAllData={handleGetAllPassengers}
+				handleGetData={handleGetLedgers}
+				handleGetAllData={handleGetAllLedgers}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
-				filename="PassengerReport"
+				filename="LedgerReport"
 			/>
 
 			<table
@@ -186,14 +218,14 @@ function PassengerReportsTable(props) {
 					id="downloadPage"
 				>
 					{/* each single page (table) */}
-					{modifiedPassengerData.map((Passenger, index) => (
+					{modifiedLedgerData.map((ledger, index) => (
 						<SinglePage
 							key={index}
 							classes={classes}
-							reportTitle="Passenger Report"
+							reportTitle="Ledger Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={Passenger}
+							data={ledger}
 							totalColumn={initialTableColumnsState?.length}
 							serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
 							setPage={setPage}
@@ -206,4 +238,4 @@ function PassengerReportsTable(props) {
 	);
 }
 
-export default PassengerReportsTable;
+export default LedgerReportsTable;
