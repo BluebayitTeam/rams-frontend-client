@@ -3,12 +3,12 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-	AGENT_FILTER_BY,
 	AGENT_FILTER_WITHOUT_PG,
 	CREATE_DEPARTMENT,
 	DELETE_DEPARTMENT,
 	DELETE_DEPARTMENT_MULTIPLE,
 	GET_DEPARTMENT_BY_ID,
+	LEDGER_FILTER_BY,
 	UPDATE_DEPARTMENT
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
@@ -22,7 +22,7 @@ const LedgerReportApi = api
 		endpoints: (build) => ({
 			getLedgerReports: build.query({
 				query: (filterData) => ({
-					url: AGENT_FILTER_BY,
+					url: LEDGER_FILTER_BY,
 					params: filterData
 				}),
 				providesTags: ['ledgerReports']

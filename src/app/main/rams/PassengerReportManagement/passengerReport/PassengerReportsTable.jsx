@@ -57,7 +57,9 @@ function PassengerReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 
-	console.log('inShowAllMode', inShowAllMode);
+	const passenger = watch("passenger");
+
+
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
