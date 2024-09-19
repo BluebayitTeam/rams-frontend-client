@@ -3,7 +3,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import { useReducer, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,9 +12,10 @@ import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/Re
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
+import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { selectFilteredPassengerReports, useGetPassengerReportsQuery } from '../PassengerReportsApi';
+import { selectFilteredPassengerReports, useGetPassengerAllReportsQuery, useGetPassengerReportsQuery } from '../PassengerReportsApi';
 import PassengerFilterMenu from './PassengerFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,17 +25,14 @@ const useStyles = makeStyles((theme) => ({
 // Define the Zod schema
 const schema = z.object({});
 
-// const initialTableColumnsState = [
-// 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-// 	{ id: 2, label: 'Name', name: 'username', show: true },
-// 	{ id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-// 	{ id: 4, label: 'District', name: 'city', subName: 'name', show: true },
-// 	{ id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-// 	{ id: 6, label: 'Email', name: 'email', show: true }
-// ];
-
-const initialTableColumnsState = [{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true }];
-
+const initialTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Name', name: 'username', show: true },
+	{ id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
+	{ id: 4, label: 'District', name: 'city', subName: 'name', show: true },
+	{ id: 5, label: 'Mobile', name: 'primary_phone', show: true },
+	{ id: 6, label: 'Email', name: 'email', show: true }
+];
 
 function PassengerReportsTable(props) {
 	const classes = useStyles();
@@ -45,19 +43,16 @@ function PassengerReportsTable(props) {
 	});
 	const dispatch = useDispatch();
 
-	const { control, getValues ,watch} = methods;
+	const { control, getValues } = methods;
 
-	const [modifiedAgentData, setModifiedAgentData] = useReportData();
+	const [modifiedPassengerData, setModifiedPassengerData] = useReportData();
 
-	console.log('modifiedAgentData', modifiedAgentData);
+	console.log('modifiedPassengerData', modifiedPassengerData);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
-	const passenger = watch("passenger");
-	console.log('lkdfjsfljdsfljdslfjds')
 
 	const [page, setPage] = useState(1);
-	const [size, setSize] = useState(25);
-
+	const [size, setSize] = useState(10);
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -69,15 +64,14 @@ function PassengerReportsTable(props) {
 	const componentRef = useRef(null);
 
 	// Prevent automatic fetching by setting enabled: false
-	const { data, isLoading, refetch ,error} = useGetPassengerReportsQuery({ ...getValues(), page, size,passenger }, { enabled: false });
-	console.log('fdskfksdhfksdhfsh',error)
+	const { data, isLoading, refetch } = useGetPassengerReportsQuery({ ...getValues(), page, size }, { enabled: false });
 
-	// const { refetch: refetchAll } = useGetAgentAllReportsQuery({ ...getValues() }, { enabled: false });
+	const { refetch: refetchAll } = useGetPassengerAllReportsQuery({ ...getValues() }, { enabled: false });
 	const totalData = useSelector(selectFilteredPassengerReports(data));
 
-	// useEffect(() => {
-	// 	setModifiedAgentData(totalData?.agents);
-	// }, [totalData]);
+	useEffect(() => {
+		setModifiedPassengerData(totalData?.Passengers);
+	}, [totalData]);
 
 	// Function to handle Excel download
 	const handleExelDownload = () => {
@@ -96,7 +90,7 @@ function PassengerReportsTable(props) {
 			const page = newPage || 1;
 			setPage(page);
 
-			const response = await refetch({ ...formValues, page, size,passenger }); // Manually trigger the query
+			const response = await refetch({ ...formValues, page, size }); // Manually trigger the query
 
 			if (response?.data) {
 				unstable_batchedUpdates(() => {
@@ -104,48 +98,48 @@ function PassengerReportsTable(props) {
 						callBack(response.data);
 					}
 
-					const agentsData = response.data.agents || [];
-					setModifiedAgentData(agentsData);
+					const PassengersData = response.data.Passengers || [];
+					setModifiedPassengerData(PassengersData);
 					setInShowAllMode(false);
 
-					// const { totalPages, totalElements } = getPaginationData(agentsData, size, page);
+					// const { totalPages, totalElements } = getPaginationData(PassengersData, size, page);
 					setTotalPages(response.data?.total_pages);
 					setTotalElements(response.data?.total_elements);
 				});
 			}
 		} catch (error) {
-			console.error('Error fetching agents:', error);
+			console.error('Error fetching Passengers:', error);
 		}
 	};
 
-	// const handleGetAllPassengers = async (callBack, callBackAfterStateUpdated) => {
-	// 	try {
-	// 		const formValues = getValues();
+	const handleGetAllPassengers = async (callBack, callBackAfterStateUpdated) => {
+		try {
+			const formValues = getValues();
 
-	// 		const response = await refetchAll({ ...formValues }); // Manually trigger the query
+			const response = await refetchAll({ ...formValues }); // Manually trigger the query
 
-	// 		if (response?.data) {
-	// 			unstable_batchedUpdates(() => {
-	// 				if (callBack) {
-	// 					callBack(response.data);
-	// 				}
+			if (response?.data) {
+				unstable_batchedUpdates(() => {
+					if (callBack) {
+						callBack(response.data);
+					}
 
-	// 				setModifiedAgentData(response.data.agents || []);
-	// 				setInShowAllMode(true);
+					setModifiedPassengerData(response.data.Passengers || []);
+					setInShowAllMode(true);
 
-	// 				const { totalPages, totalElements } = getPaginationData(response.data.agents, size, page);
-	// 				setTotalPages(totalPages);
-	// 				setTotalElements(totalElements);
-	// 			});
+					const { totalPages, totalElements } = getPaginationData(response.data.Passengers, size, page);
+					setTotalPages(totalPages);
+					setTotalElements(totalElements);
+				});
 
-	// 			if (callBackAfterStateUpdated) {
-	// 				callBackAfterStateUpdated(response.data);
-	// 			}
-	// 		}
-	// 	} catch (error) {
-	// 		console.error('Error fetching all agents:', error);
-	// 	}
-	// };
+				if (callBackAfterStateUpdated) {
+					callBackAfterStateUpdated(response.data);
+				}
+			}
+		} catch (error) {
+			console.error('Error fetching all Passengers:', error);
+		}
+	};
 
 	return (
 		<div className={classes.headContainer}>
@@ -154,7 +148,7 @@ function PassengerReportsTable(props) {
 				<PassengerFilterMenu
 					inShowAllMode={inShowAllMode}
 					handleGetPassengers={handleGetPassengers}
-					// handleGetAllPassengers={handleGetAllPassengers}
+					handleGetAllPassengers={handleGetAllPassengers}
 				/>
 			</FormProvider>
 			<ReportPaginationAndDownload
@@ -174,12 +168,11 @@ function PassengerReportsTable(props) {
 				handleExelDownload={handleExelDownload}
 				handlePrint={handlePrint}
 				handleGetData={handleGetPassengers}
-				// handleGetAllData={handleGetAllPassengers}
+				handleGetAllData={handleGetAllPassengers}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
 				filename="PassengerReport"
-				hideSection={['pg','print','wp','download','column']}
-				/>
+			/>
 
 			<table
 				id="table-to-xls"
@@ -191,14 +184,14 @@ function PassengerReportsTable(props) {
 					id="downloadPage"
 				>
 					{/* each single page (table) */}
-					{modifiedAgentData.map((agent, index) => (
+					{modifiedPassengerData.map((Passenger, index) => (
 						<SinglePage
 							key={index}
 							classes={classes}
 							reportTitle="Passenger Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={agent}
+							data={Passenger}
 							totalColumn={initialTableColumnsState?.length}
 							serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
 							setPage={setPage}
