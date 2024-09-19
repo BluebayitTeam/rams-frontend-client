@@ -64,6 +64,7 @@ import JournalAppConfig from '../rams/JournalsManagement/JournalAppConfig';
 import KsaVisaManualAppConfig from '../rams/KsaVisaManualsManagement/KsaVisaManualAppConfig';
 import KsaVisaAppConfig from '../rams/KsaVisasManagement/KsaVisaAppConfig';
 import KuwaitVisaAppConfig from '../rams/KuwaitVisasManagement/KuwaitVisaAppConfig';
+import LedgerReportAppConfig from '../rams/LedgerReportManagement/LedgerReportAppConfig';
 import LedgerAppConfig from '../rams/LedgersManagement/LedgerAppConfig';
 import ListOfManpowerRefAppConfig from '../rams/ListOfManpowerRefsManagement/ListOfManpowerRefAppConfig';
 import MakeAListAppConfig from '../rams/MakeAListsManagement/MakeAListAppConfig';
@@ -172,6 +173,7 @@ const appsConfigs = [
 	DemandAssignAppConfig,
 	AgentReportAppConfig,
 	PassengerReportAppConfig,
+	LedgerReportAppConfig,
 	VisaEntryAppConfig,
 	VisaCancelListAppConfig,
 	VisaReissueListAppConfig,
