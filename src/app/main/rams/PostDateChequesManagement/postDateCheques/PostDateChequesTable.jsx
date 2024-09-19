@@ -19,6 +19,7 @@ import moment from 'moment';
 import clsx from 'clsx';
 import PostDateChequesTableHead from './PostDateChequesTableHead';
 import { selectFilteredPostDateCheques, useGetPostDateChequesQuery } from '../PostDateChequesApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The postDateCheques table.
@@ -167,138 +168,128 @@ function PostDateChequesTable(props) {
 						{_.orderBy(postDateCheques, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 md:w-64 text-center"
-										padding="none"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
+                <TableRow
+                  className='h-20 cursor-pointer'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 md:w-64 text-center'
+                    padding='none'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    <Checkbox
+                      checked={isSelected}
+                      onClick={(event) => event.stopPropagation()}
+                      onChange={(event) => handleCheck(event, n.id)}
+                    />
+                  </TableCell>
 
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="whitespace-nowrap"
-										component="th"
-										scope="row"
-									>
-										{n.cheque_date && moment(new Date(n.cheque_date)).format('DD-MM-YYYY')}{' '}
-									</TableCell>
-									<TableCell
-										className="whitespace-nowrap"
-										component="th"
-										scope="row"
-									>
-										{n.cheque_no}
-									</TableCell>
-									<TableCell
-										className="whitespace-nowrap"
-										component="th"
-										scope="row"
-									>
-										{n.invoice_no}
-									</TableCell>
-									<TableCell
-										component="th"
-										scope="row"
-									>
-										{n.payment_account?.name}
-									</TableCell>
+                  <TableCell
+                    className='w-40 md:w-64'
+                    component='th'
+                    scope='row'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}
+                  </TableCell>
+                  <TableCell
+                    className='whitespace-nowrap'
+                    component='th'
+                    scope='row'>
+                    {n.cheque_date &&
+                      moment(new Date(n.cheque_date)).format('DD-MM-YYYY')}{' '}
+                  </TableCell>
+                  <TableCell
+                    className='whitespace-nowrap'
+                    component='th'
+                    scope='row'>
+                    {n.cheque_no}
+                  </TableCell>
+                  <TableCell
+                    className='whitespace-nowrap'
+                    component='th'
+                    scope='row'>
+                    {n.invoice_no}
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    {n.payment_account?.name}
+                  </TableCell>
 
-									<TableCell
-										className=""
-										component="th"
-										scope="row"
-									>
-										{n.pdc_type}
-									</TableCell>
+                  <TableCell className='' component='th' scope='row'>
+                    {n.pdc_type}
+                  </TableCell>
 
-									<TableCell
-										className="whitespace-nowrap"
-										component="th"
-										scope="row"
-									>
-										{n.amount}
-									</TableCell>
-									<TableCell
-										className="whitespace-nowrap"
-										component="th"
-										scope="row"
-									>
-										<div
-											className={clsx(
-												'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
-												n.is_posted === ('pending' || 'Pending')
-													? 'bg-orange'
-													: n.is_posted === ('approved' || 'Approved')
-														? 'bg-green'
-														: n.is_posted === ('rejected' || 'Rejected')
-															? 'bg-red'
-															: ''
-											)}
-										>
-											{n.is_posted === ('pending' || 'Pending')
-												? 'Pending'
-												: n.is_posted === ('approved' || 'Approved')
-													? 'Honoured'
-													: n.is_posted === ('rejected' || 'Rejected')
-														? 'Rejected'
-														: ''}
-										</div>
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16 text-right"
-										component="th"
-										scope="row"
-										align="right"
-										style={{
-											position: 'sticky',
-											right: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										<Edit
-											onClick={(event) => handleUpdatePostDateCheque(n, 'updatePostDateCheque')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+                  <TableCell
+                    className='whitespace-nowrap'
+                    component='th'
+                    scope='row'>
+                    {n.amount}
+                  </TableCell>
+                  <TableCell
+                    className='whitespace-nowrap'
+                    component='th'
+                    scope='row'>
+                    <div
+                      className={clsx(
+                        'inline text-12 font-semibold py-4 px-12 rounded-full truncate text-white',
+                        n.is_posted === ('pending' || 'Pending')
+                          ? 'bg-orange'
+                          : n.is_posted === ('approved' || 'Approved')
+                            ? 'bg-green'
+                            : n.is_posted === ('rejected' || 'Rejected')
+                              ? 'bg-red'
+                              : ''
+                      )}>
+                      {n.is_posted === ('pending' || 'Pending')
+                        ? 'Pending'
+                        : n.is_posted === ('approved' || 'Approved')
+                          ? 'Honoured'
+                          : n.is_posted === ('rejected' || 'Rejected')
+                            ? 'Rejected'
+                            : ''}
+                    </div>
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-16 text-right'
+                    component='th'
+                    scope='row'
+                    align='right'
+                    style={{
+                      position: 'sticky',
+                      right: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {hasPermission('POST_DATE_CHEQUE_UPDATE') && (
+                      <Edit
+                        onClick={(event) =>
+                          handleUpdatePostDateCheque(n, 'updatePostDateCheque')
+                        }
+                        className='cursor-pointer custom-edit-icon-style'
+                      />
+                    )}
 
-										{/* <Delete
+                    {/* <Delete
 											onClick={(event) => handleDeletePostDateCheque(n, 'deletePostDateCheque')}
 											className="cursor-pointer custom-delete-icon-style"
 										/> */}
-									</TableCell>
-								</TableRow>
-							);
+                  </TableCell>
+                </TableRow>
+              );
 						})}
 					</TableBody>
 				</Table>

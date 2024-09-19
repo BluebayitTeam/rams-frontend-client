@@ -13,6 +13,7 @@ import LedgerHeader from './LedgerHeader';
 import LedgerModel from './models/LedgerModel';
 import { useGetLedgerQuery } from '../LedgersApi';
 import LedgerForm from './LedgerForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -94,20 +95,22 @@ function Ledger() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<LedgerHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<LedgerForm ledgerId={ledgerId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('LEDGER_ACCOUNT_DETAILS') && (
+        <FusePageCarded
+          header={<LedgerHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <LedgerForm ledgerId={ledgerId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Ledger;

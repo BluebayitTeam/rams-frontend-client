@@ -13,6 +13,7 @@ import PayableBillHeader from './PayableBillHeader';
 import PayableBillModel from './models/PayableBillModel';
 import { useGetPayableBillQuery } from '../PayableBillsApi';
 import PayableBillForm from './PayableBillForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function PayableBill() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<PayableBillHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<PayableBillForm payableBillId={payableBillId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('PURCHASE_DETAILS') && (
+        <FusePageCarded
+          header={<PayableBillHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <PayableBillForm payableBillId={payableBillId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default PayableBill;

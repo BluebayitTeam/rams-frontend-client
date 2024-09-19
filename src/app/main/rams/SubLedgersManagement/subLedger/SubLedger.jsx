@@ -13,6 +13,7 @@ import SubLedgerHeader from './SubLedgerHeader';
 import SubLedgerModel from './models/SubLedgerModel';
 import { useGetSubLedgerQuery } from '../SubLedgersApi';
 import SubLedgerForm from './SubLedgerForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,23 @@ function SubLedger() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<SubLedgerHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<SubLedgerForm subLedgerId={subLedgerId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('SUBLEDGER_ACCOUNT_DETAILS') && (
+        <FusePageCarded
+          header={<SubLedgerHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <SubLedgerForm subLedgerId={subLedgerId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default SubLedger;
+

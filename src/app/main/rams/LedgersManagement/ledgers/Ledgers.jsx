@@ -3,6 +3,7 @@ import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
 import LedgersHeader from './LedgersHeader';
 import LedgersTable from './LedgersTable';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The ledgers page.
@@ -12,27 +13,25 @@ function Ledgers() {
 
 	const [searchKey, setSearchKey] = useState('');
 	return (
-		<FusePageCarded
-			classes={{
-				root: {},
-				toolbar: 'p-0',
-				header: 'min-h-80 h-80'
-			}}
-			header={
-				<LedgersHeader
-					searchKey={searchKey}
-					setSearchKey={setSearchKey}
-				/>
-			}
-			content={
-				<LedgersTable
-					searchKey={searchKey}
-					setSearchKey={setSearchKey}
-				/>
-			}
-			scroll={isMobile ? 'normal' : 'content'}
-		/>
-	);
+    <FusePageCarded
+      classes={{
+        root: {},
+        toolbar: 'p-0',
+        header: 'min-h-80 h-80',
+      }}
+      header={
+        hasPermission('LEDGER_ACCOUNT_LIST') && (
+          <LedgersHeader searchKey={searchKey} setSearchKey={setSearchKey} />
+        )
+      }
+      content={
+        hasPermission('LEDGER_ACCOUNT_LIST') && (
+          <LedgersTable searchKey={searchKey} setSearchKey={setSearchKey} />
+        )
+      }
+      scroll={isMobile ? 'normal' : 'content'}
+    />
+  );
 }
 
 export default Ledgers;

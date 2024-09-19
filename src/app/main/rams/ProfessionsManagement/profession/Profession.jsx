@@ -13,6 +13,7 @@ import ProfessionHeader from './ProfessionHeader';
 import ProfessionModel from './models/ProfessionModel';
 import { useGetProfessionQuery } from '../ProfessionsApi';
 import ProfessionForm from './ProfessionForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function Profession() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<ProfessionHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<ProfessionForm professionId={professionId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('PROFESSION_DETAILS') && (
+        <FusePageCarded
+          header={<ProfessionHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <ProfessionForm professionId={professionId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Profession;

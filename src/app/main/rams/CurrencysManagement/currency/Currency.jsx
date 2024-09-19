@@ -13,6 +13,7 @@ import CurrencyHeader from './CurrencyHeader';
 import CurrencyModel from './models/CurrencyModel';
 import { useGetCurrencyQuery } from '../CurrencysApi';
 import CurrencyForm from './CurrencyForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function Currency() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<CurrencyHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<CurrencyForm currencyId={currencyId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('CURRENCY_DETAILS') && (
+        <FusePageCarded
+          header={<CurrencyHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <CurrencyForm currencyId={currencyId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Currency;

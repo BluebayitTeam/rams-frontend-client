@@ -17,6 +17,7 @@ import { Checkbox, Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import PassengerTypesTableHead from './PassengerTypesTableHead';
 import { selectFilteredPassengerTypes, useGetPassengerTypesQuery } from '../PassengerTypesApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The passengerTypes table.
@@ -165,61 +166,78 @@ function PassengerTypesTable(props) {
 						{_.orderBy(passengerTypes, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 md:w-64 text-center"
-										padding="none"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Checkbox
-											checked={isSelected}
-											onClick={(event) => event.stopPropagation()}
-											onChange={(event) => handleCheck(event, n.id)}
-										/>
-									</TableCell>
+                <TableRow
+                  className='h-20 cursor-pointer'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 md:w-64 text-center'
+                    padding='none'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    <Checkbox
+                      checked={isSelected}
+                      onClick={(event) => event.stopPropagation()}
+                      onChange={(event) => handleCheck(event, n.id)}
+                    />
+                  </TableCell>
 
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n.name}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-										align="right"
-										style={{ position: 'sticky', right: 0, zIndex: 1, backgroundColor: '#fff' }}
-									>
-										<Edit
-											onClick={(event) => handleUpdatePassengerType(n, 'updatePassengerType')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+                  <TableCell
+                    className='w-40 md:w-64'
+                    component='th'
+                    scope='row'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n.name}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-16'
+                    component='th'
+                    scope='row'
+                    align='right'
+                    style={{
+                      position: 'sticky',
+                      right: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {hasPermission('PASSENGER_TYPE_UPDATE') && (
+                      <Edit
+                        onClick={(event) =>
+                          handleUpdatePassengerType(n, 'updatePassengerType')
+                        }
+                        className='cursor-pointer custom-edit-icon-style'
+                      />
+                    )}
 
-										<Delete
-											onClick={(event) => handleDeletePassengerType(n, 'deletePassengerType')}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
-									</TableCell>
-								</TableRow>
-							);
+                    {hasPermission('PASSENGER_TYPE_DELETE') && (
+                      <Delete
+                        onClick={(event) =>
+                          handleDeletePassengerType(n, 'deletePassengerType')
+                        }
+                        className='cursor-pointer custom-delete-icon-style'
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
 						})}
 					</TableBody>
 				</Table>

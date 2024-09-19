@@ -13,6 +13,7 @@ import PostDateChequeHeader from './PostDateChequeHeader';
 import PostDateChequeModel from './models/PostDateChequeModel';
 import { useGetPostDateChequeQuery } from '../PostDateChequesApi';
 import PostDateChequeForm from './PostDateChequeForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function PostDateCheque() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<PostDateChequeHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<PostDateChequeForm postDateChequeId={postDateChequeId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('POST_DATE_CHEQUE_DETAILS') && (
+        <FusePageCarded
+          header={<PostDateChequeHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <PostDateChequeForm postDateChequeId={postDateChequeId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default PostDateCheque;

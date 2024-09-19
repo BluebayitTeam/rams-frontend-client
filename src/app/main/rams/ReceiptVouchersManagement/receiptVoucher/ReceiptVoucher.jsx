@@ -15,6 +15,7 @@ import ReceiptVoucherHeader from './ReceiptVoucherHeader';
 import ReceiptVoucherModel from './models/ReceiptVoucherModel';
 import { useGetReceiptVoucherQuery } from '../ReceiptVouchersApi';
 import ReceiptVoucherForm from './ReceiptVoucherForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -91,20 +92,22 @@ function ReceiptVoucher() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<ReceiptVoucherHeader />}
-				content={
-					<div className="p-16 ">
-						<div>
-							<ReceiptVoucherForm receiptVoucherId={receiptVoucherId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('RECEIPT_VOUCHER_DETAILS') && (
+        <FusePageCarded
+          header={<ReceiptVoucherHeader />}
+          content={
+            <div className='p-16 '>
+              <div>
+                <ReceiptVoucherForm receiptVoucherId={receiptVoucherId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default ReceiptVoucher;

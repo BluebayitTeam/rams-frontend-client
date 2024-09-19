@@ -15,6 +15,7 @@ import ContraHeader from './ContraHeader';
 import ContraModel from './models/ContraModel';
 import { useGetContraQuery } from '../ContrasApi';
 import ContraForm from './ContraForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -91,20 +92,22 @@ function Contra() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<ContraHeader />}
-				content={
-					<div className="p-16 ">
-						<div>
-							<ContraForm contraId={contraId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('CONTRA_DETAILS') && (
+        <FusePageCarded
+          header={<ContraHeader />}
+          content={
+            <div className='p-16 '>
+              <div>
+                <ContraForm contraId={contraId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Contra;

@@ -511,6 +511,7 @@ export const permissionList = {
 	BMET_STAMP_FORM: 509,
 	MANPOWER_REF_LIST: 510,
 	BMET_APPLICATION: 511,
+	PAYORDER_CLEARNING: 512,
   
 };
 

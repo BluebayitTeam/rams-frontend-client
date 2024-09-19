@@ -13,6 +13,7 @@ import MedicalCenterHeader from './MedicalCenterHeader';
 import MedicalCenterModel from './models/MedicalCenterModel';
 import { useGetMedicalCenterQuery } from '../MedicalCentersApi';
 import MedicalCenterForm from './MedicalCenterForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function MedicalCenter() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<MedicalCenterHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<MedicalCenterForm medicalCenterId={medicalCenterId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('MEDICAL_CENTER_DETAILS') && (
+        <FusePageCarded
+          header={<MedicalCenterHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <MedicalCenterForm medicalCenterId={medicalCenterId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default MedicalCenter;

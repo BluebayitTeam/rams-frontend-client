@@ -13,6 +13,7 @@ import ReceivableBillHeader from './ReceivableBillHeader';
 import ReceivableBillModel from './models/ReceivableBillModel';
 import { useGetReceivableBillQuery } from '../ReceivableBillsApi';
 import ReceivableBillForm from './ReceivableBillForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function ReceivableBill() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<ReceivableBillHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<ReceivableBillForm receivableBillId={receivableBillId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('SALES_DETAILS') && (
+        <FusePageCarded
+          header={<ReceivableBillHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <ReceivableBillForm receivableBillId={receivableBillId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default ReceivableBill;

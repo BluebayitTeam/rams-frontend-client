@@ -15,6 +15,7 @@ import JournalIDHeader from './JournalIDHeader';
 import JournalIDModel from './models/JournalIDModel';
 import { useGetJournalIDQuery } from '../JournalIDsApi';
 import JournalIDForm from './JournalIDForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -91,20 +92,22 @@ function JournalID() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<JournalIDHeader />}
-				content={
-					<div className="p-16 ">
-						<div>
-							<JournalIDForm journalIDId={journalIDId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('IDJOURNAL_DETAILS') && (
+        <FusePageCarded
+          header={<JournalIDHeader />}
+          content={
+            <div className='p-16 '>
+              <div>
+                <JournalIDForm journalIDId={journalIDId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default JournalID;

@@ -13,6 +13,7 @@ import CurrentStatusHeader from './CurrentStatusHeader';
 import CurrentStatusModel from './models/CurrentStatusModel';
 import { useGetCurrentStatusQuery } from '../CurrentStatussApi';
 import CurrentStatusForm from './CurrentStatusForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * Form Validation Schema
@@ -96,20 +97,22 @@ function CurrentStatus() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<CurrentStatusHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<CurrentStatusForm currentStatusId={currentStatusId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('CURRENT_STATUS_DETAILS') && (
+        <FusePageCarded
+          header={<CurrentStatusHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <CurrentStatusForm currentStatusId={currentStatusId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default CurrentStatus;

@@ -15,6 +15,7 @@ import PaymentVoucherHeader from './PaymentVoucherHeader';
 import PaymentVoucherModel from './models/PaymentVoucherModel';
 import { useGetPaymentVoucherQuery } from '../PaymentVouchersApi';
 import PaymentVoucherForm from './PaymentVoucherForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -97,26 +98,25 @@ function PaymentVoucher() {
 		setFormKey((prevKey) => prevKey + 1);
 	};
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				header={<PaymentVoucherHeader />}
-				content={
-					<div className="p-16 ">
-						<div>
-							<PaymentVoucherForm
-								paymentVoucherId={paymentVoucherId}
-								handleReset={handleReset}
-							/>
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('PAYMENT_VOUCHER_DETAILS') && (
+        <FusePageCarded
+          header={<PaymentVoucherHeader />}
+          content={
+            <div className='p-16 '>
+              <div>
+                <PaymentVoucherForm
+                  paymentVoucherId={paymentVoucherId}
+                  handleReset={handleReset}
+                />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default PaymentVoucher;

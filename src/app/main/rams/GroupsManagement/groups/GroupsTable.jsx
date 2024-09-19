@@ -19,6 +19,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { GROUPS_WITHOUT_PAGINATION } from 'src/app/constant/constants';
 import GroupsTableHead from './GroupsTableHead';
 import { selectFilteredGroups, useGetGroupsQuery } from '../GroupsApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 function GroupsTable(props) {
 	const dispatch = useDispatch();
@@ -158,121 +159,112 @@ function GroupsTable(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
-				>
-					<GroupsTableHead
-						selectedGroupIds={selected}
-						tableOrder={tableOrder}
-						onRequestSort={handleRequestSort}
-						rowCount={data?.groups.length}
-					/>
+    <div className='w-full flex flex-col min-h-full px-10'>
+      <FuseScrollbars className='grow overflow-x-auto'>
+        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+          <GroupsTableHead
+            selectedGroupIds={selected}
+            tableOrder={tableOrder}
+            onRequestSort={handleRequestSort}
+            rowCount={data?.groups.length}
+          />
 
-					<TableBody>
-						{_.orderBy(data?.groups, [tableOrder.id], [tableOrder.direction])
+          <TableBody>
+            {_.orderBy(data?.groups, [tableOrder.id], [tableOrder.direction])
 
-							.map((n) => (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={selected.indexOf(n.id) !== -1}
-									tabIndex={-1}
-									key={n.id}
-									selected={selected.indexOf(n.id) !== -1}
-								>
-									<TableCell
-										className="w-40 md:w-64"
-										component="th"
-										scope="row"
-										style={{
-											position: 'sticky',
-											left: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{n.name}
-									</TableCell>
+              .map((n) => (
+                <TableRow
+                  className='h-20 cursor-pointer'
+                  hover
+                  role='checkbox'
+                  aria-checked={selected.indexOf(n.id) !== -1}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={selected.indexOf(n.id) !== -1}>
+                  <TableCell
+                    className='w-40 md:w-64'
+                    component='th'
+                    scope='row'
+                    style={{
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}
+                  </TableCell>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {n.name}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-									>
-										{getParentGroups(n)}
-									</TableCell>
-									<TableCell
-										className="p-4 md:p-16"
-										component="th"
-										scope="row"
-										align="right"
-										style={{
-											position: 'sticky',
-											right: 0,
-											zIndex: 1,
-											backgroundColor: '#fff'
-										}}
-									>
-										<Edit
-											onClick={(event) => handleUpdateGroup(n, 'updateGroup')}
-											className="cursor-pointer custom-edit-icon-style"
-										/>
+                  <TableCell className='p-4 md:p-16' component='th' scope='row'>
+                    {getParentGroups(n)}
+                  </TableCell>
+                  <TableCell
+                    className='p-4 md:p-16'
+                    component='th'
+                    scope='row'
+                    align='right'
+                    style={{
+                      position: 'sticky',
+                      right: 0,
+                      zIndex: 1,
+                      backgroundColor: '#fff',
+                    }}>
+                    {hasPermission('GROUP_UPDATE') && (
+                      <Edit
+                        onClick={(event) => handleUpdateGroup(n, 'updateGroup')}
+                        className='cursor-pointer custom-edit-icon-style'
+                      />
+                    )}
 
-										<Delete
-											onClick={(event) => handleDeleteGroup(n, 'deleteGroup')}
-											className="cursor-pointer custom-delete-icon-style"
-										/>
-									</TableCell>
-								</TableRow>
-							))}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-			<div id="pagiContainer">
-				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
+                    {hasPermission('GROUP_DELETE') && (
+                      <Delete
+                        onClick={(event) => handleDeleteGroup(n, 'deleteGroup')}
+                        className='cursor-pointer custom-delete-icon-style'
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </FuseScrollbars>
+      <div id='pagiContainer'>
+        <Pagination
+          // classes={{ ul: 'flex-nowrap' }}
+          count={totalData?.total_pages}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
 
-				<TablePagination
-					className="shrink-0 border-t-1"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_elements}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</div>
-		</div>
-	);
+        <TablePagination
+          className='shrink-0 border-t-1'
+          component='div'
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalData?.total_elements}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(GroupsTable);

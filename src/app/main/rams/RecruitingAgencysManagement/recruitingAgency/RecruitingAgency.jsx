@@ -13,6 +13,7 @@ import RecruitingAgencyHeader from './RecruitingAgencyHeader';
 import RecruitingAgencyModel from './models/RecruitingAgencyModel';
 import { useGetRecruitingAgencyQuery } from '../RecruitingAgencysApi';
 import RecruitingAgencyForm from './RecruitingAgencyForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function RecruitingAgency() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<RecruitingAgencyHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<RecruitingAgencyForm recruitingAgencyId={recruitingAgencyId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('RECRUITING_AGENCY_DETAILS') && (
+        <FusePageCarded
+          header={<RecruitingAgencyHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <RecruitingAgencyForm recruitingAgencyId={recruitingAgencyId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default RecruitingAgency;

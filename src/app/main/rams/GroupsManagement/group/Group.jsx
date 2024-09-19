@@ -13,6 +13,7 @@ import GroupHeader from './GroupHeader';
 import GroupModel from './models/GroupModel';
 import { useGetGroupQuery } from '../GroupsApi';
 import GroupForm from './GroupForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -101,26 +102,22 @@ function Group() {
 	}
 
 	return (
-		<FormProvider
-			{...methods}
-			key={formKey}
-		>
-			<FusePageCarded
-				header={<GroupHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<GroupForm
-								groupId={groupId}
-								handleReset={handleReset}
-							/>
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods} key={formKey}>
+      {hasPermission('GROUP_DETAILS') && (
+        <FusePageCarded
+          header={<GroupHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <GroupForm groupId={groupId} handleReset={handleReset} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Group;

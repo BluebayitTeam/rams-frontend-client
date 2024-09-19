@@ -13,6 +13,7 @@ import PayorderClearingHeader from './PayorderClearingHeader';
 import PayorderClearingModel from './models/PayorderClearingModel';
 import { useGetPayorderClearingQuery } from '../PayorderClearingsApi';
 import PayorderClearingForm from './PayorderClearingForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function PayorderClearing() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<PayorderClearingHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<PayorderClearingForm payorderClearingId={payorderClearingId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('PAYORDER_CLEARNING') && (
+        <FusePageCarded
+          header={<PayorderClearingHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <PayorderClearingForm payorderClearingId={payorderClearingId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default PayorderClearing;
