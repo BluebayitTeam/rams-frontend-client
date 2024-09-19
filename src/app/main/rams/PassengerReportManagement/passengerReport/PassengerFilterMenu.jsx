@@ -1,12 +1,13 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getCities, getGroups } from 'app/store/dataSlice';
-import { useEffect, useRef, useState } from 'react';
+import { getAgents, getCountries, getCurrentStatuss, getDemands, getPassengers, getPassengerTypes, getProfessions } from 'app/store/dataSlice';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
+import { genders } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,18 +19,16 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 	const dispatch = useDispatch();
 
 	const methods = useFormContext();
-	const { getValues } = methods;
+	const { getValues,setValue } = methods;
 
 	const theme = useTheme();
-	const { groups, cities } = useSelector((state) => state.data);
+	const { passengers,countries ,agents,passengerTypes,currentStatuss} = useSelector((state) => state.data);
+	
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
-	console.log('Passenger Values:', getValues());
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const PassengerCodeEl = useRef(null);
+
+	
 
 	const commonFieldProps = {
 		setReRender,
@@ -41,10 +40,14 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 	};
 
 	useEffect(() => {
-		
-		dispatch(getCities());
-		dispatch(getGroups());
-	}, [dispatch]);
+		dispatch(getPassengers());
+		dispatch(getDemands());
+		dispatch(getCountries());
+		dispatch(getAgents());
+		dispatch(getProfessions());
+		dispatch(getPassengerTypes());
+		dispatch(getCurrentStatuss());
+	}, []);
 
 	console.log('sadhbjkasbdkj', getValues());
 	return (
@@ -70,52 +73,58 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 
 
                    {/* Passenger */}
-                  <ReportSelect
-					{...commonFieldProps}
-					name="Passenger"
-					options={groups}
-					icon="person"
-					width="40px"
-				/>
+				   <ReportSelect
+	                {...commonFieldProps}
+	                name="passenger"
+	                 options={passengers}
+	                  icon="person"
+	                autocompleteStyle={{ width: '330px', margin: '0px 10px' }}
+	            getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
+	           onChange={(_event, newValue) => {
+		setValue('passengerName', newValue?.passenger_name || ''); 
+		  
+	}}
+/>
+
 
                    {/* Current Status */}
                   <ReportSelect
 					{...commonFieldProps}
-					name="Passenger"
-					options={groups}
-					icon="groups"
+					name="current_status"
+					options={currentStatuss}
+					icon="local_activity"
 					width="40px"
 				/>
                    {/* Country */}
                   <ReportSelect
 					{...commonFieldProps}
-					name="Passenger"
-					options={groups}
-					icon="groups"
+					name="target_country"
+					options={countries}
+					icon="flag"
 					width="40px"
 				/>
                    {/* Agent */}
                   <ReportSelect
 					{...commonFieldProps}
-					name="Passenger"
-					options={groups}
-					icon="groups"
+					name="agent"
+					options={agents}
+					icon="person"
 					width="40px"
 				/>
                    {/* Passenger Type */}
                   <ReportSelect
 					{...commonFieldProps}
-					name="Passenger"
-					options={groups}
-					icon="groups"
+					name="passenger_type"
+					options={passengerTypes}
+					icon="text_fields"
 					width="40px"
 				/>
                    {/* Gender */}
                   <ReportSelect
 					{...commonFieldProps}
-					name="Passenger"
-					options={groups}
-					icon="groups"
+					name="gender"
+					options={genders}
+					icon="radio_button_checked_two_tone"
 					width="40px"
 				/>
  </div>
@@ -139,11 +148,12 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 
 
 
-				<Keyword
+                    <Keyword
 					{...commonKewordProps}
 					type="select"
-					name="pasenger"
-					icon="groups"
+					name="passenger"
+					icon="person"
+					
 				/>
 
 				
@@ -151,32 +161,32 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 				<Keyword
 					{...commonKewordProps}
 					type="select"
-					name="district"
-					icon="homeSharp"
+					name="current_status"
+					icon="local_activity"
 				/>
 				<Keyword
 					{...commonKewordProps}
 					type="select"
-					name="district"
-					icon="homeSharp"
+					name="target_country"
+					icon="flag"
 				/>
 				<Keyword
 					{...commonKewordProps}
 					type="select"
-					name="district"
-					icon="homeSharp"
+					name="agent"
+					icon="person"
 				/>
 				<Keyword
 					{...commonKewordProps}
 					type="select"
-					name="district"
-					icon="homeSharp"
+					name="passenger_type"
+					icon="text_fields"
 				/>
 				<Keyword
 					{...commonKewordProps}
 					type="select"
-					name="district"
-					icon="homeSharp"
+					name="gender"
+					icon="radio_button_checked_two_tone"
 				/>
 
 				
