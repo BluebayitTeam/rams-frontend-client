@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
-import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,52 +50,6 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 	return (
 		<div className={classes.filterMenuContainer}>
 			<div className="allFieldContainer borderTop mt-4">
-				{/* user name */}
-				<ReportTextField
-					{...commonFieldProps}
-					name="username"
-					label="User Name"
-					domEl={userNameEl}
-					icon="person"
-					width="75px"
-				/>
-
-				{/* group */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="group"
-					options={groups}
-					icon="groups"
-					width="40px"
-				/>
-
-				{/* phone */}
-				<ReportTextField
-					{...commonFieldProps}
-					name="primary_phone"
-					label="Phone"
-					domEl={primaryPhoneEl}
-					icon="phone"
-					width="45px"
-				/>
-
-				{/* district */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="district"
-					options={cities}
-					icon="homeSharp"
-					width="45px"
-				/>
-
-				{/* Passenger code */}
-				<ReportTextField
-					{...commonFieldProps}
-					name="Passenger_code"
-					domEl={PassengerCodeEl}
-					icon="qr_code_scanner_sharp"
-					width="77px"
-				/>
 
 				{/* date from */}
 				<ReportDatePicker
@@ -114,51 +67,63 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					minDate={values.date_after}
 					maxDate={new Date()}
 				/>
-			</div>
+
+
+                   {/* Passenger */}
+                  <ReportSelect
+					{...commonFieldProps}
+					name="Passenger"
+					options={groups}
+					icon="person"
+					width="40px"
+				/>
+
+                   {/* Current Status */}
+                  <ReportSelect
+					{...commonFieldProps}
+					name="Passenger"
+					options={groups}
+					icon="groups"
+					width="40px"
+				/>
+                   {/* Country */}
+                  <ReportSelect
+					{...commonFieldProps}
+					name="Passenger"
+					options={groups}
+					icon="groups"
+					width="40px"
+				/>
+                   {/* Agent */}
+                  <ReportSelect
+					{...commonFieldProps}
+					name="Passenger"
+					options={groups}
+					icon="groups"
+					width="40px"
+				/>
+                   {/* Passenger Type */}
+                  <ReportSelect
+					{...commonFieldProps}
+					name="Passenger"
+					options={groups}
+					icon="groups"
+					width="40px"
+				/>
+                   {/* Gender */}
+                  <ReportSelect
+					{...commonFieldProps}
+					name="Passenger"
+					options={groups}
+					icon="groups"
+					width="40px"
+				/>
+ </div>
 
 			{/* keywords */}
 			<div className="allKeyWrdContainer">
-				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="username"
-					label="User Name"
-					domEl={userNameEl}
-					icon="person"
-				/>
 
-				<Keyword
-					{...commonKewordProps}
-					type="select"
-					name="group"
-					icon="groups"
-				/>
-
-				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="primary_phone"
-					label="Phone"
-					domEl={primaryPhoneEl}
-					icon="phone"
-				/>
-
-				<Keyword
-					{...commonKewordProps}
-					type="select"
-					name="district"
-					icon="homeSharp"
-				/>
-
-				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="Passenger_code"
-					domEl={PassengerCodeEl}
-					icon="qr_code_scanner_sharp"
-				/>
-
-				<Keyword
+			<Keyword
 					{...commonKewordProps}
 					type="date"
 					name="date_after"
@@ -171,6 +136,52 @@ function PassengerFilterMenu({ inShowAllMode, handleGetPassengers, handleGetAllP
 					name="date_before"
 					label="Date To"
 				/>
+
+
+
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="pasenger"
+					icon="groups"
+				/>
+
+				
+
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="district"
+					icon="homeSharp"
+				/>
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="district"
+					icon="homeSharp"
+				/>
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="district"
+					icon="homeSharp"
+				/>
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="district"
+					icon="homeSharp"
+				/>
+				<Keyword
+					{...commonKewordProps}
+					type="select"
+					name="district"
+					icon="homeSharp"
+				/>
+
+				
+
+				
 			</div>
 		</div>
 	);
