@@ -17,6 +17,7 @@ import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import RolesTableHead from './RolesTableHead';
 import { selectFilteredRoles, useGetRolesQuery } from '../RolesApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 function RolesTable(props) {
 	const dispatch = useDispatch();
@@ -163,59 +164,60 @@ function RolesTable(props) {
 						{_.orderBy(roles, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-								<TableRow
-									className="h-20 cursor-pointer"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 w-1/5 md:w-64 border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}{' '}
-									</TableCell>
+                <TableRow
+                  className='h-20 cursor-pointer'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 w-1/5 md:w-64 border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}{' '}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
-										component="th"
-										scope="row"
-									>
-										{n.name}
-									</TableCell>
+                  <TableCell
+                    className='p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	'
+                    component='th'
+                    scope='row'>
+                    {n.name}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 w-1/4 md:p-16 border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{n.note}
-									</TableCell>
+                  <TableCell
+                    className='p-4 w-1/4 md:p-16 border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {n.note}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	"
-										align="center"
-										component="th"
-										scope="row"
-									>
-										<div>
-											<Edit
-												onClick={() => handleUpdateRole(n, 'updateRole')}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+                  <TableCell
+                    className='p-4 w-1/5 md:p-12  whitespace-nowrap border-t-1  border-gray-200	'
+                    align='center'
+                    component='th'
+                    scope='row'>
+                    <div>
+                      {hasPermission('ROLE_UPDATE') && (
+                        <Edit
+                          onClick={() => handleUpdateRole(n, 'updateRole')}
+                          className='cursor-pointer custom-edit-icon-style'
+                        />
+                      )}
 
-											<Delete
-												onClick={() => handleDeleteRole(n, 'deleteRole')}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</div>
-									</TableCell>
-								</TableRow>
-							);
+                      {hasPermission('ROLE_DELETE') && (
+                        <Delete
+                          onClick={() => handleDeleteRole(n, 'deleteRole')}
+                          className='cursor-pointer custom-delete-icon-style'
+                        />
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
 						})}
 					</TableBody>
 				</Table>

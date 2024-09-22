@@ -13,6 +13,7 @@ import MenuHeader from './MenuHeader';
 import MenuModel from './models/MenuModel';
 import { useGetMenuQuery } from '../MenusApi';
 import MenuForm from './MenuForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -92,20 +93,22 @@ function Menu() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<MenuHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<MenuForm menuId={menuId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('MENU_ITEM_DETAILS') && (
+        <FusePageCarded
+          header={<MenuHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <MenuForm menuId={menuId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Menu;
