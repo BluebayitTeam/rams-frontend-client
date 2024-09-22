@@ -13,6 +13,7 @@ import RoleMenuHeader from './RoleMenuHeader';
 import RoleMenuModel from './models/RoleMenuModel';
 import { useGetRoleMenuQuery } from '../RoleMenusApi';
 import RoleMenuForm from './RoleMenuForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function RoleMenu() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<RoleMenuHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<RoleMenuForm roleMenuId={roleMenuId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('ROLE_MENU_DETAILS') && (
+        <FusePageCarded
+          header={<RoleMenuHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <RoleMenuForm roleMenuId={roleMenuId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default RoleMenu;

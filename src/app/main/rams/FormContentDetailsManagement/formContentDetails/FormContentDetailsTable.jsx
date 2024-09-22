@@ -18,6 +18,7 @@ import { makeStyles } from '@mui/styles';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import FormContentDetailsTableHead from './FormContentDetailsTableHead';
 import { selectFilteredFormContentDetails, useGetFormContentDetailsQuery } from '../FormContentDetailsApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The formContentDetails table.
@@ -183,37 +184,36 @@ function FormContentDetailsTable(props) {
 						{_.orderBy(formContentDetails, [tableOrder.id], [tableOrder.direction]).map((n) => {
 							const isSelected = selected.indexOf(n.id) !== -1;
 							return (
-								<TableRow
-									className="h-72 cursor-pointer border-t-1  border-gray-200"
-									hover
-									role="checkbox"
-									aria-checked={isSelected}
-									tabIndex={-1}
-									key={n.id}
-									selected={isSelected}
-								>
-									<TableCell
-										className="w-40 md:w-64 text-cente border-t-1  border-gray-200"
-										padding="none"
-									/>
+                <TableRow
+                  className='h-72 cursor-pointer border-t-1  border-gray-200'
+                  hover
+                  role='checkbox'
+                  aria-checked={isSelected}
+                  tabIndex={-1}
+                  key={n.id}
+                  selected={isSelected}>
+                  <TableCell
+                    className='w-40 md:w-64 text-cente border-t-1  border-gray-200'
+                    padding='none'
+                  />
 
-									<TableCell
-										className="w-40 md:w-64 border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{pageAndSize.page * pageAndSize.size - pageAndSize.size + serialNumber++}
-									</TableCell>
+                  <TableCell
+                    className='w-40 md:w-64 border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {pageAndSize.page * pageAndSize.size -
+                      pageAndSize.size +
+                      serialNumber++}
+                  </TableCell>
 
-									<TableCell
-										className="p-4 md:p-16 border-t-1  border-gray-200"
-										component="th"
-										scope="row"
-									>
-										{n.head?.title}
-									</TableCell>
+                  <TableCell
+                    className='p-4 md:p-16 border-t-1  border-gray-200'
+                    component='th'
+                    scope='row'>
+                    {n.head?.title}
+                  </TableCell>
 
-									{/* <TableCell className="p-4 md:p-16" component="th" scope="row">
+                  {/* <TableCell className="p-4 md:p-16" component="th" scope="row">
 										<Interweave
 											allowAttributes
 											allowElements
@@ -222,30 +222,39 @@ function FormContentDetailsTable(props) {
 										/>{' '}
 									</TableCell> */}
 
-									<TableCell
-										className="p-4 md:p-16 border-t-1  border-gray-200"
-										align="center"
-										component="th"
-										scope="row"
-									>
-										<div>
-											<Edit
-												onClick={() =>
-													handleUpdateFormContentDetail(n, 'updateFormContentDetail')
-												}
-												className="cursor-pointer custom-edit-icon-style"
-											/>
+                  <TableCell
+                    className='p-4 md:p-16 border-t-1  border-gray-200'
+                    align='center'
+                    component='th'
+                    scope='row'>
+                    <div>
+                      {hasPermission('FORM_CONTENT_DETAIL_UPDATE') && (
+                        <Edit
+                          onClick={() =>
+                            handleUpdateFormContentDetail(
+                              n,
+                              'updateFormContentDetail'
+                            )
+                          }
+                          className='cursor-pointer custom-edit-icon-style'
+                        />
+                      )}
 
-											<Delete
-												onClick={() =>
-													handleDeleteFormContentDetail(n, 'deleteFormContentDetail')
-												}
-												className="cursor-pointer custom-delete-icon-style"
-											/>
-										</div>
-									</TableCell>
-								</TableRow>
-							);
+                      {hasPermission('FORM_CONTENT_DETAIL_UPDATE') && (
+                        <Delete
+                          onClick={() =>
+                            handleDeleteFormContentDetail(
+                              n,
+                              'deleteFormContentDetail'
+                            )
+                          }
+                          className='cursor-pointer custom-delete-icon-style'
+                        />
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
 						})}
 					</TableBody>
 				</Table>

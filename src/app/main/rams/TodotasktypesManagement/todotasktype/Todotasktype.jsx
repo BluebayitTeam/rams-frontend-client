@@ -13,6 +13,7 @@ import TodotasktypeHeader from './TodotasktypeHeader';
 import TodotasktypeModel from './models/TodotasktypeModel';
 import { useGetTodotasktypeQuery } from '../TodotasktypesApi';
 import TodotasktypeForm from './TodotasktypeForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,22 @@ function Todotasktype() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<TodotasktypeHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<TodotasktypeForm todotasktypeId={todotasktypeId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('TODO_TASK_TYPE_DETAILS') && (
+        <FusePageCarded
+          header={<TodotasktypeHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <TodotasktypeForm todotasktypeId={todotasktypeId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Todotasktype;

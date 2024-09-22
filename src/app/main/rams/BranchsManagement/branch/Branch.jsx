@@ -13,6 +13,7 @@ import BranchHeader from './BranchHeader';
 import BranchModel from './models/BranchModel';
 import { useGetBranchQuery } from '../BranchsApi';
 import BranchForm from './BranchForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -90,20 +91,22 @@ function Branch() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<BranchHeader />}
-				content={
-					<div className="p-16 ">
-						<div>
-							<BranchForm branchId={branchId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('BRANCH_DETAILS') && (
+        <FusePageCarded
+          header={<BranchHeader />}
+          content={
+            <div className='p-16 '>
+              <div>
+                <BranchForm branchId={branchId} />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default Branch;

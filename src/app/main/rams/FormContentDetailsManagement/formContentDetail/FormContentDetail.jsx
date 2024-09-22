@@ -13,6 +13,7 @@ import FormContentDetailHeader from './FormContentDetailHeader';
 import FormContentDetailModel from './models/FormContentDetailModel';
 import { useGetFormContentDetailQuery } from '../FormContentDetailsApi';
 import FormContentDetailForm from './FormContentDetailForm';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * Form Validation Schema
  */
@@ -95,20 +96,24 @@ function FormContentDetail() {
 	}
 
 	return (
-		<FormProvider {...methods}>
-			<FusePageCarded
-				header={<FormContentDetailHeader />}
-				content={
-					<div className="p-16 ">
-						<div className={tabValue !== 0 ? 'hidden' : ''}>
-							<FormContentDetailForm formContentDetailId={formContentDetailId} />
-						</div>
-					</div>
-				}
-				scroll={isMobile ? 'normal' : 'content'}
-			/>
-		</FormProvider>
-	);
+    <FormProvider {...methods}>
+      {hasPermission('FORM_CONTENT_DETAIL_DETAILS') && (
+        <FusePageCarded
+          header={<FormContentDetailHeader />}
+          content={
+            <div className='p-16 '>
+              <div className={tabValue !== 0 ? 'hidden' : ''}>
+                <FormContentDetailForm
+                  formContentDetailId={formContentDetailId}
+                />
+              </div>
+            </div>
+          }
+          scroll={isMobile ? 'normal' : 'content'}
+        />
+      )}
+    </FormProvider>
+  );
 }
 
 export default FormContentDetail;
