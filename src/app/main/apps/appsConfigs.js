@@ -84,6 +84,7 @@ import MultipleStatusUpdateAppConfig from '../rams/MultipleStatusUpdate/Multiple
 import MultipleVisaEntryAppConfig from '../rams/MultipleVisaEntrysManagement/MultipleVisaEntryAppConfig';
 import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaAppConfig';
 import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConfig';
+import PassengerAccountSummaryReportAppConfig from '../rams/PassengerAccountSummaryReportManagement/PassengerAccountSummaryAppConfig';
 import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
 import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
@@ -136,6 +137,7 @@ const appsConfigs = [
 	ECommerceAppConfig,
 	FileManagerAppConfig,
 	HelpCenterAppConfig,
+	PassengerAccountSummaryReportAppConfig,
 	MailboxAppConfig,
 	MakeAListAppConfig,
 	NotesAppConfig,
