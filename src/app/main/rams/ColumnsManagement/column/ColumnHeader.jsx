@@ -108,6 +108,9 @@ function ColumnHeader() {
 			if (columnId === 'cv_bank') {
 				navigate(`/apps/cvBank/cvBanks`);
 			}
+			if (columnId === 'ticket_sales') {
+        navigate(`/apps/ticketSale/ticketSales`);
+      }
 		});
 	}
 
@@ -187,6 +190,9 @@ function ColumnHeader() {
 		if (columnId === 'cv_bank') {
 			navigate(`/apps/cvBank/cvBanks`);
 		}
+			if (columnId === 'ticket_sales') {
+        navigate(`/apps/ticketSale/ticketSales`);
+      }
 	}
 
 	return (

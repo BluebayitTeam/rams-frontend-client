@@ -9,34 +9,36 @@ import { FormProvider, useForm } from 'react-hook-form';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useGetRoleQuery } from '../RolesApi';
-import RoleModel from './models/RoleModel';
-import RoleHeader from './RoleHeader';
-import RoleForm from './RoleForm';
+import TicketSaleHeader from './TicketSaleHeader';
+import TicketSaleModel from './models/TicketSaleModel';
+import { useGetTicketSaleQuery } from '../TicketSalesApi';
+import TicketSaleForm from './TicketSaleForm';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
-
 /**
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z.string().nonempty('You must enter a role name').min(5, 'The role name must be at least 5 characters')
+	country: z.string().nonempty('You must enter a ticketSale name').min(5, 'The ticketSale name must be at least 5 characters')
 });
 
-function Role() {
+function TicketSale() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const routeParams = useParams();
-	const { roleId } = routeParams;
+	const { ticketSaleId } = routeParams;
 
 	const {
-		data: role,
+		data: ticketSale,
 		isLoading,
 		isError
-	} = useGetRoleQuery(roleId, {
-		skip: !roleId || roleId === 'new'
+	} = useGetTicketSaleQuery(ticketSaleId, {
+		skip: !ticketSaleId || ticketSaleId === 'new'
 	});
-	console.log('roleId', role, roleId);
+	console.log('ticketSaleId', ticketSale, ticketSaleId);
 
 	const [tabValue, setTabValue] = useState(0);
+
+	console.log('tabValue', tabValue);
+
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
@@ -45,16 +47,16 @@ function Role() {
 	const { reset, watch } = methods;
 	const form = watch();
 	useEffect(() => {
-		if (roleId === 'new') {
-			reset(RoleModel({}));
+		if (ticketSaleId === 'new') {
+			reset(TicketSaleModel({}));
 		}
-	}, [roleId, reset]);
+	}, [ticketSaleId, reset]);
 
 	useEffect(() => {
-		if (role) {
-			reset({ ...role });
+		if (ticketSale) {
+			reset({ ...ticketSale });
 		}
-	}, [role, reset, role?.id]);
+	}, [ticketSale, reset, ticketSale?.id]);
 
 	function handleTabChange(event, value) {
 		setTabValue(value);
@@ -65,9 +67,9 @@ function Role() {
 	}
 
 	/**
-	 * Show Message if the requested roles is not exists
+	 * Show Message if the requested ticketSale is not exists
 	 */
-	if (isError && roleId !== 'new') {
+	if (isError && ticketSaleId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -78,16 +80,16 @@ function Role() {
 					color="text.secondary"
 					variant="h5"
 				>
-					There is no such role!
+					There is no such ticketSale!
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/apps/role/roles"
+					to="/apps/ticketSale/ticketSale"
 					color="inherit"
 				>
-					Go to Roles Page
+					Go to TicketSales Page
 				</Button>
 			</motion.div>
 		);
@@ -95,21 +97,23 @@ function Role() {
 
 	return (
     <FormProvider {...methods}>
-      {hasPermission('ROLE_DETAILS') && (
+      {hasPermission('DEMAND_DETAILS') && (
         <FusePageCarded
-          header={<RoleHeader />}
+          classes={{
+            toolbar: 'p-0',
+            header: 'min-h-80 h-80',
+          }}
+          header={<TicketSaleHeader />}
           content={
             <div className='p-16 '>
-              <div className={tabValue !== 0 ? 'hidden' : ''}>
-                <RoleForm roleId={roleId} />
-              </div>
+              <TicketSaleForm ticketSaleId={ticketSaleId} />
             </div>
           }
-          scroll={isMobile ? 'normal' : 'content'}
+          innerScroll
         />
       )}
     </FormProvider>
   );
 }
 
-export default Role;
+export default TicketSale;
