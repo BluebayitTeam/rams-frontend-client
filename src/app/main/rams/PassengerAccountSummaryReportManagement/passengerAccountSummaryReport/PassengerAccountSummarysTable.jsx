@@ -110,13 +110,13 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	// Prevent automatic fetching by setting enabled: false
 	const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
-	console.log('kgdkfghfkdhgdfkhg',data);
+	console.log('adshsakdhasdhasdhasdhas',data?.account_logs);
 
 	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues() }, { enabled: false });
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
 
 	useEffect(() => {
-		setModifiedPassengerAccountSummaryData(totalData?.passengerAccountSummarys);
+		setModifiedPassengerAccountSummaryData(totalData?.account_logs);
 	}, [totalData]);
 
 	// Function to handle Excel download
@@ -144,7 +144,7 @@ function PassengerAccountSummaryReportsTable(props) {
 						callBack(response.data);
 					}
 
-					const passengerAccountSummarysData = response.data.passengerAccountSummarys || [];
+					const passengerAccountSummarysData = response.data.account_logs || [];
 					setModifiedPassengerAccountSummaryData(passengerAccountSummarysData);
 					setInShowAllMode(false);
 
@@ -170,10 +170,10 @@ function PassengerAccountSummaryReportsTable(props) {
 						callBack(response.data);
 					}
 
-					setModifiedPassengerAccountSummaryData(response.data.passengerAccountSummarys || []);
+					setModifiedPassengerAccountSummaryData(response.data.account_logs || []);
 					setInShowAllMode(true);
 
-					const { totalPages, totalElements } = getPaginationData(response.data.passengerAccountSummarys, size, page);
+					const { totalPages, totalElements } = getPaginationData(response.data.account_logs, size, page);
 					setTotalPages(totalPages);
 					setTotalElements(totalElements);
 				});

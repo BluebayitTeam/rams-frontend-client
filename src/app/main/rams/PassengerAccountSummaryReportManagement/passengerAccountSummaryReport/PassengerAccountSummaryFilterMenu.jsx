@@ -29,11 +29,11 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetpassengerAc
 
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+		onEnter: () => (inShowAllMode ? handleGetAllpassengerAccountSummarys() : handleGetpassengerAccountSummarys())
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
+		onClick: () => (inShowAllMode ? handleGetAllpassengerAccountSummarys() : handleGetpassengerAccountSummarys())
 	};
 
 	useEffect(() => {
