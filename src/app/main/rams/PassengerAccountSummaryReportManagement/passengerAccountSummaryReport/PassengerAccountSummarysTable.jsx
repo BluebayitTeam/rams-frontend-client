@@ -110,6 +110,7 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	// Prevent automatic fetching by setting enabled: false
 	const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
+	console.log('kgdkfghfkdhgdfkhg',data);
 
 	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues() }, { enabled: false });
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
