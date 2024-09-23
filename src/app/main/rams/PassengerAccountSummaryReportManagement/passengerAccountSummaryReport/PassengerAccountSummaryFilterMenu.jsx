@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetpassengerAccountSummarys, handleGetAllpassengerAccountSummarys }) {
+function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAccountSummarys, handleGetAllPassengerAccountSummarys }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -29,11 +29,11 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetpassengerAc
 
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllpassengerAccountSummarys() : handleGetpassengerAccountSummarys())
+		onEnter: () => (inShowAllMode ? handleGetAllPassengerAccountSummarys() : handleGetPassengerAccountSummarys())
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllpassengerAccountSummarys() : handleGetpassengerAccountSummarys())
+		onClick: () => (inShowAllMode ? handleGetAllPassengerAccountSummarys() : handleGetPassengerAccountSummarys())
 	};
 
 	useEffect(() => {
@@ -45,12 +45,8 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetpassengerAc
 	return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-       
-
-        {/* Agent */}
-		
-
-<ReportSelect
+       {/* Agent */}
+		<ReportSelect
           {...commonFieldProps}
           name='agent'
           options={agents}
