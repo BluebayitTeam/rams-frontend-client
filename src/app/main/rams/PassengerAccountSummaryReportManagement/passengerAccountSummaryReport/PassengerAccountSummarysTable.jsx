@@ -246,7 +246,7 @@ function PassengerAccountSummaryReportsTable(props) {
 						<SiglePageWithExtraHeading
 							key={index}
 							classes={classes}
-							reportTitle="PassengerAccountSummary Report"
+							reportTitle="Passenger AccountSummary Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							data={passengerAccountSummary}
@@ -254,9 +254,9 @@ function PassengerAccountSummaryReportsTable(props) {
 							agentName={agentName}
 							district={district}
 							phone={phone}
-							serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+							serialNumber={index + 1 + (page - 1) * size} 
 							setPage={setPage}
-							// setSortBy={setSortBy}
+							
 						/>
 					))}
 				</tbody>

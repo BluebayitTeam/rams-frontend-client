@@ -49,7 +49,7 @@ function SiglePageWithExtraHeading({
 
 	return (
 		<div
-			className={`${classes.pageContainer} printPageContainer p-24`}
+			className={`${classes.pageContainer} printPageContainer p-60`}
 			onMouseOver={() => {
 				inSiglePageMode || setPage(data.page);
 			}}
