@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import PassengerAccountSummaryReportsTable from './passengerAccountSummarysTable';
+import PassengerAccountSummaryReportsTable from './PassengerAccountSummarysTable';
 /**
  * Form Validation Schema
  */
