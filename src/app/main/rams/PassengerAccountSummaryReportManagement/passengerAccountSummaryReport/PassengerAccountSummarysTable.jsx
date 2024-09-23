@@ -8,13 +8,13 @@ import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
+import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SiglePageWithExtraHeading from 'src/app/@components/ReportComponents/SiglePageWithExtraHeading';
 import { selectFilteredPassengerAccountSummaryReports, useGetPassengerAccountSummaryAllReportsQuery, useGetPassengerAccountSummaryReportsQuery } from '../passengerAccountSummarysApi';
 import PassengerAccountSummaryFilterMenu from './PassengerAccountSummaryFilterMenu';
@@ -90,7 +90,8 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	const { control, getValues ,watch} = methods;
 	
-	
+	console.log('values111', getValues());
+
 
 	const [modifiedPassengerAccountSummaryData, setModifiedPassengerAccountSummaryData] = useReportData();
 
@@ -108,7 +109,7 @@ function PassengerAccountSummaryReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 
-	console.log('...getValues()', getValues());
+	
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
@@ -125,7 +126,6 @@ function PassengerAccountSummaryReportsTable(props) {
 	const agentName = data?.agent?.first_name
 	const district = data?.agent?.city?.name
 	const phone = data?.agent?.primary_phone
-	console.log('fddfdfdfdd',district)
 
 	useEffect(() => {
 		setModifiedPassengerAccountSummaryData(totalData?.account_logs);
@@ -209,7 +209,12 @@ function PassengerAccountSummaryReportsTable(props) {
 					handleGetAllPassengerAccountSummarys={handleGetAllPassengerAccountSummarys}
 				/>
 			</FormProvider>
-			<ReportPaginationAndDownload
+			
+			
+
+
+
+<ReportPaginationAndDownload
 				page={page}
 				size={size}
 				setPage={setPage}
@@ -229,9 +234,8 @@ function PassengerAccountSummaryReportsTable(props) {
 				handleGetAllData={handleGetAllPassengerAccountSummarys}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
-				filename="PassengerAccountSummaryReport"
+				filename="AgentReport"
 			/>
-
 			<table
 				id="table-to-xls"
 				className="w-full"
@@ -261,6 +265,7 @@ function PassengerAccountSummaryReportsTable(props) {
 					))}
 				</tbody>
 			</table>
+
 		</div>
 	);
 }
