@@ -22,8 +22,9 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
 	const theme = useTheme();
 	const { agents } = useSelector((state) => state.data);
 	const values = getValues();
+	
 	const [_reRender, setReRender] = useState(0);
-	console.log('Passenger Values:', getValues());
+	
 
 	
 
@@ -41,7 +42,7 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
 		dispatch(getAgents());
 	}, [dispatch]);
 
-	// console.log('sadhbjkasbdkj', getValues());
+
 	return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
@@ -64,7 +65,7 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
           type='select'
           name='agent'
          icon="person"
-		  
+		  options={agents}
         />
       </div>
     </div>

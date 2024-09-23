@@ -22,14 +22,15 @@ const PassengerAccountSummaryReportApi = api
 		endpoints: (build) => ({
 			getPassengerAccountSummaryReports: build.query({
 				query: (filterData) => ({
-					url: GET_PASSENGER_ACCOUNT_SUMMARY_REPORT,
-					params: filterData
+					url: `${GET_PASSENGER_ACCOUNT_SUMMARY_REPORT}${filterData?.agent}`,
+					
+					params: {page:filterData?.page,size:filterData?.size}
 				}),
 				providesTags: ['passengerAccountSummaryReports']
 			}),
 			getPassengerAccountSummaryAllReports: build.query({
 				query: (filterData) => ({
-					url: GET_PASSENGER_ACCOUNT_SUMMARY_REPORT_WITHOUT_PG,
+					url: `${GET_PASSENGER_ACCOUNT_SUMMARY_REPORT_WITHOUT_PG}${filterData?.agent}`,
 					params: filterData
 				}),
 				providesTags: ['passengerAccountSummaryReports']

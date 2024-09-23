@@ -102,7 +102,7 @@ function PassengerAccountSummaryReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 
-	console.log('inShowAllMode', inShowAllMode);
+	console.log('...getValues()', getValues());
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
@@ -112,7 +112,7 @@ function PassengerAccountSummaryReportsTable(props) {
 	const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
 	console.log('adshsakdhasdhasdhasdhas',data?.account_logs);
 
-	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues() }, { enabled: false });
+	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues()}, { enabled: false });
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
 
 	useEffect(() => {
@@ -173,7 +173,7 @@ function PassengerAccountSummaryReportsTable(props) {
 					setModifiedPassengerAccountSummaryData(response.data.account_logs || []);
 					setInShowAllMode(true);
 
-					const { totalPages, totalElements } = getPaginationData(response.data.account_logs, size, page);
+					const { totalPages, totalElements } = getPaginationData(response.data.account_logs);
 					setTotalPages(totalPages);
 					setTotalElements(totalElements);
 				});
