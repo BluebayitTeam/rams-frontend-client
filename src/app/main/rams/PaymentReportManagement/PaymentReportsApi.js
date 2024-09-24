@@ -3,12 +3,12 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-	AGENT_FILTER_BY,
-	AGENT_FILTER_WITHOUT_PG,
 	CREATE_DEPARTMENT,
 	DELETE_DEPARTMENT,
 	DELETE_DEPARTMENT_MULTIPLE,
 	GET_DEPARTMENT_BY_ID,
+	PAYMENT_FILTER_BY,
+	PAYMENT_FILTER_WITHOUT_PG,
 	UPDATE_DEPARTMENT
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
@@ -22,14 +22,14 @@ const PaymentReportApi = api
 		endpoints: (build) => ({
 			getPaymentReports: build.query({
 				query: (filterData) => ({
-					url: AGENT_FILTER_BY,
+					url: PAYMENT_FILTER_BY,
 					params: filterData
 				}),
 				providesTags: ['paymentReports']
 			}),
 			getPaymentAllReports: build.query({
 				query: (filterData) => ({
-					url: AGENT_FILTER_WITHOUT_PG,
+					url: PAYMENT_FILTER_WITHOUT_PG,
 					params: filterData
 				}),
 				providesTags: ['paymentReports']
