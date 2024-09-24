@@ -99,7 +99,7 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
-
+console.log('tableColumns',tableColumns)
 
 
    
@@ -108,6 +108,7 @@ function PassengerAccountSummaryReportsTable(props) {
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
+
 
 	
 
@@ -121,7 +122,6 @@ function PassengerAccountSummaryReportsTable(props) {
 	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues()}, { enabled: false });
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
 
-	console.log('sdksahdkashdkashds',data?.agent?.first_name);
 
 	const agentName = data?.agent?.first_name
 	const district = data?.agent?.city?.name
@@ -210,11 +210,7 @@ function PassengerAccountSummaryReportsTable(props) {
 				/>
 			</FormProvider>
 			
-			
-
-
-
-<ReportPaginationAndDownload
+			<ReportPaginationAndDownload
 				page={page}
 				size={size}
 				setPage={setPage}

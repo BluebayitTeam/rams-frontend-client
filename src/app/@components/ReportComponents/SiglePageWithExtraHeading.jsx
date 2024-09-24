@@ -28,8 +28,7 @@ function SiglePageWithExtraHeading({
 
  
 
-    // const agentName = watch('agent_name');
-	// const District = sessionStorage.getItem('PassengerAccountSummaryDistrictName');
+   
 	const contact = sessionStorage.getItem('PassengerAccountSummaryContactNumber');
 
 	const [generalData, setGeneralData] = useState({});
@@ -70,7 +69,7 @@ function SiglePageWithExtraHeading({
 
 
 
-{/* Extra Heading  */}
+               {/* Extra Heading  */}
 				<div className="ml-20 mt-40 text-base mb-40 font-semibold">
 					<table>
 						<tbody>
