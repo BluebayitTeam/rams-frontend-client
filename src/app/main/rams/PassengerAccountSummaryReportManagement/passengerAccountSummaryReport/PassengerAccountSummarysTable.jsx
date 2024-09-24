@@ -90,7 +90,6 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	const { control, getValues ,watch} = methods;
 	
-	console.log('values111', getValues());
 
 
 	const [modifiedPassengerAccountSummaryData, setModifiedPassengerAccountSummaryData] = useReportData();
@@ -99,7 +98,6 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
-console.log('tableColumns',tableColumns)
 
 
    

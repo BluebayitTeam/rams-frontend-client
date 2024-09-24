@@ -1,17 +1,17 @@
 // ReportPaginationAndDownload.js
-import { useState, useLayoutEffect } from 'react';
-import ReactHtmlTableToExcel from 'react-html-table-to-excel';
-import PrintSharpIcon from '@mui/icons-material/PrintSharp';
-import ImportContactsSharpIcon from '@mui/icons-material/ImportContactsSharp';
-import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 import BallotIcon from '@mui/icons-material/Ballot';
-import { makeStyles } from '@mui/styles';
-import { getReportMakeStyles } from 'src/app/main/rams/ReportUtilities/reportMakeStyls';
-import DownloadIcon from '@mui/icons-material/Download';
+import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 import DifferenceIcon from '@mui/icons-material/Difference';
+import DownloadIcon from '@mui/icons-material/Download';
+import ImportContactsSharpIcon from '@mui/icons-material/ImportContactsSharp';
+import PrintSharpIcon from '@mui/icons-material/PrintSharp';
+import { makeStyles } from '@mui/styles';
 import html2PDF from 'jspdf-html2canvas';
-import Pagination from './Pagination';
+import { useLayoutEffect, useState } from 'react';
+import ReactHtmlTableToExcel from 'react-html-table-to-excel';
+import { getReportMakeStyles } from 'src/app/main/rams/ReportUtilities/reportMakeStyls';
 import ColumnLabel from './ColumnLabel';
+import Pagination from './Pagination';
 
 const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
@@ -22,7 +22,7 @@ function ReportPaginationAndDownload({
 	setPage,
 	size,
 	setSize,
-	inShowAllMode,
+	inShowAllMode = false,  // Set the default state to false for pg to be selected
 	setInShowAllMode,
 	totalPages,
 	totalElements,
@@ -126,13 +126,17 @@ function ReportPaginationAndDownload({
         />
       )}
 
-      {!hideSection?.includes('pg') && (
-        <ImportContactsSharpIcon
-          className='cursor-pointer inside icon'
-          style={{ padding: '8px', border: !inShowAllMode && '1px solid' }}
-          onClick={() => handleGetData()}
-        />
-      )}
+     {/* pg: ImportContactsSharpIcon is selected by default */}
+			{!hideSection?.includes('pg') && (
+				<ImportContactsSharpIcon
+					className='cursor-pointer inside icon'
+					style={{
+						padding: '8px',
+						border: !inShowAllMode ? '1px solid' : 'none',  // Highlight as selected
+					}}
+					onClick={() => handleGetData()}
+				/>
+			)}
 
       {!hideSection?.includes('wp') && (
         <BallotIcon
