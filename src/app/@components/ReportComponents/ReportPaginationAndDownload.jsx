@@ -130,7 +130,10 @@ function ReportPaginationAndDownload({
         <ImportContactsSharpIcon
           className='cursor-pointer inside icon'
           style={{ padding: '8px', border: !inShowAllMode && '1px solid' }}
-          onClick={() => handleGetData()}
+          onClick={() => {
+            setInShowAllMode(false);
+            handleGetData();
+          }}
         />
       )}
 
@@ -138,7 +141,10 @@ function ReportPaginationAndDownload({
         <BallotIcon
           className='cursor-pointer inside icon'
           style={{ padding: '8px', border: inShowAllMode && '1px solid' }}
-          onClick={() => handleGetAllData()}
+          onClick={() => {
+            setInShowAllMode(true);
+            handleGetAllData();
+          }}
         />
       )}
 
