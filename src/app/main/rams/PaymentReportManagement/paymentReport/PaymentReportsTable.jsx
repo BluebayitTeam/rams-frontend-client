@@ -60,6 +60,7 @@ function PaymentReportsTable(props) {
   const { control, getValues,watch } = methods;
 
   const [modifiedPaymentData, setModifiedPaymentData] = useReportData();
+  console.log('dskadjasldjlasdja', modifiedPaymentData);
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -107,7 +108,7 @@ function PaymentReportsTable(props) {
 
   useEffect(() => {
     if (totalData) {
-      setModifiedPaymentData(totalData?.payments);
+      setModifiedPaymentData(totalData?.payment_vouchers);
     }
   }, [totalData]);
 
@@ -132,7 +133,7 @@ function PaymentReportsTable(props) {
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          const paymentsData = response.data.payments || [];
+          const paymentsData = response.data.payment_vouchers || [];
           setModifiedPaymentData(paymentsData);
           setInShowAllMode(false);
           setTotalPages(response.data?.total_pages);
@@ -153,10 +154,10 @@ function PaymentReportsTable(props) {
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          setModifiedPaymentData(response.data.payments || []);
+          setModifiedPaymentData(response.data.payment_vouchers || []);
           setInShowAllMode(true);
           const { totalPages, totalElements } = getPaginationData(
-            response.data.payments,
+            response.data.payment_vouchers,
             size,
             page
           );
