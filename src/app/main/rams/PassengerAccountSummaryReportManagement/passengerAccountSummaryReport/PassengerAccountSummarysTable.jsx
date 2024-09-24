@@ -8,14 +8,14 @@ import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
+import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
+import SiglePageWithExtraHeading from 'src/app/@components/ReportComponents/SiglePageWithExtraHeading';
 import { selectFilteredPassengerAccountSummaryReports, useGetPassengerAccountSummaryAllReportsQuery, useGetPassengerAccountSummaryReportsQuery } from '../passengerAccountSummarysApi';
 import PassengerAccountSummaryFilterMenu from './PassengerAccountSummaryFilterMenu';
 
@@ -88,7 +88,9 @@ function PassengerAccountSummaryReportsTable(props) {
 	});
 	const dispatch = useDispatch();
 
-	const { control, getValues } = methods;
+	const { control, getValues ,watch} = methods;
+	
+
 
 	const [modifiedPassengerAccountSummaryData, setModifiedPassengerAccountSummaryData] = useReportData();
 
@@ -96,13 +98,17 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
+
+
+   
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(10);
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 
-	console.log('inShowAllMode', inShowAllMode);
+
+	
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
@@ -110,10 +116,15 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	// Prevent automatic fetching by setting enabled: false
 	const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
-	console.log('adshsakdhasdhasdhasdhas',data?.account_logs);
-
-	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues() }, { enabled: false });
+	
+	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues()}, { enabled: false });
+	
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
+
+
+	const agentName = data?.agent?.first_name
+	const district = data?.agent?.city?.name
+	const phone = data?.agent?.primary_phone
 
 	useEffect(() => {
 		setModifiedPassengerAccountSummaryData(totalData?.account_logs);
@@ -173,7 +184,7 @@ function PassengerAccountSummaryReportsTable(props) {
 					setModifiedPassengerAccountSummaryData(response.data.account_logs || []);
 					setInShowAllMode(true);
 
-					const { totalPages, totalElements } = getPaginationData(response.data.account_logs, size, page);
+					const { totalPages, totalElements } = getPaginationData(response.data.account_logs);
 					setTotalPages(totalPages);
 					setTotalElements(totalElements);
 				});
@@ -197,6 +208,7 @@ function PassengerAccountSummaryReportsTable(props) {
 					handleGetAllPassengerAccountSummarys={handleGetAllPassengerAccountSummarys}
 				/>
 			</FormProvider>
+			
 			<ReportPaginationAndDownload
 				page={page}
 				size={size}
@@ -217,9 +229,8 @@ function PassengerAccountSummaryReportsTable(props) {
 				handleGetAllData={handleGetAllPassengerAccountSummarys}
 				tableColumns={tableColumns}
 				dispatchTableColumns={dispatchTableColumns}
-				filename="PassengerAccountSummaryReport"
+				filename="AgentReport"
 			/>
-
 			<table
 				id="table-to-xls"
 				className="w-full"
@@ -231,21 +242,25 @@ function PassengerAccountSummaryReportsTable(props) {
 				>
 					{/* each single page (table) */}
 					{modifiedPassengerAccountSummaryData.map((passengerAccountSummary, index) => (
-						<SinglePage
+						<SiglePageWithExtraHeading
 							key={index}
 							classes={classes}
-							reportTitle="PassengerAccountSummary Report"
+							reportTitle="Passenger AccountSummary Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							data={passengerAccountSummary}
 							totalColumn={initialTableColumnsState?.length}
-							serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+							agentName={agentName}
+							district={district}
+							phone={phone}
+							serialNumber={index + 1 + (page - 1) * size} 
 							setPage={setPage}
-							// setSortBy={setSortBy}
+							
 						/>
 					))}
 				</tbody>
 			</table>
+
 		</div>
 	);
 }

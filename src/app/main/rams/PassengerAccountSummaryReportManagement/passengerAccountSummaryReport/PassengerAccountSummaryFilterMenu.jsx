@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
-import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,8 +22,9 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
 	const theme = useTheme();
 	const { agents } = useSelector((state) => state.data);
 	const values = getValues();
+	
 	const [_reRender, setReRender] = useState(0);
-	console.log('Passenger Values:', getValues());
+	
 
 	
 
@@ -41,18 +42,18 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
 		dispatch(getAgents());
 	}, [dispatch]);
 
-	// console.log('sadhbjkasbdkj', getValues());
+
 	return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
        {/* Agent */}
-		<ReportSelect
+		<ReportSelectFirstLastName
           {...commonFieldProps}
           name='agent'
           options={agents}
           icon='person'
           width='40px'
-		  getOptionLabel={(option) => `${option.first_name || ''} - ${option.last_name || ''}`}
+		
 
         />
 </div>
@@ -64,7 +65,7 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
           type='select'
           name='agent'
          icon="person"
-		  
+		  options={agents}
         />
       </div>
     </div>
