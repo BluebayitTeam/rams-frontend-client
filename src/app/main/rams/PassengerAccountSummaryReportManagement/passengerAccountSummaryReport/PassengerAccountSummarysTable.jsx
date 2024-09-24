@@ -118,6 +118,7 @@ function PassengerAccountSummaryReportsTable(props) {
 	const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
 	
 	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues()}, { enabled: false });
+	
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
 
 

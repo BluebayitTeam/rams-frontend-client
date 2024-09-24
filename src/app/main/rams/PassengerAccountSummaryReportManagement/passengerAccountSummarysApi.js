@@ -21,6 +21,7 @@ const PassengerAccountSummaryReportApi = api
 					params: {page:filterData?.page,size:filterData?.size}
 				}),
 				providesTags: ['passengerAccountSummaryReports']
+				
 			}),
 			getPassengerAccountSummaryAllReports: build.query({
 				query: (filterData) => ({
