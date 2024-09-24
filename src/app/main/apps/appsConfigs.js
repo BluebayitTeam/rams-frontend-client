@@ -89,6 +89,7 @@ import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/P
 import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
+import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
@@ -103,12 +104,12 @@ import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
 import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
+import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
-import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConfig';
 
 /**
  * The list of application configurations.
@@ -137,6 +138,7 @@ const appsConfigs = [
   BmetApplicationAppConfig,
   ECommerceAppConfig,
   FileManagerAppConfig,
+  PaymentReportAppConfig,
   HelpCenterAppConfig,
   PassengerAccountSummaryReportAppConfig,
   MailboxAppConfig,
