@@ -27,12 +27,25 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Name', name: 'username', show: true },
-  { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', subName: 'name', show: true },
-  { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true },
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Date', name: 'payment_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+	{ id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+	{ id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
+	{
+		id: 6,
+		label: 'Details',
+		show: true,
+		getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`
+	},
+	{
+		id: 7,
+		label: 'Amount',
+		name: 'debit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	}
 ];
 
 function PaymentReportsTable(props) {
@@ -64,13 +77,13 @@ function PaymentReportsTable(props) {
   // Do not fetch data on mount
   const { refetch: refetchPaymentReports } =!inShowAllMode && useGetPaymentReportsQuery(
     {
-      group: watch('group') || '',
-      district: watch('district') || '',
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      username: watch('username') || '',
-      primary_phone: watch('primary_phone') || '',
-      payment_code: watch('payment_code') || '',
+      ledger: watch('ledger') || '',
+      sub_ledger: watch('sub_ledger') || '',
+     
+      account_type: watch('account_type') || '',
+      
       page,
       size,
     },
@@ -80,13 +93,12 @@ function PaymentReportsTable(props) {
     inShowAllMode &&
     useGetPaymentAllReportsQuery(
       {
-        group: watch('group') || '',
-        district: watch('district') || '',
+        ledger: watch('ledger') || '',
+        sub_ledger: watch('sub_ledger') || '',
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
-        username: watch('username') || '',
-        primary_phone: watch('primary_phone') || '',
-        payment_code: watch('payment_code') || '',
+        account_type: watch('account_type') || '',
+     
       },
       { enabled: false }
     );
