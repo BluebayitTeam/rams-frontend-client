@@ -10,6 +10,7 @@ import SinglePage2 from 'src/app/@components/ReportComponents/SinglePage2';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
@@ -59,7 +60,6 @@ function ReceiptReportsTable(props) {
   const { control, getValues,watch } = methods;
 
   const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
-  console.log('dskadjasldjlasdja', modifiedReceiptData);
   
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -70,6 +70,7 @@ function ReceiptReportsTable(props) {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
+	const [totalAmount, setTotalAmount] = useState(0);
 
   console.log("inShowAllMode", inShowAllMode)
 
@@ -141,6 +142,9 @@ function ReceiptReportsTable(props) {
       if (response?.data) {
         unstable_batchedUpdates(() => {
           const receiptsData = response.data.receipt_vouchers || [];
+          // Calculate total amount using 'credit_amount'
+          const totalAmount = getTotalAmount(receiptVouchers, 'credit_amount');
+          setTotalAmount(totalAmount);
           setModifiedReceiptData(receiptsData);
           setInShowAllMode(false);
           setTotalPages(response.data?.total_pages);
@@ -159,19 +163,24 @@ function ReceiptReportsTable(props) {
 
       const response = await refetchAllReceiptReports({ ...formValues }); // Manually trigger the query
 
-      if (response?.data) {
+      if (response?.data?.receipt_vouchers) {
         unstable_batchedUpdates(() => {
-          setModifiedReceiptData(response.data.receipt_vouchers || []);
+          const receiptVouchers = response.data.receipt_vouchers;
+          setModifiedReceiptData(receiptVouchers);
+      
+          // Calculate total amount using 'credit_amount'
+          const totalAmount = getTotalAmount(receiptVouchers, 'credit_amount');
+          setTotalAmount(totalAmount);
+      
           setInShowAllMode(true);
-          const { totalPages, totalElements } = getPaginationData(
-            response.data.receipt_vouchers,
-            size,
-            page
-          );
+      
+          // Get pagination data
+          const { totalPages, totalElements } = getPaginationData(receiptVouchers, size, page);
           setTotalPages(totalPages);
           setTotalElements(totalElements);
         });
       }
+      
     } catch (error) {
       console.error('Error fetching all receipts:', error);
     }
@@ -216,31 +225,32 @@ function ReceiptReportsTable(props) {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {/* each single page (table) */}
+
           {modifiedReceiptData.map((receipt, index) => (
             <SinglePage2
-              key={index}
-              classes={classes}
-              reportTitle='Receipt Report'
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              // data={receipt}
-              data={
-                receipt.isLastPage
-                  ? {
-                      ...receipt,
-                      data: receipt.data.concat({
-                        balance: totalAmount,
-                        total_credit: 'Total Balance',
-                        hideSerialNo: true,
-                        rowStyle: { fontWeight: 600 }
-                      })
-                    }
-                  : receipt
-              }
-              totalColumn={initialTableColumnsState?.length}
-              serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
-              setPage={setPage}
-            />
+            key={index}
+            classes={classes}
+            reportTitle="Receipt Report"
+            tableColumns={tableColumns}
+            dispatchTableColumns={dispatchTableColumns}
+            data={
+              receipt?.isLastPage && receipt?.data?.length
+                ? {
+                    ...receipt,
+                    data: receipt.data.concat({
+                      balance: totalAmount,
+                      credit_amount: 'Total Balance',
+                      hideSerialNo: true,
+                      rowStyle: { fontWeight: 600 }
+                    })
+                  }
+                : receipt
+            }
+            totalColumn={initialTableColumnsState?.length || 0} // Fallback to 0 if undefined
+            serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+            setPage={setPage}
+          />
+          
           ))}
         </tbody>
       </table>

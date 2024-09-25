@@ -24,6 +24,8 @@ function SinglePage2({
 }) {
 	let pageBasedSerialNo = serialNumber;
 
+    console.log('fdfdfdfdfdfdfdf',data)
+
 	const [generalData, setGeneralData] = useState({});
 	// get general setting data
 	useEffect(() => {
