@@ -98,6 +98,7 @@ import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStati
 import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateChequeAppConfig';
 import ProfessionAppConfig from '../rams/ProfessionsManagement/ProfessionAppConfig';
 import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
+import ReceiptReportAppConfig from '../rams/ReceiptReportManagement/ReceiptReportAppConfig';
 import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
 import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
@@ -137,6 +138,7 @@ const appsConfigs = [
   ContactsAppConfig,
   ManpowerNoteSheetAppConfig,
   BmetApplicationAppConfig,
+  ReceiptReportAppConfig,
   ECommerceAppConfig,
   FileManagerAppConfig,
   PaymentSummaryReportConfig,
