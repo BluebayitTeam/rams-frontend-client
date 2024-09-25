@@ -60,6 +60,8 @@ function ReceiptReportsTable(props) {
   const { control, getValues,watch } = methods;
 
   const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
+
+  console.log('sasasasasa', modifiedReceiptData)
   
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -93,6 +95,9 @@ function ReceiptReportsTable(props) {
   );
 
 
+  console.log('fffffffffffffffffffffffffffff',refetchReceiptReports)
+
+
   
 
 
@@ -116,6 +121,7 @@ function ReceiptReportsTable(props) {
 
   useEffect(() => {
     if (totalData) {
+      console.log('ddfdfdfdfdfdfd',totalData?.receipt_vouchers)
       setModifiedReceiptData(totalData?.receipt_vouchers);
     }
   }, [totalData]);
