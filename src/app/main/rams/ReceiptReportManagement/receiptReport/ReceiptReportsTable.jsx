@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
+import SinglePage2 from 'src/app/@components/ReportComponents/SinglePage2';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
@@ -217,7 +217,7 @@ function ReceiptReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {/* each single page (table) */}
           {modifiedReceiptData.map((receipt, index) => (
-            <SinglePage
+            <SinglePage2
               key={index}
               classes={classes}
               reportTitle='Receipt Report'

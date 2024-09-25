@@ -2,9 +2,11 @@
 import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import moment from 'moment';
 // import '../../../Print.css';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+
 
 function SinglePage2({
 	classes,
@@ -68,7 +70,10 @@ function SinglePage2({
 						</TableCell>
 					</TableHead>
 				</Table>
-				<Table aria-label="simple table" className={classes.table}>
+				<Table
+					aria-label="simple table"
+					className={`${classes.table} w-fit `}
+				>
 					<TableHead style={{ backgroundColor: '#D7DBDD' }}>
 						<TableRow>
 							{tableColumns.map((column, indx) => {
@@ -77,18 +82,18 @@ function SinglePage2({
 										key={column.id}
 										align="center"
 										className="tableCellHead"
-										onDrop={e =>
+										onDrop={(e) =>
 											dispatchTableColumns({
 												type: 'dragAndDrop',
 												dragger: e.dataTransfer.getData('draggerLebel'),
 												dropper: column.id
 											})
 										}
-										onDragOver={e => e.preventDefault()}
+										onDragOver={(e) => e.preventDefault()}
 									>
 										<div
-											draggable={true}
-											onDragStart={e => e.dataTransfer.setData('draggerLebel', column.id)}
+											draggable
+											onDragStart={(e) => e.dataTransfer.setData('draggerLebel', column.id)}
 											onClick={() => {
 												if (column.sortAction !== false) {
 													setSortBy(data.sortBy === column.name ? '' : column.name);
@@ -102,13 +107,12 @@ function SinglePage2({
 											}}
 										>
 											{column.label}
-											<FontAwesomeIcon
+											<ArrowDownwardIcon
 												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
 												style={{
 													transform:
 														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
 												}}
-												icon={faArrowUp}
 											/>
 										</div>
 									</TableCell>
@@ -119,43 +123,41 @@ function SinglePage2({
 					<TableBody>
 						{data?.data?.map((dataArr, idx) => (
 							<TableRow
-								style={{ display: dataArr?.balance === '0.00' && 'none' }}
 								key={dataArr.id}
 								className="tableRow cursor-pointer"
-								hover
-								onClick={() => {
-									router.push(
-										`/apps/report-management/ledger-reports`,
-										sessionStorage.setItem('sundryReportLedgerKey', dataArr.id),
-										sessionStorage.setItem('sundryReportLedgerName', dataArr.name)
-									);
-								}}
+								hove
 							>
-								{tableColumns.map(column => {
+								{tableColumns.map((column) => {
 									return column.show ? (
-										<TableCell align="center" className="tableCell">
+										<TableCell
+											align="center"
+											className="tableCell"
+										>
 											<div
 												style={{
 													whiteSpace: column.type === 'date' && 'nowrap',
 													...column.style,
 													...dataArr.rowStyle
 												}}
+												{...(column.columnProps ? column.columnProps(dataArr) : {})}
 											>
 												{column?.subName
 													? dataArr?.[column.name]?.[column?.subName]
 													: column.type === 'date'
-													? dataArr?.[column.name]
-														? moment(new Date(dataArr?.[column.name])).format('DD-MM-YYYY')
-														: ''
-													: column.name
-													? dataArr?.[column.name]
-													: column?.isSerialNo
-													? dataArr.hideSerialNo || pageBasedSerialNo++
-													: dataArr.getterMethod
-													? dataArr.getterMethod(dataArr)
-													: column.getterMethod
-													? column.getterMethod(dataArr)
-													: ''}
+														? dataArr?.[column.name]
+															? moment(new Date(dataArr?.[column.name])).format(
+																	'DD-MM-YYYY'
+																)
+															: ''
+														: column.name
+															? dataArr?.[column.name]
+															: column?.isSerialNo
+																? dataArr.hideSerialNo || pageBasedSerialNo++
+																: dataArr.getterMethod
+																	? dataArr.getterMethod(dataArr)
+																	: column.getterMethod
+																		? column.getterMethod(dataArr)
+																		: ''}
 											</div>
 										</TableCell>
 									) : null;
