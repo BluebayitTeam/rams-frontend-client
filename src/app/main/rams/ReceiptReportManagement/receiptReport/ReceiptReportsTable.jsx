@@ -47,6 +47,7 @@ const initialTableColumnsState = [
 		headStyle: { textAlign: 'right' }
 	}
 ];
+
 function ReceiptReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -59,8 +60,6 @@ function ReceiptReportsTable(props) {
   const { control, getValues,watch } = methods;
 
   const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
-  console.log('dskadjasldjlasdja', modifiedReceiptData);
-  
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -82,36 +81,27 @@ function ReceiptReportsTable(props) {
       date_before: watch('date_before') || '',
       ledger: watch('ledger') || '',
       sub_ledger: watch('sub_ledger') || '',
-     
       account_type: watch('account_type') || '',
-      
       page,
       size,
     },
     { enabled: false }
   );
-
-
-  
-
-
   const { refetch: refetchAllReceiptReports } =
     inShowAllMode &&
     useGetReceiptAllReportsQuery(
       {
-        ledger: watch('ledger') || '',
-        sub_ledger: watch('sub_ledger') || '',
+        
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
+        ledger: watch('ledger') || '',
+        sub_ledger: watch('sub_ledger') || '',
         account_type: watch('account_type') || '',
-     
-      },
+        },
       { enabled: false }
     );
 
   const totalData = useSelector(selectFilteredReceiptReports);
-
-
 
   useEffect(() => {
     if (totalData) {
@@ -136,7 +126,7 @@ function ReceiptReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
 
-      const response = await refetchReceiptReports({ ...formValues, page, size }); 
+      const response = await refetchReceiptReports({ ...formValues, page, size }); // Manually trigger the query
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
@@ -148,7 +138,7 @@ function ReceiptReportsTable(props) {
         });
       }
     } catch (error) {
-      console.error('Error fetching receipts:', error);
+      console.error('Error fetching receipt_vouchers:', error);
     }
   };
 
@@ -173,7 +163,7 @@ function ReceiptReportsTable(props) {
         });
       }
     } catch (error) {
-      console.error('Error fetching all receipts:', error);
+      console.error('Error fetching all receipt_vouchers:', error);
     }
   };
 
@@ -224,7 +214,6 @@ function ReceiptReportsTable(props) {
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={receipt}
-              
               totalColumn={initialTableColumnsState?.length}
               serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
               setPage={setPage}
