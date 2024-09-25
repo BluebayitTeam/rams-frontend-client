@@ -59,8 +59,11 @@ function PaymentSummaryReportsTable(props) {
 
   const { control, getValues,watch } = methods;
 
+
+
   const [modifiedPaymentSummaryData, setModifiedPaymentSummaryData] = useReportData();
   console.log('dskadjasldjlasdja', modifiedPaymentSummaryData);
+
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -76,7 +79,7 @@ function PaymentSummaryReportsTable(props) {
   const componentRef = useRef(null);
 
   // Do not fetch data on mount
-  const { refetch: refetchPaymentSummaryReports } =!inShowAllMode && useGetPaymentSummaryReportsQuery(
+  const {data, refetch: refetchPaymentSummaryReports } =!inShowAllMode && useGetPaymentSummaryReportsQuery(
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
@@ -91,12 +94,6 @@ function PaymentSummaryReportsTable(props) {
     { enabled: false }
   );
 
-
-  useEffect(() => {
-    if (!inShowAllMode) {
-      refetchPaymentSummaryReports();
-    }
-  }, [inShowAllMode, watch, page, size]);
 
 
 
@@ -114,16 +111,15 @@ function PaymentSummaryReportsTable(props) {
       { enabled: false }
     );
 
+    console.log('fgfgfgfgfgfgfgfg',data)
+
   const totalData = useSelector(selectFilteredPaymentSummaryReports);
 
-  useEffect(() => {
-    if (totalData) {
-      setModifiedPaymentSummaryData(totalData?.payment_vouchers);
-    }
-  }, [totalData]);
 
-  // Function to handle Excel download
-  const handleExelDownload = () => {
+
+
+   // Function to handle Excel download
+   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
 
@@ -132,53 +128,58 @@ function PaymentSummaryReportsTable(props) {
     content: () => componentRef.current,
   });
 
-	const handleGetPaymentSummarys = async (newPage) => {
-	  setInShowAllMode(false);
+  useEffect(() => {
+    if (data && !inShowAllMode) {
+      console.log('totalDataqwqwqw', data?.payment_voucher_summary);
+      setModifiedPaymentSummaryData(data?.payment_voucher_summary || []);
+    }
+  }, [data, inShowAllMode]);
+  
+  const handleGetPaymentSummarys = async (newPage) => {
+    setInShowAllMode(false);
     try {
       const formValues = getValues();
       const page = newPage || 1;
       setPage(page);
-
-      const response = await refetchPaymentSummaryReports({ ...formValues, page, size }); 
-
+  
+      const response = await refetchPaymentSummaryReports({ ...formValues, page, size });
+  
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          const paymentsData = response.data.payment_vouchers || [];
-          setModifiedPaymentSummaryData(paymentsData);
-          setInShowAllMode(false);
-          setTotalPages(response.data?.total_pages);
-          setTotalElements(response.data?.total_elements);
+          setModifiedPaymentSummaryData(response.data?.payment_voucher_summary || []);
+          setTotalPages(response.data?.total_pages || 0);
+          setTotalElements(response.data?.total_elements || 0);
         });
       }
     } catch (error) {
       console.error('Error fetching payments:', error);
     }
   };
-
-	const handleGetAllPaymentSummarys = async () => {
-	   setInShowAllMode(true);
+  
+  const handleGetAllPaymentSummarys = async () => {
+    setInShowAllMode(true);
     try {
       const formValues = getValues();
-
-      const response = await refetchAllPaymentSummaryReports({ ...formValues }); // Manually trigger the query
-
+  
+      const response = await refetchAllPaymentSummaryReports({ ...formValues });
+  
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          setModifiedPaymentSummaryData(response.data.payment_vouchers || []);
-          setInShowAllMode(true);
+          setModifiedPaymentSummaryData(response.data?.payment_voucher_summary || []);
           const { totalPages, totalElements } = getPaginationData(
-            response.data.payment_vouchers,
+            response.data.payment_voucher_summary,
             size,
             page
           );
-          setTotalPages(totalPages);
-          setTotalElements(totalElements);
+          setTotalPages(totalPages || 0);
+          setTotalElements(totalElements || 0);
         });
       }
     } catch (error) {
       console.error('Error fetching all payments:', error);
     }
   };
+  
 
   return (
     <div className={classes.headContainer}>

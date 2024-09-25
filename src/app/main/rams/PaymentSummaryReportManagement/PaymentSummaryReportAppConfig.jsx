@@ -5,7 +5,7 @@ import PaymentSummaryReport from './paymentSummaryReport/paymentSummary';
 /**
  * The E-Commerce app configuration.
  */
-const PaymentReportAppConfig = {
+const PaymentSummaryReportConfig = {
 	settings: {
 		layout: {}
 	},
@@ -27,4 +27,4 @@ const PaymentReportAppConfig = {
 		}
 	]
 };
-export default PaymentReportAppConfig;
+export default PaymentSummaryReportConfig;

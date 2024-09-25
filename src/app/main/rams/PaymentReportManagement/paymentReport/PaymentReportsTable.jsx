@@ -28,26 +28,16 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Date', name: 'payment_date', show: true, type: 'date' },
-	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-	{ id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-	{ id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
+	{ id: 2, label: 'SubLedger', name: 'sub_ledger', show: true },
 	{
-		id: 6,
-		label: 'Details',
-		show: true,
-		getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`
-	},
-	{
-		id: 7,
+		id: 3,
 		label: 'Amount',
-		name: 'debit_amount',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
+		name: 'amount',
+		show: true
+		// style: { justifyContent: 'flex-center', marginRight: '5px' },
+		// headStyle: { textAlign: 'right' }
 	}
 ];
-
 function PaymentReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -61,6 +51,7 @@ function PaymentReportsTable(props) {
 
   const [modifiedPaymentData, setModifiedPaymentData] = useReportData();
   console.log('dskadjasldjlasdja', modifiedPaymentData);
+  
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -92,12 +83,7 @@ function PaymentReportsTable(props) {
   );
 
 
-  useEffect(() => {
-    if (!inShowAllMode) {
-      refetchPaymentReports();
-    }
-  }, [inShowAllMode, watch, page, size]);
-
+  
 
 
   const { refetch: refetchAllPaymentReports } =
@@ -115,6 +101,8 @@ function PaymentReportsTable(props) {
     );
 
   const totalData = useSelector(selectFilteredPaymentReports);
+
+
 
   useEffect(() => {
     if (totalData) {
