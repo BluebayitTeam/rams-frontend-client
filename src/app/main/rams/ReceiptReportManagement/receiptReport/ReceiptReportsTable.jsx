@@ -28,14 +28,23 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'SubLedger', name: 'sub_ledger', show: true },
+	{ id: 2, label: 'Date', name: 'receipt_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+	{ id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+	{ id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
 	{
-		id: 3,
-		label: 'Amount',
-		name: 'amount',
+		id: 6,
+		label: 'Details',
+		getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
 		show: true
-		// style: { justifyContent: 'flex-center', marginRight: '5px' },
-		// headStyle: { textAlign: 'right' }
+	},
+	{
+		id: 7,
+		label: 'Amount',
+		name: 'credit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
 	}
 ];
 function ReceiptReportsTable(props) {
@@ -214,7 +223,20 @@ function ReceiptReportsTable(props) {
               reportTitle='Receipt Report'
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={receipt}
+              // data={receipt}
+              data={
+                receipt.isLastPage
+                  ? {
+                      ...receipt,
+                      data: receipt.data.concat({
+                        balance: totalAmount,
+                        total_credit: 'Total Balance',
+                        hideSerialNo: true,
+                        rowStyle: { fontWeight: 600 }
+                      })
+                    }
+                  : receipt
+              }
               totalColumn={initialTableColumnsState?.length}
               serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
               setPage={setPage}
