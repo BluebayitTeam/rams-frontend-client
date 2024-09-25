@@ -13,11 +13,11 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredPaymentReports,
-  useGetPaymentAllReportsQuery,
-  useGetPaymentReportsQuery,
-} from '../PaymentReportsApi';
-import PaymentFilterMenu from './PaymentFilterMenu';
+  selectFilteredPaymentSummaryReports,
+  useGetPaymentSummaryAllReportsQuery,
+  useGetPaymentSummaryReportsQuery,
+} from '../PaymentSummaryReportsApi';
+import PaymentSummaryFilterMenu from './PaymentSummaryFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -48,7 +48,7 @@ const initialTableColumnsState = [
 	}
 ];
 
-function PaymentReportsTable(props) {
+function PaymentSummaryReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -59,8 +59,8 @@ function PaymentReportsTable(props) {
 
   const { control, getValues,watch } = methods;
 
-  const [modifiedPaymentData, setModifiedPaymentData] = useReportData();
-  console.log('dskadjasldjlasdja', modifiedPaymentData);
+  const [modifiedPaymentSummaryData, setModifiedPaymentSummaryData] = useReportData();
+  console.log('dskadjasldjlasdja', modifiedPaymentSummaryData);
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -76,7 +76,7 @@ function PaymentReportsTable(props) {
   const componentRef = useRef(null);
 
   // Do not fetch data on mount
-  const { refetch: refetchPaymentReports } =!inShowAllMode && useGetPaymentReportsQuery(
+  const { refetch: refetchPaymentSummaryReports } =!inShowAllMode && useGetPaymentSummaryReportsQuery(
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
@@ -94,15 +94,15 @@ function PaymentReportsTable(props) {
 
   useEffect(() => {
     if (!inShowAllMode) {
-      refetchPaymentReports();
+      refetchPaymentSummaryReports();
     }
   }, [inShowAllMode, watch, page, size]);
 
 
 
-  const { refetch: refetchAllPaymentReports } =
+  const { refetch: refetchAllPaymentSummaryReports } =
     inShowAllMode &&
-    useGetPaymentAllReportsQuery(
+    useGetPaymentSummaryAllReportsQuery(
       {
         ledger: watch('ledger') || '',
         sub_ledger: watch('sub_ledger') || '',
@@ -114,11 +114,11 @@ function PaymentReportsTable(props) {
       { enabled: false }
     );
 
-  const totalData = useSelector(selectFilteredPaymentReports);
+  const totalData = useSelector(selectFilteredPaymentSummaryReports);
 
   useEffect(() => {
     if (totalData) {
-      setModifiedPaymentData(totalData?.payment_vouchers);
+      setModifiedPaymentSummaryData(totalData?.payment_vouchers);
     }
   }, [totalData]);
 
@@ -132,19 +132,19 @@ function PaymentReportsTable(props) {
     content: () => componentRef.current,
   });
 
-	const handleGetPayments = async (newPage) => {
+	const handleGetPaymentSummarys = async (newPage) => {
 	  setInShowAllMode(false);
     try {
       const formValues = getValues();
       const page = newPage || 1;
       setPage(page);
 
-      const response = await refetchPaymentReports({ ...formValues, page, size }); 
+      const response = await refetchPaymentSummaryReports({ ...formValues, page, size }); 
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
           const paymentsData = response.data.payment_vouchers || [];
-          setModifiedPaymentData(paymentsData);
+          setModifiedPaymentSummaryData(paymentsData);
           setInShowAllMode(false);
           setTotalPages(response.data?.total_pages);
           setTotalElements(response.data?.total_elements);
@@ -155,16 +155,16 @@ function PaymentReportsTable(props) {
     }
   };
 
-	const handleGetAllPayments = async () => {
+	const handleGetAllPaymentSummarys = async () => {
 	   setInShowAllMode(true);
     try {
       const formValues = getValues();
 
-      const response = await refetchAllPaymentReports({ ...formValues }); // Manually trigger the query
+      const response = await refetchAllPaymentSummaryReports({ ...formValues }); // Manually trigger the query
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          setModifiedPaymentData(response.data.payment_vouchers || []);
+          setModifiedPaymentSummaryData(response.data.payment_vouchers || []);
           setInShowAllMode(true);
           const { totalPages, totalElements } = getPaginationData(
             response.data.payment_vouchers,
@@ -184,10 +184,10 @@ function PaymentReportsTable(props) {
     <div className={classes.headContainer}>
       {/* Filter */}
       <FormProvider {...methods}>
-        <PaymentFilterMenu
+        <PaymentSummaryFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetPayments={handleGetPayments}
-          handleGetAllPayments={handleGetAllPayments}
+          handleGetPaymentSummarys={handleGetPaymentSummarys}
+          handleGetAllPaymentSummarys={handleGetAllPaymentSummarys}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -200,17 +200,17 @@ function PaymentReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetPayments(1)}
-        onPreviousPage={() => handleGetPayments(page - 1)}
-        onNextPage={() => handleGetPayments(page + 1)}
-        onLastPage={() => handleGetPayments(totalPages)}
+        onFirstPage={() => handleGetPaymentSummarys(1)}
+        onPreviousPage={() => handleGetPaymentSummarys(page - 1)}
+        onNextPage={() => handleGetPaymentSummarys(page + 1)}
+        onLastPage={() => handleGetPaymentSummarys(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetPayments}
-        handleGetAllData={handleGetAllPayments}
+        handleGetData={handleGetPaymentSummarys}
+        handleGetAllData={handleGetAllPaymentSummarys}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='PaymentReport'
+        filename='PaymentSummaryReport'
       />
 
       <table
@@ -219,11 +219,11 @@ function PaymentReportsTable(props) {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {/* each single page (table) */}
-          {modifiedPaymentData.map((payment, index) => (
+          {modifiedPaymentSummaryData.map((payment, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Payment Report'
+              reportTitle='PaymentSummary Report'
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={payment}
@@ -238,4 +238,4 @@ function PaymentReportsTable(props) {
   );
 }
 
-export default PaymentReportsTable;
+export default PaymentSummaryReportsTable;
