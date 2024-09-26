@@ -87,9 +87,10 @@ function PassengerLedgerReportsTable(props) {
   const { control, getValues,watch } = methods;
 
   const [modifiedPassengerLedgerData, setModifiedPassengerLedgerData] = useReportData();
+  console.log('modifiedPassengerLedgerData', modifiedPassengerLedgerData)
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
-    initialTableColumnsState
+    initialTableColumnsState // or whichever state is required as the initial value
   );
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -194,12 +195,12 @@ function PassengerLedgerReportsTable(props) {
   };
 
 
-  const PassengerLedgerAgent = data?.passenger?.agent?.first_name|| 'N/A'
-	const PassengerLedgerPID = data?.passenger?.passenger_id || 'N/A'
-	const PassengerLedgerPassportNo = data?.passenger?.passport_no || 'N/A'
-	const PassengerLedgerName = data?.passenger?.passenger_name || 'N/A'
-	const PassengerLedgeDistrict = data?.passenger?.district || 'N/A'
-	const PassengerLedgeMobileNo =data?.passenger?.agent?.contact_no || 'N/A'
+  // const PassengerLedgerAgent = data?.passenger?.agent?.first_name|| 'N/A'
+	// const PassengerLedgerPID = data?.passenger?.passenger_id || 'N/A'
+	// const PassengerLedgerPassportNo = data?.passenger?.passport_no || 'N/A'
+	// const PassengerLedgerName = data?.passenger?.passenger_name || 'N/A'
+	// const PassengerLedgeDistrict = data?.passenger?.district || 'N/A'
+	// const PassengerLedgeMobileNo =data?.passenger?.agent?.contact_no || 'N/A'
 
 
 
@@ -246,19 +247,44 @@ function PassengerLedgerReportsTable(props) {
             <SiglePageForPassengerLedgerReport
               key={index}
               classes={classes}
-              reportTitle='PassengerLedger Report'
-              tableColumns={tableColumns}
+              reportTitle='Passenger Ledger Report'
+             
               dispatchTableColumns={dispatchTableColumns}
-              data={passengerLedger}
-              totalColumn={initialTableColumnsState?.length}
+              data={
+                passengerLedger.isLastPage
+                  ? {
+                      ...passengerLedger,
+                      data: passengerLedger.data.concat({
+                        credit_amount: totalCdAmount,
+                        debit_amount: totalDbAmount,
+                        details: 'Total Balance',
+                        balance: totalBAlance,
+                        hideSerialNo: true,
+                        rowStyle: { fontWeight: 600 }
+                      })
+                    }
+                  : passengerLedger
+              }
+              tableColumns={tableColumns}
               serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
               setPage={setPage}
-              PassengerLedgerAgent={PassengerLedgerAgent}
-              PassengerLedgerPID={PassengerLedgerPID}
-              PassengerLedgerPassportNo={PassengerLedgerPassportNo}
-              PassengerLedgerName={PassengerLedgerName}
-              PassengerLedgeDistrict={PassengerLedgeDistrict}
-              PassengerLedgeMobileNo={PassengerLedgeMobileNo}
+              // PassengerLedgerAgent={PassengerLedgerAgent}
+              // PassengerLedgerPID={PassengerLedgerPID}
+              // PassengerLedgerPassportNo={PassengerLedgerPassportNo}
+              // PassengerLedgerName={PassengerLedgerName}
+              // PassengerLedgeDistrict={PassengerLedgeDistrict}
+              // PassengerLedgeMobileNo={PassengerLedgeMobileNo}
+
+
+              addInHeader={
+                passengerLedger.isFirsPage ? (
+                  <div>
+                    <h3>Opening Balance: {passengerLedger.openingBlnc.toFixed(2)}</h3>
+                  </div>
+                ) : (
+                  ''
+                )
+              }
             />
           ))}
         </tbody>
