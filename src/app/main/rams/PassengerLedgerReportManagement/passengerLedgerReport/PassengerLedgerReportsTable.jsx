@@ -195,11 +195,11 @@ function PassengerLedgerReportsTable(props) {
   };
 
 
-  // const PassengerLedgerAgent = data?.passenger?.agent?.first_name|| 'N/A'
-	// const PassengerLedgerPID = data?.passenger?.passenger_id || 'N/A'
-	// const PassengerLedgerPassportNo = data?.passenger?.passport_no || 'N/A'
-	// const PassengerLedgerName = data?.passenger?.passenger_name || 'N/A'
-	// const PassengerLedgeDistrict = data?.passenger?.district || 'N/A'
+  const PassengerLedgerAgent = data?.passenger?.agent?.first_name|| 'N/A'
+	const PassengerLedgerPID = data?.passenger?.passenger_id || 'N/A'
+	const PassengerLedgerPassportNo = data?.passenger?.passport_no || 'N/A'
+	const PassengerLedgerName = data?.passenger?.passenger_name || 'N/A'
+	const PassengerLedgeDistrict = data?.passenger?.district || 'N/A'
 	// const PassengerLedgeMobileNo =data?.passenger?.agent?.contact_no || 'N/A'
 
 
@@ -268,11 +268,11 @@ function PassengerLedgerReportsTable(props) {
               tableColumns={tableColumns}
               serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
               setPage={setPage}
-              // PassengerLedgerAgent={PassengerLedgerAgent}
-              // PassengerLedgerPID={PassengerLedgerPID}
-              // PassengerLedgerPassportNo={PassengerLedgerPassportNo}
-              // PassengerLedgerName={PassengerLedgerName}
-              // PassengerLedgeDistrict={PassengerLedgeDistrict}
+              PassengerLedgerAgent={PassengerLedgerAgent}
+              PassengerLedgerPID={PassengerLedgerPID}
+              PassengerLedgerPassportNo={PassengerLedgerPassportNo}
+              PassengerLedgerName={PassengerLedgerName}
+              PassengerLedgeDistrict={PassengerLedgeDistrict}
               // PassengerLedgeMobileNo={PassengerLedgeMobileNo}
 
 

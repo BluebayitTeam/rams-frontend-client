@@ -19,11 +19,11 @@ function SiglePageForPassengerLedgerReport({
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-    // PassengerLedgerAgent,
-    // PassengerLedgerPID,
-    // PassengerLedgerPassportNo,
-    // PassengerLedgerName,
-    // PassengerLedgeDistrict,
+    PassengerLedgerAgent,
+    PassengerLedgerPID,
+    PassengerLedgerPassportNo,
+    PassengerLedgerName,
+    PassengerLedgeDistrict,
     // PassengerLedgeMobileNo
 
 }) {
@@ -44,11 +44,11 @@ function SiglePageForPassengerLedgerReport({
 			.catch(() => setGeneralData({}));
 	}, []);
 
-    const PassengerLedgerAgent = sessionStorage.getItem('PassengerLedgerAgent');
-	const PassengerLedgerPID = sessionStorage.getItem('PassengerLedgerPID');
-	const PassengerLedgerPassportNo = sessionStorage.getItem('PassengerLedgerPassportNo');
-	const PassengerLedgerName = sessionStorage.getItem('PassengerLedgerName');
-	const PassengerLedgeDistrict = sessionStorage.getItem('PassengerLedgeDistrict');
+    // const PassengerLedgerAgent = sessionStorage.getItem('PassengerLedgerAgent');
+	// const PassengerLedgerPID = sessionStorage.getItem('PassengerLedgerPID');
+	// const PassengerLedgerPassportNo = sessionStorage.getItem('PassengerLedgerPassportNo');
+	// const PassengerLedgerName = sessionStorage.getItem('PassengerLedgerName');
+	// const PassengerLedgeDistrict = sessionStorage.getItem('PassengerLedgeDistrict');
 	const PassengerLedgeMobileNo = sessionStorage.getItem('PassengerLedgeMobileNo');
    
 
@@ -92,7 +92,7 @@ function SiglePageForPassengerLedgerReport({
 								<td>{PassengerLedgerAgent}</td>
 							</tr>
 							<tr>
-								<td>PID:</td>
+								<td>Passenger Id:</td>
 								<td>{PassengerLedgerPID}</td>
 							</tr>
 							<tr>
@@ -100,7 +100,7 @@ function SiglePageForPassengerLedgerReport({
 								<td>{PassengerLedgerPassportNo} </td>
 							</tr>
 							<tr>
-								<td>Name :</td>
+								<td>Passenger:</td>
 								<td>{PassengerLedgerName} </td>
 							</tr>
 							<tr>
