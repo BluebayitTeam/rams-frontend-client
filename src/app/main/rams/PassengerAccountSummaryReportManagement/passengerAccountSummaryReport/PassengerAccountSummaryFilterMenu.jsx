@@ -53,9 +53,7 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
           options={agents}
           icon='person'
           width='40px'
-		
-
-        />
+		/>
 </div>
 
       {/* keywords */}
@@ -67,6 +65,8 @@ function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAc
          icon="person"
 		  options={agents}
         />
+
+		
       </div>
     </div>
   );

@@ -86,9 +86,12 @@ import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaA
 import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConfig';
 import PassengerAccountSummaryReportAppConfig from '../rams/PassengerAccountSummaryReportManagement/PassengerAccountSummaryAppConfig';
 import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
+import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
 import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
+import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
+import PaymentSummaryReportConfig from '../rams/PaymentSummaryReportManagement/PaymentSummaryReportAppConfig';
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
@@ -96,6 +99,7 @@ import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStati
 import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateChequeAppConfig';
 import ProfessionAppConfig from '../rams/ProfessionsManagement/ProfessionAppConfig';
 import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
+import ReceiptReportAppConfig from '../rams/ReceiptReportManagement/ReceiptReportAppConfig';
 import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
 import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
@@ -103,12 +107,12 @@ import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
 import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
+import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
-import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConfig';
 
 /**
  * The list of application configurations.
@@ -135,8 +139,12 @@ const appsConfigs = [
   ContactsAppConfig,
   ManpowerNoteSheetAppConfig,
   BmetApplicationAppConfig,
+  ReceiptReportAppConfig,
+  PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
   FileManagerAppConfig,
+  PaymentSummaryReportConfig,
+  PaymentReportAppConfig,
   HelpCenterAppConfig,
   PassengerAccountSummaryReportAppConfig,
   MailboxAppConfig,

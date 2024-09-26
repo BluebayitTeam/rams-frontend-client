@@ -91,8 +91,23 @@ function LedgerReportsTable(props) {
 
 	const componentRef = useRef(null);
 	
-	const { data, isLoading, refetch } = useGetLedgerReportsQuery({ ...getValues(), page, size }, { enabled: false });
-	const { refetch: refetchAll } = useGetLedgerAllReportsQuery({ ...getValues() }, { enabled: false });
+	const { data, isLoading, refetch } = useGetLedgerReportsQuery({
+        ledger: watch('ledger') || '',
+        
+        date_after: watch('date_after') || '',
+        date_before: watch('date_before') || '',
+		sub_ledger: watch('sub_ledger') || '',
+        account_type: watch('account_type') || '',
+     
+      }, { enabled: false });
+	const { refetch: refetchAll } = useGetLedgerAllReportsQuery({
+        ledger: watch('ledger') || '',
+        date_after: watch('date_after') || '',
+        date_before: watch('date_before') || '',
+		sub_ledger: watch('sub_ledger') || '',
+        account_type: watch('account_type') || '',
+     
+      }, { enabled: false });
 	const totalData = useSelector(selectFilteredLedgerReports(data));
 
 	// console.log('fdjshsdjkfhsdkhfsdkhfsdkhf',getValues());

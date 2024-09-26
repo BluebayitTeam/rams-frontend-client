@@ -966,7 +966,7 @@ const navigationConfig = [
 				translate: 'Payment Report',
 				display_order: 3,
 				type: 'item',
-				url: '/apps/report-management/payment-reports',
+				url: '/apps/paymentReport/paymentReports',
 				exact: true
 			},
 			{
