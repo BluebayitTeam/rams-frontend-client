@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
+import SiglePageForPassengerLedgerReport from 'src/app/@components/ReportComponents/SiglePageForPassengerLedgerReport';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
@@ -217,7 +217,7 @@ function PassengerLedgerReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {/* each single page (table) */}
           {modifiedPassengerLedgerData.map((passengerLedger, index) => (
-            <SinglePage
+            <SiglePageForPassengerLedgerReport
               key={index}
               classes={classes}
               reportTitle='PassengerLedger Report'

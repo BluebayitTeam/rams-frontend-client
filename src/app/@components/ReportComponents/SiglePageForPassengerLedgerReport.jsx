@@ -1,4 +1,3 @@
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import moment from 'moment';
@@ -11,7 +10,7 @@ function SiglePageForPassengerLedgerReport({
 	classes,
 	reportTitle = 'Report',
 	tableColumns = [],
-	filteredData,
+	
 	dispatchTableColumns,
 	data,
 	totalColumn,
@@ -40,7 +39,7 @@ function SiglePageForPassengerLedgerReport({
 
 	return (
 		<div
-			className={`${classes.pageContainer} printPageContainer px-60 `}
+			className={`${classes.pageContainer} printPageContainer px-24 `}
 			onMouseOver={() => {
 				inSiglePageMode || setPage(data.page);
 			}}
@@ -69,11 +68,40 @@ function SiglePageForPassengerLedgerReport({
 						</TableCell>
 					</TableHead>
 				</Table>
-				<Table
-					aria-label="simple table"
-					className={`${classes.table} w-fit `}
-				>
-					<TableHead style={{ backgroundColor: '#D7DBDD' }}>
+				{/* Extra Heading  */}
+				<div className="ml-20 mt-40 text-base mb-40 font-semibold">
+					<table>
+						<tbody>
+							<tr>
+								<td>Agent Name:</td>
+								<td>{PassengerLedgerAgent}</td>
+							</tr>
+							<tr>
+								<td>PID:</td>
+								<td>{PassengerLedgerPID}</td>
+							</tr>
+							<tr>
+								<td>Passport No :</td>
+								<td>{PassengerLedgerPassportNo} </td>
+							</tr>
+							<tr>
+								<td>Name :</td>
+								<td>{PassengerLedgerName} </td>
+							</tr>
+							<tr>
+								<td>District :</td>
+								<td>{PassengerLedgeDistrict} </td>
+							</tr>
+							<tr>
+								<td>Mobile :</td>
+								<td>{PassengerLedgeMobileNo} </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<Table aria-label="simple table" className={classes.table}>
+					<TableHead style={{ backgroundColor: '#D7DBDD', height: '35px' }}>
 						<TableRow>
 							{tableColumns.map((column, indx) => {
 								return column.show ? (
@@ -81,18 +109,18 @@ function SiglePageForPassengerLedgerReport({
 										key={column.id}
 										align="center"
 										className="tableCellHead"
-										onDrop={(e) =>
+										onDrop={e =>
 											dispatchTableColumns({
 												type: 'dragAndDrop',
 												dragger: e.dataTransfer.getData('draggerLebel'),
 												dropper: column.id
 											})
 										}
-										onDragOver={(e) => e.preventDefault()}
+										onDragOver={e => e.preventDefault()}
 									>
 										<div
-											draggable
-											onDragStart={(e) => e.dataTransfer.setData('draggerLebel', column.id)}
+											draggable={true}
+											onDragStart={e => e.dataTransfer.setData('draggerLebel', column.id)}
 											onClick={() => {
 												if (column.sortAction !== false) {
 													setSortBy(data.sortBy === column.name ? '' : column.name);
@@ -106,12 +134,13 @@ function SiglePageForPassengerLedgerReport({
 											}}
 										>
 											{column.label}
-											<ArrowDownwardIcon
+											<FontAwesomeIcon
 												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
 												style={{
 													transform:
 														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
 												}}
+												icon={faArrowUp}
 											/>
 										</div>
 									</TableCell>
@@ -121,42 +150,32 @@ function SiglePageForPassengerLedgerReport({
 					</TableHead>
 					<TableBody>
 						{data?.data?.map((dataArr, idx) => (
-							<TableRow
-								key={dataArr.id}
-								className="tableRow cursor-pointer"
-								hove
-							>
-								{tableColumns.map((column) => {
+							<TableRow key={dataArr.id} className="tableRow cursor-pointer" hover>
+								{tableColumns.map(column => {
 									return column.show ? (
-										<TableCell
-											align="center"
-											className="tableCell"
-										>
+										<TableCell align="center" className="tableCell">
 											<div
 												style={{
 													whiteSpace: column.type === 'date' && 'nowrap',
 													...column.style,
 													...dataArr.rowStyle
 												}}
-												{...(column.columnProps ? column.columnProps(dataArr) : {})}
 											>
 												{column?.subName
 													? dataArr?.[column.name]?.[column?.subName]
 													: column.type === 'date'
-														? dataArr?.[column.name]
-															? moment(new Date(dataArr?.[column.name])).format(
-																	'DD-MM-YYYY'
-																)
-															: ''
-														: column.name
-															? dataArr?.[column.name]
-															: column?.isSerialNo
-																? dataArr.hideSerialNo || pageBasedSerialNo++
-																: dataArr.getterMethod
-																	? dataArr.getterMethod(dataArr)
-																	: column.getterMethod
-																		? column.getterMethod(dataArr)
-																		: ''}
+													? dataArr?.[column.name]
+														? moment(new Date(dataArr?.[column.name])).format('DD-MM-YYYY')
+														: ''
+													: column.name
+													? dataArr?.[column.name]
+													: column?.isSerialNo
+													? dataArr.hideSerialNo || pageBasedSerialNo++
+													: dataArr.getterMethod
+													? dataArr.getterMethod(dataArr)
+													: column.getterMethod
+													? column.getterMethod(dataArr)
+													: ''}
 											</div>
 										</TableCell>
 									) : null;
