@@ -1,12 +1,13 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { getGroups, getPassengers } from 'app/store/dataSlice';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
-import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,10 +27,7 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 	const [_reRender, setReRender] = useState(0);
 	console.log('Passenger Values:', getValues());
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const passengerLedgerCodeEl = useRef(null);
+	
 
 	const commonFieldProps = {
 		setReRender,
@@ -67,16 +65,22 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
         />
         
               {/* Passenger */}
-				   <ReportSelect
-	              {...commonFieldProps}
-	              name="passenger"
-	              options={passengers}
-	              icon="person"
-	              getOptionLabel={(option) => `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`}
-	              onChange={(_event, newValue) => {
-	          	  setValue('passengerName', newValue?.passenger_name || ''); 
-		  }}
-/>
+				  <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='passenger'
+          options={passengers}
+          icon='person'
+          width='40px'
+		      />
+
+          {/* lpassengerTypes */}
+          <ReportSelect
+					{...commonFieldProps}
+					name="account_type"
+					options={bankAndCash}
+					icon="text_fields"
+					width="40px"
+				/>
 </div>
 
       {/* keywords */}
@@ -103,7 +107,21 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 					icon="person"
 					
 				/>
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='passenger'
+         icon="person"
+		     options={passengers}
+        />
       </div>
+
+      <Keyword
+					{...commonKewordProps}
+					type="select"
+					name="account_type"
+					icon="text_fields"
+				/>
     </div>
   );
 }
