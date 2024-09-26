@@ -188,7 +188,7 @@ class FuseNavigationHelper {
 		const rootItems = [];
 		navigation.forEach((item) => {
 			if (item.order?.includes('.')) {
-				const parentOrder = item.order.substring(0, item.order.lastIndexOf('.'));
+				const parentOrder = item.order?.substring(0, item.order.lastIndexOf('.'));
 				const parent = navigation.find((navItem) => navItem.order === parentOrder);
 
 				if (parent) {

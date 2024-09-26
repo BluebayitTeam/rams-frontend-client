@@ -42,7 +42,9 @@ function TicketSalesTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const totalData = useSelector(selectFilteredTicketSales(data));
-	const ticketSales = useSelector(selectFilteredTicketSales(data?.ticketSales));
+	const ticketSales = useSelector(
+    selectFilteredTicketSales(data?.iata_ticket_temporaries)
+  );
 
 	useEffect(() => {
 		refetch({ searchKey });
@@ -59,44 +61,44 @@ function TicketSalesTable(props) {
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 	useEffect(() => {
-		if (totalData?.ticketSales) {
-			const modifiedRow = [
-				{
-					id: 'sl',
-					align: 'left',
-					disablePadding: false,
-					label: 'SL',
-					sort: true
-				}
-			];
+    if (totalData?.iata_ticket_temporaries) {
+      const modifiedRow = [
+        {
+          id: 'sl',
+          align: 'left',
+          disablePadding: false,
+          label: 'SL',
+          sort: true,
+        },
+      ];
 
-			Object.entries(totalData?.ticketSales[0] || {})
-				.filter(([key]) => key !== 'id' && key !== 'random_number')
-				.map(([key]) => {
-					modifiedRow.push({
-						id: key,
-						label: key
-							.split('_')
-							.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-							.join(' '),
-						align: 'left',
-						disablePadding: false,
-						sort: true,
-						style: { whiteSpace: 'nowrap' }
-					});
-				});
+      Object.entries(totalData?.iata_ticket_temporaries[0] || {})
+        .filter(([key]) => key !== 'id' && key !== 'random_number')
+        .map(([key]) => {
+          modifiedRow.push({
+            id: key,
+            label: key
+              .split('_')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' '),
+            align: 'left',
+            disablePadding: false,
+            sort: true,
+            style: { whiteSpace: 'nowrap' },
+          });
+        });
 
-			modifiedRow.push({
-				id: 'action',
-				align: 'left',
-				disablePadding: false,
-				label: 'Action',
-				sort: true
-			});
+      modifiedRow.push({
+        id: 'action',
+        align: 'left',
+        disablePadding: false,
+        label: 'Action',
+        sort: true,
+      });
 
-			setRows(modifiedRow);
-		}
-	}, [totalData?.ticketSales, refetch]);
+      setRows(modifiedRow);
+    }
+  }, [totalData?.iata_ticket_temporaries, refetch]);
 
 	const [selected, setSelected] = useState([]);
 

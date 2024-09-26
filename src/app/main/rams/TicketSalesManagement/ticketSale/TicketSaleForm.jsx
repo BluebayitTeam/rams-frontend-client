@@ -3,8 +3,8 @@
 import { styled } from '@mui/system';
 import { useParams } from 'react-router-dom';
 
-import { Autocomplete, Box, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
-import { getAgents, getCountries, getProfessions } from 'app/store/dataSlice';
+import { Autocomplete, Box, Button, Checkbox, FormControlLabel, Icon, TextField, Tooltip, Typography, tooltipClasses } from '@mui/material';
+import { getAgencys, getAgents, getAirways, getBranches, getCountries, getCurrencies, getCurrentstatuses, getEmployees, getPassengers, getProfessions } from 'app/store/dataSlice';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
 
@@ -16,6 +16,10 @@ import { activeCncl } from 'src/app/@data/data';
 import { PictureAsPdf } from '@mui/icons-material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import CustomDropdownField from 'src/app/@components/CustomDropdownField';
+import CustomTextField from 'src/app/@components/CustomTextField';
+import CustomCheckbox from 'src/app/@components/CustomCheckbox';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {
@@ -45,24 +49,36 @@ function TicketSaleForm(props) {
 	const routeParams = useParams();
 	const { ticketSaleId } = routeParams;
 	const classes = useStyles(props);
-	const professions = useSelector((state) => state.data.professions);
-	const countries = useSelector((state) => state.data.countries);
-	const visaAgents = useSelector((state) => state.data.agents);
+	const passengers = useSelector((state) => state.data.passengers);
+  const professions = useSelector((state) => state.data.professions);
+  const countries = useSelector((state) => state.data.countries);
+  const branches = useSelector((state) => state.data.branches);
+  const agencys = useSelector((state) => state.data.agents);
+  const employees = useSelector((state) => state.data.employees);
+
+  const airways = useSelector((state) => state.data.airways);
+
+  const currencies = useSelector((state) => state.data.currencies);
+  const currentstatuses = useSelector((state) => state.data.currentstatuses);
+  const visaAgents = useSelector((state) => state.data.agents);
 	const getCountryCode1 = watch('country_code1');
 	const image = watch('image');
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const file = watch('file') || '';
-	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
-	const [fileExtPCName, setFileExtPCName] = useState('');
 
-	const slipPic = watch('file') || '';
-	const fileInputRef = useRef(null);
-	useEffect(() => {
-		dispatch(getProfessions());
-		dispatch(getCountries());
-		dispatch(getAgents());
-	}, []);
+		useEffect(() => {
+      dispatch(getProfessions());
+      dispatch(getCountries());
+      dispatch(getAgents());
+      dispatch(getPassengers());
+      dispatch(getAgencys());
+      dispatch(getBranches());
+      dispatch(getEmployees());
+      dispatch(getAirways());
+      dispatch(getCurrencies());
+      dispatch(getCurrentstatuses());
+    }, []);
+
 
 	const handleRemoveslipPicFile = () => {
 		setPreviewslipPicFile(null);
@@ -78,489 +94,145 @@ function TicketSaleForm(props) {
 		console.log('sfsdferwer', getValues());
 	};
 	return (
-		<div>
-			<Controller
-				name="country"
-				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? countries.find((data) => data.id === value) : null}
-						options={countries}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Country"
-								label="Country"
-								// error={!!errors.country || !value}
-								helperText={errors?.country?.message}
-								variant="outlined"
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-								// onKeyDown={handleSubmitOnKeyDownEnter}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="visa_agent"
-				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? visaAgents.find((data) => data.id === value) : null}
-						options={visaAgents}
-						getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Visa Agent"
-								label="Visa Agent"
-								// error={!!errors.visa_agent || !value}
-								helperText={errors?.visa_agent?.message}
-								variant="outlined"
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-								// onKeyDown={handleSubmitOnKeyDownEnter}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="company_name"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							// error={!!errors.company_name || !field.value}
-							helperText={errors?.company_name?.message}
-							label="Company Name"
-							id="company_name"
-							variant="outlined"
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="profession"
-				control={control}
-				render={({ field: { onChange, value, name } }) => (
-					<Autocomplete
-						className="mt-8 mb-16"
-						freeSolo
-						value={value ? professions.find((data) => data.id === value) : null}
-						options={professions}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Profession"
-								label="Profession"
-								helperText={errors?.profession?.message}
-								variant="outlined"
-								InputLabelProps={value ? { shrink: true } : { style: { color: 'red' } }}
-
-								// onKeyDown={handleSubmitOnKeyDownEnter}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="ticketSale_no"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.ticketSale_no?.message}
-							label="TicketSale No"
-							id="ticketSale_no"
-							type="number"
-							variant="outlined"
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="quantity"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.quantity?.message}
-							label="Quantity"
-							id="quantity"
-							type="number"
-							variant="outlined"
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="salary"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.salary?.message}
-							label="Salary"
-							id="salary"
-							variant="outlined"
-							InputLabelProps={field.value ? { shrink: true } : { style: { color: 'red' } }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="purchase_rate"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.purchase_rate?.message}
-							label="Purchase Rate"
-							id="purchase_rate"
-							type="number"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="purchase_foreign_corrency"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.purchase_foreign_corrency?.message}
-							label="Purchase Foreign Corrency"
-							id="purchase_foreign_corrency"
-							type="number"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="office_rate"
-				control={control}
-				render={({ field }) => {
-					return (
-						<TextField
-							{...field}
-							className="mt-8 mb-16"
-							helperText={errors?.office_rate?.message}
-							label="Office Rate"
-							id="office_rate"
-							type="number"
-							variant="outlined"
-							InputLabelProps={field.value && { shrink: true }}
-							fullWidth
-						/>
-					);
-				}}
-			/>
-
-			<Controller
-				name="status"
-				control={control}
-				render={({ field: { onChange, value } }) => (
-					<Autocomplete
-						className="mt-8 mb-16 w-full  "
-						freeSolo
-						value={value ? activeCncl.find((data) => data.id === value) : null}
-						options={activeCncl}
-						getOptionLabel={(option) => `${option.name}`}
-						onChange={(event, newValue) => {
-							onChange(newValue?.id);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								placeholder="Select Status"
-								label="Status"
-								id="status"
-								helperText={errors?.status?.message}
-								variant="outlined"
-								InputLabelProps={{
-									shrink: true
-								}}
-							/>
-						)}
-					/>
-				)}
-			/>
-
-			<Controller
-				name="file"
-				control={control}
-				render={({ field: { onChange } }) => (
-					<div className="flex w-full flex-row items-center justify-center ml-16">
-						<div className="flex-col">
-							<Typography className="text-center"> File</Typography>
-							<label
-								htmlFor="file-button-file"
-								className={clsx(
-									classes.productImageUpload,
-									'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-								)}
-							>
-								<input
-									accept="image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-									className="hidden"
-									id="file-button-file"
-									type="file"
-									onChange={async (e) => {
-										const reader = new FileReader();
-										reader.onload = () => {
-											if (reader.readyState === 2) {
-												setPreviewslipPicFile(reader.result);
-											}
-										};
-										reader.readAsDataURL(e.target.files[0]);
-
-										const file = e.target.files[0];
-
-										if (file) {
-											const fileExtension = file.name.split('.').pop().toLowerCase();
-											setFileExtPCName(fileExtension);
-											onChange(file);
-										}
-
-										// Force reset the input value to allow re-uploading the same file
-										e.target.value = '';
-									}}
-								/>
-								<Icon
-									fontSize="large"
-									color="action"
-								>
-									cloud_upload
-								</Icon>
-							</label>
-						</div>
-						{!previewslipPicFile && slipPic && (
-							<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
-								<div
-									id="cancelIcon"
-									style={{
-										position: 'absolute',
-										top: '0',
-										right: '0',
-										zIndex: 1,
-										color: 'red',
-										cursor: 'pointer',
-										backgroundColor: 'white',
-										width: '20px',
-										height: '20px',
-										borderRadius: '50%',
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'center'
-									}}
-								>
-									<HighlightOffIcon onClick={handleRemoveslipPicFile} />
-								</div>
-								<div style={{ width: 'auto', height: '150px', overflow: 'hidden', display: 'flex' }}>
-									{typeof slipPic === 'string' &&
-									['pdf', 'doc', 'docx'].includes(slipPic.split('.').pop().toLowerCase()) ? (
-										<div
-											style={{
-												display: 'flex',
-												alignItems: 'center',
-												justifyContent: 'center',
-												height: '100%'
-											}}
-										>
-											{slipPic.toLowerCase().includes('pdf') ? (
-												<PictureAsPdf
-													style={{
-														color: 'red',
-														cursor: 'pointer',
-														display: 'block',
-														fontSize: '137px',
-														margin: 'auto'
-													}}
-													onClick={() => window.open(`${BASE_URL}${slipPic}`)}
-												/>
-											) : (
-												<DescriptionIcon
-													style={{
-														color: 'blue',
-														cursor: 'pointer',
-														display: 'block',
-														fontSize: '137px',
-														margin: 'auto'
-													}}
-													onClick={() => window.open(`${BASE_URL}${slipPic}`)}
-												/>
-											)}
-										</div>
-									) : (
-										<img
-											src={`${BASE_URL}${slipPic}`}
-											style={{ height: '100px' }}
-											alt="file"
-										/>
-									)}
-								</div>
-							</div>
-						)}
-
-						{previewslipPicFile ? (
-							<div style={{ width: 'auto', height: '150px', overflow: 'hidden' }}>
-								{fileExtPCName && ['pdf', 'doc', 'docx'].includes(fileExtPCName) ? (
-									<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
-										<div
-											id="cancelIcon"
-											style={{
-												position: 'absolute',
-												top: '0',
-												right: '0',
-												zIndex: 1,
-												color: 'red',
-												cursor: 'pointer',
-												backgroundColor: 'white',
-												width: '20px',
-												height: '20px',
-												borderRadius: '50%',
-												display: 'flex',
-												alignItems: 'center',
-												justifyContent: 'center'
-											}}
-										>
-											<HighlightOffIcon onClick={handleRemoveslipPicFile} />
-										</div>
-										{fileExtPCName === 'pdf' ? (
-											<iframe
-												src={previewslipPicFile}
-												frameBorder="0"
-												scrolling="auto"
-												height="150px"
-												width="150px"
-											/>
-										) : (
-											<DescriptionIcon
-												style={{
-													color: 'blue',
-													cursor: 'pointer',
-													display: 'block',
-													fontSize: '137px',
-													margin: 'auto'
-												}}
-												onClick={() => window.open(previewslipPicFile)}
-											/>
-										)}
-									</div>
-								) : (
-									<div style={{ display: 'flex', position: 'relative', width: 'fit-content' }}>
-										<div
-											id="cancelIcon"
-											style={{
-												position: 'absolute',
-												top: '0',
-												right: '0',
-												zIndex: 1,
-												color: 'red',
-												cursor: 'pointer',
-												backgroundColor: 'white',
-												width: '20px',
-												height: '20px',
-												borderRadius: '50%',
-												display: 'flex',
-												alignItems: 'center',
-												justifyContent: 'center'
-											}}
-										>
-											<HighlightOffIcon onClick={handleRemoveslipPicFile} />
-										</div>
-										<img
-											src={previewslipPicFile}
-											style={{ height: '140px', width: '150px' }}
-											alt="file"
-										/>
-									</div>
-								)}
-							</div>
-						) : (
-							!slipPic && (
-								<Box
-									height={180}
-									width={180}
-									my={4}
-									display="flex"
-									alignItems="center"
-									gap={4}
-									p={2}
-									style={{
-										width: '150px',
-										height: '70px',
-										border: '1px solid red'
-									}}
-									className={clsx(
-										classes.productImageUpload,
-										'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-									)}
-								>
-									<Typography className="text-sm font-700">
-										<span className="mr-4 text-xs text-red-500">
-											Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
-										</span>
-									</Typography>
-								</Box>
-							)
-						)}
-					</div>
-				)}
-			/>
-		</div>
-	);
+    <div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='branch'
+            label='Branch'
+            options={branches}
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='customer'
+            label='Customer'
+            options={agencys}
+            optionLabelFormat={(option) =>
+              `${option.first_name || ''} ${option.last_name || ''}`
+            }
+          />
+        </div>
+      </div>{' '}
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='ticket_agency'
+            label='Ticket Agency'
+            options={agencys}
+            optionLabelFormat={(option) =>
+              `${option.first_name || ''} ${option.last_name || ''}`
+            }
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='issue_person'
+            label='Issue Person'
+            options={employees}
+            optionLabelFormat={(option) =>
+              `${option.first_name || ''} ${option.last_name || ''}`
+            }
+          />
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomCheckbox name='_other' label='Other' />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomCheckbox
+            name='multi_ticket_entry'
+            label='Multiple Ticket No'
+          />
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='passenger'
+            label='Passenger'
+            options={passengers}
+            disabled={watch('pax_name')?.length > 1}
+            optionLabelFormat={(option) => `${option.passenger_name || ''}`}
+          />{' '}
+        </div>
+        <div className='w-full md:w-1/2 px-2 mt-8'>
+          <CustomTextField
+            name='pax_name'
+            label='Pax Name'
+            disabled={watch('passenger')}
+            required
+          />
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='passport_no' label='Passport No' required />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField
+            name='ticket_no'
+            label='Ticket No'
+            placeholder='Ticket number must be 10 digits'
+            required
+          />
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDatePicker
+            name='flight_date'
+            label='Flight Date'
+            placeholder='DD-MM-YYYY'
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='flight_no' label='Flight No' required />
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='_class' label='Class name' required />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='sector' label='Sector Name' required />
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='flight_time' label='Flight Time' required />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='arrived_time' label='Arrival Time' required />
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='airline_pnr' label='Airline PNR' required />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDatePicker
+            name='return_flight_date'
+            label='Return Flight Date'
+            placeholder='DD-MM-YYYY'
+          />{' '}
+        </div>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='sales_amount' label='Sales Amount' required />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField
+            name='purchase_amount'
+            label='Purchase Amount'
+            required
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default TicketSaleForm;
