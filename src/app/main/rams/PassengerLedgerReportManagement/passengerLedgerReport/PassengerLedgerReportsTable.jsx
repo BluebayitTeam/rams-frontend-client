@@ -58,6 +58,22 @@ const initialTableColumnsState = [
 		headStyle: { textAlign: 'right' }
 	}
 ];
+const initialBillDetailsTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Sales Date', name: 'sales_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+	{ id: 4, label: 'Bill Purpose', name: 'related_ledger', show: true },
+	{ id: 5, label: 'Bill Details ', name: 'details', show: true },
+	{ id: 6, label: 'Amount', name: 'credit_amount', show: true }
+];
+const initialCostDetailsTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: ' Date', name: 'purchase_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+	{ id: 4, label: ' Purpose', name: 'related_ledger', show: true },
+	{ id: 5, label: ' Details ', name: 'details', show: true },
+	{ id: 6, label: 'Amount', name: 'credit_amount', show: true }
+];
 
 function PassengerLedgerReportsTable(props) {
   const classes = useStyles();
@@ -86,7 +102,7 @@ function PassengerLedgerReportsTable(props) {
   const componentRef = useRef(null);
 
   // Do not fetch data on mount
-  const { refetch: refetchPassengerLedgerReports } =!inShowAllMode && useGetPassengerLedgerReportsQuery(
+  const {data, refetch: refetchPassengerLedgerReports } =!inShowAllMode && useGetPassengerLedgerReportsQuery(
     {
       
       date_after: watch('date_after') || '',
@@ -177,6 +193,16 @@ function PassengerLedgerReportsTable(props) {
     }
   };
 
+
+  const PassengerLedgerAgent = data?.passenger?.agent?.first_name|| 'N/A'
+	const PassengerLedgerPID = data?.passenger?.passenger_id || 'N/A'
+	const PassengerLedgerPassportNo = data?.passenger?.passport_no || 'N/A'
+	const PassengerLedgerName = data?.passenger?.passenger_name || 'N/A'
+	const PassengerLedgeDistrict = data?.passenger?.district || 'N/A'
+	const PassengerLedgeMobileNo =data?.passenger?.agent?.contact_no || 'N/A'
+
+
+
   return (
     <div className={classes.headContainer}>
       {/* Filter */}
@@ -227,6 +253,12 @@ function PassengerLedgerReportsTable(props) {
               totalColumn={initialTableColumnsState?.length}
               serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
               setPage={setPage}
+              PassengerLedgerAgent={PassengerLedgerAgent}
+              PassengerLedgerPID={PassengerLedgerPID}
+              PassengerLedgerPassportNo={PassengerLedgerPassportNo}
+              PassengerLedgerName={PassengerLedgerName}
+              PassengerLedgeDistrict={PassengerLedgeDistrict}
+              PassengerLedgeMobileNo={PassengerLedgeMobileNo}
             />
           ))}
         </tbody>

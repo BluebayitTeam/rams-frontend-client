@@ -18,7 +18,14 @@ function SiglePageForPassengerLedgerReport({
 	setPage,
 	inSiglePageMode,
 	setSortBy,
-	setSortBySubKey
+	setSortBySubKey,
+    PassengerLedgerAgent,
+    PassengerLedgerPID,
+    PassengerLedgerPassportNo,
+    PassengerLedgerName,
+    PassengerLedgeDistrict,
+    PassengerLedgeMobileNo
+
 }) {
 	let pageBasedSerialNo = serialNumber;
 
@@ -38,12 +45,7 @@ function SiglePageForPassengerLedgerReport({
 	}, []);
 
 
-    const PassengerLedgerAgent = sessionStorage.getItem('PassengerLedgerAgent');
-	const PassengerLedgerPID = sessionStorage.getItem('PassengerLedgerPID');
-	const PassengerLedgerPassportNo = sessionStorage.getItem('PassengerLedgerPassportNo');
-	const PassengerLedgerName = sessionStorage.getItem('PassengerLedgerName');
-	const PassengerLedgeDistrict = sessionStorage.getItem('PassengerLedgeDistrict');
-	const PassengerLedgeMobileNo = sessionStorage.getItem('PassengerLedgeMobileNo');
+   
 
 	return (
 		<div
