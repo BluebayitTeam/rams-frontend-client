@@ -199,8 +199,8 @@ function PassengerLedgerReportsTable(props) {
 	const PassengerLedgerPID = data?.passenger?.passenger_id || 'N/A'
 	const PassengerLedgerPassportNo = data?.passenger?.passport_no || 'N/A'
 	const PassengerLedgerName = data?.passenger?.passenger_name || 'N/A'
-	const PassengerLedgeDistrict = data?.passenger?.district || 'N/A'
-	// const PassengerLedgeMobileNo =data?.passenger?.agent?.contact_no || 'N/A'
+	const PassengerLedgeDistrict = data?.passenger?.district.name || 'N/A'
+	const PassengerLedgeMobileNo =data?.passenger?.contact_no || 'N/A'
 
 
 
@@ -273,7 +273,7 @@ function PassengerLedgerReportsTable(props) {
               PassengerLedgerPassportNo={PassengerLedgerPassportNo}
               PassengerLedgerName={PassengerLedgerName}
               PassengerLedgeDistrict={PassengerLedgeDistrict}
-              // PassengerLedgeMobileNo={PassengerLedgeMobileNo}
+              PassengerLedgeMobileNo={PassengerLedgeMobileNo}
 
 
               addInHeader={
