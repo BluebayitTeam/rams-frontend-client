@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getGroups, getPassengers } from 'app/store/dataSlice';
+import { getPassengers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,10 +41,8 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 
 	useEffect(() => {
 		dispatch(getPassengers());
-    dispatch(getGroups());
 	}, [dispatch]);
 
-	console.log('sadhbjkasbdkj', getValues());
 	return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
@@ -108,13 +106,7 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 					icon="person"
 					
 				/>
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='passenger'
-         icon="person"
-		     options={passengers}
-        />
+        
       </div>
 
       <Keyword
