@@ -27,12 +27,36 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Name', name: 'username', show: true },
-  { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', subName: 'name', show: true },
-  { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true },
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true },
+	{ id: 4, label: 'Log Type', name: 'log_type', show: true },
+	{ id: 5, label: 'Pay Purpose', name: 'log_type', show: true },
+	{ id: 6, label: 'Particular', name: 'details', show: true },
+	{
+		id: 7,
+		label: 'Debit',
+		name: 'debit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	},
+	{
+		id: 8,
+		label: 'Credit',
+		name: 'credit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	},
+	{
+		id: 9,
+		label: 'Balance',
+		name: 'balance',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	}
 ];
 
 function PassengerLedgerReportsTable(props) {
@@ -91,7 +115,7 @@ function PassengerLedgerReportsTable(props) {
 
   useEffect(() => {
     if (totalData) {
-      setModifiedPassengerLedgerData(totalData?.passengerLedgers);
+      setModifiedPassengerLedgerData(totalData?.account_logs);
     }
   }, [totalData]);
 
@@ -116,7 +140,7 @@ function PassengerLedgerReportsTable(props) {
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          const passengerLedgersData = response.data.passengerLedgers || [];
+          const passengerLedgersData = response.data.account_logs || [];
           setModifiedPassengerLedgerData(passengerLedgersData);
           setInShowAllMode(false);
           setTotalPages(response.data?.total_pages);
@@ -124,7 +148,7 @@ function PassengerLedgerReportsTable(props) {
         });
       }
     } catch (error) {
-      console.error('Error fetching passengerLedgers:', error);
+      console.error('Error fetching account_logs:', error);
     }
   };
 
@@ -137,10 +161,10 @@ function PassengerLedgerReportsTable(props) {
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          setModifiedPassengerLedgerData(response.data.passengerLedgers || []);
+          setModifiedPassengerLedgerData(response.data.account_logs || []);
           setInShowAllMode(true);
           const { totalPages, totalElements } = getPaginationData(
-            response.data.passengerLedgers,
+            response.data.account_logs,
             size,
             page
           );
@@ -149,7 +173,7 @@ function PassengerLedgerReportsTable(props) {
         });
       }
     } catch (error) {
-      console.error('Error fetching all passengerLedgers:', error);
+      console.error('Error fetching all account_logs:', error);
     }
   };
 
