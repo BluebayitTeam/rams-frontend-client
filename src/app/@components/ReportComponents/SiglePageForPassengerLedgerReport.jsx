@@ -37,6 +37,14 @@ function SiglePageForPassengerLedgerReport({
 			.catch(() => setGeneralData({}));
 	}, []);
 
+
+    const PassengerLedgerAgent = sessionStorage.getItem('PassengerLedgerAgent');
+	const PassengerLedgerPID = sessionStorage.getItem('PassengerLedgerPID');
+	const PassengerLedgerPassportNo = sessionStorage.getItem('PassengerLedgerPassportNo');
+	const PassengerLedgerName = sessionStorage.getItem('PassengerLedgerName');
+	const PassengerLedgeDistrict = sessionStorage.getItem('PassengerLedgeDistrict');
+	const PassengerLedgeMobileNo = sessionStorage.getItem('PassengerLedgeMobileNo');
+
 	return (
 		<div
 			className={`${classes.pageContainer} printPageContainer px-24 `}
@@ -134,14 +142,7 @@ function SiglePageForPassengerLedgerReport({
 											}}
 										>
 											{column.label}
-											<FontAwesomeIcon
-												className={`sortIcon ${column.sortAction === false && 'invisible'}`}
-												style={{
-													transform:
-														data.sortBy === column.name ? 'rotate(180deg)' : 'rotate(0deg)'
-												}}
-												icon={faArrowUp}
-											/>
+											
 										</div>
 									</TableCell>
 								) : null;
