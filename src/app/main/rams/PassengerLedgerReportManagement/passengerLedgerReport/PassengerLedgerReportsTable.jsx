@@ -64,13 +64,12 @@ function PassengerLedgerReportsTable(props) {
   // Do not fetch data on mount
   const { refetch: refetchPassengerLedgerReports } =!inShowAllMode && useGetPassengerLedgerReportsQuery(
     {
-      group: watch('group') || '',
-      district: watch('district') || '',
+      
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      username: watch('username') || '',
-      primary_phone: watch('primary_phone') || '',
-      passengerLedger_code: watch('passengerLedger_code') || '',
+      passenger: watch('passenger') || '',
+      account_type: watch('account_type') || '',
+    
       page,
       size,
     },
@@ -80,13 +79,10 @@ function PassengerLedgerReportsTable(props) {
     inShowAllMode &&
     useGetPassengerLedgerAllReportsQuery(
       {
-        group: watch('group') || '',
-        district: watch('district') || '',
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
-        username: watch('username') || '',
-        primary_phone: watch('primary_phone') || '',
-        passengerLedger_code: watch('passengerLedger_code') || '',
+        passenger: watch('passenger') || '',
+        account_type: watch('account_type') || '',
       },
       { enabled: false }
     );
