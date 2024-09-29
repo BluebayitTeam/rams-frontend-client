@@ -1500,6 +1500,7 @@ export const GET_TICKETENTRY_BY_ID = `${BASE_URL}/ticket_purchase/api/v1/ticket_
 export const UPDATE_TICKETENTRY = `${BASE_URL}/ticket_purchase/api/v1/ticket_purchase/update/`;
 
 export const DELETE_TICKETENTRY = `${BASE_URL}/ticket_purchase/api/v1/ticket_purchase/delete/`;
+export const DELETE_TICKETENTRY_MULTIPLE = `${BASE_URL}/ticket_purchase/api/v1/ticket_purchase/delete/`;
 
 export const SEARCH_TICKETENTRY = `${BASE_URL}/ticket_purchase/api/v1/ticket_purchase/search/`;
 
@@ -1830,6 +1831,7 @@ export const GET_TICKETREFUND_BY_ID = `${BASE_URL}/ticket_refund/api/v1/ticket_r
 export const UPDATE_TICKETREFUND = `${BASE_URL}/ticket_refund/api/v1/ticket_refund/update/`;
 
 export const DELETE_TICKETREFUND = `${BASE_URL}/ticket_refund/api/v1/ticket_refund/delete/`;
+export const DELETE_TICKETREFUND_MULTIPLE = `${BASE_URL}/ticket_refund/api/v1/ticket_refund/delete/`;
 
 export const SEARCH_TICKETREFUND = `${BASE_URL}/ticket_refund/api/v1/ticket_refund/search/`;
 
@@ -1843,6 +1845,7 @@ export const GET_TICKETDEPUTE_BY_ID = `${BASE_URL}/ticket_depute/api/v1/ticket_d
 export const UPDATE_TICKETDEPUTE = `${BASE_URL}/ticket_depute/api/v1/ticket_depute/update/`;
 
 export const DELETE_TICKETDEPUTE = `${BASE_URL}/ticket_depute/api/v1/ticket_depute/delete/`;
+export const DELETE_TICKETDEPUTE_MULTIPLE = `${BASE_URL}/ticket_depute/api/v1/ticket_depute/delete/`;
 
 export const SEARCH_TICKETDEPUTE = `${BASE_URL}/ticket_depute/api/v1/ticket_depute/search/`;
 

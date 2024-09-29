@@ -113,6 +113,9 @@ import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
+import TicketRefundAppConfig from '../rams/TicketRefundsManagement/TicketRefundAppConfig';
+import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeAppConfig';
+import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
 
 /**
  * The list of application configurations.
@@ -197,6 +200,9 @@ const appsConfigs = [
   SubscriptionLoanAppConfig,
   MultipleVisaEntryAppConfig,
   DepartmentAppConfig,
+  TicketRefundAppConfig,
+  TicketPurchaseAppConfig,
+  TicketDeputeAppConfig,
   SiteSettingAppConfig,
   BranchAppConfig,
   PoliceStationAppConfig,
