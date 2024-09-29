@@ -1,9 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -23,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
 
-// Define the Zod schema
 const schema = z.object({});
 
 const initialTableColumnsState = [
@@ -40,11 +38,10 @@ function AgentReportsTable(props) {
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
-    resolver: zodResolver(schema), // Use zodResolver for form validation
+    resolver: zodResolver(schema),
   });
-  const dispatch = useDispatch();
 
-  const { control, getValues,watch } = methods;
+  const { control, getValues, watch } = methods;
 
   const [modifiedAgentData, setModifiedAgentData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -57,109 +54,89 @@ function AgentReportsTable(props) {
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
 
-  console.log("inShowAllMode", inShowAllMode)
-
   const componentRef = useRef(null);
 
-  // Do not fetch data on mount
-  const { refetch: refetchAgentReports } =!inShowAllMode && useGetAgentReportsQuery(
+  const watchedValues = watch();
+
+  const { data: paginatedData, refetch: refetchAgentReports } = useGetAgentReportsQuery(
     {
-      group: watch('group') || '',
-      district: watch('district') || '',
-      date_after: watch('date_after') || '',
-      date_before: watch('date_before') || '',
-      username: watch('username') || '',
-      primary_phone: watch('primary_phone') || '',
-      agent_code: watch('agent_code') || '',
+      group: watchedValues.group || '',
+      district: watchedValues.district || '',
+      date_after: watchedValues.date_after || '',
+      date_before: watchedValues.date_before || '',
+      username: watchedValues.username || '',
+      primary_phone: watchedValues.primary_phone || '',
+      agent_code: watchedValues.agent_code || '',
       page,
       size,
     },
-    { enabled: false }
+    { skip: inShowAllMode }
   );
-  const { refetch: refetchAllAgentReports } =
-    inShowAllMode &&
-    useGetAgentAllReportsQuery(
-      {
-        group: watch('group') || '',
-        district: watch('district') || '',
-        date_after: watch('date_after') || '',
-        date_before: watch('date_before') || '',
-        username: watch('username') || '',
-        primary_phone: watch('primary_phone') || '',
-        agent_code: watch('agent_code') || '',
-      },
-      { enabled: false }
-    );
+  
+  const { data: allData, refetch: refetchAllAgentReports } = useGetAgentAllReportsQuery(
+    {
+      group: watchedValues.group || '',
+      district: watchedValues.district || '',
+      date_after: watchedValues.date_after || '',
+      date_before: watchedValues.date_before || '',
+      username: watchedValues.username || '',
+      primary_phone: watchedValues.primary_phone || '',
+      agent_code: watchedValues.agent_code || '',
+    },
+    { skip: !inShowAllMode }
+  );
 
   const totalData = useSelector(selectFilteredAgentReports);
 
   useEffect(() => {
-    if (totalData) {
-      setModifiedAgentData(totalData?.agents);
+    if (inShowAllMode && allData) {
+      setModifiedAgentData(allData.agents || []);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.agents,
+        size,
+        page
+      );
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+      setModifiedAgentData(paginatedData.agents || []);
+      setTotalPages(paginatedData.total_pages || 0);
+      setTotalElements(paginatedData.total_elements || 0);
     }
-  }, [totalData]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
-  // Function to handle Excel download
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
 
-  // Function to handle Print
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-	const handleGetAgents = async (newPage) => {
-	  setInShowAllMode(false);
+  const handleGetAgents = useCallback(async (newPage) => {
+    setInShowAllMode(false);
+    setModifiedAgentData([]); // Clear data before fetching new data
     try {
-      const formValues = getValues();
       const page = newPage || 1;
       setPage(page);
-
-      const response = await refetchAgentReports({ ...formValues, page, size }); // Manually trigger the query
-
-      if (response?.data) {
-        unstable_batchedUpdates(() => {
-          const agentsData = response.data.agents || [];
-          setModifiedAgentData(agentsData);
-          setInShowAllMode(false);
-          setTotalPages(response.data?.total_pages);
-          setTotalElements(response.data?.total_elements);
-        });
-      }
+      await refetchAgentReports();
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
-  };
+  }, [refetchAgentReports]);
 
-	const handleGetAllAgents = async () => {
-	   setInShowAllMode(true);
+  const handleGetAllAgents = useCallback(async () => {
+    setInShowAllMode(true);
+    setModifiedAgentData([]); // Clear data before fetching new data
     try {
-      const formValues = getValues();
-
-      const response = await refetchAllAgentReports({ ...formValues }); // Manually trigger the query
-
-      if (response?.data) {
-        unstable_batchedUpdates(() => {
-          setModifiedAgentData(response.data.agents || []);
-          setInShowAllMode(true);
-          const { totalPages, totalElements } = getPaginationData(
-            response.data.agents,
-            size,
-            page
-          );
-          setTotalPages(totalPages);
-          setTotalElements(totalElements);
-        });
-      }
+      await refetchAllAgentReports();
     } catch (error) {
       console.error('Error fetching all agents:', error);
     }
-  };
+  }, [refetchAllAgentReports]);
 
   return (
     <div className={classes.headContainer}>
-      {/* Filter */}
       <FormProvider {...methods}>
         <AgentFilterMenu
           inShowAllMode={inShowAllMode}
@@ -190,22 +167,18 @@ function AgentReportsTable(props) {
         filename='AgentReport'
       />
 
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
+      <table id='table-to-xls' className='w-full' style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {/* each single page (table) */}
           {modifiedAgentData.map((agent, index) => (
             <SinglePage
-              key={index}
+              key={agent.id || index}
               classes={classes}
               reportTitle='Agent Report'
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={agent}
               totalColumn={initialTableColumnsState?.length}
-              serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+              serialNumber={index + 1 + (page - 1) * size}
               setPage={setPage}
             />
           ))}

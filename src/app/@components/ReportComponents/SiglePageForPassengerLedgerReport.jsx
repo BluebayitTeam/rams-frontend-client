@@ -24,7 +24,7 @@ function SiglePageForPassengerLedgerReport({
     PassengerLedgerPassportNo,
     PassengerLedgerName,
     PassengerLedgeDistrict,
-    // PassengerLedgeMobileNo
+    PassengerLedgeMobileNo
 
 }) {
 	let pageBasedSerialNo = serialNumber;
@@ -44,12 +44,7 @@ function SiglePageForPassengerLedgerReport({
 			.catch(() => setGeneralData({}));
 	}, []);
 
-    // const PassengerLedgerAgent = sessionStorage.getItem('PassengerLedgerAgent');
-	// const PassengerLedgerPID = sessionStorage.getItem('PassengerLedgerPID');
-	// const PassengerLedgerPassportNo = sessionStorage.getItem('PassengerLedgerPassportNo');
-	// const PassengerLedgerName = sessionStorage.getItem('PassengerLedgerName');
-	// const PassengerLedgeDistrict = sessionStorage.getItem('PassengerLedgeDistrict');
-	const PassengerLedgeMobileNo = sessionStorage.getItem('PassengerLedgeMobileNo');
+
    
 
 	return (
