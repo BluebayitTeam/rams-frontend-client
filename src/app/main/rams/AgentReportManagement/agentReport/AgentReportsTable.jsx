@@ -135,11 +135,6 @@ function AgentReportsTable(props) {
     }
   }, [refetchAllAgentReports]);
 
-
-
-
-
-  
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
