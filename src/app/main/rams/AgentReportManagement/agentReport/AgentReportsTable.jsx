@@ -92,27 +92,27 @@ function AgentReportsTable(props) {
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedAgentData(allData.agents || []);
-      setInSiglePageMode(false);
-			setInShowAllMode(true);
+      // setInSiglePageMode(false);
+			// setInShowAllMode(true);
       const { totalPages, totalElements } = getPaginationData(
         allData.agents,
         size,
         page
       );
-      setPage(page || 1);
-			setSize(size || 25);
+      // setPage(page || 1);
+			// setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
 
     } else if (!inShowAllMode && paginatedData) {
 
       setModifiedAgentData(paginatedData.agents || []);
-      setPage(paginatedData?.page || 1);
-			setSize(paginatedData?.size || 25);
+      // setPage(paginatedData?.page || 1);
+			// setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
-      setInSiglePageMode(true);
-			setInShowAllMode(false);
+      // setInSiglePageMode(true);
+			// setInShowAllMode(false);
       
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
@@ -126,7 +126,7 @@ function AgentReportsTable(props) {
   });
 
   const handleGetAgents = useCallback(async (newPage) => {
-    setModifiedAgentData([]); // Clear data before fetching new data
+    setModifiedAgentData([]); 
     try {
       const page = newPage || 1;
       setPage(page);
@@ -137,8 +137,9 @@ function AgentReportsTable(props) {
   }, [refetchAgentReports]);
 
   const handleGetAllAgents = useCallback(async () => {
-    setModifiedAgentData([]); // Clear data before fetching new data
+    setModifiedAgentData([]); 
     try {
+      
       await refetchAllAgentReports();
     } catch (error) {
       console.error('Error fetching all agents:', error);
