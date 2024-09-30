@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 // import '../../../Print.css';
 
-import '../Print.css';
+// import '../Print.css';
 
 
 function SinglePage({
