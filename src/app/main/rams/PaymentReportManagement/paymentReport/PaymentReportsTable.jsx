@@ -70,6 +70,9 @@ function PaymentReportsTable(props) {
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const watchedValues = watch();
+  const [pagination, setPagination] = useState(false);
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
+
 
   console.log("inShowAllMode", inShowAllMode)
 
@@ -106,36 +109,70 @@ function PaymentReportsTable(props) {
   
 
   
+  // useEffect(() => {
+  //   if (inShowAllMode && allData) {
+  //     setModifiedPaymentData(allData.payment_vouchers || []);
+  //     setInSiglePageMode(false);
+	// 		setInShowAllMode(true);
+  //           setPagination(false)
+
+  //     const { totalPages, totalElements } = getPaginationData(
+  //       allData.payment_vouchers,
+  //       size,
+  //       page
+  //     );
+  //     // setPage(page || 1);
+	// 		// setSize(size || 25);
+  //     setTotalPages(totalPages);
+  //     setTotalElements(totalElements);
+
+  //   } else if (!inShowAllMode && paginatedData) {
+
+  //     setModifiedPaymentData(paginatedData.payment_vouchers || []);
+  //     setPage(paginatedData?.page || 1);
+	// 		setSize(paginatedData?.size || 25);
+  //     setTotalPages(paginatedData.total_pages || 0);
+  //     setTotalElements(paginatedData.total_elements || 0);
+  //     // setInSiglePageMode(true);
+	// 		// setInShowAllMode(false);
+      
+  //   }
+  // }, [inShowAllMode, allData, paginatedData, size, page]);
+
+
+ 
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedPaymentData(allData.payment_vouchers || []);
-      // setInSiglePageMode(false);
-			// setInShowAllMode(true);
+      setInSiglePageMode(false);
+			setInShowAllMode(true);
+      setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
         allData.payment_vouchers,
         size,
         page
       );
-      // setPage(page || 1);
-			// setSize(size || 25);
+      setPage(page || 1);
+			setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
 
     } else if (!inShowAllMode && paginatedData) {
 
       setModifiedPaymentData(paginatedData.payment_vouchers || []);
-      // setPage(paginatedData?.page || 1);
-			// setSize(paginatedData?.size || 25);
+      setPage(paginatedData?.page || 1);
+			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
-      // setInSiglePageMode(true);
-			// setInShowAllMode(false);
+      setPagination(true);
+
+      setInSiglePageMode(true);
+			setInShowAllMode(false);
       
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
 
- 
 
   const totalData = useSelector(selectFilteredPaymentReports);
 
@@ -164,7 +201,7 @@ function PaymentReportsTable(props) {
       setPage(page);
       await refetchPaymentReports();
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error('Error fetching payment_vouchers:', error);
     }
   }, [refetchPaymentReports]);
 
@@ -176,7 +213,7 @@ function PaymentReportsTable(props) {
       
       await refetchAllPaymentReports();
     } catch (error) {
-      console.error('Error fetching all agents:', error);
+      console.error('Error fetching all payment_vouchers:', error);
     }
   }, [refetchAllPaymentReports]);
 
@@ -230,8 +267,14 @@ function PaymentReportsTable(props) {
               dispatchTableColumns={dispatchTableColumns}
               data={payment}
               totalColumn={initialTableColumnsState?.length}
-              serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+              serialNumber={
+                pagination
+                  ? page * size - size + 1
+                  : payment.page * payment.size - payment.size + 1
+              }
               setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+
             />
           ))}
         </tbody>
