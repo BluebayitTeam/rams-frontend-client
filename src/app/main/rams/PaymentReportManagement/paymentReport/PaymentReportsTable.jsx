@@ -75,24 +75,6 @@ function PaymentReportsTable(props) {
 
   const componentRef = useRef(null);
 
-  // Do not fetch data on mount
-  // const { refetch: refetchPaymentReports } =!inShowAllMode && useGetPaymentReportsQuery(
-  //   {
-  //     date_after: watch('date_after') || '',
-  //     date_before: watch('date_before') || '',
-  //     ledger: watch('ledger') || '',
-  //     sub_ledger: watch('sub_ledger') || '',
-     
-  //     account_type: watch('account_type') || '',
-      
-  //     page,
-  //     size,
-  //   },
-  //   { enabled: false }
-  // );
-
-
-
   const { data: paginatedData, refetch: refetchPaymentReports } = useGetPaymentReportsQuery(
     {
       
@@ -153,29 +135,13 @@ function PaymentReportsTable(props) {
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
 
-  // const { refetch: refetchAllPaymentReports } =
-  //   inShowAllMode &&
-  //   useGetPaymentAllReportsQuery(
-  //     {
-  //       ledger: watch('ledger') || '',
-  //       sub_ledger: watch('sub_ledger') || '',
-  //       date_after: watch('date_after') || '',
-  //       date_before: watch('date_before') || '',
-  //       account_type: watch('account_type') || '',
-     
-  //     },
-  //     { enabled: false }
-  //   );
+ 
 
   const totalData = useSelector(selectFilteredPaymentReports);
 
 
 
-  // useEffect(() => {
-  //   if (totalData) {
-  //     setModifiedPaymentData(totalData?.payment_vouchers);
-  //   }
-  // }, [totalData]);
+  
 
   // Function to handle Excel download
   const handleExelDownload = () => {
@@ -187,28 +153,7 @@ function PaymentReportsTable(props) {
     content: () => componentRef.current,
   });
 
-	// const handleGetPayments = async (newPage) => {
-	//   setInShowAllMode(false);
-  //   try {
-  //     const formValues = getValues();
-  //     const page = newPage || 1;
-  //     setPage(page);
 
-  //     const response = await refetchPaymentReports({ ...formValues, page, size }); 
-
-  //     if (response?.data) {
-  //       unstable_batchedUpdates(() => {
-  //         const paymentsData = response.data.payment_vouchers || [];
-  //         setModifiedPaymentData(paymentsData);
-  //         setInShowAllMode(false);
-  //         setTotalPages(response.data?.total_pages);
-  //         setTotalElements(response.data?.total_elements);
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching payments:', error);
-  //   }
-  // };
 
 
 
@@ -229,36 +174,13 @@ function PaymentReportsTable(props) {
     setModifiedPaymentData([]); 
     try {
       
-      await refetchPaymentReports();
+      await refetchAllPaymentReports();
     } catch (error) {
       console.error('Error fetching all agents:', error);
     }
-  }, [refetchPaymentReports]);
+  }, [refetchAllPaymentReports]);
 
-	// const handleGetAllPayments = async () => {
-	//    setInShowAllMode(true);
-  //   try {
-  //     const formValues = getValues();
 
-  //     const response = await refetchAllPaymentReports({ ...formValues }); // Manually trigger the query
-
-  //     if (response?.data) {
-  //       unstable_batchedUpdates(() => {
-  //         setModifiedPaymentData(response.data.payment_vouchers || []);
-  //         setInShowAllMode(true);
-  //         const { totalPages, totalElements } = getPaginationData(
-  //           response.data.payment_vouchers,
-  //           size,
-  //           page
-  //         );
-  //         setTotalPages(totalPages);
-  //         setTotalElements(totalElements);
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching all payments:', error);
-  //   }
-  // };
 
   return (
     <div className={classes.headContainer}>
