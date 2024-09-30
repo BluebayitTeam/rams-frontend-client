@@ -52,7 +52,8 @@ function AgentReportsTable(props) {
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
- 
+  const [pagination, setPagination] = useState(false);
+
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
@@ -92,27 +93,32 @@ function AgentReportsTable(props) {
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedAgentData(allData.agents || []);
-      // setInSiglePageMode(false);
-			// setInShowAllMode(true);
+      setInSiglePageMode(false);
+			setInShowAllMode(true);
+      setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
         allData.agents,
         size,
         page
       );
-      // setPage(page || 1);
-			// setSize(size || 25);
+      setPage(page || 1);
+			setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
+      // console.log('totalPages12121',totalPages,totalElements)
 
     } else if (!inShowAllMode && paginatedData) {
 
       setModifiedAgentData(paginatedData.agents || []);
-      // setPage(paginatedData?.page || 1);
-			// setSize(paginatedData?.size || 25);
+      setPage(paginatedData?.page || 1);
+			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
-      // setInSiglePageMode(true);
-			// setInShowAllMode(false);
+      setPagination(true);
+      console.log('totalPages12121',paginatedData?.total_pages,paginatedData?.total_elements)
+
+      setInSiglePageMode(true);
+			setInShowAllMode(false);
       
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
@@ -189,8 +195,16 @@ function AgentReportsTable(props) {
               dispatchTableColumns={dispatchTableColumns}
               data={agent}
               totalColumn={initialTableColumnsState?.length}
-              serialNumber={index + 1 + (page - 1) * size}
-             
+              // serialNumber={  agent.page * agent.size - agent.size + 1 }
+
+              serialNumber={
+                pagination
+                  ? page * size - size + 1
+                  : agent.page * agent.size - agent.size + 1
+              }
+
+
+              // index + 1 + (page - 1) * size
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
               setSortBy={setSortBy}
