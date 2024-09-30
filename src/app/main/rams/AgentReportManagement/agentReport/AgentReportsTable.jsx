@@ -90,25 +90,20 @@ function AgentReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      const allAgents = allData.agents || [];
-      setModifiedAgentData(allAgents);
-      const { totalPages: calculatedTotalPages, totalElements: calculatedTotalElements } = getPaginationData(
-        allAgents,
+      setModifiedAgentData(allData.agents || []);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.agents,
         size,
-        1
+        page
       );
-      setPage(1);
-      setSize(allAgents.length);
-      setTotalPages(calculatedTotalPages);
-      setTotalElements(calculatedTotalElements);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedAgentData(paginatedData.agents || []);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
-      setPage(paginatedData?.page || 1);
-      setSize(paginatedData?.size || 25);
     }
-  }, [inShowAllMode, allData, paginatedData, size]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
@@ -122,8 +117,8 @@ function AgentReportsTable(props) {
     setInShowAllMode(false);
     setModifiedAgentData([]); // Clear data before fetching new data
     try {
-      const pageToFetch = newPage || 1;
-      setPage(pageToFetch);
+      const page = newPage || 1;
+      setPage(page);
       await refetchAgentReports();
     } catch (error) {
       console.error('Error fetching agents:', error);
@@ -139,12 +134,6 @@ function AgentReportsTable(props) {
       console.error('Error fetching all agents:', error);
     }
   }, [refetchAllAgentReports]);
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      handleGetAgents(newPage);
-    }
-  };
 
   return (
     <div className={classes.headContainer}>
@@ -165,10 +154,10 @@ function AgentReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handlePageChange(1)}
-        onPreviousPage={() => handlePageChange(page - 1)}
-        onNextPage={() => handlePageChange(page + 1)}
-        onLastPage={() => handlePageChange(totalPages)}
+        onFirstPage={() => handleGetAgents(1)}
+        onPreviousPage={() => handleGetAgents(page - 1)}
+        onNextPage={() => handleGetAgents(page + 1)}
+        onLastPage={() => handleGetAgents(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
         handleGetData={handleGetAgents}
@@ -188,7 +177,6 @@ function AgentReportsTable(props) {
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={agent}
-              inShowAllMode={inShowAllMode}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={index + 1 + (page - 1) * size}
               setPage={setPage}
