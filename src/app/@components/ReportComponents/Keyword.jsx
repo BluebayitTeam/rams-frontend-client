@@ -76,7 +76,6 @@ function Keyword({
       });
     }
 
-    // Call the onClick function
     onClick();
   };
 
