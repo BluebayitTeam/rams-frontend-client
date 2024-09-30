@@ -74,7 +74,6 @@ function PaymentReportsTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
 
-  console.log("inShowAllMode", inShowAllMode)
 
   const componentRef = useRef(null);
 
@@ -108,40 +107,7 @@ function PaymentReportsTable(props) {
   );
   
 
-  
-  // useEffect(() => {
-  //   if (inShowAllMode && allData) {
-  //     setModifiedPaymentData(allData.payment_vouchers || []);
-  //     setInSiglePageMode(false);
-	// 		setInShowAllMode(true);
-  //           setPagination(false)
-
-  //     const { totalPages, totalElements } = getPaginationData(
-  //       allData.payment_vouchers,
-  //       size,
-  //       page
-  //     );
-  //     // setPage(page || 1);
-	// 		// setSize(size || 25);
-  //     setTotalPages(totalPages);
-  //     setTotalElements(totalElements);
-
-  //   } else if (!inShowAllMode && paginatedData) {
-
-  //     setModifiedPaymentData(paginatedData.payment_vouchers || []);
-  //     setPage(paginatedData?.page || 1);
-	// 		setSize(paginatedData?.size || 25);
-  //     setTotalPages(paginatedData.total_pages || 0);
-  //     setTotalElements(paginatedData.total_elements || 0);
-  //     // setInSiglePageMode(true);
-	// 		// setInShowAllMode(false);
-      
-  //   }
-  // }, [inShowAllMode, allData, paginatedData, size, page]);
-
-
- 
-  useEffect(() => {
+useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedPaymentData(allData.payment_vouchers || []);
       setInSiglePageMode(false);

@@ -42,15 +42,13 @@ function SinglePage({
 
 	return (
 		<div
-			className={`${classes.pageContainer} printPageContainer px-60 `}
+			className={`${classes.pageContainer} printPageContainer `}
 			onMouseOver={() => {
 				inSiglePageMode 
 			}}
 		>
-			<br />
-			<br />
-			<br />
-			<br />
+			<br /><br />
+			
 			<div>
 				<div className={classes.pageHead}>
 					<div className="logoContainer pr-0 md:-pr-20">
@@ -75,6 +73,7 @@ function SinglePage({
 						</TableCell>
 					</TableHead>
 				</Table>
+				<br /><br />
 				<Table
 					aria-label="simple table"
 					className={`${classes.table} w-fit `}
@@ -172,8 +171,9 @@ function SinglePage({
 					</TableBody>
 				</Table>
 			</div>
-
+<br /><br /><br /><br />
 			<table className={classes.pageBottmContainer}>
+			<br /><br />
 				<tbody>
 					<tr>
 						<td>
