@@ -24,6 +24,8 @@ function SinglePage({
 	let pageBasedSerialNo = serialNumber;
 
 	const [generalData, setGeneralData] = useState({});
+
+	console.log('dfdsfsfsdfsdfsdfsdf',data)
 	// get general setting data
 	useEffect(() => {
 		const authTOKEN = {
@@ -42,7 +44,7 @@ function SinglePage({
 		<div
 			className={`${classes.pageContainer} printPageContainer px-60 `}
 			onMouseOver={() => {
-				inSiglePageMode || setPage(data.page);
+				inSiglePageMode || setPage(data?.page);
 			}}
 		>
 			<br />

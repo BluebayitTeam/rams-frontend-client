@@ -103,7 +103,9 @@ function AgentReportsTable(props) {
 			setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
+
     } else if (!inShowAllMode && paginatedData) {
+
       setModifiedAgentData(paginatedData.agents || []);
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
@@ -111,6 +113,7 @@ function AgentReportsTable(props) {
       setTotalElements(paginatedData.total_elements || 0);
       setInSiglePageMode(true);
 			setInShowAllMode(false);
+      
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
