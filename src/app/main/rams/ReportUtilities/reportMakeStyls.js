@@ -214,8 +214,8 @@ export const getReportMakeStyles = (theme) => ({
 	},
 	pageBottmContainer: {
 		width: '100%',
-		padding: '5px',
-		height: '20px',
+		padding: '10px',
+		height: '40px',
 
 		textAlign: 'center',
 		'& h5': {

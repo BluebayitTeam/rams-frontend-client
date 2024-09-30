@@ -1,11 +1,11 @@
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
-import moment from 'moment';
-// import '../../../Print.css';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+// import '../../../Print.css';
 
 function SinglePage({
 	classes,
@@ -25,7 +25,6 @@ function SinglePage({
 
 	const [generalData, setGeneralData] = useState({});
 
-	console.log('dfdsfsfsdfsdfsdfsdf',data)
 	// get general setting data
 	useEffect(() => {
 		const authTOKEN = {
@@ -47,7 +46,7 @@ function SinglePage({
 				inSiglePageMode 
 			}}
 		>
-			<br /><br />
+			
 			
 			<div>
 				<div className={classes.pageHead}>
@@ -63,17 +62,11 @@ function SinglePage({
 					</div>
 				</div>
 
-				<Table>
-					<TableHead>
-						<TableCell
-							className=" text-24 text-center"
-							colspan={totalColumn}
-						>
-							{reportTitle}
-						</TableCell>
-					</TableHead>
-				</Table>
-				<br /><br />
+				<div className={classes.pageHead}>
+					<h1 className="title  pl-0 md:-pl-20">
+						<u>{reportTitle}</u>
+					</h1>
+				</div>
 				<Table
 					aria-label="simple table"
 					className={`${classes.table} w-fit `}
@@ -171,9 +164,8 @@ function SinglePage({
 					</TableBody>
 				</Table>
 			</div>
-<br /><br /><br /><br />
+
 			<table className={classes.pageBottmContainer}>
-			<br /><br />
 				<tbody>
 					<tr>
 						<td>
