@@ -42,9 +42,13 @@ function SinglePage({
 		<div
 			className={`${classes.pageContainer} printPageContainer px-60 `}
 			onMouseOver={() => {
-				inSiglePageMode ;
+				inSiglePageMode || setPage(data.page);
 			}}
 		>
+			<br />
+			<br />
+			<br />
+			<br />
 			<div>
 				<div className={classes.pageHead}>
 					<div className="logoContainer pr-0 md:-pr-20">

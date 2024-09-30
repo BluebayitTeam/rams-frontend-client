@@ -43,7 +43,7 @@ function AgentReportsTable(props) {
 
   const { control, getValues, watch } = methods;
 
-  const [modifiedAgentData, setModifiedAgentData] = useReportData();
+  const [modifiedAgentData, setModifiedAgentData,setSortBy,setSortBySubKey,dragAndDropRow] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -52,8 +52,9 @@ function AgentReportsTable(props) {
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
+ 
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
-
   const componentRef = useRef(null);
 
   const watchedValues = watch();
@@ -91,17 +92,25 @@ function AgentReportsTable(props) {
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedAgentData(allData.agents || []);
+      setInSiglePageMode(false);
+			setInShowAllMode(true);
       const { totalPages, totalElements } = getPaginationData(
         allData.agents,
         size,
         page
       );
+      setPage(page || 1);
+			setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedAgentData(paginatedData.agents || []);
+      setPage(paginatedData?.page || 1);
+			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
+      setInSiglePageMode(true);
+			setInShowAllMode(false);
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
@@ -114,7 +123,6 @@ function AgentReportsTable(props) {
   });
 
   const handleGetAgents = useCallback(async (newPage) => {
-    setInShowAllMode(false);
     setModifiedAgentData([]); // Clear data before fetching new data
     try {
       const page = newPage || 1;
@@ -126,7 +134,6 @@ function AgentReportsTable(props) {
   }, [refetchAgentReports]);
 
   const handleGetAllAgents = useCallback(async () => {
-    setInShowAllMode(true);
     setModifiedAgentData([]); // Clear data before fetching new data
     try {
       await refetchAllAgentReports();
@@ -180,6 +187,10 @@ function AgentReportsTable(props) {
               totalColumn={initialTableColumnsState?.length}
               serialNumber={index + 1 + (page - 1) * size}
               setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              setSortBy={setSortBy}
+              setSortBySubKey={setSortBySubKey}
+              dragAndDropRow={dragAndDropRow}
             />
           ))}
         </tbody>
