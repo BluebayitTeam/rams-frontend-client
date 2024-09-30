@@ -58,22 +58,6 @@ function TicketPostingHeader({ handleReset }) {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-        {hasPermission('DEMAND_ASSIGN_CREATE') && (
-          <Button
-            className='whitespace-nowrap mx-4 '
-            variant='contained'
-            color='secondary'
-            onClick={handleCreateTicketPosting}>
-            Save
-          </Button>
-        )}
-
-        <Button
-          className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
-          variant='contained'
-          onClick={handleCancel}>
-          Cancel
-        </Button>
       </motion.div>
     </div>
   );

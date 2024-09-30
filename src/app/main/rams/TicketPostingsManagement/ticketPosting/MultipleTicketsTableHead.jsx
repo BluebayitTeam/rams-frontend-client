@@ -5,46 +5,46 @@ import Tooltip from '@mui/material/Tooltip';
 import TableHead from '@mui/material/TableHead';
 
 const rows = [
-	{
-		id: 'id',
-		align: 'left',
-		disablePadding: true,
-		label: 'SL',
-		sort: true
-	},
-	{
-		id: 'id_no',
-		align: 'left',
-		disablePadding: true,
-		label: 'Id No',
-		sort: true
-	},
-	{
-		id: 'passenger',
-		align: 'left',
-		disablePadding: false,
-		label: 'Passenger Name',
-		sort: true
-	},
+  {
+    id: 'id',
+    align: 'left',
+    disablePadding: true,
+    label: 'SL',
+    sort: true,
+  },
+  {
+    id: 'issue_date',
+    align: 'left',
+    disablePadding: true,
+    label: 'Issue Date',
+    sort: true,
+  },
+  {
+    id: 'ticket_number',
+    align: 'left',
+    disablePadding: false,
+    label: 'Ticket Number',
+    sort: true,
+  },
 
-	{
-		id: 'passport_no',
-		align: 'left',
-		disablePadding: false,
-		label: 'Passport No.',
-		sort: true
-	},
+  {
+    id: 'passenger_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Passenger Name',
+    sort: true,
+  },
 
-	{
-		id: 'action',
-		align: 'right',
-		disablePadding: false,
-		label: 'Action',
-		sort: true
-	}
+  {
+    id: 'action',
+    align: 'right',
+    disablePadding: false,
+    label: 'Action',
+    sort: true,
+  },
 ];
 
-function MultiplePassengersTableHead(props) {
+function MultipleTicketsTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-48 sm:h-64">
@@ -73,4 +73,4 @@ function MultiplePassengersTableHead(props) {
 	);
 }
 
-export default MultiplePassengersTableHead;
+export default MultipleTicketsTableHead;
