@@ -56,7 +56,7 @@ function ReportSelect({
   width,
   setReRender,
   onEnter = () => null,
-  getOptionLabel = (option) => `${option.name}`, // Default to option.name
+  getOptionLabel = (option) => `${option.name}`, 
 } = {}) {
   const classes = useStyles();
 
