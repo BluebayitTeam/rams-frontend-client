@@ -190,6 +190,7 @@ function AgentReportsTable(props) {
               data={agent}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={index + 1 + (page - 1) * size}
+             
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
               setSortBy={setSortBy}

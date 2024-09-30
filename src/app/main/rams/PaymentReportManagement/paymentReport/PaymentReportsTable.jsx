@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
@@ -70,54 +69,113 @@ function PaymentReportsTable(props) {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
+  const watchedValues = watch();
 
   console.log("inShowAllMode", inShowAllMode)
 
   const componentRef = useRef(null);
 
   // Do not fetch data on mount
-  const { refetch: refetchPaymentReports } =!inShowAllMode && useGetPaymentReportsQuery(
-    {
-      date_after: watch('date_after') || '',
-      date_before: watch('date_before') || '',
-      ledger: watch('ledger') || '',
-      sub_ledger: watch('sub_ledger') || '',
+  // const { refetch: refetchPaymentReports } =!inShowAllMode && useGetPaymentReportsQuery(
+  //   {
+  //     date_after: watch('date_after') || '',
+  //     date_before: watch('date_before') || '',
+  //     ledger: watch('ledger') || '',
+  //     sub_ledger: watch('sub_ledger') || '',
      
-      account_type: watch('account_type') || '',
+  //     account_type: watch('account_type') || '',
       
+  //     page,
+  //     size,
+  //   },
+  //   { enabled: false }
+  // );
+
+
+
+  const { data: paginatedData, refetch: refetchPaymentReports } = useGetPaymentReportsQuery(
+    {
+      
+    
+      date_after: watchedValues.date_after || '',
+      date_before: watchedValues.date_before || '',
+      ledger: watchedValues.ledger || '',
+      sub_ledger: watchedValues.sub_ledger || '',
+      account_type: watchedValues.account_type || '',
       page,
       size,
     },
-    { enabled: false }
+    { skip: inShowAllMode }
   );
-
-
+  
+  const { data: allData, refetch: refetchAllPaymentReports } = useGetPaymentAllReportsQuery(
+    {
+      
+    
+      date_after: watchedValues.date_after || '',
+      date_before: watchedValues.date_before || '',
+      ledger: watchedValues.ledger || '',
+      sub_ledger: watchedValues.sub_ledger || '',
+      account_type: watchedValues.account_type || '',
+     
+    },
+    { skip: !inShowAllMode }
+  );
   
 
+  
+  useEffect(() => {
+    if (inShowAllMode && allData) {
+      setModifiedPaymentData(allData.payment_vouchers || []);
+      // setInSiglePageMode(false);
+			// setInShowAllMode(true);
+      const { totalPages, totalElements } = getPaginationData(
+        allData.payment_vouchers,
+        size,
+        page
+      );
+      // setPage(page || 1);
+			// setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
 
-  const { refetch: refetchAllPaymentReports } =
-    inShowAllMode &&
-    useGetPaymentAllReportsQuery(
-      {
-        ledger: watch('ledger') || '',
-        sub_ledger: watch('sub_ledger') || '',
-        date_after: watch('date_after') || '',
-        date_before: watch('date_before') || '',
-        account_type: watch('account_type') || '',
+    } else if (!inShowAllMode && paginatedData) {
+
+      setModifiedPaymentData(paginatedData.payment_vouchers || []);
+      // setPage(paginatedData?.page || 1);
+			// setSize(paginatedData?.size || 25);
+      setTotalPages(paginatedData.total_pages || 0);
+      setTotalElements(paginatedData.total_elements || 0);
+      // setInSiglePageMode(true);
+			// setInShowAllMode(false);
+      
+    }
+  }, [inShowAllMode, allData, paginatedData, size, page]);
+
+
+  // const { refetch: refetchAllPaymentReports } =
+  //   inShowAllMode &&
+  //   useGetPaymentAllReportsQuery(
+  //     {
+  //       ledger: watch('ledger') || '',
+  //       sub_ledger: watch('sub_ledger') || '',
+  //       date_after: watch('date_after') || '',
+  //       date_before: watch('date_before') || '',
+  //       account_type: watch('account_type') || '',
      
-      },
-      { enabled: false }
-    );
+  //     },
+  //     { enabled: false }
+  //   );
 
   const totalData = useSelector(selectFilteredPaymentReports);
 
 
 
-  useEffect(() => {
-    if (totalData) {
-      setModifiedPaymentData(totalData?.payment_vouchers);
-    }
-  }, [totalData]);
+  // useEffect(() => {
+  //   if (totalData) {
+  //     setModifiedPaymentData(totalData?.payment_vouchers);
+  //   }
+  // }, [totalData]);
 
   // Function to handle Excel download
   const handleExelDownload = () => {
@@ -129,53 +187,78 @@ function PaymentReportsTable(props) {
     content: () => componentRef.current,
   });
 
-	const handleGetPayments = async (newPage) => {
-	  setInShowAllMode(false);
+	// const handleGetPayments = async (newPage) => {
+	//   setInShowAllMode(false);
+  //   try {
+  //     const formValues = getValues();
+  //     const page = newPage || 1;
+  //     setPage(page);
+
+  //     const response = await refetchPaymentReports({ ...formValues, page, size }); 
+
+  //     if (response?.data) {
+  //       unstable_batchedUpdates(() => {
+  //         const paymentsData = response.data.payment_vouchers || [];
+  //         setModifiedPaymentData(paymentsData);
+  //         setInShowAllMode(false);
+  //         setTotalPages(response.data?.total_pages);
+  //         setTotalElements(response.data?.total_elements);
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching payments:', error);
+  //   }
+  // };
+
+
+
+  const handleGetPayments = useCallback(async (newPage) => {
+    setModifiedPaymentData([]); 
     try {
-      const formValues = getValues();
       const page = newPage || 1;
       setPage(page);
-
-      const response = await refetchPaymentReports({ ...formValues, page, size }); 
-
-      if (response?.data) {
-        unstable_batchedUpdates(() => {
-          const paymentsData = response.data.payment_vouchers || [];
-          setModifiedPaymentData(paymentsData);
-          setInShowAllMode(false);
-          setTotalPages(response.data?.total_pages);
-          setTotalElements(response.data?.total_elements);
-        });
-      }
+      await refetchPaymentReports();
     } catch (error) {
-      console.error('Error fetching payments:', error);
+      console.error('Error fetching agents:', error);
     }
-  };
+  }, [refetchPaymentReports]);
 
-	const handleGetAllPayments = async () => {
-	   setInShowAllMode(true);
+
+
+  const handleGetAllPayments = useCallback(async () => {
+    setModifiedPaymentData([]); 
     try {
-      const formValues = getValues();
-
-      const response = await refetchAllPaymentReports({ ...formValues }); // Manually trigger the query
-
-      if (response?.data) {
-        unstable_batchedUpdates(() => {
-          setModifiedPaymentData(response.data.payment_vouchers || []);
-          setInShowAllMode(true);
-          const { totalPages, totalElements } = getPaginationData(
-            response.data.payment_vouchers,
-            size,
-            page
-          );
-          setTotalPages(totalPages);
-          setTotalElements(totalElements);
-        });
-      }
+      
+      await refetchPaymentReports();
     } catch (error) {
-      console.error('Error fetching all payments:', error);
+      console.error('Error fetching all agents:', error);
     }
-  };
+  }, [refetchPaymentReports]);
+
+	// const handleGetAllPayments = async () => {
+	//    setInShowAllMode(true);
+  //   try {
+  //     const formValues = getValues();
+
+  //     const response = await refetchAllPaymentReports({ ...formValues }); // Manually trigger the query
+
+  //     if (response?.data) {
+  //       unstable_batchedUpdates(() => {
+  //         setModifiedPaymentData(response.data.payment_vouchers || []);
+  //         setInShowAllMode(true);
+  //         const { totalPages, totalElements } = getPaginationData(
+  //           response.data.payment_vouchers,
+  //           size,
+  //           page
+  //         );
+  //         setTotalPages(totalPages);
+  //         setTotalElements(totalElements);
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching all payments:', error);
+  //   }
+  // };
 
   return (
     <div className={classes.headContainer}>

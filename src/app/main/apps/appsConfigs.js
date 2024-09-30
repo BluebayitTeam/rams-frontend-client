@@ -107,16 +107,16 @@ import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
 import ThailandVisaAppConfig from '../rams/ThailandVisasManagement/ThailandVisaAppConfig';
+import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeAppConfig';
+import TicketPostingAppConfig from '../rams/TicketPostingsManagement/TicketPostingAppConfig';
+import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
+import TicketRefundAppConfig from '../rams/TicketRefundsManagement/TicketRefundAppConfig';
 import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
-import TicketRefundAppConfig from '../rams/TicketRefundsManagement/TicketRefundAppConfig';
-import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeAppConfig';
-import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
-import TicketPostingAppConfig from '../rams/TicketPostingsManagement/TicketPostingAppConfig';
 
 /**
  * The list of application configurations.
