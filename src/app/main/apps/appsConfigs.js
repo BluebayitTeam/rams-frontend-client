@@ -116,6 +116,7 @@ import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/V
 import TicketRefundAppConfig from '../rams/TicketRefundsManagement/TicketRefundAppConfig';
 import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeAppConfig';
 import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
+import TicketPostingAppConfig from '../rams/TicketPostingsManagement/TicketPostingAppConfig';
 
 /**
  * The list of application configurations.
@@ -186,6 +187,7 @@ const appsConfigs = [
   CvFemaleAppConfig,
   CvMaleAppConfig,
   DemandAssignAppConfig,
+  TicketPostingAppConfig,
   AgentReportAppConfig,
   PassengerReportAppConfig,
   LedgerReportAppConfig,
