@@ -5,11 +5,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
+import SiglePage3 from 'src/app/@components/ReportComponents/SiglePage3';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
-import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
@@ -60,6 +59,7 @@ function ReceiptReportsTable(props) {
   const { watch } = methods;
 
   const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
+  console.log('modifiedReceiptData', modifiedReceiptData);
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -72,6 +72,9 @@ function ReceiptReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [totalAmount, setTotalAmount] = useState(0);
+  console.log('totalAmountvcvcvcv',totalAmount)
+
+ 
 
   const componentRef = useRef(null);
 
@@ -112,7 +115,7 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedReceiptData(allData.receipt_vouchers || []);
-      setTotalAmount(getTotalAmount(paginatedData?.receipt_vouchers || [], 'balance'));
+      setTotalAmount(allData?.receipt_vouchers || [], 'credit_amount');
 
       setInSiglePageMode(false);
 			setInShowAllMode(true);
@@ -130,7 +133,7 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
     } else if (!inShowAllMode && paginatedData) {
 
       setModifiedReceiptData(paginatedData.receipt_vouchers || []);
-      setTotalAmount(getTotalAmount(paginatedData?.receipt_vouchers || [], 'balance'));
+      setTotalAmount(paginatedData?.receipt_vouchers || [], 'credit_amount');
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -213,7 +216,8 @@ const handleGetAllReceipts = useCallback(async () => {
         <tbody ref={componentRef} id='downloadPage'>
           {/* each single page (table) */}
           {modifiedReceiptData.map((receipt, index) => (
-            <SinglePage
+
+            <SiglePage3
               key={index}
               classes={classes}
               reportTitle='Receipt Report'
@@ -225,8 +229,8 @@ const handleGetAllReceipts = useCallback(async () => {
                   ? {
                       ...receipt,
                       data: receipt.data.concat({
-                        balance: totalAmount,
-                        total_credit: 'Total Balance',
+                        credit_amount: totalAmount,
+                        getterMethod: () => 'Grand Total',
                         hideSerialNo: true,
                         rowStyle: { fontWeight: 600 }
                       })
