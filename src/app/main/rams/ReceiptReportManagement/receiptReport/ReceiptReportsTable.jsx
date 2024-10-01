@@ -9,6 +9,7 @@ import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
@@ -70,6 +71,7 @@ function ReceiptReportsTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
+	const [totalAmount, setTotalAmount] = useState(0);
 
   const componentRef = useRef(null);
 
@@ -110,6 +112,8 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedReceiptData(allData.receipt_vouchers || []);
+      setTotalAmount(getTotalAmount(paginatedData?.receipt_vouchers || [], 'balance'));
+
       setInSiglePageMode(false);
 			setInShowAllMode(true);
       setPagination(false)
@@ -118,6 +122,7 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
         size,
         page
       );
+
       setPage(page || 1);
 			setSize(size || 25);
       setTotalPages(totalPages);
@@ -125,6 +130,7 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
     } else if (!inShowAllMode && paginatedData) {
 
       setModifiedReceiptData(paginatedData.receipt_vouchers || []);
+      setTotalAmount(getTotalAmount(paginatedData?.receipt_vouchers || [], 'balance'));
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -213,7 +219,20 @@ const handleGetAllReceipts = useCallback(async () => {
               reportTitle='Receipt Report'
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={receipt}
+              // data={receipt}
+              data={
+                receipt.isLastPage
+                  ? {
+                      ...receipt,
+                      data: receipt.data.concat({
+                        balance: totalAmount,
+                        total_credit: 'Total Balance',
+                        hideSerialNo: true,
+                        rowStyle: { fontWeight: 600 }
+                      })
+                    }
+                  : receipt
+              }
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
