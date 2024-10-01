@@ -1,0 +1,16 @@
+@media print {
+  .printPageContainer {
+    /* page-break-before: always; */
+    page-break-inside: avoid; /* Prevent page breaks inside the container */
+    height: auto;
+    padding-bottom: 20px;
+    overflow: hidden;
+    /* width: 90%; */
+    padding-left: 5%;
+    padding-right: 5%;
+    width: fit-content;
+    /* block-size: fit-content; */
+    margin-bottom: 0px;
+    /* margin: 0.5cm; */
+  }
+}

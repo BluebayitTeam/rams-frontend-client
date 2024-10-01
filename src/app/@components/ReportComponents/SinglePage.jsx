@@ -5,10 +5,8 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
-// import '../../../Print.css';
 
-// import '../Print.css';
-
+import '../../../app/main/rams/print.css';
 
 function SinglePage({
 	classes,

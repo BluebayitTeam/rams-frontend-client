@@ -10,6 +10,7 @@ import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColum
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
+// import '../../../../../../src/app/main/rams/Print.css';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   selectFilteredAgentReports,
