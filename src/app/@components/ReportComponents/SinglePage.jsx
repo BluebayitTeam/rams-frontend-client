@@ -6,18 +6,13 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 
-import '../../../app/main/rams/print.css';
-
 function SinglePage({
 	classes,
 	reportTitle = 'Report',
 	tableColumns = [],
-	filteredData,
 	dispatchTableColumns,
 	data,
-	totalColumn,
 	serialNumber,
-	setPage,
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey
@@ -46,9 +41,7 @@ function SinglePage({
 			onMouseOver={() => {
 				inSiglePageMode 
 			}}
-		>
-			
-			
+		>	
 			<div>
 				<div className={classes.pageHead}>
 					<div className="logoContainer pr-0 md:-pr-20">

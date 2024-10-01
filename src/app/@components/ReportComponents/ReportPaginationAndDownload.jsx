@@ -76,7 +76,7 @@ function ReportPaginationAndDownload({
       style={{ backgroundColor: '#c2c7f1' }}>
 
       {/* Pagination */}
-      {!hideSection?.includes('pagination') && (
+      {inShowAllMode || !hideSection?.includes('pagination') && (
         <Pagination
           page={page }
           size={size}

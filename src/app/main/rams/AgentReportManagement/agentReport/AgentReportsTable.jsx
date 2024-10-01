@@ -10,7 +10,8 @@ import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColum
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
-// import '../../../../../../src/app/main/rams/Print.css';
+import '../../../rams/print.css';
+
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   selectFilteredAgentReports,
@@ -42,7 +43,7 @@ function AgentReportsTable(props) {
     resolver: zodResolver(schema),
   });
 
-  const { control, getValues, watch } = methods;
+  const {  watch } = methods;
 
   const [modifiedAgentData, setModifiedAgentData,setSortBy,setSortBySubKey,dragAndDropRow] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -59,17 +60,17 @@ function AgentReportsTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  const watchedValues = watch();
+  const filterData = watch();
 
   const { data: paginatedData, refetch: refetchAgentReports } = useGetAgentReportsQuery(
     {
-      group: watchedValues.group || '',
-      district: watchedValues.district || '',
-      date_after: watchedValues.date_after || '',
-      date_before: watchedValues.date_before || '',
-      username: watchedValues.username || '',
-      primary_phone: watchedValues.primary_phone || '',
-      agent_code: watchedValues.agent_code || '',
+      group: filterData.group || '',
+      district: filterData.district || '',
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      username: filterData.username || '',
+      primary_phone: filterData.primary_phone || '',
+      agent_code: filterData.agent_code || '',
       page,
       size,
     },
@@ -78,13 +79,13 @@ function AgentReportsTable(props) {
   
   const { data: allData, refetch: refetchAllAgentReports } = useGetAgentAllReportsQuery(
     {
-      group: watchedValues.group || '',
-      district: watchedValues.district || '',
-      date_after: watchedValues.date_after || '',
-      date_before: watchedValues.date_before || '',
-      username: watchedValues.username || '',
-      primary_phone: watchedValues.primary_phone || '',
-      agent_code: watchedValues.agent_code || '',
+      group: filterData.group || '',
+      district: filterData.district || '',
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      username: filterData.username || '',
+      primary_phone: filterData.primary_phone || '',
+      agent_code: filterData.agent_code || '',
     },
     { skip: !inShowAllMode }
   );
@@ -106,8 +107,6 @@ function AgentReportsTable(props) {
 			setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
-      // console.log('totalPages12121',totalPages,totalElements)
-
     } else if (!inShowAllMode && paginatedData) {
 
       setModifiedAgentData(paginatedData.agents || []);
@@ -116,8 +115,6 @@ function AgentReportsTable(props) {
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
-      console.log('totalPages12121',paginatedData?.total_pages,paginatedData?.total_elements)
-
       setInSiglePageMode(true);
 			setInShowAllMode(false);
       
@@ -133,7 +130,6 @@ function AgentReportsTable(props) {
   });
 
   const handleGetAgents = useCallback(async (newPage) => {
-    setModifiedAgentData([]); 
     try {
       const page = newPage || 1;
       setPage(page);
@@ -144,7 +140,6 @@ function AgentReportsTable(props) {
   }, [refetchAgentReports]);
 
   const handleGetAllAgents = useCallback(async () => {
-    setModifiedAgentData([]); 
     try {
       
       await refetchAllAgentReports();
@@ -196,16 +191,12 @@ function AgentReportsTable(props) {
               dispatchTableColumns={dispatchTableColumns}
               data={agent}
               totalColumn={initialTableColumnsState?.length}
-              // serialNumber={  agent.page * agent.size - agent.size + 1 }
 
               serialNumber={
                 pagination
                   ? page * size - size + 1
                   : agent.page * agent.size - agent.size + 1
               }
-
-
-              // index + 1 + (page - 1) * size
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
               setSortBy={setSortBy}
