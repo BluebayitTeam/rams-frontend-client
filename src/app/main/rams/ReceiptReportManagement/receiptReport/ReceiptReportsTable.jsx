@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
@@ -57,7 +56,7 @@ function ReceiptReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { control, getValues,watch } = methods;
+  const { watch } = methods;
 
   const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -69,45 +68,73 @@ function ReceiptReportsTable(props) {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
-
-  console.log("inShowAllMode", inShowAllMode)
+  const [pagination, setPagination] = useState(false);
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
   const componentRef = useRef(null);
 
-  // Do not fetch data on mount
-  const { refetch: refetchReceiptReports } =!inShowAllMode && useGetReceiptReportsQuery(
+  const filterData = watch();
+
+const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptReportsQuery(
     {
-      date_after: watch('date_after') || '',
-      date_before: watch('date_before') || '',
-      ledger: watch('ledger') || '',
-      sub_ledger: watch('sub_ledger') || '',
-      account_type: watch('account_type') || '',
+     
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      ledger: filterData.ledger || '',
+      sub_ledger: filterData.sub_ledger || '',
+      account_type: filterData.account_type || '',
       page,
       size,
     },
-    { enabled: false }
+    { skip: inShowAllMode }
   );
-  const { refetch: refetchAllReceiptReports } =
-    inShowAllMode &&
-    useGetReceiptAllReportsQuery(
+
+
+ 
+
+    const { data: allData, refetch: refetchAllReceiptReports  } = useGetReceiptAllReportsQuery(
       {
-        
-        date_after: watch('date_after') || '',
-        date_before: watch('date_before') || '',
-        ledger: watch('ledger') || '',
-        sub_ledger: watch('sub_ledger') || '',
-        account_type: watch('account_type') || '',
-        },
-      { enabled: false }
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      ledger: filterData.ledger || '',
+      sub_ledger: filterData.sub_ledger || '',
+      account_type: filterData.account_type || '',
+      },
+      { skip: !inShowAllMode }
     );
+
+
 
   const totalData = useSelector(selectFilteredReceiptReports);
 
   useEffect(() => {
-    if (totalData) {
-      setModifiedReceiptData(totalData?.receipt_vouchers);
+    if (inShowAllMode && allData) {
+      setModifiedReceiptData(allData.receipt_vouchers || []);
+      setInSiglePageMode(false);
+			setInShowAllMode(true);
+      setPagination(false)
+      const { totalPages, totalElements } = getPaginationData(
+        allData.receipt_vouchers,
+        size,
+        page
+      );
+      setPage(page || 1);
+			setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+
+      setModifiedReceiptData(paginatedData.receipt_vouchers || []);
+      setPage(paginatedData?.page || 1);
+			setSize(paginatedData?.size || 25);
+      setTotalPages(paginatedData.total_pages || 0);
+      setTotalElements(paginatedData.total_elements || 0);
+      setPagination(true);
+      setInSiglePageMode(true);
+			setInShowAllMode(false);
+      
     }
-  }, [totalData]);
+  }, [inShowAllMode, allData, paginatedData, size, page]);
 
   // Function to handle Excel download
   const handleExelDownload = () => {
@@ -119,53 +146,26 @@ function ReceiptReportsTable(props) {
     content: () => componentRef.current,
   });
 
-	const handleGetReceipts = async (newPage) => {
-	  setInShowAllMode(false);
+	const handleGetReceipts = useCallback(async (newPage) => {
     try {
-      const formValues = getValues();
       const page = newPage || 1;
       setPage(page);
-
-      const response = await refetchReceiptReports({ ...formValues, page, size }); // Manually trigger the query
-
-      if (response?.data) {
-        unstable_batchedUpdates(() => {
-          const receiptsData = response.data.receipt_vouchers || [];
-          setModifiedReceiptData(receiptsData);
-          setInShowAllMode(false);
-          setTotalPages(response.data?.total_pages);
-          setTotalElements(response.data?.total_elements);
-        });
-      }
+      await refetchAgentReports();
     } catch (error) {
-      console.error('Error fetching receipt_vouchers:', error);
+      console.error('Error fetching agents:', error);
     }
-  };
+  }, [refetchAgentReports]);
 
-	const handleGetAllReceipts = async () => {
-	   setInShowAllMode(true);
+
+const handleGetAllReceipts = useCallback(async () => {
     try {
-      const formValues = getValues();
-
-      const response = await refetchAllReceiptReports({ ...formValues }); // Manually trigger the query
-
-      if (response?.data) {
-        unstable_batchedUpdates(() => {
-          setModifiedReceiptData(response.data.receipt_vouchers || []);
-          setInShowAllMode(true);
-          const { totalPages, totalElements } = getPaginationData(
-            response.data.receipt_vouchers,
-            size,
-            page
-          );
-          setTotalPages(totalPages);
-          setTotalElements(totalElements);
-        });
-      }
+      
+      await refetchAllReceiptReports();
     } catch (error) {
-      console.error('Error fetching all receipt_vouchers:', error);
+      console.error('Error fetching all receipts:', error);
     }
-  };
+  }, [refetchAllReceiptReports]);
+
 
   return (
     <div className={classes.headContainer}>
@@ -215,7 +215,12 @@ function ReceiptReportsTable(props) {
               dispatchTableColumns={dispatchTableColumns}
               data={receipt}
               totalColumn={initialTableColumnsState?.length}
-              serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+              inSiglePageMode={inSiglePageMode}
+              serialNumber={
+                pagination
+                  ? page * size - size + 1
+                  : receipt.page * receipt.size - receipt.size + 1
+              }
               setPage={setPage}
             />
           ))}
