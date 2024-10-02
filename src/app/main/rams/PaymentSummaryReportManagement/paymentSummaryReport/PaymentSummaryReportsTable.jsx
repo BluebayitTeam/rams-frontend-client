@@ -25,26 +25,18 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'paymentSummary_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-  { id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
-  {
-    id: 6,
-    label: 'Details',
-    getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
-    show: true
-  },
-  {
-    id: 7,
-    label: 'Amount',
-    name: 'credit_amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' }
-  }
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'SubLedger', name: 'sub_ledger', show: true },
+	{
+		id: 3,
+		label: 'Amount',
+		name: 'amount',
+		show: true
+		// style: { justifyContent: 'flex-center', marginRight: '5px' },
+		// headStyle: { textAlign: 'right' }
+	}
 ];
+
 
 function PaymentSummaryReportsTable(props) {
   const classes = useStyles();
@@ -58,10 +50,12 @@ function PaymentSummaryReportsTable(props) {
   const { watch } = methods;
 
   const [modifiedPaymentSummaryData, setModifiedPaymentSummaryData] = useReportData();
+
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
   );
+
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
@@ -88,6 +82,8 @@ function PaymentSummaryReportsTable(props) {
     { skip: inShowAllMode }
   );
 
+
+
   const { data: allData, refetch: refetchAllPaymentSummaryReports } = useGetPaymentSummaryAllReportsQuery(
     {
       date_after: filterData.date_after || '',
@@ -99,18 +95,28 @@ function PaymentSummaryReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
+  console.log('modifiedPaymentSummaryData', allData);
+
+
+  const convertObjectToArray = obj => {
+		let convertedArr = [];
+		for (let x in obj) {
+			convertedArr.push({ sub_ledger: x, amount: obj[x] });
+		}
+		return convertedArr;
+	};
 
  
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPaymentSummaryData(allData.paymentSummary_vouchers || []);
+      setModifiedPaymentSummaryData(convertObjectToArray(allData.payment_voucher_summary ));
       setTotalAmount(allData.total_amount );
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.paymentSummary_vouchers,
+        allData.payment_voucher_summary,
         size,
         page
       );
@@ -119,8 +125,10 @@ function PaymentSummaryReportsTable(props) {
       setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
+
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPaymentSummaryData(paginatedData.paymentSummary_vouchers || []);
+
+      setModifiedPaymentSummaryData(convertObjectToArray(paginatedData.payment_voucher_summary) );
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -209,18 +217,7 @@ function PaymentSummaryReportsTable(props) {
           reportTitle="PaymentSummary Report"
           tableColumns={tableColumns}
           dispatchTableColumns={dispatchTableColumns}
-          data={{
-            ...paymentSummary,
-            data: [
-              ...paymentSummary.data, 
-              {
-                credit_amount: totalAmount,
-                getterMethod: () => 'Total Amount',
-                hideSerialNo: true,
-                rowStyle: { fontWeight: 600 },
-              },
-            ],
-          }}
+          data={paymentSummary}
           totalColumn={initialTableColumnsState?.length}
           inSiglePageMode={inSiglePageMode}
           serialNumber={

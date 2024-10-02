@@ -19,6 +19,8 @@ function SinglePage({
 }) {
 	let pageBasedSerialNo = serialNumber;
 
+	console.log('datasasasasa', data);
+
 	const [generalData, setGeneralData] = useState({});
 
 	// get general setting data
