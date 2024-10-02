@@ -2,19 +2,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SiglePage3 from 'src/app/@components/ReportComponents/SiglePage3';
+import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredReceiptReports,
   useGetReceiptAllReportsQuery,
-  useGetReceiptReportsQuery,
+  useGetReceiptReportsQuery
 } from '../ReceiptReportsApi';
 import ReceiptFilterMenu from './ReceiptFilterMenu';
 
@@ -26,25 +25,25 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Date', name: 'receipt_date', show: true, type: 'date' },
-	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-	{ id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-	{ id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
-	{
-		id: 6,
-		label: 'Details',
-		getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
-		show: true
-	},
-	{
-		id: 7,
-		label: 'Amount',
-		name: 'credit_amount',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	}
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Date', name: 'receipt_date', show: true, type: 'date' },
+  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+  { id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
+  {
+    id: 6,
+    label: 'Details',
+    getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
+    show: true
+  },
+  {
+    id: 7,
+    label: 'Amount',
+    name: 'credit_amount',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' }
+  }
 ];
 
 function ReceiptReportsTable(props) {
@@ -52,14 +51,13 @@ function ReceiptReportsTable(props) {
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
-    resolver: zodResolver(schema), // Use zodResolver for form validation
+    resolver: zodResolver(schema),
   });
   const dispatch = useDispatch();
 
   const { watch } = methods;
 
   const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
-  console.log('modifiedReceiptData', modifiedReceiptData);
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -71,18 +69,14 @@ function ReceiptReportsTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
-	const [totalAmount, setTotalAmount] = useState(0);
-  console.log('totalAmountvcvcvcv',totalAmount)
-
- 
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const componentRef = useRef(null);
 
   const filterData = watch();
 
-const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptReportsQuery(
+  const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptReportsQuery(
     {
-     
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
       ledger: filterData.ledger || '',
@@ -94,31 +88,29 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
     { skip: inShowAllMode }
   );
 
-
- 
-
-    const { data: allData, refetch: refetchAllReceiptReports  } = useGetReceiptAllReportsQuery(
-      {
+  const { data: allData, refetch: refetchAllReceiptReports } = useGetReceiptAllReportsQuery(
+    {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
       ledger: filterData.ledger || '',
       sub_ledger: filterData.sub_ledger || '',
       account_type: filterData.account_type || '',
-      },
-      { skip: !inShowAllMode }
-    );
+    },
+    { skip: !inShowAllMode }
+  );
 
 
-
-  const totalData = useSelector(selectFilteredReceiptReports);
+  const calculateTotalAmount = (data) => {
+    return data.reduce((total, item) => total + (parseFloat(item.credit_amount) || 0), 0);
+  };
 
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedReceiptData(allData.receipt_vouchers || []);
-      setTotalAmount(allData?.receipt_vouchers || [], 'credit_amount');
+      setTotalAmount(calculateTotalAmount(allData.receipt_vouchers || []));
 
       setInSiglePageMode(false);
-			setInShowAllMode(true);
+      setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
         allData.receipt_vouchers,
@@ -127,35 +119,31 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
       );
 
       setPage(page || 1);
-			setSize(size || 25);
+      setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-
       setModifiedReceiptData(paginatedData.receipt_vouchers || []);
-      setTotalAmount(paginatedData?.receipt_vouchers || [], 'credit_amount');
+      setTotalAmount(calculateTotalAmount(paginatedData.receipt_vouchers || []));
       setPage(paginatedData?.page || 1);
-			setSize(paginatedData?.size || 25);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
-			setInShowAllMode(false);
-      
+      setInShowAllMode(false);
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
-  // Function to handle Excel download
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
 
-  // Function to handle Print
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-	const handleGetReceipts = useCallback(async (newPage) => {
+  const handleGetReceipts = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -165,20 +153,16 @@ const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptRepor
     }
   }, [refetchAgentReports]);
 
-
-const handleGetAllReceipts = useCallback(async () => {
+  const handleGetAllReceipts = useCallback(async () => {
     try {
-      
       await refetchAllReceiptReports();
     } catch (error) {
       console.error('Error fetching all receipts:', error);
     }
   }, [refetchAllReceiptReports]);
 
-
   return (
     <div className={classes.headContainer}>
-      {/* Filter */}
       <FormProvider {...methods}>
         <ReceiptFilterMenu
           inShowAllMode={inShowAllMode}
@@ -214,39 +198,38 @@ const handleGetAllReceipts = useCallback(async () => {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {/* each single page (table) */}
           {modifiedReceiptData.map((receipt, index) => (
-
-            <SiglePage3
-              key={index}
-              classes={classes}
-              reportTitle='Receipt Report'
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              // data={receipt}
-              data={
-                receipt.isLastPage
-                  ? {
-                      ...receipt,
-                      data: receipt.data.concat({
-                        credit_amount: totalAmount,
-                        getterMethod: () => 'Grand Total',
-                        hideSerialNo: true,
-                        rowStyle: { fontWeight: 600 }
-                      })
-                    }
-                  : receipt
-              }
-              totalColumn={initialTableColumnsState?.length}
-              inSiglePageMode={inSiglePageMode}
-              serialNumber={
-                pagination
-                  ? page * size - size + 1
-                  : receipt.page * receipt.size - receipt.size + 1
-              }
-              setPage={setPage}
-            />
+          <SinglePage
+          key={index}
+          classes={classes}
+          reportTitle="Receipt Report"
+          tableColumns={tableColumns}
+          dispatchTableColumns={dispatchTableColumns}
+          data={{
+            ...receipt,
+            data: [
+              ...receipt.data, 
+              {
+                credit_amount: totalAmount,
+                getterMethod: () => 'Grand Total',
+                hideSerialNo: true,
+                rowStyle: { fontWeight: 600 },
+              },
+            ],
+          }}
+          totalColumn={initialTableColumnsState?.length}
+          inSiglePageMode={inSiglePageMode}
+          serialNumber={
+            pagination
+              ? page * size - size + index * receipt.data.length + 1
+              : receipt.page * receipt.size - receipt.size + 1
+          }
+          setPage={setPage}
+        />
+        
+         
           ))}
+          
         </tbody>
       </table>
     </div>
