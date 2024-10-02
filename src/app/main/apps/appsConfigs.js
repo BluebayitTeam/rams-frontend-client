@@ -100,6 +100,7 @@ import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateC
 import ProfessionAppConfig from '../rams/ProfessionsManagement/ProfessionAppConfig';
 import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
 import ReceiptReportAppConfig from '../rams/ReceiptReportManagement/ReceiptReportAppConfig';
+import ReceiptSummaryReportAppConfig from '../rams/ReceiptSummaryReportManagement/ReceiptSummaryReportAppConfig';
 import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
 import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
@@ -148,6 +149,7 @@ const appsConfigs = [
   ECommerceAppConfig,
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
+  ReceiptSummaryReportAppConfig,
   PaymentReportAppConfig,
   HelpCenterAppConfig,
   PassengerAccountSummaryReportAppConfig,
