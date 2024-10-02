@@ -12,10 +12,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetPaymentSummaryAllReportsQuery,
-  useGetPaymentSummaryReportsQuery
+	useGetReceiptAllReportsQuery,
+	useGetReceiptReportsQuery
 } from '../PaymentSummaryReportsApi';
-import PaymentSummaryFilterMenu from './PaymentSummaryFilterMenu';
+import ReceiptFilterMenu from './ReceiptFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -26,7 +26,7 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'paymentSummary_date', show: true, type: 'date' },
+  { id: 2, label: 'Date', name: 'receipt_date', show: true, type: 'date' },
   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
   { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
   { id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
@@ -46,7 +46,7 @@ const initialTableColumnsState = [
   }
 ];
 
-function PaymentSummaryReportsTable(props) {
+function ReceiptReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -57,7 +57,7 @@ function PaymentSummaryReportsTable(props) {
 
   const { watch } = methods;
 
-  const [modifiedPaymentSummaryData, setModifiedPaymentSummaryData] = useReportData();
+  const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -75,7 +75,7 @@ function PaymentSummaryReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } = useGetPaymentSummaryReportsQuery(
+  const { data: paginatedData, refetch: refetchAgentReports } = useGetReceiptReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
@@ -88,7 +88,7 @@ function PaymentSummaryReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData, refetch: refetchAllPaymentSummaryReports } = useGetPaymentSummaryAllReportsQuery(
+  const { data: allData, refetch: refetchAllReceiptReports } = useGetReceiptAllReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
@@ -103,14 +103,14 @@ function PaymentSummaryReportsTable(props) {
  
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPaymentSummaryData(allData.paymentSummary_vouchers || []);
+      setModifiedReceiptData(allData.receipt_vouchers || []);
       setTotalAmount(allData.total_amount );
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.paymentSummary_vouchers,
+        allData.receipt_vouchers,
         size,
         page
       );
@@ -120,7 +120,7 @@ function PaymentSummaryReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPaymentSummaryData(paginatedData.paymentSummary_vouchers || []);
+      setModifiedReceiptData(paginatedData.receipt_vouchers || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -146,7 +146,7 @@ function PaymentSummaryReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetPaymentSummarys = useCallback(async (newPage) => {
+  const handleGetReceipts = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -156,21 +156,21 @@ function PaymentSummaryReportsTable(props) {
     }
   }, [refetchAgentReports]);
 
-  const handleGetAllPaymentSummarys = useCallback(async () => {
+  const handleGetAllReceipts = useCallback(async () => {
     try {
-      await refetchAllPaymentSummaryReports();
+      await refetchAllReceiptReports();
     } catch (error) {
-      console.error('Error fetching all paymentSummarys:', error);
+      console.error('Error fetching all receipts:', error);
     }
-  }, [refetchAllPaymentSummaryReports]);
+  }, [refetchAllReceiptReports]);
 
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <PaymentSummaryFilterMenu
+        <ReceiptFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetPaymentSummarys={handleGetPaymentSummarys}
-          handleGetAllPaymentSummarys={handleGetAllPaymentSummarys}
+          handleGetReceipts={handleGetReceipts}
+          handleGetAllReceipts={handleGetAllReceipts}
         />
       </FormProvider>
 
@@ -184,17 +184,17 @@ function PaymentSummaryReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetPaymentSummarys(1)}
-        onPreviousPage={() => handleGetPaymentSummarys(page - 1)}
-        onNextPage={() => handleGetPaymentSummarys(page + 1)}
-        onLastPage={() => handleGetPaymentSummarys(totalPages)}
+        onFirstPage={() => handleGetReceipts(1)}
+        onPreviousPage={() => handleGetReceipts(page - 1)}
+        onNextPage={() => handleGetReceipts(page + 1)}
+        onLastPage={() => handleGetReceipts(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetPaymentSummarys}
-        handleGetAllData={handleGetAllPaymentSummarys}
+        handleGetData={handleGetReceipts}
+        handleGetAllData={handleGetAllReceipts}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='PaymentSummaryReport'
+        filename='ReceiptReport'
       />
 
       <table
@@ -202,17 +202,17 @@ function PaymentSummaryReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedPaymentSummaryData.map((paymentSummary, index) => (
+          {modifiedReceiptData.map((receipt, index) => (
           <SinglePage
           key={index}
           classes={classes}
-          reportTitle="PaymentSummary Report"
+          reportTitle="Receipt Report"
           tableColumns={tableColumns}
           dispatchTableColumns={dispatchTableColumns}
           data={{
-            ...paymentSummary,
+            ...receipt,
             data: [
-              ...paymentSummary.data, 
+              ...receipt.data, 
               {
                 credit_amount: totalAmount,
                 getterMethod: () => 'Total Amount',
@@ -225,8 +225,8 @@ function PaymentSummaryReportsTable(props) {
           inSiglePageMode={inSiglePageMode}
           serialNumber={
             pagination
-              ? page * size - size + index * paymentSummary.data.length + 1
-              : paymentSummary.page * paymentSummary.size - paymentSummary.size + 1
+              ? page * size - size + index * receipt.data.length + 1
+              : receipt.page * receipt.size - receipt.size + 1
           }
           setPage={setPage}
         />
@@ -240,4 +240,4 @@ function PaymentSummaryReportsTable(props) {
   );
 }
 
-export default PaymentSummaryReportsTable;
+export default ReceiptReportsTable;

@@ -1,18 +1,18 @@
 import { Navigate } from 'react-router-dom';
-import PaymentReportApp from './PaymentSummaryApp';
-import PaymentSummaryReport from './paymentSummaryReport/paymentSummary';
+import PaymentSummaryReportApp from './PaymentSummaryReportApp';
+import PaymentSummaryReport from './paymentSummaryReport/PaymentSummaryReport';
 
 /**
  * The E-Commerce app configuration.
  */
-const PaymentSummaryReportConfig = {
+const PaymentSummaryReportAppConfig = {
 	settings: {
 		layout: {}
 	},
 	routes: [
 		{
 			path: 'apps/paymentSummaryReport',
-			element: <PaymentReportApp />,
+			element: <PaymentSummaryReportApp />,
 			children: [
 				{
 					path: '',
@@ -27,4 +27,4 @@ const PaymentSummaryReportConfig = {
 		}
 	]
 };
-export default PaymentSummaryReportConfig;
+export default PaymentSummaryReportAppConfig;
