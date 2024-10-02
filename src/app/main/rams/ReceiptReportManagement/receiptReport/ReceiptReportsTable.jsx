@@ -100,14 +100,11 @@ function ReceiptReportsTable(props) {
   );
 
 
-  const calculateTotalAmount = (data) => {
-    return data.reduce((total, item) => total + (parseFloat(item.credit_amount) || 0), 0);
-  };
-
+ 
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedReceiptData(allData.receipt_vouchers || []);
-      setTotalAmount(calculateTotalAmount(allData.receipt_vouchers || []));
+      setTotalAmount(allData.total_amount );
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -123,9 +120,8 @@ function ReceiptReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-
       setModifiedReceiptData(paginatedData.receipt_vouchers || []);
-      setTotalAmount(calculateTotalAmount(paginatedData.receipt_vouchers || []));
+      setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -136,6 +132,11 @@ function ReceiptReportsTable(props) {
 
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
+
+
+
+
+  
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();

@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -12,9 +12,8 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredPaymentReports,
   useGetPaymentAllReportsQuery,
-  useGetPaymentReportsQuery,
+  useGetPaymentReportsQuery
 } from '../PaymentReportsApi';
 import PaymentFilterMenu from './PaymentFilterMenu';
 
@@ -72,8 +71,9 @@ function PaymentReportsTable(props) {
   const watchedValues = watch();
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
 
-
+console.log('totalAmount121', totalAmount);
 
   const componentRef = useRef(null);
 
@@ -105,48 +105,45 @@ function PaymentReportsTable(props) {
     },
     { skip: !inShowAllMode }
   );
+
+
   
 
 useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedPaymentData(allData.payment_vouchers || []);
+      setTotalAmount(allData.total_amount);
+
       setInSiglePageMode(false);
-			setInShowAllMode(true);
+      setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
         allData.payment_vouchers,
         size,
         page
       );
+
       setPage(page || 1);
-			setSize(size || 25);
+      setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
-
     } else if (!inShowAllMode && paginatedData) {
 
       setModifiedPaymentData(paginatedData.payment_vouchers || []);
+      setTotalAmount(paginatedData.total_amount );
       setPage(paginatedData?.page || 1);
-			setSize(paginatedData?.size || 25);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
-
       setInSiglePageMode(true);
-			setInShowAllMode(false);
-      
+      setInShowAllMode(false);
+
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
 
-
-  const totalData = useSelector(selectFilteredPaymentReports);
-
-
-
-  
-
-  // Function to handle Excel download
+ // Function to handle Excel download
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
@@ -156,12 +153,7 @@ useEffect(() => {
     content: () => componentRef.current,
   });
 
-
-
-
-
-  const handleGetPayments = useCallback(async (newPage) => {
-    setModifiedPaymentData([]); 
+const handleGetPayments = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -174,7 +166,6 @@ useEffect(() => {
 
 
   const handleGetAllPayments = useCallback(async () => {
-    setModifiedPaymentData([]); 
     try {
       
       await refetchAllPaymentReports();
@@ -223,7 +214,6 @@ useEffect(() => {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {/* each single page (table) */}
           {modifiedPaymentData.map((payment, index) => (
             <SinglePage
               key={index}
@@ -231,7 +221,19 @@ useEffect(() => {
               reportTitle='Payment Report'
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={payment}
+              // data={payment}
+              data={{
+                ...payment,
+                data: [
+                  ...payment.data, 
+                  {
+                    debit_amount: totalAmount,
+                    getterMethod: () => 'Total Payment',
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 },
+                  },
+                ],
+              }}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
