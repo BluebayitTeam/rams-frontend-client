@@ -123,6 +123,7 @@ function ReceiptReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
+
       setModifiedReceiptData(paginatedData.receipt_vouchers || []);
       setTotalAmount(calculateTotalAmount(paginatedData.receipt_vouchers || []));
       setPage(paginatedData?.page || 1);
@@ -132,6 +133,7 @@ function ReceiptReportsTable(props) {
       setPagination(true);
       setInSiglePageMode(true);
       setInShowAllMode(false);
+
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
@@ -170,6 +172,7 @@ function ReceiptReportsTable(props) {
           handleGetAllReceipts={handleGetAllReceipts}
         />
       </FormProvider>
+
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -211,7 +214,7 @@ function ReceiptReportsTable(props) {
               ...receipt.data, 
               {
                 credit_amount: totalAmount,
-                getterMethod: () => 'Grand Total',
+                getterMethod: () => 'Total Amount',
                 hideSerialNo: true,
                 rowStyle: { fontWeight: 600 },
               },
