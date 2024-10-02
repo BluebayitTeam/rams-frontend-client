@@ -118,6 +118,7 @@ function SinglePage({
 							<TableRow
 								key={dataArr.id}
 								className="tableRow cursor-pointer"
+								
 								hove
 							>
 								{tableColumns.map((column) => {
