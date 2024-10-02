@@ -25,25 +25,37 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'foreignLedger_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-  { id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
-  {
-    id: 6,
-    label: 'Details',
-    getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
-    show: true
-  },
-  {
-    id: 7,
-    label: 'Amount',
-    name: 'credit_amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' }
-  }
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true, headStyle: { textAlign: 'right' } },
+	{ id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
+	{ id: 5, label: 'Currency', name: 'currency', subName: 'name', show: true },
+
+	{ id: 5, label: 'Particular', name: 'details', show: true },
+	{
+		id: 6,
+		label: 'Debit',
+		name: 'currency_amount_dr',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	},
+	{
+		id: 7,
+		label: 'Credit',
+		name: 'currency_amount_cr',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	},
+	{
+		id: 8,
+		label: 'Balance',
+		name: 'balance',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	}
 ];
 
 function ForeignLedgerReportsTable(props) {
@@ -63,14 +75,13 @@ function ForeignLedgerReportsTable(props) {
     initialTableColumnsState
   );
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [showForeign, setShowForeign] = useState(false);
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -103,14 +114,14 @@ function ForeignLedgerReportsTable(props) {
  
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedForeignLedgerData(allData.foreignLedger_vouchers || []);
+      setModifiedForeignLedgerData(allData.account_logs || []);
       setTotalAmount(allData.total_amount );
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.foreignLedger_vouchers,
+        allData.account_logs,
         size,
         page
       );
@@ -120,7 +131,7 @@ function ForeignLedgerReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedForeignLedgerData(paginatedData.foreignLedger_vouchers || []);
+      setModifiedForeignLedgerData(paginatedData.account_logs || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -165,7 +176,9 @@ function ForeignLedgerReportsTable(props) {
   }, [refetchAllForeignLedgerReports]);
 
 
-
+  const AgentName = paginatedData?.agent?.first_name || 'N/A';
+	const District = paginatedData?.agent?.city || 'N/A';
+	const MobileNo = paginatedData?.agent?.primary_phone || 'N/A';
 
 
   return (
@@ -233,6 +246,9 @@ function ForeignLedgerReportsTable(props) {
               : foreignLedger.page * foreignLedger.size - foreignLedger.size + 1
           }
           setPage={setPage}
+          AgentName={AgentName}
+          District={District}
+          MobileNo={MobileNo}
         />
         
          

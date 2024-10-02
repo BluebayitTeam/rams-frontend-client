@@ -19,10 +19,17 @@ function SiglePageLedgerReport({
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-   
+	AgentName,
+	District,
+	MobileNo,
+	AgentId,
+	PassportNo,
+	PassengerName 
 
 }) {
 	let pageBasedSerialNo = serialNumber;
+
+	console.log('MobileNo',District)
 
 	const [generalData, setGeneralData] = useState({});
 	// get general setting data
@@ -40,9 +47,7 @@ function SiglePageLedgerReport({
 	}, []);
 
 
-	const AgentName = 'John Doe';
-	const District = 'Central';
-	const MobileNo = '123-456-7890';
+	
 
 	return (
 		<div
@@ -77,36 +82,49 @@ function SiglePageLedgerReport({
 				</Table>
 				{/* Extra Heading  */}
 				<div className="ml-20 mt-40 text-base mb-40 font-semibold">
-				{(AgentName || AgentId || PassportNo || PassengerName || District || MobileNo) && (
-	<table>
-		<tbody>
-			<tr>
-				<td>Agent Name:</td>
-				<td>{AgentName}</td>
-			</tr>
-			<tr>
-				<td>Passenger Id:</td>
-				<td>{AgentId}</td>
-			</tr>
-			<tr>
-				<td>Passport No :</td>
-				<td>{PassportNo}</td>
-			</tr>
-			<tr>
-				<td>Passenger:</td>
-				<td>{PassengerName}</td>
-			</tr>
-			<tr>
-				<td>District :</td>
-				<td>{District}</td>
-			</tr>
-			<tr>
-				<td>Mobile :</td>
-				<td>{MobileNo}</td>
-			</tr>
-		</tbody>
-	</table>
+				{(AgentName || District || MobileNo) && (
+    <table>
+      <tbody>
+        {AgentName && (
+          <tr>
+            <td>Agent Name:</td>
+            <td>{AgentName}</td>
+          </tr>
+        )}
+        {AgentId && (
+          <tr>
+            <td>Passenger Id:</td>
+            <td>{AgentId} || ''</td>
+          </tr>
+        )}
+        {PassportNo && (
+          <tr>
+            <td>Passport No :</td>
+            <td>{PassportNo}</td>
+          </tr>
+        )}
+        {PassengerName && (
+          <tr>
+            <td>Passenger:</td>
+            <td>{PassengerName}</td>
+          </tr>
+        )}
+        {District && (
+          <tr>
+            <td>District :</td>
+            <td>{District}</td>
+          </tr>
+        )}
+        {MobileNo && (
+          <tr>
+            <td>Mobile :</td>
+            <td>{MobileNo}</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
 )}
+
 
 				</div>
 
