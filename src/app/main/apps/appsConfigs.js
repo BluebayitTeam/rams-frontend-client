@@ -56,6 +56,7 @@ import FemalefingerletterAppConfig from '../rams/FemalefingerlettersManagement/F
 import FemaletrainingAppConfig from '../rams/FemaletrainingsManagement/FemaletrainingAppConfig';
 import FingerAppConfig from '../rams/FingersManagement/FingerAppConfig';
 import FlightAppConfig from '../rams/FlightsManagement/FlightAppConfig';
+import ForeignLedgerReportAppConfig from '../rams/ForeignLedgerReportManagement/ForeignLedgerReportAppConfig';
 import FormContentDetailAppConfig from '../rams/FormContentDetailsManagement/FormContentDetailAppConfig';
 import GdsAppConfig from '../rams/GdssManagement/GdsAppConfig';
 import GroupAppConfig from '../rams/GroupsManagement/GroupAppConfig';
@@ -150,6 +151,7 @@ const appsConfigs = [
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
   ReceiptSummaryReportAppConfig,
+  ForeignLedgerReportAppConfig,
   PaymentReportAppConfig,
   HelpCenterAppConfig,
   PassengerAccountSummaryReportAppConfig,
