@@ -91,7 +91,7 @@ import PassengerReportAppConfig from '../rams/PassengerReportManagement/Passenge
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
-import PaymentSummaryReportConfig from '../rams/PaymentSummaryReportManagement/PaymentSummaryReportAppConfig';
+import PaymentSummaryReportAppConfig from '../rams/PaymentSummaryReportManagement/PaymentSummaryReportAppConfig';
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
@@ -147,7 +147,7 @@ const appsConfigs = [
   PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
   FileManagerAppConfig,
-  PaymentSummaryReportConfig,
+  PaymentSummaryReportAppConfig,
   PaymentReportAppConfig,
   HelpCenterAppConfig,
   PassengerAccountSummaryReportAppConfig,

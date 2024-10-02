@@ -7,8 +7,8 @@ import {
 	DELETE_DEPARTMENT,
 	DELETE_DEPARTMENT_MULTIPLE,
 	GET_DEPARTMENT_BY_ID,
-	RECEIPT_FILTER_BY,
-	RECEIPT_FILTER_WITHOUT_PG,
+	PAYMENT_SUMMARY_FILTER_BY,
+	PAYMENT_SUMMARY_FILTER_WITHOUT_PG,
 	UPDATE_DEPARTMENT
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
@@ -22,14 +22,14 @@ const PaymentSummaryReportApi = api
 		endpoints: (build) => ({
 			getPaymentSummaryReports: build.query({
 				query: (filterData) => ({
-					url: RECEIPT_FILTER_BY,
+					url: PAYMENT_SUMMARY_FILTER_BY,
 					params: filterData
 				}),
 				providesTags: ['paymentSummaryReports']
 			}),
 			getPaymentSummaryAllReports: build.query({
 				query: (filterData) => ({
-					url: RECEIPT_FILTER_WITHOUT_PG,
+					url: PAYMENT_SUMMARY_FILTER_WITHOUT_PG,
 					params: filterData
 				}),
 				providesTags: ['paymentSummaryReports']
