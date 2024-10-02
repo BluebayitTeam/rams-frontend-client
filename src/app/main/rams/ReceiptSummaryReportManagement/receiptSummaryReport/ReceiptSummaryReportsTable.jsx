@@ -109,14 +109,13 @@ function ReceiptSummaryReportsTable(props) {
  
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedReceiptSummaryData(convertObjectToArray(allData.payment_voucher_summary ));
+      setModifiedReceiptSummaryData(convertObjectToArray(allData.receipt_voucher_summary ));
       setTotalAmount(allData.total_amount );
-
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.payment_voucher_summary,
+        allData.receipt_voucher_summary,
         size,
         page
       );
@@ -128,7 +127,7 @@ function ReceiptSummaryReportsTable(props) {
 
     } else if (!inShowAllMode && paginatedData) {
 
-      setModifiedReceiptSummaryData(convertObjectToArray(paginatedData.payment_voucher_summary) );
+      setModifiedReceiptSummaryData(convertObjectToArray(paginatedData.receipt_voucher_summary) );
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
