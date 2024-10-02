@@ -223,7 +223,7 @@ function ForeignLedgerReportsTable(props) {
           <SiglePageLedgerReport
           key={index}
           classes={classes}
-          reportTitle="ForeignLedger Report"
+          reportTitle="Foreign Ledger Report"
           tableColumns={tableColumns}
           dispatchTableColumns={dispatchTableColumns}
           data={{
