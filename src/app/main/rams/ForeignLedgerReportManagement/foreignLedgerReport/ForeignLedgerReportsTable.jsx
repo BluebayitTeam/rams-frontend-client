@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
+import SiglePageLedgerReport from 'src/app/@components/ReportComponents/SiglePageLedgerReport';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
@@ -70,16 +70,16 @@ function ForeignLedgerReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-
+  const [showForeign, setShowForeign] = useState(false);
   const componentRef = useRef(null);
 
   const filterData = watch();
 
   const { data: paginatedData, refetch: refetchAgentReports } = useGetForeignLedgerReportsQuery(
     {
+      ledger: filterData.ledger || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      ledger: filterData.ledger || '',
       sub_ledger: filterData.sub_ledger || '',
       account_type: filterData.account_type || '',
       page,
@@ -90,9 +90,9 @@ function ForeignLedgerReportsTable(props) {
 
   const { data: allData, refetch: refetchAllForeignLedgerReports } = useGetForeignLedgerAllReportsQuery(
     {
+      ledger: filterData.ledger || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      ledger: filterData.ledger || '',
       sub_ledger: filterData.sub_ledger || '',
       account_type: filterData.account_type || '',
     },
@@ -203,7 +203,7 @@ function ForeignLedgerReportsTable(props) {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedForeignLedgerData.map((foreignLedger, index) => (
-          <SinglePage
+          <SiglePageLedgerReport
           key={index}
           classes={classes}
           reportTitle="ForeignLedger Report"

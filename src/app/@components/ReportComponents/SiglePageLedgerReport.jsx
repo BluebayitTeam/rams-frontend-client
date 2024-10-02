@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { useEffect, useState } from 'react';
 import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 
-function SiglePageForPassengerLedgerReport({
+function SiglePageLedgerReport({
 	classes,
 	reportTitle = 'Report',
 	tableColumns = [],
@@ -19,12 +19,12 @@ function SiglePageForPassengerLedgerReport({
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-    PassengerLedgerAgent,
-    PassengerLedgerPID,
-    PassengerLedgerPassportNo,
-    PassengerLedgerName,
-    PassengerLedgeDistrict,
-    PassengerLedgeMobileNo
+    AgentName,
+    AgentId,
+    PassportNo,
+    PassengerName,
+    District,
+    MobileNo
 
 }) {
 	let pageBasedSerialNo = serialNumber;
@@ -84,27 +84,27 @@ function SiglePageForPassengerLedgerReport({
 						<tbody>
 							<tr>
 								<td>Agent Name:</td>
-								<td>{PassengerLedgerAgent}</td>
+								<td>{AgentName}</td>
 							</tr>
 							<tr>
 								<td>Passenger Id:</td>
-								<td>{PassengerLedgerPID}</td>
+								<td>{AgentId}</td>
 							</tr>
 							<tr>
 								<td>Passport No :</td>
-								<td>{PassengerLedgerPassportNo} </td>
+								<td>{PassportNo} </td>
 							</tr>
 							<tr>
 								<td>Passenger:</td>
-								<td>{PassengerLedgerName} </td>
+								<td>{PassengerName} </td>
 							</tr>
 							<tr>
 								<td>District :</td>
-								<td>{PassengerLedgeDistrict} </td>
+								<td>{District} </td>
 							</tr>
 							<tr>
 								<td>Mobile :</td>
-								<td>{PassengerLedgeMobileNo} </td>
+								<td>{MobileNo} </td>
 							</tr>
 						</tbody>
 					</table>
@@ -230,4 +230,4 @@ function SiglePageForPassengerLedgerReport({
 	);
 }
 
-export default SiglePageForPassengerLedgerReport;
+export default SiglePageLedgerReport;

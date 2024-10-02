@@ -51,6 +51,15 @@ function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handl
 	return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
+        
+          {/* ledger */}
+          <ReportSelect
+          {...commonFieldProps}
+          name='ledger'
+          options={ledgers}
+          icon='import_contacts'
+          width='40px'
+        />
 
         {/* date from */}
         <ReportDatePicker
@@ -69,19 +78,7 @@ function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handl
           maxDate={new Date()}
         />
 
-       
-
-        {/* ledger */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
-          width='40px'
-        />
-
-
-         {/* sub_ledger */}
+        {/* sub_ledger */}
 				<ReportSelect
 					{...commonFieldProps}
 					name="sub_ledger"
@@ -107,6 +104,13 @@ function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handl
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
+
+      <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='ledger'
+          icon='import_contacts'
+        />
         
       <Keyword
           {...commonKewordProps}
@@ -122,12 +126,7 @@ function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handl
           label='Date To'
         />
 
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='ledger'
-          icon='import_contacts'
-        />
+        
         <Keyword
           {...commonKewordProps}
           type='select'
