@@ -19,12 +19,7 @@ function SiglePageLedgerReport({
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-    AgentName,
-    AgentId,
-    PassportNo,
-    PassengerName,
-    District,
-    MobileNo
+   
 
 }) {
 	let pageBasedSerialNo = serialNumber;

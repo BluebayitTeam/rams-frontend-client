@@ -87,7 +87,6 @@ import MusanedOkalaAppConfig from '../rams/MusanedOkalasManagement/MusanedOkalaA
 import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConfig';
 import PassengerAccountSummaryReportAppConfig from '../rams/PassengerAccountSummaryReportManagement/PassengerAccountSummaryAppConfig';
 import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
-import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
 import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
@@ -146,7 +145,7 @@ const appsConfigs = [
   ManpowerNoteSheetAppConfig,
   BmetApplicationAppConfig,
   ReceiptReportAppConfig,
-  PassengerLedgerReportAppConfig,
+  // PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
