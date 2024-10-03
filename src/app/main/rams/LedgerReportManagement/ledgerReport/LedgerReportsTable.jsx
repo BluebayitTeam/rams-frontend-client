@@ -165,9 +165,10 @@ function LedgerReportsTable(props) {
 		            setPage(ledgersData?.page || 1);
 		            setDateFrom(ledgersData?.date_after);
 		            setDateTo(ledgersData?.date_before);
-		            setSize(size + 1);
-		            setTotalPages(ledgersData?.total_pages || 0);
-		            setTotalElements(ledgersData?.total_elements || 0);
+					setPage(ledgersData?.page || 1);
+					setSize(ledgersData?.size || 25);
+					setTotalPages(ledgersData.total_pages || 0);
+					setTotalElements(ledgersData.total_elements || 0);
 		            setInSiglePageMode(true);
 		            setInShowAllMode(false);
 	
@@ -208,7 +209,7 @@ function LedgerReportsTable(props) {
 					//get pagination data
 					const { totalPages, totalElements } = getPaginationData(allData?.account_logs, size, page);
 					setPage(page || 1);
-					setSize(size);
+					setSize(size || 25);
 					setTotalPages(totalPages);
 					setTotalElements(totalElements);
 				});
