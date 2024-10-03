@@ -3,7 +3,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
@@ -86,7 +86,7 @@ function PassengerAccountSummaryReportsTable(props) {
 		resolver: zodResolver(schema) 
 	});
 	const dispatch = useDispatch();
-     const {  getValues } = methods;
+     const {  watch } = methods;
 	const [modifiedPassengerAccountSummaryData, setModifiedPassengerAccountSummaryData] = useReportData();
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
     const [page, setPage] = useState(1);
@@ -101,7 +101,7 @@ function PassengerAccountSummaryReportsTable(props) {
 	const [pagination, setPagination] = useState(false);
 
     const componentRef = useRef(null);
-	const { watch } = methods;
+	
 
 	const filterData = watch();
 
@@ -121,8 +121,6 @@ function PassengerAccountSummaryReportsTable(props) {
 		},
 		{ skip: !inShowAllMode }
 	  );
-
-
 
 	  useEffect(() => {
 		if (inShowAllMode && allData) {
@@ -180,9 +178,9 @@ function PassengerAccountSummaryReportsTable(props) {
 		}
 	  }, [refetchAllPassengerAccountSummary]);
 
-    const agentName = data?.agent?.first_name
-	const district = data?.agent?.city?.name
-	const phone = data?.agent?.primary_phone
+    const agentName = paginatedData?.agent?.first_name
+	const district = paginatedData?.agent?.city?.name
+	const phone = paginatedData?.agent?.primary_phone
 
 	
 
@@ -248,12 +246,32 @@ function PassengerAccountSummaryReportsTable(props) {
 							reportTitle="Passenger AccountSummary Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={passengerAccountSummary}
+							inSiglePageMode={inSiglePageMode}
+
+							data={{
+								...passengerAccountSummary,
+								data: [
+								  ...passengerAccountSummary.data, 
+								  {
+									currency_amount_cr: totalCdAmount,
+									currency_amount_dr: totalDbAmount,
+									details: 'Total Balance',
+									balance: totalBAlance,
+									getterMethod: () => 'Total Amount',
+									hideSerialNo: true,
+									rowStyle: { fontWeight: 600 },
+								  },
+								],
+							  }}
 							totalColumn={initialTableColumnsState?.length}
 							agentName={agentName}
 							district={district}
 							phone={phone}
-							serialNumber={index + 1 + (page - 1) * size} 
+							serialNumber={
+								pagination
+								  ? page * size - size + index * passengerAccountSummary.data.length + 1
+								  : passengerAccountSummary.page * passengerAccountSummary.size - passengerAccountSummary.size + 1
+							  }
 							setPage={setPage}
 							
 						/>
