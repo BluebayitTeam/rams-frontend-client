@@ -3,7 +3,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import { useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
@@ -69,28 +69,24 @@ function LedgerReportsTable(props) {
 		resolver: zodResolver(schema) // Use zodResolver for form validation
 	});
 	const dispatch = useDispatch();
-
-	const { watch } = methods;
-
+    const { watch } = methods;
 	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
+	const [totalCdAmount, setTotalCdAmount] = useState(0);
+	const [totalDbAmount, setTotalDbAmount] = useState(0);
+	const [totalBAlance, setTotalBAlance] = useState(0);
 
-
-	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
-
+    const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [page, setPage] = useState(1);
-	const [size, setSize] = useState(10);
+	const [size, setSize] = useState(25);
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [pagination, setPagination] = useState(false);
-
-
-	const [inSiglePageMode, setInSiglePageMode] = useState(false);
-
-	const componentRef = useRef(null);
+    const [inSiglePageMode, setInSiglePageMode] = useState(false);
+    const componentRef = useRef(null);
 	const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchLedgerReports } = useGetLedgerReportsQuery(
+	const { data: paginatedData, refetch: refetchLedgerReports } = useGetLedgerReportsQuery(
     {
       ledger: filterData.ledger || '',
       date_after: filterData.date_after || '',
@@ -247,16 +243,12 @@ function LedgerReportsTable(props) {
 									debit_amount: totalDbAmount,
 									details: 'Total Balance',
 									balance:
-															totalCdAmount + ledger.openingBlnc - totalDbAmount > 0
-																? `${
-																		totalCdAmount +
-																		ledger.openingBlnc -
-																		totalDbAmount
+										totalCdAmount + ledger.openingBlnc-totalDbAmount > 0
+												? `${
+												 totalCdAmount +ledger.openingBlnc-totalDbAmount
 																  } Cr`
 																: `${
-																		totalCdAmount +
-																		ledger.openingBlnc -
-																		totalDbAmount
+																	totalCdAmount +ledger.openingBlnc-totalDbAmount
 																  } Dr`,
 									getterMethod: () => 'Total Amount',
 									hideSerialNo: true,
