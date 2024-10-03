@@ -82,8 +82,8 @@ function LedgerReportsTable(props) {
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
+	const [pagination, setPagination] = useState(false);
 
-	console.log('inShowAllMode', inShowAllMode);
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
@@ -237,9 +237,45 @@ function LedgerReportsTable(props) {
 							reportTitle="Ledger Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
-							data={ledger}
+							inSiglePageMode={inSiglePageMode}
+							data={{
+								...ledger,
+								data: [
+								  ...ledger.data, 
+								  {
+									credit_amount: totalCdAmount+ ledger.openingBlnc,
+									debit_amount: totalDbAmount,
+									details: 'Total Balance',
+									balance:
+															totalCdAmount + ledger.openingBlnc - totalDbAmount > 0
+																? `${
+																		totalCdAmount +
+																		ledger.openingBlnc -
+																		totalDbAmount
+																  } Cr`
+																: `${
+																		totalCdAmount +
+																		ledger.openingBlnc -
+																		totalDbAmount
+																  } Dr`,
+									getterMethod: () => 'Total Amount',
+									hideSerialNo: true,
+									rowStyle: {
+										fontWeight: 600,
+										color:
+											totalCdAmount + ledger.openingBlnc - totalDbAmount > 0
+												? 'green'
+												: 'red'
+									}
+								  },
+								],
+							  }}
 							totalColumn={initialTableColumnsState?.length}
-							serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+							serialNumber={
+								pagination
+								  ? page * size - size + index * ledger.data.length + 1
+								  : ledger.page * ledger.size - ledger.size + 1
+							  }
 							setPage={setPage}
 							// setSortBy={setSortBy}
 						/>
