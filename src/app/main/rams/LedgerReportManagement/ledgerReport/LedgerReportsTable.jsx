@@ -3,10 +3,9 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
+import { useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -15,7 +14,7 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import { selectFilteredLedgerReports, useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
+import { useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
 import LedgerFilterMenu from './LedgerFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -71,11 +70,10 @@ function LedgerReportsTable(props) {
 	});
 	const dispatch = useDispatch();
 
-	const { control, getValues,watch } = methods;
+	const { watch } = methods;
 
 	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
 
-	console.log('modifiedLedgerData', modifiedLedgerData);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -90,31 +88,92 @@ function LedgerReportsTable(props) {
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
 	const componentRef = useRef(null);
+	const filterData = watch();
+
+  const { data: paginatedData, refetch: refetchLedgerReports } = useGetLedgerReportsQuery(
+    {
+      ledger: filterData.ledger || '',
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      sub_ledger: filterData.sub_ledger || '',
+      account_type: filterData.account_type || '',
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
+
+  const { data: allData, refetch: refetchAllLedgerReports } = useGetLedgerAllReportsQuery(
+		{
+		  ledger: filterData.ledger || '',
+		  date_after: filterData.date_after || '',
+		  date_before: filterData.date_before || '',
+		  sub_ledger: filterData.sub_ledger || '',
+		  account_type: filterData.account_type || '',
+		
+		},
+		{ skip: !inShowAllMode }
+	  );
 	
-	const { data, isLoading, refetch } = useGetLedgerReportsQuery({
-        ledger: watch('ledger') || '',
-        
-        date_after: watch('date_after') || '',
-        date_before: watch('date_before') || '',
-		sub_ledger: watch('sub_ledger') || '',
-        account_type: watch('account_type') || '',
-     
-      }, { enabled: false });
-	const { refetch: refetchAll } = useGetLedgerAllReportsQuery({
-        ledger: watch('ledger') || '',
-        date_after: watch('date_after') || '',
-        date_before: watch('date_before') || '',
-		sub_ledger: watch('sub_ledger') || '',
-        account_type: watch('account_type') || '',
-     
-      }, { enabled: false });
-	const totalData = useSelector(selectFilteredLedgerReports(data));
+	  useEffect(() => {
+		if (inShowAllMode && allData) {
+		  setModifiedLedgerData(allData.account_logs || []);
+		  setTotalCdAmount(allData.total_credit_amount );
+		  setTotalDbAmount(allData.total_debit_amount );
+		  setTotalBAlance(allData.total_balance );
+	
+		  setInSiglePageMode(false);
+		  setInShowAllMode(true);
+		  setPagination(false)
+		  const { totalPages, totalElements } = getPaginationData(
+			allData.account_logs,
+			size,
+			page
+		  );
+	
+		  setPage(page || 1);
+		  setSize(size || 25);
+		  setTotalPages(totalPages);
+		  setTotalElements(totalElements);
+		} else if (!inShowAllMode && paginatedData) {
+		  setModifiedLedgerData(paginatedData.account_logs || []);
+		  setTotalCdAmount(paginatedData.total_credit_amount );
+		  setTotalDbAmount(paginatedData.total_debit_amount );
+		  setTotalBAlance(paginatedData.total_balance ); 
+		  setPage(paginatedData?.page || 1);
+		  setSize(paginatedData?.size || 25);
+		  setTotalPages(paginatedData.total_pages || 0);
+		  setTotalElements(paginatedData.total_elements || 0);
+		  setPagination(true);
+		  setInSiglePageMode(true);
+		  setInShowAllMode(false);
+	
+		}
+	  }, [inShowAllMode, allData, paginatedData, size, page]);
 
-	// console.log('fdjshsdjkfhsdkhfsdkhfsdkhf',getValues());
 
-	useEffect(() => {
-		setModifiedLedgerData(totalData?.account_logs);
-	}, [totalData]);
+
+	  const handleGetLedgers = useCallback(async (newPage) => {
+		try {
+		  const page = newPage || 1;
+		  setPage(page);
+		  await refetchLedgerReports();
+		} catch (error) {
+		  console.error('Error fetching agents:', error);
+		}
+	  }, [refetchLedgerReports]);
+	
+	  const handleGetAllLedgers = useCallback(async () => {
+		try {
+		  await refetchAllLedgerReports();
+		} catch (error) {
+		  console.error('Error fetching all foreignLedgers:', error);
+		}
+	  }, [refetchAllLedgerReports]);
+
+
+
+	
 
 	// Function to handle Excel download
 	const handleExelDownload = () => {
@@ -126,63 +185,7 @@ function LedgerReportsTable(props) {
 		content: () => componentRef.current
 	});
 
-	const handleGetLedgers = async (newPage, callBack) => {
-		
-		try {
-			const formValues = getValues();
-			const page = newPage || 1;
-			setPage(page);
 
-			const response = await refetch({ ...formValues, page, size }); // Manually trigger the query
-
-			if (response?.data) {
-				unstable_batchedUpdates(() => {
-					if (callBack) {
-						callBack(response.data);
-					}
-
-					const ledgersData = response.data.ledgers || [];
-					setModifiedLedgerData(ledgersData);
-					setInShowAllMode(false);
-
-					// const { totalPages, totalElements } = getPaginationData(ledgersData, size, page);
-					setTotalPages(response.data?.total_pages);
-					setTotalElements(response.data?.total_elements);
-				});
-			}
-		} catch (error) {
-			console.error('Error fetching ledgers:', error);
-		}
-	};
-
-	const handleGetAllLedgers = async (callBack, callBackAfterStateUpdated) => {
-		try {
-			const formValues = getValues();
-
-			const response = await refetchAll({ ...formValues }); // Manually trigger the query
-
-			if (response?.data) {
-				unstable_batchedUpdates(() => {
-					if (callBack) {
-						callBack(response.data);
-					}
-
-					setModifiedLedgerData(response.data.account_logs || []);
-					setInShowAllMode(true);
-
-					const { totalPages, totalElements } = getPaginationData(response.data.account_logs, size, page);
-					setTotalPages(totalPages);
-					setTotalElements(totalElements);
-				});
-
-				if (callBackAfterStateUpdated) {
-					callBackAfterStateUpdated(response.data);
-				}
-			}
-		} catch (error) {
-			console.error('Error fetching all ledgers:', error);
-		}
-	};
 
 	return (
 		<div className={classes.headContainer}>
