@@ -12,6 +12,7 @@ import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import { useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
@@ -69,12 +70,17 @@ function LedgerReportsTable(props) {
 		resolver: zodResolver(schema) // Use zodResolver for form validation
 	});
 	const dispatch = useDispatch();
-    const { watch } = methods;
+    const { watch ,getValues } = methods;
 	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
 	const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
-
+	const [totalAllPageBalance, setTotalAllPageBalance] = useState(0);
+	const [totalRecords, setTotalRecords] = useState(0);
+	const [previousBalance, setPreviousBalance] = useState(0);
+	const [ledgerName, setLedgerName] = useState('');
+	const [dateFrom, setDateFrom] = useState();
+	const [dateTo, setDateTo] = useState();
     const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(25);
@@ -85,6 +91,7 @@ function LedgerReportsTable(props) {
     const [inSiglePageMode, setInSiglePageMode] = useState(false);
     const componentRef = useRef(null);
 	const filterData = watch();
+	const [show, setShow] = useState(false);
 
 	const { data: paginatedData, refetch: refetchLedgerReports } = useGetLedgerReportsQuery(
     {
@@ -113,36 +120,59 @@ function LedgerReportsTable(props) {
 	
 	  useEffect(() => {
 		if (inShowAllMode && allData) {
-		  setModifiedLedgerData(allData.account_logs || []);
-		  setTotalCdAmount(allData.total_credit_amount );
-		  setTotalDbAmount(allData.total_debit_amount );
-		  setTotalBAlance(allData.total_balance );
-	
-		  setInSiglePageMode(false);
-		  setInShowAllMode(true);
-		  setPagination(false)
-		  const { totalPages, totalElements } = getPaginationData(
-			allData.account_logs,
-			size,
-			page
-		  );
-	
-		  setPage(page || 1);
-		  setSize(size || 25);
-		  setTotalPages(totalPages);
-		  setTotalElements(totalElements);
+		  setModifiedLedgerData(allData.account_logs || [],size,allData?.previous_balance || 0);
+          const totalCdAmnt = getTotalAmount(
+			allData?.account_logs || [],
+			'credit_amount',
+			allData?.previous_balance || 0
+		);
+		setTotalAllPageBalance(allData?.all_page_total_amount || 0.0);
+		setTotalRecords(allData?.total_elements || 0);
+		setPagination(false);
+		setPreviousBalance(allData?.previous_balance || 0);
+		setShow(allData?.account_logs?.length > 0 ? false : true);
+
+		setTotalCdAmount(allData?.total_credit_amount || 0);
+		setTotalDbAmount(allData?.total_debit_amount || 0);
+		setLedgerName(allData?.ledger_name);
+		const totalDbAmnt = getTotalAmount(allData?.account_logs || [], 'debit_amount');
+		setTotalBAlance(allData?.total_amount?.toFixed(2) || 0.0);
+		setInSiglePageMode(false);
+		setDateFrom(allData?.date_after);
+		setDateTo(allData?.date_before);
+		setInShowAllMode(true);
+		//get pagination data
+		const { totalPages, totalElements } = getPaginationData(allData?.account_logs, size, page);
+		setPage(page || 1);
+		setSize(size);
+		setTotalPages(totalPages);
+		setTotalElements(totalElements);
+
 		} else if (!inShowAllMode && paginatedData) {
 		  setModifiedLedgerData(paginatedData.account_logs || []);
-		  setTotalCdAmount(paginatedData.total_credit_amount );
-		  setTotalDbAmount(paginatedData.total_debit_amount );
-		  setTotalBAlance(paginatedData.total_balance ); 
-		  setPage(paginatedData?.page || 1);
-		  setSize(paginatedData?.size || 25);
-		  setTotalPages(paginatedData.total_pages || 0);
-		  setTotalElements(paginatedData.total_elements || 0);
-		  setPagination(true);
-		  setInSiglePageMode(true);
-		  setInShowAllMode(false);
+		  const totalCdAmnt = getTotalAmount(
+			paginatedData?.account_logs || [],
+			'credit_amount',
+			paginatedData?.previous_balance || 0
+		);
+		setTotalAllPageBalance(paginatedData?.all_page_total_amount || 0.0);
+		setTotalRecords(paginatedData?.total_elements || 0);
+		setPreviousBalance(paginatedData?.previous_balance || 0);
+		setPagination(true);
+		setShow(paginatedData?.account_logs?.length > 0 ? false : true);
+		setLedgerName(paginatedData?.ledger_name);
+		const totalDbAmnt = getTotalAmount(paginatedData?.account_logs || [], 'debit_amount');
+		setTotalCdAmount(paginatedData?.total_credit_amount || 0);
+		setTotalDbAmount(paginatedData?.total_debit_amount || 0);
+		setTotalBAlance(paginatedData?.total_amount?.toFixed(2) || 0.0);
+		setPage(paginatedData?.page || 1);
+		setDateFrom(paginatedData?.date_after);
+		setDateTo(paginatedData?.date_before);
+		setSize(size + 1);
+		setTotalPages(paginatedData?.total_pages || 0);
+		setTotalElements(paginatedData?.total_elements || 0);
+		setInSiglePageMode(true);
+		setInShowAllMode(false);
 	
 		}
 	  }, [inShowAllMode, allData, paginatedData, size, page]);
@@ -182,6 +212,13 @@ function LedgerReportsTable(props) {
 	});
 
 
+	const filteredData = {
+		Account: getValues()?.account_typeName || null,
+		Ledger: getValues()?.sub_ledgerName || null,
+		Date_To: getValues()?.date_before || null,
+		Date_From: getValues()?.date_after || null,
+		Sub_Ledger: getValues()?.sub_ledgerName || null
+	};
 
 	return (
 		<div className={classes.headContainer}>
@@ -234,6 +271,15 @@ function LedgerReportsTable(props) {
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							inSiglePageMode={inSiglePageMode}
+							filteredData={filteredData}
+							dateFromDateTo={
+								dateFrom && dateTo
+									? `Date : ${
+											dateFrom && moment(new Date(dateFrom)).format('DD-MM-YYYY')
+									  } to ${dateTo && moment(new Date(dateTo)).format('DD-MM-YYYY')}`
+									: ''
+							}
+
 							data={{
 								...ledger,
 								data: [
@@ -269,6 +315,8 @@ function LedgerReportsTable(props) {
 								  : ledger.page * ledger.size - ledger.size + 1
 							  }
 							setPage={setPage}
+							addInHeader={ledger.isFirsPage && ledger.openingBlnc}
+
 							// setSortBy={setSortBy}
 						/>
 					))}
