@@ -2,11 +2,12 @@ import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import moment from 'moment';
-import { BASE_URL } from 'src/app/constant/constants';
+import { useEffect, useState } from 'react';
+import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 
-function SiglePageWithOpeningBalanceForLedger({
+function SiglePageWithOpeningBalance({
 	classes,
-	generalData,
+	
 	addInHeader,
 	reportTitle = 'Report',
 	dateFromDateTo = 'Date From: Date To:',
@@ -32,6 +33,23 @@ function SiglePageWithOpeningBalanceForLedger({
 		return `${key.replace(/_/g, ' ')}: ${filteredData[key]}`;
 	});
 	const FilteredCriteria = filteredValues.join(', ');
+
+
+    
+	const [generalData, setGeneralData] = useState({});
+	// get general setting data
+	useEffect(() => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		fetch(`${GET_SITESETTINGS}`, authTOKEN)
+			.then((response) => response.json())
+			.then((data) => setGeneralData(data.general_settings[0] || {}))
+			.catch(() => setGeneralData({}));
+	}, []);
 
 	return (
 		<div
@@ -98,14 +116,17 @@ function SiglePageWithOpeningBalanceForLedger({
 					<p className="title  pl-0 md:-pl-20">{dateFromDateTo}</p>
 				</div>
 				{addInHeader != 0 && (
-					<div style={{ textAlign: 'right', marginRight: '20px' }}>
-						{addInHeader > 0 ? (
-							<h3 style={{ color: 'green' }}>Opening Balance: {addInHeader?.toFixed(2)} Cr</h3>
-						) : (
-							<h3 style={{ color: 'red' }}>Opening Balance: {addInHeader?.toFixed(2)} Dr</h3>
-						)}
-					</div>
-				)}
+	<div style={{ textAlign: 'right', marginRight: '20px' }}>
+		{typeof addInHeader === 'number' ? (
+			addInHeader > 0 ? (
+				<h3 style={{ color: 'green' }}>Opening Balance: {addInHeader.toFixed(2)} Cr</h3>
+			) : (
+				<h3 style={{ color: 'red' }}>Opening Balance: {Math.abs(addInHeader).toFixed(2)} Dr</h3>
+			)
+		) : null}
+	</div>
+)}
+
 
 				<Table aria-label="simple table" className={`${classes.table} w-fit `} border="1">
 					<TableHead style={{ backgroundColor: '#D7DBDD' }}>
@@ -226,4 +247,4 @@ function SiglePageWithOpeningBalanceForLedger({
 	);
 }
 
-export default SiglePageWithOpeningBalanceForLedger;
+export default SiglePageWithOpeningBalance;
