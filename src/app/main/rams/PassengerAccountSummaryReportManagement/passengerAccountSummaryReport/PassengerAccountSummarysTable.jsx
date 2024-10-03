@@ -4,9 +4,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
 import { useEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
@@ -16,7 +15,7 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SiglePageWithExtraHeading from 'src/app/@components/ReportComponents/SiglePageWithExtraHeading';
-import { selectFilteredPassengerAccountSummaryReports, useGetPassengerAccountSummaryAllReportsQuery, useGetPassengerAccountSummaryReportsQuery } from '../passengerAccountSummarysApi';
+import { useGetPassengerAccountSummaryAllReportsQuery, useGetPassengerAccountSummaryReportsQuery } from '../passengerAccountSummarysApi';
 import PassengerAccountSummaryFilterMenu from './PassengerAccountSummaryFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -106,7 +105,7 @@ function PassengerAccountSummaryReportsTable(props) {
 
 	const filterData = watch();
 
-	const { data: paginatedData, refetch: refetchAgentReports } = useGetPassengerAccountSummaryReportsQuery(
+	const { data: paginatedData, refetch: refetchPassengerAccountSummary } = useGetPassengerAccountSummaryReportsQuery(
 	  {
 		agent: filterData.agent || '',
 		page,
@@ -115,7 +114,7 @@ function PassengerAccountSummaryReportsTable(props) {
 	  { skip: inShowAllMode }
 	);
 
-    const { data: allData, refetch: refetchAllForeignLedgerReports } = useGetPassengerAccountSummaryAllReportsQuery(
+    const { data: allData, refetch: refetchAllPassengerAccountSummary } = useGetPassengerAccountSummaryAllReportsQuery(
 		{
 			agent: filterData.agent || '',
 		
@@ -162,14 +161,30 @@ function PassengerAccountSummaryReportsTable(props) {
 	  }, [inShowAllMode, allData, paginatedData, size, page]);
 
 
-	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
+	  const handleGetPassengerAccountSummarys = useCallback(async (newPage) => {
+		try {
+		  const page = newPage || 1;
+		  setPage(page);
+		  await refetchPassengerAccountSummary();
+		} catch (error) {
+		  console.error('Error fetching agents:', error);
+		}
+	  }, [refetchPassengerAccountSummary]);
+
+
+	  const handleGetAllPassengerAccountSummarys = useCallback(async () => {
+		try {
+		  await refetchAllPassengerAccountSummary();
+		} catch (error) {
+		  console.error('Error fetching all foreignLedgers:', error);
+		}
+	  }, [refetchAllPassengerAccountSummary]);
+
     const agentName = data?.agent?.first_name
 	const district = data?.agent?.city?.name
 	const phone = data?.agent?.primary_phone
 
-	useEffect(() => {
-		setModifiedPassengerAccountSummaryData(totalData?.account_logs);
-	}, [totalData]);
+	
 
 	// Function to handle Excel download
 	const handleExelDownload = () => {
@@ -181,62 +196,7 @@ function PassengerAccountSummaryReportsTable(props) {
 		content: () => componentRef.current
 	});
 
-	const handleGetPassengerAccountSummarys = async (newPage, callBack) => {
-		try {
-			const formValues = getValues();
-			const page = newPage || 1;
-			setPage(page);
-
-			const response = await refetch({ ...formValues, page, size }); // Manually trigger the query
-
-			if (response?.data) {
-				unstable_batchedUpdates(() => {
-					if (callBack) {
-						callBack(response.data);
-					}
-
-					const passengerAccountSummarysData = response.data.account_logs || [];
-					setModifiedPassengerAccountSummaryData(passengerAccountSummarysData);
-					setInShowAllMode(false);
-
-					// const { totalPages, totalElements } = getPaginationData(passengerAccountSummarysData, size, page);
-					setTotalPages(response.data?.total_pages);
-					setTotalElements(response.data?.total_elements);
-				});
-			}
-		} catch (error) {
-			console.error('Error fetching passengerAccountSummarys:', error);
-		}
-	};
-
-	const handleGetAllPassengerAccountSummarys = async (callBack, callBackAfterStateUpdated) => {
-		try {
-			const formValues = getValues();
-
-			const response = await refetchAll({ ...formValues }); // Manually trigger the query
-
-			if (response?.data) {
-				unstable_batchedUpdates(() => {
-					if (callBack) {
-						callBack(response.data);
-					}
-
-					setModifiedPassengerAccountSummaryData(response.data.account_logs || []);
-					setInShowAllMode(true);
-
-					const { totalPages, totalElements } = getPaginationData(response.data.account_logs);
-					setTotalPages(totalPages);
-					setTotalElements(totalElements);
-				});
-
-				if (callBackAfterStateUpdated) {
-					callBackAfterStateUpdated(response.data);
-				}
-			}
-		} catch (error) {
-			console.error('Error fetching all passengerAccountSummarys:', error);
-		}
-	};
+	
 
 	return (
 		<div className={classes.headContainer}>
