@@ -98,6 +98,8 @@ function PassengerAccountSummaryReportsTable(props) {
 	const [totalCdAmount, setTotalCdAmount] = useState(0);
     const [totalDbAmount, setTotalDbAmount] = useState(0);
     const [totalBAlance, setTotalBAlance] = useState(0);
+	const [totalOfficeAmount, setTotalOfficeAmount] = useState(0);
+
 	const [pagination, setPagination] = useState(false);
 
     const componentRef = useRef(null);
@@ -128,7 +130,8 @@ function PassengerAccountSummaryReportsTable(props) {
 		  setTotalCdAmount(allData.total_credit_amount );
 		  setTotalDbAmount(allData.total_debit_amount );
 		  setTotalBAlance(allData.total_balance );
-	
+		  setTotalOfficeAmount('');
+
 		  setInSiglePageMode(false);
 		  setInShowAllMode(true);
 		  setPagination(false)
@@ -147,7 +150,8 @@ function PassengerAccountSummaryReportsTable(props) {
 		  setTotalCdAmount(paginatedData.total_credit_amount );
 		  setTotalDbAmount(paginatedData.total_debit_amount );
 		  setTotalBAlance(paginatedData.total_balance ); 
-		  setPage(paginatedData?.page || 1);
+		  setTotalOfficeAmount('');
+          setPage(paginatedData?.page || 1);
 		  setSize(paginatedData?.size || 25);
 		  setTotalPages(paginatedData.total_pages || 0);
 		  setTotalElements(paginatedData.total_elements || 0);
@@ -253,11 +257,12 @@ function PassengerAccountSummaryReportsTable(props) {
 								data: [
 								  ...passengerAccountSummary.data, 
 								  {
-									currency_amount_cr: totalCdAmount,
-									currency_amount_dr: totalDbAmount,
+									credit: totalCdAmount,
+                                    debit: totalDbAmount,
+                                    passenger: 'Total Balance',
 									details: 'Total Balance',
 									balance: totalBAlance,
-									getterMethod: () => 'Total Amount',
+									office_cost: totalOfficeAmount,
 									hideSerialNo: true,
 									rowStyle: { fontWeight: 600 },
 								  },
