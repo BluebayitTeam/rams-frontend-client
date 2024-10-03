@@ -96,9 +96,72 @@ function PassengerAccountSummaryReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
     const [inSiglePageMode, setInSiglePageMode] = useState(false);
+	const [totalCdAmount, setTotalCdAmount] = useState(0);
+    const [totalDbAmount, setTotalDbAmount] = useState(0);
+    const [totalBAlance, setTotalBAlance] = useState(0);
+	const [pagination, setPagination] = useState(false);
+
     const componentRef = useRef(null);
-    const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
-	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues()}, { enabled: false });
+	const { watch } = methods;
+
+	const filterData = watch();
+
+	const { data: paginatedData, refetch: refetchAgentReports } = useGetPassengerAccountSummaryReportsQuery(
+	  {
+		agent: filterData.agent || '',
+		page,
+		size,
+	  },
+	  { skip: inShowAllMode }
+	);
+
+    const { data: allData, refetch: refetchAllForeignLedgerReports } = useGetPassengerAccountSummaryAllReportsQuery(
+		{
+			agent: filterData.agent || '',
+		
+		},
+		{ skip: !inShowAllMode }
+	  );
+
+
+
+	  useEffect(() => {
+		if (inShowAllMode && allData) {
+		  setModifiedPassengerAccountSummaryData(allData.account_logs || []);
+		  setTotalCdAmount(allData.total_credit_amount );
+		  setTotalDbAmount(allData.total_debit_amount );
+		  setTotalBAlance(allData.total_balance );
+	
+		  setInSiglePageMode(false);
+		  setInShowAllMode(true);
+		  setPagination(false)
+		  const { totalPages, totalElements } = getPaginationData(
+			allData.account_logs,
+			size,
+			page
+		  );
+	
+		  setPage(page || 1);
+		  setSize(size || 25);
+		  setTotalPages(totalPages);
+		  setTotalElements(totalElements);
+		} else if (!inShowAllMode && paginatedData) {
+		  setModifiedPassengerAccountSummaryData(paginatedData.account_logs || []);
+		  setTotalCdAmount(paginatedData.total_credit_amount );
+		  setTotalDbAmount(paginatedData.total_debit_amount );
+		  setTotalBAlance(paginatedData.total_balance ); 
+		  setPage(paginatedData?.page || 1);
+		  setSize(paginatedData?.size || 25);
+		  setTotalPages(paginatedData.total_pages || 0);
+		  setTotalElements(paginatedData.total_elements || 0);
+		  setPagination(true);
+		  setInSiglePageMode(true);
+		  setInShowAllMode(false);
+	
+		}
+	  }, [inShowAllMode, allData, paginatedData, size, page]);
+
+
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
     const agentName = data?.agent?.first_name
 	const district = data?.agent?.city?.name
