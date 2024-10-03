@@ -84,6 +84,7 @@ function LedgerReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [pagination, setPagination] = useState(false);
+	console.log('pagination111',totalElements)
 	const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
@@ -282,6 +283,7 @@ function LedgerReportsTable(props) {
 						reportTitle="Ledger Report"
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
+						ledgerName={ledgerName}
 						dateFromDateTo={
 							dateFrom && dateTo
 								? `Date : ${moment(dateFrom).format('DD-MM-YYYY')} to ${moment(dateTo).format('DD-MM-YYYY')}`
