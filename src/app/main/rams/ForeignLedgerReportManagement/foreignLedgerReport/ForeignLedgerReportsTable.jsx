@@ -81,7 +81,10 @@ function ForeignLedgerReportsTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalCdAmount, setTotalCdAmount] = useState(0);
+  const [totalDbAmount, setTotalDbAmount] = useState(0);
+  const [totalBAlance, setTotalBAlance] = useState(0);
+
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -231,7 +234,10 @@ function ForeignLedgerReportsTable(props) {
             data: [
               ...foreignLedger.data, 
               {
-                credit_amount: totalAmount,
+                currency_amount_cr: totalCdAmount,
+                currency_amount_dr: totalDbAmount,
+                details: 'Total Balance',
+                balance: totalBAlance,
                 getterMethod: () => 'Total Amount',
                 hideSerialNo: true,
                 rowStyle: { fontWeight: 600 },
