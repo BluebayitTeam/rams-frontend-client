@@ -247,7 +247,7 @@ function PassengerAccountSummaryReportsTable(props) {
 						<SiglePageWithExtraHeading
 							key={index}
 							classes={classes}
-							reportTitle="Passenger AccountSummary Report"
+							reportTitle="Passenger Account Summary Report"
 							tableColumns={tableColumns}
 							dispatchTableColumns={dispatchTableColumns}
 							inSiglePageMode={inSiglePageMode}
