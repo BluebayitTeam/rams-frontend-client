@@ -118,7 +118,9 @@ function ForeignLedgerReportsTable(props) {
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedForeignLedgerData(allData.account_logs || []);
-      setTotalAmount(allData.total_amount );
+      setTotalCdAmount(allData.total_amount );
+      setTotalDbAmount(allData.total_amount );
+      setTotalBAlance(allData.total_amount );
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -135,7 +137,9 @@ function ForeignLedgerReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedForeignLedgerData(paginatedData.account_logs || []);
-      setTotalAmount(paginatedData.total_amount);
+      setTotalCdAmount(paginatedData.total_amount );
+      setTotalDbAmount(paginatedData.total_amount );
+      setTotalBAlance(paginatedData.total_amount ); 
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
