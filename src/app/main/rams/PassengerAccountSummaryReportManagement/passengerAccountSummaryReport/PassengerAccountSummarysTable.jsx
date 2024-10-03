@@ -84,45 +84,23 @@ function PassengerAccountSummaryReportsTable(props) {
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
-		resolver: zodResolver(schema) // Use zodResolver for form validation
+		resolver: zodResolver(schema) 
 	});
 	const dispatch = useDispatch();
-
-	const { control, getValues ,watch} = methods;
-	
-
-
+     const {  getValues } = methods;
 	const [modifiedPassengerAccountSummaryData, setModifiedPassengerAccountSummaryData] = useReportData();
-
-	console.log('modifiedPassengerAccountSummaryData', modifiedPassengerAccountSummaryData);
-
-	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
-
-
-
-   
-	const [page, setPage] = useState(1);
+    const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
+    const [page, setPage] = useState(1);
 	const [size, setSize] = useState(10);
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
-
-
-	
-
-	const [inSiglePageMode, setInSiglePageMode] = useState(false);
-
-	const componentRef = useRef(null);
-
-	// Prevent automatic fetching by setting enabled: false
-	const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
-	
+    const [inSiglePageMode, setInSiglePageMode] = useState(false);
+    const componentRef = useRef(null);
+    const { data, isLoading, refetch } = useGetPassengerAccountSummaryReportsQuery({ ...getValues(), page, size }, { enabled: false });
 	const { refetch: refetchAll } = useGetPassengerAccountSummaryAllReportsQuery({ ...getValues()}, { enabled: false });
-	
 	const totalData = useSelector(selectFilteredPassengerAccountSummaryReports(data));
-
-
-	const agentName = data?.agent?.first_name
+    const agentName = data?.agent?.first_name
 	const district = data?.agent?.city?.name
 	const phone = data?.agent?.primary_phone
 
@@ -141,7 +119,6 @@ function PassengerAccountSummaryReportsTable(props) {
 	});
 
 	const handleGetPassengerAccountSummarys = async (newPage, callBack) => {
-		// debugger;
 		try {
 			const formValues = getValues();
 			const page = newPage || 1;
