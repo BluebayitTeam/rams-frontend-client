@@ -94,7 +94,7 @@ function LedgerReportsTable(props) {
 	const [dateTo, setDateTo] = useState();
 	const [show, setShow] = useState(false);
 
-console.log('totalBAlance',totalBAlance)
+console.log('previousBalance',previousBalance)
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
@@ -146,7 +146,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalCdAmount(allData.total_credit_amount ||0 );
 		  setTotalDbAmount(allData.total_debit_amount ||0);
 		  setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
-
+		  setPreviousBalance(allData?.previous_balance || 0);
 		  setInSiglePageMode(false);
 		  setInShowAllMode(true);
 		  setPagination(false)
@@ -165,6 +165,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalCdAmount(paginatedData.total_credit_amount|| 0);
 		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
 		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
+		  setPreviousBalance(paginatedData?.previous_balance || 0);
 
 		  setPage(paginatedData?.page || 1);
 		  setSize(paginatedData?.size || 25);
