@@ -1,8 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-dom';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
@@ -11,7 +10,6 @@ import SiglePageWithOpeningBalance from 'src/app/@components/ReportComponents/Si
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
-import getTotalAmount from 'src/app/@helpers/getTotalAmount';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import { selectFilteredLedgerReports, useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
@@ -94,33 +92,35 @@ function LedgerReportsTable(props) {
 	const [ledgerName, setLedgerName] = useState('');
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
+	const [show, setShow] = useState(false);
 
-	
+console.log('totalBAlance',totalBAlance)
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
 	const componentRef = useRef(null);
 	
-	const { data, isLoading, refetch } = useGetLedgerReportsQuery({
-        ledger: watch('ledger') || '',
-        
-        date_after: watch('date_after') || '',
-        date_before: watch('date_before') || '',
-		sub_ledger: watch('sub_ledger') || '',
-        account_type: watch('account_type') || '',
-     
-      }, { enabled: false });
-	const { refetch: refetchAll } = useGetLedgerAllReportsQuery({
+	const { data:paginatedData, isLoading, refetch } = useGetLedgerReportsQuery({
         ledger: watch('ledger') || '',
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
 		sub_ledger: watch('sub_ledger') || '',
         account_type: watch('account_type') || '',
      
-      }, { enabled: false });
-	const totalData = useSelector(selectFilteredLedgerReports(data));
+      },  { skip: inShowAllMode });
 
-	// console.log('fdjshsdjkfhsdkhfsdkhfsdkhf',getValues());
+
+const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
+        ledger: watch('ledger') || '',
+        date_after: watch('date_after') || '',
+        date_before: watch('date_before') || '',
+		sub_ledger: watch('sub_ledger') || '',
+        account_type: watch('account_type') || '',
+     
+      },  { skip: !inShowAllMode });
+
+	const totalData = useSelector(selectFilteredLedgerReports(paginatedData));
+
 
 	useEffect(() => {
 		setModifiedLedgerData(totalData?.account_logs);
@@ -136,93 +136,70 @@ function LedgerReportsTable(props) {
 		content: () => componentRef.current
 	});
 
-	const handleGetLedgers = async (newPage, callBack) => {
-		
-		try {
-			const formValues = getValues();
-			const page = newPage || 1;
-			setPage(page);
-
-			const response = await refetch({ ...formValues, page, size }); // Manually trigger the query
-
-			if (response?.data) {
-				unstable_batchedUpdates(() => {
-					if (callBack) {
-						callBack(response.data);
-					}
-
-					const ledgersData = (response.data.account_logs || [], size + 1, response.data?.previous_balance || 0);
-					setModifiedLedgerData(ledgersData);
-					setTotalAllPageBalance(ledgersData?.all_page_total_amount || 0.0);
-		            setTotalRecords(ledgersData?.total_elements || 0);
-		            setPreviousBalance(ledgersData?.previous_balance || 0);
-	                setPagination(true);
-		            setShow(ledgersData?.account_logs?.length > 0 ? false : true);
-		            setLedgerName(ledgersData?.ledger_name);
-		            const totalDbAmnt = getTotalAmount(ledgersData?.account_logs || [], 'debit_amount');
-		            setTotalCdAmount(ledgersData?.total_credit_amount || 0);
-		            setTotalDbAmount(ledgersData?.total_debit_amount || 0);
-		            setTotalBAlance(ledgersData?.total_amount?.toFixed(2) || 0.0);
-		            setPage(ledgersData?.page || 1);
-		            setDateFrom(ledgersData?.date_after);
-		            setDateTo(ledgersData?.date_before);
-					setPage(ledgersData?.page || 1);
-					setSize(ledgersData?.size || 25);
-					setTotalPages(ledgersData.total_pages || 0);
-					setTotalElements(ledgersData.total_elements || 0);
-		            setInSiglePageMode(true);
-		            setInShowAllMode(false);
 	
-				});
-			}
-		} catch (error) {
-			console.error('Error fetching ledgers:', error);
-		}
-	};
 
-	const handleGetAllLedgers = async (callBack, callBackAfterStateUpdated) => {
+	useEffect(() => {
+		if (inShowAllMode && allData) {
+			setModifiedLedgerData(allData?.account_logs , size, allData?.previous_balance || 0);
+		  setTotalCdAmount(allData.total_credit_amount ||0 );
+		  setTotalDbAmount(allData.total_debit_amount ||0);
+		  setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
+		  setShow(allData?.account_logs?.length > 0 ? false : true);
+
+		  setInSiglePageMode(false);
+		  setInShowAllMode(true);
+		  setPagination(false)
+		  const { totalPages, totalElements } = getPaginationData(
+			allData.account_logs,
+			size,
+			page
+		  );
+	
+		  setPage(page || 1);
+		  setSize(size || 25);
+		  setTotalPages(totalPages);
+		  setTotalElements(totalElements);
+		} else if (!inShowAllMode && paginatedData) {
+			setModifiedLedgerData(paginatedData?.account_logs , size, paginatedData?.previous_balance || 0 );
+		  setTotalCdAmount(paginatedData.total_credit_amount|| 0);
+		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
+		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
+		  setShow(allData?.account_logs?.length > 0 ? false : true);
+
+		  setPage(paginatedData?.page || 1);
+		  setSize(paginatedData?.size || 25);
+		  setTotalPages(paginatedData.total_pages || 0);
+		  setTotalElements(paginatedData.total_elements || 0);
+		  setPagination(true);
+		  setInSiglePageMode(true);
+		  setInShowAllMode(false);
+	
+		}
+	  }, [inShowAllMode, allData, paginatedData, size, page]);
+
+
+
+
+
+	  const handleGetLedgers = useCallback(async (newPage) => {
 		try {
-			const formValues = getValues();
-
-			const response = await refetchAll({ ...formValues }); // Manually trigger the query
-
-			if (response?.data) {
-				unstable_batchedUpdates(() => {
-					if (callBack) {
-						callBack(response.data);
-					}
-                    const allData = (response.data.account_logs || [], size, response.data?.previous_balance || 0);
-					setModifiedLedgerData(allData);
-					setTotalAllPageBalance(allData?.all_page_total_amount || 0.0);
-					setTotalRecords(allData?.total_elements || 0);
-					setPagination(false);
-					setPreviousBalance(allData?.previous_balance || 0);
-					setShow(allData?.account_logs?.length > 0 ? false : true);
-					setTotalCdAmount(allData?.total_credit_amount || 0);
-					setTotalDbAmount(allData?.total_debit_amount || 0);
-					setLedgerName(allData?.ledger_name);
-					const totalDbAmnt = getTotalAmount(allData?.account_logs || [], 'debit_amount');
-					setTotalBAlance(allData?.total_amount?.toFixed(2) || 0.0);
-					setInSiglePageMode(false);
-					setDateFrom(allData?.date_after);
-					setDateTo(allData?.date_before);
-					setInShowAllMode(true);
-					//get pagination data
-					const { totalPages, totalElements } = getPaginationData(allData?.account_logs, size, page);
-					setPage(page || 1);
-					setSize(size || 25);
-					setTotalPages(totalPages);
-					setTotalElements(totalElements);
-				});
-
-				if (callBackAfterStateUpdated) {
-					callBackAfterStateUpdated(response.data);
-				}
-			}
+		  const page = newPage || 1;
+		  setPage(page);
+		  await refetch();
 		} catch (error) {
-			console.error('Error fetching all ledgers:', error);
+		  console.error('Error fetching agents:', error);
 		}
-	};
+	  }, [refetch]);
+	
+	  const handleGetAllLedgers = useCallback(async () => {
+		try {
+		  await refetchAll();
+		} catch (error) {
+		  console.error('Error fetching all foreignLedgers:', error);
+		}
+	  }, [refetchAll]);
+
+
 
 
 	const filteredData = {
@@ -292,20 +269,17 @@ function LedgerReportsTable(props) {
 						data={{
 							...ledger,
 							data: [
-								...ledger.data,
+								...ledger?.data,
 								{
-									credit_amount: totalCdAmount + ledger.openingBlnc,
+									credit_amount: totalCdAmount ,
 									debit_amount: totalDbAmount,
 									details: 'Total Balance',
-									balance:
-										totalCdAmount + ledger.openingBlnc - totalDbAmount > 0
-											? `${totalCdAmount + ledger.openingBlnc - totalDbAmount} Cr`
-											: `${Math.abs(totalCdAmount + ledger.openingBlnc - totalDbAmount)} Dr`,
+									balance:totalBAlance,
 									getterMethod: () => 'Total Amount',
 									hideSerialNo: true,
 									rowStyle: {
 										fontWeight: 600,
-										color: totalCdAmount + ledger.openingBlnc - totalDbAmount > 0 ? 'green' : 'red',
+										color: totalCdAmount  > 0 ? 'green' : 'red',
 									},
 								},
 							],
@@ -322,9 +296,11 @@ function LedgerReportsTable(props) {
 						addInHeader={{
 							...ledger,
 							addInHeader:[
-								ledger.openingBlnc
+								ledger
 							]
 						}}
+						inSiglePageMode={inSiglePageMode}
+
 					/>
 					
 					))}

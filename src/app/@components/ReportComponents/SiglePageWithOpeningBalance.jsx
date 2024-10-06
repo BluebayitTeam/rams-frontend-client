@@ -22,7 +22,7 @@ function SiglePageWithOpeningBalance({
 	ledger,
 	accountType,
 	page,
-	inSinglePageMode,
+	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey
 }) {
@@ -55,7 +55,7 @@ function SiglePageWithOpeningBalance({
 		<div
 			className={`${classes.pageContainer} printPageContainer `}
 			onMouseOver={() => {
-				inSinglePageMode || setPage(data.page);
+				inSiglePageMode || setPage(data.page);
 			}}
 		>
 			<div>
@@ -203,8 +203,8 @@ function SiglePageWithOpeningBalance({
 														: ''
 													: column.type === 'amount' // Check for 'amount' type
 													? dataArr?.[column.name]
-														? parseFloat(dataArr[column.name]).toFixed(2) // Format as a decimal with 2 decimal places
-														: ''
+														? parseFloat(dataArr[column.name]).toFixed(2) || .0 // Format as a decimal with 2 decimal places
+														: '0.00'
 													: column.name
 													? dataArr?.[column.name]
 													: column?.isSerialNo
@@ -234,9 +234,9 @@ function SiglePageWithOpeningBalance({
 							<h5>&nbsp;</h5>
 						</td>
 						<td>
-							{!inSinglePageMode && (
+							{!inSiglePageMode&& (
 								<h6 style={{ marginBottom: '10px', textAlign: 'right', marginRight: '20px' }}>
-									Page : {inSinglePageMode ? page : data?.page}
+									Page : {inSiglePageMode? page : data?.page}
 								</h6>
 							)}
 						</td>
