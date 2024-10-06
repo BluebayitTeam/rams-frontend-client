@@ -127,8 +127,8 @@ function PassengerAccountSummaryReportsTable(props) {
 	  useEffect(() => {
 		if (inShowAllMode && allData) {
 		  setModifiedPassengerAccountSummaryData(allData.account_logs || []);
-		  setTotalCdAmount(allData.total_credit_amount );
-		  setTotalDbAmount(allData.total_debit_amount );
+		  setTotalCdAmount(allData.total_credit );
+		  setTotalDbAmount(allData.total_debit );
 		  setTotalBAlance(allData.total_balance );
 		  setTotalOfficeAmount('');
 
@@ -147,8 +147,8 @@ function PassengerAccountSummaryReportsTable(props) {
 		  setTotalElements(totalElements);
 		} else if (!inShowAllMode && paginatedData) {
 		  setModifiedPassengerAccountSummaryData(paginatedData.account_logs || []);
-		  setTotalCdAmount(paginatedData.total_credit_amount );
-		  setTotalDbAmount(paginatedData.total_debit_amount );
+		  setTotalCdAmount(paginatedData.total_credit );
+		  setTotalDbAmount(paginatedData.total_debit );
 		  setTotalBAlance(paginatedData.total_balance ); 
 		  setTotalOfficeAmount('');
           setPage(paginatedData?.page || 1);

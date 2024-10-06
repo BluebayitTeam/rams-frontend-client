@@ -131,7 +131,9 @@ function LedgerFilterMenu({ inShowAllMode, handleGetLedgers, handleGetAllLedgers
 				/>
 
 			
-				<Keyword
+				
+
+                   <Keyword
 					{...commonKewordProps}
 					type="select"
 					name="account_type"
