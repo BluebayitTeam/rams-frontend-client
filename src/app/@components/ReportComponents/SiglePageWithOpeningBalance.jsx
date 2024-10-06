@@ -55,7 +55,7 @@ function SiglePageWithOpeningBalance({
 		<div
 			className={`${classes.pageContainer} printPageContainer `}
 			onMouseOver={() => {
-				inSiglePageMode || setPage(data.page);
+				inSiglePageMode 
 			}}
 		>
 			<div>
