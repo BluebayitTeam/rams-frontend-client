@@ -82,7 +82,7 @@ function LedgerReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [pagination, setPagination] = useState(false);
-	console.log('pagination111',totalElements)
+	console.log('pagination111',pagination)
 	const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
@@ -106,6 +106,8 @@ console.log('totalBAlance',totalBAlance)
         date_before: watch('date_before') || '',
 		sub_ledger: watch('sub_ledger') || '',
         account_type: watch('account_type') || '',
+		page,
+		size,
      
       },  { skip: inShowAllMode });
 
@@ -144,7 +146,6 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalCdAmount(allData.total_credit_amount ||0 );
 		  setTotalDbAmount(allData.total_debit_amount ||0);
 		  setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
-		  setShow(allData?.account_logs?.length > 0 ? false : true);
 
 		  setInSiglePageMode(false);
 		  setInShowAllMode(true);
@@ -164,7 +165,6 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalCdAmount(paginatedData.total_credit_amount|| 0);
 		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
 		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
-		  setShow(allData?.account_logs?.length > 0 ? false : true);
 
 		  setPage(paginatedData?.page || 1);
 		  setSize(paginatedData?.size || 25);
