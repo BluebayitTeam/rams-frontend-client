@@ -35,7 +35,7 @@ function SiglePageWithOpeningBalance({
 	const FilteredCriteria = filteredValues.join(', ');
 
 
-    
+    console.log('memberName',addInHeader)
 	const [generalData, setGeneralData] = useState({});
 	// get general setting data
 	useEffect(() => {
