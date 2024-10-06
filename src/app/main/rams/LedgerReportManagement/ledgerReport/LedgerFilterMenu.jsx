@@ -1,13 +1,12 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
-import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
@@ -28,10 +27,7 @@ function LedgerFilterMenu({ inShowAllMode, handleGetLedgers, handleGetAllLedgers
 	const [_reRender, setReRender] = useState(0);
 	console.log('Passenger Values:', getValues());
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const agentCodeEl = useRef(null);
+	
 
 	const commonFieldProps = {
 		setReRender,
@@ -90,14 +86,7 @@ function LedgerFilterMenu({ inShowAllMode, handleGetLedgers, handleGetAllLedgers
 					width="45px"
 				/>
 
-				{/* ledger code */}
-				<ReportTextField
-					{...commonFieldProps}
-					name="agent_code"
-					domEl={agentCodeEl}
-					icon="qr_code_scanner_sharp"
-					width="77px"
-				/>
+				
                     {/* lpassengerTypes */}
                   <ReportSelect
 					{...commonFieldProps}
@@ -141,17 +130,8 @@ function LedgerFilterMenu({ inShowAllMode, handleGetLedgers, handleGetAllLedgers
 					icon="import_contacts"
 				/>
 
+			
 				<Keyword
-					{...commonKewordProps}
-					type="text"
-					name="agent_code"
-					domEl={agentCodeEl}
-					icon="qr_code_scanner_sharp"
-				/>
-
-				
-
-                   <Keyword
 					{...commonKewordProps}
 					type="select"
 					name="account_type"
