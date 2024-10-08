@@ -10,6 +10,7 @@ import SiglePageWithOpeningBalance from 'src/app/@components/ReportComponents/Si
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+import { GET_SITESETTINGS } from 'src/app/constant/constants';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import { selectFilteredLedgerReports, useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
@@ -124,6 +125,28 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 	const totalData = useSelector(selectFilteredLedgerReports(paginatedData));
 
 
+
+	//get general setting data
+	useEffect(() => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+
+		if (sessionStorage.getItem('sundryReportLedgerKey')) {
+			if (inShowAllMode === true) handleGetAllLedgers();
+			else handleGetLedgers();
+		}
+
+		fetch(`${GET_SITESETTINGS}`, authTOKEN)
+			.then(response => response.json())
+			.then(data => setGeneralData(data.general_settings[0] || {}))
+			.catch(() => setGeneralData({}));
+	}, []);
+
+
 	useEffect(() => {
 		setModifiedLedgerData(totalData?.account_logs);
 	}, [totalData]);
@@ -143,18 +166,19 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 	useEffect(() => {
 		if (inShowAllMode && allData) {
 			setModifiedLedgerData(allData?.account_logs , size, allData?.previous_balance || 0);
-		  setTotalCdAmount(allData.total_credit_amount ||0 );
-		  setTotalDbAmount(allData.total_debit_amount ||0);
-		  setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
-		  setPreviousBalance(allData?.previous_balance || 0);
-		  setInSiglePageMode(false);
-		  setInShowAllMode(true);
-		  setPagination(false)
-		  const { totalPages, totalElements } = getPaginationData(
+		    setTotalCdAmount(allData.total_credit_amount ||0 );
+		    setTotalDbAmount(allData.total_debit_amount ||0);
+		    setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
+		    setTotalRecords(allData?.total_elements || 0);
+            setPreviousBalance(allData?.previous_balance || 0);
+		    setInSiglePageMode(false);
+		    setInShowAllMode(true);
+		    setPagination(false)
+		    const { totalPages, totalElements } = getPaginationData(
 			allData.account_logs,
 			size,
 			page
-		  );
+		   );
 	
 		  setPage(page || 1);
 		  setSize(size || 25);
@@ -166,6 +190,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
 		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
 		  setPreviousBalance(paginatedData?.previous_balance || 0);
+		  setTotalRecords(paginatedData?.total_elements || 0);
 
 		  setPage(paginatedData?.page || 1);
 		  setSize(paginatedData?.size || 25);
