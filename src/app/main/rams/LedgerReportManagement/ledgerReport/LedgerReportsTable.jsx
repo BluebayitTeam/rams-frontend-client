@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
@@ -10,7 +11,7 @@ import SiglePageWithOpeningBalance from 'src/app/@components/ReportComponents/Si
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
-import { GET_SITESETTINGS } from 'src/app/constant/constants';
+import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import { selectFilteredLedgerReports, useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
@@ -74,7 +75,6 @@ function LedgerReportsTable(props) {
 
 	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
 
-	console.log('modifiedLedgerData', modifiedLedgerData);
 
 	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -92,9 +92,13 @@ function LedgerReportsTable(props) {
 	const [totalRecords, setTotalRecords] = useState(0);
 	const [previousBalance, setPreviousBalance] = useState(0);
 	const [ledgerName, setLedgerName] = useState('');
+	const [subLedgerName, setSubLedgerName] = useState('');
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
 	const [show, setShow] = useState(false);
+	const [generalData, setGeneralData] = useState({});
+
+	console.log('modifiedLedgerData', ledgerName);
 
 console.log('previousBalance',previousBalance)
 
@@ -172,6 +176,12 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		    setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
 		    setTotalRecords(allData?.total_elements || 0);
             setPreviousBalance(allData?.previous_balance || 0);
+			setShow(allData?.account_logs?.length > 0 ? false : true);
+			setTotalRecords(allData?.total_elements || 0);
+			setDateFrom(allData?.date_after);
+			setLedgerName(allData?.ledger_name);
+			setDateTo(allData?.date_before);
+			setSubLedgerName(allData?.sub_ledger);
 		    setInSiglePageMode(false);
 		    setInShowAllMode(true);
 		    setPagination(false)
@@ -186,14 +196,21 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalPages(totalPages);
 		  setTotalElements(totalElements);
 		} else if (!inShowAllMode && paginatedData) {
-			setModifiedLedgerData(paginatedData?.account_logs , size, paginatedData?.previous_balance || 0 );
+		  setModifiedLedgerData(paginatedData?.account_logs , size, paginatedData?.previous_balance || 0 );
 		  setTotalCdAmount(paginatedData.total_credit_amount|| 0);
 		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
 		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
 		  setPreviousBalance(paginatedData?.previous_balance || 0);
 		  setTotalRecords(paginatedData?.total_elements || 0);
+		  setShow(paginatedData?.account_logs?.length > 0 ? false : true);
+		  setTotalRecords(paginatedData?.total_elements || 0);
+		  setDateFrom(paginatedData?.date_after);
+		  setLedgerName(paginatedData?.ledger_name);
+		  setSubLedgerName(allData?.sub_ledger);
 
-		  setPage(paginatedData?.page || 1);
+		  setDateTo(paginatedData?.date_before);
+
+          setPage(paginatedData?.page || 1);
 		  setSize(paginatedData?.size || 25);
 		  setTotalPages(paginatedData.total_pages || 0);
 		  setTotalElements(paginatedData.total_elements || 0);
@@ -231,11 +248,13 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 	const filteredData = {
 		Account: getValues()?.account_typeName || null,
-		Ledger: getValues()?.sub_ledgerName || null,
+		Ledger: getValues()?.ledgerName || null,
 		Date_To: getValues()?.date_before || null,
 		Date_From: getValues()?.date_after || null,
 		Sub_Ledger: getValues()?.sub_ledgerName || null
 	};
+
+	console.log('filteredData', filteredData);
 
 	return (
 		<div className={classes.headContainer}>
@@ -288,6 +307,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
 						ledgerName={ledgerName}
+						
 						dateFromDateTo={
 							dateFrom && dateTo
 								? `Date : ${moment(dateFrom).format('DD-MM-YYYY')} to ${moment(dateTo).format('DD-MM-YYYY')}`
@@ -367,7 +387,10 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 								</h2>
 							</div>
 							<div className={classes.pageHead}>
-								<p className="title  pl-0 md:-pl-20">Ledger: {ledgerName}</p>
+								<p className="title  pl-0 md:-pl-20">Ledger: <b>{ledgerName}</b></p> <br />
+							</div>{' '}
+							<div className={classes.pageHead}>
+								<p className="title  pl-0 md:-pl-20">Sub Ledger: <b>{subLedgerName}</b></p> <br />
 							</div>{' '}
 							<div className={classes.pageHead}>
 								<p className="title  pl-0 md:-pl-20">

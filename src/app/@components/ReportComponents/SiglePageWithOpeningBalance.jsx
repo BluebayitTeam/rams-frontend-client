@@ -20,6 +20,7 @@ function SiglePageWithOpeningBalance({
 	serialNumber,
 	setPage,
 	ledger,
+	
 	accountType,
 	page,
 	inSiglePageMode,
@@ -27,7 +28,7 @@ function SiglePageWithOpeningBalance({
 	setSortBySubKey
 }) {
 	let pageBasedSerialNo = serialNumber;
-	console.log(`filteredData`, filteredData);
+	console.log('filteredData', filteredData);
 	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
 	const filteredValues = filteredKeys.map(key => {
 		return `${key.replace(/_/g, ' ')}: ${filteredData[key]}`;
@@ -115,7 +116,7 @@ function SiglePageWithOpeningBalance({
 				<div className={classes.pageHead}>
 					<p className="title  pl-0 md:-pl-20">{dateFromDateTo}</p>
 				</div>
-				{addInHeader != 0 && (
+	{addInHeader != 0 && (
 	<div style={{ textAlign: 'right', marginRight: '20px' }}>
 		{typeof addInHeader === 'number' ? (
 			addInHeader > 0 ? (
