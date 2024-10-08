@@ -7,38 +7,25 @@ import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 
 function SiglePageWithOpeningBalance({
 	classes,
-	
 	addInHeader,
 	reportTitle = 'Report',
-	dateFromDateTo = 'Date From: Date To:',
-	memberName,
-	filteredData,
-	ledgerName,
-	tableColumns = [],
+    tableColumns = [],
 	dispatchTableColumns,
 	data,
 	serialNumber,
-	setPage,
-	ledger,
-	
-	accountType,
 	page,
 	inSiglePageMode,
 	setSortBy,
-	setSortBySubKey
+	setSortBySubKey,
+	FilteredCriteria
 }) {
 	let pageBasedSerialNo = serialNumber;
-	console.log('filteredData', filteredData);
-	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
-	const filteredValues = filteredKeys.map(key => {
-		return `${key.replace(/_/g, ' ')}: ${filteredData[key]}`;
-	});
-	const FilteredCriteria = filteredValues.join(', ');
 
+	
 
-    console.log('memberName',addInHeader)
 	const [generalData, setGeneralData] = useState({});
-	// get general setting data
+	
+	// Get general setting data
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -92,42 +79,23 @@ function SiglePageWithOpeningBalance({
 						<u>{reportTitle}</u>
 					</h2>
 				</div>
-				{memberName && (
-					<div className={classes.pageHead}>
-						<h4 className="title  pl-0 md:-pl-20">{memberName}</h4>
-					</div>
-				)}
-				{ledgerName && (
-					<div className={classes.pageHead}>
-						<p className="title  pl-0 md:-pl-20">Ledger: {ledgerName}</p>
-					</div>
-				)}
-
+				
+				{/* Render FilteredCriteria with dangerouslySetInnerHTML */}
 				<div className={classes.pageHead}>
-					<p className="title  pl-0 md:-pl-20">{FilteredCriteria}</p>
+					<p className="title  pl-0 md:-pl-20" dangerouslySetInnerHTML={{ __html: FilteredCriteria }} />
 				</div>
 
-				{accountType && (
-					<div className={classes.pageHead}>
-						<p className="title  pl-0 md:-pl-20">Account Type: {accountType}</p>
+				{addInHeader !== 0 && (
+					<div style={{ textAlign: 'right', marginRight: '20px' }}>
+						{typeof addInHeader === 'number' ? (
+							addInHeader > 0 ? (
+								<h3 style={{ color: 'green' }}>Opening Balance: {addInHeader.toFixed(2)} Cr</h3>
+							) : (
+								<h3 style={{ color: 'red' }}>Opening Balance: {Math.abs(addInHeader).toFixed(2)} Dr</h3>
+							)
+						) : null}
 					</div>
 				)}
-
-				<div className={classes.pageHead}>
-					<p className="title  pl-0 md:-pl-20">{dateFromDateTo}</p>
-				</div>
-	{addInHeader != 0 && (
-	<div style={{ textAlign: 'right', marginRight: '20px' }}>
-		{typeof addInHeader === 'number' ? (
-			addInHeader > 0 ? (
-				<h3 style={{ color: 'green' }}>Opening Balance: {addInHeader.toFixed(2)} Cr</h3>
-			) : (
-				<h3 style={{ color: 'red' }}>Opening Balance: {Math.abs(addInHeader).toFixed(2)} Dr</h3>
-			)
-		) : null}
-	</div>
-)}
-
 
 				<Table aria-label="simple table" className={`${classes.table} w-fit `} border="1">
 					<TableHead style={{ backgroundColor: '#D7DBDD' }}>
@@ -136,7 +104,6 @@ function SiglePageWithOpeningBalance({
 								return column.show ? (
 									<TableCell
 										key={column.id}
-										// align="left"
 										className="tableCellHead"
 										onDrop={e =>
 											dispatchTableColumns({
@@ -202,9 +169,9 @@ function SiglePageWithOpeningBalance({
 													? dataArr?.[column.name]
 														? moment(new Date(dataArr?.[column.name])).format('DD-MM-YYYY')
 														: ''
-													: column.type === 'amount' // Check for 'amount' type
+													: column.type === 'amount' 
 													? dataArr?.[column.name]
-														? parseFloat(dataArr[column.name]).toFixed(2) || .0 // Format as a decimal with 2 decimal places
+														? parseFloat(dataArr[column.name]).toFixed(2) || .0 
 														: '0.00'
 													: column.name
 													? dataArr?.[column.name]
@@ -223,27 +190,27 @@ function SiglePageWithOpeningBalance({
 						))}
 					</TableBody>
 				</Table>
-			</div>
 
-			<table className={classes.pageFooterContainer}>
-				<tbody>
-					<tr>
-						<td>
-							<h6 style={{ textAlign: 'left' }}>Developed by RAMS(Bluebay IT Limited)</h6>
-						</td>
-						<td>
-							<h5>&nbsp;</h5>
-						</td>
-						<td>
-							{!inSiglePageMode&& (
-								<h6 style={{ marginBottom: '10px', textAlign: 'right', marginRight: '20px' }}>
-									Page : {inSiglePageMode? page : data?.page}
-								</h6>
-							)}
-						</td>
-					</tr>
-				</tbody>
-			</table>
+				<table className={classes.pageFooterContainer}>
+					<tbody>
+						<tr>
+							<td>
+								<h6 style={{ textAlign: 'left' }}>Developed by RAMS(Bluebay IT Limited)</h6>
+							</td>
+							<td>
+								<h5>&nbsp;</h5>
+							</td>
+							<td>
+								{!inSiglePageMode && (
+									<h6 style={{ marginBottom: '10px', textAlign: 'right', marginRight: '20px' }}>
+										Page : {inSiglePageMode ? page : data?.page}
+									</h6>
+								)}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

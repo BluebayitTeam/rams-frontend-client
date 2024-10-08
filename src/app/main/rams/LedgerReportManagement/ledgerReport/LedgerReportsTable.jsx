@@ -255,6 +255,16 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 	console.log('filteredData', filteredData);
 
+	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
+	console.log('firstKey', filteredKeys);
+
+	const filteredValues = filteredKeys.map(key => {
+		return `<b>${key.replace(/_/g, ' ')}</b>: ${filteredData[key]}`;
+	});
+	const FilteredCriteria = filteredValues.join(', ');
+
+	
+
 	return (
 		<div className={classes.headContainer}>
 			{/* Filter */}
@@ -346,6 +356,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 							]
 						}}
 						inSiglePageMode={inSiglePageMode}
+						FilteredCriteria={FilteredCriteria}
 
 					/>
 					
@@ -381,21 +392,8 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 								{` ${generalData?.email || ''}`}
 							</div>
 							<div className={classes.pageHead}>
-								<h2 className="title  pl-0 md:-pl-20">
-									<u>Ledger Report</u>
-								</h2>
-							</div>
-							<div className={classes.pageHead}>
-								<p className="title  pl-0 md:-pl-20">Ledger: <b>{ledgerName}</b></p> <br />
-							</div>{' '}
-							<div className={classes.pageHead}>
-								<p className="title  pl-0 md:-pl-20">Sub Ledger: <b>{subLedgerName}</b></p> <br />
-							</div>{' '}
-							<div className={classes.pageHead}>
-								<p className="title  pl-0 md:-pl-20">
-									Date From: {dateFrom} Date To :{dateTo}
-								</p>
-							</div>
+					<p className="title  pl-0 md:-pl-20" dangerouslySetInnerHTML={{ __html: FilteredCriteria }} />
+				</div>
 							<div style={{ textAlign: 'center' }}>
 								{previousBalance > 0 ? (
 									<h3 style={{ color: 'green' }}>
