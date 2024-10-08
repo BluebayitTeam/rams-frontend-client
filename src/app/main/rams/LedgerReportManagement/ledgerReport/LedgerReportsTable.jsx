@@ -116,7 +116,10 @@ console.log('previousBalance',previousBalance)
 		page,
 		size,
      
-      },  { skip: inShowAllMode });
+      },  { skip: inShowAllMode })
+	  
+
+	  console.log('allData420', paginatedData)
 
 
 const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
@@ -128,8 +131,9 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
      
       },  { skip: !inShowAllMode });
 
-	const totalData = useSelector(selectFilteredLedgerReports(paginatedData));
 
+	const totalData = useSelector(selectFilteredLedgerReports(paginatedData));
+console.log('totalData',totalData)
 
 
 	//get general setting data
@@ -171,7 +175,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 	useEffect(() => {
 		if (inShowAllMode && allData) {
-			setModifiedLedgerData(allData?.account_logs , size, allData?.previous_balance || 0);
+			setModifiedLedgerData(allData?.account_logs || []);
 		    setTotalCdAmount(allData.total_credit_amount ||0 );
 		    setTotalDbAmount(allData.total_debit_amount ||0);
 		    setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
@@ -197,7 +201,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalPages(totalPages);
 		  setTotalElements(totalElements);
 		} else if (!inShowAllMode && paginatedData) {
-		  setModifiedLedgerData(paginatedData?.account_logs , size, paginatedData?.previous_balance || 0 );
+		  setModifiedLedgerData(paginatedData?.account_logs || []);
 		  setTotalCdAmount(paginatedData.total_credit_amount|| 0);
 		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
 		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
@@ -350,12 +354,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 						setPage={setPage}
 						filteredData={filteredData}
 						addInHeader={previousBalance}
-						// addInHeader={{
-						// 	...ledger,
-						// 	addInHeader:[
-						// 		ledger
-						// 	]
-						// }}
+						
 						inSiglePageMode={inSiglePageMode}
 						FilteredCriteria={FilteredCriteria}
 						
