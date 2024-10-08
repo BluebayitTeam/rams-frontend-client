@@ -26,12 +26,13 @@ const schema = z.object({});
 const initialTableColumnsState = [
 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true, style: { justifyContent: 'center' } },
 	{ id: 2, label: 'Log Date', name: 'log_date', show: true, type: 'date', style: { justifyContent: 'center' } },
-	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true, style: { justifyContent: 'center' } },
-	{ id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
-	{ id: 5, label: 'Details', name: 'details', show: true },
+	{ id: 3, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+	{ id: 4, label: 'Invoice No', name: 'reference_no', show: true, style: { justifyContent: 'center' } },
+	{ id: 5, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
+	{ id: 6, label: 'Details', name: 'details', show: true },
 
 	{
-		id: 6,
+		id: 7,
 		label: 'Credit',
 		name: 'credit_amount',
 		show: true,
@@ -40,7 +41,7 @@ const initialTableColumnsState = [
 		type: 'amount'
 	},
 	{
-		id: 7,
+		id: 8,
 		label: 'Debit',
 		name: 'debit_amount',
 		show: true,
@@ -50,7 +51,7 @@ const initialTableColumnsState = [
 	},
 
 	{
-		id: 8,
+		id: 9,
 		label: 'Balance',
 		name: 'balance',
 		show: true,
@@ -269,7 +270,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 				filename="LedgerReport"
 			/>
 
-			<table
+			{totalRecords > 0 ?( <table
 				id="table-to-xls"
 				className="w-full"
 				style={{ minHeight: '270px' }}
@@ -331,7 +332,61 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 					
 					))}
 				</tbody>
-			</table>
+			</table>):(
+				<div>
+					{show && (
+						<div>
+							<div className={classes.pageHead}>
+								<div className="logoContainer pr-0 md:-pr-20">
+									<img
+										style={{
+											visibility: generalData.logo ? 'visible' : 'hidden',
+											textAlign: 'center'
+										}}
+										src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
+										alt="Not found"
+									/>
+								</div>
+							</div>
+							<div
+								style={{
+									textAlign: 'center',
+									borderBottom: '1px solid gray',
+									fontSize: '10px'
+								}}
+							>
+								<LocationOn fontSize="small" />
+								{` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
+								<PhoneEnabled fontSize="small" />
+								{` ${generalData?.phone || ''}`}&nbsp; &nbsp; <Email fontSize="small" />
+								{` ${generalData?.email || ''}`}
+							</div>
+							<div className={classes.pageHead}>
+								<h2 className="title  pl-0 md:-pl-20">
+									<u>Ledger Report</u>
+								</h2>
+							</div>
+							<div className={classes.pageHead}>
+								<p className="title  pl-0 md:-pl-20">Ledger: {ledgerName}</p>
+							</div>{' '}
+							<div className={classes.pageHead}>
+								<p className="title  pl-0 md:-pl-20">
+									Date From: {dateFrom} Date To :{dateTo}
+								</p>
+							</div>
+							<div style={{ textAlign: 'center' }}>
+								{previousBalance > 0 ? (
+									<h3 style={{ color: 'green' }}>
+										Opening Balance: {previousBalance?.toFixed(2)} Cr
+									</h3>
+								) : (
+									<h3 style={{ color: 'red' }}>Opening Balance: {previousBalance?.toFixed(2)} Dr</h3>
+								)}
+							</div>
+						</div>
+					)}
+				</div>
+			)}
 		</div>
 	);
 }
