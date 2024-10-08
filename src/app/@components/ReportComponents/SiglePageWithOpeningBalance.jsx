@@ -17,7 +17,8 @@ function SiglePageWithOpeningBalance({
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-	FilteredCriteria
+	FilteredCriteria,
+	previousBalance
 }) {
 	let pageBasedSerialNo = serialNumber;
 
@@ -91,11 +92,13 @@ function SiglePageWithOpeningBalance({
 							addInHeader > 0 ? (
 								<h3 style={{ color: 'green' }}>Opening Balance: {addInHeader.toFixed(2)} Cr</h3>
 							) : (
-								<h3 style={{ color: 'red' }}>Opening Balance: {Math.abs(addInHeader).toFixed(2)} Dr</h3>
+								<h3 style={{ color: 'red' }}>Opening Balance: {addInHeader.toFixed(2)}  Dr</h3>
 							)
 						) : null}
 					</div>
 				)}
+
+				
 
 				<Table aria-label="simple table" className={`${classes.table} w-fit `} border="1">
 					<TableHead style={{ backgroundColor: '#D7DBDD' }}>

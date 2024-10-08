@@ -91,6 +91,7 @@ function LedgerReportsTable(props) {
 	const [totalAllPageBalance, setTotalAllPageBalance] = useState(0);
 	const [totalRecords, setTotalRecords] = useState(0);
 	const [previousBalance, setPreviousBalance] = useState(0);
+	console.log('previousBalance',previousBalance)
 	const [ledgerName, setLedgerName] = useState('');
 	const [subLedgerName, setSubLedgerName] = useState('');
 	const [dateFrom, setDateFrom] = useState();
@@ -315,8 +316,8 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 						reportTitle="Ledger Report"
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
-						ledgerName={ledgerName}
-						
+						// previousBalance={previousBalance}
+
 						dateFromDateTo={
 							dateFrom && dateTo
 								? `Date : ${moment(dateFrom).format('DD-MM-YYYY')} to ${moment(dateTo).format('DD-MM-YYYY')}`
@@ -348,15 +349,16 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 						}
 						setPage={setPage}
 						filteredData={filteredData}
-						// addInHeader={ledger.isFirsPage && ledger.openingBlnc}
-						addInHeader={{
-							...ledger,
-							addInHeader:[
-								ledger
-							]
-						}}
+						addInHeader={previousBalance}
+						// addInHeader={{
+						// 	...ledger,
+						// 	addInHeader:[
+						// 		ledger
+						// 	]
+						// }}
 						inSiglePageMode={inSiglePageMode}
 						FilteredCriteria={FilteredCriteria}
+						
 
 					/>
 					
@@ -377,6 +379,11 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 										alt="Not found"
 									/>
 								</div>
+							</div>
+							<div className={classes.pageHead}>
+								<h2 className="title  pl-0 md:-pl-20">
+									<u>Ledger Report</u>
+								</h2>
 							</div>
 							<div
 								style={{
