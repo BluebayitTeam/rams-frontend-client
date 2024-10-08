@@ -246,13 +246,20 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 
 
-	const filteredData = {
+	  const formatDate = (dateStr) => {
+		if (!dateStr) return null;
+		const date = new Date(dateStr);
+		const formattedDate = date.toLocaleDateString('en-GB'); // 'en-GB' gives DD-MM-YYYY format
+		return formattedDate;
+	  };
+	  
+	  const filteredData = {
 		Account: getValues()?.account_typeName || null,
 		Ledger: getValues()?.ledgerName || null,
-		Date_To: getValues()?.date_before || null,
-		Date_From: getValues()?.date_after || null,
+		Date_To: formatDate(getValues()?.date_before) || null, // Format the date
+		Date_From: formatDate(getValues()?.date_after) || null, // Format the date
 		Sub_Ledger: getValues()?.sub_ledgerName || null
-	};
+	  };
 
 	console.log('filteredData', filteredData);
 
