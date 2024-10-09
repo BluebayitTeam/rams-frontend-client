@@ -1065,7 +1065,7 @@ const navigationConfig = [
 				translate: 'Sundry Creditors Report',
 				display_order: 14,
 				type: 'item',
-				url: '/apps/report-management/creditor-reports',
+				url: '/apps/creditorReport/creditorReports',
 				exact: true
 			},
 			{
@@ -1074,7 +1074,7 @@ const navigationConfig = [
 				translate: 'Sundry Debtors Report',
 				display_order: 15,
 				type: 'item',
-				url: '/apps/report-management/debtor-reports',
+				url: 'apps/drebtorReport/drebtorReports',
 				exact: true
 			},
 			{
