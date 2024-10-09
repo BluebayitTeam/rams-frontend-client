@@ -47,6 +47,7 @@ import CurrentStatusAppConfig from '../rams/CurrentStatussManagement/CurrentStat
 import CvBankAppConfig from '../rams/CvBanksManagement/CvBankAppConfig';
 import CvFemaleAppConfig from '../rams/CvFemalesManagement/CvFemaleAppConfig';
 import CvMaleAppConfig from '../rams/CvMalesManagement/CvMaleAppConfig';
+import DrebtorReportAppConfig from '../rams/DebtorReportManagement/DrebtorReportAppConfig';
 import DemandAssignAppConfig from '../rams/DemandAssignsManagement/DemandAssignAppConfig';
 import DepartureAppConfig from '../rams/DeparturesManagement/DepartureAppConfig';
 import DistrictAppConfig from '../rams/DistrictsManagement/DistrictAppConfig';
@@ -189,6 +190,7 @@ const appsConfigs = [
   CallingEmbAttestationAppConfig,
   CvFemaleAppConfig,
   CvMaleAppConfig,
+  DrebtorReportAppConfig,
   DemandAssignAppConfig,
   TicketPostingAppConfig,
   AgentReportAppConfig,
