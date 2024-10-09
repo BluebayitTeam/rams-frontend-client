@@ -6,9 +6,9 @@ import {
 	CREATE_DEPARTMENT,
 	DELETE_DEPARTMENT,
 	DELETE_DEPARTMENT_MULTIPLE,
+	GET_DEBTOR_TOTAL_REPORT_DATA,
+	GET_DEBTOR_TOTAL_REPORT_DATA_WITHOUT_PG,
 	GET_DEPARTMENT_BY_ID,
-	RECEIPT_FILTER_BY,
-	RECEIPT_FILTER_WITHOUT_PG,
 	UPDATE_DEPARTMENT
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
@@ -22,14 +22,14 @@ const DrebtorReportApi = api
 		endpoints: (build) => ({
 			getDrebtorReports: build.query({
 				query: (filterData) => ({
-					url: RECEIPT_FILTER_BY,
+					url: GET_DEBTOR_TOTAL_REPORT_DATA,
 					params: filterData
 				}),
 				providesTags: ['drebtorReports']
 			}),
 			getDrebtorAllReports: build.query({
 				query: (filterData) => ({
-					url: RECEIPT_FILTER_WITHOUT_PG,
+					url: GET_DEBTOR_TOTAL_REPORT_DATA_WITHOUT_PG,
 					params: filterData
 				}),
 				providesTags: ['drebtorReports']
