@@ -208,9 +208,9 @@ const handleExelDownload = () => {
            data: [
              ...drebtor.data,
              {
-               balance: totalAmount.toFixed(2),
-               total_debit: totalDB.toFixed(2),
-               total_credit: totalCD.toFixed(2),
+               balance: totalAmount?.toFixed(2)|| '0.00',
+               total_debit: totalDB?.toFixed(2) || '0.00',
+               total_credit: totalCD?.toFixed(2) || '0.00',
                getterMethod: () => 'Total Amount',
                hideSerialNo: true,
                rowStyle: { fontWeight: 600 }, // Custom styling to highlight totals
