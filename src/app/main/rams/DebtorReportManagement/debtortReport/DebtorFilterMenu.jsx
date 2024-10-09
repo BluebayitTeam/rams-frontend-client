@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
-import { useEffect, useRef, useState } from 'react';
+import { getGroups, getLedgers } from 'app/store/dataSlice';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -20,15 +20,11 @@ function DebtorFilterMenu({ inShowAllMode, handleGetDebtors, handleGetAllDebtors
 	const { getValues } = methods;
 
 	const theme = useTheme();
-	const { ledgers, subLedgers } = useSelector((state) => state.data);
+	const { ledgers, groups } = useSelector((state) => state.data);
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
-	console.log('Passenger Values:', getValues());
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const debtorCodeEl = useRef(null);
+
 
 	const commonFieldProps = {
 		setReRender,
@@ -41,21 +37,15 @@ function DebtorFilterMenu({ inShowAllMode, handleGetDebtors, handleGetAllDebtors
 
 	useEffect(() => {
 		dispatch(getLedgers());
-		dispatch(getSubLedgers());
+    dispatch(getGroups());
+
 	}, []);
 
 
-	console.log('sadhbjkasbdkj', getValues());
+	
 	return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-
-       
-
-       
-
-       
-
         {/* ledger */}
         <ReportSelect
           {...commonFieldProps}
@@ -64,36 +54,31 @@ function DebtorFilterMenu({ inShowAllMode, handleGetDebtors, handleGetAllDebtors
           icon='import_contacts'
           width='40px'
         />
-
-
-        
-       
-       
-
-       
-        
-      </div>
+        <ReportSelect
+          {...commonFieldProps}
+          name='group'
+          options={groups}
+          icon='import_contacts'
+          width='40px'
+        />
+ </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-        
-     
-
-        
-
         <Keyword
           {...commonKewordProps}
           type='select'
           name='ledger'
           icon='import_contacts'
         />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='group'
+          icon='import_contacts'
+        />
         
-        
-        
-       
-
-        
-      </div>
+        </div>
     </div>
   );
 }

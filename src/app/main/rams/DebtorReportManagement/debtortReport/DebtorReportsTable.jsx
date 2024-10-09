@@ -11,10 +11,8 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import {
-  useGetDrebtorAllReportsQuery,
-  useGetDrebtorReportsQuery
-} from '../DrebtorReportsApi';
+
+import { useGetDrebtorAllReportsQuery, useGetDrebtorReportsQuery } from '../DrebtorReportsApi';
 import DrebtorFilterMenu from './DebtorFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,25 +23,14 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'drebtor_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-  { id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
-  {
-    id: 6,
-    label: 'Details',
-    getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
-    show: true
-  },
-  {
-    id: 7,
-    label: 'Amount',
-    name: 'credit_amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' }
-  }
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+
+	{ id: 2, label: 'Agent Name	', name: 'name', show: true },
+
+	{ id: 3, label: 'Group', name: 'head_group', subName: 'name', show: true },
+	{ id: 4, label: 'Debit', name: 'total_debit', show: true },
+	{ id: 4, label: 'Credit', name: 'total_credit', show: true },
+	{ id: 4, label: 'Balance', name: 'balance', show: true }
 ];
 
 function DrebtorReportsTable(props) {
@@ -77,11 +64,10 @@ function DrebtorReportsTable(props) {
 
   const { data: paginatedData, refetch: refetchAgentReports } = useGetDrebtorReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
+    
       ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
+      group: filterData.group || '',
+     
       page,
       size,
     },
@@ -90,11 +76,10 @@ function DrebtorReportsTable(props) {
 
   const { data: allData, refetch: refetchAllDrebtorReports } = useGetDrebtorAllReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
+      
       ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
+      group: filterData.group || '',
+    
     },
     { skip: !inShowAllMode }
   );
@@ -103,14 +88,14 @@ function DrebtorReportsTable(props) {
  
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedDrebtorData(allData.drebtor_vouchers || []);
+      setModifiedDrebtorData(allData.debtors || []);
       setTotalAmount(allData.total_amount );
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.drebtor_vouchers,
+        allData.debtors,
         size,
         page
       );
@@ -120,7 +105,7 @@ function DrebtorReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedDrebtorData(paginatedData.drebtor_vouchers || []);
+      setModifiedDrebtorData(paginatedData.debtors || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -133,12 +118,7 @@ function DrebtorReportsTable(props) {
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
-
-
-
-  
-
-  const handleExelDownload = () => {
+const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
 
