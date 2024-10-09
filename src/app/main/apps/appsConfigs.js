@@ -42,7 +42,6 @@ import CallingEmbAttestationAppConfig from '../rams/CallingEmbAttestationsManage
 import ComplainAppConfig from '../rams/ComplainsManagement/ComplainAppConfig';
 import ContraAppConfig from '../rams/ContrasManagement/ContraAppConfig';
 import CountryAppConfig from '../rams/CountryssManagement/CountryAppConfig';
-import CreditorReportAppConfig from '../rams/CreditorReportManagement/CreditorReportAppConfig';
 import CurrencyAppConfig from '../rams/CurrencysManagement/CurrencyAppConfig';
 import CurrentStatusAppConfig from '../rams/CurrentStatussManagement/CurrentStatusAppConfig';
 import CvBankAppConfig from '../rams/CvBanksManagement/CvBankAppConfig';
@@ -201,7 +200,7 @@ const appsConfigs = [
   VisaCancelListAppConfig,
   VisaReissueListAppConfig,
   CallingEntryAppConfig,
-  CreditorReportAppConfig,
+  // CreditorReportAppConfig,
   ColumnAppConfig,
   MedicalAppConfig,
   ManPowerAppConfig,

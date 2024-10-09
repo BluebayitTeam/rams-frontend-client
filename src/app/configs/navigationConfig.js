@@ -984,7 +984,7 @@ const navigationConfig = [
 				translate: 'Ledger Report',
 				display_order: 5,
 				type: 'item',
-				url: '/apps/report-management/ledger-reports',
+				url: '/apps/ledgerReport/ledgerReports',
 				exact: true
 			},
 			{
@@ -993,7 +993,7 @@ const navigationConfig = [
 				translate: 'Foreign Ledger Report',
 				display_order: 6,
 				type: 'item',
-				url: '/apps/report-management/foreignledger-reports',
+				url: '/apps/foreignLedgerReport/foreignLedgerReports',
 				exact: true
 			},
 			{
@@ -1002,7 +1002,7 @@ const navigationConfig = [
 				translate: 'Passenger Account Summary',
 				display_order: 7,
 				type: 'item',
-				url: '/apps/report-management/passengerSummary-reports',
+				url: '/apps/paymentSummaryReport/paymentSummaryReports',
 				exact: true
 			},
 			{

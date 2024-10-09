@@ -100,7 +100,7 @@ function CreditorReportsTable(props) {
  
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedCreditorData(allData.debtors || []);
+      setModifiedCreditorData(allData.creditors || []);
       setTotalAmount(allData.total_amount );
       setTotalCD(allData.total_credit_amount );
       setTotalDB(allData.total_debit_amount );
@@ -108,7 +108,7 @@ function CreditorReportsTable(props) {
       setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.debtors,
+        allData.creditors,
         size,
         page
       );
@@ -118,7 +118,7 @@ function CreditorReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedCreditorData(paginatedData.debtors || []);
+      setModifiedCreditorData(paginatedData.creditors || []);
       setTotalAmount(paginatedData?.total_amount);
       setTotalCD(paginatedData.total_credit_amount );
       setTotalDB(paginatedData.total_debit_amount );
