@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function DebtorFilterMenu({ inShowAllMode, handleGetDebtors, handleGetAllDebtors }) {
+function DebtorFilterMenu({ inShowAllMode, handleGetDrebtors, handleGetAllDrebtors }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -28,11 +28,11 @@ function DebtorFilterMenu({ inShowAllMode, handleGetDebtors, handleGetAllDebtors
 
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllDebtors() : handleGetDebtors())
+		onEnter: () => (inShowAllMode ? handleGetAllDrebtors() : handleGetDrebtors())
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllDebtors() : handleGetDebtors())
+		onClick: () => (inShowAllMode ? handleGetAllDrebtors() : handleGetDrebtors())
 	};
 
 	useEffect(() => {
@@ -48,12 +48,12 @@ function DebtorFilterMenu({ inShowAllMode, handleGetDebtors, handleGetAllDebtors
       <div className='allFieldContainer borderTop mt-4'>
         {/* ledger */}
         <ReportSelect
-          {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
-          width='40px'
-        />
+					{...commonFieldProps}
+					name="ledger"
+					options={ledgers}
+					icon="import_contacts"
+					width="40px"
+				/>
         <ReportSelect
           {...commonFieldProps}
           name='group'
@@ -65,12 +65,13 @@ function DebtorFilterMenu({ inShowAllMode, handleGetDebtors, handleGetAllDebtors
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='ledger'
-          icon='import_contacts'
-        />
+      <Keyword
+					{...commonKewordProps}
+					type="select"
+					name="ledger"
+					icon="import_contacts"
+				/>
+
         <Keyword
           {...commonKewordProps}
           type='select'
