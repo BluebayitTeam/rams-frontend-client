@@ -71,7 +71,7 @@ function LedgerReportsTable(props) {
 	});
 	const dispatch = useDispatch();
 
-	const {  getValues,watch } = methods;
+	const { control, getValues,watch } = methods;
 
 	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
 
@@ -84,17 +84,23 @@ function LedgerReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [pagination, setPagination] = useState(false);
+	console.log('pagination111',pagination)
 	const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
+	const [totalAllPageBalance, setTotalAllPageBalance] = useState(0);
 	const [totalRecords, setTotalRecords] = useState(0);
 	const [previousBalance, setPreviousBalance] = useState(0);
+	console.log('previousBalance',previousBalance)
+	const [ledgerName, setLedgerName] = useState('');
+	console.log('ledgerName',ledgerName)
+	const [subLedgerName, setSubLedgerName] = useState('');
+	const [accountType , setAccountType] = useState('');
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
 	const [show, setShow] = useState(false);
 	const [generalData, setGeneralData] = useState({});
 
-	
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
@@ -177,7 +183,10 @@ console.log('totalData',totalData)
 			setShow(allData?.account_logs?.length > 0 ? false : true);
 			setTotalRecords(allData?.total_elements || 0);
 			setDateFrom(allData?.date_after);
+			setLedgerName(allData?.ledger_name);
 			setDateTo(allData?.date_before);
+			setSubLedgerName(allData?.sub_ledger);
+			setAccountType(allData?.account_type);
 		    setInSiglePageMode(false);
 		    setInShowAllMode(true);
 		    setPagination(false)
@@ -197,10 +206,14 @@ console.log('totalData',totalData)
 		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
 		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
 		  setPreviousBalance(paginatedData?.previous_balance || 0);
+		  setAccountType(paginatedData?.account_type);
+
 		  setTotalRecords(paginatedData?.total_elements || 0);
 		  setShow(paginatedData?.account_logs?.length > 0 ? false : true);
 		  setTotalRecords(paginatedData?.total_elements || 0);
 		  setDateFrom(paginatedData?.date_after);
+		  setLedgerName(paginatedData?.ledger_name);
+		  setSubLedgerName(allData?.sub_ledger);
 
 		  setDateTo(paginatedData?.date_before);
 
@@ -247,15 +260,18 @@ console.log('totalData',totalData)
 	  
 	  
 
-	console.log('filteredData', filteredData);
+const ladgerData = getValues().ledger
 
-	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
+console.log('ladgerData', ladgerData)
+	
+const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
 	console.log('firstKey', filteredKeys);
 
 	const filteredValues = filteredKeys.map(key => {
 		return `<b>${key.replace(/_/g, ' ')}</b>: ${filteredData[key]}`;
 	});
 	const FilteredCriteria = filteredValues.join(', ');
+
 
 	
 
@@ -301,6 +317,7 @@ console.log('totalData',totalData)
 					ref={componentRef}
 					id="downloadPage"
 				>
+					{/* each single page (table) */}
 					{modifiedLedgerData.map((ledger, index) => (
 						<SiglePageWithOpeningBalance
 						key={index}
@@ -308,6 +325,7 @@ console.log('totalData',totalData)
 						reportTitle="Ledger Report"
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
+						
 
 						dateFromDateTo={
 							dateFrom && dateTo
@@ -339,12 +357,11 @@ console.log('totalData',totalData)
 								: ledger.page * ledger.size - ledger.size + 1
 						}
 						setPage={setPage}
-						filteredData={filteredData}
+						
 						addInHeader={previousBalance}
 						
 						inSiglePageMode={inSiglePageMode}
-						FilteredCriteria={FilteredCriteria}
-						
+						filteredData={filteredData}
 
 					/>
 					
@@ -352,7 +369,8 @@ console.log('totalData',totalData)
 				</tbody>
 			</table>):(
 				<div>
-					{show && (
+					
+					{show && ladgerData && (
 						<div>
 							<div className={classes.pageHead}>
 								<div className="logoContainer pr-0 md:-pr-20">
@@ -365,11 +383,6 @@ console.log('totalData',totalData)
 										alt="Not found"
 									/>
 								</div>
-							</div>
-							<div className={classes.pageHead}>
-								<h2 className="title  pl-0 md:-pl-20">
-									<u>Ledger Report</u>
-								</h2>
 							</div>
 							<div
 								style={{
@@ -385,8 +398,15 @@ console.log('totalData',totalData)
 								{` ${generalData?.email || ''}`}
 							</div>
 							<div className={classes.pageHead}>
+								<h2 className="title  pl-0 md:-pl-20">
+									<u>Ledger Report</u>
+								</h2>
+							</div>
+							<div className={classes.pageHead}>
 					<p className="title  pl-0 md:-pl-20" dangerouslySetInnerHTML={{ __html: FilteredCriteria }} />
 				</div>
+
+							
 							<div style={{ textAlign: 'center' }}>
 								{previousBalance > 0 ? (
 									<h3 style={{ color: 'green' }}>
@@ -398,6 +418,7 @@ console.log('totalData',totalData)
 							</div>
 						</div>
 					)}
+
 				</div>
 			)}
 		</div>

@@ -17,7 +17,8 @@ function SiglePageWithOpeningBalance({
 	inSiglePageMode,
 	setSortBy,
 	setSortBySubKey,
-	FilteredCriteria,
+	filteredData,
+	previousBalance
 }) {
 	let pageBasedSerialNo = serialNumber;
 
@@ -38,6 +39,15 @@ function SiglePageWithOpeningBalance({
 			.then((data) => setGeneralData(data.general_settings[0] || {}))
 			.catch(() => setGeneralData({}));
 	}, []);
+
+
+
+	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
+	
+	const filteredValues = filteredKeys.map(key => {
+		return `<b>${key.replace(/_/g, ' ')}</b>: ${filteredData[key]}`;
+	});
+	const FilteredCriteria = filteredValues.join(', ');
 
 	return (
 		<div
