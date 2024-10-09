@@ -18,7 +18,6 @@ function SiglePageWithOpeningBalance({
 	setSortBy,
 	setSortBySubKey,
 	FilteredCriteria,
-	previousBalance
 }) {
 	let pageBasedSerialNo = serialNumber;
 

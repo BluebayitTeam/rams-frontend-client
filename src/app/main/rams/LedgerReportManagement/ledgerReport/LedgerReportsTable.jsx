@@ -71,7 +71,7 @@ function LedgerReportsTable(props) {
 	});
 	const dispatch = useDispatch();
 
-	const { control, getValues,watch } = methods;
+	const {  getValues,watch } = methods;
 
 	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
 
@@ -84,24 +84,17 @@ function LedgerReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [pagination, setPagination] = useState(false);
-	console.log('pagination111',pagination)
 	const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
-	const [totalAllPageBalance, setTotalAllPageBalance] = useState(0);
 	const [totalRecords, setTotalRecords] = useState(0);
 	const [previousBalance, setPreviousBalance] = useState(0);
-	console.log('previousBalance',previousBalance)
-	const [ledgerName, setLedgerName] = useState('');
-	const [subLedgerName, setSubLedgerName] = useState('');
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
 	const [show, setShow] = useState(false);
 	const [generalData, setGeneralData] = useState({});
 
-	console.log('modifiedLedgerData', ledgerName);
-
-console.log('previousBalance',previousBalance)
+	
 
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
@@ -184,9 +177,7 @@ console.log('totalData',totalData)
 			setShow(allData?.account_logs?.length > 0 ? false : true);
 			setTotalRecords(allData?.total_elements || 0);
 			setDateFrom(allData?.date_after);
-			setLedgerName(allData?.ledger_name);
 			setDateTo(allData?.date_before);
-			setSubLedgerName(allData?.sub_ledger);
 		    setInSiglePageMode(false);
 		    setInShowAllMode(true);
 		    setPagination(false)
@@ -210,8 +201,6 @@ console.log('totalData',totalData)
 		  setShow(paginatedData?.account_logs?.length > 0 ? false : true);
 		  setTotalRecords(paginatedData?.total_elements || 0);
 		  setDateFrom(paginatedData?.date_after);
-		  setLedgerName(paginatedData?.ledger_name);
-		  setSubLedgerName(allData?.sub_ledger);
 
 		  setDateTo(paginatedData?.date_before);
 
@@ -312,7 +301,6 @@ console.log('totalData',totalData)
 					ref={componentRef}
 					id="downloadPage"
 				>
-					{/* each single page (table) */}
 					{modifiedLedgerData.map((ledger, index) => (
 						<SiglePageWithOpeningBalance
 						key={index}
@@ -320,7 +308,6 @@ console.log('totalData',totalData)
 						reportTitle="Ledger Report"
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
-						// previousBalance={previousBalance}
 
 						dateFromDateTo={
 							dateFrom && dateTo
