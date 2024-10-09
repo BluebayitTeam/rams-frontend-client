@@ -27,16 +27,16 @@ const initialTableColumnsState = [
 
 	{ id: 2, label: 'Agent Name	', name: 'name', show: true },
 
-	{ id: 3, label: 'Group', name: 'head_group', subName: 'name', show: true },
   {
-    id: 4,
-    label: 'Details',
-    getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
+    id: 3,
+    label: 'Group',
+    getterMethod: data => `${data.head_group?.name || ''}`,
     show: true
   },
-	{ id: 5, label: 'Debit', name: 'total_debit', show: true },
-	{ id: 6, label: 'Credit', name: 'total_credit', show: true },
-	{ id: 7, label: 'Balance', name: 'balance', show: true },
+
+	{ id: 4, label: 'Debit', name: 'total_debit', show: true,style: { justifyContent: 'flex-end', marginRight: '5px' }, },
+	{ id: 5, label: 'Credit', name: 'total_credit', show: true ,style: { justifyContent: 'flex-end', marginRight: '5px' },},
+	{ id: 6, label: 'Balance', name: 'balance', show: true,style: { justifyContent: 'flex-end', marginRight: '5px' }, },
  
 
 ];
@@ -208,9 +208,9 @@ const handleExelDownload = () => {
            data: [
              ...drebtor.data,
              {
-               balance: totalAmount,
-               total_debit: totalDB,
-               total_credit: totalCD,
+               balance: totalAmount.toFixed(2),
+               total_debit: totalDB.toFixed(2),
+               total_credit: totalCD.toFixed(2),
                getterMethod: () => 'Total Amount',
                hideSerialNo: true,
                rowStyle: { fontWeight: 600 }, // Custom styling to highlight totals
