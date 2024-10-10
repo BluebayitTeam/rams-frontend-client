@@ -175,6 +175,13 @@ const handleGetPayments = useCallback(async (newPage) => {
   }, [refetchAllPaymentReports]);
 
 
+  const filteredData = {
+		Account: getValues()?.account_typeName || null,
+		Ledger: getValues()?.ledgerName || null,
+		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
+		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
+		Sub_Ledger: getValues()?.sub_ledgerName || null
+	  };
 
   return (
     <div className={classes.headContainer}>
@@ -219,6 +226,7 @@ const handleGetPayments = useCallback(async (newPage) => {
               key={index}
               classes={classes}
               reportTitle='Payment Report'
+              filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               // data={payment}

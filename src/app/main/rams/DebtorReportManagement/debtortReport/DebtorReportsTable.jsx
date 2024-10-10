@@ -11,7 +11,7 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
-import SiglePageWithOpeningBalance from 'src/app/@components/ReportComponents/SiglePageWithOpeningBalance';
+import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import { useGetDrebtorAllReportsQuery, useGetDrebtorReportsQuery } from '../DrebtorReportsApi';
 import DebtorFilterMenu from './DebtorFilterMenu';
 
@@ -204,7 +204,7 @@ const handleExelDownload = () => {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedDrebtorData.map((drebtor, index) => (
-         <SiglePageWithOpeningBalance
+         <SinglePage
          key={index}
          classes={classes}
          reportTitle="Drebtor Report"

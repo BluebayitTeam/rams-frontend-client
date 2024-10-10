@@ -47,7 +47,7 @@ function ReceiptSummaryReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { watch } = methods;
+  const { watch,getValues } = methods;
 
   const [modifiedReceiptSummaryData, setModifiedReceiptSummaryData] = useReportData();
 
@@ -171,6 +171,16 @@ function ReceiptSummaryReportsTable(props) {
     }
   }, [refetchAllReceiptSummaryReports]);
 
+
+
+  const filteredData = {
+		Account: getValues()?.account_typeName || null,
+		Ledger: getValues()?.ledgerName || null,
+		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
+		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
+		Sub_Ledger: getValues()?.sub_ledgerName || null
+	  };
+
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
@@ -214,6 +224,7 @@ function ReceiptSummaryReportsTable(props) {
           key={index}
           classes={classes}
           reportTitle="ReceiptSummary Report"
+          filteredData={filteredData}
           tableColumns={tableColumns}
           dispatchTableColumns={dispatchTableColumns}
           data={receiptSummary}
