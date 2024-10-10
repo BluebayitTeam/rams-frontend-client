@@ -67,17 +67,12 @@ function LedgerReportsTable(props) {
 	const methods = useForm({
 		mode: 'onChange',
 		defaultValues: {},
-		resolver: zodResolver(schema) // Use zodResolver for form validation
+		resolver: zodResolver(schema) 	
 	});
 	const dispatch = useDispatch();
-
-	const { control, getValues,watch } = methods;
-
-	const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
-
-
-	const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
-
+    const {  getValues,watch } = methods;
+    const [modifiedLedgerData, setModifiedLedgerData] = useReportData();
+    const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 	const [page, setPage] = useState(1);
 	const [size, setSize] = useState(25);
 	const [totalPages, setTotalPages] = useState(0);
@@ -93,11 +88,8 @@ function LedgerReportsTable(props) {
 	const [dateTo, setDateTo] = useState();
 	const [show, setShow] = useState(false);
 	const [generalData, setGeneralData] = useState({});
-
-
-	const [inSiglePageMode, setInSiglePageMode] = useState(false);
-
-	const componentRef = useRef(null);
+    const [inSiglePageMode, setInSiglePageMode] = useState(false);
+    const componentRef = useRef(null);
 	
 	const { data:paginatedData,  refetch } = useGetLedgerReportsQuery({
         ledger: watch('ledger') || '',
