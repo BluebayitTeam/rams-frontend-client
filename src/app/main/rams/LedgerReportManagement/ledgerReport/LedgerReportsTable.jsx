@@ -132,7 +132,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 
 	const totalData = useSelector(selectFilteredLedgerReports(paginatedData));
-console.log('totalData',totalData)
+
 
 
 	//get general setting data

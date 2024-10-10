@@ -47,7 +47,7 @@ function PaymentSummaryReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { watch } = methods;
+  const { watch,getValues } = methods;
 
   const [modifiedPaymentSummaryData, setModifiedPaymentSummaryData] = useReportData();
 
@@ -95,7 +95,7 @@ function PaymentSummaryReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-  console.log('modifiedPaymentSummaryData', allData);
+ 
 
 
   const convertObjectToArray = obj => {
@@ -172,6 +172,15 @@ function PaymentSummaryReportsTable(props) {
     }
   }, [refetchAllPaymentSummaryReports]);
 
+
+  const filteredData = {
+		Account: getValues()?.account_typeName || null,
+		Ledger: getValues()?.ledgerName || null,
+		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
+		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
+		Sub_Ledger: getValues()?.sub_ledgerName || null
+	  };
+
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
@@ -215,6 +224,7 @@ function PaymentSummaryReportsTable(props) {
           key={index}
           classes={classes}
           reportTitle="PaymentSummary Report"
+          filteredData={filteredData}
           tableColumns={tableColumns}
           dispatchTableColumns={dispatchTableColumns}
           data={paymentSummary}

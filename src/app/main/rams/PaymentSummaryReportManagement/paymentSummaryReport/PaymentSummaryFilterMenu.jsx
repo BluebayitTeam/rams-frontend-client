@@ -77,7 +77,7 @@ function PaymentSummaryFilterMenu({ inShowAllMode, handleGetPaymentSummarys, han
           name='ledger'
           options={ledgers}
           icon='import_contacts'
-          width='40px'
+          width='50px'
         />
 
 
@@ -87,7 +87,7 @@ function PaymentSummaryFilterMenu({ inShowAllMode, handleGetPaymentSummarys, han
 					name="sub_ledger"
 					options={subLedgers}
 					icon="import_contacts"
-					width="45px"
+					width="76px"
 				/>
 
         {/* lpassengerTypes */}
@@ -96,7 +96,7 @@ function PaymentSummaryFilterMenu({ inShowAllMode, handleGetPaymentSummarys, han
 					name="account_type"
 					options={bankAndCash}
 					icon="text_fields"
-					width="40px"
+					width="90px"
 				/>
 
        

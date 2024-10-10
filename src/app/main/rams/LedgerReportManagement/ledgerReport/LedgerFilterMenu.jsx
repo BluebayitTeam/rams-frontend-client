@@ -55,7 +55,7 @@ function LedgerFilterMenu({ inShowAllMode, handleGetLedgers, handleGetAllLedgers
 					name="ledger"
 					options={ledgers}
 					icon="import_contacts"
-					width="40px"
+					width="50px"
 				/>
 
 				{/* date from */}
@@ -83,7 +83,7 @@ function LedgerFilterMenu({ inShowAllMode, handleGetLedgers, handleGetAllLedgers
 					name="sub_ledger"
 					options={subLedgers}
 					icon="import_contacts"
-					width="45px"
+					width="70px"
 				/>
 
 				
@@ -93,7 +93,7 @@ function LedgerFilterMenu({ inShowAllMode, handleGetLedgers, handleGetAllLedgers
 					name="account_type"
 					options={bankAndCash}
 					icon="text_fields"
-					width="40px"
+					width="90px"
 				/>
 
 				
