@@ -15,7 +15,9 @@ function SinglePage({
 	serialNumber,
 	inSiglePageMode,
 	setSortBy,
-	setSortBySubKey
+	setSortBySubKey,
+	filteredData,
+
 }) {
 	let pageBasedSerialNo = serialNumber;
 
@@ -36,6 +38,14 @@ function SinglePage({
 			.then((data) => setGeneralData(data.general_settings[0] || {}))
 			.catch(() => setGeneralData({}));
 	}, []);
+
+
+	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
+	
+	const filteredValues = filteredKeys.map(key => {
+		return `<b>${key.replace(/_/g, ' ')}</b>: ${filteredData[key]}`;
+	});
+	const FilteredCriteria = filteredValues.join(', ');
 
 	return (
 		<div
@@ -62,6 +72,11 @@ function SinglePage({
 					<h1 className="title  pl-0 md:-pl-20">
 						<u>{reportTitle}</u>
 					</h1>
+				</div>
+
+				{/* Render FilteredCriteria with dangerouslySetInnerHTML */}
+				<div className={classes.pageHead}>
+					<p className="title  pl-0 md:-pl-20" dangerouslySetInnerHTML={{ __html: FilteredCriteria }} />
 				</div>
 				<Table
 					aria-label="simple table"

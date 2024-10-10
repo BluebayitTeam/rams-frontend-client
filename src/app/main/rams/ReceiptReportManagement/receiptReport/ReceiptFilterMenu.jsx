@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -25,12 +25,8 @@ function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllRecei
 	const { ledgers, subLedgers } = useSelector((state) => state.data);
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
-	console.log('Passenger Values:', getValues());
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const receiptCodeEl = useRef(null);
+
 
 	const commonFieldProps = {
 		setReRender,
@@ -77,7 +73,7 @@ function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllRecei
           name='ledger'
           options={ledgers}
           icon='import_contacts'
-          width='40px'
+          width='50px'
         />
 
 
@@ -87,7 +83,7 @@ function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllRecei
 					name="sub_ledger"
 					options={subLedgers}
 					icon="import_contacts"
-					width="45px"
+					width="76px"
 				/>
 
         {/* lpassengerTypes */}
@@ -96,7 +92,7 @@ function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllRecei
 					name="account_type"
 					options={bankAndCash}
 					icon="text_fields"
-					width="40px"
+					width="95px"
 				/>
 
        
