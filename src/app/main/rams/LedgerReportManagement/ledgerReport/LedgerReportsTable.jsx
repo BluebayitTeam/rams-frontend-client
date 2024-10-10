@@ -334,8 +334,8 @@ return (
 							data: [
 								...ledger?.data,
 								{
-									credit_amount: totalCdAmount ,
-									debit_amount: totalDbAmount,
+									credit_amount: totalCdAmount?.toFixed(2)|| '0.00', 
+									debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
 									details: 'Total Balance',
 									balance:totalBAlance,
 									getterMethod: () => 'Total Amount',

@@ -27,19 +27,17 @@ const initialTableColumnsState = [
 
 	{ id: 2, label: 'Agent Name	', name: 'name', show: true },
 
-	{ id: 3, label: 'Group', name: 'head_group', subName: 'name', show: true },
   {
-    id: 4,
-    label: 'Details',
-    getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`,
+    id: 3,
+    label: 'Group',
+    getterMethod: data => `${data.head_group?.name || ''}`,
     show: true
   },
-	{ id: 5, label: 'Debit', name: 'total_debit', show: true },
-	{ id: 6, label: 'Credit', name: 'total_credit', show: true },
-	{ id: 7, label: 'Balance', name: 'balance', show: true },
- 
-
+	{ id: 4, label: 'Debit', name: 'total_debit', show: true,style: { justifyContent: 'flex-end', marginRight: '5px' }, },
+	{ id: 4, label: 'Credit', name: 'total_credit', show: true,style: { justifyContent: 'flex-end', marginRight: '5px' }, },
+	{ id: 4, label: 'Balance', name: 'balance', show: true ,style: { justifyContent: 'flex-end', marginRight: '5px' },}
 ];
+
 
 function CreditorReportsTable(props) {
   const classes = useStyles();
@@ -50,7 +48,7 @@ function CreditorReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { watch } = methods;
+  const { watch,getValues } = methods;
 
   const [modifiedCreditorData, setModifiedCreditorData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -68,7 +66,7 @@ function CreditorReportsTable(props) {
   const [totalCD, setTotalCD] = useState(0);
   const [totalDB, setTotalDB] = useState(0);
 
-  console.log('totalAmount121', totalAmount);
+ 
 
   const componentRef = useRef(null);
 
@@ -158,6 +156,16 @@ const handleExelDownload = () => {
     }
   }, [refetchAllCreditorReports]);
 
+
+  const filteredData = {
+		Account: getValues()?.account_typeName || null,
+		Ledger: getValues()?.ledgerName || null,
+		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
+		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
+		Sub_Ledger: getValues()?.sub_ledgerName || null
+	  };
+	  
+
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
@@ -201,6 +209,7 @@ const handleExelDownload = () => {
          key={index}
          classes={classes}
          reportTitle="Creditor Report"
+         filteredData={filteredData}
          tableColumns={tableColumns}
          dispatchTableColumns={dispatchTableColumns}
          data={{
@@ -208,9 +217,9 @@ const handleExelDownload = () => {
            data: [
              ...creditor.data,
              {
-               balance: totalAmount,
-               total_debit: totalDB,
-               total_credit: totalCD,
+               balance: totalAmount?.toFixed(2)|| '0.00',
+               total_debit: totalDB?.toFixed(2)|| '0.00',
+               total_credit: totalCD?.toFixed(2)|| '0.00',
                getterMethod: () => 'Total Amount',
                hideSerialNo: true,
                rowStyle: { fontWeight: 600 }, // Custom styling to highlight totals
