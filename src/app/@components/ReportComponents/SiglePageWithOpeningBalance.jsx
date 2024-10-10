@@ -73,9 +73,8 @@ function SiglePageWithOpeningBalance({
 					style={{
 						textAlign: 'center',
 						borderBottom: '1px solid gray',
-						marginBottom: '20px',
-						marginTop: '-10px',
-						fontSize: '10px'
+						marginTop: '-15px',
+					    fontSize: '10px'
 					}}
 				>
 					<LocationOn fontSize="small" />
@@ -202,26 +201,31 @@ function SiglePageWithOpeningBalance({
 						))}
 					</TableBody>
 				</Table>
+				<table className={classes.pageFooterContainer} style={{}}>
+				<tbody>
+					<tr>
+						<td>
+							<span style={{ textAlign: 'left' }}>
+								Printed Date & Time: {moment().format('DD/MM/YY')}, {moment().format('LT')}
+							</span>
+						</td>
 
-				<table className={classes.pageFooterContainer}>
-					<tbody>
-						<tr>
-							<td>
-								<h6 style={{ textAlign: 'left' }}>Developed by RAMS(Bluebay IT Limited)</h6>
-							</td>
-							<td>
-								<h5>&nbsp;</h5>
-							</td>
-							<td>
-								{!inSiglePageMode && (
-									<h6 style={{ marginBottom: '10px', textAlign: 'right', marginRight: '20px' }}>
-										Page : {inSiglePageMode ? page : data?.page}
-									</h6>
-								)}
-							</td>
-						</tr>
-					</tbody>
-				</table>
+						<td>
+							<span style={{ textAlign: 'left' }}>Developed by RAMS(Bluebay IT Limited)-01861650206</span>
+						</td>
+						<td>
+							<span>&nbsp;</span>
+						</td>
+						<td>
+							{!inSiglePageMode && (
+								<span style={{ textAlign: 'right', marginRight: '20px' }}>
+									Page : {inSiglePageMode ? page : data?.page}
+								</span>
+							)}
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			</div>
 		</div>
 	);
