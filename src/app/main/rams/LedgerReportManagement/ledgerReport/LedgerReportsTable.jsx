@@ -84,18 +84,12 @@ function LedgerReportsTable(props) {
 	const [totalElements, setTotalElements] = useState(0);
 	const [inShowAllMode, setInShowAllMode] = useState(false);
 	const [pagination, setPagination] = useState(false);
-	console.log('pagination111',pagination)
 	const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
-	const [totalAllPageBalance, setTotalAllPageBalance] = useState(0);
 	const [totalRecords, setTotalRecords] = useState(0);
 	const [previousBalance, setPreviousBalance] = useState(0);
-	console.log('previousBalance',previousBalance)
 	const [ledgerName, setLedgerName] = useState('');
-	console.log('ledgerName',ledgerName)
-	const [subLedgerName, setSubLedgerName] = useState('');
-	const [accountType , setAccountType] = useState('');
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
 	const [show, setShow] = useState(false);
@@ -106,7 +100,7 @@ function LedgerReportsTable(props) {
 
 	const componentRef = useRef(null);
 	
-	const { data:paginatedData, isLoading, refetch } = useGetLedgerReportsQuery({
+	const { data:paginatedData,  refetch } = useGetLedgerReportsQuery({
         ledger: watch('ledger') || '',
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
@@ -133,9 +127,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 	const totalData = useSelector(selectFilteredLedgerReports(paginatedData));
 
-
-
-	//get general setting data
+//get general setting data
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -229,10 +221,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 	  }, [inShowAllMode, allData, paginatedData, size, page]);
 
 
-
-
-
-	  const handleGetLedgers = useCallback(async (newPage) => {
+const handleGetLedgers = useCallback(async (newPage) => {
 		try {
 		  const page = newPage || 1;
 		  setPage(page);
