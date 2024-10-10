@@ -158,9 +158,11 @@ const handleExelDownload = () => {
 
 
   const filteredData = {
-    Ledger: getValues()?.ledgerName || null,
-		Group: getValues()?.group?.name || null,
+		Ledger: getValues()?.ledgerName || null,
+    Group: getValues()?.groupName || null,
 	  };
+
+    console.log('filteredData', filteredData);
 	  
 
   return (

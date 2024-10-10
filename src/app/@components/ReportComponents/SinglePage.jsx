@@ -41,15 +41,35 @@ function SinglePage({
 
 
 	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
+
+	// Separate non-date fields and date fields
+	const nonDateFields = [];
+	const dateFields = [];
 	
-	const filteredValues = filteredKeys.map(key => {
-		return `<b>${key.replace(/_/g, ' ')}</b>: ${filteredData[key]}`;
+	// Map filteredValues
+	filteredKeys.forEach(key => {
+		const formattedKey = key.replace(/_/g, ' ');
+		const value = filteredData[key];
+	
+		if (formattedKey === 'Date From' || formattedKey === 'Date To') {
+			dateFields.push(`<b>${formattedKey}</b>: ${moment(value).format('DD-MM-YYYY')}`);
+		} else {
+			nonDateFields.push(`<b>${formattedKey}</b>: ${value}`);
+		}
 	});
-	const FilteredCriteria = filteredValues.join(', ');
+	
+	// Join non-date fields in one line, date fields on a new line
+	const FilteredCriteria = `
+		<div style="text-align: center; margin-top: -8px">
+			${nonDateFields.join(', ')}<br/>
+			${dateFields.join(', ')}
+		</div>
+	`;
 
 	return (
 		<div
-			className={`${classes.pageContainer} printPageContainer `}
+			className={`${classes.pageContainer} printPageContainer  `}
+			style={{ padding: '0px 90px  ' }}
 			onMouseOver={() => {
 				inSiglePageMode 
 			}}
@@ -60,7 +80,8 @@ function SinglePage({
 						<img
 							style={{
 								visibility: generalData.logo ? 'visible' : 'hidden',
-								textAlign: 'center'
+								textAlign: 'center',
+								marginTop: '-10px',
 							}}
 							src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
 							alt="Not found"
@@ -69,7 +90,7 @@ function SinglePage({
 				</div>
 
 				<div className={classes.pageHead}>
-					<h1 className="title  pl-0 md:-pl-20">
+					<h1 className="title  pl-0 md:-pl-20" style={{marginTop: '-35px'}}>
 						<u>{reportTitle}</u>
 					</h1>
 				</div>

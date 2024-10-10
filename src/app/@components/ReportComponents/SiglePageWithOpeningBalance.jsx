@@ -42,7 +42,7 @@ function SiglePageWithOpeningBalance({
 
 
 
-	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
+const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
 
 // Separate non-date fields and date fields
 const nonDateFields = [];
@@ -68,7 +68,6 @@ const FilteredCriteria = `
     </div>
 `;
 
-console.log('FilteredCriteria', FilteredCriteria);
 
 
 	return (
@@ -95,7 +94,7 @@ console.log('FilteredCriteria', FilteredCriteria);
 					style={{
 						textAlign: 'center',
 						borderBottom: '1px solid gray',
-						marginTop: '-15px',
+						marginTop: '-25px',
 					    fontSize: '10px'
 					}}
 				>
