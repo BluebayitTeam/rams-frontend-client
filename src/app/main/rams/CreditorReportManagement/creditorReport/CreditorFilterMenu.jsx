@@ -52,7 +52,7 @@ function CreditorFilterMenu({ inShowAllMode, handleGetCreditors, handleGetAllCre
 					name="ledger"
 					options={ledgers}
 					icon="import_contacts"
-					width="40px"
+					width="50px"
 				/>
         <ReportSelect
           {...commonFieldProps}
