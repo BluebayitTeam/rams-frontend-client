@@ -81,7 +81,7 @@ function SinglePage({
 							style={{
 								visibility: generalData.logo ? 'visible' : 'hidden',
 								textAlign: 'center',
-								marginTop: '-10px',
+								marginTop: '20px'
 							}}
 							src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
 							alt="Not found"
@@ -90,7 +90,7 @@ function SinglePage({
 				</div>
 
 				<div className={classes.pageHead}>
-					<h1 className="title  pl-0 md:-pl-20" style={{marginTop: '-35px'}}>
+					<h1 className="title  pl-0 md:-pl-20" style={{marginTop: '-5px'}}>
 						<u>{reportTitle}</u>
 					</h1>
 				</div>
