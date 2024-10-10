@@ -301,8 +301,6 @@ return (
 						reportTitle="Ledger Report"
 						tableColumns={tableColumns}
 						dispatchTableColumns={dispatchTableColumns}
-						
-
 						dateFromDateTo={
 							dateFrom && dateTo
 								? `Date : ${moment(dateFrom).format('DD-MM-YYYY')} to ${moment(dateTo).format('DD-MM-YYYY')}`
