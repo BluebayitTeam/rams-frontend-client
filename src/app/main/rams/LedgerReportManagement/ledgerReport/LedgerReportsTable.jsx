@@ -89,7 +89,6 @@ function LedgerReportsTable(props) {
 	const [totalBAlance, setTotalBAlance] = useState(0);
 	const [totalRecords, setTotalRecords] = useState(0);
 	const [previousBalance, setPreviousBalance] = useState(0);
-	const [ledgerName, setLedgerName] = useState('');
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
 	const [show, setShow] = useState(false);
@@ -127,7 +126,9 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 	const totalData = useSelector(selectFilteredLedgerReports(paginatedData));
 
-//get general setting data
+
+
+	//get general setting data
 	useEffect(() => {
 		const authTOKEN = {
 			headers: {
@@ -175,10 +176,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 			setShow(allData?.account_logs?.length > 0 ? false : true);
 			setTotalRecords(allData?.total_elements || 0);
 			setDateFrom(allData?.date_after);
-			setLedgerName(allData?.ledger_name);
 			setDateTo(allData?.date_before);
-			setSubLedgerName(allData?.sub_ledger);
-			setAccountType(allData?.account_type);
 		    setInSiglePageMode(false);
 		    setInShowAllMode(true);
 		    setPagination(false)
@@ -198,14 +196,11 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		  setTotalDbAmount(paginatedData.total_debit_amount || 0);
 		  setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
 		  setPreviousBalance(paginatedData?.previous_balance || 0);
-		  setAccountType(paginatedData?.account_type);
 
 		  setTotalRecords(paginatedData?.total_elements || 0);
 		  setShow(paginatedData?.account_logs?.length > 0 ? false : true);
 		  setTotalRecords(paginatedData?.total_elements || 0);
 		  setDateFrom(paginatedData?.date_after);
-		  setLedgerName(paginatedData?.ledger_name);
-		  setSubLedgerName(allData?.sub_ledger);
 
 		  setDateTo(paginatedData?.date_before);
 
@@ -221,7 +216,10 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 	  }, [inShowAllMode, allData, paginatedData, size, page]);
 
 
-const handleGetLedgers = useCallback(async (newPage) => {
+
+
+
+	  const handleGetLedgers = useCallback(async (newPage) => {
 		try {
 		  const page = newPage || 1;
 		  setPage(page);

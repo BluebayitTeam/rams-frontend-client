@@ -21,7 +21,6 @@ function CreditorFilterMenu({ inShowAllMode, handleGetCreditors, handleGetAllCre
 
 	const theme = useTheme();
 	const { ledgers, groups } = useSelector((state) => state.data);
-	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
 
 
