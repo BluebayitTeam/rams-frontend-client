@@ -158,11 +158,8 @@ const handleExelDownload = () => {
 
 
   const filteredData = {
-		Account: getValues()?.account_typeName || null,
-		Ledger: getValues()?.ledgerName || null,
-		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
-		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
-		Sub_Ledger: getValues()?.sub_ledgerName || null
+    Ledger: getValues()?.ledgerName || null,
+		Group: getValues()?.group?.name || null,
 	  };
 	  
 
