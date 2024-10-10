@@ -13,7 +13,7 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
 import { z } from 'zod';
-import '../../../rams/print.css';
+// import '../../../rams/print.css';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import { selectFilteredLedgerReports, useGetLedgerAllReportsQuery, useGetLedgerReportsQuery } from '../LedgerReportsApi';
 import LedgerFilterMenu from './LedgerFilterMenu';

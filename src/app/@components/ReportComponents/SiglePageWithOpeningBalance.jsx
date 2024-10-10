@@ -73,7 +73,7 @@ const FilteredCriteria = `
 	return (
 		<div
 			className={`${classes.pageContainer} printPageContainer `}
-			style={{ padding: '0px 90px  ' }}
+			style={{ padding: '0px 90px 0px 90px' }}
 			onMouseOver={() => {
 				inSiglePageMode 
 			}}
