@@ -18,7 +18,7 @@ function SiglePageWithOpeningBalance({
 	setSortBy,
 	setSortBySubKey,
 	filteredData,
-	previousBalance
+	
 }) {
 	let pageBasedSerialNo = serialNumber;
 
@@ -43,11 +43,33 @@ function SiglePageWithOpeningBalance({
 
 
 	const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
-	
-	const filteredValues = filteredKeys.map(key => {
-		return `<b>${key.replace(/_/g, ' ')}</b>: ${filteredData[key]}`;
-	});
-	const FilteredCriteria = filteredValues.join(', ');
+
+// Separate non-date fields and date fields
+const nonDateFields = [];
+const dateFields = [];
+
+// Map filteredValues
+filteredKeys.forEach(key => {
+    const formattedKey = key.replace(/_/g, ' ');
+    const value = filteredData[key];
+
+    if (formattedKey === 'Date From' || formattedKey === 'Date To') {
+        dateFields.push(`<b>${formattedKey}</b>: ${moment(value).format('DD-MM-YYYY')}`);
+    } else {
+        nonDateFields.push(`<b>${formattedKey}</b>: ${value}`);
+    }
+});
+
+// Join non-date fields in one line, date fields on a new line
+const FilteredCriteria = `
+    <div style="text-align: center; margin-top: -8px">
+        ${nonDateFields.join(', ')}<br/>
+        ${dateFields.join(', ')}
+    </div>
+`;
+
+console.log('FilteredCriteria', FilteredCriteria);
+
 
 	return (
 		<div
@@ -58,7 +80,7 @@ function SiglePageWithOpeningBalance({
 		>
 			<div>
 				<div className={classes.pageHead}>
-					<div className="logoContainer pr-0 md:-pr-20">
+					<div className="logoContainer pr-0 md:-pr-20 ">
 						<img
 							style={{
 								visibility: generalData.logo ? 'visible' : 'hidden',

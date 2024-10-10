@@ -272,10 +272,7 @@ const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !
 	});
 	const FilteredCriteria = filteredValues.join(', ');
 
-
-	
-
-	return (
+return (
 		<div className={classes.headContainer}>
 			{/* Filter */}
 			<FormProvider {...methods}>
