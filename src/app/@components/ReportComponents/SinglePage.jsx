@@ -1,6 +1,5 @@
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-import { Email, Language, LocationOn, PhoneEnabled } from '@mui/icons-material';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -198,39 +197,29 @@ function SinglePage({
 				</Table>
 			</div>
 
-			<table className={classes.pageBottmContainer}>
+			<table className={classes.pageFooterContainer} style={{}}>
 				<tbody>
 					<tr>
 						<td>
-							<h5>
-								<LocationOn fontSize="small" />
-								{` ${generalData?.address}` || ''}
-							</h5>
+							<span style={{ textAlign: 'left' }}>
+								Printed Date & Time: {moment().format('DD/MM/YY')}, {moment().format('LT')}
+							</span>
+						</td>
+
+						
+						<td>
+							<span>&nbsp;</span>
 						</td>
 						<td>
-							<h5>
-								<PhoneEnabled fontSize="small" />
-								{` ${generalData?.phone || ''}`}
-							</h5>
+							{!inSiglePageMode && (
+								<span style={{ textAlign: 'right', marginRight: '20px' }}>
+									Page : {inSiglePageMode ? page : data?.page}
+								</span>
+							)}
 						</td>
+
 						<td>
-							<h5>
-								<Email fontSize="small" />
-								{` ${generalData?.email || ''}`}
-							</h5>
-						</td>
-						<td>
-							<h5>
-								<Language fontSize="small" />
-								<a
-									className="ml-2"
-									href={generalData?.site_address || ''}
-									target="_blank"
-									rel="noreferrer"
-								>
-									{generalData?.site_address}
-								</a>
-							</h5>
+							<span style={{ textAlign: 'left' }}>Developed by RAMS(Bluebay IT Limited)-01861650206</span>
 						</td>
 					</tr>
 				</tbody>

@@ -73,7 +73,7 @@ const FilteredCriteria = `
 	return (
 		<div
 			className={`${classes.pageContainer} printPageContainer `}
-			style={{ padding: '0px 90px 0px 90px' }}
+			style={{ padding: '0px 40px 0px 40px' }}
 			onMouseOver={() => {
 				inSiglePageMode 
 			}}
@@ -232,9 +232,7 @@ const FilteredCriteria = `
 							</span>
 						</td>
 
-						<td>
-							<span style={{ textAlign: 'left' }}>Developed by RAMS(Bluebay IT Limited)-01861650206</span>
-						</td>
+						
 						<td>
 							<span>&nbsp;</span>
 						</td>
@@ -244,6 +242,10 @@ const FilteredCriteria = `
 									Page : {inSiglePageMode ? page : data?.page}
 								</span>
 							)}
+						</td>
+
+						<td>
+							<span style={{ textAlign: 'left' }}>Developed by RAMS(Bluebay IT Limited)-01861650206</span>
 						</td>
 					</tr>
 				</tbody>

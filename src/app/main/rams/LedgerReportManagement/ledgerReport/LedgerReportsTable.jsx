@@ -27,13 +27,13 @@ const schema = z.object({});
 const initialTableColumnsState = [
 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true, style: { justifyContent: 'center' } },
 	{ id: 2, label: 'Log Date', name: 'log_date', show: true, type: 'date', style: { justifyContent: 'center' } },
-	{ id: 3, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-	{ id: 4, label: 'Invoice No', name: 'reference_no', show: true, style: { justifyContent: 'center' } },
-	{ id: 5, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
-	{ id: 6, label: 'Details', name: 'details', show: true },
+	// { id: 3, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true, style: { justifyContent: 'center' } },
+	{ id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
+	{ id: 5, label: 'Details', name: 'details', show: true },
 
 	{
-		id: 7,
+		id: 6,
 		label: 'Credit',
 		name: 'credit_amount',
 		show: true,
@@ -42,7 +42,7 @@ const initialTableColumnsState = [
 		type: 'amount'
 	},
 	{
-		id: 8,
+		id: 7,
 		label: 'Debit',
 		name: 'debit_amount',
 		show: true,
@@ -52,7 +52,7 @@ const initialTableColumnsState = [
 	},
 
 	{
-		id: 9,
+		id: 8,
 		label: 'Balance',
 		name: 'balance',
 		show: true,
