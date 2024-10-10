@@ -64,6 +64,8 @@ function ReportSelect({
   const { getValues, setValue, control } = methods;
   const values = getValues();
 
+  console.log('sadhbjkasbdkj',values);
+
   const isFocused = values[`${name}Focused`];
 
   const [Label] = useState(label || fillUnderscoreBySpace(name));

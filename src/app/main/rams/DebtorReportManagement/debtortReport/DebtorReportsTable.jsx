@@ -5,13 +5,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
+import SiglePageWithOpeningBalance from 'src/app/@components/ReportComponents/SiglePageWithOpeningBalance';
 import { useGetDrebtorAllReportsQuery, useGetDrebtorReportsQuery } from '../DrebtorReportsApi';
 import DebtorFilterMenu from './DebtorFilterMenu';
 
@@ -50,7 +50,7 @@ function DrebtorReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { watch } = methods;
+  const { watch ,getValues} = methods;
 
   const [modifiedDrebtorData, setModifiedDrebtorData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -68,7 +68,7 @@ function DrebtorReportsTable(props) {
   const [totalCD, setTotalCD] = useState(0);
   const [totalDB, setTotalDB] = useState(0);
 
-  console.log('totalAmount121', totalAmount);
+
 
   const componentRef = useRef(null);
 
@@ -158,6 +158,13 @@ const handleExelDownload = () => {
     }
   }, [refetchAllDrebtorReports]);
 
+
+  const filteredData = {
+		Ledger: getValues()?.ledgerName || null,
+    Group: getValues()?.groupName || null,
+	  };
+
+
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
@@ -197,10 +204,11 @@ const handleExelDownload = () => {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedDrebtorData.map((drebtor, index) => (
-         <SinglePage
+         <SiglePageWithOpeningBalance
          key={index}
          classes={classes}
          reportTitle="Drebtor Report"
+         filteredData={filteredData}
          tableColumns={tableColumns}
          dispatchTableColumns={dispatchTableColumns}
          data={{
@@ -225,6 +233,7 @@ const handleExelDownload = () => {
              : drebtor.page * drebtor.size - drebtor.size + 1
          }
          setPage={setPage}
+
        />
         
          
