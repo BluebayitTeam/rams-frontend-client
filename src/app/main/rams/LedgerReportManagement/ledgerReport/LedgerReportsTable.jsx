@@ -91,7 +91,7 @@ function LedgerReportsTable(props) {
     const [inSiglePageMode, setInSiglePageMode] = useState(false);
     const componentRef = useRef(null);
 	
-	const { data:paginatedData,  refetch } = useGetLedgerReportsQuery({
+	const { data:paginatedData } = useGetLedgerReportsQuery({
         ledger: watch('ledger') || '',
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
@@ -105,7 +105,7 @@ function LedgerReportsTable(props) {
 
 
 
-const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
+const {data: allData} = useGetLedgerAllReportsQuery({
         ledger: watch('ledger') || '',
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
@@ -217,7 +217,7 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		} catch (error) {
 		  console.error('Error fetching agents:', error);
 		}
-	  }, [refetch]);
+	  }, []);
 	
 	  const handleGetAllLedgers = useCallback(async () => {
 		try {

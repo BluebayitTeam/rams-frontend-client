@@ -1,12 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
+import moment from 'moment';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SiglePageForPassengerLedgerReport from 'src/app/@components/ReportComponents/SiglePageForPassengerLedgerReport';
+import SiglePageLedgerReport from 'src/app/@components/ReportComponents/SiglePageLedgerReport';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
@@ -15,7 +16,7 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   selectFilteredPassengerLedgerReports,
   useGetPassengerLedgerAllReportsQuery,
-  useGetPassengerLedgerReportsQuery,
+  useGetPassengerLedgerReportsQuery
 } from '../PassengerLedgerReportsApi';
 import PassengerLedgerFilterMenu from './PassengerLedgerFilterMenu';
 
@@ -58,52 +59,43 @@ const initialTableColumnsState = [
 		headStyle: { textAlign: 'right' }
 	}
 ];
-const initialBillDetailsTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Sales Date', name: 'sales_date', show: true, type: 'date' },
-	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-	{ id: 4, label: 'Bill Purpose', name: 'related_ledger', show: true },
-	{ id: 5, label: 'Bill Details ', name: 'details', show: true },
-	{ id: 6, label: 'Amount', name: 'credit_amount', show: true }
-];
-const initialCostDetailsTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: ' Date', name: 'purchase_date', show: true, type: 'date' },
-	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-	{ id: 4, label: ' Purpose', name: 'related_ledger', show: true },
-	{ id: 5, label: ' Details ', name: 'details', show: true },
-	{ id: 6, label: 'Amount', name: 'credit_amount', show: true }
-];
+
+
 
 function PassengerLedgerReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
-    resolver: zodResolver(schema), // Use zodResolver for form validation
+    resolver: zodResolver(schema), 
   });
   const dispatch = useDispatch();
 
   const { control, getValues,watch } = methods;
 
   const [modifiedPassengerLedgerData, setModifiedPassengerLedgerData] = useReportData();
-  console.log('modifiedPassengerLedgerData', modifiedPassengerLedgerData)
-  const [tableColumns, dispatchTableColumns] = useReducer(
-    tableColumnsReducer,
-    initialTableColumnsState // or whichever state is required as the initial value
-  );
+ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
+	
+
+  
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
+	const [pagination, setPagination] = useState(false);
+  const [totalCdAmount, setTotalCdAmount] = useState(0);
+	const [totalDbAmount, setTotalDbAmount] = useState(0);
+	const [totalBAlance, setTotalBAlance] = useState(0);
+	const [dateFrom, setDateFrom] = useState();
+	const [dateTo, setDateTo] = useState();
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
-  console.log("inShowAllMode", inShowAllMode)
 
   const componentRef = useRef(null);
 
   // Do not fetch data on mount
-  const {data, refetch: refetchPassengerLedgerReports } =!inShowAllMode && useGetPassengerLedgerReportsQuery(
+  const { data:paginatedData} = useGetPassengerLedgerReportsQuery(
     {
       
       date_after: watch('date_after') || '',
@@ -114,21 +106,63 @@ function PassengerLedgerReportsTable(props) {
       page,
       size,
     },
-    { enabled: false }
+    {  skip: inShowAllMode  }
   );
-  const { refetch: refetchAllPassengerLedgerReports } =
-    inShowAllMode &&
-    useGetPassengerLedgerAllReportsQuery(
+  const { data: allData } =useGetPassengerLedgerAllReportsQuery(
       {
         date_after: watch('date_after') || '',
         date_before: watch('date_before') || '',
         passenger: watch('passenger') || '',
         account_type: watch('account_type') || '',
       },
-      { enabled: false }
+      { skip: !inShowAllMode  }
     );
 
-  const totalData = useSelector(selectFilteredPassengerLedgerReports);
+    const totalData = useSelector(selectFilteredPassengerLedgerReports(paginatedData));
+
+
+    useEffect(() => {
+      if (inShowAllMode && allData) {
+        setModifiedPassengerLedgerData(allData?.account_logs || []);
+          setTotalCdAmount(allData.total_credit_amount ||0 );
+          setTotalDbAmount(allData.total_debit_amount ||0);
+          setTotalBAlance(allData.total_amount?.toFixed(2) || 0.0);
+        setDateFrom(allData?.date_after);
+        setDateTo(allData?.date_before);
+          setInSiglePageMode(false);
+          setInShowAllMode(true);
+          setPagination(false)
+          const { totalPages, totalElements } = getPaginationData(
+        allData.account_logs,
+        size,
+        page
+         );
+    
+        setPage(page || 1);
+        setSize(size || 25);
+        setTotalPages(totalPages);
+        setTotalElements(totalElements);
+      } else if (!inShowAllMode && paginatedData) {
+        setModifiedPassengerLedgerData(paginatedData?.account_logs || []);
+        setTotalCdAmount(paginatedData.total_credit_amount|| 0);
+        setTotalDbAmount(paginatedData.total_debit_amount || 0);
+        setTotalBAlance(paginatedData.total_amount?.toFixed(2) || 0.0);
+  
+        setDateFrom(paginatedData?.date_after);
+  
+        setDateTo(paginatedData?.date_before);
+  
+        setPage(paginatedData?.page || 1);
+        setSize(paginatedData?.size || 25);
+        setTotalPages(paginatedData.total_pages || 0);
+        setTotalElements(paginatedData.total_elements || 0);
+        setPagination(true);
+        setInSiglePageMode(true);
+        setInShowAllMode(false);
+    
+      }
+      }, [inShowAllMode, allData, paginatedData, size, page]);
+  
 
   useEffect(() => {
     if (totalData) {
@@ -195,12 +229,20 @@ function PassengerLedgerReportsTable(props) {
   };
 
 
-  const PassengerLedgerAgent = data?.passenger?.agent?.first_name|| 'N/A'
-	const PassengerLedgerPID = data?.passenger?.passenger_id || 'N/A'
-	const PassengerLedgerPassportNo = data?.passenger?.passport_no || 'N/A'
-	const PassengerLedgerName = data?.passenger?.passenger_name || 'N/A'
-	const PassengerLedgeDistrict = data?.passenger?.district.name || 'N/A'
-	const PassengerLedgeMobileNo =data?.passenger?.contact_no || 'N/A'
+  const AgentName = paginatedData?.passenger?.agent?.first_name|| 'N/A'
+	const AgentId = paginatedData?.passenger?.passenger_id || 'N/A'
+	const PassportNo = paginatedData?.passenger?.passport_no || 'N/A'
+	const PassengerName = paginatedData?.passenger?.passenger_name || 'N/A'
+	const District = paginatedData?.passenger?.district?.name || 'N/A'
+	const MobileNo =paginatedData?.passenger?.contact_no || 'N/A'
+
+
+  const filteredData = {
+		Account: getValues()?.account_typeName || null,
+		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
+		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
+  
+  };
 
 
 
@@ -244,47 +286,51 @@ function PassengerLedgerReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {/* each single page (table) */}
           {modifiedPassengerLedgerData.map((passengerLedger, index) => (
-            <SiglePageForPassengerLedgerReport
+            <SiglePageLedgerReport
               key={index}
               classes={classes}
               reportTitle='Passenger Ledger Report'
-             
+              filteredData={filteredData}
               dispatchTableColumns={dispatchTableColumns}
-              data={
-                passengerLedger.isLastPage
-                  ? {
-                      ...passengerLedger,
-                      data: passengerLedger.data.concat({
-                        credit_amount: totalCdAmount,
-                        debit_amount: totalDbAmount,
-                        details: 'Total Balance',
-                        balance: totalBAlance,
-                        hideSerialNo: true,
-                        rowStyle: { fontWeight: 600 }
-                      })
-                    }
-                  : passengerLedger
+              dateFromDateTo={
+                dateFrom && dateTo
+                  ? `Date : ${moment(dateFrom).format('DD-MM-YYYY')} to ${moment(dateTo).format('DD-MM-YYYY')}`
+                  : ''
               }
+              data={{
+                ...passengerLedger,
+                data: [
+                  ...passengerLedger?.data,
+                  {
+                    credit_amount: totalCdAmount?.toFixed(2)|| '0.00', 
+                    debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
+                    details: 'Total Balance',
+                    balance:totalBAlance,
+                    details: 'Total Balance',
+
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 }
+                  },
+                ],
+              }}
+
               tableColumns={tableColumns}
-              serialNumber={index + 1 + (page - 1) * size} // Serial number across pages
+              serialNumber={
+                pagination
+                  ? page * size - size + index + 1
+                  : passengerLedger.page * passengerLedger.size - passengerLedger.size + 1
+              }              
               setPage={setPage}
-              PassengerLedgerAgent={PassengerLedgerAgent}
-              PassengerLedgerPID={PassengerLedgerPID}
-              PassengerLedgerPassportNo={PassengerLedgerPassportNo}
-              PassengerLedgerName={PassengerLedgerName}
-              PassengerLedgeDistrict={PassengerLedgeDistrict}
-              PassengerLedgeMobileNo={PassengerLedgeMobileNo}
+              AgentName={AgentName}
+              AgentId={AgentId}
+              PassengerName={PassengerName}
+              PassportNo={PassportNo}
+              District={District}
+              MobileNo={MobileNo}
+              inSiglePageMode={inSiglePageMode}
 
+             
 
-              addInHeader={
-                passengerLedger.isFirsPage ? (
-                  <div>
-                    <h3>Opening Balance: {passengerLedger.openingBlnc.toFixed(2)}</h3>
-                  </div>
-                ) : (
-                  ''
-                )
-              }
             />
           ))}
         </tbody>
