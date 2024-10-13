@@ -152,7 +152,7 @@ return (
           {watch('is_branch_show') && (
             <div>
               <h3 className="title  pl-0 md:-pl-20 text-center">
-                Branch: {getValues()?.branchName ? getValues()?.branchName : 'All'}
+               <b>Branch : </b> {getValues()?.branchName ? getValues()?.branchName : 'All'}
               </h3>
             </div>
           )}
