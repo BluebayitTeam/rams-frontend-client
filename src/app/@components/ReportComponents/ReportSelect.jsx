@@ -149,10 +149,9 @@ function ReportSelect({
               <TextField
                 {...params}
                 className="textFieldUnderSelect"
-                placeholder={`Select ${Label}`} // Fixed placeholder
+                placeholder={`Select ${Label}`} 
                 inputProps={{
                   ...params.inputProps,
-                  value: fieldNameValue || "",
                 }}
               />
             )}
