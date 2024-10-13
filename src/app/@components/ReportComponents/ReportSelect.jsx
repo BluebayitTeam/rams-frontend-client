@@ -56,7 +56,7 @@ function ReportSelect({
   width,
   setReRender,
   onEnter = () => null,
-  getOptionLabel = (option) => option.name, // Default function definition fixed
+  getOptionLabel = (option) => option.name,
 }) {
   const classes = useStyles();
 
@@ -120,7 +120,7 @@ function ReportSelect({
         control={control}
         render={({ field: { onChange, value } }) => (
           <Autocomplete
-            key={`${name}-${fieldValue}`} // Fixed key interpolation
+            key={`${name}-${fieldValue}`} 
             id={`${name}groupEl`}
             className="mb-3 selectField"
             style={{
@@ -136,19 +136,20 @@ function ReportSelect({
             }}
             freeSolo
             options={options}
-            value={value ? options.find((data) => data.id == value) || null : null}
+            value={
+              value ? options.find((data) => data.id === value) || null : null
+            }
             getOptionLabel={getOptionLabel}
             onChange={(_event, newValue) => {
               onChange(newValue?.id || "");
               onEnter();
               setValue(`${name}Name`, newValue?.name || "");
-              setReRender(Math.random());
             }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 className="textFieldUnderSelect"
-                placeholder={`Select ${Label}`} // Fixed string interpolation
+                placeholder={`Select ${Label}`} // Fixed placeholder
                 inputProps={{
                   ...params.inputProps,
                   value: fieldNameValue || "",

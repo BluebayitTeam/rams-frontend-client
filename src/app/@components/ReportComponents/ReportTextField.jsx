@@ -1,8 +1,8 @@
+import { Icon } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import fillUnderscoreBySpace from 'src/app/@helpers/fillUnderscoreBySpace';
-import { Icon } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
 	fieldContainer: {

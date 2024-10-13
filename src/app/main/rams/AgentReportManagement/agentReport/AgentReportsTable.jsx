@@ -12,6 +12,7 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import '../../../rams/print.css';
 
+import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   selectFilteredAgentReports,
@@ -62,7 +63,7 @@ function AgentReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } = useGetAgentReportsQuery(
+  const { data: paginatedData,  } = useGetAgentReportsQuery(
     {
       group: filterData.group || '',
       district: filterData.district || '',
@@ -77,7 +78,7 @@ function AgentReportsTable(props) {
     { skip: inShowAllMode }
   );
   
-  const { data: allData, refetch: refetchAllAgentReports } = useGetAgentAllReportsQuery(
+  const { data: allData, } = useGetAgentAllReportsQuery(
     {
       group: filterData.group || '',
       district: filterData.district || '',
