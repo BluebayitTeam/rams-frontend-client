@@ -10,7 +10,6 @@ function SiglePageLedgerReport({
 	classes,
 	reportTitle = 'Report',
 	tableColumns = [],
-	
 	dispatchTableColumns,
 	data,
 	totalColumn,
@@ -29,7 +28,6 @@ function SiglePageLedgerReport({
 }) {
 	let pageBasedSerialNo = serialNumber;
 
-	console.log('MobileNo',District)
 
 	const [generalData, setGeneralData] = useState({});
 	// get general setting data
