@@ -1,10 +1,12 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { useState } from 'react';
+import { getBranches } from 'app/store/dataSlice';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
+import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +21,8 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
   const theme = useTheme();
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
+  const { branches } = useSelector((state) => state.data);
+
   const commonFieldProps = {
 		setReRender,
 		onEnter: () => (inShowAllMode ? handleGetAllAccountSummarys() : handleGetAccountSummarys())
@@ -28,9 +32,21 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
 		onClick: () => (inShowAllMode ? handleGetAllAccountSummarys() : handleGetAccountSummarys())
 	};
 
+  useEffect(() => {
+		dispatch(getBranches());
+	}, []);
+
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
+         {/* branche */}
+         <ReportSelect
+          {...commonFieldProps}
+          name='branch'
+          options={branches}
+          icon='groups'
+          width='40px'
+        />
        {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -51,6 +67,12 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
+      <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='branch'
+          icon='groups'
+        />
       <Keyword
           {...commonKewordProps}
           type='date'
