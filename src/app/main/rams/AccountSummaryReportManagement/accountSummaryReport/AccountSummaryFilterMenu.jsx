@@ -25,11 +25,11 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
 
   const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllAccountSummarys() : handleGetAccountSummarys())
+		onEnter: () => (inShowAllMode ?  handleGetAccountSummarys():null)
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllAccountSummarys() : handleGetAccountSummarys())
+		onClick: () => (inShowAllMode ?handleGetAccountSummarys():null)
 	};
 
   useEffect(() => {
