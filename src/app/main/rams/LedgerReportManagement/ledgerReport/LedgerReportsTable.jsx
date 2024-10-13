@@ -214,7 +214,6 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 		try {
 		  const page = newPage || 1;
 		  setPage(page);
-		  await refetch();
 		} catch (error) {
 		  console.error('Error fetching agents:', error);
 		}
@@ -222,11 +221,11 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 	
 	  const handleGetAllLedgers = useCallback(async () => {
 		try {
-		  await refetchAll();
+		 
 		} catch (error) {
 		  console.error('Error fetching all foreignLedgers:', error);
 		}
-	  }, [refetchAll]);
+	  }, []);
 
      const filteredData = {
 		Account: getValues()?.account_typeName || null,
