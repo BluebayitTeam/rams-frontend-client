@@ -103,7 +103,6 @@ function LedgerReportsTable(props) {
       },  { skip: inShowAllMode })
 	  
 
-	  console.log('allData420', paginatedData)
 
 
 const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
@@ -241,7 +240,6 @@ const {data: allData, refetch: refetchAll } = useGetLedgerAllReportsQuery({
 
 const ladgerData = getValues().ledger
 
-console.log('ladgerData', ladgerData)
 	
 const filteredKeys = Object.keys(filteredData).filter(key => filteredData[key] !== null);
 	console.log('firstKey', filteredKeys);

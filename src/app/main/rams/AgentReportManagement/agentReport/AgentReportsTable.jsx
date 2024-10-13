@@ -43,7 +43,7 @@ function AgentReportsTable(props) {
     resolver: zodResolver(schema),
   });
 
-  const {  watch } = methods;
+  const {  watch ,getValues } = methods;
 
   const [modifiedAgentData, setModifiedAgentData,setSortBy,setSortBySubKey,dragAndDropRow] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -133,7 +133,6 @@ function AgentReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-      await refetchAgentReports();
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
@@ -142,11 +141,25 @@ function AgentReportsTable(props) {
   const handleGetAllAgents = useCallback(async () => {
     try {
       
-      await refetchAllAgentReports();
     } catch (error) {
       console.error('Error fetching all agents:', error);
     }
   }, [refetchAllAgentReports]);
+
+
+  const filteredData = {
+    Group: getValues()?.groupName || null,
+    District: getValues()?.districtName || null,
+    Username: getValues()?.username || null,
+    Date_To: getValues()?.date_before
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
+      : null,
+    Date_From: getValues()?.date_after
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
+      : null,
+    Primary_phone: getValues()?.primary_phone || null,
+    agent_code: getValues()?.agent_code || null,
+  };
 
   return (
     <div className={classes.headContainer}>
@@ -187,6 +200,7 @@ function AgentReportsTable(props) {
               key={agent.id || index}
               classes={classes}
               reportTitle='Agent Report'
+              filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={agent}
