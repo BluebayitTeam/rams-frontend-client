@@ -44,8 +44,8 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
           {...commonFieldProps}
           name='branch'
           options={branches}
-          icon='groups'
-          width='40px'
+          icon='import_contacts'
+          width='50px'
         />
        {/* date from */}
         <ReportDatePicker
@@ -71,7 +71,7 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
           {...commonKewordProps}
           type='select'
           name='branch'
-          icon='groups'
+          icon='import_contacts'
         />
       <Keyword
           {...commonKewordProps}
