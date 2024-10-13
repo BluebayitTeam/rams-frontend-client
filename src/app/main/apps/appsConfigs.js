@@ -28,6 +28,7 @@ import ProfileAppConfig from './profile/profileAppConfig';
 import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TasksAppConfig from './tasks/TasksAppConfig';
 
+import AccountSummaryReportAppConfig from '../rams/AccountSummaryReportManagement/AccountSummaryReportAppConfig';
 import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
 import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
 import BmetApplicationAppConfig from '../rams/BmetApplicationsManagement/BmetApplicationAppConfig';
@@ -125,6 +126,7 @@ import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/V
  * The list of application configurations.
  */
 const appsConfigs = [
+  AccountSummaryReportAppConfig,
   BmetAppConfig,
   BmetContractAppConfig,
   BmetVerifyAppConfig,
