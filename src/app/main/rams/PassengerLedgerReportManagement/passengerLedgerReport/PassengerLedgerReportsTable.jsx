@@ -187,7 +187,7 @@ function PassengerLedgerReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
 
-      const response = await refetchPassengerLedgerReports({ ...formValues, page, size }); // Manually trigger the query
+      const response = await refetchPassengerLedgerReports({ ...formValues, page, size }); 
 
       if (response?.data) {
         unstable_batchedUpdates(() => {
