@@ -94,13 +94,13 @@ function SiglePageLedgerReport({
         {AgentId && (
           <tr>
             <td>Passenger Id:</td>
-            <td>{AgentId} || ''</td>
+            <td>{AgentId} </td>
           </tr>
         )}
         {PassportNo && (
           <tr>
             <td>Passport No :</td>
-            <td>{PassportNo}</td>
+            <td>{PassportNo} </td>
           </tr>
         )}
         {PassengerName && (
@@ -112,13 +112,13 @@ function SiglePageLedgerReport({
         {District && (
           <tr>
             <td>District :</td>
-            <td>{District}</td>
+            <td>{District} </td>
           </tr>
         )}
         {MobileNo && (
           <tr>
             <td>Mobile :</td>
-            <td>{MobileNo}</td>
+            <td>{MobileNo} </td>
           </tr>
         )}
       </tbody>
