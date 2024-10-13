@@ -12,6 +12,7 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import '../../../rams/print.css';
 
+import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   selectFilteredAccountSummaryReports,
@@ -62,30 +63,24 @@ function AccountSummaryReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAccountSummaryReports } = useGetAccountSummaryReportsQuery(
+  const { data: paginatedData,  } = useGetAccountSummaryReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
+      
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
-      accountSummary_code: filterData.accountSummary_code || '',
+     
       page,
       size,
     },
     { skip: inShowAllMode }
   );
   
-  const { data: allData, refetch: refetchAllAccountSummaryReports } = useGetAccountSummaryAllReportsQuery(
+  const { data: allData, } = useGetAccountSummaryAllReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
+      
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
-      accountSummary_code: filterData.accountSummary_code || '',
+     
     },
     { skip: !inShowAllMode }
   );
@@ -94,12 +89,12 @@ function AccountSummaryReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedAccountSummaryData(allData.accountSummarys || []);
+      setModifiedAccountSummaryData(allData.agents || []);
       setInSiglePageMode(false);
 			setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.accountSummarys,
+        allData.agents,
         size,
         page
       );
@@ -109,7 +104,7 @@ function AccountSummaryReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
 
-      setModifiedAccountSummaryData(paginatedData.accountSummarys || []);
+      setModifiedAccountSummaryData(paginatedData.agents || []);
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -134,7 +129,7 @@ function AccountSummaryReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching accountSummarys:', error);
+      console.error('Error fetching agents:', error);
     }
   }, []);
 
@@ -142,23 +137,20 @@ function AccountSummaryReportsTable(props) {
     try {
       
     } catch (error) {
-      console.error('Error fetching all accountSummarys:', error);
+      console.error('Error fetching all agents:', error);
     }
   }, []);
 
 
   const filteredData = {
-    Group: getValues()?.groupName || null,
-    District: getValues()?.districtName || null,
-    Username: getValues()?.username || null,
+    
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
       : null,
-    Primary_phone: getValues()?.primary_phone || null,
-    accountSummary_code: getValues()?.accountSummary_code || null,
+   
   };
 
   return (
