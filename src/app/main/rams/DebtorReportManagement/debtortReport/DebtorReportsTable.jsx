@@ -144,19 +144,17 @@ const handleExelDownload = () => {
     try {
       const page = newPage || 1;
       setPage(page);
-      await refetchAgentReports();
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
-  }, [refetchAgentReports]);
+  }, []);
 
   const handleGetAllDrebtors = useCallback(async () => {
     try {
-      await refetchAllDrebtorReports();
     } catch (error) {
       console.error('Error fetching all drebtors:', error);
     }
-  }, [refetchAllDrebtorReports]);
+  }, []);
 
 
   const filteredData = {
