@@ -157,7 +157,6 @@ function ReceiptSummaryReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-      await refetchAgentReports();
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
@@ -165,11 +164,10 @@ function ReceiptSummaryReportsTable(props) {
 
   const handleGetAllReceiptSummarys = useCallback(async () => {
     try {
-      await refetchAllReceiptSummaryReports();
     } catch (error) {
       console.error('Error fetching all receiptSummarys:', error);
     }
-  }, [refetchAllReceiptSummaryReports]);
+  }, []);
 
 
 

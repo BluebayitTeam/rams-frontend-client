@@ -151,19 +151,19 @@ function ReceiptReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-      await refetchAgentReports();
+     
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
-  }, [refetchAgentReports]);
+  }, []);
 
   const handleGetAllReceipts = useCallback(async () => {
     try {
-      await refetchAllReceiptReports();
+     
     } catch (error) {
       console.error('Error fetching all receipts:', error);
     }
-  }, [refetchAllReceiptReports]);
+  }, []);
 
 
   const filteredData = {

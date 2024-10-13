@@ -157,22 +157,20 @@ const handleGetPayments = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
-      await refetchPaymentReports();
     } catch (error) {
       console.error('Error fetching payment_vouchers:', error);
     }
-  }, [refetchPaymentReports]);
+  }, []);
 
 
 
   const handleGetAllPayments = useCallback(async () => {
     try {
       
-      await refetchAllPaymentReports();
     } catch (error) {
       console.error('Error fetching all payment_vouchers:', error);
     }
-  }, [refetchAllPaymentReports]);
+  }, []);
 
 
   const filteredData = {
