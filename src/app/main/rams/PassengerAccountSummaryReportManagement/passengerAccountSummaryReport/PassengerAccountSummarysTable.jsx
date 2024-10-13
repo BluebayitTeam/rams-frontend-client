@@ -167,20 +167,18 @@ function PassengerAccountSummaryReportsTable(props) {
 		try {
 		  const page = newPage || 1;
 		  setPage(page);
-		  await refetchPassengerAccountSummary();
 		} catch (error) {
 		  console.error('Error fetching agents:', error);
 		}
-	  }, [refetchPassengerAccountSummary]);
+	  }, []);
 
 
 	  const handleGetAllPassengerAccountSummarys = useCallback(async () => {
 		try {
-		  await refetchAllPassengerAccountSummary();
 		} catch (error) {
 		  console.error('Error fetching all foreignLedgers:', error);
 		}
-	  }, [refetchAllPassengerAccountSummary]);
+	  }, []);
 
     const agentName = paginatedData?.agent?.first_name
 	const district = paginatedData?.agent?.city?.name

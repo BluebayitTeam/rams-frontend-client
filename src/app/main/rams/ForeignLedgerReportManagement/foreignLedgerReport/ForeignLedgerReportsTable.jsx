@@ -113,9 +113,7 @@ function ForeignLedgerReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-
- 
-  useEffect(() => {
+useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedForeignLedgerData(allData.account_logs || []);
       setTotalCdAmount(allData.total_credit_amount );
