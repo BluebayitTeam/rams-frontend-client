@@ -116,33 +116,41 @@ function AccountSummaryReportsTable(props) {
   
 
   return (
-    <>
+    < >
     <div className={classes.headContainer}>
       {/* filter */}
       <FormProvider {...methods}>
         <AccountSummaryFilterMenu handleGetAccountSummarys={handleGetAccountSummarys} />
       </FormProvider>
     </div>
-    <div className={`${classes.menubar} justify-start md:justify-center`}>
-      {/* print icon*/}
-      <PrintIcon
-        className="cursor-pointer inside icon"
-        style={{ padding: '6px', border: inPrint && '1px solid' }}
-        onClick={() => handlePrint()}
-      />
-      <Controller
-        name="is_branch_show"
-        control={control}
-        render={({ field }) => (
-          <FormControl>
-            <FormControlLabel
-              label="Is Branch Show"
-              control={<Checkbox {...field} checked={field.value ? field.value : false} />}
+    <div className={`${classes.menubar} justify-start md:justify-center`} style={{ backgroundColor: '#c2c7f1' }}>
+  {/* Print icon */}
+  <PrintIcon
+    className="cursor-pointer inside icon"
+    style={{ padding: '6px', border: inPrint ? '1px solid' : 'none' }} // Use conditional rendering for the border
+    onClick={handlePrint} // No need for arrow function if you're passing the function directly
+  />
+  
+  <Controller
+    name="is_branch_show"
+    control={control}
+    render={({ field }) => (
+      <FormControl>
+        <FormControlLabel
+          label="Is Branch Show"
+          control={
+            <Checkbox
+              {...field}
+              checked={!!field.value} // Ensure it always returns a boolean
+              onChange={(e) => field.onChange(e.target.checked)} // Handle checkbox state change correctly
             />
-          </FormControl>
-        )}
-      />
-    </div>
+          }
+        />
+      </FormControl>
+    )}
+  />
+</div>
+
 
     <table id="table-to-xls" className="w-full " style={{ minHeight: '270px' }}>
       {data?.balance_details && (
