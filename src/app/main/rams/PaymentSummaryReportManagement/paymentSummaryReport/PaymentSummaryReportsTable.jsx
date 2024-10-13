@@ -158,19 +158,17 @@ function PaymentSummaryReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-      await refetchAgentReports();
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
-  }, [refetchAgentReports]);
+  }, []);
 
   const handleGetAllPaymentSummarys = useCallback(async () => {
     try {
-      await refetchAllPaymentSummaryReports();
     } catch (error) {
       console.error('Error fetching all paymentSummarys:', error);
     }
-  }, [refetchAllPaymentSummaryReports]);
+  }, []);
 
 
   const filteredData = {
