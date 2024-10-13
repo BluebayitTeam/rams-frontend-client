@@ -34,17 +34,17 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
        {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_after'
+          name='start_date'
           label='Date From'
-          maxDate={values.date_before || new Date()}
+          maxDate={values.end_date || new Date()}
         />
 
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
+          name='end_date'
           label='Date To'
-          minDate={values.date_after}
+          minDate={values.start_date}
           maxDate={new Date()}
         />
       </div>
@@ -54,14 +54,14 @@ function AccountSummaryFilterMenu({ inShowAllMode, handleGetAccountSummarys, han
       <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_after'
+          name='start_date'
           label='Date From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_before'
+          name='end_date'
           label='Date To'
         />
       </div>

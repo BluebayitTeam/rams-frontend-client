@@ -66,8 +66,8 @@ function AccountSummaryReportsTable(props) {
   const { data: paginatedData,  } = useGetAccountSummaryReportsQuery(
     {
       
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
+      start_date: filterData.start_date || '',
+      end_date: filterData.end_date || '',
      
       page,
       size,
@@ -78,8 +78,8 @@ function AccountSummaryReportsTable(props) {
   const { data: allData, } = useGetAccountSummaryAllReportsQuery(
     {
       
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
+      start_date: filterData.start_date || '',
+      end_date: filterData.end_date || '',
      
     },
     { skip: !inShowAllMode }
@@ -144,11 +144,11 @@ function AccountSummaryReportsTable(props) {
 
   const filteredData = {
     
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
+    Date_To: getValues()?.end_date
+      ? moment(new Date(getValues()?.end_date)).format("DD-MM-YYYY")
       : null,
-    Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
+    Date_From: getValues()?.start_date
+      ? moment(new Date(getValues()?.start_date)).format("DD-MM-YYYY")
       : null,
    
   };
