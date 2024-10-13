@@ -38,13 +38,9 @@ function AccountSummaryReportsTable(props) {
 
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalElements, setTotalElements] = useState(0);
-  const [pagination, setPagination] = useState(false);
 	const [inPrint, setInPrint] = useState(false);
 	const { authTOKEN } = useUserInfo();
 
-  const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
@@ -62,34 +58,7 @@ function AccountSummaryReportsTable(props) {
     { skip: inShowAllMode }
   );
   
-
-  // const { data: allData, } = useGetAccountSummaryAllReportsQuery(
-  //   {
-      
-  //     start_date: filterData.start_date || '',
-  //     end_date: filterData.end_date || '',
-     
-  //   },
-  //   { skip: !inShowAllMode }
-  // );
-
-
-  // useEffect(() => {
-  //   if (!inShowAllMode && data) {
-
-  //     setModifiedAccountSummaryData(data.agents || []);
-  //     setPage(data?.page || 1);
-	// 		setSize(data?.size || 25);
-  //     setTotalPages(data.total_pages || 0);
-  //     setTotalElements(data.total_elements || 0);
-  //     setPagination(true);
-  //     setInSiglePageMode(true);
-	// 		setInShowAllMode(false);
-      
-  //   }
-  // }, [ data, size, page]);
-
- //get general setting data
+//get general setting data
  useEffect(() => {
   fetch(`${GET_SITESETTINGS}`, authTOKEN)
     .then(response => response.json())
@@ -110,12 +79,7 @@ function AccountSummaryReportsTable(props) {
     }
   }, []);
 
-
-
-
-  
-
-  return (
+return (
     < >
     <div className={classes.headContainer}>
       {/* filter */}
@@ -127,8 +91,8 @@ function AccountSummaryReportsTable(props) {
   {/* Print icon */}
   <PrintIcon
     className="cursor-pointer inside icon"
-    style={{ padding: '6px', border: inPrint ? '1px solid' : 'none' }} // Use conditional rendering for the border
-    onClick={handlePrint} // No need for arrow function if you're passing the function directly
+    style={{ padding: '6px', border: inPrint ? '1px solid' : 'none' }} 
+    onClick={handlePrint} 
   />
   
   <Controller
@@ -141,8 +105,8 @@ function AccountSummaryReportsTable(props) {
           control={
             <Checkbox
               {...field}
-              checked={!!field.value} // Ensure it always returns a boolean
-              onChange={(e) => field.onChange(e.target.checked)} // Handle checkbox state change correctly
+              checked={!!field.value} 
+              onChange={(e) => field.onChange(e.target.checked)} 
             />
           }
         />
