@@ -136,7 +136,7 @@ function AgentReportsTable(props) {
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
-  }, [refetchAgentReports]);
+  }, []);
 
   const handleGetAllAgents = useCallback(async () => {
     try {
@@ -144,7 +144,7 @@ function AgentReportsTable(props) {
     } catch (error) {
       console.error('Error fetching all agents:', error);
     }
-  }, [refetchAllAgentReports]);
+  }, []);
 
 
   const filteredData = {
