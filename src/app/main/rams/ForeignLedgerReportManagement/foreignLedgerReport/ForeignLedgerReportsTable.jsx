@@ -150,13 +150,7 @@ function ForeignLedgerReportsTable(props) {
 
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
-
-
-
-
-  
-
-  const handleExelDownload = () => {
+const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
 
@@ -168,19 +162,17 @@ function ForeignLedgerReportsTable(props) {
     try {
       const page = newPage || 1;
       setPage(page);
-      await refetchAgentReports();
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
-  }, [refetchAgentReports]);
+  }, []);
 
   const handleGetAllForeignLedgers = useCallback(async () => {
     try {
-      await refetchAllForeignLedgerReports();
     } catch (error) {
       console.error('Error fetching all foreignLedgers:', error);
     }
-  }, [refetchAllForeignLedgerReports]);
+  }, []);
 
 
   const AgentName = paginatedData?.agent?.first_name || 'N/A';

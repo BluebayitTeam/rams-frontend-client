@@ -140,10 +140,7 @@ function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handl
 					name="account_type"
 					icon="text_fields"
 				/>
-       
-
-        
-      </div>
+       </div>
     </div>
   );
 }
