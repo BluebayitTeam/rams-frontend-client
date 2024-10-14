@@ -121,6 +121,7 @@ import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
+import ReportClmAppConfig from '../rams/ReportClmsManagement/ReportClmAppConfig';
 
 /**
  * The list of application configurations.
@@ -205,6 +206,7 @@ const appsConfigs = [
   CallingEntryAppConfig,
   CreditorReportAppConfig,
   ColumnAppConfig,
+  ReportClmAppConfig,
   MedicalAppConfig,
   ManPowerAppConfig,
   EmployeeAppConfig,
