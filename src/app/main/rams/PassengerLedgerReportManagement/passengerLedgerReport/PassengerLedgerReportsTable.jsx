@@ -94,7 +94,7 @@ function PassengerLedgerReportsTable(props) {
   const [modifiedPassengerLedgerBillDetailData, setModifiedPassengerLedgerBillDetailData] = useReportData();
   const [modifiedPassengerLedgerCostDetailData, setModifiedPassengerLedgerCostDetailData,] = useReportData();
 
-  console.log('modifiedPassengerLedgerCostDetailData', modifiedPassengerLedgerCostDetailData);
+  console.log('modifiedPassengerLedgerCostDetailData', modifiedPassengerLedgerBillDetailData);
 
 const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -164,6 +164,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
       {  skip: inShowAllMode  }
     );
 
+
     const { data:CostDetailData} = useGetPassengerLedgerCostDetailDataReportsQuery(
       {
         
@@ -178,9 +179,8 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
       {  skip: inShowAllMode  }
     );
 
-    console.log('CostDetailData', CostDetailData?.purchases);
 
-    const totalData = useSelector(selectFilteredPassengerLedgerReports(paginatedData));
+    const totalData = useSelector(selectFilteredPassengerLedgerReports());
 
 
     useEffect(() => {
@@ -225,51 +225,29 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
         setInShowAllMode(false);
     
       } else if (!inShowAllMode && BillDetailData) {
-        
         setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
-     
-        setTotalCdAmount(BillDetailData.total_credit_amount|| 0);
-        setTotalDbAmount(BillDetailData.total_debit_amount || 0);
-        setTotalBAlance(BillDetailData.total_amount?.toFixed(2) || 0.0);
-  
-        setDateFrom(BillDetailData?.date_after);
-  
-        setDateTo(BillDetailData?.date_before);
-  
         setPage(BillDetailData?.page || 1);
         setSize(BillDetailData?.size || 25);
         setTotalPages(BillDetailData.total_pages || 0);
         setTotalElements(BillDetailData.total_elements || 0);
-        setPagination(true);
         setInSiglePageMode(true);
         setInShowAllMode(false);
     
        }
-      // else if (!inShowAllMode && CostDetailData) {
-        
-      //   setModifiedPassengerLedgerCostDetailData(CostDetailData?.purchases || []);
+      else if (!inShowAllMode && CostDetailData) {
+        setModifiedPassengerLedgerCostDetailData(CostDetailData?.purchases || []);
+        setPage(CostDetailData?.page || 1);
+        setSize(CostDetailData?.size || 25);
+        setTotalPages(CostDetailData.total_pages || 0);
+        setTotalElements(CostDetailData.total_elements || 0);
      
-      //   setTotalCdAmount(CostDetailData.total_credit_amount|| 0);
-      //   setTotalDbAmount(CostDetailData.total_debit_amount || 0);
-      //   setTotalBAlance(CostDetailData.total_amount?.toFixed(2) || 0.0);
-  
-      //   setDateFrom(CostDetailData?.date_after);
-  
-      //   setDateTo(CostDetailData?.date_before);
-  
-      //   setPage(CostDetailData?.page || 1);
-      //   setSize(CostDetailData?.size || 25);
-      //   setTotalPages(CostDetailData.total_pages || 0);
-      //   setTotalElements(CostDetailData.total_elements || 0);
-      //   setPagination(true);
-      //   setInSiglePageMode(true);
-      //   setInShowAllMode(false);
+        setInSiglePageMode(true);
+        setInShowAllMode(false);
     
-      // }
+      }
       }, [inShowAllMode, allData, paginatedData,BillDetailData,CostDetailData, size, page]);
-  
 
-  useEffect(() => {
+useEffect(() => {
     if (totalData) {
       setModifiedPassengerLedgerData(totalData?.account_logs);
       setModifiedPassengerLedgerBillDetailData(totalData?.sales);
@@ -291,7 +269,9 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
 
 
   const handleGetPassengerLedgers = useCallback(async (newPage) => {
+    
 		try {
+
 		  const page = newPage || 1;
 		  setPage(page);
 		} catch (error) {
@@ -439,7 +419,45 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
         </tbody>
       </table>
 
+{/* Passenger Bill Details Report  */}
 
+<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
+				<div id="downloadPage">
+					{/* each single page (table) */}
+
+					{modifiedPassengerLedgerBillDetailData.map((sales, index) => (
+						<SiglePageLedgerReport
+							classes={classes}
+							
+							reportTitle="Bill Details"
+							tableColumns={billDetailstableColumns}
+							dispatchTableColumns={dispatchBillDetailsTableColumns}
+              data={{
+                ...sales,
+                data: [
+                  ...sales?.data,
+                  {
+                    credit_amount: totalCdAmount?.toFixed(2)|| '0.00', 
+                    debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
+                    
+                    balance:totalBAlance,
+                    details: 'Total Balance',
+
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 }
+                  },
+                ],
+              }}
+							serialNumber={sales.page * sales.size - sales.size + 1}
+               
+							setPage={setPage}
+							 inSiglePageMode={inSiglePageMode}
+							
+							// setSortBySubKey={setSortBySubKey}
+						/>
+					))}
+				</div>
+			</table>
 
     </div>
   );
