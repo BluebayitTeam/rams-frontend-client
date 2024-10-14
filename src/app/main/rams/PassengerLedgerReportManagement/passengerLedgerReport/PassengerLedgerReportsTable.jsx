@@ -94,7 +94,7 @@ function PassengerLedgerReportsTable(props) {
   const [modifiedPassengerLedgerBillDetailData, setModifiedPassengerLedgerBillDetailData] = useReportData();
   const [modifiedPassengerLedgerCostDetailData, setModifiedPassengerLedgerCostDetailData,] = useReportData();
 
-  console.log('modifiedPassengerLedgerCostDetailData', modifiedPassengerLedgerBillDetailData);
+  console.log('modifiedPassengerLedgerBillDetailData', modifiedPassengerLedgerBillDetailData);
 
 const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -224,27 +224,32 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
         setInSiglePageMode(true);
         setInShowAllMode(false);
     
-      } else if (!inShowAllMode && BillDetailData) {
-        setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
-        setPage(BillDetailData?.page || 1);
-        setSize(BillDetailData?.size || 25);
-        setTotalPages(BillDetailData.total_pages || 0);
-        setTotalElements(BillDetailData.total_elements || 0);
-        setInSiglePageMode(true);
-        setInShowAllMode(false);
+      } 
+      
+      
+      
+      // else if (!inShowAllMode && BillDetailData) {
+      //   setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
+      //   setPage(BillDetailData?.page || 1);
+      //   setSize(BillDetailData?.size || 25);
+      //   setTotalPages(BillDetailData.total_pages || 0);
+      //   setTotalElements(BillDetailData.total_elements || 0);
+      //   setInSiglePageMode(true);
+      //   setInShowAllMode(false);
     
-       }
-      else if (!inShowAllMode && CostDetailData) {
-        setModifiedPassengerLedgerCostDetailData(CostDetailData?.purchases || []);
-        setPage(CostDetailData?.page || 1);
-        setSize(CostDetailData?.size || 25);
-        setTotalPages(CostDetailData.total_pages || 0);
-        setTotalElements(CostDetailData.total_elements || 0);
+      //  }
+      // else if (!inShowAllMode && CostDetailData) {
+      //   setModifiedPassengerLedgerCostDetailData(CostDetailData?.purchases || []);
+      //   setPage(CostDetailData?.page || 1);
+      //   setSize(CostDetailData?.size || 25);
+      //   setTotalPages(CostDetailData.total_pages || 0);
+      //   setTotalElements(CostDetailData.total_elements || 0);
      
-        setInSiglePageMode(true);
-        setInShowAllMode(false);
+      //   setInSiglePageMode(true);
+      //   setInShowAllMode(false);
     
-      }
+      // }
+
       }, [inShowAllMode, allData, paginatedData,BillDetailData,CostDetailData, size, page]);
 
 useEffect(() => {
@@ -278,6 +283,14 @@ useEffect(() => {
 		  console.error('Error fetching agents:', error);
 		}
 	  }, []);
+
+
+
+
+
+
+
+
 	
 	  const handleGetAllPassengerLedgers = useCallback(async () => {
 		try {
@@ -296,6 +309,35 @@ useEffect(() => {
         console.error('Error fetching agents:', error);
       }
       }, []);
+
+
+  //   	const handleGetPassengerLedgerBillDetails = async (newPage) => {
+   
+
+  //   try {
+  //     const formValues = getValues();
+  //     const page = newPage || 1;
+  //     setPage(page);
+
+  //     const response = await BillDetailData({ ...formValues, page, size }); 
+
+  //     console.log('response121212121', response);
+
+  //     if (response?.data) {
+  //       unstable_batchedUpdates(() => {
+  //         const passengerLedgersData = response.data?.sales || [];
+  //         setModifiedPassengerLedgerBillDetailData(passengerLedgersData);
+  //         setInShowAllMode(false);
+  //         setTotalPages(response.data?.total_pages);
+  //         setTotalElements(response.data?.total_elements);
+  //         setInSiglePageMode(true);
+  //         setInShowAllMode(false);
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching account_logs:', error);
+  //   }
+  // };
 
 
       const handleGetPassengerLedgerCostDetails = useCallback(async (params) => {
