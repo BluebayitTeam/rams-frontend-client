@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, handleGetAllPassengerLedgers }) {
+function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, handleGetAllPassengerLedgers,handleGetPassengerLedgerBillDetails,
+	handleGetPassengerLedgerCostDetails, }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -22,20 +23,26 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 	const { getValues,setValue } = methods;
 
 	const theme = useTheme();
-	const { passengers, cities } = useSelector((state) => state.data);
+	const { passengers } = useSelector((state) => state.data);
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
 	console.log('Passenger Values:', getValues());
 
 	
 
-	const commonFieldProps = {
-		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllPassengerLedgers() : handleGetPassengerLedgers())
-	};
+  const commonFieldProps = {
+    setReRender,
+    onEnter: () => 
+      inShowAllMode 
+        ? handleGetAllPassengerLedgers() 
+        : handleGetPassengerLedgers() 
+          ? handleGetPassengerLedgerBillDetails() 
+          : handleGetPassengerLedgerCostDetails()
+  };
+  
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllPassengerLedgers() : handleGetPassengerLedgers())
+		onClick: () => (inShowAllMode ? handleGetAllPassengerLedgers() : handleGetPassengerLedgers()? handleGetPassengerLedgerBillDetails() : handleGetPassengerLedgerCostDetails())
 	};
 
 	useEffect(() => {
