@@ -10,8 +10,12 @@ export const BASE_URL = isProduction
 
 // export const BASE_URL = isProduction ? 'https://rl1010api.ramsbd.net' : 'https://rl1010api.ramsbd.net/';
 
-export const CLIENT_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.119:3000';
-export const ADMIN_URL = isProduction ? 'https://rl7811api.ramsbd.net' : 'http://192.168.0.117:8008';
+export const CLIENT_URL = isProduction
+  ? 'https://rl7811api.ramsbd.net'
+  : 'http://192.168.0.119:3000';
+export const ADMIN_URL = isProduction
+  ? 'https://rl7811api.ramsbd.net'
+  : 'http://192.168.0.117:8008';
 export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
 export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
 
@@ -2026,9 +2030,9 @@ export const GET_COMPANY_OVERVIEW_REPORT_WITHOUT_PG = `${BASE_URL}/report/api/v1
 
 // pamemoemtrmpfl_report_column
 
-export const GET_REPORT_COLUMN = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/`;
+// export const GET_REPORT_COLUMN = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/`;
 
-export const UPDATE_REPORT_COLUMN = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/update/`;
+// export const UPDATE_REPORT_COLUMN = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/update/`;
 
 // receipt voucher
 export const POSTDATE_FILTER_BY = `${BASE_URL}/postdate_cheque/api/v1/postdate_cheque/filter/`;
@@ -2364,3 +2368,18 @@ export const UPDATE_CLIENT_TYPE = `${BASE_URL}/client_type/api/v1/client_type/up
 export const DELETE_CLIENT_TYPE = `${BASE_URL}/client_type/api/v1/client_type/delete/`;
 
 export const SEARCH_CLIENT_TYPE = `${BASE_URL}/client_type/api/v1/client_type/search/`;
+
+//  Report Column
+export const CREATE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/create/`;
+
+export const REPORT_COLUMN_REPORT_COLUMN = `${BASE_URL}/client_column_client_column/api/v1/client_column_client_column/`;
+
+export const GET_REPORT_COLUMNS = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/all/`;
+
+export const GET_REPORT_COLUMN_BY_ID = `${BASE_URL}/table_column_settings_for_report_settings/api/v1/table_column_settings_for_report_settings/`;
+
+export const UPDATE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report_settings/api/v1/table_column_settings_for_report_settings/update/`;
+
+export const DELETE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/delete/`;
+
+export const SEARCH_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/search/`;

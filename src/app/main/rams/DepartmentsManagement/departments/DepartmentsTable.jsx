@@ -16,156 +16,162 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import DepartmentsTableHead from './DepartmentsTableHead';
-import { selectFilteredDepartments, useGetDepartmentsQuery } from '../DepartmentsApi';
+import {
+  selectFilteredDepartments,
+  useGetDepartmentsQuery,
+} from '../DepartmentsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The departments table.
  */
 function DepartmentsTable(props) {
-	const dispatch = useDispatch();
-	const { navigate, searchKey } = props;
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetDepartmentsQuery({ ...pageAndSize, searchKey });
-	const totalData = useSelector(selectFilteredDepartments(data));
-	const departments = useSelector(selectFilteredDepartments(data?.departments));
-	let serialNumber = 1;
+  const dispatch = useDispatch();
+  const { navigate, searchKey } = props;
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const { data, isLoading, refetch } = useGetDepartmentsQuery({
+    ...pageAndSize,
+    searchKey,
+  });
+  const totalData = useSelector(selectFilteredDepartments(data));
+  const departments = useSelector(selectFilteredDepartments(data?.departments));
+  let serialNumber = 1;
 
-	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
+  useEffect(() => {
+    // Fetch data with specific page and size when component mounts or when page and size change
+    refetch({ page, rowsPerPage });
+  }, [page, rowsPerPage]);
 
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
-	const [selected, setSelected] = useState([]);
+  useEffect(() => {
+    refetch({ searchKey });
+  }, [searchKey]);
+  const [selected, setSelected] = useState([]);
 
-	const [tableOrder, setTableOrder] = useState({
-		direction: 'asc',
-		id: ''
-	});
+  const [tableOrder, setTableOrder] = useState({
+    direction: 'asc',
+    id: '',
+  });
 
-	function handleRequestSort(event, property) {
-		const newOrder = { id: property, direction: 'desc' };
+  function handleRequestSort(event, property) {
+    const newOrder = { id: property, direction: 'desc' };
 
-		if (tableOrder.id === property && tableOrder.direction === 'desc') {
-			newOrder.direction = 'asc';
-		}
+    if (tableOrder.id === property && tableOrder.direction === 'desc') {
+      newOrder.direction = 'asc';
+    }
 
-		setTableOrder(newOrder);
-	}
+    setTableOrder(newOrder);
+  }
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(departments.map((n) => n.id));
-			return;
-		}
+  function handleSelectAllClick(event) {
+    if (event.target.checked) {
+      setSelected(departments.map((n) => n.id));
+      return;
+    }
 
-		setSelected([]);
-	}
+    setSelected([]);
+  }
 
-	function handleDeselect() {
-		setSelected([]);
-	}
+  function handleDeselect() {
+    setSelected([]);
+  }
 
-	function handleClick(item) {
-		navigate(`/apps/department/departments/${item.id}/${item.handle}`);
-	}
+  function handleClick(item) {
+    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+  }
 
-	function handleUpdateDepartment(item, event) {
-		localStorage.removeItem('deleteDepartment');
-		localStorage.setItem('updateDepartment', event);
-		navigate(`/apps/department/departments/${item.id}/${item.handle}`);
-	}
+  function handleUpdateDepartment(item, event) {
+    localStorage.removeItem('deleteDepartment');
+    localStorage.setItem('updateDepartment', event);
+    // navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+    navigate(`/apps/reportClm/reportClms/passenger`);
+  }
 
-	function handleDeleteDepartment(item, event) {
-		localStorage.removeItem('updateDepartment');
-		localStorage.setItem('deleteDepartment', event);
-		navigate(`/apps/department/departments/${item.id}/${item.handle}`);
-	}
+  function handleDeleteDepartment(item, event) {
+    localStorage.removeItem('updateDepartment');
+    localStorage.setItem('deleteDepartment', event);
+    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
+  }
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+  function handleCheck(event, id) {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
 
-		setSelected(newSelected);
-	}
+    setSelected(newSelected);
+  }
 
-	// pagination
-	const handlePagination = (e, handlePage) => {
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
-	};
+  // pagination
+  const handlePagination = (e, handlePage) => {
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
+  };
 
-	function handleChangePage(event, value) {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
-	}
+  function handleChangePage(event, value) {
+    setPage(value);
+    setPageAndSize({ ...pageAndSize, page: value + 1 });
+  }
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(+event.target.value);
-		setPageAndSize({ ...pageAndSize, size: event.target.value });
-	}
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPageAndSize({ ...pageAndSize, size: event.target.value });
+  }
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
-	if (departments?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no departments!
-				</Typography>
-			</motion.div>
-		);
-	}
+  if (departments?.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There are no departments!
+        </Typography>
+      </motion.div>
+    );
+  }
 
-	return (
-		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
-					stickyHeader
-					className="min-w-xl"
-					aria-labelledby="tableTitle"
-				>
-					<DepartmentsTableHead
-						selectedDepartmentIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={departments.length}
-						onMenuItemClick={handleDeselect}
-					/>
+  return (
+    <div className='w-full flex flex-col min-h-full px-10'>
+      <FuseScrollbars className='grow overflow-x-auto'>
+        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+          <DepartmentsTableHead
+            selectedDepartmentIds={selected}
+            tableOrder={tableOrder}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={departments.length}
+            onMenuItemClick={handleDeselect}
+          />
 
-					<TableBody>
-						{_.orderBy(departments, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
+          <TableBody>
+            {_.orderBy(
+              departments,
+              [tableOrder.id],
+              [tableOrder.direction]
+            ).map((n) => {
+              const isSelected = selected.indexOf(n.id) !== -1;
+              return (
                 <TableRow
                   className='h-20 cursor-pointer border-t-1  border-gray-200'
                   hover
@@ -225,44 +231,44 @@ function DepartmentsTable(props) {
                   </TableCell>
                 </TableRow>
               );
-						})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
+            })}
+          </TableBody>
+        </Table>
+      </FuseScrollbars>
 
-			<div id="pagiContainer">
-				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
+      <div id='pagiContainer'>
+        <Pagination
+          // classes={{ ul: 'flex-nowrap' }}
+          count={totalData?.total_pages}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
 
-				<TablePagination
-					className="shrink-0 border-t-1"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_pages}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</div>
-		</div>
-	);
+        <TablePagination
+          className='shrink-0 border-t-1'
+          component='div'
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalData?.total_pages}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(DepartmentsTable);

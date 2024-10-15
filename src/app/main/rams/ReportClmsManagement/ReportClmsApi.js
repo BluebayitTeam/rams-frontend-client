@@ -5,8 +5,8 @@ import {
   ALL_USERS,
   CREATE_CLIENT,
   GET_CLIENTS,
-  GET_COLUMN_BY_ID,
-  UPDATE_COLUMN,
+  GET_REPORT_COLUMN_BY_ID,
+  UPDATE_REPORT_COLUMN,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -35,13 +35,13 @@ const ReportClmApi = api
 
       getReportClm: build.query({
         query: (reportClmId) => ({
-          url: `${GET_COLUMN_BY_ID}${reportClmId}`,
+          url: `${GET_REPORT_COLUMN_BY_ID}${reportClmId}`,
         }),
         providesTags: ['reportClms'],
       }),
       updateReportClm: build.mutation({
         query: (data) => ({
-          url: `${UPDATE_COLUMN}${data?.type}/`,
+          url: `${UPDATE_REPORT_COLUMN}${data?.type}/`,
           method: 'PUT',
           data,
         }),
