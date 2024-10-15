@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -15,9 +14,8 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredAccountStatementReports,
   useGetAccountStatementAllReportsQuery,
-  useGetAccountStatementReportsQuery,
+  useGetAccountStatementReportsQuery
 } from '../AccountStatementReportsApi';
 import AccountStatementFilterMenu from './AccountStatementFilterMenu';
 
@@ -61,37 +59,32 @@ function AccountStatementReportsTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  const filterData = watch();
+  
 
   const { data: paginatedData,  } = useGetAccountStatementReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
-      accountStatement_code: filterData.accountStatement_code || '',
-      page,
-      size,
+      date_after: watch('date_after') || '',
+      date_before: watch('date_before') || '',
+      ledger: watch('ledger') || '',
+      sub_ledger: watch('sub_ledger') || '',
+      account_type: watch('account_type') || '',
+		  page,
+		  size,
     },
     { skip: inShowAllMode }
   );
   
   const { data: allData, } = useGetAccountStatementAllReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
-      accountStatement_code: filterData.accountStatement_code || '',
+      date_after: watch('date_after') || '',
+      date_before: watch('date_before') || '',
+      ledger: watch('ledger') || '',
+      sub_ledger: watch('sub_ledger') || '',
+      account_type: watch('account_type') || '',
     },
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredAccountStatementReports);
 
   useEffect(() => {
     if (inShowAllMode && allData) {
@@ -149,17 +142,11 @@ function AccountStatementReportsTable(props) {
 
 
   const filteredData = {
-    Group: getValues()?.groupName || null,
-    District: getValues()?.districtName || null,
-    Username: getValues()?.username || null,
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
-      : null,
-    Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
-      : null,
-    Primary_phone: getValues()?.primary_phone || null,
-    accountStatement_code: getValues()?.accountStatement_code || null,
+    Account: getValues()?.account_typeName || null,
+		Ledger: getValues()?.ledgerName || null,
+		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
+		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
+		Sub_Ledger: getValues()?.sub_ledgerName || null
   };
 
   return (
