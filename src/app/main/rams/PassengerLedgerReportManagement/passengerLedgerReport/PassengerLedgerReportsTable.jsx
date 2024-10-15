@@ -365,9 +365,7 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
   
   };
 
-
-
-  return (
+return (
     <div className={classes.headContainer}>
       {/* Filter */}
       <FormProvider {...methods}>
