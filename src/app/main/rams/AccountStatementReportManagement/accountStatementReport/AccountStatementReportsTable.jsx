@@ -26,12 +26,35 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true , },
-  { id: 2, label: 'Name', name: 'username', show: true },
-  { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', show: true ,		},  
-  { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true, },
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true },
+	{ id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
+	{ id: 5, label: 'Details', name: 'details', show: true },
+	{
+		id: 7,
+		label: 'Receipt',
+		name: 'debit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	},
+	{
+		id: 6,
+		label: 'Payment',
+		name: 'credit_amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	},
+	{
+		id: 8,
+		label: 'Balance',
+		name: 'balance',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	}
 ];
 
 function AccountStatementReportsTable(props) {
@@ -88,12 +111,12 @@ function AccountStatementReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedAccountStatementData(allData.accountStatements || []);
+      setModifiedAccountStatementData(allData?.account_logs || []);
       setInSiglePageMode(false);
 			setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.accountStatements,
+        allData?.account_logs,
         size,
         page
       );
@@ -103,7 +126,7 @@ function AccountStatementReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
 
-      setModifiedAccountStatementData(paginatedData.accountStatements || []);
+      setModifiedAccountStatementData(paginatedData?.account_logs || []);
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -128,7 +151,7 @@ function AccountStatementReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching accountStatements:', error);
+      console.error('Error fetching account_logs:', error);
     }
   }, []);
 
@@ -136,7 +159,7 @@ function AccountStatementReportsTable(props) {
     try {
       
     } catch (error) {
-      console.error('Error fetching all accountStatements:', error);
+      console.error('Error fetching all account_logs:', error);
     }
   }, []);
 
