@@ -131,7 +131,7 @@ function AccountStatementReportsTable(props) {
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
-      setTotalBAlance(paginatedData.total_balance || 0);
+      setTotalBAlance(paginatedData.total_amount || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
