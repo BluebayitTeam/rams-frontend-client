@@ -7,14 +7,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SiglePageLedgerReport from 'src/app/@components/ReportComponents/SiglePageLedgerReport';
+import SinglePage2 from 'src/app/@components/ReportComponents/SinglePage2';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   selectFilteredPassengerLedgerReports,
+  useGetPassengerLedgerAllReportsQuery,
   useGetPassengerLedgerBillDetailDataReportsQuery,
-  useGetPassengerLedgerCostDetailDataReportsQuery
+  useGetPassengerLedgerCostDetailDataReportsQuery,
+  useGetPassengerLedgerReportsQuery
 } from '../PassengerLedgerReportsApi';
 import PassengerLedgerFilterMenu from './PassengerLedgerFilterMenu';
 
@@ -122,29 +125,29 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
   const componentRef = useRef(null);
 
   // Do not fetch data on mount
-  // const { data:paginatedData} = useGetPassengerLedgerReportsQuery(
-  //   {
+  const { data:paginatedData} = useGetPassengerLedgerReportsQuery(
+    {
       
-  //     date_after: watch('date_after') || '',
-  //     date_before: watch('date_before') || '',
-  //     passenger: watch('passenger') || '',
-  //     account_type: watch('account_type') || '',
+      date_after: watch('date_after') || '',
+      date_before: watch('date_before') || '',
+      passenger: watch('passenger') || '',
+      account_type: watch('account_type') || '',
     
-  //     page,
-  //     size,
-  //   },
-  //   {  skip: inShowAllMode  }
-  // );
+      page,
+      size,
+    },
+    {  skip: inShowAllMode  }
+  );
   
-  // const { data: allData } =useGetPassengerLedgerAllReportsQuery(
-  //     {
-  //       date_after: watch('date_after') || '',
-  //       date_before: watch('date_before') || '',
-  //       passenger: watch('passenger') || '',
-  //       account_type: watch('account_type') || '',
-  //     },
-  //     { skip: !inShowAllMode  }
-  //   );
+  const { data: allData } =useGetPassengerLedgerAllReportsQuery(
+      {
+        date_after: watch('date_after') || '',
+        date_before: watch('date_before') || '',
+        passenger: watch('passenger') || '',
+        account_type: watch('account_type') || '',
+      },
+      { skip: !inShowAllMode  }
+    );
 
 
     const { data:BillDetailData} = useGetPassengerLedgerBillDetailDataReportsQuery(
@@ -155,8 +158,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
         passenger: watch('passenger') || '',
         account_type: watch('account_type') || '',
       
-        page,
-        size,
+      
       },
       {  skip: inShowAllMode  }
     );
@@ -181,50 +183,50 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
 
 
     useEffect(() => {
-      // if (inShowAllMode && allData) {
-      //   setModifiedPassengerLedgerData(allData?.account_logs || []);
+      if (inShowAllMode && allData) {
+        setModifiedPassengerLedgerData(allData?.account_logs || []);
        
-      //     setTotalCdAmount(allData.total_credit ||0 );
-      //     setTotalDbAmount(allData.total_debit ||0);
-      //     setTotalBAlance(allData.total_balance?.toFixed(2) || 0.0);
-      //   setDateFrom(allData?.date_after);
-      //   setDateTo(allData?.date_before);
-      //     setInSiglePageMode(false);
-      //     setInShowAllMode(true);
-      //     setPagination(false)
-      //     const { totalPages, totalElements } = getPaginationData(
-      //   allData.account_logs,
-      //   size,
-      //   page
-      //    );
+          setTotalCdAmount(allData.total_credit ||0 );
+          setTotalDbAmount(allData.total_debit ||0);
+          setTotalBAlance(allData.total_balance?.toFixed(2) || 0.0);
+        setDateFrom(allData?.date_after);
+        setDateTo(allData?.date_before);
+          setInSiglePageMode(false);
+          setInShowAllMode(true);
+          setPagination(false)
+          const { totalPages, totalElements } = getPaginationData(
+        allData.account_logs,
+        size,
+        page
+         );
     
-      //   setPage(page || 1);
-      //   setSize(size || 25);
-      //   setTotalPages(totalPages);
-      //   setTotalElements(totalElements);
-      // }
+        setPage(page || 1);
+        setSize(size || 25);
+        setTotalPages(totalPages);
+        setTotalElements(totalElements);
+      }
       
       
-      // else if (!inShowAllMode && paginatedData) {
-      //   setModifiedPassengerLedgerData(paginatedData?.account_logs || []);
+      else if (!inShowAllMode && paginatedData) {
+        setModifiedPassengerLedgerData(paginatedData?.account_logs || []);
       
-      //   setTotalCdAmount(paginatedData.total_credit|| 0);
-      //   setTotalDbAmount(paginatedData.total_debit || 0);
-      //   setTotalBAlance(paginatedData.total_balance?.toFixed(2) || 0.0);
+        setTotalCdAmount(paginatedData.total_credit|| 0);
+        setTotalDbAmount(paginatedData.total_debit || 0);
+        setTotalBAlance(paginatedData.total_balance?.toFixed(2) || 0.0);
   
-      //   setDateFrom(paginatedData?.date_after);
+        setDateFrom(paginatedData?.date_after);
   
-      //   setDateTo(paginatedData?.date_before);
+        setDateTo(paginatedData?.date_before);
   
-      //   setPage(paginatedData?.page || 1);
-      //   setSize(paginatedData?.size || 25);
-      //   setTotalPages(paginatedData.total_pages || 0);
-      //   setTotalElements(paginatedData.total_elements || 0);
-      //   setPagination(true);
-      //   setInSiglePageMode(true);
-      //   setInShowAllMode(false);
+        setPage(paginatedData?.page || 1);
+        setSize(paginatedData?.size || 25);
+        setTotalPages(paginatedData.total_pages || 0);
+        setTotalElements(paginatedData.total_elements || 0);
+        setPagination(true);
+        setInSiglePageMode(true);
+        setInShowAllMode(false);
     
-      // } 
+      } 
       
       
       
@@ -251,7 +253,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
     
       }
 
-      }, [inShowAllMode,BillDetailData,CostDetailData, size, page]);
+      }, [inShowAllMode,allData,paginatedData,BillDetailData,CostDetailData, size, page]);
 
 useEffect(() => {
     if (totalData) {
@@ -462,7 +464,7 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
 					{/* each single page (table) */}
 
 					{modifiedPassengerLedgerBillDetailData.map((sales, index) => (
-						<SiglePageLedgerReport
+						<SinglePage2
 							classes={classes}
 							
 							reportTitle="Bill Details"
