@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getBranches } from 'app/store/dataSlice';
+import { getBranches, getLedgers, getSubLedgers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,15 +25,17 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
 
   const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ?  handleGetPostDateCheques():null)
+		onEnter: () => (inShowAllMode ?  handleGetPostDateCheques():handleGetAllPostDateCheques)
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ?handleGetPostDateCheques():null)
+		onClick: () => (inShowAllMode ?handleGetPostDateCheques():handleGetAllPostDateCheques)
 	};
 
   useEffect(() => {
 		dispatch(getBranches());
+    dispatch(getLedgers());
+		dispatch(getSubLedgers());
 	}, []);
 
   return (

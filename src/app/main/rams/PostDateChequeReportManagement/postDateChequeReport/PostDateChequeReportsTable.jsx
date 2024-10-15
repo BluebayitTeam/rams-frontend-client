@@ -1,19 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
-import PrintIcon from '@mui/icons-material/Print';
-import { Checkbox, FormControl, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import useUserInfo from 'src/app/@customHooks/useUserInfo';
-import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
+import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
+import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
+import useReportData from 'src/app/@components/ReportComponents/useReportData';
+import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import '../../../rams/print.css';
+
+import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetPostDateChequeReportsQuery
+  selectFilteredPostDateChequeReports,
+  useGetPostDateChequeAllReportsQuery,
+  useGetPostDateChequeReportsQuery,
 } from '../PostDateChequeReportsApi';
 import PostDateChequeFilterMenu from './PostDateChequeFilterMenu';
 
@@ -23,7 +27,24 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
-
+const initialTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Invoice No', name: 'invoice_no', show: true },
+	{ id: 3, label: 'Date', name: 'updated_at', show: true, type: 'date' },
+	{ id: 4, label: 'Issue Date', name: 'pdc_issue_date', show: true, type: 'date' },
+	{ id: 5, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+	{ id: 6, label: 'Status', name: 'status', show: true },
+	{ id: 7, label: 'Bank', name: 'rp_bank_id', show: true },
+	{ id: 8, label: 'Cheque No', name: 'cheque_no', show: true },
+	{
+		id: 9,
+		label: 'Amount',
+		name: 'amount',
+		show: true,
+		style: { justifyContent: 'flex-end', marginRight: '5px' },
+		headStyle: { textAlign: 'right' }
+	}
+];
 function PostDateChequeReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -32,40 +53,88 @@ function PostDateChequeReportsTable(props) {
     resolver: zodResolver(schema),
   });
 
-  const {  watch ,getValues,control  ,setValue } = methods;
+  const {  watch ,getValues } = methods;
 
-  const [generalData, setGeneralData] = useState({});
-
+  const [modifiedPostDateChequeData, setModifiedPostDateChequeData,setSortBy,setSortBySubKey,dragAndDropRow] = useReportData();
+  const [tableColumns, dispatchTableColumns] = useReducer(
+    tableColumnsReducer,
+    initialTableColumnsState
+  );
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
-	const [inPrint, setInPrint] = useState(false);
-	const { authTOKEN } = useUserInfo();
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [pagination, setPagination] = useState(false);
 
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
   const filterData = watch();
 
-  const { data  } = useGetPostDateChequeReportsQuery(
+  const { data: paginatedData,  } = useGetPostDateChequeReportsQuery(
     {
-      
-      start_date: filterData.start_date || '',
-      end_date: filterData.end_date || '',
-     
+      branch: filterData.branch || '',
+      district: filterData.district || '',
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      username: filterData.username || '',
+      primary_phone: filterData.primary_phone || '',
+      postDateCheque_code: filterData.postDateCheque_code || '',
       page,
       size,
     },
     { skip: inShowAllMode }
   );
   
-//get general setting data
- useEffect(() => {
-  fetch(`${GET_SITESETTINGS}`, authTOKEN)
-    .then(response => response.json())
-    .then(data => setGeneralData(data.general_settings[0] || {}))
-    .catch(() => setGeneralData({}));
-  setValue('is_branch_show', true);
-}, []);
+  const { data: allData, } = useGetPostDateChequeAllReportsQuery(
+    {
+      branch: filterData.branch || '',
+      district: filterData.district || '',
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      username: filterData.username || '',
+      primary_phone: filterData.primary_phone || '',
+      postDateCheque_code: filterData.postDateCheque_code || '',
+    },
+    { skip: !inShowAllMode }
+  );
+
+  const totalData = useSelector(selectFilteredPostDateChequeReports);
+
+  useEffect(() => {
+    if (inShowAllMode && allData) {
+      setModifiedPostDateChequeData(allData.postDateCheques || []);
+      setInSiglePageMode(false);
+			setInShowAllMode(true);
+      setPagination(false)
+      const { totalPages, totalElements } = getPaginationData(
+        allData.postDateCheques,
+        size,
+        page
+      );
+      setPage(page || 1);
+			setSize(size || 25);
+      setTotalPages(totalPages);
+      setTotalElements(totalElements);
+    } else if (!inShowAllMode && paginatedData) {
+
+      setModifiedPostDateChequeData(paginatedData.postDateCheques || []);
+      setPage(paginatedData?.page || 1);
+			setSize(paginatedData?.size || 25);
+      setTotalPages(paginatedData.total_pages || 0);
+      setTotalElements(paginatedData.total_elements || 0);
+      setPagination(true);
+      setInSiglePageMode(true);
+			setInShowAllMode(false);
+      
+    }
+  }, [inShowAllMode, allData, paginatedData, size, page]);
+
+  const handleExelDownload = () => {
+    document.getElementById('test-table-xls-button').click();
+  };
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -75,252 +144,92 @@ function PostDateChequeReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error('Error fetching postDateCheques:', error);
     }
   }, []);
 
-return (
-    < >
-    <div className={classes.headContainer}>
-      {/* filter */}
-      <FormProvider {...methods}>
-        <PostDateChequeFilterMenu handleGetPostDateCheques={handleGetPostDateCheques} />
-      </FormProvider>
-    </div>
-    <div className={`${classes.menubar} justify-start md:justify-center`} style={{ backgroundColor: '#c2c7f1' }}>
-  {/* Print icon */}
-  <PrintIcon
-    className="cursor-pointer inside icon"
-    style={{ padding: '6px', border: inPrint ? '1px solid' : 'none' }} 
-    onClick={handlePrint} 
-  />
+  const handleGetAllPostDateCheques = useCallback(async () => {
+    try {
+      
+    } catch (error) {
+      console.error('Error fetching all postDateCheques:', error);
+    }
+  }, []);
+
+
+  const filteredData = {
+    Branch: getValues()?.branchName || null,
+   
+    Date_To: getValues()?.date_before
+      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
+      : null,
+    Date_From: getValues()?.date_after
+      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
+      : null,
   
-  <Controller
-    name="is_branch_show"
-    control={control}
-    render={({ field }) => (
-      <FormControl>
-        <FormControlLabel
-          label="Is Branch Show"
-          control={
-            <Checkbox
-              {...field}
-              checked={!!field.value} 
-              onChange={(e) => field.onChange(e.target.checked)} 
-            />
-          }
+   
+  };
+
+  return (
+    <div className={classes.headContainer}>
+      <FormProvider {...methods}>
+        <PostDateChequeFilterMenu
+          inShowAllMode={inShowAllMode}
+          handleGetPostDateCheques={handleGetPostDateCheques}
+          handleGetAllPostDateCheques={handleGetAllPostDateCheques}
         />
-      </FormControl>
-    )}
-  />
-</div>
+      </FormProvider>
+      <ReportPaginationAndDownload
+        page={page}
+        size={size}
+        setPage={setPage}
+        setSize={setSize}
+        inShowAllMode={inShowAllMode}
+        setInShowAllMode={setInShowAllMode}
+        componentRef={componentRef}
+        totalPages={totalPages}
+        totalElements={totalElements}
+        onFirstPage={() => handleGetPostDateCheques(1)}
+        onPreviousPage={() => handleGetPostDateCheques(page - 1)}
+        onNextPage={() => handleGetPostDateCheques(page + 1)}
+        onLastPage={() => handleGetPostDateCheques(totalPages)}
+        handleExelDownload={handleExelDownload}
+        handlePrint={handlePrint}
+        handleGetData={handleGetPostDateCheques}
+        handleGetAllData={handleGetAllPostDateCheques}
+        tableColumns={tableColumns}
+        dispatchTableColumns={dispatchTableColumns}
+        filename='PostDateChequeReport'
+      />
 
+      <table id='table-to-xls' className='w-full' style={{ minHeight: '270px' }}>
+        <tbody ref={componentRef} id='downloadPage'>
+          {modifiedPostDateChequeData.map((postDateCheque, index) => (
+            <SinglePage
+              key={postDateCheque.id || index}
+              classes={classes}
+              reportTitle='PostDateCheque Report'
+              filteredData={filteredData}
+              tableColumns={tableColumns}
+              dispatchTableColumns={dispatchTableColumns}
+              data={postDateCheque}
+              totalColumn={initialTableColumnsState?.length}
 
-    <table id="table-to-xls" className="w-full " style={{ minHeight: '270px' }}>
-      {data?.balance_details && (
-        <div ref={componentRef} id="downloadPage" className="bg-white">
-          <div className={classes.pageHead}>
-            <div className="logoContainer pr-0 md:-pr-20">
-              <img
-                style={{
-                  visibility: generalData.logo ? 'visible' : 'hidden',
-                  textAlign: 'center'
-                }}
-                src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-                alt="Not found"
-              />
-            </div>
-          </div>
-          <div
-            style={{
-              textAlign: 'center',
-              borderBottom: '1px solid gray',
-              marginTop: '10px',
-              fontSize: '10px'
-            }}
-          >
-            <LocationOn fontSize="small" />
-            {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp; <PhoneEnabled fontSize="small" />
-            {` ${generalData?.phone || ''}`}&nbsp; &nbsp; <Email fontSize="small" />
-            {` ${generalData?.email || ''}`}
-          </div>
-          <div className={classes.pageHead}>
-            <h2 className="title  pl-0 md:-pl-20">
-              <u>Account Statement Summary Report</u>
-            </h2>
-          </div>{' '}
-          {watch('is_branch_show') && (
-            <div>
-              <h3 className="title  pl-0 md:-pl-20 text-center">
-               <b>Branch : </b> {getValues()?.branchName ? getValues()?.branchName : 'All'}
-              </h3>
-            </div>
-          )}
-          <div>
-            <h2 className="title  pl-10 md:-pl-20 mt-20 mb-5" style={{ marginLeft: '50px' }}>
-              <span style={{ marginLeft: '15px' }}>
-                <b>Opening Balance</b>
-              </span>
-            </h2>
-          </div>
-          <TableContainer style={{ width: '50%', marginLeft: '5%' }}>
-            <Table
-              className={classes.table}
-              size="small"
-              style={{ border: '1px solid gray', borderBottom: '1px solid gray' }}
-              aria-label=" table w-75"
-            >
-              <TableHead>
-                <TableRow className="tableRow cursor-pointer">
-                  <TableCell className="tableCell text-center">SL</TableCell>
-                  <TableCell className="tableCell" align="">
-                    Name
-                  </TableCell>
-                  <TableCell className="tableCell" align="">
-                    Balance
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Object.entries(data?.opening_balances).map(([key, val], index) => (
-                  <TableRow key={key}>
-                    <TableCell className="tableCell text-center" component="th" scope="row">
-                      {index + 1} {/* SL No */}
-                    </TableCell>
-                    <TableCell className="tableCell" align="">
-                      {key}
-                    </TableCell>
-                    <TableCell
-                      className="tableCell"
-                      align=""
-                      style={{ color: val > 0 ? 'green' : 'red' }}
-                    >
-                      {val?.toFixed(2)} {val > 0 ? 'Dr' : 'Cr'}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <div>
-            <h2 className="title  pl-0 md:-pl-20 mt-20 mb-5" style={{ marginLeft: '50px' }}>
-              <span style={{ marginLeft: '15px' }}>
-                <b>Balance</b>
-              </span>
-            </h2>
-          </div>
-          <TableContainer style={{ width: '90%', marginLeft: '5%' }} className="text-center">
-            <Table
-              className={classes.table}
-              size="small"
-              style={{ border: '1px solid gray', borderBottom: '1px solid gray' }}
-              aria-label="a dense table w-75"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell className="tableCell text-center">SL</TableCell>
-                  <TableCell className="tableCell" align="">
-                    Name
-                  </TableCell>
-
-                  <TableCell className="tableCell" align="">
-                    Receipt
-                  </TableCell>
-                  <TableCell className="tableCell" align="">
-                    Payment
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data?.balance_details?.map((balance_detail, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell className="tableCell text-center" component="th" scope="row">
-                      {idx + 1}
-                    </TableCell>
-                    <TableCell className="tableCell" align="">
-                      {balance_detail?.name}
-                    </TableCell>
-                    <TableCell className="tableCell" align="">
-                      {balance_detail.debit?.toFixed(2)}
-                    </TableCell>
-                    <TableCell className="tableCell" align="">
-                      {balance_detail.credit?.toFixed(2)}
-                    </TableCell>{' '}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <div>
-            <h2 className="title  pl-0 md:-pl-20 mt-20 mb-5" style={{ marginLeft: '50px' }}>
-              <span style={{ marginLeft: '15px' }}>
-                <b>Closing Balance</b>
-              </span>
-            </h2>
-          </div>
-          <TableContainer style={{ width: '50%', marginLeft: '5%' }}>
-            <Table
-              className={classes.table}
-              style={{ border: '1px solid gray', borderBottom: '1px solid gray' }}
-              size="small"
-              aria-label="a dense table w-75"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell className="tableCell text-center">SL</TableCell>
-                  <TableCell className="tableCell" align="">
-                    Name
-                  </TableCell>
-                  <TableCell className="tableCell" align="">
-                    Balance
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Object.entries(data?.closing_balances)?.map((entry, index) => (
-                  <TableRow key={entry[0]}>
-                    <TableCell className="tableCell text-center" component="th" scope="row">
-                      {index + 1} {/* SL No */}
-                    </TableCell>
-                    <TableCell className="tableCell" align="">
-                      {entry[0]}
-                    </TableCell>
-                    <TableCell
-                      className="tableCell"
-                      align=""
-                      style={{ color: entry[1] > 0 ? 'green' : 'red' }}
-                    >
-                      {entry[1]?.toFixed(2)} {entry[1] > 0 ? 'Dr' : 'Cr'}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <table className={classes.pageFooterContainer} style={{ marginTop: '15px' }}>
-            <tbody>
-              <tr>
-                <td>
-                  <span style={{ textAlign: 'left' }}>
-                    Printed Date & Time: {moment().format('DD/MM/YY')}, {moment().format('LT')}
-                  </span>
-                </td>
-
-                <td>
-                  <span style={{ textAlign: 'left' }}>
-                    Developed by RAMS(Bluebay IT Limited)-01861650206
-                  </span>
-                </td>
-                <td>
-                  <span>&nbsp;</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
-    </table>
-  </>
+              serialNumber={
+                pagination
+                  ? page * size - size + 1
+                  : postDateCheque.page * postDateCheque.size - postDateCheque.size + 1
+              }
+              setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              setSortBy={setSortBy}
+              setSortBySubKey={setSortBySubKey}
+              dragAndDropRow={dragAndDropRow}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
