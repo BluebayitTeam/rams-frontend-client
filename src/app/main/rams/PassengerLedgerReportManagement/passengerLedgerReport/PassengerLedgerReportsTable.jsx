@@ -151,7 +151,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
     );
 
 
-    const { refetch:refetchBillDetails} = useGetPassengerLedgerBillDetailDataReportsQuery(
+    const { data:BillDetailData} = useGetPassengerLedgerBillDetailDataReportsQuery(
       {
         
         date_after: watch('date_after') || '',
@@ -232,16 +232,16 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
       
       
       
-      //  if (!inShowAllMode && BillDetailData) {
-      //   setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
-      //   setPage(BillDetailData?.page || 1);
-      //   setSize(BillDetailData?.size || 25);
-      //   setTotalPages(BillDetailData.total_pages || 0);
-      //   setTotalElements(BillDetailData.total_elements || 0);
-      //   setInSiglePageMode(true);
-      //   setInShowAllMode(false);
+       if (!inShowAllMode && BillDetailData) {
+        setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
+        setPage(BillDetailData?.page || 1);
+        setSize(BillDetailData?.size || 25);
+        setTotalPages(BillDetailData.total_pages || 0);
+        setTotalElements(BillDetailData.total_elements || 0);
+        setInSiglePageMode(true);
+        setInShowAllMode(false);
     
-      //  }
+       }
 
        if (!inShowAllMode && CostDetailData) {
         console.log('CostDetailData54554545', CostDetailData?.purchases || []);
@@ -255,7 +255,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
     
       }
 
-      }, [inShowAllMode,allData,paginatedData,CostDetailData, size, page]);
+      }, [inShowAllMode,allData,paginatedData,BillDetailData,CostDetailData, size, page]);
 
 useEffect(() => {
     if (totalData) {
@@ -309,74 +309,33 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
     //   }, []);
 
 
-  //   	const handleGetPassengerLedgerBillDetails = async (newPage) => {
+    	const handleGetPassengerLedgerBillDetails = async (newPage) => {
    
 
-  //   try {
-  //     const formValues = getValues();
-  //     const page = newPage || 1;
-  //     setPage(page);
-
-  //     const response = await refetchBillDetails({ ...formValues, page, size }); 
-
-  //     console.log('response121212121', response);
-
-  //     if (response?.data) {
-  //       unstable_batchedUpdates(() => {
-  //         const passengerLedgersData = response.data?.sales || [];
-  //         setModifiedPassengerLedgerBillDetailData(passengerLedgersData);
-  //         setInShowAllMode(false);
-  //         setTotalPages(response.data?.total_pages);
-  //         setTotalElements(response.data?.total_elements);
-  //         setInSiglePageMode(true);
-  //         setInShowAllMode(false);
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching account_logs:', error);
-  //   }
-  // };
-
-
-
-  const handleGetPassengerLedgerBillDetails = async (newPage = 1) => {
     try {
-      // Get form values using getValues() method (assuming this is from react-hook-form)
       const formValues = getValues();
+      const page = newPage || 1;
+      setPage(page);
 
-      console.log('formValues', formValues);
-      
-      // Set the current page, defaulting to 1 if newPage is not provided
-      setPage(newPage);
-  
-      // Perform the refetch with the current form values and pagination
-      const response = await refetchBillDetails({ 
-        ...formValues, // Spread form values like date_after, date_before, passenger, etc.
-        page: newPage, // Send the current page
-        size,          // Ensure you pass the `size` for pagination
-      });
-  
-      // Log the response for debugging purposes
-      console.log('API Response:', response);
-  
-      // Check if response contains valid data
+      const response = await BillDetailData({ ...formValues, page, size }); 
+
+      console.log('response121212121', response);
+
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          const passengerLedgersData = response.data?.sales || []; // Extract sales data
-          setModifiedPassengerLedgerBillDetailData(passengerLedgersData); // Update state with sales data
-          setTotalPages(response.data?.total_pages);    // Set total pages for pagination
-          setTotalElements(response.data?.total_elements); // Set total elements count
-          
-          // Toggle modes based on the response
+          const passengerLedgersData = response.data?.sales || [];
+          setModifiedPassengerLedgerBillDetailData(passengerLedgersData);
           setInShowAllMode(false);
+          setTotalPages(response.data?.total_pages);
+          setTotalElements(response.data?.total_elements);
           setInSiglePageMode(true);
+          setInShowAllMode(false);
         });
       }
     } catch (error) {
-      console.error('Error fetching passenger ledger bill details:', error);
+      console.error('Error fetching account_logs:', error);
     }
   };
-  
 
 
       const handleGetPassengerLedgerCostDetails = useCallback(async (params) => {

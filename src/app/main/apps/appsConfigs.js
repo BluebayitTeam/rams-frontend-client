@@ -91,7 +91,7 @@ import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConf
 import PassengerAccountSummaryReportAppConfig from '../rams/PassengerAccountSummaryReportManagement/PassengerAccountSummaryAppConfig';
 import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
 import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
-import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
+import PassengerReportAppConfig from '../rams/PassengerReportManagement2/PassengerReportAppConfig';
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
@@ -108,6 +108,7 @@ import ReceiptSummaryReportAppConfig from '../rams/ReceiptSummaryReportManagemen
 import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
 import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
+import ReportClmAppConfig from '../rams/ReportClmsManagement/ReportClmAppConfig';
 import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
@@ -122,7 +123,6 @@ import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
-import ReportClmAppConfig from '../rams/ReportClmsManagement/ReportClmAppConfig';
 
 /**
  * The list of application configurations.
