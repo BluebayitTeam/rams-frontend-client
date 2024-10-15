@@ -366,6 +366,23 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
   
   };
 
+
+  // const handleSavePassengerDelivery = () => {
+	// 	passengerDeliveryDate
+	// 		? dispatch(
+	// 				updatePassengerDelivery({
+	// 					...getValues()
+	// 				})
+	// 		  ) && dispatch(getPassengerLedgers({ values: getValues() }))
+	// 		: dispatch(
+	// 				savePassengerDelivery({
+	// 					...getValues()
+	// 				})
+	// 		  );
+
+	// 	setOpenSuccessStatusAlert(true);
+	// };
+
 return (
     <div className={classes.headContainer}>
       {/* Filter */}
@@ -581,6 +598,32 @@ return (
 					</TableFooter>
 				</Table>
 			</TableContainer>
+      {/* <FormProvider {...methods}>
+				<div
+					className="bg-white"
+					style={{ display: modifiedPassengerLedgerData[0]?.data.length > 0 ? 'block' : 'none' }}
+				>
+					<div className="flex flex-nowrap mt-10 pt-10 ml-40">
+          <CustomDatePicker
+				name="delivery_date"
+				label="Delivery Date"
+				required
+				placeholder="DD-MM-YYYY"
+			/>
+						<div className="ml-20">
+							<Button
+								className="whitespace-nowrap mx-4 mt-10 "
+								variant="contained"
+								color="secondary"
+								onClick={() => handleSavePassengerDelivery()}
+							>
+								{passengerDeliveryDate ? 'Update' : 'Save'}
+							</Button>
+						</div>
+					</div>
+				</div>
+			</FormProvider> */}
+
     </div>
   );
 }

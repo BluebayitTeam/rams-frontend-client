@@ -28,6 +28,7 @@ import ProfileAppConfig from './profile/profileAppConfig';
 import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TasksAppConfig from './tasks/TasksAppConfig';
 
+import AccountStatementReportAppConfig from '../rams/AccountStatementReportManagement/AccountStatementReportAppConfig';
 import AccountSummaryReportAppConfig from '../rams/AccountSummaryReportManagement/AccountSummaryReportAppConfig';
 import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
 import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
@@ -199,6 +200,7 @@ const appsConfigs = [
   DemandAssignAppConfig,
   TicketPostingAppConfig,
   AgentReportAppConfig,
+  AccountStatementReportAppConfig,
   PassengerReportAppConfig,
   LedgerReportAppConfig,
   VisaEntryAppConfig,
