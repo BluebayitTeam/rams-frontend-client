@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableRow } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
@@ -476,7 +477,7 @@ return (
                   ...sales?.data,
                   {
                     credit_amount: totalCdAmount?.toFixed(2)|| '0.00', 
-                    debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
+                   
                     
                     balance:totalBAlance,
                     details: 'Total Balance',
@@ -531,8 +532,55 @@ return (
 					))}
 				</div>
 			</table>
+      <h1
+				className="title  pl-0 md:-pl-20 "
+				style={{
+					display: totalCdAmount ? 'block' : 'none',
+					marginLeft: '45%'
+				}}
+			>
+				<u>Balance Summary</u>
+			</h1>
 
 
+      <TableContainer
+				component={Paper}
+				style={{ display: totalCdAmount ? 'block' : 'none' }}
+			>
+				<Table className={`${classes.table} justify-center`}>
+					<TableBody>
+						<TableRow>
+							<TableCell component="th" scope="row"></TableCell>
+							<TableCell component="th" scope="row">
+								<b> Total Bill</b>{' '}
+							</TableCell>
+							<TableCell component="th" scope="row">
+								{totalCdAmount?.toFixed(2)|| '0.00' }
+							</TableCell>
+						</TableRow>
+						<TableRow>
+							<TableCell component="th" scope="row"></TableCell>
+							<TableCell component="th" scope="row">
+								<b>Total Cost</b>
+							</TableCell>
+							<TableCell component="th" scope="row">
+								{totalCdAmount?.toFixed(2)|| '0.00' }
+							</TableCell>
+						</TableRow>
+					</TableBody>
+					<TableFooter className="bg-blue-50 ">
+						<TableRow>
+							<TableCell component="th" scope="row"></TableCell>
+							<TableCell component="th" scope="row">
+								<b>Profit(+)Loss(-)</b>
+							</TableCell>
+							<TableCell component="th" scope="row">
+								{totalBAlance}
+							</TableCell>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</TableContainer>
     </div>
   );
 }
