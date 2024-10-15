@@ -101,6 +101,7 @@ import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVo
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
+import PostDateChequeReportAppConfig from '../rams/PostDateChequeReportManagement/PostDateChequeReportAppConfig';
 import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateChequeAppConfig';
 import ProfessionAppConfig from '../rams/ProfessionsManagement/ProfessionAppConfig';
 import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
@@ -202,6 +203,7 @@ const appsConfigs = [
   AgentReportAppConfig,
   AccountStatementReportAppConfig,
   PassengerReportAppConfig,
+  PostDateChequeReportAppConfig,
   LedgerReportAppConfig,
   VisaEntryAppConfig,
   VisaCancelListAppConfig,
