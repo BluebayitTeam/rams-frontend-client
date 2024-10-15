@@ -68,7 +68,7 @@ const initialBillDetailsTableColumnsState = [
 	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
 	{ id: 4, label: 'Bill Purpose', name: 'related_ledger', show: true },
 	{ id: 5, label: 'Bill Details ', name: 'details', show: true },
-	{ id: 6, label: 'Amount', name: 'credit_amount', show: true }
+	{ id: 6, label: 'Amount', name: 'debit_amount', show: true }
 ];
 const initialCostDetailsTableColumnsState = [
 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -119,10 +119,12 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
   const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
+  const [totalSl, setTotalSl] = useState(0);
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
+  console.log('totalDbAmount', totalSl);
 
   const componentRef = useRef(null);
 
@@ -238,6 +240,8 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
         setPage(BillDetailData?.page || 1);
         setSize(BillDetailData?.size || 25);
         setTotalPages(BillDetailData.total_pages || 0);
+        setTotalDbAmount(BillDetailData?.sales?.total_debit || 0);
+        setTotalSl(BillDetailData?.sales?.total_balance || 0);
         setTotalElements(BillDetailData.total_elements || 0);
         setInSiglePageMode(true);
         setInShowAllMode(false);
@@ -493,10 +497,11 @@ return (
                 data: [
                   ...sales?.data,
                   {
-                    credit_amount: totalCdAmount?.toFixed(2)|| '0.00', 
-                   
+                    // debit_amount: totalDbAmount?.toFixed(2)|| '0.00', 
+                    debit_amount:totalSl, 
+
                     
-                    balance:totalBAlance,
+                    // balance:totalBAlance,
                     details: 'Total Balance',
 
                     hideSerialNo: true,

@@ -81,6 +81,7 @@ function AccountStatementReportsTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
+	const [totalBAlance, setTotalBAlance] = useState(0);
 
   
 
@@ -130,6 +131,7 @@ function AccountStatementReportsTable(props) {
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
+      setTotalBAlance(paginatedData.total_balance || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
@@ -210,11 +212,24 @@ function AccountStatementReportsTable(props) {
             <SinglePage
               key={accountStatement.id || index}
               classes={classes}
-              reportTitle='AccountStatement Report'
+              reportTitle='Account Statement Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={accountStatement}
+              data={{
+                ...accountStatement,
+                data: [
+                  ...accountStatement?.data,
+                  {
+                    // debit_amount: totalDbAmount?.toFixed(2)|| '0.00', 
+                    balance:totalBAlance, 
+                    credit_amount: 'Total Balance',
+
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 }
+                  },
+                ],
+              }}
               totalColumn={initialTableColumnsState?.length}
 
               serialNumber={
