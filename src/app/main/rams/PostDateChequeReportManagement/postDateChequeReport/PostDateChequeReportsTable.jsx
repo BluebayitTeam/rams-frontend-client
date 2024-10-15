@@ -73,12 +73,14 @@ function PostDateChequeReportsTable(props) {
   const { data: paginatedData,  } = useGetPostDateChequeReportsQuery(
     {
       branch: filterData.branch || '',
-      district: filterData.district || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
+      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
+      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
+      ledger: filterData.ledger || '',
+      sub_ledger: filterData.sub_ledger || '',
       postDateCheque_code: filterData.postDateCheque_code || '',
+      rp_bank_id: filterData.rp_bank_id || '',
       page,
       size,
     },
@@ -88,12 +90,14 @@ function PostDateChequeReportsTable(props) {
   const { data: allData, } = useGetPostDateChequeAllReportsQuery(
     {
       branch: filterData.branch || '',
-      district: filterData.district || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
+      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
+      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
+      ledger: filterData.ledger || '',
+      sub_ledger: filterData.sub_ledger || '',
       postDateCheque_code: filterData.postDateCheque_code || '',
+      rp_bank_id: filterData.rp_bank_id || '',
     },
     { skip: !inShowAllMode }
   );
@@ -205,7 +209,7 @@ function PostDateChequeReportsTable(props) {
             <SinglePage
               key={postDateCheque.id || index}
               classes={classes}
-              reportTitle='PostDateCheque Report'
+              reportTitle='PostDate Cheque Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
