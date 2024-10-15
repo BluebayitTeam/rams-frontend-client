@@ -6,8 +6,6 @@ import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
-import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
-import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,54 +49,6 @@ function AccountStatementFilterMenu({ inShowAllMode, handleGetAccountStatements,
 	return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* user name */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='username'
-          label='User Name'
-          domEl={userNameEl}
-          icon='person'
-          width='75px'
-        />
-
-        {/* group */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='group'
-          options={groups}
-          icon='groups'
-          width='40px'
-        />
-
-        {/* phone */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='primary_phone'
-          label='Phone'
-          domEl={primaryPhoneEl}
-          icon='phone'
-          width='45px'
-        />
-
-        {/* district */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='district'
-          options={cities}
-          icon='homeSharp'
-          width='45px'
-          getOptionLabel={(option) => `${option.name}- ${option.bn_name}`}
-        />
-
-        {/* accountStatement code */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='accountStatement_code'
-          domEl={accountStatementCodeEl}
-          icon='qr_code_scanner_sharp'
-          width='77px'
-        />
-
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -115,52 +65,15 @@ function AccountStatementFilterMenu({ inShowAllMode, handleGetAccountStatements,
           minDate={values.date_after}
           maxDate={new Date()}
         />
+
+       
+
+        
       </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-        <Keyword
-          {...commonKewordProps}
-          type='text'
-          name='username'
-          label='User Name'
-          domEl={userNameEl}
-          icon='person'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='group'
-          icon='groups'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='text'
-          name='primary_phone'
-          label='Phone'
-          domEl={primaryPhoneEl}
-          icon='phone'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='district'
-          icon='homeSharp'
-		  
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='text'
-          name='accountStatement_code'
-          domEl={accountStatementCodeEl}
-          icon='qr_code_scanner_sharp'
-        />
-
-        <Keyword
+      <Keyword
           {...commonKewordProps}
           type='date'
           name='date_after'
@@ -173,6 +86,14 @@ function AccountStatementFilterMenu({ inShowAllMode, handleGetAccountStatements,
           name='date_before'
           label='Date To'
         />
+
+        
+
+        
+
+        
+
+        
       </div>
     </div>
   );
