@@ -10,6 +10,7 @@ import SiglePageLedgerReport from 'src/app/@components/ReportComponents/SiglePag
 import SinglePage2 from 'src/app/@components/ReportComponents/SinglePage2';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
+import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
@@ -88,13 +89,13 @@ function PassengerLedgerReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { control, getValues,watch } = methods;
+  const {  getValues,watch } = methods;
 
   const [modifiedPassengerLedgerData, setModifiedPassengerLedgerData] = useReportData();
   const [modifiedPassengerLedgerBillDetailData, setModifiedPassengerLedgerBillDetailData] = useReportData();
   const [modifiedPassengerLedgerCostDetailData, setModifiedPassengerLedgerCostDetailData,] = useReportData();
 
-  console.log('modifiedPassengerLedgerBillDetailData', modifiedPassengerLedgerBillDetailData);
+  console.log('modifiedPassengerLedgerCostDetailData', modifiedPassengerLedgerCostDetailData);
 
 const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, initialTableColumnsState);
 
@@ -172,12 +173,13 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
         passenger: watch('passenger') || '',
         account_type: watch('account_type') || '',
       
-        page,
-        size,
+       
       },
       {  skip: inShowAllMode  }
     );
 
+
+    console.log('CostDetailData120', CostDetailData?.purchases);
 
     const totalData = useSelector(selectFilteredPassengerLedgerReports());
 
@@ -241,13 +243,13 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
     
        }
 
-      else if (!inShowAllMode && CostDetailData) {
+       if (!inShowAllMode && CostDetailData) {
+        console.log('CostDetailData54554545', CostDetailData?.purchases || []);
         setModifiedPassengerLedgerCostDetailData(CostDetailData?.purchases || []);
         setPage(CostDetailData?.page || 1);
         setSize(CostDetailData?.size || 25);
         setTotalPages(CostDetailData.total_pages || 0);
         setTotalElements(CostDetailData.total_elements || 0);
-     
         setInSiglePageMode(true);
         setInShowAllMode(false);
     
@@ -496,6 +498,42 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
 					))}
 				</div>
 			</table>
+
+
+
+      {/* Passenger Cost Details Report  */}
+
+			<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
+				<div id="downloadPage">
+					{/* each single page (table) */}
+
+					{modifiedPassengerLedgerCostDetailData.map(cost => (
+						<SinglePage2
+							classes={classes}
+							reportTitle="Cost Details"
+							tableColumns={costDetailstableColumns}
+							dispatchTableColumns={dispatchCostDetailsTableColumns}
+						  data={{
+                ...cost,
+                data: [
+                  ...cost?.data,
+                  {
+                    credit_amount: totalCdAmount ?.toFixed(2)|| '0.00'||'',
+												details: 'Total Balance',
+												hideSerialNo: true,
+												rowStyle: { fontWeight: 600 }
+                  },
+                ],
+              }}
+
+							serialNumber={cost.page * cost.size - cost.size + 1}
+							setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+						/>
+					))}
+				</div>
+			</table>
+
 
     </div>
   );
