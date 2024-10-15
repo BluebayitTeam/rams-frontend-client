@@ -21,7 +21,7 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
   const theme = useTheme();
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
-  const { branches } = useSelector((state) => state.data);
+  const { ledgers, subLedgers,branches } = useSelector((state) => state.data);
 
   const commonFieldProps = {
 		setReRender,
@@ -52,19 +52,64 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
        {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='start_date'
+          name='date_after'
           label='Date From'
-          maxDate={values.end_date || new Date()}
+          maxDate={values.date_before || new Date()}
         />
 
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='end_date'
+          name='date_before'
           label='Date To'
-          minDate={values.start_date}
+          minDate={values.date_after}
           maxDate={new Date()}
         />
+       {/* date from */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='pdc_issue_date_after'
+          label='Issue Date  From'
+          maxDate={values.pdc_issue_date_before || new Date()}
+        />
+
+        {/* date to */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='pdc_issue_date_before'
+          label='Issue Date To'
+          minDate={values.pdc_issue_date_after}
+          maxDate={new Date()}
+        />
+        
+        
+
+          {/* ledger */}
+          <ReportSelect
+          {...commonFieldProps}
+          name='ledger'
+          options={ledgers}
+          icon='import_contacts'
+          width='50px'
+        />
+
+
+         {/* sub_ledger */}
+				<ReportSelect
+					{...commonFieldProps}
+					name="sub_ledger"
+					options={subLedgers}
+					icon="import_contacts"
+					width="76px"
+				/>
+
+        {/* lpassengerTypes */}
+        <ReportSelect
+					{...commonFieldProps}
+					name="rp_bank_id"
+				  icon="text_fields"
+					width="95px"
+				/>
       </div>
 
       {/* keywords */}
@@ -78,16 +123,48 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
       <Keyword
           {...commonKewordProps}
           type='date'
-          name='start_date'
+          name='date_after'
           label='Date From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='end_date'
+          name='date_before'
           label='Date To'
         />
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='pdc_issue_date_after'
+          label='Issue Date From'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='pdc_issue_date_before'
+          label='Issue Date To'
+        />
+
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='ledger'
+          icon='import_contacts'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='sub_ledger'
+          icon='import_contacts'
+        />
+        
+        <Keyword
+					{...commonKewordProps}
+					type="select"
+					name="rp_bank_id"
+					icon="text_fields"
+				/>
       </div>
     </div>
   );

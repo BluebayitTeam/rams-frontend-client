@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -15,9 +14,8 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredPostDateChequeReports,
   useGetPostDateChequeAllReportsQuery,
-  useGetPostDateChequeReportsQuery,
+  useGetPostDateChequeReportsQuery
 } from '../PostDateChequeReportsApi';
 import PostDateChequeFilterMenu from './PostDateChequeFilterMenu';
 
@@ -100,16 +98,15 @@ function PostDateChequeReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredPostDateChequeReports);
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPostDateChequeData(allData.postDateCheques || []);
+      setModifiedPostDateChequeData(allData.postdate_cheques || []);
       setInSiglePageMode(false);
 			setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.postDateCheques,
+        allData.postdate_cheques,
         size,
         page
       );
@@ -119,7 +116,7 @@ function PostDateChequeReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
 
-      setModifiedPostDateChequeData(paginatedData.postDateCheques || []);
+      setModifiedPostDateChequeData(paginatedData.postdate_cheques || []);
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
