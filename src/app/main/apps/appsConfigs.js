@@ -120,6 +120,7 @@ import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeA
 import TicketPostingAppConfig from '../rams/TicketPostingsManagement/TicketPostingAppConfig';
 import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
 import TicketRefundAppConfig from '../rams/TicketRefundsManagement/TicketRefundAppConfig';
+import TicketSaleReportAppConfig from '../rams/TicketSaleReportManagement/TicketSaleReportAppConfig';
 import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
@@ -173,6 +174,7 @@ const appsConfigs = [
   ManpowerSubmissionListAppConfig,
   MaletrainingAppConfig,
   FemaletrainingAppConfig,
+  TicketSaleReportAppConfig,
   DepartureAppConfig,
   GdsAppConfig,
   FormContentDetailAppConfig,

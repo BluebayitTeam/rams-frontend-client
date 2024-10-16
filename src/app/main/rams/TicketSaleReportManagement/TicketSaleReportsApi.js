@@ -7,43 +7,43 @@ import {
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
-export const addTagTypes = ['postDateChequeReports'];
-const PostDateChequeReportApi = api
+export const addTagTypes = ['ticketSaleReports'];
+const TicketSaleReportApi = api
 	.enhanceEndpoints({
 		addTagTypes
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			getPostDateChequeReports: build.query({
+			getTicketSaleReports: build.query({
 				query: (filterData) => ({
 					url: POSTDATE_FILTER_BY,
 					params: filterData
 				}),
-				providesTags: ['postDateChequeReports']
+				providesTags: ['ticketSaleReports']
 			}),
-			getPostDateChequeAllReports: build.query({
+			getTicketSaleAllReports: build.query({
 				query: (filterData) => ({
 					url: POSTDATE_FILTER_WITHOUT_PG,
 					params: filterData
 				}),
-				providesTags: ['postDateChequeReports']
+				providesTags: ['ticketSaleReports']
 			}),
 			
 			}),
 		overrideExisting: false
 	});
-export default PostDateChequeReportApi;
+export default TicketSaleReportApi;
 export const {
-	useGetPostDateChequeReportsQuery,
-	useGetPostDateChequeAllReportsQuery,
+	useGetTicketSaleReportsQuery,
+	useGetTicketSaleAllReportsQuery,
 	
-} = PostDateChequeReportApi;
+} = TicketSaleReportApi;
 
-export const selectFilteredPostDateChequeReports = (postDateChequeReports) =>
+export const selectFilteredTicketSaleReports = (ticketSaleReports) =>
 	createSelector([selectSearchText], (searchText) => {
 		if (searchText?.length === 0) {
-			return postDateChequeReports;
+			return ticketSaleReports;
 		}
 
-		return FuseUtils.filterArrayByString(postDateChequeReports, searchText);
+		return FuseUtils.filterArrayByString(ticketSaleReports, searchText);
 	});
