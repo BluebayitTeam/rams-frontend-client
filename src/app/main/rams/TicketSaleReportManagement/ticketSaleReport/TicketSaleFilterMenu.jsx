@@ -78,17 +78,17 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           name='airway'
           options={airways}
           icon='local_activityIcon'
-          width='50px'
+          width='45px'
         />
 
 
-         {/* sub_ledger */}
+         {/* Coustomer */}
 				<ReportSelect
 					{...commonFieldProps}
-					name="sub_ledger"
-					options={subLedgers}
-					icon="import_contacts"
-					width="76px"
+					name="agent"
+					options={agents}
+					icon="person_icon"
+					width="40px"
 				/>
 
         
@@ -125,8 +125,8 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='sub_ledger'
-          icon='import_contacts'
+          name='agent'
+          icon="person_icon"
         />
         
       
