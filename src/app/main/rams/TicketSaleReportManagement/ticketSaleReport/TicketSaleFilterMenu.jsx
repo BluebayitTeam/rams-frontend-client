@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getBranches, getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import { getAgents, getAirways, getBranches, getCountries, getCurrentStatuss, getEmployees, getPassengers, getPassengerTypes } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,8 +21,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
   const theme = useTheme();
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
-  const { ledgers, subLedgers,branches } = useSelector((state) => state.data);
-	const banks = ledgers.filter(data => data?.head_group?.name === 'Bank Accounts');
+  const { branches ,currentStatuss,countries,agents,passengers,passengerTypes,airways,employees} = useSelector((state) => state.data);
 
   const commonFieldProps = {
 		setReRender,
@@ -34,31 +33,29 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
 	};
 
   useEffect(() => {
+		dispatch(getCountries());
+		dispatch(getCurrentStatuss());
+		dispatch(getAgents());
 		dispatch(getBranches());
-    dispatch(getLedgers());
-		dispatch(getSubLedgers());
+		dispatch(getPassengers());
+		dispatch(getPassengerTypes());
+		dispatch(getAirways());
+		dispatch(getEmployees());
 	}, []);
 
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-         {/* branche */}
-         <ReportSelect
-          {...commonFieldProps}
-          name='branch'
-          options={branches}
-          icon='import_contacts'
-          width='50px'
-        />
-       {/* date from */}
-        <ReportDatePicker
+
+         {/* date from */}
+         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
           label='Date From'
           maxDate={values.date_before || new Date()}
         />
 
-        {/* date to */}
+          {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
@@ -66,31 +63,21 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           minDate={values.date_after}
           maxDate={new Date()}
         />
-       {/* date from */}
-        <ReportDatePicker
+         {/* branche */}
+         <ReportSelect
           {...commonFieldProps}
-          name='pdc_issue_date_after'
-          label='Issue Date  From'
-          maxDate={values.pdc_issue_date_before || new Date()}
+          name='branch'
+          options={branches}
+          icon='local_activityIcon'
+          width='50px'
         />
-
-        {/* date to */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='pdc_issue_date_before'
-          label='Issue Date To'
-          minDate={values.pdc_issue_date_after}
-          maxDate={new Date()}
-        />
-        
-        
-
-          {/* ledger */}
+         
+         {/* AirWay */}
           <ReportSelect
           {...commonFieldProps}
-          name='ledger'
+          name='airway'
           options={ledgers}
-          icon='import_contacts'
+          icon='local_activityIcon'
           width='50px'
         />
 
@@ -104,14 +91,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
 					width="76px"
 				/>
 
-        {/* lpassengerTypes */}
-        <ReportSelect
-					{...commonFieldProps}
-					name="rp_bank_id"
-					options={banks}
-				  icon="text_fields"
-					width="95px"
-				/>
+        
       </div>
 
       {/* keywords */}
@@ -161,12 +141,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           icon='import_contacts'
         />
         
-        <Keyword
-					{...commonKewordProps}
-					type="select"
-					name="rp_bank_id"
-					icon="text_fields"
-				/>
+      
       </div>
     </div>
   );
