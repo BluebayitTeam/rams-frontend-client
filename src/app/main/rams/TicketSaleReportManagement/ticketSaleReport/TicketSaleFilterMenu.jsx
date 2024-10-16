@@ -25,11 +25,11 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
 
   const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ?  handleGetTicketSales():handleGetAllTicketSales)
+		onEnter: () => (inShowAllMode ?  handleGetAllTicketSales():handleGetTicketSales())
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ?handleGetTicketSales():handleGetAllTicketSales)
+		onClick: () => (inShowAllMode ? handleGetAllTicketSales():handleGetTicketSales())      
 	};
 
   useEffect(() => {
@@ -93,6 +93,16 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           getOptionLabel={(option) => `${option.first_name}- ${option.agent_code}`}
 				/>
 
+
+           {/* Ticket Agency */}
+          <ReportSelect
+          {...commonFieldProps}
+          name='ticket_agency'
+          label='Ticket Agency'
+          options={agents}
+          icon='person_icon'
+          width='95px'
+          getOptionLabel={(option) => `${option.first_name || ''} - ${option.agent_code || ''}`}          />
         
       </div>
 
@@ -129,8 +139,12 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           type='select'
           name='agent'
           icon="person_icon"
-          getOptionLabel={(option) => `${option.first_name}`}
-
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='ticket_agency'
+          icon="person_icon"
         />
         
       
