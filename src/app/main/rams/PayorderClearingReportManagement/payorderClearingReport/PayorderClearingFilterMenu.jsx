@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, handleGetAllPostDateCheques }) {
+function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings, handleGetAllPayorderClearings }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
   const methods = useFormContext();
@@ -26,11 +26,11 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
 
   const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ?  handleGetPostDateCheques():handleGetAllPostDateCheques)
+		onEnter: () => (inShowAllMode ?  handleGetPayorderClearings():handleGetAllPayorderClearings)
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ?handleGetPostDateCheques():handleGetAllPostDateCheques)
+		onClick: () => (inShowAllMode ?handleGetPayorderClearings():handleGetAllPayorderClearings)
 	};
 
   useEffect(() => {
@@ -172,4 +172,4 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
   );
 }
 
-export default PostDateChequeFilterMenu;
+export default PayorderClearingFilterMenu;
