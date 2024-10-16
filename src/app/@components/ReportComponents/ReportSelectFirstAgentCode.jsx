@@ -68,7 +68,6 @@ function ReportSelectFirstAgentCode({
   const [Label] = useState(label || fillUnderscoreBySpace(name));
 
   const fieldValue = watch(name);
-  const fieldNameValue = watch(`${name}Name`);
 
   useEffect(() => {
     if (!fieldValue) {

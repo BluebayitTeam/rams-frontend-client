@@ -8,6 +8,7 @@ import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +23,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
   const theme = useTheme();
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
-  const { branches ,currentStatuss,countries,agents,passengers,passengerTypes,airways,employees} = useSelector((state) => state.data);
+  const { branches ,agents,airways,employees} = useSelector((state) => state.data);
 
   const commonFieldProps = {
 		setReRender,
@@ -99,11 +100,18 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           <ReportSelectFirstAgentCode
           {...commonFieldProps}
           name='ticket_agency'
-          label='Ticket Agency'
           options={agents}
           icon='person_icon'
           width='95px'
           />
+
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='issue_person'
+          options={employees}
+          icon='person'
+          width='95px'
+		     />
         
       </div>
 
@@ -146,6 +154,12 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           {...commonKewordProps}
           type='select'
           name='ticket_agency'
+          icon="person_icon"
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='issue_person'
           icon="person_icon"
         />
         
