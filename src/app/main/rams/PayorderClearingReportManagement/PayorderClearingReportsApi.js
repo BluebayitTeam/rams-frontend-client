@@ -2,8 +2,8 @@ import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import {
-	POSTDATE_FILTER_BY,
-	POSTDATE_FILTER_WITHOUT_PG
+	PAYORDER_FILTER_BY,
+	PAYORDER_FILTER_WITHOUT_PG
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -16,14 +16,14 @@ const PayorderClearingReportApi = api
 		endpoints: (build) => ({
 			getPayorderClearingReports: build.query({
 				query: (filterData) => ({
-					url: POSTDATE_FILTER_BY,
+					url: PAYORDER_FILTER_BY,
 					params: filterData
 				}),
 				providesTags: ['payorderClearingReports']
 			}),
 			getPayorderClearingAllReports: build.query({
 				query: (filterData) => ({
-					url: POSTDATE_FILTER_WITHOUT_PG,
+					url: PAYORDER_FILTER_WITHOUT_PG,
 					params: filterData
 				}),
 				providesTags: ['payorderClearingReports']
