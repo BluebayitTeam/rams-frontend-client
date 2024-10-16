@@ -42,14 +42,7 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-         {/* branche */}
-         <ReportSelect
-          {...commonFieldProps}
-          name='branch'
-          options={branches}
-          icon='import_contacts'
-          width='50px'
-        />
+         
        {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -66,45 +59,7 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
           minDate={values.date_after}
           maxDate={new Date()}
         />
-       {/* date from */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='pdc_issue_date_after'
-          label='Issue Date  From'
-          maxDate={values.pdc_issue_date_before || new Date()}
-        />
-
-        {/* date to */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='pdc_issue_date_before'
-          label='Issue Date To'
-          minDate={values.pdc_issue_date_after}
-          maxDate={new Date()}
-        />
-        
-        
-
-          {/* ledger */}
-          <ReportSelect
-          {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
-          width='50px'
-        />
-
-
-         {/* sub_ledger */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="sub_ledger"
-					options={subLedgers}
-					icon="import_contacts"
-					width="76px"
-				/>
-
-        {/* lpassengerTypes */}
+       {/* lpassengerTypes */}
         <ReportSelect
 					{...commonFieldProps}
 					name="rp_bank_id"
@@ -116,12 +71,7 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-      <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='branch'
-          icon='import_contacts'
-        />
+      
       <Keyword
           {...commonKewordProps}
           type='date'
@@ -135,33 +85,8 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
           name='date_before'
           label='Date To'
         />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_after'
-          label='Issue Date From'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_before'
-          label='Issue Date To'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='ledger'
-          icon='import_contacts'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='sub_ledger'
-          icon='import_contacts'
-        />
-        
-        <Keyword
+       
+       <Keyword
 					{...commonKewordProps}
 					type="select"
 					name="rp_bank_id"
