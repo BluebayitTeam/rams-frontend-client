@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
+import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -83,7 +84,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
 
 
          {/* Coustomer */}
-				<ReportSelect
+				<ReportSelectFirstAgentCode
 					{...commonFieldProps}
 					name="agent"
           label="Coustomer"
@@ -95,14 +96,14 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
 
 
            {/* Ticket Agency */}
-          <ReportSelect
+          <ReportSelectFirstAgentCode
           {...commonFieldProps}
           name='ticket_agency'
           label='Ticket Agency'
           options={agents}
           icon='person_icon'
           width='95px'
-          getOptionLabel={(option) => `${option.first_name || ''} - ${option.agent_code || ''}`}          />
+          />
         
       </div>
 
@@ -138,6 +139,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           {...commonKewordProps}
           type='select'
           name='agent'
+          label="Coustomer"
           icon="person_icon"
         />
         <Keyword
