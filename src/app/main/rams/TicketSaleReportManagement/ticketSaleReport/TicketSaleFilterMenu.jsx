@@ -86,9 +86,11 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
 				<ReportSelect
 					{...commonFieldProps}
 					name="agent"
+          label="Coustomer"
 					options={agents}
 					icon="person_icon"
-					width="40px"
+          width="76px"
+          getOptionLabel={(option) => `${option.first_name}- ${option.agent_code}`}
 				/>
 
         
@@ -127,6 +129,8 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           type='select'
           name='agent'
           icon="person_icon"
+          getOptionLabel={(option) => `${option.first_name}`}
+
         />
         
       
