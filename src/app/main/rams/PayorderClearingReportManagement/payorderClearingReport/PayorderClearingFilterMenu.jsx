@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
+import { payorderReportStatus } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,10 +63,10 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
        {/* lpassengerTypes */}
         <ReportSelect
 					{...commonFieldProps}
-					name="rp_bank_id"
-					options={banks}
+					name="status"
+					options={payorderReportStatus}
 				  icon="text_fields"
-					width="95px"
+					width="45px"
 				/>
       </div>
 
@@ -89,7 +90,7 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
        <Keyword
 					{...commonKewordProps}
 					type="select"
-					name="rp_bank_id"
+					name="status"
 					icon="text_fields"
 				/>
       </div>
