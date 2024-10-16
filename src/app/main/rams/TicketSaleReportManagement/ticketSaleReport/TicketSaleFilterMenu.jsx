@@ -76,7 +76,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           <ReportSelect
           {...commonFieldProps}
           name='airway'
-          options={ledgers}
+          options={airways}
           icon='local_activityIcon'
           width='50px'
         />
@@ -100,7 +100,7 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           {...commonKewordProps}
           type='select'
           name='branch'
-          icon='import_contacts'
+          icon='local_activityIcon'
         />
       <Keyword
           {...commonKewordProps}
@@ -115,24 +115,12 @@ function TicketSaleFilterMenu({ inShowAllMode, handleGetTicketSales, handleGetAl
           name='date_before'
           label='Date To'
         />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_after'
-          label='Issue Date From'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_before'
-          label='Issue Date To'
-        />
-
+        
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='ledger'
-          icon='import_contacts'
+          name='airway'
+          icon='local_activityIcon'
         />
         <Keyword
           {...commonKewordProps}
