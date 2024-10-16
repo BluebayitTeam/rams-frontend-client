@@ -31,7 +31,7 @@ const initialTableColumnsState = [
 	{ id: 2, label: 'Invoice No', name: 'invoice_no', show: true },
 	{ id: 3, label: 'Date', name: 'updated_at', show: true, type: 'date' },
 	{ id: 4, label: 'Issue Date', name: 'pdc_issue_date', show: true, type: 'date' },
-	{ id: 5, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+	{ id: 5, label: 'Ledger', name: 'ticket_agency', subName: 'name', show: true },
 	{ id: 6, label: 'Status', name: 'status', show: true },
 	{ id: 7, label: 'Bank', name: 'rp_bank_id', show: true },
 	{ id: 8, label: 'Cheque No', name: 'cheque_no', show: true },
@@ -73,15 +73,13 @@ function TicketSaleReportsTable(props) {
 
   const { data: paginatedData,  } = useGetTicketSaleReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      ticketSale_code: filterData.ticketSale_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+      branch: filterData.branch || '',
+      airway: filterData.airway || '',
+      agent: filterData.agent || '',
+      ticket_agency: filterData.ticket_agency || '',
+      issue_person: filterData.issue_person || '',
       page,
       size,
     },
@@ -90,15 +88,13 @@ function TicketSaleReportsTable(props) {
   
   const { data: allData, } = useGetTicketSaleAllReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      ticketSale_code: filterData.ticketSale_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+      branch: filterData.branch || '',
+      airway: filterData.airway || '',
+      agent: filterData.agent || '',
+      ticket_agency: filterData.ticket_agency || '',
+      issue_person: filterData.issue_person || '',
     },
     { skip: !inShowAllMode }
   );
@@ -161,7 +157,10 @@ function TicketSaleReportsTable(props) {
 
   const filteredData = {
     Branch: getValues()?.branchName || null,
-   
+    Airway: getValues()?.airwayName || null,
+    Agent: getValues()?.agentName || null,
+    Ticket_Agency: getValues()?.ticketAgency || null,
+    Issue_Person: getValues()?.issuePerson || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
       : null,
