@@ -1100,7 +1100,7 @@ const navigationConfig = [
 				title: 'Post Date Payorder Rpt',
 				translate: 'Post Date Payorder Rpt',
 				type: 'item',
-				url: '/apps/report-management/payorderClearing-reports',
+				url: '/apps/payorderClearingReport/payorderClearingReports',
 				exact: true,
 				display_order: 20
 			}

@@ -98,6 +98,7 @@ import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppC
 import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
 import PaymentSummaryReportAppConfig from '../rams/PaymentSummaryReportManagement/PaymentSummaryReportAppConfig';
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
+import PayorderClearingReportAppConfig from '../rams/PayorderClearingReportManagement/PayorderClearingReportAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
@@ -201,6 +202,7 @@ const appsConfigs = [
   DemandAssignAppConfig,
   TicketPostingAppConfig,
   AgentReportAppConfig,
+  PayorderClearingReportAppConfig,
   AccountStatementReportAppConfig,
   PassengerReportAppConfig,
   PostDateChequeReportAppConfig,
