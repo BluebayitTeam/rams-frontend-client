@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { getBranches, getLedgers, getSubLedgers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
@@ -22,8 +22,6 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
   const theme = useTheme();
 	const values = getValues();
 	const [_reRender, setReRender] = useState(0);
-  const { ledgers, subLedgers,branches } = useSelector((state) => state.data);
-	const banks = ledgers.filter(data => data?.head_group?.name === 'Bank Accounts');
 
   const commonFieldProps = {
 		setReRender,
@@ -66,7 +64,7 @@ function PayorderClearingFilterMenu({ inShowAllMode, handleGetPayorderClearings,
 					name="status"
 					options={payorderReportStatus}
 				  icon="text_fields"
-					width="45px"
+					width="46px"
 				/>
       </div>
 

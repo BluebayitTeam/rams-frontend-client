@@ -43,6 +43,7 @@ const initialTableColumnsState = [
 		headStyle: { textAlign: 'right' }
 	}
 ];
+
 function PayorderClearingReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -72,15 +73,10 @@ function PayorderClearingReportsTable(props) {
 
   const { data: paginatedData,  } = useGetPayorderClearingReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
+      is_cheque: 'payorder',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      payorderClearing_code: filterData.payorderClearing_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+      status: filterData.status || '',
       page,
       size,
     },
@@ -89,15 +85,11 @@ function PayorderClearingReportsTable(props) {
   
   const { data: allData, } = useGetPayorderClearingAllReportsQuery(
     {
-      branch: filterData.branch || '',
+      
       date_after: filterData.date_after || '',
+      is_cheque: 'payorder',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      payorderClearing_code: filterData.payorderClearing_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+     status: filterData.status || '',
     },
     { skip: !inShowAllMode }
   );
@@ -159,7 +151,7 @@ function PayorderClearingReportsTable(props) {
 
 
   const filteredData = {
-    Branch: getValues()?.branchName || null,
+    status: getValues()?.status || null,
    
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
