@@ -2,8 +2,8 @@ import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import {
-	POSTDATE_FILTER_BY,
-	POSTDATE_FILTER_WITHOUT_PG
+	GET_IATA_TICKET_REPORT,
+	GET_IATA_TICKET_REPORT_WITHOUT_PG
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -16,14 +16,14 @@ const TicketSaleReportApi = api
 		endpoints: (build) => ({
 			getTicketSaleReports: build.query({
 				query: (filterData) => ({
-					url: POSTDATE_FILTER_BY,
+					url: GET_IATA_TICKET_REPORT,
 					params: filterData
 				}),
 				providesTags: ['ticketSaleReports']
 			}),
 			getTicketSaleAllReports: build.query({
 				query: (filterData) => ({
-					url: POSTDATE_FILTER_WITHOUT_PG,
+					url: GET_IATA_TICKET_REPORT_WITHOUT_PG,
 					params: filterData
 				}),
 				providesTags: ['ticketSaleReports']

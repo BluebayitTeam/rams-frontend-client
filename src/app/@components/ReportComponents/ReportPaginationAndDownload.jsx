@@ -189,21 +189,7 @@ function ReportPaginationAndDownload({
         />
       </div>
 
-      {/* <div
-					style={{
-						display: 'flex',
-						visibility: modifiedDonationAssignData?.length > 0 ? 'visible' : 'hidden',
-						fontSize: '16px'
-					}}
-				>
-					<div style={{ marginRight: '50px' }}>
-						<b>Total Records :</b> {totalRecords}
-					</div>
-					<div>
-						<b>Balance : </b>
-						{totalAllPageBalance?.toFixed(2)}
-					</div>
-				</div>{' '} */}
+      
 
 
 

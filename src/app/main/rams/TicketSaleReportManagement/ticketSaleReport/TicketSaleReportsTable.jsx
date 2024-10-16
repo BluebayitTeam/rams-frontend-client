@@ -1,10 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import PrintIcon from '@mui/icons-material/Print';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
@@ -12,6 +11,7 @@ import { z } from 'zod';
 import '../../../rams/print.css';
 
 import moment from 'moment';
+import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetTicketSaleAllReportsQuery,
@@ -26,23 +26,90 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
-const initialTableColumnsState = [
+const initialPrintTableColumnsState = [
 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Invoice No', name: 'invoice_no', show: true },
-	{ id: 3, label: 'Date', name: 'updated_at', show: true, type: 'date' },
-	{ id: 4, label: 'Issue Date', name: 'pdc_issue_date', show: true, type: 'date' },
-	{ id: 5, label: 'Ledger', name: 'ticket_agency', subName: 'name', show: true },
-	{ id: 6, label: 'Status', name: 'status', show: true },
-	{ id: 7, label: 'Bank', name: 'rp_bank_id', show: true },
-	{ id: 8, label: 'Cheque No', name: 'cheque_no', show: true },
+	{ id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+	{ id: 4, label: 'Pax Name', name: 'passenger', subName: 'passenger_name', show: true },
 	{
-		id: 9,
-		label: 'Amount',
-		name: 'amount',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
+		id: 5,
+		label: 'Issue Person',
+		getterMethod: data => `${data.issue_person?.first_name || ''}, ${data.issue_person?.last_name || ''}`,
+		show: true
+	},
+	{
+		id: 6,
+		label: 'Ticket Agency',
+		getterMethod: data => `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
+		show: true
+	},
+	{ id: 7, label: 'Flight Date', name: 'flight_date', show: true, type: 'date' },
+	{ id: 8, label: 'GDS', name: 'gds', subName: 'name', show: true },
+	{ id: 9, label: 'PNR', name: 'gds_pnr', show: true },
+	{ id: 10, label: 'Airline PNR', name: 'airline_pnr', show: true },
+	{ id: 11, label: 'Return Flight Date', name: 'return_flight_date', show: true, type: 'date' },
+	{ id: 12, label: 'Ticket No', name: 'ticket_no', show: true },
+	{ id: 13, label: 'FLT & Class', name: '_class', show: true },
+	{ id: 14, label: 'Air Way', name: 'current_airway', subName: 'name', show: true },
+	{ id: 15, label: 'Sector Name', name: 'sector', show: true },
+	{ id: 16, label: 'Fare Amount', name: 'fare_amount', show: true },
+	{ id: 17, label: 'Airline Comission Amount', name: 'airline_commission_amount', show: true },
+	{ id: 18, label: 'Customer Commission Amount', name: 'customer_commission_amount', show: true },
+	{ id: 19, label: 'Tax Amount', name: 'tax_amount', subName: 'name', show: true },
+	{ id: 20, label: ' Sales Amount', name: 'sales_amount', show: true },
+	{ id: 21, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
+	{
+		id: 22,
+		label: 'Profit ',
+		getterMethod: data => `${data.sales_amount - data.purchase_amount}`,
+		show: true
 	}
+];
+
+const initialAirlinePrintTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+	{ id: 3, label: 'Pax Name', name: 'passenger', subName: 'passenger_name', show: true },
+	{
+		id: 4,
+		label: 'Ticket Agency',
+		getterMethod: data => `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
+		show: true
+	},
+	{ id: 5, label: 'Ticket No', name: 'ticket_no', show: true },
+	{ id: 6, label: 'Air Way', name: 'current_airway', subName: 'name', show: true },
+	{ id: 7, label: 'Purchase Amount ', name: 'purchase_amount', show: true }
+];
+const initialCustomerPrintTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+	{
+		id: 4,
+		label: 'Pax Name',
+		getterMethod: data => (data.pax_name ? `${data.pax_name}` : `${data.passenger?.passenger_name || ''}`),
+		show: true
+	},
+	{
+		id: 5,
+		label: 'Issue Person',
+		getterMethod: data => `${data.issue_person?.first_name || ''} ${data.issue_person?.last_name || ''}`,
+		show: true
+	},
+	{
+		id: 6,
+		label: 'Ticket Agency',
+		getterMethod: data => `${data.ticket_agency?.first_name || ''} ${data.ticket_agency?.last_name || ''}`,
+		show: true
+	},
+	{ id: 7, label: 'Flight Date', name: 'flight_date', show: true, type: 'date' },
+	{ id: 8, label: 'GDS', name: 'gds', subName: 'name', show: true },
+	{ id: 9, label: 'PNR', name: 'gds_pnr', show: true },
+	{ id: 10, label: 'Airline PNR', name: 'airline_pnr', show: true },
+	{ id: 11, label: 'Return Flight Date', name: 'return_flight_date', show: true, type: 'date' },
+	{ id: 12, label: 'Ticket No', name: 'ticket_no', show: true },
+	{ id: 13, label: 'FLT & Class', name: '_class', show: true },
+	{ id: 14, label: ' Sales Amount', name: 'sales_amount', show: true }
 ];
 function TicketSaleReportsTable(props) {
   const classes = useStyles();
@@ -55,10 +122,19 @@ function TicketSaleReportsTable(props) {
   const {  watch ,getValues } = methods;
 
   const [modifiedTicketSaleData, setModifiedTicketSaleData,setSortBy,setSortBySubKey,dragAndDropRow] = useReportData();
-  const [tableColumns, dispatchTableColumns] = useReducer(
-    tableColumnsReducer,
-    initialTableColumnsState
-  );
+  const [printtableColumns, dispatchPrintTableColumns] = useReducer(
+		tableColumnsReducer,
+		initialPrintTableColumnsState
+	);
+	const [customerprinttableColumns, dispatchCustomerPrintTableColumns] = useReducer(
+		tableColumnsReducer,
+		initialCustomerPrintTableColumnsState
+	);
+	const [airlineprinttableColumns, dispatchAirlinePrintTableColumns] = useReducer(
+		tableColumnsReducer,
+		initialAirlinePrintTableColumnsState
+	);
+
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
@@ -102,12 +178,12 @@ function TicketSaleReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketSaleData(allData.postdate_cheques || []);
+      setModifiedTicketSaleData(allData.iata_tickets || []);
       setInSiglePageMode(false);
 			setInShowAllMode(true);
       setPagination(false)
       const { totalPages, totalElements } = getPaginationData(
-        allData.postdate_cheques,
+        allData.iata_tickets,
         size,
         page
       );
@@ -117,7 +193,7 @@ function TicketSaleReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
 
-      setModifiedTicketSaleData(paginatedData.postdate_cheques || []);
+      setModifiedTicketSaleData(paginatedData.iata_tickets || []);
       setPage(paginatedData?.page || 1);
 			setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -178,28 +254,15 @@ function TicketSaleReportsTable(props) {
           handleGetAllTicketSales={handleGetAllTicketSales}
         />
       </FormProvider>
-      <ReportPaginationAndDownload
-        page={page}
-        size={size}
-        setPage={setPage}
-        setSize={setSize}
-        inShowAllMode={inShowAllMode}
-        setInShowAllMode={setInShowAllMode}
-        componentRef={componentRef}
-        totalPages={totalPages}
-        totalElements={totalElements}
-        onFirstPage={() => handleGetTicketSales(1)}
-        onPreviousPage={() => handleGetTicketSales(page - 1)}
-        onNextPage={() => handleGetTicketSales(page + 1)}
-        onLastPage={() => handleGetTicketSales(totalPages)}
-        handleExelDownload={handleExelDownload}
-        handlePrint={handlePrint}
-        handleGetData={handleGetTicketSales}
-        handleGetAllData={handleGetAllTicketSales}
-        tableColumns={tableColumns}
-        dispatchTableColumns={dispatchTableColumns}
-        filename='TicketSaleReport'
-      />
+      <div className={`${classes.menubar} justify-start md:justify-center`} style={{ backgroundColor: '#c2c7f1' }}>
+  {/* Print icon */}
+  <PrintIcon
+    className="cursor-pointer inside icon"
+    // style={{ padding: '6px', border: inPrint ? '1px solid' : 'none' }} 
+    onClick={handlePrint} 
+  />
+  
+</div>
 
       <table id='table-to-xls' className='w-full' style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
@@ -209,10 +272,11 @@ function TicketSaleReportsTable(props) {
               classes={classes}
               reportTitle='PostDate Cheque Report'
               filteredData={filteredData}
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
+              printtableColumns={printtableColumns}
+              dispatchPrintTableColumns={dispatchPrintTableColumns}
               data={ticketSale}
-              totalColumn={initialTableColumnsState?.length}
+              
+              totalColumn={initialPrintTableColumnsState?.length}
 
               serialNumber={
                 pagination
