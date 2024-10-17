@@ -35,7 +35,7 @@ function ReportTicketSales({
 	handleExelDownload,
 	handlePrint,
     handlePrintCoustomer,
-    handlePrintAirLine,
+    handlePrintAirline,
 	handleGetData,
 	handleGetAllData,
 	tableColumns,
@@ -138,7 +138,7 @@ function ReportTicketSales({
 						style={{ padding: '4px', border: inPrint && '1px solid', color: 'green' }}
              onClick={() => {
             setInPrint(true);
-            handlePrintAirLine();
+            handlePrintAirline();
           }}
 					/>
 				</Tooltip>

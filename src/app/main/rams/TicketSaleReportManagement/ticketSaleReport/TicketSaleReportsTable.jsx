@@ -81,6 +81,38 @@ const initialAirlinePrintTableColumnsState = [
 	{ id: 7, label: 'Purchase Amount ', name: 'purchase_amount', show: true }
 ];
 
+const initialCustomerPrintTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+	{
+		id: 4,
+		label: 'Pax Name',
+		getterMethod: data => (data.pax_name ? `${data.pax_name}` : `${data.passenger?.passenger_name || ''}`),
+		show: true
+	},
+	{
+		id: 5,
+		label: 'Issue Person',
+		getterMethod: data => `${data.issue_person?.first_name || ''} ${data.issue_person?.last_name || ''}`,
+		show: true
+	},
+	{
+		id: 6,
+		label: 'Ticket Agency',
+		getterMethod: data => `${data.ticket_agency?.first_name || ''} ${data.ticket_agency?.last_name || ''}`,
+		show: true
+	},
+	{ id: 7, label: 'Flight Date', name: 'flight_date', show: true, type: 'date' },
+	{ id: 8, label: 'GDS', name: 'gds', subName: 'name', show: true },
+	{ id: 9, label: 'PNR', name: 'gds_pnr', show: true },
+	{ id: 10, label: 'Airline PNR', name: 'airline_pnr', show: true },
+	{ id: 11, label: 'Return Flight Date', name: 'return_flight_date', show: true, type: 'date' },
+	{ id: 12, label: 'Ticket No', name: 'ticket_no', show: true },
+	{ id: 13, label: 'FLT & Class', name: '_class', show: true },
+	{ id: 14, label: ' Sales Amount', name: 'sales_amount', show: true }
+];
+
 function TicketSaleReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -101,6 +133,10 @@ function TicketSaleReportsTable(props) {
     tableColumnsReducer,
     initialAirlinePrintTableColumnsState
   );
+  const [customerprinttableColumns, dispatchCustomerPrintTableColumns] = useReducer(
+    tableColumnsReducer,
+    initialCustomerPrintTableColumnsState
+  );
 
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -117,8 +153,8 @@ function TicketSaleReportsTable(props) {
   const [totalSalesAmount, setTotalSalesAmount] = useState(0);
   const [totalPurchaseAmount, setTotalPurchaseAmount] = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
-  const componentRef = useRef();
-  const componentRefCustomerPrint = useRef();
+  const componentRef = useRef(null);
+  const componentRefCustomerPrint = useRef(null);
   const componentRefAirlinePrint = useRef();
 
   const filterData = watch();
@@ -195,10 +231,10 @@ function TicketSaleReportsTable(props) {
   });
 
   const handlePrintCoustomer = useReactToPrint({
-    content: () => componentRef.current,
+    content: () => componentRefCustomerPrint.current,
   });
   const handlePrintAirline = useReactToPrint({
-    content: () => componentRef.current,
+	content: () => componentRefAirlinePrint.current,
   });
 
   const handleGetTicketSales = useCallback(async (newPage) => {
@@ -259,7 +295,9 @@ function TicketSaleReportsTable(props) {
     handleGetData={handleGetTicketSales}
     handleGetAllData={handleGetAllTicketSales}
     tableColumns={printtableColumns}
+    // tableColumns={customerprinttableColumns}
     dispatchTableColumns={dispatchPrintTableColumns}
+    // dispatchTableColumns={dispatchCustomerPrintTableColumns}
     filename='TicketSaleReport'
   />
 
@@ -271,7 +309,7 @@ function TicketSaleReportsTable(props) {
     width: '100%', 
   }}
 >
-  <table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
+<table id="table-to-xls" className="w-full" style={{ minHeight: '270px' }}>
     <tbody ref={componentRef} id='downloadPage'>
       {modifiedTicketSaleData.map((ticketSale, index) => (
         <SinglePage
@@ -311,6 +349,46 @@ function TicketSaleReportsTable(props) {
       ))}
     </tbody>
   </table>
+
+
+  <table id="table-to-xls" className="w-full" style={{ minHeight: '270px', display: 'none' }}>
+				<div ref={componentRefCustomerPrint} id="downloadPage">
+					{/* each single page (table) */}
+					{modifiedTicketSaleData.map(ticketSale => (
+						<SinglePage
+							style={{ backgroundColor: 'green' }}
+							classes={classes}
+							reportTitle="Ticket Sales Report"
+							filteredData={filteredData}
+							tableColumns={customerprinttableColumns}
+							dispatchTableColumns={dispatchCustomerPrintTableColumns}
+							data={{
+								...ticketSale,
+								data: [
+								  ...ticketSale.data, 
+								  {
+									Profit: totalProfit,
+									purchase_amount: totalPurchaseAmount,
+									sales_amount: totalSalesAmount,
+									tax_amount: totalTaxAmount,
+									customer_commission_amount: totalCustomerCommisionAmount,
+									airline_commission_amount: totalAirlineCommissionAmount,
+									fare_amount: totalFareAmount,
+									details: 'Total',
+									hideSerialNo: true,
+									rowStyle: { fontWeight: 600 }
+								  },
+								],
+							  }}
+							serialNumber={ticketSale.page * ticketSale.size - ticketSale.size + 1}
+							setPage={setPage}
+							inSiglePageMode={inSiglePageMode}
+							// setSortBy={setSortBy}
+							// setSortBySubKey={setSortBySubKey}
+						/>
+					))}
+				</div>
+			</table>
   
 </div>
 
