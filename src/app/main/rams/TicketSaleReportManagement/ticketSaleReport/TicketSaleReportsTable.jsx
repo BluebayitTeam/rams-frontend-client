@@ -65,6 +65,22 @@ const initialTableColumnsState = [
 	}
 ];
 
+
+const initialAirlinePrintTableColumnsState = [
+	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+	{ id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+	{ id: 3, label: 'Pax Name', name: 'passenger', subName: 'passenger_name', show: true },
+	{
+		id: 4,
+		label: 'Ticket Agency',
+		getterMethod: data => `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
+		show: true
+	},
+	{ id: 5, label: 'Ticket No', name: 'ticket_no', show: true },
+	{ id: 6, label: 'Air Way', name: 'current_airway', subName: 'name', show: true },
+	{ id: 7, label: 'Purchase Amount ', name: 'purchase_amount', show: true }
+];
+
 function TicketSaleReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -77,10 +93,15 @@ function TicketSaleReportsTable(props) {
   const { watch,getValues} = methods;
 
   const [modifiedTicketSaleData, setModifiedTicketSaleData] = useReportData();
-  const [tableColumns, dispatchTableColumns] = useReducer(
+  const [printtableColumns, dispatchPrintTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
   );
+  const [airlineprinttableColumns, dispatchAirlinePrintTableColumns] = useReducer(
+    tableColumnsReducer,
+    initialAirlinePrintTableColumnsState
+  );
+
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
@@ -235,8 +256,8 @@ function TicketSaleReportsTable(props) {
 	handlePrintAirline={handlePrintAirline}
     handleGetData={handleGetTicketSales}
     handleGetAllData={handleGetAllTicketSales}
-    tableColumns={tableColumns}
-    dispatchTableColumns={dispatchTableColumns}
+    tableColumns={printtableColumns}
+    dispatchTableColumns={dispatchPrintTableColumns}
     filename='TicketSaleReport'
   />
 
@@ -256,8 +277,8 @@ function TicketSaleReportsTable(props) {
           classes={classes}
           reportTitle="TicketSale Report"
           filteredData={filteredData}
-          tableColumns={tableColumns}
-          dispatchTableColumns={dispatchTableColumns}
+          tableColumns={printtableColumns}
+          dispatchTableColumns={dispatchPrintTableColumns}
           data={{
             ...ticketSale,
             data: [
@@ -288,6 +309,7 @@ function TicketSaleReportsTable(props) {
       ))}
     </tbody>
   </table>
+  
 </div>
 
   </div>
