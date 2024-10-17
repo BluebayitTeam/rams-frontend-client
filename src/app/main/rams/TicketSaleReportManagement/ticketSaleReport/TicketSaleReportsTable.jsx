@@ -5,7 +5,7 @@ import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
+import ReportPaginationDownLoad2 from 'src/app/@components/ReportComponents/ReportPaginationDownLoad2';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
@@ -89,7 +89,13 @@ function TicketSaleReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-
+  const [totalFareAmount, setTotalFareAmount] = useState(0);
+  const [totalAirlineCommissionAmount, setTotalAirlineCommissionAmount] = useState(0);
+  const [totalCustomerCommisionAmount, setTotalCustomerCommisionAmount] = useState(0);
+  const [totalTaxAmount, setTotalTaxAmount] = useState(0);
+  const [totalSalesAmount, setTotalSalesAmount] = useState(0);
+  const [totalPurchaseAmount, setTotalPurchaseAmount] = useState(0);
+  const [totalProfit, setTotalProfit] = useState(0);
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -202,7 +208,7 @@ function TicketSaleReportsTable(props) {
     />
   </FormProvider>
 
-  <ReportPaginationAndDownload
+  <ReportPaginationDownLoad2
     page={page}
     size={size}
     setPage={setPage}
@@ -248,10 +254,16 @@ function TicketSaleReportsTable(props) {
             data: [
               ...ticketSale.data, 
               {
-                credit_amount: totalAmount,
-                getterMethod: () => 'Total Amount',
-                hideSerialNo: true,
-                rowStyle: { fontWeight: 600 },
+				Profit: totalProfit,
+				purchase_amount: totalPurchaseAmount,
+				sales_amount: totalSalesAmount,
+				tax_amount: totalTaxAmount,
+				customer_commission_amount: totalCustomerCommisionAmount,
+				airline_commission_amount: totalAirlineCommissionAmount,
+				fare_amount: totalFareAmount,
+				details: 'Total',
+				hideSerialNo: true,
+				rowStyle: { fontWeight: 600 }
               },
             ],
           }}

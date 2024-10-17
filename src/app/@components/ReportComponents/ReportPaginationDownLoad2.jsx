@@ -1,4 +1,4 @@
-// ReportPaginationAndDownload.js
+// ReportPaginationDownLoad2.js
 import BallotIcon from '@mui/icons-material/Ballot';
 import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 import DifferenceIcon from '@mui/icons-material/Difference';
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
 }));
 
-function ReportPaginationAndDownload({
+function ReportPaginationDownLoad2({
 	page,
 	setPage,
 	size,
@@ -197,4 +197,4 @@ function ReportPaginationAndDownload({
   );
 }
 
-export default ReportPaginationAndDownload;
+export default ReportPaginationDownLoad2;
