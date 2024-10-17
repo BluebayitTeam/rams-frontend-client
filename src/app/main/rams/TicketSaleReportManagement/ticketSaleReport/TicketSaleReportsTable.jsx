@@ -171,6 +171,13 @@ function TicketSaleReportsTable(props) {
     content: () => componentRef.current,
   });
 
+  const handlePrintCoustomer = useReactToPrint({
+    content: () => componentRef.current,
+  });
+  const handlePrintAirline = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   const handleGetTicketSales = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
@@ -224,6 +231,8 @@ function TicketSaleReportsTable(props) {
     onLastPage={() => handleGetTicketSales(totalPages)}
     handleExelDownload={handleExelDownload}
     handlePrint={handlePrint}
+	handlePrintCoustomer={handlePrintCoustomer}
+	handlePrintAirline={handlePrintAirline}
     handleGetData={handleGetTicketSales}
     handleGetAllData={handleGetAllTicketSales}
     tableColumns={tableColumns}

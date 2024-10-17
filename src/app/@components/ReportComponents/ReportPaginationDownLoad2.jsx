@@ -33,6 +33,8 @@ function ReportPaginationDownLoad2({
 	handlePdfDownload,
 	handleExelDownload,
 	handlePrint,
+    handlePrintCoustomer,
+    handlePrintAirLine,
 	handleGetData,
 	handleGetAllData,
 	tableColumns,
@@ -122,6 +124,26 @@ function ReportPaginationDownLoad2({
           onClick={() => {
             setInPrint(true);
             handlePrint();
+          }}
+        />
+      )}
+      {!hideSection?.includes('print') && (
+        <PrintSharpIcon
+          className='cursor-pointer inside icon'
+          style={{ padding: '6px', border: inPrint && '1px solid', color: 'green' }}
+          onClick={() => {
+            setInPrint(true);
+            handlePrintCoustomer();
+          }}
+        />
+      )}
+      {!hideSection?.includes('print') && (
+        <PrintSharpIcon
+          className='cursor-pointer inside icon'
+          style={{ padding: '6px', border: inPrint && '1px solid', color: 'red' }}
+          onClick={() => {
+            setInPrint(true);
+            handlePrintAirLine();
           }}
         />
       )}
