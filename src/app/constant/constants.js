@@ -4,11 +4,13 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = isProduction
   ? 'https://rl1010api.ramsbd.net'
-  : 'https://rl1010api.ramsbd.net';
+  : 'http://192.168.68.137:8006';
 
 // added by live api
 
-// export const BASE_URL = isProduction ? 'https://rl1010api.ramsbd.net' : 'https://rl1010api.ramsbd.net/';
+// export const BASE_URL = isProduction
+//   ? 'https://rl1010api.ramsbd.net'
+//   : 'https://rl1010api.ramsbd.net/';
 
 export const CLIENT_URL = isProduction
   ? 'https://rl7811api.ramsbd.net'
@@ -2376,9 +2378,9 @@ export const REPORT_COLUMN_REPORT_COLUMN = `${BASE_URL}/client_column_client_col
 
 export const GET_REPORT_COLUMNS = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/all/`;
 
-export const GET_REPORT_COLUMN_BY_ID = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/`;
+export const GET_REPORT_COLUMN_BY_ID = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/`;
 
-export const UPDATE_REPORT_COLUMN = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/update/`;
+export const UPDATE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/update/`;
 
 export const DELETE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/delete/`;
 

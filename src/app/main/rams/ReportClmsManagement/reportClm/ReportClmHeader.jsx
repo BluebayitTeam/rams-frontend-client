@@ -26,7 +26,7 @@ function ReportClmHeader() {
   function handleUpdateReportClm() {
     const filteredData = Object.values(getValues()?.reportClms).map((item) => {
       return {
-        serial: item.isChecked ? item.serial.toString() : null,
+        serial: item.isChecked ? item.serial?.toString() : null,
         isChecked: item.isChecked,
         id: item.key,
       };

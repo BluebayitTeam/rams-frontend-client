@@ -31,8 +31,8 @@ function ReportClmForm(props) {
   }, [props?.reportClms, setValue, getValues(), reportClmValue]);
   return (
     <div className='grid grid-cols-3 grid-flow-row gap-1'>
-      {props?.reportClms?.map((clm) => (
-        <div key={clm.id} style={{ flex: '1 0 30%', display: 'flex' }}>
+      {props?.reportClms?.map((clm, index) => (
+        <div key={index} style={{ flex: '1 0 30%', display: 'flex' }}>
           <Controller
             name={`reportClms.${clm.id}.serial`}
             control={control}

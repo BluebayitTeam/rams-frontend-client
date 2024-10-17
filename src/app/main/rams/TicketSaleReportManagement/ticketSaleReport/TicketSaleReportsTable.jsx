@@ -362,24 +362,7 @@ function TicketSaleReportsTable(props) {
 							filteredData={filteredData}
 							tableColumns={customerprinttableColumns}
 							dispatchTableColumns={dispatchCustomerPrintTableColumns}
-							data={{
-								...ticketSale,
-								data: [
-								  ...ticketSale.data, 
-								  {
-									Profit: totalProfit,
-									purchase_amount: totalPurchaseAmount,
-									sales_amount: totalSalesAmount,
-									tax_amount: totalTaxAmount,
-									customer_commission_amount: totalCustomerCommisionAmount,
-									airline_commission_amount: totalAirlineCommissionAmount,
-									fare_amount: totalFareAmount,
-									details: 'Total',
-									hideSerialNo: true,
-									rowStyle: { fontWeight: 600 }
-								  },
-								],
-							  }}
+							data={ticketSale}
 							serialNumber={ticketSale.page * ticketSale.size - ticketSale.size + 1}
 							setPage={setPage}
 							inSiglePageMode={inSiglePageMode}
@@ -389,6 +372,29 @@ function TicketSaleReportsTable(props) {
 					))}
 				</div>
 			</table>
+
+			<table id="table-to-xls" className="w-full" style={{ minHeight: '270px', display: 'none' }}>
+				<div ref={componentRefAirlinePrint} id="downloadPage">
+					{/* each single page (table) */}
+					{modifiedTicketSaleData.map(ticketsale => (
+						<SinglePage
+							style={{ backgroundColor: 'red' }}
+							classes={classes}
+							reportTitle="Ticket Sales Report"
+							filteredData={filteredData}
+							tableColumns={airlineprinttableColumns}
+							dispatchTableColumns={dispatchAirlinePrintTableColumns}
+							data={ticketsale}
+							serialNumber={ticketsale.page * ticketsale.size - ticketsale.size + 1}
+							setPage={setPage}
+							inSiglePageMode={inSiglePageMode}
+							// setSortBy={setSortBy}
+							// setSortBySubKey={setSortBySubKey}
+						/>
+					))}
+				</div>
+			</table>
+
   
 </div>
 
