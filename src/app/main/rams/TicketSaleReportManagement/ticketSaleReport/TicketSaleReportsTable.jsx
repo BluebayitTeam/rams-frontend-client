@@ -266,8 +266,8 @@ function TicketSaleReportsTable(props) {
 	Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
 	Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null,
 	Agent: getValues()?.agentName || null,
-	TicketAgency: getValues()?.ticket_agency || null,
-	issue_person: getValues()?.issue_person || null 
+	TicketAgency: getValues()?.ticket_agencyName || null,
+	issuePerson: getValues()?.issue_personName || null 
   };
   
   return (
