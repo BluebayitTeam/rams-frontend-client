@@ -117,7 +117,9 @@ function TicketSaleReportsTable(props) {
   const [totalSalesAmount, setTotalSalesAmount] = useState(0);
   const [totalPurchaseAmount, setTotalPurchaseAmount] = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
-  const componentRef = useRef(null);
+  const componentRef = useRef();
+  const componentRefCustomerPrint = useRef();
+  const componentRefAirlinePrint = useRef();
 
   const filterData = watch();
 
