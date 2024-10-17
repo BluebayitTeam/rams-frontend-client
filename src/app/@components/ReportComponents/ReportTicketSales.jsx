@@ -1,4 +1,4 @@
-// ReportPaginationDownLoad2.js
+// ReportTicketSales.js
 import BallotIcon from '@mui/icons-material/Ballot';
 import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 import DifferenceIcon from '@mui/icons-material/Difference';
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
 }));
 
-function ReportPaginationDownLoad2({
+function ReportTicketSales({
 	page,
 	setPage,
 	size,
@@ -219,4 +219,4 @@ function ReportPaginationDownLoad2({
   );
 }
 
-export default ReportPaginationDownLoad2;
+export default ReportTicketSales;

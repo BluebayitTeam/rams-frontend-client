@@ -5,7 +5,7 @@ import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import ReportPaginationDownLoad2 from 'src/app/@components/ReportComponents/ReportPaginationDownLoad2';
+import ReportTicketSales from 'src/app/@components/ReportComponents/ReportTicketSales';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
@@ -215,7 +215,7 @@ function TicketSaleReportsTable(props) {
     />
   </FormProvider>
 
-  <ReportPaginationDownLoad2
+  <ReportTicketSales
     page={page}
     size={size}
     setPage={setPage}
