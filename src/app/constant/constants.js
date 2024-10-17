@@ -2376,9 +2376,9 @@ export const REPORT_COLUMN_REPORT_COLUMN = `${BASE_URL}/client_column_client_col
 
 export const GET_REPORT_COLUMNS = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/all/`;
 
-export const GET_REPORT_COLUMN_BY_ID = `${BASE_URL}/table_column_settings_for_report_settings/api/v1/table_column_settings_for_report_settings/`;
+export const GET_REPORT_COLUMN_BY_ID = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/`;
 
-export const UPDATE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report_settings/api/v1/table_column_settings_for_report_settings/update/`;
+export const UPDATE_REPORT_COLUMN = `${BASE_URL}/pamemoemtrmpfl_report_column/api/v1/pamemoemtrmpfl_report_column/update/`;
 
 export const DELETE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/delete/`;
 

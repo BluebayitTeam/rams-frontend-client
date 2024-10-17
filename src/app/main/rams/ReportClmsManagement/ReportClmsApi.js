@@ -41,7 +41,7 @@ const ReportClmApi = api
       }),
       updateReportClm: build.mutation({
         query: (data) => ({
-          url: `${UPDATE_REPORT_COLUMN}${data?.type}/`,
+          url: `${UPDATE_REPORT_COLUMN}${data?.type}`,
           method: 'PUT',
           data,
         }),
