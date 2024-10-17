@@ -130,7 +130,8 @@ function ReportTicketSales({
       )}
       
       {!hideSection?.includes('print') && (
-      <Tooltip title="Customer Print" TransitionComponent={Zoom}>
+      
+<Tooltip title="Customer Print" TransitionComponent={Zoom}>
 					{/*Customer print icon*/}
 					<PrintSharpIcon
 						className="cursor-pointer inside icon"
