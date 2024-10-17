@@ -5,6 +5,7 @@ import DifferenceIcon from '@mui/icons-material/Difference';
 import DownloadIcon from '@mui/icons-material/Download';
 import ImportContactsSharpIcon from '@mui/icons-material/ImportContactsSharp';
 import PrintSharpIcon from '@mui/icons-material/PrintSharp';
+import { Tooltip, Zoom } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import html2PDF from 'jspdf-html2canvas';
 import { useLayoutEffect, useState } from 'react';
@@ -127,25 +128,32 @@ function ReportTicketSales({
           }}
         />
       )}
+      
       {!hideSection?.includes('print') && (
-        <PrintSharpIcon
-          className='cursor-pointer inside icon'
-          style={{ padding: '6px', border: inPrint && '1px solid', color: 'green' }}
-          onClick={() => {
-            setInPrint(true);
-            handlePrintCoustomer();
-          }}
-        />
-      )}
-      {!hideSection?.includes('print') && (
-        <PrintSharpIcon
-          className='cursor-pointer inside icon'
-          style={{ padding: '6px', border: inPrint && '1px solid', color: 'red' }}
-          onClick={() => {
+      <Tooltip title="Customer Print" TransitionComponent={Zoom}>
+					{/*Customer print icon*/}
+					<PrintSharpIcon
+						className="cursor-pointer inside icon"
+						style={{ padding: '4px', border: inPrint && '1px solid', color: 'green' }}
+             onClick={() => {
             setInPrint(true);
             handlePrintAirLine();
           }}
-        />
+					/>
+				</Tooltip>
+      )}
+      {!hideSection?.includes('print') && (
+        <Tooltip title="Air Line Print" TransitionComponent={Zoom}>
+					{/*Air Line Print icon*/}
+					<PrintSharpIcon
+						className="cursor-pointer inside icon"
+             style={{ padding: '6px', border: inPrint && '1px solid', color: 'red' }}
+             onClick={() => {
+            setInPrint(true);
+            handlePrintAirLine();
+          }}
+					/>
+				</Tooltip>
       )}
 
       {!hideSection?.includes('pg') && (
