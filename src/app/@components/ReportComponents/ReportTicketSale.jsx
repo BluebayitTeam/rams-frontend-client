@@ -40,6 +40,7 @@ function ReportPaginationAndDownload({
 	hideSection
 }) {
 	const classes = useStyles();
+	console.log('totalPages,totalElements', totalPages, totalElements);
 	const [inPrint, setInPrint] = useState(false);
 	const [inSiglePageMode, setInSiglePageMode] = useState(false);
 	const [inDowloadPdf, setInDowloadPdf] = useState(false);
@@ -188,12 +189,7 @@ function ReportPaginationAndDownload({
         />
       </div>
 
-      
-
-
-
-      
-    </div>
+</div>
   );
 }
 

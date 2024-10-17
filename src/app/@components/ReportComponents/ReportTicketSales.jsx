@@ -1,10 +1,11 @@
-// ReportPaginationAndDownload.js
+// ReportTicketSales.js
 import BallotIcon from '@mui/icons-material/Ballot';
 import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 import DifferenceIcon from '@mui/icons-material/Difference';
 import DownloadIcon from '@mui/icons-material/Download';
 import ImportContactsSharpIcon from '@mui/icons-material/ImportContactsSharp';
 import PrintSharpIcon from '@mui/icons-material/PrintSharp';
+import { Tooltip, Zoom } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import html2PDF from 'jspdf-html2canvas';
 import { useLayoutEffect, useState } from 'react';
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	...getReportMakeStyles(theme)
 }));
 
-function ReportPaginationAndDownload({
+function ReportTicketSales({
 	page,
 	setPage,
 	size,
@@ -33,6 +34,8 @@ function ReportPaginationAndDownload({
 	handlePdfDownload,
 	handleExelDownload,
 	handlePrint,
+    handlePrintCoustomer,
+    handlePrintAirline,
 	handleGetData,
 	handleGetAllData,
 	tableColumns,
@@ -125,6 +128,34 @@ function ReportPaginationAndDownload({
           }}
         />
       )}
+      
+      {!hideSection?.includes('print') && (
+      
+<Tooltip title="Customer Print" TransitionComponent={Zoom}>
+					{/*Customer print icon*/}
+					<PrintSharpIcon
+						className="cursor-pointer inside icon"
+						style={{ padding: '4px', border: inPrint && '1px solid', color: 'green' }}
+             onClick={() => {
+            setInPrint(true);
+            handlePrintAirline();
+          }}
+					/>
+				</Tooltip>
+      )}
+      {!hideSection?.includes('print') && (
+        <Tooltip title="Air Line Print" TransitionComponent={Zoom}>
+					{/*Air Line Print icon*/}
+					<PrintSharpIcon
+						className="cursor-pointer inside icon"
+             style={{ padding: '6px', border: inPrint && '1px solid', color: 'red' }}
+             onClick={() => {
+            setInPrint(true);
+            handlePrintAirLine();
+          }}
+					/>
+				</Tooltip>
+      )}
 
       {!hideSection?.includes('pg') && (
         <ImportContactsSharpIcon
@@ -197,4 +228,4 @@ function ReportPaginationAndDownload({
   );
 }
 
-export default ReportPaginationAndDownload;
+export default ReportTicketSales;

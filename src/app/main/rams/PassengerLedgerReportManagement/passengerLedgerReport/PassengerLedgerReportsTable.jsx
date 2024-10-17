@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableRow } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
@@ -67,7 +68,7 @@ const initialBillDetailsTableColumnsState = [
 	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
 	{ id: 4, label: 'Bill Purpose', name: 'related_ledger', show: true },
 	{ id: 5, label: 'Bill Details ', name: 'details', show: true },
-	{ id: 6, label: 'Amount', name: 'credit_amount', show: true }
+	{ id: 6, label: 'Amount', name: 'debit_amount', show: true }
 ];
 const initialCostDetailsTableColumnsState = [
 	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -118,10 +119,12 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
   const [totalCdAmount, setTotalCdAmount] = useState(0);
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
+  const [totalSl, setTotalSl] = useState(0);
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
+  console.log('totalDbAmount', totalSl);
 
   const componentRef = useRef(null);
 
@@ -151,7 +154,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
     );
 
 
-    const { refetch:refetchBillDetails} = useGetPassengerLedgerBillDetailDataReportsQuery(
+    const { data:BillDetailData} = useGetPassengerLedgerBillDetailDataReportsQuery(
       {
         
         date_after: watch('date_after') || '',
@@ -232,16 +235,18 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
       
       
       
-      //  if (!inShowAllMode && BillDetailData) {
-      //   setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
-      //   setPage(BillDetailData?.page || 1);
-      //   setSize(BillDetailData?.size || 25);
-      //   setTotalPages(BillDetailData.total_pages || 0);
-      //   setTotalElements(BillDetailData.total_elements || 0);
-      //   setInSiglePageMode(true);
-      //   setInShowAllMode(false);
+       if (!inShowAllMode && BillDetailData) {
+        setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
+        setPage(BillDetailData?.page || 1);
+        setSize(BillDetailData?.size || 25);
+        setTotalPages(BillDetailData.total_pages || 0);
+        setTotalDbAmount(BillDetailData?.sales?.total_debit || 0);
+        setTotalSl(BillDetailData?.sales?.total_balance || 0);
+        setTotalElements(BillDetailData.total_elements || 0);
+        setInSiglePageMode(true);
+        setInShowAllMode(false);
     
-      //  }
+       }
 
        if (!inShowAllMode && CostDetailData) {
         console.log('CostDetailData54554545', CostDetailData?.purchases || []);
@@ -255,7 +260,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
     
       }
 
-      }, [inShowAllMode,allData,paginatedData,CostDetailData, size, page]);
+      }, [inShowAllMode,allData,paginatedData,BillDetailData,CostDetailData, size, page]);
 
 useEffect(() => {
     if (totalData) {
@@ -309,74 +314,33 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
     //   }, []);
 
 
-  //   	const handleGetPassengerLedgerBillDetails = async (newPage) => {
+    	const handleGetPassengerLedgerBillDetails = async (newPage) => {
    
 
-  //   try {
-  //     const formValues = getValues();
-  //     const page = newPage || 1;
-  //     setPage(page);
-
-  //     const response = await refetchBillDetails({ ...formValues, page, size }); 
-
-  //     console.log('response121212121', response);
-
-  //     if (response?.data) {
-  //       unstable_batchedUpdates(() => {
-  //         const passengerLedgersData = response.data?.sales || [];
-  //         setModifiedPassengerLedgerBillDetailData(passengerLedgersData);
-  //         setInShowAllMode(false);
-  //         setTotalPages(response.data?.total_pages);
-  //         setTotalElements(response.data?.total_elements);
-  //         setInSiglePageMode(true);
-  //         setInShowAllMode(false);
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching account_logs:', error);
-  //   }
-  // };
-
-
-
-  const handleGetPassengerLedgerBillDetails = async (newPage = 1) => {
     try {
-      // Get form values using getValues() method (assuming this is from react-hook-form)
       const formValues = getValues();
+      const page = newPage || 1;
+      setPage(page);
 
-      console.log('formValues', formValues);
-      
-      // Set the current page, defaulting to 1 if newPage is not provided
-      setPage(newPage);
-  
-      // Perform the refetch with the current form values and pagination
-      const response = await refetchBillDetails({ 
-        ...formValues, // Spread form values like date_after, date_before, passenger, etc.
-        page: newPage, // Send the current page
-        size,          // Ensure you pass the `size` for pagination
-      });
-  
-      // Log the response for debugging purposes
-      console.log('API Response:', response);
-  
-      // Check if response contains valid data
+      const response = await BillDetailData({ ...formValues, page, size }); 
+
+      console.log('response121212121', response);
+
       if (response?.data) {
         unstable_batchedUpdates(() => {
-          const passengerLedgersData = response.data?.sales || []; // Extract sales data
-          setModifiedPassengerLedgerBillDetailData(passengerLedgersData); // Update state with sales data
-          setTotalPages(response.data?.total_pages);    // Set total pages for pagination
-          setTotalElements(response.data?.total_elements); // Set total elements count
-          
-          // Toggle modes based on the response
+          const passengerLedgersData = response.data?.sales || [];
+          setModifiedPassengerLedgerBillDetailData(passengerLedgersData);
           setInShowAllMode(false);
+          setTotalPages(response.data?.total_pages);
+          setTotalElements(response.data?.total_elements);
           setInSiglePageMode(true);
+          setInShowAllMode(false);
         });
       }
     } catch (error) {
-      console.error('Error fetching passenger ledger bill details:', error);
+      console.error('Error fetching account_logs:', error);
     }
   };
-  
 
 
       const handleGetPassengerLedgerCostDetails = useCallback(async (params) => {
@@ -407,8 +371,23 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
   };
 
 
+  // const handleSavePassengerDelivery = () => {
+	// 	passengerDeliveryDate
+	// 		? dispatch(
+	// 				updatePassengerDelivery({
+	// 					...getValues()
+	// 				})
+	// 		  ) && dispatch(getPassengerLedgers({ values: getValues() }))
+	// 		: dispatch(
+	// 				savePassengerDelivery({
+	// 					...getValues()
+	// 				})
+	// 		  );
 
-  return (
+	// 	setOpenSuccessStatusAlert(true);
+	// };
+
+return (
     <div className={classes.headContainer}>
       {/* Filter */}
       <FormProvider {...methods}>
@@ -518,10 +497,11 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
                 data: [
                   ...sales?.data,
                   {
-                    credit_amount: totalCdAmount?.toFixed(2)|| '0.00', 
-                    debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
+                    // debit_amount: totalDbAmount?.toFixed(2)|| '0.00', 
+                    debit_amount:totalSl, 
+
                     
-                    balance:totalBAlance,
+                    // balance:totalBAlance,
                     details: 'Total Balance',
 
                     hideSerialNo: true,
@@ -574,7 +554,80 @@ const handleGetAllPassengerLedgers = useCallback(async () => {
 					))}
 				</div>
 			</table>
+      <h1
+				className="title  pl-0 md:-pl-20 "
+				style={{
+					display: totalCdAmount ? 'block' : 'none',
+					marginLeft: '45%'
+				}}
+			>
+				<u>Balance Summary</u>
+			</h1>
 
+
+      <TableContainer
+				component={Paper}
+				style={{ display: totalCdAmount ? 'block' : 'none' }}
+			>
+				<Table className={`${classes.table} justify-center`}>
+					<TableBody>
+						<TableRow>
+							<TableCell component="th" scope="row"></TableCell>
+							<TableCell component="th" scope="row">
+								<b> Total Bill</b>{' '}
+							</TableCell>
+							<TableCell component="th" scope="row">
+								{totalCdAmount?.toFixed(2)|| '0.00' }
+							</TableCell>
+						</TableRow>
+						<TableRow>
+							<TableCell component="th" scope="row"></TableCell>
+							<TableCell component="th" scope="row">
+								<b>Total Cost</b>
+							</TableCell>
+							<TableCell component="th" scope="row">
+								{totalCdAmount?.toFixed(2)|| '0.00' }
+							</TableCell>
+						</TableRow>
+					</TableBody>
+					<TableFooter className="bg-blue-50 ">
+						<TableRow>
+							<TableCell component="th" scope="row"></TableCell>
+							<TableCell component="th" scope="row">
+								<b>Profit(+)Loss(-)</b>
+							</TableCell>
+							<TableCell component="th" scope="row">
+								{totalBAlance}
+							</TableCell>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</TableContainer>
+      {/* <FormProvider {...methods}>
+				<div
+					className="bg-white"
+					style={{ display: modifiedPassengerLedgerData[0]?.data.length > 0 ? 'block' : 'none' }}
+				>
+					<div className="flex flex-nowrap mt-10 pt-10 ml-40">
+          <CustomDatePicker
+				name="delivery_date"
+				label="Delivery Date"
+				required
+				placeholder="DD-MM-YYYY"
+			/>
+						<div className="ml-20">
+							<Button
+								className="whitespace-nowrap mx-4 mt-10 "
+								variant="contained"
+								color="secondary"
+								onClick={() => handleSavePassengerDelivery()}
+							>
+								{passengerDeliveryDate ? 'Update' : 'Save'}
+							</Button>
+						</div>
+					</div>
+				</div>
+			</FormProvider> */}
 
     </div>
   );

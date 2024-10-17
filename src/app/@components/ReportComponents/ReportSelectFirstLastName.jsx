@@ -1,6 +1,6 @@
 import { Autocomplete, Icon, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import fillUnderscoreBySpace from "src/app/@helpers/fillUnderscoreBySpace";
 const useStyles = makeStyles((theme) => ({
@@ -59,12 +59,25 @@ const ReportSelectFirstLastName = ({
 	const classes = useStyles();
 
 	const methods = useFormContext();
-	const { getValues, setValue, control } = methods;
+	const { getValues, setValue, control ,watch, trigger} = methods;
 	const values = getValues();
 
 	const isFocused = values[`${name}Focused`];
 
 	const [Label] = useState(label || fillUnderscoreBySpace(name));
+
+  const fieldValue = watch(name);
+
+  useEffect(() => {
+    if (!fieldValue) {
+      setValue(`${name}Name`, "");
+      setValue(`${name}Focused`, false);
+      trigger(name);
+      if (setReRender) {
+        setReRender(Math.random());
+      }
+    }
+  }, [fieldValue, setValue, name, trigger, setReRender]);
 
 	return (
 		<div className={classes.fieldContainer}>
@@ -110,6 +123,7 @@ const ReportSelectFirstLastName = ({
 				render={({ field: { onChange, value } }) => (
 					<Autocomplete
 						id={`${name}groupEl`}
+            key={`${name}-${fieldValue}`} 
 						className="mb-3 selectField"
 						style={{
 							width: isFocused ? '170px' : '0px',
@@ -131,9 +145,16 @@ const ReportSelectFirstLastName = ({
 							onEnter();
 							setValue(`${name}Name`, newValue?.first_name || '');
 						}}
-						renderInput={params => (
-							<TextField {...params} className="textFieldUnderSelect" placeholder={`Select ${Label}`} />
-						)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className="textFieldUnderSelect"
+                placeholder={`Select ${Label}`} 
+                inputProps={{
+                  ...params.inputProps,
+                }}
+              />
+            )}
 					/>
 				)}
 			/>

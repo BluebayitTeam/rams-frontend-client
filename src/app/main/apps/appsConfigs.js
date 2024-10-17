@@ -28,6 +28,7 @@ import ProfileAppConfig from './profile/profileAppConfig';
 import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TasksAppConfig from './tasks/TasksAppConfig';
 
+import AccountStatementReportAppConfig from '../rams/AccountStatementReportManagement/AccountStatementReportAppConfig';
 import AccountSummaryReportAppConfig from '../rams/AccountSummaryReportManagement/AccountSummaryReportAppConfig';
 import AgentReportAppConfig from '../rams/AgentReportManagement/AgentReportAppConfig';
 import AirwayAppConfig from '../rams/AirwaysManagement/AirwayAppConfig';
@@ -91,15 +92,17 @@ import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConf
 import PassengerAccountSummaryReportAppConfig from '../rams/PassengerAccountSummaryReportManagement/PassengerAccountSummaryAppConfig';
 import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
 import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
-import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
+import PassengerReportAppConfig from '../rams/PassengerReportManagement2/PassengerReportAppConfig';
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
 import PaymentSummaryReportAppConfig from '../rams/PaymentSummaryReportManagement/PaymentSummaryReportAppConfig';
 import PaymentVoucherAppConfig from '../rams/PaymentVouchersManagement/PaymentVoucherAppConfig';
+import PayorderClearingReportAppConfig from '../rams/PayorderClearingReportManagement/PayorderClearingReportAppConfig';
 import PayorderClearingAppConfig from '../rams/PayorderClearingsManagement/PayorderClearingAppConfig';
 import PermissionAppConfig from '../rams/PermissionsManagement/PermissionAppConfig';
 import PoliceStationAppConfig from '../rams/PoliceStationsManagement/PoliceStationAppConfig';
+import PostDateChequeReportAppConfig from '../rams/PostDateChequeReportManagement/PostDateChequeReportAppConfig';
 import PostDateChequeAppConfig from '../rams/PostDateChequesManagement/PostDateChequeAppConfig';
 import ProfessionAppConfig from '../rams/ProfessionsManagement/ProfessionAppConfig';
 import QualificationAppConfig from '../rams/QualificationsManagement/QualificationAppConfig';
@@ -108,6 +111,7 @@ import ReceiptSummaryReportAppConfig from '../rams/ReceiptSummaryReportManagemen
 import ReceiptVoucherAppConfig from '../rams/ReceiptVouchersManagement/ReceiptVoucherAppConfig';
 import ReceivableBillAppConfig from '../rams/ReceivableBillsManagement/ReceivableBillAppConfig';
 import RecruitingAgencyAppConfig from '../rams/RecruitingAgencysManagement/RecruitingAgencyAppConfig';
+import ReportClmAppConfig from '../rams/ReportClmsManagement/ReportClmAppConfig';
 import RoleAppConfig from '../rams/RolesManagement/RoleAppConfig';
 import SiteSettingAppConfig from '../rams/SiteSettingsManagement/SiteSettingAppConfig';
 import SubLedgerAppConfig from '../rams/SubLedgersManagement/SubLedgerAppConfig';
@@ -116,13 +120,13 @@ import TicketDeputeAppConfig from '../rams/TicketDeputesManagement/TicketDeputeA
 import TicketPostingAppConfig from '../rams/TicketPostingsManagement/TicketPostingAppConfig';
 import TicketPurchaseAppConfig from '../rams/TicketPurchasesManagement/TicketPurchaseAppConfig';
 import TicketRefundAppConfig from '../rams/TicketRefundsManagement/TicketRefundAppConfig';
+import TicketSaleReportAppConfig from '../rams/TicketSaleReportManagement/TicketSaleReportAppConfig';
 import TicketSaleAppConfig from '../rams/TicketSalesManagement/TicketSaleAppConfig';
 import TodotasktypeAppConfig from '../rams/TodotasktypesManagement/TodotasktypeAppConfig';
 import TrainingAppConfig from '../rams/TrainingsManagement/TrainingAppConfig';
 import VisaCancelListAppConfig from '../rams/VisaCancelListsManagement/VisaCancelListAppConfig';
 import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaReissueListAppConfig';
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
-import ReportClmAppConfig from '../rams/ReportClmsManagement/ReportClmAppConfig';
 
 /**
  * The list of application configurations.
@@ -170,6 +174,7 @@ const appsConfigs = [
   ManpowerSubmissionListAppConfig,
   MaletrainingAppConfig,
   FemaletrainingAppConfig,
+  TicketSaleReportAppConfig,
   DepartureAppConfig,
   GdsAppConfig,
   FormContentDetailAppConfig,
@@ -199,7 +204,10 @@ const appsConfigs = [
   DemandAssignAppConfig,
   TicketPostingAppConfig,
   AgentReportAppConfig,
+  PayorderClearingReportAppConfig,
+  AccountStatementReportAppConfig,
   PassengerReportAppConfig,
+  PostDateChequeReportAppConfig,
   LedgerReportAppConfig,
   VisaEntryAppConfig,
   VisaCancelListAppConfig,
