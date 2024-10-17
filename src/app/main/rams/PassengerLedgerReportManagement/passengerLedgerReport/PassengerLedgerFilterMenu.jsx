@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
+import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
@@ -20,7 +21,7 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 	const dispatch = useDispatch();
 
 	const methods = useFormContext();
-	const { getValues,setValue } = methods;
+	const { getValues } = methods;
 
 	const theme = useTheme();
 	const { passengers } = useSelector((state) => state.data);
@@ -70,14 +71,14 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
         />
         
               {/* Passenger */}
-				  <ReportSelect
+				  <ReportSelectPassenger
           {...commonFieldProps}
           name='passenger'
           options={passengers}
           getOptionLabel={(option) => `${option.passenger_id}  ${option.passport_no} ${option.passenger_name}`}
 
           icon='person'
-          width='40px'
+          width='78px'
 		      />
 
           {/* lpassengerTypes */}
@@ -86,7 +87,7 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 					name="account_type"
 					options={bankAndCash}
 					icon="text_fields"
-					width="40px"
+					width="95px"
 				/>
 </div>
 
@@ -114,15 +115,16 @@ function PassengerLedgerFilterMenu({ inShowAllMode, handleGetPassengerLedgers, h
 					icon="person"
 					
 				/>
-        
-      </div>
-
-      <Keyword
+        <Keyword
 					{...commonKewordProps}
 					type="select"
 					name="account_type"
 					icon="text_fields"
 				/>
+        
+      </div>
+
+      
     </div>
   );
 }

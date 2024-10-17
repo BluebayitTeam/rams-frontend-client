@@ -120,11 +120,11 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
 	const [totalDbAmount, setTotalDbAmount] = useState(0);
 	const [totalBAlance, setTotalBAlance] = useState(0);
   const [totalSl, setTotalSl] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
 	const [dateFrom, setDateFrom] = useState();
 	const [dateTo, setDateTo] = useState();
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
-  console.log('totalDbAmount', totalSl);
 
   const componentRef = useRef(null);
 
@@ -237,11 +237,12 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
       
        if (!inShowAllMode && BillDetailData) {
         setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
+        setTotalSl(BillDetailData?.total_balance || '0.00');
         setPage(BillDetailData?.page || 1);
         setSize(BillDetailData?.size || 25);
         setTotalPages(BillDetailData.total_pages || 0);
         setTotalDbAmount(BillDetailData?.sales?.total_debit || 0);
-        setTotalSl(BillDetailData?.sales?.total_balance || 0);
+        
         setTotalElements(BillDetailData.total_elements || 0);
         setInSiglePageMode(true);
         setInShowAllMode(false);
@@ -249,12 +250,13 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
        }
 
        if (!inShowAllMode && CostDetailData) {
-        console.log('CostDetailData54554545', CostDetailData?.purchases || []);
         setModifiedPassengerLedgerCostDetailData(CostDetailData?.purchases || []);
+        setTotalCost(CostDetailData?.total_balance || '0.00');
         setPage(CostDetailData?.page || 1);
         setSize(CostDetailData?.size || 25);
         setTotalPages(CostDetailData.total_pages || 0);
         setTotalElements(CostDetailData.total_elements || 0);
+        
         setInSiglePageMode(true);
         setInShowAllMode(false);
     
@@ -539,7 +541,7 @@ return (
                 data: [
                   ...cost?.data,
                   {
-                    credit_amount: totalCdAmount ?.toFixed(2)|| '0.00'||'',
+                    credit_amount: totalCost,
 												details: 'Total Balance',
 												hideSerialNo: true,
 												rowStyle: { fontWeight: 600 }
