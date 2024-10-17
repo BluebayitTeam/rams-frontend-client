@@ -261,16 +261,15 @@ function TicketSaleReportsTable(props) {
 
 
   const filteredData = {
-	branch: getValues()?.branchName || null,
-	airway: getValues()?.airway?.name || null,
+	Branch: getValues()?.branchName || null,
+	Airway: getValues()?.airwayName || null,
 	Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
 	Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null,
-	agent: getValues()?.agent || null,
+	Agent: getValues()?.agentName || null,
 	TicketAgency: getValues()?.ticket_agency || null,
 	issue_person: getValues()?.issue_person || null 
   };
   
-
   return (
     <div className={classes.headContainer}>
   <FormProvider {...methods}>
