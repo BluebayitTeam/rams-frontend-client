@@ -28,14 +28,15 @@ function ReportClmHeader() {
       return {
         serial: item.isChecked ? item.serial?.toString() : null,
         isChecked: item.isChecked,
+        column_name: item.column_name,
         id: item.key,
       };
     });
 
     saveReportClm({ reportClms: filteredData, type: reportClmId }).then(
       (data) => {
-        if (reportClmId === 'Clients') {
-          navigate(`/apps/client/clients`);
+        if (reportClmId === 'passenger') {
+          navigate(`/apps/passengerReport/passengerReports`);
         }
 
         if (reportClmId === 'agent') {
@@ -117,8 +118,8 @@ function ReportClmHeader() {
   }
 
   function handleCancel() {
-    if (reportClmId === 'Clients') {
-      navigate(`/apps/client/clients`);
+    if (reportClmId === 'passenger') {
+      navigate(`/apps/passengerReport/passengerReports`);
     }
 
     if (reportClmId === 'agent') {

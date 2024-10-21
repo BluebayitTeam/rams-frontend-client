@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
+import SinglePageWithDynamicColumn from 'src/app/@components/ReportComponents/SinglePageWithDynamicColumn';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
@@ -26,14 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = z.object({});
-
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Name', name: 'username', show: true },
-  { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', show: true },
-  { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true },
 ];
 
 function PassengerReportsTable(props) {
@@ -45,7 +39,7 @@ function PassengerReportsTable(props) {
   });
 
   const { watch, getValues } = methods;
-
+  const [initialTableColumnsState, setInitialTableColumnsState] = useState([]);
   const [
     modifiedPassengerData,
     setModifiedPassengerData,
@@ -57,6 +51,12 @@ function PassengerReportsTable(props) {
     tableColumnsReducer,
     initialTableColumnsState
   );
+  useEffect(() => {
+    dispatchTableColumns({
+      type: 'setColumns',
+      data: initialTableColumnsState,
+    });
+  }, [initialTableColumnsState]);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
@@ -69,15 +69,18 @@ function PassengerReportsTable(props) {
 
   const filterData = watch();
 
+  console.log('filterData', filterData);
+
   const { data: paginatedData } = useGetPassengerReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
+      passenger: filterData.passenger || '',
+      current_status: filterData.current_status || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
+      target_country: filterData.target_country || '',
+      agent: filterData.agent || '',
       passenger_code: filterData.passenger_code || '',
+      gender: filterData.gender || '',
       page,
       size,
     },
@@ -86,18 +89,40 @@ function PassengerReportsTable(props) {
 
   const { data: allData } = useGetPassengerAllReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
+      passenger: filterData.passenger || '',
+      current_status: filterData.current_status || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
+      target_country: filterData.target_country || '',
+      agent: filterData.agent || '',
       passenger_code: filterData.passenger_code || '',
+      gender: filterData.gender || '',
     },
     { skip: !inShowAllMode }
   );
 
   const totalData = useSelector(selectFilteredPassengerReports);
+  const generateDynamicColumns = (data) => {
+    // Start with the static "SL" column
+    const staticSLColumn = {
+      id: 1,
+      label: 'SL',
+      sortAction: false,
+      isSerialNo: true,
+      show: true,
+    };
+
+    // Dynamically generate the other columns based on the keys of the data
+    const dynamicColumns = Object.keys(data).map((key, index) => ({
+      id: index + 2, // Start id after SL
+      label: key.replace(/_/g, ' ').toUpperCase(), // Convert keys to labels
+      name: key,
+      show: true,
+    }));
+
+    // Return the array with the static "SL" column first, followed by dynamic columns
+    return [staticSLColumn, ...dynamicColumns];
+  };
 
   useEffect(() => {
     if (inShowAllMode && allData) {
@@ -116,6 +141,9 @@ function PassengerReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedPassengerData(paginatedData.passengers || []);
+      setInitialTableColumnsState(
+        generateDynamicColumns(paginatedData?.passengers[0])
+      );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -202,7 +230,7 @@ function PassengerReportsTable(props) {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedPassengerData.map((passenger, index) => (
-            <SinglePage
+            <SinglePageWithDynamicColumn
               key={passenger.id || index}
               classes={classes}
               reportTitle='Passenger Report'

@@ -24,6 +24,10 @@ function ReportClmForm(props) {
           reportClm.isChecked ? reportClm.serial : null
         );
         setValue(`reportClms.${reportClm?.id}.key`, reportClm.key);
+        setValue(
+          `reportClms.${reportClm?.id}.column_name`,
+          reportClm.column_name
+        );
         // console.log('setValue', setValue);
       });
       setReportClmValue(true);
@@ -61,6 +65,20 @@ function ReportClmForm(props) {
               />
             }
             label={clm.label}
+          />
+          <Controller
+            name={`reportClms.${clm.id}.column_name`}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                variant='outlined'
+                className='mx-5'
+                size='small'
+                margin='normal'
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
           />
         </div>
       ))}
