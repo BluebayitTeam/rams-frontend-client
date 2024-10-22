@@ -21,6 +21,8 @@ import ReportTextField from 'src/app/@components/ReportComponents/ReportTextFiel
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import { genders } from 'src/app/@data/data';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -39,14 +41,8 @@ function PassengerFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const {
-    passengers,
-    countries,
-    agents,
-    passengerTypes,
-    currentStatuss,
-    genders,
-  } = useSelector((state) => state.data);
+  const { passengers, countries, agents, passengerTypes, currentStatuss } =
+    useSelector((state) => state.data);
 
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
@@ -122,7 +118,7 @@ function PassengerFilterMenu({
           name='current_status'
           options={currentStatuss}
           icon='local_activity'
-          width='40px'
+          width='100px'
         />
         {/* Country */}
         <ReportSelect
@@ -130,10 +126,10 @@ function PassengerFilterMenu({
           name='target_country'
           options={countries}
           icon='flag'
-          width='40px'
+          width='100px'
         />
-        {/* Agent */}
-        <ReportSelect
+
+        <ReportSelectFirstLastName
           {...commonFieldProps}
           name='agent'
           options={agents}
@@ -146,7 +142,7 @@ function PassengerFilterMenu({
           name='passenger_type'
           options={passengerTypes}
           icon='text_fields'
-          width='40px'
+          width='110px'
         />
         {/* Gender */}
         <ReportSelect
@@ -154,10 +150,17 @@ function PassengerFilterMenu({
           name='gender'
           options={genders}
           icon='radio_button_checked_two_tone'
-          width='40px'
+          width='50px'
         />
       </div>
-
+      <div>
+        <ViewWeek
+          onClick={() => navigate(`/apps/reportClm/reportClms/passenger`)}
+          className='cursor-pointer mr-10 mt-20'
+          style={{ color: 'red', marginLeft: '45%', fontSize: '30px' }}
+        />{' '}
+        <p style={{ marginLeft: '42%', color: 'blue' }}>Column Setting</p>
+      </div>
       {/* keywords */}
       <div className='allKeyWrdContainer'>
         <Keyword
@@ -198,7 +201,9 @@ function PassengerFilterMenu({
           type='select'
           name='agent'
           icon='person'
+          options={agents}
         />
+
         <Keyword
           {...commonKewordProps}
           type='select'

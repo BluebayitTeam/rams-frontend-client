@@ -10,6 +10,13 @@ import {
   Checkbox,
   FormControlLabel,
   Icon,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Tooltip,
   Typography,
@@ -30,11 +37,16 @@ import {
 } from 'app/store/dataSlice';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
+import { Delete } from '@mui/icons-material';
 
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { BASE_URL } from 'src/app/constant/constants';
+import {
+  BASE_URL,
+  DELETE_TICKETSALE_WITH_IMAGE,
+  GET_TICKETSALES_WITH_IMAGE,
+} from 'src/app/constant/constants';
 import { activeCncl, ticketSalesTicketStatus } from 'src/app/@data/data';
 import { PictureAsPdf } from '@mui/icons-material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -43,6 +55,14 @@ import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import CustomTextField from 'src/app/@components/CustomTextField';
 import CustomCheckbox from 'src/app/@components/CustomCheckbox';
+import {
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import { useCreateTicketSaleMutation } from '../TicketSalesApi';
+import axios from 'axios';
+import moment from 'moment';
 
 const HtmlTooltip = styled(Tooltip)(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
@@ -67,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 function TicketSaleForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, watch, setValue, setError } = methods;
+  const { control, formState, watch, setValue, setError, getValues } = methods;
   const { errors } = formState;
   const routeParams = useParams();
   const { ticketSaleId } = routeParams;
@@ -87,6 +107,8 @@ function TicketSaleForm(props) {
   const image = watch('image');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [iataTableData, setIataTableData] = useState([]);
+  const [createTicketSale] = useCreateTicketSaleMutation();
 
   useEffect(() => {
     dispatch(getProfessions());
@@ -102,7 +124,43 @@ function TicketSaleForm(props) {
     dispatch(getCurrentstatuses());
     setValue('sales_amount', 0);
     setValue('purchase_amount', 0);
+    handleGetTicketTempTableData();
   }, []);
+
+  const handleGetTicketTempTableData = async () => {
+    try {
+      const response = await axios.get(GET_TICKETSALES_WITH_IMAGE);
+      const data = response.data;
+      setIataTableData(data?.iata_ticket_temp_temps);
+      console.log(`sdfsewryuiwor`, data); // Handle the response data as needed
+    } catch (error) {
+      console.error('Error fetching ticket sales data:', error);
+    }
+  };
+  const handleDeleteTicketPicsale = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${DELETE_TICKETSALE_WITH_IMAGE}${id}`
+      );
+      const data = response.data;
+      DeletedSuccessfully();
+      // Call function to refresh the table data after deletion
+      handleGetTicketTempTableData();
+
+      console.log('Successfully deleted:', data);
+    } catch (error) {
+      console.error('Error deleting ticket sale:', error);
+    }
+  };
+
+  function handleCreateTicketSale() {
+    createTicketSale(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
+        handleGetTicketTempTableData();
+      });
+  }
 
   const handleRemoveslipPicFile = () => {
     setPreviewslipPicFile(null);
@@ -113,7 +171,6 @@ function TicketSaleForm(props) {
     }
     console.log('sfsdferwer', getValues());
   };
-
 
   const CreateInputFields = () => {
     for (let i = 0; i < getValues().qty; i++) {
@@ -267,6 +324,24 @@ function TicketSaleForm(props) {
           </div>
         </div>
       )}
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDatePicker
+            name='issue_date'
+            label='Issue Date'
+            placeholder='DD-MM-YYYY'
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='current_airway'
+            label='Current Airway'
+            options={airways}
+            optionLabelFormat={(option) => `${option.name || ''} `}
+          />
+        </div>
+      </div>
 
       <div className='flex flex-wrap md:flex-nowrap w-full'>
         <div className='w-full md:w-1/2 px-2'>
@@ -460,6 +535,327 @@ function TicketSaleForm(props) {
       </div>
 
       <CustomTextField name='detail' label='Details' required />
+
+      {
+        <Button
+          className='whitespace-nowrap mx-4 my-4 '
+          variant='contained'
+          color='secondary'
+          // disabled={_.isEmpty(dirtyFields) || !isValid}
+          onClick={handleCreateTicketSale}>
+          Save
+        </Button>
+      }
+
+      {iataTableData?.length > 0 && (
+        <div>
+          <h2 className='my-5 text-danger font-bold text-center border-bottom mb-10'>
+            Ticket Details
+          </h2>
+          <TableContainer component={Paper} className='mb-48'>
+            <Table
+              sx={{ minWidth: 650 }}
+              aria-label='customized  table p-3 mt-10'>
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    SL
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Issue date
+                  </TableCell>
+
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Issue Person.
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    User
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Passenger Name
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Ticket Agency Name
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Flight Date
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    GDS
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    GDS PNR
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Airline PNR
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Return Flight Date
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Ticket No
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Sector
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Air Way
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Flight No
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Class
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Fare Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Airline Commision Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Customer Commision Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Tax Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Service Charge
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Airlines Net Rate
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Sales Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Action
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {iataTableData.map((n, idx) => (
+                  <TableRow
+                    key={idx}
+                    className='p-4 md:p-16 border-1 border-gray px-5'>
+                    <TableCell
+                      component='th'
+                      scope='row'
+                      className='p-4 md:p-16 border-1 border-gray px-5'>
+                      {idx + 1}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {moment(new Date(n.issue_date)).format('YYYY-MM-DD')}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {`${n.issue_person?.first_name} ${n.issue_person?.last_name}`}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {`${n.issue_person?.first_name} ${n.issue_person?.last_name}`}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.final_passenger}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {moment(new Date(n.flight_date)).format('YYYY-MM-DD')}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.gds?.name}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.gds_pnr}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.airline_pnr}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {moment(new Date(n.return_flight_date)).format(
+                        'YYYY-MM-DD'
+                      )}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.ticket_no}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.sector}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.current_airway?.name}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.flight_no}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n?._class}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.fare_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.airline_commission_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.customer_commission_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.tax_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.service_charge}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.purchase_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.sales_amount}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      align='center'
+                      component='th'
+                      scope='row'>
+                      <div>
+                        <Delete
+                          onClick={(event) => handleDeleteTicketPicsale(n.id)}
+                          className='cursor-pointer'
+                          style={{ color: 'red' }}
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      )}
     </div>
   );
 }

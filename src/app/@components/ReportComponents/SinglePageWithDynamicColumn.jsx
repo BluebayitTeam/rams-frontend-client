@@ -23,7 +23,7 @@ function SinglePageWithDynamicColumn({
   setSortBySubKey,
   filteredData,
 }) {
-  console.log('tableColumns', tableColumns);
+  console.log('tableColumns', filteredData);
 
   let pageBasedSerialNo = serialNumber;
 

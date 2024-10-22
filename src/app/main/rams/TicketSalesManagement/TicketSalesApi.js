@@ -2,13 +2,16 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-	ALL_USERS,
-	GET_DEMANDS,
-	GET_DEMAND_BY_ID,
-	CREATE_DEMAND,
-	DELETE_DEMAND,
-	UPDATE_DEMAND,
-	GET_TICKETSALES
+  ALL_USERS,
+  GET_DEMANDS,
+  GET_DEMAND_BY_ID,
+  CREATE_DEMAND,
+  DELETE_DEMAND,
+  UPDATE_DEMAND,
+  GET_TICKETSALES,
+  CREATE_TICKETSALE_WITH_IMAGE,
+  CREATE_TICKETSALE,
+  CREATE_SINGLE_TICKETSALE_WITH_IMAGE,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -51,7 +54,7 @@ const TicketSaleApi = api
       }),
       createTicketSale: build.mutation({
         query: (newTicketSale) => ({
-          url: CREATE_DEMAND,
+          url: CREATE_SINGLE_TICKETSALE_WITH_IMAGE,
           method: 'POST',
           data: jsonToFormData(TicketSaleModel(newTicketSale)),
         }),
@@ -77,19 +80,19 @@ const TicketSaleApi = api
   });
 export default TicketSaleApi;
 export const {
-	useGetTicketSalesQuery,
-	useDeleteTicketSalesMutation,
-	useGetTicketSaleQuery,
-	useUpdateTicketSaleMutation,
-	useDeleteTicketSaleMutation,
-	useCreateTicketSaleMutation
+  useGetTicketSalesQuery,
+  useDeleteTicketSalesMutation,
+  useGetTicketSaleQuery,
+  useUpdateTicketSaleMutation,
+  useDeleteTicketSaleMutation,
+  useCreateTicketSaleMutation,
 } = TicketSaleApi;
 
 export const selectFilteredTicketSales = (ticketSales) =>
-	createSelector([selectSearchText], (searchText) => {
-		if (searchText?.length === 0) {
-			return ticketSales;
-		}
+  createSelector([selectSearchText], (searchText) => {
+    if (searchText?.length === 0) {
+      return ticketSales;
+    }
 
-		return FuseUtils.filterArrayByString(ticketSales, searchText);
-	});
+    return FuseUtils.filterArrayByString(ticketSales, searchText);
+  });

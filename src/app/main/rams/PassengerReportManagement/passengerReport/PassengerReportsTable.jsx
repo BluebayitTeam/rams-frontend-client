@@ -69,7 +69,7 @@ function PassengerReportsTable(props) {
 
   const filterData = watch();
 
-  console.log('filterData', filterData);
+  console.log('filterData', getValues());
 
   const { data: paginatedData } = useGetPassengerReportsQuery(
     {
@@ -179,17 +179,17 @@ function PassengerReportsTable(props) {
   }, []);
 
   const filteredData = {
-    Group: getValues()?.groupName || null,
-    District: getValues()?.districtName || null,
-    Username: getValues()?.username || null,
+    Passenger: getValues()?.passengerName || null,
+    Current_Status: getValues()?.current_statusName || null,
+    Target_Country: getValues()?.target_countryName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Primary_phone: getValues()?.primary_phone || null,
-    passenger_code: getValues()?.passenger_code || null,
+    Agent: getValues()?.agentName || null,
+    Gender: getValues()?.genderName || null,
   };
 
   return (

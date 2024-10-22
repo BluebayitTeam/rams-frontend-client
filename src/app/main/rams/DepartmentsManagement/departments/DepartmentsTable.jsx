@@ -84,8 +84,7 @@ function DepartmentsTable(props) {
   function handleUpdateDepartment(item, event) {
     localStorage.removeItem('deleteDepartment');
     localStorage.setItem('updateDepartment', event);
-    // navigate(`/apps/department/departments/${item.id}/${item.handle}`);
-    navigate(`/apps/reportClm/reportClms/passenger`);
+    navigate(`/apps/department/departments/${item.id}/${item.handle}`);
   }
 
   function handleDeleteDepartment(item, event) {
