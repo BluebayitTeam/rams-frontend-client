@@ -126,6 +126,7 @@ import PassengerReportAppConfig from '../rams/PassengerReportManagement/Passenge
 /**
  * The list of application configurations.
  */
+// eslint-disable-next-line
 const appsConfigs = [
   AccountSummaryReportAppConfig,
   BmetAppConfig,

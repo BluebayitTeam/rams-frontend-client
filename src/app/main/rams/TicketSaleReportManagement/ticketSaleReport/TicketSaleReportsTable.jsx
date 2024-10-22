@@ -159,13 +159,15 @@ function TicketSaleReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } = useGetTicketSaleReportsQuery(
+  const { data: paginatedData} = useGetTicketSaleReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
+      branch: filterData.branch || '',
+      airway: filterData.airway || '',
+      agent: filterData.agent || '',
+      ticket_agency: filterData.ticket_agency || '',
+      issue_person: filterData.issue_person || '',
       page,
       size,
     },
@@ -174,11 +176,13 @@ function TicketSaleReportsTable(props) {
 
   const { data: allData  } = useGetTicketSaleAllReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
+		date_after: filterData.date_after || '',
+		date_before: filterData.date_before || '',
+		branch: filterData.branch || '',
+		airway: filterData.airway || '',
+		agent: filterData.agent || '',
+		ticket_agency: filterData.ticket_agency || '',
+		issue_person: filterData.issue_person || '',
     },
     { skip: !inShowAllMode }
   );
@@ -257,13 +261,15 @@ function TicketSaleReportsTable(props) {
 
 
   const filteredData = {
-		Account: getValues()?.account_typeName || null,
-		Ledger: getValues()?.ledgerName || null,
-		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
-		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
-		Sub_Ledger: getValues()?.sub_ledgerName || null
-	  };
-
+	Branch: getValues()?.branchName || null,
+	Airway: getValues()?.airwayName || null,
+	Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
+	Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null,
+	Agent: getValues()?.agentName || null,
+	TicketAgency: getValues()?.ticket_agencyName || null,
+	issuePerson: getValues()?.issue_personName || null 
+  };
+  
   return (
     <div className={classes.headContainer}>
   <FormProvider {...methods}>
