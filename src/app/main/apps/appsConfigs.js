@@ -130,6 +130,7 @@ import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/V
 /**
  * The list of application configurations.
  */
+// eslint-disable-next-line
 const appsConfigs = [
   AccountSummaryReportAppConfig,
   BmetAppConfig,
