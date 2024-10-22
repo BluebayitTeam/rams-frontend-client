@@ -125,6 +125,7 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
 	const [dateTo, setDateTo] = useState();
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
+  console.log('totalDbAmount', totalDbAmount);
 
   const componentRef = useRef(null);
 
@@ -213,10 +214,11 @@ const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer, ini
       
       
       else if (!inShowAllMode && paginatedData) {
+        
         setModifiedPassengerLedgerData(paginatedData?.account_logs || []);
       
         setTotalCdAmount(paginatedData.total_credit|| 0);
-        setTotalDbAmount(paginatedData.total_debit || 0);
+        setTotalDbAmount(paginatedData?.total_debit|| '0.00');
         setTotalBAlance(paginatedData.total_balance?.toFixed(2) || 0.0);
   
         setDateFrom(paginatedData?.date_after);
@@ -448,7 +450,7 @@ return (
                   ...passengerLedger?.data,
                   {
                     credit_amount: totalCdAmount?.toFixed(2)|| '0.00', 
-                    debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
+                    debit_amount: totalDbAmount,
                     
                     balance:totalBAlance,
                     details: 'Total Balance',

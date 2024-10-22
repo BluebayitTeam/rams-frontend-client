@@ -92,7 +92,6 @@ import OfficeWorkAppConfig from '../rams/OfficeWorksManagement/OfficeWorkAppConf
 import PassengerAccountSummaryReportAppConfig from '../rams/PassengerAccountSummaryReportManagement/PassengerAccountSummaryAppConfig';
 import PassengerAgreementAppConfig from '../rams/PassengerAgreementsManagement/PassengerAgreementAppConfig';
 import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
-import PassengerReportAppConfig from '../rams/PassengerReportManagement2/PassengerReportAppConfig';
 import PassengerTypeAppConfig from '../rams/PassengerTypesManagement/PassengerTypeAppConfig';
 import PayableBillAppConfig from '../rams/PayableBillsManagement/PayableBillAppConfig';
 import PaymentReportAppConfig from '../rams/PaymentReportManagement/PaymentReportAppConfig';
@@ -206,7 +205,7 @@ const appsConfigs = [
   AgentReportAppConfig,
   PayorderClearingReportAppConfig,
   AccountStatementReportAppConfig,
-  PassengerReportAppConfig,
+  
   PostDateChequeReportAppConfig,
   LedgerReportAppConfig,
   VisaEntryAppConfig,
