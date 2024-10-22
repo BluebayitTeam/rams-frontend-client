@@ -153,6 +153,7 @@ const appsConfigs = [
   ReceiptReportAppConfig,
   // PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
+
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
   ReceiptSummaryReportAppConfig,
