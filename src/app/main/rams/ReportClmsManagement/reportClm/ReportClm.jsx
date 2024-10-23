@@ -33,9 +33,7 @@ function ReportClm() {
     isLoading,
     isError,
     refetch,
-  } = useGetReportClmQuery(reportClmId, {
-    skip: !reportClmId || reportClmId === 'new',
-  });
+  } = useGetReportClmQuery(reportClmId);
   console.log('reportClmIdsdsdds', reportClm, reportClmId);
 
   const [tabValue, setTabValue] = useState(0);
