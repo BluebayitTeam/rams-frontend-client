@@ -59,9 +59,7 @@ function SinglePageWithDynamicColumn({
     const value = filteredData[key];
 
     if (formattedKey === 'Date From' || formattedKey === 'Date To') {
-      dateFields.push(
-        `<b>${formattedKey}</b>: ${moment(value).format('DD-MM-YYYY')}`
-      );
+      dateFields.push(`<b>${formattedKey}</b>: ${value}`);
     } else {
       nonDateFields.push(`<b>${formattedKey}</b>: ${value}`);
     }

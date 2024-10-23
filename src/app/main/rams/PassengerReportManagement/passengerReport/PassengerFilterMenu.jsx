@@ -23,6 +23,7 @@ import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 import { genders } from 'src/app/@data/data';
+import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -98,7 +99,7 @@ function PassengerFilterMenu({
         />
 
         {/* Passenger */}
-        <ReportSelect
+        {/* <ReportSelect
           {...commonFieldProps}
           name='passenger'
           options={passengers}
@@ -110,6 +111,18 @@ function PassengerFilterMenu({
           onChange={(_event, newValue) => {
             setValue('passengerName', newValue?.passenger_name || '');
           }}
+        /> */}
+
+        {/* Passenger */}
+        <ReportSelectPassenger
+          {...commonFieldProps}
+          name='passenger'
+          options={passengers}
+          getOptionLabel={(option) =>
+            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
+          }
+          icon='person'
+          width='78px'
         />
 
         {/* Current Status */}
