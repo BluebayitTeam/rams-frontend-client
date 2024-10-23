@@ -38,6 +38,7 @@ import {
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -151,10 +152,11 @@ function PassengerLedgerReportsTable(props) {
   const [dateFrom, setDateFrom] = useState();
   const [dateTo, setDateTo] = useState();
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
-
+  const [passengerDeliveryDate, setPassengerDeliveryDate] = useState('');
+  // console.log('passengerDeliveryDate', passengerDeliveryDate);
   const [updatePassengerLedger] = useUpdatePassengerLedgerReportMutation();
   const [createPassengerLedger] = useCreatePassengerLedgerReportMutation();
-
+  const navigate = useNavigate();
   console.log('totalDbAmount', totalDbAmount);
 
   const componentRef = useRef(null);
@@ -204,8 +206,6 @@ function PassengerLedgerReportsTable(props) {
       },
       { skip: inShowAllMode }
     );
-
-  console.log('CostDetailData120', CostDetailData?.purchases);
 
   const totalData = useSelector(selectFilteredPassengerLedgerReports());
 
@@ -383,6 +383,7 @@ function PassengerLedgerReportsTable(props) {
   const handleSavePassengerDelivery = async () => {
     try {
       const formData = getValues(); // Retrieve form data
+      console.log('formData', formData);
       if (passengerDeliveryDate) {
         // If passengerDeliveryDate exists, create Passenger Ledger
         // Otherwise, create Agent
@@ -641,12 +642,7 @@ function PassengerLedgerReportsTable(props) {
                 : 'none',
           }}>
           <div className='flex flex-nowrap mt-10 pt-10 ml-40'>
-            <CustomDatePicker
-              name='delivery_date'
-              label='Delivery Date'
-              required
-              placeholder='DD-MM-YYYY'
-            />
+            <CustomDatePicker name='delivery_date' placeholder='DD-MM-YYYY' />
             <div className='ml-20'>
               <Button
                 className='whitespace-nowrap mx-4 mt-10 '
