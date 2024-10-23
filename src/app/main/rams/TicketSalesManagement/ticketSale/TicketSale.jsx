@@ -18,84 +18,124 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	country: z.string().nonempty('You must enter a ticketSale name').min(5, 'The ticketSale name must be at least 5 characters')
+  country: z
+    .string()
+    .nonempty('You must enter a ticketSale name')
+    .min(5, 'The ticketSale name must be at least 5 characters'),
 });
 
 function TicketSale() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { ticketSaleId } = routeParams;
+  const emptyValue = {
+    airline_commission_amount: 0,
+    airline_commission_rate: 7,
+    airline_pnr: 0,
+    arrived_time: '',
+    branch: '',
+    check_tax: '',
+    currency: '',
+    current_airway: '',
+    customer: '',
+    customer_commission_amount: 0,
+    customer_commission_rate: 7,
+    detail: '',
+    dollar_amount: 0,
+    dollar_rate: 0,
+    fare_amount: 0,
+    final_passenger: '',
+    flight_date: '',
+    flight_no: '',
+    flight_time: '',
+    gds: '',
+    gds_pnr: '',
+    govt_vat_rate: 7,
+    invoice_no: '',
+    issue_date: '',
+    issue_person: '',
+    passenger: '',
+    passport_copy: '',
+    passport_no: '',
+    pax_name: '',
+    purchase_amount: 0,
+    return_flight_date: '',
+    sales_amount: 0,
+    sector: '',
+    service_charge: 0,
+    tax_amount: 0,
+    ticket_agency: '',
+    ticket_copy: '',
+    ticket_no: '',
+    ticket_status: 'active',
+    _class: '',
+  };
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { ticketSaleId } = routeParams;
 
-	const {
-		data: ticketSale,
-		isLoading,
-		isError
-	} = useGetTicketSaleQuery(ticketSaleId, {
-		skip: !ticketSaleId || ticketSaleId === 'new'
-	});
-	console.log('ticketSaleId', ticketSale, ticketSaleId);
+  const {
+    data: ticketSale,
+    isLoading,
+    isError,
+  } = useGetTicketSaleQuery(ticketSaleId, {
+    skip: !ticketSaleId || ticketSaleId === 'new',
+  });
+  console.log('ticketSaleId', ticketSale, ticketSaleId);
 
-	const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
 
-	console.log('tabValue', tabValue);
+  console.log('tabValue', tabValue);
 
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (ticketSaleId === 'new') {
-			reset(TicketSaleModel({}));
-		}
-	}, [ticketSaleId, reset]);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (ticketSaleId === 'new') {
+      reset(TicketSaleModel({}));
+    }
+  }, [ticketSaleId, reset]);
 
-	useEffect(() => {
-		if (ticketSale) {
-			reset({ ...ticketSale });
-		}
-	}, [ticketSale, reset, ticketSale?.id]);
+  useEffect(() => {
+    if (ticketSale) {
+      reset({ ...ticketSale });
+    }
+  }, [ticketSale, reset, ticketSale?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested ticketSale is not exists
-	 */
-	if (isError && ticketSaleId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such ticketSale!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/ticketSale/ticketSale"
-					color="inherit"
-				>
-					Go to TicketSales Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested ticketSale is not exists
+   */
+  if (isError && ticketSaleId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such ticketSale!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/ticketSale/ticketSale'
+          color='inherit'>
+          Go to TicketSales Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('DEMAND_DETAILS') && (
         <FusePageCarded

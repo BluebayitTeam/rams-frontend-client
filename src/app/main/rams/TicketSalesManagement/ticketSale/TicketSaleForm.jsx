@@ -87,7 +87,8 @@ const useStyles = makeStyles((theme) => ({
 function TicketSaleForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, formState, watch, setValue, setError, getValues } = methods;
+  const { control, formState, watch, setValue, setError, getValues, reset } =
+    methods;
   const { errors } = formState;
   const routeParams = useParams();
   const { ticketSaleId } = routeParams;
@@ -159,6 +160,7 @@ function TicketSaleForm(props) {
       .then((data) => {
         AddedSuccessfully();
         handleGetTicketTempTableData();
+        reset({});
       });
   }
 
@@ -194,6 +196,7 @@ function TicketSaleForm(props) {
             name='branch'
             label='Branch'
             options={branches}
+            required
           />
         </div>
         <div className='w-full md:w-1/2 px-2'>
@@ -204,6 +207,7 @@ function TicketSaleForm(props) {
             optionLabelFormat={(option) =>
               `${option.first_name || ''} ${option.last_name || ''}`
             }
+            required
           />
         </div>
       </div>
@@ -216,6 +220,7 @@ function TicketSaleForm(props) {
             optionLabelFormat={(option) =>
               `${option.first_name || ''} ${option.last_name || ''}`
             }
+            required
           />
         </div>
         <div className='w-full md:w-1/2 px-2'>
@@ -226,6 +231,7 @@ function TicketSaleForm(props) {
             optionLabelFormat={(option) =>
               `${option.first_name || ''} ${option.last_name || ''}`
             }
+            required
           />
         </div>
       </div>
@@ -253,6 +259,7 @@ function TicketSaleForm(props) {
               options={passengers}
               disabled={watch('pax_name')?.length > 1}
               optionLabelFormat={(option) => `${option.passenger_name || ''}`}
+              required
             />
           </div>
           <div className='w-full md:w-1/2 px-2 mt-8'>
@@ -260,7 +267,6 @@ function TicketSaleForm(props) {
               name='pax_name'
               label='Pax Name'
               disabled={watch('passenger')}
-              required
             />
           </div>
         </div>
@@ -277,14 +283,12 @@ function TicketSaleForm(props) {
             name='tkt_num'
             label='Ticket No'
             placeholder='Ticket number must be 10 digits'
-            required
           />{' '}
           <CustomTextField
             name='qty'
             label='QTY'
             placeholder='Ticket number must be 10 digits'
             disabled={watch('tkt_num')?.length !== 10}
-            required
           />
           <Button
             className=' '
@@ -312,7 +316,7 @@ function TicketSaleForm(props) {
       {!watch('is_multiple_ticket') && (
         <div className='flex flex-wrap md:flex-nowrap w-full'>
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField name='passport_no' label='Passport No' required />
+            <CustomTextField name='passport_no' label='Passport No' />
           </div>
           <div className='w-full md:w-1/2 px-2'>
             <CustomTextField
@@ -331,6 +335,7 @@ function TicketSaleForm(props) {
             name='issue_date'
             label='Issue Date'
             placeholder='DD-MM-YYYY'
+            required
           />
         </div>
         <div className='w-full md:w-1/2 px-2'>
@@ -339,6 +344,7 @@ function TicketSaleForm(props) {
             label='Current Airway'
             options={airways}
             optionLabelFormat={(option) => `${option.name || ''} `}
+            required
           />
         </div>
       </div>
@@ -349,40 +355,42 @@ function TicketSaleForm(props) {
             name='flight_date'
             label='Flight Date'
             placeholder='DD-MM-YYYY'
+            required
           />
         </div>
         <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='flight_no' label='Flight No' required />
+          <CustomTextField name='flight_no' label='Flight No' />
         </div>
       </div>
 
       <div className='flex flex-wrap md:flex-nowrap w-full'>
         <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='_class' label='Class name' required />
+          <CustomTextField name='_class' label='Class name' />
         </div>
         <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='sector' label='Sector Name' required />
-        </div>
-      </div>
-
-      <div className='flex flex-wrap md:flex-nowrap w-full'>
-        <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='flight_time' label='Flight Time' required />
-        </div>
-        <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='arrived_time' label='Arrival Time' required />
+          <CustomTextField name='sector' label='Sector Name' />
         </div>
       </div>
 
       <div className='flex flex-wrap md:flex-nowrap w-full'>
         <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='airline_pnr' label='Airline PNR' required />
+          <CustomTextField name='flight_time' label='Flight Time' />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='arrived_time' label='Arrival Time' />
+        </div>
+      </div>
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='airline_pnr' label='Airline PNR' />
         </div>
         <div className='w-full md:w-1/2 px-2'>
           <CustomDatePicker
             name='return_flight_date'
             label='Return Flight Date'
             placeholder='DD-MM-YYYY'
+            required
           />
         </div>
       </div>
@@ -390,18 +398,10 @@ function TicketSaleForm(props) {
       {watch('is_sales_purchase_amount_only') && (
         <div className='flex flex-wrap md:flex-nowrap w-full'>
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField
-              name='sales_amount'
-              label='Sales Amount'
-              required
-            />
+            <CustomTextField name='sales_amount' label='Sales Amount' />
           </div>
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField
-              name='purchase_amount'
-              label='Purchase Amount'
-              required
-            />
+            <CustomTextField name='purchase_amount' label='Purchase Amount' />
           </div>
         </div>
       )}
@@ -411,7 +411,7 @@ function TicketSaleForm(props) {
           <CustomDropdownField name='gds' label='GDS' options={GDSs} />
         </div>
         <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='gds_pnr' label='GDS PNR' required />
+          <CustomTextField name='gds_pnr' label='GDS PNR' />
         </div>
       </div>
 
@@ -436,14 +436,12 @@ function TicketSaleForm(props) {
             <CustomTextField
               name='customer_commission_rate'
               label='Customer Comission(%)'
-              required
             />
           </div>
           <div className='w-full md:w-1/2 px-2'>
             <CustomTextField
               name='customer_commission_amount'
               label='Customer Comission Amount'
-              required
             />
           </div>
         </div>
@@ -454,14 +452,12 @@ function TicketSaleForm(props) {
           <CustomTextField
             name='airline_commission_rate'
             label='Airline Comission Rate(%)'
-            required
           />
         </div>
         <div className='w-full md:w-1/2 px-2'>
           <CustomTextField
             name='airline_commission_amount'
             label='Airline Comission Amount'
-            required
           />
         </div>
       </div>
@@ -476,7 +472,7 @@ function TicketSaleForm(props) {
             />
           </div>
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField name='dollar_rate' label='Dollar Rate' required />
+            <CustomTextField name='dollar_rate' label='Dollar Rate' />
           </div>
         </div>
       )}
@@ -484,33 +480,21 @@ function TicketSaleForm(props) {
       {!watch('is_sales_purchase_amount_only') && (
         <div className='flex flex-wrap md:flex-nowrap w-full'>
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField
-              name='service_charge'
-              label='Service Charge'
-              required
-            />
+            <CustomTextField name='service_charge' label='Service Charge' />
           </div>
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField
-              name='govt_vat_rate'
-              label='Govt Vat Rate'
-              required
-            />
+            <CustomTextField name='govt_vat_rate' label='Govt Vat Rate' />
           </div>
         </div>
       )}
 
       <div className='flex flex-wrap md:flex-nowrap w-full'>
         <div className='w-full md:w-1/2 px-2'>
-          <CustomTextField name='tax_amount' label='Tax Amount' required />
+          <CustomTextField name='tax_amount' label='Tax Amount' />
         </div>
         {!watch('is_sales_purchase_amount_only') && (
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField
-              name='sales_amount'
-              label='Sales Amount'
-              required
-            />
+            <CustomTextField name='sales_amount' label='Sales Amount' />
           </div>
         )}
       </div>
@@ -518,11 +502,7 @@ function TicketSaleForm(props) {
       <div className='flex flex-wrap md:flex-nowrap w-full'>
         {!watch('is_sales_purchase_amount_only') && (
           <div className='w-full md:w-1/2 px-2'>
-            <CustomTextField
-              name='purchase_amount'
-              label='Purchase Amount'
-              required
-            />
+            <CustomTextField name='purchase_amount' label='Purchase Amount' />
           </div>
         )}
         <div className='w-full md:w-1/2 px-2'>
@@ -534,7 +514,7 @@ function TicketSaleForm(props) {
         </div>
       </div>
 
-      <CustomTextField name='detail' label='Details' required />
+      <CustomTextField name='detail' label='Details' />
 
       {
         <Button
@@ -543,7 +523,7 @@ function TicketSaleForm(props) {
           color='secondary'
           // disabled={_.isEmpty(dirtyFields) || !isValid}
           onClick={handleCreateTicketSale}>
-          Save
+          Add
         </Button>
       }
 
@@ -854,6 +834,16 @@ function TicketSaleForm(props) {
               </TableBody>
             </Table>
           </TableContainer>
+          {
+            <Button
+              className='whitespace-nowrap mx-4 my-4 '
+              variant='contained'
+              color='secondary'
+              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              onClick={handleCreateTicketSale}>
+              Submit
+            </Button>
+          }
         </div>
       )}
     </div>
