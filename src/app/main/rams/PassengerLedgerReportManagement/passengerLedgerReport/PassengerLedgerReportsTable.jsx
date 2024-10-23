@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -24,12 +25,19 @@ import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   selectFilteredPassengerLedgerReports,
+  useCreatePassengerLedgerReportMutation,
   useGetPassengerLedgerAllReportsQuery,
   useGetPassengerLedgerBillDetailDataReportsQuery,
   useGetPassengerLedgerCostDetailDataReportsQuery,
   useGetPassengerLedgerReportsQuery,
+  useUpdatePassengerLedgerReportMutation,
 } from '../PassengerLedgerReportsApi';
 import PassengerLedgerFilterMenu from './PassengerLedgerFilterMenu';
+import {
+  AddedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -143,6 +151,9 @@ function PassengerLedgerReportsTable(props) {
   const [dateFrom, setDateFrom] = useState();
   const [dateTo, setDateTo] = useState();
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
+
+  const [updatePassengerLedger] = useUpdatePassengerLedgerReportMutation();
+  const [createPassengerLedger] = useCreatePassengerLedgerReportMutation();
 
   console.log('totalDbAmount', totalDbAmount);
 
@@ -369,21 +380,45 @@ function PassengerLedgerReportsTable(props) {
       : null,
   };
 
-  // const handleSavePassengerDelivery = () => {
-  // 	passengerDeliveryDate
-  // 		? dispatch(
-  // 				updatePassengerDelivery({
-  // 					...getValues()
-  // 				})
-  // 		  ) && dispatch(getPassengerLedgers({ values: getValues() }))
-  // 		: dispatch(
-  // 				savePassengerDelivery({
-  // 					...getValues()
-  // 				})
-  // 		  );
+  const handleSavePassengerDelivery = async () => {
+    try {
+      const formData = getValues(); // Retrieve form data
+      if (passengerDeliveryDate) {
+        // If passengerDeliveryDate exists, create Passenger Ledger
+        // Otherwise, create Agent
+        await createPassengerLedger(formData).unwrap();
+        AddedSuccessfully(); // Notify success
+      } else {
+        await updatePassengerLedger(formData);
+        UpdatedSuccessfully(); // Notify success
+      }
 
-  // 	setOpenSuccessStatusAlert(true);
-  // };
+      // Navigate after successful operation
+      navigate(`/apps/passengerLedgerReport/passengerLedgerReports`);
+    } catch (error) {
+      // Handle error (optional, for better UX)
+      console.error('Error saving passenger delivery:', error);
+      // You can add a notification or toast here to notify the user of the error
+    }
+  };
+
+  // function handleUpdateAgent() {
+  //   createPassengerLedger(getValues()).then((data) => {
+  //     UpdatedSuccessfully();
+
+  //     navigate(`/apps/passengerLedgerReport/passengerLedgerReports`);
+  //   });
+  // }
+
+  // function handleCreateAgent() {
+  //   createAgent(getValues())
+  //     .unwrap()
+  //     .then((data) => {
+  //       AddedSuccessfully();
+
+  //       navigate(`/apps/passengerLedgerReport/passengerLedgerReports`);
+  //     });
+  // }
 
   return (
     <div className={classes.headContainer}>
@@ -596,31 +631,34 @@ function PassengerLedgerReportsTable(props) {
           </TableFooter>
         </Table>
       </TableContainer>
-      {/* <FormProvider {...methods}>
-				<div
-					className="bg-white"
-					style={{ display: modifiedPassengerLedgerData[0]?.data.length > 0 ? 'block' : 'none' }}
-				>
-					<div className="flex flex-nowrap mt-10 pt-10 ml-40">
-          <CustomDatePicker
-				name="delivery_date"
-				label="Delivery Date"
-				required
-				placeholder="DD-MM-YYYY"
-			/>
-						<div className="ml-20">
-							<Button
-								className="whitespace-nowrap mx-4 mt-10 "
-								variant="contained"
-								color="secondary"
-								onClick={() => handleSavePassengerDelivery()}
-							>
-								{passengerDeliveryDate ? 'Update' : 'Save'}
-							</Button>
-						</div>
-					</div>
-				</div>
-			</FormProvider> */}
+      <FormProvider {...methods}>
+        <div
+          className='bg-white'
+          style={{
+            display:
+              modifiedPassengerLedgerData[0]?.data.length > 0
+                ? 'block'
+                : 'none',
+          }}>
+          <div className='flex flex-nowrap mt-10 pt-10 ml-40'>
+            <CustomDatePicker
+              name='delivery_date'
+              label='Delivery Date'
+              required
+              placeholder='DD-MM-YYYY'
+            />
+            <div className='ml-20'>
+              <Button
+                className='whitespace-nowrap mx-4 mt-10 '
+                variant='contained'
+                color='secondary'
+                onClick={() => handleSavePassengerDelivery()}>
+                {passengerDeliveryDate ? 'Update' : 'Save'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </FormProvider>
     </div>
   );
 }
