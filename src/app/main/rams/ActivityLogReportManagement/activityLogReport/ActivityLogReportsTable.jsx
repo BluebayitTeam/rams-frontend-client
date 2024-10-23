@@ -83,6 +83,7 @@ function ActivityLogReportsTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [dateFrom, setDateFrom] = useState();
+  const [dateTo, setDateTo] = useState();
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -115,7 +116,8 @@ function ActivityLogReportsTable(props) {
     if (inShowAllMode && allData) {
       setModifiedActivityLogData(allData.activity_logs || []);
       setTotalAmount(allData.total_amount);
-
+      setDateFrom(allData?.date_after);
+      setDateTo(allData?.date_before);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -131,7 +133,8 @@ function ActivityLogReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedActivityLogData(paginatedData.activity_logs || []);
-      setTotalAmount(paginatedData.total_amount);
+      setDateFrom(paginatedData?.date_after);
+      setDateTo(allData?.date_before);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -153,7 +156,9 @@ function ActivityLogReportsTable(props) {
   const handleGetActivityLogs = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
-      setPage(page);
+
+      console.log('dfhdjfhjdfhjdhf', page);
+      setPage(newPage);
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
@@ -197,7 +202,7 @@ function ActivityLogReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetActivityLogs(1)}
+        onFirstPage={() => handleGetActivityLogs(page)}
         onPreviousPage={() => handleGetActivityLogs(page - 1)}
         onNextPage={() => handleGetActivityLogs(page + 1)}
         onLastPage={() => handleGetActivityLogs(totalPages)}
@@ -230,7 +235,6 @@ function ActivityLogReportsTable(props) {
                   : ''
               }
               data={activityLog}
-              // serialNumber={activityLog.page * activityLog.size - activityLog.size + 1}
               serialNumber={
                 pagination
                   ? page * size - size + 1
