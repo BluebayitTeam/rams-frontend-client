@@ -8,58 +8,68 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateTicketSaleMutation, useDeleteTicketSaleMutation, useUpdateTicketSaleMutation } from '../TicketSalesApi';
+import {
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateTicketSaleMutation,
+  useDeleteTicketSaleMutation,
+  useUpdateTicketSaleMutation,
+} from '../TicketSalesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The ticketSale header.
  */
 function TicketSaleHeader() {
-	const routeParams = useParams();
-	const { ticketSaleId } = routeParams;
-	const [createTicketSale] = useCreateTicketSaleMutation();
-	const [saveTicketSale] = useUpdateTicketSaleMutation();
-	const [removeTicketSale] = useDeleteTicketSaleMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteTicketSale');
-	const handleUpdate = localStorage.getItem('updateTicketSale');
+  const routeParams = useParams();
+  const { ticketSaleId } = routeParams;
+  const [createTicketSale] = useCreateTicketSaleMutation();
+  const [saveTicketSale] = useUpdateTicketSaleMutation();
+  const [removeTicketSale] = useDeleteTicketSaleMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteTicketSale');
+  const handleUpdate = localStorage.getItem('updateTicketSale');
 
-	function handleUpdateTicketSale() {
-		saveTicketSale(getValues()).then((data) => {
-			UpdatedSuccessfully();
+  function handleUpdateTicketSale() {
+    saveTicketSale(getValues()).then((data) => {
+      UpdatedSuccessfully();
 
-			navigate(`/apps/ticketSale/ticketSales`);
-		});
-	}
+      navigate(`/apps/ticketSale/ticketSales`);
+    });
+  }
 
-	function handleCreateTicketSale() {
-		createTicketSale(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateTicketSale() {
+    createTicketSale(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/ticketSale/ticketSales`);
-			});
-	}
+        navigate(`/apps/ticketSale/ticketSales`);
+      });
+  }
 
-	function handleRemoveTicketSale(dispatch) {
-		removeTicketSale(ticketSaleId);
-		DeletedSuccessfully();
-		navigate('/apps/ticketSale/ticketSales');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveTicketSale(dispatch) {
+    removeTicketSale(ticketSaleId);
+    DeletedSuccessfully();
+    navigate('/apps/ticketSale/ticketSales');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/ticketSale/ticketSales`);
-	}
+  function handleCancel() {
+    navigate(`/apps/ticketSale/ticketSales`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -136,7 +146,7 @@ function TicketSaleHeader() {
               Remove
             </Button>
           )}
-        {ticketSaleId === 'new' && hasPermission('DEMAND_CREATE') && (
+        {/* {ticketSaleId === 'new' && hasPermission('DEMAND_CREATE') && (
           <Button
             className='whitespace-nowrap mx-4 '
             variant='contained'
@@ -145,7 +155,7 @@ function TicketSaleHeader() {
             onClick={handleCreateTicketSale}>
             Save
           </Button>
-        )}
+        )} */}
         {handleDelete !== 'deleteTicketSale' &&
           handleUpdate === 'updateTicketSale' &&
           ticketSaleId !== 'new' &&
