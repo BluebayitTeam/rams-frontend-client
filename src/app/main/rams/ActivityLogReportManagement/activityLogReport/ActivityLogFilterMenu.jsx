@@ -1,6 +1,10 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import {
+  getEmployeeUsers,
+  getLedgers,
+  getSubLedgers,
+} from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +13,7 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -26,7 +31,8 @@ function ActivityLogFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { employees, subLedgers } = useSelector((state) => state.data);
+  const { employeeusers, subLedgers } = useSelector((state) => state.data);
+  console.log('employeeusers', employeeusers);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 
@@ -42,8 +48,7 @@ function ActivityLogFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getLedgers());
-    dispatch(getSubLedgers());
+    dispatch(getEmployeeUsers());
   }, []);
 
   return (
@@ -67,12 +72,12 @@ function ActivityLogFilterMenu({
         />
 
         {/* ledger */}
-        <ReportSelect
+        <ReportSelectFirstLastName
           {...commonFieldProps}
           name='employee'
-          options={employees}
+          options={employeeusers}
           icon='person'
-          width='66px'
+          width='95px'
         />
 
         {/* lpassengerTypes */}
@@ -82,7 +87,7 @@ function ActivityLogFilterMenu({
           label='Activity Log Type'
           options={bankAndCash}
           icon='text_fields'
-          width='108px'
+          width='118px'
         />
       </div>
 
