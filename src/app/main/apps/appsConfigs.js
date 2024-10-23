@@ -122,6 +122,7 @@ import VisaReissueListAppConfig from '../rams/VisaReissueListsManagement/VisaRei
 import VisaSubmissionListAppConfig from '../rams/VisaSubmissionListsManagement/VisaSubmissionListAppConfig';
 import ReportClmAppConfig from '../rams/ReportClmsManagement/ReportClmAppConfig';
 import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
+import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
 
 /**
  * The list of application configurations.
@@ -151,8 +152,9 @@ const appsConfigs = [
   ManpowerNoteSheetAppConfig,
   BmetApplicationAppConfig,
   ReceiptReportAppConfig,
-  // PassengerLedgerReportAppConfig,
+  PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
+
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
   ReceiptSummaryReportAppConfig,

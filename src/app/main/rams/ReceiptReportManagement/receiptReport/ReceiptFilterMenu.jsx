@@ -11,43 +11,44 @@ import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
-	...getReportFilterMakeStyles(theme)
+  ...getReportFilterMakeStyles(theme),
 }));
 
-function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllReceipts }) {
-	const classes = useStyles();
-	const dispatch = useDispatch();
+function ReceiptFilterMenu({
+  inShowAllMode,
+  handleGetReceipts,
+  handleGetAllReceipts,
+}) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
-	const methods = useFormContext();
-	const { getValues } = methods;
+  const methods = useFormContext();
+  const { getValues } = methods;
 
-	const theme = useTheme();
-	const { ledgers, subLedgers } = useSelector((state) => state.data);
-	const values = getValues();
-	const [_reRender, setReRender] = useState(0);
+  const theme = useTheme();
+  const { ledgers, subLedgers } = useSelector((state) => state.data);
+  const values = getValues();
+  const [_reRender, setReRender] = useState(0);
 
+  const commonFieldProps = {
+    setReRender,
+    onEnter: () =>
+      inShowAllMode ? handleGetAllReceipts() : handleGetReceipts(),
+  };
+  const commonKewordProps = {
+    setReRender,
+    onClick: () =>
+      inShowAllMode ? handleGetAllReceipts() : handleGetReceipts(),
+  };
 
+  useEffect(() => {
+    dispatch(getLedgers());
+    dispatch(getSubLedgers());
+  }, []);
 
-	const commonFieldProps = {
-		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllReceipts() : handleGetReceipts())
-	};
-	const commonKewordProps = {
-		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllReceipts() : handleGetReceipts())
-	};
-
-	useEffect(() => {
-		dispatch(getLedgers());
-		dispatch(getSubLedgers());
-	}, []);
-
-
-	console.log('sadhbjkasbdkj', getValues());
-	return (
+  return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -65,8 +66,6 @@ function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllRecei
           maxDate={new Date()}
         />
 
-       
-
         {/* ledger */}
         <ReportSelect
           {...commonFieldProps}
@@ -76,35 +75,28 @@ function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllRecei
           width='50px'
         />
 
-
-         {/* sub_ledger */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="sub_ledger"
-					options={subLedgers}
-					icon="import_contacts"
-					width="76px"
-				/>
+        {/* sub_ledger */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='sub_ledger'
+          options={subLedgers}
+          icon='import_contacts'
+          width='76px'
+        />
 
         {/* lpassengerTypes */}
         <ReportSelect
-					{...commonFieldProps}
-					name="account_type"
-					options={bankAndCash}
-					icon="text_fields"
-					width="95px"
-				/>
-
-       
-
-       
-        
+          {...commonFieldProps}
+          name='account_type'
+          options={bankAndCash}
+          icon='text_fields'
+          width='95px'
+        />
       </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-        
-      <Keyword
+        <Keyword
           {...commonKewordProps}
           type='date'
           name='date_after'
@@ -130,16 +122,13 @@ function ReceiptFilterMenu({ inShowAllMode, handleGetReceipts, handleGetAllRecei
           name='sub_ledger'
           icon='import_contacts'
         />
-        
-        <Keyword
-					{...commonKewordProps}
-					type="select"
-					name="account_type"
-					icon="text_fields"
-				/>
-       
 
-        
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='account_type'
+          icon='text_fields'
+        />
       </div>
     </div>
   );
