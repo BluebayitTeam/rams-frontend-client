@@ -17,7 +17,7 @@ export const getReportMakeStyles = (theme) => ({
     justifyContent: 'space-between',
   },
   menubar: {
-    backgroundColor: theme.palette.primary[100],
+    backgroundColor: theme.palette.primary.light,
     display: 'flex',
     alignItems: 'center',
     padding: '5px',
@@ -72,11 +72,11 @@ export const getReportMakeStyles = (theme) => ({
           height: '10px',
           width: '10px',
           transform: 'rotate(41deg)',
-          backgroundColor: theme.palette.primary[100],
+          backgroundColor: theme.palette.primary.light,
           marginBottom: '-5px',
         },
         '& .downloadOptions': {
-          backgroundColor: theme.palette.primary[100],
+          backgroundColor: theme.palette.primary.light,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-evenly',
@@ -109,7 +109,7 @@ export const getReportMakeStyles = (theme) => ({
         overflow: 'auto',
         position: 'absolute',
         top: '50px',
-        background: theme.palette.primary[100],
+        background: theme.palette.primary.light,
         padding: '10px',
         color: theme.palette.primary.dark,
         borderRadius: '5px',
@@ -256,7 +256,7 @@ export const getReportFilterMakeStyles = (theme) => ({
     flexDirection: 'column',
     margin: '0px 10px',
     '& .borderTop': {
-      borderTop: `1px solid ${theme.palette.primary[100]}`,
+      borderTop: `1px solid ${theme.palette.primary.light}`,
     },
     '& .allFieldContainer': {
       display: 'flex',
@@ -278,7 +278,7 @@ export const getReportFilterMakeStyles = (theme) => ({
           background: 'inherit',
           border: 'none',
           outline: 'none',
-          borderBottom: `1px solid ${theme.palette.primary[100]}`,
+          borderBottom: `1px solid ${theme.palette.primary.light}`,
           color: theme.palette.primary.main,
           width: '100%',
           transition: '0.3s',
@@ -342,7 +342,7 @@ export const getReportFilterMakeStyles = (theme) => ({
       justifyContent: 'center',
       margin: '20px auto',
       paddingTop: '5px',
-      borderTop: `1px solid ${theme.palette.primary[100]}`,
+      borderTop: `1px solid ${theme.palette.primary.light}`,
       '& .keywordContainer': {
         display: 'flex',
         flexDirection: 'row',
@@ -357,7 +357,7 @@ export const getReportFilterMakeStyles = (theme) => ({
         '& > div': {
           padding: '3px 8px',
           fontSize: '14px',
-          background: theme.palette.primary[100],
+          background: theme.palette.primary.light,
           color: theme.palette.primary.dark,
           margin: '3px 5px',
           borderRadius: '15px',

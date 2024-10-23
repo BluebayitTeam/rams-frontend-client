@@ -97,22 +97,29 @@ function PassengerFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
-
-        {/* Passenger */}
-        {/* <ReportSelect
+        {/* Country */}
+        <ReportSelect
           {...commonFieldProps}
-          name='passenger'
-          options={passengers}
+          name='target_country'
+          options={countries}
+          icon='flag'
+          width='100px'
+        />
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='agent'
+          options={agents}
           icon='person'
-          autocompleteStyle={{ width: '330px', margin: '0px 10px' }}
-          getOptionLabel={(option) =>
-            `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
-          }
-          onChange={(_event, newValue) => {
-            setValue('passengerName', newValue?.passenger_name || '');
-          }}
-        /> */}
-
+          width='40px'
+        />
+        {/* Passenger Type */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='passenger_type'
+          options={passengerTypes}
+          icon='text_fields'
+          width='110px'
+        />
         {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}
@@ -133,30 +140,7 @@ function PassengerFilterMenu({
           icon='local_activity'
           width='100px'
         />
-        {/* Country */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='target_country'
-          options={countries}
-          icon='flag'
-          width='100px'
-        />
 
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name='agent'
-          options={agents}
-          icon='person'
-          width='40px'
-        />
-        {/* Passenger Type */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='passenger_type'
-          options={passengerTypes}
-          icon='text_fields'
-          width='110px'
-        />
         {/* Gender */}
         <ReportSelect
           {...commonFieldProps}

@@ -7,97 +7,99 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const useStyles = makeStyles((theme) => ({
-	...getReportPaginationMakeStyles(theme)
+  ...getReportPaginationMakeStyles(theme),
 }));
 
 function Pagination({
-	page,
-	size,
-	totalPages,
-	totalElements,
-	onClickFirstPage = () => null,
-	onClickPreviousPage = () => null,
-	onClickNextPage = () => null,
-	onClickLastPage = () => null
+  page,
+  size,
+  totalPages,
+  totalElements,
+  onClickFirstPage = () => null,
+  onClickPreviousPage = () => null,
+  onClickNextPage = () => null,
+  onClickLastPage = () => null,
 }) {
-	const classes = useStyles();
+  const classes = useStyles();
 
-	const memoizedPrevButtonActive = useMemo(() => {
-		const isIctive = page && page !== 1;
-		return isIctive;
-	}, [page]);
+  const memoizedPrevButtonActive = useMemo(() => {
+    const isIctive = page && page !== 1;
+    return isIctive;
+  }, [page]);
 
-	const memoizedNextButtonActive = useMemo(() => {
-		const isIctive = totalPages && page !== totalPages;
-		return isIctive;
-	}, [page, totalPages]);
+  const memoizedNextButtonActive = useMemo(() => {
+    const isIctive = totalPages && page !== totalPages;
+    return isIctive;
+  }, [page, totalPages]);
 
-	return (
-		<div className={classes.paginationContainer}>
-			<FirstPageIcon
-				className="pagIcon"
-				fontSize="large"
-				style={{
-					opacity: memoizedPrevButtonActive ? 1 : 0.5,
-					cursor: memoizedPrevButtonActive ? 'pointer' : 'default',
-					border: memoizedPrevButtonActive || 'none'
-				}}
-				onClick={() => {
-					memoizedPrevButtonActive && onClickFirstPage({ page: 1, size });
-				}}
-			/>
-			<NavigateBeforeIcon
-				className="pagIcon"
-				fontSize="large"
-				style={{
-					opacity: memoizedPrevButtonActive ? 1 : 0.5,
-					cursor: memoizedPrevButtonActive ? 'pointer' : 'default',
-					border: memoizedPrevButtonActive || 'none'
-				}}
-				onClick={() => {
-					memoizedPrevButtonActive && onClickPreviousPage({ page: page - 1, size });
-				}}
-			/>
-			{page && totalPages ? (
-				<div className="pageNumberContainer">
-					<h2>{page}</h2>
-					<h4>{page && '/'}</h4>
-					<h2>{totalPages}</h2>
-				</div>
-			) : null}
-			<NavigateNextIcon
-				className="pagIcon"
-				fontSize="large"
-				style={{
-					opacity: memoizedNextButtonActive ? 1 : 0.5,
-					cursor: memoizedNextButtonActive ? 'pointer' : 'default',
-					border: memoizedNextButtonActive || 'none'
-				}}
-				onClick={() => {
-					memoizedNextButtonActive && onClickNextPage({ page: page + 1, size });
-				}}
-			/>
-			<LastPageIcon
-				className="pagIcon"
-				fontSize="large"
-				style={{
-					opacity: memoizedNextButtonActive ? 1 : 0.5,
-					cursor: memoizedNextButtonActive ? 'pointer' : 'default',
-					border: memoizedNextButtonActive || 'none'
-				}}
-				onClick={() => {
-					memoizedNextButtonActive && onClickLastPage({ page: totalPages, size });
-				}}
-			/>
-		</div>
-	);
+  return (
+    <div className={classes.paginationContainer}>
+      <FirstPageIcon
+        className='pagIcon'
+        fontSize='large'
+        style={{
+          opacity: memoizedPrevButtonActive ? 1 : 0.5,
+          cursor: memoizedPrevButtonActive ? 'pointer' : 'default',
+          border: memoizedPrevButtonActive || 'none',
+        }}
+        onClick={() => {
+          memoizedPrevButtonActive && onClickFirstPage({ page: 1, size });
+        }}
+      />
+      <NavigateBeforeIcon
+        className='pagIcon'
+        fontSize='large'
+        style={{
+          opacity: memoizedPrevButtonActive ? 1 : 0.5,
+          cursor: memoizedPrevButtonActive ? 'pointer' : 'default',
+          border: memoizedPrevButtonActive || 'none',
+        }}
+        onClick={() => {
+          memoizedPrevButtonActive &&
+            onClickPreviousPage({ page: page - 1, size });
+        }}
+      />
+      {page && totalPages ? (
+        <div className='pageNumberContainer'>
+          <h2>{page}</h2>
+          <h4>{page && '/'}</h4>
+          <h2>{totalPages}</h2>
+        </div>
+      ) : null}
+      <NavigateNextIcon
+        className='pagIcon'
+        fontSize='large'
+        style={{
+          opacity: memoizedNextButtonActive ? 1 : 0.5,
+          cursor: memoizedNextButtonActive ? 'pointer' : 'default',
+          border: memoizedNextButtonActive || 'none',
+        }}
+        onClick={() => {
+          memoizedNextButtonActive && onClickNextPage({ page: page + 1, size });
+        }}
+      />
+      <LastPageIcon
+        className='pagIcon'
+        fontSize='large'
+        style={{
+          opacity: memoizedNextButtonActive ? 1 : 0.5,
+          cursor: memoizedNextButtonActive ? 'pointer' : 'default',
+          border: memoizedNextButtonActive || 'none',
+        }}
+        onClick={() => {
+          memoizedNextButtonActive &&
+            onClickLastPage({ page: totalPages, size });
+        }}
+      />
+    </div>
+  );
 }
 
 export default memo(Pagination, (prevProps, nextProps) => {
-	const isEqual =
-		prevProps.page === nextProps.page &&
-		prevProps.size === nextProps.size &&
-		prevProps.totalPages === nextProps.totalPages &&
-		prevProps.totalElements === nextProps.totalElements;
-	return isEqual;
+  const isEqual =
+    prevProps.page === nextProps.page &&
+    prevProps.size === nextProps.size &&
+    prevProps.totalPages === nextProps.totalPages &&
+    prevProps.totalElements === nextProps.totalElements;
+  return isEqual;
 });

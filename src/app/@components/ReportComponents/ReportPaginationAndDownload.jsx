@@ -14,79 +14,77 @@ import ColumnLabel from './ColumnLabel';
 import Pagination from './Pagination';
 
 const useStyles = makeStyles((theme) => ({
-	...getReportMakeStyles(theme)
+  ...getReportMakeStyles(theme),
 }));
 
 function ReportPaginationAndDownload({
-	page,
-	setPage,
-	size,
-	setSize,
-	inShowAllMode = false,  // Set the default state to false for pg to be selected
-	setInShowAllMode,
-	totalPages,
-	totalElements,
-	onFirstPage,
-	onPreviousPage,
-	onNextPage,
-	onLastPage,
-	handlePdfDownload,
-	handleExelDownload,
-	handlePrint,
-	handleGetData,
-	handleGetAllData,
-	tableColumns,
-	dispatchTableColumns,
-	hideSection
+  page,
+  setPage,
+  size,
+  setSize,
+  inShowAllMode = false, // Set the default state to false for pg to be selected
+  setInShowAllMode,
+  totalPages,
+  totalElements,
+  onFirstPage,
+  onPreviousPage,
+  onNextPage,
+  onLastPage,
+  handlePdfDownload,
+  handleExelDownload,
+  handlePrint,
+  handleGetData,
+  handleGetAllData,
+  tableColumns,
+  dispatchTableColumns,
+  hideSection,
 }) {
-	const classes = useStyles();
-	const [inPrint, setInPrint] = useState(false);
-	const [inSiglePageMode, setInSiglePageMode] = useState(false);
-	const [inDowloadPdf, setInDowloadPdf] = useState(false);
-	const [inDowloadExcel, setInDowloadExcel] = useState(false);
-	const [showClmSelectOption, setShowClmSelectOption] = useState(false);
+  const classes = useStyles();
+  const [inPrint, setInPrint] = useState(false);
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
+  const [inDowloadPdf, setInDowloadPdf] = useState(false);
+  const [inDowloadExcel, setInDowloadExcel] = useState(false);
+  const [showClmSelectOption, setShowClmSelectOption] = useState(false);
 
-	const pdfDownloadAction = () => {
-		html2PDF(downloadPage, {
-			margin: [0, 0, 0, 0],
-			filename: 'pdfhtml2.pdf',
-			html2canvas: {
-				dpi: 300,
-				letterRendering: true
-			},
-			setTestIsImage: false,
-			useCORS: true,
-			jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-		});
-		setInDowloadPdf(false);
-	};
+  const pdfDownloadAction = () => {
+    html2PDF(downloadPage, {
+      margin: [0, 0, 0, 0],
+      filename: 'pdfhtml2.pdf',
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+      },
+      setTestIsImage: false,
+      useCORS: true,
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    });
+    setInDowloadPdf(false);
+  };
 
-	const downloadPage = document.getElementById('downloadPage');
+  const downloadPage = document.getElementById('downloadPage');
 
-	useLayoutEffect(() => {
-		window.addEventListener('click', (e) => {
-			if (e.target.id !== 'insideClmSelect') setShowClmSelectOption(false);
-		});
-	}, []);
+  useLayoutEffect(() => {
+    window.addEventListener('click', (e) => {
+      if (e.target.id !== 'insideClmSelect') setShowClmSelectOption(false);
+    });
+  }, []);
 
-	return (
-    <div
-      className={`${classes.menubar} justify-start md:justify-center`}
-      style={{ backgroundColor: '#c2c7f1' }}>
-
+  return (
+    <div className={`${classes.menubar} justify-start md:justify-center`}>
       {/* Pagination */}
-      {inShowAllMode || !hideSection?.includes('pagination') && (
-        <Pagination
-          page={page }
-          size={size}
-          totalPages={totalPages || 0}
-          totalElements={totalElements || 0}
-          onClickFirstPage={onFirstPage}
-          onClickPreviousPage={onPreviousPage}
-          onClickNextPage={onNextPage}
-          onClickLastPage={onLastPage}
-        />
-      )}
+      {inShowAllMode ||
+        (!hideSection?.includes('pagination') && (
+          <Pagination
+            page={page}
+            size={size}
+            totalPages={totalPages || 0}
+            totalElements={totalElements || 0}
+            onClickFirstPage={onFirstPage}
+            onClickPreviousPage={onPreviousPage}
+            onClickNextPage={onNextPage}
+            onClickLastPage={onLastPage}
+          />
+        ))}
       {!hideSection?.includes('download') && (
         <div className='downloadIcon'>
           <div className='downloadOptionContainer'>
@@ -155,8 +153,8 @@ function ReportPaginationAndDownload({
             className='cursor-pointer inside icon'
             style={{
               margin: '0px',
-				padding: '6px',
-			  
+              padding: '6px',
+
               border: showClmSelectOption && '1px solid',
             }}
             onClick={() => setShowClmSelectOption(true)}
@@ -187,12 +185,6 @@ function ReportPaginationAndDownload({
           buttonText='Download as XLS'
         />
       </div>
-
-      
-
-
-
-      
     </div>
   );
 }
