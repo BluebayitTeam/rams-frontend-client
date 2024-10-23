@@ -72,7 +72,7 @@ function ActivityLogFilterMenu({
           name='employee'
           options={employees}
           icon='person'
-          width='50px'
+          width='66px'
         />
 
         {/* lpassengerTypes */}
@@ -82,7 +82,7 @@ function ActivityLogFilterMenu({
           label='Activity Log Type'
           options={bankAndCash}
           icon='text_fields'
-          width='95px'
+          width='108px'
         />
       </div>
 
