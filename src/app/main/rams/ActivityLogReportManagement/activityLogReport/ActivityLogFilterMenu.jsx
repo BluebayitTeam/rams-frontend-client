@@ -26,7 +26,7 @@ function ActivityLogFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { ledgers, subLedgers } = useSelector((state) => state.data);
+  const { employees, subLedgers } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 
@@ -53,7 +53,7 @@ function ActivityLogFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='Date From'
+          label='Created From'
           maxDate={values.date_before || new Date()}
         />
 
@@ -61,7 +61,7 @@ function ActivityLogFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='Date To'
+          label='Created To'
           minDate={values.date_after}
           maxDate={new Date()}
         />
@@ -69,25 +69,17 @@ function ActivityLogFilterMenu({
         {/* ledger */}
         <ReportSelect
           {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
+          name='employee'
+          options={employees}
+          icon='person'
           width='50px'
-        />
-
-        {/* sub_ledger */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='sub_ledger'
-          options={subLedgers}
-          icon='import_contacts'
-          width='76px'
         />
 
         {/* lpassengerTypes */}
         <ReportSelect
           {...commonFieldProps}
           name='account_type'
+          label='Activity Log Type'
           options={bankAndCash}
           icon='text_fields'
           width='95px'
@@ -113,14 +105,8 @@ function ActivityLogFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='ledger'
-          icon='import_contacts'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='sub_ledger'
-          icon='import_contacts'
+          name='employee'
+          icon='person'
         />
 
         <Keyword
