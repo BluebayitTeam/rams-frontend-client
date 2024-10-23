@@ -80,6 +80,9 @@ export const {
   useGetPassengerLedgerAllReportsQuery,
   useGetPassengerLedgerBillDetailDataReportsQuery,
   useGetPassengerLedgerCostDetailDataReportsQuery,
+  useUpdatePassengerLedgerReportMutation,
+  useDeletePassengerLedgerReportMutation,
+  useCreatePassengerLedgerReportMutation,
 } = PassengerLedgerReportApi;
 
 export const selectFilteredPassengerLedgerReports = (passengerLedgerReports) =>
