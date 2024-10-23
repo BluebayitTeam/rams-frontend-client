@@ -9,6 +9,8 @@ import {
   GET_DEPARTMENT_BY_ID,
   RECEIPT_FILTER_BY,
   RECEIPT_FILTER_WITHOUT_PG,
+  SEARCH_ACTIVITYLOG,
+  SEARCH_ACTIVITYLOG_WP,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
@@ -22,54 +24,17 @@ const ActivityLogReportApi = api
     endpoints: (build) => ({
       getActivityLogReports: build.query({
         query: (filterData) => ({
-          url: RECEIPT_FILTER_BY,
+          url: SEARCH_ACTIVITYLOG,
           params: filterData,
         }),
         providesTags: ['activityLogReports'],
       }),
       getActivityLogAllReports: build.query({
         query: (filterData) => ({
-          url: RECEIPT_FILTER_WITHOUT_PG,
+          url: SEARCH_ACTIVITYLOG_WP,
           params: filterData,
         }),
         providesTags: ['activityLogReports'],
-      }),
-      deleteActivityLogReports: build.mutation({
-        query: (activityLogReportIds) => ({
-          url: DELETE_DEPARTMENT_MULTIPLE,
-          method: 'DELETE',
-          data: { ids: activityLogReportIds },
-        }),
-        invalidatesTags: ['activityLogReports'],
-      }),
-      getActivityLogReport: build.query({
-        query: (activityLogReportId) => ({
-          url: `${GET_DEPARTMENT_BY_ID}${activityLogReportId}`,
-        }),
-        providesTags: ['activityLogReports'],
-      }),
-      createActivityLogReport: build.mutation({
-        query: (newActivityLogReport) => ({
-          url: CREATE_DEPARTMENT,
-          method: 'POST',
-          data: jsonToFormData(newActivityLogReport),
-        }),
-        invalidatesTags: ['activityLogReports'],
-      }),
-      updateActivityLogReport: build.mutation({
-        query: (activityLogReport) => ({
-          url: `${UPDATE_DEPARTMENT}${activityLogReport.id}`,
-          method: 'PUT',
-          data: jsonToFormData(activityLogReport),
-        }),
-        invalidatesTags: ['activityLogReports'],
-      }),
-      deleteActivityLogReport: build.mutation({
-        query: (activityLogReportId) => ({
-          url: `${DELETE_DEPARTMENT}${activityLogReportId}`,
-          method: 'DELETE',
-        }),
-        invalidatesTags: ['activityLogReports'],
       }),
     }),
     overrideExisting: false,
@@ -78,11 +43,6 @@ export default ActivityLogReportApi;
 export const {
   useGetActivityLogReportsQuery,
   useGetActivityLogAllReportsQuery,
-  useDeleteActivityLogReportsMutation,
-  useGetActivityLogReportQuery,
-  useUpdateActivityLogReportMutation,
-  useDeleteActivityLogReportMutation,
-  useCreateActivityLogReportMutation,
 } = ActivityLogReportApi;
 
 export const selectFilteredActivityLogReports = (activityLogReports) =>
