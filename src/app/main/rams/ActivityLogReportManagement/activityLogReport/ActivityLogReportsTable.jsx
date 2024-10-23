@@ -26,31 +26,35 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'activityLog_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+  {
+    id: 1,
+    label: 'SL',
+    sortAction: false,
+    isSerialNo: true,
+    show: true,
+    style: { justifyContent: 'center' },
+  },
+  {
+    id: 2,
+    label: 'Activity Type',
+    getterMethod: (data) => `${data.activity_type?.name?.replace(/_/g, ' ')}`,
+    show: true,
+  },
+  {
+    id: 3,
+    label: 'Employee',
+    getterMethod: (data) =>
+      `${data.activity_by?.first_name || ''} ${data.activity_by?.last_name || ''}`,
+    show: true,
+  },
+  { id: 4, label: 'Message', name: 'comment', show: true },
+
   {
     id: 5,
-    label: 'SubLedger',
-    name: 'sub_ledger',
-    subName: 'name',
-    show: true,
-  },
-  {
-    id: 6,
-    label: 'Details',
+    label: 'Created On',
     getterMethod: (data) =>
-      `${data.details || ''}, ${data.related_ledger || ''}`,
+      `${moment(data.created_at).format('DD-MM-YYYY')}   , ${moment(data.created_at).format('hh:mm A')}`,
     show: true,
-  },
-  {
-    id: 7,
-    label: 'Amount',
-    name: 'credit_amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
   },
 ];
 
@@ -71,14 +75,14 @@ function ActivityLogReportsTable(props) {
     initialTableColumnsState
   );
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-
+  const [dateFrom, setDateFrom] = useState();
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -88,9 +92,8 @@ function ActivityLogReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
         page,
         size,
       },
@@ -102,23 +105,22 @@ function ActivityLogReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
       },
       { skip: !inShowAllMode }
     );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedActivityLogData(allData.activityLog_vouchers || []);
+      setModifiedActivityLogData(allData.activity_logs || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.activityLog_vouchers,
+        allData.activity_logs,
         size,
         page
       );
@@ -128,7 +130,7 @@ function ActivityLogReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedActivityLogData(paginatedData.activityLog_vouchers || []);
+      setModifiedActivityLogData(paginatedData.activity_logs || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -218,32 +220,29 @@ function ActivityLogReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedActivityLogData.map((activityLog, index) => (
             <SinglePage
-              key={index}
               classes={classes}
-              reportTitle='ActivityLog Report'
+              reportTitle='Activity Log Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={{
-                ...activityLog,
-                data: [
-                  ...activityLog.data,
-                  {
-                    credit_amount: totalAmount,
-                    getterMethod: () => 'Total Amount',
-                    hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 },
-                  },
-                ],
-              }}
-              totalColumn={initialTableColumnsState?.length}
-              inSiglePageMode={inSiglePageMode}
+              dateFromDateTo={
+                dateFrom && dateTo
+                  ? `Date : ${dateFrom && moment(new Date(dateFrom)).format('DD-MM-YYYY')} to ${
+                      dateTo && moment(new Date(dateTo)).format('DD-MM-YYYY')
+                    }`
+                  : ''
+              }
+              data={activityLog}
+              // serialNumber={activityLog.page * activityLog.size - activityLog.size + 1}
               serialNumber={
                 pagination
-                  ? page * size - size + index * activityLog.data.length + 1
+                  ? page * size - size + 1
                   : activityLog.page * activityLog.size - activityLog.size + 1
               }
               setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              // setSortBy={setSortBy}
+              // setSortBySubKey={setSortBySubKey}
             />
           ))}
         </tbody>
