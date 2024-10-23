@@ -74,7 +74,7 @@ function SinglePageWithDynamicColumn({
 
   // Join non-date fields in one line, date fields on a new line
   const FilteredCriteria = `
-		<div style="text-align: center; margin-top: -8px">
+		<div style="text-align: center; margin-top: -9px">
 			${nonDateFields.join(', ')}<br/>
 			${dateFields.join(', ')}
 		</div>
