@@ -24,6 +24,7 @@ function ReportClmHeader() {
   const { name, images, featuredImageId } = watch();
 
   function handleUpdateReportClm() {
+    console.log(`sfasdsasdf`, getValues().reportClms);
     const filteredData = Object.values(getValues()?.reportClms).map((item) => {
       return {
         serial: item.isChecked ? item.serial?.toString() : null,
@@ -32,6 +33,7 @@ function ReportClmHeader() {
         id: item.key,
       };
     });
+    console.log('filteredData', filteredData);
 
     saveReportClm({ reportClms: filteredData, type: reportClmId }).then(
       (data) => {

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
+import { useParams } from 'react-router';
 
 function ReportClmForm(props) {
   const { control, setValue, getValues, reset } = useFormContext();
   const [editingIndex, setEditingIndex] = useState(null); // State to track editing index
   const [reportClmValue, setReportClmValue] = useState(false);
-
-  console.log(`jsabdfjka`, props?.reportClms);
+  const routeParams = useParams();
+  const { reportClmId } = routeParams;
+  console.log(`jsabdfjka`, getValues());
   useEffect(() => {
     // Reset form values with the provided props
     reset({ ...getValues(), items: props?.reportClms });
@@ -28,6 +30,28 @@ function ReportClmForm(props) {
       setReportClmValue(true);
     }
   }, [props?.reportClms, setValue, getValues, reset, reportClmValue]);
+  useEffect(() => {
+    // Execute only on the first render
+    if (!reportClmValue && props?.reportClms) {
+      // Get initial values
+      const initialValues = { ...getValues(), items: props?.reportClms };
+
+      // Set form values from props
+      props?.reportClms.forEach((reportClm) => {
+        initialValues[`reportClms.${reportClm?.id}.isChecked`] =
+          reportClm.isChecked;
+        initialValues[`reportClms.${reportClm?.id}.serial`] =
+          reportClm.isChecked ? reportClm.serial : '';
+        initialValues[`reportClms.${reportClm?.id}.key`] = reportClm.key;
+        initialValues[`reportClms.${reportClm?.id}.column_name`] =
+          reportClm.column_name;
+      });
+
+      // Reset form values once
+      reset(initialValues);
+      setReportClmValue(true); // Set flag to prevent re-initialization
+    }
+  }, [getValues()]);
 
   // Handle key press to save value and exit edit mode
   const handleEnterPress = (e, clmId) => {
@@ -84,6 +108,21 @@ function ReportClmForm(props) {
               />
             }
             label={`${clm.table_name}`}
+          />
+          <Controller
+            name={`reportClms.${clm.id}.key`}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                variant='outlined'
+                size='small'
+                style={{ display: 'none' }}
+                margin='normal'
+                InputLabelProps={{ shrink: true }}
+                autoFocus // Autofocus when editing starts
+              />
+            )}
           />
           {editingIndex === index ? (
             <Controller
