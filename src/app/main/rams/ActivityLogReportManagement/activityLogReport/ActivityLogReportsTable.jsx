@@ -92,9 +92,8 @@ function ActivityLogReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
         page,
         size,
       },
@@ -106,9 +105,8 @@ function ActivityLogReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
       },
       { skip: !inShowAllMode }
     );

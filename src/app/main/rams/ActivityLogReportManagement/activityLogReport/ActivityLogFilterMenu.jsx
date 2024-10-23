@@ -91,7 +91,7 @@ function ActivityLogFilterMenu({
         {/* lpassengerTypes */}
         <ReportSelect
           {...commonFieldProps}
-          name='account_type'
+          name='activity_log_type'
           label='Activity Log Type'
           options={activityLogTypes}
           icon='text_fields'
