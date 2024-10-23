@@ -39,7 +39,6 @@ function ActivityLogFilterMenu({
   useEffect(() => {
     setActivityLogTypes([].concat(...Object.values(activityLog)));
   }, [activityLog]);
-  console.log('employeeusers', employeeusers);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 
@@ -125,7 +124,7 @@ function ActivityLogFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='account_type'
+          name='activity_log_type'
           icon='text_fields'
         />
       </div>

@@ -22,7 +22,7 @@ function ReportPaginationAndDownload({
   setPage,
   size,
   setSize,
-  inShowAllMode = false, // Set the default state to false for pg to be selected
+  inShowAllMode = false,
   setInShowAllMode,
   totalPages,
   totalElements,
