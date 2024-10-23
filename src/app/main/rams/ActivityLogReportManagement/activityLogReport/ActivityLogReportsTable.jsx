@@ -167,7 +167,7 @@ function ActivityLogReportsTable(props) {
   }, []);
 
   const filteredData = {
-    activity_log_type: getValues()?.account_typeName || null,
+    ActivityLog: getValues()?.activity_log_typeName || null,
     Employee: getValues()?.employeeName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')

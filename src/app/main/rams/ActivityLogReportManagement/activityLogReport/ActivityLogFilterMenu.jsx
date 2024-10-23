@@ -125,7 +125,7 @@ function ActivityLogFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='account_type'
+          name='activity_log_type'
           icon='text_fields'
         />
       </div>
