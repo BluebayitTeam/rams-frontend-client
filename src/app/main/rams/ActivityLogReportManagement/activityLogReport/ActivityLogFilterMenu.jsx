@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles';
 import {
   getEmployeeUsers,
   getLedgers,
+  getPermissions,
   getSubLedgers,
 } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
@@ -32,6 +33,12 @@ function ActivityLogFilterMenu({
 
   const theme = useTheme();
   const { employeeusers, subLedgers } = useSelector((state) => state.data);
+  const activityLog = useSelector((state) => state.data.permissions);
+  const [activityLogTypes, setActivityLogTypes] = useState([]);
+
+  useEffect(() => {
+    setActivityLogTypes([].concat(...Object.values(activityLog)));
+  }, [activityLog]);
   console.log('employeeusers', employeeusers);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
@@ -49,6 +56,7 @@ function ActivityLogFilterMenu({
 
   useEffect(() => {
     dispatch(getEmployeeUsers());
+    dispatch(getPermissions());
   }, []);
 
   return (
@@ -77,7 +85,7 @@ function ActivityLogFilterMenu({
           name='employee'
           options={employeeusers}
           icon='person'
-          width='95px'
+          width='65px'
         />
 
         {/* lpassengerTypes */}
@@ -85,7 +93,7 @@ function ActivityLogFilterMenu({
           {...commonFieldProps}
           name='account_type'
           label='Activity Log Type'
-          options={bankAndCash}
+          options={activityLogTypes}
           icon='text_fields'
           width='118px'
         />
