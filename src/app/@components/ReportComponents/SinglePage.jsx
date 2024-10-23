@@ -1,3 +1,4 @@
+import { Call, Email, Language, LocationOn } from '@mui/icons-material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import {
@@ -94,6 +95,27 @@ function SinglePage({
           </div>
         </div>
 
+        <div
+          style={{
+            textAlign: 'center',
+            fontSize: '10px',
+          }}>
+          &nbsp; &nbsp; &nbsp; <Call fontSize='small' />
+          {` ${generalData?.phone || ''}`}
+          &nbsp; &nbsp; <Email fontSize='small' />
+          {` ${generalData?.email || ''}`}&nbsp; &nbsp;{' '}
+          <Language fontSize='small' />
+          {` ${generalData?.site_address || ''}`}
+        </div>
+        <div
+          style={{
+            textAlign: 'center',
+            borderBottom: '1px solid gray',
+            fontSize: '10px',
+          }}>
+          <LocationOn fontSize='small' />
+          {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
+        </div>
         <div className={classes.pageHead}>
           <h1 className='title  pl-0 md:-pl-20' style={{ marginTop: '-5px' }}>
             <u>{reportTitle}</u>
