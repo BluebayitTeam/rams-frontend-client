@@ -124,6 +124,7 @@ import ReportClmAppConfig from '../rams/ReportClmsManagement/ReportClmAppConfig'
 import PassengerReportAppConfig from '../rams/PassengerReportManagement/PassengerReportAppConfig';
 import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
 import AccountStatementReportAppConfig from '../rams/AccountStatementReportManagement/AccountStatementReportAppConfig';
+import ActivityLogReportAppConfig from '../rams/ActivityLogReportManagement/ActivityLogReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -149,6 +150,7 @@ const appsConfigs = [
   MalefingerletterAppConfig,
   MultipleStatusUpdateAppConfig,
   MalaysiaVisaAppConfig,
+  ActivityLogReportAppConfig,
   ContactsAppConfig,
   ManpowerNoteSheetAppConfig,
   BmetApplicationAppConfig,
