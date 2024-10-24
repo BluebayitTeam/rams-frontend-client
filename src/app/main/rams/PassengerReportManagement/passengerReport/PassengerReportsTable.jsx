@@ -113,7 +113,7 @@ function PassengerReportsTable(props) {
     };
 
     // Dynamically generate the other columns based on the keys of the data
-    const dynamicColumns = Object.keys(data).map((key, index) => ({
+    const dynamicColumns = Object.keys(data)?.map((key, index) => ({
       id: index + 2, // Start id after SL
       label: key.replace(/_/g, ' ').toUpperCase(), // Convert keys to labels
       name: key,
@@ -126,7 +126,7 @@ function PassengerReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassengerData(allData.passengers || []);
+      setModifiedPassengerData(allData?.passengers || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -140,9 +140,9 @@ function PassengerReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassengerData(paginatedData.passengers || []);
+      setModifiedPassengerData(paginatedData?.passengers || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.passengers[0])
+        generateDynamicColumns(paginatedData?.passengers[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -229,7 +229,7 @@ function PassengerReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedPassengerData.map((passenger, index) => (
+          {modifiedPassengerData?.map((passenger, index) => (
             <SinglePageWithDynamicColumn
               key={passenger.id || index}
               classes={classes}
