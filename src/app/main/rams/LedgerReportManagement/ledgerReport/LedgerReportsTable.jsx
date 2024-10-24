@@ -260,7 +260,6 @@ function LedgerReportsTable(props) {
   const filteredKeys = Object.keys(filteredData).filter(
     (key) => filteredData[key] !== null
   );
-  console.log('firstKey', filteredKeys);
 
   const filteredValues = filteredKeys.map((key) => {
     return `<b>${key.replace(/_/g, ' ')}</b>: ${filteredData[key]}`;
