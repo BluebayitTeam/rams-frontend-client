@@ -1432,7 +1432,7 @@ const navigationConfig = [
         translate: 'Ticket Purchase Report',
         display_order: 2,
         type: 'item',
-        url: '/apps/ticketsaless/report',
+        url: '/apps/ticketPurchasesReport/ticketPurchasesReports',
         exact: true,
       },
 
