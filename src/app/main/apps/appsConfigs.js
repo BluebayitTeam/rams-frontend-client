@@ -151,6 +151,7 @@ const appsConfigs = [
   ManpowerNoteSheetFemaleAppConfig,
   ManpowerNoteSheetMaleAppConfig,
   ManpowerSubmissionV2ListAppConfig,
+  SubAgentAppConfig,
   TicketPurchasesReportAppConfig,
   MedicalReportAppConfig,
   MalefingerletterAppConfig,

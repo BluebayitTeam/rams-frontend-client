@@ -41,8 +41,8 @@ function ReportClmHeader() {
           navigate(`/apps/passengerReport/passengerReports`);
         }
 
-        if (reportClmId === 'agent') {
-          navigate(`/apps/agent/agents`);
+        if (reportClmId === 'medical') {
+          navigate(`/apps/medicalReport/medicalReports`);
         }
 
         if (reportClmId === 'employee') {
@@ -124,8 +124,8 @@ function ReportClmHeader() {
       navigate(`/apps/passengerReport/passengerReports`);
     }
 
-    if (reportClmId === 'agent') {
-      navigate(`/apps/agent/agents`);
+    if (reportClmId === 'medical') {
+      navigate(`/apps/medicalReport/medicalReports`);
     }
 
     if (reportClmId === 'employee') {

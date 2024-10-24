@@ -180,7 +180,7 @@ function MedicalFilterMenu({
       </div>
       <div>
         <ViewWeek
-          onClick={() => navigate(`/apps/reportClm/reportClms/passenger`)}
+          onClick={() => navigate(`/apps/reportClm/reportClms/medical`)}
           className='cursor-pointer mr-10 mt-20'
           style={{ color: 'red', marginLeft: '45%', fontSize: '30px' }}
         />{' '}
