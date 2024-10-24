@@ -19,6 +19,7 @@ import {
   getPassengers,
   getPassengerTypes,
 } from 'app/store/dataSlice';
+import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
 // import ReportSelectMedical from 'src/app/@components/ReportComponents/ReportSelectMedical';
 
 const useStyles = makeStyles((theme) => ({
@@ -72,7 +73,7 @@ function MedicalFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* date from */}
+        {/* M.Rpt From */}
         <ReportDatePicker
           {...commonFieldProps}
           name='report_date_after'
@@ -80,7 +81,7 @@ function MedicalFilterMenu({
           maxDate={values.report_date_before || new Date()}
         />
 
-        {/* date to */}
+        {/* M.Rpt To */}
         <ReportDatePicker
           {...commonFieldProps}
           name='report_date_before'
@@ -88,6 +89,53 @@ function MedicalFilterMenu({
           minDate={values.report_date_after}
           maxDate={new Date()}
         />
+
+        {/* M.Exp From */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='date_after'
+          label='M.Ent To'
+          maxDate={values.date_before || new Date()}
+        />
+
+        {/* M.Exp To */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='expiry_date_before'
+          label='M.Exp To'
+          minDate={values.expiry_date_after}
+          maxDate={new Date()}
+        />
+
+        {/* M.Exp From */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='expiry_date_after'
+          label='M.Exp From'
+          maxDate={values.expiry_date_before || new Date()}
+        />
+
+        {/* M.Ent To*/}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='date_before'
+          label='M.Ent From'
+          minDate={values.date_after}
+          maxDate={new Date()}
+        />
+
+        {/* Passenger */}
+        <ReportSelectPassenger
+          {...commonFieldProps}
+          name='passenger'
+          options={passengers}
+          getOptionLabel={(option) =>
+            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
+          }
+          icon='person'
+          width='78px'
+        />
+
         {/* Country */}
         <ReportSelect
           {...commonFieldProps}
@@ -96,6 +144,7 @@ function MedicalFilterMenu({
           icon='flag'
           width='100px'
         />
+        {/* agent */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
           name='agent'
@@ -103,25 +152,14 @@ function MedicalFilterMenu({
           icon='person'
           width='40px'
         />
-        {/* Medical Type */}
+        {/* Passenger Type */}
         <ReportSelect
           {...commonFieldProps}
-          name='medical_type'
-          options={medicalTypes}
+          name='passenger_type'
+          options={passengerTypes}
           icon='text_fields'
           width='110px'
         />
-        {/* Medical */}
-        {/* <ReportSelectMedical
-          {...commonFieldProps}
-          name='medical'
-          options={medicals}
-          getOptionLabel={(option) =>
-            `${option.medical_id} -${option.office_serial} - ${option.passport_no}- ${option.medical_name}`
-          }
-          icon='person'
-          width='78px'
-        /> */}
 
         {/* Current Status */}
         <ReportSelect
@@ -157,26 +195,41 @@ function MedicalFilterMenu({
           name='report_date_after'
           label='M.Rpt From'
         />
-
         <Keyword
           {...commonKewordProps}
           type='date'
           name='report_date_before'
           label='M.Rpt To'
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='expiry_date_after'
+          label='M.Exp From'
         />
-
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='expiry_date_before'
+          label='M.Exp To'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='date_after'
+          label='M.Ent From'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='date_before'
+          label='M.Ent To'
+        />
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='medical'
+          name='passenger'
           icon='person'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='current_status'
-          icon='local_activity'
         />
         <Keyword
           {...commonKewordProps}
@@ -187,15 +240,20 @@ function MedicalFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
+          name='current_status'
+          icon='local_activity'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
           name='agent'
           icon='person'
           options={agents}
         />
-
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='medical_type'
+          name='passenger_type'
           icon='text_fields'
         />
         <Keyword
