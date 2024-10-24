@@ -229,18 +229,7 @@ function TicketsalesReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={{
-                ...ticketsales,
-                data: [
-                  ...ticketsales.data,
-                  {
-                    credit_amount: totalAmount,
-                    getterMethod: () => 'Total Amount',
-                    hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 },
-                  },
-                ],
-              }}
+              data={ticketsales}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
