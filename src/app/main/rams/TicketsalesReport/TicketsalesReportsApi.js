@@ -9,6 +9,8 @@ import {
   GET_DEPARTMENT_BY_ID,
   RECEIPT_FILTER_BY,
   RECEIPT_FILTER_WITHOUT_PG,
+  TICKETSALES_FILTER_BY,
+  TICKETSALES_FILTER_WITHOUT_PG,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
@@ -22,14 +24,14 @@ const TicketsalesReportApi = api
     endpoints: (build) => ({
       getTicketsalesReports: build.query({
         query: (filterData) => ({
-          url: RECEIPT_FILTER_BY,
+          url: TICKETSALES_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['ticketsalesReports'],
       }),
       getTicketsalesAllReports: build.query({
         query: (filterData) => ({
-          url: RECEIPT_FILTER_WITHOUT_PG,
+          url: TICKETSALES_FILTER_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['ticketsalesReports'],
