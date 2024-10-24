@@ -13,10 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetTicketsalesAllReportsQuery,
-  useGetTicketsalesReportsQuery,
-} from '../TicketsalesReportsApi';
-import TicketsalesFilterMenu from './TicketsalesFilterMenu';
+  useGetTicketPurchasesAllReportsQuery,
+  useGetTicketPurchasesReportsQuery,
+} from '../TicketPurchasesReportsApi';
+import TicketPurchasesFilterMenu from './TicketPurchasesFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -67,7 +67,7 @@ const initialTableColumnsState = [
   { id: 15, label: 'Purchase Amount', name: 'purchase_amount', show: true },
 ];
 
-function TicketsalesReportsTable(props) {
+function TicketPurchasesReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -78,7 +78,8 @@ function TicketsalesReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedTicketsalesData, setModifiedTicketsalesData] = useReportData();
+  const [modifiedTicketPurchasesData, setModifiedTicketPurchasesData] =
+    useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -97,7 +98,7 @@ function TicketsalesReportsTable(props) {
   const filterData = watch();
 
   const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetTicketsalesReportsQuery(
+    useGetTicketPurchasesReportsQuery(
       {
         issue_date_after: filterData.issue_date_after || '',
         issue_date_before: filterData.issue_date_before || '',
@@ -108,8 +109,8 @@ function TicketsalesReportsTable(props) {
       { skip: inShowAllMode }
     );
 
-  const { data: allData, refetch: refetchAllTicketsalesReports } =
-    useGetTicketsalesAllReportsQuery(
+  const { data: allData, refetch: refetchAllTicketPurchasesReports } =
+    useGetTicketPurchasesAllReportsQuery(
       {
         issue_date_after: filterData.issue_date_after || '',
         issue_date_before: filterData.issue_date_before || '',
@@ -120,7 +121,7 @@ function TicketsalesReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketsalesData(allData.ticket_purchases || []);
+      setModifiedTicketPurchasesData(allData.ticket_purchases || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
@@ -137,7 +138,7 @@ function TicketsalesReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketsalesData(paginatedData.ticket_purchases || []);
+      setModifiedTicketPurchasesData(paginatedData.ticket_purchases || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -157,7 +158,7 @@ function TicketsalesReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetTicketsaless = useCallback(async (newPage) => {
+  const handleGetTicketPurchasess = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -166,10 +167,10 @@ function TicketsalesReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllTicketsaless = useCallback(async () => {
+  const handleGetAllTicketPurchasess = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all ticketsaless:', error);
+      console.error('Error fetching all ticketPurchasess:', error);
     }
   }, []);
 
@@ -186,10 +187,10 @@ function TicketsalesReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <TicketsalesFilterMenu
+        <TicketPurchasesFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetTicketsaless={handleGetTicketsaless}
-          handleGetAllTicketsaless={handleGetAllTicketsaless}
+          handleGetTicketPurchasess={handleGetTicketPurchasess}
+          handleGetAllTicketPurchasess={handleGetAllTicketPurchasess}
         />
       </FormProvider>
 
@@ -203,17 +204,17 @@ function TicketsalesReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetTicketsaless(1)}
-        onPreviousPage={() => handleGetTicketsaless(page - 1)}
-        onNextPage={() => handleGetTicketsaless(page + 1)}
-        onLastPage={() => handleGetTicketsaless(totalPages)}
+        onFirstPage={() => handleGetTicketPurchasess(1)}
+        onPreviousPage={() => handleGetTicketPurchasess(page - 1)}
+        onNextPage={() => handleGetTicketPurchasess(page + 1)}
+        onLastPage={() => handleGetTicketPurchasess(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetTicketsaless}
-        handleGetAllData={handleGetAllTicketsaless}
+        handleGetData={handleGetTicketPurchasess}
+        handleGetAllData={handleGetAllTicketPurchasess}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TicketsalesReport'
+        filename='TicketPurchasesReport'
       />
 
       <table
@@ -221,7 +222,7 @@ function TicketsalesReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedTicketsalesData.map((ticketsales, index) => (
+          {modifiedTicketPurchasesData.map((ticketPurchases, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -229,13 +230,15 @@ function TicketsalesReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={ticketsales}
+              data={ticketPurchases}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * ticketsales.data.length + 1
-                  : ticketsales.page * ticketsales.size - ticketsales.size + 1
+                  ? page * size - size + index * ticketPurchases.data.length + 1
+                  : ticketPurchases.page * ticketPurchases.size -
+                    ticketPurchases.size +
+                    1
               }
               setPage={setPage}
             />
@@ -246,4 +249,4 @@ function TicketsalesReportsTable(props) {
   );
 }
 
-export default TicketsalesReportsTable;
+export default TicketPurchasesReportsTable;

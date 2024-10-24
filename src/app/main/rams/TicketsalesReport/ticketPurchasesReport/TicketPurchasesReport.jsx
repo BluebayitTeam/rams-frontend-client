@@ -1,18 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import TicketsalesReportsTable from './TicketsalesReportsTable';
+import TicketPurchasesReportsTable from './TicketPurchasesReportsTable';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a ticketsalesReport name')
-    .min(5, 'The ticketsalesReport name must be at least 5 characters'),
+    .nonempty('You must enter a ticketPurchasesReport name')
+    .min(5, 'The ticketPurchasesReport name must be at least 5 characters'),
 });
 
-function TicketsalesReport() {
+function TicketPurchasesReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   return (
@@ -31,10 +31,10 @@ function TicketsalesReport() {
           </h1>
         </div>
       }
-      content={<TicketsalesReportsTable />}
+      content={<TicketPurchasesReportsTable />}
       innerScroll
     />
   );
 }
 
-export default TicketsalesReport;
+export default TicketPurchasesReport;

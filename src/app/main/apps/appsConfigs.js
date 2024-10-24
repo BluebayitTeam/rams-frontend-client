@@ -125,7 +125,8 @@ import PassengerReportAppConfig from '../rams/PassengerReportManagement/Passenge
 import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
 import AccountStatementReportAppConfig from '../rams/AccountStatementReportManagement/AccountStatementReportAppConfig';
 import ActivityLogReportAppConfig from '../rams/ActivityLogReportManagement/ActivityLogReportAppConfig';
-import TicketsalesReportAppConfig from '../rams/TicketsalesReport/TicketsalesReportAppConfig';
+import TicketsalesReportAppConfig from '../rams/TicketsalesReport/TicketPurchasesReportAppConfig';
+import TicketPurchasesReportAppConfig from '../rams/TicketsalesReport/TicketPurchasesReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -148,7 +149,7 @@ const appsConfigs = [
   ManpowerNoteSheetFemaleAppConfig,
   ManpowerNoteSheetMaleAppConfig,
   ManpowerSubmissionV2ListAppConfig,
-  TicketsalesReportAppConfig,
+  TicketPurchasesReportAppConfig,
   MalefingerletterAppConfig,
   MultipleStatusUpdateAppConfig,
   MalaysiaVisaAppConfig,

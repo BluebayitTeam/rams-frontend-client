@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function TicketsalesFilterMenu({
+function TicketPurchasesFilterMenu({
   inShowAllMode,
-  handleGetTicketsaless,
-  handleGetAllTicketsaless,
+  handleGetTicketPurchasess,
+  handleGetAllTicketPurchasess,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -34,12 +34,16 @@ function TicketsalesFilterMenu({
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllTicketsaless() : handleGetTicketsaless(),
+      inShowAllMode
+        ? handleGetAllTicketPurchasess()
+        : handleGetTicketPurchasess(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllTicketsaless() : handleGetTicketsaless(),
+      inShowAllMode
+        ? handleGetAllTicketPurchasess()
+        : handleGetTicketPurchasess(),
   };
 
   useEffect(() => {
@@ -106,4 +110,4 @@ function TicketsalesFilterMenu({
   );
 }
 
-export default TicketsalesFilterMenu;
+export default TicketPurchasesFilterMenu;
