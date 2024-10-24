@@ -77,7 +77,7 @@ function PassengerFilterMenu({
     dispatch(getCurrentStatuss());
   }, [dispatch]);
 
-  console.log('sadhbjkasbdkj', getValues());
+  // console.log('sadhbjkasbdkj', getValues());
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
