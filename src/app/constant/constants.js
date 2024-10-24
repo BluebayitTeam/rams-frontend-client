@@ -896,6 +896,22 @@ export const SEARCH_AGENT = `${BASE_URL}/agent/api/v1/agent/search/`;
 export const AGENT_FILTER_BY = `${BASE_URL}/report/api/v1/agent_report/filter/`;
 
 export const AGENT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/agent_report/without_pagination/filter/`;
+// subagent
+export const CREATE_SUBAGENT = `${BASE_URL}/sub_agent/api/v1/sub_agent/create/`;
+
+export const GET_SUBAGENTS = `${BASE_URL}/sub_agent/api/v1/sub_agent/all`;
+
+export const GET_SUBAGENT_BY_ID = `${BASE_URL}/sub_agent/api/v1/sub_agent/`;
+
+export const UPDATE_SUBAGENT = `${BASE_URL}/sub_agent/api/v1/sub_agent/update/`;
+
+export const DELETE_SUBAGENT = `${BASE_URL}/sub_agent/api/v1/sub_agent/delete/`;
+
+export const SEARCH_SUBAGENT = `${BASE_URL}/sub_agent/api/v1/sub_agent/search/`;
+
+export const SUBAGENT_FILTER_BY = `${BASE_URL}/report/api/v1/sub_agent_report/filter/`;
+
+export const SUBAGENT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/sub_agent_report/without_pagination/filter/`;
 
 // demand
 export const CREATE_DEMAND = `${BASE_URL}/demand/api/v1/demand/create/`;

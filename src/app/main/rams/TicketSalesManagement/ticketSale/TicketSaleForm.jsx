@@ -109,6 +109,7 @@ function TicketSaleForm(props) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [iataTableData, setIataTableData] = useState([]);
+  const [mtlTicketDetails, setMltTicketDetails] = useState([]);
   const [createTicketSale] = useCreateTicketSaleMutation();
 
   useEffect(() => {
@@ -250,7 +251,7 @@ function TicketSaleForm(props) {
         </div>
       )}
 
-      {!watch('is_multiple_ticket') && (
+      {!watch('is_multi_ticket_entry') && (
         <div className='flex flex-wrap md:flex-nowrap w-full'>
           <div className='w-full md:w-1/2 px-2'>
             <CustomDropdownField
@@ -272,12 +273,12 @@ function TicketSaleForm(props) {
         </div>
       )}
 
-      {watch('is_multiple_ticket') && (
+      {watch('is_multi_ticket_entry') && (
         <div className='flex md:space-x-12 flex-col md:flex-row my-10'>
           <h3>Please Enter Ticket Number and Quantity :</h3>
         </div>
       )}
-      {watch('is_multiple_ticket') && (
+      {watch('is_multi_ticket_entry') && (
         <div className='flex md:space-x-12 flex-col md:flex-row'>
           <CustomTextField
             name='tkt_num'
@@ -313,7 +314,7 @@ function TicketSaleForm(props) {
         </div>
       )}
 
-      {!watch('is_multiple_ticket') && (
+      {!watch('is_multi_ticket_entry') && (
         <div className='flex flex-wrap md:flex-nowrap w-full'>
           <div className='w-full md:w-1/2 px-2'>
             <CustomTextField name='passport_no' label='Passport No' />

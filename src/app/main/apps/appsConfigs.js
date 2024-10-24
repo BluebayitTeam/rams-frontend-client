@@ -125,6 +125,7 @@ import PassengerReportAppConfig from '../rams/PassengerReportManagement/Passenge
 import PassengerLedgerReportAppConfig from '../rams/PassengerLedgerReportManagement/PassengerLedgerAppConfig';
 import AccountStatementReportAppConfig from '../rams/AccountStatementReportManagement/AccountStatementReportAppConfig';
 import ActivityLogReportAppConfig from '../rams/ActivityLogReportManagement/ActivityLogReportAppConfig';
+import SubAgentAppConfig from '../rams/SubAgentsManagement/SubAgentAppConfig';
 
 /**
  * The list of application configurations.
@@ -188,6 +189,7 @@ const appsConfigs = [
   ThailandVisaAppConfig,
   TodotasktypeAppConfig,
   AgentAppConfig,
+  SubAgentAppConfig,
   DemandAppConfig,
   TicketSaleAppConfig,
   QualificationAppConfig,
