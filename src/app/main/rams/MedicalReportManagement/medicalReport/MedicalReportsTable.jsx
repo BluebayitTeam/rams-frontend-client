@@ -9,6 +9,7 @@ import SinglePageWithDynamicColumn from 'src/app/@components/ReportComponents/Si
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+
 import { z } from 'zod';
 import '../../../rams/print.css';
 

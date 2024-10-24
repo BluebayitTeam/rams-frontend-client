@@ -8,7 +8,7 @@ import {
   getDemands,
   getGroups,
   getMedicals,
-  getMedicalTypes,
+  // getMedicalTypes,
   getProfessions,
 } from 'app/store/dataSlice';
 import { useEffect, useRef, useState } from 'react';
@@ -23,7 +23,7 @@ import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 import { genders } from 'src/app/@data/data';
-import ReportSelectMedical from 'src/app/@components/ReportComponents/ReportSelectMedical';
+// import ReportSelectMedical from 'src/app/@components/ReportComponents/ReportSelectMedical';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -73,7 +73,7 @@ function MedicalFilterMenu({
     dispatch(getCountries());
     dispatch(getAgents());
     dispatch(getProfessions());
-    dispatch(getMedicalTypes());
+    // dispatch(getMedicalTypes());
     dispatch(getCurrentStatuss());
   }, [dispatch]);
 
@@ -121,7 +121,7 @@ function MedicalFilterMenu({
           width='110px'
         />
         {/* Medical */}
-        <ReportSelectMedical
+        {/* <ReportSelectMedical
           {...commonFieldProps}
           name='medical'
           options={medicals}
@@ -130,7 +130,7 @@ function MedicalFilterMenu({
           }
           icon='person'
           width='78px'
-        />
+        /> */}
 
         {/* Current Status */}
         <ReportSelect

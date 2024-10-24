@@ -6,6 +6,8 @@ import {
   DELETE_DEPARTMENT,
   DELETE_DEPARTMENT_MULTIPLE,
   GET_DEPARTMENT_BY_ID,
+  MEDICAL_FILTER_BY,
+  MEDICAL_FILTER_WITHOUT_PG,
   PASSENGER_FILTER_BY,
   PASSENGER_FILTER_WITHOUT_PG,
   UPDATE_DEPARTMENT,
@@ -22,14 +24,14 @@ const MedicalReportApi = api
     endpoints: (build) => ({
       getMedicalReports: build.query({
         query: (filterData) => ({
-          url: PASSENGER_FILTER_BY,
+          url: MEDICAL_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['medicalReports'],
       }),
       getMedicalAllReports: build.query({
         query: (filterData) => ({
-          url: PASSENGER_FILTER_WITHOUT_PG,
+          url: MEDICAL_FILTER_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['medicalReports'],
