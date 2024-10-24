@@ -78,10 +78,10 @@ function MedicalReportsTable(props) {
       report_date_before: filterData.report_date_before || '',
       expiry_date_after: filterData.expiry_date_after || '',
       expiry_date_before: filterData.expiry_date_before || '',
-      expiry_date_after: filterData.expiry_date_after || '',
+
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
+
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
@@ -101,10 +101,10 @@ function MedicalReportsTable(props) {
       report_date_before: filterData.report_date_before || '',
       expiry_date_after: filterData.expiry_date_after || '',
       expiry_date_before: filterData.expiry_date_before || '',
-      expiry_date_after: filterData.expiry_date_after || '',
+
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
+
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
@@ -194,15 +194,23 @@ function MedicalReportsTable(props) {
   }, []);
 
   const filteredData = {
-    Medical: getValues()?.medicalName || null,
-    Current_Status: getValues()?.current_statusName || null,
-    Target_Country: getValues()?.target_countryName || null,
+    M_Rpt_To: getValues()?.report_date_before
+      ? moment(new Date(getValues()?.report_date_before)).format('DD-MM-YYYY')
+      : null,
+    M_Rpt_From: getValues()?.report_date_after
+      ? moment(new Date(getValues()?.report_date_after)).format('DD-MM-YYYY')
+      : null,
+
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
+    Medical: getValues()?.medicalName || null,
+    Current_Status: getValues()?.current_statusName || null,
+    Target_Country: getValues()?.target_countryName || null,
+
     Agent: getValues()?.agentName || null,
     Gender: getValues()?.genderName || null,
   };

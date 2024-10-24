@@ -39,7 +39,7 @@ function MedicalFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { medicals, countries, agents, medicalTypes, currentStatuss } =
+  const { passengers, countries, agents, passengerTypes, currentStatuss } =
     useSelector((state) => state.data);
 
   const values = getValues();
@@ -180,7 +180,7 @@ function MedicalFilterMenu({
       </div>
       <div>
         <ViewWeek
-          onClick={() => navigate(`/apps/reportClm/reportClms/medical`)}
+          onClick={() => navigate(`/apps/reportClm/reportClms/passenger`)}
           className='cursor-pointer mr-10 mt-20'
           style={{ color: 'red', marginLeft: '45%', fontSize: '30px' }}
         />{' '}
