@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import { getAgents, getLedgers, getSubLedgers } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -26,7 +27,7 @@ function TicketsalesFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { ledgers, subLedgers } = useSelector((state) => state.data);
+  const { agents } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 
@@ -42,55 +43,39 @@ function TicketsalesFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getLedgers());
-    dispatch(getSubLedgers());
+    dispatch(getAgents());
   }, []);
 
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* date from */}
+        {/* Issue Date From */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_after'
-          label='Date From'
-          maxDate={values.date_before || new Date()}
+          name='issue_date_after'
+          label='Issue Date From'
+          maxDate={values.issue_date_before || new Date()}
         />
-
-        {/* date to */}
+        {/* Issue Date To:*/}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
-          label='Date To'
-          minDate={values.date_after}
+          name='issue_date_before'
+          label='Issue Date To:'
+          minDate={values.issue_date_after}
           maxDate={new Date()}
         />
+        {/* Agency Name */}
 
-        {/* ledger */}
-        <ReportSelect
+        <ReportSelectFirstAgentCode
           {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
-          width='50px'
-        />
-
-        {/* sub_ledger */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='sub_ledger'
-          options={subLedgers}
-          icon='import_contacts'
-          width='76px'
-        />
-
-        {/* lpassengerTypes */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='account_type'
-          options={bankAndCash}
-          icon='text_fields'
-          width='95px'
+          name='agent'
+          label='Agency Name'
+          options={agents}
+          icon='person_icon'
+          width='94px'
+          getOptionLabel={(option) =>
+            `${option.first_name}- ${option.agent_code}`
+          }
         />
       </div>
 
@@ -99,35 +84,22 @@ function TicketsalesFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_after'
+          name='issue_date_after'
           label='Date From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_before'
+          name='issue_date_before'
           label='Date To'
         />
 
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='ledger'
-          icon='import_contacts'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='sub_ledger'
-          icon='import_contacts'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='account_type'
-          icon='text_fields'
+          name='agent'
+          icon='person'
         />
       </div>
     </div>
