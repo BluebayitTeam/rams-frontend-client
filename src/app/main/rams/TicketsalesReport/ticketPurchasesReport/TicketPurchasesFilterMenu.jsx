@@ -72,7 +72,7 @@ function TicketPurchasesFilterMenu({
 
         <ReportSelectFirstAgentCode
           {...commonFieldProps}
-          name='agent'
+          name='ticket_agency'
           label='Agency Name'
           options={agents}
           icon='person_icon'
@@ -102,7 +102,7 @@ function TicketPurchasesFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='agent'
+          name='ticket_agency'
           icon='person'
         />
       </div>

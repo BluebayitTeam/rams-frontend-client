@@ -102,7 +102,7 @@ function TicketPurchasesReportsTable(props) {
       {
         issue_date_after: filterData.issue_date_after || '',
         issue_date_before: filterData.issue_date_before || '',
-        agent: filterData.agent || '',
+        ticket_agency: filterData.ticket_agency || '',
         page,
         size,
       },
@@ -114,7 +114,7 @@ function TicketPurchasesReportsTable(props) {
       {
         issue_date_after: filterData.issue_date_after || '',
         issue_date_before: filterData.issue_date_before || '',
-        agent: filterData.agent || '',
+        ticket_agency: filterData.ticket_agency || '',
       },
       { skip: !inShowAllMode }
     );
@@ -181,7 +181,7 @@ function TicketPurchasesReportsTable(props) {
     Date_From: getValues()?.issue_date_after
       ? moment(new Date(getValues()?.issue_date_after)).format('DD-MM-YYYY')
       : null,
-    Agent: getValues()?.agentName || null,
+    Agent: getValues()?.ticket_agencyName || null,
   };
 
   return (
