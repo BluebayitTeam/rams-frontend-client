@@ -27,31 +27,44 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'ticketsales_date', show: true, type: 'date' },
+  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+  {
+    id: 4,
+    label: 'Passenger Name',
+    name: 'passenger',
+    subName: 'passenger_name',
+    show: true,
+  },
   {
     id: 5,
-    label: 'SubLedger',
-    name: 'sub_ledger',
-    subName: 'name',
+    label: 'Agent Name',
+    name: 'passenger',
+    subName: 'agent.first_name',
     show: true,
   },
   {
     id: 6,
-    label: 'Details',
-    getterMethod: (data) =>
-      `${data.details || ''}, ${data.related_ledger || ''}`,
+    label: 'Ticket Agency Name',
+    name: 'ticket_agency',
+    subName: 'first_name',
     show: true,
   },
   {
     id: 7,
-    label: 'Amount',
-    name: 'credit_amount',
+    label: 'Flight Date',
+    name: 'flight_date',
     show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
+    type: 'date',
   },
+  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
+  { id: 9, label: 'Country', name: 'sector_name', show: true },
+  { id: 10, label: 'Sector Name', name: 'sector_name', show: true },
+  { id: 11, label: ' AirWay', name: 'carrier_air_way', show: true },
+  { id: 12, label: 'Flight No', name: 'flight_no', show: true, type: 'date' },
+  { id: 13, label: 'Flight Time', name: 'flight_time', show: true },
+  { id: 14, label: 'Comment', name: 'notes', show: true },
+  { id: 15, label: 'Purchase Amount', name: 'purchase_amount', show: true },
 ];
 
 function TicketsalesReportsTable(props) {
@@ -107,14 +120,14 @@ function TicketsalesReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketsalesData(allData.ticketsales_vouchers || []);
+      setModifiedTicketsalesData(allData.ticket_purchases || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.ticketsales_vouchers,
+        allData.ticket_purchases,
         size,
         page
       );
@@ -124,7 +137,7 @@ function TicketsalesReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketsalesData(paginatedData.ticketsales_vouchers || []);
+      setModifiedTicketsalesData(paginatedData.ticket_purchases || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
