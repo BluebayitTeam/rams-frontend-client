@@ -86,11 +86,9 @@ function TicketsalesReportsTable(props) {
   const { data: paginatedData, refetch: refetchAgentReports } =
     useGetTicketsalesReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        issue_date_after: filterData.issue_date_after || '',
+        issue_date_before: filterData.issue_date_before || '',
+        agent: filterData.agent || '',
         page,
         size,
       },
@@ -100,11 +98,9 @@ function TicketsalesReportsTable(props) {
   const { data: allData, refetch: refetchAllTicketsalesReports } =
     useGetTicketsalesAllReportsQuery(
       {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        issue_date_after: filterData.issue_date_after || '',
+        issue_date_before: filterData.issue_date_before || '',
+        agent: filterData.agent || '',
       },
       { skip: !inShowAllMode }
     );
