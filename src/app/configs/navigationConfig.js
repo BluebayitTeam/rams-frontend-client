@@ -817,7 +817,7 @@ const navigationConfig = [
         translate: 'Medical Report',
         display_order: 3,
         type: 'item',
-        url: '/apps/report-management/medical-reports',
+        url: '/apps/medicalReport/medicalReports',
         exact: true,
       },
       {
