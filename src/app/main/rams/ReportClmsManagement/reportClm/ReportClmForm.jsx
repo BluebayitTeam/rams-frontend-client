@@ -71,7 +71,7 @@ function ReportClmForm(props) {
   };
 
   return (
-    <div className='grid grid-cols-3 grid-flow-row gap-1'>
+    <div className='grid grid-cols-2 grid-flow-row gap-1'>
       {props?.reportClms?.map((clm, index) => (
         <div
           key={index}

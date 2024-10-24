@@ -9,17 +9,18 @@ import SinglePageWithDynamicColumn from 'src/app/@components/ReportComponents/Si
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+
 import { z } from 'zod';
 import '../../../rams/print.css';
 
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredPassengerReports,
-  useGetPassengerAllReportsQuery,
-  useGetPassengerReportsQuery,
-} from '../PassengerReportsApi';
-import PassengerFilterMenu from './PassengerFilterMenu';
+  selectFilteredMedicalReports,
+  useGetMedicalAllReportsQuery,
+  useGetMedicalReportsQuery,
+} from '../MedicalReportsApi';
+import MedicalFilterMenu from './MedicalFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -30,7 +31,7 @@ const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
 ];
 
-function PassengerReportsTable(props) {
+function MedicalReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -41,8 +42,8 @@ function PassengerReportsTable(props) {
   const { watch, getValues } = methods;
   const [initialTableColumnsState, setInitialTableColumnsState] = useState([]);
   const [
-    modifiedPassengerData,
-    setModifiedPassengerData,
+    modifiedMedicalData,
+    setModifiedMedicalData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -71,15 +72,22 @@ function PassengerReportsTable(props) {
 
   console.log('filterData', getValues());
 
-  const { data: paginatedData } = useGetPassengerReportsQuery(
+  const { data: paginatedData } = useGetMedicalReportsQuery(
     {
-      passenger: filterData.passenger || '',
-      current_status: filterData.current_status || '',
-      date_after: filterData.date_after || '',
+      report_date_after: filterData.report_date_after || '',
+      report_date_before: filterData.report_date_before || '',
+      expiry_date_after: filterData.expiry_date_after || '',
+      expiry_date_before: filterData.expiry_date_before || '',
+
       date_before: filterData.date_before || '',
+      date_after: filterData.date_after || '',
+
+      passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      passenger_code: filterData.passenger_code || '',
+      current_status: filterData.current_status || '',
+      passenger_type: filterData.passenger_type || '',
+
       gender: filterData.gender || '',
       page,
       size,
@@ -87,21 +95,28 @@ function PassengerReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetPassengerAllReportsQuery(
+  const { data: allData } = useGetMedicalAllReportsQuery(
     {
-      passenger: filterData.passenger || '',
-      current_status: filterData.current_status || '',
-      date_after: filterData.date_after || '',
+      report_date_after: filterData.report_date_after || '',
+      report_date_before: filterData.report_date_before || '',
+      expiry_date_after: filterData.expiry_date_after || '',
+      expiry_date_before: filterData.expiry_date_before || '',
+
       date_before: filterData.date_before || '',
+      date_after: filterData.date_after || '',
+
+      passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      passenger_code: filterData.passenger_code || '',
+      current_status: filterData.current_status || '',
+      passenger_type: filterData.passenger_type || '',
+
       gender: filterData.gender || '',
     },
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredPassengerReports);
+  const totalData = useSelector(selectFilteredMedicalReports);
   const generateDynamicColumns = (data) => {
     // Start with the static "SL" column
     const staticSLColumn = {
@@ -126,12 +141,12 @@ function PassengerReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassengerData(allData?.passengers || []);
+      setModifiedMedicalData(allData?.medicals || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.passengers,
+        allData.medicals,
         size,
         page
       );
@@ -140,9 +155,9 @@ function PassengerReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassengerData(paginatedData?.passengers || []);
+      setModifiedMedicalData(paginatedData?.medicals || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.passengers[0] || {})
+        generateDynamicColumns(paginatedData?.medicals[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -162,32 +177,40 @@ function PassengerReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetPassengers = useCallback(async (newPage) => {
+  const handleGetMedicals = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching passengers:', error);
+      console.error('Error fetching medicals:', error);
     }
   }, []);
 
-  const handleGetAllPassengers = useCallback(async () => {
+  const handleGetAllMedicals = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all passengers:', error);
+      console.error('Error fetching all medicals:', error);
     }
   }, []);
 
   const filteredData = {
-    Passenger: getValues()?.passengerName || null,
-    Current_Status: getValues()?.current_statusName || null,
-    Target_Country: getValues()?.target_countryName || null,
+    M_Rpt_To: getValues()?.report_date_before
+      ? moment(new Date(getValues()?.report_date_before)).format('DD-MM-YYYY')
+      : null,
+    M_Rpt_From: getValues()?.report_date_after
+      ? moment(new Date(getValues()?.report_date_after)).format('DD-MM-YYYY')
+      : null,
+
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
+    Medical: getValues()?.medicalName || null,
+    Current_Status: getValues()?.current_statusName || null,
+    Target_Country: getValues()?.target_countryName || null,
+
     Agent: getValues()?.agentName || null,
     Gender: getValues()?.genderName || null,
   };
@@ -195,10 +218,10 @@ function PassengerReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <PassengerFilterMenu
+        <MedicalFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetPassengers={handleGetPassengers}
-          handleGetAllPassengers={handleGetAllPassengers}
+          handleGetMedicals={handleGetMedicals}
+          handleGetAllMedicals={handleGetAllMedicals}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -211,17 +234,17 @@ function PassengerReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetPassengers(1)}
-        onPreviousPage={() => handleGetPassengers(page - 1)}
-        onNextPage={() => handleGetPassengers(page + 1)}
-        onLastPage={() => handleGetPassengers(totalPages)}
+        onFirstPage={() => handleGetMedicals(1)}
+        onPreviousPage={() => handleGetMedicals(page - 1)}
+        onNextPage={() => handleGetMedicals(page + 1)}
+        onLastPage={() => handleGetMedicals(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetPassengers}
-        handleGetAllData={handleGetAllPassengers}
+        handleGetData={handleGetMedicals}
+        handleGetAllData={handleGetAllMedicals}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='PassengerReport'
+        filename='MedicalReport'
       />
 
       <table
@@ -229,20 +252,20 @@ function PassengerReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedPassengerData?.map((passenger, index) => (
+          {modifiedMedicalData?.map((medical, index) => (
             <SinglePageWithDynamicColumn
-              key={passenger.id || index}
+              key={medical.id || index}
               classes={classes}
-              reportTitle='Passenger Report'
+              reportTitle='Medical Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={passenger}
+              data={medical}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : passenger.page * passenger.size - passenger.size + 1
+                  : medical.page * medical.size - medical.size + 1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
@@ -257,4 +280,4 @@ function PassengerReportsTable(props) {
   );
 }
 
-export default PassengerReportsTable;
+export default MedicalReportsTable;
