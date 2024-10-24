@@ -1,16 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import {
-  getAgents,
-  getCities,
-  getCountries,
-  getCurrentStatuss,
-  getDemands,
-  getGroups,
-  getMedicals,
-  // getMedicalTypes,
-  getProfessions,
-} from 'app/store/dataSlice';
+
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +13,12 @@ import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 import { genders } from 'src/app/@data/data';
+import {
+  getAgents,
+  getCountries,
+  getPassengers,
+  getPassengerTypes,
+} from 'app/store/dataSlice';
 // import ReportSelectMedical from 'src/app/@components/ReportComponents/ReportSelectMedical';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,15 +62,10 @@ function MedicalFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getCities());
-    dispatch(getGroups());
-    dispatch(getMedicals());
-    dispatch(getDemands());
+    dispatch(getPassengers());
     dispatch(getCountries());
     dispatch(getAgents());
-    dispatch(getProfessions());
-    // dispatch(getMedicalTypes());
-    dispatch(getCurrentStatuss());
+    dispatch(getPassengerTypes());
   }, [dispatch]);
 
   // console.log('sadhbjkasbdkj', getValues());
@@ -84,17 +75,17 @@ function MedicalFilterMenu({
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_after'
-          label='Date From'
-          maxDate={values.date_before || new Date()}
+          name='report_date_after'
+          label='M.Rpt From'
+          maxDate={values.report_date_before || new Date()}
         />
 
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
-          label='Date To'
-          minDate={values.date_after}
+          name='report_date_before'
+          label='M.Rpt To'
+          minDate={values.report_date_after}
           maxDate={new Date()}
         />
         {/* Country */}
@@ -163,15 +154,15 @@ function MedicalFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_after'
-          label='Date From'
+          name='report_date_after'
+          label='M.Rpt From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_before'
-          label='Date To'
+          name='report_date_before'
+          label='M.Rpt To'
         />
 
         <Keyword
