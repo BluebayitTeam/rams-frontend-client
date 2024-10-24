@@ -913,7 +913,7 @@ export const SUBAGENT_FILTER_BY = `${BASE_URL}/report/api/v1/sub_agent_report/fi
 
 export const SUBAGENT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/sub_agent_report/without_pagination/filter/`;
 
-export const SUBAGENTS_WITHOUT_PAGINATION = `${BASE_URL}/sub_agent/api/v1/sub_agent/without_pagination/all/`;
+export const SUBAGENTS_WITHOUT_PAGINATION = `${BASE_URL}/sub_agent/api/v1/sub_agent/by_agent/`;
 
 // demand
 export const CREATE_DEMAND = `${BASE_URL}/demand/api/v1/demand/create/`;

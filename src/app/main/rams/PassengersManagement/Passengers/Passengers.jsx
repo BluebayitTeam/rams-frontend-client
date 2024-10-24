@@ -9,9 +9,9 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The passengers page.
  */
 function Passengers() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const [searchKey, setSearchKey] = useState('');
-	return (
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const [searchKey, setSearchKey] = useState('');
+  return (
     <FusePageCarded
       classes={{
         root: {},

@@ -404,14 +404,14 @@ export const getAgents = () => (dispatch) => {
     .then((data) => dispatch(setAgents(data.agents)))
     .catch(() => {});
 };
-export const getSubAgents = () => (dispatch) => {
+export const getSubAgents = (id) => (dispatch) => {
   const authTOKEN = {
     headers: {
       'Content-type': 'application/json',
       Authorization: localStorage.getItem('jwt_access_token'),
     },
   };
-  fetch(`${SUBAGENTS_WITHOUT_PAGINATION}`, authTOKEN)
+  fetch(`${SUBAGENTS_WITHOUT_PAGINATION}${id || ''}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setSubAgents(data.sub_agent)))
     .catch(() => {});

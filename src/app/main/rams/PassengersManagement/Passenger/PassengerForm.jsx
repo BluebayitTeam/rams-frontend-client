@@ -29,6 +29,7 @@ import {
   getPassengerTypes,
   getProfessions,
   getRecruitingAgencys,
+  getSubAgents,
   getThanas,
   getThanasBasedOnCity,
   getVisaEntrys,
@@ -72,6 +73,10 @@ function PassengerForm(props) {
   const passengerTypes = useSelector((state) => state.data.passengerTypes);
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
+  const subagents = useSelector((state) => state.data.subagents);
+
+  console.log('subagents', subagents);
+
   const recruitingAgencys = useSelector(
     (state) => state.data.recruitingAgencys
   );
@@ -196,6 +201,7 @@ function PassengerForm(props) {
 
   useEffect(() => {
     dispatch(getAgents());
+    dispatch(getSubAgents(''));
     dispatch(getDemands());
     dispatch(getAgencys());
     dispatch(getCountries());
@@ -373,7 +379,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <div
       // style={{ display: routeParams.passengerId === 'new' ? 'block' : 'none' }}
       >
@@ -465,6 +470,7 @@ function PassengerForm(props) {
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
+              dispatch(getSubAgents(newValue?.id));
             }}
             renderInput={(params) => (
               <TextField
@@ -482,8 +488,39 @@ function PassengerForm(props) {
             )}
           />
         )}
-      />
-
+      />{' '}
+      {watch('agent') && (
+        <Controller
+          name='sub_agent'
+          control={control}
+          render={({ field: { onChange, value, name } }) => (
+            <Autocomplete
+              className='mt-8 mb-16 w-full'
+              freeSolo
+              value={value ? subagents.find((data) => data.id === value) : null}
+              options={subagents}
+              getOptionLabel={(option) =>
+                `${option.first_name}  -${option.agent_code} `
+              }
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder='Select Sub Agent'
+                  label='Sub Agent'
+                  // error={!!errors.agent || !value}
+                  helperText={errors?.sub_agent?.message}
+                  variant='outlined'
+                  autoFocus
+                  InputLabelProps={value && { shrink: true }}
+                />
+              )}
+            />
+          )}
+        />
+      )}
       <Controller
         name='passenger_name'
         control={control}
@@ -535,7 +572,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='profession'
         control={control}
@@ -565,7 +601,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='agency'
         control={control}
@@ -597,7 +632,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       {/* <Controller
 				control={control}
 				name="date_of_birth"
@@ -625,14 +659,12 @@ function PassengerForm(props) {
 					/>
 				)}
 			/> */}
-
       <CustomDatePicker
         name='date_of_birth'
         label='Date of Birth'
         required
         placeholder='DD-MM-YYYY'
       />
-
       <Controller
         name='target_country'
         control={control}
@@ -664,7 +696,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='passport_no'
         control={control}
@@ -691,7 +722,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='passport_issue_place'
         control={control}
@@ -726,7 +756,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       {/* <Controller
 				control={control}
 				name="passport_issue_date"
@@ -807,14 +836,12 @@ function PassengerForm(props) {
           />
         )}
       /> */}
-
       <CustomDatePicker
         name='passport_issue_date'
         label='Passport Issue Date'
         required
         placeholder='DD-MM-YYYY'
       />
-
       <CustomDatePicker
         name='passport_expiry_date'
         label='Passport Expiry Date'
@@ -838,7 +865,6 @@ function PassengerForm(props) {
           />
         )}
       /> */}
-
       <div
         style={{
           display: routeParams.passengerType === 'hajj' ? 'block' : 'none',
@@ -895,7 +921,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='district'
         control={control}
@@ -926,7 +951,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='police_station'
         control={control}
@@ -972,7 +996,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <div
         style={{
           display: 'none',
@@ -1009,7 +1032,6 @@ function PassengerForm(props) {
           )}
         />
       </div>
-
       <Controller
         name='father_name'
         control={control}
@@ -1028,7 +1050,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='mother_name'
         control={control}
@@ -1047,7 +1068,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='spouse_name'
         control={control}
@@ -1066,7 +1086,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='religion'
         control={control}
@@ -1094,7 +1113,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='post_office'
         control={control}
@@ -1113,7 +1131,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='village'
         control={control}
@@ -1132,7 +1149,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='marital_status'
         control={control}
@@ -1162,7 +1178,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='contact_no'
         control={control}
@@ -1181,7 +1196,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='nid'
         control={control}
@@ -1200,7 +1214,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='place_of_birth'
         control={control}
@@ -1250,7 +1263,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='emergency_contact_no'
         control={control}
@@ -1301,7 +1313,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='current_status'
         control={control}
@@ -1332,7 +1343,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='passport_type'
         control={control}
@@ -1362,7 +1372,6 @@ function PassengerForm(props) {
           />
         )}
       />
-
       <Controller
         name='place_of_residence'
         control={control}
@@ -1381,7 +1390,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <Controller
         name='notes'
         control={control}
@@ -1401,7 +1409,6 @@ function PassengerForm(props) {
           );
         }}
       />
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <div className='flex flex-wrap w-full   my-2 justify-evenly items-center'>
           {passportPic && !previewImage1 && (

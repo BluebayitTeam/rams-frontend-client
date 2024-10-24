@@ -128,6 +128,7 @@ import ActivityLogReportAppConfig from '../rams/ActivityLogReportManagement/Acti
 import TicketsalesReportAppConfig from '../rams/TicketsalesReport/TicketPurchasesReportAppConfig';
 import TicketPurchasesReportAppConfig from '../rams/TicketsalesReport/TicketPurchasesReportAppConfig';
 import MedicalReportAppConfig from '../rams/MedicalReportManagement/MedicalReportAppConfig';
+import SubAgentAppConfig from '../rams/SubAgentsManagement/SubAgentAppConfig';
 
 /**
  * The list of application configurations.

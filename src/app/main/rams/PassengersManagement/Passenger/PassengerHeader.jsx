@@ -9,64 +9,75 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreatePassengerMutation, useDeletePassengerMutation, useUpdatePassengerMutation } from '../PassengersApi';
+import {
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreatePassengerMutation,
+  useDeletePassengerMutation,
+  useUpdatePassengerMutation,
+} from '../PassengersApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The passenger header.
  */
 function PassengerHeader() {
-	const routeParams = useParams();
-	// const history = useHistory();
+  const routeParams = useParams();
+  // const history = useHistory();
 
-	const { passengerId, passengerType } = routeParams;
+  const { passengerId, passengerType } = routeParams;
 
-	const [createPassenger] = useCreatePassengerMutation();
-	const [savePassenger] = useUpdatePassengerMutation();
-	const [removePassenger] = useDeletePassengerMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deletePassenger');
-	const handleUpdate = localStorage.getItem('updatePassenger');
+  const [createPassenger] = useCreatePassengerMutation();
+  const [savePassenger] = useUpdatePassengerMutation();
+  const [removePassenger] = useDeletePassengerMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deletePassenger');
+  const handleUpdate = localStorage.getItem('updatePassenger');
 
-	const { passengerName } = useParams();
+  const { passengerName } = useParams();
 
-	function handleUpdatePassenger() {
-		savePassenger(getValues()).then((data) => {
-			UpdatedSuccessfully();
+  function handleUpdatePassenger() {
+    savePassenger(getValues()).then((data) => {
+      UpdatedSuccessfully();
 
-			navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
-		});
-	}
+      navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+    });
+  }
 
-	function handleCreatePassenger() {
-		console.log(`getValues()`, getValues());
-		createPassenger(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreatePassenger() {
+    console.log(`getValues()`, getValues());
+    createPassenger(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
-			});
-	}
+        navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+      });
+  }
 
-	function handleRemovePassenger(dispatch) {
-		removePassenger(passengerId);
-		DeletedSuccessfully();
-		navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemovePassenger(dispatch) {
+    removePassenger(passengerId);
+    DeletedSuccessfully();
+    navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
-	}
+  function handleCancel() {
+    navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+  }
 
-	// console.log('hendelcancel', handleCancel);
-	return (
+  // console.log('hendelcancel', handleCancel);
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
