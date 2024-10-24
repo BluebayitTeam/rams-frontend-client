@@ -69,7 +69,6 @@ function MedicalFilterMenu({
     dispatch(getPassengerTypes());
   }, [dispatch]);
 
-  // console.log('sadhbjkasbdkj', getValues());
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
@@ -93,9 +92,9 @@ function MedicalFilterMenu({
         {/* M.Exp From */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_after'
+          name='expiry_date_after'
           label='M.Ent To'
-          maxDate={values.date_before || new Date()}
+          maxDate={values.expiry_date_before || new Date()}
         />
 
         {/* M.Exp To */}

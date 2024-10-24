@@ -74,13 +74,20 @@ function MedicalReportsTable(props) {
 
   const { data: paginatedData } = useGetMedicalReportsQuery(
     {
-      medical: filterData.medical || '',
-      current_status: filterData.current_status || '',
+      report_date_after: filterData.report_date_after || '',
+      report_date_before: filterData.report_date_before || '',
+      expiry_date_after: filterData.expiry_date_after || '',
+      expiry_date_before: filterData.expiry_date_before || '',
+      expiry_date_after: filterData.expiry_date_after || '',
+      date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
+      passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      medical_code: filterData.medical_code || '',
+      current_status: filterData.current_status || '',
+      passenger_type: filterData.passenger_type || '',
+
       gender: filterData.gender || '',
       page,
       size,
@@ -90,13 +97,20 @@ function MedicalReportsTable(props) {
 
   const { data: allData } = useGetMedicalAllReportsQuery(
     {
-      medical: filterData.medical || '',
-      current_status: filterData.current_status || '',
+      report_date_after: filterData.report_date_after || '',
+      report_date_before: filterData.report_date_before || '',
+      expiry_date_after: filterData.expiry_date_after || '',
+      expiry_date_before: filterData.expiry_date_before || '',
+      expiry_date_after: filterData.expiry_date_after || '',
+      date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
+      passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      medical_code: filterData.medical_code || '',
+      current_status: filterData.current_status || '',
+      passenger_type: filterData.passenger_type || '',
+
       gender: filterData.gender || '',
     },
     { skip: !inShowAllMode }
