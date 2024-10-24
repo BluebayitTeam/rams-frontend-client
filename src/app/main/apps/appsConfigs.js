@@ -127,6 +127,7 @@ import AccountStatementReportAppConfig from '../rams/AccountStatementReportManag
 import ActivityLogReportAppConfig from '../rams/ActivityLogReportManagement/ActivityLogReportAppConfig';
 import TicketsalesReportAppConfig from '../rams/TicketsalesReport/TicketPurchasesReportAppConfig';
 import TicketPurchasesReportAppConfig from '../rams/TicketsalesReport/TicketPurchasesReportAppConfig';
+import MedicalReportAppConfig from '../rams/MedicalReportManagement/MedicalReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -150,6 +151,7 @@ const appsConfigs = [
   ManpowerNoteSheetMaleAppConfig,
   ManpowerSubmissionV2ListAppConfig,
   TicketPurchasesReportAppConfig,
+  MedicalReportAppConfig,
   MalefingerletterAppConfig,
   MultipleStatusUpdateAppConfig,
   MalaysiaVisaAppConfig,
