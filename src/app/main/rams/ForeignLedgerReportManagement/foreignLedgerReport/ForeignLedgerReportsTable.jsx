@@ -13,7 +13,7 @@ import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetForeignLedgerAllReportsQuery,
-  useGetForeignLedgerReportsQuery
+  useGetForeignLedgerReportsQuery,
 } from '../ForeignLedgerReportsApi';
 import ForeignLedgerFilterMenu from './ForeignLedgerFilterMenu';
 
@@ -25,37 +25,43 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
-	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true, headStyle: { textAlign: 'right' } },
-	{ id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
-	{ id: 5, label: 'Currency', name: 'currency', subName: 'name', show: true },
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
+  {
+    id: 3,
+    label: 'Invoice No',
+    name: 'reference_no',
+    show: true,
+    headStyle: { textAlign: 'right' },
+  },
+  { id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
+  { id: 5, label: 'Currency', name: 'currency', subName: 'name', show: true },
 
-	{ id: 5, label: 'Particular', name: 'details', show: true },
-	{
-		id: 6,
-		label: 'Debit',
-		name: 'currency_amount_dr',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	},
-	{
-		id: 7,
-		label: 'Credit',
-		name: 'currency_amount_cr',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	},
-	{
-		id: 8,
-		label: 'Balance',
-		name: 'balance',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	}
+  { id: 5, label: 'Particular', name: 'details', show: true },
+  {
+    id: 6,
+    label: 'Debit',
+    name: 'currency_amount_dr',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
+  {
+    id: 7,
+    label: 'Credit',
+    name: 'currency_amount_cr',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
+  {
+    id: 8,
+    label: 'Balance',
+    name: 'balance',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
 ];
 
 function ForeignLedgerReportsTable(props) {
@@ -69,7 +75,8 @@ function ForeignLedgerReportsTable(props) {
 
   const { watch } = methods;
 
-  const [modifiedForeignLedgerData, setModifiedForeignLedgerData] = useReportData();
+  const [modifiedForeignLedgerData, setModifiedForeignLedgerData] =
+    useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -89,40 +96,42 @@ function ForeignLedgerReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } = useGetForeignLedgerReportsQuery(
-    {
-      ledger: filterData.ledger || '',
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
+  const { data: paginatedData, refetch: refetchAgentReports } =
+    useGetForeignLedgerReportsQuery(
+      {
+        ledger: filterData.ledger || '',
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        sub_ledger: filterData.sub_ledger || '',
+        account_type: filterData.account_type || '',
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
-  const { data: allData, refetch: refetchAllForeignLedgerReports } = useGetForeignLedgerAllReportsQuery(
-    {
-      ledger: filterData.ledger || '',
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
-    },
-    { skip: !inShowAllMode }
-  );
+  const { data: allData, refetch: refetchAllForeignLedgerReports } =
+    useGetForeignLedgerAllReportsQuery(
+      {
+        ledger: filterData.ledger || '',
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        sub_ledger: filterData.sub_ledger || '',
+        account_type: filterData.account_type || '',
+      },
+      { skip: !inShowAllMode }
+    );
 
-useEffect(() => {
+  useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedForeignLedgerData(allData.account_logs || []);
-      setTotalCdAmount(allData.total_credit_amount );
-      setTotalDbAmount(allData.total_debit_amount );
-      setTotalBAlance(allData.total_balance );
+      setTotalCdAmount(allData.total_credit_amount);
+      setTotalDbAmount(allData.total_debit_amount);
+      setTotalBAlance(allData.total_balance);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
-      setPagination(false)
+      setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
         allData.account_logs,
         size,
@@ -135,9 +144,9 @@ useEffect(() => {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedForeignLedgerData(paginatedData.account_logs || []);
-      setTotalCdAmount(paginatedData.total_credit_amount );
-      setTotalDbAmount(paginatedData.total_debit_amount );
-      setTotalBAlance(paginatedData.total_balance ); 
+      setTotalCdAmount(paginatedData.total_credit_amount);
+      setTotalDbAmount(paginatedData.total_debit_amount);
+      setTotalBAlance(paginatedData.total_balance);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -145,10 +154,9 @@ useEffect(() => {
       setPagination(true);
       setInSiglePageMode(true);
       setInShowAllMode(false);
-
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
-const handleExelDownload = () => {
+  const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
 
@@ -172,11 +180,9 @@ const handleExelDownload = () => {
     }
   }, []);
 
-
   const AgentName = paginatedData?.agent?.first_name || 'N/A';
-	const District = paginatedData?.agent?.city?.name|| 'N/A';
-	const MobileNo = paginatedData?.agent?.primary_phone || 'N/A';
-
+  const District = paginatedData?.agent?.city?.name || 'N/A';
+  const MobileNo = paginatedData?.agent?.primary_phone || 'N/A';
 
   return (
     <div className={classes.headContainer}>
@@ -217,43 +223,42 @@ const handleExelDownload = () => {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedForeignLedgerData.map((foreignLedger, index) => (
-          <SiglePageLedgerReport
-          key={index}
-          classes={classes}
-          reportTitle="Foreign Ledger Report"
-          tableColumns={tableColumns}
-          dispatchTableColumns={dispatchTableColumns}
-          data={{
-            ...foreignLedger,
-            data: [
-              ...foreignLedger.data, 
-              {
-                currency_amount_cr: totalCdAmount,
-                currency_amount_dr: totalDbAmount,
-                details: 'Total Balance',
-                balance: totalBAlance,
-                getterMethod: () => 'Total Amount',
-                hideSerialNo: true,
-                rowStyle: { fontWeight: 600 },
-              },
-            ],
-          }}
-          totalColumn={initialTableColumnsState?.length}
-          inSiglePageMode={inSiglePageMode}
-          serialNumber={
-            pagination
-              ? page * size - size + index * foreignLedger.data.length + 1
-              : foreignLedger.page * foreignLedger.size - foreignLedger.size + 1
-          }
-          setPage={setPage}
-          AgentName={AgentName}
-          District={District}
-          MobileNo={MobileNo}
-        />
-        
-         
+            <SiglePageLedgerReport
+              key={index}
+              classes={classes}
+              reportTitle='Foreign Ledger Report'
+              tableColumns={tableColumns}
+              dispatchTableColumns={dispatchTableColumns}
+              data={{
+                ...foreignLedger,
+                data: [
+                  ...foreignLedger.data,
+                  {
+                    currency_amount_cr: totalCdAmount,
+                    currency_amount_dr: totalDbAmount,
+                    details: 'Total Balance',
+                    balance: totalBAlance,
+                    getterMethod: () => 'Total Amount',
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 },
+                  },
+                ],
+              }}
+              totalColumn={initialTableColumnsState?.length}
+              inSiglePageMode={inSiglePageMode}
+              serialNumber={
+                pagination
+                  ? page * size - size + index * foreignLedger.data.length + 1
+                  : foreignLedger.page * foreignLedger.size -
+                    foreignLedger.size +
+                    1
+              }
+              setPage={setPage}
+              AgentName={AgentName}
+              District={District}
+              MobileNo={MobileNo}
+            />
           ))}
-          
         </tbody>
       </table>
     </div>
