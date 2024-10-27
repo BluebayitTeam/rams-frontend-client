@@ -7,6 +7,8 @@ import {
   DELETE_DEPARTMENT,
   DELETE_DEPARTMENT_MULTIPLE,
   GET_DEPARTMENT_BY_ID,
+  GET_IATA_TICKET_REFUND_REPORT,
+  GET_IATA_TICKET_REFUND_REPORT_WITHOUT_PG,
   RECEIPT_FILTER_BY,
   RECEIPT_FILTER_WITHOUT_PG,
   TICKETSALES_FILTER_BY,
@@ -24,14 +26,14 @@ const TicketrefundReportApi = api
     endpoints: (build) => ({
       getTicketrefundReports: build.query({
         query: (filterData) => ({
-          url: TICKETSALES_FILTER_BY,
+          url: GET_IATA_TICKET_REFUND_REPORT,
           params: filterData,
         }),
         providesTags: ['ticketrefundReports'],
       }),
       getTicketrefundAllReports: build.query({
         query: (filterData) => ({
-          url: TICKETSALES_FILTER_WITHOUT_PG,
+          url: GET_IATA_TICKET_REFUND_REPORT_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['ticketrefundReports'],
