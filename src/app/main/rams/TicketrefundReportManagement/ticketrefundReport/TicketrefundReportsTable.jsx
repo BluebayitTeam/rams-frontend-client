@@ -26,29 +26,29 @@ const useStyles = makeStyles((theme) => ({
 // Define the Zod schema
 const schema = z.object({});
 
-const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+const initialPrintTableColumnsState = [
+  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
   { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
   {
     id: 4,
-    label: 'Passenger Name',
+    label: 'Pax Name',
     name: 'passenger',
     subName: 'passenger_name',
     show: true,
   },
   {
     id: 5,
-    label: 'Agent Name',
-    name: 'passenger',
-    subName: 'agent.first_name',
+    label: 'Issue Person',
+    name: 'issue_person',
+    subName: 'username',
     show: true,
   },
   {
     id: 6,
-    label: 'Ticket Agency Name',
+    label: 'Ticket Agency',
     name: 'ticket_agency',
-    subName: 'first_name',
+    subName: 'username',
     show: true,
   },
   {
@@ -58,14 +58,48 @@ const initialTableColumnsState = [
     show: true,
     type: 'date',
   },
-  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
-  { id: 9, label: 'Country', name: 'sector_name', show: true },
-  { id: 10, label: 'Sector Name', name: 'sector_name', show: true },
-  { id: 11, label: ' AirWay', name: 'carrier_air_way', show: true },
-  { id: 12, label: 'Flight No', name: 'flight_no', show: true, type: 'date' },
-  { id: 13, label: 'Flight Time', name: 'flight_time', show: true },
-  { id: 14, label: 'Comment', name: 'notes', show: true },
-  { id: 15, label: 'Purchase Amount', name: 'purchase_amount', show: true },
+  { id: 8, label: 'GDS', name: 'gds', show: true },
+  { id: 9, label: 'PNR', name: 'gds_pnr', show: true },
+  { id: 10, label: 'Airline PNR', name: 'airline_pnr', show: true },
+  {
+    id: 11,
+    label: 'Return Flight Date',
+    name: 'return_flight_date',
+    show: true,
+    type: 'date',
+  },
+  { id: 12, label: 'Ticket No', name: 'ticket_no', show: true },
+  { id: 13, label: 'FLT & Class', name: '_class', show: true },
+  {
+    id: 14,
+    label: 'Air Way',
+    name: 'current_airway',
+    subName: 'name',
+    show: true,
+  },
+  { id: 15, label: 'Sector Name', name: 'sector', show: true },
+  { id: 16, label: 'Fare Amount', name: 'fare_amount', show: true },
+  {
+    id: 17,
+    label: 'Airline Comission Amount',
+    name: 'airline_commission_amount',
+    show: true,
+  },
+  {
+    id: 18,
+    label: 'Customer Commission Amount',
+    name: 'customer_commission_amount',
+    show: true,
+  },
+  {
+    id: 19,
+    label: 'Tax Amount',
+    name: 'tax_amount',
+    subName: 'name',
+    show: true,
+  },
+  { id: 20, label: ' Sales Amount', name: 'sales_amount', show: true },
+  { id: 21, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
 ];
 
 function TicketrefundReportsTable(props) {
@@ -83,7 +117,7 @@ function TicketrefundReportsTable(props) {
     useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
-    initialTableColumnsState
+    initialPrintTableColumnsState
   );
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -129,14 +163,14 @@ function TicketrefundReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketrefundData(allData.ticket_purchases || []);
+      setModifiedTicketrefundData(allData.ticket_refunds || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.ticket_purchases,
+        allData.ticket_refunds,
         size,
         page
       );
@@ -146,7 +180,7 @@ function TicketrefundReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketrefundData(paginatedData.ticket_purchases || []);
+      setModifiedTicketrefundData(paginatedData.ticket_refunds || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
