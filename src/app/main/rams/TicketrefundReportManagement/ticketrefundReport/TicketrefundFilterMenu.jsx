@@ -81,6 +81,14 @@ function TicketrefundFilterMenu({
           icon=' confirmation_number'
           width='77px'
         />
+        {/* Airline Agency */}
+        <ReportSelectFirstAgentCode
+          {...commonFieldProps}
+          name='airline_agency'
+          options={agents}
+          icon='person'
+          width='95px'
+        />
       </div>
 
       {/* keywords */}
@@ -108,6 +116,12 @@ function TicketrefundFilterMenu({
           type='text'
           name='invoice_no'
           icon='confirmation_number'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='airline_agency'
+          icon='person'
         />
       </div>
     </div>
