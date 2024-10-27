@@ -18,7 +18,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-  first_name: z.string().nonempty('You must enter an agent name'),
+  grade: z.string().nonempty('You must enter an agent name'),
 });
 
 function Qualification() {
