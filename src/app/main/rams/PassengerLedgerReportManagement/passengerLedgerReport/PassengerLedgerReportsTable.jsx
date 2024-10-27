@@ -242,7 +242,6 @@ function PassengerLedgerReportsTable(props) {
 
       setDateTo(paginatedData?.date_before);
 
-      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -254,7 +253,7 @@ function PassengerLedgerReportsTable(props) {
     if (!inShowAllMode && BillDetailData) {
       setModifiedPassengerLedgerBillDetailData(BillDetailData?.sales || []);
       setTotalSl(BillDetailData?.total_balance || '0.00');
-      setPage(BillDetailData?.page || 1);
+
       setSize(BillDetailData?.size || 25);
       setTotalPages(BillDetailData.total_pages || 0);
       setTotalDbAmount(BillDetailData?.sales?.total_debit || 0);
@@ -267,7 +266,7 @@ function PassengerLedgerReportsTable(props) {
     if (!inShowAllMode && CostDetailData) {
       setModifiedPassengerLedgerCostDetailData(CostDetailData?.purchases || []);
       setTotalCost(CostDetailData?.total_balance || '0.00');
-      setPage(CostDetailData?.page || 1);
+
       setSize(CostDetailData?.size || 25);
       setTotalPages(CostDetailData.total_pages || 0);
       setTotalElements(CostDetailData.total_elements || 0);
@@ -318,15 +317,6 @@ function PassengerLedgerReportsTable(props) {
       console.error('Error fetching all foreignLedgers:', error);
     }
   }, []);
-
-  // const handleGetPassengerLedgerBillDetails = useCallback(async (newPage) => {
-  //   try {
-  //     const page = newPage || 1;
-  //     setPage(page);
-  //   } catch (error) {
-  //     console.error('Error fetching agents:', error);
-  //   }
-  //   }, []);
 
   const handleGetPassengerLedgerBillDetails = async (newPage) => {
     try {
@@ -402,24 +392,6 @@ function PassengerLedgerReportsTable(props) {
       // You can add a notification or toast here to notify the user of the error
     }
   };
-
-  // function handleUpdateAgent() {
-  //   createPassengerLedger(getValues()).then((data) => {
-  //     UpdatedSuccessfully();
-
-  //     navigate(`/apps/passengerLedgerReport/passengerLedgerReports`);
-  //   });
-  // }
-
-  // function handleCreateAgent() {
-  //   createAgent(getValues())
-  //     .unwrap()
-  //     .then((data) => {
-  //       AddedSuccessfully();
-
-  //       navigate(`/apps/passengerLedgerReport/passengerLedgerReports`);
-  //     });
-  // }
 
   return (
     <div className={classes.headContainer}>

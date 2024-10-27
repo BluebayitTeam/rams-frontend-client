@@ -14,7 +14,7 @@ import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetPaymentAllReportsQuery,
-  useGetPaymentReportsQuery
+  useGetPaymentReportsQuery,
 } from '../PaymentReportsApi';
 import PaymentFilterMenu from './PaymentFilterMenu';
 
@@ -26,25 +26,32 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Date', name: 'payment_date', show: true, type: 'date' },
-	{ id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-	{ id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-	{ id: 5, label: 'SubLedger', name: 'sub_ledger', subName: 'name', show: true },
-	{
-		id: 6,
-		label: 'Details',
-		show: true,
-		getterMethod: data => `${data.details || ''}, ${data.related_ledger || ''}`
-	},
-	{
-		id: 7,
-		label: 'Amount',
-		name: 'debit_amount',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	}
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Date', name: 'payment_date', show: true, type: 'date' },
+  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+  {
+    id: 5,
+    label: 'SubLedger',
+    name: 'sub_ledger',
+    subName: 'name',
+    show: true,
+  },
+  {
+    id: 6,
+    label: 'Details',
+    show: true,
+    getterMethod: (data) =>
+      `${data.details || ''}, ${data.related_ledger || ''}`,
+  },
+  {
+    id: 7,
+    label: 'Amount',
+    name: 'debit_amount',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
 ];
 function PaymentReportsTable(props) {
   const classes = useStyles();
@@ -55,11 +62,11 @@ function PaymentReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { control, getValues,watch } = methods;
+  const { control, getValues, watch } = methods;
 
   const [modifiedPaymentData, setModifiedPaymentData] = useReportData();
   console.log('dskadjasldjlasdja', modifiedPaymentData);
-  
+
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -74,50 +81,44 @@ function PaymentReportsTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
 
-console.log('totalAmount121', totalAmount);
+  console.log('totalAmount121', totalAmount);
 
   const componentRef = useRef(null);
 
-  const { data: paginatedData, refetch: refetchPaymentReports } = useGetPaymentReportsQuery(
-    {
-      
-    
-      date_after: watchedValues.date_after || '',
-      date_before: watchedValues.date_before || '',
-      ledger: watchedValues.ledger || '',
-      sub_ledger: watchedValues.sub_ledger || '',
-      account_type: watchedValues.account_type || '',
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
-  
-  const { data: allData, refetch: refetchAllPaymentReports } = useGetPaymentAllReportsQuery(
-    {
-      
-    
-      date_after: watchedValues.date_after || '',
-      date_before: watchedValues.date_before || '',
-      ledger: watchedValues.ledger || '',
-      sub_ledger: watchedValues.sub_ledger || '',
-      account_type: watchedValues.account_type || '',
-     
-    },
-    { skip: !inShowAllMode }
-  );
+  const { data: paginatedData, refetch: refetchPaymentReports } =
+    useGetPaymentReportsQuery(
+      {
+        date_after: watchedValues.date_after || '',
+        date_before: watchedValues.date_before || '',
+        ledger: watchedValues.ledger || '',
+        sub_ledger: watchedValues.sub_ledger || '',
+        account_type: watchedValues.account_type || '',
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
+  const { data: allData, refetch: refetchAllPaymentReports } =
+    useGetPaymentAllReportsQuery(
+      {
+        date_after: watchedValues.date_after || '',
+        date_before: watchedValues.date_before || '',
+        ledger: watchedValues.ledger || '',
+        sub_ledger: watchedValues.sub_ledger || '',
+        account_type: watchedValues.account_type || '',
+      },
+      { skip: !inShowAllMode }
+    );
 
-  
-
-useEffect(() => {
+  useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedPaymentData(allData.payment_vouchers || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
-      setPagination(false)
+      setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
         allData.payment_vouchers,
         size,
@@ -129,22 +130,18 @@ useEffect(() => {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-
       setModifiedPaymentData(paginatedData.payment_vouchers || []);
-      setTotalAmount(paginatedData.total_amount );
-      setPage(paginatedData?.page || 1);
+      setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
       setInShowAllMode(false);
-
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
-
- // Function to handle Excel download
+  // Function to handle Excel download
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
@@ -154,7 +151,7 @@ useEffect(() => {
     content: () => componentRef.current,
   });
 
-const handleGetPayments = useCallback(async (newPage) => {
+  const handleGetPayments = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -163,24 +160,24 @@ const handleGetPayments = useCallback(async (newPage) => {
     }
   }, []);
 
-
-
   const handleGetAllPayments = useCallback(async () => {
     try {
-      
     } catch (error) {
       console.error('Error fetching all payment_vouchers:', error);
     }
   }, []);
 
-
   const filteredData = {
-		Account: getValues()?.account_typeName || null,
-		Ledger: getValues()?.ledgerName || null,
-		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
-		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
-		Sub_Ledger: getValues()?.sub_ledgerName || null
-	  };
+    Account: getValues()?.account_typeName || null,
+    Ledger: getValues()?.ledgerName || null,
+    Date_To: getValues()?.date_before
+      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      : null,
+    Date_From: getValues()?.date_after
+      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      : null,
+    Sub_Ledger: getValues()?.sub_ledgerName || null,
+  };
 
   return (
     <div className={classes.headContainer}>
@@ -232,7 +229,7 @@ const handleGetPayments = useCallback(async (newPage) => {
               data={{
                 ...payment,
                 data: [
-                  ...payment.data, 
+                  ...payment.data,
                   {
                     debit_amount: totalAmount,
                     getterMethod: () => 'Total Payment',
@@ -249,7 +246,6 @@ const handleGetPayments = useCallback(async (newPage) => {
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
-
             />
           ))}
         </tbody>

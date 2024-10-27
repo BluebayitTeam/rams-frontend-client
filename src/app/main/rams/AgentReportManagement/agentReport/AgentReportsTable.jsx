@@ -28,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true , },
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
   { id: 2, label: 'Name', name: 'username', show: true },
   { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', show: true ,		},  
+  { id: 4, label: 'District', name: 'city', show: true },
   { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true, },
+  { id: 6, label: 'Email', name: 'email', show: true },
 ];
 
 function AgentReportsTable(props) {
@@ -44,9 +44,15 @@ function AgentReportsTable(props) {
     resolver: zodResolver(schema),
   });
 
-  const {  watch ,getValues } = methods;
+  const { watch, getValues } = methods;
 
-  const [modifiedAgentData, setModifiedAgentData,setSortBy,setSortBySubKey,dragAndDropRow] = useReportData();
+  const [
+    modifiedAgentData,
+    setModifiedAgentData,
+    setSortBy,
+    setSortBySubKey,
+    dragAndDropRow,
+  ] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -63,7 +69,7 @@ function AgentReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData,  } = useGetAgentReportsQuery(
+  const { data: paginatedData } = useGetAgentReportsQuery(
     {
       group: filterData.group || '',
       district: filterData.district || '',
@@ -77,8 +83,8 @@ function AgentReportsTable(props) {
     },
     { skip: inShowAllMode }
   );
-  
-  const { data: allData, } = useGetAgentAllReportsQuery(
+
+  const { data: allData } = useGetAgentAllReportsQuery(
     {
       group: filterData.group || '',
       district: filterData.district || '',
@@ -97,28 +103,25 @@ function AgentReportsTable(props) {
     if (inShowAllMode && allData) {
       setModifiedAgentData(allData.agents || []);
       setInSiglePageMode(false);
-			setInShowAllMode(true);
-      setPagination(false)
+      setInShowAllMode(true);
+      setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
         allData.agents,
         size,
         page
       );
       setPage(page || 1);
-			setSize(size || 25);
+      setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-
       setModifiedAgentData(paginatedData.agents || []);
-      setPage(paginatedData?.page || 1);
-			setSize(paginatedData?.size || 25);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
-			setInShowAllMode(false);
-      
+      setInShowAllMode(false);
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
@@ -141,22 +144,20 @@ function AgentReportsTable(props) {
 
   const handleGetAllAgents = useCallback(async () => {
     try {
-      
     } catch (error) {
       console.error('Error fetching all agents:', error);
     }
   }, []);
-
 
   const filteredData = {
     Group: getValues()?.groupName || null,
     District: getValues()?.districtName || null,
     Username: getValues()?.username || null,
     Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format("DD-MM-YYYY")
+      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format("DD-MM-YYYY")
+      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
     Primary_phone: getValues()?.primary_phone || null,
     agent_code: getValues()?.agent_code || null,
@@ -194,7 +195,10 @@ function AgentReportsTable(props) {
         filename='AgentReport'
       />
 
-      <table id='table-to-xls' className='w-full' style={{ minHeight: '270px' }}>
+      <table
+        id='table-to-xls'
+        className='w-full'
+        style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedAgentData.map((agent, index) => (
             <SinglePage
@@ -206,7 +210,6 @@ function AgentReportsTable(props) {
               dispatchTableColumns={dispatchTableColumns}
               data={agent}
               totalColumn={initialTableColumnsState?.length}
-
               serialNumber={
                 pagination
                   ? page * size - size + 1
