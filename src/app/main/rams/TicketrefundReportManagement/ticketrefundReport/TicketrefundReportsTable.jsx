@@ -183,7 +183,6 @@ function TicketrefundReportsTable(props) {
       setModifiedTicketrefundData(paginatedData.ticket_refunds || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
-      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
