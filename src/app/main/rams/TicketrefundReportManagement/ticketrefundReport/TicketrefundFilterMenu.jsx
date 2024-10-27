@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
-import { useEffect, useRef, useState } from 'react';
+import { getAgents, getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -9,15 +9,17 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
+import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function ForeignLedgerFilterMenu({
+function TicketrefundFilterMenu({
   inShowAllMode,
-  handleGetForeignLedgers,
-  handleGetAllForeignLedgers,
+  handleGetTicketrefunds,
+  handleGetAllTicketrefunds,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -26,54 +28,36 @@ function ForeignLedgerFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { ledgers, subLedgers } = useSelector((state) => state.data);
+  const { agents } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  console.log('Passenger Values:', getValues());
-
-  // element refs
-  const userNameEl = useRef(null);
-  const primaryPhoneEl = useRef(null);
-  const foreignLedgerCodeEl = useRef(null);
 
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllForeignLedgers() : handleGetForeignLedgers(),
+      inShowAllMode ? handleGetAllTicketrefunds() : handleGetTicketrefunds(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllForeignLedgers() : handleGetForeignLedgers(),
+      inShowAllMode ? handleGetAllTicketrefunds() : handleGetTicketrefunds(),
   };
 
   useEffect(() => {
-    dispatch(getLedgers());
-    dispatch(getSubLedgers());
+    dispatch(getAgents());
   }, []);
 
-  console.log('sadhbjkasbdkj', getValues());
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* ledger */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
-          width='46px'
-        />
-
-        {/* date from */}
+        {/* Issue Date From */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
           label='Date From'
           maxDate={values.date_before || new Date()}
         />
-
-        {/* date to */}
+        {/* Issue Date To:*/}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
@@ -81,35 +65,26 @@ function ForeignLedgerFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
-
-        {/* sub_ledger */}
-        <ReportSelect
+        {/* Ticket No*/}
+        <ReportTextField
           {...commonFieldProps}
-          name='sub_ledger'
-          options={subLedgers}
-          icon='import_contacts'
-          width='75px'
-        />
-
-        {/* lpassengerTypes */}
-        <ReportSelect
+          name='ticket_no'
+          label='Ticket No'
+          icon=' confirmation_number'
+          width='77px'
+        />{' '}
+        {/* invoice no*/}
+        <ReportTextField
           {...commonFieldProps}
-          name='account_type'
-          options={bankAndCash}
-          icon='text_fields'
-          width='92px'
+          name='invoice_no'
+          label='Ticket No'
+          icon=' confirmation_number'
+          width='77px'
         />
       </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='ledger'
-          icon='import_contacts'
-        />
-
         <Keyword
           {...commonKewordProps}
           type='date'
@@ -126,20 +101,13 @@ function ForeignLedgerFilterMenu({
 
         <Keyword
           {...commonKewordProps}
-          type='select'
-          name='sub_ledger'
-          icon='import_contacts'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='account_type'
-          icon='text_fields'
+          type='text'
+          name='ticket_no'
+          icon='confirmation_number'
         />
       </div>
     </div>
   );
 }
 
-export default ForeignLedgerFilterMenu;
+export default TicketrefundFilterMenu;

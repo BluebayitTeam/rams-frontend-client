@@ -817,7 +817,7 @@ const navigationConfig = [
         translate: 'Medical Report',
         display_order: 3,
         type: 'item',
-        url: '/apps/report-management/medical-reports',
+        url: '/apps/medicalReport/medicalReports',
         exact: true,
       },
       {
@@ -1432,7 +1432,7 @@ const navigationConfig = [
         translate: 'Ticket Purchase Report',
         display_order: 2,
         type: 'item',
-        url: '/apps/ticketsaless/report',
+        url: '/apps/ticketPurchasesReport/ticketPurchasesReports',
         exact: true,
       },
 
@@ -1533,7 +1533,7 @@ const navigationConfig = [
         translate: 'Ticket Sales Report',
         display_order: 1,
         type: 'item',
-        url: '/apps/ticketsales/report',
+        url: '/apps/ticketSaleReport/ticketSaleReports',
         exact: true,
       },
       {
@@ -1542,7 +1542,7 @@ const navigationConfig = [
         translate: 'Ticket Refund Report',
         display_order: 2,
         type: 'item',
-        url: '/apps/ticketrefunds/report',
+        url: '/apps/ticketrefundReport/ticketrefundReports',
         exact: true,
       },
       {

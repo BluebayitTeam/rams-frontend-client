@@ -62,25 +62,21 @@ function TicketPostingForm(props) {
     handleGetAvaiableTicketForPosting();
   }, [watch('customer'), watch('date_after'), watch('date_before')]);
 
-
- 
-  
   function handleSaveTicketposting() {
-      createTicketPosting({ ids: selectedTickets })
-        .unwrap()
-        .then((data) => {
-
-         Swal.fire({
-           position: 'top-center',
-           icon: 'success',
-           title: 'Successfully post this Ticket',
-           showConfirmButton: false,
-           timer: 2000,
-         });
-
-         setMltTicketList([])
+    createTicketPosting({ ids: selectedTickets })
+      .unwrap()
+      .then((data) => {
+        Swal.fire({
+          position: 'top-center',
+          icon: 'success',
+          title: 'Successfully post this Ticket',
+          showConfirmButton: false,
+          timer: 2000,
         });
-    }
+
+        setMltTicketList([]);
+      });
+  }
 
   return (
     <div>
@@ -112,16 +108,15 @@ function TicketPostingForm(props) {
         </div>
       )}
 
-      {mltTicketList?.length > 0 &&
+      {mltTicketList?.length > 0 && (
         <Button
-        className='whitespace-nowrap mt-20 mx-auto text-center'
-        
-        variant='contained'
-        color='secondary'
-       
-  onClick={() => handleSaveTicketposting()} >
-        Submit Posting
-      </Button>}
+          className='whitespace-nowrap mt-20 mx-auto text-center'
+          variant='contained'
+          color='secondary'
+          onClick={() => handleSaveTicketposting()}>
+          Submit Posting
+        </Button>
+      )}
     </div>
   );
 }
