@@ -8,61 +8,70 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import {
-	useCreatePaymentVoucherMutation,
-	useDeletePaymentVoucherMutation,
-	useUpdatePaymentVoucherMutation
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreatePaymentVoucherMutation,
+  useDeletePaymentVoucherMutation,
+  useUpdatePaymentVoucherMutation,
 } from '../PaymentVouchersApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The paymentVoucher header.
  */
 function PaymentVoucherHeader() {
-	const routeParams = useParams();
-	const { paymentVoucherId } = routeParams;
-	const [createPaymentVoucher] = useCreatePaymentVoucherMutation();
-	const [savePaymentVoucher] = useUpdatePaymentVoucherMutation();
-	const [removePaymentVoucher] = useDeletePaymentVoucherMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deletePaymentVoucher');
-	const handleUpdate = localStorage.getItem('updatePaymentVoucher');
+  const routeParams = useParams();
+  const { paymentVoucherId } = routeParams;
+  const [createPaymentVoucher] = useCreatePaymentVoucherMutation();
+  const [savePaymentVoucher] = useUpdatePaymentVoucherMutation();
+  const [removePaymentVoucher] = useDeletePaymentVoucherMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deletePaymentVoucher');
+  const handleUpdate = localStorage.getItem('updatePaymentVoucher');
 
-	function handleUpdatePaymentVoucher() {
-		console.log(`jbjk`, getValues());
-		savePaymentVoucher({ ...getValues(), id: paymentVoucherId }).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/paymentVoucher/paymentVouchers`);
-		});
-	}
+  function handleUpdatePaymentVoucher() {
+    console.log(`jbjk`, getValues());
+    savePaymentVoucher({ ...getValues(), id: paymentVoucherId }).then(
+      (data) => {
+        UpdatedSuccessfully();
+        navigate(`/apps/paymentVoucher/paymentVouchers`);
+      }
+    );
+  }
 
-	function handleCreatePaymentVoucher() {
-		createPaymentVoucher(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreatePaymentVoucher() {
+    createPaymentVoucher(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/paymentVoucher/paymentVouchers`);
-			});
-	}
+        navigate(`/apps/paymentVoucher/paymentVouchers`);
+      });
+  }
 
-	function handleRemovePaymentVoucher(dispatch) {
-		removePaymentVoucher(paymentVoucherId);
-		DeletedSuccessfully();
-		navigate('/apps/paymentVoucher/paymentVouchers');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemovePaymentVoucher(dispatch) {
+    removePaymentVoucher(paymentVoucherId);
+    DeletedSuccessfully();
+    navigate('/apps/paymentVoucher/paymentVouchers');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/paymentVoucher/paymentVouchers`);
-	}
+  function handleCancel() {
+    navigate(`/apps/paymentVoucher/paymentVouchers`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div

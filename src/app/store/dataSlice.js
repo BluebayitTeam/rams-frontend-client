@@ -44,6 +44,7 @@ import {
   GET_USERS_WITHOUT_PAGINATION,
   GET_VENDORS_WITHOUT_PAGINATION,
   GROUPS_WITHOUT_PAGINATION,
+  LEDGER_BANK_CASH,
   LEDGERS_WITHOUT_PAGINATION,
   MANPOWER_BY_PASSENGER_ID,
   MEDICALCENTERS_WITHOUT_PAGINATION,
@@ -911,6 +912,18 @@ export const getSubLedgers = () => (dispatch) => {
     .then((data) => dispatch(setSubLedgers(data.sub_ledgers)))
     .catch(() => {});
 };
+export const getLedgerBankCashs = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(LEDGER_BANK_CASH, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setLedgerBankCashs(data.ledger_accounts)))
+    .catch(() => {});
+};
 
 const dataSlice = createSlice({
   name: 'dropdown/data',
@@ -973,6 +986,7 @@ const dataSlice = createSlice({
     formcontentHeads: [],
     ledgers: [],
     subLedgers: [],
+    ledgerbankcashs: [],
     taskTypes: [],
     currencies: [],
     currentstatuses: [],
@@ -983,6 +997,9 @@ const dataSlice = createSlice({
   reducers: {
     setBranches: (state, action) => {
       state.branches = action.payload;
+    },
+    setLedgerBankCashs: (state, action) => {
+      state.ledgerBankCashs = action.payload ? action.payload : [];
     },
     setSiteSettings: (state, action) => {
       state.siteSettings = action.payload;
@@ -1261,6 +1278,7 @@ const {
   setPassengers,
   setPassengersWithVisaEntry,
   setLedgers,
+  setLedgerBankCashs,
   setSubLedgers,
   setCurrencies,
   setPermissionGroups,
