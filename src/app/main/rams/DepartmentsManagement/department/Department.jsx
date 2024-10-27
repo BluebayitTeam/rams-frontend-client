@@ -18,84 +18,76 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a department name')
-		.min(5, 'The department name must be at least 5 characters')
+  name: z.string().nonempty('You must enter an agent name'),
 });
 
 function Department() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { departmentId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { departmentId } = routeParams;
 
-	const {
-		data: department,
-		isLoading,
-		isError
-	} = useGetDepartmentQuery(departmentId, {
-		skip: !departmentId || departmentId === 'new'
-	});
-	console.log('departmentId', department, departmentId);
+  const {
+    data: department,
+    isLoading,
+    isError,
+  } = useGetDepartmentQuery(departmentId, {
+    skip: !departmentId || departmentId === 'new',
+  });
+  console.log('departmentId', department, departmentId);
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (departmentId === 'new') {
-			reset(DepartmentModel({}));
-		}
-	}, [departmentId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (departmentId === 'new') {
+      reset(DepartmentModel({}));
+    }
+  }, [departmentId, reset]);
 
-	useEffect(() => {
-		if (department) {
-			reset({ ...department });
-		}
-	}, [department, reset, department?.id]);
+  useEffect(() => {
+    if (department) {
+      reset({ ...department });
+    }
+  }, [department, reset, department?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested departments is not exists
-	 */
-	if (isError && departmentId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such department!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/department/departments"
-					color="inherit"
-				>
-					Go to Departments Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested departments is not exists
+   */
+  if (isError && departmentId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such department!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/department/departments'
+          color='inherit'>
+          Go to Departments Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('DEPARTURE_DETAILS') && (
         <FusePageCarded
