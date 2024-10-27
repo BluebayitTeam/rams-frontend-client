@@ -70,9 +70,10 @@ function TicketrefundFilterMenu({
         {/* agent code */}
         <ReportTextField
           {...commonFieldProps}
-          name='agent_code'
+          name='ticket_no'
           // domEl={agentCodeEl}
-          icon='qr_code_scanner_sharp'
+          label='Ticket No'
+          icon=' confirmation_number'
           width='77px'
         />
       </div>
