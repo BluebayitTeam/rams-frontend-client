@@ -65,12 +65,18 @@ function TicketrefundFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* Agency Name */}
-
-        {/* agent code */}
+        {/* Ticket No*/}
         <ReportTextField
           {...commonFieldProps}
           name='ticket_no'
+          label='Ticket No'
+          icon=' confirmation_number'
+          width='77px'
+        />{' '}
+        {/* invoice no*/}
+        <ReportTextField
+          {...commonFieldProps}
+          name='invoice_no'
           label='Ticket No'
           icon=' confirmation_number'
           width='77px'
