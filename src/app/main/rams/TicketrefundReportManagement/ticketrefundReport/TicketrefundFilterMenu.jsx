@@ -77,9 +77,26 @@ function TicketrefundFilterMenu({
         <ReportTextField
           {...commonFieldProps}
           name='invoice_no'
-          label='Ticket No'
+          label='Invoice No'
           icon=' confirmation_number'
           width='77px'
+        />
+        {/* Airline Agency */}
+        <ReportSelectFirstAgentCode
+          {...commonFieldProps}
+          name='airline_agency'
+          options={agents}
+          icon='person'
+          width='95px'
+        />{' '}
+        {/* Customer*/}
+        <ReportSelectFirstAgentCode
+          {...commonFieldProps}
+          name='agent'
+          options={agents}
+          label='Customer'
+          icon='person'
+          width='65px'
         />
       </div>
 
@@ -91,19 +108,35 @@ function TicketrefundFilterMenu({
           name='date_after'
           label='Date From'
         />
-
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
           label='Date To'
         />
-
         <Keyword
           {...commonKewordProps}
           type='text'
           name='ticket_no'
           icon='confirmation_number'
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='invoice_no'
+          icon='confirmation_number'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='airline_agency'
+          icon='person'
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='agent'
+          icon='person'
         />
       </div>
     </div>

@@ -217,7 +217,6 @@ function LedgerReportsTable(props) {
 
       setDateTo(paginatedData?.date_before);
 
-      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);

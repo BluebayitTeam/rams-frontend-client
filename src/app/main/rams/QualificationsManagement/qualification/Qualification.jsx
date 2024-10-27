@@ -18,81 +18,75 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z.string().nonempty('You must enter a qualification name')
+  grade: z.string().nonempty('You must enter an agent name'),
 });
 
 function Qualification() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { qualificationId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { qualificationId } = routeParams;
 
-	const {
-		data: qualification,
-		isLoading,
-		isError
-	} = useGetQualificationQuery(qualificationId, {
-		skip: !qualificationId || qualificationId === 'new'
-	});
-	console.log('qualificationId', qualification, qualificationId);
+  const {
+    data: qualification,
+    isLoading,
+    isError,
+  } = useGetQualificationQuery(qualificationId, {
+    skip: !qualificationId || qualificationId === 'new',
+  });
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (qualificationId === 'new') {
-			reset(QualificationModel({}));
-		}
-	}, [qualificationId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (qualificationId === 'new') {
+      reset(QualificationModel({}));
+    }
+  }, [qualificationId, reset]);
 
-	useEffect(() => {
-		if (qualification) {
-			reset({ ...qualification });
-		}
-	}, [qualification, reset, qualification?.id]);
+  useEffect(() => {
+    if (qualification) {
+      reset({ ...qualification });
+    }
+  }, [qualification, reset, qualification?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested qualifications is not exists
-	 */
-	if (isError && qualificationId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such qualification!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/qualification/qualifications"
-					color="inherit"
-				>
-					Go to Qualifications Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested qualifications is not exists
+   */
+  if (isError && qualificationId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such qualification!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/qualification/qualifications'
+          color='inherit'>
+          Go to Qualifications Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('QUALIFICATION_DETAILS') && (
         <FusePageCarded

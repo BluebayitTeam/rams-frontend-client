@@ -14,7 +14,7 @@ import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetPaymentSummaryAllReportsQuery,
-  useGetPaymentSummaryReportsQuery
+  useGetPaymentSummaryReportsQuery,
 } from '../PaymentSummaryReportsApi';
 import PaymentSummaryFilterMenu from './PaymentSummaryFilterMenu';
 
@@ -26,18 +26,17 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'SubLedger', name: 'sub_ledger', show: true },
-	{
-		id: 3,
-		label: 'Amount',
-		name: 'amount',
-		show: true
-		// style: { justifyContent: 'flex-center', marginRight: '5px' },
-		// headStyle: { textAlign: 'right' }
-	}
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'SubLedger', name: 'sub_ledger', show: true },
+  {
+    id: 3,
+    label: 'Amount',
+    name: 'amount',
+    show: true,
+    // style: { justifyContent: 'flex-center', marginRight: '5px' },
+    // headStyle: { textAlign: 'right' }
+  },
 ];
-
 
 function PaymentSummaryReportsTable(props) {
   const classes = useStyles();
@@ -48,9 +47,10 @@ function PaymentSummaryReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { watch,getValues } = methods;
+  const { watch, getValues } = methods;
 
-  const [modifiedPaymentSummaryData, setModifiedPaymentSummaryData] = useReportData();
+  const [modifiedPaymentSummaryData, setModifiedPaymentSummaryData] =
+    useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -70,52 +70,50 @@ function PaymentSummaryReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } = useGetPaymentSummaryReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
+  const { data: paginatedData, refetch: refetchAgentReports } =
+    useGetPaymentSummaryReportsQuery(
+      {
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        ledger: filterData.ledger || '',
+        sub_ledger: filterData.sub_ledger || '',
+        account_type: filterData.account_type || '',
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
+  const { data: allData, refetch: refetchAllPaymentSummaryReports } =
+    useGetPaymentSummaryAllReportsQuery(
+      {
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        ledger: filterData.ledger || '',
+        sub_ledger: filterData.sub_ledger || '',
+        account_type: filterData.account_type || '',
+      },
+      { skip: !inShowAllMode }
+    );
 
+  const convertObjectToArray = (obj) => {
+    let convertedArr = [];
+    for (let x in obj) {
+      convertedArr.push({ sub_ledger: x, amount: obj[x] });
+    }
+    return convertedArr;
+  };
 
-  const { data: allData, refetch: refetchAllPaymentSummaryReports } = useGetPaymentSummaryAllReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      account_type: filterData.account_type || '',
-    },
-    { skip: !inShowAllMode }
-  );
-
- 
-
-
-  const convertObjectToArray = obj => {
-		let convertedArr = [];
-		for (let x in obj) {
-			convertedArr.push({ sub_ledger: x, amount: obj[x] });
-		}
-		return convertedArr;
-	};
-
- 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPaymentSummaryData(convertObjectToArray(allData.payment_voucher_summary ));
-      setTotalAmount(allData.total_amount );
+      setModifiedPaymentSummaryData(
+        convertObjectToArray(allData.payment_voucher_summary)
+      );
+      setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
-      setPagination(false)
+      setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
         allData.payment_voucher_summary,
         size,
@@ -126,26 +124,20 @@ function PaymentSummaryReportsTable(props) {
       setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
-
     } else if (!inShowAllMode && paginatedData) {
-
-      setModifiedPaymentSummaryData(convertObjectToArray(paginatedData.payment_voucher_summary) );
+      setModifiedPaymentSummaryData(
+        convertObjectToArray(paginatedData.payment_voucher_summary)
+      );
       setTotalAmount(paginatedData.total_amount);
-      setPage(paginatedData?.page || 1);
+
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
       setInShowAllMode(false);
-
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
-
-
-
-
-  
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
@@ -171,14 +163,17 @@ function PaymentSummaryReportsTable(props) {
     }
   }, []);
 
-
   const filteredData = {
-		Account: getValues()?.account_typeName || null,
-		Ledger: getValues()?.ledgerName || null,
-		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
-		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
-		Sub_Ledger: getValues()?.sub_ledgerName || null
-	  };
+    Account: getValues()?.account_typeName || null,
+    Ledger: getValues()?.ledgerName || null,
+    Date_To: getValues()?.date_before
+      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      : null,
+    Date_From: getValues()?.date_after
+      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      : null,
+    Sub_Ledger: getValues()?.sub_ledgerName || null,
+  };
 
   return (
     <div className={classes.headContainer}>
@@ -219,27 +214,26 @@ function PaymentSummaryReportsTable(props) {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedPaymentSummaryData.map((paymentSummary, index) => (
-          <SinglePage
-          key={index}
-          classes={classes}
-          reportTitle="PaymentSummary Report"
-          filteredData={filteredData}
-          tableColumns={tableColumns}
-          dispatchTableColumns={dispatchTableColumns}
-          data={paymentSummary}
-          totalColumn={initialTableColumnsState?.length}
-          inSiglePageMode={inSiglePageMode}
-          serialNumber={
-            pagination
-              ? page * size - size + index * paymentSummary.data.length + 1
-              : paymentSummary.page * paymentSummary.size - paymentSummary.size + 1
-          }
-          setPage={setPage}
-        />
-        
-         
+            <SinglePage
+              key={index}
+              classes={classes}
+              reportTitle='PaymentSummary Report'
+              filteredData={filteredData}
+              tableColumns={tableColumns}
+              dispatchTableColumns={dispatchTableColumns}
+              data={paymentSummary}
+              totalColumn={initialTableColumnsState?.length}
+              inSiglePageMode={inSiglePageMode}
+              serialNumber={
+                pagination
+                  ? page * size - size + index * paymentSummary.data.length + 1
+                  : paymentSummary.page * paymentSummary.size -
+                    paymentSummary.size +
+                    1
+              }
+              setPage={setPage}
+            />
           ))}
-          
         </tbody>
       </table>
     </div>

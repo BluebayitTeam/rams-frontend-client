@@ -12,7 +12,10 @@ import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-import { useGetDrebtorAllReportsQuery, useGetDrebtorReportsQuery } from '../DrebtorReportsApi';
+import {
+  useGetDrebtorAllReportsQuery,
+  useGetDrebtorReportsQuery,
+} from '../DrebtorReportsApi';
 import DebtorFilterMenu from './DebtorFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,22 +26,38 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
 
-	{ id: 2, label: 'Agent Name	', name: 'name', show: true },
+  { id: 2, label: 'Agent Name	', name: 'name', show: true },
 
   {
     id: 3,
     label: 'Group',
-    getterMethod: data => `${data.head_group?.name || ''}`,
-    show: true
+    getterMethod: (data) => `${data.head_group?.name || ''}`,
+    show: true,
   },
 
-	{ id: 4, label: 'Debit', name: 'total_debit', show: true,style: { justifyContent: 'flex-end', marginRight: '5px' }, },
-	{ id: 5, label: 'Credit', name: 'total_credit', show: true ,style: { justifyContent: 'flex-end', marginRight: '5px' },},
-	{ id: 6, label: 'Balance', name: 'balance', show: true,style: { justifyContent: 'flex-end', marginRight: '5px' }, },
- 
-
+  {
+    id: 4,
+    label: 'Debit',
+    name: 'total_debit',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+  },
+  {
+    id: 5,
+    label: 'Credit',
+    name: 'total_credit',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+  },
+  {
+    id: 6,
+    label: 'Balance',
+    name: 'balance',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+  },
 ];
 
 function DrebtorReportsTable(props) {
@@ -50,7 +69,7 @@ function DrebtorReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { watch ,getValues} = methods;
+  const { watch, getValues } = methods;
 
   const [modifiedDrebtorData, setModifiedDrebtorData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -68,45 +87,40 @@ function DrebtorReportsTable(props) {
   const [totalCD, setTotalCD] = useState(0);
   const [totalDB, setTotalDB] = useState(0);
 
-
-
   const componentRef = useRef(null);
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } = useGetDrebtorReportsQuery(
-    {
-    
-      ledger: filterData.ledger || '',
-      group: filterData.group || '',
-     
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
+  const { data: paginatedData, refetch: refetchAgentReports } =
+    useGetDrebtorReportsQuery(
+      {
+        ledger: filterData.ledger || '',
+        group: filterData.group || '',
 
-  const { data: allData, refetch: refetchAllDrebtorReports } = useGetDrebtorAllReportsQuery(
-    {
-      
-      ledger: filterData.ledger || '',
-      group: filterData.group || '',
-    
-    },
-    { skip: !inShowAllMode }
-  );
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
+  const { data: allData, refetch: refetchAllDrebtorReports } =
+    useGetDrebtorAllReportsQuery(
+      {
+        ledger: filterData.ledger || '',
+        group: filterData.group || '',
+      },
+      { skip: !inShowAllMode }
+    );
 
- 
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedDrebtorData(allData.debtors || []);
-      setTotalAmount(allData.total_amount );
-      setTotalCD(allData.total_credit_amount );
-      setTotalDB(allData.total_debit_amount );
+      setTotalAmount(allData.total_amount);
+      setTotalCD(allData.total_credit_amount);
+      setTotalDB(allData.total_debit_amount);
       setInSiglePageMode(false);
       setInShowAllMode(true);
-      setPagination(false)
+      setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
         allData.debtors,
         size,
@@ -120,19 +134,17 @@ function DrebtorReportsTable(props) {
     } else if (!inShowAllMode && paginatedData) {
       setModifiedDrebtorData(paginatedData.debtors || []);
       setTotalAmount(paginatedData?.total_amount);
-      setTotalCD(paginatedData.total_credit_amount );
-      setTotalDB(paginatedData.total_debit_amount );
+      setTotalCD(paginatedData.total_credit_amount);
+      setTotalDB(paginatedData.total_debit_amount);
 
-      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setInSiglePageMode(true);
       setInShowAllMode(false);
-
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
-const handleExelDownload = () => {
+  const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
   };
 
@@ -156,12 +168,10 @@ const handleExelDownload = () => {
     }
   }, []);
 
-
   const filteredData = {
-		Ledger: getValues()?.ledgerName || null,
+    Ledger: getValues()?.ledgerName || null,
     Group: getValues()?.groupName || null,
-	  };
-
+  };
 
   return (
     <div className={classes.headContainer}>
@@ -202,41 +212,37 @@ const handleExelDownload = () => {
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedDrebtorData.map((drebtor, index) => (
-         <SinglePage
-         key={index}
-         classes={classes}
-         reportTitle="Drebtor Report"
-         filteredData={filteredData}
-         tableColumns={tableColumns}
-         dispatchTableColumns={dispatchTableColumns}
-         data={{
-           ...drebtor,
-           data: [
-             ...drebtor.data,
-             {
-               balance: totalAmount?.toFixed(2)|| '0.00',
-               total_debit: totalDB?.toFixed(2) || '0.00',
-               total_credit: totalCD?.toFixed(2) || '0.00',
-               getterMethod: () => 'Total Amount',
-               hideSerialNo: true,
-               rowStyle: { fontWeight: 600 }, // Custom styling to highlight totals
-             },
-           ],
-         }}
-         totalColumn={initialTableColumnsState?.length}
-         inSiglePageMode={inSiglePageMode}
-         serialNumber={
-           pagination
-             ? page * size - size + index * drebtor.data.length + 1
-             : drebtor.page * drebtor.size - drebtor.size + 1
-         }
-         setPage={setPage}
-
-       />
-        
-         
+            <SinglePage
+              key={index}
+              classes={classes}
+              reportTitle='Drebtor Report'
+              filteredData={filteredData}
+              tableColumns={tableColumns}
+              dispatchTableColumns={dispatchTableColumns}
+              data={{
+                ...drebtor,
+                data: [
+                  ...drebtor.data,
+                  {
+                    balance: totalAmount?.toFixed(2) || '0.00',
+                    total_debit: totalDB?.toFixed(2) || '0.00',
+                    total_credit: totalCD?.toFixed(2) || '0.00',
+                    getterMethod: () => 'Total Amount',
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 }, // Custom styling to highlight totals
+                  },
+                ],
+              }}
+              totalColumn={initialTableColumnsState?.length}
+              inSiglePageMode={inSiglePageMode}
+              serialNumber={
+                pagination
+                  ? page * size - size + index * drebtor.data.length + 1
+                  : drebtor.page * drebtor.size - drebtor.size + 1
+              }
+              setPage={setPage}
+            />
           ))}
-          
         </tbody>
       </table>
     </div>

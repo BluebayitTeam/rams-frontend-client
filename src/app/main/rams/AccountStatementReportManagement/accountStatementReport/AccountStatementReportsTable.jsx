@@ -15,7 +15,7 @@ import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetAccountStatementAllReportsQuery,
-  useGetAccountStatementReportsQuery
+  useGetAccountStatementReportsQuery,
 } from '../AccountStatementReportsApi';
 import AccountStatementFilterMenu from './AccountStatementFilterMenu';
 
@@ -26,35 +26,35 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-	{ id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-	{ id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
-	{ id: 3, label: 'Invoice No', name: 'reference_no', show: true },
-	{ id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
-	{ id: 5, label: 'Details', name: 'details', show: true },
-	{
-		id: 7,
-		label: 'Receipt',
-		name: 'debit_amount',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	},
-	{
-		id: 6,
-		label: 'Payment',
-		name: 'credit_amount',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	},
-	{
-		id: 8,
-		label: 'Balance',
-		name: 'balance',
-		show: true,
-		style: { justifyContent: 'flex-end', marginRight: '5px' },
-		headStyle: { textAlign: 'right' }
-	}
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
+  { id: 3, label: 'Invoice No', name: 'reference_no', show: true },
+  { id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
+  { id: 5, label: 'Details', name: 'details', show: true },
+  {
+    id: 7,
+    label: 'Receipt',
+    name: 'debit_amount',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
+  {
+    id: 6,
+    label: 'Payment',
+    name: 'credit_amount',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
+  {
+    id: 8,
+    label: 'Balance',
+    name: 'balance',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
 ];
 
 function AccountStatementReportsTable(props) {
@@ -65,9 +65,15 @@ function AccountStatementReportsTable(props) {
     resolver: zodResolver(schema),
   });
 
-  const {  watch ,getValues } = methods;
+  const { watch, getValues } = methods;
 
-  const [modifiedAccountStatementData, setModifiedAccountStatementData,setSortBy,setSortBySubKey,dragAndDropRow] = useReportData();
+  const [
+    modifiedAccountStatementData,
+    setModifiedAccountStatementData,
+    setSortBy,
+    setSortBySubKey,
+    dragAndDropRow,
+  ] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -81,24 +87,22 @@ function AccountStatementReportsTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
-	const [totalBAlance, setTotalBAlance] = useState(0);
+  const [totalBAlance, setTotalBAlance] = useState(0);
 
-  
-
-  const { data: paginatedData,  } = useGetAccountStatementReportsQuery(
+  const { data: paginatedData } = useGetAccountStatementReportsQuery(
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
       ledger: watch('ledger') || '',
       sub_ledger: watch('sub_ledger') || '',
       account_type: watch('account_type') || '',
-		  page,
-		  size,
+      page,
+      size,
     },
     { skip: inShowAllMode }
   );
-  
-  const { data: allData, } = useGetAccountStatementAllReportsQuery(
+
+  const { data: allData } = useGetAccountStatementAllReportsQuery(
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
@@ -109,34 +113,30 @@ function AccountStatementReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedAccountStatementData(allData?.account_logs || []);
       setInSiglePageMode(false);
-			setInShowAllMode(true);
-      setPagination(false)
+      setInShowAllMode(true);
+      setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
         allData?.account_logs,
         size,
         page
       );
       setPage(page || 1);
-			setSize(size || 25);
+      setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-
       setModifiedAccountStatementData(paginatedData?.account_logs || []);
-      setPage(paginatedData?.page || 1);
-			setSize(paginatedData?.size || 25);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalBAlance(paginatedData.total_amount || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
-			setInShowAllMode(false);
-      
+      setInShowAllMode(false);
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
 
@@ -159,19 +159,21 @@ function AccountStatementReportsTable(props) {
 
   const handleGetAllAccountStatements = useCallback(async () => {
     try {
-      
     } catch (error) {
       console.error('Error fetching all account_logs:', error);
     }
   }, []);
 
-
   const filteredData = {
     Account: getValues()?.account_typeName || null,
-		Ledger: getValues()?.ledgerName || null,
-		Date_To: getValues()?.date_before ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY') : null,
-		Date_From: getValues()?.date_after ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY') : null, 
-		Sub_Ledger: getValues()?.sub_ledgerName || null
+    Ledger: getValues()?.ledgerName || null,
+    Date_To: getValues()?.date_before
+      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      : null,
+    Date_From: getValues()?.date_after
+      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+      : null,
+    Sub_Ledger: getValues()?.sub_ledgerName || null,
   };
 
   return (
@@ -206,7 +208,10 @@ function AccountStatementReportsTable(props) {
         filename='AccountStatementReport'
       />
 
-      <table id='table-to-xls' className='w-full' style={{ minHeight: '270px' }}>
+      <table
+        id='table-to-xls'
+        className='w-full'
+        style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedAccountStatementData.map((accountStatement, index) => (
             <SinglePage
@@ -221,21 +226,22 @@ function AccountStatementReportsTable(props) {
                 data: [
                   ...accountStatement?.data,
                   {
-                    // debit_amount: totalDbAmount?.toFixed(2)|| '0.00', 
-                    balance:totalBAlance, 
+                    // debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
+                    balance: totalBAlance,
                     credit_amount: 'Total Balance',
 
                     hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 }
+                    rowStyle: { fontWeight: 600 },
                   },
                 ],
               }}
               totalColumn={initialTableColumnsState?.length}
-
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : accountStatement.page * accountStatement.size - accountStatement.size + 1
+                  : accountStatement.page * accountStatement.size -
+                    accountStatement.size +
+                    1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}

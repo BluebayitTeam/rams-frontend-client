@@ -7,61 +7,68 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import {
-	useCreateDepartmentMutation,
-	useDeleteDepartmentMutation,
-	useUpdateDepartmentMutation
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateDepartmentMutation,
+  useDeleteDepartmentMutation,
+  useUpdateDepartmentMutation,
 } from '../DepartmentsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import _ from 'lodash';
 
 /**
  * The department header.
  */
 function DepartmentHeader() {
-	const routeParams = useParams();
-	const { departmentId } = routeParams;
-	const [createDepartment] = useCreateDepartmentMutation();
-	const [saveDepartment] = useUpdateDepartmentMutation();
-	const [removeDepartment] = useDeleteDepartmentMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteDepartment');
-	const handleUpdate = localStorage.getItem('updateDepartment');
+  const routeParams = useParams();
+  const { departmentId } = routeParams;
+  const [createDepartment] = useCreateDepartmentMutation();
+  const [saveDepartment] = useUpdateDepartmentMutation();
+  const [removeDepartment] = useDeleteDepartmentMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteDepartment');
+  const handleUpdate = localStorage.getItem('updateDepartment');
 
-	function handleUpdateDepartment() {
-		saveDepartment(getValues()).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/department/departments`);
-		});
-	}
+  function handleUpdateDepartment() {
+    saveDepartment(getValues()).then((data) => {
+      UpdatedSuccessfully();
+      navigate(`/apps/department/departments`);
+    });
+  }
 
-	function handleCreateDepartment() {
-		createDepartment(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateDepartment() {
+    createDepartment(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/department/departments`);
-			});
-	}
+        navigate(`/apps/department/departments`);
+      });
+  }
 
-	function handleRemoveDepartment(dispatch) {
-		removeDepartment(departmentId);
-		DeletedSuccessfully();
-		navigate('/apps/department/departments');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveDepartment(dispatch) {
+    removeDepartment(departmentId);
+    DeletedSuccessfully();
+    navigate('/apps/department/departments');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/department/departments`);
-	}
+  function handleCancel() {
+    navigate(`/apps/department/departments`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -110,7 +117,7 @@ function DepartmentHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateDepartment}>
             Save
           </Button>
