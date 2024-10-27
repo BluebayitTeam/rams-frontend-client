@@ -33,10 +33,10 @@ function QualificationForm(props) {
   const { errors } = formState;
   const routeParams = useParams();
   const { qualificationId } = routeParams;
-  const pcFile = watch('pc_image') || '';
-  const dlFile = watch('dl_image') || '';
-  const doc1File = watch('doc1_image') || '';
-  const doc2File = watch('doc2_image') || '';
+  const pcFile = watch('image_doc_one') || '';
+  const dlFile = watch('image_doc_two') || '';
+  const doc1File = watch('image_doc_three') || '';
+  const doc2File = watch('image_doc_four') || '';
 
   const [previewPCFile, setPreviewPCFile] = useState('');
   const [previewDLFile, setPreviewDLFile] = useState('');
@@ -65,7 +65,7 @@ function QualificationForm(props) {
     setFileExtDoc1Name('');
     setPreviewDoc1Image('');
     // setpreviewDoc2Image('');
-  }, [getValues('police_clearance_no')]);
+  }, [getValues('employee')]);
 
   // removed image
   const handleRemovePCFile = () => {
@@ -73,7 +73,7 @@ function QualificationForm(props) {
 
     setFileExtPCName(null);
 
-    setValue('pc_image', '');
+    setValue('image_doc_one', '');
 
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -84,7 +84,7 @@ function QualificationForm(props) {
   const handleRemoveDLFile = () => {
     setPreviewDLFile(null);
     setFileExtDLName(null);
-    setValue('dl_image', '');
+    setValue('image_doc_two', '');
 
     if (fileInputdLRef.current) {
       fileInputdLRef.current.value = '';
@@ -95,7 +95,7 @@ function QualificationForm(props) {
   const handleRemoveDOC1File = () => {
     setFileExtDoc1Name(null);
     setPreviewDoc1Image(null);
-    setValue('doc1_image', '');
+    setValue('image_doc_three', '');
 
     if (fileInputdoc1Ref.current) {
       fileInputdoc1Ref.current.value = '';
@@ -106,7 +106,7 @@ function QualificationForm(props) {
   const handleRemoveDOC2File = () => {
     setFileExtDoc2Name(null);
     setPreviewDoc2File(null);
-    setValue('doc2_image', '');
+    setValue('image_doc_four', '');
 
     if (fileInputdoc2Ref.current) {
       fileInputdoc2Ref.current.value = '';
@@ -135,14 +135,14 @@ function QualificationForm(props) {
 
       <div className='flex justify-start -mx-16 flex-col md:flex-row'>
         <Controller
-          name='pc_image'
+          name='image_doc_one'
           control={control}
           render={({ field: { onChange, value } }) => (
             <div className='flex w-full flex-row items-center justify-center ml-16'>
               <div className='flex-col'>
-                <Typography className='text-center'>PC File</Typography>
+                <Typography className='text-center'>File 1</Typography>
                 <label
-                  htmlFor='pc_image-button-file'
+                  htmlFor='image_doc_one-button-file'
                   className={clsx(
                     classes.productImageUpload,
                     'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
@@ -150,7 +150,7 @@ function QualificationForm(props) {
                   <input
                     accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                     className='hidden'
-                    id='pc_image-button-file'
+                    id='image_doc_one-button-file'
                     type='file'
                     onChange={async (e) => {
                       const reader = new FileReader();
@@ -378,14 +378,14 @@ function QualificationForm(props) {
           )}
         />
         <Controller
-          name='dl_image'
+          name='image_doc_two'
           control={control}
           render={({ field: { onChange, value } }) => (
             <div className='flex w-full flex-row items-center justify-center ml-16'>
               <div className='flex-col'>
-                <Typography className='text-center'>DL File</Typography>
+                <Typography className='text-center'>File 2</Typography>
                 <label
-                  htmlFor='dl_image-button-file'
+                  htmlFor='image_doc_two-button-file'
                   className={clsx(
                     classes.productImageUpload,
                     'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
@@ -393,7 +393,7 @@ function QualificationForm(props) {
                   <input
                     accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                     className='hidden'
-                    id='dl_image-button-file'
+                    id='image_doc_two-button-file'
                     type='file'
                     onChange={async (e) => {
                       const reader = new FileReader();
@@ -624,14 +624,14 @@ function QualificationForm(props) {
 
       <div className='flex justify-start -mx-16 flex-col md:flex-row'>
         <Controller
-          name='doc1_image'
+          name='image_doc_three'
           control={control}
           render={({ field: { onChange, value } }) => (
             <div className='flex w-full flex-row items-center justify-center ml-16'>
               <div className='flex-col'>
-                <Typography className='text-center'>Document 1</Typography>
+                <Typography className='text-center'>File 3</Typography>
                 <label
-                  htmlFor='doc1_image-button-file'
+                  htmlFor='image_doc_three-button-file'
                   className={clsx(
                     classes.productImageUpload,
                     'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
@@ -639,7 +639,7 @@ function QualificationForm(props) {
                   <input
                     accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                     className='hidden'
-                    id='doc1_image-button-file'
+                    id='image_doc_three-button-file'
                     type='file'
                     onChange={async (e) => {
                       const reader = new FileReader();
@@ -872,14 +872,14 @@ function QualificationForm(props) {
         />
 
         <Controller
-          name='doc2_image'
+          name='image_doc_four'
           control={control}
           render={({ field: { onChange, value } }) => (
             <div className='flex w-full flex-row items-center justify-center ml-16'>
               <div className='flex-col'>
-                <Typography className='text-center'>Document 2</Typography>
+                <Typography className='text-center'>File 4</Typography>
                 <label
-                  htmlFor='doc2_image-button-file'
+                  htmlFor='image_doc_four-button-file'
                   className={clsx(
                     classes.productImageUpload,
                     'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
@@ -887,7 +887,7 @@ function QualificationForm(props) {
                   <input
                     accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                     className='hidden'
-                    id='doc2_image-button-file'
+                    id='image_doc_four-button-file'
                     type='file'
                     onChange={async (e) => {
                       const reader = new FileReader();
