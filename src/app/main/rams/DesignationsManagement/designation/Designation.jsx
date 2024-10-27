@@ -18,84 +18,76 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a designation name')
-		.min(5, 'The designation name must be at least 5 characters')
+  name: z.string().nonempty('You must enter an agent name'),
 });
 
 function Designation() {
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { designationId } = routeParams;
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { designationId } = routeParams;
 
-	const {
-		data: designation,
-		isLoading,
-		isError
-	} = useGetDesignationQuery(designationId, {
-		skip: !designationId || designationId === 'new'
-	});
-	console.log('designationId', designation, designationId);
+  const {
+    data: designation,
+    isLoading,
+    isError,
+  } = useGetDesignationQuery(designationId, {
+    skip: !designationId || designationId === 'new',
+  });
+  console.log('designationId', designation, designationId);
 
-	const [tabValue, setTabValue] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: {},
-		resolver: zodResolver(schema)
-	});
-	const { reset, watch } = methods;
-	const form = watch();
-	useEffect(() => {
-		if (designationId === 'new') {
-			reset(DesignationModel({}));
-		}
-	}, [designationId, reset]);
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (designationId === 'new') {
+      reset(DesignationModel({}));
+    }
+  }, [designationId, reset]);
 
-	useEffect(() => {
-		if (designation) {
-			reset({ ...designation });
-		}
-	}, [designation, reset, designation?.id]);
+  useEffect(() => {
+    if (designation) {
+      reset({ ...designation });
+    }
+  }, [designation, reset, designation?.id]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	/**
-	 * Show Message if the requested designations is not exists
-	 */
-	if (isError && designationId !== 'new') {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-col flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There is no such designation!
-				</Typography>
-				<Button
-					className="mt-24"
-					component={Link}
-					variant="outlined"
-					to="/apps/designation/designations"
-					color="inherit"
-				>
-					Go to Designations Page
-				</Button>
-			</motion.div>
-		);
-	}
+  /**
+   * Show Message if the requested designations is not exists
+   */
+  if (isError && designationId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such designation!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/designation/designations'
+          color='inherit'>
+          Go to Designations Page
+        </Button>
+      </motion.div>
+    );
+  }
 
-	return (
+  return (
     <FormProvider {...methods}>
       {hasPermission('DESIGNATION_DETAILS') && (
         <FusePageCarded

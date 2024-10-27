@@ -8,61 +8,69 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import {
-	useCreateDesignationMutation,
-	useDeleteDesignationMutation,
-	useUpdateDesignationMutation
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateDesignationMutation,
+  useDeleteDesignationMutation,
+  useUpdateDesignationMutation,
 } from '../DesignationsApi';
+import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The designation header.
  */
+
 function DesignationHeader() {
-	const routeParams = useParams();
-	const { designationId } = routeParams;
-	const [createDesignation] = useCreateDesignationMutation();
-	const [saveDesignation] = useUpdateDesignationMutation();
-	const [removeDesignation] = useDeleteDesignationMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteDesignation');
-	const handleUpdate = localStorage.getItem('updateDesignation');
+  const routeParams = useParams();
+  const { designationId } = routeParams;
+  const [createDesignation] = useCreateDesignationMutation();
+  const [saveDesignation] = useUpdateDesignationMutation();
+  const [removeDesignation] = useDeleteDesignationMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteDesignation');
+  const handleUpdate = localStorage.getItem('updateDesignation');
 
-	function handleUpdateDesignation() {
-		saveDesignation(getValues()).then((data) => {
-			UpdatedSuccessfully();
+  function handleUpdateDesignation() {
+    saveDesignation(getValues()).then((data) => {
+      UpdatedSuccessfully();
 
-			navigate(`/apps/designation/designations`);
-		});
-	}
+      navigate(`/apps/designation/designations`);
+    });
+  }
 
-	function handleCreateDesignation() {
-		createDesignation(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateDesignation() {
+    createDesignation(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/designation/designations`);
-			});
-	}
+        navigate(`/apps/designation/designations`);
+      });
+  }
 
-	function handleRemoveDesignation(dispatch) {
-		removeDesignation(designationId);
-		DeletedSuccessfully();
-		navigate('/apps/designation/designations');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveDesignation(dispatch) {
+    removeDesignation(designationId);
+    DeletedSuccessfully();
+    navigate('/apps/designation/designations');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/designation/designations`);
-	}
+  function handleCancel() {
+    navigate(`/apps/designation/designations`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -143,7 +151,7 @@ function DesignationHeader() {
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            disabled={_.isEmpty(dirtyFields) || !isValid}
             onClick={handleCreateDesignation}>
             Save
           </Button>
