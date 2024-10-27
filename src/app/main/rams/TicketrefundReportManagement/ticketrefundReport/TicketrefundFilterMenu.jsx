@@ -88,6 +88,15 @@ function TicketrefundFilterMenu({
           options={agents}
           icon='person'
           width='95px'
+        />{' '}
+        {/* Customer*/}
+        <ReportSelectFirstAgentCode
+          {...commonFieldProps}
+          name='agent'
+          options={agents}
+          label='Customer'
+          icon='person'
+          width='65px'
         />
       </div>
 
@@ -121,6 +130,12 @@ function TicketrefundFilterMenu({
           {...commonKewordProps}
           type='select'
           name='airline_agency'
+          icon='person'
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='agent'
           icon='person'
         />
       </div>
