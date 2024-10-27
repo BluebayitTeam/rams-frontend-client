@@ -1542,7 +1542,7 @@ const navigationConfig = [
         translate: 'Ticket Refund Report',
         display_order: 2,
         type: 'item',
-        url: '/apps/ticketrefunds/report',
+        url: '/apps/ticketrefundReport/ticketrefundReports',
         exact: true,
       },
       {
