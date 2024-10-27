@@ -1533,7 +1533,7 @@ const navigationConfig = [
         translate: 'Ticket Sales Report',
         display_order: 1,
         type: 'item',
-        url: '/apps/ticketsales/report',
+        url: '/apps/ticketSaleReport/ticketSaleReports',
         exact: true,
       },
       {
