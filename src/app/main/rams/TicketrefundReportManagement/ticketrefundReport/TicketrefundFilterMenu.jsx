@@ -10,6 +10,7 @@ import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
+import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -52,30 +53,27 @@ function TicketrefundFilterMenu({
         {/* Issue Date From */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='issue_date_after'
-          label='Issue Date From'
-          maxDate={values.issue_date_before || new Date()}
+          name='date_after'
+          label='Date From'
+          maxDate={values.date_before || new Date()}
         />
         {/* Issue Date To:*/}
         <ReportDatePicker
           {...commonFieldProps}
-          name='issue_date_before'
-          label='Issue Date To:'
-          minDate={values.issue_date_after}
+          name='date_before'
+          label='Date To'
+          minDate={values.date_after}
           maxDate={new Date()}
         />
         {/* Agency Name */}
 
-        <ReportSelectFirstAgentCode
+        {/* agent code */}
+        <ReportTextField
           {...commonFieldProps}
-          name='ticket_agency'
-          label='Agency Name'
-          options={agents}
-          icon='person_icon'
-          width='94px'
-          getOptionLabel={(option) =>
-            `${option.first_name}- ${option.agent_code}`
-          }
+          name='agent_code'
+          domEl={agentCodeEl}
+          icon='qr_code_scanner_sharp'
+          width='77px'
         />
       </div>
 
@@ -84,14 +82,14 @@ function TicketrefundFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='issue_date_after'
+          name='date_after'
           label='Date From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='issue_date_before'
+          name='date_before'
           label='Date To'
         />
 
