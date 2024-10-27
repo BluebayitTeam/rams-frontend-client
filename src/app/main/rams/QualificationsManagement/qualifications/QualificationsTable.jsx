@@ -202,17 +202,10 @@ function QualificationsTable(props) {
                       serialNumber++}
                   </TableCell>
                   <TableCell
-                    className='p-4 md:p-12 whitespace-nowrap border-t-1  border-gray-200'
+                    className='p-4 md:p-12 whitespace-nowrap border-t-1 border-gray-200'
                     component='th'
                     scope='row'>
-                    {_.isEmpty(employees) ||
-                      employees.find(
-                        (employee) => employee.id === n.employee.id
-                      ).first_name}{' '}
-                    {_.isEmpty(employees) ||
-                      employees.find(
-                        (employee) => employee.id === n.employee.id
-                      ).last_name}
+                    {n.employee.first_name} {n.employee.last_name}
                   </TableCell>
 
                   <TableCell
