@@ -71,7 +71,6 @@ function TicketrefundFilterMenu({
         <ReportTextField
           {...commonFieldProps}
           name='ticket_no'
-          // domEl={agentCodeEl}
           label='Ticket No'
           icon=' confirmation_number'
           width='77px'
@@ -96,9 +95,9 @@ function TicketrefundFilterMenu({
 
         <Keyword
           {...commonKewordProps}
-          type='select'
-          name='ticket_agency'
-          icon='person'
+          type='text'
+          name='ticket_no'
+          icon='confirmation_number'
         />
       </div>
     </div>
