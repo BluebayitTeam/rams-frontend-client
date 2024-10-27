@@ -11,54 +11,58 @@ import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
-	...getReportFilterMakeStyles(theme)
+  ...getReportFilterMakeStyles(theme),
 }));
 
-function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handleGetAllForeignLedgers }) {
-	const classes = useStyles();
-	const dispatch = useDispatch();
+function ForeignLedgerFilterMenu({
+  inShowAllMode,
+  handleGetForeignLedgers,
+  handleGetAllForeignLedgers,
+}) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
-	const methods = useFormContext();
-	const { getValues } = methods;
+  const methods = useFormContext();
+  const { getValues } = methods;
 
-	const theme = useTheme();
-	const { ledgers, subLedgers } = useSelector((state) => state.data);
-	const values = getValues();
-	const [_reRender, setReRender] = useState(0);
-	console.log('Passenger Values:', getValues());
+  const theme = useTheme();
+  const { ledgers, subLedgers } = useSelector((state) => state.data);
+  const values = getValues();
+  const [_reRender, setReRender] = useState(0);
+  console.log('Passenger Values:', getValues());
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const foreignLedgerCodeEl = useRef(null);
+  // element refs
+  const userNameEl = useRef(null);
+  const primaryPhoneEl = useRef(null);
+  const foreignLedgerCodeEl = useRef(null);
 
-	const commonFieldProps = {
-		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllForeignLedgers() : handleGetForeignLedgers())
-	};
-	const commonKewordProps = {
-		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllForeignLedgers() : handleGetForeignLedgers())
-	};
+  const commonFieldProps = {
+    setReRender,
+    onEnter: () =>
+      inShowAllMode ? handleGetAllForeignLedgers() : handleGetForeignLedgers(),
+  };
+  const commonKewordProps = {
+    setReRender,
+    onClick: () =>
+      inShowAllMode ? handleGetAllForeignLedgers() : handleGetForeignLedgers(),
+  };
 
-	useEffect(() => {
-		dispatch(getLedgers());
-		dispatch(getSubLedgers());
-	}, []);
+  useEffect(() => {
+    dispatch(getLedgers());
+    dispatch(getSubLedgers());
+  }, []);
 
-
-	console.log('sadhbjkasbdkj', getValues());
-	return (
+  console.log('sadhbjkasbdkj', getValues());
+  return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        
-          {/* ledger */}
-          <ReportSelect
+        {/* ledger */}
+        <ReportSelect
           {...commonFieldProps}
           name='ledger'
           options={ledgers}
           icon='import_contacts'
-          width='40px'
+          width='46px'
         />
 
         {/* date from */}
@@ -79,40 +83,34 @@ function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handl
         />
 
         {/* sub_ledger */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="sub_ledger"
-					options={subLedgers}
-					icon="import_contacts"
-					width="45px"
-				/>
+        <ReportSelect
+          {...commonFieldProps}
+          name='sub_ledger'
+          options={subLedgers}
+          icon='import_contacts'
+          width='75px'
+        />
 
         {/* lpassengerTypes */}
         <ReportSelect
-					{...commonFieldProps}
-					name="account_type"
-					options={bankAndCash}
-					icon="text_fields"
-					width="40px"
-				/>
-
-       
-
-       
-        
+          {...commonFieldProps}
+          name='account_type'
+          options={bankAndCash}
+          icon='text_fields'
+          width='92px'
+        />
       </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-
-      <Keyword
+        <Keyword
           {...commonKewordProps}
           type='select'
           name='ledger'
           icon='import_contacts'
         />
-        
-      <Keyword
+
+        <Keyword
           {...commonKewordProps}
           type='date'
           name='date_after'
@@ -126,21 +124,20 @@ function ForeignLedgerFilterMenu({ inShowAllMode, handleGetForeignLedgers, handl
           label='Date To'
         />
 
-        
         <Keyword
           {...commonKewordProps}
           type='select'
           name='sub_ledger'
           icon='import_contacts'
         />
-        
+
         <Keyword
-					{...commonKewordProps}
-					type="select"
-					name="account_type"
-					icon="text_fields"
-				/>
-       </div>
+          {...commonKewordProps}
+          type='select'
+          name='account_type'
+          icon='text_fields'
+        />
+      </div>
     </div>
   );
 }
