@@ -235,7 +235,7 @@ function PassengersTable(props) {
 
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
-      <FuseScrollbars className='grow overflow-x-auto '>
+      <div className='grow overflow-x-auto overflow-y-auto'>
         <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
           <PassengersTableHead
             selectedPassengerIds={selected}
@@ -367,7 +367,7 @@ function PassengersTable(props) {
             )}
           </TableBody>
         </Table>
-      </FuseScrollbars>
+      </div>
 
       <div id='pagiContainer' className='flex justify-between mb-6'>
         <Pagination

@@ -29,199 +29,197 @@ import { selectFilteredEmployees, useGetEmployeesQuery } from '../EmployeesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 function EmployeesTable(props) {
-	const { navigate, searchKey } = props;
-	const { reset, formState, watch, control, getValues, setValue } = useForm({
-		mode: 'onChange',
-		resolver: zodResolver()
-	});
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetEmployeesQuery({ ...pageAndSize, searchKey });
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(25);
-	const totalData = useSelector(selectFilteredEmployees(data));
-	const employees = useSelector(selectFilteredEmployees(data?.employees));
+  const { navigate, searchKey } = props;
+  const { reset, formState, watch, control, getValues, setValue } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(),
+  });
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const { data, isLoading, refetch } = useGetEmployeesQuery({
+    ...pageAndSize,
+    searchKey,
+  });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const totalData = useSelector(selectFilteredEmployees(data));
+  const employees = useSelector(selectFilteredEmployees(data?.employees));
 
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
+  useEffect(() => {
+    refetch({ searchKey });
+  }, [searchKey]);
 
-	let serialNumber = 1;
+  let serialNumber = 1;
 
-	const [rows, setRows] = useState([]);
-	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
-	useEffect(() => {
-		if (totalData?.employees) {
-			const modifiedRow = [
-				{
-					id: 'sl',
-					align: 'left',
-					disablePadding: false,
-					label: 'SL',
-					sort: true
-				}
-			];
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    // Fetch data with specific page and size when component mounts or when page and size change
+    refetch({ page, rowsPerPage });
+  }, [page, rowsPerPage]);
+  useEffect(() => {
+    if (totalData?.employees) {
+      const modifiedRow = [
+        {
+          id: 'sl',
+          align: 'left',
+          disablePadding: false,
+          label: 'SL',
+          sort: true,
+        },
+      ];
 
-			Object.entries(totalData?.employees[0] || {})
-				.filter(([key]) => key !== 'id' && key !== 'random_number')
-				.map(([key]) => {
-					modifiedRow.push({
-						id: key,
-						label: key
-							.split('_')
-							.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-							.join(' '),
-						align: 'left',
-						disablePadding: false,
-						sort: true,
-						style: { whiteSpace: 'nowrap' }
-					});
-				});
+      Object.entries(totalData?.employees[0] || {})
+        .filter(([key]) => key !== 'id' && key !== 'random_number')
+        .map(([key]) => {
+          modifiedRow.push({
+            id: key,
+            label: key
+              .split('_')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' '),
+            align: 'left',
+            disablePadding: false,
+            sort: true,
+            style: { whiteSpace: 'nowrap' },
+          });
+        });
 
-			modifiedRow.push({
-				id: 'action',
-				align: 'left',
-				disablePadding: false,
-				label: 'Action',
-				sort: true
-			});
+      modifiedRow.push({
+        id: 'action',
+        align: 'left',
+        disablePadding: false,
+        label: 'Action',
+        sort: true,
+      });
 
-			setRows(modifiedRow);
-		}
-	}, [totalData?.employees]);
+      setRows(modifiedRow);
+    }
+  }, [totalData?.employees]);
 
-	const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([]);
 
-	const [tableOrder, setTableOrder] = useState({
-		direction: 'asc',
-		id: ''
-	});
+  const [tableOrder, setTableOrder] = useState({
+    direction: 'asc',
+    id: '',
+  });
 
-	function handleRequestSort(event, property) {
-		const newOrder = { id: property, direction: 'desc' };
+  function handleRequestSort(event, property) {
+    const newOrder = { id: property, direction: 'desc' };
 
-		if (tableOrder.id === property && tableOrder.direction === 'desc') {
-			newOrder.direction = 'asc';
-		}
+    if (tableOrder.id === property && tableOrder.direction === 'desc') {
+      newOrder.direction = 'asc';
+    }
 
-		setTableOrder(newOrder);
-	}
+    setTableOrder(newOrder);
+  }
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(employees.map((n) => n.id));
-			return;
-		}
+  function handleSelectAllClick(event) {
+    if (event.target.checked) {
+      setSelected(employees.map((n) => n.id));
+      return;
+    }
 
-		setSelected([]);
-	}
+    setSelected([]);
+  }
 
-	function handleDeselect() {
-		setSelected([]);
-	}
+  function handleDeselect() {
+    setSelected([]);
+  }
 
-	function _handleClick(item) {
-		navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
-	}
+  function _handleClick(item) {
+    navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
+  }
 
-	function handleUpdateEmployee(item, event) {
-		localStorage.removeItem('deleteEmployee');
-		localStorage.setItem('updateEmployee', event);
-		navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
-	}
+  function handleUpdateEmployee(item, event) {
+    localStorage.removeItem('deleteEmployee');
+    localStorage.setItem('updateEmployee', event);
+    navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
+  }
 
-	function handleDeleteEmployee(item, event) {
-		localStorage.removeItem('updateEmployee');
-		localStorage.setItem('deleteEmployee', event);
-		navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
-	}
+  function handleDeleteEmployee(item, event) {
+    localStorage.removeItem('updateEmployee');
+    localStorage.setItem('deleteEmployee', event);
+    navigate(`/apps/employee/employees/${item.id}/${item.handle}`);
+  }
 
-	// console.log('testDelete', handleDeleteEmployee);
+  // console.log('testDelete', handleDeleteEmployee);
 
-	function _handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+  function _handleCheck(event, id) {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
 
-		setSelected(newSelected);
-	}
+    setSelected(newSelected);
+  }
 
-	// pagination
-	const handlePagination = (event, handlePage) => {
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
-	};
+  // pagination
+  const handlePagination = (event, handlePage) => {
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
+  };
 
-	function handleChangePage(event, value) {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
-	}
+  function handleChangePage(event, value) {
+    setPage(value);
+    setPageAndSize({ ...pageAndSize, page: value + 1 });
+  }
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(+event.target.value);
-		setPageAndSize({ ...pageAndSize, size: event.target.value });
-	}
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPageAndSize({ ...pageAndSize, size: event.target.value });
+  }
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
-	if (employees?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no employees!
-				</Typography>
-			</motion.div>
-		);
-	}
+  if (employees?.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There are no employees!
+        </Typography>
+      </motion.div>
+    );
+  }
 
-	return (
-		<div className="w-full flex flex-col min-h-full px-10 ">
-			<FuseScrollbars className="grow overflow-x-auto ">
-				<Table
-					stickyHeader
-					className="min-w-xl "
-					aria-labelledby="tableTitle"
-				>
-					<EmployeesTableHead
-						selectedEmployeeIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={employees?.length}
-						onMenuItemClick={handleDeselect}
-						rows={rows}
-					/>
+  return (
+    <div className='w-full flex flex-col min-h-full px-10 "'>
+      <div className='grow overflow-x-auto overflow-y-auto'>
+        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
+          <EmployeesTableHead
+            selectedEmployeeIds={selected}
+            tableOrder={tableOrder}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={employees?.length}
+            onMenuItemClick={handleDeselect}
+            rows={rows}
+          />
 
-					<TableBody>
-						{_.orderBy(employees, [tableOrder.id], [tableOrder.direction])
+          <TableBody className=''>
+            {_.orderBy(employees, [tableOrder.id], [tableOrder.direction])
 
-							.map((n) => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
+              .map((n) => {
+                const isSelected = selected.indexOf(n.id) !== -1;
+                return (
                   <TableRow
                     className='h-20 cursor-pointer border-t-1  border-gray-200'
                     hover
@@ -350,46 +348,43 @@ function EmployeesTable(props) {
                     </TableCell>
                   </TableRow>
                 );
-							})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
+              })}
+          </TableBody>
+        </Table>
+      </div>
 
-			<div
-				id="pagiContainer"
-				className="flex justify-between mb-6"
-			>
-				<Pagination
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
+      <div id='pagiContainer' className='flex justify-between mb-6'>
+        <Pagination
+          count={totalData?.total_pages}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
 
-				<TablePagination
-					className="shrink-0 mb-2"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_elements}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</div>
-		</div>
-	);
+        <TablePagination
+          className='shrink-0 mb-2'
+          component='div'
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalData?.total_elements}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(EmployeesTable);

@@ -1,18 +1,21 @@
-/**
-Basic Table Styles
- */
+/** Basic Table Styles */
 .table-responsive {
     display: block;
     width: 100%;
-    overflow-x: auto;
+    overflow-x: auto; /* Enables horizontal scrolling */
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
+.table-container {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: hidden; /* Hides vertical overflow */
+    max-height: 100vh; /* Limit the height of the table */
+}
+
 table.simple {
     width: 100%;
-    border: none;
-    border-spacing: 0;
+    border-collapse: collapse; /* Avoid space between borders */
     text-align: left;
 }
 
@@ -20,15 +23,7 @@ table.simple thead tr th {
     padding: 16px 8px;
     font-weight: 500;
     border-bottom: 5px solid rgba(0, 0, 0, 0.12);
-    white-space: nowrap;
-}
-
-table.simple thead tr th:first-child {
-    padding-left: 24px;
-}
-
-table.simple thead tr th:last-child {
-    padding-right: 24px;
+    white-space: nowrap; /* Prevents text wrapping */
 }
 
 table.simple tbody tr td {
@@ -36,16 +31,19 @@ table.simple tbody tr td {
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+/* Adjustments for first and last cells */
+table.simple thead tr th:first-child,
 table.simple tbody tr td:first-child {
     padding-left: 24px;
 }
 
+table.simple thead tr th:last-child,
 table.simple tbody tr td:last-child {
     padding-right: 24px;
 }
 
 table.simple tbody tr:last-child td {
-    border-bottom: none;
+    border-bottom: none; /* Remove border for last row */
 }
 
 table.simple.clickable tbody tr {
@@ -53,17 +51,17 @@ table.simple.clickable tbody tr {
 }
 
 table.simple.clickable tbody tr:hover {
-    background: rgba(0, 0, 0, 0.03);
+    background: rgba(0, 0, 0, 0.03); /* Hover effect */
 }
 
 table.simple.borderless {
     border: none;
 }
 
-table.simple.borderless tbody tr td{
+table.simple.borderless tbody tr td {
     border: none;
 }
 
-table.simple.borderless thead tr th{
+table.simple.borderless thead tr th {
     border: none;
 }

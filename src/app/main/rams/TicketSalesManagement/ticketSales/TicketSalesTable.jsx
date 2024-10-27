@@ -23,44 +23,47 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { BASE_URL } from 'src/app/constant/constants';
 import TicketSalesTableHead from './TicketSalesTableHead';
-import { selectFilteredTicketSales, useGetTicketSalesQuery } from '../TicketSalesApi';
+import {
+  selectFilteredTicketSales,
+  useGetTicketSalesQuery,
+} from '../TicketSalesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 function TicketSalesTable(props) {
-	const dispatch = useDispatch();
-	const { navigate, searchKey } = props;
-	const { reset, formState, watch, control, getValues, setValue } = useForm({
-		mode: 'onChange',
-		resolver: zodResolver()
-	});
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const dispatch = useDispatch();
+  const { navigate, searchKey } = props;
+  const { reset, formState, watch, control, getValues, setValue } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(),
+  });
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
-	const { data, isLoading, refetch } = useGetTicketSalesQuery({
-		...pageAndSize,
-		searchKey
-	});
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const totalData = useSelector(selectFilteredTicketSales(data));
-	const ticketSales = useSelector(
+  const { data, isLoading, refetch } = useGetTicketSalesQuery({
+    ...pageAndSize,
+    searchKey,
+  });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const totalData = useSelector(selectFilteredTicketSales(data));
+  const ticketSales = useSelector(
     selectFilteredTicketSales(data?.iata_ticket_temporaries)
   );
 
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
-	useEffect(() => {
-		refetch({ searchKey });
-	}, []);
+  useEffect(() => {
+    refetch({ searchKey });
+  }, [searchKey]);
+  useEffect(() => {
+    refetch({ searchKey });
+  }, []);
 
-	let serialNumber = 1;
+  let serialNumber = 1;
 
-	const [rows, setRows] = useState([]);
-	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
-	useEffect(() => {
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    // Fetch data with specific page and size when component mounts or when page and size change
+    refetch({ page, rowsPerPage });
+  }, [page, rowsPerPage]);
+  useEffect(() => {
     if (totalData?.iata_ticket_temporaries) {
       const modifiedRow = [
         {
@@ -100,134 +103,133 @@ function TicketSalesTable(props) {
     }
   }, [totalData?.iata_ticket_temporaries, refetch]);
 
-	const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState([]);
 
-	const [tableOrder, setTableOrder] = useState({
-		direction: 'asc',
-		id: ''
-	});
+  const [tableOrder, setTableOrder] = useState({
+    direction: 'asc',
+    id: '',
+  });
 
-	function handleRequestSort(event, property) {
-		const newOrder = { id: property, direction: 'desc' };
+  function handleRequestSort(event, property) {
+    const newOrder = { id: property, direction: 'desc' };
 
-		if (tableOrder.id === property && tableOrder.direction === 'desc') {
-			newOrder.direction = 'asc';
-		}
+    if (tableOrder.id === property && tableOrder.direction === 'desc') {
+      newOrder.direction = 'asc';
+    }
 
-		setTableOrder(newOrder);
-	}
+    setTableOrder(newOrder);
+  }
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(ticketSales.map((n) => n.id));
-			return;
-		}
+  function handleSelectAllClick(event) {
+    if (event.target.checked) {
+      setSelected(ticketSales.map((n) => n.id));
+      return;
+    }
 
-		setSelected([]);
-	}
+    setSelected([]);
+  }
 
-	function handleDeselect() {
-		setSelected([]);
-	}
+  function handleDeselect() {
+    setSelected([]);
+  }
 
-	function _handleClick(item) {
-		navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
-	}
+  function _handleClick(item) {
+    navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
+  }
 
-	function handleUpdateTicketSale(item, event) {
-		localStorage.removeItem('deleteTicketSale');
-		localStorage.setItem('updateTicketSale', event);
-		navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
-	}
+  function handleUpdateTicketSale(item, event) {
+    localStorage.removeItem('deleteTicketSale');
+    localStorage.setItem('updateTicketSale', event);
+    navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
+  }
 
-	function handleDeleteTicketSale(item, event) {
-		localStorage.removeItem('updateTicketSale');
-		localStorage.setItem('deleteTicketSale', event);
-		navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
-	}
+  function handleDeleteTicketSale(item, event) {
+    localStorage.removeItem('updateTicketSale');
+    localStorage.setItem('deleteTicketSale', event);
+    navigate(`/apps/ticketSale/ticketSales/${item.id}/${item.handle}`);
+  }
 
-	// console.log('testDelete', handleDeleteTicketSale);
+  // console.log('testDelete', handleDeleteTicketSale);
 
-	function _handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+  function _handleCheck(event, id) {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
 
-		setSelected(newSelected);
-	}
+    setSelected(newSelected);
+  }
 
-	// pagination
-	const handlePagination = (e, handlePage) => {
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
-	};
+  // pagination
+  const handlePagination = (e, handlePage) => {
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
+  };
 
-	function handleChangePage(event, value) {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
-	}
+  function handleChangePage(event, value) {
+    setPage(value);
+    setPageAndSize({ ...pageAndSize, page: value + 1 });
+  }
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(+event.target.value);
-		setPageAndSize({ ...pageAndSize, size: event.target.value });
-	}
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(+event.target.value);
+    setPageAndSize({ ...pageAndSize, size: event.target.value });
+  }
 
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
-	if (ticketSales?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no ticketSales!
-				</Typography>
-			</motion.div>
-		);
-	}
+  if (ticketSales?.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There are no ticketSales!
+        </Typography>
+      </motion.div>
+    );
+  }
 
-	return (
-		<div className="w-full flex flex-col min-h-full px-10 ">
-			<FuseScrollbars className="grow overflow-x-auto ">
-				<Table
-					stickyHeader
-					className="min-w-xl "
-					aria-labelledby="tableTitle"
-				>
-					<TicketSalesTableHead
-						selectedTicketSaleIds={selected}
-						tableOrder={tableOrder}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={ticketSales?.length}
-						onMenuItemClick={handleDeselect}
-						rows={rows}
-					/>
+  return (
+    <div className='w-full flex flex-col min-h-full px-10 '>
+      <div className='grow overflow-x-auto overflow-y-auto'>
+        <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
+          <TicketSalesTableHead
+            selectedTicketSaleIds={selected}
+            tableOrder={tableOrder}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={ticketSales?.length}
+            onMenuItemClick={handleDeselect}
+            rows={rows}
+          />
 
-					<TableBody>
-						{_.orderBy(ticketSales, [tableOrder.id], [tableOrder.direction]).map((n) => {
-							const isSelected = selected.indexOf(n.id) !== -1;
-							return (
+          <TableBody>
+            {_.orderBy(
+              ticketSales,
+              [tableOrder.id],
+              [tableOrder.direction]
+            ).map((n) => {
+              const isSelected = selected.indexOf(n.id) !== -1;
+              return (
                 <TableRow
                   className='h-20 cursor-pointer border-t-1  border-gray-200'
                   hover
@@ -356,46 +358,43 @@ function TicketSalesTable(props) {
                   </TableCell>
                 </TableRow>
               );
-						})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
+            })}
+          </TableBody>
+        </Table>
+      </div>
 
-			<div
-				id="pagiContainer"
-				className="flex justify-between mb-6"
-			>
-				<Pagination
-					count={totalData?.total_pages}
-					page={page + 1}
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
+      <div id='pagiContainer' className='flex justify-between mb-6'>
+        <Pagination
+          count={totalData?.total_pages}
+          page={page + 1}
+          defaultPage={1}
+          color='primary'
+          showFirstButton
+          showLastButton
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePagination}
+        />
 
-				<TablePagination
-					className="shrink-0 mb-2"
-					component="div"
-					rowsPerPageOptions={rowsPerPageOptions}
-					count={totalData?.total_elements}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
-			</div>
-		</div>
-	);
+        <TablePagination
+          className='shrink-0 mb-2'
+          component='div'
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalData?.total_elements}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default withRouter(TicketSalesTable);
