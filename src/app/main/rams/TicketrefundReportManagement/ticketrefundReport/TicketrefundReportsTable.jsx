@@ -101,9 +101,13 @@ function TicketrefundReportsTable(props) {
   const { data: paginatedData, refetch: refetchAgentReports } =
     useGetTicketrefundReportsQuery(
       {
-        issue_date_after: filterData.issue_date_after || '',
-        issue_date_before: filterData.issue_date_before || '',
-        ticket_agency: filterData.ticket_agency || '',
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        ticket_no: filterData.ticket_no || '',
+        invoice_no: filterData.invoice_no || '',
+        airline_agency: filterData.airline_agency || '',
+        agent: filterData.agent || '',
+
         page,
         size,
       },
@@ -113,9 +117,12 @@ function TicketrefundReportsTable(props) {
   const { data: allData, refetch: refetchAllTicketrefundReports } =
     useGetTicketrefundAllReportsQuery(
       {
-        issue_date_after: filterData.issue_date_after || '',
-        issue_date_before: filterData.issue_date_before || '',
-        ticket_agency: filterData.ticket_agency || '',
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        ticket_no: filterData.ticket_no || '',
+        invoice_no: filterData.invoice_no || '',
+        airline_agency: filterData.airline_agency || '',
+        agent: filterData.agent || '',
       },
       { skip: !inShowAllMode }
     );
@@ -176,13 +183,16 @@ function TicketrefundReportsTable(props) {
   }, []);
 
   const filteredData = {
-    Date_To: getValues()?.issue_date_before
-      ? moment(new Date(getValues()?.issue_date_before)).format('DD-MM-YYYY')
+    Date_To: getValues()?.date_before
+      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
-    Date_From: getValues()?.issue_date_after
-      ? moment(new Date(getValues()?.issue_date_after)).format('DD-MM-YYYY')
+    Date_From: getValues()?.date_after
+      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Agent: getValues()?.ticket_agencyName || null,
+    Ticket_No: getValues()?.ticket_no || null,
+    Invoice_No: getValues()?.invoice_no || null,
+    Airline_Agency: getValues()?.airline_agencyName || null,
+    Customer: getValues()?.agentName || null,
   };
 
   return (
