@@ -131,6 +131,8 @@ import MedicalReportAppConfig from '../rams/MedicalReportManagement/MedicalRepor
 import SubAgentAppConfig from '../rams/SubAgentsManagement/SubAgentAppConfig';
 import TicketSaleReportAppConfig from '../rams/TicketSaleReportManagement/TicketSaleReportAppConfig';
 import TicketrefundReportAppConfig from '../rams/TicketrefundReportManagement/TicketPurchasesReportAppConfig';
+import UnitAppConfig from '../rams/UnitsManagement/UnitAppConfig';
+import ComputeAppConfig from '../rams/ComputesManagement/ComputeAppConfig';
 
 /**
  * The list of application configurations.
@@ -231,6 +233,8 @@ const appsConfigs = [
   SubscriptionLoanAppConfig,
   MultipleVisaEntryAppConfig,
   DepartmentAppConfig,
+  UnitAppConfig,
+  ComputeAppConfig,
   TicketRefundAppConfig,
   TicketPurchaseAppConfig,
   TicketDeputeAppConfig,

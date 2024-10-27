@@ -2403,3 +2403,37 @@ export const UPDATE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_repor
 export const DELETE_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/delete/`;
 
 export const SEARCH_REPORT_COLUMN = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_report/search/`;
+
+//  Unit
+export const CREATE_UNIT = `${BASE_URL}/unit/api/v1/unit/create/`;
+
+export const GET_UNITS = `${BASE_URL}/unit/api/v1/unit/all/`;
+
+export const GET_UNITS_WITHOUT_PAGINATION = `${BASE_URL}/unit/api/v1/unit_wp/all/`;
+
+export const GET_UNIT_BY_ID = `${BASE_URL}/unit/api/v1/unit/`;
+
+export const UPDATE_UNIT = `${BASE_URL}/unit/api/v1/unit/update/`;
+
+export const DELETE_UNIT = `${BASE_URL}/unit/api/v1/unit/delete/`;
+
+export const DELETE_UNIT_MULTIPLE = `${BASE_URL}/unit/api/v1/unit/delete/`;
+
+export const SEARCH_UNIT = `${BASE_URL}/unit/api/v1/unit/search/`;
+
+//  Compute
+export const CREATE_COMPUTE = `${BASE_URL}/compute/api/v1/compute/create/`;
+
+export const GET_COMPUTES = `${BASE_URL}/compute/api/v1/compute/all/`;
+
+export const GET_COMPUTES_WITHOUT_PAGINATION = `${BASE_URL}/compute/api/v1/compute_wp/all/`;
+
+export const GET_COMPUTE_BY_ID = `${BASE_URL}/compute/api/v1/compute/`;
+
+export const UPDATE_COMPUTE = `${BASE_URL}/compute/api/v1/compute/update/`;
+
+export const DELETE_COMPUTE = `${BASE_URL}/compute/api/v1/compute/delete/`;
+
+export const DELETE_COMPUTE_MULTIPLE = `${BASE_URL}/compute/api/v1/compute/delete/`;
+
+export const SEARCH_COMPUTE = `${BASE_URL}/compute/api/v1/compute/search/`;

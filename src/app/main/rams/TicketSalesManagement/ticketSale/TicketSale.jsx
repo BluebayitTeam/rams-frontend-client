@@ -31,6 +31,7 @@ function TicketSale() {
     airline_pnr: 0,
     arrived_time: '',
     branch: '',
+    items: [],
     check_tax: '',
     currency: '',
     current_airway: '',
