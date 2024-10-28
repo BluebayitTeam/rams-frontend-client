@@ -18,6 +18,7 @@ import {
   useGetTicketsalessummaryReportsQuery,
 } from '../TicketsalessummaryReportsApi';
 import TicketsalessummaryFilterMenu from './TicketsalessummaryFilterMenu';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -68,126 +69,6 @@ const schema = z.object({});
 //   { id: 15, label: 'Purchase Amount', name: 'purchase_amount', show: true },
 // ];
 
-const initialTableColumnsState = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
-
-  {
-    id: 2,
-    label: 'Ticket Agency Name',
-    getterMethod: (data) =>
-      `${data.ticket_agency?.first_name || ''} ${data.ticket_agency?.last_name || ''}`,
-    show: true,
-  },
-
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
-  {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('ticket_agency', data.ticket_agency?.id);
-            history.push(
-              `/apps/ticketsalesummeryfilterdatas/report/:date_before/:date_after/:current_airway/:customer/:ticket_agency/:branch/:issue_person?`
-            );
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
-    show: true,
-  },
-];
-
-const initialPrintTableColumnsState2 = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Air Way  ',
-    getterMethod: (data) => `${data.current_airway?.name || ''}`,
-    show: true,
-  },
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
-
-  {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('current_airway', data.current_airway?.id);
-            history.push(`/apps/ticketsalesummeryfilterdatas/report`);
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
-    show: true,
-  },
-];
-const initialPrintTableColumnsState3 = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Agent Name',
-    getterMethod: (data) =>
-      `${data.customer?.first_name || ''} ${data.customer?.last_name || ''}`,
-    show: true,
-  },
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
-  {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('customer', data.customer?.id);
-            history.push(`/apps/ticketsalesummeryfilterdatas/report`);
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
-    show: true,
-  },
-];
-const initialPrintTableColumnsState4 = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Issue Person  ',
-    getterMethod: (data) =>
-      `${data.issue_person?.first_name || ''} ${data.issue_person?.last_name || ''}`,
-    show: true,
-  },
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
-  {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('issue_person', data.issue_person?.id);
-            history.push({
-              pathname: '/apps/ticketsalesummeryfilterdatas/report',
-            });
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
-    show: true,
-  },
-];
-
 function TicketsalessummaryReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -198,6 +79,132 @@ function TicketsalessummaryReportsTable(props) {
   const dispatch = useDispatch();
 
   const { watch, getValues } = methods;
+  const navigate = useNavigate();
+
+  const initialTableColumnsState = [
+    { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
+
+    {
+      id: 2,
+      label: 'Ticket Agency Name',
+      getterMethod: (data) =>
+        `${data.ticket_agency?.first_name || ''} ${data.ticket_agency?.last_name || ''}`,
+      show: true,
+    },
+
+    { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
+    {
+      id: 4,
+      label: 'Action',
+      getterMethod: (data) => {
+        return (
+          <VisibilityIcon
+            onClick={() => {
+              sessionStorage.setItem('ticket_agency', data.ticket_agency?.id);
+              navigate(
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport/:date_before/:date_after/:current_airway/:customer/:ticket_agency/:branch/:issue_person?`
+              );
+            }}
+            className='h-22 cursor-pointer'
+            style={{ color: 'orange' }}
+          />
+        );
+      },
+      show: true,
+    },
+  ];
+
+  const initialPrintTableColumnsState2 = [
+    { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
+    {
+      id: 2,
+      label: 'Air Way  ',
+      getterMethod: (data) => `${data.current_airway?.name || ''}`,
+      show: true,
+    },
+    { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
+
+    {
+      id: 4,
+      label: 'Action',
+      getterMethod: (data) => {
+        return (
+          <VisibilityIcon
+            onClick={() => {
+              sessionStorage.setItem('current_airway', data.current_airway?.id);
+              navigate(
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport`
+              );
+            }}
+            className='h-22 cursor-pointer'
+            style={{ color: 'orange' }}
+          />
+        );
+      },
+      show: true,
+    },
+  ];
+  const initialPrintTableColumnsState3 = [
+    { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
+    {
+      id: 2,
+      label: 'Agent Name',
+      getterMethod: (data) =>
+        `${data.customer?.first_name || ''} ${data.customer?.last_name || ''}`,
+      show: true,
+    },
+    { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
+    {
+      id: 4,
+      label: 'Action',
+      getterMethod: (data) => {
+        return (
+          <VisibilityIcon
+            onClick={() => {
+              sessionStorage.setItem('customer', data.customer?.id);
+              navigate(
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport`
+              );
+            }}
+            className='h-22 cursor-pointer'
+            style={{ color: 'orange' }}
+          />
+        );
+      },
+      show: true,
+    },
+  ];
+  const initialPrintTableColumnsState4 = [
+    { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
+    {
+      id: 2,
+      label: 'Issue Person  ',
+      getterMethod: (data) =>
+        `${data.issue_person?.first_name || ''} ${data.issue_person?.last_name || ''}`,
+      show: true,
+    },
+    { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
+    {
+      id: 4,
+      label: 'Action',
+      getterMethod: (data) => {
+        return (
+          <VisibilityIcon
+            onClick={() => {
+              sessionStorage.setItem('issue_person', data.issue_person?.id);
+              navigate({
+                pathname:
+                  '/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport',
+              });
+            }}
+            className='h-22 cursor-pointer'
+            style={{ color: 'orange' }}
+          />
+        );
+      },
+      show: true,
+    },
+  ];
 
   const [modifiedTicketsalessummaryData, setModifiedTicketsalessummaryData] =
     useReportData();
