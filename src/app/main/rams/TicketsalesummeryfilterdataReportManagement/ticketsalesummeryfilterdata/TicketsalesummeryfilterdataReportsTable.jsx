@@ -26,164 +26,85 @@ const useStyles = makeStyles((theme) => ({
 // Define the Zod schema
 const schema = z.object({});
 
-// const initialTableColumnsState = [
-//   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-//   { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
-//   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-//   {
-//     id: 4,
-//     label: 'Passenger Name',
-//     name: 'passenger',
-//     subName: 'passenger_name',
-//     show: true,
-//   },
-//   {
-//     id: 5,
-//     label: 'Agent Name',
-//     name: 'passenger',
-//     subName: 'agent.first_name',
-//     show: true,
-//   },
-//   {
-//     id: 6,
-//     label: 'Ticket Agency Name',
-//     name: 'ticket_agency',
-//     subName: 'first_name',
-//     show: true,
-//   },
-//   {
-//     id: 7,
-//     label: 'Flight Date',
-//     name: 'flight_date',
-//     show: true,
-//     type: 'date',
-//   },
-//   { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
-//   { id: 9, label: 'Country', name: 'sector_name', show: true },
-//   { id: 10, label: 'Sector Name', name: 'sector_name', show: true },
-//   { id: 11, label: ' AirWay', name: 'carrier_air_way', show: true },
-//   { id: 12, label: 'Flight No', name: 'flight_no', show: true, type: 'date' },
-//   { id: 13, label: 'Flight Time', name: 'flight_time', show: true },
-//   { id: 14, label: 'Comment', name: 'notes', show: true },
-//   { id: 15, label: 'Purchase Amount', name: 'purchase_amount', show: true },
-// ];
-
 const initialTableColumnsState = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
-
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
   {
-    id: 2,
-    label: 'Ticket Agency Name',
+    id: 4,
+    label: 'Pax Name',
+    name: 'passenger',
+    subName: 'passenger_name',
+    show: true,
+  },
+  {
+    id: 5,
+    label: 'Issue Person',
     getterMethod: (data) =>
-      `${data.ticket_agency?.first_name || ''} ${data.ticket_agency?.last_name || ''}`,
-    show: true,
-  },
+      `${data.issue_person?.first_name || ''}, ${data.issue_person?.last_name || ''}`,
 
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
-  {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('ticket_agency', data.ticket_agency?.id);
-            history.push(
-              `/apps/ticketsalesummeryfilterdatas/report/:date_before/:date_after/:current_airway/:customer/:ticket_agency/:branch/:issue_person?`
-            );
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
     show: true,
   },
-];
-
-const initialPrintTableColumnsState2 = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
   {
-    id: 2,
-    label: 'Air Way  ',
-    getterMethod: (data) => `${data.current_airway?.name || ''}`,
-    show: true,
-  },
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
-
-  {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('current_airway', data.current_airway?.id);
-            history.push(`/apps/ticketsalesummeryfilterdatas/report`);
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
-    show: true,
-  },
-];
-const initialPrintTableColumnsState3 = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Agent Name',
+    id: 6,
+    label: 'Ticket Agency',
     getterMethod: (data) =>
-      `${data.customer?.first_name || ''} ${data.customer?.last_name || ''}`,
+      `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
     show: true,
   },
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
   {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('customer', data.customer?.id);
-            history.push(`/apps/ticketsalesummeryfilterdatas/report`);
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
+    id: 7,
+    label: 'Flight Date',
+    name: 'flight_date',
+    show: true,
+    type: 'date',
+  },
+  { id: 8, label: 'GDS', name: 'gds', show: true },
+  { id: 9, label: 'PNR', name: 'gds_pnr', show: true },
+  { id: 10, label: 'Airline PNR', name: 'airline_pnr', show: true },
+  {
+    id: 11,
+    label: 'Return Flight Date',
+    name: 'return_flight_date',
+    show: true,
+    type: 'date',
+  },
+  { id: 12, label: 'Ticket No', name: 'ticket_no', show: true },
+  { id: 13, label: 'FLT & Class', name: '_class', show: true },
+  {
+    id: 14,
+    label: 'Air Way',
+    name: 'current_airway',
+    subName: 'name',
     show: true,
   },
-];
-const initialPrintTableColumnsState4 = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
+  { id: 15, label: 'Sector Name', name: 'sector', show: true },
+  { id: 16, label: 'Fare Amount', name: 'fare_amount', show: true },
   {
-    id: 2,
-    label: 'Issue Person  ',
-    getterMethod: (data) =>
-      `${data.issue_person?.first_name || ''} ${data.issue_person?.last_name || ''}`,
+    id: 17,
+    label: 'Airline Comission Amount',
+    name: 'airline_commission_amount',
     show: true,
   },
-  { id: 3, label: 'Total Ticket', name: 'dup_count', show: true },
   {
-    id: 4,
-    label: 'Action',
-    getterMethod: (data) => {
-      return (
-        <VisibilityIcon
-          onClick={() => {
-            sessionStorage.setItem('issue_person', data.issue_person?.id);
-            history.push({
-              pathname: '/apps/ticketsalesummeryfilterdatas/report',
-            });
-          }}
-          className='h-22 cursor-pointer'
-          style={{ color: 'orange' }}
-        />
-      );
-    },
+    id: 18,
+    label: 'Customer Commission Amount',
+    name: 'customer_commission_amount',
+    show: true,
+  },
+  {
+    id: 19,
+    label: 'Tax Amount',
+    name: 'tax_amount',
+    subName: 'name',
+    show: true,
+  },
+  { id: 20, label: ' Sales Amount', name: 'sales_amount', show: true },
+  { id: 21, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
+  {
+    id: 22,
+    label: 'Profit ',
+    getterMethod: (data) => `${data.sales_amount - data.purchase_amount}`,
     show: true,
   },
 ];
@@ -361,7 +282,6 @@ function TicketsalesummeryfilterdataReportsTable(props) {
           }
         />
       </FormProvider>
-
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -384,7 +304,6 @@ function TicketsalesummeryfilterdataReportsTable(props) {
         dispatchTableColumns={dispatchTableColumns}
         filename='TicketsalesummeryfilterdataReport'
       />
-
       <table
         id='table-to-xls'
         className='w-full'
@@ -395,7 +314,7 @@ function TicketsalesummeryfilterdataReportsTable(props) {
               <SinglePage
                 key={index}
                 classes={classes}
-                reportTitle='Ticket Agency Summary'
+                reportTitle='Total Summary'
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
@@ -419,99 +338,7 @@ function TicketsalesummeryfilterdataReportsTable(props) {
           )}
         </tbody>
       </table>
-
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <div>
-          {/* each single page (table) */}
-
-          {modifiedTicketsalesummeryfilterdataData2.map(
-            (ticketsalesummeryfilterdata2) => (
-              <SinglePage
-                style={{ backgroundColor: 'green' }}
-                classes={classes}
-                reportTitle='Airway Summary'
-                filteredData={filteredData}
-                tableColumns={printtableColumns2}
-                dispatchTableColumns2={dispatchPrintTableColumns2}
-                data={ticketsalesummeryfilterdata2}
-                serialNumber={
-                  ticketsalesummeryfilterdata2.page *
-                    ticketsalesummeryfilterdata2.size -
-                  ticketsalesummeryfilterdata2.size +
-                  1
-                }
-                setPage={setPage}
-                inSiglePageMode={inSiglePageMode}
-              />
-            )
-          )}
-        </div>
-      </table>
-
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <div>
-          {/* each single page (table) */}
-
-          {modifiedTicketsalesummeryfilterdataData3.map(
-            (ticketsalesummeryfilterdata3) => (
-              <SinglePage
-                style={{ backgroundColor: 'green' }}
-                classes={classes}
-                reportTitle='Agent Summery'
-                filteredData={filteredData}
-                tableColumns={printtableColumns3}
-                dispatchTableColumns2={dispatchPrintTableColumns3}
-                data={ticketsalesummeryfilterdata3}
-                serialNumber={
-                  ticketsalesummeryfilterdata3.page *
-                    ticketsalesummeryfilterdata3.size -
-                  ticketsalesummeryfilterdata3.size +
-                  1
-                }
-                setPage={setPage}
-                inSiglePageMode={inSiglePageMode}
-              />
-            )
-          )}
-        </div>
-      </table>
-
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <div>
-          {/* each single page (table) */}
-
-          {modifiedTicketsalesummeryfilterdataData4.map(
-            (ticketsalesummeryfilterdata4) => (
-              <SinglePage
-                style={{ backgroundColor: 'green' }}
-                classes={classes}
-                reportTitle='Issue Person Summary'
-                filteredData={filteredData}
-                tableColumns={printtableColumns4}
-                dispatchTableColumns4={dispatchPrintTableColumns4}
-                data={ticketsalesummeryfilterdata4}
-                serialNumber={
-                  ticketsalesummeryfilterdata4.page *
-                    ticketsalesummeryfilterdata4.size -
-                  ticketsalesummeryfilterdata4.size +
-                  1
-                }
-                setPage={setPage}
-                inSiglePageMode={inSiglePageMode}
-              />
-            )
-          )}
-        </div>
-      </table>
+      >
     </div>
   );
 }
