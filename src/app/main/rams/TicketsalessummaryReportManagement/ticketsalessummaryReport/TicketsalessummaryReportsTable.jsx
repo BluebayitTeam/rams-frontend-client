@@ -330,8 +330,50 @@ function TicketsalessummaryReportsTable(props) {
       console.error('Error fetching agents:', error);
     }
   }, []);
+  const handleGetTicketsalessummarys2 = useCallback(async (newPage) => {
+    try {
+      const page = newPage || 1;
+      setPage(page);
+    } catch (error) {
+      console.error('Error fetching agents:', error);
+    }
+  }, []);
+  const handleGetTicketsalessummarys3 = useCallback(async (newPage) => {
+    try {
+      const page = newPage || 1;
+      setPage(page);
+    } catch (error) {
+      console.error('Error fetching agents:', error);
+    }
+  }, []);
+  const handleGetTicketsalessummarys4 = useCallback(async (newPage) => {
+    try {
+      const page = newPage || 1;
+      setPage(page);
+    } catch (error) {
+      console.error('Error fetching agents:', error);
+    }
+  }, []);
 
   const handleGetAllTicketsalessummarys = useCallback(async () => {
+    try {
+    } catch (error) {
+      console.error('Error fetching all ticketsalessummarys:', error);
+    }
+  }, []);
+  const handleGetAllTicketsalessummarys2 = useCallback(async () => {
+    try {
+    } catch (error) {
+      console.error('Error fetching all ticketsalessummarys:', error);
+    }
+  }, []);
+  const handleGetAllTicketsalessummarys3 = useCallback(async () => {
+    try {
+    } catch (error) {
+      console.error('Error fetching all ticketsalessummarys:', error);
+    }
+  }, []);
+  const handleGetAllTicketsalessummarys4 = useCallback(async () => {
     try {
     } catch (error) {
       console.error('Error fetching all ticketsalessummarys:', error);
@@ -354,7 +396,13 @@ function TicketsalessummaryReportsTable(props) {
         <TicketsalessummaryFilterMenu
           inShowAllMode={inShowAllMode}
           handleGetTicketsalessummarys={handleGetTicketsalessummarys}
+          handleGetTicketsalessummary2={handleGetTicketsalessummarys2}
+          handleGetTicketsalessummary3={handleGetTicketsalessummarys3}
+          handleGetTicketsalessummary4={handleGetTicketsalessummarys4}
           handleGetAllTicketsalessummarys={handleGetAllTicketsalessummarys}
+          handleGetAllTicketsalessummarys2={handleGetAllTicketsalessummarys2}
+          handleGetAllTicketsalessummarys3={handleGetAllTicketsalessummarys3}
+          handleGetAllTicketsalessummarys4={handleGetAllTicketsalessummarys4}
         />
       </FormProvider>
 
