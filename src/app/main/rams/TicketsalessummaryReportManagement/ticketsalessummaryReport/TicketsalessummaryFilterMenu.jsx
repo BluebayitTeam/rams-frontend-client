@@ -30,7 +30,13 @@ const useStyles = makeStyles((theme) => ({
 function TicketsalessummarysFilterMenu({
   inShowAllMode,
   handleGetTicketsalessummarys,
+  handleGetTicketsalessummarys2,
+  handleGetTicketsalessummarys3,
+  handleGetTicketsalessummarys4,
   handleGetAllTicketsalessummarys,
+  handleGetAllTicketsalessummarys2,
+  handleGetAllTicketsalessummarys3,
+  handleGetAllTicketsalessummarys4,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -51,13 +57,38 @@ function TicketsalessummarysFilterMenu({
       inShowAllMode
         ? handleGetAllTicketsalessummarys()
         : handleGetTicketsalessummarys(),
+    onEnter2: () =>
+      inShowAllMode
+        ? handleGetAllTicketsalessummarys2()
+        : handleGetTicketsalessummarys2(),
+    onEnter3: () =>
+      inShowAllMode
+        ? handleGetAllTicketsalessummarys3()
+        : handleGetTicketsalessummarys3(),
+    onEnter4: () =>
+      inShowAllMode
+        ? handleGetAllTicketsalessummarys4()
+        : handleGetTicketsalessummarys4(),
   };
+
   const commonKewordProps = {
     setReRender,
-    onClick: () =>
+    onClick1: () =>
       inShowAllMode
         ? handleGetAllTicketsalessummarys()
         : handleGetTicketsalessummarys(),
+    onClick2: () =>
+      inShowAllMode
+        ? handleGetAllTicketsalessummarys2()
+        : handleGetTicketsalessummarys2(),
+    onClick3: () =>
+      inShowAllMode
+        ? handleGetAllTicketsalessummarys3()
+        : handleGetTicketsalessummarys3(),
+    onClick4: () =>
+      inShowAllMode
+        ? handleGetAllTicketsalessummarys4()
+        : handleGetTicketsalessummarys4(),
   };
 
   useEffect(() => {
