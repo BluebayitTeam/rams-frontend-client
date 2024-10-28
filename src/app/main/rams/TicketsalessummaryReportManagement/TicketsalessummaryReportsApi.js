@@ -3,16 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-  CREATE_DEPARTMENT,
-  DELETE_DEPARTMENT,
-  DELETE_DEPARTMENT_MULTIPLE,
-  GET_DEPARTMENT_BY_ID,
   GET_IATA_TICKET_SALES_SUMMARY_REPORT,
-  RECEIPT_FILTER_BY,
-  RECEIPT_FILTER_WITHOUT_PG,
-  TICKETSALES_FILTER_BY,
-  TICKETSALES_FILTER_WITHOUT_PG,
-  UPDATE_DEPARTMENT,
+  GET_IATA_TICKET_SALES_SUMMARY_REPORT_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -44,11 +36,6 @@ export default TicketsalessummaryReportApi;
 export const {
   useGetTicketsalessummaryReportsQuery,
   useGetTicketsalessummaryAllReportsQuery,
-  useDeleteTicketsalessummaryReportsMutation,
-  useGetTicketsalessummaryReportQuery,
-  useUpdateTicketsalessummaryReportMutation,
-  useDeleteTicketsalessummaryReportMutation,
-  useCreateTicketsalessummaryReportMutation,
 } = TicketsalessummaryReportApi;
 
 export const selectFilteredTicketsalessummaryReports = (
