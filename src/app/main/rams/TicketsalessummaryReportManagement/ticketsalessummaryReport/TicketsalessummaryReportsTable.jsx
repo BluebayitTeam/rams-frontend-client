@@ -100,9 +100,13 @@ function TicketsalessummaryReportsTable(props) {
   const { data: paginatedData, refetch: refetchAgentReports } =
     useGetTicketsalessummaryReportsQuery(
       {
-        issue_date_after: filterData.issue_date_after || '',
-        issue_date_before: filterData.issue_date_before || '',
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        branch: filterData.branch || '',
+        airway: filterData.airway || '',
+        agent: filterData.agent || '',
         ticket_agency: filterData.ticket_agency || '',
+        issue_person: filterData.issue_person || '',
         page,
         size,
       },
@@ -112,23 +116,27 @@ function TicketsalessummaryReportsTable(props) {
   const { data: allData, refetch: refetchAllTicketsalessummaryReports } =
     useGetTicketsalessummaryAllReportsQuery(
       {
-        issue_date_after: filterData.issue_date_after || '',
-        issue_date_before: filterData.issue_date_before || '',
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        branch: filterData.branch || '',
+        airway: filterData.airway || '',
+        agent: filterData.agent || '',
         ticket_agency: filterData.ticket_agency || '',
+        issue_person: filterData.issue_person || '',
       },
       { skip: !inShowAllMode }
     );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketsalessummaryData(allData.ticket_purchases || []);
+      setModifiedTicketsalessummaryData(allData.iata_tickets || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.ticket_purchases,
+        allData.iata_tickets,
         size,
         page
       );
@@ -138,9 +146,8 @@ function TicketsalessummaryReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketsalessummaryData(paginatedData.ticket_purchases || []);
+      setModifiedTicketsalessummaryData(paginatedData.iata_tickets || []);
       setTotalAmount(paginatedData.total_amount);
-
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
