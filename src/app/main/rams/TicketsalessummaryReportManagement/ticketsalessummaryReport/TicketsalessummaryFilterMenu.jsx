@@ -1,6 +1,17 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getAgents, getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import {
+  getAgents,
+  getAirways,
+  getBranches,
+  getCountries,
+  getCurrentStatuss,
+  getEmployees,
+  getLedgers,
+  getPassengers,
+  getPassengerTypes,
+  getSubLedgers,
+} from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +39,9 @@ function TicketsalessummarysFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { agents } = useSelector((state) => state.data);
+  const { branches, agents, airways, employees } = useSelector(
+    (state) => state.data
+  );
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 
@@ -48,7 +61,14 @@ function TicketsalessummarysFilterMenu({
   };
 
   useEffect(() => {
+    dispatch(getCountries());
+    dispatch(getCurrentStatuss());
     dispatch(getAgents());
+    dispatch(getBranches());
+    dispatch(getPassengers());
+    dispatch(getPassengerTypes());
+    dispatch(getAirways());
+    dispatch(getEmployees());
   }, []);
 
   return (
