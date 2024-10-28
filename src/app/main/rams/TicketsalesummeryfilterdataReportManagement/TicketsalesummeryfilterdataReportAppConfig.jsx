@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import TicketsalesummeryfilterdataReportApp from './TicketsalesummeryfilterdataReportApp';
-import TicketsalesummeryfilterdatasReport from './ticketsalesummeryfilterdata/TicketsalesummeryfilterdatasReport';
+import TicketsalesummeryfilterdatasReport from './ticketsalesummeryfilterdata/TicketsalesummeryfilterdataReport';
 
 /**
  * The E-Commerce app configuration.

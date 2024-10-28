@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
 
 function TicketsalesummeryfilterdatasFilterMenu({
   inShowAllMode,
-  inShowAllMode,
   handleGetTicketsalesummeryfilterdatas,
   handleGetAllTicketsalesummeryfilterdatas,
 }) {
