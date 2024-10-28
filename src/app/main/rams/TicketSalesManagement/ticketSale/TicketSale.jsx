@@ -14,6 +14,7 @@ import TicketSaleModel from './models/TicketSaleModel';
 import { useGetTicketSaleQuery } from '../TicketSalesApi';
 import TicketSaleForm from './TicketSaleForm';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import Swal from 'sweetalert2';
 /**
  * Form Validation Schema
  */
@@ -28,6 +29,7 @@ function TicketSale() {
   const emptyValue = {
     airline_commission_amount: 0,
     airline_commission_rate: 7,
+    mlt_ticket_update: false,
     airline_pnr: 0,
     arrived_time: '',
     branch: '',
@@ -101,6 +103,14 @@ function TicketSale() {
   useEffect(() => {
     if (ticketSale) {
       reset({ ...ticketSale });
+      if (ticketSale?.invoice_count > 1) {
+        Swal.fire({
+          title: `You have ${ticketSale?.invoice_count} ticket in this invoice.`,
+          text: 'If you want to update all the ticket must check Multiple Ticket Update',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        });
+      }
     }
   }, [ticketSale, reset, ticketSale?.id]);
 

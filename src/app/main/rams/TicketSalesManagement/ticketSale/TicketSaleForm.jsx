@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Checkbox,
+  FormControl,
   FormControlLabel,
   Icon,
   Paper,
@@ -60,7 +61,10 @@ import {
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
-import { useCreateTicketSaleMutation } from '../TicketSalesApi';
+import {
+  useCreateTicketSaleMutation,
+  useCreateTicketSingleSaleMutation,
+} from '../TicketSalesApi';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -110,7 +114,11 @@ function TicketSaleForm(props) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [iataTableData, setIataTableData] = useState([]);
   const [mtlTicketDetails, setMltTicketDetails] = useState([]);
+
+  console.log('mtlTicketDetails', mtlTicketDetails);
+
   const [createTicketSale] = useCreateTicketSaleMutation();
+  const [createTicketSingleSale] = useCreateTicketSingleSaleMutation();
 
   useEffect(() => {
     dispatch(getProfessions());
@@ -155,14 +163,21 @@ function TicketSaleForm(props) {
     }
   };
 
-  function handleCreateTicketSale() {
-    createTicketSale(getValues())
+  function handleAddTicketSale() {
+    createTicketSingleSale(getValues())
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
         handleGetTicketTempTableData();
         reset({});
       });
+  }
+  function handleSubmitTicketSale() {
+    createTicketSale(getValues());
+    AddedSuccessfully();
+    handleGetTicketTempTableData();
+    reset({});
+    navigate('/apps/ticketSale/ticketSales');
   }
 
   const handleRemoveslipPicFile = () => {
@@ -176,21 +191,44 @@ function TicketSaleForm(props) {
   };
 
   const CreateInputFields = () => {
-    for (let i = 0; i < getValues().qty; i++) {
-      const Specific_ticket_number = getValues().tkt_num + i;
+    const fields = [];
+    for (let i = 0; i < Number(watch('qty')); i++) {
+      const Specific_ticket_number = Number(watch('tkt_num')) + i;
+      setValue(`items.${i}.ticket_no`, Specific_ticket_number);
       fields.push({
-        ticket_number: Specific_ticket_number,
+        ticket_no: Specific_ticket_number,
         pax_name: '',
         passport_no: '',
       });
     }
+    console.log(`gasjfsdf`, fields);
     // setInputFields(data);
+    setMltTicketDetails(fields);
 
     setValue('pax_name', '');
     setValue('passenger', '');
   };
   return (
     <div>
+      {ticketSaleId !== 'new' && (
+        <Controller
+          name='mlt_ticket_update'
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <FormControlLabel
+                label='All Ticket Update in this Invoice'
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value ? field.value : false}
+                  />
+                }
+              />
+            </FormControl>
+          )}
+        />
+      )}
       <div className='flex flex-wrap md:flex-nowrap w-full'>
         <div className='w-full md:w-1/2 px-2'>
           <CustomDropdownField
@@ -313,6 +351,29 @@ function TicketSaleForm(props) {
           </Button>
         </div>
       )}
+
+      {watch('is_multi_ticket_entry') &&
+        mtlTicketDetails?.length > 0 &&
+        mtlTicketDetails?.map((data, idx) => (
+          <div key={idx} className='flex md:space-x-12 flex-col md:flex-row'>
+            <CustomTextField
+              name={`items.${idx}.ticket_no`}
+              label='Ticket No'
+              placeholder='Ticket No'
+              defaultValue={data.ticket_no} // Set default value from data
+            />
+            <CustomTextField
+              name={`items.${idx}.pax_name`}
+              label='Pax Name'
+              defaultValue={data.pax_name} // Set default value from data
+            />
+            <CustomTextField
+              name={`items.${idx}.passport_no`}
+              label='Passport No'
+              defaultValue={data.passport_no} // Set default value from data
+            />
+          </div>
+        ))}
 
       {!watch('is_multi_ticket_entry') && (
         <div className='flex flex-wrap md:flex-nowrap w-full'>
@@ -523,7 +584,7 @@ function TicketSaleForm(props) {
           variant='contained'
           color='secondary'
           // disabled={_.isEmpty(dirtyFields) || !isValid}
-          onClick={handleCreateTicketSale}>
+          onClick={handleAddTicketSale}>
           Add
         </Button>
       }
@@ -841,7 +902,7 @@ function TicketSaleForm(props) {
               variant='contained'
               color='secondary'
               // disabled={_.isEmpty(dirtyFields) || !isValid}
-              onClick={handleCreateTicketSale}>
+              onClick={handleSubmitTicketSale}>
               Submit
             </Button>
           }

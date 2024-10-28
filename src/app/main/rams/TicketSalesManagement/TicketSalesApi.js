@@ -12,6 +12,9 @@ import {
   CREATE_TICKETSALE_WITH_IMAGE,
   CREATE_TICKETSALE,
   CREATE_SINGLE_TICKETSALE_WITH_IMAGE,
+  GET_TICKETSALE_BY_ID,
+  UPDATE_TICKETSALE,
+  DELETE_TICKETSALE,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -48,11 +51,19 @@ const TicketSaleApi = api
       }),
       getTicketSale: build.query({
         query: (ticketSaleId) => ({
-          url: `${GET_DEMAND_BY_ID}${ticketSaleId}`,
+          url: `${GET_TICKETSALE_BY_ID}${ticketSaleId}`,
         }),
         providesTags: ['ticketSales'],
       }),
       createTicketSale: build.mutation({
+        query: (newTicketSale) => ({
+          url: CREATE_TICKETSALE_WITH_IMAGE,
+          method: 'POST',
+          data: {},
+        }),
+        invalidatesTags: ['ticketSales'],
+      }),
+      createTicketSingleSale: build.mutation({
         query: (newTicketSale) => ({
           url: CREATE_SINGLE_TICKETSALE_WITH_IMAGE,
           method: 'POST',
@@ -62,7 +73,7 @@ const TicketSaleApi = api
       }),
       updateTicketSale: build.mutation({
         query: (ticketSale) => ({
-          url: `${UPDATE_DEMAND}${ticketSale.id}`,
+          url: `${UPDATE_TICKETSALE}${ticketSale.id}`,
           method: 'PUT',
           data: jsonToFormData(ticketSale),
         }),
@@ -70,7 +81,7 @@ const TicketSaleApi = api
       }),
       deleteTicketSale: build.mutation({
         query: (ticketSaleId) => ({
-          url: `${DELETE_DEMAND}${ticketSaleId}`,
+          url: `${DELETE_TICKETSALE}${ticketSaleId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['ticketSales'],
@@ -86,6 +97,7 @@ export const {
   useUpdateTicketSaleMutation,
   useDeleteTicketSaleMutation,
   useCreateTicketSaleMutation,
+  useCreateTicketSingleSaleMutation,
 } = TicketSaleApi;
 
 export const selectFilteredTicketSales = (ticketSales) =>
