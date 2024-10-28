@@ -10,6 +10,7 @@ import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -53,33 +54,66 @@ function TicketsalessummarysFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* Issue Date From */}
+        {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='issue_date_after'
-          label='Issue Date From'
-          maxDate={values.issue_date_before || new Date()}
+          name='date_after'
+          label='Date From'
+          maxDate={values.date_before || new Date()}
         />
-        {/* Issue Date To:*/}
+        {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='issue_date_before'
-          label='Issue Date To:'
-          minDate={values.issue_date_after}
+          name='date_before'
+          label='Date To'
+          minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* Agency Name */}
+        {/* branche */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='branch'
+          options={branches}
+          icon='local_activityIcon'
+          width='50px'
+        />
+        {/* AirWay */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='airway'
+          options={airways}
+          icon='local_activityIcon'
+          width='45px'
+        />
 
+        {/* Coustomer */}
         <ReportSelectFirstAgentCode
           {...commonFieldProps}
-          name='ticket_agency'
-          label='Agency Name'
+          name='agent'
+          label='Coustomer'
           options={agents}
           icon='person_icon'
-          width='94px'
+          width='76px'
           getOptionLabel={(option) =>
             `${option.first_name}- ${option.agent_code}`
           }
+        />
+
+        {/* Ticket Agency */}
+        <ReportSelectFirstAgentCode
+          {...commonFieldProps}
+          name='ticket_agency'
+          options={agents}
+          icon='person_icon'
+          width='95px'
+        />
+        {/* issue person*/}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='issue_person'
+          options={employees}
+          icon='person'
+          width='95px'
         />
       </div>
 
