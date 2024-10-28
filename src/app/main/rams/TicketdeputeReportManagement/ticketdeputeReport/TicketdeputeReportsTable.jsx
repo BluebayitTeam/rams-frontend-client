@@ -163,14 +163,14 @@ function TicketdeputeReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketdeputeData(allData.ticket_refunds || []);
+      setModifiedTicketdeputeData(allData.ticket_deputes || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.ticket_refunds,
+        allData.ticket_deputes,
         size,
         page
       );
@@ -180,7 +180,7 @@ function TicketdeputeReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketdeputeData(paginatedData.ticket_refunds || []);
+      setModifiedTicketdeputeData(paginatedData.ticket_deputes || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setTotalPages(paginatedData.total_pages || 0);
