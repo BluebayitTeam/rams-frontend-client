@@ -275,7 +275,7 @@ function TicketrefundReportsTable(props) {
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={ticketrefund}
-              totalColumn={initialTableColumnsState?.length}
+              totalColumn={initialPrintTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination

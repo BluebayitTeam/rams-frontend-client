@@ -243,7 +243,7 @@ function EmployeesTable(props) {
                         serialNumber++}
                     </TableCell>
 
-                    {Object?.entries(n)?.map(
+                    {Object.entries(n).map(
                       ([key, value]) =>
                         key !== 'id' &&
                         key !== 'random_number' && (
@@ -283,7 +283,7 @@ function EmployeesTable(props) {
                               ) : (
                                 <img
                                   onClick={() =>
-                                    n.file && showImage(`${BASE_URL}${n[key]}`)
+                                    n[key] && showImage(`${BASE_URL}${n[key]}`)
                                   }
                                   src={
                                     n[key]
