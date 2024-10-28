@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 function TicketsalessummarysFilterMenu({
   inShowAllMode,
-  handleGetTicketsalessummaryss,
-  handleGetAllTicketsalessummaryss,
+  handleGetTicketsalessummarys,
+  handleGetAllTicketsalessummarys,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -49,15 +49,15 @@ function TicketsalessummarysFilterMenu({
     setReRender,
     onEnter: () =>
       inShowAllMode
-        ? handleGetAllTicketsalessummaryss()
-        : handleGetTicketsalessummaryss(),
+        ? handleGetAllTicketsalessummarys()
+        : handleGetTicketsalessummarys(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
       inShowAllMode
-        ? handleGetAllTicketsalessummaryss()
-        : handleGetTicketsalessummaryss(),
+        ? handleGetAllTicketsalessummarys()
+        : handleGetTicketsalessummarys(),
   };
 
   useEffect(() => {
@@ -141,23 +141,48 @@ function TicketsalessummarysFilterMenu({
       <div className='allKeyWrdContainer'>
         <Keyword
           {...commonKewordProps}
+          type='select'
+          name='branch'
+          icon='local_activityIcon'
+        />
+        <Keyword
+          {...commonKewordProps}
           type='date'
-          name='issue_date_after'
+          name='date_after'
           label='Date From'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='issue_date_before'
+          name='date_before'
           label='Date To'
         />
 
         <Keyword
           {...commonKewordProps}
           type='select'
+          name='airway'
+          icon='local_activityIcon'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='agent'
+          label='Coustomer'
+          icon='person_icon'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
           name='ticket_agency'
-          icon='person'
+          icon='person_icon'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='issue_person'
+          icon='person_icon'
         />
       </div>
     </div>
