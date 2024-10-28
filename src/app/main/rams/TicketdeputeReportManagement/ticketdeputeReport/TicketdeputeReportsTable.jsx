@@ -270,7 +270,7 @@ function TicketdeputeReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Ticket Refund Report'
+              reportTitle='Ticket Depute Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
