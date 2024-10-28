@@ -25,7 +25,6 @@ function SinglePage({
   filteredData,
 }) {
   let pageBasedSerialNo = serialNumber;
-  console.log('filteredData1111', filteredData);
 
   const [generalData, setGeneralData] = useState({});
 
@@ -72,7 +71,6 @@ function SinglePage({
 		</div>
 	`;
 
-  console.log('FilteredCriteria', FilteredCriteria);
   return (
     <div
       className={`${classes.pageContainer} printPageContainer  `}

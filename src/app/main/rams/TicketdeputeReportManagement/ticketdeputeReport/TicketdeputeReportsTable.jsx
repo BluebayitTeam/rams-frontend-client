@@ -13,11 +13,11 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
-import TicketrefundFilterMenu from './TicketrefundFilterMenu';
+import TicketdeputeFilterMenu from './TicketdeputeFilterMenu';
 import {
-  useGetTicketrefundAllReportsQuery,
-  useGetTicketrefundReportsQuery,
-} from '../TicketPurchasesReportsApi';
+  useGetTicketdeputeAllReportsQuery,
+  useGetTicketdeputeReportsQuery,
+} from '../TicketdeputeReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -102,7 +102,7 @@ const initialPrintTableColumnsState = [
   { id: 21, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
 ];
 
-function TicketrefundReportsTable(props) {
+function TicketdeputeReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -113,7 +113,7 @@ function TicketrefundReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedTicketrefundData, setModifiedTicketrefundData] =
+  const [modifiedTicketdeputeData, setModifiedTicketdeputeData] =
     useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -133,7 +133,7 @@ function TicketrefundReportsTable(props) {
   const filterData = watch();
 
   const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetTicketrefundReportsQuery(
+    useGetTicketdeputeReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
@@ -148,8 +148,8 @@ function TicketrefundReportsTable(props) {
       { skip: inShowAllMode }
     );
 
-  const { data: allData, refetch: refetchAllTicketrefundReports } =
-    useGetTicketrefundAllReportsQuery(
+  const { data: allData, refetch: refetchAllTicketdeputeReports } =
+    useGetTicketdeputeAllReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
@@ -163,14 +163,14 @@ function TicketrefundReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketrefundData(allData.ticket_refunds || []);
+      setModifiedTicketdeputeData(allData.ticket_deputes || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.ticket_refunds,
+        allData.ticket_deputes,
         size,
         page
       );
@@ -180,7 +180,7 @@ function TicketrefundReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketrefundData(paginatedData.ticket_refunds || []);
+      setModifiedTicketdeputeData(paginatedData.ticket_deputes || []);
       setTotalAmount(paginatedData.total_amount);
       setPage(paginatedData?.page || 1);
       setTotalPages(paginatedData.total_pages || 0);
@@ -199,7 +199,7 @@ function TicketrefundReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetTicketrefunds = useCallback(async (newPage) => {
+  const handleGetTicketdeputes = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -208,10 +208,10 @@ function TicketrefundReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllTicketrefunds = useCallback(async () => {
+  const handleGetAllTicketdeputes = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all ticketrefunds:', error);
+      console.error('Error fetching all ticketdeputes:', error);
     }
   }, []);
 
@@ -231,10 +231,10 @@ function TicketrefundReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <TicketrefundFilterMenu
+        <TicketdeputeFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetTicketrefunds={handleGetTicketrefunds}
-          handleGetAllTicketrefunds={handleGetAllTicketrefunds}
+          handleGetTicketdeputes={handleGetTicketdeputes}
+          handleGetAllTicketdeputes={handleGetAllTicketdeputes}
         />
       </FormProvider>
 
@@ -248,17 +248,17 @@ function TicketrefundReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetTicketrefunds(1)}
-        onPreviousPage={() => handleGetTicketrefunds(page - 1)}
-        onNextPage={() => handleGetTicketrefunds(page + 1)}
-        onLastPage={() => handleGetTicketrefunds(totalPages)}
+        onFirstPage={() => handleGetTicketdeputes(1)}
+        onPreviousPage={() => handleGetTicketdeputes(page - 1)}
+        onNextPage={() => handleGetTicketdeputes(page + 1)}
+        onLastPage={() => handleGetTicketdeputes(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetTicketrefunds}
-        handleGetAllData={handleGetAllTicketrefunds}
+        handleGetData={handleGetTicketdeputes}
+        handleGetAllData={handleGetAllTicketdeputes}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TicketrefundReport'
+        filename='TicketdeputeReport'
       />
 
       <table
@@ -266,22 +266,22 @@ function TicketrefundReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedTicketrefundData.map((ticketrefund, index) => (
+          {modifiedTicketdeputeData.map((ticketdepute, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Ticket Refund Report'
+              reportTitle='Ticket Depute Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={ticketrefund}
+              data={ticketdepute}
               totalColumn={initialPrintTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * ticketrefund.data.length + 1
-                  : ticketrefund.page * ticketrefund.size -
-                    ticketrefund.size +
+                  ? page * size - size + index * ticketdepute.data.length + 1
+                  : ticketdepute.page * ticketdepute.size -
+                    ticketdepute.size +
                     1
               }
               setPage={setPage}
@@ -293,4 +293,4 @@ function TicketrefundReportsTable(props) {
   );
 }
 
-export default TicketrefundReportsTable;
+export default TicketdeputeReportsTable;

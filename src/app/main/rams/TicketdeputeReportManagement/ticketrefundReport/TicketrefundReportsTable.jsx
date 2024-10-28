@@ -17,7 +17,7 @@ import TicketrefundFilterMenu from './TicketrefundFilterMenu';
 import {
   useGetTicketrefundAllReportsQuery,
   useGetTicketrefundReportsQuery,
-} from '../TicketPurchasesReportsApi';
+} from '../TicketdeputeReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),

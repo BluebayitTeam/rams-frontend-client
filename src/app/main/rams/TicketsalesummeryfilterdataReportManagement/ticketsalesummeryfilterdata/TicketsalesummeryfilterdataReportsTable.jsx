@@ -10,14 +10,14 @@ import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-
-import TicketrefundFilterMenu from './TicketrefundFilterMenu';
 import {
-  useGetTicketrefundAllReportsQuery,
-  useGetTicketrefundReportsQuery,
-} from '../TicketPurchasesReportsApi';
+  useGetTicketsalesummeryfilterdataAllReportsQuery,
+  useGetTicketsalesummeryfilterdataReportsQuery,
+} from '../TicketsalesummeryfilterdataReportsApi';
+import TicketsalesummeryfilterdataFilterMenu from './TicketsalesummeryfilterdataFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
 // Define the Zod schema
 const schema = z.object({});
 
-const initialPrintTableColumnsState = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
+const initialTableColumnsState = [
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
   { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
   {
@@ -40,15 +40,16 @@ const initialPrintTableColumnsState = [
   {
     id: 5,
     label: 'Issue Person',
-    name: 'issue_person',
-    subName: 'username',
+    getterMethod: (data) =>
+      `${data.issue_person?.first_name || ''}, ${data.issue_person?.last_name || ''}`,
+
     show: true,
   },
   {
     id: 6,
     label: 'Ticket Agency',
-    name: 'ticket_agency',
-    subName: 'username',
+    getterMethod: (data) =>
+      `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
     show: true,
   },
   {
@@ -100,9 +101,15 @@ const initialPrintTableColumnsState = [
   },
   { id: 20, label: ' Sales Amount', name: 'sales_amount', show: true },
   { id: 21, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
+  {
+    id: 22,
+    label: 'Profit ',
+    getterMethod: (data) => `${data.sales_amount - data.purchase_amount}`,
+    show: true,
+  },
 ];
 
-function TicketrefundReportsTable(props) {
+function TicketsalesummeryfilterdataReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -113,12 +120,43 @@ function TicketrefundReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedTicketrefundData, setModifiedTicketrefundData] =
-    useReportData();
+  const [
+    modifiedTicketsalesummeryfilterdataData,
+    setModifiedTicketsalesummeryfilterdataData,
+  ] = useReportData();
+  const [
+    modifiedTicketsalesummeryfilterdataData2,
+    setModifiedTicketsalesummeryfilterdataData2,
+  ] = useReportData();
+
+  const [
+    modifiedTicketsalesummeryfilterdataData3,
+    setModifiedTicketsalesummeryfilterdataData3,
+  ] = useReportData();
+  const [
+    modifiedTicketsalesummeryfilterdataData4,
+    setModifiedTicketsalesummeryfilterdataData4,
+  ] = useReportData();
+
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
-    initialPrintTableColumnsState
+    initialTableColumnsState
   );
+
+  const [printtableColumns2, dispatchPrintTableColumns2] = useReducer(
+    tableColumnsReducer,
+    initialPrintTableColumnsState2
+  );
+
+  const [printtableColumns3, dispatchPrintTableColumns3] = useReducer(
+    tableColumnsReducer,
+    initialPrintTableColumnsState3
+  );
+  const [printtableColumns4, dispatchPrintTableColumns4] = useReducer(
+    tableColumnsReducer,
+    initialPrintTableColumnsState4
+  );
+
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
@@ -133,44 +171,47 @@ function TicketrefundReportsTable(props) {
   const filterData = watch();
 
   const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetTicketrefundReportsQuery(
+    useGetTicketsalesummeryfilterdataReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ticket_no: filterData.ticket_no || '',
-        invoice_no: filterData.invoice_no || '',
-        airline_agency: filterData.airline_agency || '',
+        branch: filterData.branch || '',
+        airway: filterData.airway || '',
         agent: filterData.agent || '',
-
+        ticket_agency: filterData.ticket_agency || '',
+        issue_person: filterData.issue_person || '',
         page,
         size,
       },
       { skip: inShowAllMode }
     );
 
-  const { data: allData, refetch: refetchAllTicketrefundReports } =
-    useGetTicketrefundAllReportsQuery(
-      {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        ticket_no: filterData.ticket_no || '',
-        invoice_no: filterData.invoice_no || '',
-        airline_agency: filterData.airline_agency || '',
-        agent: filterData.agent || '',
-      },
-      { skip: !inShowAllMode }
-    );
+  const {
+    data: allData,
+    refetch: refetchAllTicketsalesummeryfilterdataReports,
+  } = useGetTicketsalesummeryfilterdataAllReportsQuery(
+    {
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      branch: filterData.branch || '',
+      airway: filterData.airway || '',
+      agent: filterData.agent || '',
+      ticket_agency: filterData.ticket_agency || '',
+      issue_person: filterData.issue_person || '',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketrefundData(allData.ticket_refunds || []);
+      setModifiedTicketsalesummeryfilterdataData(allData.iata_tickets || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.ticket_refunds,
+        allData.iata_tickets,
         size,
         page
       );
@@ -180,9 +221,12 @@ function TicketrefundReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketrefundData(paginatedData.ticket_refunds || []);
+      setModifiedTicketsalesummeryfilterdataData(
+        paginatedData?.iata_tickets || []
+      );
+
       setTotalAmount(paginatedData.total_amount);
-      setPage(paginatedData?.page || 1);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
@@ -199,7 +243,7 @@ function TicketrefundReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetTicketrefunds = useCallback(async (newPage) => {
+  const handleGetTicketsalesummeryfilterdatas = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -208,36 +252,36 @@ function TicketrefundReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllTicketrefunds = useCallback(async () => {
+  const handleGetAllTicketsalesummeryfilterdatas = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all ticketrefunds:', error);
+      console.error('Error fetching all ticketsalesummeryfilterdatas:', error);
     }
   }, []);
 
   const filteredData = {
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+    Date_To: getValues()?.issue_date_before
+      ? moment(new Date(getValues()?.issue_date_before)).format('DD-MM-YYYY')
       : null,
-    Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
+    Date_From: getValues()?.issue_date_after
+      ? moment(new Date(getValues()?.issue_date_after)).format('DD-MM-YYYY')
       : null,
-    Ticket_No: getValues()?.ticket_no || null,
-    Invoice_No: getValues()?.invoice_no || null,
-    Airline_Agency: getValues()?.airline_agencyName || null,
-    Customer: getValues()?.agentName || null,
+    Agent: getValues()?.ticket_agencyName || null,
   };
 
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <TicketrefundFilterMenu
+        <TicketsalesummeryfilterdataFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetTicketrefunds={handleGetTicketrefunds}
-          handleGetAllTicketrefunds={handleGetAllTicketrefunds}
+          handleGetTicketsalesummeryfilterdatas={
+            handleGetTicketsalesummeryfilterdatas
+          }
+          handleGetAllTicketsalesummeryfilterdatas={
+            handleGetAllTicketsalesummeryfilterdatas
+          }
         />
       </FormProvider>
-
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -248,49 +292,55 @@ function TicketrefundReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetTicketrefunds(1)}
-        onPreviousPage={() => handleGetTicketrefunds(page - 1)}
-        onNextPage={() => handleGetTicketrefunds(page + 1)}
-        onLastPage={() => handleGetTicketrefunds(totalPages)}
+        onFirstPage={() => handleGetTicketsalesummeryfilterdatas(1)}
+        onPreviousPage={() => handleGetTicketsalesummeryfilterdatas(page - 1)}
+        onNextPage={() => handleGetTicketsalesummeryfilterdatas(page + 1)}
+        onLastPage={() => handleGetTicketsalesummeryfilterdatas(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetTicketrefunds}
-        handleGetAllData={handleGetAllTicketrefunds}
+        handleGetData={handleGetTicketsalesummeryfilterdatas}
+        handleGetAllData={handleGetAllTicketsalesummeryfilterdatas}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TicketrefundReport'
+        filename='TicketsalesummeryfilterdataReport'
       />
-
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedTicketrefundData.map((ticketrefund, index) => (
-            <SinglePage
-              key={index}
-              classes={classes}
-              reportTitle='Ticket Refund Report'
-              filteredData={filteredData}
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              data={ticketrefund}
-              totalColumn={initialPrintTableColumnsState?.length}
-              inSiglePageMode={inSiglePageMode}
-              serialNumber={
-                pagination
-                  ? page * size - size + index * ticketrefund.data.length + 1
-                  : ticketrefund.page * ticketrefund.size -
-                    ticketrefund.size +
-                    1
-              }
-              setPage={setPage}
-            />
-          ))}
+          {modifiedTicketsalesummeryfilterdataData.map(
+            (ticketsalesummeryfilterdata, index) => (
+              <SinglePage
+                key={index}
+                classes={classes}
+                reportTitle='Total Summary'
+                filteredData={filteredData}
+                tableColumns={tableColumns}
+                dispatchTableColumns={dispatchTableColumns}
+                data={ticketsalesummeryfilterdata}
+                totalColumn={initialTableColumnsState?.length}
+                inSiglePageMode={inSiglePageMode}
+                serialNumber={
+                  pagination
+                    ? page * size -
+                      size +
+                      index * ticketsalesummeryfilterdata.data.length +
+                      1
+                    : ticketsalesummeryfilterdata.page *
+                        ticketsalesummeryfilterdata.size -
+                      ticketsalesummeryfilterdata.size +
+                      1
+                }
+                setPage={setPage}
+              />
+            )
+          )}
         </tbody>
       </table>
+      >
     </div>
   );
 }
 
-export default TicketrefundReportsTable;
+export default TicketsalesummeryfilterdataReportsTable;
