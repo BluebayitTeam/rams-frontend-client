@@ -63,8 +63,6 @@ function PassengerForm(props) {
   const userID = localStorage.getItem('user_id');
   const [createPassengerImage, data] = useCreatePassengerImageMutation();
 
-  console.log('data', data);
-
   const agents = useSelector((state) => state.data.agents);
   const demands = useSelector((state) => state.data.demands);
   const professions = useSelector((state) => state.data.professions);
@@ -73,9 +71,7 @@ function PassengerForm(props) {
   const passengerTypes = useSelector((state) => state.data.passengerTypes);
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
-  const subagents = useSelector((state) => state.data.subagents);
-
-  console.log('subagents', subagents);
+  const subagents = useSelector((state) => state.data.subagents || []);
 
   const recruitingAgencys = useSelector(
     (state) => state.data.recruitingAgencys
