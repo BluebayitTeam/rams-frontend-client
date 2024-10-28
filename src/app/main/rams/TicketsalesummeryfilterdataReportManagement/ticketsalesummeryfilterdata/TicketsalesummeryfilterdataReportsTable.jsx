@@ -301,19 +301,9 @@ function TicketsalesummeryfilterdataReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedTicketsalesummeryfilterdataData(
-        paginatedData?.iata_tickets.current_airways || []
+        paginatedData?.iata_tickets || []
       );
 
-      setModifiedTicketsalesummeryfilterdataData2(
-        paginatedData?.iata_tickets.customers || []
-      );
-
-      setModifiedTicketsalesummeryfilterdataData3(
-        paginatedData?.iata_tickets.issue_persons || []
-      );
-      setModifiedTicketsalesummeryfilterdataData4(
-        paginatedData?.iata_tickets.ticket_agencies || []
-      );
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -340,59 +330,8 @@ function TicketsalesummeryfilterdataReportsTable(props) {
       console.error('Error fetching agents:', error);
     }
   }, []);
-  const handleGetTicketsalesummeryfilterdatas2 = useCallback(
-    async (newPage) => {
-      try {
-        const page = newPage || 1;
-        setPage(page);
-      } catch (error) {
-        console.error('Error fetching agents:', error);
-      }
-    },
-    []
-  );
-  const handleGetTicketsalesummeryfilterdatas3 = useCallback(
-    async (newPage) => {
-      try {
-        const page = newPage || 1;
-        setPage(page);
-      } catch (error) {
-        console.error('Error fetching agents:', error);
-      }
-    },
-    []
-  );
-  const handleGetTicketsalesummeryfilterdatas4 = useCallback(
-    async (newPage) => {
-      try {
-        const page = newPage || 1;
-        setPage(page);
-      } catch (error) {
-        console.error('Error fetching agents:', error);
-      }
-    },
-    []
-  );
 
   const handleGetAllTicketsalesummeryfilterdatas = useCallback(async () => {
-    try {
-    } catch (error) {
-      console.error('Error fetching all ticketsalesummeryfilterdatas:', error);
-    }
-  }, []);
-  const handleGetAllTicketsalesummeryfilterdatas2 = useCallback(async () => {
-    try {
-    } catch (error) {
-      console.error('Error fetching all ticketsalesummeryfilterdatas:', error);
-    }
-  }, []);
-  const handleGetAllTicketsalesummeryfilterdatas3 = useCallback(async () => {
-    try {
-    } catch (error) {
-      console.error('Error fetching all ticketsalesummeryfilterdatas:', error);
-    }
-  }, []);
-  const handleGetAllTicketsalesummeryfilterdatas4 = useCallback(async () => {
     try {
     } catch (error) {
       console.error('Error fetching all ticketsalesummeryfilterdatas:', error);
@@ -417,26 +356,8 @@ function TicketsalesummeryfilterdataReportsTable(props) {
           handleGetTicketsalesummeryfilterdatas={
             handleGetTicketsalesummeryfilterdatas
           }
-          handleGetTicketsalesummeryfilterdata2={
-            handleGetTicketsalesummeryfilterdatas2
-          }
-          handleGetTicketsalesummeryfilterdata3={
-            handleGetTicketsalesummeryfilterdatas3
-          }
-          handleGetTicketsalesummeryfilterdata4={
-            handleGetTicketsalesummeryfilterdatas4
-          }
           handleGetAllTicketsalesummeryfilterdatas={
             handleGetAllTicketsalesummeryfilterdatas
-          }
-          handleGetAllTicketsalesummeryfilterdatas2={
-            handleGetAllTicketsalesummeryfilterdatas2
-          }
-          handleGetAllTicketsalesummeryfilterdatas3={
-            handleGetAllTicketsalesummeryfilterdatas3
-          }
-          handleGetAllTicketsalesummeryfilterdatas4={
-            handleGetAllTicketsalesummeryfilterdatas4
           }
         />
       </FormProvider>
