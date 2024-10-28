@@ -226,7 +226,7 @@ function TicketsalessummaryReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Ticket Purchase Report'
+              reportTitle='Ticket Sales Summarys Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

@@ -134,6 +134,7 @@ import TicketrefundReportAppConfig from '../rams/TicketrefundReportManagement/Ti
 import UnitAppConfig from '../rams/UnitsManagement/UnitAppConfig';
 import ComputeAppConfig from '../rams/ComputesManagement/ComputeAppConfig';
 import TicketdeputeReportAppConfig from '../rams/TicketdeputeReportManagement/TicketdeputeReportAppConfig';
+import TicketsalessummaryReportAppConfig from '../rams/TicketsalessummaryReportManagement/TicketsalessummaryReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -160,6 +161,7 @@ const appsConfigs = [
   TicketrefundReportAppConfig,
   SubAgentAppConfig,
   TicketPurchasesReportAppConfig,
+  TicketsalessummaryReportAppConfig,
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
   MalefingerletterAppConfig,

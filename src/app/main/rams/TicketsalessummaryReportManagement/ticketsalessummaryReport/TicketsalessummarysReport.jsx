@@ -27,7 +27,7 @@ function TicketsalessummarysReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            Ticket Purchase Report
+            Ticket Sales Summarys Report
           </h1>
         </div>
       }

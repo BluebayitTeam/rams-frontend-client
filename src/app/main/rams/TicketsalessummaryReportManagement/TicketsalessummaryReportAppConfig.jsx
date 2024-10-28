@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import TicketsalessummaryReportApp from './TicketsalessummaryReportApp';
-import TicketsalessummaryReport from './ticketsalessummaryReport/TicketsalessummaryReport';
+import TicketsalessummarysReport from './ticketsalessummaryReport/TicketsalessummarysReport';
 
 /**
  * The E-Commerce app configuration.
@@ -21,7 +21,7 @@ const TicketsalessummaryReportAppConfig = {
 
         {
           path: 'ticketsalessummaryReports/:ticketsalessummaryReportId?/*',
-          element: <TicketsalessummaryReport />,
+          element: <TicketsalessummarysReport />,
         },
       ],
     },
