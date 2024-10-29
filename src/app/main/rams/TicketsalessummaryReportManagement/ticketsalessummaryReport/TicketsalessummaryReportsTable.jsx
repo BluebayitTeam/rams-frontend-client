@@ -27,48 +27,6 @@ const useStyles = makeStyles((theme) => ({
 // Define the Zod schema
 const schema = z.object({});
 
-// const initialTableColumnsState = [
-//   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-//   { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
-//   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-//   {
-//     id: 4,
-//     label: 'Passenger Name',
-//     name: 'passenger',
-//     subName: 'passenger_name',
-//     show: true,
-//   },
-//   {
-//     id: 5,
-//     label: 'Agent Name',
-//     name: 'passenger',
-//     subName: 'agent.first_name',
-//     show: true,
-//   },
-//   {
-//     id: 6,
-//     label: 'Ticket Agency Name',
-//     name: 'ticket_agency',
-//     subName: 'first_name',
-//     show: true,
-//   },
-//   {
-//     id: 7,
-//     label: 'Flight Date',
-//     name: 'flight_date',
-//     show: true,
-//     type: 'date',
-//   },
-//   { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
-//   { id: 9, label: 'Country', name: 'sector_name', show: true },
-//   { id: 10, label: 'Sector Name', name: 'sector_name', show: true },
-//   { id: 11, label: ' AirWay', name: 'carrier_air_way', show: true },
-//   { id: 12, label: 'Flight No', name: 'flight_no', show: true, type: 'date' },
-//   { id: 13, label: 'Flight Time', name: 'flight_time', show: true },
-//   { id: 14, label: 'Comment', name: 'notes', show: true },
-//   { id: 15, label: 'Purchase Amount', name: 'purchase_amount', show: true },
-// ];
-
 function TicketsalessummaryReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
