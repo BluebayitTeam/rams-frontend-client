@@ -288,7 +288,7 @@ function AgentsTable(props) {
                                   src={
                                     n[key]
                                       ? `${BASE_URL}${n[key]}`
-                                      : '/public/assets/images/logos/user.jpg'
+                                      : '/assets/images/logos/user.jpg'
                                   }
                                   style={{
                                     height: '40px',

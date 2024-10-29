@@ -162,8 +162,8 @@ const appsConfigs = [
   TicketrefundReportAppConfig,
   SubAgentAppConfig,
   TicketPurchasesReportAppConfig,
-  TicketsalessummaryReportAppConfig,
-  TicketsalesummeryfilterdataReportAppConfig,
+  // TicketsalessummaryReportAppConfig,
+
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
   MalefingerletterAppConfig,
