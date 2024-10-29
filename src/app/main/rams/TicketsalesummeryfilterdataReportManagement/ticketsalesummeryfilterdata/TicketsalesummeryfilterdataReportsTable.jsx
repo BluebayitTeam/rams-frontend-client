@@ -18,6 +18,7 @@ import {
   useGetTicketsalesummeryfilterdataReportsQuery,
 } from '../TicketsalesummeryfilterdataReportsApi';
 import TicketsalesummeryfilterdataFilterMenu from './TicketsalesummeryfilterdataFilterMenu';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -124,19 +125,6 @@ function TicketsalesummeryfilterdataReportsTable(props) {
     modifiedTicketsalesummeryfilterdataData,
     setModifiedTicketsalesummeryfilterdataData,
   ] = useReportData();
-  const [
-    modifiedTicketsalesummeryfilterdataData2,
-    setModifiedTicketsalesummeryfilterdataData2,
-  ] = useReportData();
-
-  const [
-    modifiedTicketsalesummeryfilterdataData3,
-    setModifiedTicketsalesummeryfilterdataData3,
-  ] = useReportData();
-  const [
-    modifiedTicketsalesummeryfilterdataData4,
-    setModifiedTicketsalesummeryfilterdataData4,
-  ] = useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -153,6 +141,7 @@ function TicketsalesummeryfilterdataReportsTable(props) {
   const [totalAmount, setTotalAmount] = useState(0);
 
   const componentRef = useRef(null);
+  const routeParams = useParams();
 
   const filterData = watch();
 
@@ -171,7 +160,6 @@ function TicketsalesummeryfilterdataReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  console.log('cxcxcxcxcxcxcxc', paginatedData);
   const {
     data: allData,
     refetch: refetchAllTicketsalesummeryfilterdataReports,

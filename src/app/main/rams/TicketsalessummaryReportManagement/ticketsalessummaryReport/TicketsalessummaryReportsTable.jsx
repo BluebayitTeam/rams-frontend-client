@@ -119,9 +119,8 @@ function TicketsalessummaryReportsTable(props) {
         return (
           <VisibilityIcon
             onClick={() => {
-              sessionStorage.setItem('customer', data.customer?.id);
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports?customer=${data.customer?.id}`
               );
             }}
             className='h-22 cursor-pointer'
