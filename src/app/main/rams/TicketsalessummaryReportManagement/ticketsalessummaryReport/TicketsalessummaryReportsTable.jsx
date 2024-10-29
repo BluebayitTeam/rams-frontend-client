@@ -102,7 +102,7 @@ function TicketsalessummaryReportsTable(props) {
             onClick={() => {
               sessionStorage.setItem('ticket_agency', data.ticket_agency?.id);
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport/:date_before/:date_after/:current_airway/:customer/:ticket_agency/:branch/:issue_person?`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/:date_before/:date_after/:current_airway/:customer/:ticket_agency/:branch/:issue_person?`
               );
             }}
             className='h-22 cursor-pointer'
@@ -133,7 +133,7 @@ function TicketsalessummaryReportsTable(props) {
             onClick={() => {
               sessionStorage.setItem('current_airway', data.current_airway?.id);
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports`
               );
             }}
             className='h-22 cursor-pointer'
@@ -163,7 +163,7 @@ function TicketsalessummaryReportsTable(props) {
             onClick={() => {
               sessionStorage.setItem('customer', data.customer?.id);
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports`
               );
             }}
             className='h-22 cursor-pointer'
@@ -194,7 +194,7 @@ function TicketsalessummaryReportsTable(props) {
               sessionStorage.setItem('issue_person', data.issue_person?.id);
               navigate({
                 pathname:
-                  '/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReport',
+                  '/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports',
               });
             }}
             className='h-22 cursor-pointer'

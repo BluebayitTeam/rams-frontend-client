@@ -143,20 +143,6 @@ function TicketsalesummeryfilterdataReportsTable(props) {
     initialTableColumnsState
   );
 
-  const [printtableColumns2, dispatchPrintTableColumns2] = useReducer(
-    tableColumnsReducer,
-    initialPrintTableColumnsState2
-  );
-
-  const [printtableColumns3, dispatchPrintTableColumns3] = useReducer(
-    tableColumnsReducer,
-    initialPrintTableColumnsState3
-  );
-  const [printtableColumns4, dispatchPrintTableColumns4] = useReducer(
-    tableColumnsReducer,
-    initialPrintTableColumnsState4
-  );
-
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
