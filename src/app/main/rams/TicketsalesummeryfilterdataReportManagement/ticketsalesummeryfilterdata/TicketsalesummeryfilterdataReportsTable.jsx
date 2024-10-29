@@ -156,22 +156,22 @@ function TicketsalesummeryfilterdataReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetTicketsalesummeryfilterdataReportsQuery(
-      {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        branch: filterData.branch || '',
-        current_airway: filterData.current_airway || '',
-        customer: filterData.customer || '',
-        ticket_agency: filterData.ticket_agency || '',
-        issue_person: filterData.issue_person || '',
-        page,
-        size,
-      },
-      { skip: inShowAllMode }
-    );
+  const { data: paginatedData } = useGetTicketsalesummeryfilterdataReportsQuery(
+    {
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      branch: filterData.branch || '',
+      current_airway: filterData.current_airway || '',
+      customer: filterData.customer || '',
+      ticket_agency: filterData.ticket_agency || '',
+      issue_person: filterData.issue_person || '',
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
 
+  console.log('cxcxcxcxcxcxcxc', paginatedData);
   const {
     data: allData,
     refetch: refetchAllTicketsalesummeryfilterdataReports,

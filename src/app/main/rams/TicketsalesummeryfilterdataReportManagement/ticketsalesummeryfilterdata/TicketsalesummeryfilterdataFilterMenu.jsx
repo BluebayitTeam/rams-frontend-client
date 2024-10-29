@@ -40,6 +40,7 @@ function TicketsalesummeryfilterdatasFilterMenu({
   const theme = useTheme();
 
   const [loop, setLoop] = useState(true);
+  console.log('loopsssss', loop);
   const renderFunction = () => {
     if (loop == true) {
       inShowAllMode
