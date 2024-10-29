@@ -86,12 +86,13 @@ function TicketsalessummaryReportsTable(props) {
       id: 4,
       label: 'Action',
       getterMethod: (data) => {
+        console.log('datassss', data.current_airway);
         return (
           <VisibilityIcon
             onClick={() => {
-              sessionStorage.setItem('current_airway', data.current_airway?.id);
+              // sessionStorage.setItem('current_airway', data.current_airway?.id);
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/${data.current_airway?.id}`
               );
             }}
             className='h-22 cursor-pointer'

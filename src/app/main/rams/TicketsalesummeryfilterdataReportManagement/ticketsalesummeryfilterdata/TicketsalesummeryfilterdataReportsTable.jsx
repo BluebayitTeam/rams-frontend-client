@@ -313,7 +313,6 @@ function TicketsalesummeryfilterdataReportsTable(props) {
           )}
         </tbody>
       </table>
-      >
     </div>
   );
 }
