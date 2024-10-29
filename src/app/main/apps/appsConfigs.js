@@ -136,6 +136,7 @@ import ComputeAppConfig from '../rams/ComputesManagement/ComputeAppConfig';
 import TicketdeputeReportAppConfig from '../rams/TicketdeputeReportManagement/TicketdeputeReportAppConfig';
 import TicketsalessummaryReportAppConfig from '../rams/TicketsalessummaryReportManagement/TicketsalessummaryReportAppConfig';
 import TicketsalesummeryfilterdataReportAppConfig from '../rams/TicketsalesummeryfilterdataReportManagement/TicketsalesummeryfilterdataReportAppConfig';
+import PostDateChequeReportAppConfig from '../rams/PostDateChequeReportManagement/PostDateChequeReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -174,6 +175,7 @@ const appsConfigs = [
   ManpowerNoteSheetAppConfig,
   BmetApplicationAppConfig,
   ReceiptReportAppConfig,
+  PostDateChequeReportAppConfig,
   PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
   AccountStatementReportAppConfig,
