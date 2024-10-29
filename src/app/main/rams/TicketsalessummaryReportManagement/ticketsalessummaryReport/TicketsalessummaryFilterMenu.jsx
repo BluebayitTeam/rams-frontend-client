@@ -131,7 +131,7 @@ function TicketsalessummarysFilterMenu({
         {/* AirWay */}
         <ReportSelect
           {...commonFieldProps}
-          name='airway'
+          name='current_airway'
           options={airways}
           icon='local_activityIcon'
           width='45px'
@@ -140,7 +140,7 @@ function TicketsalessummarysFilterMenu({
         {/* Coustomer */}
         <ReportSelectFirstAgentCode
           {...commonFieldProps}
-          name='agent'
+          name='customer'
           label='Coustomer'
           options={agents}
           icon='person_icon'
@@ -193,13 +193,13 @@ function TicketsalessummarysFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='airway'
+          name='current_airway'
           icon='local_activityIcon'
         />
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='agent'
+          name='customer'
           label='Coustomer'
           icon='person_icon'
         />
