@@ -142,6 +142,7 @@ function TicketsalesummeryfilterdataReportsTable(props) {
 
   const componentRef = useRef(null);
   const routeParams = useParams();
+  console.log('routeParams', routeParams);
 
   const filterData = watch();
 

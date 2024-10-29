@@ -120,7 +120,7 @@ function TicketsalessummaryReportsTable(props) {
           <VisibilityIcon
             onClick={() => {
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports?customer=${data.customer?.id}`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports?customer/${data?.customer?.id}`
               );
             }}
             className='h-22 cursor-pointer'
