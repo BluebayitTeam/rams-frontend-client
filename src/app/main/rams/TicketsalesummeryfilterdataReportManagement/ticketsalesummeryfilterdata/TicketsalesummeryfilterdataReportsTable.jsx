@@ -197,7 +197,11 @@ function TicketsalesummeryfilterdataReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedTicketsalesummeryfilterdataData(
-        paginatedData?.iata_tickets || []
+        paginatedData?.iata_tickets.current_airways ||
+          paginatedData?.iata_tickets.customers ||
+          paginatedData?.iata_tickets.issue_persons ||
+          paginatedData?.iata_tickets.ticket_agencies ||
+          []
       );
 
       setTotalAmount(paginatedData.total_amount);
