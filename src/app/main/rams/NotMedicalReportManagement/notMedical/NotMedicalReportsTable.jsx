@@ -17,7 +17,7 @@ import {
   useGetNotMedicalAllReportsQuery,
   useGetNotMedicalReportsQuery,
 } from '../NotMedicalReportsApi';
-import NotMedicalFilterMenu from './NotMedicalMenu';
+
 import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,8 @@ const initialTableColumnsState = [
   {
     id: 4,
     label: 'Agent',
-    getterMethod: (data) => `${data.agent?.first_name || ''}`,
+    getterMethod: (data) => `${data?.agent || ''}`,
+
     show: true,
   },
   {
@@ -48,7 +49,8 @@ const initialTableColumnsState = [
   {
     id: 6,
     label: 'Current Status',
-    getterMethod: (data) => `${data?.current_status?.name || ''}`,
+    getterMethod: (data) => `${data?.current_status || ''}`,
+
     show: true,
   },
 ];
@@ -212,7 +214,7 @@ function NotMedicalReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Summary'
+              reportTitle='Not Medical Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

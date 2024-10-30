@@ -137,6 +137,7 @@ import TicketdeputeReportAppConfig from '../rams/TicketdeputeReportManagement/Ti
 import TicketsalessummaryReportAppConfig from '../rams/TicketsalessummaryReportManagement/TicketsalessummaryReportAppConfig';
 import TicketsalesummeryfilterdataReportAppConfig from '../rams/TicketsalesummeryfilterdataReportManagement/TicketsalesummeryfilterdataReportAppConfig';
 import PostDateChequeReportAppConfig from '../rams/PostDateChequeReportManagement/PostDateChequeReportAppConfig';
+import NotMedicalReportAppConfig from '../rams/NotMedicalReportManagement/NotMedicalReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -179,6 +180,7 @@ const appsConfigs = [
   PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
   AccountStatementReportAppConfig,
+  NotMedicalReportAppConfig,
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
   ReceiptSummaryReportAppConfig,
