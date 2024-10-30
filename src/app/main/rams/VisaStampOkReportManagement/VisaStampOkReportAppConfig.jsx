@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import VisaStampOkReportApp from './VisaStampOkApp';
-import VisaStampOksReport from './visaStampOk/VisaStampOkReport';
+import VisaStampOksReport from './visaStampOk/VisaStampOklReport';
+import VisaStampOkReportApp from './VisaStampOkReportApp';
 
 /**
  * The E-Commerce app configuration.

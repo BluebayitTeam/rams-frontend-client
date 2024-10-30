@@ -139,6 +139,7 @@ import TicketsalesummeryfilterdataReportAppConfig from '../rams/Ticketsalesummer
 import PostDateChequeReportAppConfig from '../rams/PostDateChequeReportManagement/PostDateChequeReportAppConfig';
 import NotMedicalReportAppConfig from '../rams/NotMedicalReportManagement/NotMedicalReportAppConfig';
 import MedicalFitReportAppConfig from '../rams/MedicalFitReportManagement/MedicalFitReportAppConfig';
+import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -167,6 +168,7 @@ const appsConfigs = [
   TicketPurchasesReportAppConfig,
   TicketsalessummaryReportAppConfig,
   TicketsalesummeryfilterdataReportAppConfig,
+  VisaStampOkReportAppConfig,
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
   MalefingerletterAppConfig,
