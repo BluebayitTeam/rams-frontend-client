@@ -29,83 +29,26 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+
+  { id: 2, label: 'Passenger Name', name: 'passenger_name', show: true },
+
+  { id: 3, label: 'Passenger Passport No', name: 'passport_no', show: true },
   {
     id: 4,
-    label: 'Pax Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    label: 'Agent',
+    getterMethod: (data) => `${data.agent?.first_name || ''}`,
     show: true,
   },
   {
     id: 5,
-    label: 'Issue Person',
-    getterMethod: (data) =>
-      `${data.issue_person?.first_name || ''}, ${data.issue_person?.last_name || ''}`,
-
+    label: 'Medical Status',
+    getterMethod: (data) => `${data.medical_result || 'Not Medical'}`,
     show: true,
   },
   {
     id: 6,
-    label: 'Ticket Agency',
-    getterMethod: (data) =>
-      `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
-    show: true,
-  },
-  {
-    id: 7,
-    label: 'Flight Date',
-    name: 'flight_date',
-    show: true,
-    type: 'date',
-  },
-  { id: 8, label: 'GDS', name: 'gds', show: true },
-  { id: 9, label: 'PNR', name: 'gds_pnr', show: true },
-  { id: 10, label: 'Airline PNR', name: 'airline_pnr', show: true },
-  {
-    id: 11,
-    label: 'Return Flight Date',
-    name: 'return_flight_date',
-    show: true,
-    type: 'date',
-  },
-  { id: 12, label: 'Ticket No', name: 'ticket_no', show: true },
-  { id: 13, label: 'FLT & Class', name: '_class', show: true },
-  {
-    id: 14,
-    label: 'Air Way',
-    name: 'current_airway',
-    subName: 'name',
-    show: true,
-  },
-  { id: 15, label: 'Sector Name', name: 'sector', show: true },
-  { id: 16, label: 'Fare Amount', name: 'fare_amount', show: true },
-  {
-    id: 17,
-    label: 'Airline Comission Amount',
-    name: 'airline_commission_amount',
-    show: true,
-  },
-  {
-    id: 18,
-    label: 'Customer Commission Amount',
-    name: 'customer_commission_amount',
-    show: true,
-  },
-  {
-    id: 19,
-    label: 'Tax Amount',
-    name: 'tax_amount',
-    subName: 'name',
-    show: true,
-  },
-  { id: 20, label: ' Sales Amount', name: 'sales_amount', show: true },
-  { id: 21, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
-  {
-    id: 22,
-    label: 'Profit ',
-    getterMethod: (data) => `${data.sales_amount - data.purchase_amount}`,
+    label: 'Current Status',
+    getterMethod: (data) => `${data?.current_status?.name || ''}`,
     show: true,
   },
 ];
