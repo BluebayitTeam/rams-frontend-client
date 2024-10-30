@@ -213,7 +213,7 @@ function FlightFlightDoneReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Visa Stamp Ok Report'
+              reportTitle='Flight Done Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
