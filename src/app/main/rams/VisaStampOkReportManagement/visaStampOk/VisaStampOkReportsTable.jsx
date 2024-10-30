@@ -212,7 +212,7 @@ function VisaStampOkReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Not Medical Report'
+              reportTitle='Visa Stamp Ok Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
