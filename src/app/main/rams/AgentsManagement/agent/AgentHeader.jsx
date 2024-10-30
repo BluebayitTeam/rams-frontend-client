@@ -7,60 +7,70 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateAgentMutation, useDeleteAgentMutation, useUpdateAgentMutation } from '../AgentsApi';
+import {
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateAgentMutation,
+  useDeleteAgentMutation,
+  useUpdateAgentMutation,
+} from '../AgentsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The agent header.
  */
 function AgentHeader() {
-	const routeParams = useParams();
-	const { agentId } = routeParams;
-	const [createAgent] = useCreateAgentMutation();
-	const [saveAgent] = useUpdateAgentMutation();
-	const [removeAgent] = useDeleteAgentMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, image, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteAgent');
-	const handleUpdate = localStorage.getItem('updateAgent');
+  const routeParams = useParams();
+  const { agentId } = routeParams;
+  const [createAgent] = useCreateAgentMutation();
+  const [saveAgent] = useUpdateAgentMutation();
+  const [removeAgent] = useDeleteAgentMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, image, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteAgent');
+  const handleUpdate = localStorage.getItem('updateAgent');
 
-	// console.log('image', image);
+  // console.log('image', image);
 
-	function handleUpdateAgent() {
-		saveAgent(getValues()).then((data) => {
-			UpdatedSuccessfully();
+  function handleUpdateAgent() {
+    saveAgent(getValues()).then((data) => {
+      UpdatedSuccessfully();
 
-			navigate(`/apps/agent/agents`);
-		});
-	}
+      navigate(`/apps/agent/agents`);
+    });
+  }
 
-	function handleCreateAgent() {
-		createAgent(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateAgent() {
+    createAgent(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/agent/agents`);
-			});
-	}
+        navigate(`/apps/agent/agents`);
+      });
+  }
 
-	function handleRemoveAgent(dispatch) {
-		removeAgent(agentId);
-		DeletedSuccessfully();
-		navigate('/apps/agent/agents');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveAgent(dispatch) {
+    removeAgent(agentId);
+    DeletedSuccessfully();
+    navigate('/apps/agent/agents');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/agent/agents`);
-	}
+  function handleCancel() {
+    navigate(`/apps/agent/agents`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
