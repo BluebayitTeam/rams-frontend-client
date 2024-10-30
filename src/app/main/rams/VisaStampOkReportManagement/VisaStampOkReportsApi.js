@@ -3,10 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-  GET_IATA_TICKET_SALES_SUMMARY_REPORT,
-  GET_IATA_TICKET_SALES_SUMMARY_REPORT_WITHOUT_PG,
-  GET_NOT_MEDICAL_LIST,
-  GET_NOT_MEDICAL_LIST_WITHOUT_PG,
+  GET_VISA_STAMP_OK_LIST,
+  GET_VISA_STAMP_OK_LIST_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -19,14 +17,14 @@ const VisaStampOkReportApi = api
     endpoints: (build) => ({
       getVisaStampOkReports: build.query({
         query: (filterData) => ({
-          url: GET_NOT_MEDICAL_LIST,
+          url: GET_VISA_STAMP_OK_LIST,
           params: filterData,
         }),
         providesTags: ['visaStampOkReports'],
       }),
       getVisaStampOkAllReports: build.query({
         query: (filterData) => ({
-          url: GET_NOT_MEDICAL_LIST_WITHOUT_PG,
+          url: GET_VISA_STAMP_OK_LIST_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['visaStampOkReports'],
