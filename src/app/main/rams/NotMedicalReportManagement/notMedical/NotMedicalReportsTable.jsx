@@ -116,14 +116,14 @@ function NotMedicalReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedNotMedicalData(allData.iata_tickets || []);
+      setModifiedNotMedicalData(allData.not_medicals || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.iata_tickets,
+        allData.not_medicals,
         size,
         page
       );
@@ -133,7 +133,7 @@ function NotMedicalReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedNotMedicalData(paginatedData?.iata_tickets || []);
+      setModifiedNotMedicalData(paginatedData?.not_medicals || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
