@@ -193,7 +193,7 @@ function MedicalFitReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Not Medical Report'
+              reportTitle='Medical Fit Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
