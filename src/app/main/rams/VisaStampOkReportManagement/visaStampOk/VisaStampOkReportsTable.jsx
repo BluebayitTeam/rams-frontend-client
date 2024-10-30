@@ -30,27 +30,45 @@ const schema = z.object({});
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
 
-  { id: 2, label: 'Passenger Name', name: 'passenger_name', show: true },
+  {
+    id: 2,
+    label: 'Passenger Name',
+    name: 'passenger',
+    subName: 'passenger_name',
+    show: true,
+  },
 
-  { id: 3, label: 'Passenger Passport No', name: 'passport_no', show: true },
+  {
+    id: 3,
+    label: 'Passenger Passport No',
+    name: 'passenger',
+    subName: 'passport_no',
+    show: true,
+  },
   {
     id: 4,
     label: 'Agent',
-    getterMethod: (data) => `${data?.agent || ''}`,
-
+    getterMethod: (data) => `${data.agent?.first_name || ''} `,
     show: true,
   },
   {
     id: 5,
-    label: 'Medical Status',
-    getterMethod: (data) => `${data.medical_result || 'Not Medical'}`,
+    label: 'Current Status',
+    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
     show: true,
   },
   {
     id: 6,
-    label: 'Current Status',
-    getterMethod: (data) => `${data?.current_status || ''}`,
-
+    label: 'Visa No',
+    name: 'visa_entry',
+    subName: 'visa_number',
+    show: true,
+  },
+  {
+    id: 7,
+    label: 'Sponsor No',
+    name: 'visa_entry',
+    subName: 'sponsor_id_no',
     show: true,
   },
 ];
