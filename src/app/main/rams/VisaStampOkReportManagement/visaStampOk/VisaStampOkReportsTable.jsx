@@ -14,9 +14,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetNotMedicalAllReportsQuery,
-  useGetNotMedicalReportsQuery,
-} from '../NotMedicalReportsApi';
+  useGetVisaStampOkAllReportsQuery,
+  useGetVisaStampOkReportsQuery,
+} from '../VisaStampOkReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -55,7 +55,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function NotMedicalReportsTable(props) {
+function VisaStampOkReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -66,7 +66,7 @@ function NotMedicalReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedNotMedicalData, setModifiedNotMedicalData] = useReportData();
+  const [modifiedVisaStampOkData, setModifiedVisaStampOkData] = useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -88,7 +88,7 @@ function NotMedicalReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetNotMedicalReportsQuery(
+  const { data: paginatedData } = useGetVisaStampOkReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
@@ -103,7 +103,7 @@ function NotMedicalReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetNotMedicalAllReportsQuery(
+  const { data: allData } = useGetVisaStampOkAllReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
@@ -118,7 +118,7 @@ function NotMedicalReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedNotMedicalData(allData.not_medicals || []);
+      setModifiedVisaStampOkData(allData.not_medicals || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
@@ -135,7 +135,7 @@ function NotMedicalReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedNotMedicalData(paginatedData?.not_medicals || []);
+      setModifiedVisaStampOkData(paginatedData?.not_medicals || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -155,7 +155,7 @@ function NotMedicalReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetNotMedicals = useCallback(async (newPage) => {
+  const handleGetVisaStampOks = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -164,10 +164,10 @@ function NotMedicalReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllNotMedicals = useCallback(async () => {
+  const handleGetAllVisaStampOks = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all notMedicals:', error);
+      console.error('Error fetching all visaStampOks:', error);
     }
   }, []);
 
@@ -193,24 +193,24 @@ function NotMedicalReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetNotMedicals(1)}
-        onPreviousPage={() => handleGetNotMedicals(page - 1)}
-        onNextPage={() => handleGetNotMedicals(page + 1)}
-        onLastPage={() => handleGetNotMedicals(totalPages)}
+        onFirstPage={() => handleGetVisaStampOks(1)}
+        onPreviousPage={() => handleGetVisaStampOks(page - 1)}
+        onNextPage={() => handleGetVisaStampOks(page + 1)}
+        onLastPage={() => handleGetVisaStampOks(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetNotMedicals}
-        handleGetAllData={handleGetAllNotMedicals}
+        handleGetData={handleGetVisaStampOks}
+        handleGetAllData={handleGetAllVisaStampOks}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='NotMedicalReport'
+        filename='VisaStampOkReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedNotMedicalData.map((notMedical, index) => (
+          {modifiedVisaStampOkData.map((visaStampOk, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -218,13 +218,13 @@ function NotMedicalReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={notMedical}
+              data={visaStampOk}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * notMedical.data.length + 1
-                  : notMedical.page * notMedical.size - notMedical.size + 1
+                  ? page * size - size + index * visaStampOk.data.length + 1
+                  : visaStampOk.page * visaStampOk.size - visaStampOk.size + 1
               }
               setPage={setPage}
             />
@@ -235,4 +235,4 @@ function NotMedicalReportsTable(props) {
   );
 }
 
-export default NotMedicalReportsTable;
+export default VisaStampOkReportsTable;

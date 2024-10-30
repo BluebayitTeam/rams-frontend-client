@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import NotMedicalsReportsTable from './NotMedicalReportsTable';
+import VisaStampOksReportsTable from './VisaStampOkReportsTable';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
@@ -14,11 +14,11 @@ import { useTheme } from '@mui/material/styles';
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a notMedicalsReport name')
-    .min(5, 'The notMedicalsReport name must be at least 5 characters'),
+    .nonempty('You must enter a visaStampOksReport name')
+    .min(5, 'The visaStampOksReport name must be at least 5 characters'),
 });
 
-function NotMedicalsReport() {
+function VisaStampOksReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -50,10 +50,10 @@ function NotMedicalsReport() {
           </Typography>
         </motion.div>
       }
-      content={<NotMedicalsReportsTable />}
+      content={<VisaStampOksReportsTable />}
       innerScroll
     />
   );
 }
 
-export default NotMedicalsReport;
+export default VisaStampOksReport;
