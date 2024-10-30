@@ -140,6 +140,7 @@ import PostDateChequeReportAppConfig from '../rams/PostDateChequeReportManagemen
 import NotMedicalReportAppConfig from '../rams/NotMedicalReportManagement/NotMedicalReportAppConfig';
 import MedicalFitReportAppConfig from '../rams/MedicalFitReportManagement/MedicalFitReportAppConfig';
 import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig';
+import FlightFlightDoneReportAppConfig from '../rams/FlightFlightDoneReportManagement/FlightFlightDoneReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -171,6 +172,7 @@ const appsConfigs = [
   VisaStampOkReportAppConfig,
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
+  FlightFlightDoneReportAppConfig,
   MalefingerletterAppConfig,
   MultipleStatusUpdateAppConfig,
   MalaysiaVisaAppConfig,

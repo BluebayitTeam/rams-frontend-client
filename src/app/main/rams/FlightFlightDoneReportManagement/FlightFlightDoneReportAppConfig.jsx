@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import FlightFlightDonesReport from './flightFlightDone/FlightFlightDonelReport';
 import FlightFlightDoneReportApp from './FlightFlightDoneReportApp';
+import FlightFlightDonesReport from './flightFlightDone/FlightFlightDoneReport';
 
 /**
  * The E-Commerce app configuration.
