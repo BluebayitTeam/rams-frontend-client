@@ -5,6 +5,8 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
   GET_IATA_TICKET_SALES_SUMMARY_REPORT,
   GET_IATA_TICKET_SALES_SUMMARY_REPORT_WITHOUT_PG,
+  GET_NOT_MEDICAL_LIST,
+  GET_NOT_MEDICAL_LIST_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -17,14 +19,14 @@ const NotMedicalReportApi = api
     endpoints: (build) => ({
       getNotMedicalReports: build.query({
         query: (filterData) => ({
-          url: GET_IATA_TICKET_SALES_SUMMARY_REPORT,
+          url: GET_NOT_MEDICAL_LIST,
           params: filterData,
         }),
         providesTags: ['notMedicalReports'],
       }),
       getNotMedicalAllReports: build.query({
         query: (filterData) => ({
-          url: GET_IATA_TICKET_SALES_SUMMARY_REPORT_WITHOUT_PG,
+          url: GET_NOT_MEDICAL_LIST_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['notMedicalReports'],

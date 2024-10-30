@@ -158,19 +158,18 @@ function NotMedicalReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData, refetch: refetchAllNotMedicalReports } =
-    useGetNotMedicalAllReportsQuery(
-      {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        branch: filterData.branch || '',
-        current_airway: filterData.current_airway || '',
-        customer: filterData.customer || '',
-        ticket_agency: filterData.ticket_agency || '',
-        issue_person: filterData.issue_person || '',
-      },
-      { skip: !inShowAllMode }
-    );
+  const { data: allData } = useGetNotMedicalAllReportsQuery(
+    {
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      branch: filterData.branch || '',
+      current_airway: filterData.current_airway || '',
+      customer: filterData.customer || '',
+      ticket_agency: filterData.ticket_agency || '',
+      issue_person: filterData.issue_person || '',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
@@ -239,13 +238,6 @@ function NotMedicalReportsTable(props) {
 
   return (
     <div className={classes.headContainer}>
-      <FormProvider {...methods}>
-        <NotMedicalFilterMenu
-          inShowAllMode={inShowAllMode}
-          handleGetNotMedicals={handleGetNotMedicals}
-          handleGetAllNotMedicals={handleGetAllNotMedicals}
-        />
-      </FormProvider>
       <ReportPaginationAndDownload
         page={page}
         size={size}
