@@ -50,7 +50,7 @@ function TicketsalesummeryfilterdatasFilterMenu({
   );
 
   useEffect(() => {
-    if (issuepersonId) {
+    if (issuepersonId || agentId || airwayId || ticketId) {
       setValue('issue_person', issuepersonId);
       setValue('ticket_agency', agentId);
       setValue('current_airway', airwayId);
