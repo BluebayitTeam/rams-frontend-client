@@ -29,50 +29,55 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-
   {
     id: 2,
+    label: 'Flight Date',
+    name: 'flight_date',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 3,
     label: 'Passenger Name',
     name: 'passenger',
     subName: 'passenger_name',
     show: true,
   },
-
   {
-    id: 3,
+    id: 4,
     label: 'Passenger Passport No',
     name: 'passenger',
     subName: 'passport_no',
     show: true,
   },
   {
-    id: 4,
-    label: 'Agent',
-    getterMethod: (data) => `${data.agent?.first_name || ''} `,
-    show: true,
-  },
-  {
     id: 5,
-    label: 'Current Status',
-    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
+    label: 'Country',
+    getterMethod: (data) => `${data.passenger?.target_country?.name || ''} `,
     show: true,
   },
   {
     id: 6,
+    label: 'Agent',
+    getterMethod: (data) => `${data.agent?.first_name || ''} `,
+    show: true,
+  },
+
+  {
+    id: 7,
     label: 'Visa No',
     name: 'visa_entry',
     subName: 'visa_number',
     show: true,
   },
+  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
   {
-    id: 7,
-    label: 'Sponsor No',
-    name: 'visa_entry',
-    subName: 'sponsor_id_no',
+    id: 9,
+    label: 'Current Status',
+    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
     show: true,
   },
 ];
-
 function FlightFlightDoneReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
