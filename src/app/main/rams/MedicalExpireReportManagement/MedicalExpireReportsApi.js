@@ -3,6 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
+  GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT,
+  GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT_WITHOUT_PG,
   GET_FLIGHT_FLIGHT_DONE_LIST,
   GET_FLIGHT_FLIGHT_DONE_LIST_WITHOUT_PG,
   GET_UPCOMING_MEDICAL_COUNT,
@@ -18,14 +20,14 @@ const MedicalExpireReportApi = api
     endpoints: (build) => ({
       getMedicalExpireReports: build.query({
         query: (filterData) => ({
-          url: GET_UPCOMING_MEDICAL_COUNT,
+          url: GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT,
           params: filterData,
         }),
         providesTags: ['medicalExpireReports'],
       }),
       getMedicalExpireAllReports: build.query({
         query: (filterData) => ({
-          url: GET_FLIGHT_FLIGHT_DONE_LIST_WITHOUT_PG,
+          url: GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['medicalExpireReports'],

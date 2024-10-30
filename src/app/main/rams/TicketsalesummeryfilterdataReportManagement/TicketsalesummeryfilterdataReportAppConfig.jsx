@@ -20,7 +20,7 @@ const TicketsalesummeryfilterdataReportAppConfig = {
         },
 
         {
-          path: 'ticketsalesummeryfilterdataReports/:ticketsalesummeryfilterdataReportId?/*',
+          path: 'ticketsalesummeryfilterdataReports/:ticketId?/:airwayId?/:agentId?/:issuepersonId?',
           element: <TicketsalesummeryfilterdatasReport />,
         },
       ],

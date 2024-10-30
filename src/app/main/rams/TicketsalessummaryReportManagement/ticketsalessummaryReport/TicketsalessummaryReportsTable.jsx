@@ -60,7 +60,7 @@ function TicketsalessummaryReportsTable(props) {
             onClick={() => {
               sessionStorage.setItem('ticket_agency', data.ticket_agency?.id);
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/:date_before/:date_after/:current_airway/:customer/:ticket_agency/:branch/:issue_person?`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/${data.ticket_agency?.id || ''}/${null}/${null}/${null}`
               );
             }}
             className='h-22 cursor-pointer'
@@ -92,7 +92,7 @@ function TicketsalessummaryReportsTable(props) {
             onClick={() => {
               // sessionStorage.setItem('current_airway', data.current_airway?.id);
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/${data.current_airway?.id}`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/${null}/${data.current_airway?.id || ''}/${null}/${null}`
               );
             }}
             className='h-22 cursor-pointer'
@@ -121,7 +121,7 @@ function TicketsalessummaryReportsTable(props) {
           <VisibilityIcon
             onClick={() => {
               navigate(
-                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports?customer/${data?.customer?.id}`
+                `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/${null}/${null}/${data.customer?.id || ''}/${null}`
               );
             }}
             className='h-22 cursor-pointer'
@@ -151,8 +151,7 @@ function TicketsalessummaryReportsTable(props) {
             onClick={() => {
               sessionStorage.setItem('issue_person', data.issue_person?.id);
               navigate({
-                pathname:
-                  '/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports',
+                pathname: `/apps/ticketsalesummeryfilterdataReport/ticketsalesummeryfilterdataReports/${null}/${null}/${null}/${data.issue_person?.id || ''}`,
               });
             }}
             className='h-22 cursor-pointer'

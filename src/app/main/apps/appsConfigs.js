@@ -141,6 +141,7 @@ import NotMedicalReportAppConfig from '../rams/NotMedicalReportManagement/NotMed
 import MedicalFitReportAppConfig from '../rams/MedicalFitReportManagement/MedicalFitReportAppConfig';
 import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig';
 import FlightFlightDoneReportAppConfig from '../rams/FlightFlightDoneReportManagement/FlightFlightDoneReportAppConfig';
+import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/MedicalExpireReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -174,6 +175,7 @@ const appsConfigs = [
   MedicalReportAppConfig,
   FlightFlightDoneReportAppConfig,
   MalefingerletterAppConfig,
+  MedicalExpireReportAppConfig,
   MultipleStatusUpdateAppConfig,
   MalaysiaVisaAppConfig,
   ActivityLogReportAppConfig,

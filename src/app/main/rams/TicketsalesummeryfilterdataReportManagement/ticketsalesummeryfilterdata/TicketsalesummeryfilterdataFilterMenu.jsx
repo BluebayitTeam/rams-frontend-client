@@ -22,6 +22,7 @@ import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -35,8 +36,27 @@ function TicketsalesummeryfilterdatasFilterMenu({
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const methods = useFormContext();
+  const { methods, setValue } = useFormContext();
+  const routeParams = useParams();
 
+  const { issuepersonId, agentId, airwayId, ticketId } = routeParams;
+
+  console.log(
+    ' issuepersonId, agentId, airwayId, ticketId ',
+    issuepersonId,
+    agentId,
+    airwayId,
+    ticketId
+  );
+
+  useEffect(() => {
+    if (issuepersonId) {
+      setValue('issue_person', issuepersonId);
+      setValue('ticket_agency', agentId);
+      setValue('current_airway', airwayId);
+      setValue('ticket_agency', ticketId);
+    }
+  }, [issuepersonId, agentId, airwayId, ticketId]);
   const theme = useTheme();
 
   const [loop, setLoop] = useState(true);

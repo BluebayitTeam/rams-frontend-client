@@ -1,12 +1,12 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import MedicalExpiresReportsTable from './MedicalExpireReportsTable';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import MedicalExpireReportsTable from './MedicalExpiresReportsTable';
 
 /**
  * Form Validation Schema
@@ -53,7 +53,7 @@ function MedicalExpiresReport() {
           </Typography>
         </motion.div>
       }
-      content={<MedicalExpiresReportsTable />}
+      content={<MedicalExpireReportsTable />}
       innerScroll
     />
   );
