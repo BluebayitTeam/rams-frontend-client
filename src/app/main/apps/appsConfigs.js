@@ -138,6 +138,7 @@ import TicketsalessummaryReportAppConfig from '../rams/TicketsalessummaryReportM
 import TicketsalesummeryfilterdataReportAppConfig from '../rams/TicketsalesummeryfilterdataReportManagement/TicketsalesummeryfilterdataReportAppConfig';
 import PostDateChequeReportAppConfig from '../rams/PostDateChequeReportManagement/PostDateChequeReportAppConfig';
 import NotMedicalReportAppConfig from '../rams/NotMedicalReportManagement/NotMedicalReportAppConfig';
+import MedicalFitReportAppConfig from '../rams/MedicalFitReportManagement/MedicalFitReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -172,6 +173,7 @@ const appsConfigs = [
   MultipleStatusUpdateAppConfig,
   MalaysiaVisaAppConfig,
   ActivityLogReportAppConfig,
+  MedicalFitReportAppConfig,
   ContactsAppConfig,
   ManpowerNoteSheetAppConfig,
   BmetApplicationAppConfig,
