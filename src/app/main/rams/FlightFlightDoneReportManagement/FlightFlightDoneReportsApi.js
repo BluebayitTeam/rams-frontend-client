@@ -3,8 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-  GET_VISA_STAMP_OK_LIST,
-  GET_VISA_STAMP_OK_LIST_WITHOUT_PG,
+  GET_FLIGHT_FLIGHT_DONE_LIST,
+  GET_FLIGHT_FLIGHT_DONE_LIST_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -17,14 +17,14 @@ const FlightFlightDoneReportApi = api
     endpoints: (build) => ({
       getFlightFlightDoneReports: build.query({
         query: (filterData) => ({
-          url: GET_VISA_STAMP_OK_LIST,
+          url: GET_FLIGHT_FLIGHT_DONE_LIST,
           params: filterData,
         }),
         providesTags: ['flightFlightDoneReports'],
       }),
       getFlightFlightDoneAllReports: build.query({
         query: (filterData) => ({
-          url: GET_VISA_STAMP_OK_LIST_WITHOUT_PG,
+          url: GET_FLIGHT_FLIGHT_DONE_LIST_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['flightFlightDoneReports'],
