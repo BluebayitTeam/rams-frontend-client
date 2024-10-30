@@ -88,44 +88,24 @@ function VisaStampOkReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetVisaStampOkReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      branch: filterData.branch || '',
-      current_airway: filterData.current_airway || '',
-      customer: filterData.customer || '',
-      ticket_agency: filterData.ticket_agency || '',
-      issue_person: filterData.issue_person || '',
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
+  const { data: paginatedData } = useGetVisaStampOkReportsQuery({
+    skip: inShowAllMode,
+  });
 
-  const { data: allData } = useGetVisaStampOkAllReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      branch: filterData.branch || '',
-      current_airway: filterData.current_airway || '',
-      customer: filterData.customer || '',
-      ticket_agency: filterData.ticket_agency || '',
-      issue_person: filterData.issue_person || '',
-    },
-    { skip: !inShowAllMode }
-  );
+  const { data: allData } = useGetVisaStampOkAllReportsQuery({
+    skip: !inShowAllMode,
+  });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedVisaStampOkData(allData.not_medicals || []);
+      setModifiedVisaStampOkData(allData.stamp_oks || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.not_medicals,
+        allData.stamp_oks,
         size,
         page
       );
@@ -135,7 +115,7 @@ function VisaStampOkReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedVisaStampOkData(paginatedData?.not_medicals || []);
+      setModifiedVisaStampOkData(paginatedData?.stamp_oks || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
