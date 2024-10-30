@@ -122,14 +122,14 @@ function FlightFlightDoneReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedFlightFlightDoneData(allData.stamp_oks || []);
+      setModifiedFlightFlightDoneData(allData.flight_dones || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.stamp_oks,
+        allData.flight_dones,
         size,
         page
       );
@@ -139,7 +139,7 @@ function FlightFlightDoneReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedFlightFlightDoneData(paginatedData?.stamp_oks || []);
+      setModifiedFlightFlightDoneData(paginatedData?.flight_dones || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
