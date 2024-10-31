@@ -228,7 +228,7 @@ function VisaExpireReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Medical Expires Report'
+              reportTitle='Visa Expires Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
