@@ -43,7 +43,13 @@ const initialTableColumnsState = [
     subName: 'passport_no',
     show: true,
   },
-  { id: 4, label: 'Country', name: 'country', subName: 'name', show: true },
+  {
+    id: 4,
+    label: 'Country',
+    name: 'target_country',
+    subName: 'name',
+    show: true,
+  },
   {
     id: 5,
     label: 'Profession',
