@@ -111,12 +111,11 @@ function MedicalExpireReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-  const [noOfDays, setNoOfDays] = useState(15);
-  console.log('noOfDays', noOfDays);
 
   const componentRef = useRef(null);
   const routeParams = useParams();
-  // const { noOfDays } = routeParams;
+
+  const { noOfDays } = routeParams;
   const filterData = watch();
 
   const { data: paginatedData } = useGetMedicalExpireReportsQuery({
