@@ -45,9 +45,12 @@ const initialTableColumnsState = [
   },
   {
     id: 4,
-    label: 'Country',
+    label: 'country',
     name: 'target_country',
-    subName: 'name',
+
+    getterMethod: (data) => console.log('sdfdskfhksdhfd', data),
+    // `${data.passenger?.target_country?.name || ''}`
+
     show: true,
   },
   {
