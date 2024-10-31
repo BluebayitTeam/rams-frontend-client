@@ -46,18 +46,19 @@ const initialTableColumnsState = [
   {
     id: 4,
     label: 'country',
-    name: 'target_country',
 
-    getterMethod: (data) => console.log('sdfdskfhksdhfd', data),
-    // `${data.passenger?.target_country?.name || ''}`
+    getterMethod: (data) =>
+      // console.log('sdfdskfhksdhfd', ),
+      `${data?.passenger?.target_country?.name || ''}`,
 
     show: true,
   },
   {
     id: 5,
     label: 'Profession',
-    name: 'profession',
-    subName: 'name',
+    getterMethod: (data) => console.log('sdfdskfhksdhfd', data),
+    // `${data?.passenger?.target_country?.name || ''}`,
+
     show: true,
   },
   {
