@@ -142,6 +142,7 @@ import MedicalFitReportAppConfig from '../rams/MedicalFitReportManagement/Medica
 import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/VisaStampOkReportAppConfig';
 import FlightFlightDoneReportAppConfig from '../rams/FlightFlightDoneReportManagement/FlightFlightDoneReportAppConfig';
 import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/MedicalExpireReportAppConfig';
+import VisaExpireReportAppConfig from '../rams/VisaExpireReportManagement/VisaExpireReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -173,6 +174,7 @@ const appsConfigs = [
   VisaStampOkReportAppConfig,
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
+  VisaExpireReportAppConfig,
   FlightFlightDoneReportAppConfig,
   MalefingerletterAppConfig,
   MedicalExpireReportAppConfig,
