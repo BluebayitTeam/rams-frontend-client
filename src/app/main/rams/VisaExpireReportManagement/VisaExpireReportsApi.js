@@ -5,6 +5,8 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
   GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT,
   GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT_WITHOUT_PG,
+  GET_EXPIRABLE_VISA_NOTOFICATION_REPORT,
+  GET_EXPIRABLE_VISA_NOTOFICATION_REPORT_WITHOUT_PG,
   GET_FLIGHT_FLIGHT_DONE_LIST,
   GET_FLIGHT_FLIGHT_DONE_LIST_WITHOUT_PG,
   GET_UPCOMING_MEDICAL_COUNT,
@@ -20,14 +22,14 @@ const VisaExpireReportApi = api
     endpoints: (build) => ({
       getVisaExpireReports: build.query({
         query: (filterData) => ({
-          url: GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT,
+          url: GET_EXPIRABLE_VISA_NOTOFICATION_REPORT,
           params: filterData,
         }),
         providesTags: ['visaExpireReports'],
       }),
       getVisaExpireAllReports: build.query({
         query: (filterData) => ({
-          url: GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT_WITHOUT_PG,
+          url: GET_EXPIRABLE_VISA_NOTOFICATION_REPORT_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['visaExpireReports'],
