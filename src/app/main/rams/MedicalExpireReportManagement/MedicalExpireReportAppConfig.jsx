@@ -20,7 +20,7 @@ const MedicalExpireReportAppConfig = {
         },
 
         {
-          path: 'medicalExpireReports/:medicalExpireReportId?/*',
+          path: 'medicalExpireReports/:noOfDays?/*',
           element: <MedicalExpiresReport />,
         },
       ],

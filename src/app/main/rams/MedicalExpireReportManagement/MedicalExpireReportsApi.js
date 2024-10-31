@@ -21,14 +21,14 @@ const MedicalExpireReportApi = api
       getMedicalExpireReports: build.query({
         query: (filterData) => ({
           url: GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT,
-          params: { no_of_days: filterData?.no_of_days },
+          params: filterData,
         }),
         providesTags: ['medicalExpireReports'],
       }),
       getMedicalExpireAllReports: build.query({
         query: (filterData) => ({
           url: GET_EXPIRABLE_MEDICAL_NOTOFICATION_REPORT_WITHOUT_PG,
-          params: { no_of_days: filterData?.no_of_days },
+          params: filterData,
         }),
         providesTags: ['medicalExpireReports'],
       }),

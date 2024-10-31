@@ -104,45 +104,54 @@ function MedicalExpireReportsTable(props) {
   );
 
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [noOfDays, setNoOfDays] = useState(15);
+  console.log('noOfDays', noOfDays);
 
   const componentRef = useRef(null);
   const routeParams = useParams();
-
+  // const { noOfDays } = routeParams;
   const filterData = watch();
 
   const { data: paginatedData } = useGetMedicalExpireReportsQuery({
-    date_after: filterData.date_after,
+    no_of_days: noOfDays || '',
+    page,
+    size,
+    skip: inShowAllMode,
   });
 
-  const { data: allData } = useGetMedicalExpireAllReportsQuery({});
+  const { data: allData } = useGetMedicalExpireAllReportsQuery({
+    no_of_days: noOfDays || '',
+    page,
+    size,
+    skip: !inShowAllMode,
+  });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMedicalExpireData(allData.flight_dones || []);
+      setModifiedMedicalExpireData(allData.medicals || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.flight_dones,
+        allData.medicals,
         size,
         page
       );
-
       setPage(page || 1);
       setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalExpireData(paginatedData?.flight_dones || []);
+      setModifiedMedicalExpireData(paginatedData?.medicals || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
