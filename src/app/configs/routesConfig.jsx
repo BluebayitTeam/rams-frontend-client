@@ -13,36 +13,39 @@ import UserInterfaceConfigs from '../main/user-interface/UserInterfaceConfigs';
 import authRoleExamplesConfigs from '../main/auth/authRoleExamplesConfigs';
 
 const routeConfigs = [
-	SignOutConfig,
-	SignInConfig,
-	SignUpConfig,
-	...PagesConfigs,
-	...UserInterfaceConfigs,
-	...DashboardsConfigs,
-	...AppsConfigs,
-	...authRoleExamplesConfigs
+  SignOutConfig,
+  SignInConfig,
+  SignUpConfig,
+  ...PagesConfigs,
+  ...UserInterfaceConfigs,
+  ...DashboardsConfigs,
+  ...AppsConfigs,
+  ...authRoleExamplesConfigs,
 ];
 /**
  * The routes of the application.
  */
 const routes = [
-	...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
-	{
-		path: '/',
-		element: <Navigate to="/dashboards/project" />,
-		auth: settingsConfig.defaultAuth
-	},
-	{
-		path: 'loading',
-		element: <FuseLoading />
-	},
-	{
-		path: '404',
-		element: <Error404Page />
-	},
-	{
-		path: '*',
-		element: <Navigate to="404" />
-	}
+  ...FuseUtils.generateRoutesFromConfigs(
+    routeConfigs,
+    settingsConfig.defaultAuth
+  ),
+  {
+    path: '/dashboards/project',
+    element: <Navigate to='/dashboards/project' />,
+    auth: settingsConfig.defaultAuth,
+  },
+  {
+    path: 'loading',
+    element: <FuseLoading />,
+  },
+  {
+    path: '404',
+    element: <Error404Page />,
+  },
+  {
+    path: '*',
+    element: <Navigate to='404' />,
+  },
 ];
 export default routes;

@@ -123,7 +123,7 @@ function ProjectDashboardAppHeader() {
           open={Boolean(selectedProject.menuEl)}
           onClose={handleCloseProjectMenu}>
           {projects &&
-            projects.map((project) => (
+            projects?.map((project) => (
               <MenuItem
                 key={project.id}
                 onClick={() => {
