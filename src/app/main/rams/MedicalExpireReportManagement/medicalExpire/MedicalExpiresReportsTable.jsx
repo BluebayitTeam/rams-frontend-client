@@ -118,12 +118,10 @@ function MedicalExpireReportsTable(props) {
   const filterData = watch();
 
   const { data: paginatedData } = useGetMedicalExpireReportsQuery({
-    skip: inShowAllMode,
+    date_after: filterData.date_after,
   });
 
-  const { data: allData } = useGetMedicalExpireAllReportsQuery({
-    skip: !inShowAllMode,
-  });
+  const { data: allData } = useGetMedicalExpireAllReportsQuery({});
 
   useEffect(() => {
     if (inShowAllMode && allData) {
@@ -223,7 +221,7 @@ function MedicalExpireReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Flight Done Report'
+              reportTitle='Medical Expires Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
