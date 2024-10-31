@@ -133,14 +133,14 @@ function VisaExpireReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedVisaExpireData(allData.medicals || []);
+      setModifiedVisaExpireData(allData.embassies || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.medicals,
+        allData.embassies,
         size,
         page
       );
@@ -149,7 +149,7 @@ function VisaExpireReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedVisaExpireData(paginatedData?.medicals || []);
+      setModifiedVisaExpireData(paginatedData?.embassies || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
