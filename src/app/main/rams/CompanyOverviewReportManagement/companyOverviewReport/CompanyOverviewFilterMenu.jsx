@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import { getAgents, getLedgers, getSubLedgers } from 'app/store/dataSlice';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,8 +53,7 @@ function CompanyOverviewFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getLedgers());
-    dispatch(getSubLedgers());
+    dispatch(getAgents());
   }, []);
   console.log('sadhbjkasbdkj', getValues());
   return (
