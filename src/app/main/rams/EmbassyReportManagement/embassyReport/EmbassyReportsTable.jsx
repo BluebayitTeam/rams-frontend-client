@@ -16,11 +16,11 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredMedicalReports,
-  useGetMedicalAllReportsQuery,
-  useGetMedicalReportsQuery,
-} from '../MedicalReportsApi';
-import MedicalFilterMenu from './EmbassyFilterMenu';
+  selectFilteredEmbassyReports,
+  useGetEmbassyAllReportsQuery,
+  useGetEmbassyReportsQuery,
+} from '../EmbassyReportsApi';
+import EmbassyFilterMenu from './EmbassyFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -31,7 +31,7 @@ const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
 ];
 
-function MedicalReportsTable(props) {
+function EmbassyReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -42,8 +42,8 @@ function MedicalReportsTable(props) {
   const { watch, getValues } = methods;
   const [initialTableColumnsState, setInitialTableColumnsState] = useState([]);
   const [
-    modifiedMedicalData,
-    setModifiedMedicalData,
+    modifiedEmbassyData,
+    setModifiedEmbassyData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -72,7 +72,7 @@ function MedicalReportsTable(props) {
 
   console.log('filterData', getValues());
 
-  const { data: paginatedData } = useGetMedicalReportsQuery(
+  const { data: paginatedData } = useGetEmbassyReportsQuery(
     {
       report_date_after: filterData.report_date_after || '',
       report_date_before: filterData.report_date_before || '',
@@ -95,7 +95,7 @@ function MedicalReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetMedicalAllReportsQuery(
+  const { data: allData } = useGetEmbassyAllReportsQuery(
     {
       report_date_after: filterData.report_date_after || '',
       report_date_before: filterData.report_date_before || '',
@@ -116,7 +116,7 @@ function MedicalReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredMedicalReports);
+  const totalData = useSelector(selectFilteredEmbassyReports);
   const generateDynamicColumns = (data) => {
     // Start with the static "SL" column
     const staticSLColumn = {
@@ -141,12 +141,12 @@ function MedicalReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMedicalData(allData?.medicals || []);
+      setModifiedEmbassyData(allData?.embassys || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.medicals,
+        allData.embassys,
         size,
         page
       );
@@ -155,9 +155,9 @@ function MedicalReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalData(paginatedData?.medicals || []);
+      setModifiedEmbassyData(paginatedData?.embassys || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.medicals[0] || {})
+        generateDynamicColumns(paginatedData?.embassys[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -177,19 +177,19 @@ function MedicalReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetMedicals = useCallback(async (newPage) => {
+  const handleGetEmbassys = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching medicals:', error);
+      console.error('Error fetching embassys:', error);
     }
   }, []);
 
-  const handleGetAllMedicals = useCallback(async () => {
+  const handleGetAllEmbassys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicals:', error);
+      console.error('Error fetching all embassys:', error);
     }
   }, []);
 
@@ -207,7 +207,7 @@ function MedicalReportsTable(props) {
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Medical: getValues()?.medicalName || null,
+    Embassy: getValues()?.embassyName || null,
     Current_Status: getValues()?.current_statusName || null,
     Target_Country: getValues()?.target_countryName || null,
 
@@ -218,10 +218,10 @@ function MedicalReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <MedicalFilterMenu
+        <EmbassyFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetMedicals={handleGetMedicals}
-          handleGetAllMedicals={handleGetAllMedicals}
+          handleGetEmbassys={handleGetEmbassys}
+          handleGetAllEmbassys={handleGetAllEmbassys}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -234,17 +234,17 @@ function MedicalReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetMedicals(1)}
-        onPreviousPage={() => handleGetMedicals(page - 1)}
-        onNextPage={() => handleGetMedicals(page + 1)}
-        onLastPage={() => handleGetMedicals(totalPages)}
+        onFirstPage={() => handleGetEmbassys(1)}
+        onPreviousPage={() => handleGetEmbassys(page - 1)}
+        onNextPage={() => handleGetEmbassys(page + 1)}
+        onLastPage={() => handleGetEmbassys(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetMedicals}
-        handleGetAllData={handleGetAllMedicals}
+        handleGetData={handleGetEmbassys}
+        handleGetAllData={handleGetAllEmbassys}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalReport'
+        filename='EmbassyReport'
       />
 
       <table
@@ -252,20 +252,20 @@ function MedicalReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMedicalData?.map((medical, index) => (
+          {modifiedEmbassyData?.map((embassy, index) => (
             <SinglePageWithDynamicColumn
-              key={medical.id || index}
+              key={embassy.id || index}
               classes={classes}
-              reportTitle='Medical Report'
+              reportTitle='Embassy Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={medical}
+              data={embassy}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : medical.page * medical.size - medical.size + 1
+                  : embassy.page * embassy.size - embassy.size + 1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
@@ -280,4 +280,4 @@ function MedicalReportsTable(props) {
   );
 }
 
-export default MedicalReportsTable;
+export default EmbassyReportsTable;
