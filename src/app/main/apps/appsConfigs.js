@@ -144,6 +144,7 @@ import FlightFlightDoneReportAppConfig from '../rams/FlightFlightDoneReportManag
 import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/MedicalExpireReportAppConfig';
 import VisaExpireReportAppConfig from '../rams/VisaExpireReportManagement/VisaExpireReportAppConfig';
 import CompanyOverviewReportAppConfig from '../rams/CompanyOverviewReportManagement/CompanyOverviewReportAppConfig';
+import EmbassyReportAppConfig from '../rams/EmbassyReportManagement/EmbassyReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -191,6 +192,7 @@ const appsConfigs = [
   PostDateChequeReportAppConfig,
   PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
+  EmbassyReportAppConfig,
   AccountStatementReportAppConfig,
   NotMedicalReportAppConfig,
   FileManagerAppConfig,
