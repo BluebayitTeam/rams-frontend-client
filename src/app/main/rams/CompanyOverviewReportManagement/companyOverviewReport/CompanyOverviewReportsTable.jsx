@@ -38,7 +38,12 @@ const initialTableColumnsState = [
     subName: 'first_name',
     show: true,
   },
-  { id: 7, label: 'Company', name: 'sponsor_name_english', show: true },
+  {
+    id: 7,
+    label: 'Company',
+    getterMethod: (data) => `${data?.demand?.company_name || ''} `,
+    show: true,
+  },
   { id: 8, label: 'Category', name: 'profession_english', show: true },
   { id: 9, label: 'Quantity', name: 'quantity', show: true },
   { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
@@ -100,6 +105,8 @@ function CompanyOverviewReportsTable(props) {
     },
     { skip: inShowAllMode }
   );
+
+  console.log('paginatedData', paginatedData);
 
   const { data: allData } = useGetCompanyOverviewAllReportsQuery(
     {
@@ -172,7 +179,6 @@ function CompanyOverviewReportsTable(props) {
       : null,
     Visa_Agent: getValues()?.visa_agentName || null,
     Visa_Number: getValues()?.visa_number || null,
-
     Company_Name: getValues()?.company_name || null,
   };
 
@@ -221,20 +227,7 @@ function CompanyOverviewReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={{
-                ...companyOverview,
-                data: [
-                  ...companyOverview?.data,
-                  {
-                    // debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
-                    balance: totalBAlance,
-                    credit_amount: 'Total Balance',
-
-                    hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 },
-                  },
-                ],
-              }}
+              data={companyOverview}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
