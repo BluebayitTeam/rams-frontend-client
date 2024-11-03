@@ -16,7 +16,7 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetAccountStatementAllReportsQuery,
   useGetAccountStatementReportsQuery,
-} from '../AccountStatementReportsApi';
+} from '../CompanyOverviewReportsApi';
 import AccountStatementFilterMenu from './AccountStatementFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
