@@ -92,9 +92,9 @@ function CompanyOverviewReportsTable(props) {
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      ledger: watch('ledger') || '',
-      sub_ledger: watch('sub_ledger') || '',
-      account_type: watch('account_type') || '',
+      visa_agent: watch('visa_agent') || '',
+      visa_number: watch('visa_number') || '',
+      company_name: watch('company_name') || '',
       page,
       size,
     },
@@ -105,9 +105,9 @@ function CompanyOverviewReportsTable(props) {
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      ledger: watch('ledger') || '',
-      sub_ledger: watch('sub_ledger') || '',
-      account_type: watch('account_type') || '',
+      visa_agent: watch('visa_agent') || '',
+      visa_number: watch('visa_number') || '',
+      company_name: watch('company_name') || '',
     },
     { skip: !inShowAllMode }
   );
