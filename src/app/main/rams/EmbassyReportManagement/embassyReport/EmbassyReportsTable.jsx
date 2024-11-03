@@ -74,8 +74,8 @@ function EmbassyReportsTable(props) {
 
   const { data: paginatedData } = useGetEmbassyReportsQuery(
     {
-      report_date_after: filterData.report_date_after || '',
-      report_date_before: filterData.report_date_before || '',
+      stamping_date_after: filterData.stamping_date_after || '',
+      stamping_date_before: filterData.stamping_date_before || '',
       expiry_date_after: filterData.expiry_date_after || '',
       expiry_date_before: filterData.expiry_date_before || '',
 
@@ -85,7 +85,7 @@ function EmbassyReportsTable(props) {
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      current_status: filterData.current_status || '',
+      stamping_status: filterData.stamping_status || '',
       passenger_type: filterData.passenger_type || '',
 
       gender: filterData.gender || '',
@@ -97,8 +97,8 @@ function EmbassyReportsTable(props) {
 
   const { data: allData } = useGetEmbassyAllReportsQuery(
     {
-      report_date_after: filterData.report_date_after || '',
-      report_date_before: filterData.report_date_before || '',
+      stamping_date_after: filterData.stamping_date_after || '',
+      stamping_date_before: filterData.stamping_date_before || '',
       expiry_date_after: filterData.expiry_date_after || '',
       expiry_date_before: filterData.expiry_date_before || '',
 
@@ -108,7 +108,7 @@ function EmbassyReportsTable(props) {
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      current_status: filterData.current_status || '',
+      stamping_status: filterData.stamping_status || '',
       passenger_type: filterData.passenger_type || '',
 
       gender: filterData.gender || '',
@@ -194,11 +194,11 @@ function EmbassyReportsTable(props) {
   }, []);
 
   const filteredData = {
-    M_Rpt_To: getValues()?.report_date_before
-      ? moment(new Date(getValues()?.report_date_before)).format('DD-MM-YYYY')
+    M_Rpt_To: getValues()?.stamping_date_before
+      ? moment(new Date(getValues()?.stamping_date_before)).format('DD-MM-YYYY')
       : null,
-    M_Rpt_From: getValues()?.report_date_after
-      ? moment(new Date(getValues()?.report_date_after)).format('DD-MM-YYYY')
+    M_Rpt_From: getValues()?.stamping_date_after
+      ? moment(new Date(getValues()?.stamping_date_after)).format('DD-MM-YYYY')
       : null,
 
     Date_To: getValues()?.date_before
