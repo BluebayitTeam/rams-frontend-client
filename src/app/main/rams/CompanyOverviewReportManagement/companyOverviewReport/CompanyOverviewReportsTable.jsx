@@ -14,10 +14,10 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetAccountStatementAllReportsQuery,
-  useGetAccountStatementReportsQuery,
+  useGetCompanyOverviewAllReportsQuery,
+  useGetCompanyOverviewReportsQuery,
 } from '../CompanyOverviewReportsApi';
-import AccountStatementFilterMenu from './AccountStatementFilterMenu';
+import CompanyOverviewFilterMenu from './CompanyOverviewFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -57,7 +57,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function AccountStatementReportsTable(props) {
+function CompanyOverviewReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -68,8 +68,8 @@ function AccountStatementReportsTable(props) {
   const { watch, getValues } = methods;
 
   const [
-    modifiedAccountStatementData,
-    setModifiedAccountStatementData,
+    modifiedCompanyOverviewData,
+    setModifiedCompanyOverviewData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -89,7 +89,7 @@ function AccountStatementReportsTable(props) {
   const componentRef = useRef(null);
   const [totalBAlance, setTotalBAlance] = useState(0);
 
-  const { data: paginatedData } = useGetAccountStatementReportsQuery(
+  const { data: paginatedData } = useGetCompanyOverviewReportsQuery(
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
@@ -102,7 +102,7 @@ function AccountStatementReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetAccountStatementAllReportsQuery(
+  const { data: allData } = useGetCompanyOverviewAllReportsQuery(
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
@@ -115,7 +115,7 @@ function AccountStatementReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedAccountStatementData(allData?.account_logs || []);
+      setModifiedCompanyOverviewData(allData?.account_logs || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -129,7 +129,7 @@ function AccountStatementReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedAccountStatementData(paginatedData?.account_logs || []);
+      setModifiedCompanyOverviewData(paginatedData?.account_logs || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalBAlance(paginatedData.total_amount || 0);
@@ -148,7 +148,7 @@ function AccountStatementReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetAccountStatements = useCallback(async (newPage) => {
+  const handleGetCompanyOverviews = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -157,7 +157,7 @@ function AccountStatementReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllAccountStatements = useCallback(async () => {
+  const handleGetAllCompanyOverviews = useCallback(async () => {
     try {
     } catch (error) {
       console.error('Error fetching all account_logs:', error);
@@ -179,10 +179,10 @@ function AccountStatementReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <AccountStatementFilterMenu
+        <CompanyOverviewFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetAccountStatements={handleGetAccountStatements}
-          handleGetAllAccountStatements={handleGetAllAccountStatements}
+          handleGetCompanyOverviews={handleGetCompanyOverviews}
+          handleGetAllCompanyOverviews={handleGetAllCompanyOverviews}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -195,17 +195,17 @@ function AccountStatementReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetAccountStatements(1)}
-        onPreviousPage={() => handleGetAccountStatements(page - 1)}
-        onNextPage={() => handleGetAccountStatements(page + 1)}
-        onLastPage={() => handleGetAccountStatements(totalPages)}
+        onFirstPage={() => handleGetCompanyOverviews(1)}
+        onPreviousPage={() => handleGetCompanyOverviews(page - 1)}
+        onNextPage={() => handleGetCompanyOverviews(page + 1)}
+        onLastPage={() => handleGetCompanyOverviews(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetAccountStatements}
-        handleGetAllData={handleGetAllAccountStatements}
+        handleGetData={handleGetCompanyOverviews}
+        handleGetAllData={handleGetAllCompanyOverviews}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='AccountStatementReport'
+        filename='CompanyOverviewReport'
       />
 
       <table
@@ -213,18 +213,18 @@ function AccountStatementReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedAccountStatementData.map((accountStatement, index) => (
+          {modifiedCompanyOverviewData.map((companyOverview, index) => (
             <SinglePage
-              key={accountStatement.id || index}
+              key={companyOverview.id || index}
               classes={classes}
               reportTitle='Account Statement Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={{
-                ...accountStatement,
+                ...companyOverview,
                 data: [
-                  ...accountStatement?.data,
+                  ...companyOverview?.data,
                   {
                     // debit_amount: totalDbAmount?.toFixed(2)|| '0.00',
                     balance: totalBAlance,
@@ -239,8 +239,8 @@ function AccountStatementReportsTable(props) {
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : accountStatement.page * accountStatement.size -
-                    accountStatement.size +
+                  : companyOverview.page * companyOverview.size -
+                    companyOverview.size +
                     1
               }
               setPage={setPage}
@@ -256,4 +256,4 @@ function AccountStatementReportsTable(props) {
   );
 }
 
-export default AccountStatementReportsTable;
+export default CompanyOverviewReportsTable;
