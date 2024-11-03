@@ -75,10 +75,11 @@ function CompanyOverviewFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* ledger */}
-        <ReportSelect
+        {/* V.Agent */}
+        <ReportSelectFirstAgentCode
           {...commonFieldProps}
-          name='ledger'
+          name='visa_agent'
+          label='V.Agent'
           options={ledgers}
           icon='import_contacts'
           width='50px'
