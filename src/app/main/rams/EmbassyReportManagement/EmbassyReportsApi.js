@@ -5,6 +5,8 @@ import {
   CREATE_DEPARTMENT,
   DELETE_DEPARTMENT,
   DELETE_DEPARTMENT_MULTIPLE,
+  EMBASSY_FILTER_BY,
+  EMBASSY_FILTER_WITHOUT_PG,
   GET_DEPARTMENT_BY_ID,
   MEDICAL_FILTER_BY,
   MEDICAL_FILTER_WITHOUT_PG,
@@ -24,14 +26,14 @@ const EmbassyReportApi = api
     endpoints: (build) => ({
       getEmbassyReports: build.query({
         query: (filterData) => ({
-          url: MEDICAL_FILTER_BY,
+          url: EMBASSY_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['embassyReports'],
       }),
       getEmbassyAllReports: build.query({
         query: (filterData) => ({
-          url: MEDICAL_FILTER_WITHOUT_PG,
+          url: EMBASSY_FILTER_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['embassyReports'],
