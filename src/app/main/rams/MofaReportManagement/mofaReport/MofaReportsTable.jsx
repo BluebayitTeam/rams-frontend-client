@@ -74,11 +74,6 @@ function MofaReportsTable(props) {
 
   const { data: paginatedData } = useGetMofaReportsQuery(
     {
-      stamping_date_after: filterData.stamping_date_after || '',
-      stamping_date_before: filterData.stamping_date_before || '',
-      expiry_date_after: filterData.expiry_date_after || '',
-      expiry_date_before: filterData.expiry_date_before || '',
-
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
 
@@ -97,11 +92,6 @@ function MofaReportsTable(props) {
 
   const { data: allData } = useGetMofaAllReportsQuery(
     {
-      stamping_date_after: filterData.stamping_date_after || '',
-      stamping_date_before: filterData.stamping_date_before || '',
-      expiry_date_after: filterData.expiry_date_after || '',
-      expiry_date_before: filterData.expiry_date_before || '',
-
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
 
@@ -194,13 +184,6 @@ function MofaReportsTable(props) {
   }, []);
 
   const filteredData = {
-    M_Rpt_To: getValues()?.stamping_date_before
-      ? moment(new Date(getValues()?.stamping_date_before)).format('DD-MM-YYYY')
-      : null,
-    M_Rpt_From: getValues()?.stamping_date_after
-      ? moment(new Date(getValues()?.stamping_date_after)).format('DD-MM-YYYY')
-      : null,
-
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
@@ -208,8 +191,8 @@ function MofaReportsTable(props) {
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
     Mofa: getValues()?.mofaName || null,
-    Current_Status: getValues()?.current_statusName || null,
-    Target_Country: getValues()?.target_countryName || null,
+
+    Country: getValues()?.target_countryName || null,
 
     Agent: getValues()?.agentName || null,
     Gender: getValues()?.genderName || null,

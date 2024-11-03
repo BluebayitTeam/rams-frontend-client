@@ -57,8 +57,8 @@ function ReportClmHeader() {
           navigate(`/apps/passenger/passengers/recruiting`);
         }
 
-        if (reportClmId === 'processing') {
-          navigate(`/apps/passenger/passengers/processing`);
+        if (reportClmId === 'mofa') {
+          navigate(`/apps/mofaReport/mofaReports`);
         }
 
         if (reportClmId === 'female') {
@@ -131,8 +131,8 @@ function ReportClmHeader() {
     if (reportClmId === 'embassy') {
       navigate(`/apps/embassyReport/embassyReports`);
     }
-    if (reportClmId === 'Departments') {
-      navigate(`/apps/department/departments`);
+    if (reportClmId === 'mofa') {
+      navigate(`/apps/mofaReport/mofaReports`);
     }
 
     if (reportClmId === 'recruiting') {

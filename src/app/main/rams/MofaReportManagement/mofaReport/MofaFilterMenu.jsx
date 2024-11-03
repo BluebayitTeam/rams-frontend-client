@@ -91,9 +91,10 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
         <ReportSelect
           {...commonFieldProps}
           name='target_country'
+          label='Country'
           options={countries}
           icon='flag'
-          width='100px'
+          width='55px'
         />
         {/* agent */}
         <ReportSelectFirstLastName
@@ -152,6 +153,7 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
           {...commonKewordProps}
           type='select'
           name='target_country'
+          label='Country'
           icon='flag'
         />
 
