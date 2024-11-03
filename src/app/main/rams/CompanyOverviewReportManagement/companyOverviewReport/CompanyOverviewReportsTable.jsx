@@ -223,7 +223,7 @@ function CompanyOverviewReportsTable(props) {
             <SinglePage
               key={companyOverview.id || index}
               classes={classes}
-              reportTitle='Account Statement Report'
+              reportTitle='Company Overview Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
