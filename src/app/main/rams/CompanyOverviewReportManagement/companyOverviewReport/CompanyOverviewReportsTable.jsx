@@ -25,6 +25,38 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
+// const initialTableColumnsState = [
+//   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+//   { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
+//   { id: 3, label: 'Country', name: 'country', subName: 'name', show: true },
+//   { id: 4, label: 'Group No', name: 'group_no', show: true },
+//   { id: 5, label: 'Visa No', name: 'visa_number', show: true },
+//   {
+//     id: 6,
+//     label: 'Vendor Name',
+//     name: 'visa_agent',
+//     subName: 'first_name',
+//     show: true,
+//   },
+//   { id: 7, label: 'Company', name: 'sponsor_name_english', show: true },
+
+//   { id: 8, label: 'Category', name: 'profession_english', show: true },
+//   { id: 9, label: 'Quantity', name: 'quantity', show: true },
+//   { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
+//   { id: 11, label: 'Recruiting Agency', name: 'recruiting_agency', show: true },
+//   {
+//     id: 12,
+//     label: 'Recruiting Agency Total',
+//     name: 'recruiting_agency_count',
+//     show: true,
+//   },
+//   { id: 13, label: 'Calling', name: 'calling_emb_count', show: true },
+//   { id: 14, label: 'Stamping', name: 'embassy_count', show: true },
+//   { id: 15, label: 'Manpower', name: 'manpower_count', show: true },
+//   { id: 16, label: 'Flight Waiting', name: 'flight_waiting_count', show: true },
+//   { id: 17, label: 'Flight Ok', name: 'flight_ok_count', show: true },
+// ];
+
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
   { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
@@ -38,12 +70,7 @@ const initialTableColumnsState = [
     subName: 'first_name',
     show: true,
   },
-  {
-    id: 7,
-    label: 'Company',
-    getterMethod: (data) => `${data?.demand?.company_name || ''} `,
-    show: true,
-  },
+  { id: 7, label: 'Company', name: 'sponsor_name_english', show: true },
   { id: 8, label: 'Category', name: 'profession_english', show: true },
   { id: 9, label: 'Quantity', name: 'quantity', show: true },
   { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
