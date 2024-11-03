@@ -133,8 +133,6 @@ function CompanyOverviewReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  console.log('paginatedData', paginatedData);
-
   const { data: allData } = useGetCompanyOverviewAllReportsQuery(
     {
       date_after: watch('date_after') || '',
@@ -257,11 +255,9 @@ function CompanyOverviewReportsTable(props) {
               data={companyOverview}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
-                pagination
-                  ? page * size - size + 1
-                  : companyOverview.page * companyOverview.size -
-                    companyOverview.size +
-                    1
+                companyOverview.page * companyOverview.size -
+                companyOverview.size +
+                1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
