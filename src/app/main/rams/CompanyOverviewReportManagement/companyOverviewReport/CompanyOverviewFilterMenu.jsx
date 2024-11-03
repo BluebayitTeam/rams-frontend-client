@@ -90,7 +90,7 @@ function CompanyOverviewFilterMenu({
           name='visa_number'
           domEl={visaNoEl}
           icon='accessibility_new_icon'
-          width='77px'
+          width='90px'
         />
 
         {/* phone */}
@@ -100,7 +100,7 @@ function CompanyOverviewFilterMenu({
           label='Company Name'
           domEl={companyNameEl}
           icon='phone'
-          width='45px'
+          width='110px'
         />
       </div>
 
