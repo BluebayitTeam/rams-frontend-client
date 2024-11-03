@@ -10,6 +10,7 @@ import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
+import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -33,9 +34,8 @@ function CompanyOverviewFilterMenu({
   console.log('Passenger Values:', getValues());
 
   // element refs
-  const userNameEl = useRef(null);
-  const primaryPhoneEl = useRef(null);
-  const companyOverviewCodeEl = useRef(null);
+  const visaNoEl = useRef(null);
+  const companyNameEl = useRef(null);
 
   const commonFieldProps = {
     setReRender,
@@ -81,19 +81,28 @@ function CompanyOverviewFilterMenu({
           name='visa_agent'
           label='V.Agent'
           options={agents}
-          icon='import_contacts'
+          icon='person'
           width='50px'
         />
 
-        {/* sub_ledger */}
-        <ReportSelect
+        {/* Visa No */}
+        <ReportTextField
           {...commonFieldProps}
-          name='sub_ledger'
-          options={subLedgers}
-          icon='import_contacts'
-          width='76px'
+          name='visa_number'
+          domEl={visaNoEl}
+          icon='accessibility_new_icon'
+          width='77px'
         />
 
+        {/* phone */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='company_name'
+          label='Company Name'
+          domEl={companyNameEl}
+          icon='phone'
+          width='45px'
+        />
         {/* lpassengerTypes */}
         <ReportSelect
           {...commonFieldProps}
@@ -122,15 +131,26 @@ function CompanyOverviewFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='ledger'
-          icon='import_contacts'
+          name='visa_agent'
+          icon='person'
         />
         <Keyword
           {...commonKewordProps}
-          type='select'
-          name='sub_ledger'
-          icon='import_contacts'
+          type='text'
+          name='visa_number'
+          domEl={visaNoEl}
+          icon='accessibility_new_icon'
         />
+
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='company_name'
+          label='Company Name'
+          domEl={companyNameEl}
+          icon='phone'
+        />
+
         <Keyword
           {...commonKewordProps}
           type='select'
