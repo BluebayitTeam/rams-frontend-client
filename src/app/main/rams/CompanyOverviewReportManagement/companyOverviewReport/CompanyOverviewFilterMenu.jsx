@@ -55,7 +55,6 @@ function CompanyOverviewFilterMenu({
   useEffect(() => {
     dispatch(getAgents());
   }, []);
-  console.log('sadhbjkasbdkj', getValues());
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
@@ -103,14 +102,6 @@ function CompanyOverviewFilterMenu({
           icon='phone'
           width='45px'
         />
-        {/* lpassengerTypes */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='account_type'
-          options={bankAndCash}
-          icon='text_fields'
-          width='90px'
-        />
       </div>
 
       {/* keywords */}
@@ -149,13 +140,6 @@ function CompanyOverviewFilterMenu({
           label='Company Name'
           domEl={companyNameEl}
           icon='phone'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='account_type'
-          icon='text_fields'
         />
       </div>
     </div>
