@@ -27,7 +27,7 @@ function CompanyOverviewFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { ledgers, subLedgers } = useSelector((state) => state.data);
+  const { agents, subLedgers } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
   console.log('Passenger Values:', getValues());
@@ -81,7 +81,7 @@ function CompanyOverviewFilterMenu({
           {...commonFieldProps}
           name='visa_agent'
           label='V.Agent'
-          options={ledgers}
+          options={agents}
           icon='import_contacts'
           width='50px'
         />
