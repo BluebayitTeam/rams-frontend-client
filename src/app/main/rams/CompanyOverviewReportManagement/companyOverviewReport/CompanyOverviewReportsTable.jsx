@@ -27,34 +27,33 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'reference_no', show: true },
-  { id: 4, label: 'Purpose', name: 'sub_ledger', subName: 'name', show: true },
-  { id: 5, label: 'Details', name: 'details', show: true },
-  {
-    id: 7,
-    label: 'Receipt',
-    name: 'debit_amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
+  { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
+  { id: 3, label: 'Country', name: 'country', subName: 'name', show: true },
+  { id: 4, label: 'Group No', name: 'group_no', show: true },
+  { id: 5, label: 'Visa No', name: 'visa_number', show: true },
   {
     id: 6,
-    label: 'Payment',
-    name: 'credit_amount',
+    label: 'Vendor Name',
+    name: 'visa_agent',
+    subName: 'first_name',
     show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
   },
+  { id: 7, label: 'Company', name: 'sponsor_name_english', show: true },
+  { id: 8, label: 'Category', name: 'profession_english', show: true },
+  { id: 9, label: 'Quantity', name: 'quantity', show: true },
+  { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
+  { id: 11, label: 'Recruiting Agency', name: 'recruiting_agency', show: true },
   {
-    id: 8,
-    label: 'Balance',
-    name: 'balance',
+    id: 12,
+    label: 'Recruiting Agency Total',
+    name: 'recruiting_agency_count',
     show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
   },
+  { id: 13, label: 'Calling', name: 'calling_emb_count', show: true },
+  { id: 14, label: 'Stamping', name: 'embassy_count', show: true },
+  { id: 15, label: 'Manpower', name: 'manpower_count', show: true },
+  { id: 16, label: 'Flight Waiting', name: 'flight_waiting_count', show: true },
+  { id: 17, label: 'Flight Ok', name: 'flight_ok_count', show: true },
 ];
 
 function CompanyOverviewReportsTable(props) {
@@ -115,12 +114,12 @@ function CompanyOverviewReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedCompanyOverviewData(allData?.account_logs || []);
+      setModifiedCompanyOverviewData(allData?.overview_report || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData?.account_logs,
+        allData?.overview_report,
         size,
         page
       );
@@ -129,7 +128,7 @@ function CompanyOverviewReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedCompanyOverviewData(paginatedData?.account_logs || []);
+      setModifiedCompanyOverviewData(paginatedData?.overview_report || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalBAlance(paginatedData.total_amount || 0);
@@ -153,14 +152,14 @@ function CompanyOverviewReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching account_logs:', error);
+      console.error('Error fetching overview_report:', error);
     }
   }, []);
 
   const handleGetAllCompanyOverviews = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all account_logs:', error);
+      console.error('Error fetching all overview_report:', error);
     }
   }, []);
 

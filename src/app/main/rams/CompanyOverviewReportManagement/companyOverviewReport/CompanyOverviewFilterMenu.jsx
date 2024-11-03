@@ -31,7 +31,6 @@ function CompanyOverviewFilterMenu({
   const { agents, subLedgers } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  console.log('Passenger Values:', getValues());
 
   // element refs
   const visaNoEl = useRef(null);
@@ -139,7 +138,7 @@ function CompanyOverviewFilterMenu({
           name='company_name'
           label='Company Name'
           domEl={companyNameEl}
-          icon='phone'
+          icon='accessibility_new_icon'
         />
       </div>
     </div>
