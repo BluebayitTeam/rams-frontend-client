@@ -2,17 +2,8 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-  CREATE_DEPARTMENT,
-  DELETE_DEPARTMENT,
-  DELETE_DEPARTMENT_MULTIPLE,
   EMBASSY_FILTER_BY,
   EMBASSY_FILTER_WITHOUT_PG,
-  GET_DEPARTMENT_BY_ID,
-  MEDICAL_FILTER_BY,
-  MEDICAL_FILTER_WITHOUT_PG,
-  PASSENGER_FILTER_BY,
-  PASSENGER_FILTER_WITHOUT_PG,
-  UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
