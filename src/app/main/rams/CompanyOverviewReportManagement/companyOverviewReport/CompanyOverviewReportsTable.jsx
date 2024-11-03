@@ -173,7 +173,7 @@ function CompanyOverviewReportsTable(props) {
     Visa_Agent: getValues()?.visa_agentName || null,
     Visa_Number: getValues()?.visa_number || null,
 
-    Sub_Ledger: getValues()?.sub_ledgerName || null,
+    Company_Name: getValues()?.company_name || null,
   };
 
   return (
