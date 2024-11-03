@@ -60,60 +60,22 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* V.Stp From */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='stamping_date_after'
-          label='V.Stp From'
-          maxDate={values.stamping_date_before || new Date()}
-        />
-        {/* V.Stp To */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='stamping_date_before'
-          label='V.Stp To'
-          minDate={values.stamping_date_after}
-          maxDate={new Date()}
-        />
-        {/* M.Exp From */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='expiry_date_after'
-          label='M.Exp From'
-          minDate={values.expiry_date_before}
-          maxDate={new Date()}
-        />{' '}
-        {/* M.Exp To */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='expiry_date_before'
-          label='M.Exp To'
-          minDate={values.expiry_date_after}
-          maxDate={new Date()}
-        />
-        {/* V.Ent from */}
+        {/* M.Ent from */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='V.Ent from'
+          label='M.Ent from'
           maxDate={values.date_before || new Date()}
         />
-        {/* V.Ent To */}
+        {/* M.Ent to  */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='V.Ent To'
+          label='M.Ent to '
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* V.Stp Status */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='stamping_status'
-          options={doneNotDone}
-          icon='local_activity'
-          width='112px'
-        />
+
         {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}
@@ -171,38 +133,14 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='stamping_date_after'
-          label='V.Stp From'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='stamping_date_before'
-          label='V.Stp To'
-        />{' '}
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='expiry_date_after'
-          label='M.Exp From'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='expiry_date_before'
-          label='M.Exp To'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
           name='date_after'
-          label='V.Ent from'
+          label='M.Ent from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
-          label='V.Ent To'
+          label='M.Ent to '
         />
         <Keyword
           {...commonKewordProps}
@@ -216,12 +154,7 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
           name='target_country'
           icon='flag'
         />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='current_status'
-          icon='local_activity'
-        />
+
         <Keyword
           {...commonKewordProps}
           type='select'

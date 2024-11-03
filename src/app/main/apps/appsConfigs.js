@@ -145,6 +145,7 @@ import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/
 import VisaExpireReportAppConfig from '../rams/VisaExpireReportManagement/VisaExpireReportAppConfig';
 import CompanyOverviewReportAppConfig from '../rams/CompanyOverviewReportManagement/CompanyOverviewReportAppConfig';
 import EmbassyReportAppConfig from '../rams/EmbassyReportManagement/EmbassyReportAppConfig';
+import MofaReportAppConfig from '../rams/MofaReportManagement/MofaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -192,6 +193,7 @@ const appsConfigs = [
   PostDateChequeReportAppConfig,
   PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
+  MofaReportAppConfig,
   EmbassyReportAppConfig,
   AccountStatementReportAppConfig,
   NotMedicalReportAppConfig,
