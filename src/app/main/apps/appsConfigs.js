@@ -143,6 +143,7 @@ import VisaStampOkReportAppConfig from '../rams/VisaStampOkReportManagement/Visa
 import FlightFlightDoneReportAppConfig from '../rams/FlightFlightDoneReportManagement/FlightFlightDoneReportAppConfig';
 import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/MedicalExpireReportAppConfig';
 import VisaExpireReportAppConfig from '../rams/VisaExpireReportManagement/VisaExpireReportAppConfig';
+import CompanyOverviewReportAppConfig from '../rams/CompanyOverviewReportManagement/CompanyOverviewReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -158,6 +159,7 @@ const appsConfigs = [
   BmetV2ApplicationAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
+  CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
   FemalefingerletterAppConfig,
