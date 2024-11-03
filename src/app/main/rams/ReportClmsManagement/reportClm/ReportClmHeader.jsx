@@ -45,8 +45,8 @@ function ReportClmHeader() {
           navigate(`/apps/medicalReport/medicalReports`);
         }
 
-        if (reportClmId === 'employee') {
-          navigate(`/apps/employee/employees`);
+        if (reportClmId === 'embassy') {
+          navigate(`/apps/embassyReport/embassyReports`);
         }
 
         if (reportClmId === 'Departments') {
@@ -128,10 +128,9 @@ function ReportClmHeader() {
       navigate(`/apps/medicalReport/medicalReports`);
     }
 
-    if (reportClmId === 'employee') {
-      navigate(`/apps/employee/employees`);
+    if (reportClmId === 'embassy') {
+      navigate(`/apps/embassyReport/embassyReports`);
     }
-
     if (reportClmId === 'Departments') {
       navigate(`/apps/department/departments`);
     }
