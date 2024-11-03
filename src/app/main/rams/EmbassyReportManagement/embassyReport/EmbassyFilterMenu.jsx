@@ -12,7 +12,7 @@ import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls
 import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
-import { genders } from 'src/app/@data/data';
+import { doneNotDone, genders } from 'src/app/@data/data';
 import {
   getAgents,
   getCountries,
@@ -44,12 +44,6 @@ function EmbassyFilterMenu({
 
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  console.log('Embassy Values:', getValues());
-
-  // element refs
-  const userNameEl = useRef(null);
-  const primaryPhoneEl = useRef(null);
-  const embassyCodeEl = useRef(null);
 
   const commonFieldProps = {
     setReRender,
@@ -72,31 +66,29 @@ function EmbassyFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* M.Rpt From */}
+        {/* V.Stp From */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='report_date_after'
-          label='M.Rpt From'
-          maxDate={values.report_date_before || new Date()}
+          name='stamping_date_after'
+          label='V.Stp From'
+          maxDate={values.stamping_date_before || new Date()}
         />
-
-        {/* M.Rpt To */}
+        {/* V.Stp To */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='report_date_before'
-          label='M.Rpt To'
-          minDate={values.report_date_after}
+          name='stamping_date_before'
+          label='V.Stp To'
+          minDate={values.stamping_date_after}
           maxDate={new Date()}
         />
-
         {/* M.Exp From */}
         <ReportDatePicker
           {...commonFieldProps}
           name='expiry_date_after'
-          label='M.Ent To'
-          maxDate={values.expiry_date_before || new Date()}
-        />
-
+          label='M.Exp From'
+          minDate={values.expiry_date_before}
+          maxDate={new Date()}
+        />{' '}
         {/* M.Exp To */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -105,24 +97,29 @@ function EmbassyFilterMenu({
           minDate={values.expiry_date_after}
           maxDate={new Date()}
         />
-
-        {/* M.Exp From */}
+        {/* V.Ent from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='expiry_date_after'
-          label='M.Exp From'
-          maxDate={values.expiry_date_before || new Date()}
+          name='date_after'
+          label='V.Ent from'
+          maxDate={values.date_before || new Date()}
         />
-
-        {/* M.Ent To*/}
+        {/* V.Ent To */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='M.Ent From'
+          label='V.Ent To'
           minDate={values.date_after}
           maxDate={new Date()}
         />
-
+        {/* V.Stp Status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='stamping_status'
+          options={doneNotDone}
+          icon='local_activity'
+          width='112px'
+        />
         {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}
@@ -134,7 +131,6 @@ function EmbassyFilterMenu({
           icon='person'
           width='78px'
         />
-
         {/* Country */}
         <ReportSelect
           {...commonFieldProps}
@@ -159,16 +155,6 @@ function EmbassyFilterMenu({
           icon='text_fields'
           width='110px'
         />
-
-        {/* Current Status */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='current_status'
-          options={currentStatuss}
-          icon='local_activity'
-          width='100px'
-        />
-
         {/* Gender */}
         <ReportSelect
           {...commonFieldProps}
@@ -191,14 +177,14 @@ function EmbassyFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='report_date_after'
-          label='M.Rpt From'
+          name='stamping_date_after'
+          label='V.Stp From'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='report_date_before'
-          label='M.Rpt To'
+          name='stamping_date_before'
+          label='V.Stp To'
         />{' '}
         <Keyword
           {...commonKewordProps}
@@ -216,13 +202,13 @@ function EmbassyFilterMenu({
           {...commonKewordProps}
           type='date'
           name='date_after'
-          label='M.Ent From'
+          label='V.Ent from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
-          label='M.Ent To'
+          label='V.Ent To'
         />
         <Keyword
           {...commonKewordProps}
