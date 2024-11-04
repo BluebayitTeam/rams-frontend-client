@@ -130,7 +130,7 @@ function ManPowerFilterMenu({
           options={countries}
           label='Country'
           icon='flag'
-          width='100px'
+          width='60px'
         />
         {/* agent */}
         <ReportSelectFirstLastName
