@@ -191,7 +191,7 @@ function ManPowerFilterMenu({
           type='date'
           name='man_powe_date_before'
           label='MP.to '
-        />{' '}
+        />
         <Keyword
           {...commonKewordProps}
           type='date'
