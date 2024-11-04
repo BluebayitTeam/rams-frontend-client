@@ -148,6 +148,7 @@ import EmbassyReportAppConfig from '../rams/EmbassyReportManagement/EmbassyRepor
 import MofaReportAppConfig from '../rams/MofaReportManagement/MofaReportAppConfig';
 import TrainingReportAppConfig from '../rams/TrainingReportManagement/TrainingReportAppConfig';
 import ManPowerReportAppConfig from '../rams/ManPowerReport/ManPowerReportAppConfig';
+import FlightReportAppConfig from '../rams/FlightReportManagement/FlightReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -167,6 +168,7 @@ const appsConfigs = [
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
   FemalefingerletterAppConfig,
+  FlightReportAppConfig,
   MessengerAppConfig,
   ManpowerNoteSheetFemaleAppConfig,
   ManpowerNoteSheetMaleAppConfig,
