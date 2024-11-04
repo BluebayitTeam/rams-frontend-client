@@ -883,7 +883,7 @@ const navigationConfig = [
         translate: 'ManPower Report',
         display_order: 7,
         type: 'item',
-        url: '/apps/report-management/manpower-reports',
+        url: '/apps/manPowerReport/manPowerReports',
         exact: true,
       },
       {
