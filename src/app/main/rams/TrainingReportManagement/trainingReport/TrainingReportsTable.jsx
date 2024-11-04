@@ -190,6 +190,8 @@ function TrainingReportsTable(props) {
       : null,
     Training: getValues()?.trainingName || null,
 
+    Passenger: getValues()?.passengerName || null,
+
     Country: getValues()?.target_countryName || null,
 
     Agent: getValues()?.agentName || null,
