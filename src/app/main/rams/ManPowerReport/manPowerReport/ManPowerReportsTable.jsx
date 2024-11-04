@@ -77,6 +77,12 @@ function ManPowerReportsTable(props) {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
 
+      man_power_date_before: filterData.man_power_date_before || '',
+      man_power_date_after: filterData.man_power_date_after || '',
+
+      delivery_date_before: filterData.man_power_date_before || '',
+      delivery__date_after: filterData.delivery__date_after || '',
+
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
@@ -93,6 +99,12 @@ function ManPowerReportsTable(props) {
     {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
+
+      man_power_date_before: filterData.man_power_date_before || '',
+      man_power_date_after: filterData.man_power_date_after || '',
+
+      delivery_date_before: filterData.man_power_date_before || '',
+      delivery__date_after: filterData.delivery__date_after || '',
 
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
