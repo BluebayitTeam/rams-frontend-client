@@ -179,6 +179,18 @@ function ManPowerFilterMenu({
           type='date'
           name='date_before'
           label='MP.Ent to '
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='man_power_date_after'
+          label='MP.From'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='man_powe_date_before'
+          label='MP.to '
         />
         <Keyword
           {...commonKewordProps}
@@ -193,7 +205,6 @@ function ManPowerFilterMenu({
           label='Country'
           icon='flag'
         />
-
         <Keyword
           {...commonKewordProps}
           type='select'
