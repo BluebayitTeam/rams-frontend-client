@@ -141,12 +141,12 @@ function EmbassyReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedEmbassyData(allData?.embassys || []);
+      setModifiedEmbassyData(allData?.embassies || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.embassys,
+        allData.embassies,
         size,
         page
       );
@@ -155,9 +155,9 @@ function EmbassyReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedEmbassyData(paginatedData?.embassys || []);
+      setModifiedEmbassyData(paginatedData?.embassies || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.embassys[0] || {})
+        generateDynamicColumns(paginatedData?.embassies[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -182,14 +182,14 @@ function EmbassyReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching embassys:', error);
+      console.error('Error fetching embassies:', error);
     }
   }, []);
 
   const handleGetAllEmbassys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all embassys:', error);
+      console.error('Error fetching all embassies:', error);
     }
   }, []);
 

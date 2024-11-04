@@ -184,13 +184,15 @@ function MofaReportsTable(props) {
   }, []);
 
   const filteredData = {
-    Date_To: getValues()?.date_before
+    MEnt_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
-    Date_From: getValues()?.date_after
+    MEnt_Form: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
     Mofa: getValues()?.mofaName || null,
+
+    Passenger: getValues()?.passengerName || null,
 
     Country: getValues()?.target_countryName || null,
 
