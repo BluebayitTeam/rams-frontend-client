@@ -209,7 +209,10 @@ function MedicalReportsTable(props) {
       : null,
     Medical: getValues()?.medicalName || null,
     Current_Status: getValues()?.current_statusName || null,
-    Target_Country: getValues()?.target_countryName || null,
+
+    Passenger: getValues()?.passengerName || null,
+
+    Country: getValues()?.target_countryName || null,
 
     Agent: getValues()?.agentName || null,
     Gender: getValues()?.genderName || null,

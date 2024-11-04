@@ -93,7 +93,7 @@ function MedicalFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='expiry_date_after'
-          label='M.Ent To'
+          label='M.Exp From'
           maxDate={values.expiry_date_before || new Date()}
         />
 
@@ -106,12 +106,13 @@ function MedicalFilterMenu({
           maxDate={new Date()}
         />
 
-        {/* M.Exp From */}
+        {/* M.Ent From*/}
         <ReportDatePicker
           {...commonFieldProps}
-          name='expiry_date_after'
-          label='M.Exp From'
-          maxDate={values.expiry_date_before || new Date()}
+          name='date_after'
+          label='M.Ent From'
+          minDate={values.date_before}
+          maxDate={new Date()}
         />
 
         {/* M.Ent To*/}
@@ -158,15 +159,6 @@ function MedicalFilterMenu({
           options={passengerTypes}
           icon='text_fields'
           width='110px'
-        />
-
-        {/* Current Status */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='current_status'
-          options={currentStatuss}
-          icon='local_activity'
-          width='100px'
         />
 
         {/* Gender */}
@@ -235,12 +227,6 @@ function MedicalFilterMenu({
           type='select'
           name='target_country'
           icon='flag'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='current_status'
-          icon='local_activity'
         />
         <Keyword
           {...commonKewordProps}
