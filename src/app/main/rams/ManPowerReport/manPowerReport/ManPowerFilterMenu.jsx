@@ -191,6 +191,18 @@ function ManPowerFilterMenu({
           type='date'
           name='man_powe_date_before'
           label='MP.to '
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='delivery_date_after'
+          label='Mp.Dl From'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='delivery_date_before'
+          label='Mp.Dl to '
         />
         <Keyword
           {...commonKewordProps}
