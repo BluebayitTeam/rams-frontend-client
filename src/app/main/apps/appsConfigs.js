@@ -147,6 +147,7 @@ import CompanyOverviewReportAppConfig from '../rams/CompanyOverviewReportManagem
 import EmbassyReportAppConfig from '../rams/EmbassyReportManagement/EmbassyReportAppConfig';
 import MofaReportAppConfig from '../rams/MofaReportManagement/MofaReportAppConfig';
 import TrainingReportAppConfig from '../rams/TrainingReportManagement/TrainingReportAppConfig';
+import ManPowerReportAppConfig from '../rams/ManPowerReport/ManPowerReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -174,6 +175,7 @@ const appsConfigs = [
   TicketrefundReportAppConfig,
   SubAgentAppConfig,
   TicketPurchasesReportAppConfig,
+  ManPowerReportAppConfig,
   TicketsalessummaryReportAppConfig,
   TicketsalesummeryfilterdataReportAppConfig,
   VisaStampOkReportAppConfig,
