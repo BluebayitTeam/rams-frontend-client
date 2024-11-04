@@ -145,7 +145,7 @@ const navigationConfig = [
         translate: 'Agent Report',
         display_order: 2,
         type: 'item',
-        url: '/apps/agents/report',
+        url: '/apps/agentReport/agentReports',
         exact: true,
       },
     ],
@@ -829,7 +829,7 @@ const navigationConfig = [
         translate: 'Passenger Report',
         display_order: 1,
         type: 'item',
-        url: '/apps/passengers/report',
+        url: '/apps/passengerReport/passengerReports',
         exact: true,
       },
       {
