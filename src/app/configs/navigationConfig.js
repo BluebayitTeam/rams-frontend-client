@@ -1684,7 +1684,7 @@ const navigationConfig = [
         translate: 'Activity Log',
         display_order: 6,
         type: 'item',
-        url: '/apps/activityLogs/report',
+        url: '/apps/activityLogReport/activityLogReports',
         exact: true,
       },
     ],
