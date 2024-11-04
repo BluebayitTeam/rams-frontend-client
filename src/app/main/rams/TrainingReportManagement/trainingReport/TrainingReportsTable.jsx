@@ -80,7 +80,6 @@ function TrainingReportsTable(props) {
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      stamping_status: filterData.stamping_status || '',
       passenger_type: filterData.passenger_type || '',
 
       gender: filterData.gender || '',
@@ -98,7 +97,6 @@ function TrainingReportsTable(props) {
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
       agent: filterData.agent || '',
-      stamping_status: filterData.stamping_status || '',
       passenger_type: filterData.passenger_type || '',
 
       gender: filterData.gender || '',
