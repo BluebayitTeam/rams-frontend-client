@@ -200,6 +200,7 @@ function ManPowerReportsTable(props) {
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
+
     MP_Ent_Form: getValues()?.man_power_date_before
       ? moment(new Date(getValues()?.man_power_date_before)).format(
           'DD-MM-YYYY'
@@ -214,7 +215,7 @@ function ManPowerReportsTable(props) {
     MP_Dl_To: getValues()?.delivery_date_after
       ? moment(new Date(getValues()?.delivery_date_after)).format('DD-MM-YYYY')
       : null,
-    ManPower: getValues()?.manPowerName || null,
+    Passenger: getValues()?.passengerName || null,
 
     Country: getValues()?.target_countryName || null,
 
