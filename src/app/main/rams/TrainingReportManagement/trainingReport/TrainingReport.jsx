@@ -1,18 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import MofaReportsTable from './TrainingReportsTable';
+import TrainingReportsTable from './TrainingReportsTable';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a mofaReport name')
-    .min(5, 'The mofaReport name must be at least 5 characters'),
+    .nonempty('You must enter a trainingReport name')
+    .min(5, 'The trainingReport name must be at least 5 characters'),
 });
 
-function MofaReport() {
+function TrainingReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   return (
@@ -27,14 +27,14 @@ function MofaReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            Mofa Report
+            Training Report
           </h1>
         </div>
       }
-      content={<MofaReportsTable />}
+      content={<TrainingReportsTable />}
       innerScroll
     />
   );
 }
 
-export default MofaReport;
+export default TrainingReport;
