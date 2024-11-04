@@ -66,19 +66,50 @@ function ManPowerFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* TR.Ent from */}
+        {/* MP.Ent From */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='TR.Ent From'
+          label='MP.Ent From'
           maxDate={values.date_before || new Date()}
         />
-        {/* TR.Ent to  */}
+        {/* MP.Ent to  */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='TR.Ent to '
+          label='MP.Ent to '
           minDate={values.date_after}
+          maxDate={new Date()}
+        />
+
+        {/* MP.From */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='man_power_date_after'
+          label='MP.From'
+          maxDate={values.man_power_date_before || new Date()}
+        />
+        {/* MP.To  */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='man_power_date_before'
+          label='MP.To'
+          minDate={values.man_power_date_after}
+          maxDate={new Date()}
+        />
+        {/* MP.Dl from */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='delivery_date_after'
+          label='MP.Dl from'
+          maxDate={values.delivery_date_before || new Date()}
+        />
+        {/* MP.Dl To  */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='delivery_date_before'
+          label='MP.Dl To '
+          minDate={values.delivery_date_after}
           maxDate={new Date()}
         />
 
@@ -141,13 +172,13 @@ function ManPowerFilterMenu({
           {...commonKewordProps}
           type='date'
           name='date_after'
-          label='TR.Ent From'
+          label='MP.Ent From'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
-          label='TR.Ent to '
+          label='MP.Ent to '
         />
         <Keyword
           {...commonKewordProps}
