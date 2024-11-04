@@ -61,8 +61,8 @@ function ReportClmHeader() {
           navigate(`/apps/mofaReport/mofaReports`);
         }
 
-        if (reportClmId === 'female') {
-          navigate(`/apps/passenger/passengers/female`);
+        if (reportClmId === 'manPower') {
+          navigate(`/apps/manPowerReport/manPowerReports`);
         }
 
         if (reportClmId === 'hajj') {
@@ -138,8 +138,8 @@ function ReportClmHeader() {
     if (reportClmId === 'training') {
       navigate(`/apps/trainingReport/trainingReports`);
     }
-    if (reportClmId === 'processing') {
-      navigate(`/apps/passenger/passengers/processing`);
+    if (reportClmId === 'manPower') {
+      navigate(`/apps/manPowerReport/manPowerReports`);
     }
 
     if (reportClmId === 'female') {
