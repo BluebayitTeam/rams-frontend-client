@@ -20,7 +20,7 @@ import {
   useGetMofaAllReportsQuery,
   useGetMofaReportsQuery,
 } from '../TrainingReportsApi';
-import MofaFilterMenu from './MofaFilterMenu';
+import MofaFilterMenu from './TrainingFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),

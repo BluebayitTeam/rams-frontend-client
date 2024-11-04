@@ -20,13 +20,17 @@ import {
   getPassengerTypes,
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
-// import ReportSelectMofa from 'src/app/@components/ReportComponents/ReportSelectMofa';
+// import ReportSelectTraining from 'src/app/@components/ReportComponents/ReportSelectTraining';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
+function TrainingFilterMenu({
+  inShowAllMode,
+  handleGetTrainings,
+  handleGetAllTrainings,
+}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,11 +47,13 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
 
   const commonFieldProps = {
     setReRender,
-    onEnter: () => (inShowAllMode ? handleGetAllMofas() : handleGetMofas()),
+    onEnter: () =>
+      inShowAllMode ? handleGetAllTrainings() : handleGetTrainings(),
   };
   const commonKewordProps = {
     setReRender,
-    onClick: () => (inShowAllMode ? handleGetAllMofas() : handleGetMofas()),
+    onClick: () =>
+      inShowAllMode ? handleGetAllTrainings() : handleGetTrainings(),
   };
 
   useEffect(() => {
@@ -123,7 +129,7 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
       </div>
       <div>
         <ViewWeek
-          onClick={() => navigate(`/apps/reportClm/reportClms/mofa`)}
+          onClick={() => navigate(`/apps/reportClm/reportClms/training`)}
           className='cursor-pointer mr-10 mt-20'
           style={{ color: 'red', marginLeft: '45%', fontSize: '30px' }}
         />{' '}
@@ -181,4 +187,4 @@ function MofaFilterMenu({ inShowAllMode, handleGetMofas, handleGetAllMofas }) {
   );
 }
 
-export default MofaFilterMenu;
+export default TrainingFilterMenu;
