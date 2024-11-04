@@ -141,12 +141,12 @@ function ManPowerReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedManPowerData(allData?.manPowers || []);
+      setModifiedManPowerData(allData?.man_powers || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.manPowers,
+        allData.man_powers,
         size,
         page
       );
@@ -155,9 +155,9 @@ function ManPowerReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedManPowerData(paginatedData?.manPowers || []);
+      setModifiedManPowerData(paginatedData?.man_powers || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.manPowers[0] || {})
+        generateDynamicColumns(paginatedData?.man_powers[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -182,14 +182,14 @@ function ManPowerReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching manPowers:', error);
+      console.error('Error fetching man_powers:', error);
     }
   }, []);
 
   const handleGetAllManPowers = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all manPowers:', error);
+      console.error('Error fetching all man_powers:', error);
     }
   }, []);
 
