@@ -128,6 +128,7 @@ function ManPowerFilterMenu({
           {...commonFieldProps}
           name='target_country'
           options={countries}
+          label='Country'
           icon='flag'
           width='100px'
         />
@@ -212,6 +213,7 @@ function ManPowerFilterMenu({
           {...commonKewordProps}
           type='select'
           name='target_country'
+          label='Country'
           icon='flag'
         />
         <Keyword
