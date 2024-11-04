@@ -194,25 +194,25 @@ function ManPowerReportsTable(props) {
   }, []);
 
   const filteredData = {
-    Date_To: getValues()?.date_before
+    MP_Ent_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
-    Date_From: getValues()?.date_after
+    MP_Ent_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
 
-    MP_Ent_Form: getValues()?.man_power_date_before
+    MP_To: getValues()?.man_power_date_before
       ? moment(new Date(getValues()?.man_power_date_before)).format(
           'DD-MM-YYYY'
         )
       : null,
-    MP_Ent_To: getValues()?.man_power_date_after
+    MP_Form: getValues()?.man_power_date_after
       ? moment(new Date(getValues()?.man_power_date_after)).format('DD-MM-YYYY')
       : null,
-    MP_Dl_Form: getValues()?.delivery_date_before
+    MP_Dl_To: getValues()?.delivery_date_before
       ? moment(new Date(getValues()?.delivery_date_before)).format('DD-MM-YYYY')
       : null,
-    MP_Dl_To: getValues()?.delivery_date_after
+    MP_Dl_Form: getValues()?.delivery_date_after
       ? moment(new Date(getValues()?.delivery_date_after)).format('DD-MM-YYYY')
       : null,
     Passenger: getValues()?.passengerName || null,
