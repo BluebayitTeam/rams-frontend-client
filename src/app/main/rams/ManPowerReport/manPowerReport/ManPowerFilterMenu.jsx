@@ -20,16 +20,16 @@ import {
   getPassengerTypes,
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
-// import ReportSelectTraining from 'src/app/@components/ReportComponents/ReportSelectTraining';
+// import ReportSelectManPower from 'src/app/@components/ReportComponents/ReportSelectManPower';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function TrainingFilterMenu({
+function ManPowerFilterMenu({
   inShowAllMode,
-  handleGetTrainings,
-  handleGetAllTrainings,
+  handleGetManPowers,
+  handleGetAllManPowers,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -48,12 +48,12 @@ function TrainingFilterMenu({
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllTrainings() : handleGetTrainings(),
+      inShowAllMode ? handleGetAllManPowers() : handleGetManPowers(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllTrainings() : handleGetTrainings(),
+      inShowAllMode ? handleGetAllManPowers() : handleGetManPowers(),
   };
 
   useEffect(() => {
@@ -129,7 +129,7 @@ function TrainingFilterMenu({
       </div>
       <div>
         <ViewWeek
-          onClick={() => navigate(`/apps/reportClm/reportClms/training`)}
+          onClick={() => navigate(`/apps/reportClm/reportClms/manPower`)}
           className='cursor-pointer mr-10 mt-20'
           style={{ color: 'red', marginLeft: '45%', fontSize: '30px' }}
         />{' '}
@@ -187,4 +187,4 @@ function TrainingFilterMenu({
   );
 }
 
-export default TrainingFilterMenu;
+export default ManPowerFilterMenu;

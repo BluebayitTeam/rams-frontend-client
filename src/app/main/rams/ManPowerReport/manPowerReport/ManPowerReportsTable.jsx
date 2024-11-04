@@ -16,11 +16,11 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredTrainingReports,
-  useGetTrainingAllReportsQuery,
-  useGetTrainingReportsQuery,
+  selectFilteredManPowerReports,
+  useGetManPowerAllReportsQuery,
+  useGetManPowerReportsQuery,
 } from '../ManPowerReportsApi';
-import TrainingFilterMenu from './TrainingFilterMenu';
+import ManPowerFilterMenu from './ManPowerFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -31,7 +31,7 @@ const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
 ];
 
-function TrainingReportsTable(props) {
+function ManPowerReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -42,8 +42,8 @@ function TrainingReportsTable(props) {
   const { watch, getValues } = methods;
   const [initialTableColumnsState, setInitialTableColumnsState] = useState([]);
   const [
-    modifiedTrainingData,
-    setModifiedTrainingData,
+    modifiedManPowerData,
+    setModifiedManPowerData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -72,7 +72,7 @@ function TrainingReportsTable(props) {
 
   console.log('filterData', getValues());
 
-  const { data: paginatedData } = useGetTrainingReportsQuery(
+  const { data: paginatedData } = useGetManPowerReportsQuery(
     {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
@@ -89,7 +89,7 @@ function TrainingReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetTrainingAllReportsQuery(
+  const { data: allData } = useGetManPowerAllReportsQuery(
     {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
@@ -104,7 +104,7 @@ function TrainingReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredTrainingReports);
+  const totalData = useSelector(selectFilteredManPowerReports);
   const generateDynamicColumns = (data) => {
     // Start with the static "SL" column
     const staticSLColumn = {
@@ -129,12 +129,12 @@ function TrainingReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTrainingData(allData?.trainings || []);
+      setModifiedManPowerData(allData?.manPowers || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.trainings,
+        allData.manPowers,
         size,
         page
       );
@@ -143,9 +143,9 @@ function TrainingReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTrainingData(paginatedData?.trainings || []);
+      setModifiedManPowerData(paginatedData?.manPowers || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.trainings[0] || {})
+        generateDynamicColumns(paginatedData?.manPowers[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -165,19 +165,19 @@ function TrainingReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetTrainings = useCallback(async (newPage) => {
+  const handleGetManPowers = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching trainings:', error);
+      console.error('Error fetching manPowers:', error);
     }
   }, []);
 
-  const handleGetAllTrainings = useCallback(async () => {
+  const handleGetAllManPowers = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all trainings:', error);
+      console.error('Error fetching all manPowers:', error);
     }
   }, []);
 
@@ -188,7 +188,7 @@ function TrainingReportsTable(props) {
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Training: getValues()?.trainingName || null,
+    ManPower: getValues()?.manPowerName || null,
 
     Country: getValues()?.target_countryName || null,
 
@@ -199,10 +199,10 @@ function TrainingReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <TrainingFilterMenu
+        <ManPowerFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetTrainings={handleGetTrainings}
-          handleGetAllTrainings={handleGetAllTrainings}
+          handleGetManPowers={handleGetManPowers}
+          handleGetAllManPowers={handleGetAllManPowers}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -215,17 +215,17 @@ function TrainingReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetTrainings(1)}
-        onPreviousPage={() => handleGetTrainings(page - 1)}
-        onNextPage={() => handleGetTrainings(page + 1)}
-        onLastPage={() => handleGetTrainings(totalPages)}
+        onFirstPage={() => handleGetManPowers(1)}
+        onPreviousPage={() => handleGetManPowers(page - 1)}
+        onNextPage={() => handleGetManPowers(page + 1)}
+        onLastPage={() => handleGetManPowers(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetTrainings}
-        handleGetAllData={handleGetAllTrainings}
+        handleGetData={handleGetManPowers}
+        handleGetAllData={handleGetAllManPowers}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TrainingReport'
+        filename='ManPowerReport'
       />
 
       <table
@@ -233,20 +233,20 @@ function TrainingReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedTrainingData?.map((training, index) => (
+          {modifiedManPowerData?.map((manPower, index) => (
             <SinglePageWithDynamicColumn
-              key={training.id || index}
+              key={manPower.id || index}
               classes={classes}
-              reportTitle='Training Report'
+              reportTitle='ManPower Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={training}
+              data={manPower}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : training.page * training.size - training.size + 1
+                  : manPower.page * manPower.size - manPower.size + 1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
@@ -261,4 +261,4 @@ function TrainingReportsTable(props) {
   );
 }
 
-export default TrainingReportsTable;
+export default ManPowerReportsTable;
