@@ -66,18 +66,18 @@ function TrainingFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* M.Ent from */}
+        {/* TR.Ent from */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='M.Ent from'
+          label='TR.Ent From'
           maxDate={values.date_before || new Date()}
         />
-        {/* M.Ent to  */}
+        {/* TR.Ent to  */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='M.Ent to '
+          label='TR.Ent to '
           minDate={values.date_after}
           maxDate={new Date()}
         />
@@ -141,13 +141,13 @@ function TrainingFilterMenu({
           {...commonKewordProps}
           type='date'
           name='date_after'
-          label='M.Ent from'
+          label='TR.Ent From'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
-          label='M.Ent to '
+          label='TR.Ent to '
         />
         <Keyword
           {...commonKewordProps}
