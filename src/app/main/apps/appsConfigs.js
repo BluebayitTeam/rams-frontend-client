@@ -146,6 +146,7 @@ import VisaExpireReportAppConfig from '../rams/VisaExpireReportManagement/VisaEx
 import CompanyOverviewReportAppConfig from '../rams/CompanyOverviewReportManagement/CompanyOverviewReportAppConfig';
 import EmbassyReportAppConfig from '../rams/EmbassyReportManagement/EmbassyReportAppConfig';
 import MofaReportAppConfig from '../rams/MofaReportManagement/MofaReportAppConfig';
+import TrainingReportAppConfig from '../rams/TrainingReportManagement/TrainingReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -179,6 +180,7 @@ const appsConfigs = [
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
   VisaExpireReportAppConfig,
+  TrainingReportAppConfig,
   FlightFlightDoneReportAppConfig,
   MalefingerletterAppConfig,
   MedicalExpireReportAppConfig,
