@@ -2,45 +2,45 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-  TRAINING_FILTER_BY,
-  TRAINING_FILTER_WITHOUT_PG,
+  MANPOWER_FILTER_BY,
+  MANPOWER_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
 
-export const addTagTypes = ['trainingReports'];
-const TrainingReportApi = api
+export const addTagTypes = ['manPowerReports'];
+const ManPowerReportApi = api
   .enhanceEndpoints({
     addTagTypes,
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getTrainingReports: build.query({
+      getManPowerReports: build.query({
         query: (filterData) => ({
-          url: TRAINING_FILTER_BY,
+          url: MANPOWER_FILTER_BY,
           params: filterData,
         }),
-        providesTags: ['trainingReports'],
+        providesTags: ['manPowerReports'],
       }),
-      getTrainingAllReports: build.query({
+      getManPowerAllReports: build.query({
         query: (filterData) => ({
-          url: TRAINING_FILTER_WITHOUT_PG,
+          url: MANPOWER_FILTER_WITHOUT_PG,
           params: filterData,
         }),
-        providesTags: ['trainingReports'],
+        providesTags: ['manPowerReports'],
       }),
     }),
     overrideExisting: false,
   });
-export default TrainingReportApi;
-export const { useGetTrainingReportsQuery, useGetTrainingAllReportsQuery } =
-  TrainingReportApi;
+export default ManPowerReportApi;
+export const { useGetManPowerReportsQuery, useGetManPowerAllReportsQuery } =
+  ManPowerReportApi;
 
-export const selectFilteredTrainingReports = (trainingReports) =>
+export const selectFilteredManPowerReports = (manPowerReports) =>
   createSelector([selectSearchText], (searchText) => {
     if (searchText?.length === 0) {
-      return trainingReports;
+      return manPowerReports;
     }
 
-    return FuseUtils.filterArrayByString(trainingReports, searchText);
+    return FuseUtils.filterArrayByString(manPowerReports, searchText);
   });
