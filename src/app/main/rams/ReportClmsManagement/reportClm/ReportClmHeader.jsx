@@ -49,8 +49,8 @@ function ReportClmHeader() {
           navigate(`/apps/embassyReport/embassyReports`);
         }
 
-        if (reportClmId === 'Departments') {
-          navigate(`/apps/department/departments`);
+        if (reportClmId === 'training') {
+          navigate(`/apps/trainingReport/trainingReports`);
         }
 
         if (reportClmId === 'recruiting') {
@@ -135,10 +135,9 @@ function ReportClmHeader() {
       navigate(`/apps/mofaReport/mofaReports`);
     }
 
-    if (reportClmId === 'recruiting') {
-      navigate(`/apps/passenger/passengers/recruiting`);
+    if (reportClmId === 'training') {
+      navigate(`/apps/trainingReport/trainingReports`);
     }
-
     if (reportClmId === 'processing') {
       navigate(`/apps/passenger/passengers/processing`);
     }
