@@ -81,44 +81,36 @@ function ManPowerFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* M.Exp From */}
+        {/* MP.from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='expiry_date_after'
-          label='M.Exp From'
-          minDate={values.expiry_date_before}
+          name='man_power_date_after'
+          label='MP.from'
+          minDate={values.man_power_date_before}
           maxDate={new Date()}
         />{' '}
-        {/* M.Exp To */}
+        {/* MP.To */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='expiry_date_before'
-          label='M.Exp To'
-          minDate={values.expiry_date_after}
+          name='man_power_date_before'
+          label='MP.To'
+          minDate={values.man_power_date_after}
           maxDate={new Date()}
         />
-        {/* V.Ent from */}
+        {/* MP.Dl from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_after'
-          label='V.Ent from'
-          maxDate={values.date_before || new Date()}
+          name='delivery_date_after'
+          label='MP.Dl from'
+          maxDate={values.delivery_date_before || new Date()}
         />
-        {/* V.Ent To */}
+        {/* MP.Dl to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
-          label='V.Ent To'
-          minDate={values.date_after}
+          name='delivery_date_before'
+          label='MP.Dl to'
+          minDate={values.delivery_date_after}
           maxDate={new Date()}
-        />
-        {/* V.Stp Status */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='stamping_status'
-          options={doneNotDone}
-          icon='local_activity'
-          width='112px'
         />
         {/* Passenger */}
         <ReportSelectPassenger
@@ -189,26 +181,26 @@ function ManPowerFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='expiry_date_after'
-          label='M.Exp From'
+          name='man_power_date_after'
+          label='MP.from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='expiry_date_before'
-          label='M.Exp To'
+          name='man_power_date_before'
+          label='MP.To'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_after'
-          label='V.Ent from'
+          name='delivery_date_after'
+          label='MP.Dl from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_before'
-          label='V.Ent To'
+          name='delivery_date_before'
+          label='MP.Dl to'
         />
         <Keyword
           {...commonKewordProps}
@@ -221,12 +213,6 @@ function ManPowerFilterMenu({
           type='select'
           name='target_country'
           icon='flag'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='current_status'
-          icon='local_activity'
         />
         <Keyword
           {...commonKewordProps}
