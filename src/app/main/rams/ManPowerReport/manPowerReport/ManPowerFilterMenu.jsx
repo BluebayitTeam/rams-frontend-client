@@ -73,46 +73,53 @@ function ManPowerFilterMenu({
           label='MP.Ent From'
           maxDate={values.date_before || new Date()}
         />
-        {/* MP.Ent to  */}
+        {/* MP.Ent To */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='MP.Ent to '
+          label='MP.Ent To'
           minDate={values.date_after}
           maxDate={new Date()}
         />
-
-        {/* MP.From */}
+        {/* M.Exp From */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_after'
-          label='MP.From'
-          maxDate={values.man_power_date_before || new Date()}
-        />
-        {/* MP.To  */}
+          name='expiry_date_after'
+          label='M.Exp From'
+          minDate={values.expiry_date_before}
+          maxDate={new Date()}
+        />{' '}
+        {/* M.Exp To */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_before'
-          label='MP.To'
-          minDate={values.man_power_date_after}
+          name='expiry_date_before'
+          label='M.Exp To'
+          minDate={values.expiry_date_after}
           maxDate={new Date()}
         />
-        {/* MP.Dl from */}
+        {/* V.Ent from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='delivery_date_after'
-          label='MP.Dl from'
-          maxDate={values.delivery_date_before || new Date()}
+          name='date_after'
+          label='V.Ent from'
+          maxDate={values.date_before || new Date()}
         />
-        {/* MP.Dl To  */}
+        {/* V.Ent To */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='delivery_date_before'
-          label='MP.Dl To '
-          minDate={values.delivery_date_after}
+          name='date_before'
+          label='V.Ent To'
+          minDate={values.date_after}
           maxDate={new Date()}
         />
-
+        {/* V.Stp Status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='stamping_status'
+          options={doneNotDone}
+          icon='local_activity'
+          width='112px'
+        />
         {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}
@@ -128,10 +135,9 @@ function ManPowerFilterMenu({
         <ReportSelect
           {...commonFieldProps}
           name='target_country'
-          label='Country'
           options={countries}
           icon='flag'
-          width='55px'
+          width='100px'
         />
         {/* agent */}
         <ReportSelectFirstLastName
@@ -178,31 +184,31 @@ function ManPowerFilterMenu({
           {...commonKewordProps}
           type='date'
           name='date_before'
-          label='MP.Ent to '
+          label='MP.Ent To'
         />{' '}
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_power_date_after'
-          label='MP.From'
+          name='expiry_date_after'
+          label='M.Exp From'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_powe_date_before'
-          label='MP.to '
+          name='expiry_date_before'
+          label='M.Exp To'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='delivery_date_after'
-          label='Mp.Dl From'
+          name='date_after'
+          label='V.Ent from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='delivery_date_before'
-          label='Mp.Dl to '
+          name='date_before'
+          label='V.Ent To'
         />
         <Keyword
           {...commonKewordProps}
@@ -214,8 +220,13 @@ function ManPowerFilterMenu({
           {...commonKewordProps}
           type='select'
           name='target_country'
-          label='Country'
           icon='flag'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='current_status'
+          icon='local_activity'
         />
         <Keyword
           {...commonKewordProps}
