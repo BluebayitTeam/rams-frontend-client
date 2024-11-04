@@ -16,11 +16,11 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredMofaReports,
-  useGetMofaAllReportsQuery,
-  useGetMofaReportsQuery,
+  selectFilteredTrainingReports,
+  useGetTrainingAllReportsQuery,
+  useGetTrainingReportsQuery,
 } from '../TrainingReportsApi';
-import MofaFilterMenu from './TrainingFilterMenu';
+import TrainingFilterMenu from './TrainingFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -31,7 +31,7 @@ const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
 ];
 
-function MofaReportsTable(props) {
+function TrainingReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -42,8 +42,8 @@ function MofaReportsTable(props) {
   const { watch, getValues } = methods;
   const [initialTableColumnsState, setInitialTableColumnsState] = useState([]);
   const [
-    modifiedMofaData,
-    setModifiedMofaData,
+    modifiedTrainingData,
+    setModifiedTrainingData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -72,7 +72,7 @@ function MofaReportsTable(props) {
 
   console.log('filterData', getValues());
 
-  const { data: paginatedData } = useGetMofaReportsQuery(
+  const { data: paginatedData } = useGetTrainingReportsQuery(
     {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
@@ -90,7 +90,7 @@ function MofaReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetMofaAllReportsQuery(
+  const { data: allData } = useGetTrainingAllReportsQuery(
     {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
@@ -106,7 +106,7 @@ function MofaReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredMofaReports);
+  const totalData = useSelector(selectFilteredTrainingReports);
   const generateDynamicColumns = (data) => {
     // Start with the static "SL" column
     const staticSLColumn = {
@@ -131,12 +131,12 @@ function MofaReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMofaData(allData?.mofas || []);
+      setModifiedTrainingData(allData?.trainings || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.mofas,
+        allData.trainings,
         size,
         page
       );
@@ -145,9 +145,9 @@ function MofaReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMofaData(paginatedData?.mofas || []);
+      setModifiedTrainingData(paginatedData?.trainings || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.mofas[0] || {})
+        generateDynamicColumns(paginatedData?.trainings[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -167,19 +167,19 @@ function MofaReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetMofas = useCallback(async (newPage) => {
+  const handleGetTrainings = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching mofas:', error);
+      console.error('Error fetching trainings:', error);
     }
   }, []);
 
-  const handleGetAllMofas = useCallback(async () => {
+  const handleGetAllTrainings = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all mofas:', error);
+      console.error('Error fetching all trainings:', error);
     }
   }, []);
 
@@ -190,7 +190,7 @@ function MofaReportsTable(props) {
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Mofa: getValues()?.mofaName || null,
+    Training: getValues()?.trainingName || null,
 
     Country: getValues()?.target_countryName || null,
 
@@ -201,10 +201,10 @@ function MofaReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <MofaFilterMenu
+        <TrainingFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetMofas={handleGetMofas}
-          handleGetAllMofas={handleGetAllMofas}
+          handleGetTrainings={handleGetTrainings}
+          handleGetAllTrainings={handleGetAllTrainings}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -217,17 +217,17 @@ function MofaReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetMofas(1)}
-        onPreviousPage={() => handleGetMofas(page - 1)}
-        onNextPage={() => handleGetMofas(page + 1)}
-        onLastPage={() => handleGetMofas(totalPages)}
+        onFirstPage={() => handleGetTrainings(1)}
+        onPreviousPage={() => handleGetTrainings(page - 1)}
+        onNextPage={() => handleGetTrainings(page + 1)}
+        onLastPage={() => handleGetTrainings(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetMofas}
-        handleGetAllData={handleGetAllMofas}
+        handleGetData={handleGetTrainings}
+        handleGetAllData={handleGetAllTrainings}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MofaReport'
+        filename='TrainingReport'
       />
 
       <table
@@ -235,20 +235,20 @@ function MofaReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMofaData?.map((mofa, index) => (
+          {modifiedTrainingData?.map((training, index) => (
             <SinglePageWithDynamicColumn
-              key={mofa.id || index}
+              key={training.id || index}
               classes={classes}
-              reportTitle='Mofa Report'
+              reportTitle='Training Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={mofa}
+              data={training}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : mofa.page * mofa.size - mofa.size + 1
+                  : training.page * training.size - training.size + 1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
@@ -263,4 +263,4 @@ function MofaReportsTable(props) {
   );
 }
 
-export default MofaReportsTable;
+export default TrainingReportsTable;
