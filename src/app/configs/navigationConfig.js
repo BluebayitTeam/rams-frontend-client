@@ -865,7 +865,7 @@ const navigationConfig = [
         translate: 'Mofa Report',
         display_order: 5,
         type: 'item',
-        url: '/apps/report-management/mofa-reports',
+        url: '/apps/mofaReport/mofaReports',
         exact: true,
       },
       {
@@ -874,7 +874,7 @@ const navigationConfig = [
         translate: 'Training Report',
         display_order: 6,
         type: 'item',
-        url: '/apps/report-management/training-reports',
+        url: '/apps/trainingReport/trainingReports',
         exact: true,
       },
       {
