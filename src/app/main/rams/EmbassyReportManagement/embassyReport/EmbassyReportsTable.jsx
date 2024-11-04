@@ -194,22 +194,29 @@ function EmbassyReportsTable(props) {
   }, []);
 
   const filteredData = {
-    M_Rpt_To: getValues()?.stamping_date_before
+    V_Stp_To: getValues()?.stamping_date_before
       ? moment(new Date(getValues()?.stamping_date_before)).format('DD-MM-YYYY')
       : null,
-    M_Rpt_From: getValues()?.stamping_date_after
+    V_Stp_From: getValues()?.stamping_date_after
       ? moment(new Date(getValues()?.stamping_date_after)).format('DD-MM-YYYY')
       : null,
 
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+    M_Exp_From: getValues()?.expiry_date_after
+      ? moment(new Date(getValues()?.expiry_date_after)).format('DD-MM-YYYY')
       : null,
-    Date_From: getValues()?.date_after
+    M_Exp_To: getValues()?.expiry_date_before
+      ? moment(new Date(getValues()?.expiry_date_before)).format('DD-MM-YYYY')
+      : null,
+    V_Ent_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Embassy: getValues()?.embassyName || null,
-    Current_Status: getValues()?.current_statusName || null,
-    Target_Country: getValues()?.target_countryName || null,
+    V_Ent_To: getValues()?.date_before
+      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
+      : null,
+    Passenger: getValues()?.passengerName || null,
+    Stamping_Status: getValues()?.stamping_status || null,
+
+    Country: getValues()?.target_countryName || null,
 
     Agent: getValues()?.agentName || null,
     Gender: getValues()?.genderName || null,
