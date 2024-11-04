@@ -838,7 +838,7 @@ const navigationConfig = [
         translate: 'Company Overview Report',
         display_order: 2,
         type: 'item',
-        url: '/apps/companyOverviews/report',
+        url: '/apps/companyOverviewReport/companyOverviewReports',
         exact: true,
       },
       {
@@ -856,7 +856,7 @@ const navigationConfig = [
         translate: 'Embassy Report',
         display_order: 4,
         type: 'item',
-        url: '/apps/report-management/embassy-reports',
+        url: '/embassyReport/embassyReports',
         exact: true,
       },
       {
