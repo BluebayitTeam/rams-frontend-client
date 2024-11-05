@@ -20,7 +20,6 @@ import {
   getPassengerTypes,
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
-// import ReportSelectPassengerSumary from 'src/app/@components/ReportComponents/ReportSelectPassengerSumary';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),

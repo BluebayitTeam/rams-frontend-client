@@ -264,7 +264,7 @@ function PassengerSumaryReportsTable(props) {
             <SinglePageWithDynamicColumn
               key={passengerSumary.id || index}
               classes={classes}
-              reportTitle='PassengerSumary Report'
+              reportTitle='Passenger Summary Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

@@ -149,6 +149,7 @@ import MofaReportAppConfig from '../rams/MofaReportManagement/MofaReportAppConfi
 import TrainingReportAppConfig from '../rams/TrainingReportManagement/TrainingReportAppConfig';
 import ManPowerReportAppConfig from '../rams/ManPowerReport/ManPowerReportAppConfig';
 import FlightReportAppConfig from '../rams/FlightReportManagement/FlightReportAppConfig';
+import PassengerSumaryReportAppConfig from '../rams/PassengerSumaryReportManagement/PassengerSumaryAppConfig';
 
 /**
  * The list of application configurations.
@@ -200,6 +201,7 @@ const appsConfigs = [
   PassengerLedgerReportAppConfig,
   ECommerceAppConfig,
   MofaReportAppConfig,
+  PassengerSumaryReportAppConfig,
   EmbassyReportAppConfig,
   AccountStatementReportAppConfig,
   NotMedicalReportAppConfig,
