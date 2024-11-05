@@ -1028,11 +1028,11 @@ export const PASSENGER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/passenger_
 
 // Passenger Summary
 
-export const PASSENGER_SUMMARY_FILTER_BY = `${BASE_URL}/report/api/v1/de_ag_ve_pa_me_mo_ow_mo_em_tr_mp_fl_report/filter/`;
+export const PASSENGER_SUMMARY_FILTER_BY = `${BASE_URL}/report/api/v1/passenger_summary_report/filter/`;
 
 export const PASSENGER_SUMMARY_ALL = `${BASE_URL}/report/api/v1/de_ag_ve_pa_me_mo_ow_mo_em_tr_mp_fl_report/all/`;
 
-export const PASSENGER_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/de_ag_ve_pa_me_mo_ow_mo_em_tr_mp_fl_report_wp/filter/`;
+export const PASSENGER_SUMMARY_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/passenger_summary_report_wp/filter/`;
 
 export const UPDATE_PASSENGER_SUMMARY_CLM = `${BASE_URL}/report/api/v1/passenger_summary_columns/update/`;
 

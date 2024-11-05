@@ -4,6 +4,8 @@ import FuseUtils from '@fuse/utils';
 import {
   MANPOWER_FILTER_BY,
   MANPOWER_FILTER_WITHOUT_PG,
+  PASSENGER_SUMMARY_FILTER_BY,
+  PASSENGER_SUMMARY_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -17,14 +19,14 @@ const PassengerSumaryReportApi = api
     endpoints: (build) => ({
       getPassengerSumaryReports: build.query({
         query: (filterData) => ({
-          url: MANPOWER_FILTER_BY,
+          url: PASSENGER_SUMMARY_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['passengerSumaryReports'],
       }),
       getPassengerSumaryAllReports: build.query({
         query: (filterData) => ({
-          url: MANPOWER_FILTER_WITHOUT_PG,
+          url: PASSENGER_SUMMARY_FILTER_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['passengerSumaryReports'],
