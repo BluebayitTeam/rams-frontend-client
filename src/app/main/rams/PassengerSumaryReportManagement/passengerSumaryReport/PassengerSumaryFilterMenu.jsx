@@ -12,7 +12,7 @@ import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls
 import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
-import { doneNotDone, genders } from 'src/app/@data/data';
+import { doneNotDone, genders, medicalResults } from 'src/app/@data/data';
 import {
   getAgents,
   getCountries,
@@ -157,46 +157,89 @@ function PassengerSumaryFilterMenu({
           name='passenger'
           options={passengers}
           getOptionLabel={(option) =>
-            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
+            `${option.passenger_id} ${option.office_serial} ${option.passport_no} ${option.passenger_name}`
           }
           icon='person'
           width='78px'
         />
-        {/* MP.Ent From */}
-        <ReportDatePicker
+        {/* Mofa Status */}
+        <ReportSelect
           {...commonFieldProps}
-          name='date_after'
-          label='MP.Ent From'
-          maxDate={values.date_before || new Date()}
+          name='mofa_status'
+          options={doneNotDone}
+          icon='local_activity'
+          width='82px'
         />
-        {/* MP.Ent To */}
+        {/* Stamping from  */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='date_before'
-          label='MP.Ent To'
-          minDate={values.date_after}
+          name='stamping_date_after'
+          label='Stamping from '
+          maxDate={values.stamping_date_before || new Date()}
+        />
+        {/* Stamping to */}
+        <ReportDatePicker
+          {...commonFieldProps}
+          name='stamping_date_before'
+          label='Stamping to'
+          minDate={values.stamping_date_after}
           maxDate={new Date()}
         />
-        {/* MP.from */}
+        {/* Medical Result */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='medical_result'
+          options={medicalResults}
+          icon='new_releases'
+          width='97px'
+        />
+        {/* Med.Exp from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_after'
-          label='MP.from'
-          minDate={values.man_power_date_before}
+          name='medical_expiry_date_after'
+          label='Med.Exp from'
+          minDate={values.medical_expiry_date_before}
           maxDate={new Date()}
         />{' '}
-        {/* MP.To */}
+        {/* Med.Exp To */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_before'
-          label='MP.To'
-          minDate={values.man_power_date_after}
+          name='medical_expiry_date_before'
+          label='Med.Exp To'
+          minDate={values.medical_expiry_date_after}
           maxDate={new Date()}
+        />
+        {/* PC.Status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='police_clearance_status'
+          options={doneNotDone}
+          icon='account_balance'
+          label='Pc Status'
+          width='64px'
+        />{' '}
+        {/* DL.Status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='driving_license_status'
+          options={doneNotDone}
+          icon='directions_car'
+          label='Dl Status'
+          width='62px'
+        />{' '}
+        {/* finger status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='finger_status'
+          options={doneNotDone}
+          icon='touch_app'
+          label='Finger Statuss'
+          width='90px'
         />
         {/* MP.Dl from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='delivery_date_after'
+          name='delivery_stamping_date_after'
           label='MP.Dl from'
           maxDate={values.delivery_date_before || new Date()}
         />
@@ -205,7 +248,7 @@ function PassengerSumaryFilterMenu({
           {...commonFieldProps}
           name='delivery_date_before'
           label='MP.Dl to'
-          minDate={values.delivery_date_after}
+          minDate={values.delivery_stamping_date_after}
           maxDate={new Date()}
         />
       </div>
@@ -253,7 +296,14 @@ function PassengerSumaryFilterMenu({
           name='profession'
           icon='person'
           options={professions}
-        />
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='medical_result'
+          icon='new_releases'
+          options={medicalResults}
+        />{' '}
         <Keyword
           {...commonKewordProps}
           type='select'
@@ -281,32 +331,63 @@ function PassengerSumaryFilterMenu({
         />
         <Keyword
           {...commonKewordProps}
-          type='date'
-          name='date_after'
-          label='MP.Ent From'
+          type='select'
+          name='mofa_status'
+          icon='local_activity'
+          options={doneNotDone}
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='police_clearance_status'
+          icon='account_balance'
+          label='Pc Status'
+          options={doneNotDone}
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='driving_license_status'
+          icon='directions_car'
+          label='Dl Status'
+          options={doneNotDone}
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='finger_status'
+          icon='touch_app'
+          label='Dl Status'
+          options={doneNotDone}
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='date_before'
-          label='MP.Ent To'
+          name='stamping_date_after'
+          label='Stamping from '
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='date'
+          name='stamping_date_before'
+          label='Stamping to'
         />{' '}
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_power_date_after'
-          label='MP.from'
+          name='medical_expiry_date_after'
+          label='Med.Exp from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_power_date_before'
-          label='MP.To'
+          name='medical_expiry_date_before'
+          label='Med.Exp To'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='delivery_date_after'
+          name='delivery_stamping_date_after'
           label='MP.Dl from'
         />
         <Keyword
