@@ -22,6 +22,7 @@ import {
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
 import ReportSelectDemand from 'src/app/@components/ReportComponents/ReportSelectDemand';
+import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -86,6 +87,15 @@ function PassengerSumaryFilterMenu({
           label='Demand'
           icon='person'
           width='56px'
+        />
+        {/* P.agent */}
+        <ReportSelectFirstAgentCode
+          {...commonFieldProps}
+          name='passenger_agent'
+          label='P.agent'
+          options={agents}
+          icon='person_icon'
+          width='54px'
         />
         {/* MP.Ent From */}
         <ReportDatePicker

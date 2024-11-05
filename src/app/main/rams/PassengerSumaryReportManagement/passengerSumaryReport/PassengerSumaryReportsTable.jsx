@@ -141,12 +141,12 @@ function PassengerSumaryReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassengerSumaryData(allData?.man_powers || []);
+      setModifiedPassengerSumaryData(allData?.passenger_objs || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.man_powers,
+        allData.passenger_objs,
         size,
         page
       );
@@ -155,9 +155,9 @@ function PassengerSumaryReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassengerSumaryData(paginatedData?.man_powers || []);
+      setModifiedPassengerSumaryData(paginatedData?.passenger_objs || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.man_powers[0] || {})
+        generateDynamicColumns(paginatedData?.passenger_objs[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -182,14 +182,14 @@ function PassengerSumaryReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching man_powers:', error);
+      console.error('Error fetching passenger_objs:', error);
     }
   }, []);
 
   const handleGetAllPassengerSumarys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all man_powers:', error);
+      console.error('Error fetching all passenger_objs:', error);
     }
   }, []);
 
