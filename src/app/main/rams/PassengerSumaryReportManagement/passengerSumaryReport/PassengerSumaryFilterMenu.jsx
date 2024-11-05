@@ -19,6 +19,7 @@ import {
   getDemands,
   getPassengers,
   getPassengerTypes,
+  getProfessions,
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
 import ReportSelectDemand from 'src/app/@components/ReportComponents/ReportSelectDemand';
@@ -39,7 +40,8 @@ function PassengerSumaryFilterMenu({
 
   const methods = useFormContext();
   const { getValues } = methods;
-
+  // element refs
+  const visaNoEl = useRef(null);
   const theme = useTheme();
   const {
     passengers,
@@ -48,6 +50,7 @@ function PassengerSumaryFilterMenu({
     passengerTypes,
     currentStatuss,
     demands,
+    professions,
   } = useSelector((state) => state.data);
 
   const values = getValues();
@@ -74,6 +77,7 @@ function PassengerSumaryFilterMenu({
     dispatch(getAgents());
     dispatch(getPassengerTypes());
     dispatch(getDemands());
+    dispatch(getProfessions());
   }, [dispatch]);
 
   return (
@@ -96,6 +100,31 @@ function PassengerSumaryFilterMenu({
           options={agents}
           icon='person_icon'
           width='54px'
+        />
+        {/* ticket no */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='visa_number'
+          domEl={visaNoEl}
+          icon='accessibility_new_icon'
+          width='90px'
+        />
+        {/* Profession */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='profession'
+          options={professions}
+          label='Profession'
+          icon='person'
+          width='72px'
+        />
+        {/* agent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='agent'
+          options={agents}
+          icon='person'
+          width='40px'
         />
         {/* MP.Ent From */}
         <ReportDatePicker
@@ -163,14 +192,6 @@ function PassengerSumaryFilterMenu({
           icon='flag'
           width='60px'
         />
-        {/* agent */}
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name='agent'
-          options={agents}
-          icon='person'
-          width='40px'
-        />
         {/* Passenger Type */}
         <ReportSelect
           {...commonFieldProps}
@@ -211,6 +232,20 @@ function PassengerSumaryFilterMenu({
           name='passenger_agent'
           label='P.Agent'
           icon='person'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='visa_number'
+          domEl={visaNoEl}
+          icon='accessibility_new_icon'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='agent'
+          icon='person'
+          options={agents}
         />
         <Keyword
           {...commonKewordProps}
@@ -260,13 +295,6 @@ function PassengerSumaryFilterMenu({
           name='target_country'
           label='Country'
           icon='flag'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='agent'
-          icon='person'
-          options={agents}
         />
         <Keyword
           {...commonKewordProps}
