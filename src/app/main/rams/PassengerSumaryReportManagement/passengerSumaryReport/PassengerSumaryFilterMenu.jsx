@@ -20,16 +20,16 @@ import {
   getPassengerTypes,
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
-// import ReportSelectManPower from 'src/app/@components/ReportComponents/ReportSelectManPower';
+// import ReportSelectPassengerSumary from 'src/app/@components/ReportComponents/ReportSelectPassengerSumary';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function ManPowerFilterMenu({
+function PassengerSumaryFilterMenu({
   inShowAllMode,
-  handleGetManPowers,
-  handleGetAllManPowers,
+  handleGetPassengerSumarys,
+  handleGetAllPassengerSumarys,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -48,12 +48,16 @@ function ManPowerFilterMenu({
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllManPowers() : handleGetManPowers(),
+      inShowAllMode
+        ? handleGetAllPassengerSumarys()
+        : handleGetPassengerSumarys(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllManPowers() : handleGetManPowers(),
+      inShowAllMode
+        ? handleGetAllPassengerSumarys()
+        : handleGetPassengerSumarys(),
   };
 
   useEffect(() => {
@@ -240,4 +244,4 @@ function ManPowerFilterMenu({
   );
 }
 
-export default ManPowerFilterMenu;
+export default PassengerSumaryFilterMenu;

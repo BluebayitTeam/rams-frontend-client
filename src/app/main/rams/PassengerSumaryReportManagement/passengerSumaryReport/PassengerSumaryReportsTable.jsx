@@ -16,11 +16,11 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredManPowerReports,
-  useGetManPowerAllReportsQuery,
-  useGetManPowerReportsQuery,
+  selectFilteredPassengerSumaryReports,
+  useGetPassengerSumaryAllReportsQuery,
+  useGetPassengerSumaryReportsQuery,
 } from '../PassengerSumaryReportsApi';
-import ManPowerFilterMenu from './ManPowerFilterMenu';
+import PassengerSumaryFilterMenu from './PassengerSumaryFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -31,7 +31,7 @@ const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
 ];
 
-function ManPowerReportsTable(props) {
+function PassengerSumaryReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -42,8 +42,8 @@ function ManPowerReportsTable(props) {
   const { watch, getValues } = methods;
   const [initialTableColumnsState, setInitialTableColumnsState] = useState([]);
   const [
-    modifiedManPowerData,
-    setModifiedManPowerData,
+    modifiedPassengerSumaryData,
+    setModifiedPassengerSumaryData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -72,7 +72,7 @@ function ManPowerReportsTable(props) {
 
   console.log('filterData', getValues());
 
-  const { data: paginatedData } = useGetManPowerReportsQuery(
+  const { data: paginatedData } = useGetPassengerSumaryReportsQuery(
     {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
@@ -95,7 +95,7 @@ function ManPowerReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetManPowerAllReportsQuery(
+  const { data: allData } = useGetPassengerSumaryAllReportsQuery(
     {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
@@ -116,7 +116,7 @@ function ManPowerReportsTable(props) {
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredManPowerReports);
+  const totalData = useSelector(selectFilteredPassengerSumaryReports);
   const generateDynamicColumns = (data) => {
     // Start with the static "SL" column
     const staticSLColumn = {
@@ -141,7 +141,7 @@ function ManPowerReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedManPowerData(allData?.man_powers || []);
+      setModifiedPassengerSumaryData(allData?.man_powers || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -155,7 +155,7 @@ function ManPowerReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedManPowerData(paginatedData?.man_powers || []);
+      setModifiedPassengerSumaryData(paginatedData?.man_powers || []);
       setInitialTableColumnsState(
         generateDynamicColumns(paginatedData?.man_powers[0] || {})
       );
@@ -177,7 +177,7 @@ function ManPowerReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetManPowers = useCallback(async (newPage) => {
+  const handleGetPassengerSumarys = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -186,7 +186,7 @@ function ManPowerReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllManPowers = useCallback(async () => {
+  const handleGetAllPassengerSumarys = useCallback(async () => {
     try {
     } catch (error) {
       console.error('Error fetching all man_powers:', error);
@@ -226,10 +226,10 @@ function ManPowerReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <ManPowerFilterMenu
+        <PassengerSumaryFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetManPowers={handleGetManPowers}
-          handleGetAllManPowers={handleGetAllManPowers}
+          handleGetPassengerSumarys={handleGetPassengerSumarys}
+          handleGetAllPassengerSumarys={handleGetAllPassengerSumarys}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -242,17 +242,17 @@ function ManPowerReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetManPowers(1)}
-        onPreviousPage={() => handleGetManPowers(page - 1)}
-        onNextPage={() => handleGetManPowers(page + 1)}
-        onLastPage={() => handleGetManPowers(totalPages)}
+        onFirstPage={() => handleGetPassengerSumarys(1)}
+        onPreviousPage={() => handleGetPassengerSumarys(page - 1)}
+        onNextPage={() => handleGetPassengerSumarys(page + 1)}
+        onLastPage={() => handleGetPassengerSumarys(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetManPowers}
-        handleGetAllData={handleGetAllManPowers}
+        handleGetData={handleGetPassengerSumarys}
+        handleGetAllData={handleGetAllPassengerSumarys}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='ManPowerReport'
+        filename='PassengerSumaryReport'
       />
 
       <table
@@ -260,20 +260,22 @@ function ManPowerReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedManPowerData?.map((manPower, index) => (
+          {modifiedPassengerSumaryData?.map((passengerSumary, index) => (
             <SinglePageWithDynamicColumn
-              key={manPower.id || index}
+              key={passengerSumary.id || index}
               classes={classes}
-              reportTitle='ManPower Report'
+              reportTitle='PassengerSumary Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={manPower}
+              data={passengerSumary}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : manPower.page * manPower.size - manPower.size + 1
+                  : passengerSumary.page * passengerSumary.size -
+                    passengerSumary.size +
+                    1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
@@ -288,4 +290,4 @@ function ManPowerReportsTable(props) {
   );
 }
 
-export default ManPowerReportsTable;
+export default PassengerSumaryReportsTable;

@@ -1,18 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import ManPowerReportsTable from './ManPowerReportsTable';
+import PassengerSumaryReportsTable from './PassengerSumaryReportsTable';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a manPowerReport name')
-    .min(5, 'The manPowerReport name must be at least 5 characters'),
+    .nonempty('You must enter a passengerSumaryReport name')
+    .min(5, 'The passengerSumaryReport name must be at least 5 characters'),
 });
 
-function ManPowerReport() {
+function PassengerSumaryReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   return (
@@ -27,14 +27,14 @@ function ManPowerReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            ManPower Report
+            PassengerSumary Report
           </h1>
         </div>
       }
-      content={<ManPowerReportsTable />}
+      content={<PassengerSumaryReportsTable />}
       innerScroll
     />
   );
 }
 
-export default ManPowerReport;
+export default PassengerSumaryReport;
