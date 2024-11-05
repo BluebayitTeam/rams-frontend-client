@@ -159,7 +159,7 @@ function PassengerSumaryReportsTable(props) {
       setInitialTableColumnsState(
         generateDynamicColumns(paginatedData?.passenger_objs[0] || {})
       );
-      setPage(paginatedData?.page || 1);
+
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);

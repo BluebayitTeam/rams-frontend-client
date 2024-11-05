@@ -200,6 +200,20 @@ function PassengerSumaryFilterMenu({
       <div className='allKeyWrdContainer'>
         <Keyword
           {...commonKewordProps}
+          type='select'
+          name='demand'
+          label='Demand'
+          icon='person'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='passenger_agent'
+          label='P.Agent'
+          icon='person'
+        />
+        <Keyword
+          {...commonKewordProps}
           type='date'
           name='date_after'
           label='MP.Ent From'
