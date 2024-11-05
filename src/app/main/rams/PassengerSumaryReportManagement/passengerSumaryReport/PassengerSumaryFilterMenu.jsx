@@ -109,6 +109,14 @@ function PassengerSumaryFilterMenu({
           icon='accessibility_new_icon'
           width='90px'
         />
+        {/* agent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='agent'
+          options={agents}
+          icon='person'
+          width='40px'
+        />
         {/* Profession */}
         <ReportSelect
           {...commonFieldProps}
@@ -118,13 +126,41 @@ function PassengerSumaryFilterMenu({
           icon='person'
           width='72px'
         />
-        {/* agent */}
-        <ReportSelectFirstLastName
+        {/* Passenger Type */}
+        <ReportSelect
           {...commonFieldProps}
-          name='agent'
-          options={agents}
+          name='passenger_type'
+          options={passengerTypes}
+          icon='text_fields'
+          width='110px'
+        />
+        {/* Gender */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='gender'
+          options={genders}
+          icon='radio_button_checked_two_tone'
+          width='50px'
+        />
+        {/* Passenger */}
+        <ReportSelectPassenger
+          {...commonFieldProps}
+          name='passenger'
+          options={passengers}
+          getOptionLabel={(option) =>
+            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
+          }
           icon='person'
-          width='40px'
+          width='78px'
+        />
+        {/* Country */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='target_country'
+          options={countries}
+          label='Country'
+          icon='flag'
+          width='60px'
         />
         {/* MP.Ent From */}
         <ReportDatePicker
@@ -171,42 +207,6 @@ function PassengerSumaryFilterMenu({
           label='MP.Dl to'
           minDate={values.delivery_date_after}
           maxDate={new Date()}
-        />
-        {/* Passenger */}
-        <ReportSelectPassenger
-          {...commonFieldProps}
-          name='passenger'
-          options={passengers}
-          getOptionLabel={(option) =>
-            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
-          }
-          icon='person'
-          width='78px'
-        />
-        {/* Country */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='target_country'
-          options={countries}
-          label='Country'
-          icon='flag'
-          width='60px'
-        />
-        {/* Passenger Type */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='passenger_type'
-          options={passengerTypes}
-          icon='text_fields'
-          width='110px'
-        />
-        {/* Gender */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='gender'
-          options={genders}
-          icon='radio_button_checked_two_tone'
-          width='50px'
         />
       </div>
       <div>
@@ -256,6 +256,31 @@ function PassengerSumaryFilterMenu({
         />
         <Keyword
           {...commonKewordProps}
+          type='select'
+          name='passenger_type'
+          icon='text_fields'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='passenger'
+          icon='person'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='gender'
+          icon='radio_button_checked_two_tone'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='target_country'
+          label='Country'
+          icon='flag'
+        />
+        <Keyword
+          {...commonKewordProps}
           type='date'
           name='date_after'
           label='MP.Ent From'
@@ -289,31 +314,6 @@ function PassengerSumaryFilterMenu({
           type='date'
           name='delivery_date_before'
           label='MP.Dl to'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='passenger'
-          icon='person'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='target_country'
-          label='Country'
-          icon='flag'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='passenger_type'
-          icon='text_fields'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='gender'
-          icon='radio_button_checked_two_tone'
         />
       </div>
     </div>
