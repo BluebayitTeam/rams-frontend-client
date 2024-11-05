@@ -16,6 +16,7 @@ import { doneNotDone, genders } from 'src/app/@data/data';
 import {
   getAgents,
   getCountries,
+  getDemands,
   getPassengers,
   getPassengerTypes,
 } from 'app/store/dataSlice';
@@ -38,8 +39,14 @@ function PassengerSumaryFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { passengers, countries, agents, passengerTypes, currentStatuss } =
-    useSelector((state) => state.data);
+  const {
+    passengers,
+    countries,
+    agents,
+    passengerTypes,
+    currentStatuss,
+    demands,
+  } = useSelector((state) => state.data);
 
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
@@ -64,11 +71,21 @@ function PassengerSumaryFilterMenu({
     dispatch(getCountries());
     dispatch(getAgents());
     dispatch(getPassengerTypes());
+    dispatch(getDemands());
   }, [dispatch]);
 
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
+        {/* Demand */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='demand'
+          options={demands}
+          label='Demand'
+          icon='person'
+          width='60px'
+        />
         {/* MP.Ent From */}
         <ReportDatePicker
           {...commonFieldProps}
