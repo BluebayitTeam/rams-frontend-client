@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUpdateColumnMutation } from '../ColumnsApi';
+import { UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 
 /**
  * The column header.
@@ -114,6 +115,7 @@ function ColumnHeader() {
       if (columnId === 'ticket_sales') {
         navigate(`/apps/ticketSale/ticketSales`);
       }
+      UpdatedSuccessfully();
     });
   }
 

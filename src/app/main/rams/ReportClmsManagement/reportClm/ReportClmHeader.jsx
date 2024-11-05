@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUpdateReportClmMutation } from '../ReportClmsApi';
+import { UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 
 /**
  * The reportClm header.
@@ -53,15 +54,15 @@ function ReportClmHeader() {
           navigate(`/apps/trainingReport/trainingReports`);
         }
 
-        if (reportClmId === 'recruiting') {
-          navigate(`/apps/passenger/passengers/recruiting`);
+        if (reportClmId === 'flight') {
+          navigate(`/apps/flightReport/flightReports`);
         }
 
         if (reportClmId === 'mofa') {
           navigate(`/apps/mofaReport/mofaReports`);
         }
 
-        if (reportClmId === 'manPower') {
+        if (reportClmId === 'manpower') {
           navigate(`/apps/manPowerReport/manPowerReports`);
         }
 
@@ -115,6 +116,7 @@ function ReportClmHeader() {
         if (reportClmId === 'ticket_sales') {
           navigate(`/apps/ticketSale/ticketSales`);
         }
+        UpdatedSuccessfully();
       }
     );
   }
@@ -138,14 +140,13 @@ function ReportClmHeader() {
     if (reportClmId === 'training') {
       navigate(`/apps/trainingReport/trainingReports`);
     }
-    if (reportClmId === 'manPower') {
+    if (reportClmId === 'manpower') {
       navigate(`/apps/manPowerReport/manPowerReports`);
     }
 
-    if (reportClmId === 'female') {
-      navigate(`/apps/passenger/passengers/female`);
+    if (reportClmId === 'flight') {
+      navigate(`/apps/flightReport/flightReports`);
     }
-
     if (reportClmId === 'hajj') {
       navigate(`/apps/passenger/passengers/hajj`);
     }

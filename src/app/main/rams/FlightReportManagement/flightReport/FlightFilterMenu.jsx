@@ -37,6 +37,8 @@ function FlightFilterMenu({
 
   const methods = useFormContext();
   const { getValues } = methods;
+  // element refs
+  const ticketNoEl = useRef(null);
 
   const theme = useTheme();
   const { passengers, countries, agents, passengerTypes, currentStatuss } =
@@ -64,51 +66,44 @@ function FlightFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* MP.Ent From */}
+        {/* F.Ent from */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='MP.Ent From'
+          label='F.Ent from'
           maxDate={values.date_before || new Date()}
         />
-        {/* MP.Ent To */}
+        {/* F.Ent to*/}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='MP.Ent To'
+          label='F.Ent to'
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* MP.from */}
+        {/* Flight From */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_after'
-          label='MP.from'
-          minDate={values.man_power_date_before}
+          name='flight_date_after'
+          label='Flight From'
+          minDate={values.flight_date_after}
           maxDate={new Date()}
         />{' '}
-        {/* MP.To */}
+        {/* Flight to*/}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_before'
-          label='MP.To'
-          minDate={values.man_power_date_after}
+          name='flight_date_after'
+          label='Flight to'
+          minDate={values.flight_date_after}
           maxDate={new Date()}
         />
-        {/* MP.Dl from */}
-        <ReportDatePicker
+        {/* ticket no */}
+        <ReportTextField
           {...commonFieldProps}
-          name='delivery_date_after'
-          label='MP.Dl from'
-          maxDate={values.delivery_date_before || new Date()}
-        />
-        {/* MP.Dl to */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='delivery_date_before'
-          label='MP.Dl to'
-          minDate={values.delivery_date_after}
-          maxDate={new Date()}
+          name='ticket_no'
+          domEl={ticketNoEl}
+          icon='accessibility_new_icon'
+          width='90px'
         />
         {/* Passenger */}
         <ReportSelectPassenger
@@ -169,37 +164,32 @@ function FlightFilterMenu({
           {...commonKewordProps}
           type='date'
           name='date_after'
-          label='MP.Ent From'
+          label='F.Ent from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
-          label='MP.Ent To'
+          label='F.Ent to'
         />{' '}
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_power_date_after'
-          label='MP.from'
+          name='flight_date_after'
+          label='Flight From'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_power_date_before'
-          label='MP.To'
+          name='flight_date_before'
+          label='Flight to'
         />
         <Keyword
           {...commonKewordProps}
-          type='date'
-          name='delivery_date_after'
-          label='MP.Dl from'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='delivery_date_before'
-          label='MP.Dl to'
+          type='text'
+          name='ticket_no'
+          domEl={ticketNoEl}
+          icon='accessibility_new_icon'
         />
         <Keyword
           {...commonKewordProps}

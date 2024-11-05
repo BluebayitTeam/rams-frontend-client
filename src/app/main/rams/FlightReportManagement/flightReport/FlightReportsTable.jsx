@@ -77,11 +77,9 @@ function FlightReportsTable(props) {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
 
-      man_power_date_before: filterData.man_power_date_before || '',
-      man_power_date_after: filterData.man_power_date_after || '',
-
-      delivery_date_before: filterData.man_power_date_before || '',
-      delivery__date_after: filterData.delivery__date_after || '',
+      flight_date_after: filterData.flight_date_after || '',
+      flight_date_before: filterData.flight_date_before || '',
+      ticket_no: filterData.ticket_no || '',
 
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
@@ -100,11 +98,9 @@ function FlightReportsTable(props) {
       date_before: filterData.date_before || '',
       date_after: filterData.date_after || '',
 
-      man_power_date_before: filterData.man_power_date_before || '',
-      man_power_date_after: filterData.man_power_date_after || '',
-
-      delivery_date_before: filterData.man_power_date_before || '',
-      delivery__date_after: filterData.delivery__date_after || '',
+      flight_date_after: filterData.flight_date_after || '',
+      flight_date_before: filterData.flight_date_before || '',
+      ticket_no: filterData.ticket_no || '',
 
       passenger: filterData.passenger || '',
       target_country: filterData.target_country || '',
@@ -141,12 +137,12 @@ function FlightReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedFlightData(allData?.man_powers || []);
+      setModifiedFlightData(allData?.flights || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.man_powers,
+        allData.flights,
         size,
         page
       );
@@ -155,9 +151,9 @@ function FlightReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedFlightData(paginatedData?.man_powers || []);
+      setModifiedFlightData(paginatedData?.flights || []);
       setInitialTableColumnsState(
-        generateDynamicColumns(paginatedData?.man_powers[0] || {})
+        generateDynamicColumns(paginatedData?.flights[0] || {})
       );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
@@ -182,14 +178,14 @@ function FlightReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching man_powers:', error);
+      console.error('Error fetching flights:', error);
     }
   }, []);
 
   const handleGetAllFlights = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all man_powers:', error);
+      console.error('Error fetching all flights:', error);
     }
   }, []);
 
@@ -201,13 +197,11 @@ function FlightReportsTable(props) {
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
 
-    MP_To: getValues()?.man_power_date_before
-      ? moment(new Date(getValues()?.man_power_date_before)).format(
-          'DD-MM-YYYY'
-        )
+    MP_To: getValues()?.flight_date_after
+      ? moment(new Date(getValues()?.flight_date_after)).format('DD-MM-YYYY')
       : null,
-    MP_Form: getValues()?.man_power_date_after
-      ? moment(new Date(getValues()?.man_power_date_after)).format('DD-MM-YYYY')
+    MP_Form: getValues()?.flight_date_before
+      ? moment(new Date(getValues()?.flight_date_before)).format('DD-MM-YYYY')
       : null,
     MP_Dl_To: getValues()?.delivery_date_before
       ? moment(new Date(getValues()?.delivery_date_before)).format('DD-MM-YYYY')
@@ -216,6 +210,7 @@ function FlightReportsTable(props) {
       ? moment(new Date(getValues()?.delivery_date_after)).format('DD-MM-YYYY')
       : null,
     Passenger: getValues()?.passengerName || null,
+    Ticket_No: getValues()?.ticket_no || null,
 
     Country: getValues()?.target_countryName || null,
 

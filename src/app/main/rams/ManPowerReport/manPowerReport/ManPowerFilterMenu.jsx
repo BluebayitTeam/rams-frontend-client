@@ -159,7 +159,7 @@ function ManPowerFilterMenu({
       </div>
       <div>
         <ViewWeek
-          onClick={() => navigate(`/apps/reportClm/reportClms/manPower`)}
+          onClick={() => navigate(`/apps/reportClm/reportClms/manpower`)}
           className='cursor-pointer mr-10 mt-20'
           style={{ color: 'red', marginLeft: '45%', fontSize: '30px' }}
         />{' '}

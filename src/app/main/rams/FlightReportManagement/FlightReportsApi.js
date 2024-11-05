@@ -2,6 +2,8 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
+  FLIGHT_FILTER_BY,
+  FLIGHT_FILTER_WITHOUT_PG,
   MANPOWER_FILTER_BY,
   MANPOWER_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
@@ -17,14 +19,14 @@ const FlightReportApi = api
     endpoints: (build) => ({
       getFlightReports: build.query({
         query: (filterData) => ({
-          url: MANPOWER_FILTER_BY,
+          url: FLIGHT_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['flightReports'],
       }),
       getFlightAllReports: build.query({
         query: (filterData) => ({
-          url: MANPOWER_FILTER_WITHOUT_PG,
+          url: FLIGHT_FILTER_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['flightReports'],
