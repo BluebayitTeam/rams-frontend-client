@@ -249,6 +249,13 @@ function PassengerSumaryFilterMenu({
         />
         <Keyword
           {...commonKewordProps}
+          type='select'
+          name='profession'
+          icon='person'
+          options={professions}
+        />
+        <Keyword
+          {...commonKewordProps}
           type='date'
           name='date_after'
           label='MP.Ent From'
