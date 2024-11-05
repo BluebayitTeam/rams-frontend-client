@@ -21,6 +21,7 @@ import {
   getPassengerTypes,
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
+import ReportSelectDemand from 'src/app/@components/ReportComponents/ReportSelectDemand';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -78,13 +79,13 @@ function PassengerSumaryFilterMenu({
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
         {/* Demand */}
-        <ReportSelect
+        <ReportSelectDemand
           {...commonFieldProps}
           name='demand'
           options={demands}
           label='Demand'
           icon='person'
-          width='60px'
+          width='56px'
         />
         {/* MP.Ent From */}
         <ReportDatePicker
