@@ -134,6 +134,15 @@ function PassengerSumaryFilterMenu({
           icon='text_fields'
           width='110px'
         />
+        {/* Country */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='target_country'
+          options={countries}
+          label='Country'
+          icon='flag'
+          width='60px'
+        />
         {/* Gender */}
         <ReportSelect
           {...commonFieldProps}
@@ -152,15 +161,6 @@ function PassengerSumaryFilterMenu({
           }
           icon='person'
           width='78px'
-        />
-        {/* Country */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='target_country'
-          options={countries}
-          label='Country'
-          icon='flag'
-          width='60px'
         />
         {/* MP.Ent From */}
         <ReportDatePicker
