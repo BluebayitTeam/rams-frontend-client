@@ -284,6 +284,14 @@ function PassengerSumaryFilterMenu({
           label='V.Agent'
           width='54px'
         />
+        {/* Current Status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='current_status'
+          options={doneNotDone}
+          icon='local_activity'
+          width='97px'
+        />
       </div>
       <div>
         <ViewWeek
@@ -322,6 +330,13 @@ function PassengerSumaryFilterMenu({
           name='agent'
           icon='person'
           options={agents}
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='visa_agent'
+          icon='person'
+          options={visa_agents}
         />
         <Keyword
           {...commonKewordProps}
@@ -372,6 +387,13 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
+          name='current_status'
+          icon='local_activity'
+          options={doneNotDone}
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
           name='police_clearance_status'
           icon='account_balance'
           label='Pc Status'
@@ -398,7 +420,15 @@ function PassengerSumaryFilterMenu({
           type='select'
           name='finger_status'
           icon='touch_app'
-          label='Dl Status'
+          label='Finger Status'
+          options={doneNotDone}
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='man_power_status'
+          icon='recent_actors'
+          label='ManP.Status'
           options={doneNotDone}
         />
         <Keyword
