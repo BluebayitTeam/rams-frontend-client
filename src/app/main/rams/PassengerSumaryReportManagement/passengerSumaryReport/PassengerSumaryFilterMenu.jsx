@@ -283,6 +283,15 @@ function PassengerSumaryFilterMenu({
           icon='person'
           label='V.Agent'
           width='54px'
+        />{' '}
+        {/* P.Agent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='passenger_agent'
+          options={passenger_agents}
+          icon='person'
+          label='P.Agent'
+          width='54px'
         />
         {/* Current Status */}
         <ReportSelect
