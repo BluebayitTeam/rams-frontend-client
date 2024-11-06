@@ -151,7 +151,7 @@ function ReportSelectPassenger({
               onEnter();
               setValue(
                 `${name}Name`,
-                `${newValue.passenger_id || ''} -${newValue.office_serial || ''} - ${newValue.passport_no || ''}- ${newValue.passenger_name || ''}`
+                `${newValue.passenger_id || ''} - ${newValue.office_serial || ''} - ${newValue.passport_no || ''} - ${newValue.passenger_name || ''}`
               );
             }}
             renderInput={(params) => (
