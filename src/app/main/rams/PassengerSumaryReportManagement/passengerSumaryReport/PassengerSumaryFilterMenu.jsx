@@ -99,7 +99,7 @@ function PassengerSumaryFilterMenu({
           width='56px'
         />
         {/* P.agent */}
-        <ReportSelectPassenger
+        <ReportSelectFirstLastName
           {...commonFieldProps}
           name='passenger_agent'
           label='P.agent'

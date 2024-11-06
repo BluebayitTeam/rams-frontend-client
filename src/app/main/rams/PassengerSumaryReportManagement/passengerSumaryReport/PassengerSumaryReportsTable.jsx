@@ -74,21 +74,33 @@ function PassengerSumaryReportsTable(props) {
 
   const { data: paginatedData } = useGetPassengerSumaryReportsQuery(
     {
-      date_before: filterData.date_before || '',
-      date_after: filterData.date_after || '',
+      demand: filterData.demand || '',
+      passenger_agent: filterData.passenger_agent || '',
 
-      man_power_date_before: filterData.man_power_date_before || '',
-      man_power_date_after: filterData.man_power_date_after || '',
-
-      delivery_date_before: filterData.man_power_date_before || '',
-      delivery__date_after: filterData.delivery__date_after || '',
-
-      passenger: filterData.passenger || '',
-      target_country: filterData.target_country || '',
+      visa_number: filterData.visa_number || '',
       agent: filterData.agent || '',
-      passenger_type: filterData.passenger_type || '',
 
+      profession: filterData.profession || '',
+      passenger_type: filterData.passenger_type || '',
+      target_country: filterData.target_country || '',
       gender: filterData.gender || '',
+      passenger: filterData.passenger || '',
+      mofa_status: filterData.mofa_status || '',
+      stamping_date_after: filterData.stamping_date_after || '',
+      stamping_date_before: filterData.stamping_date_before || '',
+      medical_result: filterData.medical_result || '',
+      medical_expiry_date_after: filterData.medical_expiry_date_after || '',
+      medical_expiry_date_before: filterData.medical_expiry_date_before || '',
+      police_clearance_status: filterData.police_clearance_status || '',
+      driving_license_status: filterData.driving_license_status || '',
+      finger_status: filterData.finger_status || '',
+      training_card_status: filterData.training_card_status || '',
+      man_power_date_after: filterData.man_power_date_after || '',
+      man_power_date_before: filterData.man_power_date_before || '',
+      man_power_status: filterData.man_power_status || '',
+      visa_agent: filterData.visa_agent || '',
+      current_status: filterData.current_status || '',
+
       page,
       size,
     },
@@ -97,21 +109,32 @@ function PassengerSumaryReportsTable(props) {
 
   const { data: allData } = useGetPassengerSumaryAllReportsQuery(
     {
-      date_before: filterData.date_before || '',
-      date_after: filterData.date_after || '',
+      demand: filterData.demand || '',
+      passenger_agent: filterData.passenger_agent || '',
 
-      man_power_date_before: filterData.man_power_date_before || '',
-      man_power_date_after: filterData.man_power_date_after || '',
-
-      delivery_date_before: filterData.man_power_date_before || '',
-      delivery__date_after: filterData.delivery__date_after || '',
-
-      passenger: filterData.passenger || '',
-      target_country: filterData.target_country || '',
+      visa_number: filterData.visa_number || '',
       agent: filterData.agent || '',
-      passenger_type: filterData.passenger_type || '',
 
+      profession: filterData.profession || '',
+      passenger_type: filterData.passenger_type || '',
+      target_country: filterData.target_country || '',
       gender: filterData.gender || '',
+      passenger: filterData.passenger || '',
+      mofa_status: filterData.mofa_status || '',
+      stamping_date_after: filterData.stamping_date_after || '',
+      stamping_date_before: filterData.stamping_date_before || '',
+      medical_result: filterData.medical_result || '',
+      medical_expiry_date_after: filterData.medical_expiry_date_after || '',
+      medical_expiry_date_before: filterData.medical_expiry_date_before || '',
+      police_clearance_status: filterData.police_clearance_status || '',
+      driving_license_status: filterData.driving_license_status || '',
+      finger_status: filterData.finger_status || '',
+      training_card_status: filterData.training_card_status || '',
+      man_power_date_after: filterData.man_power_date_after || '',
+      man_power_date_before: filterData.man_power_date_before || '',
+      man_power_status: filterData.man_power_status || '',
+      visa_agent: filterData.visa_agent || '',
+      current_status: filterData.current_status || '',
     },
     { skip: !inShowAllMode }
   );
@@ -194,33 +217,49 @@ function PassengerSumaryReportsTable(props) {
   }, []);
 
   const filteredData = {
-    MP_Ent_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
-      : null,
-    MP_Ent_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
-      : null,
+    Demand: getValues()?.demandName || null,
+    Passenger_Agent: getValues()?.passenger_agent || null,
+    Visa_Number: getValues()?.visa_number || null,
+    Agent: getValues()?.agentName || null,
+    Profession: getValues()?.professionName || null,
+    Passenger_Type: getValues()?.passenger_typeName || null,
+    Country: getValues()?.target_countryName || null,
+    Gender: getValues()?.genderName || null,
 
-    MP_To: getValues()?.man_power_date_before
+    Mofa_Status: getValues()?.mofa_status || null,
+    Stamping_Date_From: getValues()?.stamping_date_after
+      ? moment(new Date(getValues()?.stamping_date_after)).format('DD-MM-YYYY')
+      : null,
+    Stamping_Date_To: getValues()?.stamping_date_before
+      ? moment(new Date(getValues()?.stamping_date_before)).format('DD-MM-YYYY')
+      : null,
+    Medical_Result: getValues()?.medical_result || null,
+
+    Medical_Expiry_To: getValues()?.medical_expiry_date_before
+      ? moment(new Date(getValues()?.medical_expiry_date_before)).format(
+          'DD-MM-YYYY'
+        )
+      : null,
+    Medical_Expiry_From: getValues()?.medical_expiry_date_after
+      ? moment(new Date(getValues()?.medical_expiry_date_after)).format(
+          'DD-MM-YYYY'
+        )
+      : null,
+    Police_Clearance_Status: getValues()?.police_clearance_status || null,
+    Driving_License_Status: getValues()?.driving_license_status || null,
+    Finger_Status: getValues()?.finger_status || null,
+    Training_Card_Status: getValues()?.training_card_status || null,
+    ManP_To: getValues()?.man_power_date_before
       ? moment(new Date(getValues()?.man_power_date_before)).format(
           'DD-MM-YYYY'
         )
       : null,
-    MP_Form: getValues()?.man_power_date_after
+    ManP_from: getValues()?.man_power_date_after
       ? moment(new Date(getValues()?.man_power_date_after)).format('DD-MM-YYYY')
       : null,
-    MP_Dl_To: getValues()?.delivery_date_before
-      ? moment(new Date(getValues()?.delivery_date_before)).format('DD-MM-YYYY')
-      : null,
-    MP_Dl_Form: getValues()?.delivery_date_after
-      ? moment(new Date(getValues()?.delivery_date_after)).format('DD-MM-YYYY')
-      : null,
-    Passenger: getValues()?.passengerName || null,
-
-    Country: getValues()?.target_countryName || null,
-
-    Agent: getValues()?.agentName || null,
-    Gender: getValues()?.genderName || null,
+    Man_power_Status: getValues()?.man_power_status || null,
+    Visa_Agent: getValues()?.visa_agent || null,
+    Current_Status: getValues()?.current_status || null,
   };
 
   return (
