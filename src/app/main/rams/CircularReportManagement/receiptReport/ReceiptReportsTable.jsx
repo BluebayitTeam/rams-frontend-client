@@ -15,7 +15,7 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetReceiptAllReportsQuery,
   useGetReceiptReportsQuery,
-} from '../ReceiptReportsApi';
+} from '../CircularReportsApi';
 import ReceiptFilterMenu from './ReceiptFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
