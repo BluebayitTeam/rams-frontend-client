@@ -54,7 +54,6 @@ function PassengerSumaryFilterMenu({
     demands,
     professions,
     visa_agents,
-    passenger_agents,
   } = useSelector((state) => state.data);
 
   const values = getValues();
@@ -101,9 +100,9 @@ function PassengerSumaryFilterMenu({
         {/* P.agent */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
-          name='passenger_agent'
+          name='agent'
           label='P.agent'
-          options={passenger_agents}
+          options={agents}
           icon='person'
           width='54px'
         />
@@ -114,14 +113,6 @@ function PassengerSumaryFilterMenu({
           domEl={visaNoEl}
           icon='accessibility_new_icon'
           width='90px'
-        />
-        {/* agent */}
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name='agent'
-          options={agents}
-          icon='person'
-          width='40px'
         />
         {/* Profession */}
         <ReportSelect
@@ -322,13 +313,6 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='agent'
-          icon='person'
-          options={agents}
-        />{' '}
-        <Keyword
-          {...commonKewordProps}
-          type='select'
           name='visa_agent'
           icon='person'
           options={visa_agents}
@@ -336,9 +320,9 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='passenger_agent'
+          name='agent'
           label='P.agent'
-          options={passenger_agents}
+          options={agents}
           icon='person'
         />{' '}
         <Keyword

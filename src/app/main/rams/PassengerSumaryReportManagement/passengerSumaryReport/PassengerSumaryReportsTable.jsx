@@ -75,7 +75,6 @@ function PassengerSumaryReportsTable(props) {
   const { data: paginatedData } = useGetPassengerSumaryReportsQuery(
     {
       demand: filterData.demand || '',
-      passenger_agent: filterData.passenger_agent || '',
 
       visa_number: filterData.visa_number || '',
       agent: filterData.agent || '',
