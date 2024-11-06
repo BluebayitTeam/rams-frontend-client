@@ -64,6 +64,8 @@ function PassengerSumaryReportsTable(props) {
   const [totalElements, setTotalElements] = useState(0);
   const [pagination, setPagination] = useState(false);
 
+  console.log('cfdsfdsfdsfdsfd', pagination);
+
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
@@ -183,7 +185,7 @@ function PassengerSumaryReportsTable(props) {
         generateDynamicColumns(paginatedData?.passenger_objs[0] || {})
       );
 
-      setSize(paginatedData?.size || 25);
+      setSize(paginatedData.size);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);

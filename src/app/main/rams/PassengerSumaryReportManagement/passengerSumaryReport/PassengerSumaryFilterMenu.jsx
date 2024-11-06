@@ -295,7 +295,9 @@ function PassengerSumaryFilterMenu({
       </div>
       <div>
         <ViewWeek
-          onClick={() => navigate(`/apps/reportClm/reportClms/manpower`)}
+          onClick={() =>
+            navigate(`/apps/reportClm/reportClms/passenger_summary`)
+          }
           className='cursor-pointer mr-10 mt-20'
           style={{ color: 'red', marginLeft: '45%', fontSize: '30px' }}
         />{' '}
