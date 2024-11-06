@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function ReceiptFilterMenu({
+function CircularFilterMenu({
   inShowAllMode,
-  handleGetReceipts,
-  handleGetAllReceipts,
+  handleGetCirculars,
+  handleGetAllCirculars,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -33,12 +33,12 @@ function ReceiptFilterMenu({
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
-      inShowAllMode ? handleGetAllReceipts() : handleGetReceipts(),
+      inShowAllMode ? handleGetAllCirculars() : handleGetCirculars(),
   };
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode ? handleGetAllReceipts() : handleGetReceipts(),
+      inShowAllMode ? handleGetAllCirculars() : handleGetCirculars(),
   };
 
   useEffect(() => {
@@ -134,4 +134,4 @@ function ReceiptFilterMenu({
   );
 }
 
-export default ReceiptFilterMenu;
+export default CircularFilterMenu;

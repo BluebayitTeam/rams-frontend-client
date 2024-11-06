@@ -13,10 +13,10 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetReceiptAllReportsQuery,
-  useGetReceiptReportsQuery,
+  useGetCircularAllReportsQuery,
+  useGetCircularReportsQuery,
 } from '../CircularReportsApi';
-import ReceiptFilterMenu from './ReceiptFilterMenu';
+import CircularFilterMenu from './CircularFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -27,7 +27,7 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'receipt_date', show: true, type: 'date' },
+  { id: 2, label: 'Date', name: 'circular_date', show: true, type: 'date' },
   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
   { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
   {
@@ -54,7 +54,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function ReceiptReportsTable(props) {
+function CircularReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -65,7 +65,7 @@ function ReceiptReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedReceiptData, setModifiedReceiptData] = useReportData();
+  const [modifiedCircularData, setModifiedCircularData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -84,7 +84,7 @@ function ReceiptReportsTable(props) {
   const filterData = watch();
 
   const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetReceiptReportsQuery(
+    useGetCircularReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
@@ -97,8 +97,8 @@ function ReceiptReportsTable(props) {
       { skip: inShowAllMode }
     );
 
-  const { data: allData, refetch: refetchAllReceiptReports } =
-    useGetReceiptAllReportsQuery(
+  const { data: allData, refetch: refetchAllCircularReports } =
+    useGetCircularAllReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
@@ -111,14 +111,14 @@ function ReceiptReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedReceiptData(allData.receipt_vouchers || []);
+      setModifiedCircularData(allData.circular_vouchers || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.receipt_vouchers,
+        allData.circular_vouchers,
         size,
         page
       );
@@ -128,7 +128,7 @@ function ReceiptReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedReceiptData(paginatedData.receipt_vouchers || []);
+      setModifiedCircularData(paginatedData.circular_vouchers || []);
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -147,7 +147,7 @@ function ReceiptReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetReceipts = useCallback(async (newPage) => {
+  const handleGetCirculars = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -156,10 +156,10 @@ function ReceiptReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllReceipts = useCallback(async () => {
+  const handleGetAllCirculars = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all receipts:', error);
+      console.error('Error fetching all circulars:', error);
     }
   }, []);
 
@@ -180,10 +180,10 @@ function ReceiptReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <ReceiptFilterMenu
+        <CircularFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetReceipts={handleGetReceipts}
-          handleGetAllReceipts={handleGetAllReceipts}
+          handleGetCirculars={handleGetCirculars}
+          handleGetAllCirculars={handleGetAllCirculars}
         />
       </FormProvider>
 
@@ -197,17 +197,17 @@ function ReceiptReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetReceipts(1)}
-        onPreviousPage={() => handleGetReceipts(page - 1)}
-        onNextPage={() => handleGetReceipts(page + 1)}
-        onLastPage={() => handleGetReceipts(totalPages)}
+        onFirstPage={() => handleGetCirculars(1)}
+        onPreviousPage={() => handleGetCirculars(page - 1)}
+        onNextPage={() => handleGetCirculars(page + 1)}
+        onLastPage={() => handleGetCirculars(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetReceipts}
-        handleGetAllData={handleGetAllReceipts}
+        handleGetData={handleGetCirculars}
+        handleGetAllData={handleGetAllCirculars}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='ReceiptReport'
+        filename='CircularReport'
       />
 
       <table
@@ -215,18 +215,18 @@ function ReceiptReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedReceiptData.map((receipt, index) => (
+          {modifiedCircularData.map((circular, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Receipt Report'
+              reportTitle='Circular Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={{
-                ...receipt,
+                ...circular,
                 data: [
-                  ...receipt.data,
+                  ...circular.data,
                   {
                     credit_amount: totalAmount,
                     getterMethod: () => 'Total Amount',
@@ -239,8 +239,8 @@ function ReceiptReportsTable(props) {
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * receipt.data.length + 1
-                  : receipt.page * receipt.size - receipt.size + 1
+                  ? page * size - size + index * circular.data.length + 1
+                  : circular.page * circular.size - circular.size + 1
               }
               setPage={setPage}
             />
@@ -251,4 +251,4 @@ function ReceiptReportsTable(props) {
   );
 }
 
-export default ReceiptReportsTable;
+export default CircularReportsTable;
