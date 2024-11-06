@@ -99,12 +99,12 @@ function PassengerSumaryFilterMenu({
           width='56px'
         />
         {/* P.agent */}
-        <ReportSelectFirstAgentCode
+        <ReportSelectPassenger
           {...commonFieldProps}
           name='passenger_agent'
           label='P.agent'
           options={passenger_agents}
-          icon='person_icon'
+          icon='person'
           width='54px'
         />
         {/* ticket no */}
@@ -284,15 +284,6 @@ function PassengerSumaryFilterMenu({
           label='V.Agent'
           width='54px'
         />{' '}
-        {/* P.Agent */}
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name='passenger_agent'
-          options={passenger_agents}
-          icon='person'
-          label='P.Agent'
-          width='54px'
-        />
         {/* Current Status */}
         <ReportSelect
           {...commonFieldProps}
@@ -321,13 +312,6 @@ function PassengerSumaryFilterMenu({
         />
         <Keyword
           {...commonKewordProps}
-          type='select'
-          name='passenger_agent'
-          label='P.Agent'
-          icon='person'
-        />
-        <Keyword
-          {...commonKewordProps}
           type='text'
           name='visa_number'
           domEl={visaNoEl}
@@ -347,6 +331,14 @@ function PassengerSumaryFilterMenu({
           icon='person'
           options={visa_agents}
         />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='passenger_agent'
+          label='P.agent'
+          options={passenger_agents}
+          icon='person'
+        />{' '}
         <Keyword
           {...commonKewordProps}
           type='select'
