@@ -66,8 +66,8 @@ function ReportClmHeader() {
           navigate(`/apps/manPowerReport/manPowerReports`);
         }
 
-        if (reportClmId === 'hajj') {
-          navigate(`/apps/passenger/passengers/hajj`);
+        if (reportClmId === 'passenger_summary') {
+          navigate(`/apps/passengerSumaryReport/passengerSumaryReports`);
         }
 
         if (reportClmId === 'umrah') {
@@ -147,8 +147,8 @@ function ReportClmHeader() {
     if (reportClmId === 'flight') {
       navigate(`/apps/flightReport/flightReports`);
     }
-    if (reportClmId === 'hajj') {
-      navigate(`/apps/passenger/passengers/hajj`);
+    if (reportClmId === 'passenger_summary') {
+      navigate(`/apps/passengerSumaryReport/passengerSumaryReports`);
     }
 
     if (reportClmId === 'umrah') {
