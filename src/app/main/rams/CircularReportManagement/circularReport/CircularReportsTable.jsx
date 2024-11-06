@@ -227,18 +227,7 @@ function CircularReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={{
-                ...circular,
-                data: [
-                  ...circular.data,
-                  {
-                    credit_amount: totalAmount,
-                    getterMethod: () => 'Total Amount',
-                    hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 },
-                  },
-                ],
-              }}
+              data={circular}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
