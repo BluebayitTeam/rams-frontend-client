@@ -49,6 +49,7 @@ import {
   MANPOWER_BY_PASSENGER_ID,
   MEDICALCENTERS_WITHOUT_PAGINATION,
   ORDERSTATUS,
+  PASSENGER_AGENTS_WITHOUT_PAGINATION,
   PASSENGER_VISA_ENTRY_WITHOUT_PAGINATION,
   PASSENGERS_WITHOUT_PAGINATION,
   PASSENGERTYPES_WITHOUT_PAGINATION,
@@ -416,6 +417,18 @@ export const getVisaAgents = () => (dispatch) => {
   fetch(`${VISA_AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setVisaAgents(data.visa_agents)))
+    .catch(() => {});
+};
+export const getPassengerAgents = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(`${PASSENGER_AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setPassengerAgents(data.passenger_agents)))
     .catch(() => {});
 };
 export const getSubAgents = (id) => (dispatch) => {
@@ -1089,6 +1102,9 @@ const dataSlice = createSlice({
     setVisaAgents: (state, action) => {
       state.visa_agents = action.payload;
     },
+    setPassengerAgents: (state, action) => {
+      state.passenger_agents = action.payload;
+    },
     setSubAgents: (state, action) => {
       state.subagents = action.payload;
     },
@@ -1246,10 +1262,11 @@ const {
   setTicketDepartments,
   setTicketStatuss,
   setAutoStatusUpdates,
-  // setKsaVisa,
   setDepartments,
   setClients,
   setVisaAgents,
+  setPassengerAgents,
+  setAgents,
   visa_agents,
   setSubAgents,
   setCities,

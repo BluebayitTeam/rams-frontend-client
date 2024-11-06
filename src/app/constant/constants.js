@@ -141,6 +141,9 @@ export const DESIGNATIONS_WITHOUT_PAGINATION = `${BASE_URL}/designation/api/v1/d
 export const AGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/agent/without_pagination/all/`;
 export const VISA_AGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/visa_agent/without_pagination/all/`;
 
+// Passenger agent
+export const PASSENGER_AGENTS_WITHOUT_PAGINATION = `${BASE_URL}/agent/api/v1/passenger_agent/without_pagination/all/`;
+
 // visa entry
 export const VISAENTRYS_WITHOUT_PAGINATION = `${BASE_URL}/visa_entry/api/v1/visa_entry/without_pagination/all/`;
 
