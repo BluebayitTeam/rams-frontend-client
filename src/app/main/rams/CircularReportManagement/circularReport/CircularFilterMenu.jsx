@@ -107,7 +107,7 @@ function CircularFilterMenu({
           icon='person'
           width='72px'
         />
-        {/* visa no */}
+        {/* company name */}
         <ReportTextField
           {...commonFieldProps}
           name='company_name'

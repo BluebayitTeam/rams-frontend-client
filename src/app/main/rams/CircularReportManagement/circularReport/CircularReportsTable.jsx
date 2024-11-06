@@ -72,7 +72,7 @@ function CircularReportsTable(props) {
     initialTableColumnsState
   );
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -133,7 +133,6 @@ function CircularReportsTable(props) {
     } else if (!inShowAllMode && paginatedData) {
       setModifiedCircularData(paginatedData.demand_list || []);
       setTotalAmount(paginatedData.total_amount);
-      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
@@ -230,11 +229,7 @@ function CircularReportsTable(props) {
               data={circular}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
-              serialNumber={
-                pagination
-                  ? page * size - size + index * circular.data.length + 1
-                  : circular.page * circular.size - circular.size + 1
-              }
+              serialNumber={circular.page * circular.size - circular.size + 1}
               setPage={setPage}
             />
           ))}
