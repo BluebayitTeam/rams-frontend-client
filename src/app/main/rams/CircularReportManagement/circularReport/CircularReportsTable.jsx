@@ -26,32 +26,33 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'circular_date', show: true, type: 'date' },
-  { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 4, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
+  { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Country', name: 'country', subName: 'name', show: true },
+  {
+    id: 3,
+    label: 'Visa Agent',
+    name: 'visa_agent',
+    subName: 'first_name',
+    show: true,
+  },
+  { id: 4, label: 'Company Name', name: 'company_name', show: true },
   {
     id: 5,
-    label: 'SubLedger',
-    name: 'sub_ledger',
+    label: 'Profession',
+    name: 'profession',
     subName: 'name',
     show: true,
   },
+  { id: 6, label: 'Quantity', name: 'quantity', show: true },
+  { id: 7, label: 'Salary', name: 'salary', show: true },
   {
-    id: 6,
-    label: 'Details',
-    getterMethod: (data) =>
-      `${data.details || ''}, ${data.related_ledger || ''}`,
+    id: 8,
+    label: 'Office Rate',
+    name: 'office_rate',
     show: true,
+    type: 'date',
   },
-  {
-    id: 7,
-    label: 'Amount',
-    name: 'credit_amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
+  { id: 9, label: 'Status', name: 'status', show: true },
 ];
 
 function CircularReportsTable(props) {
@@ -88,9 +89,10 @@ function CircularReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        visa_agent: filterData.visa_agent || '',
+        country: filterData.country || '',
+        profession: filterData.profession || '',
+        company_name: filterData.company_name || '',
         page,
         size,
       },
@@ -102,23 +104,24 @@ function CircularReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        ledger: filterData.ledger || '',
-        sub_ledger: filterData.sub_ledger || '',
-        account_type: filterData.account_type || '',
+        visa_agent: filterData.visa_agent || '',
+        country: filterData.country || '',
+        profession: filterData.profession || '',
+        company_name: filterData.company_name || '',
       },
       { skip: !inShowAllMode }
     );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedCircularData(allData.circular_vouchers || []);
+      setModifiedCircularData(allData.demand_list || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.circular_vouchers,
+        allData.demand_list,
         size,
         page
       );
@@ -128,7 +131,7 @@ function CircularReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedCircularData(paginatedData.circular_vouchers || []);
+      setModifiedCircularData(paginatedData.demand_list || []);
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -164,15 +167,16 @@ function CircularReportsTable(props) {
   }, []);
 
   const filteredData = {
-    Account: getValues()?.account_typeName || null,
-    Ledger: getValues()?.ledgerName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Sub_Ledger: getValues()?.sub_ledgerName || null,
+    Visa_Agent: getValues()?.visa_agentName || null,
+    Country: getValues()?.countryName || null,
+    Profession: getValues()?.professionName || null,
+    Company_Name: getValues()?.company_name || null,
   };
 
   // console.log('filteredData', filteredData);

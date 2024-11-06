@@ -107,7 +107,7 @@ function PassengerSumaryFilterMenu({
           icon='person'
           width='54px'
         />
-        {/* ticket no */}
+        {/* visa no */}
         <ReportTextField
           {...commonFieldProps}
           name='visa_number'

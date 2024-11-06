@@ -1,7 +1,13 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getLedgers, getSubLedgers } from 'app/store/dataSlice';
-import { useEffect, useState } from 'react';
+import {
+  getCountries,
+  getLedgers,
+  getProfessions,
+  getSubLedgers,
+  getVisaAgents,
+} from 'app/store/dataSlice';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -9,6 +15,8 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -26,10 +34,13 @@ function CircularFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { ledgers, subLedgers } = useSelector((state) => state.data);
+  const { visa_agents, countries, professions } = useSelector(
+    (state) => state.data
+  );
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-
+  // element refs
+  const companyNameEl = useRef(null);
   const commonFieldProps = {
     setReRender,
     onEnter: () =>
@@ -42,8 +53,9 @@ function CircularFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getLedgers());
-    dispatch(getSubLedgers());
+    dispatch(getVisaAgents());
+    dispatch(getCountries());
+    dispatch(getProfessions());
   }, []);
 
   return (
@@ -66,31 +78,42 @@ function CircularFilterMenu({
           maxDate={new Date()}
         />
 
-        {/* ledger */}
-        <ReportSelect
+        {/* V.Agent */}
+        <ReportSelectFirstLastName
           {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
-          width='50px'
+          name='visa_agent'
+          options={visa_agents}
+          icon='person'
+          label='V.Agent'
+          width='54px'
         />
 
-        {/* sub_ledger */}
+        {/* Country */}
         <ReportSelect
           {...commonFieldProps}
-          name='sub_ledger'
-          options={subLedgers}
-          icon='import_contacts'
-          width='76px'
+          name='country'
+          options={countries}
+          label='Country'
+          icon='flag'
+          width='60px'
         />
 
-        {/* lpassengerTypes */}
+        {/* Profession */}
         <ReportSelect
           {...commonFieldProps}
-          name='account_type'
-          options={bankAndCash}
-          icon='text_fields'
-          width='95px'
+          name='profession'
+          options={professions}
+          label='Profession'
+          icon='person'
+          width='72px'
+        />
+        {/* visa no */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='company_name'
+          domEl={companyNameEl}
+          icon='accessibility_new_icon'
+          width='106px'
         />
       </div>
 
@@ -113,21 +136,30 @@ function CircularFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='ledger'
-          icon='import_contacts'
+          name='visa_agent'
+          icon='person'
+          options={visa_agents}
         />
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='sub_ledger'
-          icon='import_contacts'
+          name='country'
+          label='Country'
+          icon='flag'
         />
-
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='account_type'
-          icon='text_fields'
+          name='profession'
+          icon='person'
+          options={professions}
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='company_name'
+          domEl={companyNameEl}
+          icon='accessibility_new_icon'
         />
       </div>
     </div>
