@@ -219,7 +219,7 @@ function PassengerSumaryReportsTable(props) {
     Demand: getValues()?.demandName || null,
     Passenger_Agent: getValues()?.passenger_agent || null,
     Visa_Number: getValues()?.visa_number || null,
-    Agent: getValues()?.agentName || null,
+    Passenger_Agent: getValues()?.agentName || null,
     Profession: getValues()?.professionName || null,
     Passenger_Type: getValues()?.passenger_typeName || null,
     Country: getValues()?.target_countryName || null,
