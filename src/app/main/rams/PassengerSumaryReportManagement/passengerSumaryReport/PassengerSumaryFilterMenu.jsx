@@ -20,6 +20,7 @@ import {
   getPassengers,
   getPassengerTypes,
   getProfessions,
+  getVisaAgents,
 } from 'app/store/dataSlice';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
 import ReportSelectDemand from 'src/app/@components/ReportComponents/ReportSelectDemand';
@@ -51,6 +52,7 @@ function PassengerSumaryFilterMenu({
     currentStatuss,
     demands,
     professions,
+    visa_agents,
   } = useSelector((state) => state.data);
 
   const values = getValues();
@@ -75,6 +77,7 @@ function PassengerSumaryFilterMenu({
     dispatch(getPassengers());
     dispatch(getCountries());
     dispatch(getAgents());
+    dispatch(getVisaAgents());
     dispatch(getPassengerTypes());
     dispatch(getDemands());
     dispatch(getProfessions());
@@ -235,21 +238,48 @@ function PassengerSumaryFilterMenu({
           icon='touch_app'
           label='Finger Statuss'
           width='90px'
+        />{' '}
+        {/* Trng.Card Status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='training_card_status'
+          options={doneNotDone}
+          icon='recent_actors'
+          label='Trng.Card Status'
+          width='115px'
         />
-        {/* MP.Dl from */}
+        {/* ManP.from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='delivery_stamping_date_after'
-          label='MP.Dl from'
-          maxDate={values.delivery_date_before || new Date()}
+          name='man_power_date_after'
+          label='ManP.from'
+          maxDate={values.man_power_date_before || new Date()}
         />
-        {/* MP.Dl to */}
+        {/* ManP.to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='delivery_date_before'
-          label='MP.Dl to'
-          minDate={values.delivery_stamping_date_after}
+          name='man_power_date_before'
+          label='ManP.to'
+          minDate={values.man_power_date_after}
           maxDate={new Date()}
+        />
+        {/* ManP.Status*/}
+        <ReportSelect
+          {...commonFieldProps}
+          name='man_power_status'
+          options={doneNotDone}
+          icon='recent_actors'
+          label='ManP.Status'
+          width='85px'
+        />
+        {/* V.Agent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='visa_agent'
+          options={visa_agents}
+          icon='person'
+          label='V.Agent'
+          width='54px'
         />
       </div>
       <div>
@@ -355,6 +385,14 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
+          name='training_card_status'
+          icon='recent_actors'
+          label='Trng.Card Status'
+          options={doneNotDone}
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
           name='finger_status'
           icon='touch_app'
           label='Dl Status'
@@ -387,14 +425,14 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='delivery_stamping_date_after'
-          label='MP.Dl from'
+          name='man_power_date_after'
+          label='ManP.from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='delivery_date_before'
-          label='MP.Dl to'
+          name='man_power_date_before'
+          label='ManP.to'
         />
       </div>
     </div>

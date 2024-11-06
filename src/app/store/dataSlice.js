@@ -61,6 +61,7 @@ import {
   SUBLEDGERS_WITHOUT_PAGINATION,
   THANAS_BASED_CITY,
   TODO_TASK_TYPE,
+  VISA_AGENTS_WITHOUT_PAGINATION,
   VISAENTRYS_WITHOUT_PAGINATION,
 } from '../constant/constants';
 
@@ -403,6 +404,18 @@ export const getAgents = () => (dispatch) => {
   fetch(`${AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setAgents(data.agents)))
+    .catch(() => {});
+};
+export const getVisaAgents = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(`${VISA_AGENTS_WITHOUT_PAGINATION}`, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setVisaAgents(data.visa_agents)))
     .catch(() => {});
 };
 export const getSubAgents = (id) => (dispatch) => {
@@ -1073,6 +1086,9 @@ const dataSlice = createSlice({
     setAgents: (state, action) => {
       state.agents = action.payload;
     },
+    setVisaAgents: (state, action) => {
+      state.visa_agents = action.payload;
+    },
     setSubAgents: (state, action) => {
       state.subagents = action.payload;
     },
@@ -1233,7 +1249,8 @@ const {
   // setKsaVisa,
   setDepartments,
   setClients,
-  setAgents,
+  setVisaAgents,
+  visa_agents,
   setSubAgents,
   setCities,
   setCountries,
