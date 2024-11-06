@@ -72,8 +72,6 @@ function PassengerSumaryReportsTable(props) {
 
   const filterData = watch();
 
-  console.log('filterData', getValues());
-
   const { data: paginatedData } = useGetPassengerSumaryReportsQuery(
     {
       demand: filterData.demand || '',
