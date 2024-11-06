@@ -17,6 +17,7 @@ import {
   getAgents,
   getCountries,
   getDemands,
+  getPassengerAgents,
   getPassengers,
   getPassengerTypes,
   getProfessions,
@@ -53,6 +54,7 @@ function PassengerSumaryFilterMenu({
     demands,
     professions,
     visa_agents,
+    passenger_agents,
   } = useSelector((state) => state.data);
 
   const values = getValues();
@@ -81,6 +83,7 @@ function PassengerSumaryFilterMenu({
     dispatch(getPassengerTypes());
     dispatch(getDemands());
     dispatch(getProfessions());
+    dispatch(getPassengerAgents());
   }, [dispatch]);
 
   return (
@@ -100,7 +103,7 @@ function PassengerSumaryFilterMenu({
           {...commonFieldProps}
           name='passenger_agent'
           label='P.agent'
-          options={agents}
+          options={passenger_agents}
           icon='person_icon'
           width='54px'
         />
