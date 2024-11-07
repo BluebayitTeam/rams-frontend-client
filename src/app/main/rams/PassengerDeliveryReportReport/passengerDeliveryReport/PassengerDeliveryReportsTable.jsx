@@ -101,27 +101,27 @@ function PassengerDeliveryReportsTable(props) {
       style: { justifyContent: 'flex-end', marginRight: '5px' },
       headStyle: { textAlign: 'center' },
     },
-    {
-      id: 9,
-      label: 'Action',
-      getterMethod: (data) =>
-        data.passenger_delivery?.id && (
-          <Delete
-            onClick={() =>
-              function handleRemoveAgent(data) {
-                console.log('sdsdsdsdsdsd', data);
-                removePassengerDelivery(data.passenger_delivery?.id);
-                DeletedSuccessfully();
-              }
-            }
-            className='cursor-pointer custom-delete-icon-style'
-          />
-        ),
-      show: true,
+    // {
+    //   id: 9,
+    //   label: 'Action',
+    //   getterMethod: (data) =>
+    //     data.passenger_delivery?.id && (
+    //       <Delete
+    //         onClick={() =>
+    //           function handleRemoveAgent(data) {
+    //             console.log('sdsdsdsdsdsd', data);
+    //             removePassengerDelivery(data.passenger_delivery?.id);
+    //             DeletedSuccessfully();
+    //           }
+    //         }
+    //         className='cursor-pointer custom-delete-icon-style'
+    //       />
+    //     ),
+    //   show: true,
 
-      style: { justifyContent: 'flex-end', marginRight: '5px' },
-      headStyle: { textAlign: 'right' },
-    },
+    //   style: { justifyContent: 'flex-end', marginRight: '5px' },
+    //   headStyle: { textAlign: 'right' },
+    // },
   ];
   const { watch, getValues } = methods;
 
