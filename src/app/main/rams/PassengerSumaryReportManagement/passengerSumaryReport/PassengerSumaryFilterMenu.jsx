@@ -199,7 +199,7 @@ function PassengerSumaryFilterMenu({
         {/* Med.Exp from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='medical_expiry_date_after'
+          name='medical_expiry_date_before'
           label='Med.Exp from'
           minDate={values.medical_expiry_date_before}
           maxDate={new Date()}
@@ -207,7 +207,7 @@ function PassengerSumaryFilterMenu({
         {/* Med.Exp To */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='medical_expiry_date_before'
+          name='medical_expiry_date_after'
           label='Med.Exp To'
           minDate={values.medical_expiry_date_after}
           maxDate={new Date()}
@@ -439,13 +439,13 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='medical_expiry_date_after'
+          name='medical_expiry_date_before'
           label='Med.Exp from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='medical_expiry_date_before'
+          name='medical_expiry_date_after'
           label='Med.Exp To'
         />
         <Keyword
