@@ -206,6 +206,7 @@ const appsConfigs = [
   CircularReportAppConfig,
   EmbassyReportAppConfig,
   AccountStatementReportAppConfig,
+
   NotMedicalReportAppConfig,
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
