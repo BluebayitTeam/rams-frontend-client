@@ -10,47 +10,59 @@ import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
-	...getReportFilterMakeStyles(theme)
+  ...getReportFilterMakeStyles(theme),
 }));
 
-function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, handleGetAllPostDateCheques }) {
-	const classes = useStyles();
-	const dispatch = useDispatch();
+function PassengerDeliveryFilterMenu({
+  inShowAllMode,
+  handleGetPassengerDeliverys,
+  handleGetAllPassengerDeliverys,
+}) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const methods = useFormContext();
-	const { getValues } = methods;
+  const { getValues } = methods;
   const theme = useTheme();
-	const values = getValues();
-	const [_reRender, setReRender] = useState(0);
-  const { ledgers, subLedgers,branches } = useSelector((state) => state.data);
-	const banks = ledgers.filter(data => data?.head_group?.name === 'Bank Accounts');
+  const values = getValues();
+  const [_reRender, setReRender] = useState(0);
+  const { ledgers, subLedgers, branches } = useSelector((state) => state.data);
+  const banks = ledgers.filter(
+    (data) => data?.head_group?.name === 'Bank Accounts'
+  );
 
   const commonFieldProps = {
-		setReRender,
-		onEnter: () => (inShowAllMode ?  handleGetPostDateCheques():handleGetAllPostDateCheques)
-	};
-	const commonKewordProps = {
-		setReRender,
-		onClick: () => (inShowAllMode ?handleGetPostDateCheques():handleGetAllPostDateCheques)
-	};
+    setReRender,
+    onEnter: () =>
+      inShowAllMode
+        ? handleGetPassengerDeliverys()
+        : handleGetAllPassengerDeliverys,
+  };
+  const commonKewordProps = {
+    setReRender,
+    onClick: () =>
+      inShowAllMode
+        ? handleGetPassengerDeliverys()
+        : handleGetAllPassengerDeliverys,
+  };
 
   useEffect(() => {
-		dispatch(getBranches());
+    dispatch(getBranches());
     dispatch(getLedgers());
-		dispatch(getSubLedgers());
-	}, []);
+    dispatch(getSubLedgers());
+  }, []);
 
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-         {/* branche */}
-         <ReportSelect
+        {/* branche */}
+        <ReportSelect
           {...commonFieldProps}
           name='branch'
           options={branches}
           icon='import_contacts'
           width='50px'
         />
-       {/* date from */}
+        {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
@@ -66,7 +78,7 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
           minDate={values.date_after}
           maxDate={new Date()}
         />
-       {/* date from */}
+        {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
           name='pdc_issue_date_after'
@@ -82,11 +94,9 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
           minDate={values.pdc_issue_date_after}
           maxDate={new Date()}
         />
-        
-        
 
-          {/* ledger */}
-          <ReportSelect
+        {/* ledger */}
+        <ReportSelect
           {...commonFieldProps}
           name='ledger'
           options={ledgers}
@@ -94,35 +104,34 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
           width='50px'
         />
 
-
-         {/* sub_ledger */}
-				<ReportSelect
-					{...commonFieldProps}
-					name="sub_ledger"
-					options={subLedgers}
-					icon="import_contacts"
-					width="76px"
-				/>
+        {/* sub_ledger */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='sub_ledger'
+          options={subLedgers}
+          icon='import_contacts'
+          width='76px'
+        />
 
         {/* lpassengerTypes */}
         <ReportSelect
-					{...commonFieldProps}
-					name="rp_bank_id"
-					options={banks}
-				  icon="text_fields"
-					width="95px"
-				/>
+          {...commonFieldProps}
+          name='rp_bank_id'
+          options={banks}
+          icon='text_fields'
+          width='95px'
+        />
       </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-      <Keyword
+        <Keyword
           {...commonKewordProps}
           type='select'
           name='branch'
           icon='import_contacts'
         />
-      <Keyword
+        <Keyword
           {...commonKewordProps}
           type='date'
           name='date_after'
@@ -160,16 +169,16 @@ function PostDateChequeFilterMenu({ inShowAllMode, handleGetPostDateCheques, han
           name='sub_ledger'
           icon='import_contacts'
         />
-        
+
         <Keyword
-					{...commonKewordProps}
-					type="select"
-					name="rp_bank_id"
-					icon="text_fields"
-				/>
+          {...commonKewordProps}
+          type='select'
+          name='rp_bank_id'
+          icon='text_fields'
+        />
       </div>
     </div>
   );
 }
 
-export default PostDateChequeFilterMenu;
+export default PassengerDeliveryFilterMenu;

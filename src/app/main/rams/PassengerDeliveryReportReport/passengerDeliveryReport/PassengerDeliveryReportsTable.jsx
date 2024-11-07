@@ -14,10 +14,10 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetPostDateChequeAllReportsQuery,
-  useGetPostDateChequeReportsQuery,
+  useGetPassengerDeliveryAllReportsQuery,
+  useGetPassengerDeliveryReportsQuery,
 } from '../PassengerDeliveryReportsApi';
-import PostDateChequeFilterMenu from './PostDateChequeFilterMenu';
+import PassengerDeliveryFilterMenu from './PassengerDeliveryFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -49,7 +49,7 @@ const initialTableColumnsState = [
     headStyle: { textAlign: 'right' },
   },
 ];
-function PostDateChequeReportsTable(props) {
+function PassengerDeliveryReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -60,8 +60,8 @@ function PostDateChequeReportsTable(props) {
   const { watch, getValues } = methods;
 
   const [
-    modifiedPostDateChequeData,
-    setModifiedPostDateChequeData,
+    modifiedPassengerDeliveryData,
+    setModifiedPassengerDeliveryData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -82,7 +82,7 @@ function PostDateChequeReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetPostDateChequeReportsQuery(
+  const { data: paginatedData } = useGetPassengerDeliveryReportsQuery(
     {
       branch: filterData.branch || '',
       date_after: filterData.date_after || '',
@@ -91,7 +91,7 @@ function PostDateChequeReportsTable(props) {
       pdc_issue_date_before: filterData.pdc_issue_date_before || '',
       ledger: filterData.ledger || '',
       sub_ledger: filterData.sub_ledger || '',
-      postDateCheque_code: filterData.postDateCheque_code || '',
+      passengerDelivery_code: filterData.passengerDelivery_code || '',
       rp_bank_id: filterData.rp_bank_id || '',
       page,
       size,
@@ -99,7 +99,7 @@ function PostDateChequeReportsTable(props) {
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetPostDateChequeAllReportsQuery(
+  const { data: allData } = useGetPassengerDeliveryAllReportsQuery(
     {
       branch: filterData.branch || '',
       date_after: filterData.date_after || '',
@@ -108,7 +108,7 @@ function PostDateChequeReportsTable(props) {
       pdc_issue_date_before: filterData.pdc_issue_date_before || '',
       ledger: filterData.ledger || '',
       sub_ledger: filterData.sub_ledger || '',
-      postDateCheque_code: filterData.postDateCheque_code || '',
+      passengerDelivery_code: filterData.passengerDelivery_code || '',
       rp_bank_id: filterData.rp_bank_id || '',
     },
     { skip: !inShowAllMode }
@@ -116,7 +116,7 @@ function PostDateChequeReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPostDateChequeData(allData.postdate_cheques || []);
+      setModifiedPassengerDeliveryData(allData.postdate_cheques || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -130,7 +130,7 @@ function PostDateChequeReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPostDateChequeData(paginatedData.postdate_cheques || []);
+      setModifiedPassengerDeliveryData(paginatedData.postdate_cheques || []);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -149,19 +149,19 @@ function PostDateChequeReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetPostDateCheques = useCallback(async (newPage) => {
+  const handleGetPassengerDeliverys = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching postDateCheques:', error);
+      console.error('Error fetching passengerDeliverys:', error);
     }
   }, []);
 
-  const handleGetAllPostDateCheques = useCallback(async () => {
+  const handleGetAllPassengerDeliverys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all postDateCheques:', error);
+      console.error('Error fetching all passengerDeliverys:', error);
     }
   }, []);
 
@@ -179,10 +179,10 @@ function PostDateChequeReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <PostDateChequeFilterMenu
+        <PassengerDeliveryFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetPostDateCheques={handleGetPostDateCheques}
-          handleGetAllPostDateCheques={handleGetAllPostDateCheques}
+          handleGetPassengerDeliverys={handleGetPassengerDeliverys}
+          handleGetAllPassengerDeliverys={handleGetAllPassengerDeliverys}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -195,17 +195,17 @@ function PostDateChequeReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetPostDateCheques(1)}
-        onPreviousPage={() => handleGetPostDateCheques(page - 1)}
-        onNextPage={() => handleGetPostDateCheques(page + 1)}
-        onLastPage={() => handleGetPostDateCheques(totalPages)}
+        onFirstPage={() => handleGetPassengerDeliverys(1)}
+        onPreviousPage={() => handleGetPassengerDeliverys(page - 1)}
+        onNextPage={() => handleGetPassengerDeliverys(page + 1)}
+        onLastPage={() => handleGetPassengerDeliverys(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetPostDateCheques}
-        handleGetAllData={handleGetAllPostDateCheques}
+        handleGetData={handleGetPassengerDeliverys}
+        handleGetAllData={handleGetAllPassengerDeliverys}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='PostDateChequeReport'
+        filename='PassengerDeliveryReport'
       />
 
       <table
@@ -213,21 +213,21 @@ function PostDateChequeReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedPostDateChequeData.map((postDateCheque, index) => (
+          {modifiedPassengerDeliveryData.map((passengerDelivery, index) => (
             <SinglePage
-              key={postDateCheque.id || index}
+              key={passengerDelivery.id || index}
               classes={classes}
               reportTitle='PostDate Cheque Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={postDateCheque}
+              data={passengerDelivery}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : postDateCheque.page * postDateCheque.size -
-                    postDateCheque.size +
+                  : passengerDelivery.page * passengerDelivery.size -
+                    passengerDelivery.size +
                     1
               }
               setPage={setPage}
@@ -243,4 +243,4 @@ function PostDateChequeReportsTable(props) {
   );
 }
 
-export default PostDateChequeReportsTable;
+export default PassengerDeliveryReportsTable;
