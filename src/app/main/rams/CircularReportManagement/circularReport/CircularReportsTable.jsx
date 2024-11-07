@@ -1,9 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -11,62 +9,75 @@ import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColum
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
+import '../../../rams/print.css';
+
+import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetCircularAllReportsQuery,
   useGetCircularReportsQuery,
 } from '../CircularReportsApi';
 import CircularFilterMenu from './CircularFilterMenu';
+import { useDispatch } from 'react-redux';
+import { Delete } from '@mui/icons-material';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
 
-// Define the Zod schema
 const schema = z.object({});
-
-const initialTableColumnsState = [
-  { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Country', name: 'country', subName: 'name', show: true },
-  {
-    id: 3,
-    label: 'Visa Agent',
-    name: 'visa_agent',
-    subName: 'first_name',
-    show: true,
-  },
-  { id: 4, label: 'Company Name', name: 'company_name', show: true },
-  {
-    id: 5,
-    label: 'Profession',
-    name: 'profession',
-    subName: 'name',
-    show: true,
-  },
-  { id: 6, label: 'Quantity', name: 'quantity', show: true },
-  { id: 7, label: 'Salary', name: 'salary', show: true },
-  {
-    id: 8,
-    label: 'Office Rate',
-    name: 'office_rate',
-    show: true,
-    type: 'date',
-  },
-  { id: 9, label: 'Status', name: 'status', show: true },
-];
 
 function CircularReportsTable(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const routeParams = useParams();
+  // const { agentId } = routeParams;
+  console.log('routeParam111s', routeParams);
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
     resolver: zodResolver(schema),
   });
-  const dispatch = useDispatch();
 
+  const initialTableColumnsState = [
+    { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
+    { id: 2, label: 'Country', name: 'country', subName: 'name', show: true },
+    {
+      id: 3,
+      label: 'Visa Agent',
+      name: 'visa_agent',
+      subName: 'first_name',
+      show: true,
+    },
+    { id: 4, label: 'Company Name', name: 'company_name', show: true },
+    {
+      id: 5,
+      label: 'Profession',
+      name: 'profession',
+      subName: 'name',
+      show: true,
+    },
+    { id: 6, label: 'Quantity', name: 'quantity', show: true },
+    { id: 7, label: 'Salary', name: 'salary', show: true },
+    {
+      id: 8,
+      label: 'Office Rate',
+      name: 'office_rate',
+      show: true,
+      type: 'date',
+    },
+    { id: 9, label: 'Status', name: 'status', show: true },
+  ];
   const { watch, getValues } = methods;
 
-  const [modifiedCircularData, setModifiedCircularData] = useReportData();
+  const [
+    modifiedCircularData,
+    setModifiedCircularData,
+    setSortBy,
+    setSortBySubKey,
+    dragAndDropRow,
+  ] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -75,49 +86,46 @@ function CircularReportsTable(props) {
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
-  const [inSiglePageMode, setInSiglePageMode] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(0);
 
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
+  const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetCircularReportsQuery(
-      {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
+  const { data: paginatedData } = useGetCircularReportsQuery(
+    {
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      country: filterData.country || '',
 
-        visa_agent: filterData.visa_agent || '',
-        country: filterData.country || '',
-        profession: filterData.profession || '',
-        company_name: filterData.company_name || '',
-        page,
-        size,
-      },
-      { skip: inShowAllMode }
-    );
+      visa_agent: filterData.visa_agent || '',
+      profession: filterData.profession || '',
+      company_name: filterData.company_name || '',
 
-  const { data: allData, refetch: refetchAllCircularReports } =
-    useGetCircularAllReportsQuery(
-      {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        visa_agent: filterData.visa_agent || '',
-        country: filterData.country || '',
-        profession: filterData.profession || '',
-        company_name: filterData.company_name || '',
-      },
-      { skip: !inShowAllMode }
-    );
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
+
+  const { data: allData } = useGetCircularAllReportsQuery(
+    {
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      country: filterData.country || '',
+
+      visa_agent: filterData.visa_agent || '',
+      profession: filterData.profession || '',
+      company_name: filterData.company_name || '',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedCircularData(allData.demand_list || []);
-      setTotalAmount(allData.total_amount);
-
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -126,14 +134,14 @@ function CircularReportsTable(props) {
         size,
         page
       );
-
       setPage(page || 1);
       setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedCircularData(paginatedData.demand_list || []);
-      setTotalAmount(paginatedData.total_amount);
+      setPage(paginatedData?.page || 1);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
@@ -155,7 +163,7 @@ function CircularReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error('Error fetching circulars:', error);
     }
   }, []);
 
@@ -178,9 +186,6 @@ function CircularReportsTable(props) {
     Profession: getValues()?.professionName || null,
     Company_Name: getValues()?.company_name || null,
   };
-
-  // console.log('filteredData', filteredData);
-
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
@@ -190,7 +195,6 @@ function CircularReportsTable(props) {
           handleGetAllCirculars={handleGetAllCirculars}
         />
       </FormProvider>
-
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -221,17 +225,24 @@ function CircularReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedCircularData.map((circular, index) => (
             <SinglePage
-              key={index}
+              key={circular.id || index}
               classes={classes}
-              reportTitle='Circular Report'
+              reportTitle='Passenger Delivery Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={circular}
               totalColumn={initialTableColumnsState?.length}
-              inSiglePageMode={inSiglePageMode}
-              serialNumber={circular.page * circular.size - circular.size + 1}
+              serialNumber={
+                pagination
+                  ? page * size - size + 1
+                  : circular.page * circular.size - circular.size + 1
+              }
               setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              setSortBy={setSortBy}
+              setSortBySubKey={setSortBySubKey}
+              dragAndDropRow={dragAndDropRow}
             />
           ))}
         </tbody>
