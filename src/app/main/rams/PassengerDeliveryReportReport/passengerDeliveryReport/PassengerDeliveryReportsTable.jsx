@@ -25,26 +25,64 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
-const initialTableColumnsState = [
+const initialTableColumnsState = ({ dispatch, reloadData }) => [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 3, label: 'Date', name: 'updated_at', show: true, type: 'date' },
+  {
+    id: 2,
+    label: 'Delivery Date',
+    getterMethod: (data) =>
+      data?.passenger_delivery?.delivery_date.slice(0, 10),
+    show: true,
+  },
+
+  { id: 3, label: 'Job Id', name: 'passenger_id', show: true },
   {
     id: 4,
-    label: 'Issue Date',
-    name: 'pdc_issue_date',
+    label: 'Ref Name',
+    getterMethod: (data) => `${data?.agent?.first_name || ''}  `,
     show: true,
-    type: 'date',
   },
-  { id: 5, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-  { id: 6, label: 'Status', name: 'status', show: true },
-  { id: 7, label: 'Bank', name: 'rp_bank_id', show: true },
-  { id: 8, label: 'Cheque No', name: 'cheque_no', show: true },
+
+  { id: 5, label: 'Passenger', name: 'passenger_name', show: true },
+
+  {
+    id: 6,
+    label: 'Total Bill',
+    name: 'bill',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
+  {
+    id: 7,
+    label: 'Total Expense',
+    name: 'cost',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'right' },
+  },
+  {
+    id: 8,
+    label: 'Loss(-)/Profit(+)',
+    name: 'balance',
+    show: true,
+    style: { justifyContent: 'flex-end', marginRight: '5px' },
+    headStyle: { textAlign: 'center' },
+  },
   {
     id: 9,
-    label: 'Amount',
-    name: 'amount',
+    label: 'Action',
+    getterMethod: (data) => data.passenger_delivery?.id && <p>Delete</p>,
     show: true,
+    columnProps: (data) => ({
+      onClick: () => {
+        dispatch(removePassengerDelivery(data.passenger_delivery?.id)).then(
+          () => {
+            reloadData();
+          }
+        );
+      },
+    }),
     style: { justifyContent: 'flex-end', marginRight: '5px' },
     headStyle: { textAlign: 'right' },
   },
