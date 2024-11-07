@@ -227,14 +227,17 @@ function PassengerDeliveryReportsTable(props) {
   }, []);
 
   const filteredData = {
-    Branch: getValues()?.branchName || null,
-
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
+
+    Country: getValues()?.countryName || null,
+    Passenger_Type: getValues()?.passenger_typeName || null,
+    Agent: getValues()?.agentName || null,
+    passenger: getValues()?.passengerName || null,
   };
 
   return (
