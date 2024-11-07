@@ -2,6 +2,8 @@ import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import {
+  GET_PASSENGER_DELIVERY_REPORT,
+  GET_PASSENGER_DELIVERY_REPORT_WITHOUT_PG,
   POSTDATE_FILTER_BY,
   POSTDATE_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
@@ -16,14 +18,14 @@ const PassengerDeliveryReportApi = api
     endpoints: (build) => ({
       getPassengerDeliveryReports: build.query({
         query: (filterData) => ({
-          url: POSTDATE_FILTER_BY,
+          url: GET_PASSENGER_DELIVERY_REPORT,
           params: filterData,
         }),
         providesTags: ['passengerDeliveryReports'],
       }),
       getPassengerDeliveryAllReports: build.query({
         query: (filterData) => ({
-          url: POSTDATE_FILTER_WITHOUT_PG,
+          url: GET_PASSENGER_DELIVERY_REPORT_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['passengerDeliveryReports'],
