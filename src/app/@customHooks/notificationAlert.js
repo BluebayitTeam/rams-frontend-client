@@ -27,13 +27,22 @@ export const RemoveSuccessfully = () => {
     timer: 2000,
   });
 };
+export const Updated = () => {
+  Swal.fire({
+    position: 'top-center',
+    icon: 'success',
+    title: 'Updated',
+    showConfirmButton: false,
+    timer: 4000,
+  });
+};
 export const UpdatedSuccessfully = () => {
   Swal.fire({
     position: 'top-center',
     icon: 'success',
     title: 'Updated Successfully',
     showConfirmButton: false,
-    timer: 3000,
+    timer: 2000,
   });
 };
 export const EmabassyAlert = () => {

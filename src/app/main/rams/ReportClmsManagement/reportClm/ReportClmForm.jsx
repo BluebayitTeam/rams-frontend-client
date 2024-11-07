@@ -9,7 +9,6 @@ function ReportClmForm(props) {
   const [reportClmValue, setReportClmValue] = useState(false);
   const routeParams = useParams();
   const { reportClmId } = routeParams;
-  console.log(`jsabdfjka`, getValues());
   useEffect(() => {
     // Reset form values with the provided props
     reset({ ...getValues(), items: props?.reportClms });

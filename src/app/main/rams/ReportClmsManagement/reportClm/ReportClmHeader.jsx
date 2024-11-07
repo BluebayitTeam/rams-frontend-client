@@ -5,7 +5,12 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUpdateReportClmMutation } from '../ReportClmsApi';
-import { UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  Updated,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import { useState } from 'react';
+import FuseLoading from '@fuse/core/FuseLoading';
 
 /**
  * The reportClm header.
@@ -23,9 +28,9 @@ function ReportClmHeader() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { name, images, featuredImageId } = watch();
+  const [loading, setLoading] = useState(false);
 
   function handleUpdateReportClm() {
-    console.log(`sfasdsasdf`, getValues().reportClms);
     const filteredData = Object.values(getValues()?.reportClms).map((item) => {
       return {
         serial: item.isChecked ? item.serial?.toString() : null,
@@ -34,7 +39,6 @@ function ReportClmHeader() {
         id: item.key,
       };
     });
-    console.log('filteredData', filteredData);
 
     saveReportClm({ reportClms: filteredData, type: reportClmId }).then(
       (data) => {
@@ -116,6 +120,8 @@ function ReportClmHeader() {
         if (reportClmId === 'ticket_sales') {
           navigate(`/apps/ticketSale/ticketSales`);
         }
+        setLoading(false); // Set loading to false after update completes
+
         UpdatedSuccessfully();
       }
     );

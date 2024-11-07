@@ -54,6 +54,7 @@ function PassengerSumaryFilterMenu({
     demands,
     professions,
     visa_agents,
+    passenger_agents,
   } = useSelector((state) => state.data);
 
   const values = getValues();
@@ -102,7 +103,7 @@ function PassengerSumaryFilterMenu({
           {...commonFieldProps}
           name='agent'
           label='P.agent'
-          options={agents}
+          options={passenger_agents}
           icon='person'
           width='54px'
         />
@@ -322,7 +323,7 @@ function PassengerSumaryFilterMenu({
           type='select'
           name='agent'
           label='P.agent'
-          options={agents}
+          options={passenger_agents}
           icon='person'
         />{' '}
         <Keyword

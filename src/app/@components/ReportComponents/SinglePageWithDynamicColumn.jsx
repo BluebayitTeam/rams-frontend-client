@@ -30,11 +30,7 @@ function SinglePageWithDynamicColumn({
   setSortBySubKey,
   filteredData,
 }) {
-  console.log('tableColumns', filteredData);
-
   let pageBasedSerialNo = serialNumber;
-
-  console.log('datasasasasa', data);
 
   const [generalData, setGeneralData] = useState({});
 

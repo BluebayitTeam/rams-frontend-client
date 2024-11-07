@@ -70,7 +70,12 @@ const initialTableColumnsState = [
     subName: 'first_name',
     show: true,
   },
-  { id: 7, label: 'Company', name: 'sponsor_name_english', show: true },
+  {
+    id: 7,
+    label: 'Company',
+    getterMethod: (data) => `${data.demand.company_name || ''} `,
+    show: true,
+  },
   { id: 8, label: 'Category', name: 'profession_english', show: true },
   { id: 9, label: 'Quantity', name: 'quantity', show: true },
   { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
@@ -255,9 +260,11 @@ function CompanyOverviewReportsTable(props) {
               data={companyOverview}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
-                companyOverview.page * companyOverview.size -
-                companyOverview.size +
-                1
+                pagination
+                  ? page * size - size + 1
+                  : companyOverview.page * companyOverview.size -
+                    companyOverview.size +
+                    1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}

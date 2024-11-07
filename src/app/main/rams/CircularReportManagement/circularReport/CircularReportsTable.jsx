@@ -89,6 +89,7 @@ function CircularReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
+
         visa_agent: filterData.visa_agent || '',
         country: filterData.country || '',
         profession: filterData.profession || '',
