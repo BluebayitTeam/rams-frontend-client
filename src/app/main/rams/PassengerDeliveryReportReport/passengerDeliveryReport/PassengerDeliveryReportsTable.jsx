@@ -217,7 +217,7 @@ function PassengerDeliveryReportsTable(props) {
             <SinglePage
               key={passengerDelivery.id || index}
               classes={classes}
-              reportTitle='PostDate Cheque Report'
+              reportTitle='Passenger Delivery Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
