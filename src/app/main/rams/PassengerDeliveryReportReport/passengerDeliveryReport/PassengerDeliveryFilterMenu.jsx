@@ -1,6 +1,11 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getBranches, getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import {
+  getBranches,
+  getCountries,
+  getLedgers,
+  getSubLedgers,
+} from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +30,9 @@ function PassengerDeliveryFilterMenu({
   const theme = useTheme();
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  const { ledgers, subLedgers, branches } = useSelector((state) => state.data);
+  const { countries, subLedgers, branches } = useSelector(
+    (state) => state.data
+  );
   const banks = ledgers.filter(
     (data) => data?.head_group?.name === 'Bank Accounts'
   );
@@ -47,26 +54,18 @@ function PassengerDeliveryFilterMenu({
 
   useEffect(() => {
     dispatch(getBranches());
-    dispatch(getLedgers());
+    dispatch(getCountries());
     dispatch(getSubLedgers());
   }, []);
 
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* branche */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='branch'
-          options={branches}
-          icon='import_contacts'
-          width='50px'
-        />
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='Date From'
+          label='Delivery Date From	'
           maxDate={values.date_before || new Date()}
         />
 
@@ -74,33 +73,17 @@ function PassengerDeliveryFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='Date To'
+          label='Delivery Date  to'
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* date from */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='pdc_issue_date_after'
-          label='Issue Date  From'
-          maxDate={values.pdc_issue_date_before || new Date()}
-        />
 
-        {/* date to */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='pdc_issue_date_before'
-          label='Issue Date To'
-          minDate={values.pdc_issue_date_after}
-          maxDate={new Date()}
-        />
-
-        {/* ledger */}
+        {/* Country */}
         <ReportSelect
           {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
-          icon='import_contacts'
+          name='country'
+          options={countries}
+          icon='flag'
           width='50px'
         />
 
@@ -127,41 +110,24 @@ function PassengerDeliveryFilterMenu({
       <div className='allKeyWrdContainer'>
         <Keyword
           {...commonKewordProps}
-          type='select'
-          name='branch'
-          icon='import_contacts'
-        />
-        <Keyword
-          {...commonKewordProps}
           type='date'
           name='date_after'
-          label='Date From'
+          label='Delivery Date From	'
         />
 
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
-          label='Date To'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_after'
-          label='Issue Date From'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_before'
-          label='Issue Date To'
+          label='Delivery Date  to'
         />
 
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='ledger'
-          icon='import_contacts'
+          name='country'
+          options={countries}
+          icon='flag'
         />
         <Keyword
           {...commonKewordProps}
