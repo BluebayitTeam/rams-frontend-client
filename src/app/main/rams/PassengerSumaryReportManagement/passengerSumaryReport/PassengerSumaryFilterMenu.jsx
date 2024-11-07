@@ -176,14 +176,14 @@ function PassengerSumaryFilterMenu({
         {/* Stamping from  */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='stamping_date_after'
+          name='stamping_date_before'
           label='Stamping from '
           maxDate={values.stamping_date_before || new Date()}
         />
         {/* Stamping to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='stamping_date_before'
+          name='stamping_date_after'
           label='Stamping to'
           minDate={values.stamping_date_after}
           maxDate={new Date()}

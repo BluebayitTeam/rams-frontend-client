@@ -150,7 +150,7 @@ function PassengerDeliveryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          options={passengers}
+          name='passenger'
           icon='person'
         />
       </div>
