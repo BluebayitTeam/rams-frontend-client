@@ -14,6 +14,7 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -95,13 +96,13 @@ function PassengerDeliveryFilterMenu({
           width='108px'
         />
 
-        {/* Agent */}
-        <ReportSelect
+        {/* agent */}
+        <ReportSelectFirstLastName
           {...commonFieldProps}
           name='agent'
           options={agents}
           icon='person'
-          width='50px'
+          width='40px'
         />
         {/* Passenger */}
         <ReportSelectPassenger
@@ -124,14 +125,12 @@ function PassengerDeliveryFilterMenu({
           name='date_after'
           label='Delivery Date From	'
         />
-
         <Keyword
           {...commonKewordProps}
           type='date'
           name='date_before'
           label='Delivery Date  to'
         />
-
         <Keyword
           {...commonKewordProps}
           type='select'
@@ -146,11 +145,16 @@ function PassengerDeliveryFilterMenu({
           options={passengerTypes}
           icon='person'
         />
-
         <Keyword
           {...commonKewordProps}
           type='select'
           name='passenger'
+          icon='person'
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='agent'
           icon='person'
         />
       </div>

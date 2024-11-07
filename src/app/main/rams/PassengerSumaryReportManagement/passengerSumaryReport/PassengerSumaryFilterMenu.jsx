@@ -427,13 +427,13 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='stamping_date_after'
+          name='stamping_date_before'
           label='Stamping from '
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='stamping_date_before'
+          name='stamping_date_after'
           label='Stamping to'
         />{' '}
         <Keyword
