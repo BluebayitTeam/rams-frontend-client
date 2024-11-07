@@ -30,6 +30,13 @@ const PassengerDeliveryReportApi = api
         }),
         providesTags: ['passengerDeliveryReports'],
       }),
+      deletePassengerDelivery: build.mutation({
+        query: (PassengerDeliveryId) => ({
+          url: `${DELETE_PassengerDelivery}${PassengerDeliveryId}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: ['PassengerDeliverys'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -37,6 +44,7 @@ export default PassengerDeliveryReportApi;
 export const {
   useGetPassengerDeliveryReportsQuery,
   useGetPassengerDeliveryAllReportsQuery,
+  useDeletePassengerDeliveryMutation,
 } = PassengerDeliveryReportApi;
 
 export const selectFilteredPassengerDeliveryReports = (

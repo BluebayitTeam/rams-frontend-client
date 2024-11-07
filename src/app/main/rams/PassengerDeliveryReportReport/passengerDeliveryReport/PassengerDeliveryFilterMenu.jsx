@@ -2,12 +2,9 @@ import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import {
   getAgents,
-  getBranches,
   getCountries,
-  getLedgers,
   getPassengers,
   getPassengerTypes,
-  getSubLedgers,
 } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -36,9 +33,6 @@ function PassengerDeliveryFilterMenu({
   const [_reRender, setReRender] = useState(0);
   const { countries, passengerTypes, agents, passengers } = useSelector(
     (state) => state.data
-  );
-  const banks = ledgers.filter(
-    (data) => data?.head_group?.name === 'Bank Accounts'
   );
 
   const commonFieldProps = {
@@ -89,7 +83,7 @@ function PassengerDeliveryFilterMenu({
           name='country'
           options={countries}
           icon='flag'
-          width='50px'
+          width='55px'
         />
 
         {/* passenger Type */}
@@ -98,7 +92,7 @@ function PassengerDeliveryFilterMenu({
           name='passenger_type'
           options={passengerTypes}
           icon='person'
-          width='76px'
+          width='108px'
         />
 
         {/* Agent */}
@@ -107,7 +101,7 @@ function PassengerDeliveryFilterMenu({
           name='agent'
           options={agents}
           icon='person'
-          width='95px'
+          width='50px'
         />
         {/* Passenger */}
         <ReportSelectPassenger

@@ -14,10 +14,14 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
+  useDeletePassengerDeliveryMutation,
   useGetPassengerDeliveryAllReportsQuery,
   useGetPassengerDeliveryReportsQuery,
 } from '../PassengerDeliveryReportsApi';
 import PassengerDeliveryFilterMenu from './PassengerDeliveryFilterMenu';
+import { useDispatch } from 'react-redux';
+import { Delete } from '@mui/icons-material';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -25,76 +29,100 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
-const initialTableColumnsState = ({ dispatch, reloadData }) => [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Delivery Date',
-    getterMethod: (data) =>
-      data?.passenger_delivery?.delivery_date.slice(0, 10),
-    show: true,
-  },
-
-  { id: 3, label: 'Job Id', name: 'passenger_id', show: true },
-  {
-    id: 4,
-    label: 'Ref Name',
-    getterMethod: (data) => `${data?.agent?.first_name || ''}  `,
-    show: true,
-  },
-
-  { id: 5, label: 'Passenger', name: 'passenger_name', show: true },
-
-  {
-    id: 6,
-    label: 'Total Bill',
-    name: 'bill',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-  {
-    id: 7,
-    label: 'Total Expense',
-    name: 'cost',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-  {
-    id: 8,
-    label: 'Loss(-)/Profit(+)',
-    name: 'balance',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'center' },
-  },
-  {
-    id: 9,
-    label: 'Action',
-    getterMethod: (data) => data.passenger_delivery?.id && <p>Delete</p>,
-    show: true,
-    columnProps: (data) => ({
-      onClick: () => {
-        dispatch(removePassengerDelivery(data.passenger_delivery?.id)).then(
-          () => {
-            reloadData();
-          }
-        );
-      },
-    }),
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-];
 function PassengerDeliveryReportsTable(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const routeParams = useParams();
+  // const { agentId } = routeParams;
+  console.log('routeParam111s', routeParams);
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
     resolver: zodResolver(schema),
   });
 
+  const [removePassengerDelivery] = useDeletePassengerDeliveryMutation();
+  const handleRemoveAgent = (dispatch, id) => {
+    // Call your async action to remove the delivery
+    dispatch(removePassengerDelivery(id)).then(() => {
+      DeletedSuccessfully(); // Optional: Call any success handler after deletion
+
+      // Dispatch a message to notify the user
+      dispatch(
+        showMessage({
+          message: `Please Restart The Backend`,
+          variant: 'error',
+        })
+      );
+    });
+  };
+
+  const initialTableColumnsState = [
+    { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+    {
+      id: 2,
+      label: 'Delivery Date',
+      getterMethod: (data) =>
+        data?.passenger_delivery?.delivery_date.slice(0, 10),
+      show: true,
+    },
+
+    { id: 3, label: 'Job Id', name: 'passenger_id', show: true },
+    {
+      id: 4,
+      label: 'Ref Name',
+      getterMethod: (data) => `${data?.agent?.first_name || ''}  `,
+      show: true,
+    },
+
+    { id: 5, label: 'Passenger', name: 'passenger_name', show: true },
+
+    {
+      id: 6,
+      label: 'Total Bill',
+      name: 'bill',
+      show: true,
+      style: { justifyContent: 'flex-end', marginRight: '5px' },
+      headStyle: { textAlign: 'right' },
+    },
+    {
+      id: 7,
+      label: 'Total Expense',
+      name: 'cost',
+      show: true,
+      style: { justifyContent: 'flex-end', marginRight: '5px' },
+      headStyle: { textAlign: 'right' },
+    },
+    {
+      id: 8,
+      label: 'Loss(-)/Profit(+)',
+      name: 'balance',
+      show: true,
+      style: { justifyContent: 'flex-end', marginRight: '5px' },
+      headStyle: { textAlign: 'center' },
+    },
+    {
+      id: 9,
+      label: 'Action',
+      getterMethod: (data) =>
+        data.passenger_delivery?.id && (
+          <Delete
+            onClick={() =>
+              function handleRemoveAgent(data) {
+                console.log('sdsdsdsdsdsd', data);
+                removePassengerDelivery(data.passenger_delivery?.id);
+                DeletedSuccessfully();
+              }
+            }
+            className='cursor-pointer custom-delete-icon-style'
+          />
+        ),
+      show: true,
+
+      style: { justifyContent: 'flex-end', marginRight: '5px' },
+      headStyle: { textAlign: 'right' },
+    },
+  ];
   const { watch, getValues } = methods;
 
   const [
@@ -122,15 +150,13 @@ function PassengerDeliveryReportsTable(props) {
 
   const { data: paginatedData } = useGetPassengerDeliveryReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      passengerDelivery_code: filterData.passengerDelivery_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+      country: filterData.country || '',
+      passenger_type: filterData.passenger_type || '',
+      agent: filterData.agent || '',
+      passenger: filterData.passenger || '',
+
       page,
       size,
     },
@@ -139,27 +165,24 @@ function PassengerDeliveryReportsTable(props) {
 
   const { data: allData } = useGetPassengerDeliveryAllReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      passengerDelivery_code: filterData.passengerDelivery_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+      country: filterData.country || '',
+      passenger_type: filterData.passenger_type || '',
+      agent: filterData.agent || '',
+      passenger: filterData.passenger || '',
     },
     { skip: !inShowAllMode }
   );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassengerDeliveryData(allData.postdate_cheques || []);
+      setModifiedPassengerDeliveryData(allData.passenger_delivery || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.postdate_cheques,
+        allData.passenger_delivery,
         size,
         page
       );
@@ -168,7 +191,7 @@ function PassengerDeliveryReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassengerDeliveryData(paginatedData.postdate_cheques || []);
+      setModifiedPassengerDeliveryData(paginatedData.passenger_delivery || []);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
