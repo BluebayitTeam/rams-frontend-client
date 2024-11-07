@@ -251,14 +251,14 @@ function PassengerSumaryFilterMenu({
         {/* ManP.from */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_after'
+          name='man_power_date_before'
           label='ManP.from'
           maxDate={values.man_power_date_before || new Date()}
         />
         {/* ManP.to */}
         <ReportDatePicker
           {...commonFieldProps}
-          name='man_power_date_before'
+          name='man_power_date_after'
           label='ManP.to'
           minDate={values.man_power_date_after}
           maxDate={new Date()}
@@ -451,13 +451,13 @@ function PassengerSumaryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_power_date_after'
+          name='man_power_date_before'
           label='ManP.from'
         />
         <Keyword
           {...commonKewordProps}
           type='date'
-          name='man_power_date_before'
+          name='man_power_date_after'
           label='ManP.to'
         />
       </div>
