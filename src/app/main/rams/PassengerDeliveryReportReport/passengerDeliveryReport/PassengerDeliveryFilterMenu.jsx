@@ -1,9 +1,12 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import {
+  getAgents,
   getBranches,
   getCountries,
   getLedgers,
+  getPassengers,
+  getPassengerTypes,
   getSubLedgers,
 } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
@@ -13,6 +16,7 @@ import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePicker';
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelectPassenger from 'src/app/@components/ReportComponents/ReportSelectPassenger';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -30,7 +34,7 @@ function PassengerDeliveryFilterMenu({
   const theme = useTheme();
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  const { countries, subLedgers, branches } = useSelector(
+  const { countries, passengerTypes, agents, passengers } = useSelector(
     (state) => state.data
   );
   const banks = ledgers.filter(
@@ -53,9 +57,10 @@ function PassengerDeliveryFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getBranches());
+    dispatch(getPassengers());
     dispatch(getCountries());
-    dispatch(getSubLedgers());
+    dispatch(getAgents());
+    dispatch(getPassengerTypes());
   }, []);
 
   return (
@@ -87,22 +92,33 @@ function PassengerDeliveryFilterMenu({
           width='50px'
         />
 
-        {/* sub_ledger */}
+        {/* passenger Type */}
         <ReportSelect
           {...commonFieldProps}
-          name='sub_ledger'
-          options={subLedgers}
-          icon='import_contacts'
+          name='passenger_type'
+          options={passengerTypes}
+          icon='person'
           width='76px'
         />
 
-        {/* lpassengerTypes */}
+        {/* Agent */}
         <ReportSelect
           {...commonFieldProps}
-          name='rp_bank_id'
-          options={banks}
-          icon='text_fields'
+          name='agent'
+          options={agents}
+          icon='person'
           width='95px'
+        />
+        {/* Passenger */}
+        <ReportSelectPassenger
+          {...commonFieldProps}
+          name='passenger'
+          options={passengers}
+          getOptionLabel={(option) =>
+            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
+          }
+          icon='person'
+          width='78px'
         />
       </div>
 
@@ -132,15 +148,16 @@ function PassengerDeliveryFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='sub_ledger'
-          icon='import_contacts'
+          name='passenger_type'
+          options={passengerTypes}
+          icon='person'
         />
 
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='rp_bank_id'
-          icon='text_fields'
+          options={passengers}
+          icon='person'
         />
       </div>
     </div>
