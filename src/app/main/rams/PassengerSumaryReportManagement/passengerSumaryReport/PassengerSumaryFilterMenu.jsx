@@ -12,7 +12,12 @@ import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls
 import { ViewWeek } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
-import { doneNotDone, genders, medicalResults } from 'src/app/@data/data';
+import {
+  doneNotDone,
+  genders,
+  medicalResult2s,
+  medicalResults,
+} from 'src/app/@data/data';
 import {
   getAgents,
   getCountries,
@@ -187,7 +192,7 @@ function PassengerSumaryFilterMenu({
         <ReportSelect
           {...commonFieldProps}
           name='medical_result'
-          options={medicalResults}
+          options={medicalResult2s}
           icon='new_releases'
           width='97px'
         />

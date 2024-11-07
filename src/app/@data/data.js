@@ -98,6 +98,11 @@ export const medicalResults = [
   { id: 'unFit', name: 'UnFit' },
   { id: 'meet', name: 'Meet', default: true },
 ];
+export const medicalResult2s = [
+  { id: 'fit', name: 'Fit' },
+  { id: 'unfit', name: 'UnFit' },
+  { id: 'meet', name: 'Meet', default: true },
+];
 export const ticketSalesTicketStatus = [
   { id: 'issue', name: 'Issue' },
   { id: 'active', name: 'Active' },
