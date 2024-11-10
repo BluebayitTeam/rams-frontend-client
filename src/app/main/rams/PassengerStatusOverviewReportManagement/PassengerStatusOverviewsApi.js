@@ -29,43 +29,6 @@ const PassengerStatusOverviewReportApi = api
         }),
         providesTags: ['passengerStatusOverviewReports'],
       }),
-      // deletePassengerStatusOverviewReports: build.mutation({
-      // 	query: (passengerStatusOverviewReportIds) => ({
-      // 		url: DELETE_DEPARTMENT_MULTIPLE,
-      // 		method: 'DELETE',
-      // 		data: { ids: passengerStatusOverviewReportIds }
-      // 	}),
-      // 	invalidatesTags: ['passengerStatusOverviewReports']
-      // }),
-      // getPassengerStatusOverviewReport: build.query({
-      // 	query: (passengerStatusOverviewReportId) => ({
-      // 		url: `${GET_DEPARTMENT_BY_ID}${passengerStatusOverviewReportId}`
-      // 	}),
-      // 	providesTags: ['passengerStatusOverviewReports']
-      // }),
-      // createPassengerStatusOverviewReport: build.mutation({
-      // 	query: (newPassengerStatusOverviewReport) => ({
-      // 		url: CREATE_DEPARTMENT,
-      // 		method: 'POST',
-      // 		data: jsonToFormData(newPassengerStatusOverviewReport)
-      // 	}),
-      // 	invalidatesTags: ['passengerStatusOverviewReports']
-      // }),
-      // updatePassengerStatusOverviewReport: build.mutation({
-      // 	query: (passengerStatusOverviewReport) => ({
-      // 		url: `${UPDATE_DEPARTMENT}${passengerStatusOverviewReport.id}`,
-      // 		method: 'PUT',
-      // 		data: jsonToFormData(passengerStatusOverviewReport)
-      // 	}),
-      // 	invalidatesTags: ['passengerStatusOverviewReports']
-      // }),
-      // deletePassengerStatusOverviewReport: build.mutation({
-      // 	query: (passengerStatusOverviewReportId) => ({
-      // 		url: `${DELETE_DEPARTMENT}${passengerStatusOverviewReportId}`,
-      // 		method: 'DELETE'
-      // 	}),
-      // 	invalidatesTags: ['passengerStatusOverviewReports']
-      // })
     }),
     overrideExisting: false,
   });
@@ -73,11 +36,6 @@ export default PassengerStatusOverviewReportApi;
 export const {
   useGetPassengerStatusOverviewReportsQuery,
   useGetPassengerStatusOverviewAllReportsQuery,
-  // useDeletePassengerStatusOverviewReportsMutation,
-  // useGetPassengerStatusOverviewReportQuery,
-  // useUpdatePassengerStatusOverviewReportMutation,
-  // useDeletePassengerStatusOverviewReportMutation,
-  // useCreatePassengerStatusOverviewReportMutation
 } = PassengerStatusOverviewReportApi;
 
 export const selectFilteredPassengerStatusOverviewReports = (
