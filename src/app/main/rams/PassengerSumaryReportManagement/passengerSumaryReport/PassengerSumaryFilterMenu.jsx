@@ -21,6 +21,7 @@ import {
 import {
   getAgents,
   getCountries,
+  getCurrentStatuss,
   getDemands,
   getPassengerAgents,
   getPassengers,
@@ -89,6 +90,7 @@ function PassengerSumaryFilterMenu({
     dispatch(getDemands());
     dispatch(getProfessions());
     dispatch(getPassengerAgents());
+    dispatch(getCurrentStatuss());
   }, [dispatch]);
 
   return (

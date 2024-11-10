@@ -407,6 +407,7 @@ export const getAgents = () => (dispatch) => {
     .then((data) => dispatch(setAgents(data.agents)))
     .catch(() => {});
 };
+
 export const getVisaAgents = () => (dispatch) => {
   const authTOKEN = {
     headers: {
