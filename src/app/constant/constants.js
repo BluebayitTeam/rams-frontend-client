@@ -855,6 +855,7 @@ export const DELETE_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_s
 export const DELETE_CURRENTSTATUS_MULTIPLE = `${BASE_URL}/current_status/api/v1/current_status/delete/`;
 
 export const SEARCH_CURRENTSTATUS = `${BASE_URL}/current_status/api/v1/current_status/search/`;
+export const CURRENTSTATUS_WP = `${BASE_URL}/current_status/api/v1/current_status/without_pagination/all/`;
 
 // profession
 export const CREATE_PROFESSION = `${BASE_URL}/profession/api/v1/profession/create/`;
