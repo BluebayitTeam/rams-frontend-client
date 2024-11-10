@@ -230,7 +230,7 @@ function CircularReportsTable(props) {
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={circular}
-              totalColumn={initialTableColumnsState?.length}
+              // totalColumn={initialTableColumnsState?.length}
               serialNumber={circular.page * circular.size - circular.size + 1}
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
