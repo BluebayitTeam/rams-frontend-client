@@ -26,6 +26,36 @@ const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
 
+const initialTableColumnsState = [
+  { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Country', name: 'country', subName: 'name', show: true },
+  {
+    id: 3,
+    label: 'Visa Agent',
+    name: 'visa_agent',
+    subName: 'first_name',
+    show: true,
+  },
+  { id: 4, label: 'Company Name', name: 'company_name', show: true },
+  {
+    id: 5,
+    label: 'Profession',
+    name: 'profession',
+    subName: 'name',
+    show: true,
+  },
+  { id: 6, label: 'Quantity', name: 'quantity', show: true },
+  { id: 7, label: 'Salary', name: 'salary', show: true },
+  {
+    id: 8,
+    label: 'Office Rate',
+    name: 'office_rate',
+    show: true,
+    type: 'date',
+  },
+  { id: 9, label: 'Status', name: 'status', show: true },
+];
+
 const schema = z.object({});
 
 function CircularReportsTable(props) {
@@ -40,35 +70,6 @@ function CircularReportsTable(props) {
     resolver: zodResolver(schema),
   });
 
-  const initialTableColumnsState = [
-    { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
-    { id: 2, label: 'Country', name: 'country', subName: 'name', show: true },
-    {
-      id: 3,
-      label: 'Visa Agent',
-      name: 'visa_agent',
-      subName: 'first_name',
-      show: true,
-    },
-    { id: 4, label: 'Company Name', name: 'company_name', show: true },
-    {
-      id: 5,
-      label: 'Profession',
-      name: 'profession',
-      subName: 'name',
-      show: true,
-    },
-    { id: 6, label: 'Quantity', name: 'quantity', show: true },
-    { id: 7, label: 'Salary', name: 'salary', show: true },
-    {
-      id: 8,
-      label: 'Office Rate',
-      name: 'office_rate',
-      show: true,
-      type: 'date',
-    },
-    { id: 9, label: 'Status', name: 'status', show: true },
-  ];
   const { watch, getValues } = methods;
 
   const [
@@ -98,9 +99,8 @@ function CircularReportsTable(props) {
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      country: filterData.country || '',
-
       visa_agent: filterData.visa_agent || '',
+      country: filterData.country || '',
       profession: filterData.profession || '',
       company_name: filterData.company_name || '',
 
@@ -114,9 +114,8 @@ function CircularReportsTable(props) {
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      country: filterData.country || '',
-
       visa_agent: filterData.visa_agent || '',
+      country: filterData.country || '',
       profession: filterData.profession || '',
       company_name: filterData.company_name || '',
     },
@@ -140,7 +139,6 @@ function CircularReportsTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedCircularData(paginatedData.demand_list || []);
-      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -227,17 +225,13 @@ function CircularReportsTable(props) {
             <SinglePage
               key={circular.id || index}
               classes={classes}
-              reportTitle='Passenger Delivery Report'
+              reportTitle='Circular Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={circular}
               totalColumn={initialTableColumnsState?.length}
-              serialNumber={
-                pagination
-                  ? page * size - size + 1
-                  : circular.page * circular.size - circular.size + 1
-              }
+              serialNumber={circular.page * circular.size - circular.size + 1}
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
               setSortBy={setSortBy}
