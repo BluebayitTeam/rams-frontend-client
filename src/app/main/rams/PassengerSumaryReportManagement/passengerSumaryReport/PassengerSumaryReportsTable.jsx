@@ -217,7 +217,6 @@ function PassengerSumaryReportsTable(props) {
 
   const filteredData = {
     Demand: getValues()?.demandName || null,
-    Passenger_Agent: getValues()?.passenger_agent || null,
     Visa_Number: getValues()?.visa_number || null,
     Passenger_Agent: getValues()?.agentName || null,
     Profession: getValues()?.professionName || null,
