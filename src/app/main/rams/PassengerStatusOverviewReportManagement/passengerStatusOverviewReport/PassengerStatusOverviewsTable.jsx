@@ -138,6 +138,7 @@ function PassengerStatusOverviewReportsTable(props) {
     useGetPassengerStatusOverviewReportsQuery(
       {
         agent: filterData.agent || '',
+        country: filterData.country || '',
         page,
         size,
       },
@@ -148,6 +149,7 @@ function PassengerStatusOverviewReportsTable(props) {
     useGetPassengerStatusOverviewAllReportsQuery(
       {
         agent: filterData.agent || '',
+        country: filterData.country || '',
       },
       { skip: !inShowAllMode }
     );
@@ -292,9 +294,6 @@ function PassengerStatusOverviewReportsTable(props) {
                   ],
                 }}
                 totalColumn={initialTableColumnsState?.length}
-                agentName={agentName}
-                district={district}
-                phone={phone}
                 serialNumber={
                   pagination
                     ? page * size -
