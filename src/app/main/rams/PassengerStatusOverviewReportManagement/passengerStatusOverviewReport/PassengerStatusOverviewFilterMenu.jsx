@@ -1,12 +1,13 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getAgents } from 'app/store/dataSlice';
+import { getAgents, getCountries } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -24,7 +25,7 @@ function passengerStatusOverviewFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { agents } = useSelector((state) => state.data);
+  const { agents, countries } = useSelector((state) => state.data);
   const values = getValues();
 
   const [_reRender, setReRender] = useState(0);
@@ -46,6 +47,7 @@ function passengerStatusOverviewFilterMenu({
 
   useEffect(() => {
     dispatch(getAgents());
+    dispatch(getCountries());
   }, [dispatch]);
 
   return (
@@ -59,6 +61,16 @@ function passengerStatusOverviewFilterMenu({
           icon='person'
           width='40px'
         />
+
+        {/* Country */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='country'
+          options={countries}
+          label='Country'
+          icon='flag'
+          width='60px'
+        />
       </div>
 
       {/* keywords */}
@@ -69,6 +81,13 @@ function passengerStatusOverviewFilterMenu({
           name='agent'
           icon='person'
           options={agents}
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='country'
+          label='Country'
+          icon='flag'
         />
       </div>
     </div>

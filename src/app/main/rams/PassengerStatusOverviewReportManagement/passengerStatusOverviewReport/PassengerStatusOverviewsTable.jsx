@@ -20,6 +20,7 @@ import {
   useGetPassengerStatusOverviewReportsQuery,
 } from '../passengerStatusOverviewsApi';
 import PassengerStatusOverviewFilterMenu from './PassengerStatusOverviewFilterMenu';
+import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -107,7 +108,7 @@ function PassengerStatusOverviewReportsTable(props) {
     resolver: zodResolver(schema),
   });
   const dispatch = useDispatch();
-  const { watch } = methods;
+  const { watch, getValues } = methods;
   const [
     modifiedPassengerStatusOverviewData,
     setModifiedPassengerStatusOverviewData,
@@ -153,7 +154,9 @@ function PassengerStatusOverviewReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassengerStatusOverviewData(allData.account_logs || []);
+      setModifiedPassengerStatusOverviewData(
+        allData.passenger_status_overviews || []
+      );
       setTotalCdAmount(allData.total_credit);
       setTotalDbAmount(allData.total_debit);
       setTotalBAlance(allData.total_balance);
@@ -163,7 +166,7 @@ function PassengerStatusOverviewReportsTable(props) {
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.account_logs,
+        allData.passenger_status_overviews,
         size,
         page
       );
@@ -173,7 +176,9 @@ function PassengerStatusOverviewReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassengerStatusOverviewData(paginatedData.account_logs || []);
+      setModifiedPassengerStatusOverviewData(
+        paginatedData.passenger_status_overviews || []
+      );
       setTotalCdAmount(paginatedData.total_credit);
       setTotalDbAmount(paginatedData.total_debit);
       setTotalBAlance(paginatedData.total_balance);
@@ -204,10 +209,6 @@ function PassengerStatusOverviewReportsTable(props) {
     }
   }, []);
 
-  const agentName = paginatedData?.agent?.first_name;
-  const district = paginatedData?.agent?.city?.name;
-  const phone = paginatedData?.agent?.primary_phone;
-
   // Function to handle Excel download
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
@@ -217,6 +218,11 @@ function PassengerStatusOverviewReportsTable(props) {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  const filteredData = {
+    Agent: getValues()?.agentName || null,
+    Gender: getValues()?.genderName || null,
+  };
 
   return (
     <div className={classes.headContainer}>
@@ -261,10 +267,11 @@ function PassengerStatusOverviewReportsTable(props) {
           {/* each single page (table) */}
           {modifiedPassengerStatusOverviewData.map(
             (passengerStatusOverview, index) => (
-              <SiglePageWithExtraHeading
+              <SinglePage
                 key={index}
                 classes={classes}
                 reportTitle='Passenger Status Overview'
+                filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
                 inSiglePageMode={inSiglePageMode}
