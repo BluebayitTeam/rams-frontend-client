@@ -280,8 +280,8 @@ function PassengerSumaryFilterMenu({
           name='visa_agent'
           options={visa_agents}
           icon='person'
-          label='V.Agent'
-          width='54px'
+          label='Visa Agent'
+          width='77px'
         />{' '}
         {/* Current Status */}
         <ReportSelect

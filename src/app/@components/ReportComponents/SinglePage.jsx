@@ -26,7 +26,6 @@ function SinglePage({
 }) {
   let pageBasedSerialNo = serialNumber;
 
-  console.log('tableColumns', data);
   const [generalData, setGeneralData] = useState({});
 
   // get general setting data

@@ -929,7 +929,7 @@ const navigationConfig = [
         translate: 'Visa Entry Report',
         display_order: 12,
         type: 'item',
-        url: '/apps/report-management/visaEntry-reports',
+        url: '/apps/visaEntryReport/visaEntryReports',
         exact: true,
       },
       {
