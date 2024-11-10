@@ -2,8 +2,8 @@ import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import {
-  GET_PASSENGER_ACCOUNT_SUMMARY_REPORT,
-  GET_PASSENGER_ACCOUNT_SUMMARY_REPORT_WITHOUT_PG,
+  PASSENGER_STATUS_OVERVIEW_FILTER_BY,
+  PASSENGER_STATUS_OVERVIEW_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -16,7 +16,7 @@ const PassengerStatusOverviewReportApi = api
     endpoints: (build) => ({
       getPassengerStatusOverviewReports: build.query({
         query: (filterData) => ({
-          url: `${GET_PASSENGER_ACCOUNT_SUMMARY_REPORT}${filterData?.agent}`,
+          url: `${PASSENGER_STATUS_OVERVIEW_FILTER_BY}${filterData?.agent}`,
 
           params: { page: filterData?.page, size: filterData?.size },
         }),
@@ -24,7 +24,7 @@ const PassengerStatusOverviewReportApi = api
       }),
       getPassengerStatusOverviewAllReports: build.query({
         query: (filterData) => ({
-          url: `${GET_PASSENGER_ACCOUNT_SUMMARY_REPORT_WITHOUT_PG}${filterData?.agent}`,
+          url: `${PASSENGER_STATUS_OVERVIEW_FILTER_WITHOUT_PG}${filterData?.agent}`,
           // params: {agent:filterData.agent}
         }),
         providesTags: ['passengerStatusOverviewReports'],
