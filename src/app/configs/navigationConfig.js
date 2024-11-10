@@ -919,7 +919,7 @@ const navigationConfig = [
         translate: 'Passenger Status Overview Report',
         display_order: 11,
         type: 'item',
-        url: '/apps/passengerStatusOverviews/report',
+        url: '/apps/passengerStatusOverviewReport/passengerStatusOverviewReports',
         exact: true,
       },
 

@@ -152,6 +152,7 @@ import FlightReportAppConfig from '../rams/FlightReportManagement/FlightReportAp
 import PassengerSumaryReportAppConfig from '../rams/PassengerSumaryReportManagement/PassengerSumaryAppConfig';
 import CircularReportAppConfig from '../rams/CircularReportManagement/CircularReportAppConfig';
 import PassengerDeliveryReportAppConfig from '../rams/PassengerDeliveryReportReport/PassengerDeliveryReportAppConfig';
+import PassengerStatusOverviewReportAppConfig from '../rams/PassengerStatusOverviewReportManagement/Passenger Status OverviewAppConfig';
 
 /**
  * The list of application configurations.
@@ -207,7 +208,7 @@ const appsConfigs = [
   CircularReportAppConfig,
   EmbassyReportAppConfig,
   AccountStatementReportAppConfig,
-
+  PassengerStatusOverviewReportAppConfig,
   NotMedicalReportAppConfig,
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
