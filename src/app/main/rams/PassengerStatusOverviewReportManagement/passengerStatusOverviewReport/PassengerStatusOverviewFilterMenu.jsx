@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function passengerStatusOverviewFilterMenu({
+function PassengerStatusOverviewFilterMenu({
   inShowAllMode,
   handleGetPassengerStatusOverviews,
   handleGetAllPassengerStatusOverviews,
@@ -94,4 +94,4 @@ function passengerStatusOverviewFilterMenu({
   );
 }
 
-export default passengerStatusOverviewFilterMenu;
+export default PassengerStatusOverviewFilterMenu;

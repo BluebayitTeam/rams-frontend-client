@@ -1,27 +1,22 @@
-/* eslint-disable jsx-a11y/iframe-has-title */
-/* eslint-disable jsx-a11y/alt-text */
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
+import moment from 'moment';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
+import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
+import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
 import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColumnsReducer';
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-
-import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
-import SiglePageWithExtraHeading from 'src/app/@components/ReportComponents/SiglePageWithExtraHeading';
 import {
   useGetPassengerStatusOverviewAllReportsQuery,
   useGetPassengerStatusOverviewReportsQuery,
-} from '../passengerStatusOverviewsApi';
+} from '../PassengerStatusOverviewsApi';
 import PassengerStatusOverviewFilterMenu from './PassengerStatusOverviewFilterMenu';
-import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
-
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
@@ -30,77 +25,38 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Job Id', name: 'reference_no', show: true },
+  { id: 1, label: 'Sl_No', sortAction: false, isSerialNo: true, show: true },
+  {
+    id: 2,
+    label: 'Agent ID',
+    name: 'agent',
+    subName: 'agent_code',
+    show: true,
+  },
   {
     id: 3,
-    label: 'Passenger Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    label: 'Agent Name',
+    getterMethod: (data) =>
+      `${data.agent?.first_name || ''} ${data.agent?.last_name || ''} `,
     show: true,
   },
-  {
-    id: 4,
-    label: 'Passport No',
-    name: 'passenger',
-    subName: 'passport_no',
-    show: true,
-  },
-  {
-    id: 5,
-    label: 'Mobile No',
-    name: 'passenger',
-    subName: 'contact_no',
-    show: true,
-  },
-  {
-    id: 6,
-    label: 'District',
-    getterMethod: (data) => `${data.passenger?.district?.name || ''}`,
-    show: true,
-  },
-
-  {
-    id: 7,
-    label: 'Debit',
-    name: 'debit',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-  {
-    id: 8,
-    label: 'Credit',
-    name: 'credit',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-  {
-    id: 9,
-    label: 'Balance',
-    name: 'balance',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-  {
-    id: 10,
-    label: 'Office Cost',
-    name: 'office_cost',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-  {
-    id: 11,
-    label: 'Current Status',
-    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
-    show: true,
-  },
+  { id: 4, label: 'Total PP', name: 'total_passengers', show: true },
+  { id: 6, label: 'ST.BOX', name: 'ST.BOX', show: true },
+  { id: 7, label: 'Medical', name: 'Medical', show: true },
+  { id: 8, label: 'M.Fit', name: 'M.Fit', show: true },
+  { id: 9, label: 'M.Unfit', name: 'M.Unfit', show: true },
+  { id: 10, label: 'Re Medical', name: 'Re Medical', show: true },
+  { id: 11, label: 'PP Return', name: 'PP Return', show: true },
+  { id: 12, label: 'Sending', name: 'Sending', show: true },
+  { id: 13, label: 'Online', name: 'Online', show: true },
+  { id: 14, label: 'Calling', name: 'Calling', show: true },
+  { id: 15, label: 'E Visa', name: 'E Visa', show: true },
+  { id: 16, label: 'Ready For Flight', name: 'Ready For Flight', show: true },
+  { id: 17, label: 'Flight Done', name: 'Flight Done', show: true },
+  { id: 18, label: 'Balance', name: 'total_amount', show: true },
 ];
 
-function PassengerStatusOverviewReportsTable(props) {
+function PassengerStatusOverviewsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -108,62 +64,57 @@ function PassengerStatusOverviewReportsTable(props) {
     resolver: zodResolver(schema),
   });
   const dispatch = useDispatch();
+
   const { watch, getValues } = methods;
+
   const [
     modifiedPassengerStatusOverviewData,
     setModifiedPassengerStatusOverviewData,
   ] = useReportData();
+
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
   );
+
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
-  const [inSiglePageMode, setInSiglePageMode] = useState(false);
-  const [totalCdAmount, setTotalCdAmount] = useState(0);
-  const [totalDbAmount, setTotalDbAmount] = useState(0);
-  const [totalBAlance, setTotalBAlance] = useState(0);
-  const [totalOfficeAmount, setTotalOfficeAmount] = useState(0);
-
   const [pagination, setPagination] = useState(false);
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const componentRef = useRef(null);
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchPassengerStatusOverview } =
-    useGetPassengerStatusOverviewReportsQuery(
-      {
-        agent: filterData.agent || '',
-        country: filterData.country || '',
-        page,
-        size,
-      },
-      { skip: inShowAllMode }
-    );
+  const { data: paginatedData } = useGetPassengerStatusOverviewReportsQuery(
+    {
+      agent: filterData.agent || '',
+      country: filterData.country || '',
 
-  const { data: allData, refetch: refetchAllPassengerStatusOverview } =
-    useGetPassengerStatusOverviewAllReportsQuery(
-      {
-        agent: filterData.agent || '',
-        country: filterData.country || '',
-      },
-      { skip: !inShowAllMode }
-    );
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
+
+  const { data: allData } = useGetPassengerStatusOverviewAllReportsQuery(
+    {
+      agent: filterData.agent || '',
+      country: filterData.country || '',
+    },
+    { skip: !inShowAllMode }
+  );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
       setModifiedPassengerStatusOverviewData(
         allData.passenger_status_overviews || []
       );
-      setTotalCdAmount(allData.total_credit);
-      setTotalDbAmount(allData.total_debit);
-      setTotalBAlance(allData.total_balance);
-      setTotalOfficeAmount('');
-
+      setTotalAmount(allData.total_amount);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -181,11 +132,9 @@ function PassengerStatusOverviewReportsTable(props) {
       setModifiedPassengerStatusOverviewData(
         paginatedData.passenger_status_overviews || []
       );
-      setTotalCdAmount(paginatedData.total_credit);
-      setTotalDbAmount(paginatedData.total_debit);
-      setTotalBAlance(paginatedData.total_balance);
-      setTotalOfficeAmount('');
 
+      setTotalAmount(paginatedData.total_amount);
+      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -194,6 +143,14 @@ function PassengerStatusOverviewReportsTable(props) {
       setInShowAllMode(false);
     }
   }, [inShowAllMode, allData, paginatedData, size, page]);
+
+  const handleExelDownload = () => {
+    document.getElementById('test-table-xls-button').click();
+  };
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const handleGetPassengerStatusOverviews = useCallback(async (newPage) => {
     try {
@@ -207,19 +164,9 @@ function PassengerStatusOverviewReportsTable(props) {
   const handleGetAllPassengerStatusOverviews = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all foreignLedgers:', error);
+      console.error('Error fetching all passengerStatusOverviews:', error);
     }
   }, []);
-
-  // Function to handle Excel download
-  const handleExelDownload = () => {
-    document.getElementById('test-table-xls-button').click();
-  };
-
-  // Function to handle Print
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
 
   const filteredData = {
     Agent: getValues()?.agentName || null,
@@ -228,7 +175,6 @@ function PassengerStatusOverviewReportsTable(props) {
 
   return (
     <div className={classes.headContainer}>
-      {/* Filter */}
       <FormProvider {...methods}>
         <PassengerStatusOverviewFilterMenu
           inShowAllMode={inShowAllMode}
@@ -259,14 +205,14 @@ function PassengerStatusOverviewReportsTable(props) {
         handleGetAllData={handleGetAllPassengerStatusOverviews}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='AgentReport'
+        filename='PassengerStatusOverview'
       />
+
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {/* each single page (table) */}
           {modifiedPassengerStatusOverviewData.map(
             (passengerStatusOverview, index) => (
               <SinglePage
@@ -276,24 +222,9 @@ function PassengerStatusOverviewReportsTable(props) {
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
-                inSiglePageMode={inSiglePageMode}
-                data={{
-                  ...passengerStatusOverview,
-                  data: [
-                    ...passengerStatusOverview.data,
-                    {
-                      credit: totalCdAmount,
-                      debit: totalDbAmount,
-                      passenger: 'Total Balance',
-                      details: 'Total Balance',
-                      balance: totalBAlance,
-                      office_cost: totalOfficeAmount,
-                      hideSerialNo: true,
-                      rowStyle: { fontWeight: 600 },
-                    },
-                  ],
-                }}
+                data={passengerStatusOverview}
                 totalColumn={initialTableColumnsState?.length}
+                inSiglePageMode={inSiglePageMode}
                 serialNumber={
                   pagination
                     ? page * size -
@@ -315,4 +246,4 @@ function PassengerStatusOverviewReportsTable(props) {
   );
 }
 
-export default PassengerStatusOverviewReportsTable;
+export default PassengerStatusOverviewsTable;

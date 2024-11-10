@@ -16,15 +16,15 @@ const PassengerStatusOverviewReportApi = api
     endpoints: (build) => ({
       getPassengerStatusOverviewReports: build.query({
         query: (filterData) => ({
-          url: `${PASSENGER_STATUS_OVERVIEW_FILTER_BY}${filterData?.agent}`,
-
-          params: { page: filterData?.page, size: filterData?.size },
+          url: PASSENGER_STATUS_OVERVIEW_FILTER_BY,
+          params: filterData,
         }),
         providesTags: ['passengerStatusOverviewReports'],
       }),
       getPassengerStatusOverviewAllReports: build.query({
         query: (filterData) => ({
-          url: `${PASSENGER_STATUS_OVERVIEW_FILTER_WITHOUT_PG}${filterData?.agent}`,
+          url: PASSENGER_STATUS_OVERVIEW_FILTER_WITHOUT_PG,
+          params: filterData,
         }),
         providesTags: ['passengerStatusOverviewReports'],
       }),
