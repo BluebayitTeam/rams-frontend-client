@@ -84,7 +84,7 @@ function PassengerStatusOverviewsTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalData, setTotalData] = useState(0);
 
   const componentRef = useRef(null);
 
@@ -114,7 +114,7 @@ function PassengerStatusOverviewsTable(props) {
       setModifiedPassengerStatusOverviewData(
         allData.passenger_status_overviews || []
       );
-      setTotalAmount(allData.total_amount);
+      setTotalData(allData.total_amount);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -132,7 +132,7 @@ function PassengerStatusOverviewsTable(props) {
         paginatedData.passenger_status_overviews || []
       );
 
-      setTotalAmount(paginatedData.total_amount);
+      setTotalData(paginatedData);
 
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -221,7 +221,19 @@ function PassengerStatusOverviewsTable(props) {
                 filteredData={filteredData}
                 tableColumns={tableColumns}
                 dispatchTableColumns={dispatchTableColumns}
-                data={passengerStatusOverview}
+                data={{
+                  ...passengerStatusOverview,
+                  data: [
+                    ...passengerStatusOverview?.data,
+                    {
+                      getterMethod: () => 'Total',
+                      total_passengers: totalData?.total_passengers_sum,
+
+                      hideSerialNo: true,
+                      rowStyle: { fontWeight: 600 },
+                    },
+                  ],
+                }}
                 totalColumn={initialTableColumnsState?.length}
                 inSiglePageMode={inSiglePageMode}
                 serialNumber={
