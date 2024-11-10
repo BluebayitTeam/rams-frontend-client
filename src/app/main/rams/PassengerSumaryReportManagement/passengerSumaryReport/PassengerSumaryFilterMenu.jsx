@@ -287,7 +287,7 @@ function PassengerSumaryFilterMenu({
         <ReportSelect
           {...commonFieldProps}
           name='current_status'
-          options={doneNotDone}
+          options={currentStatuss}
           icon='local_activity'
           width='97px'
         />
@@ -384,7 +384,7 @@ function PassengerSumaryFilterMenu({
           type='select'
           name='current_status'
           icon='local_activity'
-          options={doneNotDone}
+          options={currentStatuss}
         />{' '}
         <Keyword
           {...commonKewordProps}
