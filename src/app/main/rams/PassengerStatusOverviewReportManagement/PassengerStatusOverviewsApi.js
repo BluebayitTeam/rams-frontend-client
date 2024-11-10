@@ -25,7 +25,6 @@ const PassengerStatusOverviewReportApi = api
       getPassengerStatusOverviewAllReports: build.query({
         query: (filterData) => ({
           url: `${PASSENGER_STATUS_OVERVIEW_FILTER_WITHOUT_PG}${filterData?.agent}`,
-          // params: {agent:filterData.agent}
         }),
         providesTags: ['passengerStatusOverviewReports'],
       }),
