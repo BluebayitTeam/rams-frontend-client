@@ -34,7 +34,8 @@ function ActivityLogFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { users, subLedgers } = useSelector((state) => state.data);
+  const { employees, subLedgers } = useSelector((state) => state.data);
+  console.log('employees', employees);
   const invoiceNoEl = useRef(null);
   const activityLog = useSelector((state) => state.data.permissions);
   const [activityLogTypes, setActivityLogTypes] = useState([]);
@@ -57,7 +58,7 @@ function ActivityLogFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getUsers());
+    dispatch(getEmployeeUsers());
   }, []);
 
   return (
@@ -80,13 +81,13 @@ function ActivityLogFilterMenu({
           maxDate={new Date()}
         />
 
-        {/* passengerAgent */}
+        {/* Employee */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
-          name='user'
-          options={users}
+          name='employee'
+          options={employees}
           icon='person'
-          width='35px'
+          width='65px'
         />
       </div>
 
@@ -107,7 +108,7 @@ function ActivityLogFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='user'
+          name='employee'
           icon='person'
         />
       </div>
