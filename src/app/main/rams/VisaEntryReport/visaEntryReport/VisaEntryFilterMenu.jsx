@@ -1,10 +1,13 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import {
+  getAgents,
+  getCountries,
   getEmployeeUsers,
   getLedgers,
   getPermissions,
   getSubLedgers,
+  getVisaAgents,
 } from 'app/store/dataSlice';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -32,8 +35,10 @@ function VisaEntryFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { employeeusers, subLedgers } = useSelector((state) => state.data);
-  const visaEntry = useSelector((state) => state.data.permissions);
+  const { agents, countries, visa_agents } = useSelector((state) => state.data);
+  const visaNoEl = useRef(null);
+  const companyNameEl = useRef(null);
+
   const [visaEntryTypes, setVisaEntryTypes] = useState([]);
 
   useEffect(() => {
@@ -54,8 +59,9 @@ function VisaEntryFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getEmployeeUsers());
-    dispatch(getPermissions());
+    dispatch(getAgents());
+    dispatch(getVisaAgents());
+    dispatch(getCountries());
   }, []);
 
   return (
@@ -65,36 +71,57 @@ function VisaEntryFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='Created From'
+          label='Date From'
           maxDate={values.date_before || new Date()}
         />
-
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='Created To'
+          label='Date To'
           minDate={values.date_after}
           maxDate={new Date()}
         />
-
-        {/* ledger */}
-        <ReportSelectFirstLastName
+        {/* visa_no */}
+        <ReportTextField
           {...commonFieldProps}
-          name='employee'
-          options={employeeusers}
+          name='visa_no'
+          domEl={visaNoEl}
           icon='person'
-          width='65px'
+          width='75px'
         />
 
+        <ReportTextField
+          {...commonFieldProps}
+          name='company_name'
+          domEl={companyNameEl}
+          icon='person'
+          width='110px'
+        />
+
+        {/* passengerAgent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='passenger_agent'
+          options={agents}
+          icon='import_contacts'
+          width='125px'
+        />
+
+        {/* V.Agent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='visa_agent'
+          options={visa_agents}
+          icon='import_contacts'
+          width='72px'
+        />
         {/* lpassengerTypes */}
         <ReportSelect
           {...commonFieldProps}
-          name='activity_log_type'
-          label='Activity Log Type'
-          options={visaEntryTypes}
-          icon='text_fields'
-          width='118px'
+          name='country'
+          options={countries}
+          icon='flag'
         />
       </div>
 
@@ -116,16 +143,40 @@ function VisaEntryFilterMenu({
 
         <Keyword
           {...commonKewordProps}
-          type='select'
-          name='employee'
+          type='text'
+          name='visa_no'
+          domEl={visaNoEl}
+          icon='person'
+        />
+
+        <Keyword
+          {...commonKewordProps}
+          type='text'
+          name='company_name'
+          domEl={companyNameEl}
           icon='person'
         />
 
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='activity_log_type'
-          icon='text_fields'
+          name='passenger_agent'
+          icon='import_contacts'
+        />
+
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='visa_agent'
+          icon='import_contacts'
+          options={visa_agents}
+        />
+
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='country'
+          icon='flag'
         />
       </div>
     </div>
