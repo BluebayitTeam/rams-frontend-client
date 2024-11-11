@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getCities, getGroups } from 'app/store/dataSlice';
+import { getCities, getGroups, getUsers } from 'app/store/dataSlice';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,14 +28,12 @@ function AuthorizeLogFilterMenu({
 
   const theme = useTheme();
   const { users, subLedgers } = useSelector((state) => state.data);
-  const invoiceNoEl = useRef(null);
+
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 
   // element refs
-  const userNameEl = useRef(null);
-  const primaryPhoneEl = useRef(null);
-  const authorizeLogCodeEl = useRef(null);
+  const invoiceNoEl = useRef(null);
 
   const commonFieldProps = {
     setReRender,
@@ -49,8 +47,7 @@ function AuthorizeLogFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getCities());
-    dispatch(getGroups());
+    dispatch(getUsers());
   }, [dispatch]);
 
   return (

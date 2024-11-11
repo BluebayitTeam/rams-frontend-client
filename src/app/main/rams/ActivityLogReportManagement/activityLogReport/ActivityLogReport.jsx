@@ -27,7 +27,7 @@ function ActivityLogReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            Account Authorize Log Report
+            Activity Log Report
           </h1>
         </div>
       }

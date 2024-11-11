@@ -255,7 +255,7 @@ function ActivityLogReportsTable(props) {
           {modifiedActivityLogData.map((activityLog, index) => (
             <SinglePage
               classes={classes}
-              reportTitle='Account Authorize Log Report'
+              reportTitle='Activity Log Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

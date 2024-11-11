@@ -67,7 +67,7 @@ function ActivityLogFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='Date From'
+          label='Created From'
           maxDate={values.date_before || new Date()}
         />
 
@@ -75,19 +75,11 @@ function ActivityLogFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='Date To'
+          label='Created To'
           minDate={values.date_after}
           maxDate={new Date()}
         />
 
-        {/* name */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='invoice_no'
-          domEl={invoiceNoEl}
-          icon='person'
-          width='75px'
-        />
         {/* passengerAgent */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
@@ -104,17 +96,14 @@ function ActivityLogFilterMenu({
           {...commonKewordProps}
           type='date'
           name='date_after'
-          label='Date From'
-        />
-
+          label='Created From'
+        />{' '}
         <Keyword
           {...commonKewordProps}
-          type='text'
-          name='invoice_no'
-          domEl={invoiceNoEl}
-          icon='person'
+          type='date'
+          name='date_before'
+          label='Created To'
         />
-
         <Keyword
           {...commonKewordProps}
           type='select'
