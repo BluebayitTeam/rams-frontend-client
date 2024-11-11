@@ -145,7 +145,10 @@ const ReportSelectFirstLastName = ({
             onChange={(_event, newValue) => {
               onChange(newValue?.id);
               onEnter();
-              setValue(`${name}Name`, newValue?.first_name || '');
+              setValue(
+                `${name}Name`,
+                `${newValue?.first_name || ''} ${newValue?.last_name || ''}`
+              );
             }}
             renderInput={(params) => (
               <TextField

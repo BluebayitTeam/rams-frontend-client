@@ -88,25 +88,26 @@ function ActivityLogReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetActivityLogReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      invoice_no: filterData.invoice_no || '',
-      user: filterData.user || '',
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
+  const { data: paginatedData, refetch: refetchAgentReports } =
+    useGetActivityLogReportsQuery(
+      {
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        activity_by: filterData.activity_by || '',
+        activity_type: filterData.activity_type || '',
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
   const { data: allData, refetch: refetchAllActivityLogReports } =
     useGetActivityLogAllReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        invoice_no: filterData.invoice_no || '',
-        user: filterData.user || '',
+        activity_by: filterData.activity_by || '',
+        activity_type: filterData.activity_type || '',
       },
       { skip: !inShowAllMode }
     );
@@ -134,7 +135,7 @@ function ActivityLogReportsTable(props) {
       setModifiedActivityLogData(paginatedData.activity_logs || []);
       setDateFrom(paginatedData?.date_after);
       setDateTo(allData?.date_before);
-
+      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -156,7 +157,6 @@ function ActivityLogReportsTable(props) {
     try {
       const page = newPage || 1;
 
-      console.log('dfhdjfhjdfhjdhf', page);
       setPage(newPage);
     } catch (error) {
       console.error('Error fetching agents:', error);
@@ -171,15 +171,17 @@ function ActivityLogReportsTable(props) {
   }, []);
 
   const filteredData = {
+    ActivityLog: getValues()?.activity_typeName || null,
+    Employee: getValues()?.activity_byName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Invoice_No: getValues()?.invoice_no || null,
-    User: getValues()?.employeeName || null,
   };
+
+  console.log('fdgfgfgdgdfgd', filteredData);
 
   return (
     <div className={classes.headContainer}>
@@ -222,7 +224,7 @@ function ActivityLogReportsTable(props) {
           {modifiedActivityLogData.map((activityLog, index) => (
             <SinglePage
               classes={classes}
-              reportTitle='Account Authorize Log Report'
+              reportTitle='Activity Log Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

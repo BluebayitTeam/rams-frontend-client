@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
+import moment from 'moment';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -10,28 +11,20 @@ import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColum
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
-import '../../../rams/print.css';
-
-import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import {
-  selectFilteredAuthorizeLogReports,
-  useGetAuthorizeLogAllReportsQuery,
-  useGetAuthorizeLogReportsQuery,
-} from '../AuthorizeLogReportsApi';
-import AuthorizeLogFilterMenu from './AuthorizeLogMenu';
+import ActivityLogFilterMenu from '../../ActivityLogReportManagement/activityLogReport/ActivityLogFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
 
+// Define the Zod schema
 const schema = z.object({});
 
 const initialTableColumnsState = [
   {
     id: 1,
     label: 'SL',
-
     sortAction: false,
     isSerialNo: true,
     show: true,
@@ -39,81 +32,40 @@ const initialTableColumnsState = [
   },
   {
     id: 2,
-    label: 'Request Date',
-    name: 'request_date',
+    label: 'Activity Type',
+    getterMethod: (data) => `${data.activity_type?.name?.replace(/_/g, ' ')}`,
     show: true,
-    type: 'date',
-    style: { justifyContent: 'center' },
   },
   {
     id: 3,
-    label: 'Invoice No',
-    name: 'invoice_no',
-    show: true,
-    style: { justifyContent: 'center' },
-  },
-  {
-    id: 4,
-    label: 'Type',
+    label: 'Employee',
     getterMethod: (data) =>
-      `${
-        data?.invoice_type
-          ?.replaceAll('_', ' ')
-          ?.split(' ')
-          ?.map((word) => word.charAt(0)?.toUpperCase() + word.slice(1))
-          .join(' ') || ''
-      } `,
+      `${data.activity_by?.first_name || ''} ${data.activity_by?.last_name || ''}`,
     show: true,
   },
+  { id: 4, label: 'Message', name: 'comment', show: true },
+
   {
     id: 5,
-    label: 'Approval Date',
-    name: 'updated_at',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 6,
-    label: 'Approved By',
-    name: 'updated_by',
-    subName: 'username',
-    show: true,
-  },
-  { id: 7, label: 'Previous Amount', name: 'previous_amont', show: true },
-  { id: 8, label: 'Current Amount', name: 'amount', show: true },
-  {
-    id: 9,
-    label: 'Status',
+    label: 'Created On',
     getterMethod: (data) =>
-      `${
-        data?.status === 'update_pending' || data?.status === 'delete_pending'
-          ? 'Pending'
-          : data?.status === 'approved_pending' ||
-              data?.status === 'approved_pending'
-            ? 'Approved'
-            : 'Rejected' || ''
-      } `,
+      `${moment(data.created_at).format('DD-MM-YYYY')}   , ${moment(data.created_at).format('hh:mm A')}`,
     show: true,
   },
 ];
 
-function AuthorizeLogReportsTable(props) {
+function ActivityLogReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
     resolver: zodResolver(schema),
   });
+  const dispatch = useDispatch();
 
   const { watch, getValues } = methods;
 
-  const [
-    modifiedAuthorizeLogData,
-    setModifiedAuthorizeLogData,
-    setSortBy,
-    setSortBySubKey,
-    dragAndDropRow,
-  ] = useReportData();
+  const [modifiedActivityLogData, setModifiedActivityLogData] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -122,55 +74,64 @@ function AuthorizeLogReportsTable(props) {
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const [pagination, setPagination] = useState(false);
-
-  const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
+  const [pagination, setPagination] = useState(false);
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [dateFrom, setDateFrom] = useState();
+  const [dateTo, setDateTo] = useState();
   const componentRef = useRef(null);
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetAuthorizeLogReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      invoice_no: filterData.invoice_no || '',
-      user: filterData.user || '',
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
+  const { data: paginatedData, refetch: refetchAgentReports } =
+    useGetActivityLogReportsQuery(
+      {
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
-  const { data: allData } = useGetAuthorizeLogAllReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      invoice_no: filterData.invoice_no || '',
-      user: filterData.user || '',
-    },
-    { skip: !inShowAllMode }
-  );
-
-  const totalData = useSelector(selectFilteredAuthorizeLogReports);
+  const { data: allData, refetch: refetchAllActivityLogReports } =
+    useGetActivityLogAllReportsQuery(
+      {
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
+      },
+      { skip: !inShowAllMode }
+    );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedAuthorizeLogData(allData.acc_update_logs || []);
+      setModifiedActivityLogData(allData.activity_logs || []);
+      setTotalAmount(allData.total_amount);
+      setDateFrom(allData?.date_after);
+      setDateTo(allData?.date_before);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.acc_update_logs,
+        allData.activity_logs,
         size,
         page
       );
+
       setPage(page || 1);
       setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedAuthorizeLogData(paginatedData.acc_update_logs || []);
+      setModifiedActivityLogData(paginatedData.activity_logs || []);
+      setDateFrom(paginatedData?.date_after);
+      setDateTo(allData?.date_before);
+      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -188,45 +149,45 @@ function AuthorizeLogReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetAuthorizeLogs = useCallback(async (newPage) => {
+  const handleGetActivityLogs = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
-      setPage(page);
+
+      console.log('dfhdjfhjdfhjdhf', page);
+      setPage(newPage);
     } catch (error) {
-      console.error('Error fetching acc_update_logs:', error);
+      console.error('Error fetching agents:', error);
     }
   }, []);
 
-  const handleGetAllAuthorizeLogs = useCallback(async () => {
+  const handleGetAllActivityLogs = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all acc_update_logs:', error);
+      console.error('Error fetching all activityLogs:', error);
     }
   }, []);
 
   const filteredData = {
-    Group: getValues()?.groupName || null,
-    District: getValues()?.districtName || null,
-    Username: getValues()?.username || null,
+    ActivityLog: getValues()?.activity_log_typeName || null,
+    Employee: getValues()?.employeeName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Primary_phone: getValues()?.primary_phone || null,
-    authorizeLog_code: getValues()?.authorizeLog_code || null,
   };
 
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <AuthorizeLogFilterMenu
+        <ActivityLogFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetAuthorizeLogs={handleGetAuthorizeLogs}
-          handleGetAllAuthorizeLogs={handleGetAllAuthorizeLogs}
+          handleGetActivityLogs={handleGetActivityLogs}
+          handleGetAllActivityLogs={handleGetAllActivityLogs}
         />
       </FormProvider>
+
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -237,17 +198,17 @@ function AuthorizeLogReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetAuthorizeLogs(1)}
-        onPreviousPage={() => handleGetAuthorizeLogs(page - 1)}
-        onNextPage={() => handleGetAuthorizeLogs(page + 1)}
-        onLastPage={() => handleGetAuthorizeLogs(totalPages)}
+        onFirstPage={() => handleGetActivityLogs(page)}
+        onPreviousPage={() => handleGetActivityLogs(page - 1)}
+        onNextPage={() => handleGetActivityLogs(page + 1)}
+        onLastPage={() => handleGetActivityLogs(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetAuthorizeLogs}
-        handleGetAllData={handleGetAllAuthorizeLogs}
+        handleGetData={handleGetActivityLogs}
+        handleGetAllData={handleGetAllActivityLogs}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='AuthorizeLogReport'
+        filename='ActivityLogReport'
       />
 
       <table
@@ -255,28 +216,30 @@ function AuthorizeLogReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedAuthorizeLogData.map((authorizeLog, index) => (
+          {modifiedActivityLogData.map((activityLog, index) => (
             <SinglePage
-              key={authorizeLog.id || index}
               classes={classes}
-              reportTitle='Account Authorize Log Report'
+              reportTitle='Activity Log Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={authorizeLog}
-              totalColumn={initialTableColumnsState?.length}
+              dateFromDateTo={
+                dateFrom && dateTo
+                  ? `Date : ${dateFrom && moment(new Date(dateFrom)).format('DD-MM-YYYY')} to ${
+                      dateTo && moment(new Date(dateTo)).format('DD-MM-YYYY')
+                    }`
+                  : ''
+              }
+              data={activityLog}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : authorizeLog.page * authorizeLog.size -
-                    authorizeLog.size +
-                    1
+                  : activityLog.page * activityLog.size - activityLog.size + 1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
-              setSortBy={setSortBy}
-              setSortBySubKey={setSortBySubKey}
-              dragAndDropRow={dragAndDropRow}
+              // setSortBy={setSortBy}
+              // setSortBySubKey={setSortBySubKey}
             />
           ))}
         </tbody>
@@ -285,4 +248,4 @@ function AuthorizeLogReportsTable(props) {
   );
 }
 
-export default AuthorizeLogReportsTable;
+export default ActivityLogReportsTable;

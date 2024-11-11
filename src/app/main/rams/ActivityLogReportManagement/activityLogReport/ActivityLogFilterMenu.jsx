@@ -81,8 +81,9 @@ function ActivityLogFilterMenu({
         {/* ledger */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
-          name='employee'
+          name='activity_by'
           options={employeeusers}
+          label='Employee'
           icon='person'
           width='65px'
         />
@@ -90,7 +91,7 @@ function ActivityLogFilterMenu({
         {/* lpassengerTypes */}
         <ReportSelect
           {...commonFieldProps}
-          name='activity_log_type'
+          name='activity_type'
           label='Activity Log Type'
           options={activityLogTypes}
           icon='text_fields'
@@ -117,14 +118,15 @@ function ActivityLogFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='employee'
+          name='activity_by'
+          label='Employee'
           icon='person'
         />
 
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='activity_log_type'
+          name='activity_type'
           icon='text_fields'
         />
       </div>
