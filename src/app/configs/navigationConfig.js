@@ -938,7 +938,7 @@ const navigationConfig = [
         translate: 'Calling Entry Report',
         display_order: 13,
         type: 'item',
-        url: '/apps/report-management/callingEntry-reports',
+        url: '/apps/callingEntryReport/callingEntryReport',
         exact: true,
       },
       {
@@ -965,7 +965,7 @@ const navigationConfig = [
         translate: 'Authorize Log Report',
         display_order: 14,
         type: 'item',
-        url: '/apps/report-management/authorizeLog-reports',
+        url: '/apps/authorizeLogReport/authorizeLog-reports',
         exact: true,
       },
     ],
