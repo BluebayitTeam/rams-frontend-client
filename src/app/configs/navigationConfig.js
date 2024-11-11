@@ -965,7 +965,7 @@ const navigationConfig = [
         translate: 'Authorize Log Report',
         display_order: 14,
         type: 'item',
-        url: '/apps/authorizeLogReport/authorizeLog-reports',
+        url: '/apps/activityLogReport/activityLogReports',
         exact: true,
       },
     ],
