@@ -3,6 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
+  AUTHORIZE_LOG_FILTER_BY,
+  AUTHORIZE_LOG_FILTER_BY_WP,
   CREATE_DEPARTMENT,
   DELETE_DEPARTMENT,
   DELETE_DEPARTMENT_MULTIPLE,
@@ -24,14 +26,14 @@ const ActivityLogReportApi = api
     endpoints: (build) => ({
       getActivityLogReports: build.query({
         query: (filterData) => ({
-          url: SEARCH_ACTIVITYLOG,
+          url: AUTHORIZE_LOG_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['activityLogReports'],
       }),
       getActivityLogAllReports: build.query({
         query: (filterData) => ({
-          url: SEARCH_ACTIVITYLOG_WP,
+          url: AUTHORIZE_LOG_FILTER_BY_WP,
           params: filterData,
         }),
         providesTags: ['activityLogReports'],
