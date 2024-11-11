@@ -29,7 +29,6 @@ const initialTableColumnsState = [
   {
     id: 1,
     label: 'SL',
-
     sortAction: false,
     isSerialNo: true,
     show: true,
@@ -37,60 +36,24 @@ const initialTableColumnsState = [
   },
   {
     id: 2,
-    label: 'Request Date',
-    name: 'request_date',
+    label: 'Activity Type',
+    getterMethod: (data) => `${data.activity_type?.name?.replace(/_/g, ' ')}`,
     show: true,
-    type: 'date',
-    style: { justifyContent: 'center' },
   },
   {
     id: 3,
-    label: 'Invoice No',
-    name: 'invoice_no',
-    show: true,
-    style: { justifyContent: 'center' },
-  },
-  {
-    id: 4,
-    label: 'Type',
+    label: 'Employee',
     getterMethod: (data) =>
-      `${
-        data?.invoice_type
-          ?.replaceAll('_', ' ')
-          ?.split(' ')
-          ?.map((word) => word.charAt(0)?.toUpperCase() + word.slice(1))
-          .join(' ') || ''
-      } `,
+      `${data.activity_by?.first_name || ''} ${data.activity_by?.last_name || ''}`,
     show: true,
   },
+  { id: 4, label: 'Message', name: 'comment', show: true },
+
   {
     id: 5,
-    label: 'Approval Date',
-    name: 'updated_at',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 6,
-    label: 'Approved By',
-    name: 'updated_by',
-    subName: 'username',
-    show: true,
-  },
-  { id: 7, label: 'Previous Amount', name: 'previous_amont', show: true },
-  { id: 8, label: 'Current Amount', name: 'amount', show: true },
-  {
-    id: 9,
-    label: 'Status',
+    label: 'Created On',
     getterMethod: (data) =>
-      `${
-        data?.status === 'update_pending' || data?.status === 'delete_pending'
-          ? 'Pending'
-          : data?.status === 'approved_pending' ||
-              data?.status === 'approved_pending'
-            ? 'Approved'
-            : 'Rejected' || ''
-      } `,
+      `${moment(data.created_at).format('DD-MM-YYYY')}   , ${moment(data.created_at).format('hh:mm A')}`,
     show: true,
   },
 ];
@@ -150,7 +113,7 @@ function ActivityLogReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedActivityLogData(allData.acc_update_logs || []);
+      setModifiedActivityLogData(allData.activity_logs || []);
       setTotalAmount(allData.total_amount);
       setDateFrom(allData?.date_after);
       setDateTo(allData?.date_before);
@@ -158,7 +121,7 @@ function ActivityLogReportsTable(props) {
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.acc_update_logs,
+        allData.activity_logs,
         size,
         page
       );
@@ -168,9 +131,10 @@ function ActivityLogReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedActivityLogData(paginatedData.acc_update_logs || []);
+      setModifiedActivityLogData(paginatedData.activity_logs || []);
       setDateFrom(paginatedData?.date_after);
       setDateTo(allData?.date_before);
+
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -191,6 +155,9 @@ function ActivityLogReportsTable(props) {
   const handleGetActivityLogs = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
+
+      console.log('dfhdjfhjdfhjdhf', page);
+      setPage(newPage);
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
@@ -255,7 +222,7 @@ function ActivityLogReportsTable(props) {
           {modifiedActivityLogData.map((activityLog, index) => (
             <SinglePage
               classes={classes}
-              reportTitle='Activity Log Report'
+              reportTitle='Account Authorize Log Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
@@ -274,6 +241,8 @@ function ActivityLogReportsTable(props) {
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
+              // setSortBy={setSortBy}
+              // setSortBySubKey={setSortBySubKey}
             />
           ))}
         </tbody>
