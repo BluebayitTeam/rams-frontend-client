@@ -15,6 +15,7 @@ import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -32,7 +33,8 @@ function ActivityLogFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { employeeusers, subLedgers } = useSelector((state) => state.data);
+  const { users, subLedgers } = useSelector((state) => state.data);
+  const invoiceNoEl = useRef(null);
   const activityLog = useSelector((state) => state.data.permissions);
   const [activityLogTypes, setActivityLogTypes] = useState([]);
 
@@ -65,7 +67,7 @@ function ActivityLogFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_after'
-          label='Created From'
+          label='Date From'
           maxDate={values.date_before || new Date()}
         />
 
@@ -73,28 +75,26 @@ function ActivityLogFilterMenu({
         <ReportDatePicker
           {...commonFieldProps}
           name='date_before'
-          label='Created To'
+          label='Date To'
           minDate={values.date_after}
           maxDate={new Date()}
         />
 
-        {/* ledger */}
+        {/* name */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='invoice_no'
+          domEl={invoiceNoEl}
+          icon='person'
+          width='75px'
+        />
+        {/* passengerAgent */}
         <ReportSelectFirstLastName
           {...commonFieldProps}
-          name='employee'
-          options={employeeusers}
-          icon='person'
-          width='65px'
-        />
-
-        {/* lpassengerTypes */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='activity_log_type'
-          label='Activity Log Type'
-          options={activityLogTypes}
-          icon='text_fields'
-          width='118px'
+          name='user'
+          options={users}
+          icon={person}
+          width='125px'
         />
       </div>
 
@@ -109,23 +109,17 @@ function ActivityLogFilterMenu({
 
         <Keyword
           {...commonKewordProps}
-          type='date'
-          name='date_before'
-          label='Date To'
+          type='text'
+          name='invoice_no'
+          domEl={invoiceNoEl}
+          icon={person}
         />
 
         <Keyword
           {...commonKewordProps}
           type='select'
-          name='employee'
+          name='user'
           icon='person'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='activity_log_type'
-          icon='text_fields'
         />
       </div>
     </div>
