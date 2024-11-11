@@ -6,7 +6,7 @@ import {
   getPermissions,
   getSubLedgers,
 } from 'app/store/dataSlice';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -93,7 +93,7 @@ function ActivityLogFilterMenu({
           {...commonFieldProps}
           name='user'
           options={users}
-          icon={person}
+          icon='person'
           width='125px'
         />
       </div>
@@ -112,7 +112,7 @@ function ActivityLogFilterMenu({
           type='text'
           name='invoice_no'
           domEl={invoiceNoEl}
-          icon={person}
+          icon='person'
         />
 
         <Keyword
