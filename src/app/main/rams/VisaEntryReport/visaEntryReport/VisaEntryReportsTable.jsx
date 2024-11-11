@@ -17,7 +17,6 @@ import {
   useGetVisaEntryReportsQuery,
 } from '../VisaEntryReportsApi';
 import VisaEntryFilterMenu from './VisaEntryFilterMenu';
-import SinglePage2 from 'src/app/@components/ReportComponents/SinglePage2';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -35,61 +34,28 @@ const initialTableColumnsState = [
     show: true,
     style: { justifyContent: 'center' },
   },
-
   {
     id: 2,
-    label: 'Date',
-    name: 'visa_issue_date',
+    label: 'Activity Type',
+    getterMethod: (data) => `${data.activity_type?.name?.replace(/_/g, ' ')}`,
     show: true,
-    type: 'date',
-    style: { justifyContent: 'center' },
   },
   {
     id: 3,
-    label: 'Visa Agent',
-    name: 'visa_agent',
-    subName: 'first_name',
-    show: true,
-    style: { justifyContent: 'center' },
-  },
-  { id: 4, label: 'Country', name: 'country', subName: 'name', show: true },
-  { id: 5, label: 'Quantity', name: 'quantity', show: true },
-  { id: 6, label: 'Visa No', name: 'visa_number', show: true },
-  {
-    id: 7,
-    label: 'Company Name',
-    name: 'demand',
-    subName: 'company_name',
+    label: 'Employee',
+    getterMethod: (data) =>
+      `${data.activity_by?.first_name || ''} ${data.activity_by?.last_name || ''}`,
     show: true,
   },
-  { id: 8, label: 'Sponsor ID', name: 'sponsor_id_no', show: true },
+  { id: 4, label: 'Message', name: 'comment', show: true },
 
-  { id: 9, label: 'Commment', name: 'notes', show: true },
-  { id: 10, label: 'Passport', name: 'passport_no', show: true },
-  { id: 11, label: 'Passenger', name: 'passenger_name', show: true },
-  { id: 12, label: 'Passenger Agent', name: 'passenger_agent', show: true },
   {
-    id: 13,
-    label: 'Visa Stamp Date',
-    name: 'stamping_date',
+    id: 5,
+    label: 'Created On',
+    getterMethod: (data) =>
+      `${moment(data.created_at).format('DD-MM-YYYY')}   , ${moment(data.created_at).format('hh:mm A')}`,
     show: true,
-    type: 'date',
   },
-  {
-    id: 14,
-    label: 'Manpower Date',
-    name: 'man_power_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 15,
-    label: 'Flight Date',
-    name: 'flight_date',
-    show: true,
-    type: 'date',
-  },
-  { id: 16, label: 'Status', name: 'current_status', show: true },
 ];
 
 function VisaEntryReportsTable(props) {
@@ -104,74 +70,73 @@ function VisaEntryReportsTable(props) {
   const { watch, getValues } = methods;
 
   const [modifiedVisaEntryData, setModifiedVisaEntryData] = useReportData();
-
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
   );
-
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-
+  const [dateFrom, setDateFrom] = useState();
+  const [dateTo, setDateTo] = useState();
   const componentRef = useRef(null);
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetVisaEntryReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      visa_no: filterData.visa_no || '',
-      company_name: filterData.company_name || '',
-      passenger_agent: filterData.passenger_agent || '',
-      visa_agent: filterData.visa_agent || '',
-      country: filterData.country || '',
+  const { data: paginatedData, refetch: refetchAgentReports } =
+    useGetVisaEntryReportsQuery(
+      {
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
-      page,
-      size,
-    },
-    { skip: inShowAllMode }
-  );
-
-  const { data: allData } = useGetVisaEntryAllReportsQuery(
-    {
-      date_before: filterData.date_before || '',
-      visa_no: filterData.visa_no || '',
-      company_name: filterData.company_name || '',
-      passenger_agent: filterData.passenger_agent || '',
-      visa_agent: filterData.visa_agent || '',
-      country: filterData.country || '',
-    },
-    { skip: !inShowAllMode }
-  );
+  const { data: allData, refetch: refetchAllVisaEntryReports } =
+    useGetVisaEntryAllReportsQuery(
+      {
+        date_after: filterData.date_after || '',
+        date_before: filterData.date_before || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
+      },
+      { skip: !inShowAllMode }
+    );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedVisaEntryData(allData.visa_entries);
+      setModifiedVisaEntryData(allData.activity_logs || []);
       setTotalAmount(allData.total_amount);
+      setDateFrom(allData?.date_after);
+      setDateTo(allData?.date_before);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.visa_entries,
+        allData.activity_logs,
         size,
         page
       );
 
       setPage(page || 1);
-      setSize(size || 10);
+      setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedVisaEntryData(paginatedData.visa_entries);
-      setTotalAmount(paginatedData.total_amount);
-      setSize(paginatedData?.size || 10);
+      setModifiedVisaEntryData(paginatedData.activity_logs || []);
+      setDateFrom(paginatedData?.date_after);
+      setDateTo(allData?.date_before);
+      setPage(paginatedData?.page || 1);
+      setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
@@ -191,7 +156,9 @@ function VisaEntryReportsTable(props) {
   const handleGetVisaEntrys = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
-      setPage(page);
+
+      console.log('dfhdjfhjdfhjdhf', page);
+      setPage(newPage);
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
@@ -205,17 +172,14 @@ function VisaEntryReportsTable(props) {
   }, []);
 
   const filteredData = {
+    VisaEntry: getValues()?.activity_log_typeName || null,
+    Employee: getValues()?.employeeName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    visa_no: getValues()?.visa_no || null,
-    Company_Name: getValues()?.company_name || null,
-    Passenger_Agent: getValues()?.passenger_agentName || null,
-    Visa_Agent: getValues()?.visa_agentName || null,
-    Country: getValues()?.countryName || null,
   };
 
   return (
@@ -238,7 +202,7 @@ function VisaEntryReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetVisaEntrys(1)}
+        onFirstPage={() => handleGetVisaEntrys(page)}
         onPreviousPage={() => handleGetVisaEntrys(page - 1)}
         onNextPage={() => handleGetVisaEntrys(page + 1)}
         onLastPage={() => handleGetVisaEntrys(totalPages)}
@@ -258,21 +222,28 @@ function VisaEntryReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedVisaEntryData.map((visaEntry, index) => (
             <SinglePage
-              key={index}
               classes={classes}
-              reportTitle='Visa Entry Report'
+              reportTitle='Activity Log Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
+              dateFromDateTo={
+                dateFrom && dateTo
+                  ? `Date : ${dateFrom && moment(new Date(dateFrom)).format('DD-MM-YYYY')} to ${
+                      dateTo && moment(new Date(dateTo)).format('DD-MM-YYYY')
+                    }`
+                  : ''
+              }
               data={visaEntry}
-              totalColumn={initialTableColumnsState?.length}
-              inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * visaEntry.data.length + 1
+                  ? page * size - size + 1
                   : visaEntry.page * visaEntry.size - visaEntry.size + 1
               }
               setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              // setSortBy={setSortBy}
+              // setSortBySubKey={setSortBySubKey}
             />
           ))}
         </tbody>
