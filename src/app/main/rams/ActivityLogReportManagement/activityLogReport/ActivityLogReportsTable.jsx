@@ -36,24 +36,60 @@ const initialTableColumnsState = [
   },
   {
     id: 2,
-    label: 'Activity Type',
-    getterMethod: (data) => `${data.activity_type?.name?.replace(/_/g, ' ')}`,
+    label: 'Request Date',
+    name: 'request_date',
     show: true,
+    type: 'date',
+    style: { justifyContent: 'center' },
   },
   {
     id: 3,
-    label: 'Employee',
+    label: 'Invoice No',
+    name: 'invoice_no',
+    show: true,
+    style: { justifyContent: 'center' },
+  },
+  {
+    id: 4,
+    label: 'Type',
     getterMethod: (data) =>
-      `${data.activity_by?.first_name || ''} ${data.activity_by?.last_name || ''}`,
+      `${
+        data?.invoice_type
+          ?.replaceAll('_', ' ')
+          ?.split(' ')
+          ?.map((word) => word.charAt(0)?.toUpperCase() + word.slice(1))
+          .join(' ') || ''
+      } `,
     show: true,
   },
-  { id: 4, label: 'Message', name: 'comment', show: true },
-
   {
     id: 5,
-    label: 'Created On',
+    label: 'Approval Date',
+    name: 'updated_at',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 6,
+    label: 'Approved By',
+    name: 'updated_by',
+    subName: 'username',
+    show: true,
+  },
+  { id: 7, label: 'Previous Amount', name: 'previous_amont', show: true },
+  { id: 8, label: 'Current Amount', name: 'current_amount', show: true },
+  {
+    id: 9,
+    label: 'Status',
     getterMethod: (data) =>
-      `${moment(data.created_at).format('DD-MM-YYYY')}   , ${moment(data.created_at).format('hh:mm A')}`,
+      `${
+        data?.status === 'update_pending' || data?.status === 'delete_pending'
+          ? 'Pending'
+          : data?.status === 'approved_pending' ||
+              data?.status === 'approved_pending'
+            ? 'Approved'
+            : 'Rejected' || ''
+      } `,
     show: true,
   },
 ];
@@ -113,7 +149,7 @@ function ActivityLogReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedActivityLogData(allData.activity_logs || []);
+      setModifiedActivityLogData(allData.acc_update_logs || []);
       setTotalAmount(allData.total_amount);
       setDateFrom(allData?.date_after);
       setDateTo(allData?.date_before);
@@ -121,7 +157,7 @@ function ActivityLogReportsTable(props) {
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.activity_logs,
+        allData.acc_update_logs,
         size,
         page
       );
@@ -131,7 +167,7 @@ function ActivityLogReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedActivityLogData(paginatedData.activity_logs || []);
+      setModifiedActivityLogData(paginatedData.acc_update_logs || []);
       setDateFrom(paginatedData?.date_after);
       setDateTo(allData?.date_before);
       setPage(paginatedData?.page || 1);
