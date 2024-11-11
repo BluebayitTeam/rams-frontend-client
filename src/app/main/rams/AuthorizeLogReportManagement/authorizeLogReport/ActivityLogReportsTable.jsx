@@ -15,11 +15,11 @@ import '../../../rams/print.css';
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  selectFilteredAgentReports,
-  useGetAgentAllReportsQuery,
-  useGetAgentReportsQuery,
-} from '../AgentReportsApi';
-import AgentFilterMenu from './AgentFilterMenu';
+  selectFilteredAuthorizeLogReports,
+  useGetAuthorizeLogAllReportsQuery,
+  useGetAuthorizeLogReportsQuery,
+} from '../AuthorizeLogReportsApi';
+import AuthorizeLogFilterMenu from './AuthorizeLogFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -36,7 +36,7 @@ const initialTableColumnsState = [
   { id: 6, label: 'Email', name: 'email', show: true },
 ];
 
-function AgentReportsTable(props) {
+function AuthorizeLogReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -47,8 +47,8 @@ function AgentReportsTable(props) {
   const { watch, getValues } = methods;
 
   const [
-    modifiedAgentData,
-    setModifiedAgentData,
+    modifiedAuthorizeLogData,
+    setModifiedAuthorizeLogData,
     setSortBy,
     setSortBySubKey,
     dragAndDropRow,
@@ -69,44 +69,38 @@ function AgentReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetAgentReportsQuery(
+  const { data: paginatedData } = useGetAuthorizeLogReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
-      agent_code: filterData.agent_code || '',
+      invoice_no: filterData.invoice_no || '',
+      user: filterData.user || '',
       page,
       size,
     },
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetAgentAllReportsQuery(
+  const { data: allData } = useGetAuthorizeLogAllReportsQuery(
     {
-      group: filterData.group || '',
-      district: filterData.district || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      username: filterData.username || '',
-      primary_phone: filterData.primary_phone || '',
-      agent_code: filterData.agent_code || '',
+      invoice_no: filterData.invoice_no || '',
+      user: filterData.user || '',
     },
     { skip: !inShowAllMode }
   );
 
-  const totalData = useSelector(selectFilteredAgentReports);
+  const totalData = useSelector(selectFilteredAuthorizeLogReports);
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedAgentData(allData.agents || []);
+      setModifiedAuthorizeLogData(allData.authorizeLogs || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.agents,
+        allData.authorizeLogs,
         size,
         page
       );
@@ -115,7 +109,7 @@ function AgentReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedAgentData(paginatedData.agents || []);
+      setModifiedAuthorizeLogData(paginatedData.authorizeLogs || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -133,19 +127,19 @@ function AgentReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetAgents = useCallback(async (newPage) => {
+  const handleGetAuthorizeLogs = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error('Error fetching authorizeLogs:', error);
     }
   }, []);
 
-  const handleGetAllAgents = useCallback(async () => {
+  const handleGetAllAuthorizeLogs = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all agents:', error);
+      console.error('Error fetching all authorizeLogs:', error);
     }
   }, []);
 
@@ -160,16 +154,16 @@ function AgentReportsTable(props) {
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
     Primary_phone: getValues()?.primary_phone || null,
-    agent_code: getValues()?.agent_code || null,
+    authorizeLog_code: getValues()?.authorizeLog_code || null,
   };
 
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <AgentFilterMenu
+        <AuthorizeLogFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetAgents={handleGetAgents}
-          handleGetAllAgents={handleGetAllAgents}
+          handleGetAuthorizeLogs={handleGetAuthorizeLogs}
+          handleGetAllAuthorizeLogs={handleGetAllAuthorizeLogs}
         />
       </FormProvider>
       <ReportPaginationAndDownload
@@ -182,17 +176,17 @@ function AgentReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetAgents(1)}
-        onPreviousPage={() => handleGetAgents(page - 1)}
-        onNextPage={() => handleGetAgents(page + 1)}
-        onLastPage={() => handleGetAgents(totalPages)}
+        onFirstPage={() => handleGetAuthorizeLogs(1)}
+        onPreviousPage={() => handleGetAuthorizeLogs(page - 1)}
+        onNextPage={() => handleGetAuthorizeLogs(page + 1)}
+        onLastPage={() => handleGetAuthorizeLogs(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetAgents}
-        handleGetAllData={handleGetAllAgents}
+        handleGetData={handleGetAuthorizeLogs}
+        handleGetAllData={handleGetAllAuthorizeLogs}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='AgentReport'
+        filename='AuthorizeLogReport'
       />
 
       <table
@@ -200,20 +194,22 @@ function AgentReportsTable(props) {
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedAgentData.map((agent, index) => (
+          {modifiedAuthorizeLogData.map((authorizeLog, index) => (
             <SinglePage
-              key={agent.id || index}
+              key={authorizeLog.id || index}
               classes={classes}
-              reportTitle='Agent Report'
+              reportTitle='AuthorizeLog Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={agent}
+              data={authorizeLog}
               totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
-                  : agent.page * agent.size - agent.size + 1
+                  : authorizeLog.page * authorizeLog.size -
+                    authorizeLog.size +
+                    1
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
@@ -228,4 +224,4 @@ function AgentReportsTable(props) {
   );
 }
 
-export default AgentReportsTable;
+export default AuthorizeLogReportsTable;

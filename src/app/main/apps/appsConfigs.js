@@ -155,6 +155,7 @@ import PassengerDeliveryReportAppConfig from '../rams/PassengerDeliveryReportRep
 import PassengerStatusOverviewReportAppConfig from '../rams/PassengerStatusOverviewReportManagement/Passenger Status OverviewAppConfig';
 import VisaEntryReportAppConfig from '../rams/VisaEntryReport/VisaEntryReportAppConfig';
 import PayorderClearingReportAppConfig from '../rams/PayorderClearingReportManagement/PayorderClearingReportAppConfig';
+import AuthorizeLogReportAppConfig from '../rams/AuthorizeLogReportManagement/AuthorizeLogReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -211,6 +212,7 @@ const appsConfigs = [
   EmbassyReportAppConfig,
   AccountStatementReportAppConfig,
   PassengerStatusOverviewReportAppConfig,
+  AuthorizeLogReportAppConfig,
   PayorderClearingReportAppConfig,
   VisaEntryReportAppConfig,
   NotMedicalReportAppConfig,

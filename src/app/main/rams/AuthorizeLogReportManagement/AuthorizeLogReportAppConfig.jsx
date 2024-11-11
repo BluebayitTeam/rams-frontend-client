@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import AuthorizeLogReportApp from './AuthorizeLogReportApp';
-import AuthorizeLogReport from './authorizeLogReport/AuthorizeLogReport';
 
 /**
  * The E-Commerce app configuration.

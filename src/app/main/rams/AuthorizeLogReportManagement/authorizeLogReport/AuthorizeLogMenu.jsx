@@ -9,6 +9,7 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -26,10 +27,10 @@ function AuthorizeLogFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { groups, cities } = useSelector((state) => state.data);
+  const { users, subLedgers } = useSelector((state) => state.data);
+  const invoiceNoEl = useRef(null);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  console.log('Passenger Values:', getValues());
 
   // element refs
   const userNameEl = useRef(null);
@@ -52,58 +53,9 @@ function AuthorizeLogFilterMenu({
     dispatch(getGroups());
   }, [dispatch]);
 
-  console.log('sadhbjkasbdkj', getValues());
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* user name */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='username'
-          label='User Name'
-          domEl={userNameEl}
-          icon='person'
-          width='75px'
-        />
-
-        {/* group */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='group'
-          options={groups}
-          icon='groups'
-          width='40px'
-        />
-
-        {/* phone */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='primary_phone'
-          label='Phone'
-          domEl={primaryPhoneEl}
-          icon='phone'
-          width='45px'
-        />
-
-        {/* district */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='district'
-          options={cities}
-          icon='homeSharp'
-          width='45px'
-          getOptionLabel={(option) => `${option.name}- ${option.bn_name}`}
-        />
-
-        {/* authorizeLog code */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='authorizeLog_code'
-          domEl={authorizeLogCodeEl}
-          icon='qr_code_scanner_sharp'
-          width='77px'
-        />
-
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -120,50 +72,27 @@ function AuthorizeLogFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
+
+        {/* name */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='invoice_no'
+          domEl={invoiceNoEl}
+          icon='person'
+          width='75px'
+        />
+        {/* passengerAgent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='user'
+          options={users}
+          icon='person'
+          width='35px'
+        />
       </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-        <Keyword
-          {...commonKewordProps}
-          type='text'
-          name='username'
-          label='User Name'
-          domEl={userNameEl}
-          icon='person'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='group'
-          icon='groups'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='text'
-          name='primary_phone'
-          label='Phone'
-          domEl={primaryPhoneEl}
-          icon='phone'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='district'
-          icon='homeSharp'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='text'
-          name='authorizeLog_code'
-          domEl={authorizeLogCodeEl}
-          icon='qr_code_scanner_sharp'
-        />
-
         <Keyword
           {...commonKewordProps}
           type='date'
@@ -173,9 +102,17 @@ function AuthorizeLogFilterMenu({
 
         <Keyword
           {...commonKewordProps}
-          type='date'
-          name='date_before'
-          label='Date To'
+          type='text'
+          name='invoice_no'
+          domEl={invoiceNoEl}
+          icon='person'
+        />
+
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='user'
+          icon='person'
         />
       </div>
     </div>
