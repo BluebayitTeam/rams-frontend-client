@@ -188,17 +188,14 @@ function VisaEntryReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetVisaEntrys = useCallback(
-    async (newPage) => {
-      try {
-        const page = newPage || 1;
-        setPage(page);
-      } catch (error) {
-        console.error('Error fetching agents:', error);
-      }
-    },
-    [refetchAgentReports]
-  );
+  const handleGetVisaEntrys = useCallback(async (newPage) => {
+    try {
+      const page = newPage || 1;
+      setPage(page);
+    } catch (error) {
+      console.error('Error fetching agents:', error);
+    }
+  }, []);
 
   const handleGetAllVisaEntrys = useCallback(async () => {
     try {
