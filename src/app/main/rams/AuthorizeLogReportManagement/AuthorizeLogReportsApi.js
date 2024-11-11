@@ -4,6 +4,8 @@ import FuseUtils from '@fuse/utils';
 import {
   AGENT_FILTER_BY,
   AGENT_FILTER_WITHOUT_PG,
+  AUTHORIZE_LOG_FILTER_BY,
+  AUTHORIZE_LOG_FILTER_BY_WP,
   CREATE_DEPARTMENT,
   DELETE_DEPARTMENT,
   DELETE_DEPARTMENT_MULTIPLE,
@@ -22,14 +24,14 @@ const AuthorizeLogReportApi = api
     endpoints: (build) => ({
       getAuthorizeLogReports: build.query({
         query: (filterData) => ({
-          url: AGENT_FILTER_BY,
+          url: AUTHORIZE_LOG_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['authorizeLogReports'],
       }),
       getAuthorizeLogAllReports: build.query({
         query: (filterData) => ({
-          url: AGENT_FILTER_WITHOUT_PG,
+          url: AUTHORIZE_LOG_FILTER_BY_WP,
           params: filterData,
         }),
         providesTags: ['authorizeLogReports'],

@@ -28,12 +28,73 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Name', name: 'username', show: true },
-  { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', show: true },
-  { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true },
+  {
+    id: 1,
+    label: 'SL',
+
+    sortAction: false,
+    isSerialNo: true,
+    show: true,
+    style: { justifyContent: 'center' },
+  },
+  {
+    id: 2,
+    label: 'Request Date',
+    name: 'request_date',
+    show: true,
+    type: 'date',
+    style: { justifyContent: 'center' },
+  },
+  {
+    id: 3,
+    label: 'Invoice No',
+    name: 'invoice_no',
+    show: true,
+    style: { justifyContent: 'center' },
+  },
+  {
+    id: 4,
+    label: 'Type',
+    getterMethod: (data) =>
+      `${
+        data?.invoice_type
+          ?.replaceAll('_', ' ')
+          ?.split(' ')
+          ?.map((word) => word.charAt(0)?.toUpperCase() + word.slice(1))
+          .join(' ') || ''
+      } `,
+    show: true,
+  },
+  {
+    id: 5,
+    label: 'Approval Date',
+    name: 'updated_at',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 6,
+    label: 'Approved By',
+    name: 'updated_by',
+    subName: 'username',
+    show: true,
+  },
+  { id: 7, label: 'Previous Amount', name: 'previous_amont', show: true },
+  { id: 8, label: 'Current Amount', name: 'amount', show: true },
+  {
+    id: 9,
+    label: 'Status',
+    getterMethod: (data) =>
+      `${
+        data?.status === 'update_pending' || data?.status === 'delete_pending'
+          ? 'Pending'
+          : data?.status === 'approved_pending' ||
+              data?.status === 'approved_pending'
+            ? 'Approved'
+            : 'Rejected' || ''
+      } `,
+    show: true,
+  },
 ];
 
 function AuthorizeLogReportsTable(props) {
@@ -95,12 +156,12 @@ function AuthorizeLogReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedAuthorizeLogData(allData.authorizeLogs || []);
+      setModifiedAuthorizeLogData(allData.acc_update_logs || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.authorizeLogs,
+        allData.acc_update_logs,
         size,
         page
       );
@@ -109,7 +170,7 @@ function AuthorizeLogReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedAuthorizeLogData(paginatedData.authorizeLogs || []);
+      setModifiedAuthorizeLogData(paginatedData.acc_update_logs || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -132,14 +193,14 @@ function AuthorizeLogReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching authorizeLogs:', error);
+      console.error('Error fetching acc_update_logs:', error);
     }
   }, []);
 
   const handleGetAllAuthorizeLogs = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all authorizeLogs:', error);
+      console.error('Error fetching all acc_update_logs:', error);
     }
   }, []);
 
