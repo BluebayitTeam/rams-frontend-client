@@ -94,7 +94,7 @@ function ActivityLogFilterMenu({
           name='user'
           options={users}
           icon='person'
-          width='125px'
+          width='35px'
         />
       </div>
 
