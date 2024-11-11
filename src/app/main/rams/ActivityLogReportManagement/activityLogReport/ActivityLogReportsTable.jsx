@@ -88,26 +88,25 @@ function ActivityLogReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData, refetch: refetchAgentReports } =
-    useGetActivityLogReportsQuery(
-      {
-        date_after: filterData.date_after || '',
-        date_before: filterData.date_before || '',
-        employee: filterData.employee || '',
-        activity_log_type: filterData.activity_log_type || '',
-        page,
-        size,
-      },
-      { skip: inShowAllMode }
-    );
+  const { data: paginatedData } = useGetActivityLogReportsQuery(
+    {
+      date_after: filterData.date_after || '',
+      date_before: filterData.date_before || '',
+      invoice_no: filterData.invoice_no || '',
+      user: filterData.user || '',
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
 
   const { data: allData, refetch: refetchAllActivityLogReports } =
     useGetActivityLogAllReportsQuery(
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        employee: filterData.employee || '',
-        activity_log_type: filterData.activity_log_type || '',
+        invoice_no: filterData.invoice_no || '',
+        user: filterData.user || '',
       },
       { skip: !inShowAllMode }
     );
@@ -172,14 +171,14 @@ function ActivityLogReportsTable(props) {
   }, []);
 
   const filteredData = {
-    ActivityLog: getValues()?.activity_log_typeName || null,
-    Employee: getValues()?.employeeName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
+    Invoice_No: getValues()?.invoice_no || null,
+    User: getValues()?.employeeName || null,
   };
 
   return (
