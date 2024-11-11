@@ -93,8 +93,8 @@ function ActivityLogReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        activity_by: filterData.activity_by || '',
-        activity_type: filterData.activity_type || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
         page,
         size,
       },
@@ -106,8 +106,8 @@ function ActivityLogReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        activity_by: filterData.activity_by || '',
-        activity_type: filterData.activity_type || '',
+        employee: filterData.employee || '',
+        activity_log_type: filterData.activity_log_type || '',
       },
       { skip: !inShowAllMode }
     );
@@ -157,6 +157,7 @@ function ActivityLogReportsTable(props) {
     try {
       const page = newPage || 1;
 
+      console.log('dfhdjfhjdfhjdhf', page);
       setPage(newPage);
     } catch (error) {
       console.error('Error fetching agents:', error);
@@ -171,8 +172,8 @@ function ActivityLogReportsTable(props) {
   }, []);
 
   const filteredData = {
-    ActivityLog: getValues()?.activity_typeName || null,
-    Employee: getValues()?.activity_byName || null,
+    ActivityLog: getValues()?.activity_log_typeName || null,
+    Employee: getValues()?.employeeName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
@@ -180,8 +181,6 @@ function ActivityLogReportsTable(props) {
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
   };
-
-  console.log('fdgfgfgdgdfgd', filteredData);
 
   return (
     <div className={classes.headContainer}>
