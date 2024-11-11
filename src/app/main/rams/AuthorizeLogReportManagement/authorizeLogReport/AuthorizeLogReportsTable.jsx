@@ -19,7 +19,7 @@ import {
   useGetAuthorizeLogAllReportsQuery,
   useGetAuthorizeLogReportsQuery,
 } from '../AuthorizeLogReportsApi';
-import AuthorizeLogFilterMenu from './AuthorizeLogFilterMenu';
+import AuthorizeLogFilterMenu from './AuthorizeLogMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -198,7 +198,7 @@ function AuthorizeLogReportsTable(props) {
             <SinglePage
               key={authorizeLog.id || index}
               classes={classes}
-              reportTitle='AuthorizeLog Report'
+              reportTitle='Account Authorize Log Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

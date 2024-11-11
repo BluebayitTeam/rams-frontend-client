@@ -1,18 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import ActivityLogReportsTable from './ActivityLogReportsTable';
+import AuthorizeLogReportsTable from './AuthorizeLogReportsTable';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a activityLogReport name')
-    .min(5, 'The activityLogReport name must be at least 5 characters'),
+    .nonempty('You must enter a authorizeLogReport name')
+    .min(5, 'The authorizeLogReport name must be at least 5 characters'),
 });
 
-function ActivityLogReport() {
+function AuthorizeLogReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   return (
@@ -27,14 +27,14 @@ function ActivityLogReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            ActivityLog Report
+            Account Authorize Log Report
           </h1>
         </div>
       }
-      content={<ActivityLogReportsTable />}
+      content={<AuthorizeLogReportsTable />}
       innerScroll
     />
   );
 }
 
-export default ActivityLogReport;
+export default AuthorizeLogReport;
