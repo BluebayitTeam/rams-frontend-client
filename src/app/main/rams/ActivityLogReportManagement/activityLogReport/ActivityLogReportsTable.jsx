@@ -29,6 +29,7 @@ const initialTableColumnsState = [
   {
     id: 1,
     label: 'SL',
+
     sortAction: false,
     isSerialNo: true,
     show: true,
@@ -77,7 +78,7 @@ const initialTableColumnsState = [
     show: true,
   },
   { id: 7, label: 'Previous Amount', name: 'previous_amont', show: true },
-  { id: 8, label: 'Current Amount', name: 'current_amount', show: true },
+  { id: 8, label: 'Current Amount', name: 'amount', show: true },
   {
     id: 9,
     label: 'Status',
@@ -170,7 +171,6 @@ function ActivityLogReportsTable(props) {
       setModifiedActivityLogData(paginatedData.acc_update_logs || []);
       setDateFrom(paginatedData?.date_after);
       setDateTo(allData?.date_before);
-      setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -191,9 +191,6 @@ function ActivityLogReportsTable(props) {
   const handleGetActivityLogs = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
-
-      console.log('dfhdjfhjdfhjdhf', page);
-      setPage(newPage);
     } catch (error) {
       console.error('Error fetching agents:', error);
     }
@@ -277,8 +274,6 @@ function ActivityLogReportsTable(props) {
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
-              // setSortBy={setSortBy}
-              // setSortBySubKey={setSortBySubKey}
             />
           ))}
         </tbody>

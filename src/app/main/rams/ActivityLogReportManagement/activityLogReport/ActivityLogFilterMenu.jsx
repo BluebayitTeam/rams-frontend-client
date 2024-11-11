@@ -5,6 +5,7 @@ import {
   getLedgers,
   getPermissions,
   getSubLedgers,
+  getUsers,
 } from 'app/store/dataSlice';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -56,8 +57,7 @@ function ActivityLogFilterMenu({
   };
 
   useEffect(() => {
-    dispatch(getEmployeeUsers());
-    dispatch(getPermissions());
+    dispatch(getUsers());
   }, []);
 
   return (
