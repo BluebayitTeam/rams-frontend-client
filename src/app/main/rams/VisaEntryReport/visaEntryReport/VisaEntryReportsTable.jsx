@@ -93,8 +93,11 @@ function VisaEntryReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        employee: filterData.employee || '',
-        activity_log_type: filterData.activity_log_type || '',
+        visa_no: filterData.visa_no || '',
+        company_name: filterData.company_name || '',
+        passenger_agent: filterData.passenger_agent || '',
+        visa_agent: filterData.visa_agent || '',
+        country: filterData.country || '',
         page,
         size,
       },
@@ -106,8 +109,11 @@ function VisaEntryReportsTable(props) {
       {
         date_after: filterData.date_after || '',
         date_before: filterData.date_before || '',
-        employee: filterData.employee || '',
-        activity_log_type: filterData.activity_log_type || '',
+        visa_no: filterData.visa_no || '',
+        company_name: filterData.company_name || '',
+        passenger_agent: filterData.passenger_agent || '',
+        visa_agent: filterData.visa_agent || '',
+        country: filterData.country || '',
       },
       { skip: !inShowAllMode }
     );
@@ -135,7 +141,7 @@ function VisaEntryReportsTable(props) {
       setModifiedVisaEntryData(paginatedData.activity_logs || []);
       setDateFrom(paginatedData?.date_after);
       setDateTo(allData?.date_before);
-      setPage(paginatedData?.page || 1);
+
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -172,14 +178,17 @@ function VisaEntryReportsTable(props) {
   }, []);
 
   const filteredData = {
-    VisaEntry: getValues()?.activity_log_typeName || null,
-    Employee: getValues()?.employeeName || null,
     Date_To: getValues()?.date_before
       ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
       : null,
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
+    visa_no: getValues()?.visa_no || null,
+    Company_Name: getValues()?.company_name || null,
+    Passenger_Agent: getValues()?.passenger_agentName || null,
+    Visa_Agent: getValues()?.visa_agentName || null,
+    Country: getValues()?.countryName || null,
   };
 
   return (
