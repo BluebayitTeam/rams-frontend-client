@@ -9,7 +9,7 @@ import {
   getSubLedgers,
   getVisaAgents,
 } from 'app/store/dataSlice';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -18,6 +18,7 @@ import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -40,10 +41,12 @@ function VisaEntryFilterMenu({
   const companyNameEl = useRef(null);
 
   const [visaEntryTypes, setVisaEntryTypes] = useState([]);
+  const visaEntry = useSelector((state) => state.data.visa_entries || {});
 
   useEffect(() => {
     setVisaEntryTypes([].concat(...Object.values(visaEntry)));
   }, [visaEntry]);
+
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 

@@ -9,20 +9,20 @@ import {
 import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['visaEntryReports'];
-const ActivityLogReportApi = api
+const VisaEntryReportApi = api
   .enhanceEndpoints({
     addTagTypes,
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getActivityLogReports: build.query({
+      getVisaEntryReports: build.query({
         query: (filterData) => ({
           url: VISA_ENTRY_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['visaEntryReports'],
       }),
-      getActivityLogAllReports: build.query({
+      getVisaEntryAllReports: build.query({
         query: (filterData) => ({
           url: VISA_ENTRY_FILTER_BY_WP,
           params: filterData,
@@ -32,13 +32,11 @@ const ActivityLogReportApi = api
     }),
     overrideExisting: false,
   });
-export default ActivityLogReportApi;
-export const {
-  useGetActivityLogReportsQuery,
-  useGetActivityLogAllReportsQuery,
-} = ActivityLogReportApi;
+export default VisaEntryReportApi;
+export const { useGetVisaEntryReportsQuery, useGetVisaEntryAllReportsQuery } =
+  VisaEntryReportApi;
 
-export const selectFilteredActivityLogReports = (visaEntryReports) =>
+export const selectFilteredVisaEntryReports = (visaEntryReports) =>
   createSelector([selectSearchText], (searchText) => {
     if (searchText?.length === 0) {
       return visaEntryReports;
