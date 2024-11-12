@@ -120,7 +120,7 @@ function VisaEntryReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedVisaEntryData(allData.activity_logs || []);
+      setModifiedVisaEntryData(allData.visa_entries || []);
       setTotalAmount(allData.total_amount);
       setDateFrom(allData?.date_after);
       setDateTo(allData?.date_before);
@@ -128,7 +128,7 @@ function VisaEntryReportsTable(props) {
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.activity_logs,
+        allData.visa_entries,
         size,
         page
       );
@@ -138,7 +138,7 @@ function VisaEntryReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedVisaEntryData(paginatedData.activity_logs || []);
+      setModifiedVisaEntryData(paginatedData.visa_entries || []);
       setDateFrom(paginatedData?.date_after);
       setDateTo(allData?.date_before);
 
@@ -163,7 +163,6 @@ function VisaEntryReportsTable(props) {
     try {
       const page = newPage || 1;
 
-      console.log('dfhdjfhjdfhjdhf', page);
       setPage(newPage);
     } catch (error) {
       console.error('Error fetching agents:', error);
