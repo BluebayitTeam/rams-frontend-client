@@ -37,7 +37,7 @@ const initialTableColumnsState = [
   {
     id: 2,
     label: 'Date',
-    name: 'visa_issue_date',
+    name: 'created_at',
     show: true,
     type: 'date',
     style: { justifyContent: 'center' },
@@ -52,7 +52,7 @@ const initialTableColumnsState = [
   },
   { id: 4, label: 'Country', name: 'country', subName: 'name', show: true },
   { id: 5, label: 'Quantity', name: 'quantity', show: true },
-  { id: 6, label: 'Visa No', name: 'visa_number', show: true },
+  { id: 6, label: 'Calling No', name: 'visa_number', show: true },
   {
     id: 7,
     label: 'Company Name',
@@ -60,34 +60,32 @@ const initialTableColumnsState = [
     subName: 'company_name',
     show: true,
   },
-  { id: 8, label: 'Sponsor ID', name: 'sponsor_id_no', show: true },
-
-  { id: 9, label: 'Commment', name: 'notes', show: true },
-  { id: 10, label: 'Passport', name: 'passport_no', show: true },
-  { id: 11, label: 'Passenger', name: 'passenger_name', show: true },
-  { id: 12, label: 'Passenger Agent', name: 'passenger_agent', show: true },
+  { id: 8, label: 'Commment', name: 'notes', show: true },
+  { id: 9, label: 'Passport', name: 'passport_no', show: true },
+  { id: 10, label: 'Passenger', name: 'passenger_name', show: true },
+  { id: 11, label: 'Passenger Agent', name: 'passenger_agent', show: true },
   {
-    id: 13,
+    id: 12,
     label: 'Visa Stamp Date',
     name: 'stamping_date',
     show: true,
     type: 'date',
   },
   {
-    id: 14,
+    id: 13,
     label: 'Manpower Date',
     name: 'man_power_date',
     show: true,
     type: 'date',
   },
   {
-    id: 15,
+    id: 14,
     label: 'Flight Date',
     name: 'flight_date',
     show: true,
     type: 'date',
   },
-  { id: 16, label: 'Status', name: 'current_status', show: true },
+  { id: 15, label: 'Status', name: 'current_status', show: true },
 ];
 
 function CallingEntryReportsTable(props) {
