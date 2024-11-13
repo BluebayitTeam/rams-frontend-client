@@ -12,6 +12,8 @@ import {
   GET_COMPANY_OVERVIEW_REPORT_WITHOUT_PG,
   GET_DEPARTMENT_BY_ID,
   UPDATE_DEPARTMENT,
+  VISA_ENTRY_FILTER_BY,
+  VISA_ENTRY_FILTER_BY_WP,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -24,14 +26,14 @@ const VisaEntryReportApi = api
     endpoints: (build) => ({
       getVisaEntryReports: build.query({
         query: (filterData) => ({
-          url: GET_COMPANY_OVERVIEW_REPORT,
+          url: VISA_ENTRY_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['visaEntryReports'],
       }),
       getVisaEntryAllReports: build.query({
         query: (filterData) => ({
-          url: GET_COMPANY_OVERVIEW_REPORT_WITHOUT_PG,
+          url: VISA_ENTRY_FILTER_BY_WP,
           params: filterData,
         }),
         providesTags: ['visaEntryReports'],

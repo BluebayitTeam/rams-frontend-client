@@ -25,72 +25,69 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
-// const initialTableColumnsState = [
-//   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-//   { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
-//   { id: 3, label: 'Country', name: 'country', subName: 'name', show: true },
-//   { id: 4, label: 'Group No', name: 'group_no', show: true },
-//   { id: 5, label: 'Visa No', name: 'visa_number', show: true },
-//   {
-//     id: 6,
-//     label: 'Vendor Name',
-//     name: 'visa_agent',
-//     subName: 'first_name',
-//     show: true,
-//   },
-//   { id: 7, label: 'Company', name: 'sponsor_name_english', show: true },
-
-//   { id: 8, label: 'Category', name: 'profession_english', show: true },
-//   { id: 9, label: 'Quantity', name: 'quantity', show: true },
-//   { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
-//   { id: 11, label: 'Recruiting Agency', name: 'recruiting_agency', show: true },
-//   {
-//     id: 12,
-//     label: 'Recruiting Agency Total',
-//     name: 'recruiting_agency_count',
-//     show: true,
-//   },
-//   { id: 13, label: 'Calling', name: 'calling_emb_count', show: true },
-//   { id: 14, label: 'Stamping', name: 'embassy_count', show: true },
-//   { id: 15, label: 'Manpower', name: 'manpower_count', show: true },
-//   { id: 16, label: 'Flight Waiting', name: 'flight_waiting_count', show: true },
-//   { id: 17, label: 'Flight Ok', name: 'flight_ok_count', show: true },
-// ];
-
 const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
-  { id: 3, label: 'Country', name: 'country', subName: 'name', show: true },
-  { id: 4, label: 'Group No', name: 'group_no', show: true },
-  { id: 5, label: 'Visa No', name: 'visa_number', show: true },
   {
-    id: 6,
-    label: 'Vendor Name',
+    id: 1,
+    label: 'SL',
+    sortAction: false,
+    isSerialNo: true,
+    show: true,
+    style: { justifyContent: 'center' },
+  },
+  {
+    id: 2,
+    label: 'Date',
+    name: 'visa_issue_date',
+    show: true,
+    type: 'date',
+    style: { justifyContent: 'center' },
+  },
+  {
+    id: 3,
+    label: 'Visa Agent',
     name: 'visa_agent',
     subName: 'first_name',
     show: true,
+    style: { justifyContent: 'center' },
   },
+  { id: 4, label: 'Country', name: 'country', subName: 'name', show: true },
+  { id: 5, label: 'Quantity', name: 'quantity', show: true },
+  { id: 6, label: 'Visa No', name: 'visa_number', show: true },
   {
     id: 7,
-    label: 'Company',
-    getterMethod: (data) => `${data?.demand?.company_name || ''} `,
+    label: 'Company Name',
+    name: 'demand',
+    subName: 'company_name',
     show: true,
   },
-  { id: 8, label: 'Category', name: 'profession_english', show: true },
-  { id: 9, label: 'Quantity', name: 'quantity', show: true },
-  { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
-  { id: 11, label: 'Recruiting Agency', name: 'recruiting_agency', show: true },
+  { id: 8, label: 'Sponsor ID', name: 'sponsor_id_no', show: true },
+
+  { id: 9, label: 'Commment', name: 'notes', show: true },
+  { id: 10, label: 'Passport', name: 'passport_no', show: true },
+  { id: 11, label: 'Passenger', name: 'passenger_name', show: true },
+  { id: 12, label: 'Passenger Agent', name: 'passenger_agent', show: true },
   {
-    id: 12,
-    label: 'Recruiting Agency Total',
-    name: 'recruiting_agency_count',
+    id: 13,
+    label: 'Visa Stamp Date',
+    name: 'stamping_date',
     show: true,
+    type: 'date',
   },
-  { id: 13, label: 'Calling', name: 'calling_emb_count', show: true },
-  { id: 14, label: 'Stamping', name: 'embassy_count', show: true },
-  { id: 15, label: 'Manpower', name: 'manpower_count', show: true },
-  { id: 16, label: 'Flight Waiting', name: 'flight_waiting_count', show: true },
-  { id: 17, label: 'Flight Ok', name: 'flight_ok_count', show: true },
+  {
+    id: 14,
+    label: 'Manpower Date',
+    name: 'man_power_date',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 15,
+    label: 'Flight Date',
+    name: 'flight_date',
+    show: true,
+    type: 'date',
+  },
+  { id: 16, label: 'Status', name: 'current_status', show: true },
 ];
 
 function VisaEntryReportsTable(props) {
@@ -115,7 +112,7 @@ function VisaEntryReportsTable(props) {
     initialTableColumnsState
   );
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(25);
+  const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [pagination, setPagination] = useState(false);
@@ -151,22 +148,22 @@ function VisaEntryReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedVisaEntryData(allData?.overview_report || []);
+      setModifiedVisaEntryData(allData?.visa_entries || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData?.overview_report,
+        allData?.visa_entries,
         size,
         page
       );
       setPage(page || 1);
-      setSize(size || 25);
+      setSize(size || 10);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedVisaEntryData(paginatedData?.overview_report || []);
-      setSize(paginatedData?.size || 25);
+      setModifiedVisaEntryData(paginatedData?.visa_entries || []);
+      setSize(paginatedData?.size || 10);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalBAlance(paginatedData.total_amount || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -189,14 +186,14 @@ function VisaEntryReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching overview_report:', error);
+      console.error('Error fetching visa_entries:', error);
     }
   }, []);
 
   const handleGetAllVisaEntrys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all overview_report:', error);
+      console.error('Error fetching all visa_entries:', error);
     }
   }, []);
 
