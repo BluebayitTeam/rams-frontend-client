@@ -156,6 +156,7 @@ import PassengerStatusOverviewReportAppConfig from '../rams/PassengerStatusOverv
 import VisaEntryReportAppConfig from '../rams/VisaEntryReport/VisaEntryReportAppConfig';
 import PayorderClearingReportAppConfig from '../rams/PayorderClearingReportManagement/PayorderClearingReportAppConfig';
 import AuthorizeLogReportAppConfig from '../rams/AuthorizeLogReportManagement/AuthorizeLogReportAppConfig';
+import CallingEntryReportAppConfig from '../rams/CallingEntryReportManagement/CallingEntryReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -218,6 +219,7 @@ const appsConfigs = [
   NotMedicalReportAppConfig,
   FileManagerAppConfig,
   PaymentSummaryReportAppConfig,
+  CallingEntryReportAppConfig,
   ReceiptSummaryReportAppConfig,
   PassengerDeliveryReportAppConfig,
   ForeignLedgerReportAppConfig,
