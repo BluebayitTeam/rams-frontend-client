@@ -5,6 +5,8 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
   CALLING_ENTRY_FILTER_BY,
   CALLING_ENTRY_FILTER_BY_WP,
+  DEMAND_FILTER_BY,
+  DEMAND_FILTER_BY_WP,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -17,14 +19,14 @@ const DemandReportApi = api
     endpoints: (build) => ({
       getDemandReports: build.query({
         query: (filterData) => ({
-          url: CALLING_ENTRY_FILTER_BY,
+          url: DEMAND_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['demandReports'],
       }),
       getDemandAllReports: build.query({
         query: (filterData) => ({
-          url: CALLING_ENTRY_FILTER_BY_WP,
+          url: DEMAND_FILTER_BY_WP,
           params: filterData,
         }),
         providesTags: ['demandReports'],
