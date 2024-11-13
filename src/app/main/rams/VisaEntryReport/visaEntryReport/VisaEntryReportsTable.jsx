@@ -256,7 +256,7 @@ function VisaEntryReportsTable(props) {
             <SinglePage
               key={visaEntry.id || index}
               classes={classes}
-              reportTitle='Company Overview Report'
+              reportTitle='Visa Entry Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
