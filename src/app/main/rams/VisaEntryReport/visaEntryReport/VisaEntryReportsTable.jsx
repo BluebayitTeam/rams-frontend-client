@@ -126,9 +126,11 @@ function VisaEntryReportsTable(props) {
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      visa_agent: watch('visa_agent') || '',
       visa_number: watch('visa_number') || '',
       company_name: watch('company_name') || '',
+      visa_agent: watch('visa_agent') || '',
+      passenger_agent: watch('passenger_agent') || '',
+      country: watch('country') || '',
       page,
       size,
     },
@@ -139,9 +141,11 @@ function VisaEntryReportsTable(props) {
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      visa_agent: watch('visa_agent') || '',
       visa_number: watch('visa_number') || '',
       company_name: watch('company_name') || '',
+      visa_agent: watch('visa_agent') || '',
+      passenger_agent: watch('passenger_agent') || '',
+      country: watch('country') || '',
     },
     { skip: !inShowAllMode }
   );
@@ -204,9 +208,11 @@ function VisaEntryReportsTable(props) {
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Visa_Agent: getValues()?.visa_agentName || null,
     Visa_Number: getValues()?.visa_number || null,
     Company_Name: getValues()?.company_name || null,
+    Passenger_Agent: getValues()?.passenger_agentName || null,
+    Visa_Agent: getValues()?.visa_agentName || null,
+    Country: getValues()?.countryName || null,
   };
 
   return (

@@ -1,6 +1,11 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { getAgents, getLedgers, getSubLedgers } from 'app/store/dataSlice';
+import {
+  getAgents,
+  getCountries,
+  getLedgers,
+  getSubLedgers,
+} from 'app/store/dataSlice';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +16,7 @@ import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
 import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
+import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
@@ -28,7 +34,7 @@ function VisaEntryFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { agents, subLedgers } = useSelector((state) => state.data);
+  const { agents, countries } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
 
@@ -49,6 +55,7 @@ function VisaEntryFilterMenu({
 
   useEffect(() => {
     dispatch(getAgents());
+    dispatch(getCountries());
   }, []);
   return (
     <div className={classes.filterMenuContainer}>
@@ -69,6 +76,31 @@ function VisaEntryFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
+        {/* Visa No */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='visa_number'
+          domEl={visaNoEl}
+          icon='accessibility_new_icon'
+          width='90px'
+        />
+        {/* company_name */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='company_name'
+          label='Company Name'
+          domEl={companyNameEl}
+          icon='phone'
+          width='110px'
+        />
+        {/* passengerAgent */}
+        <ReportSelectFirstLastName
+          {...commonFieldProps}
+          name='passenger_agent'
+          options={agents}
+          icon='person'
+          width='115px'
+        />
         {/* V.Agent */}
         <ReportSelectFirstAgentCode
           {...commonFieldProps}
@@ -78,24 +110,13 @@ function VisaEntryFilterMenu({
           icon='person'
           width='50px'
         />
-
-        {/* Visa No */}
-        <ReportTextField
+        {/* Country */}
+        <ReportSelect
           {...commonFieldProps}
-          name='visa_number'
-          domEl={visaNoEl}
-          icon='accessibility_new_icon'
-          width='90px'
-        />
-
-        {/* phone */}
-        <ReportTextField
-          {...commonFieldProps}
-          name='company_name'
-          label='Company Name'
-          domEl={companyNameEl}
-          icon='phone'
-          width='110px'
+          name='country'
+          options={countries}
+          icon='flag'
+          width='73px'
         />
       </div>
 
@@ -107,7 +128,6 @@ function VisaEntryFilterMenu({
           name='date_after'
           label='Date From'
         />
-
         <Keyword
           {...commonKewordProps}
           type='date'
@@ -119,6 +139,12 @@ function VisaEntryFilterMenu({
           type='select'
           name='visa_agent'
           icon='person'
+        />{' '}
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='passenger_agent'
+          icon='person'
         />
         <Keyword
           {...commonKewordProps}
@@ -127,7 +153,6 @@ function VisaEntryFilterMenu({
           domEl={visaNoEl}
           icon='accessibility_new_icon'
         />
-
         <Keyword
           {...commonKewordProps}
           type='text'
@@ -135,6 +160,12 @@ function VisaEntryFilterMenu({
           label='Company Name'
           domEl={companyNameEl}
           icon='accessibility_new_icon'
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='country'
+          icon='flag'
         />
       </div>
     </div>
