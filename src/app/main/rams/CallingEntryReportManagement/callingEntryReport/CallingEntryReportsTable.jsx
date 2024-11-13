@@ -256,7 +256,7 @@ function CallingEntryReportsTable(props) {
             <SinglePage
               key={callingEntry.id || index}
               classes={classes}
-              reportTitle='Visa Entry Report'
+              reportTitle='Calling Entry Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
