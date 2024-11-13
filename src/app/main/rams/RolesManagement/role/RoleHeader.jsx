@@ -6,88 +6,76 @@ import { useFormContext } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
 import {
-	AddedSuccessfully,
-	CustomNotification,
-	DeletedSuccessfully,
-	UpdatedSuccessfully
+  AddedSuccessfully,
+  CustomNotification,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
 } from 'src/app/@customHooks/notificationAlert';
 import { useDispatch } from 'react-redux';
-import { useCreateRoleMutation, useDeleteRoleMutation, useUpdateRoleMutation } from '../RolesApi';
+import {
+  useCreateRoleMutation,
+  useDeleteRoleMutation,
+  useUpdateRoleMutation,
+} from '../RolesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The role header.
  */
 function RoleHeader() {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const routeParams = useParams();
-	const { roleId } = routeParams;
-	const [createRole] = useCreateRoleMutation();
-	const [saveRole] = useUpdateRoleMutation();
-	const [removeRole] = useDeleteRoleMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteRole');
-	const handleUpdate = localStorage.getItem('updateRole');
+  const routeParams = useParams();
+  const { roleId } = routeParams;
+  const [createRole] = useCreateRoleMutation();
+  const [saveRole] = useUpdateRoleMutation();
+  const [removeRole] = useDeleteRoleMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteRole');
+  const handleUpdate = localStorage.getItem('updateRole');
 
-	function handleUpdateRole() {
-		saveRole(getValues()).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/role/roles`);
-		});
-	}
+  function handleUpdateRole() {
+    saveRole(getValues()).then((data) => {
+      UpdatedSuccessfully();
+      navigate(`/apps/role/roles`);
+    });
+  }
 
-	function handleCreateRole() {
-		createRole(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateRole() {
+    createRole(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/role/roles`);
-			});
-	}
+        navigate(`/apps/role/roles`);
+      });
+  }
 
-	// function handleRemoveRole(dispatch) {
-	// 	debugger;
-	// 	try {
-	// 		removeRole(roleId);
+  function handleRemoveRole() {
+    removeRole(roleId)
+      .unwrap()
+      .then((data) => {
+        if (data) {
+          DeletedSuccessfully();
+        }
 
-	// 		if (roleId) {
-	// 			DeletedSuccessfully();
-	// 		}
+        navigate('/apps/role/roles');
+      })
+      .catch((error) => {
+        CustomNotification('error', `${error.response.data.detail}`);
+      });
+  }
 
-	// 		navigate('/apps/role/roles');
-	// 	} catch (error) {
-	// 		// Handle the error here
-	// 		console.error('Errodfsdfdsfsdfsdfdsr', error);
-	// 	}
-	// }
+  function handleCancel() {
+    navigate(`/apps/role/roles`);
+  }
 
-	function handleRemoveRole() {
-		removeRole(roleId)
-			.unwrap()
-			.then((data) => {
-				if (data) {
-					DeletedSuccessfully();
-				}
-
-				navigate('/apps/role/roles');
-			})
-			.catch((error) => {
-				CustomNotification('error', `${error.response.data.detail}`);
-			});
-	}
-
-	function handleCancel() {
-		navigate(`/apps/role/roles`);
-	}
-
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <motion.div
