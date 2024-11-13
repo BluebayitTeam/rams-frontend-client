@@ -27,7 +27,7 @@ function VisaEntryReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            Activity Log Report
+            Company Overview Report
           </h1>
         </div>
       }

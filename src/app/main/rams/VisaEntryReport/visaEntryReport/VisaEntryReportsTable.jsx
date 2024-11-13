@@ -1,9 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
-import moment from 'moment';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -11,85 +9,88 @@ import tableColumnsReducer from 'src/app/@components/ReportComponents/tableColum
 import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
-import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+import '../../../rams/print.css';
 
-import VisaEntryFilterMenu from './VisaEntryFilterMenu';
+import moment from 'moment';
+import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetVisaEntryAllReportsQuery,
   useGetVisaEntryReportsQuery,
 } from '../VisaEntryReportsApi';
+import VisaEntryFilterMenu from './VisaEntryFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
 
-// Define the Zod schema
 const schema = z.object({});
 
-const initialTableColumnsState = [
-  {
-    id: 1,
-    label: 'SL',
-    sortAction: false,
-    isSerialNo: true,
-    show: true,
-    style: { justifyContent: 'center' },
-  },
+// const initialTableColumnsState = [
+//   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+//   { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
+//   { id: 3, label: 'Country', name: 'country', subName: 'name', show: true },
+//   { id: 4, label: 'Group No', name: 'group_no', show: true },
+//   { id: 5, label: 'Visa No', name: 'visa_number', show: true },
+//   {
+//     id: 6,
+//     label: 'Vendor Name',
+//     name: 'visa_agent',
+//     subName: 'first_name',
+//     show: true,
+//   },
+//   { id: 7, label: 'Company', name: 'sponsor_name_english', show: true },
 
+//   { id: 8, label: 'Category', name: 'profession_english', show: true },
+//   { id: 9, label: 'Quantity', name: 'quantity', show: true },
+//   { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
+//   { id: 11, label: 'Recruiting Agency', name: 'recruiting_agency', show: true },
+//   {
+//     id: 12,
+//     label: 'Recruiting Agency Total',
+//     name: 'recruiting_agency_count',
+//     show: true,
+//   },
+//   { id: 13, label: 'Calling', name: 'calling_emb_count', show: true },
+//   { id: 14, label: 'Stamping', name: 'embassy_count', show: true },
+//   { id: 15, label: 'Manpower', name: 'manpower_count', show: true },
+//   { id: 16, label: 'Flight Waiting', name: 'flight_waiting_count', show: true },
+//   { id: 17, label: 'Flight Ok', name: 'flight_ok_count', show: true },
+// ];
+
+const initialTableColumnsState = [
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+  { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
+  { id: 3, label: 'Country', name: 'country', subName: 'name', show: true },
+  { id: 4, label: 'Group No', name: 'group_no', show: true },
+  { id: 5, label: 'Visa No', name: 'visa_number', show: true },
   {
-    id: 2,
-    label: 'Date',
-    name: 'visa_issue_date',
-    show: true,
-    type: 'date',
-    style: { justifyContent: 'center' },
-  },
-  {
-    id: 3,
-    label: 'Visa Agent',
+    id: 6,
+    label: 'Vendor Name',
     name: 'visa_agent',
     subName: 'first_name',
     show: true,
-    style: { justifyContent: 'center' },
   },
-  { id: 4, label: 'Country', name: 'country', subName: 'name', show: true },
-  { id: 5, label: 'Quantity', name: 'quantity', show: true },
-  { id: 6, label: 'Visa No', name: 'visa_number', show: true },
   {
     id: 7,
-    label: 'Company Name',
-    name: 'demand',
-    subName: 'company_name',
+    label: 'Company',
+    getterMethod: (data) => `${data?.demand?.company_name || ''} `,
     show: true,
   },
-  { id: 8, label: 'Sponsor ID', name: 'sponsor_id_no', show: true },
-
-  { id: 9, label: 'Commment', name: 'notes', show: true },
-  { id: 10, label: 'Passport', name: 'passport_no', show: true },
-  { id: 11, label: 'Passenger', name: 'passenger_name', show: true },
-  { id: 12, label: 'Passenger Agent', name: 'passenger_agent', show: true },
+  { id: 8, label: 'Category', name: 'profession_english', show: true },
+  { id: 9, label: 'Quantity', name: 'quantity', show: true },
+  { id: 10, label: 'Total Submit', name: 'passenger_count', show: true },
+  { id: 11, label: 'Recruiting Agency', name: 'recruiting_agency', show: true },
   {
-    id: 13,
-    label: 'Visa Stamp Date',
-    name: 'stamping_date',
+    id: 12,
+    label: 'Recruiting Agency Total',
+    name: 'recruiting_agency_count',
     show: true,
-    type: 'date',
   },
-  {
-    id: 14,
-    label: 'Manpower Date',
-    name: 'man_power_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 15,
-    label: 'Flight Date',
-    name: 'flight_date',
-    show: true,
-    type: 'date',
-  },
-  { id: 16, label: 'Status', name: 'current_status', show: true },
+  { id: 13, label: 'Calling', name: 'calling_emb_count', show: true },
+  { id: 14, label: 'Stamping', name: 'embassy_count', show: true },
+  { id: 15, label: 'Manpower', name: 'manpower_count', show: true },
+  { id: 16, label: 'Flight Waiting', name: 'flight_waiting_count', show: true },
+  { id: 17, label: 'Flight Ok', name: 'flight_ok_count', show: true },
 ];
 
 function VisaEntryReportsTable(props) {
@@ -99,11 +100,16 @@ function VisaEntryReportsTable(props) {
     defaultValues: {},
     resolver: zodResolver(schema),
   });
-  const dispatch = useDispatch();
 
   const { watch, getValues } = methods;
 
-  const [modifiedVisaEntryData, setModifiedVisaEntryData] = useReportData();
+  const [
+    modifiedVisaEntryData,
+    setModifiedVisaEntryData,
+    setSortBy,
+    setSortBySubKey,
+    dragAndDropRow,
+  ] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -112,25 +118,20 @@ function VisaEntryReportsTable(props) {
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const [inShowAllMode, setInShowAllMode] = useState(false);
   const [pagination, setPagination] = useState(false);
-  const [inSiglePageMode, setInSiglePageMode] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [dateFrom, setDateFrom] = useState();
-  const [dateTo, setDateTo] = useState();
-  const componentRef = useRef(null);
 
-  const filterData = watch();
+  const [inSiglePageMode, setInSiglePageMode] = useState(false);
+  const [inShowAllMode, setInShowAllMode] = useState(false);
+  const componentRef = useRef(null);
+  const [totalBAlance, setTotalBAlance] = useState(0);
 
   const { data: paginatedData } = useGetVisaEntryReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      visa_no: filterData.visa_no || '',
-      company_name: filterData.company_name || '',
-      passenger_agent: filterData.passenger_agent || '',
-      visa_agent: filterData.visa_agent || '',
-      country: filterData.country || '',
+      date_after: watch('date_after') || '',
+      date_before: watch('date_before') || '',
+      visa_agent: watch('visa_agent') || '',
+      visa_number: watch('visa_number') || '',
+      company_name: watch('company_name') || '',
       page,
       size,
     },
@@ -139,43 +140,35 @@ function VisaEntryReportsTable(props) {
 
   const { data: allData } = useGetVisaEntryAllReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      visa_no: filterData.visa_no || '',
-      company_name: filterData.company_name || '',
-      passenger_agent: filterData.passenger_agent || '',
-      visa_agent: filterData.visa_agent || '',
-      country: filterData.country || '',
+      date_after: watch('date_after') || '',
+      date_before: watch('date_before') || '',
+      visa_agent: watch('visa_agent') || '',
+      visa_number: watch('visa_number') || '',
+      company_name: watch('company_name') || '',
     },
     { skip: !inShowAllMode }
   );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedVisaEntryData(allData.visa_entries || []);
-      setTotalAmount(allData.total_amount);
-      setDateFrom(allData?.date_after);
-      setDateTo(allData?.date_before);
+      setModifiedVisaEntryData(allData?.overview_report || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.visa_entries,
+        allData?.overview_report,
         size,
         page
       );
-
       setPage(page || 1);
       setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedVisaEntryData(paginatedData.visa_entries || []);
-      setDateFrom(paginatedData?.date_after);
-      setDateTo(allData?.date_before);
-
+      setModifiedVisaEntryData(paginatedData?.overview_report || []);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
+      setTotalBAlance(paginatedData.total_amount || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
       setInSiglePageMode(true);
@@ -194,17 +187,16 @@ function VisaEntryReportsTable(props) {
   const handleGetVisaEntrys = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
-
-      setPage(newPage);
+      setPage(page);
     } catch (error) {
-      console.error('Error fetching agents:', error);
+      console.error('Error fetching overview_report:', error);
     }
   }, []);
 
   const handleGetAllVisaEntrys = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all visaEntrys:', error);
+      console.error('Error fetching all overview_report:', error);
     }
   }, []);
 
@@ -215,11 +207,9 @@ function VisaEntryReportsTable(props) {
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    visa_no: getValues()?.visa_no || null,
-    Company_Name: getValues()?.company_name || null,
-    Passenger_Agent: getValues()?.passenger_agentName || null,
     Visa_Agent: getValues()?.visa_agentName || null,
-    Country: getValues()?.countryName || null,
+    Visa_Number: getValues()?.visa_number || null,
+    Company_Name: getValues()?.company_name || null,
   };
 
   return (
@@ -231,7 +221,6 @@ function VisaEntryReportsTable(props) {
           handleGetAllVisaEntrys={handleGetAllVisaEntrys}
         />
       </FormProvider>
-
       <ReportPaginationAndDownload
         page={page}
         size={size}
@@ -242,7 +231,7 @@ function VisaEntryReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetVisaEntrys(page)}
+        onFirstPage={() => handleGetVisaEntrys(1)}
         onPreviousPage={() => handleGetVisaEntrys(page - 1)}
         onNextPage={() => handleGetVisaEntrys(page + 1)}
         onLastPage={() => handleGetVisaEntrys(totalPages)}
@@ -262,19 +251,14 @@ function VisaEntryReportsTable(props) {
         <tbody ref={componentRef} id='downloadPage'>
           {modifiedVisaEntryData.map((visaEntry, index) => (
             <SinglePage
+              key={visaEntry.id || index}
               classes={classes}
-              reportTitle='Activity Log Report'
+              reportTitle='Company Overview Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              dateFromDateTo={
-                dateFrom && dateTo
-                  ? `Date : ${dateFrom && moment(new Date(dateFrom)).format('DD-MM-YYYY')} to ${
-                      dateTo && moment(new Date(dateTo)).format('DD-MM-YYYY')
-                    }`
-                  : ''
-              }
               data={visaEntry}
+              totalColumn={initialTableColumnsState?.length}
               serialNumber={
                 pagination
                   ? page * size - size + 1
@@ -282,8 +266,9 @@ function VisaEntryReportsTable(props) {
               }
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
-              // setSortBy={setSortBy}
-              // setSortBySubKey={setSortBySubKey}
+              setSortBy={setSortBy}
+              setSortBySubKey={setSortBySubKey}
+              dragAndDropRow={dragAndDropRow}
             />
           ))}
         </tbody>

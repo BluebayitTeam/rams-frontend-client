@@ -16,7 +16,7 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
   useGetCompanyOverviewAllReportsQuery,
   useGetCompanyOverviewReportsQuery,
-} from '../CompanyOverviewReportsApi';
+} from '../VisaEntryReportsApi';
 import CompanyOverviewFilterMenu from './CompanyOverviewFilterMenu';
 
 const useStyles = makeStyles((theme) => ({

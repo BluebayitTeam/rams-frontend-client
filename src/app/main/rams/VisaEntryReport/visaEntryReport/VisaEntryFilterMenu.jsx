@@ -1,14 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import {
-  getAgents,
-  getCountries,
-  getEmployeeUsers,
-  getLedgers,
-  getPermissions,
-  getSubLedgers,
-  getVisaAgents,
-} from 'app/store/dataSlice';
+import { getAgents, getLedgers, getSubLedgers } from 'app/store/dataSlice';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +9,7 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import { bankAndCash } from 'src/app/@data/data';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import ReportSelectFirstLastName from 'src/app/@components/ReportComponents/ReportSelectFirstLastName';
+import ReportSelectFirstAgentCode from 'src/app/@components/ReportComponents/ReportSelectFirstAgentCode';
 import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,19 +28,13 @@ function VisaEntryFilterMenu({
   const { getValues } = methods;
 
   const theme = useTheme();
-  const { agents, countries, visa_agents } = useSelector((state) => state.data);
-  const visaNoEl = useRef(null);
-  const companyNameEl = useRef(null);
-
-  const [visaEntryTypes, setVisaEntryTypes] = useState([]);
-  const visaEntry = useSelector((state) => state.data.visa_entries || {});
-
-  useEffect(() => {
-    setVisaEntryTypes([].concat(...Object.values(visaEntry)));
-  }, [visaEntry]);
-
+  const { agents, subLedgers } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
+
+  // element refs
+  const visaNoEl = useRef(null);
+  const companyNameEl = useRef(null);
 
   const commonFieldProps = {
     setReRender,
@@ -63,10 +49,7 @@ function VisaEntryFilterMenu({
 
   useEffect(() => {
     dispatch(getAgents());
-    dispatch(getVisaAgents());
-    dispatch(getCountries());
   }, []);
-
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
@@ -77,6 +60,7 @@ function VisaEntryFilterMenu({
           label='Date From'
           maxDate={values.date_before || new Date()}
         />
+
         {/* date to */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -85,46 +69,33 @@ function VisaEntryFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* visa_no */}
-        <ReportTextField
+        {/* V.Agent */}
+        <ReportSelectFirstAgentCode
           {...commonFieldProps}
-          name='visa_no'
-          domEl={visaNoEl}
+          name='visa_agent'
+          label='V.Agent'
+          options={agents}
           icon='person'
-          width='75px'
+          width='50px'
         />
 
+        {/* Visa No */}
+        <ReportTextField
+          {...commonFieldProps}
+          name='visa_number'
+          domEl={visaNoEl}
+          icon='accessibility_new_icon'
+          width='90px'
+        />
+
+        {/* phone */}
         <ReportTextField
           {...commonFieldProps}
           name='company_name'
+          label='Company Name'
           domEl={companyNameEl}
-          icon='person'
+          icon='phone'
           width='110px'
-        />
-
-        {/* passengerAgent */}
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name='passenger_agent'
-          options={agents}
-          icon='import_contacts'
-          width='125px'
-        />
-
-        {/* V.Agent */}
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name='visa_agent'
-          options={visa_agents}
-          icon='import_contacts'
-          width='72px'
-        />
-        {/* lpassengerTypes */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='country'
-          options={countries}
-          icon='flag'
         />
       </div>
 
@@ -143,43 +114,27 @@ function VisaEntryFilterMenu({
           name='date_before'
           label='Date To'
         />
-
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='visa_agent'
+          icon='person'
+        />
         <Keyword
           {...commonKewordProps}
           type='text'
-          name='visa_no'
+          name='visa_number'
           domEl={visaNoEl}
-          icon='person'
+          icon='accessibility_new_icon'
         />
 
         <Keyword
           {...commonKewordProps}
           type='text'
           name='company_name'
+          label='Company Name'
           domEl={companyNameEl}
-          icon='person'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='passenger_agent'
-          icon='import_contacts'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='visa_agent'
-          icon='import_contacts'
-          options={visa_agents}
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='country'
-          icon='flag'
+          icon='accessibility_new_icon'
         />
       </div>
     </div>

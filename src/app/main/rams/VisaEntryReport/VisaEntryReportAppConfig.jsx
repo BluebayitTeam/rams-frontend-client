@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import VisaEntryReportApp from './VisaEntryReportApp';
-import VisaEntryReport from './visaEntryReport/VisaEntryReport';
+import VisaEntryReport from './visaEntryReport/VisaEntry';
 
 /**
  * The E-Commerce app configuration.

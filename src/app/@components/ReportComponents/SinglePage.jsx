@@ -26,6 +26,8 @@ function SinglePage({
 }) {
   let pageBasedSerialNo = serialNumber;
 
+  console.log('dataPrint', data);
+
   const [generalData, setGeneralData] = useState({});
 
   // get general setting data
@@ -179,46 +181,45 @@ function SinglePage({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.data?.map((dataArr, idx) => (
-              <TableRow
-                key={dataArr.id}
-                className='tableRow cursor-pointer'
-                hove>
-                {tableColumns.map((column) => {
-                  return column.show ? (
-                    <TableCell align='center' className='tableCell'>
-                      <div
-                        style={{
-                          whiteSpace: column.type === 'date' && 'nowrap',
-                          ...column.style,
-                          ...dataArr.rowStyle,
-                        }}
-                        {...(column.columnProps
-                          ? column.columnProps(dataArr)
-                          : {})}>
-                        {column?.subName
-                          ? dataArr?.[column.name]?.[column?.subName]
-                          : column.type === 'date'
-                            ? dataArr?.[column.name]
-                              ? moment(new Date(dataArr?.[column.name])).format(
-                                  'DD-MM-YYYY'
-                                )
-                              : ''
-                            : column.name
+            {data?.data?.map((dataArr, idx) => {
+              return (
+                <TableRow key={idx} className='tableRow cursor-pointer' hover>
+                  {tableColumns.map((column) => {
+                    return column.show ? (
+                      <TableCell align='center' className='tableCell'>
+                        <div
+                          style={{
+                            whiteSpace: column.type === 'date' && 'nowrap',
+                            ...column.style,
+                            ...dataArr.rowStyle,
+                          }}
+                          {...(column.columnProps
+                            ? column.columnProps(dataArr)
+                            : {})}>
+                          {column?.subName
+                            ? dataArr?.[column.name]?.[column?.subName]
+                            : column.type === 'date'
                               ? dataArr?.[column.name]
-                              : column?.isSerialNo
-                                ? dataArr.hideSerialNo || pageBasedSerialNo++
-                                : dataArr.getterMethod
-                                  ? dataArr.getterMethod(dataArr)
-                                  : column.getterMethod
-                                    ? column.getterMethod(dataArr)
-                                    : ''}
-                      </div>
-                    </TableCell>
-                  ) : null;
-                })}
-              </TableRow>
-            ))}
+                                ? moment(
+                                    new Date(dataArr?.[column.name])
+                                  ).format('DD-MM-YYYY')
+                                : ''
+                              : column.name
+                                ? dataArr?.[column.name]
+                                : column?.isSerialNo
+                                  ? dataArr.hideSerialNo || pageBasedSerialNo++
+                                  : dataArr.getterMethod
+                                    ? dataArr.getterMethod(dataArr)
+                                    : column.getterMethod
+                                      ? column.getterMethod(dataArr)
+                                      : ''}
+                        </div>
+                      </TableCell>
+                    ) : null;
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
