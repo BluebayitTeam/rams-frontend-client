@@ -143,13 +143,6 @@ function TrialBalanceReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllTrialBalances = useCallback(async () => {
-    try {
-    } catch (error) {
-      console.error('Error fetching all trialBalances:', error);
-    }
-  }, []);
-
   const handleRowClick = (id, group_or_ledger) => {
     // push(id);
     const authTOKEN = {
@@ -200,6 +193,7 @@ function TrialBalanceReportsTable(props) {
       setSerial([0]);
     }
   }
+
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
