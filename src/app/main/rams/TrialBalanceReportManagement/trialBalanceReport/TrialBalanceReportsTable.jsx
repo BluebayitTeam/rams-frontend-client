@@ -76,10 +76,9 @@ function TrialBalanceReportsTable(props) {
 
   const { data: paginatedData } = useGetTrialBalanceReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-
+      branch: filterData.branch || '',
       page,
       size,
     },
@@ -88,9 +87,9 @@ function TrialBalanceReportsTable(props) {
 
   const { data: allData } = useGetTrialBalanceAllReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
+      branch: filterData.branch || '',
     },
     { skip: !inShowAllMode }
   );
