@@ -196,8 +196,7 @@ function TrialBalanceReportsTable(props) {
       handleRowClick(lastElement);
     } else {
       handleGetTrialBalances();
-      // handleGetBalanceSheets();
-      // setBalanceSheetDetails({});
+
       setSerial([0]);
     }
   }
