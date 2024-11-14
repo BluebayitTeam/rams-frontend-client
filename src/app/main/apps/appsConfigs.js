@@ -158,6 +158,7 @@ import PayorderClearingReportAppConfig from '../rams/PayorderClearingReportManag
 import AuthorizeLogReportAppConfig from '../rams/AuthorizeLogReportManagement/AuthorizeLogReportAppConfig';
 import CallingEntryReportAppConfig from '../rams/CallingEntryReportManagement/CallingEntryReportAppConfig';
 import DemandReportAppConfig from '../rams/DemandReportManagement/DemandReportAppConfig';
+import TrialBalanceReportAppConfig from '../rams/TrialBalanceReportManagement/TrialBalanceReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -216,6 +217,7 @@ const appsConfigs = [
   PassengerStatusOverviewReportAppConfig,
   AuthorizeLogReportAppConfig,
   PayorderClearingReportAppConfig,
+  TrialBalanceReportAppConfig,
   VisaEntryReportAppConfig,
   DemandReportAppConfig,
   NotMedicalReportAppConfig,

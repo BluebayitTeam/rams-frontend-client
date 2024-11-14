@@ -16,6 +16,7 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import DepartmentsTableHead from './DepartmentsTableHead';
+import { makeStyles } from '@mui/styles';
 import {
   selectFilteredDepartments,
   useGetDepartmentsQuery,
@@ -25,12 +26,29 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * The departments table.
  */
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'nowrap',
+
+    overflow: 'auto',
+    minHeight: '35px',
+  },
+  toolbar: {
+    '& > div': {
+      minHeight: 'fit-content',
+    },
+  },
+}));
 function DepartmentsTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const classes = useStyles();
   const { data, isLoading, refetch } = useGetDepartmentsQuery({
     ...pageAndSize,
     searchKey,
@@ -235,9 +253,9 @@ function DepartmentsTable(props) {
         </Table>
       </FuseScrollbars>
 
-      <div id='pagiContainer'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
-          // classes={{ ul: 'flex-nowrap' }}
+          classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -250,20 +268,23 @@ function DepartmentsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 border-t-1'
+          classes={{ root: 'overflow-visible' }}
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
-          count={totalData?.total_pages}
+          count={totalData?.total_elements}
           rowsPerPage={rowsPerPage}
           page={page}
+          className={classes.toolbar}
           backIconButtonProps={{
             'aria-label': 'Previous Page',
+            className: 'py-0',
           }}
           nextIconButtonProps={{
             'aria-label': 'Next Page',
+            className: 'py-0',
           }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </div>
     </div>
