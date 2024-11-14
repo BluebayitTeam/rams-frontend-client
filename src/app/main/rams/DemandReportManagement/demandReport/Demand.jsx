@@ -27,7 +27,7 @@ function DemandReport() {
       header={
         <div className='flex'>
           <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            Calling Entry Report
+            Demand Report
           </h1>
         </div>
       }

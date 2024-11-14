@@ -3,8 +3,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-  CALLING_ENTRY_FILTER_BY,
-  CALLING_ENTRY_FILTER_BY_WP,
   DEMAND_FILTER_BY,
   DEMAND_FILTER_BY_WP,
 } from 'src/app/constant/constants';

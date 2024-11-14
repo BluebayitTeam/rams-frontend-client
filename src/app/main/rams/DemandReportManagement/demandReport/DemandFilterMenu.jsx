@@ -39,7 +39,7 @@ function DemandFilterMenu({
   const [_reRender, setReRender] = useState(0);
 
   // element refs
-  const visaNoEl = useRef(null);
+  const demandNoEl = useRef(null);
   const companyNameEl = useRef(null);
 
   const commonFieldProps = {
@@ -77,8 +77,8 @@ function DemandFilterMenu({
         {/* Visa No */}
         <ReportTextField
           {...commonFieldProps}
-          name='visa_number'
-          domEl={visaNoEl}
+          name='demand_no'
+          domEl={demandNoEl}
           icon='accessibility_new_icon'
           width='90px'
         />
@@ -147,8 +147,8 @@ function DemandFilterMenu({
         <Keyword
           {...commonKewordProps}
           type='text'
-          name='visa_number'
-          domEl={visaNoEl}
+          name='demand_no'
+          domEl={demandNoEl}
           icon='accessibility_new_icon'
         />
         <Keyword

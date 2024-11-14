@@ -938,7 +938,7 @@ const navigationConfig = [
         translate: 'Calling Entry Report',
         display_order: 13,
         type: 'item',
-        url: '/apps/callingEntryReport/callingEntryReport',
+        url: '/apps/callingEntryReport/callingEntryReports',
         exact: true,
       },
       {
@@ -947,7 +947,7 @@ const navigationConfig = [
         translate: 'Calling Entry Report',
         display_order: 13,
         type: 'item',
-        url: '/apps/report-management/callingEntry-reports',
+        url: '/apps/callingEntryReport/callingEntryReports',
         exact: true,
       },
       {
@@ -956,7 +956,7 @@ const navigationConfig = [
         translate: 'Demand Report',
         display_order: 13,
         type: 'item',
-        url: '/apps/report-management/demand-reports',
+        url: '/apps/demandReport/demandReports',
         exact: true,
       },
       {
@@ -1549,8 +1549,8 @@ const navigationConfig = [
   },
   {
     id: 'ticket_report',
-    title: 'Report',
-    translate: 'Report ',
+    title: 'Ticket Report',
+    translate: 'Ticket Report',
     display_order: 18,
     type: 'collapse',
     icon: 'report',

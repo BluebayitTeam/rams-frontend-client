@@ -52,18 +52,12 @@ const initialTableColumnsState = [
   },
   { id: 4, label: 'Country', name: 'country', subName: 'name', show: true },
   { id: 5, label: 'Quantity', name: 'quantity', show: true },
-  { id: 6, label: 'Calling No', name: 'visa_number', show: true },
-  {
-    id: 7,
-    label: 'Company Name',
-    name: 'demand',
-    subName: 'company_name',
-    show: true,
-  },
-  { id: 8, label: 'Commment', name: 'notes', show: true },
-  { id: 9, label: 'Passport', name: 'passport_no', show: true },
-  { id: 10, label: 'Passenger', name: 'passenger_name', show: true },
-  { id: 11, label: 'Passenger Agent', name: 'passenger_agent', show: true },
+  { id: 6, label: 'Company Name', name: 'company_name', show: true },
+  { id: 7, label: 'Commment', name: 'notes', show: true },
+  { id: 8, label: 'Passport', name: 'passport_no', show: true },
+  { id: 9, label: 'Passenger', name: 'passenger_name', show: true },
+  { id: 10, label: 'Passenger Agent', name: 'passenger_agent', show: true },
+  { id: 11, label: 'Demand No', name: 'demand_no', show: true },
   {
     id: 12,
     label: 'Visa Stamp Date',
@@ -124,7 +118,7 @@ function DemandReportsTable(props) {
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      visa_number: watch('visa_number') || '',
+      demand_no: watch('demand_no') || '',
       company_name: watch('company_name') || '',
       visa_agent: watch('visa_agent') || '',
       passenger_agent: watch('passenger_agent') || '',
@@ -139,7 +133,7 @@ function DemandReportsTable(props) {
     {
       date_after: watch('date_after') || '',
       date_before: watch('date_before') || '',
-      visa_number: watch('visa_number') || '',
+      demand_no: watch('demand_no') || '',
       company_name: watch('company_name') || '',
       visa_agent: watch('visa_agent') || '',
       passenger_agent: watch('passenger_agent') || '',
@@ -150,12 +144,12 @@ function DemandReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedDemandData(allData?.visa_entries || []);
+      setModifiedDemandData(allData?.demand_list || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData?.visa_entries,
+        allData?.demand_list,
         size,
         page
       );
@@ -164,7 +158,7 @@ function DemandReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedDemandData(paginatedData?.visa_entries || []);
+      setModifiedDemandData(paginatedData?.demand_list || []);
       setSize(paginatedData?.size || 10);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalBAlance(paginatedData.total_amount || 0);
@@ -188,14 +182,14 @@ function DemandReportsTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching visa_entries:', error);
+      console.error('Error fetching demand_list:', error);
     }
   }, []);
 
   const handleGetAllDemands = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all visa_entries:', error);
+      console.error('Error fetching all demand_list:', error);
     }
   }, []);
 
@@ -206,7 +200,7 @@ function DemandReportsTable(props) {
     Date_From: getValues()?.date_after
       ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
       : null,
-    Visa_Number: getValues()?.visa_number || null,
+    Visa_Number: getValues()?.demand_no || null,
     Company_Name: getValues()?.company_name || null,
     Passenger_Agent: getValues()?.passenger_agentName || null,
     Visa_Agent: getValues()?.visa_agentName || null,
@@ -254,7 +248,7 @@ function DemandReportsTable(props) {
             <SinglePage
               key={demand.id || index}
               classes={classes}
-              reportTitle='Calling Entry Report'
+              reportTitle='Demand Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
