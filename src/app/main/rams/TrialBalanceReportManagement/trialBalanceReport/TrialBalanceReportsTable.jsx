@@ -84,15 +84,9 @@ function TrialBalanceReportsTable(props) {
 
   const { data: paginatedData } = useGetTrialBalanceReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      trialBalance_code: filterData.trialBalance_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+      branch: filterData.branch || '',
       page,
       size,
     },
@@ -101,15 +95,9 @@ function TrialBalanceReportsTable(props) {
 
   const { data: allData } = useGetTrialBalanceAllReportsQuery(
     {
-      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      pdc_issue_date_after: filterData.pdc_issue_date_after || '',
-      pdc_issue_date_before: filterData.pdc_issue_date_before || '',
-      ledger: filterData.ledger || '',
-      sub_ledger: filterData.sub_ledger || '',
-      trialBalance_code: filterData.trialBalance_code || '',
-      rp_bank_id: filterData.rp_bank_id || '',
+      branch: filterData.branch || '',
     },
     { skip: !inShowAllMode }
   );
