@@ -194,6 +194,7 @@ function TrialBalanceReportsTable(props) {
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
         filename='TrialBalanceReport'
+        hideSection={['download', 'wp', 'column']}
       />
 
       <table

@@ -87,10 +87,10 @@ function ReportSelect({
 
       <div
         className='selectLabel'
-        // style={{
-        //   width: isFocused ? '0px' : width,
-        //   margin: isFocused ? '0px' : '2px 5px 0px 10px',
-        // }}
+        style={{
+          width: isFocused ? '0px' : width,
+          margin: isFocused ? '0px' : '2px 5px 0px 10px',
+        }}
         onClick={() => {
           setValue(`${name}Focused`, true);
           setReRender(Math.random());
