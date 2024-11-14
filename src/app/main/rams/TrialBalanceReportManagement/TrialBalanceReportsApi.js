@@ -4,6 +4,8 @@ import { apiService as api } from 'app/store/apiService';
 import {
   POSTDATE_FILTER_BY,
   POSTDATE_FILTER_WITHOUT_PG,
+  TRIALBALANCE__FILTER_WITHOUT_PG,
+  TRIALBALANCE_FILTER_BY,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -16,14 +18,14 @@ const TrialBalanceReportApi = api
     endpoints: (build) => ({
       getTrialBalanceReports: build.query({
         query: (filterData) => ({
-          url: POSTDATE_FILTER_BY,
+          url: TRIALBALANCE_FILTER_BY,
           params: filterData,
         }),
         providesTags: ['trialBalanceReports'],
       }),
       getTrialBalanceAllReports: build.query({
         query: (filterData) => ({
-          url: POSTDATE_FILTER_WITHOUT_PG,
+          url: TRIALBALANCE__FILTER_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['trialBalanceReports'],
