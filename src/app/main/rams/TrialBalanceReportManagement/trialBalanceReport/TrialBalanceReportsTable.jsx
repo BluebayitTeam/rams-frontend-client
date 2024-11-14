@@ -105,7 +105,6 @@ function TrialBalanceReportsTable(props) {
         size,
         page
       );
-      setPage(page || 1);
       setSize(size || 25);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
