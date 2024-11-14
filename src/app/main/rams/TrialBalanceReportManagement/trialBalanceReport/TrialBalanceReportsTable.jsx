@@ -10,6 +10,19 @@ import useReportData from 'src/app/@components/ReportComponents/useReportData';
 import getPaginationData from 'src/app/@helpers/getPaginationData';
 import { z } from 'zod';
 import '../../../rams/print.css';
+import PrintIcon from '@mui/icons-material/Print';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
@@ -18,6 +31,8 @@ import {
   useGetTrialBalanceReportsQuery,
 } from '../TrialBalanceReportsApi';
 import TrialBalanceFilterMenu from './TrialBalanceFilterMenu';
+import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -25,30 +40,6 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
-const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Invoice No', name: 'invoice_no', show: true },
-  { id: 3, label: 'Date', name: 'updated_at', show: true, type: 'date' },
-  {
-    id: 4,
-    label: 'Issue Date',
-    name: 'pdc_issue_date',
-    show: true,
-    type: 'date',
-  },
-  { id: 5, label: 'Ledger', name: 'ledger', subName: 'name', show: true },
-  { id: 6, label: 'Status', name: 'status', show: true },
-  { id: 7, label: 'Bank', name: 'rp_bank_id', show: true },
-  { id: 8, label: 'Cheque No', name: 'cheque_no', show: true },
-  {
-    id: 9,
-    label: 'Amount',
-    name: 'amount',
-    show: true,
-    style: { justifyContent: 'flex-end', marginRight: '5px' },
-    headStyle: { textAlign: 'right' },
-  },
-];
 function TrialBalanceReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
@@ -66,15 +57,16 @@ function TrialBalanceReportsTable(props) {
     setSortBySubKey,
     dragAndDropRow,
   ] = useReportData();
-  const [tableColumns, dispatchTableColumns] = useReducer(
-    tableColumnsReducer,
-    initialTableColumnsState
-  );
+  const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [pagination, setPagination] = useState(false);
+  const [generalData, setGeneralData] = useState({});
+  const [inPrint, setInPrint] = useState(false);
+  const [totalDr, setTotalDr] = useState(0);
+  const [totalCr, setTotalCr] = useState(0);
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -84,9 +76,10 @@ function TrialBalanceReportsTable(props) {
 
   const { data: paginatedData } = useGetTrialBalanceReportsQuery(
     {
+      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      branch: filterData.branch || '',
+
       page,
       size,
     },
@@ -95,21 +88,21 @@ function TrialBalanceReportsTable(props) {
 
   const { data: allData } = useGetTrialBalanceAllReportsQuery(
     {
+      branch: filterData.branch || '',
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
-      branch: filterData.branch || '',
     },
     { skip: !inShowAllMode }
   );
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTrialBalanceData(allData.postdate_cheques || []);
+      setModifiedTrialBalanceData(allData.trial_balance || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.postdate_cheques,
+        allData.trial_balance,
         size,
         page
       );
@@ -118,8 +111,9 @@ function TrialBalanceReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTrialBalanceData(paginatedData.postdate_cheques || []);
-      setPage(paginatedData?.page || 1);
+      setModifiedTrialBalanceData(paginatedData.trial_balance || []);
+      setTotalCr(paginatedData?.total_cr);
+      setTotalDr(paginatedData?.total_dr);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -153,16 +147,20 @@ function TrialBalanceReportsTable(props) {
     }
   }, []);
 
-  const filteredData = {
-    Branch: getValues()?.branchName || null,
+  //get general setting data
+  useEffect(() => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
 
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
-      : null,
-    Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
-      : null,
-  };
+    fetch(`${GET_SITESETTINGS}`, authTOKEN)
+      .then((response) => response.json())
+      .then((data) => setGeneralData(data.general_settings[0] || {}))
+      .catch(() => setGeneralData({}));
+  }, []);
 
   return (
     <div className={classes.headContainer}>
@@ -173,61 +171,167 @@ function TrialBalanceReportsTable(props) {
           handleGetAllTrialBalances={handleGetAllTrialBalances}
         />
       </FormProvider>
-      <ReportPaginationAndDownload
-        page={page}
-        size={size}
-        setPage={setPage}
-        setSize={setSize}
-        inShowAllMode={inShowAllMode}
-        setInShowAllMode={setInShowAllMode}
-        componentRef={componentRef}
-        totalPages={totalPages}
-        totalElements={totalElements}
-        onFirstPage={() => handleGetTrialBalances(1)}
-        onPreviousPage={() => handleGetTrialBalances(page - 1)}
-        onNextPage={() => handleGetTrialBalances(page + 1)}
-        onLastPage={() => handleGetTrialBalances(totalPages)}
-        handleExelDownload={handleExelDownload}
-        handlePrint={handlePrint}
-        handleGetData={handleGetTrialBalances}
-        handleGetAllData={handleGetAllTrialBalances}
-        tableColumns={tableColumns}
-        dispatchTableColumns={dispatchTableColumns}
-        filename='TrialBalanceReport'
-        hideSection={['download', 'wp', 'column']}
-      />
+      <div
+        className={`${classes.menubar} justify-start md:justify-center`}
+        style={{ backgroundColor: '#c2c7f1' }}>
+        {/* ArrowBackIcon icon*/}
+        <ArrowBackIcon
+          className='cursor-pointer inside icon'
+          style={{ padding: '6px', border: inPrint && '1px solid' }}
+          onClick={() => pop()}
+        />
+        {/* Print icon */}
+        <PrintIcon
+          className='cursor-pointer inside icon'
+          style={{ padding: '6px', border: inPrint ? '1px solid' : 'none' }}
+          onClick={handlePrint}
+        />
+      </div>
+      {modifiedTrialBalanceData?.length > 0 && (
+        <div ref={componentRef} id='downloadPage' className='bg-white p-20'>
+          <div className={`${classes.pageHead} p-12`}>
+            <div className='logoContainer pr-0 md:-pr-20'>
+              <img
+                style={{
+                  visibility: generalData.logo ? 'visible' : 'hidden',
+                  textAlign: 'center',
+                }}
+                src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
+                alt='Not found'
+              />
+            </div>
+          </div>
+          <div
+            style={{
+              textAlign: 'center',
+              borderBottom: '1px solid gray',
+              marginBottom: '20px',
+              marginTop: '-10px',
+              fontSize: '10px',
+            }}>
+            <LocationOn fontSize='small' />
+            {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
+            <PhoneEnabled fontSize='small' />
+            {` ${generalData?.phone || ''}`}&nbsp; &nbsp;{' '}
+            <Email fontSize='small' />
+            {` ${generalData?.email || ''}`}
+          </div>
+          <h3 className='text-center mb-20'>
+            <u>Trial Balance</u>
+          </h3>
 
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <tbody ref={componentRef} id='downloadPage'>
-          {modifiedTrialBalanceData.map((trialBalance, index) => (
-            <SinglePage
-              key={trialBalance.id || index}
-              classes={classes}
-              reportTitle='PostDate Cheque Report'
-              filteredData={filteredData}
-              tableColumns={tableColumns}
-              dispatchTableColumns={dispatchTableColumns}
-              data={trialBalance}
-              totalColumn={initialTableColumnsState?.length}
-              serialNumber={
-                pagination
-                  ? page * size - size + 1
-                  : trialBalance.page * trialBalance.size -
-                    trialBalance.size +
-                    1
-              }
-              setPage={setPage}
-              inSiglePageMode={inSiglePageMode}
-              setSortBy={setSortBy}
-              setSortBySubKey={setSortBySubKey}
-              dragAndDropRow={dragAndDropRow}
-            />
-          ))}
-        </tbody>
-      </table>
+          <div className='px-20 mx-32'>
+            <TableContainer className='border-0'>
+              <Table size='small'>
+                <TableHead>
+                  <TableRow className='border-t-1 border-b-1 border-current mx-40 p-0'>
+                    <TableCell
+                      className='border-l-1 border-current'
+                      rowSpan='2'>
+                      &nbsp;
+                    </TableCell>
+                    <TableCell
+                      className='border-l-1 border-current border-r-1 p-0 text-center'
+                      align='center'
+                      colSpan='2'>
+                      Closing Balance
+                    </TableCell>
+                  </TableRow>
+                  <TableRow className='border-t-1 border-b-1 border-current mx-40'>
+                    <TableCell
+                      className='border-l-1 border-current p-0 ml-5 pr-5'
+                      align='right'>
+                      <b className='ml-20 pr-10'>Debit</b>
+                    </TableCell>
+                    <TableCell
+                      className='border-l-1 border-r-1 border-current p-0'
+                      align='right'>
+                      <b>Credit</b>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {modifiedTrialBalanceData?.map((item) =>
+                    item.data?.map((item) => (
+                      <TableRow
+                        key={item.id}
+                        onClick={() => {
+                          if (item?.is_clickable) {
+                            handleRowClick(item.id, item?.group_or_ledger);
+                            setSerial((prevSerial) => [
+                              ...prevSerial,
+                              item?.id,
+                            ]);
+                          }
+                        }}
+                        style={{
+                          cursor: item?.is_clickable ? 'pointer' : 'default',
+                        }}
+                        className='mx-40'>
+                        <TableCell className='border-1 border-current'>
+                          <b>{item.name}</b>
+                        </TableCell>
+                        <TableCell
+                          className='border-1 border-current'
+                          align='right'>
+                          {item.debit !== 0 ? item.debit.toFixed(2) : ''}
+                        </TableCell>
+                        <TableCell
+                          className='border-1 border-current'
+                          align='right'>
+                          {item.credit !== 0 ? item.credit.toFixed(2) : ''}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+
+                  <TableRow
+                    className='mx-40 border-t-1 border-current'
+                    style={{ backgroundColor: '#d9d9d9' }}>
+                    <TableCell className='border-1 border-current'>
+                      <b>Grand Total</b>
+                    </TableCell>
+                    <TableCell
+                      className='border-1 border-current'
+                      align='right'>
+                      <b>{totalDr === 0 ? '' : totalDr.toFixed(2)}</b>
+                    </TableCell>
+                    <TableCell
+                      className='border-1 border-current'
+                      align='right'>
+                      <b>{totalCr === 0 ? '' : totalCr.toFixed(2)}</b>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+
+          <table
+            className={classes.pageFooterContainer}
+            style={{ marginTop: '15px' }}>
+            <tbody>
+              <tr>
+                <td>
+                  <span style={{ textAlign: 'left' }}>
+                    Printed Date & Time: {moment().format('DD/MM/YY')},{' '}
+                    {moment().format('LT')}
+                  </span>
+                </td>
+
+                <td>
+                  <span style={{ textAlign: 'left' }}>
+                    Developed by RAMS(Bluebay IT Limited)-01861650206
+                  </span>
+                </td>
+                <td>
+                  <span>&nbsp;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
