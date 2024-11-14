@@ -31,7 +31,11 @@ import {
   useGetTrialBalanceReportsQuery,
 } from '../TrialBalanceReportsApi';
 import TrialBalanceFilterMenu from './TrialBalanceFilterMenu';
-import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+import {
+  BASE_URL,
+  GET_SITESETTINGS,
+  TRIALBALANCE_FILTER_BY_ID,
+} from 'src/app/constant/constants';
 import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
@@ -67,6 +71,7 @@ function TrialBalanceReportsTable(props) {
   const [inPrint, setInPrint] = useState(false);
   const [totalDr, setTotalDr] = useState(0);
   const [totalCr, setTotalCr] = useState(0);
+  const [serial, setSerial] = useState([0]);
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -145,6 +150,28 @@ function TrialBalanceReportsTable(props) {
     }
   }, []);
 
+  const handleRowClick = (id, group_or_ledger) => {
+    // push(id);
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+    fetch(
+      `${TRIALBALANCE_FILTER_BY_ID}?date_after=${getValues().date_after || ''}&date_before=${
+        getValues().date_before || ''
+      }&group_or_ledger=${group_or_ledger || ''}&branch=${getValues().branch || ''}&group_id=${id || ''}`,
+      authTOKEN
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setModifiedTrialBalanceData(data?.instances || []);
+        setTotalCr(data?.total_cr);
+        setTotalDr(data?.total_dr);
+      });
+  };
+
   //get general setting data
   useEffect(() => {
     const authTOKEN = {
@@ -160,6 +187,20 @@ function TrialBalanceReportsTable(props) {
       .catch(() => setGeneralData({}));
   }, []);
 
+  function pop() {
+    if (serial.length > 2) {
+      const newSerial = [...serial];
+      newSerial.pop();
+      setSerial(newSerial);
+      const lastElement = newSerial[newSerial.length - 1];
+      handleRowClick(lastElement);
+    } else {
+      handleGetTrialBalances();
+      // handleGetBalanceSheets();
+      // setBalanceSheetDetails({});
+      setSerial([0]);
+    }
+  }
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
