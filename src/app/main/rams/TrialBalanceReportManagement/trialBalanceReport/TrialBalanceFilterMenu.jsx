@@ -50,14 +50,6 @@ function TrialBalanceFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* branche */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='branch'
-          options={branches}
-          icon='import_contacts'
-          width='50px'
-        />
         {/* date from */}
         <ReportDatePicker
           {...commonFieldProps}
@@ -74,59 +66,18 @@ function TrialBalanceFilterMenu({
           minDate={values.date_after}
           maxDate={new Date()}
         />
-        {/* date from */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='pdc_issue_date_after'
-          label='Issue Date  From'
-          maxDate={values.pdc_issue_date_before || new Date()}
-        />
-
-        {/* date to */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='pdc_issue_date_before'
-          label='Issue Date To'
-          minDate={values.pdc_issue_date_after}
-          maxDate={new Date()}
-        />
-
-        {/* ledger */}
+        {/* branche */}
         <ReportSelect
           {...commonFieldProps}
-          name='ledger'
-          options={ledgers}
+          name='branch'
+          options={branches}
           icon='import_contacts'
           width='50px'
-        />
-
-        {/* sub_ledger */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='sub_ledger'
-          options={subLedgers}
-          icon='import_contacts'
-          width='76px'
-        />
-
-        {/* lpassengerTypes */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='rp_bank_id'
-          options={banks}
-          icon='text_fields'
-          width='95px'
         />
       </div>
 
       {/* keywords */}
       <div className='allKeyWrdContainer'>
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='branch'
-          icon='import_contacts'
-        />
         <Keyword
           {...commonKewordProps}
           type='date'
@@ -142,35 +93,9 @@ function TrialBalanceFilterMenu({
         />
         <Keyword
           {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_after'
-          label='Issue Date From'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='pdc_issue_date_before'
-          label='Issue Date To'
-        />
-
-        <Keyword
-          {...commonKewordProps}
           type='select'
-          name='ledger'
+          name='branch'
           icon='import_contacts'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='sub_ledger'
-          icon='import_contacts'
-        />
-
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='rp_bank_id'
-          icon='text_fields'
         />
       </div>
     </div>
