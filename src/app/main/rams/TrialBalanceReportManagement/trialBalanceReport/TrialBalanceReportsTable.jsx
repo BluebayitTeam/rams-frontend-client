@@ -206,7 +206,6 @@ function TrialBalanceReportsTable(props) {
         <TrialBalanceFilterMenu
           inShowAllMode={inShowAllMode}
           handleGetTrialBalances={handleGetTrialBalances}
-          handleGetAllTrialBalances={handleGetAllTrialBalances}
         />
       </FormProvider>
       <div

@@ -32,13 +32,20 @@ function TrialBalanceFilterMenu({
 
   const commonFieldProps = {
     setReRender,
-    onEnter: () =>
-      inShowAllMode ? handleGetTrialBalances() : handleGetAllTrialBalances,
+    onEnter: () => {
+      if (inShowAllMode) {
+        handleGetTrialBalances();
+      }
+    },
   };
+
   const commonKewordProps = {
     setReRender,
-    onClick: () =>
-      inShowAllMode ? handleGetTrialBalances() : handleGetAllTrialBalances,
+    onClick: () => {
+      if (inShowAllMode) {
+        handleGetTrialBalances();
+      }
+    },
   };
 
   useEffect(() => {
