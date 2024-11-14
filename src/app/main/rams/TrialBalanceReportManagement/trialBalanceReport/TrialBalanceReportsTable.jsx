@@ -311,12 +311,12 @@ function TrialBalanceReportsTable(props) {
                         <TableCell
                           className='border-1 border-current'
                           align='right'>
-                          {item.debit !== 0 ? item.debit.toFixed(2) : ''}
+                          {item.debit !== 0 ? item.debit.toFixed(2) : '0.00'}
                         </TableCell>
                         <TableCell
                           className='border-1 border-current'
                           align='right'>
-                          {item.credit !== 0 ? item.credit.toFixed(2) : ''}
+                          {item.credit !== 0 ? item.credit.toFixed(2) : '0.00'}
                         </TableCell>
                       </TableRow>
                     ))
@@ -331,12 +331,12 @@ function TrialBalanceReportsTable(props) {
                     <TableCell
                       className='border-1 border-current'
                       align='right'>
-                      <b>{totalDr === 0 ? '' : totalDr.toFixed(2)}</b>
+                      <b>{totalDr === 0 ? '0.00' : totalDr.toFixed(2)}</b>
                     </TableCell>
                     <TableCell
                       className='border-1 border-current'
                       align='right'>
-                      <b>{totalCr === 0 ? '' : totalCr.toFixed(2)}</b>
+                      <b>{totalCr === 0 ? '0.00' : totalCr.toFixed(2)}</b>
                     </TableCell>
                   </TableRow>
                 </TableBody>
