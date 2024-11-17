@@ -69,6 +69,7 @@ function TrialBalanceReportsTable(props) {
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
+  const [show, setShow] = useState(false);
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -81,7 +82,7 @@ function TrialBalanceReportsTable(props) {
       page,
       size,
     },
-    { skip: inShowAllMode }
+    { skip: !filterData.date_after && !filterData.date_before } // Skip the query if no dates are provided
   );
 
   console.log('paginatedData', paginatedData);
@@ -181,22 +182,17 @@ function TrialBalanceReportsTable(props) {
   }, []);
 
   function pop() {
-    console.log('printvcvc1');
     if (serial.length > 1) {
-      console.log('printvcvc2');
       const newSerial = [...serial];
       newSerial.pop();
       setSerial(newSerial);
       const lastElement = newSerial[newSerial.length - 1];
-      console.log('lastElement', lastElement);
       handleRowClick(lastElement);
     } else {
       if (!inShowAllMode && paginatedData) {
         const allData = paginatedData?.trial_balance;
 
         setTrialBalanceData(allData);
-      } else {
-        setTrialBalanceData(null);
       }
 
       setSerial([0]);
