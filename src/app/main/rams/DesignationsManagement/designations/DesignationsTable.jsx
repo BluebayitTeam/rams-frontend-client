@@ -16,6 +16,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import DesignationsTableHead from './DesignationsTableHead';
+
 import {
   selectFilteredDesignations,
   useGetDesignationsQuery,

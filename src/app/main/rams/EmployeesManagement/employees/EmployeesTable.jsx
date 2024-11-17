@@ -27,6 +27,32 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import EmployeesTableHead from './EmployeesTableHead';
 import { selectFilteredEmployees, useGetEmployeesQuery } from '../EmployeesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    position: 'fixed',
+    bottom: 0,
+    backgroundColor: '#fff',
+    padding: '10px 20px',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: '85%',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
 
 function EmployeesTable(props) {
   const { navigate, searchKey } = props;
@@ -43,6 +69,7 @@ function EmployeesTable(props) {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const totalData = useSelector(selectFilteredEmployees(data));
   const employees = useSelector(selectFilteredEmployees(data?.employees));
+  const classes = useStyles();
 
   useEffect(() => {
     refetch({ searchKey });
@@ -353,8 +380,9 @@ function EmployeesTable(props) {
         </Table>
       </div>
 
-      <div id='pagiContainer' className='flex justify-between mb-6'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
+          classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -367,10 +395,9 @@ function EmployeesTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 mb-2'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
-          count={totalData?.total_elements}
+          count={totalData?.total_pages}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
