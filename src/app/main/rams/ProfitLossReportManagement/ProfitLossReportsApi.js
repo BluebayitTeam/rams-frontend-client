@@ -1,11 +1,12 @@
 import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
+
+import { selectSearchText } from './store/searchTextSlice';
 import {
   PROFITLOSS__FILTER_WITHOUT_PG,
   PROFITLOSS_FILTER_BY,
 } from 'src/app/constant/constants';
-import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['profitLossReports'];
 const ProfitLossReportApi = api
