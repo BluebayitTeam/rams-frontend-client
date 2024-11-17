@@ -84,6 +84,8 @@ function TrialBalanceReportsTable(props) {
     { skip: inShowAllMode }
   );
 
+  console.log('paginatedData', paginatedData);
+
   const { data: allData } = useGetTrialBalanceAllReportsQuery(
     {
       date_after: filterData.date_after || '',
@@ -141,6 +143,7 @@ function TrialBalanceReportsTable(props) {
   }, []);
 
   const handleRowClick = (id, group_or_ledger) => {
+    console.log('groupId', id);
     // push(id);
     const authTOKEN = {
       headers: {
@@ -178,14 +181,23 @@ function TrialBalanceReportsTable(props) {
   }, []);
 
   function pop() {
-    if (serial.length > 2) {
+    console.log('printvcvc1');
+    if (serial.length > 1) {
+      console.log('printvcvc2');
       const newSerial = [...serial];
       newSerial.pop();
       setSerial(newSerial);
       const lastElement = newSerial[newSerial.length - 1];
+      console.log('lastElement', lastElement);
       handleRowClick(lastElement);
     } else {
-      handleGetTrialBalances();
+      if (!inShowAllMode && paginatedData) {
+        const allData = paginatedData?.trial_balance;
+
+        setTrialBalanceData(allData);
+      } else {
+        setTrialBalanceData(null);
+      }
 
       setSerial([0]);
     }
