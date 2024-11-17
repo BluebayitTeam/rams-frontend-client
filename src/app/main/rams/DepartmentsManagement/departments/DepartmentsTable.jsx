@@ -277,7 +277,6 @@ function DepartmentsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 border-t-1'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_pages}

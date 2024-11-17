@@ -31,15 +31,24 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
-    flexWrap: 'nowrap',
-
-    overflow: 'auto',
-    minHeight: '35px',
+    position: 'fixed',
+    bottom: 0,
+    backgroundColor: '#fff',
+    padding: '10px 20px',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: '85%',
   },
-  toolbar: {
-    '& > div': {
-      minHeight: 'fit-content',
-    },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
   },
 }));
 function DesignationsTable(props) {
@@ -258,7 +267,6 @@ function DesignationsTable(props) {
       <div className={classes.root} id='pagiContainer'>
         <Pagination
           classes={{ ul: 'flex-nowrap' }}
-          className=' border-t-1  border-gray-200'
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -271,7 +279,6 @@ function DesignationsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 border-t-1 border-gray-200'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_pages}
