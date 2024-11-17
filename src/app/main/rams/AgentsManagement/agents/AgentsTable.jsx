@@ -68,7 +68,7 @@ function AgentsTable(props) {
       ];
 
       Object.entries(totalData?.agents[0] || {})
-        .filter(([key]) => key !== 'id' && key !== 'random_number') // Filter out the 'id' field
+        .filter(([key]) => key !== 'id' && key !== 'random_number')
         .map(([key]) => {
           modifiedRow.push({
             id: key,

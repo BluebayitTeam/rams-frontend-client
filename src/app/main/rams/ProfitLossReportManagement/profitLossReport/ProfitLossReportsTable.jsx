@@ -33,7 +33,7 @@ import ProfitLossFilterMenu from './ProfitLossFilterMenu';
 import {
   BASE_URL,
   GET_SITESETTINGS,
-  PROFITLOSS_FILTER_BY_ID,
+  TRIALBALANCE_FILTER_BY_ID,
 } from 'src/app/constant/constants';
 import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
 
@@ -64,7 +64,9 @@ function ProfitLossReportsTable(props) {
   const [totalDr, setTotalDr] = useState(0);
   const [totalCr, setTotalCr] = useState(0);
   const [serial, setSerial] = useState([0]);
-  const [profitLossData, setProfitLossData] = useState([]);
+  const [profitLossDetails, setProfitLossDetailsData] = useState([]);
+  const [totalLeftTotal, setTotalLeftTotal] = useState(0);
+  const [totalRightTotal, setTotalRightTotal] = useState(0);
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -97,12 +99,12 @@ function ProfitLossReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedProfitLossData(allData.trial_balance || []);
+      setModifiedProfitLossData(allData.profit_loss || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.trial_balance,
+        allData.profit_loss,
         size,
         page
       );
@@ -110,10 +112,11 @@ function ProfitLossReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      const allData = paginatedData?.trial_balance;
+      const allData = paginatedData?.profit_loss;
 
-      setProfitLossData(allData);
-
+      setProfitLossDetailsData(allData);
+      setTotalLeftTotal(paginatedData?.left_total);
+      setTotalRightTotal(paginatedData?.right_total);
       setTotalCr(paginatedData?.total_cr);
       setTotalDr(paginatedData?.total_dr);
       setSize(paginatedData?.size || 25);
@@ -152,14 +155,14 @@ function ProfitLossReportsTable(props) {
       },
     };
     fetch(
-      `${PROFITLOSS_FILTER_BY_ID}?date_after=${getValues().date_after || ''}&date_before=${
+      `${TRIALBALANCE_FILTER_BY_ID}?date_after=${getValues().date_after || ''}&date_before=${
         getValues().date_before || ''
       }&group_or_ledger=${group_or_ledger || ''}&branch=${getValues().branch || ''}&group_id=${id || ''}`,
       authTOKEN
     )
       .then((response) => response.json())
       .then((data) => {
-        setProfitLossData(data?.instances || []);
+        setProfitLossDetailsData(data?.instances || []);
         setTotalCr(data?.total_cr);
         setTotalDr(data?.total_dr);
       });
@@ -189,9 +192,9 @@ function ProfitLossReportsTable(props) {
       handleRowClick(lastElement);
     } else {
       if (!inShowAllMode && paginatedData) {
-        const allData = paginatedData?.trial_balance;
+        const allData = paginatedData?.profit_loss;
 
-        setProfitLossData(allData);
+        setProfitLossDetailsData(allData);
       }
 
       setSerial([0]);
@@ -223,8 +226,8 @@ function ProfitLossReportsTable(props) {
         />
       </div>
       <div ref={componentRef} id='downloadPage' className='bg-white p-20'>
-        {(profitLossData?.left_upper?.length > 0 ||
-          profitLossData?.right_upper?.length > 0) && (
+        {(profitLossDetails?.left_upper?.length > 0 ||
+          profitLossDetails?.right_upper?.length > 0) && (
           <div className='bg-white p-20'>
             <div className={`${classes.pageHead} p-12`}>
               <div className='logoContainer pr-0 md:-pr-20'>
@@ -280,7 +283,7 @@ function ProfitLossReportsTable(props) {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {profitLossData?.left_upper?.map((item) => (
+                          {profitLossDetails?.left_upper?.map((item) => (
                             <TableRow
                               key={item.id}
                               onClick={() => {
@@ -312,14 +315,14 @@ function ProfitLossReportsTable(props) {
                             <TableCell
                               className='border-t-1 border-b-0 border-current'
                               align='right'>
-                              {profitLossData?.left_upper?.reduce(
+                              {profitLossDetails?.left_upper?.reduce(
                                 (total, obj) => total + obj?.amount,
                                 0
                               )}
                             </TableCell>
                           </TableRow>
 
-                          {profitLossData?.left_lower?.map((item) => (
+                          {profitLossDetails?.left_lower?.map((item) => (
                             <TableRow
                               key={item.id}
                               onClick={() => {
@@ -370,7 +373,7 @@ function ProfitLossReportsTable(props) {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {profitLossData?.right_upper?.map((item) => (
+                          {profitLossDetails?.right_upper?.map((item) => (
                             <TableRow
                               key={item.id}
                               onClick={() => {
@@ -401,13 +404,13 @@ function ProfitLossReportsTable(props) {
                             <TableCell
                               className='border-t-1 border-b-0 border-current'
                               align='right'>
-                              {profitLossData?.right_upper?.reduce(
+                              {profitLossDetails?.right_upper?.reduce(
                                 (total, obj) => total + obj?.amount,
                                 0
                               )}
                             </TableCell>
                           </TableRow>
-                          {profitLossData?.right_lower?.map((item) => (
+                          {profitLossDetails?.right_lower?.map((item) => (
                             <TableRow
                               key={item.id}
                               onClick={() => {

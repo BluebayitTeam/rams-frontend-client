@@ -268,23 +268,20 @@ function DepartmentsTable(props) {
         />
 
         <TablePagination
-          classes={{ root: 'overflow-visible' }}
+          className='shrink-0 border-t-1'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
-          count={totalData?.total_elements}
+          count={totalData?.total_pages}
           rowsPerPage={rowsPerPage}
           page={page}
-          className={classes.toolbar}
           backIconButtonProps={{
             'aria-label': 'Previous Page',
-            className: 'py-0',
           }}
           nextIconButtonProps={{
             'aria-label': 'Next Page',
-            className: 'py-0',
           }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
     </div>
