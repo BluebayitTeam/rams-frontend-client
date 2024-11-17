@@ -32,16 +32,27 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
-    flexWrap: 'nowrap',
-    overflow: 'auto',
-    minHeight: '35px',
+    position: 'fixed',
+    bottom: 0,
+    backgroundColor: '#fff',
+    padding: '10px 20px',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: '85%',
   },
-  toolbar: {
-    '& > div': {
-      minHeight: 'fit-content',
-    },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
   },
 }));
+
 function DepartmentsTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
@@ -252,7 +263,6 @@ function DepartmentsTable(props) {
           </TableBody>
         </Table>
       </FuseScrollbars>
-
       <div className={classes.root} id='pagiContainer'>
         <Pagination
           classes={{ ul: 'flex-nowrap' }}
