@@ -1095,7 +1095,7 @@ const navigationConfig = [
         translate: 'Profit Loss Report',
         display_order: 13,
         type: 'item',
-        url: '/apps/report-management/profit-loss-summary-reports',
+        url: '/apps/profitLossReport/profitLossReports',
         exact: true,
       },
       {
