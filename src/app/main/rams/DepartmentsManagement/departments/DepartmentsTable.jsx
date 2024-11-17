@@ -17,6 +17,7 @@ import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import DepartmentsTableHead from './DepartmentsTableHead';
 import { makeStyles } from '@mui/styles';
+
 import {
   selectFilteredDepartments,
   useGetDepartmentsQuery,
