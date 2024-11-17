@@ -258,6 +258,7 @@ function DesignationsTable(props) {
       <div className={classes.root} id='pagiContainer'>
         <Pagination
           classes={{ ul: 'flex-nowrap' }}
+          className=' border-t-1  border-gray-200'
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -270,7 +271,7 @@ function DesignationsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 border-t-1'
+          className='shrink-0 border-t-1 border-gray-200'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_pages}
