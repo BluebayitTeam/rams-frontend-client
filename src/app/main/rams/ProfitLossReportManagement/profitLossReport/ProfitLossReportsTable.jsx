@@ -222,146 +222,396 @@ function ProfitLossReportsTable(props) {
           onClick={handlePrint}
         />
       </div>
-      {profitLossData?.length > 0 && (
-        <div ref={componentRef} id='downloadPage' className='bg-white p-20'>
-          <div className={`${classes.pageHead} p-12`}>
-            <div className='logoContainer pr-0 md:-pr-20'>
-              <img
-                style={{
-                  visibility: generalData.logo ? 'visible' : 'hidden',
-                  textAlign: 'center',
-                }}
-                src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
-                alt='Not found'
-              />
+      <div ref={componentRef} id='downloadPage' className='bg-white p-20'>
+        {(profitLossData?.left_upper?.length > 0 ||
+          profitLossData?.right_upper?.length > 0) && (
+          <div className='bg-white p-20'>
+            <div className={`${classes.pageHead} p-12`}>
+              <div className='logoContainer pr-0 md:-pr-20'>
+                <img
+                  style={{
+                    visibility: generalData.logo ? 'visible' : 'hidden',
+                    textAlign: 'center',
+                  }}
+                  src={
+                    generalData.logo ? `${BASE_URL}${generalData.logo}` : null
+                  }
+                  alt='Not found'
+                />
+              </div>
+            </div>
+            <div className='text-center border-b border-solid border-gray-400 mb-20 mt-[-10px] text-xs'>
+              <LocationOn className='text-xs' />
+              {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
+              <PhoneEnabled className='text-xs' />
+              {` ${generalData?.phone || ''}`}&nbsp; &nbsp;{' '}
+              <Email className='text-xs' />
+              {` ${generalData?.email || ''}`}
+            </div>
+
+            <h3 className='text-center mb-10'>
+              <u>Profit & Loss A/C</u>
+            </h3>
+            <div className='px-20 mx-32'>
+              <table width='100%' style={{ padding: '20px' }}>
+                <tr>
+                  {/* Left Side */}
+                  <td
+                    valign='top'
+                    style={{
+                      // borderLeft: '1px solid black',
+                      borderTop: '1px solid black',
+                      borderRight: '1px solid black',
+                    }}>
+                    <TableContainer valign='top' className='border-0'>
+                      <Table size='small' style={{ borderStyle: 'hidden' }}>
+                        <TableHead>
+                          <TableRow className='border-1  border-current mx-40'>
+                            <TableCell
+                              align='left'
+                              className='boder-b-1 border-l-1 border-current'>
+                              <b>Particulars</b>
+                            </TableCell>
+                            <TableCell
+                              align='right'
+                              className='boder-b-1 border-current'>
+                              &nbsp;
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {profitLossData?.left_upper?.map((item) => (
+                            <TableRow
+                              key={item.id}
+                              onClick={() => {
+                                item?.is_clickable &&
+                                  handleRowClick(
+                                    item.id,
+                                    item?.group_or_ledger
+                                  );
+                                item?.is_clickable &&
+                                  setSerial([...serial, item?.id]);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className='mx-40'>
+                              <TableCell className='border-0'>
+                                <b>{item.name}</b>
+                              </TableCell>
+                              <TableCell className='border-0' align='right'>
+                                {item.amount}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+
+                          <TableRow
+                            style={{ cursor: 'pointer' }}
+                            className='mx-40'>
+                            <TableCell className='border-0'>
+                              <b>&nbsp;</b>
+                            </TableCell>
+                            <TableCell
+                              className='border-t-1 border-b-0 border-current'
+                              align='right'>
+                              {profitLossData?.left_upper?.reduce(
+                                (total, obj) => total + obj?.amount,
+                                0
+                              )}
+                            </TableCell>
+                          </TableRow>
+
+                          {profitLossData?.left_lower?.map((item) => (
+                            <TableRow
+                              key={item.id}
+                              onClick={() => {
+                                item?.is_clickable &&
+                                  handleRowClick(
+                                    item.id,
+                                    item?.group_or_ledger
+                                  );
+                                item?.is_clickable &&
+                                  setSerial([...serial, item?.id]);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className='mx-40'>
+                              <TableCell className='border-0'>
+                                <b>{item.name}</b>
+                              </TableCell>
+                              <TableCell className='border-0' align='right'>
+                                {item.amount}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </td>
+                  {/* Right Side */}
+                  <td
+                    valign='top'
+                    style={{
+                      borderLeft: '1px solid black',
+                      borderTop: '1px solid black',
+                      // borderRight: '1px solid black'
+                    }}>
+                    <TableContainer className='border-0'>
+                      <Table size='small'>
+                        <TableHead>
+                          <TableRow className='mx-40 '>
+                            <TableCell
+                              align='left'
+                              className='boder-b-1 border-current'>
+                              <b>Particulars</b>
+                            </TableCell>
+                            <TableCell
+                              align='right'
+                              className='boder-b-1 border-current'>
+                              &nbsp;
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {profitLossData?.right_upper?.map((item) => (
+                            <TableRow
+                              key={item.id}
+                              onClick={() => {
+                                item?.is_clickable &&
+                                  handleRowClick(
+                                    item.id,
+                                    item?.group_or_ledger
+                                  );
+                                item?.is_clickable &&
+                                  setSerial([...serial, item?.id]);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className='mx-40'>
+                              <TableCell className='border-0'>
+                                <b>{item.name}</b>
+                              </TableCell>
+                              <TableCell className='border-0' align='right'>
+                                {item.amount}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                          <TableRow
+                            style={{ cursor: 'pointer' }}
+                            className='mx-40'>
+                            <TableCell className='border-0'>
+                              <b>&nbsp;</b>
+                            </TableCell>
+                            <TableCell
+                              className='border-t-1 border-b-0 border-current'
+                              align='right'>
+                              {profitLossData?.right_upper?.reduce(
+                                (total, obj) => total + obj?.amount,
+                                0
+                              )}
+                            </TableCell>
+                          </TableRow>
+                          {profitLossData?.right_lower?.map((item) => (
+                            <TableRow
+                              key={item.id}
+                              onClick={() => {
+                                item?.is_clickable &&
+                                  handleRowClick(
+                                    item.id,
+                                    item?.group_or_ledger
+                                  );
+                                item?.is_clickable &&
+                                  setSerial([...serial, item?.id]);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className='mx-40'>
+                              <TableCell className='border-0'>
+                                <b>{item.name}</b>
+                              </TableCell>
+                              <TableCell className='border-0' align='right'>
+                                {item.amount}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </td>
+                </tr>
+
+                <tr>
+                  {/* Left Side */}
+                  <td>
+                    <TableContainer
+                      style={{ border: 'none' }}
+                      className='border-0'>
+                      <Table size='small'>
+                        <TableHead>
+                          <TableRow
+                            className='mx-40'
+                            style={{
+                              borderTop: '1px solid black',
+                            }}>
+                            <TableCell align='left'>
+                              <b>Total</b>
+                            </TableCell>
+                            <TableCell align='right'>
+                              {totalLeftTotal}
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                      </Table>
+                    </TableContainer>
+                  </td>
+                  {/* Right Side */}
+                  <td>
+                    <TableContainer className='border-0'>
+                      <Table size='small'>
+                        <TableHead>
+                          <TableRow
+                            className=' mx-40'
+                            style={{
+                              borderTop: '1px solid black',
+                            }}>
+                            <TableCell align='left'>
+                              <b>Total</b>
+                            </TableCell>
+                            <TableCell align='right'>
+                              {totalRightTotal}
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                      </Table>
+                    </TableContainer>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
-          <div
-            style={{
-              textAlign: 'center',
-              borderBottom: '1px solid gray',
-              marginBottom: '20px',
-              marginTop: '-10px',
-              fontSize: '10px',
-            }}>
-            <LocationOn fontSize='small' />
-            {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
-            <PhoneEnabled fontSize='small' />
-            {` ${generalData?.phone || ''}`}&nbsp; &nbsp;{' '}
-            <Email fontSize='small' />
-            {` ${generalData?.email || ''}`}
-          </div>
-          <h3 className='text-center mb-20'>
-            <u>Trial Balance</u>
-          </h3>
+        )}
 
-          <div className='px-20 mx-32'>
-            <TableContainer className='border-0'>
-              <Table size='small'>
-                <TableHead>
-                  <TableRow className='border-t-1 border-b-1 border-current mx-40 p-0'>
-                    <TableCell
-                      className='border-l-1 border-current'
-                      rowSpan='2'>
-                      &nbsp;
-                    </TableCell>
-                    <TableCell
-                      className='border-l-1 border-current border-r-1 p-0 text-center'
-                      align='center'
-                      colSpan='2'>
-                      Closing Balance
-                    </TableCell>
-                  </TableRow>
-                  <TableRow className='border-t-1 border-b-1 border-current mx-40'>
-                    <TableCell
-                      className='border-l-1 border-current p-0 ml-5 pr-5'
-                      align='right'>
-                      <b className='ml-20 pr-10'>Debit</b>
-                    </TableCell>
-                    <TableCell
-                      className='border-l-1 border-r-1 border-current p-0'
-                      align='right'>
-                      <b>Credit</b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {profitLossData?.map((item) => (
-                    <TableRow
-                      key={item.id}
-                      onClick={() => {
-                        if (item?.is_clickable) {
-                          handleRowClick(item.id, item?.group_or_ledger);
-                          setSerial((prevSerial) => [...prevSerial, item?.id]);
-                        }
-                      }}
-                      style={{
-                        cursor: item?.is_clickable ? 'pointer' : 'default',
-                      }}
-                      className='mx-40'>
-                      <TableCell className='border-1 border-current'>
-                        <b>{item.name}</b>
+        {profitLossDetails?.length > 0 && (
+          <div className='bg-white p-20'>
+            <div className={`${classes.pageHead} p-12`}>
+              <div className='logoContainer pr-0 md:-pr-20'>
+                <img
+                  style={{
+                    visibility: generalData.logo ? 'visible' : 'hidden',
+                    textAlign: 'center',
+                  }}
+                  src={
+                    generalData.logo ? `${BASE_URL}${generalData.logo}` : null
+                  }
+                  alt='Not found'
+                />
+              </div>
+            </div>
+            <div className='text-center border-b border-solid border-gray-400 mb-20 mt-[-10px] text-xs'>
+              <LocationOn className='text-xs' />
+              {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
+              <PhoneEnabled className='text-xs' />
+              {` ${generalData?.phone || ''}`}&nbsp; &nbsp;{' '}
+              <Email className='text-xs' />
+              {` ${generalData?.email || ''}`}
+            </div>
+
+            <h3 className='text-center mb-20'>
+              <u>Profit & Loss A/C</u>
+            </h3>
+            <div className='px-20 mx-32'>
+              <TableContainer className='border-0 '>
+                <Table size='small'>
+                  <TableHead>
+                    <TableRow className='border-t-1 border-b-1 border-current	mx-40 p-0'>
+                      <TableCell className='border-0' rowSpan='2'>
+                        &nbsp;
                       </TableCell>
                       <TableCell
-                        className='border-1 border-current'
-                        align='right'>
-                        {item.debit !== 0 ? item.debit.toFixed(2) : '0.00'}
-                      </TableCell>
-                      <TableCell
-                        className='border-1 border-current'
-                        align='right'>
-                        {item.credit !== 0 ? item.credit.toFixed(2) : '0.00'}
+                        className='border-l-1 border-current	p-0 text-center'
+                        align='center'
+                        colSpan='2'>
+                        Closing Balance{' '}
                       </TableCell>
                     </TableRow>
-                  ))}
+                    <TableRow className='border-t-1 border-b-1 border-current	mx-40'>
+                      <TableCell
+                        className='border-l-1 border-current	p-0 ml-5'
+                        align='left'>
+                        <b className='ml-20'>Debit</b>
+                      </TableCell>
+                      <TableCell
+                        className='border-l-1 border-current	 p-0'
+                        align='right'>
+                        <b>Credit</b>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {profitLossDetails?.map((item) => (
+                      <TableRow
+                        key={item.id}
+                        onClick={() => {
+                          const isClickable = item?.is_clickable;
 
-                  <TableRow
-                    className='mx-40 border-t-1 border-current'
-                    style={{ backgroundColor: '#d9d9d9' }}>
-                    <TableCell className='border-1 border-current'>
-                      <b>Grand Total</b>
-                    </TableCell>
-                    <TableCell
-                      className='border-1 border-current'
-                      align='right'>
-                      <b>{totalDr === 0 ? '0.00' : totalDr.toFixed(2)}</b>
-                    </TableCell>
-                    <TableCell
-                      className='border-1 border-current'
-                      align='right'>
-                      <b>{totalCr === 0 ? '0.00' : totalCr.toFixed(2)}</b>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+                          if (isClickable) {
+                            handleRowClick(item.id, item?.group_or_ledger);
+                            setSerial([...serial, item?.id]);
+
+                            const reportName = item?.name;
+
+                            if (reportName) {
+                              const reportType = {
+                                Donation: 'donationPayment-report',
+                                Treatment: 'treatmentPayment-report',
+                                'Financial Assistance':
+                                  'financialAssistancePayment-report',
+                                'Welfare Fund':
+                                  'welfareFundCombineReceipts-report',
+                                'Member Renewal': 'memberRenewalReceipt-report',
+                                NOC: 'nocReceipt-report/:redirect?',
+                                Compensation:
+                                  'compensationPayment-report/:redirect?',
+                              }[reportName];
+
+                              if (reportType) {
+                                router.push(
+                                  `/apps/report-management/${reportType}/true/${
+                                    getValues()?.branch || ' '
+                                  }/${getValues().date_after}/${
+                                    getValues().date_before
+                                  }`
+                                );
+                              }
+                            }
+                          }
+                        }}
+                        style={{ cursor: 'pointer' }}
+                        className='mx-40'>
+                        <TableCell className='border-0'>
+                          <b>{item.name}</b>
+                        </TableCell>
+                        <TableCell className='border-0' align='left'>
+                          {item.debit !== 0 && item.debit}
+                        </TableCell>
+                        <TableCell className='border-0' align='right'>
+                          {item.credit !== 0 && item.credit}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow className='mx-40 border-t-1 border-current'>
+                      <TableCell className='border-0'>
+                        <b>Grand Total:</b>
+                      </TableCell>
+                      <TableCell className='border-0' align='left'>
+                        {totalDr == 0 ? ' ' : totalDr}
+                      </TableCell>
+                      <TableCell className='border-0' align='right'>
+                        {totalCr == 0 ? ' ' : totalCr}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
           </div>
-
-          <table
-            className={classes.pageFooterContainer}
-            style={{ marginTop: '15px' }}>
-            <tbody>
-              <tr>
-                <td>
-                  <span style={{ textAlign: 'left' }}>
-                    Printed Date & Time: {moment().format('DD/MM/YY')},{' '}
-                    {moment().format('LT')}
-                  </span>
-                </td>
-
-                <td>
-                  <span style={{ textAlign: 'left' }}>
-                    Developed by RAMS(Bluebay IT Limited)-01861650206
-                  </span>
-                </td>
-                <td>
-                  <span>&nbsp;</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
