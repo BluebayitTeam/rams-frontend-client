@@ -54,13 +54,6 @@ function TrialBalanceReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [
-    modifiedTrialBalanceData,
-    setModifiedTrialBalanceData,
-    setSortBy,
-    setSortBySubKey,
-    dragAndDropRow,
-  ] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
@@ -72,6 +65,7 @@ function TrialBalanceReportsTable(props) {
   const [totalDr, setTotalDr] = useState(0);
   const [totalCr, setTotalCr] = useState(0);
   const [serial, setSerial] = useState([0]);
+  const [trialBalanceData, setTrialBalanceData] = useState([]);
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -114,7 +108,10 @@ function TrialBalanceReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTrialBalanceData(paginatedData.trial_balance || []);
+      const allData = paginatedData?.trial_balance;
+
+      setTrialBalanceData(allData);
+
       setTotalCr(paginatedData?.total_cr);
       setTotalDr(paginatedData?.total_dr);
       setSize(paginatedData?.size || 25);
@@ -159,7 +156,7 @@ function TrialBalanceReportsTable(props) {
     )
       .then((response) => response.json())
       .then((data) => {
-        setModifiedTrialBalanceData(data?.instances || []);
+        setTrialBalanceData(data?.instances || []);
         setTotalCr(data?.total_cr);
         setTotalDr(data?.total_dr);
       });
@@ -218,7 +215,7 @@ function TrialBalanceReportsTable(props) {
           onClick={handlePrint}
         />
       </div>
-      {modifiedTrialBalanceData?.length > 0 && (
+      {trialBalanceData?.length > 0 && (
         <div ref={componentRef} id='downloadPage' className='bg-white p-20'>
           <div className={`${classes.pageHead} p-12`}>
             <div className='logoContainer pr-0 md:-pr-20'>
@@ -282,39 +279,34 @@ function TrialBalanceReportsTable(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {modifiedTrialBalanceData?.map((item) =>
-                    item.data?.map((item) => (
-                      <TableRow
-                        key={item.id}
-                        onClick={() => {
-                          if (item?.is_clickable) {
-                            handleRowClick(item.id, item?.group_or_ledger);
-                            setSerial((prevSerial) => [
-                              ...prevSerial,
-                              item?.id,
-                            ]);
-                          }
-                        }}
-                        style={{
-                          cursor: item?.is_clickable ? 'pointer' : 'default',
-                        }}
-                        className='mx-40'>
-                        <TableCell className='border-1 border-current'>
-                          <b>{item.name}</b>
-                        </TableCell>
-                        <TableCell
-                          className='border-1 border-current'
-                          align='right'>
-                          {item.debit !== 0 ? item.debit.toFixed(2) : '0.00'}
-                        </TableCell>
-                        <TableCell
-                          className='border-1 border-current'
-                          align='right'>
-                          {item.credit !== 0 ? item.credit.toFixed(2) : '0.00'}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
+                  {trialBalanceData?.map((item) => (
+                    <TableRow
+                      key={item.id}
+                      onClick={() => {
+                        if (item?.is_clickable) {
+                          handleRowClick(item.id, item?.group_or_ledger);
+                          setSerial((prevSerial) => [...prevSerial, item?.id]);
+                        }
+                      }}
+                      style={{
+                        cursor: item?.is_clickable ? 'pointer' : 'default',
+                      }}
+                      className='mx-40'>
+                      <TableCell className='border-1 border-current'>
+                        <b>{item.name}</b>
+                      </TableCell>
+                      <TableCell
+                        className='border-1 border-current'
+                        align='right'>
+                        {item.debit !== 0 ? item.debit.toFixed(2) : '0.00'}
+                      </TableCell>
+                      <TableCell
+                        className='border-1 border-current'
+                        align='right'>
+                        {item.credit !== 0 ? item.credit.toFixed(2) : '0.00'}
+                      </TableCell>
+                    </TableRow>
+                  ))}
 
                   <TableRow
                     className='mx-40 border-t-1 border-current'
