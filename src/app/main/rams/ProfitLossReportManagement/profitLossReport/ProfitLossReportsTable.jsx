@@ -13,7 +13,6 @@ import '../../../rams/print.css';
 import PrintIcon from '@mui/icons-material/Print';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
-  Checkbox,
   FormControl,
   FormControlLabel,
   Table,
