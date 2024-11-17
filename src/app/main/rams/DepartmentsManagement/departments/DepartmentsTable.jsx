@@ -33,7 +33,6 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'space-between',
     flexWrap: 'nowrap',
-
     overflow: 'auto',
     minHeight: '35px',
   },
