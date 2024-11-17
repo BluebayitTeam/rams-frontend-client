@@ -2,11 +2,8 @@ import withReducer from 'app/store/withReducer';
 import { Outlet } from 'react-router';
 import reducer from './store';
 
-function TrialBalanceReportApp() {
+function ProfitLossReportApp() {
   return <Outlet />;
 }
 
-export default withReducer(
-  'trialBalanceReportApp',
-  reducer
-)(TrialBalanceReportApp);
+export default withReducer('profitLossReportApp', reducer)(ProfitLossReportApp);

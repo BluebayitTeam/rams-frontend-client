@@ -13,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function TrialBalanceFilterMenu({
+function ProfitLossFilterMenu({
   inShowAllMode,
-  handleGetTrialBalances,
-  handleGetAllTrialBalances,
+  handleGetProfitLosss,
+  handleGetAllProfitLosss,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function TrialBalanceFilterMenu({
     setReRender,
     onEnter: () => {
       if (inShowAllMode) {
-        handleGetTrialBalances();
+        handleGetProfitLosss();
       }
     },
   };
@@ -43,7 +43,7 @@ function TrialBalanceFilterMenu({
     setReRender,
     onClick: () => {
       if (inShowAllMode) {
-        handleGetTrialBalances();
+        handleGetProfitLosss();
       }
     },
   };
@@ -109,4 +109,4 @@ function TrialBalanceFilterMenu({
   );
 }
 
-export default TrialBalanceFilterMenu;
+export default ProfitLossFilterMenu;

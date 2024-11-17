@@ -1,18 +1,18 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import TrialBalanceReportsTable from './TrialBalanceReportsTable';
+import ProfitLossReportsTable from './ProfitLossReportsTable';
 /**
  * Form Validation Schema
  */
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a trialBalanceReport name')
-    .min(5, 'The trialBalanceReport name must be at least 5 characters'),
+    .nonempty('You must enter a profitLossReport name')
+    .min(5, 'The profitLossReport name must be at least 5 characters'),
 });
 
-function TrialBalanceReport() {
+function ProfitLossReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   return (
@@ -31,10 +31,10 @@ function TrialBalanceReport() {
           </h1>
         </div>
       }
-      content={<TrialBalanceReportsTable />}
+      content={<ProfitLossReportsTable />}
       innerScroll
     />
   );
 }
 
-export default TrialBalanceReport;
+export default ProfitLossReport;

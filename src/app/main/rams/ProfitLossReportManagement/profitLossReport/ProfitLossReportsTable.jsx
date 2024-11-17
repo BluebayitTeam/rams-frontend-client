@@ -27,14 +27,14 @@ import {
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetTrialBalanceAllReportsQuery,
-  useGetTrialBalanceReportsQuery,
-} from '../TrialBalanceReportsApi';
-import TrialBalanceFilterMenu from './TrialBalanceFilterMenu';
+  useGetProfitLossAllReportsQuery,
+  useGetProfitLossReportsQuery,
+} from '../ProfitLossReportsApi';
+import ProfitLossFilterMenu from './ProfitLossFilterMenu';
 import {
   BASE_URL,
   GET_SITESETTINGS,
-  TRIALBALANCE_FILTER_BY_ID,
+  PROFITLOSS_FILTER_BY_ID,
 } from 'src/app/constant/constants';
 import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
 
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 const schema = z.object({});
 
-function TrialBalanceReportsTable(props) {
+function ProfitLossReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -65,7 +65,7 @@ function TrialBalanceReportsTable(props) {
   const [totalDr, setTotalDr] = useState(0);
   const [totalCr, setTotalCr] = useState(0);
   const [serial, setSerial] = useState([0]);
-  const [trialBalanceData, setTrialBalanceData] = useState([]);
+  const [profitLossData, setProfitLossData] = useState([]);
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -74,7 +74,7 @@ function TrialBalanceReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetTrialBalanceReportsQuery(
+  const { data: paginatedData } = useGetProfitLossReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
@@ -87,7 +87,7 @@ function TrialBalanceReportsTable(props) {
 
   console.log('paginatedData', paginatedData);
 
-  const { data: allData } = useGetTrialBalanceAllReportsQuery(
+  const { data: allData } = useGetProfitLossAllReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
@@ -98,7 +98,7 @@ function TrialBalanceReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTrialBalanceData(allData.trial_balance || []);
+      setModifiedProfitLossData(allData.trial_balance || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -113,7 +113,7 @@ function TrialBalanceReportsTable(props) {
     } else if (!inShowAllMode && paginatedData) {
       const allData = paginatedData?.trial_balance;
 
-      setTrialBalanceData(allData);
+      setProfitLossData(allData);
 
       setTotalCr(paginatedData?.total_cr);
       setTotalDr(paginatedData?.total_dr);
@@ -134,12 +134,12 @@ function TrialBalanceReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetTrialBalances = useCallback(async (newPage) => {
+  const handleGetProfitLosss = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching trialBalances:', error);
+      console.error('Error fetching profitLosss:', error);
     }
   }, []);
 
@@ -153,14 +153,14 @@ function TrialBalanceReportsTable(props) {
       },
     };
     fetch(
-      `${TRIALBALANCE_FILTER_BY_ID}?date_after=${getValues().date_after || ''}&date_before=${
+      `${PROFITLOSS_FILTER_BY_ID}?date_after=${getValues().date_after || ''}&date_before=${
         getValues().date_before || ''
       }&group_or_ledger=${group_or_ledger || ''}&branch=${getValues().branch || ''}&group_id=${id || ''}`,
       authTOKEN
     )
       .then((response) => response.json())
       .then((data) => {
-        setTrialBalanceData(data?.instances || []);
+        setProfitLossData(data?.instances || []);
         setTotalCr(data?.total_cr);
         setTotalDr(data?.total_dr);
       });
@@ -192,7 +192,7 @@ function TrialBalanceReportsTable(props) {
       if (!inShowAllMode && paginatedData) {
         const allData = paginatedData?.trial_balance;
 
-        setTrialBalanceData(allData);
+        setProfitLossData(allData);
       }
 
       setSerial([0]);
@@ -202,9 +202,9 @@ function TrialBalanceReportsTable(props) {
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <TrialBalanceFilterMenu
+        <ProfitLossFilterMenu
           inShowAllMode={inShowAllMode}
-          handleGetTrialBalances={handleGetTrialBalances}
+          handleGetProfitLosss={handleGetProfitLosss}
         />
       </FormProvider>
       <div
@@ -223,7 +223,7 @@ function TrialBalanceReportsTable(props) {
           onClick={handlePrint}
         />
       </div>
-      {trialBalanceData?.length > 0 && (
+      {profitLossData?.length > 0 && (
         <div ref={componentRef} id='downloadPage' className='bg-white p-20'>
           <div className={`${classes.pageHead} p-12`}>
             <div className='logoContainer pr-0 md:-pr-20'>
@@ -287,7 +287,7 @@ function TrialBalanceReportsTable(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {trialBalanceData?.map((item) => (
+                  {profitLossData?.map((item) => (
                     <TableRow
                       key={item.id}
                       onClick={() => {
@@ -367,4 +367,4 @@ function TrialBalanceReportsTable(props) {
   );
 }
 
-export default TrialBalanceReportsTable;
+export default ProfitLossReportsTable;
