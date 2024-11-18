@@ -16,6 +16,8 @@ import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Pagination } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import QualificationsTableHead from './QualificationsTableHead';
+import { makeStyles } from '@mui/styles';
+
 import {
   selectFilteredQualifications,
   useGetQualificationsQuery,
@@ -25,12 +27,39 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
 /**
  * The qualifications table.
  */
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    position: 'fixed',
+    bottom: 0,
+    backgroundColor: '#fff',
+    padding: '10px 20px',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: '75%',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '800%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
 function QualificationsTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const classes = useStyles();
+
   const { data, isLoading, refetch } = useGetQualificationsQuery({
     ...pageAndSize,
     searchKey,
@@ -278,9 +307,9 @@ function QualificationsTable(props) {
         </Table>
       </FuseScrollbars>
 
-      <div id='pagiContainer'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
-          // classes={{ ul: 'flex-nowrap' }}
+          classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -293,7 +322,6 @@ function QualificationsTable(props) {
         />
 
         <TablePagination
-          className='shrink-0 border-t-1'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
           count={totalData?.total_pages}
