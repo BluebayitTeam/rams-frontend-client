@@ -13,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function TrialBalanceFilterMenu({
+function BalanceSheetFilterMenu({
   inShowAllMode,
-  handleGetTrialBalances,
-  handleGetAllTrialBalances,
+  handleGetBalanceSheets,
+  handleGetAllBalanceSheets,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function TrialBalanceFilterMenu({
     setReRender,
     onEnter: () => {
       if (inShowAllMode) {
-        handleGetTrialBalances();
+        handleGetBalanceSheets();
       }
     },
   };
@@ -43,7 +43,7 @@ function TrialBalanceFilterMenu({
     setReRender,
     onClick: () => {
       if (inShowAllMode) {
-        handleGetTrialBalances();
+        handleGetBalanceSheets();
       }
     },
   };
@@ -109,4 +109,4 @@ function TrialBalanceFilterMenu({
   );
 }
 
-export default TrialBalanceFilterMenu;
+export default BalanceSheetFilterMenu;
