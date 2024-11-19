@@ -32,11 +32,12 @@ import {
 } from '../BalanceSheetReportsApi';
 import BalanceSheetFilterMenu from './BalanceSheetFilterMenu';
 import {
+  BALANCESHEET_DETAILS,
   BASE_URL,
   GET_SITESETTINGS,
-  BALANCESHEET_FILTER_BY_ID,
 } from 'src/app/constant/constants';
 import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
+import getReportDateFromDateToTitle from 'src/app/@helpers/getReportDateFromDateToTitle';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -65,12 +66,19 @@ function BalanceSheetReportsTable(props) {
   const [totalDr, setTotalDr] = useState(0);
   const [totalCr, setTotalCr] = useState(0);
   const [serial, setSerial] = useState([0]);
-  const [balanceSheetData, setBalanceSheetData] = useState([]);
-
+  const [balanceSheetDetails, setBalanceSheetDetails] = useState({});
+  const [totalLiabilities, setTotalLiabilities] = useState(0);
+  const [totalAssets, setTotalAssets] = useState(0);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [show, setShow] = useState(false);
   const componentRef = useRef(null);
+
+  const componentRefDetails = useRef();
+  const [balanceSheetData, setBalanceSheetData] = useState([]);
+  const [balanceSheetsData, setBalanceSheetsData] = useState([]);
+
+  console.log('balanceSheetData', balanceSheetData);
 
   const filterData = watch();
 
@@ -111,12 +119,12 @@ function BalanceSheetReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      const allData = paginatedData?.trial_balance;
+      setBalanceSheetsData(paginatedData || []);
+      setBalanceSheetData(paginatedData.balance_sheet || []);
 
-      setBalanceSheetData(allData);
-
-      setTotalCr(paginatedData?.total_cr);
-      setTotalDr(paginatedData?.total_dr);
+      // setBalanceSheetDetails(paginatedData.balance_sheet);
+      setTotalLiabilities(paginatedData?.left_total);
+      setTotalAssets(paginatedData?.right_total);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
@@ -144,25 +152,24 @@ function BalanceSheetReportsTable(props) {
   }, []);
 
   const handleRowClick = (id, group_or_ledger) => {
-    console.log('groupId', id);
-    // push(id);
     const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
+        Authorization: sessionStorage.getItem('jwt_access_token'),
       },
     };
     fetch(
-      `${BALANCESHEET_FILTER_BY_ID}?date_after=${getValues().date_after || ''}&date_before=${
-        getValues().date_before || ''
-      }&group_or_ledger=${group_or_ledger || ''}&branch=${getValues().branch || ''}&group_id=${id || ''}`,
+      `${BALANCESHEET_DETAILS}?date_before=${getValues().date_before || ''}&date_after=${
+        getValues().date_after || ''
+      }&group_id=${id || ''}&group_or_ledger=${group_or_ledger || ''}&branch=${getValues().branch || ''}`,
       authTOKEN
     )
       .then((response) => response.json())
       .then((data) => {
-        setBalanceSheetData(data?.instances || []);
-        setTotalCr(data?.total_cr);
-        setTotalDr(data?.total_dr);
+        setBalanceSheetDetails(data);
+        setTotalLiabilities(data?.total_dr);
+        setTotalAssets(data?.total_cr);
+        setBalanceSheetData([]);
       });
   };
 
@@ -183,18 +190,18 @@ function BalanceSheetReportsTable(props) {
 
   function pop() {
     if (serial.length > 1) {
+      console.log('check1');
       const newSerial = [...serial];
       newSerial.pop();
       setSerial(newSerial);
       const lastElement = newSerial[newSerial.length - 1];
       handleRowClick(lastElement);
     } else {
+      console.log('check2');
       if (!inShowAllMode && paginatedData) {
-        const allData = paginatedData?.trial_balance;
-
-        setBalanceSheetData(allData);
+        setBalanceSheetData(paginatedData.balance_sheet);
       }
-
+      setBalanceSheetDetails({});
       setSerial([0]);
     }
   }
@@ -223,15 +230,201 @@ function BalanceSheetReportsTable(props) {
           onClick={handlePrint}
         />
       </div>
-      {balanceSheetData?.length > 0 && (
+      {(balanceSheetData?.left?.length > 0 ||
+        balanceSheetData?.right?.length > 0) && (
         <div ref={componentRef} id='downloadPage' className='bg-white p-20'>
-          <div className={`${classes.pageHead} p-12`}>
-            <div className='logoContainer pr-0 md:-pr-20'>
+          <div className={`${classes.pageHead} `}>
+            <div className='logoContainer pr-0 md:-pr-20 pt-10'>
               <img
                 style={{
                   visibility: generalData.logo ? 'visible' : 'hidden',
-                  textAlign: 'center',
                 }}
+                className='text-center'
+                src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
+                alt='Not found'
+              />
+            </div>
+          </div>
+
+          <div
+            style={{
+              textAlign: 'center',
+              borderBottom: '1px solid gray',
+              marginBottom: '20px',
+              marginTop: '-10px',
+              fontSize: '10px',
+            }}>
+            <LocationOn fontSize='small' />
+            {` ${generalData?.address}` || ''} &nbsp; &nbsp; &nbsp;{' '}
+            <PhoneEnabled fontSize='small' />
+            {` ${generalData?.phone || ''}`}&nbsp; &nbsp;{' '}
+            <Email fontSize='small' />
+            {` ${generalData?.email || ''}`}
+          </div>
+
+          <div>
+            <h4 className='text-center  font-bold text-sm py-3'>
+              Balance Sheet Report{' '}
+            </h4>
+            {balanceSheetData?.date_after && (
+              <h5 className='text-center  font-bold text-xs'>
+                {getReportDateFromDateToTitle(
+                  balanceSheetData?.date_after,
+                  balanceSheetData?.date_before
+                )}
+              </h5>
+            )}
+          </div>
+
+          <div className='px-20 mx-32'>
+            <table width='100%' className='mt-20'>
+              <tr>
+                {/* Left Side */}
+                <td valign='top' className='border-1 border-current'>
+                  <TableContainer valign='top' className='border-0'>
+                    <Table size='small' style={{ borderStyle: 'hidden' }}>
+                      <TableHead>
+                        <TableRow
+                          className='border-1  border-current mx-40'
+                          style={{ backgroundColor: '#d9d9d9' }}>
+                          <TableCell className='border-b-1 border-current font-bold'>
+                            Liabilities
+                          </TableCell>
+                          <TableCell className=' text-right border-b-1 border-current font-bold'>
+                            Total{' '}
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {balanceSheetData?.left?.map(
+                          (item) => (
+                            console.log('dfkjhkjdfhds', item),
+                            (
+                              <TableRow
+                                key={item.id}
+                                onClick={() => {
+                                  item?.is_clickable &&
+                                    handleRowClick(
+                                      item.id,
+                                      item?.group_or_ledger
+                                    );
+                                  item?.is_clickable &&
+                                    setSerial([...serial, item?.id]);
+                                }}
+                                className='mx-40 cursor-pointer'>
+                                <TableCell className='border-0'>
+                                  {item.name}
+                                </TableCell>
+                                <TableCell className='border-0' align='right'>
+                                  {/* {(item.credit - item.debit)?.toFixed(2)} */}
+                                  {(item.credit - item.debit)?.toFixed(2)}
+                                </TableCell>
+                              </TableRow>
+                            )
+                          )
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </td>
+                {/* Right Side */}
+                <td valign='top' className='border-1 border-current'>
+                  <TableContainer className='border-0'>
+                    <Table size='small'>
+                      <TableHead>
+                        <TableRow
+                          className='mx-40 border-b-1 border-current'
+                          style={{ backgroundColor: '#d9d9d9' }}>
+                          <TableCell className='border-b-1 border-current font-bold'>
+                            Assets
+                          </TableCell>
+                          <TableCell className='text-right border-b-1 border-current font-bold'>
+                            Total{' '}
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {balanceSheetData?.right?.map((item) => (
+                          <TableRow
+                            key={item.id}
+                            onClick={() => {
+                              item?.is_clickable &&
+                                handleRowClick(item.id, item?.group_or_ledger);
+                              item?.is_clickable &&
+                                setSerial([...serial, item?.id]);
+                            }}
+                            className='mx-40 cursor-pointer	'>
+                            <TableCell className='border-0'>
+                              {item.name}
+                            </TableCell>
+                            <TableCell className='border-0' align='right'>
+                              {(item.debit - item.credit)?.toFixed(2)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </td>
+              </tr>
+
+              <tr>
+                {/* Left Side */}
+
+                <td className='border-1 border-current'>
+                  <TableContainer className='border-none'>
+                    <Table size='small'>
+                      <TableHead>
+                        <TableRow className=' mx-40'>
+                          <TableCell align='left' className='font-bold'>
+                            Totals
+                          </TableCell>
+
+                          <TableCell align='right' className='font-bold'>
+                            {balanceSheetsData?.left_total?.toFixed(2) ||
+                              '0.00'}
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                    </Table>
+                  </TableContainer>
+                </td>
+                {/* Right Side */}
+                <td className='border-1 border-current'>
+                  <TableContainer className='border-0'>
+                    <Table size='small'>
+                      <TableHead>
+                        <TableRow className=' mx-40'>
+                          <TableCell align='left' className='font-bold'>
+                            Total
+                          </TableCell>
+                          <TableCell align='right' className='font-bold'>
+                            {balanceSheetsData?.right_total?.toFixed(2) ||
+                              '0.00'}
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                    </Table>
+                  </TableContainer>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {balanceSheetDetails?.instances?.length > 0 && (
+        <div
+          ref={componentRefDetails}
+          id='downloadPage'
+          className='bg-white p-20'>
+          <div className={`${classes.pageHead} `}>
+            <div className='logoContainer pr-0 md:-pr-20 pt-10'>
+              <img
+                style={{
+                  visibility: generalData.logo ? 'visible' : 'hidden',
+                }}
+                className='text-center'
                 src={generalData.logo ? `${BASE_URL}${generalData.logo}` : null}
                 alt='Not found'
               />
@@ -252,115 +445,93 @@ function BalanceSheetReportsTable(props) {
             <Email fontSize='small' />
             {` ${generalData?.email || ''}`}
           </div>
-          <h3 className='text-center mb-20'>
-            <u>Trial Balance</u>
-          </h3>
+          <div>
+            <h4 className='text-center  font-bold text-sm py-5'>
+              Balance Sheet Details Report for{' '}
+              {balanceSheetDetails?.group_id?.name}
+            </h4>
+            {balanceSheetDetails?.date_after && (
+              <h5 className='text-center  font-bold text-xs'>
+                {getReportDateFromDateToTitle(
+                  balanceSheetDetails?.date_after,
+                  balanceSheetDetails?.date_before
+                )}
+              </h5>
+            )}
+          </div>
 
           <div className='px-20 mx-32'>
-            <TableContainer className='border-0'>
+            <TableContainer className='border-0 '>
               <Table size='small'>
                 <TableHead>
-                  <TableRow className='border-t-1 border-b-1 border-current mx-40 p-0'>
-                    <TableCell
-                      className='border-l-1 border-current'
-                      rowSpan='2'>
+                  <TableRow className='border-1 border-current	mx-40 p-0'>
+                    <TableCell className='border-0' rowSpan='2'>
                       &nbsp;
                     </TableCell>
                     <TableCell
-                      className='border-l-1 border-current border-r-1 p-0 text-center'
+                      className='border-1 border-current	p-0 text-center'
                       align='center'
                       colSpan='2'>
-                      Closing Balance
+                      Closing Balance{' '}
                     </TableCell>
                   </TableRow>
-                  <TableRow className='border-t-1 border-b-1 border-current mx-40'>
-                    <TableCell
-                      className='border-l-1 border-current p-0 ml-5 pr-5'
-                      align='right'>
-                      <b className='ml-20 pr-10'>Debit</b>
+                  <TableRow className='border-1  border-current	mx-40'>
+                    <TableCell className='border-1 border-current	text-right p-0 '>
+                      <b className='mr-20 '>Debit</b>
                     </TableCell>
                     <TableCell
-                      className='border-l-1 border-r-1 border-current p-0'
+                      className='border-1 border-current	 p-0'
                       align='right'>
                       <b>Credit</b>
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {balanceSheetData?.map((item) => (
+                  {balanceSheetDetails?.instances?.map((item) => (
                     <TableRow
                       key={item.id}
                       onClick={() => {
-                        if (item?.is_clickable) {
+                        item?.is_clickable &&
                           handleRowClick(item.id, item?.group_or_ledger);
-                          setSerial((prevSerial) => [...prevSerial, item?.id]);
-                        }
+                        item?.is_clickable && setSerial([...serial, item?.id]);
                       }}
-                      style={{
-                        cursor: item?.is_clickable ? 'pointer' : 'default',
-                      }}
-                      className='mx-40'>
+                      className='mx-40 cursor-pointer	'>
                       <TableCell className='border-1 border-current'>
-                        <b>{item.name}</b>
+                        {item.name}
                       </TableCell>
                       <TableCell
                         className='border-1 border-current'
                         align='right'>
-                        {item.debit !== 0 ? item.debit.toFixed(2) : '0.00'}
+                        {item.debit !== 0 && item.debit?.toFixed(2)}
                       </TableCell>
                       <TableCell
                         className='border-1 border-current'
                         align='right'>
-                        {item.credit !== 0 ? item.credit.toFixed(2) : '0.00'}
+                        {item.credit !== 0 && item.credit?.toFixed(2)}
                       </TableCell>
                     </TableRow>
                   ))}
-
                   <TableRow
-                    className='mx-40 border-t-1 border-current'
+                    className='mx-40 border-t-2'
                     style={{ backgroundColor: '#d9d9d9' }}>
-                    <TableCell className='border-1 border-current'>
-                      <b>Grand Total</b>
+                    <TableCell className='border-1 border-current text-right'>
+                      <b>Total</b>
                     </TableCell>
                     <TableCell
-                      className='border-1 border-current'
+                      className='border-1 border-current font-bold'
                       align='right'>
-                      <b>{totalDr === 0 ? '0.00' : totalDr.toFixed(2)}</b>
+                      {totalLiabilities?.toFixed(2)}
                     </TableCell>
                     <TableCell
-                      className='border-1 border-current'
+                      className='border-1 border-current font-bold'
                       align='right'>
-                      <b>{totalCr === 0 ? '0.00' : totalCr.toFixed(2)}</b>
+                      {totalAssets?.toFixed(2)}
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
           </div>
-
-          <table
-            className={classes.pageFooterContainer}
-            style={{ marginTop: '15px' }}>
-            <tbody>
-              <tr>
-                <td>
-                  <span style={{ textAlign: 'left' }}>
-                    Printed Date & Time: {moment().format('DD/MM/YY')},{' '}
-                    {moment().format('LT')}
-                  </span>
-                </td>
-
-                <td>
-                  <span style={{ textAlign: 'left' }}>
-                    Developed by RAMS(Bluebay IT Limited)-01861650206
-                  </span>
-                </td>
-                <td>
-                  <span>&nbsp;</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       )}
     </div>

@@ -160,6 +160,7 @@ import CallingEntryReportAppConfig from '../rams/CallingEntryReportManagement/Ca
 import DemandReportAppConfig from '../rams/DemandReportManagement/DemandReportAppConfig';
 import TrialBalanceReportAppConfig from '../rams/TrialBalanceReportManagement/TrialBalanceReportAppConfig';
 import ProfitLossReportAppConfig from '../rams/ProfitLossReportManagement/ProfitLossReportAppConfig';
+import BalanceSheetReportAppConfig from '../rams/BalanceSheetReportManagement/BalanceSheetReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -173,6 +174,7 @@ const appsConfigs = [
   AirwayAppConfig,
   BranchAppConfig,
   BmetV2ApplicationAppConfig,
+  BalanceSheetReportAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
   CompanyOverviewReportAppConfig,
