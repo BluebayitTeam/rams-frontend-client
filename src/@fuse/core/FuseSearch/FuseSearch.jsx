@@ -262,6 +262,21 @@ function FuseSearch(props) {
   const classes = useStyles(props);
 
   useEffect(() => {
+    window.addEventListener('storage', (e) => {
+      if (e?.detail?.name === 'passenger_search_key') {
+        const searchKeyword = sessionStorage.getItem('passenger_search_key');
+        if (searchKeyword) {
+          dispatch({ type: 'open' });
+          dispatch({
+            type: 'setSearchText',
+            value: searchKeyword,
+          });
+        }
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     dispatch({
       type: 'setNavigation',
       data: navigation,

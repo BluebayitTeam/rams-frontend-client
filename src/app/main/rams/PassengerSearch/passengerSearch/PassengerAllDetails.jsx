@@ -10,7 +10,9 @@ import getUserData from 'src/app/@helpers/getUserData';
 import PrintIcon from '@mui/icons-material/Print';
 import {
   BASE_URL,
+  GET_PASSENGER_BY_ID,
   GET_SITESETTINGS,
+  PASSENGER_STATUS_STEP_DIAGRAM,
   SEARCH_PASSENGER_BY,
 } from 'src/app/constant/constants';
 import _ from 'lodash';
@@ -38,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     fontSize: '15px',
     fontStyle: 'italic',
+    textAlign: 'center',
   },
   passengerImgContainer: {
     marginTop: '60px',
@@ -53,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
           : theme.palette.primary.dark
       }`,
       '& > img': {
-        //usesed passport size hight by width
         height: '150px',
         width: '125px',
       },
@@ -269,6 +271,8 @@ function PassengerAllDetails() {
   console.log('statusStep', statusStep);
 
   const [passenger, setPassenger] = useState({});
+
+  console.log('passenger', passenger);
 
   const [embassy, setEmbassy] = useState({});
   const [mofa, setMofa] = useState({});
@@ -953,7 +957,7 @@ function PassengerAllDetails() {
                 />
               </div>
               <div className={classes.addressContainer}>
-                <pre>{siteSetting?.address || ''}</pre>
+                <p>{siteSetting?.address || ''}</p>
               </div>
             </div>
 
