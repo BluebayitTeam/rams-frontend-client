@@ -909,7 +909,6 @@ function PassengerAllDetails() {
     }
   }, [pId]);
 
-  //show loading when data fething
   if (loading) {
     return <FuseLoading />;
   }
