@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     fontStyle: 'italic',
   },
   passengerImgContainer: {
+    marginTop: '60px',
     display: 'flex',
     alignItems: 'flex-start',
     '& .passengerImgHolder': {
@@ -285,6 +286,8 @@ function PassengerAllDetails() {
 
   const [loading, setLoading] = useState(true);
   const [noData, setNoData] = useState(false);
+
+  console.log('noData', noData);
   const [inPrint, setInPrint] = useState(false);
   //print dom ref
   const componentRef = useRef();
