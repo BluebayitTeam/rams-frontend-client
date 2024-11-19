@@ -956,7 +956,7 @@ function PassengerAllDetails() {
             </div>
 
             <div
-              className={`w-full md:w-1/4 justify-center md:justify-start mt-20 md:mt-0 ${classes.passengerImgContainer}`}>
+              className={`w-full md:w-1/4 justify-center md:justify-start mb-20 md:mt-0 ${classes.passengerImgContainer}`}>
               <div className='passengerImgHolder rounded-2'>
                 {passenger.passenger_pic ? (
                   <img src={`${BASE_URL}${passenger.passenger_pic}`} />
