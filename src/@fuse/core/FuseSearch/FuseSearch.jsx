@@ -380,9 +380,7 @@ function FuseSearch(props) {
 
             {state.opened && (
               <ClickAwayListener onClickAway={handleClickAway}>
-                <Paper
-                  className='absolute left-0 right-0 top-0 h-full z-9999 shadow-0'
-                  square>
+                <Paper className='absolute left-0 right-0 top-0 h-full z-9999 shadow-0'>
                   <div
                     className='flex items-center max-w-320 mx-auto h-full'
                     ref={popperNode}>
