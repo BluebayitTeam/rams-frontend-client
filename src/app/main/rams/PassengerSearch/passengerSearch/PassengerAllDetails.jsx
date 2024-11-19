@@ -3,7 +3,7 @@
 function PassengerAllDetails() {
   return (
     <div>
-      <h2>Test is Passenger Serch</h2>
+      <h2>Test PerPase</h2>
     </div>
   );
 }

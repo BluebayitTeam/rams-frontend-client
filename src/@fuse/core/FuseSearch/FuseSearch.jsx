@@ -323,7 +323,8 @@ function FuseSearch(props) {
   };
 
   const searchPassenger = (value) => {
-    navigate(`/apps/agentReport/agentReports`);
+    console.log('PrintValue', value);
+    navigate(`/apps/passengerSearch/passengerSearchs/${value}`);
   };
   function handleClickAway(event) {
     if (
