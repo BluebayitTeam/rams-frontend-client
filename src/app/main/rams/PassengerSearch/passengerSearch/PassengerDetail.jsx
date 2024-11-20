@@ -49,7 +49,7 @@ function PassengerDetail({ classes, data, pid }) {
 
   const gotoEditpage = () => {
     navigate(
-      `/apps/passenger/passengers/${pid}/fromSearch/${pid}/${fillSpaceByUnderscore(
+      `/apps/passenger/passengers/${pid}/fromSearch/${fillSpaceByUnderscore(
         data.passenger_type?.name || ''
       ).toLocaleLowerCase()}`
     );
@@ -58,14 +58,14 @@ function PassengerDetail({ classes, data, pid }) {
   return (
     <>
       <div
-        className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>
+        className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes?.blockContainer}`}>
         <div className='blockContentName'>Passenger</div>
 
         <div className='blockContentHolder'>
           <div className='container flex-col md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Agent:</i>
-              <b className='label text-xs md:text-sm '>{`${data.agent.first_name || ''}`}</b>
+              <b className='label text-xs md:text-sm '>{`${data?.agent?.first_name || ''}`}</b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
@@ -317,8 +317,8 @@ function PassengerDetail({ classes, data, pid }) {
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Last Update By:</i>
               <b className='label text-xs md:text-sm'>{`${data?.updated_by?.username || ''} [DT: ${
-                data.updated_at
-                  ? moment(new Date(data.updated_at)).format('DD/MM/YYYY')
+                data?.updated_at
+                  ? moment(new Date(data?.updated_at)).format('DD/MM/YYYY')
                   : ''
               }]`}</b>
             </div>
