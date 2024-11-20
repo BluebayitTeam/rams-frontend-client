@@ -28,6 +28,21 @@ const PassengerSearchAppConfig = {
 
           element: <PassengerAllDetails />,
         },
+
+        {
+          path: 'apps/passengerSearch',
+          element: <PassengerApp />,
+        },
+
+        {
+          path: 'passengers/:passengerType?',
+          element: <Passengers />,
+        },
+
+        {
+          path: 'passengers/:passengerSearchId/:fromSearch/:passengerType?',
+          element: <Passenger />,
+        },
       ],
     },
 
