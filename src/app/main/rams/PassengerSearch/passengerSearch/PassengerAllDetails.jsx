@@ -303,7 +303,6 @@ function PassengerAllDetails() {
   const [loading, setLoading] = useState(true);
   const [noData, setNoData] = useState(false);
 
-  console.log('noData', noData);
   const [inPrint, setInPrint] = useState(false);
   //print dom ref
   const componentRef = useRef();
@@ -358,10 +357,10 @@ function PassengerAllDetails() {
             setNoData(true);
           }
         })
-        .catch((error) => console.log('ErrorTest', error), {
-          // setpId(0);
-          // setNoData(true);
-          // setLoading(false);
+        .catch((error) => {
+          setpId(0);
+          setNoData(true);
+          setLoading(false);
         });
 
       sessionStorage.setItem('passenger_search_key', passengerSearchId);
@@ -436,7 +435,7 @@ function PassengerAllDetails() {
                 order: 1,
                 title: 'Passenger PP Pic',
                 url: res.data.passport_pic,
-                editurl: '/apps/passenger-management/passenger/',
+                editurl: '/apps/passenger/passengers/',
                 pid: pId,
               })
             );

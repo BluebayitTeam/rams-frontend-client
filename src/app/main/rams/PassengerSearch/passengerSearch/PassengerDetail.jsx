@@ -43,13 +43,13 @@ const useStyles = makeStyles((theme) => ({
 
 function PassengerDetail({ classes, data, pid }) {
   const classesComponentScope = useStyles();
-  console.log('dataAsd', data.agent.first_name);
+  console.log('dataAsd', pid);
 
   const navigate = useNavigate();
 
   const gotoEditpage = () => {
     navigate(
-      `/apps/passenger/passengers/${pid}/fromSearch/${fillSpaceByUnderscore(
+      `/apps/passenger/passengers/${pid}/fromSearch/${pid}/${fillSpaceByUnderscore(
         data.passenger_type?.name || ''
       ).toLocaleLowerCase()}`
     );
@@ -65,13 +65,13 @@ function PassengerDetail({ classes, data, pid }) {
           <div className='container flex-col md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Agent:</i>
-              <b className='label text-xs md:text-sm text-black'>{`${data.agent.first_name || ''}`}</b>
+              <b className='label text-xs md:text-sm '>{`${data.agent.first_name || ''}`}</b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passenger Type:</i>
               <b className='label text-xs md:text-sm'>
-                {data?.passenger_type?.name || ''}
+                {data?.passenger_type?.name || 'N/A'}
               </b>
             </div>
           </div>
