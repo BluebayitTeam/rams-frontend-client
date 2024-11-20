@@ -346,10 +346,10 @@ function PassengerAllDetails() {
             setNoData(true);
           }
         })
-        .catch(() => {
-          setpId(0);
-          setNoData(true);
-          setLoading(false);
+        .catch((error) => console.log('ErrorTest', error), {
+          // setpId(0);
+          // setNoData(true);
+          // setLoading(false);
         });
 
       sessionStorage.setItem('passenger_search_key', searchKeyword);
