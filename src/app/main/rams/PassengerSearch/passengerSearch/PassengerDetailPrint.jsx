@@ -40,8 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PassengerDetailPrint() {
+function PassengerDetailPrint({ classes, data, pid }) {
   const classesComponentScope = useStyles();
+
   const navigate = useNavigate();
   const gotoEditpage = () => {
     navigate(

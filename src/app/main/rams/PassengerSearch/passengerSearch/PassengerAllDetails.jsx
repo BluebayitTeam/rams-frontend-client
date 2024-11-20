@@ -3,16 +3,26 @@
 import FuseLoading from '@fuse/core/FuseLoading';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import getUserData from 'src/app/@helpers/getUserData';
 import PrintIcon from '@mui/icons-material/Print';
 import {
   BASE_URL,
+  CALLINGEMBATTESTATION_BY_PASSENGER_ID,
+  EMBASSY_BY_PASSENGER_ID,
+  FLIGHT_BY_PASSENGER_ID,
   GET_PASSENGER_BY_ID,
   GET_SITESETTINGS,
+  MANPOWER_BY_PASSENGER_ID,
+  MEDICAL_BY_PASSENGER_ID,
+  MOFA_BY_PASSENGER_ID,
+  MUSANEDOKALA_BY_PASSENGER_ID,
+  OFFICEWORK_BY_PASSENGER_ID,
   PASSENGER_STATUS_STEP_DIAGRAM,
   SEARCH_PASSENGER_BY,
+  TRAINING_BY_PASSENGER_ID,
+  VISAENTRY_BY_PASSENGER_ID,
 } from 'src/app/constant/constants';
 import _ from 'lodash';
 import PassengerDetailPrint from './PassengerDetailPrint';
@@ -258,8 +268,8 @@ const useStyles = makeStyles((theme) => ({
 
 function PassengerAllDetails() {
   const classes = useStyles();
-
-  const { searchKeyword } = useParams();
+  const routeParams = useParams();
+  const { passengerSearchId } = routeParams;
 
   const [pId, setpId] = useState(0);
   const [siteSetting, setSiteSetting] = useState({});
@@ -326,7 +336,7 @@ function PassengerAllDetails() {
 
   //get paasenger id when searh keyord changed
   useEffect(() => {
-    if (searchKeyword) {
+    if (passengerSearchId) {
       setLoading(true);
 
       const authTOKEN = {
@@ -336,7 +346,7 @@ function PassengerAllDetails() {
         },
       };
       axios
-        .get(`${SEARCH_PASSENGER_BY}?keyword=${searchKeyword}`, authTOKEN)
+        .get(`${SEARCH_PASSENGER_BY}?keyword=${passengerSearchId}`, authTOKEN)
         .then((res) => {
           setpId(res?.data?.passengers[0]?.id || 0);
           setCountry(res?.data?.passengers[0]?.target_country?.name || 0);
@@ -354,12 +364,12 @@ function PassengerAllDetails() {
           // setLoading(false);
         });
 
-      sessionStorage.setItem('passenger_search_key', searchKeyword);
+      sessionStorage.setItem('passenger_search_key', passengerSearchId);
       window.dispatchEvent(
         new CustomEvent('storage', { detail: { name: 'passenger_search_key' } })
       );
     }
-  }, [searchKeyword]);
+  }, [passengerSearchId]);
 
   //get all data
   useEffect(() => {
@@ -1057,7 +1067,7 @@ function PassengerAllDetails() {
               {
                 <Forms
                   classes={classes}
-                  pid={searchKeyword}
+                  pid={passengerSearchId}
                   id={pId}
                   data={passenger}
                 />
