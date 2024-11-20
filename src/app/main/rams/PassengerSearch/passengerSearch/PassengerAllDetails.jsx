@@ -16,6 +16,8 @@ import {
   SEARCH_PASSENGER_BY,
 } from 'src/app/constant/constants';
 import _ from 'lodash';
+import PassengerDetailPrint from './PassengerDetailPrint';
+import PassengerDetail from './PassengerDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1014,7 +1016,9 @@ function PassengerAllDetails() {
                 />
               } */}
 
-              {/* {_.isEmpty(passenger) || <PassengerDetail classes={classes} data={passenger} pid={pId} />} */}
+              {_.isEmpty(passenger) || (
+                <PassengerDetail classes={classes} data={passenger} pid={pId} />
+              )}
               {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />}
               {country === 'Saudi Arabia' && (
                 <VisaEntryDetail classes={classes} data={visaEntry} />

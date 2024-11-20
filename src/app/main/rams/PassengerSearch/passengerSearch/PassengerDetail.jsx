@@ -323,3 +323,5 @@ function PassengerDetail({ classes, data, pid }) {
     </>
   );
 }
+
+export default PassengerDetail;
