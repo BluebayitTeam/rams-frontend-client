@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 
 import FuseLoading from '@fuse/core/FuseLoading';
-import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
@@ -18,6 +17,7 @@ import {
 import _ from 'lodash';
 import PassengerDetailPrint from './PassengerDetailPrint';
 import PassengerDetail from './PassengerDetail';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {

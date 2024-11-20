@@ -1,3 +1,6 @@
+import { Edit } from '@mui/icons-material';
+import { makeStyles } from '@mui/styles';
+
 const useStyles = makeStyles((theme) => ({
   passPortNameContainer: {
     height: '50px',
@@ -317,7 +320,7 @@ function PassengerDetail({ classes, data, pid }) {
         </div>
 
         <div className='blockContentAction' onClick={() => gotoEditpage()}>
-          <EditIcon />
+          <Edit />
         </div>
       </div>
     </>

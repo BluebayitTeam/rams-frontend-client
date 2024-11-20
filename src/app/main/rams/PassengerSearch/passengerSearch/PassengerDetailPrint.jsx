@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-import { makeStyles } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
 import fillSpaceByUnderscore from 'src/app/@helpers/fillSpaceByUnderscore';
@@ -45,7 +45,7 @@ function PassengerDetailPrint() {
   const navigate = useNavigate();
   const gotoEditpage = () => {
     navigate(
-      `/apps/passenger-management/passenger/${pid}/fromSearch/${fillSpaceByUnderscore(
+      `/apps/passenger/passengers/${pid}/fromSearch/${fillSpaceByUnderscore(
         data.passenger_type?.name || ''
       ).toLocaleLowerCase()}`
     );
