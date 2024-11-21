@@ -42,13 +42,16 @@ function PassengerHeader() {
   const handleDelete = localStorage.getItem('deletePassenger');
   const handleUpdate = localStorage.getItem('updatePassenger');
 
-  const { passengerName } = useParams();
+  const { passengerName, fromSearch } = useParams();
 
   function handleUpdatePassenger() {
     savePassenger(getValues()).then((data) => {
       UpdatedSuccessfully();
-
-      navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+      if (fromSearch == 'fromSearch') {
+        navigate(-1);
+      } else {
+        navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+      }
     });
   }
 
@@ -73,7 +76,11 @@ function PassengerHeader() {
   }
 
   function handleCancel() {
-    navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      navigate(`/apps/passenger/passengers/${routeParams?.passengerType}`);
+    }
   }
 
   // console.log('hendelcancel', handleCancel);

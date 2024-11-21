@@ -28,39 +28,24 @@ const PassengerSearchAppConfig = {
 
           element: <PassengerAllDetails />,
         },
+      ],
+    },
 
+    {
+      path: 'apps/passenger',
+      element: <PassengerApp />,
+      children: [
         {
-          path: 'apps/passengerSearch',
-          element: <PassengerApp />,
+          path: '',
+          element: <Navigate to='passengers' />,
         },
 
         {
-          path: 'passengers/:passengerType?',
-          element: <Passengers />,
-        },
-
-        {
-          path: 'passengers/:passengerSearchId/:fromSearch/:passengerType?',
+          path: 'passengers/:passengerId/:fromSearch/:passengerType?',
           element: <Passenger />,
         },
       ],
     },
-
-    // {
-    //   path: 'apps/passenger',
-    //   element: <PassengerApp />,
-    //   children: [
-    //     {
-    //       path: '',
-    //       element: <Navigate to='passengerSearchs' />,
-    //     },
-
-    //     {
-    //       path: 'passengers/:passengerSearchId/:fromSearch/:passengerType?',
-    //       element: <Passenger />,
-    //     },
-    //   ],
-    // },
   ],
 };
 export default PassengerSearchAppConfig;

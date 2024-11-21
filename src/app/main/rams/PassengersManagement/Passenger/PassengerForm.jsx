@@ -98,8 +98,6 @@ function PassengerForm(props) {
   const [output, setOutput] = useState('');
   const [hide, setHide] = useState(false);
 
-  const { passengerName } = useParams();
-
   const passportPic = watch('passport_pic');
 
   // eslint-disable-next-line no-console
@@ -324,8 +322,9 @@ function PassengerForm(props) {
         passport_img: { File: passportImg },
       })
     ).then((res) => {
+      console.log('resfdfd', passengerType);
       if (res.payload?.data?.id) {
-        if (passengerName === 'fromSearch') {
+        if (routeParams.fromSearch === 'fromSearch') {
           history.goBack();
         } else {
           localStorage.setItem('passengerAlert', 'updatePassenger');
