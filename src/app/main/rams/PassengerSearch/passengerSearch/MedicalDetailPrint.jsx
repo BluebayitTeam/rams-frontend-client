@@ -48,11 +48,7 @@ function MedicalDetailPrint({ classes, data, pid }) {
   const navigate = useNavigate();
 
   const gotoEditpage = () => {
-    navigate(
-      `/apps/passenger/passengers/${pid}/fromSearch/${fillSpaceByUnderscore(
-        data.passenger_type?.name || ''
-      ).toLocaleLowerCase()}`
-    );
+    navigate(`/apps/medical/medicals/${pid}/fromSearch`);
   };
 
   return (

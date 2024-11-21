@@ -49,7 +49,7 @@ function MedicalDetail({ classes, data, pid }) {
 
   const gotoEditpage = () => {
     navigate(
-      `/apps/passenger/passengers/${pid}/fromSearch/${fillSpaceByUnderscore(
+      `/apps/medical/medicals/${pid}/fromSearch/${fillSpaceByUnderscore(
         data.passenger_type?.name || ''
       ).toLocaleLowerCase()}`
     );
