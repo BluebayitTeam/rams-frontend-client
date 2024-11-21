@@ -97,7 +97,7 @@ function Medical() {
 
   const handleReset = (defaultValues) => {
     reset(defaultValues);
-    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+    setFormKey((prevKey) => prevKey + 1);
   };
 
   const getCurrentStatus = (passengerId) => {
