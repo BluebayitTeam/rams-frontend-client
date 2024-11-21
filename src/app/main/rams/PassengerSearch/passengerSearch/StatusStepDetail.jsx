@@ -113,6 +113,7 @@ ColorlibStepIcon.propTypes = {
 function StatusStepDetail({ classes, data, pid, completed }) {
   const navigate = useNavigate();
 
+  console.log('calinndsfjgdjfsd', data);
   const gotoEditpage = () => {
     navigate(`/apps/medical-management/medical/${pid}/fromSearch`);
   };

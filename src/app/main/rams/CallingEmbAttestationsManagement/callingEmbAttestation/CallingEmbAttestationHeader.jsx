@@ -5,16 +5,20 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import {
-	useCreateCallingEmbAttestationMutation,
-	useDeleteCallingEmbAttestationMutation,
-	useUpdateCallingEmbAttestationMutation
+  useCreateCallingEmbAttestationMutation,
+  useDeleteCallingEmbAttestationMutation,
+  useUpdateCallingEmbAttestationMutation,
 } from '../CallingEmbAttestationsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
@@ -22,120 +26,138 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The callingEmbAttestation header.
  */
 function CallingEmbAttestationHeader({ handleReset, emptyValue }) {
-	const routeParams = useParams();
-	// const { callingEmbAttestationId } = routeParams;
-	const [createCallingEmbAttestation] = useCreateCallingEmbAttestationMutation();
-	const [saveCallingEmbAttestation] = useUpdateCallingEmbAttestationMutation();
-	const [removeCallingEmbAttestation] = useDeleteCallingEmbAttestationMutation();
-	const methods = useFormContext();
-	const { watch, getValues, reset, formState } = methods;
-	const { isValid, dirtyFields } = formState;
-	// const theme = useTheme();
-	const navigate = useNavigate();
-	// const { name, images, featuredImageId } = watch();
-	// const handleDelete = localStorage.getItem('deleteCallingEmbAttestation');
-	// const handleUpdate = localStorage.getItem('updateCallingEmbAttestation');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
+  const routeParams = useParams();
+  // const { callingEmbAttestationId } = routeParams;
+  const [createCallingEmbAttestation] =
+    useCreateCallingEmbAttestationMutation();
+  const [saveCallingEmbAttestation] = useUpdateCallingEmbAttestationMutation();
+  const [removeCallingEmbAttestation] =
+    useDeleteCallingEmbAttestationMutation();
+  const methods = useFormContext();
+  const { watch, getValues, reset, formState } = methods;
+  const { isValid, dirtyFields } = formState;
+  // const theme = useTheme();
+  const navigate = useNavigate();
+  // const { name, images, featuredImageId } = watch();
+  // const handleDelete = localStorage.getItem('deleteCallingEmbAttestation');
+  // const handleUpdate = localStorage.getItem('updateCallingEmbAttestation');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateCallingEmbAttestation() {
-		saveCallingEmbAttestation(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'updateCallingEmbAttestation');
+  function handleUpdateCallingEmbAttestation() {
+    saveCallingEmbAttestation(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('medicalAlert', 'updateCallingEmbAttestation');
 
-						handleReset({
-							...emptyValue,
-							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-						});
-						UpdatedSuccessfully();
-						navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating callingEmbAttestation', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            handleReset({
+              ...emptyValue,
+              emb_attestation_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              calling_status: doneNotDone.find((data) => data.default)?.id,
+              bio_submitted_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+            UpdatedSuccessfully();
+            navigate(
+              '/apps/callingEmbAttestation-management/callingEmbAttestations/new'
+            );
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating callingEmbAttestation', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateCallingEmbAttestation() {
-		createCallingEmbAttestation(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'saveCallingEmbAttestation');
-						handleReset({
-							...emptyValue,
-							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-						});
-					}
+  function handleCreateCallingEmbAttestation() {
+    createCallingEmbAttestation(getValues())
+      // .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('medicalAlert', 'saveCallingEmbAttestation');
+            handleReset({
+              ...emptyValue,
+              emb_attestation_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              calling_status: doneNotDone.find((data) => data.default)?.id,
+              bio_submitted_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+          }
 
-					navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
-					AddedSuccessfully();
-				}
-			});
-	}
+          navigate('/apps/callingEmbAttestation/callingEmbAttestations/new');
+          AddedSuccessfully();
+        }
+      });
+  }
 
-	function handleRemoveCallingEmbAttestation() {
-		removeCallingEmbAttestation(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				RemoveSuccessfully();
+  function handleRemoveCallingEmbAttestation() {
+    removeCallingEmbAttestation(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        RemoveSuccessfully();
 
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-							calling_status: doneNotDone.find((data) => data.default)?.id,
-							bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-						});
-						localStorage.setItem('medicalAlert', 'saveCallingEmbAttestation');
-						navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({
+              ...emptyValue,
+              emb_attestation_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              calling_status: doneNotDone.find((data) => data.default)?.id,
+              bio_submitted_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+            localStorage.setItem('medicalAlert', 'saveCallingEmbAttestation');
+            navigate(
+              '/apps/callingEmbAttestation-management/callingEmbAttestations/new'
+            );
 
-						dispatch(
-							showMessage({
-								message: 'Please Restart The Backend',
-								variant: 'error'
-							})
-						);
-					}
-				}
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	const handleCancel = () => {
-		handleReset({
-			...emptyValue,
-			emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
-			calling_status: doneNotDone.find((data) => data.default)?.id,
-			bio_submitted_status: doneNotDone.find((data) => data.default)?.id
-		});
-		navigate('/apps/callingEmbAttestation-management/callingEmbAttestations/new');
-	};
+  const handleCancel = () => {
+    handleReset({
+      ...emptyValue,
+      emb_attestation_status: doneNotDone.find((data) => data.default)?.id,
+      calling_status: doneNotDone.find((data) => data.default)?.id,
+      bio_submitted_status: doneNotDone.find((data) => data.default)?.id,
+    });
+    navigate(
+      '/apps/callingEmbAttestation-management/callingEmbAttestations/new'
+    );
+  };
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

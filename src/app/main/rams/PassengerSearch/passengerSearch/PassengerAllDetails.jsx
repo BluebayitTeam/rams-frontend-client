@@ -31,6 +31,8 @@ import { makeStyles } from '@mui/styles';
 import MedicalDetail from './MedicalDetail';
 import MedicalDetailPrint from './MedicalDetailPrint';
 import StatusStepDetail from './StatusStepDetail';
+import CallingEmbAttestationDetail from './CallingEmbAttestationDetail';
+import CallingEmbAttestationDetailPrint from './CallingEmbAttestationDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1027,6 +1029,14 @@ function PassengerAllDetails() {
               )}
               {<MedicalDetail classes={classes} data={medical} pid={pId} />}
 
+              {country === 'Malaysia' && (
+                <CallingEmbAttestationDetail
+                  classes={classes}
+                  data={callingEmbAttestation}
+                  pid={pId}
+                />
+              )}
+
               {/* {country === 'Saudi Arabia' && (
                 <VisaEntryDetail classes={classes} data={visaEntry} />
               )}
@@ -1040,13 +1050,7 @@ function PassengerAllDetails() {
               {country === 'Saudi Arabia' && (
                 <MofaDetail classes={classes} data={mofa} pid={pId} />
               )}
-              {country === 'Malaysia' && (
-                <CallingEmbAttestationDetail
-                  classes={classes}
-                  data={callingEmbAttestation}
-                  pid={pId}
-                />
-              )}
+
               {
                 <OfficeWorkDetail
                   classes={classes}
@@ -1154,6 +1158,13 @@ function PassengerAllDetails() {
                     pid={pId}
                   />
                 )}
+                {_.isEmpty(callingEmbAttestation) || (
+                  <CallingEmbAttestationDetailPrint
+                    classes={classes}
+                    data={callingEmbAttestation}
+                    pid={pId}
+                  />
+                )}
                 {/* {_.isEmpty(visaEntry) || (
                   <VisaEntryDetailPrint classes={classes} data={visaEntry} />
                 )} */}
@@ -1167,13 +1178,7 @@ function PassengerAllDetails() {
                 {/* {_.isEmpty(mofa) || (
                   <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
                 )} */}
-                {/* {_.isEmpty(callingEmbAttestation) || (
-                  <CallingEmbAttestationDetailPrint
-                    classes={classes}
-                    data={callingEmbAttestation}
-                    pid={pId}
-                  />
-                )} */}
+
                 {/* {_.isEmpty(officeWork) || (
                   <OfficeWorkDetailPrint
                     classes={classes}
