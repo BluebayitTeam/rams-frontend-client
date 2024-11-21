@@ -30,6 +30,7 @@ import PassengerDetail from './PassengerDetail';
 import { makeStyles } from '@mui/styles';
 import MedicalDetail from './MedicalDetail';
 import MedicalDetailPrint from './MedicalDetailPrint';
+import StatusStepDetail from './StatusStepDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1010,7 +1011,7 @@ function PassengerAllDetails() {
                   </div>
                 </div>
               )}
-              {/* {
+              {
                 <StatusStepDetail
                   classes={classes}
                   data={statusStep}
@@ -1019,7 +1020,7 @@ function PassengerAllDetails() {
                     .map(([index]) => Object.keys(statusStep).indexOf(index))}
                   pid={pId}
                 />
-              } */}
+              }
 
               {_.isEmpty(passenger) || (
                 <PassengerDetail classes={classes} data={passenger} pid={pId} />

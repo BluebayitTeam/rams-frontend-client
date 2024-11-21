@@ -1,0 +1,52 @@
+.status-step-details-container {
+	width: 100%;
+	margin-top: 32px;
+}
+
+.status-step-details {
+	display: flex;
+}
+
+.step-container {
+	display: flex;
+	align-items: center;
+}
+
+.step {
+	flex: 1;
+	text-align: center;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.step:hover {
+	background-color: #f0f0f0;
+}
+
+.step.active {
+	background-color: #784af4;
+	color: #fff;
+}
+
+.step.completed {
+	background-color: #784af4;
+	color: #fff;
+}
+
+.step-icon {
+	font-size: 18px;
+}
+
+.step-label {
+	margin-top: 8px;
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.hour-space {
+	width: 1 hour; /* Adjust as needed */
+}
