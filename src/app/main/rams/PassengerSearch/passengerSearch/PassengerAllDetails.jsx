@@ -28,6 +28,8 @@ import _ from 'lodash';
 import PassengerDetailPrint from './PassengerDetailPrint';
 import PassengerDetail from './PassengerDetail';
 import { makeStyles } from '@mui/styles';
+import MedicalDetail from './MedicalDetail';
+import MedicalDetailPrint from './MedicalDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -278,13 +280,7 @@ function PassengerAllDetails() {
   const [statusStep, setStatusStep] = useState({});
   const [country, setCountry] = useState('');
 
-  console.log('country', country);
-
-  console.log('statusStep', statusStep);
-
   const [passenger, setPassenger] = useState({});
-
-  console.log('passenger', passenger);
 
   const [embassy, setEmbassy] = useState({});
   const [mofa, setMofa] = useState({});
@@ -1028,8 +1024,9 @@ function PassengerAllDetails() {
               {_.isEmpty(passenger) || (
                 <PassengerDetail classes={classes} data={passenger} pid={pId} />
               )}
-              {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />}
-              {country === 'Saudi Arabia' && (
+              {<MedicalDetail classes={classes} data={medical} pid={pId} />}
+
+              {/* {country === 'Saudi Arabia' && (
                 <VisaEntryDetail classes={classes} data={visaEntry} />
               )}
               {country === 'Saudi Arabia' && (
@@ -1149,62 +1146,62 @@ function PassengerAllDetails() {
                     pid={pId}
                   />
                 )}
-                {/* {_.isEmpty(medical) || (
+                {_.isEmpty(medical) || (
                   <MedicalDetailPrint
                     classes={classes}
                     data={medical}
                     pid={pId}
                   />
                 )}
-                {_.isEmpty(visaEntry) || (
+                {/* {_.isEmpty(visaEntry) || (
                   <VisaEntryDetailPrint classes={classes} data={visaEntry} />
-                )}
-                {_.isEmpty(musanedOkala) || (
+                )} */}
+                {/* {_.isEmpty(musanedOkala) || (
                   <MusanedOkalaDetailPrint
                     classes={classes}
                     data={musanedOkala}
                     pid={pId}
                   />
-                )}
-                {_.isEmpty(mofa) || (
+                )} */}
+                {/* {_.isEmpty(mofa) || (
                   <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
-                )}
-                {_.isEmpty(callingEmbAttestation) || (
+                )} */}
+                {/* {_.isEmpty(callingEmbAttestation) || (
                   <CallingEmbAttestationDetailPrint
                     classes={classes}
                     data={callingEmbAttestation}
                     pid={pId}
                   />
-                )}
-                {_.isEmpty(officeWork) || (
+                )} */}
+                {/* {_.isEmpty(officeWork) || (
                   <OfficeWorkDetailPrint
                     classes={classes}
                     data={officeWork}
                     pid={pId}
                   />
-                )}
-                {_.isEmpty(embassy) || (
+                )} */}
+                {/* {_.isEmpty(embassy) || (
                   <EmbassyDetailPrint
                     classes={classes}
                     data={embassy}
                     pid={pId}
                   />
-                )}
-                {_.isEmpty(training) || (
+                )} */}
+                {/* {_.isEmpty(training) || (
                   <TrainingDetailPrint
                     classes={classes}
                     data={training}
                     pid={pId}
                   />
-                )}
-                {_.isEmpty(manPower) || (
+                )} */}
+                {/* {_.isEmpty(manPower) || (
                   <ManPowerDetailPrint
                     classes={classes}
                     data={manPower}
                     pid={pId}
                   />
-                )}
-                {_.isEmpty(flight) || (
+                )} */}
+                {/* {_.isEmpty(flight) || (
                   <FlightDetailPrint
                     classes={classes}
                     data={flight}
