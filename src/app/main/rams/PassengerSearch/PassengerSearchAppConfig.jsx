@@ -5,6 +5,8 @@ import PassengerApp from '../PassengersManagement/PassengerApp';
 import PassengerDetail from './passengerSearch/PassengerDetail';
 import Passenger from '../PassengersManagement/passenger/Passenger';
 import Passengers from '../PassengersManagement/passengers/Passengers';
+import MedicalApp from '../MedicalsManagement/MedicalApp';
+import Medical from '../MedicalsManagement/medical/Medical';
 
 /**
  * The E-Commerce app configuration.
@@ -43,6 +45,21 @@ const PassengerSearchAppConfig = {
         {
           path: 'passengers/:passengerId/:fromSearch/:passengerType?',
           element: <Passenger />,
+        },
+      ],
+    },
+    {
+      path: 'apps/medical',
+      element: <MedicalApp />,
+      children: [
+        {
+          path: '',
+          element: <Navigate to='medicals' />,
+        },
+
+        {
+          path: 'medicals/:medicalId/:fromSearch?',
+          element: <Medical />,
         },
       ],
     },
