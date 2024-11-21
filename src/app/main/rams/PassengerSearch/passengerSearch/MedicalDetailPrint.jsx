@@ -2,7 +2,6 @@ import { Edit } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
-import fillSpaceByUnderscore from 'src/app/@helpers/fillSpaceByUnderscore';
 
 const useStyles = makeStyles((theme) => ({
   passPortNameContainer: {
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
 function MedicalDetailPrint({ classes, data, pid }) {
   const classesComponentScope = useStyles();
-  console.log('dataAsdMedssidjghsjkd', data);
 
   const navigate = useNavigate();
 
