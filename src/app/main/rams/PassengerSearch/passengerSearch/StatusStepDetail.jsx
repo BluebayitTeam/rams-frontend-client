@@ -115,7 +115,7 @@ function StatusStepDetail({ classes, data, pid, completed }) {
 
   console.log('calinndsfjgdjfsd', data);
   const gotoEditpage = () => {
-    navigate(`/apps/medical-management/medical/${pid}/fromSearch`);
+    navigate(`/apps/medical/medicals/${pid}/fromSearch`);
   };
 
   const steps = Object.keys(data);
