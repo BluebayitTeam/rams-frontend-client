@@ -90,7 +90,7 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
         if (res?.id) {
           // Checking if response data contains id
 
-          if (fromSearch) {
+          if (fromSearch == 'fromSearch') {
             navigate(-1);
           } else {
             localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
