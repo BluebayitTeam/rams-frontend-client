@@ -27,7 +27,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
 function PassengerHeader() {
   const routeParams = useParams();
   // const history = useHistory();
-
+  console.log('routeParams', routeParams);
   const { passengerId, passengerType } = routeParams;
 
   const [createPassenger] = useCreatePassengerMutation();

@@ -48,21 +48,21 @@ const PassengerSearchAppConfig = {
         },
       ],
     },
-    // {
-    //   path: 'apps/medical',
-    //   element: <MedicalApp />,
-    //   children: [
-    //     {
-    //       path: '',
-    //       element: <Navigate to='medicals' />,
-    //     },
+    {
+      path: 'apps/medical',
+      element: <MedicalApp />,
+      children: [
+        {
+          path: '',
+          element: <Navigate to='medicals' />,
+        },
 
-    //     {
-    //       path: 'medicals/:medicalId/:fromSearch?',
-    //       element: <Medical />,
-    //     },
-    //   ],
-    // },
+        {
+          path: 'medicals/:medicalId/:fromSearch?',
+          element: <Medical />,
+        },
+      ],
+    },
   ],
 };
 export default PassengerSearchAppConfig;

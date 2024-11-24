@@ -6,25 +6,25 @@ import Embassy from './embassy/Embassy';
  * The E-Commerce app configuration.
  */
 const EmbassyAppConfig = {
-	settings: {
-		layout: {}
-	},
-	routes: [
-		{
-			path: 'apps/embassy-management',
-			element: <EmbassyApp />,
-			children: [
-				{
-					path: '',
-					element: <Navigate to="embassys" />
-				},
+  settings: {
+    layout: {},
+  },
+  routes: [
+    {
+      path: 'apps/embassy-management',
+      element: <EmbassyApp />,
+      children: [
+        {
+          path: '',
+          element: <Navigate to='embassys' />,
+        },
 
-				{
-					path: 'embassys/:embassyId/:fromSearch?',
-					element: <Embassy />
-				}
-			]
-		}
-	]
+        {
+          path: 'embassys/:embassyId?',
+          element: <Embassy />,
+        },
+      ],
+    },
+  ],
 };
 export default EmbassyAppConfig;
