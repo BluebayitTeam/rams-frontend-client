@@ -5,143 +5,149 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useCreateMofaMutation, useDeleteMofaMutation, useUpdateMofaMutation } from '../MofasApi';
+import {
+  useCreateMofaMutation,
+  useDeleteMofaMutation,
+  useUpdateMofaMutation,
+} from '../MofasApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The mofa header.
  */
 function MofaHeader({ handleReset, emptyValue }) {
-	console.log('emptyValue', emptyValue);
-	const routeParams = useParams();
-	const { mofaId } = routeParams;
-	const [createMofa] = useCreateMofaMutation();
-	const [saveMofa] = useUpdateMofaMutation();
-	const [removeMofa] = useDeleteMofaMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMofa');
-	const handleUpdate = localStorage.getItem('updateMofa');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
+  console.log('emptyValue', emptyValue);
+  const routeParams = useParams();
+  const { mofaId } = routeParams;
+  const [createMofa] = useCreateMofaMutation();
+  const [saveMofa] = useUpdateMofaMutation();
+  const [removeMofa] = useDeleteMofaMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues, reset } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteMofa');
+  const handleUpdate = localStorage.getItem('updateMofa');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMofa() {
-		saveMofa(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('MofaAlert', 'updateMofa');
+  function handleUpdateMofa() {
+    saveMofa(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('MofaAlert', 'updateMofa');
 
-						handleReset({
-							...emptyValue,
-							remofa_status: doneNotDone.find((data) => data.default)?.id,
-							mofa_status: doneNotDone.find((data) => data.default)?.id
-						});
+            handleReset({
+              ...emptyValue,
+              remofa_status: doneNotDone.find((data) => data.default)?.id,
+              mofa_status: doneNotDone.find((data) => data.default)?.id,
+            });
 
-						UpdatedSuccessfully();
-						navigate('/apps/mofa-management/mofas/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating mofa', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            UpdatedSuccessfully();
+            navigate('/apps/mofa-management/mofas/new');
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating mofa', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateMofa() {
-		createMofa(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'saveMofa');
+  function handleCreateMofa() {
+    createMofa(getValues())
+      // .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('medicalAlert', 'saveMofa');
 
-						handleReset({
-							...emptyValue,
-							remofa_status: doneNotDone.find((data) => data.default)?.id,
-							mofa_status: doneNotDone.find((data) => data.default)?.id
-						});
+            handleReset({
+              ...emptyValue,
+              remofa_status: doneNotDone.find((data) => data.default)?.id,
+              mofa_status: doneNotDone.find((data) => data.default)?.id,
+            });
 
-						navigate('/apps/mofa-management/mofas/new');
-						AddedSuccessfully();
-					}
-				}
-			});
-	}
+            navigate('/apps/mofa-management/mofas/new');
+            AddedSuccessfully();
+          }
+        }
+      });
+  }
 
-	function handleRemoveMofa() {
-		removeMofa(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							remofa_status: doneNotDone.find((data) => data.default)?.id,
-							mofa_status: doneNotDone.find((data) => data.default)?.id
-						});
+  function handleRemoveMofa() {
+    removeMofa(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({
+              ...emptyValue,
+              remofa_status: doneNotDone.find((data) => data.default)?.id,
+              mofa_status: doneNotDone.find((data) => data.default)?.id,
+            });
 
-						localStorage.setItem('medicalAlert', 'saveMofa');
-						navigate('/apps/mofa-management/mofas/new');
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
-					}
-				}
+            localStorage.setItem('medicalAlert', 'saveMofa');
+            navigate('/apps/mofa-management/mofas/new');
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
 
-				RemoveSuccessfully();
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+        RemoveSuccessfully();
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	const handleCancel = () => {
-		handleReset({
-			...emptyValue,
-			remofa_status: doneNotDone.find((data) => data.default)?.id,
-			mofa_status: doneNotDone.find((data) => data.default)?.id
-		});
+  const handleCancel = () => {
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      handleReset({
+        ...emptyValue,
+        remofa_status: doneNotDone.find((data) => data.default)?.id,
+        mofa_status: doneNotDone.find((data) => data.default)?.id,
+      });
 
-		navigate('/apps/mofa-management/mofas/new');
-	};
+      navigate('/apps/mofa-management/mofas/new');
+    }
+  };
 
-	// useEffect(() => {
-	// 	if (mofaId === 'new') {
-	// 		reset({
-	// 			passenger: 'all',
-	// 			mofa_agency: 'all',
-
-	// 			remofa_status: doneNotDone.find((data) => data.default)?.id,
-	// 			mofa_status: doneNotDone.find((data) => data.default)?.id,
-
-	// 			why_remofa: '',
-	// 			mofa_date: '',
-	// 			remofa_charge: ''
-	// 		});
-	// 	}
-	// }, [mofaId, reset]);
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

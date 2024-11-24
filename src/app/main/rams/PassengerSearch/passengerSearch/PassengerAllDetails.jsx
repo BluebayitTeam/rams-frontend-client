@@ -36,6 +36,8 @@ import OfficeWorkDetailPrint from './OfficeWorkDetailPrint';
 import OfficeWorkDetail from './OfficeWorkDetail';
 import MusanedOkalaDetail from './MusanedOkalaDetail';
 import MusanedOkalaDetailPrint from './MusanedOkalaDetailPrint';
+import MofaDetailPrint from './MofaDetailPrint';
+import MofaDetail from './MofaDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1050,12 +1052,21 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
+              {/* 
+              {country === 'Saudi Arabia' && (
+                <MusanedOkalaDetail
+                  classes={classes}
+                  data={musanedOkala}
+                  pid={pId}
+                />
+              )} */}
 
               <MusanedOkalaDetail
                 classes={classes}
                 data={musanedOkala}
                 pid={pId}
               />
+              <MofaDetail classes={classes} data={mofa} pid={pId} />
 
               {/* {country === 'Saudi Arabia' && (
                 <EmbassyDetail classes={classes} data={embassy} pid={pId} />
@@ -1204,6 +1215,10 @@ function PassengerAllDetails() {
                   />
                 )}
 
+                {_.isEmpty(mofa) || (
+                  <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
+                )}
+
                 {/* {_.isEmpty(embassy) || (
                   <EmbassyDetailPrint
                     classes={classes}
@@ -1220,9 +1235,6 @@ function PassengerAllDetails() {
                     data={musanedOkala}
                     pid={pId}
                   />
-                )} */}
-                {/* {_.isEmpty(mofa) || (
-                  <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
                 )} */}
 
                 {/* {_.isEmpty(officeWork) || (

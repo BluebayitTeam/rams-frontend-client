@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { useNavigate } from 'react-router';
 
-function MusanedOkalaDetailPrint({ classes, data, pid }) {
+function MofaDetailPrint({ classes, data, pid }) {
   const navigate = useNavigate();
 
   const gotoEditpage = () => {
-    navigate(`/apps/musanedOkala-management/musanedOkalas/${pid}/fromSearch`);
+    navigate(`/apps/mofa-management/mofas/${pid}/fromSearch`);
   };
 
   return (
@@ -18,79 +18,69 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
           breakInside: 'avoid',
           margin: '30px',
         }}>
-        <div className='blockContentName'>Musaned Okala</div>
+        <div className='blockContentName'>Mofa</div>
 
         <div
           className='blockContentHolder'
           style={{ display: data.id ? 'block' : 'none' }}>
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Musaned No.:</i>
+              <i className='label text-xs md:text-sm'>Mofa Status:</i>
               <b className='value text-xs md:text-sm'>
-                {data?.musaned_no || ''}
+                {data?.mofa_status || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Okala No:</i>
-              <b className='value text-xs md:text-sm'>{data?.okala_no || ''}</b>
+              <i className='label text-xs md:text-sm'>Mofa No:</i>
+              <b className='value text-xs md:text-sm'>{data?.mofa_no || ''}</b>
             </div>
           </div>
 
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Musaned Status:</i>
+              <i className='label text-xs md:text-sm'>Mofa Date:</i>
               <b className='value text-xs md:text-sm'>
-                {data?.musaned_status || ''}
-              </b>
-            </div>
-            <div className='border hidden md:block'></div>
-            <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Okala Status:</i>
-              <b className='value text-xs md:text-sm'>
-                {data?.okala_status || ''}
-              </b>
-            </div>
-          </div>
-
-          <div className='container flex-row md:flex-row'>
-            <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Musaned Date:</i>
-              <b className='value text-xs md:text-sm'>
-                {data?.musaned_date
-                  ? moment(new Date(data.musaned_date)).format('DD/MM/YYYY')
+                {data?.mofa_date
+                  ? moment(new Date(data.mofa_date)).format('DD/MM/YYYY')
                   : ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Okala Date:</i>
+              <i className='label text-xs md:text-sm'>Re Mofa Charge:</i>
               <b className='value text-xs md:text-sm'>
-                {data?.okala_date
-                  ? moment(new Date(data.okala_date)).format('DD/MM/YYYY')
-                  : ''}
+                {data?.remofa_charge || ''}
               </b>
             </div>
           </div>
 
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Musaned Given By:</i>
-              <b className='value text-xs md:text-sm'>{`${data?.musaned_given_by?.first_name || ''} ${
-                data?.musaned_given_by?.last_name || ''
-              }`}</b>
+              <i className='label text-xs md:text-sm'>Re Mofa Status:</i>
+              <b className='value text-xs md:text-sm'>
+                {data?.remofa_status || ''}
+              </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Okala Given By:</i>
-              <b className='value text-xs md:text-sm'>{`${data?.okala_given_by?.first_name || ''} ${
-                data?.okala_given_by?.last_name || ''
-              }`}</b>
+              <i className='label text-xs md:text-sm'>why Re Mofa:</i>
+              <b className='value text-xs md:text-sm'>
+                {data?.why_remofa || ''}
+              </b>
             </div>
           </div>
 
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+              <i className='label text-xs md:text-sm'>Mofa Agency:</i>
+              <b className='value text-xs md:text-sm'>
+                {data?.mofa_agency?.name || ''}
+              </b>
+            </div>
+            <div className='border hidden md:block'></div>
+
+            <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Last Update By:</i>
               <b className='value text-xs md:text-sm'>{`${data?.updated_by?.username || ''} [DT: ${
                 data.updated_at
@@ -98,8 +88,6 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
                   : ''
               }]`}</b>
             </div>
-            <div className='border hidden md:block'></div>
-            <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'></div>
           </div>
         </div>
       </div>
@@ -107,4 +95,4 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
   );
 }
 
-export default MusanedOkalaDetailPrint;
+export default MofaDetailPrint;
