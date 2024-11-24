@@ -33,8 +33,6 @@ import MedicalDetailPrint from './MedicalDetailPrint';
 import StatusStepDetail from './StatusStepDetail';
 import CallingEmbAttestationDetail from './CallingEmbAttestationDetail';
 import CallingEmbAttestationDetailPrint from './CallingEmbAttestationDetailPrint';
-import EmbassyDetail from './EmbassyDetail';
-import EmbassyDetailPrint from './EmbassyDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1033,7 +1031,7 @@ function PassengerAllDetails() {
               )}
               {<MedicalDetail classes={classes} data={medical} pid={pId} />}
 
-              <EmbassyDetail classes={classes} data={embassy} pid={pId} />
+              {/* <EmbassyDetail classes={classes} data={embassy} pid={pId} /> */}
 
               {country === 'Malaysia' && (
                 <CallingEmbAttestationDetail
@@ -1174,13 +1172,13 @@ function PassengerAllDetails() {
                   />
                 )}
 
-                {_.isEmpty(embassy) || (
+                {/* {_.isEmpty(embassy) || (
                   <EmbassyDetailPrint
                     classes={classes}
                     data={embassy}
                     pid={pId}
                   />
-                )}
+                )} */}
                 {/* {_.isEmpty(visaEntry) || (
                   <VisaEntryDetailPrint classes={classes} data={visaEntry} />
                 )} */}

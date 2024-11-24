@@ -50,21 +50,6 @@ const PassengerSearchAppConfig = {
         },
       ],
     },
-    {
-      path: 'apps/embassy-management',
-      element: <EmbassyApp />,
-      children: [
-        {
-          path: '',
-          element: <Navigate to='embassys' />,
-        },
-
-        {
-          path: 'embassys/:embassyId/:fromSearch?',
-          element: <Embassy />,
-        },
-      ],
-    },
   ],
 };
 export default PassengerSearchAppConfig;
