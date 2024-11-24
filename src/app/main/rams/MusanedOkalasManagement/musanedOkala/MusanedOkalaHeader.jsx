@@ -6,16 +6,20 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import {
-	useCreateMusanedOkalaMutation,
-	useDeleteMusanedOkalaMutation,
-	useUpdateMusanedOkalaMutation
+  useCreateMusanedOkalaMutation,
+  useDeleteMusanedOkalaMutation,
+  useUpdateMusanedOkalaMutation,
 } from '../MusanedOkalasApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
@@ -23,116 +27,124 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The musanedOkala header.
  */
 function MusanedOkalaHeader({ handleReset, emptyValue }) {
-	const routeParams = useParams();
-	const { musanedOkalaId } = routeParams;
-	const [createMusanedOkala] = useCreateMusanedOkalaMutation();
-	const [saveMusanedOkala] = useUpdateMusanedOkalaMutation();
-	const [removeMusanedOkala] = useDeleteMusanedOkalaMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMusanedOkala');
-	const handleUpdate = localStorage.getItem('updateMusanedOkala');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
+  const routeParams = useParams();
+  const { musanedOkalaId } = routeParams;
+  const [createMusanedOkala] = useCreateMusanedOkalaMutation();
+  const [saveMusanedOkala] = useUpdateMusanedOkalaMutation();
+  const [removeMusanedOkala] = useDeleteMusanedOkalaMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues, reset } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteMusanedOkala');
+  const handleUpdate = localStorage.getItem('updateMusanedOkala');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMusanedOkala() {
-		saveMusanedOkala(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'updateMusanedOkala');
+  function handleUpdateMusanedOkala() {
+    saveMusanedOkala(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('medicalAlert', 'updateMusanedOkala');
 
-						handleReset({
-							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
-						});
-						UpdatedSuccessfully();
-						navigate('/apps/musanedOkala-management/musanedOkalas/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating musanedOkala', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            handleReset({
+              ...emptyValue,
+              musaned_status: doneNotDone.find((data) => data.default)?.id,
+              okala_status: doneNotDone.find((data) => data.default)?.id,
+            });
+            UpdatedSuccessfully();
+            navigate('/apps/musanedOkala-management/musanedOkalas/new');
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating musanedOkala', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateMusanedOkala() {
-		createMusanedOkala(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
-						handleReset({
-							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
-						});
-					}
+  function handleCreateMusanedOkala() {
+    createMusanedOkala(getValues())
+      // .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('medicalAlert', 'saveMusanedOkala');
+            handleReset({
+              ...emptyValue,
+              musaned_status: doneNotDone.find((data) => data.default)?.id,
+              okala_status: doneNotDone.find((data) => data.default)?.id,
+            });
+          }
 
-					navigate('/apps/musanedOkala-management/musanedOkalas/new');
-					AddedSuccessfully();
-				}
-			});
-	}
+          navigate('/apps/musanedOkala-management/musanedOkalas/new');
+          AddedSuccessfully();
+        }
+      });
+  }
 
-	function handleRemoveMusanedOkala() {
-		removeMusanedOkala(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				RemoveSuccessfully();
+  function handleRemoveMusanedOkala() {
+    removeMusanedOkala(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        RemoveSuccessfully();
 
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							musaned_status: doneNotDone.find((data) => data.default)?.id,
-							okala_status: doneNotDone.find((data) => data.default)?.id
-						});
-						localStorage.setItem('medicalAlert', 'saveMusanedOkala');
-						navigate('/apps/musanedOkala-management/musanedOkalas/new');
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({
+              ...emptyValue,
+              musaned_status: doneNotDone.find((data) => data.default)?.id,
+              okala_status: doneNotDone.find((data) => data.default)?.id,
+            });
+            localStorage.setItem('medicalAlert', 'saveMusanedOkala');
+            navigate('/apps/musanedOkala-management/musanedOkalas/new');
 
-						dispatch(
-							showMessage({
-								message: 'Please Restart The Backend',
-								variant: 'error'
-							})
-						);
-					}
-				}
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	const handleCancel = () => {
-		handleReset({
-			...emptyValue,
-			musaned_status: doneNotDone.find((data) => data.default)?.id,
-			okala_status: doneNotDone.find((data) => data.default)?.id
-		});
-		navigate('/apps/musanedOkala-management/musanedOkalas/new');
-	};
+  const handleCancel = () => {
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      handleReset({
+        ...emptyValue,
+        musaned_status: doneNotDone.find((data) => data.default)?.id,
+        okala_status: doneNotDone.find((data) => data.default)?.id,
+      });
+      navigate('/apps/musanedOkala-management/musanedOkalas/new');
+    }
+  };
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

@@ -34,6 +34,8 @@ import CallingEmbAttestationDetail from './CallingEmbAttestationDetail';
 import CallingEmbAttestationDetailPrint from './CallingEmbAttestationDetailPrint';
 import OfficeWorkDetailPrint from './OfficeWorkDetailPrint';
 import OfficeWorkDetail from './OfficeWorkDetail';
+import MusanedOkalaDetail from './MusanedOkalaDetail';
+import MusanedOkalaDetailPrint from './MusanedOkalaDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1049,6 +1051,12 @@ function PassengerAllDetails() {
                 />
               )}
 
+              <MusanedOkalaDetail
+                classes={classes}
+                data={musanedOkala}
+                pid={pId}
+              />
+
               {/* {country === 'Saudi Arabia' && (
                 <EmbassyDetail classes={classes} data={embassy} pid={pId} />
               )} */}
@@ -1184,6 +1192,14 @@ function PassengerAllDetails() {
                   <OfficeWorkDetailPrint
                     classes={classes}
                     data={officeWork}
+                    pid={pId}
+                  />
+                )}
+
+                {_.isEmpty(musanedOkala) || (
+                  <MusanedOkalaDetailPrint
+                    classes={classes}
+                    data={musanedOkala}
                     pid={pId}
                   />
                 )}
