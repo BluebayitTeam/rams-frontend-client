@@ -33,6 +33,8 @@ import MedicalDetailPrint from './MedicalDetailPrint';
 import StatusStepDetail from './StatusStepDetail';
 import CallingEmbAttestationDetail from './CallingEmbAttestationDetail';
 import CallingEmbAttestationDetailPrint from './CallingEmbAttestationDetailPrint';
+import EmbassyDetail from './EmbassyDetail';
+import EmbassyDetailPrint from './EmbassyDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1037,6 +1039,10 @@ function PassengerAllDetails() {
                 />
               )}
 
+              {country === 'Saudi Arabia' && (
+                <EmbassyDetail classes={classes} data={embassy} pid={pId} />
+              )}
+
               {/* {country === 'Saudi Arabia' && (
                 <VisaEntryDetail classes={classes} data={visaEntry} />
               )}
@@ -1058,9 +1064,7 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               }
-              {country === 'Saudi Arabia' && (
-                <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-              )}
+
 
               {<TrainingDetail classes={classes} data={training} pid={pId} />}
               {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
@@ -1165,6 +1169,14 @@ function PassengerAllDetails() {
                     pid={pId}
                   />
                 )}
+
+                {_.isEmpty(embassy) || (
+                  <EmbassyDetailPrint
+                    classes={classes}
+                    data={embassy}
+                    pid={pId}
+                  />
+                )}
                 {/* {_.isEmpty(visaEntry) || (
                   <VisaEntryDetailPrint classes={classes} data={visaEntry} />
                 )} */}
@@ -1186,13 +1198,7 @@ function PassengerAllDetails() {
                     pid={pId}
                   />
                 )} */}
-                {/* {_.isEmpty(embassy) || (
-                  <EmbassyDetailPrint
-                    classes={classes}
-                    data={embassy}
-                    pid={pId}
-                  />
-                )} */}
+
                 {/* {_.isEmpty(training) || (
                   <TrainingDetailPrint
                     classes={classes}
