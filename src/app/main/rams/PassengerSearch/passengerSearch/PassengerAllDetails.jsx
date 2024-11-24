@@ -288,6 +288,7 @@ function PassengerAllDetails() {
   const [passenger, setPassenger] = useState({});
 
   const [embassy, setEmbassy] = useState({});
+  console.log('country', country);
   const [mofa, setMofa] = useState({});
   const [officeWork, setOfficeWork] = useState({});
   const [manPower, setManPower] = useState({});
@@ -386,6 +387,7 @@ function PassengerAllDetails() {
       axios
         .get(`${PASSENGER_STATUS_STEP_DIAGRAM}${pId}`, authTOKEN)
         .then((res) => {
+          // console.log('rexzxzxs', res.data.country);
           if (res?.data) {
             if (res?.data?.country === 'Malaysia') {
               setStatusStep({
@@ -737,14 +739,14 @@ function PassengerAllDetails() {
                   order: 13,
                   title: 'Embassy Old Visa',
                   url: res.data.old_visa_image,
-                  editurl: '/apps/embassy-management/embassy/',
+                  editurl: '/apps/embassy-management/embassys/',
                   pid: pId,
                 },
                 {
                   order: 14,
                   title: 'Embassy Stamp Visa',
                   url: res.data.stamp_visa_image,
-                  editurl: '/apps/embassy-management/embassy/',
+                  editurl: '/apps/embassy-management/embassys/',
                   pid: pId,
                 }
               )
@@ -777,14 +779,14 @@ function PassengerAllDetails() {
                   order: 13,
                   title: 'Embassy Old Visa',
                   url: '',
-                  editurl: '/apps/embassy-management/embassy/',
+                  editurl: '/apps/embassy-management/embassys/',
                   pid: pId,
                 },
                 {
                   order: 14,
                   title: 'Embassy Stamp Visa',
                   url: '',
-                  editurl: '/apps/embassy-management/embassy/',
+                  editurl: '/apps/embassy-management/embassys/',
                   pid: pId,
                 }
               )
@@ -1031,6 +1033,8 @@ function PassengerAllDetails() {
               )}
               {<MedicalDetail classes={classes} data={medical} pid={pId} />}
 
+              <EmbassyDetail classes={classes} data={embassy} pid={pId} />
+
               {country === 'Malaysia' && (
                 <CallingEmbAttestationDetail
                   classes={classes}
@@ -1039,9 +1043,9 @@ function PassengerAllDetails() {
                 />
               )}
 
-              {country === 'Saudi Arabia' && (
+              {/* {country === 'Saudi Arabia' && (
                 <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-              )}
+              )} */}
 
               {/* {country === 'Saudi Arabia' && (
                 <VisaEntryDetail classes={classes} data={visaEntry} />
