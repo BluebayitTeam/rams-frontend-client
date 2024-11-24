@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 function MedicalDetail({ classes, data, pid }) {
   const classesComponentScope = useStyles();
-  console.log('dataAsd', pid);
+  console.log('dataAsdz', pid);
 
   const navigate = useNavigate();
 
