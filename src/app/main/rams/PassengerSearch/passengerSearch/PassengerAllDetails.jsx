@@ -28,11 +28,12 @@ import _ from 'lodash';
 import PassengerDetailPrint from './PassengerDetailPrint';
 import PassengerDetail from './PassengerDetail';
 import { makeStyles } from '@mui/styles';
-import MedicalDetail from './MedicalDetail';
-import MedicalDetailPrint from './MedicalDetailPrint';
+
 import StatusStepDetail from './StatusStepDetail';
 import CallingEmbAttestationDetail from './CallingEmbAttestationDetail';
 import CallingEmbAttestationDetailPrint from './CallingEmbAttestationDetailPrint';
+import OfficeWorkDetailPrint from './OfficeWorkDetailPrint';
+import OfficeWorkDetail from './OfficeWorkDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1029,7 +1030,14 @@ function PassengerAllDetails() {
               {_.isEmpty(passenger) || (
                 <PassengerDetail classes={classes} data={passenger} pid={pId} />
               )}
-              {<MedicalDetail classes={classes} data={medical} pid={pId} />}
+              {
+                <OfficeWorkDetail
+                  classes={classes}
+                  data={officeWork}
+                  pid={pId}
+                />
+              }
+              {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
 
               {/* <EmbassyDetail classes={classes} data={embassy} pid={pId} /> */}
 
@@ -1157,17 +1165,25 @@ function PassengerAllDetails() {
                     pid={pId}
                   />
                 )}
-                {_.isEmpty(medical) || (
+                {/* {_.isEmpty(medical) || (
                   <MedicalDetailPrint
                     classes={classes}
                     data={medical}
                     pid={pId}
                   />
-                )}
+                )} */}
                 {_.isEmpty(callingEmbAttestation) || (
                   <CallingEmbAttestationDetailPrint
                     classes={classes}
                     data={callingEmbAttestation}
+                    pid={pId}
+                  />
+                )}
+
+                {_.isEmpty(officeWork) || (
+                  <OfficeWorkDetailPrint
+                    classes={classes}
+                    data={officeWork}
                     pid={pId}
                   />
                 )}

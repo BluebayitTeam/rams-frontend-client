@@ -11,7 +11,10 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { GET_PASSENGER_BY_ID, OFFICEWORK_BY_PASSENGER_ID } from 'src/app/constant/constants';
+import {
+  GET_PASSENGER_BY_ID,
+  OFFICEWORK_BY_PASSENGER_ID,
+} from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import OfficeWorkHeader from './OfficeWorkHeader';
@@ -20,135 +23,136 @@ import OfficeWorkForm from './OfficeWorkForm';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		borderBottom: `1px solid ${theme.palette.primary.main}`,
-		paddingTop: '0.8rem',
-		paddingBottom: '0.7rem',
-		boxSizing: 'content-box'
-	},
-	textField: {
-		height: '4.8rem',
-		'& > div': {
-			height: '100%'
-		}
-	}
+  container: {
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    paddingTop: '0.8rem',
+    paddingBottom: '0.7rem',
+    boxSizing: 'content-box',
+  },
+  textField: {
+    height: '4.8rem',
+    '& > div': {
+      height: '100%',
+    },
+  },
 }));
 
 const schema = z.object({
-	police_clearance_no: z
-		.string()
-		.nonempty('You must enter a officeWork name')
-		.min(5, 'The officeWork name must be at least 5 characters')
+  police_clearance_no: z
+    .string()
+    .nonempty('You must enter a officeWork name')
+    .min(5, 'The officeWork name must be at least 5 characters'),
 });
 
 function OfficeWork() {
-	const emptyValue = {
-		passenger: '',
-		police_clearance_no: '',
-		police_clearance_status: '',
-		police_clearance_date: '',
-		driving_license_no: '',
-		driving_license_status: '',
-		driving_license_date: '',
-		finger_no: '',
-		finger_status: '',
-		finger_date: '',
-		certificate_experience: '',
-		created_at: '',
-		updated_at: '',
-		current_status: '',
-		pc_image: '',
-		dl_image: '',
-		doc1_image: '',
-		doc2_image: ''
-	};
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { officeWorkId, fromSearch } = routeParams;
-	const passengers = useSelector((state) => state.data.passengers);
-	const classes = useStyles();
-	const navigate = useNavigate();
-	const [formKey, setFormKey] = useState(0);
+  const emptyValue = {
+    passenger: '',
+    police_clearance_no: '',
+    police_clearance_status: '',
+    police_clearance_date: '',
+    driving_license_no: '',
+    driving_license_status: '',
+    driving_license_date: '',
+    finger_no: '',
+    finger_status: '',
+    finger_date: '',
+    certificate_experience: '',
+    created_at: '',
+    updated_at: '',
+    current_status: '',
+    pc_image: '',
+    dl_image: '',
+    doc1_image: '',
+    doc2_image: '',
+  };
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { officeWorkId, fromSearch } = routeParams;
+  console.log('routeParams', routeParams);
+  const passengers = useSelector((state) => state.data.passengers);
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const [formKey, setFormKey] = useState(0);
 
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: emptyValue,
-		resolver: zodResolver(schema)
-	});
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: emptyValue,
+    resolver: zodResolver(schema),
+  });
 
-	const {
-		data: officeWork,
-		isLoading,
-		isError
-	} = useGetOfficeWorkQuery(officeWorkId, {
-		skip: !officeWorkId || officeWorkId === 'new'
-	});
+  const {
+    data: officeWork,
+    isLoading,
+    isError,
+  } = useGetOfficeWorkQuery(officeWorkId, {
+    skip: !officeWorkId || officeWorkId === 'new',
+  });
 
-	const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
 
-	const {
-		reset,
-		watch,
-		control,
-		formState: { errors },
-		setValue
-	} = methods;
+  const {
+    reset,
+    watch,
+    control,
+    formState: { errors },
+    setValue,
+  } = methods;
 
-	const handleReset = (defaultValues) => {
-		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-	};
+  const handleReset = (defaultValues) => {
+    reset(defaultValues);
+    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+  };
 
-	const getCurrentStatus = (passengerId) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
+  const getCurrentStatus = (passengerId) => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+    axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+      setValue('current_status', res.data?.current_status?.id);
+    });
+  };
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						reset({
-							...setIdIfValueIsObject(res.data),
-							passenger: officeWorkId
-						});
-					}
-				})
-				.catch(() => null);
-		} else {
-			handleReset({
-				...emptyValue,
-				police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-				driving_license_status: doneNotDone.find((data) => data.default)?.id,
-				finger_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	}, [fromSearch]);
+  useEffect(() => {
+    if (fromSearch) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(`${OFFICEWORK_BY_PASSENGER_ID}${officeWorkId}`, authTOKEN)
+        .then((res) => {
+          if (res.data.id) {
+            reset({
+              ...setIdIfValueIsObject(res.data),
+              passenger: officeWorkId,
+            });
+          }
+        })
+        .catch(() => null);
+    } else {
+      handleReset({
+        ...emptyValue,
+        police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+        driving_license_status: doneNotDone.find((data) => data.default)?.id,
+        finger_status: doneNotDone.find((data) => data.default)?.id,
+      });
+    }
+  }, [fromSearch]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	return (
+  return (
     <FormProvider {...methods} key={formKey}>
       {hasPermission('OFFICE_WORK_DETAILS') && (
         <FusePageCarded

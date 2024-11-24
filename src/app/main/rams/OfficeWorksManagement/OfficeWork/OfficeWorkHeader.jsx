@@ -6,16 +6,20 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import {
-	useCreateOfficeWorkMutation,
-	useDeleteOfficeWorkMutation,
-	useUpdateOfficeWorkMutation
+  useCreateOfficeWorkMutation,
+  useDeleteOfficeWorkMutation,
+  useUpdateOfficeWorkMutation,
 } from '../OfficeWorksApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
@@ -23,136 +27,152 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The medical header.
  */
 function OfficeWorkHeader({ handleReset, emptyValue }) {
-	console.log('emptyValue', emptyValue);
+  console.log('emptyValue', emptyValue);
 
-	const routeParams = useParams();
-	const { officeWorkId } = routeParams;
-	const [createOfficeWork] = useCreateOfficeWorkMutation();
-	const [saveOfficeWork] = useUpdateOfficeWorkMutation();
-	const [removeOfficeWork] = useDeleteOfficeWorkMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteOfficeWork');
-	const handleUpdate = localStorage.getItem('updateOfficeWork');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
+  const routeParams = useParams();
+  const { officeWorkId } = routeParams;
+  const [createOfficeWork] = useCreateOfficeWorkMutation();
+  const [saveOfficeWork] = useUpdateOfficeWorkMutation();
+  const [removeOfficeWork] = useDeleteOfficeWorkMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues, reset } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteOfficeWork');
+  const handleUpdate = localStorage.getItem('updateOfficeWork');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateOfficeWork() {
-		saveOfficeWork(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('officeWorkAlert', 'updateOfficeWork');
+  function handleUpdateOfficeWork() {
+    saveOfficeWork(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('officeWorkAlert', 'updateOfficeWork');
 
-						handleReset({
-							...emptyValue,
-							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id
-						});
+            handleReset({
+              ...emptyValue,
+              police_clearance_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              driving_license_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              finger_status: doneNotDone.find((data) => data.default)?.id,
+            });
 
-						UpdatedSuccessfully();
-						navigate('/apps/officeWork/officeWorks/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating officeWork', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            UpdatedSuccessfully();
+            navigate('/apps/officeWork/officeWorks/new');
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating officeWork', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateOfficeWork() {
-		createOfficeWork(getValues())
-			.unwrap()
-			.then((res) => {
-				// console.log('resbvbv', res);
+  function handleCreateOfficeWork() {
+    createOfficeWork(getValues())
+      .unwrap()
+      .then((res) => {
+        // console.log('resbvbv', res);
 
-				if (res?.id) {
-					// Checking if response data contains id
+        if (res?.id) {
+          // Checking if response data contains id
 
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
-						handleReset({
-							...emptyValue,
-							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id
-						});
-						navigate('/apps/officeWork/officeWorks/new');
-						AddedSuccessfully();
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Create failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error creating officeWork', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
+            handleReset({
+              ...emptyValue,
+              police_clearance_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              driving_license_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              finger_status: doneNotDone.find((data) => data.default)?.id,
+            });
+            navigate('/apps/officeWork/officeWorks/new');
+            AddedSuccessfully();
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Create failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error creating officeWork', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleRemoveOfficeWork() {
-		removeOfficeWork(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				console.log('khskdfhdskhf', res);
+  function handleRemoveOfficeWork() {
+    removeOfficeWork(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        console.log('khskdfhdskhf', res);
 
-				if (res?.detail) {
-					RemoveSuccessfully();
+        if (res?.detail) {
+          RemoveSuccessfully();
 
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-							driving_license_status: doneNotDone.find((data) => data.default)?.id,
-							finger_status: doneNotDone.find((data) => data.default)?.id
-						});
-						localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
-						navigate('/apps/officeWork/officeWorks/new');
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({
+              ...emptyValue,
+              police_clearance_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              driving_license_status: doneNotDone.find((data) => data.default)
+                ?.id,
+              finger_status: doneNotDone.find((data) => data.default)?.id,
+            });
+            localStorage.setItem('officeWorkAlert', 'saveOfficeWork');
+            navigate('/apps/officeWork/officeWorks/new');
 
-						dispatch(
-							showMessage({
-								message: 'Please Restart The Backend',
-								variant: 'error'
-							})
-						);
-					}
-				}
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCancel() {
-		handleReset({
-			...emptyValue,
-			police_clearance_status: doneNotDone.find((data) => data.default)?.id,
-			driving_license_status: doneNotDone.find((data) => data.default)?.id,
-			finger_status: doneNotDone.find((data) => data.default)?.id
-		});
-		navigate('/apps/officeWork/officeWorks/new');
-	}
+  function handleCancel() {
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      handleReset({
+        ...emptyValue,
+        police_clearance_status: doneNotDone.find((data) => data.default)?.id,
+        driving_license_status: doneNotDone.find((data) => data.default)?.id,
+        finger_status: doneNotDone.find((data) => data.default)?.id,
+      });
+      navigate('/apps/officeWork/officeWorks/new');
+    }
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

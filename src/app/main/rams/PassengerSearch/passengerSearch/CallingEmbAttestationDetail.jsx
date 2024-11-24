@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 function CallingEmbAttestationDetail({ classes, data, pid }) {
   const classesComponentScope = useStyles();
-  console.log('dataAsd', pid);
 
   const navigate = useNavigate();
 

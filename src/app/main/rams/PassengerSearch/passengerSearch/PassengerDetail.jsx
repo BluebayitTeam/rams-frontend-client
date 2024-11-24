@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 function PassengerDetail({ classes, data, pid }) {
   const classesComponentScope = useStyles();
-  console.log('dataAsd', pid);
 
   const navigate = useNavigate();
 

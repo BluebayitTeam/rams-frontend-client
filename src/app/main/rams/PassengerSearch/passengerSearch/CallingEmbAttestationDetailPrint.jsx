@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router';
 import fillSpaceByUnderscore from 'src/app/@helpers/fillSpaceByUnderscore';
 
 function CallingEmbAttestationDetailPrint({ classes, data, pid }) {
-  console.log('aaaaaaaa', data);
-
   const navigate = useNavigate();
 
   const gotoEditpage = () => {
