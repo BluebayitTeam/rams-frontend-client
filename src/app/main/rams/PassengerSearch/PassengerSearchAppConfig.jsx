@@ -7,6 +7,8 @@ import Passenger from '../PassengersManagement/passenger/Passenger';
 import Passengers from '../PassengersManagement/passengers/Passengers';
 import MedicalApp from '../MedicalsManagement/MedicalApp';
 import Medical from '../MedicalsManagement/medical/Medical';
+import EmbassyApp from '../EmbassysManagement/EmbassyApp';
+import Embassy from '../EmbassysManagement/embassy/Embassy';
 
 /**
  * The E-Commerce app configuration.
@@ -49,17 +51,17 @@ const PassengerSearchAppConfig = {
       ],
     },
     {
-      path: 'apps/medical',
-      element: <MedicalApp />,
+      path: 'apps/embassy-management',
+      element: <EmbassyApp />,
       children: [
         {
           path: '',
-          element: <Navigate to='medicals' />,
+          element: <Navigate to='embassys' />,
         },
 
         {
-          path: 'medicals/:medicalId/:fromSearch?',
-          element: <Medical />,
+          path: 'embassys/:embassyId/:fromSearch?',
+          element: <Embassy />,
         },
       ],
     },
