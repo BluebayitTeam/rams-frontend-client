@@ -38,6 +38,8 @@ import MusanedOkalaDetail from './MusanedOkalaDetail';
 import MusanedOkalaDetailPrint from './MusanedOkalaDetailPrint';
 import MofaDetailPrint from './MofaDetailPrint';
 import MofaDetail from './MofaDetail';
+import ManPowerDetail from './ManPowerDetail';
+import ManPowerDetailPrint from './ManPowerDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1061,12 +1063,15 @@ function PassengerAllDetails() {
                 />
               )} */}
 
-              <MusanedOkalaDetail
-                classes={classes}
-                data={musanedOkala}
-                pid={pId}
-              />
-              <MofaDetail classes={classes} data={mofa} pid={pId} />
+              {
+                <MusanedOkalaDetail
+                  classes={classes}
+                  data={musanedOkala}
+                  pid={pId}
+                />
+              }
+              {<MofaDetail classes={classes} data={mofa} pid={pId} />}
+              {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
 
               {/* {country === 'Saudi Arabia' && (
                 <EmbassyDetail classes={classes} data={embassy} pid={pId} />
@@ -1217,6 +1222,14 @@ function PassengerAllDetails() {
 
                 {_.isEmpty(mofa) || (
                   <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
+                )}
+
+                {_.isEmpty(manPower) || (
+                  <ManPowerDetailPrint
+                    classes={classes}
+                    data={manPower}
+                    pid={pId}
+                  />
                 )}
 
                 {/* {_.isEmpty(embassy) || (
