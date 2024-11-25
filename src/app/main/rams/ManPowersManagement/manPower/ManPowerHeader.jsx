@@ -6,120 +6,138 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useCreateManPowerMutation, useDeleteManPowerMutation, useUpdateManPowerMutation } from '../ManPowersApi';
+import {
+  useCreateManPowerMutation,
+  useDeleteManPowerMutation,
+  useUpdateManPowerMutation,
+} from '../ManPowersApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The manPower header.
  */
 function ManPowerHeader({ handleReset, emptyValue }) {
-	const routeParams = useParams();
-	const { manPowerId } = routeParams;
-	const [createManPower] = useCreateManPowerMutation();
-	const [saveManPower] = useUpdateManPowerMutation();
-	const [removeManPower] = useDeleteManPowerMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteManPower');
-	const handleUpdate = localStorage.getItem('updateManPower');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
+  const routeParams = useParams();
+  const { manPowerId } = routeParams;
+  const [createManPower] = useCreateManPowerMutation();
+  const [saveManPower] = useUpdateManPowerMutation();
+  const [removeManPower] = useDeleteManPowerMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues, reset } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteManPower');
+  const handleUpdate = localStorage.getItem('updateManPower');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
 
-	function handleUpdateManPower() {
-		saveManPower(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'updateManPower');
 
-						handleReset({
-							...emptyValue,
-							man_power_status: doneNotDone.find((data) => data.default)?.id
-						});
+  function handleUpdateManPower() {
+    saveManPower(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('medicalAlert', 'updateManPower');
 
-						UpdatedSuccessfully();
-						navigate('/apps/manPower-management/manPowers/new');
-					}
-				} else {
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating manPower', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            handleReset({
+              ...emptyValue,
+              man_power_status: doneNotDone.find((data) => data.default)?.id,
+            });
 
-	function handleCreateManPower() {
-		createManPower(getValues()).then((res) => {
-			if (res) {
-				if (fromSearch) {
-					history.goBack();
-				} else {
-					localStorage.setItem('medicalAlert', 'saveManPower');
+            UpdatedSuccessfully();
+            navigate('/apps/manPower-management/manPowers/new');
+          }
+        } else {
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating manPower', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-					handleReset({
-						...emptyValue,
-						man_power_status: doneNotDone.find((data) => data.default)?.id
-					});
-					navigate('/apps/manPower-management/manPowers/new');
-					AddedSuccessfully();
-				}
-			}
-		});
-	}
+  function handleCreateManPower() {
+    createManPower(getValues()).then((res) => {
+      if (res) {
+        if (fromSearch) {
+          history.goBack();
+        } else {
+          localStorage.setItem('medicalAlert', 'saveManPower');
 
-	function handleRemoveManPower() {
-		removeManPower(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							man_power_status: doneNotDone.find((data) => data.default)?.id
-						});
-						localStorage.setItem('medicalAlert', 'saveManPower');
-						navigate('/apps/manPower-management/manPowers/new');
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
-					}
-				}
+          handleReset({
+            ...emptyValue,
+            man_power_status: doneNotDone.find((data) => data.default)?.id,
+          });
+          navigate('/apps/manPower-management/manPowers/new');
+          AddedSuccessfully();
+        }
+      }
+    });
+  }
 
-				RemoveSuccessfully();
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+  function handleRemoveManPower() {
+    removeManPower(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({
+              ...emptyValue,
+              man_power_status: doneNotDone.find((data) => data.default)?.id,
+            });
+            localStorage.setItem('medicalAlert', 'saveManPower');
+            navigate('/apps/manPower-management/manPowers/new');
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
 
-	const handleCancel = () => {
-		if (fromSearch) {
-			history.goBack();
-		} else {
-			history.push('/apps/manPower-management/manPowers/new');
-			handleReset({
-				...emptyValue,
-				man_power_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	};
+        RemoveSuccessfully();
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	return (
+  const handleCancel = () => {
+    if (fromSearch) {
+      history.goBack();
+    } else {
+      history.push('/apps/manPower-management/manPowers/new');
+      handleReset({
+        ...emptyValue,
+        man_power_status: doneNotDone.find((data) => data.default)?.id,
+      });
+    }
+  };
+
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

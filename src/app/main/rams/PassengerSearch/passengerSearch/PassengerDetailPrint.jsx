@@ -67,7 +67,11 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Agent:</i>
-              <b className='value text-xs md:text-sm'>{`${data?.agent?.first_name || ''} `}</b>
+              <b
+                className='value text-xs md:text-sm'
+                style={{
+                  color: 'black',
+                }}>{`${data?.agent?.first_name || ''} `}</b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
