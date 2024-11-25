@@ -45,6 +45,7 @@ import TrainingDetailPrint from './TrainingDetailPrint';
 import FlightDetail from './FlightDetail';
 import FlightDetailPrint from './FlightDetailPrint';
 import Forms from './Forms';
+import Images from './Images';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1037,7 +1038,6 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               }
-
               {_.isEmpty(passenger) || (
                 <PassengerDetail classes={classes} data={passenger} pid={pId} />
               )}
@@ -1049,9 +1049,7 @@ function PassengerAllDetails() {
                 />
               }
               {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
-
               {/* <EmbassyDetail classes={classes} data={embassy} pid={pId} /> */}
-
               {country === 'Malaysia' && (
                 <CallingEmbAttestationDetail
                   classes={classes}
@@ -1067,7 +1065,6 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )} */}
-
               {
                 <MusanedOkalaDetail
                   classes={classes}
@@ -1079,7 +1076,10 @@ function PassengerAllDetails() {
               {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
               {<TrainingDetail classes={classes} data={training} pid={pId} />}
               {<FlightDetail classes={classes} data={flight} pid={pId} />}
-
+              {_.isEmpty(images) || (
+                <Images classes={classes} images={images} />
+              )}{' '}
+              */}
               {
                 <Forms
                   classes={classes}
@@ -1088,11 +1088,9 @@ function PassengerAllDetails() {
                   data={passenger}
                 />
               }
-
               {/* {country === 'Saudi Arabia' && (
                 <EmbassyDetail classes={classes} data={embassy} pid={pId} />
               )} */}
-
               {/* {country === 'Saudi Arabia' && (
                 <VisaEntryDetail classes={classes} data={visaEntry} />
               )}
@@ -1119,9 +1117,7 @@ function PassengerAllDetails() {
              
               {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
 
-              {_.isEmpty(images) || (
-                <Images classes={classes} images={images} />
-              )} */}
+
               {/* NOT NEED */}
               {/* {_.isEmpty(forms) || <Forms classes={classes} pid={pId} />} */}
             </>

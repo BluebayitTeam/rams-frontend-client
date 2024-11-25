@@ -19,7 +19,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/ksaVisa/ksaVisas/${pid}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 KSA Visa Form
               </button>
             </div>
@@ -28,7 +28,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/malaysiaVisa/malaysiaVisas/${pid}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 Malaysia Visa Form
               </button>
             </div>
@@ -37,7 +37,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/thailandVisa/thailandVisas/${pid}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 Thailand Visa Form
               </button>
             </div>
@@ -46,7 +46,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/finger/fingers/${pid}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 Finger Form
               </button>
             </div>
@@ -55,7 +55,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/bmetContract/bmetContracts/${pid}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 BMET Contract Form
               </button>
             </div>
@@ -66,7 +66,7 @@ function Forms({ classes, data, pid, id }) {
                     `/apps/passengerAgreement/passengerAgreements/${id}`
                   );
                 }}
-                class='bg-slate-500 w-full whitespace-nowrap text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full whitespace-nowrap text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 Passenger Agreement Form
               </button>
             </div>
@@ -75,7 +75,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/departure/departures/${pid}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 Departure Card
               </button>
             </div>
@@ -84,7 +84,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/bmetVerify/bmetVerifys/${id}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 BMET Verify Form
               </button>
             </div>
@@ -93,7 +93,7 @@ function Forms({ classes, data, pid, id }) {
                 onClick={() => {
                   navigate(`/apps/bmet/bmets/${pid}`);
                 }}
-                class='bg-slate-500 w-full text-xl hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
+                class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
                 BMET Form
               </button>
             </div>
