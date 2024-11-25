@@ -40,6 +40,10 @@ import MofaDetailPrint from './MofaDetailPrint';
 import MofaDetail from './MofaDetail';
 import ManPowerDetail from './ManPowerDetail';
 import ManPowerDetailPrint from './ManPowerDetailPrint';
+import TrainingDetail from './TrainingDetail';
+import TrainingDetailPrint from './TrainingDetailPrint';
+import FlightDetail from './FlightDetail';
+import FlightDetailPrint from './FlightDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1072,6 +1076,8 @@ function PassengerAllDetails() {
               }
               {<MofaDetail classes={classes} data={mofa} pid={pId} />}
               {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
+              {<TrainingDetail classes={classes} data={training} pid={pId} />}
+              {<FlightDetail classes={classes} data={flight} pid={pId} />}
 
               {/* {country === 'Saudi Arabia' && (
                 <EmbassyDetail classes={classes} data={embassy} pid={pId} />
@@ -1100,9 +1106,8 @@ function PassengerAllDetails() {
               }
 
 
-              {<TrainingDetail classes={classes} data={training} pid={pId} />}
+             
               {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
-              {<FlightDetail classes={classes} data={flight} pid={pId} />}
               {
                 <Forms
                   classes={classes}
@@ -1232,6 +1237,22 @@ function PassengerAllDetails() {
                   />
                 )}
 
+                {_.isEmpty(training) || (
+                  <TrainingDetailPrint
+                    classes={classes}
+                    data={training}
+                    pid={pId}
+                  />
+                )}
+
+                {_.isEmpty(flight) || (
+                  <FlightDetailPrint
+                    classes={classes}
+                    data={flight}
+                    pid={pId}
+                  />
+                )}
+
                 {/* {_.isEmpty(embassy) || (
                   <EmbassyDetailPrint
                     classes={classes}
@@ -1258,24 +1279,10 @@ function PassengerAllDetails() {
                   />
                 )} */}
 
-                {/* {_.isEmpty(training) || (
-                  <TrainingDetailPrint
-                    classes={classes}
-                    data={training}
-                    pid={pId}
-                  />
-                )} */}
                 {/* {_.isEmpty(manPower) || (
                   <ManPowerDetailPrint
                     classes={classes}
                     data={manPower}
-                    pid={pId}
-                  />
-                )} */}
-                {/* {_.isEmpty(flight) || (
-                  <FlightDetailPrint
-                    classes={classes}
-                    data={flight}
                     pid={pId}
                   />
                 )} */}

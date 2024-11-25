@@ -6,141 +6,157 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 // import { doneNotDone, flightResults } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { activeRetrnCncl } from 'src/app/@data/data';
-import { useCreateFlightMutation, useDeleteFlightMutation, useUpdateFlightMutation } from '../FlightsApi';
+import {
+  useCreateFlightMutation,
+  useDeleteFlightMutation,
+  useUpdateFlightMutation,
+} from '../FlightsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The flight header.
  */
 function FlightHeader({ handleReset, emptyValue }) {
-	const routeParams = useParams();
-	const { flightId } = routeParams;
-	const [createFlight] = useCreateFlightMutation();
-	const [saveFlight] = useUpdateFlightMutation();
-	const [removeFlight] = useDeleteFlightMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteFlight');
-	const handleUpdate = localStorage.getItem('updateFlight');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
+  const routeParams = useParams();
+  const { flightId } = routeParams;
+  const [createFlight] = useCreateFlightMutation();
+  const [saveFlight] = useUpdateFlightMutation();
+  const [removeFlight] = useDeleteFlightMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues, reset } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteFlight');
+  const handleUpdate = localStorage.getItem('updateFlight');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateFlight() {
-		saveFlight(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('flightAlert', 'updateFlight');
+  function handleUpdateFlight() {
+    saveFlight(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('flightAlert', 'updateFlight');
 
-						handleReset({
-							...emptyValue,
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
-						});
-						// console.log('sklfjjdf', getValues());
-						UpdatedSuccessfully();
-						navigate('/apps/flight-management/flights/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating flight', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            handleReset({
+              ...emptyValue,
+              ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+            });
+            // console.log('sklfjjdf', getValues());
+            UpdatedSuccessfully();
+            navigate('/apps/flight-management/flights/new');
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating flight', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateFlight() {
-		createFlight(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('flightAlert', 'saveFlight');
+  function handleCreateFlight() {
+    createFlight(getValues())
+      // .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('flightAlert', 'saveFlight');
 
-						handleReset({
-							...emptyValue,
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
-						});
-						navigate('/apps/flight-management/flights/new');
-						AddedSuccessfully();
-					}
-				}
-			});
-	}
+            handleReset({
+              ...emptyValue,
+              ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+            });
+            navigate('/apps/flight-management/flights/new');
+            AddedSuccessfully();
+          }
+        }
+      });
+  }
 
-	function handleRemoveFlight() {
-		removeFlight(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
-						});
+  function handleRemoveFlight() {
+    removeFlight(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({
+              ...emptyValue,
+              ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+            });
 
-						navigate('/apps/flight-management/flights/new');
-						// dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
-					}
-				}
+            navigate('/apps/flight-management/flights/new');
+            // dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
+          }
+        }
 
-				RemoveSuccessfully();
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+        RemoveSuccessfully();
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	const handleCancel = () => {
-		handleReset({
-			...emptyValue,
-			ticket_status: activeRetrnCncl.find((data) => data.default)?.id
-		});
-		navigate('/apps/flight-management/flights/new');
-	};
+  const handleCancel = () => {
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      handleReset({
+        ...emptyValue,
+        ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+      });
+      navigate('/apps/flight-management/flights/new');
+    }
+  };
 
-	// useEffect(() => {
-	// 	if (flightId === 'new') {
-	// 		reset({
-	// 			passenger: 'all',
-	// 			ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-	// 			ticket_agency: 'all',
-	// 			carrier_air_way: '',
-	// 			flight_no: '',
-	// 			ticket_no: '',
-	// 			sector_name: '',
+  // useEffect(() => {
+  // 	if (flightId === 'new') {
+  // 		reset({
+  // 			passenger: 'all',
+  // 			ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+  // 			ticket_agency: 'all',
+  // 			carrier_air_way: '',
+  // 			flight_no: '',
+  // 			ticket_no: '',
+  // 			sector_name: '',
 
-	// 			flight_time: '',
-	// 			arrival_time: '',
-	// 			issue_date: '',
-	// 			flight_date: '',
-	// 			notes: '',
-	// 			current_status: 'all'
-	// 		});
-	// 	}
-	// }, [flightId, reset]);
-	return (
+  // 			flight_time: '',
+  // 			arrival_time: '',
+  // 			issue_date: '',
+  // 			flight_date: '',
+  // 			notes: '',
+  // 			current_status: 'all'
+  // 		});
+  // 	}
+  // }, [flightId, reset]);
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

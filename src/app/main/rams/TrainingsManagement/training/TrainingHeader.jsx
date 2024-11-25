@@ -6,143 +6,163 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
 import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useCreateTrainingMutation, useDeleteTrainingMutation, useUpdateTrainingMutation } from '../TrainingsApi';
+import {
+  useCreateTrainingMutation,
+  useDeleteTrainingMutation,
+  useUpdateTrainingMutation,
+} from '../TrainingsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The training header.
  */
 function TrainingHeader({ handleReset, emptyValue }) {
-	const routeParams = useParams();
-	const { trainingId } = routeParams;
-	const [createTraining] = useCreateTrainingMutation();
-	const [saveTraining] = useUpdateTrainingMutation();
-	const [removeTraining] = useDeleteTrainingMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteTraining');
-	const handleUpdate = localStorage.getItem('updateTraining');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
+  const routeParams = useParams();
+  const { trainingId } = routeParams;
+  const [createTraining] = useCreateTrainingMutation();
+  const [saveTraining] = useUpdateTrainingMutation();
+  const [removeTraining] = useDeleteTrainingMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues, reset } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteTraining');
+  const handleUpdate = localStorage.getItem('updateTraining');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateTraining() {
-		saveTraining(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'updateTraining');
+  function handleUpdateTraining() {
+    saveTraining(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('medicalAlert', 'updateTraining');
 
-						handleReset({
-							...emptyValue,
-							training_card_status: doneNotDone.find((data) => data.default)?.id
-						});
-						console.log('sklfjjdf', getValues());
-						UpdatedSuccessfully();
-						navigate('/apps/training-management/trainings/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating training', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            handleReset({
+              ...emptyValue,
+              training_card_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+            console.log('sklfjjdf', getValues());
+            UpdatedSuccessfully();
+            navigate('/apps/training-management/trainings/new');
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating training', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateTraining() {
-		createTraining(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'saveTraining');
+  function handleCreateTraining() {
+    createTraining(getValues())
+      // .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('medicalAlert', 'saveTraining');
 
-						handleReset({
-							...emptyValue,
-							training_card_status: doneNotDone.find((data) => data.default)?.id
-						});
-						navigate('/apps/training-management/trainings/new');
-						AddedSuccessfully();
-					}
-				}
-			});
-	}
+            handleReset({
+              ...emptyValue,
+              training_card_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+            navigate('/apps/training-management/trainings/new');
+            AddedSuccessfully();
+          }
+        }
+      });
+  }
 
-	function handleRemoveTraining() {
-		removeTraining(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							training_card_status: doneNotDone.find((data) => data.default)?.id
-						});
-						localStorage.setItem('medicalAlert', 'saveTraining');
-						navigate('/apps/training-management/trainings/new');
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
-					}
-				}
+  function handleRemoveTraining() {
+    removeTraining(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({
+              ...emptyValue,
+              training_card_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+            localStorage.setItem('medicalAlert', 'saveTraining');
+            navigate('/apps/training-management/trainings/new');
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
 
-				RemoveSuccessfully();
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+        RemoveSuccessfully();
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	const handleCancel = () => {
-		if (fromSearch) {
-			history.goBack();
-		} else {
-			history.push('/apps/training-management/trainings/new');
-			handleReset({
-				...emptyValue,
-				training_card_status: doneNotDone.find((data) => data.default)?.id
-			});
-		}
-	};
+  const handleCancel = () => {
+    if (fromSearch) {
+      history.goBack();
+    } else {
+      history.push('/apps/training-management/trainings/new');
+      handleReset({
+        ...emptyValue,
+        training_card_status: doneNotDone.find((data) => data.default)?.id,
+      });
+    }
+  };
 
-	// useEffect(() => {
-	// 	if (trainingId === 'new') {
-	// 		reset({
-	// 			passenger: 'all',
-	// 			medical_center: 'all',
-	// 			medical_serial_no: '',
-	// 			medical_result: medicalResults.find((data) => data.default)?.id || '',
-	// 			medical_card: doneNotDone.find((data) => data.default)?.id || '',
-	// 			medical_exam_date: '',
-	// 			medical_report_date: '',
-	// 			medical_issue_date: '',
-	// 			medical_expiry_date: '',
-	// 			notes: '',
-	// 			slip_pic: '',
-	// 			medical_card_pic: '',
-	// 			current_status: 'all'
-	// 		});
-	// 	}
-	// }, [trainingId, reset]);
-	return (
+  // useEffect(() => {
+  // 	if (trainingId === 'new') {
+  // 		reset({
+  // 			passenger: 'all',
+  // 			medical_center: 'all',
+  // 			medical_serial_no: '',
+  // 			medical_result: medicalResults.find((data) => data.default)?.id || '',
+  // 			medical_card: doneNotDone.find((data) => data.default)?.id || '',
+  // 			medical_exam_date: '',
+  // 			medical_report_date: '',
+  // 			medical_issue_date: '',
+  // 			medical_expiry_date: '',
+  // 			notes: '',
+  // 			slip_pic: '',
+  // 			medical_card_pic: '',
+  // 			current_status: 'all'
+  // 		});
+  // 	}
+  // }, [trainingId, reset]);
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>
