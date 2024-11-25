@@ -133,7 +133,7 @@ function TrainingHeader({ handleReset, emptyValue }) {
 
   const handleCancel = () => {
     if (fromSearch) {
-      history.goBack();
+      navigate(-1);
     } else {
       history.push('/apps/training-management/trainings/new');
       handleReset({
