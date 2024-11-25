@@ -43,7 +43,6 @@ function ManPowerHeader({ handleReset, emptyValue }) {
   const passengers = useSelector((state) => state.data.passengers);
   const { fromSearch } = useParams();
 
-
   function handleUpdateManPower() {
     saveManPower(getValues())
       .then((res) => {
@@ -78,7 +77,7 @@ function ManPowerHeader({ handleReset, emptyValue }) {
     createManPower(getValues()).then((res) => {
       if (res) {
         if (fromSearch) {
-          history.goBack();
+          navigate(-1);
         } else {
           localStorage.setItem('medicalAlert', 'saveManPower');
 
@@ -99,7 +98,7 @@ function ManPowerHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res) {
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
             handleReset({
               ...emptyValue,
@@ -127,7 +126,7 @@ function ManPowerHeader({ handleReset, emptyValue }) {
 
   const handleCancel = () => {
     if (fromSearch) {
-      history.goBack();
+      navigate(-1);
     } else {
       history.push('/apps/manPower-management/manPowers/new');
       handleReset({

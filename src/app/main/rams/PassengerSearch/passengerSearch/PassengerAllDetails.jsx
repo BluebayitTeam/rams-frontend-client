@@ -46,6 +46,8 @@ import FlightDetail from './FlightDetail';
 import FlightDetailPrint from './FlightDetailPrint';
 import Forms from './Forms';
 import Images from './Images';
+import VisaEntryDetail from './VisaEntryDetail';
+import VisaEntryDetailPrint from './VisaEntryDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -947,32 +949,150 @@ function PassengerAllDetails() {
 
   return (
     <div>
-      <div>
-        {noData ? (
-          ''
-        ) : (
-          <PrintIcon
-            fontSize='large'
-            className='cursor-pointer inside icon'
-            style={{
-              margin: '30px',
-              color: 'blue',
-              border: inPrint && '1px solid blue',
-              borderRadius: '30px',
-              padding: '2px',
-            }}
-            onClick={() => {
-              sessionStorage.setItem(
-                'passengerAllDetailsPrint',
-                'passengerAllDetailsPrint'
-              );
-              handlePrint();
-            }}
-          />
-        )}
+      {noData ? (
+        ''
+      ) : (
+        <PrintIcon
+          fontSize='large'
+          className='cursor-pointer inside icon'
+          style={{
+            margin: '30px',
+            color: 'blue',
+            border: inPrint && '1px solid blue',
+            borderRadius: '30px',
+            padding: '2px',
+          }}
+          onClick={() => {
+            sessionStorage.setItem(
+              'passengerAllDetailsPrint',
+              'passengerAllDetailsPrint'
+            );
+            handlePrint();
+          }}
+        />
+      )}
 
-        <div className={`${classes.container}`}>
-          <div className='flex justify-between items-start flex-row md:flex-row'>
+      <div className={`${classes.container}`}>
+        <div className='flex justify-between items-start flex-row md:flex-row'>
+          <div className='w-full md:w-1/4'></div>
+
+          <div className='w-full md:w-1/2'>
+            <div className={classes.logoContainer}>
+              <img
+                src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`}
+              />
+            </div>
+            <div className={classes.addressContainer}>
+              <p>{siteSetting?.address || ''}</p>
+            </div>
+          </div>
+
+          <div
+            className={`w-full md:w-1/4 justify-center md:justify-start mt-20 md:mt-0 ${classes.passengerImgContainer}`}>
+            <div className='passengerImgHolder rounded-2'>
+              {passenger.passenger_pic ? (
+                <img src={`${BASE_URL}${passenger.passenger_pic}`} />
+              ) : (
+                <img src='/assets/images/userImg/noImageFound.jpeg' />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {noData ? (
+          <div
+            className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.noData}`}>
+            <h1>no data found</h1>
+          </div>
+        ) : (
+          <>
+            {_.isEmpty(passenger) || (
+              <div
+                className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.currentStsContainer}`}>
+                <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                  <i className='label text-xs md:text-sm'>Passenger ID :</i>
+                  <b className='value text-xs md:text-sm'>
+                    {passenger?.passenger_id || ''}
+                  </b>
+                </div>
+                <div className='border hidden md:block'></div>
+                <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                  <i className='label text-xs md:text-sm'>Current Status :</i>
+                  {sessionStorage.setItem(
+                    'passengerCurrentStatus',
+                    passenger?.current_status?.name
+                  )}
+
+                  <b className='value text-xs md:text-sm'>
+                    {passenger?.current_status?.name || ''}
+                  </b>
+                </div>
+              </div>
+            )}
+            {
+              <StatusStepDetail
+                classes={classes}
+                data={statusStep}
+                completed={Object?.entries(statusStep)
+                  .filter(([_, value]) => value)
+                  .map(([index]) => Object.keys(statusStep).indexOf(index))}
+                pid={pId}
+              />
+            }
+
+            {_.isEmpty(passenger) || (
+              <PassengerDetail classes={classes} data={passenger} pid={pId} />
+            )}
+            {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
+            {country === 'Saudi Arabia' && (
+              <VisaEntryDetail classes={classes} data={visaEntry} />
+            )}
+            {country === 'Saudi Arabia' && (
+              <MusanedOkalaDetail
+                classes={classes}
+                data={musanedOkala}
+                pid={pId}
+              />
+            )}
+            {country === 'Saudi Arabia' && (
+              <MofaDetail classes={classes} data={mofa} pid={pId} />
+            )}
+            {country === 'Malaysia' && (
+              <CallingEmbAttestationDetail
+                classes={classes}
+                data={callingEmbAttestation}
+                pid={pId}
+              />
+            )}
+            {<OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
+            {country === 'Saudi Arabia' && (
+              <EmbassyDetail classes={classes} data={embassy} pid={pId} />
+            )}
+
+            {<TrainingDetail classes={classes} data={training} pid={pId} />}
+            {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
+            {<FlightDetail classes={classes} data={flight} pid={pId} />}
+            {
+              <Forms
+                classes={classes}
+                pid={passengerSearchId}
+                id={pId}
+                data={passenger}
+              />
+            }
+            {_.isEmpty(images) || <Images classes={classes} images={images} />}
+            {/* {_.isEmpty(forms) || <Forms classes={classes} pid={pId} />} */}
+          </>
+        )}
+      </div>
+
+      {/* Print Action  */}
+
+      <div className='w-full' style={{ display: 'none' }}>
+        <div className={`${classes.pageContainer}  `} ref={componentRef}>
+          <div
+            className='flex justify-between items-start flex-col md:flex-row'
+            style={{ margin: '50px' }}>
             <div className='w-full md:w-1/4'></div>
 
             <div className='w-full md:w-1/2'>
@@ -987,13 +1107,9 @@ function PassengerAllDetails() {
             </div>
 
             <div
-              className={`w-full md:w-1/4 justify-center md:justify-start mb-20 md:mt-0 ${classes.passengerImgContainer}`}>
+              className={`w-full md:w-1/4 justify-center md:justify-start mt-20 md:mt-0 ${classes.passengerImgContainer}`}>
               <div className='passengerImgHolder rounded-2'>
-                {passenger.passenger_pic ? (
-                  <img src={`${BASE_URL}${passenger.passenger_pic}`} />
-                ) : (
-                  <img src='/assets/images/userImg/noImageFound.jpeg' />
-                )}
+                <img src={`${BASE_URL}${passenger.passenger_pic}`} />
               </div>
             </div>
           </div>
@@ -1007,7 +1123,8 @@ function PassengerAllDetails() {
             <>
               {_.isEmpty(passenger) || (
                 <div
-                  className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.currentStsContainer}`}>
+                  className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.currentStsContainer}`}
+                  style={{ margin: '30px' }}>
                   <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
                     <i className='label text-xs md:text-sm'>Passenger ID :</i>
                     <b className='value text-xs md:text-sm'>
@@ -1028,266 +1145,74 @@ function PassengerAllDetails() {
                   </div>
                 </div>
               )}
-              {
-                <StatusStepDetail
-                  classes={classes}
-                  data={statusStep}
-                  completed={Object?.entries(statusStep)
-                    .filter(([_, value]) => value)
-                    .map(([index]) => Object.keys(statusStep).indexOf(index))}
-                  pid={pId}
-                />
-              }
+
               {_.isEmpty(passenger) || (
-                <PassengerDetail classes={classes} data={passenger} pid={pId} />
-              )}
-              {
-                <OfficeWorkDetail
+                <PassengerDetailPrint
                   classes={classes}
-                  data={officeWork}
+                  data={passenger}
                   pid={pId}
                 />
-              }
-              {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
-              {/* <EmbassyDetail classes={classes} data={embassy} pid={pId} /> */}
-              {country === 'Malaysia' && (
-                <CallingEmbAttestationDetail
+              )}
+              {/* {_.isEmpty(medical) || (
+                <MedicalDetailPrint
+                  classes={classes}
+                  data={medical}
+                  pid={pId}
+                />
+              )} */}
+              {_.isEmpty(visaEntry) || (
+                <VisaEntryDetailPrint classes={classes} data={visaEntry} />
+              )}
+              {_.isEmpty(musanedOkala) || (
+                <MusanedOkalaDetailPrint
+                  classes={classes}
+                  data={musanedOkala}
+                  pid={pId}
+                />
+              )}
+              {_.isEmpty(mofa) || (
+                <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
+              )}
+              {_.isEmpty(callingEmbAttestation) || (
+                <CallingEmbAttestationDetailPrint
                   classes={classes}
                   data={callingEmbAttestation}
                   pid={pId}
                 />
               )}
-              {/* 
-              {country === 'Saudi Arabia' && (
-                <MusanedOkalaDetail
-                  classes={classes}
-                  data={musanedOkala}
-                  pid={pId}
-                />
-              )} */}
-              {
-                <MusanedOkalaDetail
-                  classes={classes}
-                  data={musanedOkala}
-                  pid={pId}
-                />
-              }
-              {<MofaDetail classes={classes} data={mofa} pid={pId} />}
-              {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
-              {<TrainingDetail classes={classes} data={training} pid={pId} />}
-              {<FlightDetail classes={classes} data={flight} pid={pId} />}
-              {_.isEmpty(images) || (
-                <Images classes={classes} images={images} />
-              )}{' '}
-              */}
-              {
-                <Forms
-                  classes={classes}
-                  pid={passengerSearchId}
-                  id={pId}
-                  data={passenger}
-                />
-              }
-              {/* {country === 'Saudi Arabia' && (
-                <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-              )} */}
-              {/* {country === 'Saudi Arabia' && (
-                <VisaEntryDetail classes={classes} data={visaEntry} />
-              )}
-              {country === 'Saudi Arabia' && (
-                <MusanedOkalaDetail
-                  classes={classes}
-                  data={musanedOkala}
-                  pid={pId}
-                />
-              )}
-              {country === 'Saudi Arabia' && (
-                <MofaDetail classes={classes} data={mofa} pid={pId} />
-              )}
-
-              {
-                <OfficeWorkDetail
+              {_.isEmpty(officeWork) || (
+                <OfficeWorkDetailPrint
                   classes={classes}
                   data={officeWork}
                   pid={pId}
                 />
-              }
-
-
-             
-              {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
-
-
-              {/* NOT NEED */}
-              {/* {_.isEmpty(forms) || <Forms classes={classes} pid={pId} />} */}
+              )}
+              {/* {_.isEmpty(embassy) || (
+                <EmbassyDetailPrint
+                  classes={classes}
+                  data={embassy}
+                  pid={pId}
+                />
+              )} */}
+              {_.isEmpty(training) || (
+                <TrainingDetailPrint
+                  classes={classes}
+                  data={training}
+                  pid={pId}
+                />
+              )}
+              {_.isEmpty(manPower) || (
+                <ManPowerDetailPrint
+                  classes={classes}
+                  data={manPower}
+                  pid={pId}
+                />
+              )}
+              {_.isEmpty(flight) || (
+                <FlightDetailPrint classes={classes} data={flight} pid={pId} />
+              )}
             </>
           )}
-        </div>
-
-        {/* Print Action  */}
-
-        <div className='w-full' style={{ display: 'none' }}>
-          <div className={`${classes.pageContainer}  `} ref={componentRef}>
-            <div
-              className='flex justify-between items-start flex-col md:flex-row'
-              style={{ margin: '50px' }}>
-              <div className='w-full md:w-1/4'></div>
-
-              <div className='w-full md:w-1/2'>
-                <div className={classes.logoContainer}>
-                  <img
-                    src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`}
-                  />
-                </div>
-                <div className={classes.addressContainer}>
-                  <pre>{siteSetting?.address || ''}</pre>
-                </div>
-              </div>
-
-              <div
-                className={`w-full md:w-1/4 justify-center md:justify-start mt-20 md:mt-0 ${classes.passengerImgContainer}`}>
-                <div className='passengerImgHolder rounded-2'>
-                  <img src={`${BASE_URL}${passenger.passenger_pic}`} />
-                </div>
-              </div>
-            </div>
-
-            {noData ? (
-              <div
-                className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.noData}`}>
-                <h1>no data found</h1>
-              </div>
-            ) : (
-              <>
-                {_.isEmpty(passenger) || (
-                  <div
-                    className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.currentStsContainer}`}
-                    style={{ margin: '30px' }}>
-                    <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                      <i className='label text-xs md:text-sm'>Passenger ID :</i>
-                      <b className='value text-xs md:text-sm'>
-                        {passenger?.passenger_id || ''}
-                      </b>
-                    </div>
-                    <div className='border hidden md:block'></div>
-                    <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                      <i className='label text-xs md:text-sm'>
-                        Current Status :
-                      </i>
-                      {sessionStorage.setItem(
-                        'passengerCurrentStatus',
-                        passenger?.current_status?.name
-                      )}
-
-                      <b className='value text-xs md:text-sm'>
-                        {passenger?.current_status?.name || ''}
-                      </b>
-                    </div>
-                  </div>
-                )}
-
-                {_.isEmpty(passenger) || (
-                  <PassengerDetailPrint
-                    classes={classes}
-                    data={passenger}
-                    pid={pId}
-                  />
-                )}
-                {/* {_.isEmpty(medical) || (
-                  <MedicalDetailPrint
-                    classes={classes}
-                    data={medical}
-                    pid={pId}
-                  />
-                )} */}
-                {_.isEmpty(callingEmbAttestation) || (
-                  <CallingEmbAttestationDetailPrint
-                    classes={classes}
-                    data={callingEmbAttestation}
-                    pid={pId}
-                  />
-                )}
-
-                {_.isEmpty(officeWork) || (
-                  <OfficeWorkDetailPrint
-                    classes={classes}
-                    data={officeWork}
-                    pid={pId}
-                  />
-                )}
-
-                {_.isEmpty(musanedOkala) || (
-                  <MusanedOkalaDetailPrint
-                    classes={classes}
-                    data={musanedOkala}
-                    pid={pId}
-                  />
-                )}
-
-                {_.isEmpty(mofa) || (
-                  <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
-                )}
-
-                {_.isEmpty(manPower) || (
-                  <ManPowerDetailPrint
-                    classes={classes}
-                    data={manPower}
-                    pid={pId}
-                  />
-                )}
-
-                {_.isEmpty(training) || (
-                  <TrainingDetailPrint
-                    classes={classes}
-                    data={training}
-                    pid={pId}
-                  />
-                )}
-
-                {_.isEmpty(flight) || (
-                  <FlightDetailPrint
-                    classes={classes}
-                    data={flight}
-                    pid={pId}
-                  />
-                )}
-
-                {/* {_.isEmpty(embassy) || (
-                  <EmbassyDetailPrint
-                    classes={classes}
-                    data={embassy}
-                    pid={pId}
-                  />
-                )} */}
-                {/* {_.isEmpty(visaEntry) || (
-                  <VisaEntryDetailPrint classes={classes} data={visaEntry} />
-                )} */}
-                {/* {_.isEmpty(musanedOkala) || (
-                  <MusanedOkalaDetailPrint
-                    classes={classes}
-                    data={musanedOkala}
-                    pid={pId}
-                  />
-                )} */}
-
-                {/* {_.isEmpty(officeWork) || (
-                  <OfficeWorkDetailPrint
-                    classes={classes}
-                    data={officeWork}
-                    pid={pId}
-                  />
-                )} */}
-
-                {/* {_.isEmpty(manPower) || (
-                  <ManPowerDetailPrint
-                    classes={classes}
-                    data={manPower}
-                    pid={pId}
-                  />
-                )} */}
-              </>
-            )}
-          </div>
         </div>
       </div>
     </div>
