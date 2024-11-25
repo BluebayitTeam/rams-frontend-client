@@ -82,7 +82,7 @@ function FlightHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res) {
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
             localStorage.setItem('flightAlert', 'saveFlight');
 
@@ -103,7 +103,7 @@ function FlightHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res) {
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
             handleReset({
               ...emptyValue,
@@ -136,26 +136,6 @@ function FlightHeader({ handleReset, emptyValue }) {
     }
   };
 
-  // useEffect(() => {
-  // 	if (flightId === 'new') {
-  // 		reset({
-  // 			passenger: 'all',
-  // 			ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
-  // 			ticket_agency: 'all',
-  // 			carrier_air_way: '',
-  // 			flight_no: '',
-  // 			ticket_no: '',
-  // 			sector_name: '',
-
-  // 			flight_time: '',
-  // 			arrival_time: '',
-  // 			issue_date: '',
-  // 			flight_date: '',
-  // 			notes: '',
-  // 			current_status: 'all'
-  // 		});
-  // 	}
-  // }, [flightId, reset]);
   return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>

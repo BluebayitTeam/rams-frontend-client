@@ -129,7 +129,7 @@ function OfficeWorkHeader({ handleReset, emptyValue }) {
           RemoveSuccessfully();
 
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
             handleReset({
               ...emptyValue,

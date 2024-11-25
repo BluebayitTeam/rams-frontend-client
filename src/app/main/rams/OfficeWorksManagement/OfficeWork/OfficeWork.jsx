@@ -68,8 +68,8 @@ function OfficeWork() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const routeParams = useParams();
   const { officeWorkId, fromSearch } = routeParams;
-  console.log('routeParams', routeParams);
   const passengers = useSelector((state) => state.data.passengers);
+  console.log('passengersPrint', passengers);
   const classes = useStyles();
   const navigate = useNavigate();
   const [formKey, setFormKey] = useState(0);

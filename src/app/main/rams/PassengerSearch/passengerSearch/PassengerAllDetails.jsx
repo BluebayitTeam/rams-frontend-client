@@ -297,11 +297,11 @@ function PassengerAllDetails() {
   const [medical, setMedical] = useState({});
   const [statusStep, setStatusStep] = useState({});
   const [country, setCountry] = useState('');
-
+  console.log('country', country);
   const [passenger, setPassenger] = useState({});
 
   const [embassy, setEmbassy] = useState({});
-  console.log('country', country);
+
   const [mofa, setMofa] = useState({});
   const [officeWork, setOfficeWork] = useState({});
   const [manPower, setManPower] = useState({});
@@ -363,7 +363,7 @@ function PassengerAllDetails() {
         .get(`${SEARCH_PASSENGER_BY}?keyword=${passengerSearchId}`, authTOKEN)
         .then((res) => {
           setpId(res?.data?.passengers[0]?.id || 0);
-          setCountry(res?.data?.passengers[0]?.target_country?.name || 0);
+          setCountry(res?.data?.passengers[0]?.target_country || 0);
 
           setLoading(false);
           if (res?.data?.passengers[0]?.id) {
@@ -406,7 +406,7 @@ function PassengerAllDetails() {
               setStatusStep({
                 Medical: res.data?.medical,
                 Calling_EMB_Attestation: res.data?.callingembattestation,
-                E_Visa: res.data?.evisa,
+                E_Visa: res.data?.evisaentry,
                 Training: res.data?.training,
                 Manpower: res.data?.manpower,
                 Flight: res.data?.flight,
@@ -1065,9 +1065,9 @@ function PassengerAllDetails() {
               />
             )}
             {<OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
-            {country === 'Saudi Arabia' && (
+            {/* {country === 'Saudi Arabia' && (
               <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-            )}
+            )} */}
 
             {<TrainingDetail classes={classes} data={training} pid={pId} />}
             {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}

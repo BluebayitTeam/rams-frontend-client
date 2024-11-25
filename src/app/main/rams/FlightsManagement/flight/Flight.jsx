@@ -9,7 +9,10 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { FLIGHT_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
+import {
+  FLIGHT_BY_PASSENGER_ID,
+  GET_PASSENGER_BY_ID,
+} from 'src/app/constant/constants';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { activeRetrnCncl } from 'src/app/@data/data';
 import moment from 'moment';
@@ -20,131 +23,134 @@ import FlightForm from './FlightForm';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		borderBottom: `1px solid ${theme.palette.primary.main}`,
-		paddingTop: '0.8rem',
-		paddingBottom: '0.7rem',
-		boxSizing: 'content-box'
-	},
-	textField: {
-		height: '4.8rem',
-		'& > div': {
-			height: '100%'
-		}
-	}
+  container: {
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    paddingTop: '0.8rem',
+    paddingBottom: '0.7rem',
+    boxSizing: 'content-box',
+  },
+  textField: {
+    height: '4.8rem',
+    '& > div': {
+      height: '100%',
+    },
+  },
 }));
 
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a Flight name')
-		.min(5, 'The Flight name must be at least 5 characters')
+  first_name: z
+    .string()
+    .nonempty('You must enter a Flight name')
+    .min(5, 'The Flight name must be at least 5 characters'),
 });
 
 function Flight() {
-	const emptyValue = {
-		passenger: '',
-		ticket_status: '',
-		ticket_agency: '',
-		carrier_air_way: '',
-		flight_no: '',
-		ticket_no: '',
-		sector_name: '',
-		flight_time: '',
-		arrival_time: '',
-		issue_date: '',
-		flight_date: '',
-		notes: '',
-		current_status: ''
-	};
-	const routeParams = useParams();
-	const { flightId, fromSearch } = routeParams;
-	const passengers = useSelector((state) => state.data.passengers);
-	const classes = useStyles();
-	const navigate = useNavigate();
-	const [formKey, setFormKey] = useState(0);
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: emptyValue,
-		resolver: zodResolver(schema)
-	});
+  const emptyValue = {
+    passenger: '',
+    ticket_status: '',
+    ticket_agency: '',
+    carrier_air_way: '',
+    flight_no: '',
+    ticket_no: '',
+    sector_name: '',
+    flight_time: '',
+    arrival_time: '',
+    issue_date: '',
+    flight_date: '',
+    notes: '',
+    current_status: '',
+  };
+  const routeParams = useParams();
+  const { flightId, fromSearch } = routeParams;
+  const passengers = useSelector((state) => state.data.passengers);
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const [formKey, setFormKey] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: emptyValue,
+    resolver: zodResolver(schema),
+  });
 
-	const {
-		data: Flight,
-		isLoading,
-		isError
-	} = useGetFlightQuery(flightId, {
-		skip: !flightId || flightId === 'new'
-	});
+  const {
+    data: Flight,
+    isLoading,
+    isError,
+  } = useGetFlightQuery(flightId, {
+    skip: !flightId || flightId === 'new',
+  });
 
-	const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
 
-	const {
-		reset,
-		control,
-		formState: { errors },
-		setValue
-	} = methods;
+  const {
+    reset,
+    control,
+    formState: { errors },
+    setValue,
+  } = methods;
 
-	const handleReset = (defaultValues) => {
-		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-	};
+  const handleReset = (defaultValues) => {
+    reset(defaultValues);
+    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+  };
 
-	const getCurrentStatus = (passengerId) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
+  const getCurrentStatus = (passengerId) => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+    axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+      setValue('current_status', res.data?.current_status?.id);
+    });
+  };
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						// handleReset({ ...setIdIfValueIsObject(res.data), passenger: flightId });
-					} else {
-						handleReset({
-							passenger: flightId,
-							ticket_status: activeRetrnCncl.find((data) => data.default)?.id
-						});
-						sessionStorage.setItem('operation', 'save');
-					}
-				})
-				.catch(() => {
-					handleReset({
-						passenger: flightId,
-						ticket_status: activeRetrnCncl.find((data) => data.default)?.id
-					});
-					sessionStorage.setItem('operation', 'save');
-				});
-		} else {
-			handleReset({ ...emptyValue, ticket_status: activeRetrnCncl.find((data) => data.default)?.id });
-		}
-	}, [fromSearch]);
+  useEffect(() => {
+    if (fromSearch) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(`${FLIGHT_BY_PASSENGER_ID}${flightId}`, authTOKEN)
+        .then((res) => {
+          if (res.data.id) {
+            // handleReset({ ...setIdIfValueIsObject(res.data), passenger: flightId });
+          } else {
+            handleReset({
+              passenger: flightId,
+              ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+            });
+            sessionStorage.setItem('operation', 'save');
+          }
+        })
+        .catch(() => {
+          handleReset({
+            passenger: flightId,
+            ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+          });
+          sessionStorage.setItem('operation', 'save');
+        });
+    } else {
+      handleReset({
+        ...emptyValue,
+        ticket_status: activeRetrnCncl.find((data) => data.default)?.id,
+      });
+    }
+  }, [fromSearch]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	return (
+  return (
     <FormProvider {...methods} key={formKey}>
       {hasPermission('FLIGHT_DETAILS') && (
         <FusePageCarded
