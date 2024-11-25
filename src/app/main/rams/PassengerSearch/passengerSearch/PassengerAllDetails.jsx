@@ -44,6 +44,7 @@ import TrainingDetail from './TrainingDetail';
 import TrainingDetailPrint from './TrainingDetailPrint';
 import FlightDetail from './FlightDetail';
 import FlightDetailPrint from './FlightDetailPrint';
+import Forms from './Forms';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -1079,6 +1080,15 @@ function PassengerAllDetails() {
               {<TrainingDetail classes={classes} data={training} pid={pId} />}
               {<FlightDetail classes={classes} data={flight} pid={pId} />}
 
+              {
+                <Forms
+                  classes={classes}
+                  pid={passengerSearchId}
+                  id={pId}
+                  data={passenger}
+                />
+              }
+
               {/* {country === 'Saudi Arabia' && (
                 <EmbassyDetail classes={classes} data={embassy} pid={pId} />
               )} */}
@@ -1108,14 +1118,7 @@ function PassengerAllDetails() {
 
              
               {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
-              {
-                <Forms
-                  classes={classes}
-                  pid={passengerSearchId}
-                  id={pId}
-                  data={passenger}
-                />
-              }
+
               {_.isEmpty(images) || (
                 <Images classes={classes} images={images} />
               )} */}
