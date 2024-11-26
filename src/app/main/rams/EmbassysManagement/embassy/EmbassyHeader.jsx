@@ -28,7 +28,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 function EmbassyHeader({ handleReset, emptyValue }) {
   const routeParams = useParams();
-  console.log('routeParamsPrint', routeParams);
+  console.log('routeParamsPrint', routeParams?.embassyId);
   const { embassyId } = routeParams;
   const [createEmbassy] = useCreateEmbassyMutation();
   const [saveEmbassy] = useUpdateEmbassyMutation();

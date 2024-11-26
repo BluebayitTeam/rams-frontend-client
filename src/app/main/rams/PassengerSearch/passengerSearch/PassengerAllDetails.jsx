@@ -743,49 +743,30 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_IDS}${pId}`, authTOKEN)
         .then((res) => {
-          if (res?.data?.id) {
+          if (res.data.id) {
             setEmbassy({ ...res.data });
-            setImages((imgs) =>
-              imgs.concat(
-                {
-                  order: 13,
-                  title: 'Embassy Old Visa',
-                  url: '',
-                  editurl: '/apps/embassy-management/embassys/',
-                  pid: pId,
-                },
-                {
-                  order: 14,
-                  title: 'Embassy Stamp Visa',
-                  url: '',
-                  editurl: '/apps/embassy-management/embassys/',
-                  pid: pId,
-                }
-              )
-            );
-            setLoading(false);
           }
         })
         .catch(() => {
           setImages((imgs) =>
             imgs.concat(
               {
-                order: 15,
-                title: 'Training Doc1',
+                order: 13,
+                title: 'Embassy Old Visa',
                 url: '',
-                editurl: '/apps/training-management/training/',
+                editurl: '/apps/embassy-management/embassy/',
                 pid: pId,
               },
               {
-                order: 16,
-                title: 'Training Certificate',
+                order: 14,
+                title: 'Embassy Stamp Visa',
                 url: '',
-                editurl: '/apps/training-management/training/',
+                editurl: '/apps/embassy-management/embassy/',
                 pid: pId,
               }
             )
           );
-          setTraining({});
+          setEmbassy({});
         });
 
       //training data
