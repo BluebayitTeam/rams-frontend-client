@@ -2,15 +2,15 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-// export const BASE_URL = isProduction
-//   ? 'https://rl1010api.ramsbd.net'
-//   : 'http://192.168.68.121:8006';
+export const BASE_URL = isProduction
+  ? 'https://rl1010api.ramsbd.net'
+  : 'http://192.168.68.137:8006';
 
 // added by live api
 
-export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'https://rl1010api.ramsbd.net';
+// export const BASE_URL = isProduction
+//   ? 'https://rl1010api.ramsbd.net'
+//   : 'https://rl1010api.ramsbd.net';
 
 export const CLIENT_URL = isProduction
   ? 'https://rl7811api.ramsbd.net'
@@ -1085,6 +1085,7 @@ export const UPDATE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/update/`;
 export const DELETE_EMBASSY = `${BASE_URL}/embassy/api/v1/embassy/delete/`;
 
 export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/check_visa_entry_medical_mofa_and_get_embassy_by_passenger_id/`;
+export const EMBASSY_BY_PASSENGER_IDS = `${BASE_URL}/embassy/api/v1/embassy/get_by_passenger_id/`;
 
 export const EMBASSY_FILTER_BY = `${BASE_URL}/report/api/v1/embassy_report/filter/`;
 

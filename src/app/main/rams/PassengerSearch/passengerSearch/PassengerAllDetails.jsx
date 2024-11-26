@@ -11,6 +11,7 @@ import {
   BASE_URL,
   CALLINGEMBATTESTATION_BY_PASSENGER_ID,
   EMBASSY_BY_PASSENGER_ID,
+  EMBASSY_BY_PASSENGER_IDS,
   FLIGHT_BY_PASSENGER_ID,
   GET_PASSENGER_BY_ID,
   GET_SITESETTINGS,
@@ -48,6 +49,8 @@ import Forms from './Forms';
 import Images from './Images';
 import VisaEntryDetail from './VisaEntryDetail';
 import VisaEntryDetailPrint from './VisaEntryDetailPrint';
+import EmbassyDetail from './EmbassyDetail';
+import EmbassyDetailPrint from './EmbassyDetailPrint';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -297,10 +300,10 @@ function PassengerAllDetails() {
   const [medical, setMedical] = useState({});
   const [statusStep, setStatusStep] = useState({});
   const [country, setCountry] = useState('');
-  console.log('country', country);
   const [passenger, setPassenger] = useState({});
 
   const [embassy, setEmbassy] = useState({});
+  console.log('cvcxvxcvxcv', embassy);
 
   const [mofa, setMofa] = useState({});
   const [officeWork, setOfficeWork] = useState({});
@@ -736,81 +739,53 @@ function PassengerAllDetails() {
         });
 
       //embassy data
+
       axios
-        .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
+        .get(`${EMBASSY_BY_PASSENGER_IDS}${pId}`, authTOKEN)
         .then((res) => {
-          let embassyData = {};
-
-          if (
-            res.data?.visa_entry?.id &&
-            res.data?.mofa?.id &&
-            res.data?.embassy?.id
-          ) {
+          if (res?.data?.id) {
+            setEmbassy({ ...res.data });
             setImages((imgs) =>
               imgs.concat(
                 {
                   order: 13,
                   title: 'Embassy Old Visa',
-                  url: res.data.old_visa_image,
+                  url: '',
                   editurl: '/apps/embassy-management/embassys/',
                   pid: pId,
                 },
                 {
                   order: 14,
                   title: 'Embassy Stamp Visa',
-                  url: res.data.stamp_visa_image,
+                  url: '',
                   editurl: '/apps/embassy-management/embassys/',
                   pid: pId,
                 }
               )
             );
-
             setLoading(false);
-
-            const visa_entry = res.data?.visa_entry;
-            const mofa = res.data?.mofa;
-            const office_work = res.data?.officework;
-            const musanedokala = res.data?.musanedokala;
-            embassyData = {
-              ...res.data.embassy,
-              visa_number_readonly: visa_entry.visa_number,
-              sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-              sponsor_name_english_readonly: visa_entry.sponsor_name_english,
-              sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
-              mofa_no_readonly: mofa.mofa_no,
-              police_clearance_no_readonly: office_work.police_clearance_no,
-              oakala_no_readonly: musanedokala.okala_no,
-              driving_license_no_readonly: office_work.driving_license_no,
-              musaned_okala_no_readonly: musanedokala.musaned_no,
-              certificate_experience_no_readonly:
-                office_work.certificate_experience,
-            };
-          } else {
-            setImages((imgs) =>
-              imgs.concat(
-                {
-                  order: 13,
-                  title: 'Embassy Old Visa',
-                  url: '',
-                  editurl: '/apps/embassy-management/embassys/',
-                  pid: pId,
-                },
-                {
-                  order: 14,
-                  title: 'Embassy Stamp Visa',
-                  url: '',
-                  editurl: '/apps/embassy-management/embassys/',
-                  pid: pId,
-                }
-              )
-            );
-            embassyData.push({});
           }
-
-          setEmbassy({ ...embassyData });
         })
         .catch(() => {
-          setEmbassy({});
+          setImages((imgs) =>
+            imgs.concat(
+              {
+                order: 15,
+                title: 'Training Doc1',
+                url: '',
+                editurl: '/apps/training-management/training/',
+                pid: pId,
+              },
+              {
+                order: 16,
+                title: 'Training Certificate',
+                url: '',
+                editurl: '/apps/training-management/training/',
+                pid: pId,
+              }
+            )
+          );
+          setTraining({});
         });
 
       //training data
@@ -873,7 +848,7 @@ function PassengerAllDetails() {
                 order: 17,
                 title: 'Manpower Smart Card',
                 url: res.data.smart_card_image,
-                editurl: '/apps/manPower-management/manPower/',
+                editurl: '/apps/manPower-management/manPowers/',
                 pid: pId,
               })
             );
@@ -1065,9 +1040,9 @@ function PassengerAllDetails() {
               />
             )}
             {<OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
-            {/* {country === 'Saudi Arabia' && (
+            {country === 'Saudi Arabia' && (
               <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-            )} */}
+            )}
 
             {<TrainingDetail classes={classes} data={training} pid={pId} />}
             {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
@@ -1187,13 +1162,13 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-              {/* {_.isEmpty(embassy) || (
+              {_.isEmpty(embassy) || (
                 <EmbassyDetailPrint
                   classes={classes}
                   data={embassy}
                   pid={pId}
                 />
-              )} */}
+              )}
               {_.isEmpty(training) || (
                 <TrainingDetailPrint
                   classes={classes}

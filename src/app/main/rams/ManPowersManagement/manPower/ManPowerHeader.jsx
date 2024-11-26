@@ -48,7 +48,7 @@ function ManPowerHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res.data?.id) {
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
             localStorage.setItem('medicalAlert', 'updateManPower');
 

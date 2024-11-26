@@ -20,7 +20,7 @@ const EmbassyAppConfig = {
         },
 
         {
-          path: 'embassys/:embassyId?',
+          path: 'embassys/:embassyId/:fromSearch?',
           element: <Embassy />,
         },
       ],
