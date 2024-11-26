@@ -20,7 +20,7 @@ function Forms({ classes, data, pid, id }) {
                   navigate(`/apps/ksaVisa/ksaVisas/${pid}`);
                 }}
                 class='bg-slate-500 w-full text-xll hover:bg-blue-800 text-black hover:text-white font-bold py-10 px-4 border-1 border-blue-800 hover:border-blue-600 rounded'>
-                KSA Visa Form
+                Visa Form
               </button>
             </div>
             <div className='imgContainer w-full md:w-1/3'>
