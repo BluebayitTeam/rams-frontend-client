@@ -51,6 +51,8 @@ import VisaEntryDetail from './VisaEntryDetail';
 import VisaEntryDetailPrint from './VisaEntryDetailPrint';
 import EmbassyDetail from './EmbassyDetail';
 import EmbassyDetailPrint from './EmbassyDetailPrint';
+import MedicalDetailPrint from './MedicalDetailPrint';
+import MedicalDetail from './MedicalDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -999,7 +1001,7 @@ function PassengerAllDetails() {
             {_.isEmpty(passenger) || (
               <PassengerDetail classes={classes} data={passenger} pid={pId} />
             )}
-            {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
+            {<MedicalDetail classes={classes} data={medical} pid={pId} />}
             {country === 'Saudi Arabia' && (
               <VisaEntryDetail classes={classes} data={visaEntry} />
             )}
@@ -1109,13 +1111,13 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-              {/* {_.isEmpty(medical) || (
+              {_.isEmpty(medical) || (
                 <MedicalDetailPrint
                   classes={classes}
                   data={medical}
                   pid={pId}
                 />
-              )} */}
+              )}
               {_.isEmpty(visaEntry) || (
                 <VisaEntryDetailPrint classes={classes} data={visaEntry} />
               )}
