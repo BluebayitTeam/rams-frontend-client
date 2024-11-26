@@ -26,28 +26,38 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Musaned No.:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.musaned_no || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Okala No:</i>
-              <b className='value text-xs md:text-sm'>{data?.okala_no || ''}</b>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
+                {data?.okala_no || ''}
+              </b>
             </div>
           </div>
 
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Musaned Status:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.musaned_status || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Okala Status:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.okala_status || ''}
               </b>
             </div>
@@ -56,7 +66,9 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Musaned Date:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.musaned_date
                   ? moment(new Date(data.musaned_date)).format('DD/MM/YYYY')
                   : ''}
@@ -65,7 +77,9 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Okala Date:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.okala_date
                   ? moment(new Date(data.okala_date)).format('DD/MM/YYYY')
                   : ''}
@@ -76,14 +90,22 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Musaned Given By:</i>
-              <b className='value text-xs md:text-sm'>{`${data?.musaned_given_by?.first_name || ''} ${
+              <b
+                className='value text-xs md:text-sm'
+                style={{
+                  color: 'black',
+                }}>{`${data?.musaned_given_by?.first_name || ''} ${
                 data?.musaned_given_by?.last_name || ''
               }`}</b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Okala Given By:</i>
-              <b className='value text-xs md:text-sm'>{`${data?.okala_given_by?.first_name || ''} ${
+              <b
+                className='value text-xs md:text-sm'
+                style={{
+                  color: 'black',
+                }}>{`${data?.okala_given_by?.first_name || ''} ${
                 data?.okala_given_by?.last_name || ''
               }`}</b>
             </div>
@@ -92,7 +114,11 @@ function MusanedOkalaDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Last Update By:</i>
-              <b className='value text-xs md:text-sm'>{`${data?.updated_by?.username || ''} [DT: ${
+              <b
+                className='value text-xs md:text-sm'
+                style={{
+                  color: 'black',
+                }}>{`${data?.updated_by?.username || ''} [DT: ${
                 data.updated_at
                   ? moment(new Date(data.updated_at)).format('DD/MM/YYYY')
                   : ''

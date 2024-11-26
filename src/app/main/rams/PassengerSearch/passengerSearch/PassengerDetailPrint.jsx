@@ -76,7 +76,9 @@ function PassengerDetailPrint({ classes, data, pid }) {
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passenger Type:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.passenger_type?.name || ''}
               </b>
             </div>
@@ -85,14 +87,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passenger Name:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.passenger_name || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Father's Name:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.father_name || ''}
               </b>
             </div>
@@ -101,14 +107,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>mother's Name:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.mother_name || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Spouse's Name:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.spouse_name || ''}
               </b>
             </div>
@@ -117,7 +127,9 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Date Of Birth:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.date_of_birth
                   ? moment(new Date(data.date_of_birth)).format('DD/MM/YYYY')
                   : ''}
@@ -126,21 +138,29 @@ function PassengerDetailPrint({ classes, data, pid }) {
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Gender:</i>
-              <b className='value text-xs md:text-sm'>{data?.gender || ''}</b>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
+                {data?.gender || ''}
+              </b>
             </div>
           </div>
 
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Marital Status:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.marital_status || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Contact No:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.contact_no || ''}
               </b>
             </div>
@@ -149,14 +169,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>District:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.district?.name || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Police Station:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.police_station?.name || ''}
               </b>
             </div>
@@ -165,26 +189,38 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Post Office:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.post_office || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Village:</i>
-              <b className='value text-xs md:text-sm'>{data?.village || ''}</b>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
+                {data?.village || ''}
+              </b>
             </div>
           </div>
 
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>NID:</i>
-              <b className='value text-xs md:text-sm'>{data?.nid || ''}</b>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
+                {data?.nid || ''}
+              </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Place Of Birth:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.place_of_birth || ''}
               </b>
             </div>
@@ -193,12 +229,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Religion:</i>
-              <b className='value text-xs md:text-sm'>{data?.religion || ''}</b>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
+                {data?.religion || ''}
+              </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Profession:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.profession?.name || ''}
               </b>
             </div>
@@ -207,14 +249,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Agency:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.agency?.name || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Demand:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.demand?.company_name || ''}
               </b>
             </div>
@@ -223,14 +269,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Target Country:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.target_country?.name || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Visa Entry:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.visa_entry?.visa_number || ''}
               </b>
             </div>
@@ -239,14 +289,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Emergency Contact No:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.emergency_contact_no || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Office Serial:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.office_serial || ''}
               </b>
             </div>
@@ -255,12 +309,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Notes:</i>
-              <b className='value text-xs md:text-sm'>{data?.notes || ''}</b>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
+                {data?.notes || ''}
+              </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Place Of Residence:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.place_of_residence || ''}
               </b>
             </div>
@@ -277,14 +337,18 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passport No:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.passport_no || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passport Type:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.passport_type || ''}
               </b>
             </div>
@@ -293,7 +357,9 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passport Issue Date:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.passport_issue_date
                   ? moment(new Date(data.passport_issue_date)).format(
                       'DD/MM/YYYY'
@@ -304,7 +370,9 @@ function PassengerDetailPrint({ classes, data, pid }) {
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passport Expiry Date:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.passport_expiry_date
                   ? moment(new Date(data.passport_expiry_date)).format(
                       'DD/MM/YYYY'
@@ -317,14 +385,20 @@ function PassengerDetailPrint({ classes, data, pid }) {
           <div className='container flex-row md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Passport Issue Place:</i>
-              <b className='value text-xs md:text-sm'>
+              <b
+                className='value text-xs md:text-sm'
+                style={{ color: 'black' }}>
                 {data?.passport_issue_place || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Last Update By:</i>
-              <b className='value text-xs md:text-sm'>{`${data?.updated_by?.username || ''} [DT: ${
+              <b
+                className='value text-xs md:text-sm'
+                style={{
+                  color: 'black',
+                }}>{`${data?.updated_by?.username || ''} [DT: ${
                 data.updated_at
                   ? moment(new Date(data.updated_at)).format('DD/MM/YYYY')
                   : ''
