@@ -85,11 +85,13 @@ function TicketPostingForm(props) {
         label='Date From'
         placeholder='DD-MM-YYYY'
       />
+      <br />
       <CustomDatePicker
         name='date_before'
         label='Date To'
         placeholder='DD-MM-YYYY'
       />
+      <br />
       <CustomDropdownField
         name='customer'
         label='Customer'
@@ -98,6 +100,7 @@ function TicketPostingForm(props) {
           `${option.first_name || ''} ${option.agent_code || ''}`
         }
       />
+      <br />
       {mltTicketList?.length > 0 && (
         <div>
           <MultipleTicketsTable
