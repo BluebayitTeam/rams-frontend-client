@@ -8,58 +8,77 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreateVisaEntryMutation, useDeleteVisaEntryMutation, useUpdateVisaEntryMutation } from '../VisaEntrysApi';
+import {
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateVisaEntryMutation,
+  useDeleteVisaEntryMutation,
+  useUpdateVisaEntryMutation,
+} from '../VisaEntrysApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The visaEntry header.
  */
 function VisaEntryHeader() {
-	const routeParams = useParams();
-	const { visaEntryId } = routeParams;
-	const [createVisaEntry] = useCreateVisaEntryMutation();
-	const [saveVisaEntry] = useUpdateVisaEntryMutation();
-	const [removeVisaEntry] = useDeleteVisaEntryMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteVisaEntry');
-	const handleUpdate = localStorage.getItem('updateVisaEntry');
+  const routeParams = useParams();
+  console.log('routeParamsPrint', routeParams);
+  const { visaEntryId, fromSearch } = routeParams;
 
-	function handleUpdateVisaEntry() {
-		saveVisaEntry(getValues()).then((data) => {
-			UpdatedSuccessfully();
+  const [createVisaEntry] = useCreateVisaEntryMutation();
+  const [saveVisaEntry] = useUpdateVisaEntryMutation();
+  const [removeVisaEntry] = useDeleteVisaEntryMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteVisaEntry');
+  const handleUpdate = localStorage.getItem('updateVisaEntry');
 
-			navigate(`/apps/visaEntry/visaEntrys`);
-		});
-	}
+  function handleUpdateVisaEntry() {
+    saveVisaEntry(getValues()).then((data) => {
+      if (fromSearch) {
+        navigate(-1);
+      } else {
+        UpdatedSuccessfully();
+        navigate('/apps/visaEntry/visaEntrys');
+      }
+    });
+  }
 
-	function handleCreateVisaEntry() {
-		createVisaEntry(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateVisaEntry() {
+    createVisaEntry(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/visaEntry/visaEntrys`);
-			});
-	}
+        navigate(`/apps/visaEntry/visaEntrys`);
+      });
+  }
 
-	function handleRemoveVisaEntry(dispatch) {
-		removeVisaEntry(visaEntryId);
-		DeletedSuccessfully();
-		navigate('/apps/visaEntry/visaEntrys');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveVisaEntry(dispatch) {
+    removeVisaEntry(visaEntryId);
+    DeletedSuccessfully();
+    navigate('/apps/visaEntry/visaEntrys');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/visaEntry/visaEntrys`);
-	}
+  function handleCancel() {
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      navigate(`/apps/visaEntry/visaEntrys`);
+    }
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div

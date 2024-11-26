@@ -7,29 +7,29 @@ import VisaEntry from './visaEntry/VisaEntry';
  * The E-Commerce app configuration.
  */
 const VisaEntryAppConfig = {
-	settings: {
-		layout: {}
-	},
-	routes: [
-		{
-			path: 'apps/visaEntry',
-			element: <VisaEntryApp />,
-			children: [
-				{
-					path: '',
-					element: <Navigate to="visaEntrys" />
-				},
-				{
-					path: 'visaEntrys',
-					element: <VisaEntrys />
-				},
+  settings: {
+    layout: {},
+  },
+  routes: [
+    {
+      path: 'apps/visaEntry',
+      element: <VisaEntryApp />,
+      children: [
+        {
+          path: '',
+          element: <Navigate to='visaEntrys' />,
+        },
+        {
+          path: 'visaEntrys',
+          element: <VisaEntrys />,
+        },
 
-				{
-					path: 'visaEntrys/:visaEntryId/*',
-					element: <VisaEntry />
-				}
-			]
-		}
-	]
+        {
+          path: 'visaEntrys/:visaEntryId/:fromSearch?',
+          element: <VisaEntry />,
+        },
+      ],
+    },
+  ],
 };
 export default VisaEntryAppConfig;
