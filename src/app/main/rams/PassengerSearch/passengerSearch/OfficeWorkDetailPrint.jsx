@@ -12,7 +12,13 @@ function OfficeWorkDetailPrint({ classes, data, pid }) {
   return (
     <>
       <div
-        className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}>
+        className={`my-0 rounded-4 mx-0 md:mx-40 mt-60 ${classes.blockContainer}`}
+        style={{
+          columnBreakInside: 'avoid',
+          pageBreakInside: 'avoid',
+          breakInside: 'avoid',
+          margin: '40px',
+        }}>
         <div className='blockContentName'>Office Work</div>
 
         <div
@@ -160,9 +166,6 @@ function OfficeWorkDetailPrint({ classes, data, pid }) {
           <h1 style={{ marginTop: '10px', marginBottom: '10px' }}>
             No Data Found
           </h1>
-        </div>
-        <div className='blockContentAction' onClick={() => gotoEditpage()}>
-          <Edit />
         </div>
       </div>
     </>

@@ -15,7 +15,7 @@ function MedicalDetailPrint({ classes, data, pid }) {
           columnBreakInside: 'avoid',
           pageBreakInside: 'avoid',
           breakInside: 'avoid',
-          margin: '30px',
+          margin: '40px',
         }}>
         <div className='blockContentName'>Medical</div>
 
