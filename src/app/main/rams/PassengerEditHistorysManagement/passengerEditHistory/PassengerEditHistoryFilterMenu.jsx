@@ -29,7 +29,6 @@ function PassengerEditHistoryFilterMenu({
   const { groups, cities } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  console.log('Passenger Values:', getValues());
 
   // element refs
   const userNameEl = useRef(null);
