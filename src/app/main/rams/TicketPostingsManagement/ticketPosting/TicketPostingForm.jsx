@@ -80,18 +80,20 @@ function TicketPostingForm(props) {
 
   return (
     <div>
-      <CustomDatePicker
-        name='date_after'
-        label='Date From'
-        placeholder='DD-MM-YYYY'
-      />
-      <br />
-      <CustomDatePicker
-        name='date_before'
-        label='Date To'
-        placeholder='DD-MM-YYYY'
-      />
-      <br />
+      <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+        <CustomDatePicker
+          name='date_after'
+          label='Date From'
+          placeholder='DD-MM-YYYY'
+        />
+
+        <CustomDatePicker
+          name='date_before'
+          label='Date To'
+          placeholder='DD-MM-YYYY'
+        />
+      </div>
+
       <CustomDropdownField
         name='customer'
         label='Customer'
@@ -100,7 +102,7 @@ function TicketPostingForm(props) {
           `${option.first_name || ''} ${option.agent_code || ''}`
         }
       />
-      <br />
+
       {mltTicketList?.length > 0 && (
         <div>
           <MultipleTicketsTable
