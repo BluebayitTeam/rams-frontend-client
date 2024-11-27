@@ -1,34 +1,22 @@
-import { Navigate } from 'react-router-dom';
-import PassengerAllDetails from './passengerEditHistory/PassengerAllDetails';
-import PassengerSearchApp from './PassengerEditHistoryApp';
-import PassengerApp from '../PassengersManagement/PassengerApp';
-import PassengerDetail from './passengerEditHistory/PassengerDetail';
-import Passenger from '../PassengersManagement/passenger/Passenger';
-import Passengers from '../PassengersManagement/passengers/Passengers';
-import MedicalApp from '../MedicalsManagement/MedicalApp';
-import Medical from '../MedicalsManagement/medical/Medical';
-import EmbassyApp from '../EmbassysManagement/EmbassyApp';
-import Embassy from '../EmbassysManagement/embassy/Embassy';
-
 /**
  * The E-Commerce app configuration.
  */
-const PassengerSearchAppConfig = {
+const PassengerEditHistoryAppConfig = {
   settings: {
     layout: {},
   },
   routes: [
     {
-      path: 'apps/passengerSearch',
-      element: <PassengerSearchApp />,
+      path: 'apps/passengerEditHistory',
+      element: <PassengerEditHistoryApp />,
       children: [
         {
           path: '',
-          element: <Navigate to='passengerSearchs' />,
+          element: <Navigate to='passengerEditHistorys' />,
         },
 
         {
-          path: 'passengerSearchs/:passengerSearchId?',
+          path: 'passengerEditHistorys/:passengerEditHistoryId?',
 
           element: <PassengerAllDetails />,
         },
@@ -52,4 +40,4 @@ const PassengerSearchAppConfig = {
     },
   ],
 };
-export default PassengerSearchAppConfig;
+export default PassengerEditHistoryAppConfig;
