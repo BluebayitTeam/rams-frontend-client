@@ -176,6 +176,7 @@ const appsConfigs = [
   AirwayAppConfig,
   BranchAppConfig,
   BmetV2ApplicationAppConfig,
+  PassengerEditHistoryAppConfig,
   BalanceSheetReportAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
@@ -183,7 +184,7 @@ const appsConfigs = [
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
   FemalefingerletterAppConfig,
-  PassengerEditHistoryAppConfig,
+
   PassengerSearchAppConfig,
   FlightReportAppConfig,
   MessengerAppConfig,

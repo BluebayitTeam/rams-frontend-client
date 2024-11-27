@@ -1,38 +1,50 @@
 import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
-import { GET_BMET_BY_ID } from 'src/app/constant/constants';
-import { CustomNotification } from 'src/app/@customHooks/notificationAlert';
-import { selectSearchText } from '../AgentsManagement/store/searchTextSlice';
+import {
+  AGENT_FILTER_BY,
+  AGENT_FILTER_WITHOUT_PG,
+  CREATE_DEPARTMENT,
+  DELETE_DEPARTMENT,
+  DELETE_DEPARTMENT_MULTIPLE,
+  GET_DEPARTMENT_BY_ID,
+  GET_PASSENGER_LOG,
+  UPDATE_DEPARTMENT,
+} from 'src/app/constant/constants';
+import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import { selectSearchText } from './store/searchTextSlice';
 
 export const addTagTypes = ['passengerEditHistorys'];
-
 const PassengerEditHistoryApi = api
   .enhanceEndpoints({
     addTagTypes,
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getPassengerEditHistory: build.query({
-        query: (passengerEditHistoryId) => ({
-          url: `${GET_BMET_BY_ID}${passengerEditHistoryId}`,
+      getPassengerEditHistorys: build.query({
+        query: ({ page, size }) => ({
+          url: `${GET_PASSENGER_LOG}${PassengerEditHistorysId}`
+          params: { page, size },
         }),
         providesTags: ['passengerEditHistorys'],
       }),
     }),
     overrideExisting: false,
   });
-
 export default PassengerEditHistoryApi;
-
 export const {
   useGetPassengerEditHistorysQuery,
+  useGetAgentAllReportsQuery,
+  useDeletePassengerEditHistorysMutation,
   useGetPassengerEditHistoryQuery,
+  useUpdatePassengerEditHistoryMutation,
+  useDeletePassengerEditHistoryMutation,
+  useCreatePassengerEditHistoryMutation,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>
   createSelector([selectSearchText], (searchText) => {
-    if (!searchText || searchText.length === 0) {
+    if (searchText?.length === 0) {
       return passengerEditHistorys;
     }
 

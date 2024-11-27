@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 import withReducer from 'app/store/withReducer';
-import reducer from 'app/store/dataSlice';
+import reducer from './store';
 
 function PassengerEditHistoryApp() {
   return <Outlet />;
