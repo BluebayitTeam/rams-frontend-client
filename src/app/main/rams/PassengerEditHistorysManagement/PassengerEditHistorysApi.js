@@ -18,16 +18,6 @@ const PassengerEditHistoryApi = api
           url: `${GET_BMET_BY_ID}${passengerEditHistoryId}`,
         }),
         providesTags: ['passengerEditHistorys'],
-        async onQueryStarted(passengerEditHistoryId, { queryFulfilled }) {
-          try {
-            await queryFulfilled;
-          } catch (error) {
-            CustomNotification(
-              'error',
-              `${error?.error?.response?.data?.detail}`
-            );
-          }
-        },
       }),
     }),
     overrideExisting: false,

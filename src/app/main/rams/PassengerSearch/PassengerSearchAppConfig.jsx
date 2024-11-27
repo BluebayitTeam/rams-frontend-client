@@ -5,10 +5,6 @@ import PassengerApp from '../PassengersManagement/PassengerApp';
 import PassengerDetail from './passengerSearch/PassengerDetail';
 import Passenger from '../PassengersManagement/passenger/Passenger';
 import Passengers from '../PassengersManagement/passengers/Passengers';
-import MedicalApp from '../MedicalsManagement/MedicalApp';
-import Medical from '../MedicalsManagement/medical/Medical';
-import EmbassyApp from '../EmbassysManagement/EmbassyApp';
-import Embassy from '../EmbassysManagement/embassy/Embassy';
 
 /**
  * The E-Commerce app configuration.
