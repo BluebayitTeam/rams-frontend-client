@@ -336,8 +336,6 @@ function PassengerAllDetails() {
   const handlePrint = () => {
     setInPrint(true);
     printAction();
-
-    // setInPrint(false);
   };
 
   //get site's logo & address
@@ -1001,7 +999,6 @@ function PassengerAllDetails() {
             {_.isEmpty(passenger) || (
               <PassengerDetail classes={classes} data={passenger} pid={pId} />
             )}
-            {<MedicalDetail classes={classes} data={medical} pid={pId} />}
             {country === 'Saudi Arabia' && (
               <VisaEntryDetail classes={classes} data={visaEntry} />
             )}
@@ -1023,13 +1020,15 @@ function PassengerAllDetails() {
               />
             )}
             {<OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
-            {country === 'Saudi Arabia' && (
-              <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-            )}
 
             {<TrainingDetail classes={classes} data={training} pid={pId} />}
             {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
+            {/* {country === 'Saudi Arabia' && (
+              <EmbassyDetail classes={classes} data={embassy} pid={pId} />
+            )} */}
             {<FlightDetail classes={classes} data={flight} pid={pId} />}
+            {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
+
             {
               <Forms
                 classes={classes}
@@ -1111,13 +1110,7 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-              {_.isEmpty(medical) || (
-                <MedicalDetailPrint
-                  classes={classes}
-                  data={medical}
-                  pid={pId}
-                />
-              )}
+
               {_.isEmpty(visaEntry) || (
                 <VisaEntryDetailPrint classes={classes} data={visaEntry} />
               )}
@@ -1145,13 +1138,7 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-              {_.isEmpty(embassy) || (
-                <EmbassyDetailPrint
-                  classes={classes}
-                  data={embassy}
-                  pid={pId}
-                />
-              )}
+
               {_.isEmpty(training) || (
                 <TrainingDetailPrint
                   classes={classes}
@@ -1163,6 +1150,20 @@ function PassengerAllDetails() {
                 <ManPowerDetailPrint
                   classes={classes}
                   data={manPower}
+                  pid={pId}
+                />
+              )}
+              {_.isEmpty(medical) || (
+                <MedicalDetailPrint
+                  classes={classes}
+                  data={medical}
+                  pid={pId}
+                />
+              )}
+              {_.isEmpty(embassy) || (
+                <EmbassyDetailPrint
+                  classes={classes}
+                  data={embassy}
                   pid={pId}
                 />
               )}
