@@ -45,6 +45,7 @@ function PassengerEditHistorysTable(props) {
   });
 
   const { watch, getValues } = methods;
+  console.log('getValues', getValues);
 
   const [
     modifiedAgentData,
@@ -72,7 +73,6 @@ function PassengerEditHistorysTable(props) {
   const { data: paginatedData } = useGetPassengerEditHistorysQuery(
     {
       username: filterData.username,
-
       page,
       size,
     },
