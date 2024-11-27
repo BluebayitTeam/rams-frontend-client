@@ -162,6 +162,7 @@ import TrialBalanceReportAppConfig from '../rams/TrialBalanceReportManagement/Tr
 import ProfitLossReportAppConfig from '../rams/ProfitLossReportManagement/ProfitLossReportAppConfig';
 import BalanceSheetReportAppConfig from '../rams/BalanceSheetReportManagement/BalanceSheetReportAppConfig';
 import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
+import PassengerEditHistoryAppConfig from '../rams/PassengerEditHistorysManagement/PassengerEditHistoryAppConfig';
 
 /**
  * The list of application configurations.
@@ -182,6 +183,7 @@ const appsConfigs = [
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
   FemalefingerletterAppConfig,
+  PassengerEditHistoryAppConfig,
   PassengerSearchAppConfig,
   FlightReportAppConfig,
   MessengerAppConfig,

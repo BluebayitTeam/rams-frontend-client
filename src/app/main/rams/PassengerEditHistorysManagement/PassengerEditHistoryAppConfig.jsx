@@ -1,3 +1,7 @@
+import { Navigate } from 'react-router-dom';
+import PassengerEditHistoryApp from './PassengerEditHistoryApp';
+import PassengerEditHistory from './passengerEditHistory/PassengerEditHistory';
+
 /**
  * The E-Commerce app configuration.
  */
@@ -16,25 +20,8 @@ const PassengerEditHistoryAppConfig = {
         },
 
         {
-          path: 'passengerEditHistorys/:passengerEditHistoryId?',
-
-          element: <PassengerAllDetails />,
-        },
-      ],
-    },
-
-    {
-      path: 'apps/passenger',
-      element: <PassengerApp />,
-      children: [
-        {
-          path: '',
-          element: <Navigate to='passengers' />,
-        },
-
-        {
-          path: 'passengers/:passengerId/:fromSearch/:passengerType?',
-          element: <Passenger />,
+          path: 'passengerEditHistorys/:passengerEditHistoryId?/*',
+          element: <PassengerEditHistory />,
         },
       ],
     },

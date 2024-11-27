@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 
 /**
- * The thailandVisa header.
+ * The passengerEditHistory header.
  */
-function ThailandVisaHeader() {
+function PassengerEditHistoryHeader() {
   const routeParams = useParams();
   const data = {};
   const name = data?.passenger?.[0]?.passenger_name;
@@ -19,7 +19,7 @@ function ThailandVisaHeader() {
               initial={{ x: -20 }}
               animate={{ x: 0, transition: { delay: 0.3 } }}>
               <Typography className='text-16 sm:text-20 truncate font-semibold'>
-                {name || 'Thailand Visa Form'}
+                {name || 'Passenger History'}
               </Typography>
             </motion.div>
           </div>
@@ -29,4 +29,4 @@ function ThailandVisaHeader() {
   );
 }
 
-export default ThailandVisaHeader;
+export default PassengerEditHistoryHeader;
