@@ -746,6 +746,7 @@ function PassengerAllDetails() {
           if (res.data.id) {
             setEmbassy({ ...res.data });
           }
+          // console.log('resPrint', res.data.id);
         })
         .catch(() => {
           setImages((imgs) =>
@@ -1153,20 +1154,20 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-              {_.isEmpty(medical) || (
+              {/* {_.isEmpty(medical) || (
                 <MedicalDetailPrint
                   classes={classes}
                   data={medical}
                   pid={pId}
                 />
-              )}
-              {_.isEmpty(embassy) || (
+              )} */}
+              {/* {_.isEmpty(embassy) || (
                 <EmbassyDetailPrint
                   classes={classes}
                   data={embassy}
                   pid={pId}
                 />
-              )}
+              )} */}
               {_.isEmpty(flight) || (
                 <FlightDetailPrint classes={classes} data={flight} pid={pId} />
               )}

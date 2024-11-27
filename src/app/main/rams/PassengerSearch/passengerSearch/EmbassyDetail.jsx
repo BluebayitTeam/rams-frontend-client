@@ -3,7 +3,6 @@ import moment from 'moment';
 import { useNavigate } from 'react-router';
 
 function EmbassyDetail({ classes, data, pid }) {
-  console.log('EmbassyData', data);
   const navigate = useNavigate();
   const gotoEditpage = () => {
     navigate(`/apps/embassy-management/embassys/${pid}/fromSearch`);

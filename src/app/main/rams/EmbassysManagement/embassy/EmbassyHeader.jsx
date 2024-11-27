@@ -28,7 +28,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 function EmbassyHeader({ handleReset, emptyValue }) {
   const routeParams = useParams();
-  console.log('routeParamsPrint', routeParams?.embassyId);
+  console.log('routeParamsPrint', routeParams);
   const { embassyId } = routeParams;
   const [createEmbassy] = useCreateEmbassyMutation();
   const [saveEmbassy] = useUpdateEmbassyMutation();
@@ -42,7 +42,6 @@ function EmbassyHeader({ handleReset, emptyValue }) {
   const handleDelete = localStorage.getItem('deleteEmbassy');
   const handleUpdate = localStorage.getItem('updateEmbassy');
   const passengers = useSelector((state) => state.data.passengers);
-  const { fromSearch } = useParams();
   // const user_role = localStorage.getItem('user_role');
 
   function handleUpdateEmbassy() {
@@ -50,9 +49,9 @@ function EmbassyHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res.data?.id) {
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
-            localStorage.setItem('medicalAlert', 'updateEmbassy');
+            localStorage.setItem('embassyAlert', 'updateEmbassy');
 
             handleReset({
               ...emptyValue,
@@ -81,9 +80,9 @@ function EmbassyHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res) {
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
-            localStorage.setItem('medicalAlert', 'saveEmbassy');
+            localStorage.setItem('embassyAlert', 'saveEmbassy');
             handleReset({
               ...emptyValue,
               stamping_status: doneNotDone.find((data) => data.default)?.id,
@@ -102,13 +101,13 @@ function EmbassyHeader({ handleReset, emptyValue }) {
       .then((res) => {
         if (res) {
           if (fromSearch) {
-            history.goBack();
+            navigate(-1);
           } else {
             handleReset({
               ...emptyValue,
               stamping_status: doneNotDone.find((data) => data.default)?.id,
             });
-            localStorage.setItem('medicalAlert', 'saveEmbassy');
+            localStorage.setItem('embassyAlert', 'saveEmbassy');
             navigate('/apps/embassy-management/embassys/new');
 
             dispatch(
