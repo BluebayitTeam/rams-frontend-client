@@ -71,7 +71,7 @@ function PassengerEditHistorysTable(props) {
 
   const { data: paginatedData } = useGetPassengerEditHistorysQuery(
     {
-      username: filterData.username,
+      getValues.username,
       page,
       size,
     },

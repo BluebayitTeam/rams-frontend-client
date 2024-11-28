@@ -22,9 +22,9 @@ const PassengerEditHistoryApi = api
   .injectEndpoints({
     endpoints: (build) => ({
       getPassengerEditHistorys: build.query({
-        query: (filterData) => ({
-          url: GET_PASSENGER_LOG,
-          params: filterData,
+        query: (passengerEditHistorysId) => ({
+          url: `${GET_PASSENGER_LOG}${passengerEditHistorysId}`,
+          params: { page, size },
         }),
         providesTags: ['passengerEditHistorys'],
       }),
