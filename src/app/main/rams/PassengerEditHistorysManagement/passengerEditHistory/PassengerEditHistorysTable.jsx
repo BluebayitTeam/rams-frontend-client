@@ -19,7 +19,7 @@ import {
   useGetAgentAllReportsQuery,
   useGetPassengerEditHistorysQuery,
 } from '../PassengerEditHistorysApi';
-import AgentFilterMenu from './PassengerEditHistoryFilterMenu';
+import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -140,52 +140,16 @@ function PassengerEditHistorysTable(props) {
     }
   }, []);
 
-  const filteredData = {
-    Group: getValues()?.groupName || null,
-    District: getValues()?.districtName || null,
-    Username: getValues()?.username || null,
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
-      : null,
-    Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
-      : null,
-    Primary_phone: getValues()?.primary_phone || null,
-    agent_code: getValues()?.agent_code || null,
-  };
-
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
-        <AgentFilterMenu
+        <PassengerEditHistoryFilterMenu
           inShowAllMode={inShowAllMode}
           handleGetAgents={handleGetAgents}
           handleGetAllAgents={handleGetAllAgents}
           passengerEditHistorysId={passengerEditHistorysId}
         />
       </FormProvider>
-      <ReportPaginationAndDownload
-        page={page}
-        size={size}
-        setPage={setPage}
-        setSize={setSize}
-        inShowAllMode={inShowAllMode}
-        setInShowAllMode={setInShowAllMode}
-        componentRef={componentRef}
-        totalPages={totalPages}
-        totalElements={totalElements}
-        onFirstPage={() => handleGetAgents(1)}
-        onPreviousPage={() => handleGetAgents(page - 1)}
-        onNextPage={() => handleGetAgents(page + 1)}
-        onLastPage={() => handleGetAgents(totalPages)}
-        handleExelDownload={handleExelDownload}
-        handlePrint={handlePrint}
-        handleGetData={handleGetAgents}
-        handleGetAllData={handleGetAllAgents}
-        tableColumns={tableColumns}
-        dispatchTableColumns={dispatchTableColumns}
-        filename='PassengerEditHistory'
-      />
 
       <table
         id='table-to-xls'

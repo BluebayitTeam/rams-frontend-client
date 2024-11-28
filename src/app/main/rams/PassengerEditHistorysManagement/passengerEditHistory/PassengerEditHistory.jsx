@@ -24,13 +24,7 @@ function PassengerEditHistory() {
         contentCard: 'overflow-hidden',
         header: 'min-h-52 h-52',
       }}
-      header={
-        <div className='flex'>
-          {/* <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
-            Passenger History
-          </h1> */}
-        </div>
-      }
+      header={<div className='flex'></div>}
       content={<PassengerEditHistorysTable />}
       innerScroll
     />
