@@ -9,9 +9,15 @@ import ReportDatePicker from 'src/app/@components/ReportComponents/ReportDatePic
 import ReportSelect from 'src/app/@components/ReportComponents/ReportSelect';
 import ReportTextField from 'src/app/@components/ReportComponents/ReportTextField';
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import siteSetting from '../../siteSettingsManagement/siteSetting/siteSetting';
-import { BASE_URL } from 'src/app/constant/constants';
+import {
+  BASE_URL,
+  GET_PASSENGER_BY_PASSENGER_ID,
+  GET_SITESETTINGS,
+} from 'src/app/constant/constants';
 import ReportTextFieldPassenger from 'src/app/@components/ReportComponents/ReportTextFieldPassenger';
+import PassengerEditHistorysTable from './PassengerEditHistorysTable';
+import axios from 'axios';
+import getUserData from 'src/app/@helpers/getUserData';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -110,7 +116,7 @@ function PassengerEditHistoryFilterMenu({
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  console.log('passengerEditHistorysId', passengerEditHistorysId);
   const methods = useFormContext();
   const { getValues } = methods;
   const [noData, setNoData] = useState(false);
@@ -127,6 +133,7 @@ function PassengerEditHistoryFilterMenu({
   const userNameEl = useRef(null);
 
   const [pId, setpId] = useState(0);
+  console.log('dasjdgasjgd', pId);
 
   const commonFieldProps = {
     setReRender,
@@ -143,20 +150,52 @@ function PassengerEditHistoryFilterMenu({
         : handleGetPassengerEditHistorys(),
   };
 
-  return (
-    // <div className={classes.filterMenuContainer}>
-    //   <div className='allFieldContainer borderTop mt-4'>
-    //     {/* user name */}
-    //     <ReportTextField
-    //       {...commonFieldProps}
-    //       name='username'
-    //       label='Search by Passenger Id'
-    //       domEl={userNameEl}
-    //       width='180px'
-    //     />
-    //   </div>
-    // </div>
+  useEffect(() => {
+    if (passengerEditHistorysId) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(
+          `${GET_PASSENGER_BY_PASSENGER_ID}${passengerEditHistorysId}`,
+          authTOKEN
+        )
+        .then((res) => {
+          setpId(res?.data?.passenger_id || 0);
+          setpstatus(res?.data?.current_status || '');
+          setpimage(res?.data?.passenger_pic || '');
+          if (res?.data?.id) {
+            setNoData(false);
+          } else {
+            setNoData(true);
+          }
+        })
+        .catch(() => {
+          setpId(0);
+          setNoData(true);
+          setpimage('');
+          setpstatus('');
+        });
+    }
+  }, [passengerEditHistorysId]);
 
+  //get site's logo & address
+  useEffect(() => {
+    const { authToken } = getUserData();
+    axios
+      .get(GET_SITESETTINGS, authToken)
+      .then((res) => {
+        setsiteSetting(res?.data?.general_settings[0] || {});
+      })
+      .catch(() => null);
+
+    return () => sessionStorage.removeItem('passenger_search_key');
+  }, []);
+
+  return (
     <div>
       <div
         style={{
@@ -192,7 +231,7 @@ function PassengerEditHistoryFilterMenu({
       ) : (
         <div
           style={{
-            display: passengerEditHistorysId === null ? 'none' : 'block',
+            display: !passengerEditHistorysId ? 'none' : 'block',
           }}>
           <div style={{ display: noData ? '' : 'block' }}>
             <center>
@@ -228,23 +267,21 @@ function PassengerEditHistoryFilterMenu({
             </center>
           </div>
 
-          {/* {<PassengerEditHistorysTable />}
+          {/* {<MedicalEditHistorysTable />}
 
-					{<MedicalEditHistorysTable />}
+          {<MusanedOkalaEditHistorysTable />}
 
-					{<MusanedOkalaEditHistorysTable />}
+          {<MofaEditHistorysTable />}
 
-					{<MofaEditHistorysTable />}
+          {<OfficeWorkEditHistorysTable />}
 
-					{<OfficeWorkEditHistorysTable />}
+          {<EmbassyEditHistorysTable />}
 
-					{<EmbassyEditHistorysTable />}
+          {<TrainingEditHistorysTable />}
 
-					{<TrainingEditHistorysTable />}
+          {<ManpowerEditHistorysTable />}
 
-					{<ManpowerEditHistorysTable />}
-
-					{<FlightEditHistorysTable />} */}
+          {<FlightEditHistorysTable />} */}
         </div>
       )}
     </div>
