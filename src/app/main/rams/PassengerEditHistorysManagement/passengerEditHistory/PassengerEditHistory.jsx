@@ -26,9 +26,9 @@ function PassengerEditHistory() {
       }}
       header={
         <div className='flex'>
-          <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
+          {/* <h1 className='hidden sm:flex text-16 md:text-24 mt-5 mx-12 font-semibold'>
             Passenger History
-          </h1>
+          </h1> */}
         </div>
       }
       content={<PassengerEditHistorysTable />}

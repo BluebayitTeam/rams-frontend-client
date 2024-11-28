@@ -69,8 +69,10 @@ function PassengerEditHistorysTable(props) {
 
   const filterData = watch();
 
+  const passengerEditHistorysId = getValues().username;
+
   const { data: paginatedData } = useGetPassengerEditHistorysQuery(
-    { passengerEditHistorysId: getValues().username, page, size },
+    { passengerEditHistorysId, page, size },
     { skip: inShowAllMode }
   );
   const { data: allData } = useGetAgentAllReportsQuery(
@@ -159,6 +161,7 @@ function PassengerEditHistorysTable(props) {
           inShowAllMode={inShowAllMode}
           handleGetAgents={handleGetAgents}
           handleGetAllAgents={handleGetAllAgents}
+          passengerEditHistorysId={passengerEditHistorysId}
         />
       </FormProvider>
       <ReportPaginationAndDownload
