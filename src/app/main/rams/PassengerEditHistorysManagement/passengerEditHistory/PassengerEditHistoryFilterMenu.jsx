@@ -116,23 +116,19 @@ function PassengerEditHistoryFilterMenu({
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  console.log('passengerEditHistorysId', passengerEditHistorysId);
   const methods = useFormContext();
   const { getValues } = methods;
   const [noData, setNoData] = useState(false);
-
   const theme = useTheme();
-  const { groups, cities } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
   const [pimage, setpimage] = useState('');
   const [pstatus, setpstatus] = useState('');
   const [siteSetting, setsiteSetting] = useState({});
+  const [pId, setpId] = useState(0);
 
   // element refs
   const userNameEl = useRef(null);
-
-  const [pId, setpId] = useState(0);
 
   const commonFieldProps = {
     setReRender,
