@@ -73,7 +73,6 @@ function PassengerEditHistorysTable(props) {
     { passengerEditHistorysId: getValues().username, page, size },
     { skip: inShowAllMode }
   );
-
   const { data: allData } = useGetAgentAllReportsQuery(
     {
       group: filterData.group || '',
