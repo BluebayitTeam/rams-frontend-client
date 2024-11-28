@@ -70,11 +70,7 @@ function PassengerEditHistorysTable(props) {
   const filterData = watch();
 
   const { data: paginatedData } = useGetPassengerEditHistorysQuery(
-    {
-      getValues.username,
-      page,
-      size,
-    },
+    { passengerEditHistorysId: getValues().username, page, size },
     { skip: inShowAllMode }
   );
 
