@@ -32,15 +32,7 @@ const PassengerEditHistoryApi = api
     overrideExisting: false,
   });
 export default PassengerEditHistoryApi;
-export const {
-  useGetPassengerEditHistorysQuery,
-  useGetAgentAllReportsQuery,
-  useDeletePassengerEditHistorysMutation,
-  useGetPassengerEditHistoryQuery,
-  useUpdatePassengerEditHistoryMutation,
-  useDeletePassengerEditHistoryMutation,
-  useCreatePassengerEditHistoryMutation,
-} = PassengerEditHistoryApi;
+export const { useGetPassengerEditHistorysQuery } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>
   createSelector([selectSearchText], (searchText) => {

@@ -5,7 +5,6 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
-import { useDeletePassengerEditHistorysMutation } from '../PassengerEditHistorysApi';
 
 const rows = [
   {
