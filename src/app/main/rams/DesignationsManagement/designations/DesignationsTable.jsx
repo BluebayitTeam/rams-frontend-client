@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
     padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
-    width: '85%',
+    width: '78%',
   },
   paginationContainer: {
     display: 'flex',
