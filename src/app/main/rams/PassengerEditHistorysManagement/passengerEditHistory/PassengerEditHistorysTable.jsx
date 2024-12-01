@@ -235,7 +235,7 @@ function PassengerEditHistorysTable(props) {
           <div className='w-full flex flex-col'>
             {PassengerLogs && PassengerLogs.length > 0 ? (
               <>
-                <div className='grow overflow-x-auto overflow-y-auto'>
+                <div className='grow overflow-x-auto overflow-y-auto '>
                   <center>
                     <h1
                       style={{
@@ -275,125 +275,125 @@ function PassengerEditHistorysTable(props) {
 
                         return (
                           <TableRow
-                            className='h-72 cursor-pointer'
+                            className='h-72 cursor-pointer '
                             hover
                             role='checkbox'
                             aria-checked={isSelected}
                             tabIndex={-1}
                             key={n.id}
                             selected={isSelected}>
-                            <TableCell className='w-40 md:w-64'>
+                            <TableCell className='w-40 md:w-64 border-t-1  border-gray-200'>
                               {serial}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.created_at
                                 ? moment(n.created_at).format('DD-MM-YYYY')
                                 : ''}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {`${n.created_by?.first_name || ''} ${n.created_by?.last_name || ''}`}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.agent}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.demand}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.profession}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.agency}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.target_country}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.passenger_type}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.current_status}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.visa_entry}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.police_station}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.district}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.passenger_name}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.gender}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.date_of_birth
                                 ? moment(n.date_of_birth).format('DD-MM-YYYY')
                                 : ''}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.nid}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.father_name}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.mother_name}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.spouse_name}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.religion}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.marital_status}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.passport_no}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.passport_type}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.passport_issue_date
                                 ? moment(n.passport_issue_date).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ''}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.passport_expiry_date
                                 ? moment(n.passport_expiry_date).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ''}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.village}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.post_office}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.contact_no}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.emergency_contact_no}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.place_of_birth}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.place_of_residence}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.passport_issue_place}
                             </TableCell>
-                            <TableCell className='p-4 md:p-16'>
+                            <TableCell className='p-4 md:p-16 border-t-1  border-gray-200'>
                               {n.notes}
                             </TableCell>
                           </TableRow>
