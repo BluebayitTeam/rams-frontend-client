@@ -80,8 +80,6 @@ function EmbassyEditHistorysTable({ embassyEditHistorysData }) {
     id: '',
   });
 
-  console.log('printPagination', pageAndSize);
-
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
 
