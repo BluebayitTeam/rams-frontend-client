@@ -200,8 +200,7 @@ function EmbassyEditHistorysTable({ embassyEditHistorysData }) {
                               scope='row'>
                               {pageAndSize.page * pageAndSize.size -
                                 pageAndSize.size +
-                                index +
-                                1}
+                                serialNumber++}
                             </TableCell>
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
@@ -211,7 +210,7 @@ function EmbassyEditHistorysTable({ embassyEditHistorysData }) {
                                 ? moment(new Date(n.created_at)).format(
                                     'DD-MM-YYYY'
                                   )
-                                : ' '}
+                                : ' '}{' '}
                             </TableCell>
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
@@ -224,40 +223,59 @@ function EmbassyEditHistorysTable({ embassyEditHistorysData }) {
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.new_visa_no}
+                              {n.submit_date}
                             </TableCell>
+
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.registration_id}
+                              {n.profession_english}
                             </TableCell>
+
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.man_power_status}
+                              {n.profession_arabic}
                             </TableCell>
+
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.man_power_date
-                                ? moment(new Date(n.man_power_date)).format(
+                              {n.salary}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.stamping_status}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.stamping_date
+                                ? moment(new Date(n.stamping_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
                             </TableCell>
+
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.submit_date
-                                ? moment(new Date(n.submit_date)).format(
+                              {n.visa_expiry_date
+                                ? moment(new Date(n.visa_expiry_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
                             </TableCell>
+
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
@@ -266,7 +284,7 @@ function EmbassyEditHistorysTable({ embassyEditHistorysData }) {
                                 ? moment(new Date(n.delivery_date)).format(
                                     'DD-MM-YYYY'
                                   )
-                                : ' '}
+                                : ' '}{' '}
                             </TableCell>
                           </TableRow>
                         );
