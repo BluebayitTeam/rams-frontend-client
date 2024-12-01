@@ -198,7 +198,7 @@ function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
                             key={n.id}
                             selected={isSelected}>
                             <TableCell
-                              className='w-40 md:w-64'
+                              className='w-40 md:w-64 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {pageAndSize.page * pageAndSize.size -
@@ -207,7 +207,7 @@ function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
                                 1}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.created_at
@@ -217,32 +217,32 @@ function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
                                 : ' '}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.created_by?.first_name}{' '}
                               {n.created_by?.last_name}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.new_visa_no}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.registration_id}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.man_power_status}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.man_power_date
@@ -252,7 +252,7 @@ function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
                                 : ' '}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.submit_date
@@ -262,7 +262,7 @@ function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
                                 : ' '}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.delivery_date
