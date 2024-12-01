@@ -27,18 +27,8 @@ import _ from '@lodash';
 
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import axios from 'axios';
-import { useGetManpowerEditHistorysQuery } from '../PassengerEditHistorysApi';
 import ManpowerEditHistorysTableHead from './ManpowerEditHistorysTableHead';
 import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
-
-const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Name', name: 'username', show: true },
-  { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', show: true },
-  { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true },
-];
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -55,7 +45,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ManpowerEditHistorysTable(props) {
+function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
   const classes = useStyles();
   const methods = useForm();
 
@@ -71,31 +61,19 @@ function ManpowerEditHistorysTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  const manpowerEditHistorysId = getValues().username;
+  console.log('dataPrint', manpowerEditHistorysData);
 
-  const { data, refetch } = useGetManpowerEditHistorysQuery({
-    manpowerEditHistorysId,
-    page,
-    size,
-  });
-
-  console.log('dataPrint', data);
-
-  const ManpowerLogs = data?.manpower_logs || [];
+  const ManpowerLogs = manpowerEditHistorysData?.manpower_logs || [];
 
   useEffect(() => {
-    if (data) {
-      setTotal(data.manpower_logs || []);
+    if (manpowerEditHistorysData) {
+      setTotal(manpowerEditHistorysData.manpower_logs || []);
     }
-  }, [data, size, page]);
+  }, [manpowerEditHistorysData, size, page]);
 
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
 
-  const [noData, setNoData] = useState(false);
-  const [pimage, setpimage] = useState('');
-  const [pstatus, setpstatus] = useState('');
-  const [pId, setpId] = useState(0);
   let serialNumber = 1;
 
   const [tableOrder, setTableOrder] = useState({
@@ -159,7 +137,7 @@ function ManpowerEditHistorysTable(props) {
     }
   }, []);
 
-  if (manpowerEditHistorysId?.length === 0) {
+  if (manpowerEditHistorysData?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -168,224 +146,172 @@ function ManpowerEditHistorysTable(props) {
     );
   }
 
-  useEffect(() => {
-    if (manpowerEditHistorysId) {
-      const authTOKEN = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: localStorage.getItem('jwt_access_token'),
-        },
-      };
-      axios
-        .get(
-          ` ${GET_PASSENGER_BY_PASSENGER_ID}${manpowerEditHistorysId}`,
-          authTOKEN
-        )
-        .then((res) => {
-          setpId(res?.data?.manpower_id || 0);
-          setpstatus(res?.data?.current_status || '');
-          setpimage(res?.data?.manpower_pic || '');
-          if (res?.data?.id) {
-            setNoData(false);
-          } else {
-            setNoData(true);
-          }
-        })
-        .catch(() => {
-          setpId(0);
-          setNoData(true);
-          setpimage('');
-          setpstatus('');
-        });
-    }
-  }, [manpowerEditHistorysId]);
+  console.log('PrintManpower', manpowerEditHistorysData?.length);
+
   return (
     <div className={classes.headContainer}>
-      <FormProvider {...methods}>
-        <PassengerEditHistoryFilterMenu
-          inShowAllMode={inShowAllMode}
-          handleGetPassengerEditHistorys={handleGetPassengerEditHistorys}
-          handleGetAllAgents={handleGetAllAgents}
-          noData={noData}
-          manpowerEditHistorysId={manpowerEditHistorysId}
-          pId={pId}
-          pstatus={pstatus}
-          pimage={pimage}
-        />
-      </FormProvider>
+      <div className='w-full flex flex-col'>
+        <div className={classes.headContainer}>
+          <div className='w-full flex flex-col'>
+            {ManpowerLogs && ManpowerLogs.length > 0 ? (
+              <>
+                <div className='grow overflow-x-auto overflow-y-auto'>
+                  <center>
+                    <h1
+                      style={{
+                        fontWeight: '600',
+                        color: '#0727c7',
+                        backgroundColor: '#dbdbe1',
+                        paddingTop: '10px',
+                        paddingBottom: '10px',
+                      }}>
+                      Manpower
+                    </h1>
+                  </center>
 
-      {noData ? (
-        <div
-          className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.noData}`}>
-          <h1></h1>
-        </div>
-      ) : (
-        <div
-          style={{
-            display: !manpowerEditHistorysId ? 'none' : 'block',
-          }}>
-          <div style={{ display: noData ? '' : 'block' }}>
-            <div className='w-full flex flex-col'>
-              <div className='grow overflow-x-auto overflow-y-auto'>
-                <center>
-                  <h1
-                    style={{
-                      fontWeight: '600',
-                      color: '#0727c7',
-                      backgroundColor: '#dbdbe1',
-                      paddingTop: '10px',
-                      paddingBottom: '10px',
-                    }}>
-                    {' '}
-                    Manpower
-                  </h1>
-                </center>
-                <Table
-                  stickyHeader
-                  className='min-w-xl'
-                  aria-labelledby='tableTitle'>
-                  <ManpowerEditHistorysTableHead
-                    selectedAgentIds={selected}
-                    tableOrder={tableOrder}
-                    onSelectAllClick={handleSelectAllClick}
-                    onRequestSort={handleRequestSort}
-                    rowCount={ManpowerLogs?.length}
-                    onMenuItemClick={handleDeselect}
+                  <Table
+                    stickyHeader
+                    className='min-w-xl'
+                    aria-labelledby='tableTitle'>
+                    <ManpowerEditHistorysTableHead
+                      selectedAgentIds={selected}
+                      tableOrder={tableOrder}
+                      onSelectAllClick={handleSelectAllClick}
+                      onRequestSort={handleRequestSort}
+                      rowCount={ManpowerLogs?.length}
+                      onMenuItemClick={handleDeselect}
+                    />
+                    <TableBody>
+                      {_.orderBy(
+                        ManpowerLogs,
+                        [tableOrder.id],
+                        [tableOrder.direction]
+                      ).map((n, index) => {
+                        const isSelected = selected.indexOf(n.id) !== -1;
+                        return (
+                          <TableRow
+                            className='h-72 cursor-pointer'
+                            hover
+                            role='checkbox'
+                            aria-checked={isSelected}
+                            tabIndex={-1}
+                            key={n.id}
+                            selected={isSelected}>
+                            <TableCell
+                              className='w-40 md:w-64'
+                              component='th'
+                              scope='row'>
+                              {pageAndSize.page * pageAndSize.size -
+                                pageAndSize.size +
+                                index +
+                                1}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.created_at
+                                ? moment(new Date(n.created_at)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.created_by?.first_name}{' '}
+                              {n.created_by?.last_name}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.new_visa_no}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.registration_id}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.man_power_status}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.man_power_date
+                                ? moment(new Date(n.man_power_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.submit_date
+                                ? moment(new Date(n.submit_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.delivery_date
+                                ? moment(new Date(n.delivery_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+                <div id='pagiContainer' className='flex justify-between mb-6'>
+                  <Pagination
+                    count={manpowerEditHistorysData?.total_pages}
+                    defaultPage={1}
+                    color='primary'
+                    showFirstButton
+                    showLastButton
+                    variant='outlined'
+                    shape='rounded'
+                    onChange={handlePagination}
                   />
-
-                  <TableBody>
-                    {_.orderBy(
-                      ManpowerLogs,
-                      [tableOrder.id],
-                      [tableOrder.direction]
-                    )?.map((n) => {
-                      const isSelected = selected.indexOf(n.id) !== -1;
-                      return (
-                        <TableRow
-                          className='h-72 cursor-pointer'
-                          hover
-                          role='checkbox'
-                          aria-checked={isSelected}
-                          tabIndex={-1}
-                          key={n.id}
-                          selected={isSelected}>
-                          <TableCell
-                            className='w-40 md:w-64'
-                            component='th'
-                            scope='row'>
-                            {pageAndSize.page * pageAndSize.size -
-                              pageAndSize.size +
-                              serialNumber++}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.created_at
-                              ? moment(new Date(n.created_at)).format(
-                                  'DD-MM-YYYY'
-                                )
-                              : ' '}{' '}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.created_by?.first_name} {n.created_by?.last_name}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.new_visa_no}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.registration_id}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.man_power_status}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.man_power_date
-                              ? moment(new Date(n.man_power_date)).format(
-                                  'DD-MM-YYYY'
-                                )
-                              : ' '}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.submit_date
-                              ? moment(new Date(n.submit_date)).format(
-                                  'DD-MM-YYYY'
-                                )
-                              : ' '}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.delivery_date
-                              ? moment(new Date(n.delivery_date)).format(
-                                  'DD-MM-YYYY'
-                                )
-                              : ' '}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
-
-              <div id='pagiContainer' className='flex justify-between mb-6'>
-                <Pagination
-                  count={data?.total_pages}
-                  defaultPage={1}
-                  color='primary'
-                  showFirstButton
-                  showLastButton
-                  variant='outlined'
-                  shape='rounded'
-                  onChange={handlePagination}
-                />
-                <TablePagination
-                  classes={{ root: 'overflow-visible' }}
-                  component='div'
-                  rowsPerPageOptions={rowsPerPageOptionHistorys}
-                  count={data?.total_elements || 0}
-                  rowsPerPage={rowsPerPage}
-                  page={pageAndSize.page - 1}
-                  backIconButtonProps={{
-                    'aria-label': 'Previous Page',
-                  }}
-                  nextIconButtonProps={{
-                    'aria-label': 'Next Page',
-                  }}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-              </div>
-            </div>
+                  <TablePagination
+                    classes={{ root: 'overflow-visible' }}
+                    component='div'
+                    rowsPerPageOptions={rowsPerPageOptionHistorys}
+                    count={manpowerEditHistorysData?.total_elements || 0}
+                    rowsPerPage={rowsPerPage}
+                    page={pageAndSize.page - 1}
+                    backIconButtonProps={{
+                      'aria-label': 'Previous Page',
+                    }}
+                    nextIconButtonProps={{
+                      'aria-label': 'Next Page',
+                    }}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className='text-center mt-6'></div>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

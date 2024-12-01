@@ -2,7 +2,6 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
 import PassengerEditHistorysTable from './PassengerEditHistorysTable';
-import ManpowerEditHistorysTable from './ManpowerEditHistorysTable';
 /**
  * Form Validation Schema
  */
@@ -26,12 +25,7 @@ function PassengerEditHistory() {
         header: 'min-h-52 h-52',
       }}
       header={<div className='flex'></div>}
-      content={
-        <div>
-          <PassengerEditHistorysTable />
-          <ManpowerEditHistorysTable />
-        </div>
-      }
+      content={<PassengerEditHistorysTable />}
       innerScroll
     />
   );
