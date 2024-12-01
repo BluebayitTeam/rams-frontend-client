@@ -8,6 +8,7 @@ import {
   DELETE_DEPARTMENT,
   DELETE_DEPARTMENT_MULTIPLE,
   GET_DEPARTMENT_BY_ID,
+  GET_MANPOWER_LOG,
   GET_PASSENGER_LOG,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
@@ -28,11 +29,21 @@ const PassengerEditHistoryApi = api
         }),
         providesTags: ['passengerEditHistorys'],
       }),
+      getManpowerEditHistorys: build.query({
+        query: ({ manpowerEditHistorysId, page, size }) => ({
+          url: `${GET_MANPOWER_LOG}${manpowerEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['manpowerEditHistorys'],
+      }),
     }),
     overrideExisting: false,
   });
 export default PassengerEditHistoryApi;
-export const { useGetPassengerEditHistorysQuery } = PassengerEditHistoryApi;
+export const {
+  useGetPassengerEditHistorysQuery,
+  useGetManpowerEditHistorysQuery,
+} = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>
   createSelector([selectSearchText], (searchText) => {

@@ -25,14 +25,11 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
 import TableBody from '@mui/material/TableBody';
 import _ from '@lodash';
 
-import {
-  selectFilteredPassengerEditHistorys,
-  useGetPassengerEditHistorysQuery,
-} from '../PassengerEditHistorysApi';
-import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
-import PassengerEditHistorysTableHead from './PassengerEditHistorysTableHead';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import axios from 'axios';
+import { useGetManpowerEditHistorysQuery } from '../PassengerEditHistorysApi';
+import ManpowerEditHistorysTableHead from './ManpowerEditHistorysTableHead';
+import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -58,7 +55,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function PassengerEditHistorysTable(props) {
+function ManpowerEditHistorysTable(props) {
   const classes = useStyles();
   const methods = useForm();
 
@@ -70,26 +67,25 @@ function PassengerEditHistorysTable(props) {
   const [totalElements, setTotalElements] = useState(0);
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState([]);
-  const [totalManpower, setTotalManpower] = useState([]);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  const passengerEditHistorysId = getValues().username;
+  const manpowerEditHistorysId = getValues().username;
 
-  const { data, refetch } = useGetPassengerEditHistorysQuery({
-    passengerEditHistorysId,
+  const { data, refetch } = useGetManpowerEditHistorysQuery({
+    manpowerEditHistorysId,
     page,
     size,
   });
 
   console.log('dataPrint', data);
 
-  const PassengerLogs = data?.passenger_logs || [];
+  const ManpowerLogs = data?.manpower_logs || [];
 
   useEffect(() => {
     if (data) {
-      setTotal(data.passenger_logs || []);
+      setTotal(data.manpower_logs || []);
     }
   }, [data, size, page]);
 
@@ -121,7 +117,7 @@ function PassengerEditHistorysTable(props) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(PassengerLogs.map((n) => n.id));
+      setSelected(ManpowerLogs.map((n) => n.id));
       return;
     }
 
@@ -152,18 +148,18 @@ function PassengerEditHistorysTable(props) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching passengerlogs:', error);
+      console.error('Error fetching manpowerlogs:', error);
     }
   }, []);
 
   const handleGetAllAgents = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all passengerlogs:', error);
+      console.error('Error fetching all manpowerlogs:', error);
     }
   }, []);
 
-  if (passengerEditHistorysId?.length === 0) {
+  if (manpowerEditHistorysId?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -173,7 +169,7 @@ function PassengerEditHistorysTable(props) {
   }
 
   useEffect(() => {
-    if (passengerEditHistorysId) {
+    if (manpowerEditHistorysId) {
       const authTOKEN = {
         headers: {
           'Content-type': 'application/json',
@@ -182,13 +178,13 @@ function PassengerEditHistorysTable(props) {
       };
       axios
         .get(
-          ` ${GET_PASSENGER_BY_PASSENGER_ID}${passengerEditHistorysId}`,
+          ` ${GET_PASSENGER_BY_PASSENGER_ID}${manpowerEditHistorysId}`,
           authTOKEN
         )
         .then((res) => {
-          setpId(res?.data?.passenger_id || 0);
+          setpId(res?.data?.manpower_id || 0);
           setpstatus(res?.data?.current_status || '');
-          setpimage(res?.data?.passenger_pic || '');
+          setpimage(res?.data?.manpower_pic || '');
           if (res?.data?.id) {
             setNoData(false);
           } else {
@@ -202,8 +198,7 @@ function PassengerEditHistorysTable(props) {
           setpstatus('');
         });
     }
-  }, [passengerEditHistorysId]);
-
+  }, [manpowerEditHistorysId]);
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
@@ -212,7 +207,7 @@ function PassengerEditHistorysTable(props) {
           handleGetPassengerEditHistorys={handleGetPassengerEditHistorys}
           handleGetAllAgents={handleGetAllAgents}
           noData={noData}
-          passengerEditHistorysId={passengerEditHistorysId}
+          manpowerEditHistorysId={manpowerEditHistorysId}
           pId={pId}
           pstatus={pstatus}
           pimage={pimage}
@@ -227,7 +222,7 @@ function PassengerEditHistorysTable(props) {
       ) : (
         <div
           style={{
-            display: !passengerEditHistorysId ? 'none' : 'block',
+            display: !manpowerEditHistorysId ? 'none' : 'block',
           }}>
           <div style={{ display: noData ? '' : 'block' }}>
             <div className='w-full flex flex-col'>
@@ -242,25 +237,25 @@ function PassengerEditHistorysTable(props) {
                       paddingBottom: '10px',
                     }}>
                     {' '}
-                    Passenger
+                    Manpower
                   </h1>
                 </center>
                 <Table
                   stickyHeader
                   className='min-w-xl'
                   aria-labelledby='tableTitle'>
-                  <PassengerEditHistorysTableHead
+                  <ManpowerEditHistorysTableHead
                     selectedAgentIds={selected}
                     tableOrder={tableOrder}
                     onSelectAllClick={handleSelectAllClick}
                     onRequestSort={handleRequestSort}
-                    rowCount={PassengerLogs?.length}
+                    rowCount={ManpowerLogs?.length}
                     onMenuItemClick={handleDeselect}
                   />
 
                   <TableBody>
                     {_.orderBy(
-                      PassengerLogs,
+                      ManpowerLogs,
                       [tableOrder.id],
                       [tableOrder.direction]
                     )?.map((n) => {
@@ -303,206 +298,54 @@ function PassengerEditHistorysTable(props) {
                             className='p-4 md:p-16'
                             component='th'
                             scope='row'>
-                            {n.agent}
+                            {n.new_visa_no}
                           </TableCell>
 
                           <TableCell
                             className='p-4 md:p-16'
                             component='th'
                             scope='row'>
-                            {n.demand}
+                            {n.registration_id}
                           </TableCell>
 
                           <TableCell
                             className='p-4 md:p-16'
                             component='th'
                             scope='row'>
-                            {n.profession}
+                            {n.man_power_status}
                           </TableCell>
 
                           <TableCell
                             className='p-4 md:p-16'
                             component='th'
                             scope='row'>
-                            {n.agency}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.target_country}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.passenger_type}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.current_status}
-                          </TableCell>
-
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.visa_entry}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.police_station}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.district}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.passenger_name}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.gender}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.date_of_birth
-                              ? moment(new Date(n.date_of_birth)).format(
+                            {n.man_power_date
+                              ? moment(new Date(n.man_power_date)).format(
                                   'DD-MM-YYYY'
                                 )
                               : ' '}
                           </TableCell>
+
                           <TableCell
                             className='p-4 md:p-16'
                             component='th'
                             scope='row'>
-                            {n.nid}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.father_name}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.mother_name}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.spouse_name}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.religion}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.marital_status}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.passport_no}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.passport_type}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.passport_issue_date
-                              ? moment(new Date(n.passport_issue_date)).format(
+                            {n.submit_date
+                              ? moment(new Date(n.submit_date)).format(
                                   'DD-MM-YYYY'
                                 )
                               : ' '}
                           </TableCell>
+
                           <TableCell
                             className='p-4 md:p-16'
                             component='th'
                             scope='row'>
-                            {n.passport_expiry_date
-                              ? moment(new Date(n.passport_expiry_date)).format(
+                            {n.delivery_date
+                              ? moment(new Date(n.delivery_date)).format(
                                   'DD-MM-YYYY'
                                 )
                               : ' '}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.village}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.post_office}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.contact_no}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.emergency_contact_no}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.place_of_birth}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.place_of_residence}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.passport_issue_place}
-                          </TableCell>
-                          <TableCell
-                            className='p-4 md:p-16'
-                            component='th'
-                            scope='row'>
-                            {n.notes}
                           </TableCell>
                         </TableRow>
                       );
@@ -547,4 +390,4 @@ function PassengerEditHistorysTable(props) {
   );
 }
 
-export default PassengerEditHistorysTable;
+export default ManpowerEditHistorysTable;
