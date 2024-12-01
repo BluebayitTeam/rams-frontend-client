@@ -113,19 +113,19 @@ function PassengerEditHistoryFilterMenu({
   handleGetPassengerEditHistorys,
   handleGetAllPassengerEditHistorys,
   passengerEditHistorysId,
+  noData,
+  pimage,
+  pId,
+  pstatus,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const methods = useFormContext();
   const { getValues } = methods;
-  const [noData, setNoData] = useState(false);
   const theme = useTheme();
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
-  const [pimage, setpimage] = useState('');
-  const [pstatus, setpstatus] = useState('');
   const [siteSetting, setsiteSetting] = useState({});
-  const [pId, setpId] = useState(0);
 
   // element refs
   const userNameEl = useRef(null);
@@ -144,38 +144,6 @@ function PassengerEditHistoryFilterMenu({
         ? handleGetAllPassengerEditHistorys()
         : handleGetPassengerEditHistorys(),
   };
-
-  useEffect(() => {
-    if (passengerEditHistorysId) {
-      const authTOKEN = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: localStorage.getItem('jwt_access_token'),
-        },
-      };
-      axios
-        .get(
-          `${GET_PASSENGER_BY_PASSENGER_ID}${passengerEditHistorysId}`,
-          authTOKEN
-        )
-        .then((res) => {
-          setpId(res?.data?.passenger_id || 0);
-          setpstatus(res?.data?.current_status || '');
-          setpimage(res?.data?.passenger_pic || '');
-          if (res?.data?.id) {
-            setNoData(false);
-          } else {
-            setNoData(true);
-          }
-        })
-        .catch(() => {
-          setpId(0);
-          setNoData(true);
-          setpimage('');
-          setpstatus('');
-        });
-    }
-  }, [passengerEditHistorysId]);
 
   //get site's logo & address
   useEffect(() => {

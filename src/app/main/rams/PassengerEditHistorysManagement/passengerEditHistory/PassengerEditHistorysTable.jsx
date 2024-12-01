@@ -10,9 +10,15 @@ import { motion } from 'framer-motion';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { Pagination, TableCell } from '@mui/material';
-import { rowsPerPageOptions } from 'src/app/@data/data';
+import {
+  rowsPerPageOptionHistorys,
+  rowsPerPageOptions,
+} from 'src/app/@data/data';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
+import {
+  BASE_URL,
+  GET_PASSENGER_BY_PASSENGER_ID,
+} from 'src/app/constant/constants';
 import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
@@ -25,6 +31,8 @@ import {
 } from '../PassengerEditHistorysApi';
 import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
 import PassengerEditHistorysTableHead from './PassengerEditHistorysTableHead';
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import axios from 'axios';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -56,11 +64,10 @@ function PassengerEditHistorysTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(30);
+  const [page, setPage] = useState('1');
+  const [size, setSize] = useState('30');
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const [pagination, setPagination] = useState(false);
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState([]);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
@@ -75,7 +82,9 @@ function PassengerEditHistorysTable(props) {
     size,
   });
 
-  const PassengerLogs = data?.passenger_logs;
+  console.log('dataPrint', data);
+
+  const PassengerLogs = data?.passenger_logs || [];
 
   useEffect(() => {
     if (data) {
@@ -83,18 +92,21 @@ function PassengerEditHistorysTable(props) {
     }
   }, [data, size, page]);
 
-  const [rows, setRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
+
+  const [noData, setNoData] = useState(false);
+  const [pimage, setpimage] = useState('');
+  const [pstatus, setpstatus] = useState('');
+  const [pId, setpId] = useState(0);
   let serialNumber = 1;
 
-  useEffect(() => {
-    refetch({ page, rowsPerPage });
-  }, [page, rowsPerPage]);
   const [tableOrder, setTableOrder] = useState({
     direction: 'asc',
     id: '',
   });
+
+  console.log('printPagination', pageAndSize);
 
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
@@ -124,13 +136,15 @@ function PassengerEditHistorysTable(props) {
     setPage(handlePage - 1);
   };
 
-  function handleChangePage(event, value) {
-    setPage(value);
-    setPageAndSize({ ...pageAndSize, page: value + 1 });
+  function handleChangePage(event, newPage) {
+    // `newPage` is zero-based from TablePagination
+    setPageAndSize({ ...pageAndSize, page: newPage + 1 }); // Convert to 1-based
   }
+
   function handleChangeRowsPerPage(event) {
-    setRowsPerPage(+event.target.value);
-    setPageAndSize({ ...pageAndSize, size: event.target.value });
+    const newSize = parseInt(event.target.value, 10); // Parse the new size
+    setRowsPerPage(newSize); // Update rows per page
+    setPageAndSize({ page: 1, size: newSize }); // Reset to the first page
   }
   const handleGetPassengerEditHistorys = useCallback(async (newPage) => {
     try {
@@ -157,6 +171,37 @@ function PassengerEditHistorysTable(props) {
     );
   }
 
+  useEffect(() => {
+    if (passengerEditHistorysId) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(
+          ` ${GET_PASSENGER_BY_PASSENGER_ID}${passengerEditHistorysId}`,
+          authTOKEN
+        )
+        .then((res) => {
+          setpId(res?.data?.passenger_id || 0);
+          setpstatus(res?.data?.current_status || '');
+          setpimage(res?.data?.passenger_pic || '');
+          if (res?.data?.id) {
+            setNoData(false);
+          } else {
+            setNoData(true);
+          }
+        })
+        .catch(() => {
+          setpId(0);
+          setNoData(true);
+          setpimage('');
+          setpstatus('');
+        });
+    }
+  }, [passengerEditHistorysId]);
   return (
     <div className={classes.headContainer}>
       <FormProvider {...methods}>
@@ -164,305 +209,338 @@ function PassengerEditHistorysTable(props) {
           inShowAllMode={inShowAllMode}
           handleGetPassengerEditHistorys={handleGetPassengerEditHistorys}
           handleGetAllAgents={handleGetAllAgents}
+          noData={noData}
           passengerEditHistorysId={passengerEditHistorysId}
+          pId={pId}
+          pstatus={pstatus}
+          pimage={pimage}
         />
       </FormProvider>
 
-      <div className='w-full flex flex-col min-h-full px-10 '>
-        <div className='grow overflow-x-auto overflow-y-auto'>
-          <Table
-            stickyHeader
-            className='min-w-xl '
-            aria-labelledby='tableTitle'>
-            <PassengerEditHistorysTableHead
-              selectedAgentIds={selected}
-              tableOrder={tableOrder}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={PassengerLogs?.length}
-              onMenuItemClick={handleDeselect}
-              rows={rows}
-            />
-
-            <TableBody>
-              {_.orderBy(PassengerLogs, [tableOrder.id], [tableOrder.direction])
-
-                .map((n) => {
-                  const isSelected = selected.indexOf(n.id) !== -1;
-                  return (
-                    <TableRow
-                      className='h-72 cursor-pointer'
-                      hover
-                      role='checkbox'
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}>
-                      <TableCell
-                        className='w-40 md:w-64'
-                        component='th'
-                        scope='row'>
-                        {pageAndSize.page * pageAndSize.size -
-                          pageAndSize.size +
-                          serialNumber++}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.created_at
-                          ? moment(new Date(n.created_at)).format('DD-MM-YYYY')
-                          : ' '}{' '}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.created_by?.first_name} {n.created_by?.last_name}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.agent}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.demand}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.profession}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.agency}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.target_country}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.passenger_type}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.current_status}
-                      </TableCell>
-
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.visa_entry}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.police_station}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.district}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.passenger_name}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.gender}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.date_of_birth
-                          ? moment(new Date(n.date_of_birth)).format(
-                              'DD-MM-YYYY'
-                            )
-                          : ' '}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.nid}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.father_name}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.mother_name}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.spouse_name}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.religion}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.marital_status}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.passport_no}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.passport_type}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.passport_issue_date
-                          ? moment(new Date(n.passport_issue_date)).format(
-                              'DD-MM-YYYY'
-                            )
-                          : ' '}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.passport_expiry_date
-                          ? moment(new Date(n.passport_expiry_date)).format(
-                              'DD-MM-YYYY'
-                            )
-                          : ' '}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.village}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.post_office}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.contact_no}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.emergency_contact_no}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.place_of_birth}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.place_of_residence}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.passport_issue_place}
-                      </TableCell>
-                      <TableCell
-                        className='p-4 md:p-16'
-                        component='th'
-                        scope='row'>
-                        {n.notes}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
+      {noData ? (
+        <div
+          className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.noData}`}>
+          <h1></h1>
         </div>
-        <div id='pagiContainer' className='flex justify-between mb-6'>
-          <Pagination
-            count={data?.total_pages}
-            page={page + 1}
-            defaultPage={1}
-            color='primary'
-            showFirstButton
-            showLastButton
-            variant='outlined'
-            shape='rounded'
-            onChange={handlePagination}
-          />
+      ) : (
+        <div
+          style={{
+            display: !passengerEditHistorysId ? 'none' : 'block',
+          }}>
+          <div style={{ display: noData ? '' : 'block' }}>
+            <div className='w-full flex flex-col'>
+              <FuseScrollbars className='flex-grow overflow-x-auto'>
+                <center>
+                  <h1
+                    style={{
+                      fontWeight: '600',
+                      color: '#0727c7',
+                      backgroundColor: '#dbdbe1',
+                      paddingTop: '10px',
+                      paddingBottom: '10px',
+                    }}>
+                    {' '}
+                    Passenger
+                  </h1>
+                </center>
+                <Table
+                  stickyHeader
+                  className='min-w-xl'
+                  aria-labelledby='tableTitle'>
+                  <PassengerEditHistorysTableHead
+                    selectedAgentIds={selected}
+                    tableOrder={tableOrder}
+                    onSelectAllClick={handleSelectAllClick}
+                    onRequestSort={handleRequestSort}
+                    rowCount={PassengerLogs?.length}
+                    onMenuItemClick={handleDeselect}
+                  />
 
-          <TablePagination
-            className='shrink-0 mb-2'
-            component='div'
-            rowsPerPageOptions={rowsPerPageOptions}
-            count={data?.total_elements}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            backIconButtonProps={{
-              'aria-label': 'Previous Page',
-            }}
-            nextIconButtonProps={{
-              'aria-label': 'Next Page',
-            }}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+                  <TableBody>
+                    {_.orderBy(
+                      PassengerLogs,
+                      [tableOrder.id],
+                      [tableOrder.direction]
+                    )?.map((n) => {
+                      const isSelected = selected.indexOf(n.id) !== -1;
+                      return (
+                        <TableRow
+                          className='h-72 cursor-pointer'
+                          hover
+                          role='checkbox'
+                          aria-checked={isSelected}
+                          tabIndex={-1}
+                          key={n.id}
+                          selected={isSelected}>
+                          <TableCell
+                            className='w-40 md:w-64'
+                            component='th'
+                            scope='row'>
+                            {pageAndSize.page * pageAndSize.size -
+                              pageAndSize.size +
+                              serialNumber++}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.created_at
+                              ? moment(new Date(n.created_at)).format(
+                                  'DD-MM-YYYY'
+                                )
+                              : ' '}{' '}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.created_by?.first_name} {n.created_by?.last_name}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.agent}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.demand}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.profession}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.agency}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.target_country}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.passenger_type}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.current_status}
+                          </TableCell>
+
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.visa_entry}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.police_station}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.district}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.passenger_name}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.gender}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.date_of_birth
+                              ? moment(new Date(n.date_of_birth)).format(
+                                  'DD-MM-YYYY'
+                                )
+                              : ' '}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.nid}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.father_name}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.mother_name}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.spouse_name}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.religion}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.marital_status}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.passport_no}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.passport_type}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.passport_issue_date
+                              ? moment(new Date(n.passport_issue_date)).format(
+                                  'DD-MM-YYYY'
+                                )
+                              : ' '}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.passport_expiry_date
+                              ? moment(new Date(n.passport_expiry_date)).format(
+                                  'DD-MM-YYYY'
+                                )
+                              : ' '}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.village}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.post_office}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.contact_no}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.emergency_contact_no}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.place_of_birth}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.place_of_residence}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.passport_issue_place}
+                          </TableCell>
+                          <TableCell
+                            className='p-4 md:p-16'
+                            component='th'
+                            scope='row'>
+                            {n.notes}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </FuseScrollbars>
+
+              <div id='pagiContainer' className='flex justify-between mb-6'>
+                <Pagination
+                  count={data?.total_pages}
+                  defaultPage={1}
+                  color='primary'
+                  showFirstButton
+                  showLastButton
+                  variant='outlined'
+                  shape='rounded'
+                  onChange={handlePagination}
+                />
+                <TablePagination
+                  classes={{ root: 'overflow-visible' }}
+                  component='div'
+                  rowsPerPageOptions={rowsPerPageOptionHistorys}
+                  count={data?.total_elements || 0}
+                  rowsPerPage={rowsPerPage}
+                  page={pageAndSize.page - 1}
+                  backIconButtonProps={{
+                    'aria-label': 'Previous Page',
+                  }}
+                  nextIconButtonProps={{
+                    'aria-label': 'Next Page',
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
