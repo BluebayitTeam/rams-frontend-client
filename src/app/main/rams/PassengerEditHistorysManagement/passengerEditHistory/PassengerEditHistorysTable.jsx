@@ -27,6 +27,7 @@ import _ from '@lodash';
 
 import {
   selectFilteredPassengerEditHistorys,
+  useGetEmbassyEditHistorysQuery,
   useGetManpowerEditHistorysQuery,
   useGetPassengerEditHistorysQuery,
 } from '../PassengerEditHistorysApi';
@@ -35,6 +36,7 @@ import PassengerEditHistorysTableHead from './PassengerEditHistorysTableHead';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import axios from 'axios';
 import ManpowerEditHistorysTable from './ManpowerEditHistorysTable';
+import EmbassyEditHistorysTable from './EmbassyEditHistorysTable';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -87,6 +89,11 @@ function PassengerEditHistorysTable(props) {
 
   const { data: manpowerEditHistorysData } = useGetManpowerEditHistorysQuery({
     manpowerEditHistorysId: getValues().username,
+    page,
+    size,
+  });
+  const { data: embassyEditHistorysData } = useGetEmbassyEditHistorysQuery({
+    embassyEditHistorysId: getValues().username,
     page,
     size,
   });
@@ -437,6 +444,9 @@ function PassengerEditHistorysTable(props) {
 
       <ManpowerEditHistorysTable
         manpowerEditHistorysData={manpowerEditHistorysData}
+      />
+      <EmbassyEditHistorysTable
+        embassyEditHistorysData={embassyEditHistorysData}
       />
     </div>
   );

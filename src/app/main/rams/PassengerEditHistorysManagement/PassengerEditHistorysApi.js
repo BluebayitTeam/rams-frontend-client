@@ -8,6 +8,7 @@ import {
   DELETE_DEPARTMENT,
   DELETE_DEPARTMENT_MULTIPLE,
   GET_DEPARTMENT_BY_ID,
+  GET_EMBASSY_LOG,
   GET_MANPOWER_LOG,
   GET_PASSENGER_LOG,
   UPDATE_DEPARTMENT,
@@ -36,6 +37,13 @@ const PassengerEditHistoryApi = api
         }),
         providesTags: ['manpowerEditHistorys'],
       }),
+      getEmbassyEditHistorys: build.query({
+        query: ({ embassyEditHistorysId, page, size }) => ({
+          url: `${GET_EMBASSY_LOG}${embassyEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['EmbassyEditHistorys'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -43,6 +51,7 @@ export default PassengerEditHistoryApi;
 export const {
   useGetPassengerEditHistorysQuery,
   useGetManpowerEditHistorysQuery,
+  useGetEmbassyEditHistorysQuery,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>
