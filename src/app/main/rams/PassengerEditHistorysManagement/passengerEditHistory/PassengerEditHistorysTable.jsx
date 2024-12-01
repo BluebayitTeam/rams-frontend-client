@@ -229,7 +229,7 @@ function PassengerEditHistorysTable(props) {
           }}>
           <div style={{ display: noData ? '' : 'block' }}>
             <div className='w-full flex flex-col'>
-              <FuseScrollbars className='flex-grow overflow-x-auto'>
+              <div className='grow overflow-x-auto overflow-y-auto'>
                 <center>
                   <h1
                     style={{
@@ -507,7 +507,7 @@ function PassengerEditHistorysTable(props) {
                     })}
                   </TableBody>
                 </Table>
-              </FuseScrollbars>
+              </div>
 
               <div id='pagiContainer' className='flex justify-between mb-6'>
                 <Pagination

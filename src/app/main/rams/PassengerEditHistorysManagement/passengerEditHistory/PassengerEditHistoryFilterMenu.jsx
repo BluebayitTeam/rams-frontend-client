@@ -31,6 +31,19 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: '80px',
     overflow: 'hidden',
   },
+  logoContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    height: '70px',
+    marginBottom: '10px',
+  },
+  addressContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: '15px',
+    fontStyle: 'italic',
+    textAlign: 'center',
+  },
   passengerImgContainer: {
     display: 'flex',
     alignItems: 'flex-start',
@@ -197,54 +210,30 @@ function PassengerEditHistoryFilterMenu({
             display: !passengerEditHistorysId ? 'none' : 'block',
           }}>
           <div style={{ display: noData ? '' : 'block' }}>
-            <center>
-              <img
-                src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`}
-              />
-              <div>
-                <pre>{siteSetting?.address || ''}</pre>
-              </div>
-              {/* <div >
-							<img src={`${BASE_URL}${pimage}`} height="150px" width="150px"/>
-							</div> */}
-              <div
-                className={`w-full md:w-1/4 justify-center md:justify-start mt-20 md:mt-0 ${classes.passengerImgContainer}`}>
-                <div className='passengerImgHolder rounded-2'>
-                  <img src={`${BASE_URL}${pimage}`} />
-                </div>
-              </div>
-              <div
-                className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.currentStsContainer}`}
-                style={{ margin: '30px' }}>
-                <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                  <i className='label text-xs md:text-sm'>Passenger ID :</i>
-                  <b className='value text-xs md:text-sm'>{pId}</b>
-                </div>
-                <div className='border hidden md:block'></div>
-                <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-                  <i className='label text-xs md:text-sm'>Current Status :</i>
+            <div className={`${classes.container}`}>
+              <div className='flex justify-between items-start flex-row md:flex-row'>
+                <div className='w-full md:w-1/4'></div>
 
-                  <b className='value text-xs md:text-sm'>{pstatus || ''}</b>
+                <div className='w-full md:w-1/2'>
+                  <div className={classes.logoContainer}>
+                    <img
+                      src={`${siteSetting?.logo ? `${BASE_URL}${siteSetting?.logo}` : null}`}
+                    />
+                  </div>
+                  <div className={classes.addressContainer}>
+                    <p>{siteSetting?.address || ''}</p>
+                  </div>
+                </div>
+
+                <div
+                  className={`w-full md:w-1/4 justify-center md:justify-start mt-20 md:mt-0 ${classes.passengerImgContainer}`}>
+                  <div className='passengerImgHolder rounded-2'>
+                    <img src={`${BASE_URL}${pimage}`} />
+                  </div>
                 </div>
               </div>
-            </center>
+            </div>
           </div>
-
-          {/* {<MedicalEditHistorysTable />}
-
-          {<MusanedOkalaEditHistorysTable />}
-
-          {<MofaEditHistorysTable />}
-
-          {<OfficeWorkEditHistorysTable />}
-
-          {<EmbassyEditHistorysTable />}
-
-          {<TrainingEditHistorysTable />}
-
-          {<ManpowerEditHistorysTable />}
-
-          {<FlightEditHistorysTable />} */}
         </div>
       )}
     </div>
