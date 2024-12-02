@@ -27,7 +27,7 @@ import _ from '@lodash';
 
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import axios from 'axios';
-import MedicalEditHistorysHead from './MedicalEditHistorysHead';
+import MedicalEditHistorysHead from './MedicalEditHistorysTableHead';
 
 const useStyles = makeStyles(() => ({
   root: {

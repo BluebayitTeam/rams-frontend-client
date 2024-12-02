@@ -11,6 +11,7 @@ import {
   GET_EMBASSY_LOG,
   GET_FLIGHT_LOG,
   GET_MANPOWER_LOG,
+  GET_MEDICAL_LOG,
   GET_PASSENGER_LOG,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
@@ -54,7 +55,7 @@ const PassengerEditHistoryApi = api
       }),
       getMedicalEditHistorys: build.query({
         query: ({ medicalEditHistorysId, page, size }) => ({
-          url: `${GET_FLIGHT_LOG}${medicalEditHistorysId}`,
+          url: `${GET_MEDICAL_LOG}${medicalEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['medicalEditHistorys'],

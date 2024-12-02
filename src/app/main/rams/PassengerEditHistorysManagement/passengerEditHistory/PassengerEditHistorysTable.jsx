@@ -30,6 +30,7 @@ import {
   useGetEmbassyEditHistorysQuery,
   useGetFlightEditHistorysQuery,
   useGetManpowerEditHistorysQuery,
+  useGetMedicalEditHistorysQuery,
   useGetPassengerEditHistorysQuery,
 } from '../PassengerEditHistorysApi';
 import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
@@ -102,6 +103,11 @@ function PassengerEditHistorysTable(props) {
   });
   const { data: flightEditHistorysData } = useGetFlightEditHistorysQuery({
     flightEditHistorysId: getValues().username,
+    page,
+    size,
+  });
+  const { data: medicalEditHistorysData } = useGetMedicalEditHistorysQuery({
+    medicalEditHistorysId: getValues().username,
     page,
     size,
   });
@@ -459,7 +465,9 @@ function PassengerEditHistorysTable(props) {
       <FlightEditHistorysTable
         flightEditHistorysData={flightEditHistorysData}
       />
-      <MedicalEditHistorysTable />
+      <MedicalEditHistorysTable
+        medicalEditHistorysData={medicalEditHistorysData}
+      />
     </div>
   );
 }
