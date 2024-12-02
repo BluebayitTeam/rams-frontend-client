@@ -221,22 +221,36 @@ function MusanedOkalaEditHistorysTable({ musanedokalaEditHistorysData }) {
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.musanedokala_status}
+                              {n.musaned_no}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.musanedokala_no}
+                              {n.musaned_status}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.musanedokala_date
-                                ? moment(new Date(n.musanedokala_date)).format(
+                              {n.okala_no}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.okala_status}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.musaned_date
+                                ? moment(new Date(n.musaned_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
@@ -246,21 +260,11 @@ function MusanedOkalaEditHistorysTable({ musanedokalaEditHistorysData }) {
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.remusanedokala_charge}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.remusanedokala_status}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.why_remusanedokala}
+                              {n.okala_date
+                                ? moment(new Date(n.okala_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}
                             </TableCell>
                           </TableRow>
                         );

@@ -33,6 +33,7 @@ import {
   useGetMedicalEditHistorysQuery,
   useGetMofaEditHistorysQuery,
   useGetMusanedOkalaEditHistorysQuery,
+  useGetOfficeWorkEditHistorysQuery,
   useGetPassengerEditHistorysQuery,
 } from '../PassengerEditHistorysApi';
 import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';

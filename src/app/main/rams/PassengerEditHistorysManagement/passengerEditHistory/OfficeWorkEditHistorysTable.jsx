@@ -27,7 +27,7 @@ import _ from '@lodash';
 
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import axios from 'axios';
-import OfficeWorkEditHistorysHead from './OfficeWorkEditHistorysHead';
+import OfficeWorkEditHistorysHead from './OfficeWorkEditHistorysTableHead';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
+function OfficeWorkEditHistorysTable({ officeWorkEditHistorysData }) {
   const classes = useStyles();
   const methods = useForm();
 
@@ -60,15 +60,13 @@ function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  console.log('dataOfficeWorkPrint', officeworkEditHistorysData);
-
-  const OfficeWorkLogs = officeworkEditHistorysData?.officework_logs || [];
+  const OfficeWorkLogs = officeWorkEditHistorysData?.officework_logs || [];
 
   useEffect(() => {
-    if (officeworkEditHistorysData) {
-      setTotal(officeworkEditHistorysData.officework_logs || []);
+    if (officeWorkEditHistorysData) {
+      setTotal(officeWorkEditHistorysData.officework_logs || []);
     }
-  }, [officeworkEditHistorysData, size, page]);
+  }, [officeWorkEditHistorysData, size, page]);
 
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
@@ -134,7 +132,7 @@ function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
     }
   }, []);
 
-  if (officeworkEditHistorysData?.length === 0) {
+  if (officeWorkEditHistorysData?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -160,7 +158,7 @@ function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
                         paddingTop: '10px',
                         paddingBottom: '10px',
                       }}>
-                      OfficeWork
+                      Office Work
                     </h1>
                   </center>
 
@@ -222,24 +220,24 @@ function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.officework_status}
+                              {n.police_clearance_no}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.officework_no}
+                              {n.police_clearance_status}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.officework_date
-                                ? moment(new Date(n.officework_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
+                              {n.police_clearance_date
+                                ? moment(
+                                    new Date(n.police_clearance_date)
+                                  ).format('DD-MM-YYYY')
                                 : ' '}
                             </TableCell>
 
@@ -247,21 +245,55 @@ function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.reofficework_charge}
+                              {n.driving_license_no}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.reofficework_status}
+                              {n.driving_license_status}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.why_reofficework}
+                              {n.driving_license_date
+                                ? moment(
+                                    new Date(n.driving_license_date)
+                                  ).format('DD-MM-YYYY')
+                                : ' '}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.finger_no}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.finger_status}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.finger_date
+                                ? moment(new Date(n.finger_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}{' '}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.certificate_experience}
                             </TableCell>
                           </TableRow>
                         );
@@ -271,7 +303,7 @@ function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
                 </div>
                 <div id='pagiContainer' className='flex justify-between mb-6'>
                   <Pagination
-                    count={officeworkEditHistorysData?.total_pages}
+                    count={officeWorkEditHistorysData?.total_pages}
                     defaultPage={1}
                     color='primary'
                     showFirstButton
@@ -284,7 +316,7 @@ function OfficeWorkEditHistorysTable({ officeworkEditHistorysData }) {
                     classes={{ root: 'overflow-visible' }}
                     component='div'
                     rowsPerPageOptions={rowsPerPageOptionHistorys}
-                    count={officeworkEditHistorysData?.total_elements || 0}
+                    count={officeWorkEditHistorysData?.total_elements || 0}
                     rowsPerPage={rowsPerPage}
                     page={pageAndSize.page - 1}
                     backIconButtonProps={{

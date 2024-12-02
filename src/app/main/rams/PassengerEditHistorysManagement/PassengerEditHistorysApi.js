@@ -14,6 +14,7 @@ import {
   GET_MEDICAL_LOG,
   GET_MOFA_LOG,
   GET_MUSANED_OKALA_LOG,
+  GET_OFFICE_WORK_LOG,
   GET_PASSENGER_LOG,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
@@ -76,6 +77,13 @@ const PassengerEditHistoryApi = api
         }),
         providesTags: ['musanedOkalaEditHistorys'],
       }),
+      getOfficeWorkEditHistorys: build.query({
+        query: ({ officeWorkEditHistorysId, page, size }) => ({
+          url: `${GET_OFFICE_WORK_LOG}${officeWorkEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['officeWorkEditHistorys'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -88,6 +96,7 @@ export const {
   useGetMedicalEditHistorysQuery,
   useGetMofaEditHistorysQuery,
   useGetMusanedOkalaEditHistorysQuery,
+  useGetOfficeWorkEditHistorysQuery,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>
