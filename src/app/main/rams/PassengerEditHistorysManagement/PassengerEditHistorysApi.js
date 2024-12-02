@@ -9,6 +9,7 @@ import {
   DELETE_DEPARTMENT_MULTIPLE,
   GET_DEPARTMENT_BY_ID,
   GET_EMBASSY_LOG,
+  GET_FLIGHT_LOG,
   GET_MANPOWER_LOG,
   GET_PASSENGER_LOG,
   UPDATE_DEPARTMENT,
@@ -42,7 +43,14 @@ const PassengerEditHistoryApi = api
           url: `${GET_EMBASSY_LOG}${embassyEditHistorysId}`,
           params: { page, size },
         }),
-        providesTags: ['EmbassyEditHistorys'],
+        providesTags: ['embassyEditHistorys'],
+      }),
+      getFlightEditHistorys: build.query({
+        query: ({ flightEditHistorysId, page, size }) => ({
+          url: `${GET_FLIGHT_LOG}${flightEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['flightEditHistorys'],
       }),
     }),
     overrideExisting: false,
@@ -52,6 +60,7 @@ export const {
   useGetPassengerEditHistorysQuery,
   useGetManpowerEditHistorysQuery,
   useGetEmbassyEditHistorysQuery,
+  useGetFlightEditHistorysQuery,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>

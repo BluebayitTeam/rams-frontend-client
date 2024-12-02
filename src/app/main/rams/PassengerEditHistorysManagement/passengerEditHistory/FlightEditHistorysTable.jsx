@@ -219,72 +219,74 @@ function FlightEditHistorysTable({ flightEditHistorysData }) {
                               {n.created_by?.first_name}{' '}
                               {n.created_by?.last_name}
                             </TableCell>
+
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.submit_date}
+                              {n.carrier_air_way}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.profession_english}
+                              {n.flight_no}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.profession_arabic}
+                              {n.ticket_no}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.salary}
+                              {n.sector_name}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.stamping_status}
+                              {n.ticket_status}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.stamping_date
-                                ? moment(new Date(n.stamping_date)).format(
+                              {n.flight_time}
+                            </TableCell>
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.arrival_time}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              component='th'
+                              scope='row'>
+                              {n.issue_date
+                                ? moment(new Date(n.issue_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
                             </TableCell>
-
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.visa_expiry_date
-                                ? moment(new Date(n.visa_expiry_date)).format(
+                              {n.flight_date
+                                ? moment(new Date(n.flight_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.delivery_date
-                                ? moment(new Date(n.delivery_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
-                                : ' '}{' '}
                             </TableCell>
                           </TableRow>
                         );
