@@ -45,6 +45,7 @@ import FlightEditHistorysTable from './FlightEditHistorysTable';
 import MedicalEditHistorysTable from './MedicalEditHistorysTable';
 import MofaEditHistorysTable from './MofaEditHistorysTable';
 import MusanedOkalaEditHistorysTable from './MusanedOkalaEditHistorysTable';
+import OfficeWorkEditHistorysTable from './OfficeWorkEditHistorysTable';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -123,6 +124,12 @@ function PassengerEditHistorysTable(props) {
   const { data: musanedokalaEditHistorysData } =
     useGetMusanedOkalaEditHistorysQuery({
       musanedOkalaEditHistorysId: getValues().username,
+      page,
+      size,
+    });
+  const { data: officeWorkEditHistorysData } =
+    useGetOfficeWorkEditHistorysQuery({
+      officeWorkEditHistorysId: getValues().username,
       page,
       size,
     });
@@ -485,6 +492,9 @@ function PassengerEditHistorysTable(props) {
       <MofaEditHistorysTable mofaEditHistorysData={mofaEditHistorysData} />
       <MusanedOkalaEditHistorysTable
         musanedokalaEditHistorysData={musanedokalaEditHistorysData}
+      />{' '}
+      <OfficeWorkEditHistorysTable
+        officeWorkEditHistorysData={officeWorkEditHistorysData}
       />
     </div>
   );
