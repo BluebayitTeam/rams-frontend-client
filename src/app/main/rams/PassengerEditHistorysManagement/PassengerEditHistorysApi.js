@@ -52,6 +52,13 @@ const PassengerEditHistoryApi = api
         }),
         providesTags: ['flightEditHistorys'],
       }),
+      getMedicalEditHistorys: build.query({
+        query: ({ medicalEditHistorysId, page, size }) => ({
+          url: `${GET_FLIGHT_LOG}${medicalEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['medicalEditHistorys'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -61,6 +68,7 @@ export const {
   useGetManpowerEditHistorysQuery,
   useGetEmbassyEditHistorysQuery,
   useGetFlightEditHistorysQuery,
+  useGetMedicalEditHistorysQuery,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>
