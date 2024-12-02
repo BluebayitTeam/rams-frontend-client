@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
 function MusanedOkalaEditHistorysTable({ musanedokalaEditHistorysData }) {
   const classes = useStyles();
   const methods = useForm();
-
+  console.log('musanedokalaEditHistorysData', musanedokalaEditHistorysData);
   const { watch, getValues } = methods;
 
   const [page, setPage] = useState('1');
@@ -59,8 +59,6 @@ function MusanedOkalaEditHistorysTable({ musanedokalaEditHistorysData }) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
-
-  console.log('dataMusanedOkalaPrint', musanedokalaEditHistorysData);
 
   const MusanedOkalaLogs =
     musanedokalaEditHistorysData?.musanedokala_logs || [];

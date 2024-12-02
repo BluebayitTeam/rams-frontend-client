@@ -13,6 +13,7 @@ import {
   GET_MANPOWER_LOG,
   GET_MEDICAL_LOG,
   GET_MOFA_LOG,
+  GET_MUSANED_OKALA_LOG,
   GET_PASSENGER_LOG,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
@@ -68,6 +69,13 @@ const PassengerEditHistoryApi = api
         }),
         providesTags: ['mofaEditHistorys'],
       }),
+      getMusanedOkalaEditHistorys: build.query({
+        query: ({ musanedOkalaEditHistorysId, page, size }) => ({
+          url: `${GET_MUSANED_OKALA_LOG}${musanedOkalaEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['musanedOkalaEditHistorys'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -79,6 +87,7 @@ export const {
   useGetFlightEditHistorysQuery,
   useGetMedicalEditHistorysQuery,
   useGetMofaEditHistorysQuery,
+  useGetMusanedOkalaEditHistorysQuery,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>

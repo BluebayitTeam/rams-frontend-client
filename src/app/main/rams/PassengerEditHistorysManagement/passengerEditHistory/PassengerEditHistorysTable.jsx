@@ -32,6 +32,7 @@ import {
   useGetManpowerEditHistorysQuery,
   useGetMedicalEditHistorysQuery,
   useGetMofaEditHistorysQuery,
+  useGetMusanedOkalaEditHistorysQuery,
   useGetPassengerEditHistorysQuery,
 } from '../PassengerEditHistorysApi';
 import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
@@ -43,6 +44,7 @@ import EmbassyEditHistorysTable from './EmbassyEditHistorysTable';
 import FlightEditHistorysTable from './FlightEditHistorysTable';
 import MedicalEditHistorysTable from './MedicalEditHistorysTable';
 import MofaEditHistorysTable from './MofaEditHistorysTable';
+import MusanedOkalaEditHistorysTable from './MusanedOkalaEditHistorysTable';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -118,6 +120,12 @@ function PassengerEditHistorysTable(props) {
     page,
     size,
   });
+  const { data: musanedokalaEditHistorysData } =
+    useGetMusanedOkalaEditHistorysQuery({
+      musanedOkalaEditHistorysId: getValues().username,
+      page,
+      size,
+    });
 
   const PassengerLogs = data?.passenger_logs || [];
 
@@ -475,6 +483,9 @@ function PassengerEditHistorysTable(props) {
         medicalEditHistorysData={medicalEditHistorysData}
       />{' '}
       <MofaEditHistorysTable mofaEditHistorysData={mofaEditHistorysData} />
+      <MusanedOkalaEditHistorysTable
+        musanedokalaEditHistorysData={musanedokalaEditHistorysData}
+      />
     </div>
   );
 }
