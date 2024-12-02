@@ -195,7 +195,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                             key={n.id}
                             selected={isSelected}>
                             <TableCell
-                              className='w-40 md:w-64 border-t-1  border-gray-200'
+                              className='w-40 md:w-64'
                               component='th'
                               scope='row'>
                               {pageAndSize.page * pageAndSize.size -
@@ -203,7 +203,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                                 serialNumber++}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              className='p-4 md:p-16'
                               component='th'
                               scope='row'>
                               {n.created_at
@@ -213,80 +213,86 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                                 : ' '}{' '}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              className='p-4 md:p-16'
                               component='th'
                               scope='row'>
                               {n.created_by?.first_name}{' '}
                               {n.created_by?.last_name}
                             </TableCell>
-
                             <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.carrier_air_way}
+                              {n.medical_serial_no}
                             </TableCell>
 
                             <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_no}
+                              {n.medical_result}
                             </TableCell>
 
                             <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.ticket_no}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.sector_name}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.ticket_status}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.medical_time}
-                            </TableCell>
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.arrival_time}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.issue_date
-                                ? moment(new Date(n.issue_date)).format(
+                              {n.medical_card
+                                ? moment(new Date(n.medical_card)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
                             </TableCell>
+
                             <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
+                              className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_date
-                                ? moment(new Date(n.medical_date)).format(
+                              {n.medical_exam_date
+                                ? moment(new Date(n.medical_exam_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.medical_report_date
+                                ? moment(
+                                    new Date(n.medical_report_date)
+                                  ).format('DD-MM-YYYY')
+                                : ' '}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.medical_issue_date
+                                ? moment(new Date(n.medical_issue_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.medical_expiry_date
+                                ? moment(
+                                    new Date(n.medical_expiry_date)
+                                  ).format('DD-MM-YYYY')
+                                : ' '}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.notes}
                             </TableCell>
                           </TableRow>
                         );
