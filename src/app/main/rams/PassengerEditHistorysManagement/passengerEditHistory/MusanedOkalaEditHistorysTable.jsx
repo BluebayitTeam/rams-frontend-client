@@ -27,7 +27,7 @@ import _ from '@lodash';
 
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import axios from 'axios';
-import MedicalEditHistorysHead from './MedicalEditHistorysTableHead';
+import MusanedOkalaEditHistorysHead from './MusanedOkalaEditHistorysHead';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function MedicalEditHistorysTable({ medicalEditHistorysData }) {
+function MusanedOkalaEditHistorysTable({ musanedokalaEditHistorysData }) {
   const classes = useStyles();
   const methods = useForm();
 
@@ -60,13 +60,16 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  const MedicalLogs = medicalEditHistorysData?.medical_logs || [];
+  console.log('dataMusanedOkalaPrint', musanedokalaEditHistorysData);
+
+  const MusanedOkalaLogs =
+    musanedokalaEditHistorysData?.musanedokala_logs || [];
 
   useEffect(() => {
-    if (medicalEditHistorysData) {
-      setTotal(medicalEditHistorysData.medical_logs || []);
+    if (musanedokalaEditHistorysData) {
+      setTotal(musanedokalaEditHistorysData.musanedokala_logs || []);
     }
-  }, [medicalEditHistorysData, size, page]);
+  }, [musanedokalaEditHistorysData, size, page]);
 
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
@@ -90,7 +93,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(MedicalLogs.map((n) => n.id));
+      setSelected(MusanedOkalaLogs.map((n) => n.id));
       return;
     }
 
@@ -121,18 +124,18 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching medicallogs:', error);
+      console.error('Error fetching musanedokalalogs:', error);
     }
   }, []);
 
   const handleGetAllAgents = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicallogs:', error);
+      console.error('Error fetching all musanedokalalogs:', error);
     }
   }, []);
 
-  if (medicalEditHistorysData?.length === 0) {
+  if (musanedokalaEditHistorysData?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -146,7 +149,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
       <div className='w-full flex flex-col'>
         <div className={classes.headContainer}>
           <div className='w-full flex flex-col'>
-            {MedicalLogs && MedicalLogs.length > 0 ? (
+            {MusanedOkalaLogs && MusanedOkalaLogs.length > 0 ? (
               <>
                 <div className='grow overflow-x-auto overflow-y-auto'>
                   <center>
@@ -158,7 +161,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                         paddingTop: '10px',
                         paddingBottom: '10px',
                       }}>
-                      Medical
+                      MusanedOkala
                     </h1>
                   </center>
 
@@ -166,17 +169,17 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                     stickyHeader
                     className='min-w-xl'
                     aria-labelledby='tableTitle'>
-                    <MedicalEditHistorysHead
+                    <MusanedOkalaEditHistorysHead
                       selectedAgentIds={selected}
                       tableOrder={tableOrder}
                       onSelectAllClick={handleSelectAllClick}
                       onRequestSort={handleRequestSort}
-                      rowCount={MedicalLogs?.length}
+                      rowCount={MusanedOkalaLogs?.length}
                       onMenuItemClick={handleDeselect}
                     />
                     <TableBody>
                       {_.orderBy(
-                        MedicalLogs,
+                        MusanedOkalaLogs,
                         [tableOrder.id],
                         [tableOrder.direction]
                       ).map((n, index) => {
@@ -215,26 +218,27 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                               {n.created_by?.first_name}{' '}
                               {n.created_by?.last_name}
                             </TableCell>
+
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.medical_serial_no}
+                              {n.musanedokala_status}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.medical_result}
+                              {n.musanedokala_no}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.medical_card
-                                ? moment(new Date(n.medical_card)).format(
+                              {n.musanedokala_date
+                                ? moment(new Date(n.musanedokala_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
@@ -244,51 +248,21 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.medical_exam_date
-                                ? moment(new Date(n.medical_exam_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
-                                : ' '}
+                              {n.remusanedokala_charge}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.medical_report_date
-                                ? moment(
-                                    new Date(n.medical_report_date)
-                                  ).format('DD-MM-YYYY')
-                                : ' '}
+                              {n.remusanedokala_status}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.medical_issue_date
-                                ? moment(new Date(n.medical_issue_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
-                                : ' '}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.medical_expiry_date
-                                ? moment(
-                                    new Date(n.medical_expiry_date)
-                                  ).format('DD-MM-YYYY')
-                                : ' '}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16 border-t-1  border-gray-200'
-                              component='th'
-                              scope='row'>
-                              {n.notes}
+                              {n.why_remusanedokala}
                             </TableCell>
                           </TableRow>
                         );
@@ -298,7 +272,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                 </div>
                 <div id='pagiContainer' className='flex justify-between mb-6'>
                   <Pagination
-                    count={medicalEditHistorysData?.total_pages}
+                    count={musanedokalaEditHistorysData?.total_pages}
                     defaultPage={1}
                     color='primary'
                     showFirstButton
@@ -311,7 +285,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                     classes={{ root: 'overflow-visible' }}
                     component='div'
                     rowsPerPageOptions={rowsPerPageOptionHistorys}
-                    count={medicalEditHistorysData?.total_elements || 0}
+                    count={musanedokalaEditHistorysData?.total_elements || 0}
                     rowsPerPage={rowsPerPage}
                     page={pageAndSize.page - 1}
                     backIconButtonProps={{
@@ -335,4 +309,4 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
   );
 }
 
-export default MedicalEditHistorysTable;
+export default MusanedOkalaEditHistorysTable;
