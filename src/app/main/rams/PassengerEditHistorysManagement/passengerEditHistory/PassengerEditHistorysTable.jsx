@@ -39,6 +39,7 @@ import axios from 'axios';
 import ManpowerEditHistorysTable from './ManpowerEditHistorysTable';
 import EmbassyEditHistorysTable from './EmbassyEditHistorysTable';
 import FlightEditHistorysTable from './FlightEditHistorysTable';
+import MedicalEditHistorysTable from './MedicalEditHistorysTable';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -458,6 +459,7 @@ function PassengerEditHistorysTable(props) {
       <FlightEditHistorysTable
         flightEditHistorysData={flightEditHistorysData}
       />
+      <MedicalEditHistorysTable />
     </div>
   );
 }
