@@ -60,8 +60,6 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  console.log('dataPrint', medicalEditHistorysData);
-
   const MedicalLogs = medicalEditHistorysData?.medical_logs || [];
 
   useEffect(() => {

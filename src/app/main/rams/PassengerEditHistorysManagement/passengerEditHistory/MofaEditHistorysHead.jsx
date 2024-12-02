@@ -30,52 +30,52 @@ const rows = [
   },
 
   {
-    id: 'mofa_serial_no',
+    id: 'mofa_status',
     align: 'left',
     disablePadding: false,
-    label: 'Mofa Serial No',
+    label: 'Mofa Status',
     sort: true,
   },
   {
-    id: 'mofa_result',
+    id: 'mofa_no',
     align: 'left',
     disablePadding: false,
-    label: 'Mofa Result',
+    label: 'Mofa No ',
     sort: true,
   },
   {
-    id: 'mofa_card',
+    id: 'mofa_date',
     align: 'left',
     disablePadding: false,
-    label: 'Mofa Card',
+    label: 'Mofa Date',
     sort: true,
   },
   {
-    id: 'mofa_exam_date',
+    id: 'remofa_charge',
     align: 'left',
     disablePadding: false,
-    label: 'Mofa Exam Date',
+    label: 'Re Mofa Charge',
     sort: true,
   },
   {
-    id: 'mofa_report_date',
+    id: 'remofa_charge',
     align: 'left',
     disablePadding: false,
-    label: 'Mofa Report Date',
+    label: 'Re Mofa Status',
     sort: true,
   },
   {
-    id: 'mofa_issue_date',
+    id: 'why_remofa',
     align: 'left',
     disablePadding: false,
-    label: 'Mofa Issue Date',
+    label: 'Why Re Mofa',
     sort: true,
   },
   {
-    id: 'mofa_expiry_date',
+    id: 'medical_expiry_date',
     align: 'left',
     disablePadding: false,
-    label: 'Mofa Expiry Date  ',
+    label: 'Medical Expiry Date  ',
     sort: true,
   },
   {
@@ -86,6 +86,7 @@ const rows = [
     sort: true,
   },
 ];
+
 function MofaEditHistorysHead(props) {
   const {
     selectedAgentIds,

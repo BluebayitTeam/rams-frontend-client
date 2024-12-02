@@ -31,6 +31,7 @@ import {
   useGetFlightEditHistorysQuery,
   useGetManpowerEditHistorysQuery,
   useGetMedicalEditHistorysQuery,
+  useGetMofaEditHistorysQuery,
   useGetPassengerEditHistorysQuery,
 } from '../PassengerEditHistorysApi';
 import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
@@ -41,6 +42,7 @@ import ManpowerEditHistorysTable from './ManpowerEditHistorysTable';
 import EmbassyEditHistorysTable from './EmbassyEditHistorysTable';
 import FlightEditHistorysTable from './FlightEditHistorysTable';
 import MedicalEditHistorysTable from './MedicalEditHistorysTable';
+import MofaEditHistorysTable from './MofaEditHistorysTable';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -108,6 +110,11 @@ function PassengerEditHistorysTable(props) {
   });
   const { data: medicalEditHistorysData } = useGetMedicalEditHistorysQuery({
     medicalEditHistorysId: getValues().username,
+    page,
+    size,
+  });
+  const { data: mofaEditHistorysData } = useGetMofaEditHistorysQuery({
+    mofaEditHistorysId: getValues().username,
     page,
     size,
   });
@@ -455,7 +462,6 @@ function PassengerEditHistorysTable(props) {
           </div>
         </>
       )}
-
       <ManpowerEditHistorysTable
         manpowerEditHistorysData={manpowerEditHistorysData}
       />
@@ -467,7 +473,8 @@ function PassengerEditHistorysTable(props) {
       />
       <MedicalEditHistorysTable
         medicalEditHistorysData={medicalEditHistorysData}
-      />
+      />{' '}
+      <MofaEditHistorysTable mofaEditHistorysData={mofaEditHistorysData} />
     </div>
   );
 }

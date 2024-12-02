@@ -12,6 +12,7 @@ import {
   GET_FLIGHT_LOG,
   GET_MANPOWER_LOG,
   GET_MEDICAL_LOG,
+  GET_MOFA_LOG,
   GET_PASSENGER_LOG,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
@@ -60,6 +61,13 @@ const PassengerEditHistoryApi = api
         }),
         providesTags: ['medicalEditHistorys'],
       }),
+      getMofaEditHistorys: build.query({
+        query: ({ mofaEditHistorysId, page, size }) => ({
+          url: `${GET_MOFA_LOG}${mofaEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['mofaEditHistorys'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -70,6 +78,7 @@ export const {
   useGetEmbassyEditHistorysQuery,
   useGetFlightEditHistorysQuery,
   useGetMedicalEditHistorysQuery,
+  useGetMofaEditHistorysQuery,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>

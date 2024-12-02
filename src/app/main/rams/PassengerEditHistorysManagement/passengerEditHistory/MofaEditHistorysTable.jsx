@@ -60,7 +60,7 @@ function MofaEditHistorysTable({ mofaEditHistorysData }) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  console.log('dataPrint', mofaEditHistorysData);
+  console.log('dataMofaPrint', mofaEditHistorysData);
 
   const MofaLogs = mofaEditHistorysData?.mofa_logs || [];
 
@@ -193,7 +193,7 @@ function MofaEditHistorysTable({ mofaEditHistorysData }) {
                             key={n.id}
                             selected={isSelected}>
                             <TableCell
-                              className='w-40 md:w-64'
+                              className='w-40 md:w-64 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {pageAndSize.page * pageAndSize.size -
@@ -201,7 +201,7 @@ function MofaEditHistorysTable({ mofaEditHistorysData }) {
                                 serialNumber++}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.created_at
@@ -211,86 +211,57 @@ function MofaEditHistorysTable({ mofaEditHistorysData }) {
                                 : ' '}{' '}
                             </TableCell>
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
                               {n.created_by?.first_name}{' '}
                               {n.created_by?.last_name}
                             </TableCell>
+
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.mofa_serial_no}
+                              {n.mofa_status}
                             </TableCell>
 
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.mofa_result}
+                              {n.mofa_no}
                             </TableCell>
 
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.mofa_card
-                                ? moment(new Date(n.mofa_card)).format(
+                              {n.mofa_date
+                                ? moment(new Date(n.mofa_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
                             </TableCell>
 
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.mofa_exam_date
-                                ? moment(new Date(n.mofa_exam_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
-                                : ' '}
+                              {n.remofa_charge}
                             </TableCell>
 
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.mofa_report_date
-                                ? moment(new Date(n.mofa_report_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
-                                : ' '}
+                              {n.remofa_status}
                             </TableCell>
 
                             <TableCell
-                              className='p-4 md:p-16'
+                              className='p-4 md:p-16 border-t-1  border-gray-200'
                               component='th'
                               scope='row'>
-                              {n.mofa_issue_date
-                                ? moment(new Date(n.mofa_issue_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
-                                : ' '}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16'
-                              component='th'
-                              scope='row'>
-                              {n.mofa_expiry_date
-                                ? moment(new Date(n.mofa_expiry_date)).format(
-                                    'DD-MM-YYYY'
-                                  )
-                                : ' '}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16'
-                              component='th'
-                              scope='row'>
-                              {n.notes}
+                              {n.why_remofa}
                             </TableCell>
                           </TableRow>
                         );
