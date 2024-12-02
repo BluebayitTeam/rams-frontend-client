@@ -27,7 +27,7 @@ import _ from '@lodash';
 
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import axios from 'axios';
-import MedicalEditHistorysHead from './MedicalEditHistorysTableHead';
+import MofaEditHistorysHead from './MofaEditHistorysHead';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function MedicalEditHistorysTable({ medicalEditHistorysData }) {
+function MofaEditHistorysTable({ mofaEditHistorysData }) {
   const classes = useStyles();
   const methods = useForm();
 
@@ -60,15 +60,15 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  console.log('dataPrint', medicalEditHistorysData);
+  console.log('dataPrint', mofaEditHistorysData);
 
-  const MedicalLogs = medicalEditHistorysData?.medical_logs || [];
+  const MofaLogs = mofaEditHistorysData?.mofa_logs || [];
 
   useEffect(() => {
-    if (medicalEditHistorysData) {
-      setTotal(medicalEditHistorysData.medical_logs || []);
+    if (mofaEditHistorysData) {
+      setTotal(mofaEditHistorysData.mofa_logs || []);
     }
-  }, [medicalEditHistorysData, size, page]);
+  }, [mofaEditHistorysData, size, page]);
 
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
@@ -92,7 +92,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(MedicalLogs.map((n) => n.id));
+      setSelected(MofaLogs.map((n) => n.id));
       return;
     }
 
@@ -123,18 +123,18 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
       const page = newPage || 1;
       setPage(page);
     } catch (error) {
-      console.error('Error fetching medicallogs:', error);
+      console.error('Error fetching mofalogs:', error);
     }
   }, []);
 
   const handleGetAllAgents = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicallogs:', error);
+      console.error('Error fetching all mofalogs:', error);
     }
   }, []);
 
-  if (medicalEditHistorysData?.length === 0) {
+  if (mofaEditHistorysData?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -148,7 +148,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
       <div className='w-full flex flex-col'>
         <div className={classes.headContainer}>
           <div className='w-full flex flex-col'>
-            {MedicalLogs && MedicalLogs.length > 0 ? (
+            {MofaLogs && MofaLogs.length > 0 ? (
               <>
                 <div className='grow overflow-x-auto overflow-y-auto'>
                   <center>
@@ -160,7 +160,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                         paddingTop: '10px',
                         paddingBottom: '10px',
                       }}>
-                      Medical
+                      Mofa
                     </h1>
                   </center>
 
@@ -168,17 +168,17 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                     stickyHeader
                     className='min-w-xl'
                     aria-labelledby='tableTitle'>
-                    <MedicalEditHistorysHead
+                    <MofaEditHistorysHead
                       selectedAgentIds={selected}
                       tableOrder={tableOrder}
                       onSelectAllClick={handleSelectAllClick}
                       onRequestSort={handleRequestSort}
-                      rowCount={MedicalLogs?.length}
+                      rowCount={MofaLogs?.length}
                       onMenuItemClick={handleDeselect}
                     />
                     <TableBody>
                       {_.orderBy(
-                        MedicalLogs,
+                        MofaLogs,
                         [tableOrder.id],
                         [tableOrder.direction]
                       ).map((n, index) => {
@@ -221,22 +221,22 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                               className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_serial_no}
+                              {n.mofa_serial_no}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_result}
+                              {n.mofa_result}
                             </TableCell>
 
                             <TableCell
                               className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_card
-                                ? moment(new Date(n.medical_card)).format(
+                              {n.mofa_card
+                                ? moment(new Date(n.mofa_card)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
@@ -246,8 +246,8 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                               className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_exam_date
-                                ? moment(new Date(n.medical_exam_date)).format(
+                              {n.mofa_exam_date
+                                ? moment(new Date(n.mofa_exam_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
@@ -257,19 +257,8 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                               className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_report_date
-                                ? moment(
-                                    new Date(n.medical_report_date)
-                                  ).format('DD-MM-YYYY')
-                                : ' '}
-                            </TableCell>
-
-                            <TableCell
-                              className='p-4 md:p-16'
-                              component='th'
-                              scope='row'>
-                              {n.medical_issue_date
-                                ? moment(new Date(n.medical_issue_date)).format(
+                              {n.mofa_report_date
+                                ? moment(new Date(n.mofa_report_date)).format(
                                     'DD-MM-YYYY'
                                   )
                                 : ' '}
@@ -279,10 +268,21 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                               className='p-4 md:p-16'
                               component='th'
                               scope='row'>
-                              {n.medical_expiry_date
-                                ? moment(
-                                    new Date(n.medical_expiry_date)
-                                  ).format('DD-MM-YYYY')
+                              {n.mofa_issue_date
+                                ? moment(new Date(n.mofa_issue_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
+                                : ' '}
+                            </TableCell>
+
+                            <TableCell
+                              className='p-4 md:p-16'
+                              component='th'
+                              scope='row'>
+                              {n.mofa_expiry_date
+                                ? moment(new Date(n.mofa_expiry_date)).format(
+                                    'DD-MM-YYYY'
+                                  )
                                 : ' '}
                             </TableCell>
 
@@ -300,7 +300,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                 </div>
                 <div id='pagiContainer' className='flex justify-between mb-6'>
                   <Pagination
-                    count={medicalEditHistorysData?.total_pages}
+                    count={mofaEditHistorysData?.total_pages}
                     defaultPage={1}
                     color='primary'
                     showFirstButton
@@ -313,7 +313,7 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
                     classes={{ root: 'overflow-visible' }}
                     component='div'
                     rowsPerPageOptions={rowsPerPageOptionHistorys}
-                    count={medicalEditHistorysData?.total_elements || 0}
+                    count={mofaEditHistorysData?.total_elements || 0}
                     rowsPerPage={rowsPerPage}
                     page={pageAndSize.page - 1}
                     backIconButtonProps={{
@@ -337,4 +337,4 @@ function MedicalEditHistorysTable({ medicalEditHistorysData }) {
   );
 }
 
-export default MedicalEditHistorysTable;
+export default MofaEditHistorysTable;
