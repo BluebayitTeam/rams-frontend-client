@@ -30,45 +30,220 @@ const rows = [
   },
 
   {
-    id: 'new_visa_no',
+    id: 'agent',
     align: 'left',
     disablePadding: false,
-    label: 'New Visa No',
+    label: 'Agent',
     sort: true,
   },
   {
-    id: 'registration_id',
+    id: 'demand',
     align: 'left',
     disablePadding: false,
-    label: 'Registration ID',
+    label: 'Demand',
     sort: true,
   },
   {
-    id: 'man_power_status',
+    id: 'profession',
     align: 'left',
     disablePadding: false,
-    label: 'Manpower Status',
+    label: 'Profession ',
     sort: true,
   },
   {
-    id: 'man_power_date',
+    id: 'agency',
     align: 'left',
     disablePadding: false,
-    label: 'Manpower Date',
+    label: 'Agency',
     sort: true,
   },
   {
-    id: 'submit_date',
+    id: 'target_country',
     align: 'left',
     disablePadding: false,
-    label: 'Submit Date',
+    label: 'Target Country ',
     sort: true,
   },
   {
-    id: 'delivery_date',
+    id: 'passenger_type',
     align: 'left',
     disablePadding: false,
-    label: 'Delivery Date',
+    label: ' Passenger Type',
+    sort: true,
+  },
+  {
+    id: 'current_status',
+    align: 'left',
+    disablePadding: false,
+    label: 'Current_Status',
+    sort: true,
+  },
+  {
+    id: 'visa_entry',
+    align: 'left',
+    disablePadding: false,
+    label: 'Visa Entry',
+    sort: true,
+  },
+  {
+    id: 'police_station',
+    align: 'left',
+    disablePadding: false,
+    label: 'Police Station',
+    sort: true,
+  },
+  {
+    id: 'district',
+    align: 'left',
+    disablePadding: false,
+    label: 'District',
+    sort: true,
+  },
+  {
+    id: 'passenger_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Passenger Name',
+    sort: true,
+  },
+  {
+    id: 'gender',
+    align: 'left',
+    disablePadding: false,
+    label: 'Gender',
+    sort: true,
+  },
+  {
+    id: 'date_of_birth',
+    align: 'left',
+    disablePadding: false,
+    label: 'Date Of Birth',
+    sort: true,
+  },
+  {
+    id: 'nid',
+    align: 'left',
+    disablePadding: false,
+    label: 'NID',
+    sort: true,
+  },
+  {
+    id: 'father_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Father Name',
+    sort: true,
+  },
+  {
+    id: 'mother_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Mother Name',
+    sort: true,
+  },
+  {
+    id: 'spouse_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Spouse Name',
+    sort: true,
+  },
+  {
+    id: 'religion',
+    align: 'left',
+    disablePadding: false,
+    label: 'Religion',
+    sort: true,
+  },
+  {
+    id: 'marital_status',
+    align: 'left',
+    disablePadding: false,
+    label: 'Marital Status',
+    sort: true,
+  },
+  {
+    id: 'passport_no',
+    align: 'left',
+    disablePadding: false,
+    label: 'Passport No',
+    sort: true,
+  },
+  {
+    id: 'passport_type',
+    align: 'left',
+    disablePadding: false,
+    label: 'passport Type',
+    sort: true,
+  },
+  {
+    id: 'passport_issue_date',
+    align: 'left',
+    disablePadding: false,
+    label: 'Passport Issue Date ',
+    sort: true,
+  },
+  {
+    id: 'passport_expiry_date',
+    align: 'left',
+    disablePadding: false,
+    label: 'Passport Expiry Date',
+    sort: true,
+  },
+  {
+    id: 'village',
+    align: 'left',
+    disablePadding: false,
+    label: 'Village',
+    sort: true,
+  },
+  {
+    id: 'post_office',
+    align: 'left',
+    disablePadding: false,
+    label: 'Post Office',
+    sort: true,
+  },
+  {
+    id: 'contact_no',
+    align: 'left',
+    disablePadding: false,
+    label: 'Contact No',
+    sort: true,
+  },
+  {
+    id: 'emergency_contact_no',
+    align: 'left',
+    disablePadding: false,
+    label: 'Emergency Contact No',
+    sort: true,
+  },
+  {
+    id: 'place_of_birth',
+    align: 'left',
+    disablePadding: false,
+    label: 'Place Of Birth',
+    sort: true,
+  },
+  {
+    id: 'place_of_residence',
+    align: 'left',
+    disablePadding: false,
+    label: 'Place of Residence',
+    sort: true,
+  },
+  {
+    id: 'passport_issue_place',
+    align: 'left',
+    disablePadding: false,
+    label: 'Passport Issue Place',
+    sort: true,
+  },
+  {
+    id: 'notes',
+    align: 'left',
+    disablePadding: false,
+    label: 'Notes',
     sort: true,
   },
 ];
@@ -82,8 +257,6 @@ function PassengerEditHistorysTableHead(props) {
     rowCount,
     onMenuItemClick,
   } = props;
-
-  console.log('ChekckRows', rows);
 
   const numSelected = selectedAgentIds.length;
   const [
@@ -105,31 +278,13 @@ function PassengerEditHistorysTableHead(props) {
   return (
     <TableHead>
       <TableRow className='h-48 sm:h-64'>
-        {rows.map((row, index, array) => {
+        {rows.map((row) => {
           return (
             <TableCell
-              sx={{
-                backgroundColor: (theme) =>
-                  theme.palette.mode === 'light'
-                    ? lighten(theme.palette.background.default, 0.4)
-                    : lighten(theme.palette.background.default, 0.02),
-              }}
               className='p-4 md:p-16 whitespace-nowrap'
               key={row.id}
               align={row.align}
-              padding={row.disablePadding ? 'none' : 'normal'}
-              style={{
-                position:
-                  index === 0 || index === array.length - 1
-                    ? 'sticky'
-                    : 'inherit',
-                left: index === 0 ? 0 : undefined,
-                right: index === array.length - 1 ? 0 : undefined,
-                zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto',
-              }}
-              sortDirection={
-                tableOrder.id === row.id ? tableOrder.direction : false
-              }>
+              padding={row.disablePadding ? 'none' : 'default'}>
               {row.sort && (
                 <Tooltip
                   title='Sort'
@@ -138,9 +293,14 @@ function PassengerEditHistorysTableHead(props) {
                   }
                   enterDelay={300}>
                   <TableSortLabel
-                    active={tableOrder.id === row.id}
-                    direction={tableOrder.direction}
-                    onClick={(ev) => createSortHandler(ev, row.id)}
+                    // Ensure props.tableorder is defined before accessing its properties
+                    active={props.tableorder && props.tableorder.id === row.id}
+                    // Provide a default value for direction if tableorder is not defined
+                    direction={
+                      props.tableorder?.direction || 'asc' // Default to 'asc' if undefined
+                    }
+                    // Correctly bind the sort handler
+                    onClick={(event) => createSortHandler(event, row.id)}
                     className='font-semibold'>
                     {row.label}
                   </TableSortLabel>

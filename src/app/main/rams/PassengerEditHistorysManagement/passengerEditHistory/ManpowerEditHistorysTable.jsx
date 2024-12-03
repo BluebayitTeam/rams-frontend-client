@@ -79,8 +79,6 @@ function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
     id: '',
   });
 
-  console.log('printPagination', pageAndSize);
-
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
 

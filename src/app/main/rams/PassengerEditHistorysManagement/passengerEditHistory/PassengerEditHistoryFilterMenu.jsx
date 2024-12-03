@@ -233,6 +233,20 @@ function PassengerEditHistoryFilterMenu({
                 </div>
               </div>
             </div>
+            <div
+              className={`flex-row md:flex-row rounded-4 mx-0 md:mx-40 ${classes.currentStsContainer}`}
+              style={{ margin: '30px' }}>
+              <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                <i className='label text-xs md:text-sm'>Passenger ID :</i>
+                <b className='value text-xs md:text-sm'>{pId}</b>
+              </div>
+              <div className='border hidden md:block'></div>
+              <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+                <i className='label text-xs md:text-sm'>Current Status :</i>
+
+                <b className='value text-xs md:text-sm'>{pstatus || ''}</b>
+              </div>
+            </div>
           </div>
         </div>
       )}
