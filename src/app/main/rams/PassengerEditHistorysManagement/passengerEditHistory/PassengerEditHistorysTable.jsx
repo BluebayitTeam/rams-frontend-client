@@ -123,6 +123,14 @@ function PassengerEditHistorysTable(props) {
     size,
   });
 
+  const PassengerLogs = data?.passenger_logs || [];
+
+  useEffect(() => {
+    if (data) {
+      setTotal(data.passenger_logs || []);
+    }
+  }, [data, size, page]);
+
   const { data: manpowerEditHistorysData, refetch } =
     useGetManpowerEditHistorysQuery({
       passengerEditHistorysId,
@@ -169,14 +177,6 @@ function PassengerEditHistorysTable(props) {
     page,
     size,
   });
-
-  const PassengerLogs = data?.passenger_logs || [];
-
-  useEffect(() => {
-    if (data) {
-      setTotal(data.passenger_logs || []);
-    }
-  }, [data, size, page]);
 
   const [rowsPerPage, setRowsPerPage] = useState(30);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 30 });
