@@ -51,8 +51,6 @@ import VisaEntryDetail from './VisaEntryDetail';
 import VisaEntryDetailPrint from './VisaEntryDetailPrint';
 import EmbassyDetail from './EmbassyDetail';
 import EmbassyDetailPrint from './EmbassyDetailPrint';
-import MedicalDetailPrint from './MedicalDetailPrint';
-import MedicalDetail from './MedicalDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {

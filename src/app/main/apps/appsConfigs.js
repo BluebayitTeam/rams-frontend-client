@@ -161,8 +161,9 @@ import DemandReportAppConfig from '../rams/DemandReportManagement/DemandReportAp
 import TrialBalanceReportAppConfig from '../rams/TrialBalanceReportManagement/TrialBalanceReportAppConfig';
 import ProfitLossReportAppConfig from '../rams/ProfitLossReportManagement/ProfitLossReportAppConfig';
 import BalanceSheetReportAppConfig from '../rams/BalanceSheetReportManagement/BalanceSheetReportAppConfig';
-import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
+// import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
 import PassengerEditHistoryAppConfig from '../rams/PassengerEditHistorysManagement/PassengerEditHistoryAppConfig';
+import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
 
 /**
  * The list of application configurations.

@@ -35,6 +35,7 @@ import {
   useGetMusanedOkalaEditHistorysQuery,
   useGetOfficeWorkEditHistorysQuery,
   useGetPassengerEditHistorysQuery,
+  useGetTrainingEditHistorysQuery,
 } from '../PassengerEditHistorysApi';
 import PassengerEditHistoryFilterMenu from './PassengerEditHistoryFilterMenu';
 import PassengerEditHistorysTableHead from './PassengerEditHistorysTableHead';
@@ -47,6 +48,7 @@ import MedicalEditHistorysTable from './MedicalEditHistorysTable';
 import MofaEditHistorysTable from './MofaEditHistorysTable';
 import MusanedOkalaEditHistorysTable from './MusanedOkalaEditHistorysTable';
 import OfficeWorkEditHistorysTable from './OfficeWorkEditHistorysTable';
+import TrainingEditHistorysTable from './TrainingEditHistorysTable';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -134,6 +136,11 @@ function PassengerEditHistorysTable(props) {
       page,
       size,
     });
+  const { data: trainingEditHistorysData } = useGetTrainingEditHistorysQuery({
+    trainingEditHistorysId: getValues().username,
+    page,
+    size,
+  });
 
   const PassengerLogs = data?.passenger_logs || [];
 
@@ -496,6 +503,9 @@ function PassengerEditHistorysTable(props) {
       />{' '}
       <OfficeWorkEditHistorysTable
         officeWorkEditHistorysData={officeWorkEditHistorysData}
+      />{' '}
+      <TrainingEditHistorysTable
+        trainingEditHistorysData={trainingEditHistorysData}
       />
     </div>
   );

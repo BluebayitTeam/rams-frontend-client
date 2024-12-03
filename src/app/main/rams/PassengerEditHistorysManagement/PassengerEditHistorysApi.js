@@ -16,6 +16,7 @@ import {
   GET_MUSANED_OKALA_LOG,
   GET_OFFICE_WORK_LOG,
   GET_PASSENGER_LOG,
+  GET_TRAINING_LOG,
   UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -84,6 +85,13 @@ const PassengerEditHistoryApi = api
         }),
         providesTags: ['officeWorkEditHistorys'],
       }),
+      getTrainingEditHistorys: build.query({
+        query: ({ trainingEditHistorysId, page, size }) => ({
+          url: `${GET_TRAINING_LOG}${trainingEditHistorysId}`,
+          params: { page, size },
+        }),
+        providesTags: ['trainingEditHistorys'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -97,6 +105,7 @@ export const {
   useGetMofaEditHistorysQuery,
   useGetMusanedOkalaEditHistorysQuery,
   useGetOfficeWorkEditHistorysQuery,
+  useGetTrainingEditHistorysQuery,
 } = PassengerEditHistoryApi;
 
 export const selectFilteredPassengerEditHistorys = (passengerEditHistorys) =>
