@@ -91,10 +91,8 @@ function PassengerEditHistorysTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  const passengerEditHistorysId = getValues().username;
-
-  const { data, refetch } = useGetPassengerEditHistorysQuery({
-    passengerEditHistorysId,
+  const { data } = useGetPassengerEditHistorysQuery({
+    passengerEditHistorysId: getValues().username,
     page,
     size,
   });
@@ -164,8 +162,6 @@ function PassengerEditHistorysTable(props) {
     id: '',
   });
 
-  console.log('printPagination', pageAndSize);
-
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
 
@@ -213,22 +209,6 @@ function PassengerEditHistorysTable(props) {
     }
   }, []);
 
-  const handleGetAllAgents = useCallback(async () => {
-    try {
-    } catch (error) {
-      console.error('Error fetching all passengerlogs:', error);
-    }
-  }, []);
-
-  if (passengerEditHistorysId?.length === 0) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className='flex flex-1 items-center justify-center h-full'></motion.div>
-    );
-  }
-
   useEffect(() => {
     if (passengerEditHistorysId) {
       const authTOKEN = {
@@ -275,7 +255,6 @@ function PassengerEditHistorysTable(props) {
             <PassengerEditHistoryFilterMenu
               inShowAllMode={inShowAllMode}
               handleGetPassengerEditHistorys={handleGetPassengerEditHistorys}
-              handleGetAllAgents={handleGetAllAgents}
               noData={noData}
               passengerEditHistorysId={passengerEditHistorysId}
               pId={pId}
