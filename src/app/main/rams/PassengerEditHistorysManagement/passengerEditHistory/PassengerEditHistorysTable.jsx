@@ -49,6 +49,7 @@ import MofaEditHistorysTable from './MofaEditHistorysTable';
 import MusanedOkalaEditHistorysTable from './MusanedOkalaEditHistorysTable';
 import OfficeWorkEditHistorysTable from './OfficeWorkEditHistorysTable';
 import TrainingEditHistorysTable from './TrainingEditHistorysTable';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -90,43 +91,92 @@ function PassengerEditHistorysTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
+  const [isValidPassengerId, setIsValidPassengerId] = useState(false);
+  const [triggerRefetch, setTriggerRefetch] = useState(0); // Use a counter to force updates
 
   const passengerEditHistorysId = getValues().username;
 
-  const { data } = useGetPassengerEditHistorysQuery({
-    passengerEditHistorysId,
-    page,
-    size,
-  });
+  useEffect(() => {
+    if (passengerEditHistorysId) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(
+          `${GET_PASSENGER_BY_PASSENGER_ID}${passengerEditHistorysId}`,
+          authTOKEN
+        )
+        .then((res) => {
+          setpId(res?.data?.passenger_id || 0);
+          setpstatus(res?.data?.current_status || '');
+          setpimage(res?.data?.passenger_pic || '');
+          setIsValidPassengerId(!!res?.data?.id); // Set valid if ID exists
+          setNoData(!res?.data?.id);
+          setTriggerRefetch((prev) => prev + 1); // Trigger refetch
+        })
+        .catch(() => {
+          setpId(0);
+          setpstatus('');
+          setpimage('');
+          setNoData(true);
+          setIsValidPassengerId(false);
+        });
+    } else {
+      setIsValidPassengerId(false);
+    }
+  }, [passengerEditHistorysId]);
 
-  const { data: manpowerEditHistorysData } = useGetManpowerEditHistorysQuery({
-    passengerEditHistorysId,
-    page,
-    size,
-  });
+  // Conditionally make API calls based on isValidPassengerId and triggerRefetch
+  const { data, refetch: refetchPassengerEditHistorys } =
+    useGetPassengerEditHistorysQuery(
+      isValidPassengerId ? { passengerEditHistorysId, page, size } : skipToken,
+      { refetchOnMountOrArgChange: true } // Refetch when args change
+    );
 
-  const { data: embassyEditHistorysData } = useGetEmbassyEditHistorysQuery({
-    passengerEditHistorysId,
-    page,
-    size,
-  });
-  const { data: flightEditHistorysData } = useGetFlightEditHistorysQuery({
-    passengerEditHistorysId,
-    page,
-    size,
-  });
-  const { data: medicalEditHistorysData } = useGetMedicalEditHistorysQuery({
-    passengerEditHistorysId,
-    page,
-    size,
-  });
+  const { data: manpowerEditHistorysData, refetch: refetchManpower } =
+    useGetManpowerEditHistorysQuery(
+      isValidPassengerId ? { passengerEditHistorysId, page, size } : skipToken,
+      { refetchOnMountOrArgChange: true }
+    );
 
-  const { data: musanedokalaEditHistorysData } =
-    useGetMusanedOkalaEditHistorysQuery({
-      passengerEditHistorysId,
-      page,
-      size,
-    });
+  const { data: embassyEditHistorysData, refetch: refetchEmbassy } =
+    useGetEmbassyEditHistorysQuery(
+      isValidPassengerId ? { passengerEditHistorysId, page, size } : skipToken,
+      { refetchOnMountOrArgChange: true }
+    );
+
+  const { data: flightEditHistorysData, refetch: refetchFlight } =
+    useGetFlightEditHistorysQuery(
+      isValidPassengerId ? { passengerEditHistorysId, page, size } : skipToken,
+      { refetchOnMountOrArgChange: true }
+    );
+
+  const { data: medicalEditHistorysData, refetch: refetchMedical } =
+    useGetMedicalEditHistorysQuery(
+      isValidPassengerId ? { passengerEditHistorysId, page, size } : skipToken,
+      { refetchOnMountOrArgChange: true }
+    );
+
+  const { data: musanedokalaEditHistorysData, refetch: refetchMusanedOkala } =
+    useGetMusanedOkalaEditHistorysQuery(
+      isValidPassengerId ? { passengerEditHistorysId, page, size } : skipToken,
+      { refetchOnMountOrArgChange: true }
+    );
+
+  // Optional: Trigger manual refetch on demand
+  useEffect(() => {
+    if (isValidPassengerId) {
+      refetchPassengerEditHistorys();
+      refetchManpower();
+      refetchEmbassy();
+      refetchFlight();
+      refetchMedical();
+      refetchMusanedOkala();
+    }
+  }, [isValidPassengerId, triggerRefetch]);
   // const { data: mofaEditHistorysData } = useGetMofaEditHistorysQuery({
   //   passengerEditHistorysId,
   //   page,
@@ -213,38 +263,6 @@ function PassengerEditHistorysTable(props) {
       console.error('Error fetching passengerlogs:', error);
     }
   }, []);
-
-  useEffect(() => {
-    if (passengerEditHistorysId) {
-      const authTOKEN = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: localStorage.getItem('jwt_access_token'),
-        },
-      };
-      axios
-        .get(
-          ` ${GET_PASSENGER_BY_PASSENGER_ID}${passengerEditHistorysId}`,
-          authTOKEN
-        )
-        .then((res) => {
-          setpId(res?.data?.passenger_id || 0);
-          setpstatus(res?.data?.current_status || '');
-          setpimage(res?.data?.passenger_pic || '');
-          if (res?.data?.id) {
-            setNoData(false);
-          } else {
-            setNoData(true);
-          }
-        })
-        .catch(() => {
-          setpId(0);
-          setNoData(true);
-          setpimage('');
-          setpstatus('');
-        });
-    }
-  }, [passengerEditHistorysId]);
 
   return (
     <div className={classes.headContainer}>

@@ -2,12 +2,6 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-  AGENT_FILTER_BY,
-  AGENT_FILTER_WITHOUT_PG,
-  CREATE_DEPARTMENT,
-  DELETE_DEPARTMENT,
-  DELETE_DEPARTMENT_MULTIPLE,
-  GET_DEPARTMENT_BY_ID,
   GET_EMBASSY_LOG,
   GET_FLIGHT_LOG,
   GET_MANPOWER_LOG,
@@ -17,7 +11,6 @@ import {
   GET_OFFICE_WORK_LOG,
   GET_PASSENGER_LOG,
   GET_TRAINING_LOG,
-  UPDATE_DEPARTMENT,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
