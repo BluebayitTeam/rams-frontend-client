@@ -50,15 +50,6 @@ import MusanedOkalaEditHistorysTable from './MusanedOkalaEditHistorysTable';
 import OfficeWorkEditHistorysTable from './OfficeWorkEditHistorysTable';
 import TrainingEditHistorysTable from './TrainingEditHistorysTable';
 
-const initialTableColumnsState = [
-  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Name', name: 'username', show: true },
-  { id: 3, label: 'Group', name: 'group', subName: 'name', show: true },
-  { id: 4, label: 'District', name: 'city', show: true },
-  { id: 5, label: 'Mobile', name: 'primary_phone', show: true },
-  { id: 6, label: 'Email', name: 'email', show: true },
-];
-
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
