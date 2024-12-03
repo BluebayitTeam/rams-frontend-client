@@ -37,57 +37,57 @@ const PassengerEditHistoryApi = api
         providesTags: ['passengerEditHistorys'],
       }),
       getManpowerEditHistorys: build.query({
-        query: ({ manpowerEditHistorysId, page, size }) => ({
-          url: `${GET_MANPOWER_LOG}${manpowerEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_MANPOWER_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['manpowerEditHistorys'],
       }),
       getEmbassyEditHistorys: build.query({
-        query: ({ embassyEditHistorysId, page, size }) => ({
-          url: `${GET_EMBASSY_LOG}${embassyEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_EMBASSY_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['embassyEditHistorys'],
       }),
       getFlightEditHistorys: build.query({
-        query: ({ flightEditHistorysId, page, size }) => ({
-          url: `${GET_FLIGHT_LOG}${flightEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_FLIGHT_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['flightEditHistorys'],
       }),
       getMedicalEditHistorys: build.query({
-        query: ({ medicalEditHistorysId, page, size }) => ({
-          url: `${GET_MEDICAL_LOG}${medicalEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_MEDICAL_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['medicalEditHistorys'],
       }),
       getMofaEditHistorys: build.query({
-        query: ({ mofaEditHistorysId, page, size }) => ({
-          url: `${GET_MOFA_LOG}${mofaEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_MOFA_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['mofaEditHistorys'],
       }),
       getMusanedOkalaEditHistorys: build.query({
-        query: ({ musanedOkalaEditHistorysId, page, size }) => ({
-          url: `${GET_MUSANED_OKALA_LOG}${musanedOkalaEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_MUSANED_OKALA_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['musanedOkalaEditHistorys'],
       }),
       getOfficeWorkEditHistorys: build.query({
-        query: ({ officeWorkEditHistorysId, page, size }) => ({
-          url: `${GET_OFFICE_WORK_LOG}${officeWorkEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_OFFICE_WORK_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['officeWorkEditHistorys'],
       }),
       getTrainingEditHistorys: build.query({
-        query: ({ trainingEditHistorysId, page, size }) => ({
-          url: `${GET_TRAINING_LOG}${trainingEditHistorysId}`,
+        query: ({ passengerEditHistorysId, page, size }) => ({
+          url: `${GET_TRAINING_LOG}${passengerEditHistorysId}`,
           params: { page, size },
         }),
         providesTags: ['trainingEditHistorys'],

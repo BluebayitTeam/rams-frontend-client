@@ -61,8 +61,6 @@ function ManpowerEditHistorysTable({ manpowerEditHistorysData }) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
-  console.log('dataPrint', manpowerEditHistorysData);
-
   const ManpowerLogs = manpowerEditHistorysData?.manpower_logs || [];
 
   useEffect(() => {

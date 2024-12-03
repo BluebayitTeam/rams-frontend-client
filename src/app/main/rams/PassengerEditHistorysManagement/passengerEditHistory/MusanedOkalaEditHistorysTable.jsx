@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
 function MusanedOkalaEditHistorysTable({ musanedokalaEditHistorysData }) {
   const classes = useStyles();
   const methods = useForm();
-  console.log('musanedokalaEditHistorysData', musanedokalaEditHistorysData);
+
   const { watch, getValues } = methods;
 
   const [page, setPage] = useState('1');

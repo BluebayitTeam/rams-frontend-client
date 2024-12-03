@@ -91,54 +91,59 @@ function PassengerEditHistorysTable(props) {
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const componentRef = useRef(null);
 
+  const passengerEditHistorysId = getValues().username;
+
   const { data } = useGetPassengerEditHistorysQuery({
-    passengerEditHistorysId: getValues().username,
+    passengerEditHistorysId,
     page,
     size,
   });
 
   const { data: manpowerEditHistorysData } = useGetManpowerEditHistorysQuery({
-    manpowerEditHistorysId: getValues().username,
+    passengerEditHistorysId,
     page,
     size,
   });
+
   const { data: embassyEditHistorysData } = useGetEmbassyEditHistorysQuery({
-    embassyEditHistorysId: getValues().username,
+    passengerEditHistorysId,
     page,
     size,
   });
   const { data: flightEditHistorysData } = useGetFlightEditHistorysQuery({
-    flightEditHistorysId: getValues().username,
+    passengerEditHistorysId,
     page,
     size,
   });
   const { data: medicalEditHistorysData } = useGetMedicalEditHistorysQuery({
-    medicalEditHistorysId: getValues().username,
+    passengerEditHistorysId,
     page,
     size,
   });
-  const { data: mofaEditHistorysData } = useGetMofaEditHistorysQuery({
-    mofaEditHistorysId: getValues().username,
-    page,
-    size,
-  });
+
   const { data: musanedokalaEditHistorysData } =
     useGetMusanedOkalaEditHistorysQuery({
-      musanedOkalaEditHistorysId: getValues().username,
+      passengerEditHistorysId,
       page,
       size,
     });
-  const { data: officeWorkEditHistorysData } =
-    useGetOfficeWorkEditHistorysQuery({
-      officeWorkEditHistorysId: getValues().username,
-      page,
-      size,
-    });
-  const { data: trainingEditHistorysData } = useGetTrainingEditHistorysQuery({
-    trainingEditHistorysId: getValues().username,
-    page,
-    size,
-  });
+  // const { data: mofaEditHistorysData } = useGetMofaEditHistorysQuery({
+  //   passengerEditHistorysId,
+  //   page,
+  //   size,
+  // });
+
+  // const { data: officeWorkEditHistorysData } =
+  //   useGetOfficeWorkEditHistorysQuery({
+  //     passengerEditHistorysId,
+  //     page,
+  //     size,
+  //   });
+  // const { data: trainingEditHistorysData } = useGetTrainingEditHistorysQuery({
+  //   passengerEditHistorysId,
+  //   page,
+  //   size,
+  // });
 
   const PassengerLogs = data?.passenger_logs || [];
 
@@ -476,16 +481,16 @@ function PassengerEditHistorysTable(props) {
       <MedicalEditHistorysTable
         medicalEditHistorysData={medicalEditHistorysData}
       />{' '}
-      <MofaEditHistorysTable mofaEditHistorysData={mofaEditHistorysData} />
+      {/* <MofaEditHistorysTable mofaEditHistorysData={mofaEditHistorysData} /> */}
       <MusanedOkalaEditHistorysTable
         musanedokalaEditHistorysData={musanedokalaEditHistorysData}
       />{' '}
-      <OfficeWorkEditHistorysTable
+      {/* <OfficeWorkEditHistorysTable
         officeWorkEditHistorysData={officeWorkEditHistorysData}
-      />{' '}
-      <TrainingEditHistorysTable
+      />{' '} */}
+      {/* <TrainingEditHistorysTable
         trainingEditHistorysData={trainingEditHistorysData}
-      />
+      /> */}
     </div>
   );
 }
