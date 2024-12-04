@@ -59,7 +59,6 @@ function PassengerDeliverysTable(props) {
     defaultValues: {},
     resolver: zodResolver(schema),
   });
-  const { control } = methods;
 
   const initialTableColumnsState = [
     { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -115,7 +114,7 @@ function PassengerDeliverysTable(props) {
     { id: 5, label: ' Details ', name: 'details', show: true },
     { id: 6, label: 'Amount', name: 'credit_amount', show: true },
   ];
-  const { watch, getValues } = methods;
+  const { watch, getValues, control } = methods;
 
   const [
     modifiedPassengerDeliveryData,
@@ -164,10 +163,9 @@ function PassengerDeliverysTable(props) {
     billBalance: 0,
     costBalance: 0,
   });
-  // const [billBalance, setBillBalance] = useState(0);
-  // const [costBalance, setCostBalance] = useState(0);
+
   const componentRef = useRef(null);
-  const PassengerDeliveryDate = '12';
+
   const [openSuccessStatusAlert, setOpenSuccessStatusAlert] = useState(false);
 
   const filterData = watch();
@@ -181,6 +179,9 @@ function PassengerDeliverysTable(props) {
     },
     { skip: inShowAllMode }
   );
+
+  console.log('PassengerCheck', paginatedData);
+
   const { data: paginatedPurchasesData } =
     useGetPassengerPurchasesDeliverysQuery(
       {
@@ -307,6 +308,9 @@ function PassengerDeliverysTable(props) {
       console.error('Error fetching passengerDeliverys:', error);
     }
   }, []);
+
+  const PassengerDeliveryDate =
+    paginatedData?.passenger_delivery?.delivery_date;
 
   const agentName = paginatedSalesData?.passenger?.agent?.first_name;
   const passengerDeliveryPID = paginatedSalesData?.passenger?.passenger_id;
@@ -504,20 +508,14 @@ function PassengerDeliverysTable(props) {
         </Table>
       </TableContainer>
 
-      {/* <FormProvider {...methods}>
+      <FormProvider {...methods}>
         <div className='bg-white'>
           <div className='flex flex-nowrap mt-10 pt-10 ml-40'>
-            <Controller
+            <CustomDatePicker
               name='delivery_date'
-              control={control}
-              render={({ field }) => (
-                <CustomDatePicker
-                  field={field}
-                  label='Delivery Date'
-                  className='mt-8 mb-16   '
-                  // error={!field.value}
-                />
-              )}
+              label='Delivery Date'
+              placeholder='DD-MM-YYYY'
+              className='mt-8 mb-16'
             />
             <div className='ml-20'>
               <Button
@@ -530,7 +528,7 @@ function PassengerDeliverysTable(props) {
             </div>
           </div>
         </div>
-      </FormProvider> */}
+      </FormProvider>
 
       {/* <Dialog
         open={openSuccessStatusAlert}
