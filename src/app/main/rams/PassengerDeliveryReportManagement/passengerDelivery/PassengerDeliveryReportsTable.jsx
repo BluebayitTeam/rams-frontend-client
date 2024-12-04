@@ -143,7 +143,7 @@ function PassengerDeliverysTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [billBalance, setBillBalance] = useState(0);
-  const [billBalance, setBillBalance] = useState(0);
+  const [costBalance, setCostBalance] = useState(0);
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -208,12 +208,13 @@ function PassengerDeliverysTable(props) {
       setModifiedPassengerDeliveryData(paginatedData.account_logs || []);
 
       setModifiedPassengerDeliveryCostDetailData(
-        paginatedPurchasesData?.sales || []
+        paginatedPurchasesData?.purchases || []
       );
       setModifiedPassengerDeliveryBillDetailData(
-        paginatedSalesData?.purchases || []
+        paginatedSalesData?.sales || []
       );
       setBillBalance(paginatedSalesData?.total_balance);
+      setCostBalance(paginatedPurchasesData?.total_balance);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -390,8 +391,8 @@ function PassengerDeliverysTable(props) {
           {modifiedPassengerDeliveryCostDetailData.map((cost) => (
             <SinglePage
               classes={classes}
-              generalData={generalData}
               reportTitle='Cost Details'
+              filteredData={filteredData}
               tableColumns={costDetailstableColumns}
               dispatchTableColumns={dispatchCostDetailsTableColumns}
               data={{
