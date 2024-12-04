@@ -61,49 +61,6 @@ function PassengerDeliveryFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
-        {/* date from */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='date_after'
-          label='Delivery Date From	'
-          maxDate={values.date_before || new Date()}
-        />
-
-        {/* date to */}
-        <ReportDatePicker
-          {...commonFieldProps}
-          name='date_before'
-          label='Delivery Date  to'
-          minDate={values.date_after}
-          maxDate={new Date()}
-        />
-
-        {/* Country */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='country'
-          options={countries}
-          icon='flag'
-          width='55px'
-        />
-
-        {/* passenger Type */}
-        <ReportSelect
-          {...commonFieldProps}
-          name='passenger_type'
-          options={passengerTypes}
-          icon='person'
-          width='108px'
-        />
-
-        {/* agent */}
-        <ReportSelectFirstLastName
-          {...commonFieldProps}
-          name='agent'
-          options={agents}
-          icon='person'
-          width='40px'
-        />
         {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}
@@ -121,42 +78,10 @@ function PassengerDeliveryFilterMenu({
       <div className='allKeyWrdContainer'>
         <Keyword
           {...commonKewordProps}
-          type='date'
-          name='date_after'
-          label='Delivery Date From	'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='date'
-          name='date_before'
-          label='Delivery Date  to'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='country'
-          options={countries}
-          icon='flag'
-        />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='passenger_type'
-          options={passengerTypes}
-          icon='person'
-        />
-        <Keyword
-          {...commonKewordProps}
           type='select'
           name='passenger'
           icon='person'
         />{' '}
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='agent'
-          icon='person'
-        />
       </div>
     </div>
   );
