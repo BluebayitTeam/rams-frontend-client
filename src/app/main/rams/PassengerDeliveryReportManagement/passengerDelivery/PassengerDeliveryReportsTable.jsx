@@ -199,9 +199,9 @@ function PassengerDeliverysTable(props) {
     } else if (!inShowAllMode && paginatedData) {
       setModifiedPassengerDeliveryData(paginatedData.account_logs || []);
       setModifiedPassengerDeliveryBillDetailData(
-        paginatedSalesData.sales || []
+        paginatedSalesData?.sales || []
       );
-      setBillBalance(paginatedSalesData.total_balance);
+      setBillBalance(paginatedSalesData?.total_balance);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -345,6 +345,10 @@ function PassengerDeliverysTable(props) {
                   },
                 ],
               }}
+              agentName={agentName}
+              passengerDeliveryPID={passengerDeliveryPID}
+              passportNo={passportNo}
+              passengerName={passengerName}
               serialNumber={sales.page * sales.size - sales.size + 1}
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}

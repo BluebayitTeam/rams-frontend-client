@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { GET_SITESETTINGS } from 'src/app/constant/constants';
+import { BASE_URL, GET_SITESETTINGS } from 'src/app/constant/constants';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+import moment from 'moment';
 
 function SiglePage2ForPassengerDelivery({
   classes,
@@ -13,8 +21,13 @@ function SiglePage2ForPassengerDelivery({
   inSiglePageMode,
   setSortBy,
   setSortBySubKey,
+  agentName,
+  passengerDeliveryPID,
+  passportNo,
+  passengerName,
 }) {
   const [generalData, setGeneralData] = useState({});
+  let pageBasedSerialNo = serialNumber;
   // get general setting data
   useEffect(() => {
     const authTOKEN = {
@@ -67,19 +80,19 @@ function SiglePage2ForPassengerDelivery({
             <tbody>
               <tr>
                 <td>Agent Name:</td>
-                <td>{PassengerDeliveryAgent}</td>
+                <td>{agentName}</td>
               </tr>
               <tr>
                 <td>PID:</td>
-                <td>{PassengerDeliveryPID}</td>
+                <td>{passengerDeliveryPID}</td>
               </tr>
               <tr>
                 <td>Passport No :</td>
-                <td>{PassengerDeliveryPassportNo} </td>
+                <td>{passportNo} </td>
               </tr>
               <tr>
                 <td>Name :</td>
-                <td>{PassengerDeliveryName} </td>
+                <td>{passengerName} </td>
               </tr>
               {/* <tr>
 									<td>District  :</td>
@@ -135,16 +148,6 @@ function SiglePage2ForPassengerDelivery({
                         margin: indx === 0 && '0px -5px 0px 5px',
                       }}>
                       {column.label}
-                      <FontAwesomeIcon
-                        className={`sortIcon ${column.sortAction === false && 'invisible'}`}
-                        style={{
-                          transform:
-                            data.sortBy === column.name
-                              ? 'rotate(180deg)'
-                              : 'rotate(0deg)',
-                        }}
-                        icon={faArrowUp}
-                      />
                     </div>
                   </TableCell>
                 ) : null;
