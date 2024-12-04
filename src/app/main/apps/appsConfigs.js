@@ -164,6 +164,7 @@ import BalanceSheetReportAppConfig from '../rams/BalanceSheetReportManagement/Ba
 // import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
 import PassengerEditHistoryAppConfig from '../rams/PassengerEditHistorysManagement/PassengerEditHistoryAppConfig';
 import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
+import PassengerDeliveryAppConfig from '../rams/PassengerDeliveryReportManagement/PassengerDeliveryAppConfig';
 
 /**
  * The list of application configurations.
@@ -335,6 +336,7 @@ const appsConfigs = [
   PostDateChequeAppConfig,
   PayorderClearingAppConfig,
   PassengerAgreementAppConfig,
+  PassengerDeliveryAppConfig,
   ReceivableBillAppConfig,
   PayableBillAppConfig,
 ];

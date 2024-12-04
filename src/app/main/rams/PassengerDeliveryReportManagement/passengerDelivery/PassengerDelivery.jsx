@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import PassengerDeliverysTable from './PassengerDeliverysTable';
+import PassengerDeliverysTable from './PassengerDeliveryReportsTable';
 /**
  * Form Validation Schema
  */

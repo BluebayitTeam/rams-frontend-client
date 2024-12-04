@@ -13,11 +13,7 @@ import '../../../rams/print.css';
 
 import moment from 'moment';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import {
-  useDeletePassengerDeliveryMutation,
-  useGetPassengerDeliveryAllReportsQuery,
-  useGetPassengerDeliverysQuery,
-} from '../PassengerDeliverysApi';
+
 import PassengerDeliveryFilterMenu from './PassengerDeliveryFilterMenu';
 import { useDispatch } from 'react-redux';
 import { Delete } from '@mui/icons-material';
