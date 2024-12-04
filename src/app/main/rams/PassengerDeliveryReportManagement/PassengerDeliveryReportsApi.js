@@ -4,6 +4,8 @@ import { apiService as api } from 'app/store/apiService';
 import {
   GET_PASSENGER_DELIVERY_REPORT,
   GET_PASSENGER_DELIVERY_REPORT_WITHOUT_PG,
+  GET_PASSENGER_LEDGER_COST_DETAILS_REPORT,
+  GET_PASSENGER_LEDGER_REPORT,
   POSTDATE_FILTER_BY,
   POSTDATE_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
@@ -18,10 +20,17 @@ const PassengerDeliveryApi = api
     endpoints: (build) => ({
       getPassengerDeliverys: build.query({
         query: (filterData) => ({
-          url: GET_PASSENGER_DELIVERY_REPORT,
+          url: GET_PASSENGER_LEDGER_REPORT,
           params: filterData,
         }),
         providesTags: ['passengerDeliverys'],
+      }),
+      getPassengerPurchasesDeliverys: build.query({
+        query: (filterData) => ({
+          url: GET_PASSENGER_LEDGER_COST_DETAILS_REPORT,
+          params: filterData,
+        }),
+        providesTags: ['passengerPurchasesDeliverys'],
       }),
       getPassengerDeliveryAllReports: build.query({
         query: (filterData) => ({
@@ -43,6 +52,7 @@ const PassengerDeliveryApi = api
 export default PassengerDeliveryApi;
 export const {
   useGetPassengerDeliverysQuery,
+  useGetPassengerPurchasesDeliverysQuery,
   useGetPassengerDeliveryAllReportsQuery,
   useDeletePassengerDeliveryMutation,
 } = PassengerDeliveryApi;

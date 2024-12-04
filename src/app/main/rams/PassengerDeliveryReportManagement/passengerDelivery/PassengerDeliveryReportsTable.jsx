@@ -22,6 +22,7 @@ import {
   useDeletePassengerDeliveryMutation,
   useGetPassengerDeliveryAllReportsQuery,
   useGetPassengerDeliverysQuery,
+  useGetPassengerPurchasesDeliverysQuery,
 } from '../PassengerDeliveryReportsApi';
 
 const useStyles = makeStyles((theme) => ({
@@ -139,11 +140,6 @@ function PassengerDeliverysTable(props) {
 
   const { data: paginatedData } = useGetPassengerDeliverysQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      country: filterData.country || '',
-      passenger_type: filterData.passenger_type || '',
-      agent: filterData.agent || '',
       passenger: filterData.passenger || '',
 
       page,
@@ -151,6 +147,16 @@ function PassengerDeliverysTable(props) {
     },
     { skip: inShowAllMode }
   );
+  const { data: paginatedPurchasesData } =
+    useGetPassengerPurchasesDeliverysQuery(
+      {
+        passenger: filterData.passenger || '',
+
+        page,
+        size,
+      },
+      { skip: inShowAllMode }
+    );
 
   const { data: allData } = useGetPassengerDeliveryAllReportsQuery(
     {
@@ -166,7 +172,7 @@ function PassengerDeliverysTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedPassengerDeliveryData(allData.passenger_delivery || []);
+      setModifiedPassengerDeliveryData(allData.account_logs || []);
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
@@ -180,7 +186,7 @@ function PassengerDeliverysTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedPassengerDeliveryData(paginatedData.passenger_delivery || []);
+      setModifiedPassengerDeliveryData(paginatedData.account_logs || []);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
