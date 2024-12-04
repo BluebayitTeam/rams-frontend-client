@@ -323,24 +323,25 @@ function PassengerDeliverysTable(props) {
           {modifiedPassengerDeliveryBillDetailData.map((sales) => (
             <SiglePage2ForPassengerDelivery
               classes={classes}
-              generalData={generalData}
               reportTitle='Bill Details'
               tableColumns={billDetailstableColumns}
               dispatchTableColumns={dispatchBillDetailsTableColumns}
-              data={
-                sales.isLastPage
-                  ? {
-                      ...sales,
-                      data: sales.data.concat({
-                        credit_amount: BillBalance,
-                        details: 'Total Balance',
-                        // balance: totalBAlance,
-                        hideSerialNo: true,
-                        rowStyle: { fontWeight: 600 },
-                      }),
-                    }
-                  : sales
-              }
+              data={{
+                ...sales,
+                data: [
+                  ...sales.data,
+                  {
+                    credit: totalCdAmount,
+                    debit: totalDbAmount,
+                    passenger: 'Total Balance',
+                    details: 'Total Balance',
+                    balance: totalBAlance,
+                    office_cost: totalOfficeAmount,
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 },
+                  },
+                ],
+              }}
               serialNumber={sales.page * sales.size - sales.size + 1}
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
