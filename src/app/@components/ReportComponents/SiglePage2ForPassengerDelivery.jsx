@@ -1,7 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GET_SITESETTINGS } from 'src/app/constant/constants';
 
-function SiglePage2ForPassengerDelivery() {
+function SiglePage2ForPassengerDelivery({
+  classes,
+
+  reportTitle = 'Report',
+  tableColumns = [],
+  dispatchTableColumns,
+  data,
+  serialNumber,
+  setPage,
+  inSiglePageMode,
+  setSortBy,
+  setSortBySubKey,
+}) {
   const [generalData, setGeneralData] = useState({});
   // get general setting data
   useEffect(() => {

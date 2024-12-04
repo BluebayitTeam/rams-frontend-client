@@ -135,6 +135,7 @@ function PassengerDeliverysTable(props) {
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
+  const [billBalance, setBillBalance] = useState(0);
   const componentRef = useRef(null);
 
   const filterData = watch();
@@ -200,6 +201,7 @@ function PassengerDeliverysTable(props) {
       setModifiedPassengerDeliveryBillDetailData(
         paginatedSalesData.sales || []
       );
+      setBillBalance(paginatedSalesData.total_balance);
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -246,6 +248,11 @@ function PassengerDeliverysTable(props) {
       console.error('Error fetching passengerDeliverys:', error);
     }
   }, []);
+
+  const agentName = paginatedSalesData?.passenger?.agent?.first_name;
+  const passengerDeliveryPID = paginatedSalesData?.passenger?.passenger_id;
+  const passportNo = paginatedSalesData?.passenger?.passport_no;
+  const passengerName = paginatedSalesData?.passenger?.passenger_name;
 
   return (
     <div className={classes.headContainer}>
@@ -331,12 +338,8 @@ function PassengerDeliverysTable(props) {
                 data: [
                   ...sales.data,
                   {
-                    credit: totalCdAmount,
-                    debit: totalDbAmount,
-                    passenger: 'Total Balance',
+                    credit_amount: billBalance,
                     details: 'Total Balance',
-                    balance: totalBAlance,
-                    office_cost: totalOfficeAmount,
                     hideSerialNo: true,
                     rowStyle: { fontWeight: 600 },
                   },
