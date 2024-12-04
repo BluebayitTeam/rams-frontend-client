@@ -19,11 +19,12 @@ import { useDispatch } from 'react-redux';
 import { Delete } from '@mui/icons-material';
 import { useParams } from 'react-router';
 import {
-  useDeletePassengerDeliveryMutation,
   useGetPassengerDeliveryAllReportsQuery,
   useGetPassengerDeliverysQuery,
   useGetPassengerPurchasesDeliverysQuery,
+  useGetPassengerSalesDeliverysQuery,
 } from '../PassengerDeliveryReportsApi';
+import SiglePage2ForPassengerDelivery from 'src/app/@components/ReportComponents/SiglePage2ForPassengerDelivery';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -42,22 +43,6 @@ function PassengerDeliverysTable(props) {
     defaultValues: {},
     resolver: zodResolver(schema),
   });
-
-  const [removePassengerDelivery] = useDeletePassengerDeliveryMutation();
-  const handleRemoveAgent = (dispatch, id) => {
-    // Call your async action to remove the delivery
-    dispatch(removePassengerDelivery(id)).then(() => {
-      DeletedSuccessfully(); // Optional: Call any success handler after deletion
-
-      // Dispatch a message to notify the user
-      dispatch(
-        showMessage({
-          message: `Please Restart The Backend`,
-          variant: 'error',
-        })
-      );
-    });
-  };
 
   const initialTableColumnsState = [
     { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -122,10 +107,26 @@ function PassengerDeliverysTable(props) {
     setSortBySubKey,
     dragAndDropRow,
   ] = useReportData();
+  const [
+    modifiedPassengerDeliveryBillDetailData,
+    setModifiedPassengerDeliveryBillDetailData,
+    setSortBy2,
+    setSortBySubKey2,
+    dragAndDropRow2,
+  ] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
   );
+  const [billDetailstableColumns, dispatchBillDetailsTableColumns] = useReducer(
+    tableColumnsReducer,
+    initialBillDetailsTableColumnsState
+  );
+  const [costDetailstableColumns, dispatchCostDetailsTableColumns] = useReducer(
+    tableColumnsReducer,
+    initialCostDetailsTableColumnsState
+  );
+
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
   const [totalPages, setTotalPages] = useState(0);
@@ -157,6 +158,15 @@ function PassengerDeliverysTable(props) {
       },
       { skip: inShowAllMode }
     );
+  const { data: paginatedSalesData } = useGetPassengerSalesDeliverysQuery(
+    {
+      passenger: filterData.passenger || '',
+
+      page,
+      size,
+    },
+    { skip: inShowAllMode }
+  );
 
   const { data: allData } = useGetPassengerDeliveryAllReportsQuery(
     {
@@ -187,6 +197,9 @@ function PassengerDeliverysTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedPassengerDeliveryData(paginatedData.account_logs || []);
+      setModifiedPassengerDeliveryBillDetailData(
+        paginatedSalesData.sales || []
+      );
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -222,18 +235,17 @@ function PassengerDeliverysTable(props) {
   }, []);
 
   const filteredData = {
-    Date_To: getValues()?.date_before
-      ? moment(new Date(getValues()?.date_before)).format('DD-MM-YYYY')
-      : null,
-    Date_From: getValues()?.date_after
-      ? moment(new Date(getValues()?.date_after)).format('DD-MM-YYYY')
-      : null,
-
-    Country: getValues()?.countryName || null,
-    Passenger_Type: getValues()?.passenger_typeName || null,
-    Agent: getValues()?.agentName || null,
     passenger: getValues()?.passengerName || null,
   };
+
+  const handleGetPassengerDeliveryBillDetails = useCallback(async (newPage) => {
+    try {
+      const page = newPage || 1;
+      setPage(page);
+    } catch (error) {
+      console.error('Error fetching passengerDeliverys:', error);
+    }
+  }, []);
 
   return (
     <div className={classes.headContainer}>
@@ -297,6 +309,46 @@ function PassengerDeliverysTable(props) {
             />
           ))}
         </tbody>
+      </table>
+
+      {/* Passenger Bill Details Report  */}
+
+      <table
+        id='table-to-xls'
+        className='w-full'
+        style={{ minHeight: '270px' }}>
+        <div id='downloadPage'>
+          {/* each single page (table) */}
+
+          {modifiedPassengerDeliveryBillDetailData.map((sales) => (
+            <SiglePage2ForPassengerDelivery
+              classes={classes}
+              generalData={generalData}
+              reportTitle='Bill Details'
+              tableColumns={billDetailstableColumns}
+              dispatchTableColumns={dispatchBillDetailsTableColumns}
+              data={
+                sales.isLastPage
+                  ? {
+                      ...sales,
+                      data: sales.data.concat({
+                        credit_amount: BillBalance,
+                        details: 'Total Balance',
+                        // balance: totalBAlance,
+                        hideSerialNo: true,
+                        rowStyle: { fontWeight: 600 },
+                      }),
+                    }
+                  : sales
+              }
+              serialNumber={sales.page * sales.size - sales.size + 1}
+              setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              setSortBy={setSortBy}
+              // setSortBySubKey={setSortBySubKey}
+            />
+          ))}
+        </div>
       </table>
     </div>
   );

@@ -4,6 +4,7 @@ import { apiService as api } from 'app/store/apiService';
 import {
   GET_PASSENGER_DELIVERY_REPORT,
   GET_PASSENGER_DELIVERY_REPORT_WITHOUT_PG,
+  GET_PASSENGER_LEDGER_BILL_DETAILS_REPORT,
   GET_PASSENGER_LEDGER_COST_DETAILS_REPORT,
   GET_PASSENGER_LEDGER_REPORT,
   POSTDATE_FILTER_BY,
@@ -32,6 +33,27 @@ const PassengerDeliveryApi = api
         }),
         providesTags: ['passengerPurchasesDeliverys'],
       }),
+      getPassengerPurchasesDeliverys: build.query({
+        query: (filterData) => ({
+          url: GET_PASSENGER_LEDGER_BILL_DETAILS_REPORT,
+          params: filterData,
+        }),
+        providesTags: ['passengerPurchasesDeliverys'],
+      }),
+      getPassengerPurchasesDeliverys: build.query({
+        query: (filterData) => ({
+          url: GET_PASSENGER_LEDGER_COST_DETAILS_REPORT,
+          params: filterData,
+        }),
+        providesTags: ['passengerPurchasesDeliverys'],
+      }),
+      getPassengerSalesDeliverys: build.query({
+        query: (filterData) => ({
+          url: GET_PASSENGER_LEDGER_BILL_DETAILS_REPORT,
+          params: filterData,
+        }),
+        providesTags: ['passengerSalesDeliverys'],
+      }),
       getPassengerDeliveryAllReports: build.query({
         query: (filterData) => ({
           url: GET_PASSENGER_DELIVERY_REPORT_WITHOUT_PG,
@@ -53,6 +75,7 @@ export default PassengerDeliveryApi;
 export const {
   useGetPassengerDeliverysQuery,
   useGetPassengerPurchasesDeliverysQuery,
+  useGetPassengerSalesDeliverysQuery,
   useGetPassengerDeliveryAllReportsQuery,
   useDeletePassengerDeliveryMutation,
 } = PassengerDeliveryApi;
