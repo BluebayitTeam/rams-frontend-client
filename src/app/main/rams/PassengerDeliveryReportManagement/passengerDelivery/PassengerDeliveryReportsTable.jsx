@@ -59,69 +59,57 @@ function PassengerDeliverysTable(props) {
 
   const initialTableColumnsState = [
     { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-    {
-      id: 2,
-      label: 'Delivery Date',
-      getterMethod: (data) =>
-        data?.passenger_delivery?.delivery_date.slice(0, 10),
-      show: true,
-    },
-
-    { id: 3, label: 'Job Id', name: 'passenger_id', show: true },
-    {
-      id: 4,
-      label: 'Ref Name',
-      getterMethod: (data) => `${data?.agent?.first_name || ''}  `,
-      show: true,
-    },
-
-    { id: 5, label: 'Passenger', name: 'passenger_name', show: true },
-
-    {
-      id: 6,
-      label: 'Total Bill',
-      name: 'bill',
-      show: true,
-      style: { justifyContent: 'flex-end', marginRight: '5px' },
-      headStyle: { textAlign: 'right' },
-    },
+    { id: 2, label: 'Date', name: 'log_date', show: true, type: 'date' },
+    { id: 3, label: 'Invoice No', name: 'reference_no', show: true },
+    { id: 4, label: 'Log Type', name: 'log_type', show: true },
+    { id: 5, label: 'Pay Purpose', name: 'log_type', show: true },
+    { id: 6, label: 'Particular', name: 'details', show: true },
     {
       id: 7,
-      label: 'Total Expense',
-      name: 'cost',
+      label: 'Debit',
+      name: 'debit_amount',
       show: true,
       style: { justifyContent: 'flex-end', marginRight: '5px' },
       headStyle: { textAlign: 'right' },
     },
     {
       id: 8,
-      label: 'Loss(-)/Profit(+)',
+      label: 'Credit',
+      name: 'credit_amount',
+      show: true,
+      style: { justifyContent: 'flex-end', marginRight: '5px' },
+      headStyle: { textAlign: 'right' },
+    },
+    {
+      id: 9,
+      label: 'Balance',
       name: 'balance',
       show: true,
       style: { justifyContent: 'flex-end', marginRight: '5px' },
-      headStyle: { textAlign: 'center' },
+      headStyle: { textAlign: 'right' },
     },
-    // {
-    //   id: 9,
-    //   label: 'Action',
-    //   getterMethod: (data) =>
-    //     data.passenger_delivery?.id && (
-    //       <Delete
-    //         onClick={() =>
-    //           function handleRemoveAgent(data) {
-    //             console.log('sdsdsdsdsdsd', data);
-    //             removePassengerDelivery(data.passenger_delivery?.id);
-    //             DeletedSuccessfully();
-    //           }
-    //         }
-    //         className='cursor-pointer custom-delete-icon-style'
-    //       />
-    //     ),
-    //   show: true,
-
-    //   style: { justifyContent: 'flex-end', marginRight: '5px' },
-    //   headStyle: { textAlign: 'right' },
-    // },
+  ];
+  const initialBillDetailsTableColumnsState = [
+    { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+    {
+      id: 2,
+      label: 'Sales Date',
+      name: 'sales_date',
+      show: true,
+      type: 'date',
+    },
+    { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+    { id: 4, label: 'Bill Purpose', name: 'related_ledger', show: true },
+    { id: 5, label: 'Bill Details ', name: 'details', show: true },
+    { id: 6, label: 'Amount', name: 'credit_amount', show: true },
+  ];
+  const initialCostDetailsTableColumnsState = [
+    { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
+    { id: 2, label: ' Date', name: 'purchase_date', show: true, type: 'date' },
+    { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
+    { id: 4, label: ' Purpose', name: 'related_ledger', show: true },
+    { id: 5, label: ' Details ', name: 'details', show: true },
+    { id: 6, label: 'Amount', name: 'credit_amount', show: true },
   ];
   const { watch, getValues } = methods;
 
