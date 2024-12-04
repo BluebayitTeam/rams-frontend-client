@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useReactToPrint } from 'react-to-print';
 import ReportPaginationAndDownload from 'src/app/@components/ReportComponents/ReportPaginationAndDownload';
 import SinglePage from 'src/app/@components/ReportComponents/SinglePage';
@@ -25,6 +25,22 @@ import {
   useGetPassengerSalesDeliverysQuery,
 } from '../PassengerDeliveryReportsApi';
 import SiglePage2ForPassengerDelivery from 'src/app/@components/ReportComponents/SiglePage2ForPassengerDelivery';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableRow,
+} from '@mui/material';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -43,6 +59,7 @@ function PassengerDeliverysTable(props) {
     defaultValues: {},
     resolver: zodResolver(schema),
   });
+  const { control } = methods;
 
   const initialTableColumnsState = [
     { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -142,9 +159,16 @@ function PassengerDeliverysTable(props) {
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
-  const [billBalance, setBillBalance] = useState(0);
-  const [costBalance, setCostBalance] = useState(0);
+  const [totalBalance, setTotalBalance] = useState({
+    activatiLogBalance: 0,
+    billBalance: 0,
+    costBalance: 0,
+  });
+  // const [billBalance, setBillBalance] = useState(0);
+  // const [costBalance, setCostBalance] = useState(0);
   const componentRef = useRef(null);
+  const PassengerDeliveryDate = '12';
+  const [openSuccessStatusAlert, setOpenSuccessStatusAlert] = useState(false);
 
   const filterData = watch();
 
@@ -213,8 +237,14 @@ function PassengerDeliverysTable(props) {
       setModifiedPassengerDeliveryBillDetailData(
         paginatedSalesData?.sales || []
       );
-      setBillBalance(paginatedSalesData?.total_balance);
-      setCostBalance(paginatedPurchasesData?.total_balance);
+      // setBillBalance(paginatedSalesData?.total_balance);
+      // setCostBalance(paginatedPurchasesData?.total_balance);
+      setTotalBalance({
+        ...totalBalance,
+        activatiLogBalance: paginatedData?.total_balance,
+        billBalance: paginatedSalesData?.total_balance,
+        costBalance: paginatedPurchasesData?.total_balance,
+      });
       setPage(paginatedData?.page || 1);
       setSize(paginatedData?.size || 25);
       setTotalPages(paginatedData.total_pages || 0);
@@ -223,7 +253,15 @@ function PassengerDeliverysTable(props) {
       setInSiglePageMode(true);
       setInShowAllMode(false);
     }
-  }, [inShowAllMode, allData, paginatedData, size, page]);
+  }, [
+    inShowAllMode,
+    allData,
+    paginatedData,
+    paginatedSalesData,
+    paginatedPurchasesData,
+    size,
+    page,
+  ]);
 
   const handleExelDownload = () => {
     document.getElementById('test-table-xls-button').click();
@@ -360,7 +398,7 @@ function PassengerDeliverysTable(props) {
                 data: [
                   ...sales.data,
                   {
-                    credit_amount: billBalance,
+                    credit_amount: totalBalance?.billBalance,
                     details: 'Total Balance',
                     hideSerialNo: true,
                     rowStyle: { fontWeight: 600 },
@@ -401,7 +439,7 @@ function PassengerDeliverysTable(props) {
                 data: [
                   ...cost.data,
                   {
-                    credit_amount: costBalance,
+                    credit_amount: totalBalance?.costBalance,
                     details: 'Total Balance',
                     hideSerialNo: true,
                     rowStyle: { fontWeight: 600 },
@@ -417,6 +455,108 @@ function PassengerDeliverysTable(props) {
           ))}
         </div>
       </table>
+
+      <h1
+        className='title  pl-0 md:-pl-20 '
+        style={{
+          display: totalBalance?.billBalance ? 'block' : 'none',
+          marginLeft: '45%',
+        }}>
+        <u>Balance Summary</u>
+      </h1>
+      <TableContainer
+        component={Paper}
+        style={{
+          display: totalBalance?.billBalance ? 'block' : 'none',
+        }}>
+        <Table className={`${classes.table} justify-center`}>
+          <TableBody>
+            <TableRow>
+              <TableCell component='th' scope='row'></TableCell>
+              <TableCell component='th' scope='row'>
+                <b> Total Bill</b>{' '}
+              </TableCell>
+              <TableCell component='th' scope='row'>
+                {totalBalance?.billBalance}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell component='th' scope='row'></TableCell>
+              <TableCell component='th' scope='row'>
+                <b>Total Cost</b>
+              </TableCell>
+              <TableCell component='th' scope='row'>
+                {totalBalance.costBalance}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+          <TableFooter className='bg-blue-50 '>
+            <TableRow>
+              <TableCell component='th' scope='row'></TableCell>
+              <TableCell component='th' scope='row'>
+                <b>Profit(+)Loss(-)</b>
+              </TableCell>
+              <TableCell component='th' scope='row'>
+                {totalBalance?.activatiLogBalance}
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+
+      {/* <FormProvider {...methods}>
+        <div className='bg-white'>
+          <div className='flex flex-nowrap mt-10 pt-10 ml-40'>
+            <Controller
+              name='delivery_date'
+              control={control}
+              render={({ field }) => (
+                <CustomDatePicker
+                  field={field}
+                  label='Delivery Date'
+                  className='mt-8 mb-16   '
+                  // error={!field.value}
+                />
+              )}
+            />
+            <div className='ml-20'>
+              <Button
+                className='whitespace-nowrap mx-4 mt-10 '
+                variant='contained'
+                color='secondary'
+                onClick={() => handleSavePassengerDelivery()}>
+                {PassengerDeliveryDate ? 'Update' : 'Save'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </FormProvider> */}
+
+      {/* <Dialog
+        open={openSuccessStatusAlert}
+        onClose={() => setOpenSuccessStatusAlert(false)}
+        style={{ borderRadius: '15px' }}>
+        <DialogTitle style={{ fontSize: '25px', color: 'blue' }}>
+          Success
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText style={{ fontSize: '18px' }}>
+            This Passenger Deliver Successfully, Check Delivery Report..
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setOpenSuccessStatusAlert(false)}
+            style={{
+              backgroundColor: 'green',
+              fontSize: '18px',
+              color: 'white',
+            }}
+            autoFocus>
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog> */}
     </div>
   );
 }
