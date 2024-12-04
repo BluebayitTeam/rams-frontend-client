@@ -304,6 +304,7 @@ function PassengerDeliverysTable(props) {
         handleGetAllData={handleGetAllPassengerDeliverys}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
+        hideSection={['pg', 'wp', 'column', 'print', 'download']}
         filename='PassengerDelivery'
       />
 
