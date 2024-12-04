@@ -114,6 +114,13 @@ function PassengerDeliverysTable(props) {
     setSortBySubKey2,
     dragAndDropRow2,
   ] = useReportData();
+  const [
+    modifiedPassengerDeliveryCostDetailData,
+    setModifiedPassengerDeliveryCostDetailData,
+    setSortBy3,
+    setSortBySubKey3,
+    dragAndDropRow3,
+  ] = useReportData();
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -135,6 +142,7 @@ function PassengerDeliverysTable(props) {
 
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
+  const [billBalance, setBillBalance] = useState(0);
   const [billBalance, setBillBalance] = useState(0);
   const componentRef = useRef(null);
 
@@ -198,8 +206,12 @@ function PassengerDeliverysTable(props) {
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedPassengerDeliveryData(paginatedData.account_logs || []);
+
+      setModifiedPassengerDeliveryCostDetailData(
+        paginatedPurchasesData?.sales || []
+      );
       setModifiedPassengerDeliveryBillDetailData(
-        paginatedSalesData?.sales || []
+        paginatedSalesData?.purchases || []
       );
       setBillBalance(paginatedSalesData?.total_balance);
       setPage(paginatedData?.page || 1);
@@ -241,6 +253,14 @@ function PassengerDeliverysTable(props) {
   };
 
   const handleGetPassengerDeliveryBillDetails = useCallback(async (newPage) => {
+    try {
+      const page = newPage || 1;
+      setPage(page);
+    } catch (error) {
+      console.error('Error fetching passengerDeliverys:', error);
+    }
+  }, []);
+  const handleGetPassengerDeliveryCostDetails = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -350,6 +370,43 @@ function PassengerDeliverysTable(props) {
               passportNo={passportNo}
               passengerName={passengerName}
               serialNumber={sales.page * sales.size - sales.size + 1}
+              setPage={setPage}
+              inSiglePageMode={inSiglePageMode}
+              setSortBy={setSortBy}
+              // setSortBySubKey={setSortBySubKey}
+            />
+          ))}
+        </div>
+      </table>
+
+      {/* Passenger Cost Details Report  */}
+      <table
+        id='table-to-xls'
+        className='w-full'
+        style={{ minHeight: '270px' }}>
+        <div id='downloadPage'>
+          {/* each single page (table) */}
+
+          {modifiedPassengerDeliveryCostDetailData.map((cost) => (
+            <SinglePage
+              classes={classes}
+              generalData={generalData}
+              reportTitle='Cost Details'
+              tableColumns={costDetailstableColumns}
+              dispatchTableColumns={dispatchCostDetailsTableColumns}
+              data={{
+                ...cost,
+                data: [
+                  ...cost.data,
+                  {
+                    credit_amount: costBalance,
+                    details: 'Total Balance',
+                    hideSerialNo: true,
+                    rowStyle: { fontWeight: 600 },
+                  },
+                ],
+              }}
+              serialNumber={cost.page * cost.size - cost.size + 1}
               setPage={setPage}
               inSiglePageMode={inSiglePageMode}
               setSortBy={setSortBy}
