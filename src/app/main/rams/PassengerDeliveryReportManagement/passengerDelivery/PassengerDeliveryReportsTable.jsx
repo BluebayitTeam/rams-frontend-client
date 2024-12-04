@@ -18,6 +18,11 @@ import PassengerDeliveryFilterMenu from './PassengerDeliveryFilterMenu';
 import { useDispatch } from 'react-redux';
 import { Delete } from '@mui/icons-material';
 import { useParams } from 'react-router';
+import {
+  useDeletePassengerDeliveryMutation,
+  useGetPassengerDeliveryAllReportsQuery,
+  useGetPassengerDeliverysQuery,
+} from '../PassengerDeliveryReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
