@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { Delete } from '@mui/icons-material';
 import { useParams } from 'react-router';
 import {
+  useCreatePassengerDeliveryMutation,
   useGetPassengerDeliveryAllReportsQuery,
   useGetPassengerDeliverysQuery,
   useGetPassengerPurchasesDeliverysQuery,
@@ -41,6 +42,7 @@ import {
   TableRow,
 } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -180,8 +182,6 @@ function PassengerDeliverysTable(props) {
     { skip: inShowAllMode }
   );
 
-  console.log('PassengerCheck', paginatedData);
-
   const { data: paginatedPurchasesData } =
     useGetPassengerPurchasesDeliverysQuery(
       {
@@ -238,8 +238,7 @@ function PassengerDeliverysTable(props) {
       setModifiedPassengerDeliveryBillDetailData(
         paginatedSalesData?.sales || []
       );
-      // setBillBalance(paginatedSalesData?.total_balance);
-      // setCostBalance(paginatedPurchasesData?.total_balance);
+
       setTotalBalance({
         ...totalBalance,
         activatiLogBalance: paginatedData?.total_balance,
@@ -316,6 +315,20 @@ function PassengerDeliverysTable(props) {
   const passengerDeliveryPID = paginatedSalesData?.passenger?.passenger_id;
   const passportNo = paginatedSalesData?.passenger?.passport_no;
   const passengerName = paginatedSalesData?.passenger?.passenger_name;
+
+  const [createPassengerDelivery] = useCreatePassengerDeliveryMutation();
+
+  function handleSavePassengerDelivery() {
+    console.log('checkPaasenger', getValues());
+    createPassengerDelivery(getValues().passenger)
+      .unwrap() // Ensures promise handling for the RTK Query mutation
+      .then((data) => {
+        AddedSuccessfully(); // Call success notification
+      })
+      .catch((error) => {
+        console.error('Error:', error); // Handle error if needed
+      });
+  }
 
   return (
     <div className={classes.headContainer}>

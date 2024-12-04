@@ -2,6 +2,7 @@ import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import {
+  CREATE_PASSENGER_LEDGER_DELIVERY,
   GET_PASSENGER_DELIVERY_REPORT,
   GET_PASSENGER_DELIVERY_REPORT_WITHOUT_PG,
   GET_PASSENGER_LEDGER_BILL_DETAILS_REPORT,
@@ -61,12 +62,13 @@ const PassengerDeliveryApi = api
         }),
         providesTags: ['passengerDeliverys'],
       }),
-      deletePassengerDelivery: build.mutation({
-        query: (PassengerDeliveryId) => ({
-          url: `${DELETE_PassengerDelivery}${PassengerDeliveryId}`,
-          method: 'DELETE',
+      createPassengerDelivery: build.mutation({
+        query: (filterData) => ({
+          url: CREATE_PASSENGER_LEDGER_DELIVERY,
+          method: 'POST',
+          body: filterData, // Use 'body' instead of 'params' for POST data
         }),
-        invalidatesTags: ['PassengerDeliverys'],
+        invalidatesTags: ['passengerDeliverys'],
       }),
     }),
     overrideExisting: false,
@@ -77,7 +79,7 @@ export const {
   useGetPassengerPurchasesDeliverysQuery,
   useGetPassengerSalesDeliverysQuery,
   useGetPassengerDeliveryAllReportsQuery,
-  useDeletePassengerDeliveryMutation,
+  useCreatePassengerDeliveryMutation,
 } = PassengerDeliveryApi;
 
 export const selectFilteredPassengerDeliverys = (passengerDeliverys) =>
