@@ -12,6 +12,8 @@ import {
   POSTDATE_FILTER_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
+import jsonToFormData from 'src/app/@helpers/jsonToFormData';
+import PassengerDeliveryModel from './passengerDelivery/models/PassengerDeliveryModel';
 
 export const addTagTypes = ['passengerDeliverys'];
 const PassengerDeliveryApi = api
@@ -61,12 +63,12 @@ const PassengerDeliveryApi = api
           params: filterData,
         }),
         providesTags: ['passengerDeliverys'],
-      }),
+      }
       createPassengerDelivery: build.mutation({
-        query: (filterData) => ({
+        query: (newPassengerDelivery) => ({
           url: CREATE_PASSENGER_LEDGER_DELIVERY,
           method: 'POST',
-          body: filterData, // Use 'body' instead of 'params' for POST data
+          data: jsonToFormData(PassengerDeliveryModel(newPassengerDelivery)),
         }),
         invalidatesTags: ['passengerDeliverys'],
       }),
