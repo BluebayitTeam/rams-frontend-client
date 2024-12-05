@@ -32,8 +32,7 @@ import PassengerDetail from './PassengerDetail';
 import { makeStyles } from '@mui/styles';
 
 import StatusStepDetail from './StatusStepDetail';
-import CallingEmbAttestationDetail from './CallingEmbAttestationDetail';
-import CallingEmbAttestationDetailPrint from './CallingEmbAttestationDetailPrint';
+import CallingEmbAttestationDetailPrint from './CallingEntryDetailPrint';
 import OfficeWorkDetailPrint from './OfficeWorkDetailPrint';
 import OfficeWorkDetail from './OfficeWorkDetail';
 import MusanedOkalaDetail from './MusanedOkalaDetail';
@@ -52,6 +51,8 @@ import VisaEntryDetail from './VisaEntryDetail';
 import VisaEntryDetailPrint from './VisaEntryDetailPrint';
 import EmbassyDetail from './EmbassyDetail';
 import EmbassyDetailPrint from './EmbassyDetailPrint';
+import CallingEntryDetailPrint from './CallingEntryDetailPrint';
+import CallingEntryDetail from './CallingEntryDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -603,21 +604,21 @@ function PassengerAllDetails() {
                   order: 6,
                   title: 'Calling Doc',
                   url: res.data.calling_doc,
-                  editurl: '/apps/calling-management/calling/',
+                  editurl: '/apps/callingentry/callingentrys',
                   pid: pId,
                 },
                 {
                   order: 7,
                   title: 'Calling Doc1',
                   url: res.data.doc1,
-                  editurl: '/apps/calling-management/calling/',
+                  editurl: '/apps/callingentry/callingentrys',
                   pid: pId,
                 },
                 {
                   order: 8,
                   title: 'Calling Doc2',
                   url: res.data.doc2,
-                  editurl: '/apps/calling-management/calling/',
+                  editurl: '/apps/callingentry/callingentrys',
                   pid: pId,
                 }
               )
@@ -632,21 +633,21 @@ function PassengerAllDetails() {
                 order: 6,
                 title: 'Calling Doc',
                 url: '',
-                editurl: '/apps/calling-management/calling/',
+                editurl: '/apps/callingentry/callingentrys',
                 pid: pId,
               },
               {
                 order: 7,
                 title: 'Calling Doc1',
                 url: '',
-                editurl: '/apps/calling-management/calling/',
+                editurl: '/apps/callingentry/callingentrys',
                 pid: pId,
               },
               {
                 order: 8,
                 title: 'Calling Doc2',
                 url: '',
-                editurl: '/apps/calling-management/calling/',
+                editurl: '/apps/callingentry/callingentrys',
                 pid: pId,
               }
             )
@@ -1007,11 +1008,7 @@ function PassengerAllDetails() {
               <MofaDetail classes={classes} data={mofa} pid={pId} />
             )}
             {country === 'Malaysia' && (
-              <CallingEmbAttestationDetail
-                classes={classes}
-                data={calling}
-                pid={pId}
-              />
+              <CallingEntryDetail classes={classes} data={calling} pid={pId} />
             )}
             {<OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
 
@@ -1119,7 +1116,7 @@ function PassengerAllDetails() {
                 <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
               )}
               {_.isEmpty(calling) || (
-                <CallingEmbAttestationDetailPrint
+                <CallingEntryDetailPrint
                   classes={classes}
                   data={calling}
                   pid={pId}

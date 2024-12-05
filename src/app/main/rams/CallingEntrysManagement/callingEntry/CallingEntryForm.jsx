@@ -1,7 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 
 import { Autocomplete, Icon, TextField, Typography } from '@mui/material';
-import { getAgents, getCountries, getDemandCallingEntrys } from 'app/store/dataSlice';
+import {
+  getAgents,
+  getCountries,
+  getDemandCallingEntrys,
+} from 'app/store/dataSlice';
 import { makeStyles } from '@mui/styles';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -15,60 +19,64 @@ import { BASE_URL } from 'src/app/constant/constants';
 import { PictureAsPdf } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
-	hidden: {
-		display: 'none'
-	},
-	productImageUpload: {
-		transitionProperty: 'box-shadow',
-		transitionDuration: theme.transitions.duration.short,
-		transitionTimingFunction: theme.transitions.easing.easeInOut
-	}
+  hidden: {
+    display: 'none',
+  },
+  productImageUpload: {
+    transitionProperty: 'box-shadow',
+    transitionDuration: theme.transitions.duration.short,
+    transitionTimingFunction: theme.transitions.easing.easeInOut,
+  },
 }));
 
 function CallingEntryForm(props) {
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues } = methods;
-	const { errors } = formState;
+  const dispatch = useDispatch();
+  const methods = useFormContext();
+  const { control, formState, watch, setValue, setError, getValues } = methods;
+  const { errors } = formState;
 
-	const classes = useStyles(props);
-	const demands = useSelector((state) => state.data.demandCallingEntrys);
+  const classes = useStyles(props);
+  const demands = useSelector((state) => state.data.demandCallingEntrys);
 
-	const countries = useSelector((state) => state.data.countries);
-	const visaAgents = useSelector((state) => state.data.agents);
+  const countries = useSelector((state) => state.data.countries);
+  const visaAgents = useSelector((state) => state.data.agents);
 
-	const fileInputRef = useRef(null);
-	const slipPic = watch('file') || '';
+  const fileInputRef = useRef(null);
+  const slipPic = watch('file') || '';
 
-	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
-	const [fileExtPCName, setFileExtPCName] = useState('');
+  const [previewslipPicFile, setPreviewslipPicFile] = useState('');
+  const [fileExtPCName, setFileExtPCName] = useState('');
 
-	const handleRemoveslipPicFile = () => {
-		setPreviewslipPicFile(null);
+  const handleRemoveslipPicFile = () => {
+    setPreviewslipPicFile(null);
 
-		setFileExtPCName(null);
+    setFileExtPCName(null);
 
-		setValue('file', '');
+    setValue('file', '');
 
-		if (fileInputRef.current) {
-			fileInputRef.current.value = '';
-		}
-	};
-	// useEffect(() => {
-	// 	setFileExtName('');
-	// 	setPreviewFile('');
-	// }, [watch('demand')]);
-	useEffect(() => {
-		dispatch(getDemandCallingEntrys());
-		dispatch(getAgents());
-		dispatch(getCountries());
-	}, []);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+  // useEffect(() => {
+  // 	setFileExtName('');
+  // 	setPreviewFile('');
+  // }, [watch('demand')]);
+  useEffect(() => {
+    dispatch(getDemandCallingEntrys());
+    dispatch(getAgents());
+    dispatch(getCountries());
+  }, []);
 
-	useEffect(() => {
-		const country = countries.find((data) => data.name === 'Malaysia' || data.name === 'malaysia')?.id;
-		setValue('country', country);
-	}, [countries, watch('country')]);
-	return (
+  useEffect(() => {
+    const country = countries.find(
+      (data) => data.name === 'Malaysia' || data.name === 'malaysia'
+    )?.id;
+    setValue('country', country);
+  }, [countries, watch('country')]);
+
+  console.log('countries', countries);
+  return (
     <div>
       <Controller
         name='demand'

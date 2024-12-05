@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useNavigate } from 'react-router';
 import fillSpaceByUnderscore from 'src/app/@helpers/fillSpaceByUnderscore';
 
-function CallingEmbAttestationDetailPrint({ classes, data, pid }) {
+function CallingEntryDetailPrint({ classes, data, pid }) {
   const navigate = useNavigate();
 
   const gotoEditpage = () => {
@@ -114,4 +114,4 @@ function CallingEmbAttestationDetailPrint({ classes, data, pid }) {
   );
 }
 
-export default CallingEmbAttestationDetailPrint;
+export default CallingEntryDetailPrint;
