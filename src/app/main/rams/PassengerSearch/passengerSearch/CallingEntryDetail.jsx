@@ -47,9 +47,7 @@ function CallingEntryDetail({ classes, data, pid }) {
   const navigate = useNavigate();
 
   const gotoEditpage = () => {
-    navigate(
-      `/apps/callingEmbAttestation-management/callingEmbAttestation/${pid}/fromSearch`
-    );
+    navigate(`/apps/callingEntry/callingEntrys/${pid}/fromSearch`);
   };
 
   return (

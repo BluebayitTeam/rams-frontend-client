@@ -8,11 +8,15 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import {
-	useCreateCallingEntryMutation,
-	useDeleteCallingEntryMutation,
-	useUpdateCallingEntryMutation
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateCallingEntryMutation,
+  useDeleteCallingEntryMutation,
+  useUpdateCallingEntryMutation,
 } from '../CallingEntrysApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
@@ -20,52 +24,55 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The callingEntry header.
  */
 function CallingEntryHeader() {
-	const routeParams = useParams();
-	const { callingEntryId } = routeParams;
-	const [createCallingEntry] = useCreateCallingEntryMutation();
-	const [saveCallingEntry] = useUpdateCallingEntryMutation();
-	const [removeCallingEntry] = useDeleteCallingEntryMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, image, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteCallingEntry');
-	const handleUpdate = localStorage.getItem('updateCallingEntry');
+  const routeParams = useParams();
+  const { callingEntryId } = routeParams;
+  const [createCallingEntry] = useCreateCallingEntryMutation();
+  const [saveCallingEntry] = useUpdateCallingEntryMutation();
+  const [removeCallingEntry] = useDeleteCallingEntryMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, image, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteCallingEntry');
+  const handleUpdate = localStorage.getItem('updateCallingEntry');
 
-	// console.log('image', image);
+  // console.log('image', image);
 
-	function handleUpdateCallingEntry() {
-		saveCallingEntry(getValues()).then((data) => {
-			UpdatedSuccessfully();
+  function handleUpdateCallingEntry() {
+    console.log('getValues', getValues());
+    saveCallingEntry(getValues()).then((data) => {
+      UpdatedSuccessfully();
 
-			navigate(`/apps/callingEntry/callingEntrys`);
-		});
-	}
+      navigate(`/apps/callingEntry/callingEntrys`);
+    });
+  }
 
-	function handleCreateCallingEntry() {
-		createCallingEntry(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateCallingEntry() {
+    createCallingEntry(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/callingEntry/callingEntrys`);
-			});
-	}
+        navigate(`/apps/callingEntry/callingEntrys`);
+      });
+  }
 
-	function handleRemoveCallingEntry(dispatch) {
-		removeCallingEntry(callingEntryId);
-		DeletedSuccessfully();
-		navigate('/apps/callingEntry/callingEntrys');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveCallingEntry(dispatch) {
+    removeCallingEntry(callingEntryId);
+    DeletedSuccessfully();
+    navigate('/apps/callingEntry/callingEntrys');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/callingEntry/callingEntrys`);
-	}
+  function handleCancel() {
+    navigate(`/apps/callingEntry/callingEntrys`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div

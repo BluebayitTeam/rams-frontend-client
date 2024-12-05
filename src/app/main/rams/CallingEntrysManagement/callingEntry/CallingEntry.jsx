@@ -36,7 +36,6 @@ function CallingEntry() {
   } = useGetCallingEntryQuery(callingEntryId, {
     skip: !callingEntryId || callingEntryId === 'new',
   });
-  console.log('callingEntryId', callingEntry, callingEntryId);
 
   const [tabValue, setTabValue] = useState(0);
 

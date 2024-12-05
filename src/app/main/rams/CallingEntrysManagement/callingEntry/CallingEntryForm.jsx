@@ -58,10 +58,7 @@ function CallingEntryForm(props) {
       fileInputRef.current.value = '';
     }
   };
-  // useEffect(() => {
-  // 	setFileExtName('');
-  // 	setPreviewFile('');
-  // }, [watch('demand')]);
+
   useEffect(() => {
     dispatch(getDemandCallingEntrys());
     dispatch(getAgents());
@@ -166,7 +163,6 @@ function CallingEntryForm(props) {
                 {...params}
                 placeholder='Select Visa Agent'
                 label='Visa Agent'
-                // error={!!errors.visa_agent || !value}
                 helperText={errors?.visa_agent?.message}
                 variant='outlined'
                 InputLabelProps={
