@@ -63,7 +63,7 @@ const PassengerDeliveryApi = api
           params: filterData,
         }),
         providesTags: ['passengerDeliverys'],
-      }
+      }),
       createPassengerDelivery: build.mutation({
         query: (newPassengerDelivery) => ({
           url: CREATE_PASSENGER_LEDGER_DELIVERY,
