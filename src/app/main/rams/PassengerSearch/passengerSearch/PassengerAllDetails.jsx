@@ -15,6 +15,7 @@ import {
   FLIGHT_BY_PASSENGER_ID,
   GET_PASSENGER_BY_ID,
   GET_SITESETTINGS,
+  GET_VISAENTRY_BY_ID,
   MANPOWER_BY_PASSENGER_ID,
   MEDICAL_BY_PASSENGER_ID,
   MOFA_BY_PASSENGER_ID,
@@ -313,7 +314,7 @@ function PassengerAllDetails() {
   const [training, setTraining] = useState({});
   const [visaEntry, setVisaEntry] = useState({});
 
-  const [callingEmbAttestation, setCallingEmbAttestation] = useState({});
+  const [calling, setCalling] = useState({});
 
   const [images, setImages] = useState([]);
   const [forms, setForms] = useState([]);
@@ -589,37 +590,34 @@ function PassengerAllDetails() {
           setMofa({});
         });
 
-      //callingEmbAttestation data
+      //calling data
 
       axios
-        .get(`${CALLINGEMBATTESTATION_BY_PASSENGER_ID}${pId}`, authTOKEN)
+        .get(`${GET_VISAENTRY_BY_ID}${pId}`, authTOKEN)
         .then((res) => {
           if (res?.data?.id) {
-            setCallingEmbAttestation({ ...res.data });
+            setCalling({ ...res.data });
             setImages((imgs) =>
               imgs.concat(
                 {
                   order: 6,
                   title: 'Calling Doc',
                   url: res.data.calling_doc,
-                  editurl:
-                    '/apps/callingEmbAttestation-management/callingEmbAttestation/',
+                  editurl: '/apps/calling-management/calling/',
                   pid: pId,
                 },
                 {
                   order: 7,
                   title: 'Calling Doc1',
                   url: res.data.doc1,
-                  editurl:
-                    '/apps/callingEmbAttestation-management/callingEmbAttestation/',
+                  editurl: '/apps/calling-management/calling/',
                   pid: pId,
                 },
                 {
                   order: 8,
                   title: 'Calling Doc2',
                   url: res.data.doc2,
-                  editurl:
-                    '/apps/callingEmbAttestation-management/callingEmbAttestation/',
+                  editurl: '/apps/calling-management/calling/',
                   pid: pId,
                 }
               )
@@ -634,29 +632,26 @@ function PassengerAllDetails() {
                 order: 6,
                 title: 'Calling Doc',
                 url: '',
-                editurl:
-                  '/apps/callingEmbAttestation-management/callingEmbAttestation/',
+                editurl: '/apps/calling-management/calling/',
                 pid: pId,
               },
               {
                 order: 7,
                 title: 'Calling Doc1',
                 url: '',
-                editurl:
-                  '/apps/callingEmbAttestation-management/callingEmbAttestation/',
+                editurl: '/apps/calling-management/calling/',
                 pid: pId,
               },
               {
                 order: 8,
                 title: 'Calling Doc2',
                 url: '',
-                editurl:
-                  '/apps/callingEmbAttestation-management/callingEmbAttestation/',
+                editurl: '/apps/calling-management/calling/',
                 pid: pId,
               }
             )
           );
-          setCallingEmbAttestation({});
+          setCalling({});
         });
 
       //office work data
@@ -893,7 +888,7 @@ function PassengerAllDetails() {
       setFlight({});
       setVisaEntry({});
 
-      setCallingEmbAttestation({});
+      setCalling({});
       setImages([]);
     }
   }, [pId]);
@@ -1014,7 +1009,7 @@ function PassengerAllDetails() {
             {country === 'Malaysia' && (
               <CallingEmbAttestationDetail
                 classes={classes}
-                data={callingEmbAttestation}
+                data={calling}
                 pid={pId}
               />
             )}
@@ -1123,10 +1118,10 @@ function PassengerAllDetails() {
               {_.isEmpty(mofa) || (
                 <MofaDetailPrint classes={classes} data={mofa} pid={pId} />
               )}
-              {_.isEmpty(callingEmbAttestation) || (
+              {_.isEmpty(calling) || (
                 <CallingEmbAttestationDetailPrint
                   classes={classes}
-                  data={callingEmbAttestation}
+                  data={calling}
                   pid={pId}
                 />
               )}
