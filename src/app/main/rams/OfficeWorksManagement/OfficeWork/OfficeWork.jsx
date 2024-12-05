@@ -196,7 +196,9 @@ function OfficeWork() {
                           id='passenger'
                           value={
                             value
-                              ? passengers.find((data) => data.id === value)
+                              ? passengers.find(
+                                  (data) => data.id === Number(value)
+                                )
                               : null
                           }
                           options={passengers}

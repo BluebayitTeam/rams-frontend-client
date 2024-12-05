@@ -63,6 +63,7 @@ function Flight() {
   const routeParams = useParams();
   const { flightId, fromSearch } = routeParams;
   const passengers = useSelector((state) => state.data.passengers);
+
   const classes = useStyles();
   const navigate = useNavigate();
   const [formKey, setFormKey] = useState(0);

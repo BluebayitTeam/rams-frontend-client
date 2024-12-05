@@ -68,7 +68,7 @@ function OfficeWorkForm(props) {
 	const fileInputdLRef = useRef(null);
 	const fileInputdoc1Ref = useRef(null);
 	const fileInputdoc2Ref = useRef(null);
-	console.log(`fndsf`, getValues());
+	
 	useEffect(() => {
 		dispatch(getPassengers());
 		dispatch(getCurrentStatuss());
