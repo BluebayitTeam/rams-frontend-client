@@ -24,6 +24,7 @@ import {
   useGetPassengerDeliverysQuery,
   useGetPassengerPurchasesDeliverysQuery,
   useGetPassengerSalesDeliverysQuery,
+  useUpdatePassengerDeliveryMutation,
 } from '../PassengerDeliveryReportsApi';
 import SiglePage2ForPassengerDelivery from 'src/app/@components/ReportComponents/SiglePage2ForPassengerDelivery';
 import {
@@ -42,7 +43,10 @@ import {
   TableRow,
 } from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
-import { AddedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -116,7 +120,8 @@ function PassengerDeliverysTable(props) {
     { id: 5, label: ' Details ', name: 'details', show: true },
     { id: 6, label: 'Amount', name: 'credit_amount', show: true },
   ];
-  const { watch, getValues, control } = methods;
+  const { watch, getValues } = methods;
+  console.log('getValuestesrt', getValues());
 
   const [
     modifiedPassengerDeliveryData,
@@ -317,13 +322,19 @@ function PassengerDeliverysTable(props) {
   const passengerName = paginatedSalesData?.passenger?.passenger_name;
 
   const [createPassengerDelivery] = useCreatePassengerDeliveryMutation();
+  const [updatePassengerDelivery] = useUpdatePassengerDeliveryMutation();
 
   function handleSavePassengerDelivery() {
-    createPassengerDelivery(getValues())
-      .unwrap()
-      .then((data) => {
-        AddedSuccessfully();
-      });
+    if (PassengerDeliveryDate) {
+      console.log('PassengerDeliveryDate', PassengerDeliveryDate);
+      updatePassengerDelivery(getValues())
+        .then(() => {
+          UpdatedSuccessfully();
+        })
+        .catch((error) => {
+          console.error('Error adding delivery:', error);
+        });
+    }
   }
 
   return (

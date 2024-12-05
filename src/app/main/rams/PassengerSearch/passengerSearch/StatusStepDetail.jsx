@@ -58,12 +58,12 @@ const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   alignItems: 'center',
   ...(ownerState.active && {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242, 102, 73) 0%, rgb(242, 102, 73) 50%, rgb(242, 102, 73) 100%)',
+      'linear-gradient( 136deg, green 0%, green 50%, green 100%)',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   }),
   ...(ownerState.completed && {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242, 102, 73) 0%, rgb(242, 102, 73) 50%, rgb(242, 102, 73) 100%)',
+      'linear-gradient( 136deg, green 0%, green 50%, green 100%)',
     position: 'relative',
   }),
 }));
@@ -93,7 +93,7 @@ function ColorlibStepIcon(props) {
           style={{
             position: 'absolute',
             color: 'white',
-            backgroundColor: 'rgb(242, 102, 73)',
+            backgroundColor: 'green',
             fontSize: '30px',
             fontWeight: '800',
           }}

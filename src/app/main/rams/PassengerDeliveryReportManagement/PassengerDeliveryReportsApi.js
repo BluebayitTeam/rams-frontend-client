@@ -10,6 +10,7 @@ import {
   GET_PASSENGER_LEDGER_REPORT,
   POSTDATE_FILTER_BY,
   POSTDATE_FILTER_WITHOUT_PG,
+  UPDATE_PASSENGER_LEDGER_DELIVERY,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -72,6 +73,14 @@ const PassengerDeliveryApi = api
         }),
         invalidatesTags: ['passengerDeliverys'],
       }),
+      updatePassengerDelivery: build.mutation({
+        query: (passengerDelivery) => ({
+          url: `${UPDATE_PASSENGER_LEDGER_DELIVERY}${passengerDelivery.id}`,
+          method: 'PUT',
+          data: jsonToFormData(...passengerDelivery),
+        }),
+        invalidatesTags: ['visaSubmissionLists'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -82,6 +91,7 @@ export const {
   useGetPassengerSalesDeliverysQuery,
   useGetPassengerDeliveryAllReportsQuery,
   useCreatePassengerDeliveryMutation,
+  useUpdatePassengerDeliveryMutation,
 } = PassengerDeliveryApi;
 
 export const selectFilteredPassengerDeliverys = (passengerDeliverys) =>
