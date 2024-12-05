@@ -319,14 +319,10 @@ function PassengerDeliverysTable(props) {
   const [createPassengerDelivery] = useCreatePassengerDeliveryMutation();
 
   function handleSavePassengerDelivery() {
-    console.log('checkPaasenger', getValues());
-    createPassengerDelivery(getValues().passenger)
-      .unwrap() // Ensures promise handling for the RTK Query mutation
+    createPassengerDelivery(getValues())
+      .unwrap()
       .then((data) => {
-        AddedSuccessfully(); // Call success notification
-      })
-      .catch((error) => {
-        console.error('Error:', error); // Handle error if needed
+        AddedSuccessfully();
       });
   }
 
