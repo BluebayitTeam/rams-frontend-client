@@ -25,7 +25,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 function CallingEntryHeader() {
   const routeParams = useParams();
-  const { callingEntryId } = routeParams;
+  const { callingEntryId, fromSearch } = routeParams;
   const [createCallingEntry] = useCreateCallingEntryMutation();
   const [saveCallingEntry] = useUpdateCallingEntryMutation();
   const [removeCallingEntry] = useDeleteCallingEntryMutation();
@@ -41,11 +41,13 @@ function CallingEntryHeader() {
   // console.log('image', image);
 
   function handleUpdateCallingEntry() {
-    console.log('getValues', getValues());
     saveCallingEntry(getValues()).then((data) => {
-      UpdatedSuccessfully();
-
-      navigate(`/apps/callingEntry/callingEntrys`);
+      if (fromSearch) {
+        navigate(-1);
+      } else {
+        UpdatedSuccessfully();
+        navigate(`/apps/callingEntry/callingEntrys`);
+      }
     });
   }
 
@@ -53,9 +55,13 @@ function CallingEntryHeader() {
     createCallingEntry(getValues())
       .unwrap()
       .then((data) => {
-        AddedSuccessfully();
+        if (fromSearch) {
+          navigate(-1);
+        } else {
+          AddedSuccessfully();
 
-        navigate(`/apps/callingEntry/callingEntrys`);
+          navigate(`/apps/callingEntry/callingEntrys`);
+        }
       });
   }
 
@@ -69,7 +75,11 @@ function CallingEntryHeader() {
   }
 
   function handleCancel() {
-    navigate(`/apps/callingEntry/callingEntrys`);
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      navigate(`/apps/callingEntry/callingEntrys`);
+    }
   }
 
   return (
