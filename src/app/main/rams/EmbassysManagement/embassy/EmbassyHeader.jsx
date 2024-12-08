@@ -45,33 +45,20 @@ function EmbassyHeader({ handleReset, emptyValue }) {
   // const user_role = localStorage.getItem('user_role');
 
   function handleUpdateEmbassy() {
-    saveEmbassy(getValues())
-      .then((res) => {
-        if (res.data?.id) {
-          if (fromSearch) {
-            navigate(-1);
-          } else {
-            localStorage.setItem('embassyAlert', 'updateEmbassy');
-
-            handleReset({
-              ...emptyValue,
-              stamping_status: doneNotDone.find((data) => data.default)?.id,
-            });
-            UpdatedSuccessfully();
-            navigate('/apps/embassy-management/embassys/new');
-          }
+    saveEmbassy(getValues()).then((res) => {
+      if (res.data?.id) {
+        if (fromSearch) {
+          navigate(-1);
         } else {
-          // Handle cases where res.data.id is not present
-          console.error('Update failed: No id in response data');
+          handleReset({
+            ...emptyValue,
+            stamping_status: doneNotDone.find((data) => data.default)?.id,
+          });
+          UpdatedSuccessfully();
+          navigate('/apps/embassy-management/embassys/new');
         }
-      })
-      .catch((error) => {
-        // Handle error
-        console.error('Error updating embassy', error);
-        dispatch(
-          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
-        );
-      });
+      }
+    });
   }
 
   function handleCreateEmbassy() {
@@ -107,7 +94,6 @@ function EmbassyHeader({ handleReset, emptyValue }) {
               ...emptyValue,
               stamping_status: doneNotDone.find((data) => data.default)?.id,
             });
-            localStorage.setItem('embassyAlert', 'saveEmbassy');
             navigate('/apps/embassy-management/embassys/new');
 
             dispatch(

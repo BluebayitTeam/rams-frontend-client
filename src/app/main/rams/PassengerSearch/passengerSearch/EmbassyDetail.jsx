@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 
 function EmbassyDetail({ classes, data, pid }) {
   const navigate = useNavigate();
+
+  console.log('dataPrint', data);
   const gotoEditpage = () => {
     navigate(`/apps/embassy-management/embassys/${pid}/fromSearch`);
   };

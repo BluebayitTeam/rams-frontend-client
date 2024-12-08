@@ -749,14 +749,14 @@ function PassengerAllDetails() {
                 order: 13,
                 title: 'Embassy Old Visa',
                 url: '',
-                editurl: '/apps/embassy-management/embassy/',
+                editurl: '/apps/embassy/embassys/',
                 pid: pId,
               },
               {
                 order: 14,
                 title: 'Embassy Stamp Visa',
                 url: '',
-                editurl: '/apps/embassy-management/embassy/',
+                editurl: '/apps/embassy/embassys/',
                 pid: pId,
               }
             )
