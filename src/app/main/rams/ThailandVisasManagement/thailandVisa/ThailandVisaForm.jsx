@@ -56,7 +56,7 @@ const useStyles = makeStyles(() => ({
 function ThailandVisaForm(props) {
   const dispatch = useDispatch();
   const methods = useFormContext();
-  const { control, watch, setValue, setError } = methods;
+  const { control, watch, setValue, setError, reset } = methods;
 
   const routeParams = useParams();
   const classes = useStyles(props);
@@ -64,7 +64,7 @@ function ThailandVisaForm(props) {
   const [showPrint, setShowPrint] = useState(false);
   const [localData, setLocalData] = useState([]);
 
-  const { data, isSuccess } = useGetThailandVisaQuery(thailandVisaId, {
+  const { data, refetch, isSuccess } = useGetThailandVisaQuery(thailandVisaId, {
     skip: !thailandVisaId,
   });
   useEffect(() => {
@@ -78,16 +78,29 @@ function ThailandVisaForm(props) {
   }, [isSuccess, data]);
 
   useEffect(() => {
-    if (_.isEmpty(data)) {
-      setShowPrint(false);
+    if (thailandVisaId) {
+      refetch();
     } else {
-      setShowPrint(true);
+      reset({}); // Reset the form with empty values
     }
+  }, [thailandVisaId, refetch, reset]);
 
-    if (routeParams.thailandVisaId !== 'thailandVisa-form') {
-      setValue('name', routeParams.thailandVisaId);
+  useEffect(() => {
+    if (data && !_.isEmpty(data)) {
+      setShowPrint(true);
+      reset(data); // Reset the form with fetched data
+    } else {
+      setShowPrint(false);
+      reset({}); // Clear the form when no data is fetched
     }
-  }, [data, routeParams?.thailandVisaId, setValue]);
+  }, [data, reset]);
+
+  useEffect(() => {
+    setThailandVisaId(routeParams?.thailandVisaId);
+    if (routeParams?.thailandVisaId !== 'ksa-visa-form') {
+      setValue('name', routeParams?.thailandVisaId);
+    }
+  }, [routeParams?.thailandVisaId, setValue]);
 
   // print dom ref
   const componentRef = useRef();
@@ -147,19 +160,21 @@ function ThailandVisaForm(props) {
               />
             )}
           />
-          <button
-            style={{
-              background: 'white',
-              border: '1px solid grey',
-              borderRadius: '4px',
-              padding: '0px 5px',
-              height: '35px',
-              marginTop: '3px',
-              marginLeft: '1px',
-            }}
-            onClick={handleShowClick}>
-            Show
-          </button>
+          {!routeParams.thailandVisaId && (
+            <button
+              style={{
+                background: 'white',
+                border: '1px solid grey',
+                borderRadius: '4px',
+                padding: '0px 5px',
+                height: '35px',
+                marginTop: '3px',
+                marginLeft: '1px',
+              }}
+              onClick={handleShowClick}>
+              Show
+            </button>
+          )}
           {showPrint && (
             <button
               style={{
