@@ -734,33 +734,81 @@ function PassengerAllDetails() {
 
       //embassy data
 
+      //embassy data
       axios
-        .get(`${EMBASSY_BY_PASSENGER_IDS}${pId}`, authTOKEN)
+        .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          if (res.data.id) {
-            setEmbassy({ ...res.data });
+          let embassyData = {};
+
+          if (
+            res.data?.visa_entry?.id &&
+            res.data?.mofa?.id &&
+            res.data?.embassy?.id
+          ) {
+            setImages((imgs) =>
+              imgs.concat(
+                {
+                  order: 13,
+                  title: 'Embassy Old Visa',
+                  url: res.data.old_visa_image,
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                },
+                {
+                  order: 14,
+                  title: 'Embassy Stamp Visa',
+                  url: res.data.stamp_visa_image,
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                }
+              )
+            );
+
+            setLoading(false);
+
+            const visa_entry = res.data?.visa_entry;
+            const mofa = res.data?.mofa;
+            const office_work = res.data?.officework;
+            const musanedokala = res.data?.musanedokala;
+            embassyData = {
+              ...res.data.embassy,
+              visa_number_readonly: visa_entry.visa_number,
+              sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+              sponsor_name_english_readonly: visa_entry.sponsor_name_english,
+              sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
+              mofa_no_readonly: mofa.mofa_no,
+              police_clearance_no_readonly: office_work.police_clearance_no,
+              oakala_no_readonly: musanedokala.okala_no,
+              driving_license_no_readonly: office_work.driving_license_no,
+              musaned_okala_no_readonly: musanedokala.musaned_no,
+              certificate_experience_no_readonly:
+                office_work.certificate_experience,
+            };
+          } else {
+            setImages((imgs) =>
+              imgs.concat(
+                {
+                  order: 13,
+                  title: 'Embassy Old Visa',
+                  url: '',
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                },
+                {
+                  order: 14,
+                  title: 'Embassy Stamp Visa',
+                  url: '',
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                }
+              )
+            );
+            embassyData.push({});
           }
-          // console.log('resPrint', res.data.id);
+
+          setEmbassy({ ...embassyData });
         })
         .catch(() => {
-          setImages((imgs) =>
-            imgs.concat(
-              {
-                order: 13,
-                title: 'Embassy Old Visa',
-                url: '',
-                editurl: '/apps/embassy/embassys/',
-                pid: pId,
-              },
-              {
-                order: 14,
-                title: 'Embassy Stamp Visa',
-                url: '',
-                editurl: '/apps/embassy/embassys/',
-                pid: pId,
-              }
-            )
-          );
           setEmbassy({});
         });
 
@@ -1014,9 +1062,9 @@ function PassengerAllDetails() {
 
             {<TrainingDetail classes={classes} data={training} pid={pId} />}
             {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
-            {country === 'Saudi Arabia' && (
+            {/* {country === 'Saudi Arabia' && (
               <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-            )}
+            )} */}
             {<FlightDetail classes={classes} data={flight} pid={pId} />}
             {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
 
@@ -1093,7 +1141,6 @@ function PassengerAllDetails() {
                   </div>
                 </div>
               )}
-
               {_.isEmpty(passenger) || (
                 <PassengerDetailPrint
                   classes={classes}
@@ -1101,7 +1148,6 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-
               {_.isEmpty(visaEntry) || (
                 <VisaEntryDetailPrint classes={classes} data={visaEntry} />
               )}
@@ -1129,7 +1175,6 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-
               {_.isEmpty(training) || (
                 <TrainingDetailPrint
                   classes={classes}
@@ -1150,14 +1195,15 @@ function PassengerAllDetails() {
                   data={medical}
                   pid={pId}
                 />
-              )} */}
-              {_.isEmpty(embassy) || (
+              )} */}{' '}
+              {/* {_.isEmpty(embassy) || (
                 <EmbassyDetailPrint
                   classes={classes}
                   data={embassy}
                   pid={pId}
                 />
               )}
+ */}
               {_.isEmpty(flight) || (
                 <FlightDetailPrint classes={classes} data={flight} pid={pId} />
               )}

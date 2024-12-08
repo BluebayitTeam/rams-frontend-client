@@ -51,37 +51,30 @@ import { selectSearchText } from './store/searchTextSlice';
 export const addTagTypes = ['ksaVisas'];
 
 const KsaVisaApi = api
-	.enhanceEndpoints({
-		addTagTypes
-	})
-	.injectEndpoints({
-		endpoints: (build) => ({
-			getKsaVisa: build.query({
-				query: (ksaVisaId) => ({
-					url: `${GET_KSAVISA_BY_ID}${ksaVisaId}`
-				}),
-				providesTags: ['ksaVisas'],
-				async onQueryStarted(ksaVisaId, { queryFulfilled }) {
-					try {
-						await queryFulfilled;
-					} catch (error) {
-						CustomNotification('error', `${error?.error?.response?.data?.detail}`);
-					}
-				}
-			})
-		}),
-		overrideExisting: false
-	});
+  .enhanceEndpoints({
+    addTagTypes,
+  })
+  .injectEndpoints({
+    endpoints: (build) => ({
+      getKsaVisa: build.query({
+        query: (ksaVisaId) => ({
+          url: `${GET_KSAVISA_BY_ID}${ksaVisaId}`,
+        }),
+        providesTags: ['ksaVisas'],
+      }),
+    }),
+    overrideExisting: false,
+  });
 
 export default KsaVisaApi;
 
 export const { useGetKsaVisasQuery, useGetKsaVisaQuery } = KsaVisaApi;
 
 export const selectFilteredKsaVisas = (ksaVisas) =>
-	createSelector([selectSearchText], (searchText) => {
-		if (!searchText || searchText.length === 0) {
-			return ksaVisas;
-		}
+  createSelector([selectSearchText], (searchText) => {
+    if (!searchText || searchText.length === 0) {
+      return ksaVisas;
+    }
 
-		return FuseUtils.filterArrayByString(ksaVisas, searchText);
-	});
+    return FuseUtils.filterArrayByString(ksaVisas, searchText);
+  });
