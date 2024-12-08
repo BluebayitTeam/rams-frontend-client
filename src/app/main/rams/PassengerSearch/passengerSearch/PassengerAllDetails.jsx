@@ -1014,9 +1014,9 @@ function PassengerAllDetails() {
 
             {<TrainingDetail classes={classes} data={training} pid={pId} />}
             {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
-            {/* {country === 'Saudi Arabia' && (
+            {country === 'Saudi Arabia' && (
               <EmbassyDetail classes={classes} data={embassy} pid={pId} />
-            )} */}
+            )}
             {<FlightDetail classes={classes} data={flight} pid={pId} />}
             {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
 
@@ -1151,13 +1151,13 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )} */}
-              {/* {_.isEmpty(embassy) || (
+              {_.isEmpty(embassy) || (
                 <EmbassyDetailPrint
                   classes={classes}
                   data={embassy}
                   pid={pId}
                 />
-              )} */}
+              )}
               {_.isEmpty(flight) || (
                 <FlightDetailPrint classes={classes} data={flight} pid={pId} />
               )}
