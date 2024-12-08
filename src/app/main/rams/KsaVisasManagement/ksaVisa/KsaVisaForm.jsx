@@ -82,8 +82,6 @@ function KsaVisaForm(props) {
     skip: !ksaVisaId,
   });
 
-  console.log('dataPrint', data);
-
   useEffect(() => {
     if (isSuccess) {
       setLocalData(data);
@@ -113,6 +111,7 @@ function KsaVisaForm(props) {
   }, [data, reset]);
 
   useEffect(() => {
+    setKsaVisaId(routeParams?.ksaVisaId);
     if (routeParams?.ksaVisaId !== 'ksa-visa-form') {
       setValue('name', routeParams?.ksaVisaId);
     }
@@ -127,20 +126,19 @@ function KsaVisaForm(props) {
   });
 
   const handleKeyDown = (e) => {
-    const { value } = e.target;
-    setKsaVisaId(value);
-    // if (e.key === 'Enter') {
-    //   const { value } = e.target;
+    if (e.key === 'Enter') {
+      const { value } = e.target;
 
-    //   if (value) {
-    //   } else {
-    //     setError('name', {
-    //       type: 'manual',
-    //       message: 'Please enter a valid ID or Passport Number',
-    //     });
-    //     reset({}); // Clear the form when no valid ID is entered
-    //   }
-    // }
+      if (value) {
+        setKsaVisaId(value);
+      } else {
+        setError('name', {
+          type: 'manual',
+          message: 'Please enter a valid ID or Passport Number',
+        });
+        reset({}); // Clear the form when no valid ID is entered
+      }
+    }
   };
 
   const handleShowClick = () => {
