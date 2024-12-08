@@ -10,7 +10,10 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import { EMBASSY_BY_PASSENGER_ID, GET_PASSENGER_BY_ID } from 'src/app/constant/constants';
+import {
+  EMBASSY_BY_PASSENGER_ID,
+  GET_PASSENGER_BY_ID,
+} from 'src/app/constant/constants';
 import { doneNotDone } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import { getEmbassy } from 'app/store/dataSlice';
@@ -22,207 +25,220 @@ import { useGetEmbassyQuery } from '../EmbassysApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		borderBottom: `1px solid ${theme.palette.primary.main}`,
-		paddingTop: '0.8rem',
-		paddingBottom: '0.7rem',
-		boxSizing: 'content-box'
-	},
-	textField: {
-		height: '4.8rem',
-		'& > div': {
-			height: '100%'
-		}
-	}
+  container: {
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    paddingTop: '0.8rem',
+    paddingBottom: '0.7rem',
+    boxSizing: 'content-box',
+  },
+  textField: {
+    height: '4.8rem',
+    '& > div': {
+      height: '100%',
+    },
+  },
 }));
 
 const schema = z.object({
-	passenger: z
-		.string()
-		.nonempty('You must enter a embassy name')
-		.min(5, 'The embassy name must be at least 5 characters')
+  passenger: z
+    .string()
+    .nonempty('You must enter a embassy name')
+    .min(5, 'The embassy name must be at least 5 characters'),
 });
 
 function Embassy() {
-	const emptyValue = {
-		passenger: '',
-		recruiting_agency: '',
-		submit_date: '',
-		profession_english: '',
-		profession_arabic: '',
-		salary: '',
-		stamping_status: '',
-		stamping_visa_new_no: '',
-		stamping_date: '',
-		visa_expiry_date: '',
-		delivery_date: '',
-		old_visa_image: '',
-		stamp_visa_image: '',
-		stamp_visa_pdf: '',
-		created_at: '',
-		updated_at: '',
-		visa_number_readonly: '',
-		sponsor_id_no_readonly: '',
-		sponsor_name_english_readonly: '',
-		sponsor_name_arabic_readonly: '',
-		mofa_no_readonly: '',
+  const emptyValue = {
+    passenger: '',
+    recruiting_agency: '',
+    submit_date: '',
+    profession_english: '',
+    profession_arabic: '',
+    salary: '',
+    stamping_status: '',
+    stamping_visa_new_no: '',
+    stamping_date: '',
+    visa_expiry_date: '',
+    delivery_date: '',
+    old_visa_image: '',
+    stamp_visa_image: '',
+    stamp_visa_pdf: '',
+    created_at: '',
+    updated_at: '',
+    visa_number_readonly: '',
+    sponsor_id_no_readonly: '',
+    sponsor_name_english_readonly: '',
+    sponsor_name_arabic_readonly: '',
+    mofa_no_readonly: '',
 
-		police_clearance_no_readonly: '',
-		oakala_no_readonly: '',
-		driving_license_no_readonly: '',
-		musaned_okala_no_readonly: '',
-		certificate_experience_no_readonly: ''
-	};
+    police_clearance_no_readonly: '',
+    oakala_no_readonly: '',
+    driving_license_no_readonly: '',
+    musaned_okala_no_readonly: '',
+    certificate_experience_no_readonly: '',
+  };
 
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { embassyId, fromSearch } = routeParams;
-	const passengers = useSelector((state) => state.data.passengers);
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { embassyId, fromSearch } = routeParams;
+  const passengers = useSelector((state) => state.data.passengers);
 
-	const classes = useStyles();
-	const navigate = useNavigate();
+  const classes = useStyles();
+  const navigate = useNavigate();
 
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: emptyValue,
-		resolver: zodResolver(schema)
-	});
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: emptyValue,
+    resolver: zodResolver(schema),
+  });
 
-	const {
-		data: embassy,
-		isLoading,
-		isError
-	} = useGetEmbassyQuery(embassyId, {
-		skip: !embassyId || embassyId === 'new'
-	});
+  const {
+    data: embassy,
+    isLoading,
+    isError,
+  } = useGetEmbassyQuery(embassyId, {
+    skip: !embassyId || embassyId === 'new',
+  });
 
-	const [tabValue, setTabValue] = useState(0);
-	const [formKey, setFormKey] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
+  const [formKey, setFormKey] = useState(0);
 
-	const {
-		reset,
-		watch,
-		control,
-		formState: { errors },
-		setValue
-	} = methods;
+  const {
+    reset,
+    watch,
+    control,
+    formState: { errors },
+    setValue,
+  } = methods;
 
-	useEffect(() => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
+  useEffect(() => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
 
-		if (fromSearch) {
-			axios
-				.get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
-				.then((res) => {
-					// update scope
-					if (res.data?.visa_entry?.id && res.data?.mofa?.id && res.data?.embassy?.id) {
-						const visa_entry = res.data?.visa_entry;
-						const mofa = res.data?.mofa;
-						const office_work = res.data?.officework;
-						const musanedokala = res.data?.musanedokala;
-						handleReset({
-							...setIdIfValueIsObject(res.data.embassy),
-							visa_number_readonly: visa_entry.visa_number,
-							sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-							sponsor_name_english_readonly: visa_entry?.sponsor_name_english,
-							sponsor_name_arabic_readonly: visa_entry?.sponsor_name_arabic,
-							mofa_no_readonly: mofa.mofa_no,
-							passenger: embassyId,
-							updatePermission: true,
-							createPermission: false,
-							police_clearance_no_readonly: office_work.police_clearance_no,
-							oakala_no_readonly: musanedokala.okala_no,
-							driving_license_no_readonly: office_work.driving_license_no,
-							musaned_okala_no_readonly: musanedokala.musaned_no,
-							certificate_experience_no_readonly: office_work.certificate_experience
-						});
-					}
-				})
-				.catch(() => null);
-		} else {
-			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
-		}
-	}, [fromSearch]);
+    if (fromSearch) {
+      axios
+        .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
+        .then((res) => {
+          // update scope
+          if (
+            res.data?.visa_entry?.id &&
+            res.data?.mofa?.id &&
+            res.data?.embassy?.id
+          ) {
+            const visa_entry = res.data?.visa_entry;
+            const mofa = res.data?.mofa;
+            const office_work = res.data?.officework;
+            const musanedokala = res.data?.musanedokala;
+            handleReset({
+              ...setIdIfValueIsObject(res.data.embassy),
+              visa_number_readonly: visa_entry.visa_number,
+              sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+              sponsor_name_english_readonly: visa_entry?.sponsor_name_english,
+              sponsor_name_arabic_readonly: visa_entry?.sponsor_name_arabic,
+              mofa_no_readonly: mofa.mofa_no,
+              passenger: embassyId,
+              updatePermission: true,
+              createPermission: false,
+              police_clearance_no_readonly: office_work.police_clearance_no,
+              oakala_no_readonly: musanedokala.okala_no,
+              driving_license_no_readonly: office_work.driving_license_no,
+              musaned_okala_no_readonly: musanedokala.musaned_no,
+              certificate_experience_no_readonly:
+                office_work.certificate_experience,
+            });
+          }
+        })
+        .catch(() => null);
+    } else {
+      reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+    }
+  }, [fromSearch]);
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
-				.then((res) => {
-					if (res.data?.visa_entry?.id && res.data?.mofa?.id && res.data?.embassy?.id) {
-						const visa_entry = res.data?.visa_entry;
-						const mofa = res.data?.mofa;
-						const office_work = res.data?.officework;
-						const musanedokala = res.data?.musanedokala;
-						handleReset({
-							...setIdIfValueIsObject(res.data.embassy),
-							visa_number_readonly: visa_entry.visa_number,
-							sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-							sponsor_name_english_readonly: visa_entry?.sponsor_name_english,
-							sponsor_name_arabic_readonly: visa_entry?.sponsor_name_arabic,
-							mofa_no_readonly: mofa.mofa_no,
-							passenger: embassyId,
-							updatePermission: true,
-							createPermission: false,
-							police_clearance_no_readonly: office_work.police_clearance_no,
-							oakala_no_readonly: musanedokala.okala_no,
-							driving_license_no_readonly: office_work.driving_license_no,
-							musaned_okala_no_readonly: musanedokala.musaned_no,
-							certificate_experience_no_readonly: office_work.certificate_experience
-						});
-					} else {
-						handleReset({
-							passenger: embassyId,
-							stamping_status: doneNotDone.find((data) => data.default)?.id
-						});
-						sessionStorage.setItem('operation', 'save');
-					}
-				})
-				.catch(() => {
-					reset({ passenger: embassyId, stamping_status: doneNotDone.find((data) => data.default)?.id });
-					sessionStorage.setItem('operation', 'save');
-				});
-		} else {
-			reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
-		}
-	}, [fromSearch]);
+  useEffect(() => {
+    if (fromSearch) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
+        .then((res) => {
+          if (
+            res.data?.visa_entry?.id &&
+            res.data?.mofa?.id &&
+            res.data?.embassy?.id
+          ) {
+            const visa_entry = res.data?.visa_entry;
+            const mofa = res.data?.mofa;
+            const office_work = res.data?.officework;
+            const musanedokala = res.data?.musanedokala;
+            handleReset({
+              ...setIdIfValueIsObject(res.data.embassy),
+              visa_number_readonly: visa_entry.visa_number,
+              sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+              sponsor_name_english_readonly: visa_entry?.sponsor_name_english,
+              sponsor_name_arabic_readonly: visa_entry?.sponsor_name_arabic,
+              mofa_no_readonly: mofa.mofa_no,
+              passenger: embassyId,
+              updatePermission: true,
+              createPermission: false,
+              police_clearance_no_readonly: office_work.police_clearance_no,
+              oakala_no_readonly: musanedokala.okala_no,
+              driving_license_no_readonly: office_work.driving_license_no,
+              musaned_okala_no_readonly: musanedokala.musaned_no,
+              certificate_experience_no_readonly:
+                office_work.certificate_experience,
+            });
+          } else {
+            handleReset({
+              passenger: embassyId,
+              stamping_status: doneNotDone.find((data) => data.default)?.id,
+            });
+            sessionStorage.setItem('operation', 'save');
+          }
+        })
+        .catch(() => {
+          reset({
+            passenger: embassyId,
+            stamping_status: doneNotDone.find((data) => data.default)?.id,
+          });
+          sessionStorage.setItem('operation', 'save');
+        });
+    } else {
+      reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+    }
+  }, [fromSearch]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	const handleReset = (defaultValues) => {
-		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-	};
+  const handleReset = (defaultValues) => {
+    reset(defaultValues);
+    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+  };
 
-	const getCurrentStatus = (passengerId) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
-	return (
+  const getCurrentStatus = (passengerId) => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+    axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+      setValue('current_status', res.data?.current_status?.id);
+    });
+  };
+  return (
     <FormProvider {...methods} key={formKey}>
       {hasPermission('EMBASSY_DETAILS') && (
         <FusePageCarded
@@ -262,7 +278,9 @@ function Embassy() {
                           disabled={!!fromSearch}
                           value={
                             value
-                              ? passengers.find((data) => data.id === value)
+                              ? passengers.find(
+                                  (data) => data.id === Number(value)
+                                )
                               : null
                           }
                           options={passengers}
