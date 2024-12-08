@@ -177,19 +177,22 @@ function KsaVisaForm(props) {
               />
             )}
           />
-          <button
-            style={{
-              background: 'white',
-              border: '1px solid grey',
-              borderRadius: '4px',
-              padding: '0px 5px',
-              height: '35px',
-              marginTop: '3px',
-              marginLeft: '1px',
-            }}
-            onClick={handleShowClick}>
-            Show
-          </button>
+          {!routeParams?.ksaVisaId && (
+            <button
+              style={{
+                background: 'white',
+                border: '1px solid grey',
+                borderRadius: '4px',
+                padding: '0px 5px',
+                height: '35px',
+                marginTop: '3px',
+                marginLeft: '1px',
+              }}
+              onClick={handleShowClick}>
+              Show
+            </button>
+          )}
+
           {showPrint && (
             <button
               style={{
