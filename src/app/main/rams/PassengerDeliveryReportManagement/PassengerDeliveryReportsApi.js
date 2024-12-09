@@ -73,13 +73,14 @@ const PassengerDeliveryApi = api
         }),
         invalidatesTags: ['passengerDeliverys'],
       }),
+
       updatePassengerDelivery: build.mutation({
         query: (passengerDelivery) => ({
           url: `${UPDATE_PASSENGER_LEDGER_DELIVERY}${passengerDelivery.id}`,
           method: 'PUT',
-          data: jsonToFormData(...passengerDelivery),
+          data: jsonToFormData(passengerDelivery),
         }),
-        invalidatesTags: ['visaSubmissionLists'],
+        invalidatesTags: ['passengerDeliverys'],
       }),
     }),
     overrideExisting: false,

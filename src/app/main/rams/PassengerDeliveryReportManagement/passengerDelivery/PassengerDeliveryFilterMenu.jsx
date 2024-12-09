@@ -53,9 +53,6 @@ function PassengerDeliveryFilterMenu({
 
   useEffect(() => {
     dispatch(getPassengers());
-    dispatch(getCountries());
-    dispatch(getAgents());
-    dispatch(getPassengerTypes());
   }, []);
 
   return (

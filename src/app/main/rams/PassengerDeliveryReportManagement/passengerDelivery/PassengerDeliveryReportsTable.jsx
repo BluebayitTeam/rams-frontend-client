@@ -315,6 +315,7 @@ function PassengerDeliverysTable(props) {
 
   const PassengerDeliveryDate =
     paginatedData?.passenger_delivery?.delivery_date;
+  console.log('PassengerDeliveryDate', PassengerDeliveryDate);
 
   const agentName = paginatedSalesData?.passenger?.agent?.first_name;
   const passengerDeliveryPID = paginatedSalesData?.passenger?.passenger_id;
@@ -325,16 +326,28 @@ function PassengerDeliverysTable(props) {
   const [updatePassengerDelivery] = useUpdatePassengerDeliveryMutation();
 
   function handleSavePassengerDelivery() {
-    if (PassengerDeliveryDate) {
-      console.log('PassengerDeliveryDate', PassengerDeliveryDate);
-      updatePassengerDelivery(getValues())
-        .then(() => {
-          UpdatedSuccessfully();
-        })
-        .catch((error) => {
-          console.error('Error adding delivery:', error);
-        });
-    }
+    // if (PassengerDeliveryDate) {
+    //   updatePassengerDelivery(getValues())
+    //     .then(() => {
+    //       UpdatedSuccessfully();
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error adding delivery:', error);
+    //     });
+    // }
+    // createPassengerDelivery(getValues()).then(() => {
+    //   AddedSuccessfully();
+    // });
+
+    debugger;
+
+    updatePassengerDelivery(getValues())
+      .then(() => {
+        UpdatedSuccessfully();
+      })
+      .catch((error) => {
+        console.error('CheckError', error);
+      });
   }
 
   return (
