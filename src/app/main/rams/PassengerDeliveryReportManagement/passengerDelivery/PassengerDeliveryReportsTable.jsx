@@ -317,8 +317,6 @@ function PassengerDeliverysTable(props) {
     paginatedData?.passenger_delivery?.delivery_date;
   const PassengerDeliveryDateID = paginatedData?.passenger_delivery?.id;
 
-  console.log('PassengerDeliveryDateID', PassengerDeliveryDate);
-
   const agentName = paginatedSalesData?.passenger?.agent?.first_name;
   const passengerDeliveryPID = paginatedSalesData?.passenger?.passenger_id;
   const passportNo = paginatedSalesData?.passenger?.passport_no;

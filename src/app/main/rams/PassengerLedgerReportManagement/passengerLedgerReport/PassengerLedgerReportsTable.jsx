@@ -152,10 +152,7 @@ function PassengerLedgerReportsTable(props) {
   const [dateFrom, setDateFrom] = useState();
   const [dateTo, setDateTo] = useState();
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
-  const [passengerDeliveryDate, setPassengerDeliveryDate] = useState('');
-  // console.log('passengerDeliveryDate', passengerDeliveryDate);
-  const [updatePassengerLedger] = useUpdatePassengerLedgerReportMutation();
-  const [createPassengerLedger] = useCreatePassengerLedgerReportMutation();
+
   const navigate = useNavigate();
   console.log('totalDbAmount', totalDbAmount);
 
@@ -370,28 +367,26 @@ function PassengerLedgerReportsTable(props) {
       : null,
   };
 
-  const handleSavePassengerDelivery = async () => {
-    try {
-      const formData = getValues(); // Retrieve form data
-      console.log('formData', formData);
-      if (passengerDeliveryDate) {
-        // If passengerDeliveryDate exists, create Passenger Ledger
-        // Otherwise, create Agent
-        await createPassengerLedger(formData).unwrap();
-        AddedSuccessfully(); // Notify success
-      } else {
-        await updatePassengerLedger(formData);
-        UpdatedSuccessfully(); // Notify success
-      }
+  const PassengerDeliveryDate =
+    paginatedData?.passenger_delivery?.delivery_date;
+  const PassengerDeliveryDateID = paginatedData?.passenger_delivery?.id;
 
-      // Navigate after successful operation
-      navigate(`/apps/passengerLedgerReport/passengerLedgerReports`);
-    } catch (error) {
-      // Handle error (optional, for better UX)
-      console.error('Error saving passenger delivery:', error);
-      // You can add a notification or toast here to notify the user of the error
+  const [updatePassengerLedger] = useUpdatePassengerLedgerReportMutation();
+  const [createPassengerLedger] = useCreatePassengerLedgerReportMutation();
+
+  function handleSavePassengerDelivery() {
+    if (PassengerDeliveryDate) {
+      updatePassengerLedger({ ...getValues(), id: PassengerDeliveryDateID })
+        .then(() => {
+          UpdatedSuccessfully();
+        })
+        .catch((error) => {});
+    } else {
+      createPassengerLedger({ ...getValues() }).then(() => {
+        AddedSuccessfully();
+      });
     }
-  };
+  }
 
   return (
     <div className={classes.headContainer}>
@@ -621,7 +616,7 @@ function PassengerLedgerReportsTable(props) {
                 variant='contained'
                 color='secondary'
                 onClick={() => handleSavePassengerDelivery()}>
-                {passengerDeliveryDate ? 'Update' : 'Save'}
+                {PassengerDeliveryDate ? 'Update' : 'Save'}
               </Button>
             </div>
           </div>

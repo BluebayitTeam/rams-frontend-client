@@ -11,6 +11,7 @@ import {
   UPDATE_PASSENGER_LEDGER_DELIVERY,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
+import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 export const addTagTypes = ['passengerLedgerReports'];
 const PassengerLedgerReportApi = api
@@ -55,11 +56,14 @@ const PassengerLedgerReportApi = api
         }),
         invalidatesTags: ['passengerLedgerReports'],
       }),
+
       updatePassengerLedgerReport: build.mutation({
-        query: (passengerLedgerReport) => ({
-          url: `${UPDATE_PASSENGER_LEDGER_DELIVERY}${passengerLedgerReport.id}`,
+        query: (passengerDelivery) => ({
+          url: `${UPDATE_PASSENGER_LEDGER_DELIVERY}${passengerDelivery?.id}`,
           method: 'PUT',
-          data: jsonToFormData(passengerLedgerReport),
+          data: jsonToFormData({
+            ...passengerDelivery,
+          }),
         }),
         invalidatesTags: ['passengerLedgerReports'],
       }),
