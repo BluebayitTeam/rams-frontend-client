@@ -317,7 +317,7 @@ function PassengerDeliverysTable(props) {
     paginatedData?.passenger_delivery?.delivery_date;
   const PassengerDeliveryDateID = paginatedData?.passenger_delivery?.id;
 
-  console.log('PassengerDeliveryDateID', PassengerDeliveryDateID);
+  console.log('PassengerDeliveryDateID', PassengerDeliveryDate);
 
   const agentName = paginatedSalesData?.passenger?.agent?.first_name;
   const passengerDeliveryPID = paginatedSalesData?.passenger?.passenger_id;
@@ -329,15 +329,7 @@ function PassengerDeliverysTable(props) {
 
   function handleSavePassengerDelivery() {
     if (PassengerDeliveryDate) {
-      const values = getValues();
-      const payload = {
-        ...values,
-        id: PassengerDeliveryDateID, // Add the PassengerDeliveryDateID
-      };
-
-      console.log('Payload being sent:', payload);
-
-      updatePassengerDelivery(payload)
+      updatePassengerDelivery({ ...getValues(), id: PassengerDeliveryDateID })
         .then(() => {
           UpdatedSuccessfully();
         })
@@ -345,11 +337,10 @@ function PassengerDeliverysTable(props) {
           console.error('Error updating delivery:', error);
         });
     } else {
-      createPassengerDelivery(getValues()).then(() => {
+      createPassengerDelivery().then(() => {
         AddedSuccessfully();
       });
     }
-    console.log('PassengerDeliveryDate', PassengerDeliveryDate);
   }
 
   return (
