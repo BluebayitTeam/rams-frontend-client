@@ -540,6 +540,7 @@ function PassengerDeliverysTable(props) {
               label='Delivery Date'
               placeholder='DD-MM-YYYY'
               className='mt-8 mb-16'
+              value={PassengerDeliveryDate}
             />
             <div className='ml-20'>
               <Button
@@ -553,32 +554,6 @@ function PassengerDeliverysTable(props) {
           </div>
         </div>
       </FormProvider>
-
-      {/* <Dialog
-        open={openSuccessStatusAlert}
-        onClose={() => setOpenSuccessStatusAlert(false)}
-        style={{ borderRadius: '15px' }}>
-        <DialogTitle style={{ fontSize: '25px', color: 'blue' }}>
-          Success
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText style={{ fontSize: '18px' }}>
-            This Passenger Deliver Successfully, Check Delivery Report..
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setOpenSuccessStatusAlert(false)}
-            style={{
-              backgroundColor: 'green',
-              fontSize: '18px',
-              color: 'white',
-            }}
-            autoFocus>
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog> */}
     </div>
   );
 }
