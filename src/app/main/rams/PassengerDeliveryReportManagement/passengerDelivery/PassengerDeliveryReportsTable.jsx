@@ -121,7 +121,7 @@ function PassengerDeliverysTable(props) {
     { id: 6, label: 'Amount', name: 'credit_amount', show: true },
   ];
   const { watch, getValues } = methods;
-  console.log('getValuestesrt', getValues());
+  console.log('getValuestesrt', getValues().passenger);
 
   const [
     modifiedPassengerDeliveryData,
@@ -315,7 +315,9 @@ function PassengerDeliverysTable(props) {
 
   const PassengerDeliveryDate =
     paginatedData?.passenger_delivery?.delivery_date;
-  console.log('PassengerDeliveryDate', PassengerDeliveryDate);
+  const PassengerDeliveryDateID = paginatedData?.passenger_delivery?.id;
+
+  console.log('PassengerDeliveryDateID', PassengerDeliveryDateID);
 
   const agentName = paginatedSalesData?.passenger?.agent?.first_name;
   const passengerDeliveryPID = paginatedSalesData?.passenger?.passenger_id;
@@ -326,28 +328,28 @@ function PassengerDeliverysTable(props) {
   const [updatePassengerDelivery] = useUpdatePassengerDeliveryMutation();
 
   function handleSavePassengerDelivery() {
-    // if (PassengerDeliveryDate) {
-    //   updatePassengerDelivery(getValues())
-    //     .then(() => {
-    //       UpdatedSuccessfully();
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error adding delivery:', error);
-    //     });
-    // }
-    // createPassengerDelivery(getValues()).then(() => {
-    //   AddedSuccessfully();
-    // });
+    if (PassengerDeliveryDate) {
+      const values = getValues();
+      const payload = {
+        ...values,
+        id: PassengerDeliveryDateID, // Add the PassengerDeliveryDateID
+      };
 
-    debugger;
+      console.log('Payload being sent:', payload);
 
-    updatePassengerDelivery(getValues())
-      .then(() => {
-        UpdatedSuccessfully();
-      })
-      .catch((error) => {
-        console.error('CheckError', error);
+      updatePassengerDelivery(payload)
+        .then(() => {
+          UpdatedSuccessfully();
+        })
+        .catch((error) => {
+          console.error('Error updating delivery:', error);
+        });
+    } else {
+      createPassengerDelivery(getValues()).then(() => {
+        AddedSuccessfully();
       });
+    }
+    console.log('PassengerDeliveryDate', PassengerDeliveryDate);
   }
 
   return (

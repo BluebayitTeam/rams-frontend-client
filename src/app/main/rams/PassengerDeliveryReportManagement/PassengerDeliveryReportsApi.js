@@ -76,9 +76,11 @@ const PassengerDeliveryApi = api
 
       updatePassengerDelivery: build.mutation({
         query: (passengerDelivery) => ({
-          url: `${UPDATE_PASSENGER_LEDGER_DELIVERY}${passengerDelivery.id}`,
+          url: `${UPDATE_PASSENGER_LEDGER_DELIVERY}${passengerDelivery?.id}`,
           method: 'PUT',
-          data: jsonToFormData(passengerDelivery),
+          data: jsonToFormData({
+            ...passengerDelivery,
+          }),
         }),
         invalidatesTags: ['passengerDeliverys'],
       }),
