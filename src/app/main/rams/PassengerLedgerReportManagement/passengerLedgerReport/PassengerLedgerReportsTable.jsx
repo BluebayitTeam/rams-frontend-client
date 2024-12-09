@@ -105,7 +105,7 @@ function PassengerLedgerReportsTable(props) {
   });
   const dispatch = useDispatch();
 
-  const { getValues, watch } = methods;
+  const { getValues, watch, setValue } = methods;
 
   const [modifiedPassengerLedgerData, setModifiedPassengerLedgerData] =
     useReportData();
@@ -288,6 +288,14 @@ function PassengerLedgerReportsTable(props) {
       setModifiedPassengerLedgerCostDetailData(totalData?.purchases);
     }
   }, [totalData]);
+  useEffect(() => {
+    if (paginatedData) {
+      setValue(
+        'delivery_date',
+        paginatedData?.passenger_delivery?.delivery_date
+      );
+    }
+  }, [paginatedData]);
 
   // Function to handle Excel download
   const handleExelDownload = () => {
