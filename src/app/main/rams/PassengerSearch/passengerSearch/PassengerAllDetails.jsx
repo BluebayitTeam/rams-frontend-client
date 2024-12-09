@@ -305,7 +305,6 @@ function PassengerAllDetails() {
   const [passenger, setPassenger] = useState({});
 
   const [embassy, setEmbassy] = useState({});
-  console.log('cvcxvxcvxcv', embassy);
 
   const [mofa, setMofa] = useState({});
   const [officeWork, setOfficeWork] = useState({});
