@@ -449,6 +449,7 @@ function PassengerAllDetails() {
         .then((res) => {
           if (res?.data?.id) {
             setPassenger({ ...res.data });
+            console.log('images12125', res);
             setImages((imgs) =>
               imgs.concat({
                 order: 1,
@@ -517,22 +518,13 @@ function PassengerAllDetails() {
 
       //visa entry data
 
-      // axios
-      //   .get(`${VISAENTRY_BY_PASSENGER_ID}${pId}`, authTOKEN)
-      //   .then((res) => {
-      //     if (res?.data?.id) {
-      //       setVisaEntry({ ...res.data });
-      //       setLoading(false);
-      //     }
-      //   })
-      //   .catch(() => {
-      //     setVisaEntry({});
-      //   });
-
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          setVisaEntry({ ...res?.data?.visa_entry });
+          if (res?.data?.id) {
+            setVisaEntry({ ...res.data });
+            setLoading(false);
+          }
         })
         .catch(() => {
           setVisaEntry({});
@@ -543,89 +535,22 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          setMusanedOkala({ ...res?.data?.musanedokala });
-          setImages((imgs) =>
-            imgs.concat(
-              {
-                order: 4,
-                title: 'Masaned Okala Doc1',
-                url: res.data.doc1_image,
-                editurl: '/apps/musanedOkala-management/musanedOkala/',
-                pid: pId,
-              },
-              {
-                order: 5,
-                title: 'Masaned Okala Doc2',
-                url: res.data.doc2_image,
-                editurl: '/apps/musanedOkala-management/musanedOkala/',
-                pid: pId,
-              }
-            )
-          );
-        })
-        .catch(() => {
-          setMusanedOkala({});
-          setImages((imgs) =>
-            imgs.concat(
-              {
-                order: 4,
-                title: 'Masaned Okala Doc1',
-                url: '',
-                editurl: '/apps/musanedOkala-management/musanedOkala/',
-                pid: pId,
-              },
-              {
-                order: 5,
-                title: 'Masaned Okala Doc2',
-                url: '',
-                editurl: '/apps/musanedOkala-management/musanedOkala/',
-                pid: pId,
-              }
-            )
-          );
-        });
-
-      //mfa data
-      axios
-        .get(`${MOFA_BY_PASSENGER_ID}${pId}`, authTOKEN)
-        .then((res) => {
           if (res?.data?.id) {
-            setMofa({ ...res.data });
-            setLoading(false);
-          }
-        })
-        .catch(() => {
-          setMofa({});
-        });
-
-      //calling data
-
-      axios
-        .get(`${GET_VISAENTRY_BY_ID}${pId}`, authTOKEN)
-        .then((res) => {
-          if (res?.data?.id) {
-            setCalling({ ...res.data });
+            setMusanedOkala({ ...res.data.musanedokala });
             setImages((imgs) =>
               imgs.concat(
                 {
-                  order: 6,
-                  title: 'Calling Doc',
-                  url: res.data.calling_doc,
-                  editurl: '/apps/callingentry/callingentrys',
+                  order: 4,
+                  title: 'Masaned Okala Doc1',
+                  url: res.data.doc1_image,
+                  editurl: '/apps/musanedOkala-management/musanedOkala/',
                   pid: pId,
                 },
                 {
-                  order: 7,
-                  title: 'Calling Doc1',
-                  url: res.data.doc1,
-                  editurl: '/apps/callingentry/callingentrys',
-                  pid: pId,
-                },
-                {
-                  order: 8,
-                  title: 'Calling Doc2',
-                  url: res.data.doc2,
-                  editurl: '/apps/callingentry/callingentrys',
+                  order: 5,
+                  title: 'Masaned Okala Doc2',
+                  url: res.data.doc2_image,
+                  editurl: '/apps/musanedOkala-management/musanedOkala/',
                   pid: pId,
                 }
               )
@@ -637,28 +562,48 @@ function PassengerAllDetails() {
           setImages((imgs) =>
             imgs.concat(
               {
-                order: 6,
-                title: 'Calling Doc',
+                order: 4,
+                title: 'Masaned Okala Doc1',
                 url: '',
-                editurl: '/apps/callingentry/callingentrys',
+                editurl: '/apps/musanedOkala-management/musanedOkala/',
                 pid: pId,
               },
               {
-                order: 7,
-                title: 'Calling Doc1',
+                order: 5,
+                title: 'Masaned Okala Doc2',
                 url: '',
-                editurl: '/apps/callingentry/callingentrys',
-                pid: pId,
-              },
-              {
-                order: 8,
-                title: 'Calling Doc2',
-                url: '',
-                editurl: '/apps/callingentry/callingentrys',
+                editurl: '/apps/musanedOkala-management/musanedOkala/',
                 pid: pId,
               }
             )
           );
+          setMusanedOkala({});
+        });
+
+      //mfa data
+      axios
+        .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
+        .then((res) => {
+          if (res?.data?.id) {
+            setMofa({ ...res.data.mofa });
+            setLoading(false);
+          }
+        })
+        .catch(() => {
+          setMofa({});
+        });
+
+      //calling data
+
+      axios
+        .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
+        .then((res) => {
+          if (res?.data?.id) {
+            setCalling({ ...res.data });
+            setLoading(false);
+          }
+        })
+        .catch(() => {
           setCalling({});
         });
 
@@ -667,41 +612,72 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          setOfficeWork({ ...res?.data?.officework });
-          setImages((imgs) =>
-            imgs.concat(
-              {
-                order: 15,
-                title: 'Training Doc1',
-                url: '',
-                editurl: '/apps/training-management/training/',
-                pid: pId,
-              },
-              {
-                order: 16,
-                title: 'Training Certificate',
-                url: '',
-                editurl: '/apps/training-management/training/',
-                pid: pId,
-              }
-            )
-          );
+          if (res?.data?.id) {
+            setOfficeWork({ ...res.data.officework });
+            setImages((imgs) =>
+              imgs.concat(
+                {
+                  order: 9,
+                  title: 'Office Work PC',
+                  url: res.data.pc_image,
+                  editurl: '/apps/officeWork-management/officeWork/',
+                  pid: pId,
+                },
+                {
+                  order: 10,
+                  title: 'Office Work DL',
+                  url: res.data.dl_image,
+                  editurl: '/apps/officeWork-management/officeWork/',
+                  pid: pId,
+                },
+                {
+                  order: 11,
+                  title: 'Office Work Doc1',
+                  url: res.data.doc1_image,
+                  editurl: '/apps/officeWork-management/officeWork/',
+                  pid: pId,
+                },
+                {
+                  order: 12,
+                  title: 'Office Work Doc2',
+                  url: res.data.doc2_image,
+                  editurl: '/apps/officeWork-management/officeWork/',
+                  pid: pId,
+                }
+              )
+            );
+            setLoading(false);
+          }
         })
         .catch(() => {
           setImages((imgs) =>
             imgs.concat(
               {
-                order: 15,
-                title: 'Training Doc1',
+                order: 9,
+                title: 'Office Work PC',
                 url: '',
-                editurl: '/apps/training-management/training/',
+                editurl: '/apps/officeWork-management/officeWork/',
                 pid: pId,
               },
               {
-                order: 16,
-                title: 'Training Certificate',
+                order: 10,
+                title: 'Office Work DL',
                 url: '',
-                editurl: '/apps/training-management/training/',
+                editurl: '/apps/officeWork-management/officeWork/',
+                pid: pId,
+              },
+              {
+                order: 11,
+                title: 'Office Work Doc1',
+                url: '',
+                editurl: '/apps/officeWork-management/officeWork/',
+                pid: pId,
+              },
+              {
+                order: 12,
+                title: 'Office Work Doc2',
+                url: '',
+                editurl: '/apps/officeWork-management/officeWork/',
                 pid: pId,
               }
             )
@@ -710,81 +686,6 @@ function PassengerAllDetails() {
         });
 
       //embassy data
-
-      // axios
-      //   .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
-      //   .then((res) => {
-      //     if (
-      //       res.data?.visa_entry?.id &&
-      //       res.data?.mofa?.id &&
-      //       res.data?.embassy?.id
-      //     ) {
-      //       setImages((imgs) =>
-      //         imgs.concat(
-      //           {
-      //             order: 13,
-      //             title: 'Embassy Old Visa',
-      //             url: res.data.old_visa_image,
-      //             editurl: '/apps/embassy-management/embassy/',
-      //             pid: pId,
-      //           },
-      //           {
-      //             order: 14,
-      //             title: 'Embassy Stamp Visa',
-      //             url: res.data.stamp_visa_image,
-      //             editurl: '/apps/embassy-management/embassy/',
-      //             pid: pId,
-      //           }
-      //         )
-      //       );
-
-      //       setLoading(false);
-
-      //       const visa_entry = res.data?.visa_entry;
-      //       const mofa = res.data?.mofa;
-      //       const office_work = res.data?.officework;
-      //       const musanedokala = res.data?.musanedokala;
-      //       embassyData = {
-      //         ...res.data.embassy,
-      //         visa_number_readonly: visa_entry.visa_number,
-      //         sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-      //         sponsor_name_english_readonly: visa_entry.sponsor_name_english,
-      //         sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
-      //         mofa_no_readonly: mofa.mofa_no,
-      //         police_clearance_no_readonly: office_work.police_clearance_no,
-      //         oakala_no_readonly: musanedokala.okala_no,
-      //         driving_license_no_readonly: office_work.driving_license_no,
-      //         musaned_okala_no_readonly: musanedokala.musaned_no,
-      //         certificate_experience_no_readonly:
-      //           office_work.certificate_experience,
-      //       };
-      //     } else {
-      //       setImages((imgs) =>
-      //         imgs.concat(
-      //           {
-      //             order: 13,
-      //             title: 'Embassy Old Visa',
-      //             url: '',
-      //             editurl: '/apps/embassy-management/embassy/',
-      //             pid: pId,
-      //           },
-      //           {
-      //             order: 14,
-      //             title: 'Embassy Stamp Visa',
-      //             url: '',
-      //             editurl: '/apps/embassy-management/embassy/',
-      //             pid: pId,
-      //           }
-      //         )
-      //       );
-      //       embassyData.push({});
-      //     }
-
-      //     setEmbassy({ ...res.data });
-      //   })
-      //   .catch(() => {
-      //     setEmbassy({});
-      //   });
 
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
@@ -795,17 +696,17 @@ function PassengerAllDetails() {
           setImages((imgs) =>
             imgs.concat(
               {
-                order: 15,
-                title: 'Training Doc1',
-                url: '',
-                editurl: '/apps/training-management/training/',
+                order: 13,
+                title: 'Embassy Old Visa',
+                url: res.data.old_visa_image,
+                editurl: '/apps/embassy-management/embassy/',
                 pid: pId,
               },
               {
-                order: 16,
-                title: 'Training Certificate',
-                url: '',
-                editurl: '/apps/training-management/training/',
+                order: 14,
+                title: 'Embassy Stamp Visa',
+                url: res.data.stamp_visa_image,
+                editurl: '/apps/embassy-management/embassy/',
                 pid: pId,
               }
             )
@@ -873,7 +774,7 @@ function PassengerAllDetails() {
                 order: 17,
                 title: 'Manpower Smart Card',
                 url: res.data.smart_card_image,
-                editurl: '/apps/manPower-management/manPowers/',
+                editurl: '/apps/manPower-management/manPower/',
                 pid: pId,
               })
             );
@@ -893,7 +794,7 @@ function PassengerAllDetails() {
           setManPower({});
         });
 
-      //flight data
+      // flight data
 
       axios
         .get(`${FLIGHT_BY_PASSENGER_ID}${pId}`, authTOKEN)
@@ -924,7 +825,7 @@ function PassengerAllDetails() {
           );
           setFlight({});
         });
-    } else {
+      // } else {
       setPassenger({});
 
       setLoading(false);
