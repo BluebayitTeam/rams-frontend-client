@@ -317,7 +317,7 @@ function PassengerAllDetails() {
   const [calling, setCalling] = useState({});
 
   const [images, setImages] = useState([]);
-  console.log('images121', images);
+  console.log('calling', visaEntry);
   const [forms, setForms] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -449,7 +449,6 @@ function PassengerAllDetails() {
         .then((res) => {
           if (res?.data?.id) {
             setPassenger({ ...res.data });
-            console.log('images12125', res);
             setImages((imgs) =>
               imgs.concat({
                 order: 1,
@@ -521,10 +520,7 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          if (res?.data?.id) {
-            setVisaEntry({ ...res.data });
-            setLoading(false);
-          }
+          setVisaEntry({ ...res?.data?.visa_entry });
         })
         .catch(() => {
           setVisaEntry({});
@@ -535,7 +531,7 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          if (res?.data?.id) {
+          if (res?.data) {
             setMusanedOkala({ ...res.data.musanedokala });
             setImages((imgs) =>
               imgs.concat(
@@ -581,13 +577,11 @@ function PassengerAllDetails() {
         });
 
       //mfa data
+
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          if (res?.data?.id) {
-            setMofa({ ...res.data.mofa });
-            setLoading(false);
-          }
+          setMofa({ ...res?.data?.mofa });
         })
         .catch(() => {
           setMofa({});
@@ -596,7 +590,7 @@ function PassengerAllDetails() {
       //calling data
 
       axios
-        .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
+        .get(`${VISAENTRY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
           if (res?.data?.id) {
             setCalling({ ...res.data });
@@ -612,8 +606,9 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          if (res?.data?.id) {
+          if (res?.data) {
             setOfficeWork({ ...res.data.officework });
+            console.log('dsadsadsadsad', res?.data);
             setImages((imgs) =>
               imgs.concat(
                 {
@@ -825,7 +820,7 @@ function PassengerAllDetails() {
           );
           setFlight({});
         });
-      // } else {
+
       setPassenger({});
 
       setLoading(false);
