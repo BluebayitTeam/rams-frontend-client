@@ -162,7 +162,7 @@ function PassengerDeliverysTable(props) {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [pagination, setPagination] = useState(false);
-
+  const [getDate, setGetDate] = useState([]);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [inShowAllMode, setInShowAllMode] = useState(false);
   const [totalBalance, setTotalBalance] = useState({
@@ -333,11 +333,9 @@ function PassengerDeliverysTable(props) {
         .then(() => {
           UpdatedSuccessfully();
         })
-        .catch((error) => {
-          console.error('Error updating delivery:', error);
-        });
+        .catch((error) => {});
     } else {
-      createPassengerDelivery().then(() => {
+      createPassengerDelivery({ ...getValues() }).then(() => {
         AddedSuccessfully();
       });
     }
