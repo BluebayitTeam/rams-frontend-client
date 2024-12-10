@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Autocomplete, Button, Checkbox, FormControlLabel } from '@mui/material';
+import { Autocomplete, Box, Button, Checkbox, FormControlLabel, Icon, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { getAgencys, getAgents, getAirways, getBranches, getCountries, getCurrencies, getCurrentstatuses, getEmployees, getGDSs, getPassengers, getProfessions } from 'app/store/dataSlice';
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Controller, useForm, useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -15,6 +16,7 @@ import FileUpload from 'src/app/@components/FileUploader';
 import { ticketSalesTicketStatus } from 'src/app/@data/data';
 import { BASE_URL } from 'src/app/constant/constants';
 import { Schema } from 'zod';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const useStyles = makeStyles((theme) => ({
   hidden: {
@@ -32,7 +34,7 @@ function TicketeditForm(props) {
   const routeParams = useParams();
   const { ticketeditId } = routeParams;
   const classes = useStyles(props);
-const { control, formState, reset, watch, setValue } = useForm({
+const { control, formState, reset, watch, setValue, getValues } = useForm({
   mode: 'onChange',
   defaultValues: '',
   resolver: zodResolver(Schema),
@@ -68,7 +70,21 @@ const [MltTicketqty, setMltTicketqty] = useState(0);
 const [MltTicketNumber, setMltTicketNumber] = useState(0);
 const [SalesAmount, setSalesAmount] = useState(0);
 const [AirlineComissionAmount, setAirlineComissionAmount] = useState(0);
-const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
+  const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
+   const pcFile = watch('ticket_copy') || '';
+   const dlFile = watch('passport_copy') || '';
+
+
+   const [previewPCFile, setPreviewPCFile] = useState('');
+   const [previewDLFile, setPreviewDLFile] = useState('');
+   const [previewDoc2File, setPreviewDoc2File] = useState('');
+
+   const [fileExtPCName, setFileExtPCName] = useState('');
+   const [fileExtDLName, setFileExtDLName] = useState('');
+   const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
+
+   const [previewDoc1Image, setPreviewDoc1Image] = useState('');
+   const [fileExtDoc2Name, setFileExtDoc2Name] = useState('');
 	const { errors } = formState;
 
 	useEffect(() => {
@@ -191,6 +207,66 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
   }, [CustomerComissionAmounts]);
 
 
+
+
+  useEffect(() => {
+    setFileExtPCName('');
+    setFileExtDLName('');
+
+    setPreviewPCFile('');
+    setPreviewDLFile('');
+    setFileExtDoc1Name('');
+    setPreviewDoc1Image('');
+    // setpreviewDoc2Image('');
+  }, [getValues('employee')]);
+
+  // removed image
+  const handleRemovePCFile = () => {
+    setPreviewPCFile(null);
+
+    setFileExtPCName(null);
+
+    setValue('ticket_copy', '');
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    console.log('sfsdferwer', getValues());
+  };
+  const handleRemoveDLFile = () => {
+    setPreviewDLFile(null);
+    setFileExtDLName(null);
+    setValue('passport_copy', '');
+
+    if (fileInputdLRef.current) {
+      fileInputdLRef.current.value = '';
+    }
+
+    console.log('878787', getValues());
+  };
+  const handleRemoveDOC1File = () => {
+    setFileExtDoc1Name(null);
+    setPreviewDoc1Image(null);
+    setValue('image_doc_three', '');
+
+    if (fileInputdoc1Ref.current) {
+      fileInputdoc1Ref.current.value = '';
+    }
+
+    console.log('sfsdferwer', getValues());
+  };
+  const handleRemoveDOC2File = () => {
+    setFileExtDoc2Name(null);
+    setPreviewDoc2File(null);
+    setValue('image_doc_four', '');
+
+    if (fileInputdoc2Ref.current) {
+      fileInputdoc2Ref.current.value = '';
+    }
+
+    console.log('sfsdferwer', getValues());
+  };
 
 	
   return (
@@ -1254,28 +1330,492 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         </Button>
       </div>
       {/* <div id="mLtTicket"></div> */}
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <FileUpload
+      <div className='flex justify-start -mx-16 flex-col md:flex-row'>
+        <Controller
           name='ticket_copy'
-          className='mt-8 mb-16 w-full md:w-6/12'
-          label='Ticket'
           control={control}
-          setValue={setValue}
-          setFile={setFile}
-          file={file}
-          BASE_URL={BASE_URL}
-          classes={classes}
+          render={({ field: { onChange, value } }) => (
+            <div className='flex w-full flex-row items-center justify-center ml-16'>
+              <div className='flex-col'>
+                <Typography className='text-center'>File 1</Typography>
+                <label
+                  htmlFor='ticket_copy-button-file'
+                  className={clsx(
+                    classes.productImageUpload,
+                    'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+                  )}>
+                  <input
+                    accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    className='hidden'
+                    id='ticket_copy-button-file'
+                    type='file'
+                    onChange={async (e) => {
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        if (reader.readyState === 2) {
+                          setPreviewPCFile(reader.result);
+                        }
+                      };
+                      reader.readAsDataURL(e.target.files[0]);
+
+                      const file = e.target.files[0];
+
+                      if (file) {
+                        const fileExtension = file.name
+                          .split('.')
+                          .pop()
+                          .toLowerCase();
+                        setFileExtPCName(fileExtension);
+                        onChange(file);
+                      }
+
+                      // Force reset the input value to allow re-uploading the same file
+                      e.target.value = '';
+                    }}
+                  />
+                  <Icon fontSize='large' color='action'>
+                    cloud_upload
+                  </Icon>
+                </label>
+              </div>
+              {!previewPCFile && pcFile && (
+                <div
+                  style={{
+                    display: 'flex',
+                    position: 'relative',
+                    width: 'fit-content',
+                  }}>
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      right: '0',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      backgroundColor: 'white',
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <HighlightOffIcon onClick={handleRemovePCFile} />
+                  </div>
+                  <div
+                    style={{
+                      width: 'auto',
+                      height: '150px',
+                      overflow: 'hidden',
+                      display: 'flex',
+                    }}>
+                    {typeof pcFile === 'string' &&
+                    ['pdf', 'doc', 'docx'].includes(
+                      pcFile.split('.').pop().toLowerCase()
+                    ) ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '100%',
+                        }}>
+                        {pcFile.toLowerCase().includes('pdf') ? (
+                          <PictureAsPdf
+                            style={{
+                              color: 'red',
+                              cursor: 'pointer',
+                              display: 'block',
+                              fontSize: '137px',
+                              margin: 'auto',
+                            }}
+                            onClick={() => window.open(`${BASE_URL}${pcFile}`)}
+                          />
+                        ) : (
+                          <DescriptionIcon
+                            style={{
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'block',
+                              fontSize: '137px',
+                              margin: 'auto',
+                            }}
+                            onClick={() => window.open(`${BASE_URL}${pcFile}`)}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <img
+                        src={`${BASE_URL}${pcFile}`}
+                        style={{ height: '100px' }}
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {previewPCFile ? (
+                <div
+                  style={{
+                    width: 'auto',
+                    height: '150px',
+                    overflow: 'hidden',
+                  }}>
+                  {fileExtPCName &&
+                  ['pdf', 'doc', 'docx'].includes(fileExtPCName) ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        position: 'relative',
+                        width: 'fit-content',
+                      }}>
+                      <div
+                        id='cancelIcon'
+                        style={{
+                          position: 'absolute',
+                          top: '0',
+                          right: '0',
+                          zIndex: 1,
+                          color: 'red',
+                          cursor: 'pointer',
+                          backgroundColor: 'white',
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <HighlightOffIcon onClick={handleRemovePCFile} />
+                      </div>
+                      {fileExtPCName === 'pdf' ? (
+                        <iframe
+                          src={previewPCFile}
+                          frameBorder='0'
+                          scrolling='auto'
+                          height='150px'
+                          width='150px'
+                        />
+                      ) : (
+                        <DescriptionIcon
+                          style={{
+                            color: 'blue',
+                            cursor: 'pointer',
+                            display: 'block',
+                            fontSize: '137px',
+                            margin: 'auto',
+                          }}
+                          onClick={() => window.open(previewPCFile)}
+                        />
+                      )}
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        display: 'flex',
+                        position: 'relative',
+                        width: 'fit-content',
+                      }}>
+                      <div
+                        id='cancelIcon'
+                        style={{
+                          position: 'absolute',
+                          top: '0',
+                          right: '0',
+                          zIndex: 1,
+                          color: 'red',
+                          cursor: 'pointer',
+                          backgroundColor: 'white',
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <HighlightOffIcon onClick={handleRemovePCFile} />
+                      </div>
+                      <img
+                        src={previewPCFile}
+                        style={{ height: '140px', width: '150px' }}
+                      />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                !pcFile && (
+                  <Box
+                    height={180}
+                    width={180}
+                    my={4}
+                    display='flex'
+                    alignItems='center'
+                    gap={4}
+                    p={2}
+                    style={{
+                      width: '150px',
+                      height: '70px',
+                      border: '1px solid red',
+                    }}
+                    className={clsx(
+                      classes.productImageUpload,
+                      'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+                    )}>
+                    <Typography className='text-sm font-700'>
+                      <span className='mr-4 text-xs text-red-500'>
+                        Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
+                      </span>
+                    </Typography>
+                  </Box>
+                )
+              )}
+            </div>
+          )}
         />
-        <FileUpload
+        <Controller
           name='passport_copy'
-          label='Passport'
-          className='mt-8 mb-16 w-full md:w-6/12'
           control={control}
-          setValue={setValue}
-          setFile={setFile}
-          file={file}
-          BASE_URL={BASE_URL}
-          classes={classes}
+          render={({ field: { onChange, value } }) => (
+            <div className='flex w-full flex-row items-center justify-center ml-16'>
+              <div className='flex-col'>
+                <Typography className='text-center'>File 2</Typography>
+                <label
+                  htmlFor='passport_copy-button-file'
+                  className={clsx(
+                    classes.productImageUpload,
+                    'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+                  )}>
+                  <input
+                    accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    className='hidden'
+                    id='passport_copy-button-file'
+                    type='file'
+                    onChange={async (e) => {
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        if (reader.readyState === 2) {
+                          setPreviewDLFile(reader.result);
+                        }
+                      };
+                      reader.readAsDataURL(e.target.files[0]);
+
+                      const file = e.target.files[0];
+
+                      if (file) {
+                        const fileExtension = file.name
+                          .split('.')
+                          .pop()
+                          .toLowerCase();
+                        setFileExtDLName(fileExtension);
+                        onChange(file);
+                      }
+
+                      // Force reset the input value to allow re-uploading the same file
+                      e.target.value = '';
+                    }}
+                  />
+                  <Icon fontSize='large' color='action'>
+                    cloud_upload
+                  </Icon>
+                </label>
+              </div>
+              {!previewDLFile && dlFile && (
+                <div
+                  style={{
+                    display: 'flex',
+                    position: 'relative',
+                    width: 'fit-content',
+                  }}>
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      right: '0',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      backgroundColor: 'white',
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <HighlightOffIcon onClick={handleRemoveDLFile} />
+                  </div>
+                  <div
+                    style={{
+                      width: 'auto',
+                      height: '150px',
+                      overflow: 'hidden',
+                      display: 'flex',
+                    }}>
+                    {typeof dlFile === 'string' &&
+                    ['pdf', 'doc', 'docx'].includes(
+                      dlFile.split('.').pop().toLowerCase()
+                    ) ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '100%',
+                        }}>
+                        {dlFile.toLowerCase().includes('pdf') ? (
+                          <PictureAsPdf
+                            style={{
+                              color: 'red',
+                              cursor: 'pointer',
+                              display: 'block',
+                              fontSize: '137px',
+                              margin: 'auto',
+                            }}
+                            onClick={() => window.open(`${BASE_URL}${dlFile}`)}
+                          />
+                        ) : (
+                          <DescriptionIcon
+                            style={{
+                              color: 'blue',
+                              cursor: 'pointer',
+                              display: 'block',
+                              fontSize: '137px',
+                              margin: 'auto',
+                            }}
+                            onClick={() => window.open(`${BASE_URL}${dlFile}`)}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <img
+                        src={`${BASE_URL}${dlFile}`}
+                        style={{ height: '100px' }}
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {previewDLFile ? (
+                <div
+                  style={{
+                    width: 'auto',
+                    height: '150px',
+                    overflow: 'hidden',
+                  }}>
+                  {fileExtDLName &&
+                  ['pdf', 'doc', 'docx'].includes(fileExtDLName) ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        position: 'relative',
+                        width: 'fit-content',
+                      }}>
+                      <div
+                        id='cancelIcon'
+                        style={{
+                          position: 'absolute',
+                          top: '0',
+                          right: '0',
+                          zIndex: 1,
+                          color: 'red',
+                          cursor: 'pointer',
+                          backgroundColor: 'white',
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <HighlightOffIcon onClick={handleRemoveDLFile} />
+                      </div>
+                      {fileExtDLName === 'pdf' ? (
+                        <iframe
+                          src={previewDLFile}
+                          frameBorder='0'
+                          scrolling='auto'
+                          height='150px'
+                          width='150px'
+                        />
+                      ) : (
+                        <DescriptionIcon
+                          style={{
+                            color: 'blue',
+                            cursor: 'pointer',
+                            display: 'block',
+                            fontSize: '137px',
+                            margin: 'auto',
+                          }}
+                          onClick={() => window.open(previewDLFile)}
+                        />
+                      )}
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        display: 'flex',
+                        position: 'relative',
+                        width: 'fit-content',
+                      }}>
+                      <div
+                        id='cancelIcon'
+                        style={{
+                          position: 'absolute',
+                          top: '0',
+                          right: '0',
+                          zIndex: 1,
+                          color: 'red',
+                          cursor: 'pointer',
+                          backgroundColor: 'white',
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <HighlightOffIcon onClick={handleRemoveDLFile} />
+                      </div>
+                      <img
+                        src={previewDLFile}
+                        style={{ height: '140px', width: '150px' }}
+                      />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                !dlFile && (
+                  <Box
+                    height={180}
+                    width={180}
+                    my={4}
+                    display='flex'
+                    alignItems='center'
+                    gap={4}
+                    p={2}
+                    style={{
+                      width: '150px',
+                      height: '70px',
+                      border: '1px solid red',
+                    }}
+                    className={clsx(
+                      classes.productImageUpload,
+                      'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
+                    )}>
+                    <Typography className='text-sm font-700'>
+                      <span className='mr-4 text-xs text-red-500'>
+                        Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
+                      </span>
+                    </Typography>
+                  </Box>
+                )
+              )}
+            </div>
+          )}
         />
       </div>
     </div>
