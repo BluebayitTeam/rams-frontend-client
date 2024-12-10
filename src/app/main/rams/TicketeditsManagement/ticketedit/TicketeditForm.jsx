@@ -215,8 +215,8 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         }}
       />
 
-         <div className='flex md:space-x-12 flex-col md:flex-row'>
-       <Controller
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
+        <Controller
           name='branch'
           control={control}
           render={({ field: { onChange, value, name } }) => (
@@ -284,8 +284,8 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           )}
         />
       </div>
-     <div className='flex md:space-x-12 flex-col md:flex-row'>
-         <Controller
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
+        <Controller
           name='ticket_agency'
           control={control}
           render={({ field: { onChange, value, name } }) => (
@@ -353,7 +353,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         />
       </div>
 
-       <div className='flex md:space-x-12 flex-col md:flex-row'>
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='passenger'
           control={control}
@@ -414,19 +414,21 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
       </div>
 
       <div className='flex md:space-x-12 flex-col md:flex-row'>
-       <FormControlLabel
+        <FormControlLabel
           control={<Checkbox checked={checked} onChange={handleChange} />}
           label='Other'
           className='mt-8 mb-16 w-full md:w-6/12'
         />
         <FormControlLabel
-					control={<Checkbox Mltchecked={Mltchecked} onChange={handleChange2} />}
-					label="Mult TKT NO"
-					className="mt-8 mb-16 w-full md:w-6/12"
-				/>
+          control={
+            <Checkbox Mltchecked={Mltchecked} onChange={handleChange2} />
+          }
+          label='Mult TKT NO'
+          className='mt-8 mb-16 w-full md:w-6/12'
+        />
       </div>
       <div className='flex md:space-x-12 flex-col md:flex-row'>
-         <Controller
+        <Controller
           name='current_airway'
           control={control}
           render={({ field: { onChange, value, name } }) => (
@@ -479,7 +481,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-        <div
+      <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: Mltchecked ? 'none' : '',
@@ -537,38 +539,24 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         />
       </div>
 
-       {/* <div className='flex md:space-x-12 flex-col md:flex-row'>
-         <Controller
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
+        <CustomDatePicker
           name='flight_date'
-          control={control}
-          render={({ field }) => (
-            <CustomDatePicker
-              field={field}
-              checked={false}
-              Mltchecked={false}
-              label='Flight Date'
-              className='mt-8 mb-16 w-full md:w-6/12'
-              // required
-            />
-          )}
+          label='Flight Date'
+          className='mt-8 mb-16 w-full md:w-6/12'
+          placeholder='DD-MM-YYYY'
         />
 
-        <Controller
+        <CustomDatePicker
           name='issue_date'
-          control={control}
-          render={({ field }) => (
-            <CustomDatePicker
-              field={field}
-              label='Issue Date'
-              className='mt-8 mb-16 w-full md:w-6/12'
-              // required
-            />
-          )}
+          label='Issue Date'
+          className='mt-8 mb-16 w-full md:w-6/12'
+          placeholder='DD-MM-YYYY'
         />
-      </div> */}
+      </div>
 
-    <div className='flex md:space-x-12 flex-col md:flex-row'>
-     <Controller
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
+        <Controller
           name='_class'
           control={control}
           render={({ field }) => {
@@ -610,7 +598,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         />
       </div>
 
-   <div className='flex md:space-x-12 flex-col md:flex-row'>
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='flight_time'
           control={control}
@@ -653,16 +641,15 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
-    <div className='flex md:space-x-12 flex-col md:flex-row'>
-         <Controller
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
+        <Controller
           name='airline_pnr'
           control={control}
           render={({ field }) => {
             return (
               <TextField
                 {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
+               
                 error={!!errors.airline_pnr}
                 helperText={errors?.airline_pnr?.message}
                 label='Airline PNR'
@@ -675,21 +662,16 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
             );
           }}
         />
-        {/* <Controller
+
+        <CustomDatePicker
           name='return_flight_date'
-          control={control}
-          render={({ field }) => (
-            <CustomDatePicker
-              field={field}
-              label='Return Flight Date'
-              className='mt-8 mb-16 w-full md:w-6/12'
-              // required
-            />
-          )}
-        /> */}
+          label='return flight date'
+        
+          placeholder='DD-MM-YYYY'
+        />
       </div>
 
-     <div
+      <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: checked ? '' : 'none',
@@ -746,7 +728,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         />
       </div>
 
-       <div
+      <div
         className='flex md:space-x-12 flex-col md:flex-row '
         style={{
           display: checked ? 'none' : '',
@@ -871,7 +853,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-     <div
+      <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: checked ? 'none' : '',
@@ -1047,7 +1029,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         />
       </div>
 
-        <div
+      <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: checked ? 'none' : '',
@@ -1207,7 +1189,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         />
       </div>
 
-        <div
+      <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: Mltchecked ? '' : 'none',
@@ -1289,40 +1271,7 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
       </div>
     </div>
 
-
-    
     // <div>
-   
-
-   
-
- 
-
-   
-
-  
-
-    
-
-  
-
-   
-
-   
-
-   
-
-    
-
-    
-
-    
-
-    
-
-   
-
-   
 
     //   {/* <div id="mLtTicket"></div> */}
 
