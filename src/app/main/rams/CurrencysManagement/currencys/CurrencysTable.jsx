@@ -170,23 +170,24 @@ function CurrencysTable(props) {
   }
 
   return (
-	   <div className='w-full flex flex-col min-h-full px-10'>
-		        <div className='grow overflow-x-auto overflow-y-auto'>
-
-      <FuseScrollbars className='grow overflow-x-auto'>
-        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-          <CurrencysTableHead
-            selectedCurrencyIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={currencys.length}
-            onMenuItemClick={handleDeselect}
-          />
-
-          <TableBody>
-            {_.orderBy(currencys, [tableOrder.id], [tableOrder.direction]).map(
-              (n) => {
+    <div className='w-full flex flex-col min-h-full px-10'>
+      <div className='grow overflow-x-auto overflow-y-auto'>
+        <FuseScrollbars className='grow overflow-x-auto'>
+          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+            <CurrencysTableHead
+              selectedCurrencyIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={currencys.length}
+              onMenuItemClick={handleDeselect}
+            />
+            <TableBody>
+              {_.orderBy(
+                currencys,
+                [tableOrder.id],
+                [tableOrder.direction]
+              ).map((n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
@@ -264,14 +265,13 @@ function CurrencysTable(props) {
                     </TableCell>
                   </TableRow>
                 );
-              }
-            )}
-          </TableBody>
-        </Table>
-			  </FuseScrollbars>
-			  </div>
+              })}
+            </TableBody>
+          </Table>
+        </FuseScrollbars>
+      </div>
 
-       <div className={classes.root} id='pagiContainer'>
+      <div className={classes.root} id='pagiContainer'>
         <Pagination
           // classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
