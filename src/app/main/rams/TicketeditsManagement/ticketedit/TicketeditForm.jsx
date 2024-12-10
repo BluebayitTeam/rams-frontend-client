@@ -1,29 +1,74 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Autocomplete, Button, Checkbox, FormControlLabel } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getAgencys, getAgents, getAirways, getBranches, getEmployees, getGDSs, getPassengers, getProfessions } from 'app/store/dataSlice';
-import { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { makeStyles } from '@mui/styles';
+import { getAgencys, getAgents, getAirways, getBranches, getCountries, getCurrencies, getCurrentstatuses, getEmployees, getGDSs, getPassengers, getProfessions } from 'app/store/dataSlice';
+import { useEffect, useState } from 'react';
+import { Controller, useForm, useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import CustomDropdownField from 'src/app/@components/CustomDropdownField';
 import CustomTextField from 'src/app/@components/CustomTextField';
+import FileUpload from 'src/app/@components/FileUploader';
+import { ticketSalesTicketStatus } from 'src/app/@data/data';
+import { BASE_URL } from 'src/app/constant/constants';
+import { Schema } from 'zod';
+
+const useStyles = makeStyles((theme) => ({
+  hidden: {
+    display: 'none',
+  },
+  productImageUpload: {
+    transitionProperty: 'box-shadow',
+    transitionDuration: theme.transitions.duration.short,
+    transitionTimingFunction: theme.transitions.easing.easeInOut,
+  },
+}));
 
 function TicketeditForm(props) {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const routeParams = useParams();
+  const { ticketeditId } = routeParams;
+  const classes = useStyles(props);
+const { control, formState, reset, watch, setValue } = useForm({
+  mode: 'onChange',
+  defaultValues: '',
+  resolver: zodResolver(Schema),
+});
 	const methods = useFormContext();
-	const { control, formState, watch } = methods;
-		const passengers = useSelector((state) => state.data.passengers);
-    const professions = useSelector((state) => state.data.professions);
-    const countries = useSelector((state) => state.data.countries);
-    const branches = useSelector((state) => state.data.branches);
+	const passengers = useSelector((state) => state.data.passengers);
+  const professions = useSelector((state) => state.data.professions);
+  const countries = useSelector((state) => state.data.countries);
+    
+  const branches = useSelector((state) => state.data.branches);
     const agencys = useSelector((state) => state.data.agents);
     const GDSs = useSelector((state) => state.data.gdss);
+	const userID = localStorage.getItem('user_id');
+	const [file, setFile] = useState(null);
+	const [file2, setFile2] = useState(null);
 
     const employees = useSelector((state) => state.data.employees);
     const airways = useSelector((state) => state.data.airways);
     const currencies = useSelector((state) => state.data.currencies);
     const currentstatuses = useSelector((state) => state.data.currentstatuses);
-    const visaAgents = useSelector((state) => state.data.agents);
+  const visaAgents = useSelector((state) => state.data.agents);
+  	const [checked, setChecked] = useState(false);
+	const [Mltchecked, setMltChecked] = useState(false);
+const [ticketfare, setTicketfare] = useState(0);
+const [taxAmount, setTaxAmount] = useState(0);
+const [airlineCommisionRate, setAirlineCommisionRate] = useState(0);
+const [purchaseAmount, setPurchaseAmount] = useState(0);
+const [ServiceCharge, setServiceCharge] = useState(0);
+const [govtVatrate, setgovtVatrate] = useState(0);
+const [CustomerComission, setCustomerComission] = useState(0);
+const [CustomerAmount, setCustomerAmount] = useState(0);
+const [MltTicketqty, setMltTicketqty] = useState(0);
+const [MltTicketNumber, setMltTicketNumber] = useState(0);
+const [SalesAmount, setSalesAmount] = useState(0);
+const [AirlineComissionAmount, setAirlineComissionAmount] = useState(0);
+const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
 	const { errors } = formState;
 
 	useEffect(() => {
@@ -40,7 +85,115 @@ function TicketeditForm(props) {
     dispatch(getCurrencies());
     dispatch(getCurrentstatuses());
   }, []);
-	return (
+  const createMLTticketTable = (e) => {
+    let output =
+      '<table style="border:1px solid black"><thead> <tr> <th style="border:1px solid black">Ticket No </th border: "1px solid black"> <th style="border:1px solid black">PAX </th> <th style="border:1px solid black">Passport No </th></tr></thead> <tbody> ';
+    let row = parseInt(MltTicketqty);
+    let totalTicket = parseInt(MltTicketNumber);
+    let col = 3;
+    for (let i = MltTicketNumber; i < row + totalTicket; i++) {
+      output =
+        output +
+        '<tr> <td style="border:1px solid black"> <input type="number" placeholder="Ticket no." name="ticket_no" value={{i}}> </td>  <td style="border:1px solid black"> <input type="text" placeholder="Passenger Name" name="pax_name"> </td>  <td style="border:1px solid black"> <input type="number" name="passport_no" placeholder="Passport No."> </td> </tr>';
+    }
+    output = output + '</tbody></table>';
+
+    document.getElementById('mLtTicket').innerHTML = output;
+  };
+  const handleSubmitOnKeyDownEnter = (ev) => {
+    if (ev.key === 'Enter') {
+      if (
+        routeParams.ticketeditId === 'new' &&
+        !(_.isEmpty(dirtyFields) || !isValid)
+      ) {
+        handleSaveTicketedit();
+      } else if (handleDelete !== 'Delete' && routeParams?.ticketeditName) {
+        handleUpdateTicketedit();
+      }
+    }
+  };
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+  const handleChange2 = (event) => {
+    setMltChecked(event.target.checked);
+  };
+  const handleMltTicketqty = (event) => {
+    setMltTicketqty(event.target.value);
+  };
+  const handleMltTicketNumber = (event) => {
+    setMltTicketNumber(event.target.value);
+  };
+
+  const handleAirlineCommisionRate = (e) => {
+    setAirlineCommisionRate(e.target.value);
+  };
+
+  const handleTaxAmount = (e) => {
+    setTaxAmount(e.target.value);
+  };
+  const handleTicketFareAmount = (e) => {
+    setTicketfare(e.target.value);
+  };
+  const handleCustomerComission = (e) => {
+    setCustomerComission(e.target.value);
+  };
+  const handlegovtVatrate = (e) => {
+    setgovtVatrate(e.target.value);
+  };
+  const handleServiceCharge = (e) => {
+    setServiceCharge(e.target.value);
+  };
+
+  const handleAirlineComissionAmount = (e) => {
+    setAirlineComissionAmount(e.target.value);
+  };
+  const handleCustomerComissionAmount = (e) => {
+    setCustomerComissionAmount(e.target.value);
+  };
+
+  const purchase_amount = parseFloat(
+    parseFloat(ticketfare) +
+      parseFloat(taxAmount) -
+      (parseFloat(ticketfare) + parseFloat(taxAmount)) *
+        parseFloat(parseFloat(airlineCommisionRate) / 100)
+  );
+
+  const Customer_Amount = parseFloat(
+    parseFloat(ticketfare) +
+      parseFloat(taxAmount) +
+      parseFloat(govtVatrate) +
+      parseFloat(ServiceCharge) -
+      (parseFloat(ticketfare) + parseFloat(taxAmount)) *
+        parseFloat(parseFloat(CustomerComission) / 100)
+  );
+
+  const AirlineComissionAmounts =
+    (parseFloat(ticketfare) + parseFloat(taxAmount)) *
+    parseFloat(parseFloat(airlineCommisionRate) / 100);
+  const CustomerComissionAmounts =
+    (parseFloat(ticketfare) + parseFloat(taxAmount)) *
+    parseFloat(parseFloat(CustomerComission) / 100);
+
+  useEffect(() => {
+    setValue('sales_amount', Customer_Amount);
+  }, [Customer_Amount]);
+
+  useEffect(() => {
+    setValue('purchase_amount', purchase_amount);
+  }, [purchase_amount]);
+  useEffect(() => {
+    setValue('airline_commission_amount', AirlineComissionAmounts);
+  }, [AirlineComissionAmounts]);
+  useEffect(() => {
+    setValue('customer_commission_amount', CustomerComissionAmounts);
+  }, [CustomerComissionAmounts]);
+
+
+
+	
+  return (
     <div>
       <Controller
         name={ticketeditId === 'new' ? 'created_by' : 'updated_by'}
@@ -62,8 +215,8 @@ function TicketeditForm(props) {
         }}
       />
 
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
+         <div className='flex md:space-x-12 flex-col md:flex-row'>
+       <Controller
           name='branch'
           control={control}
           render={({ field: { onChange, value, name } }) => (
@@ -131,9 +284,8 @@ function TicketeditForm(props) {
           )}
         />
       </div>
-
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
+     <div className='flex md:space-x-12 flex-col md:flex-row'>
+         <Controller
           name='ticket_agency'
           control={control}
           render={({ field: { onChange, value, name } }) => (
@@ -201,7 +353,7 @@ function TicketeditForm(props) {
         />
       </div>
 
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
+       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='passenger'
           control={control}
@@ -262,20 +414,19 @@ function TicketeditForm(props) {
       </div>
 
       <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <FormControlLabel
+       <FormControlLabel
           control={<Checkbox checked={checked} onChange={handleChange} />}
           label='Other'
           className='mt-8 mb-16 w-full md:w-6/12'
         />
-        {/* <FormControlLabel
+        <FormControlLabel
 					control={<Checkbox Mltchecked={Mltchecked} onChange={handleChange2} />}
 					label="Mult TKT NO"
 					className="mt-8 mb-16 w-full md:w-6/12"
-				/> */}
+				/>
       </div>
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
+         <Controller
           name='current_airway'
           control={control}
           render={({ field: { onChange, value, name } }) => (
@@ -328,8 +479,7 @@ function TicketeditForm(props) {
           }}
         />
       </div>
-
-      <div
+        <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: Mltchecked ? 'none' : '',
@@ -387,8 +537,8 @@ function TicketeditForm(props) {
         />
       </div>
 
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
+       {/* <div className='flex md:space-x-12 flex-col md:flex-row'>
+         <Controller
           name='flight_date'
           control={control}
           render={({ field }) => (
@@ -415,10 +565,10 @@ function TicketeditForm(props) {
             />
           )}
         />
-      </div>
+      </div> */}
 
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
+    <div className='flex md:space-x-12 flex-col md:flex-row'>
+     <Controller
           name='_class'
           control={control}
           render={({ field }) => {
@@ -460,7 +610,7 @@ function TicketeditForm(props) {
         />
       </div>
 
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
+   <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='flight_time'
           control={control}
@@ -504,8 +654,8 @@ function TicketeditForm(props) {
         />
       </div>
 
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
+    <div className='flex md:space-x-12 flex-col md:flex-row'>
+         <Controller
           name='airline_pnr'
           control={control}
           render={({ field }) => {
@@ -525,7 +675,7 @@ function TicketeditForm(props) {
             );
           }}
         />
-        <Controller
+        {/* <Controller
           name='return_flight_date'
           control={control}
           render={({ field }) => (
@@ -536,10 +686,10 @@ function TicketeditForm(props) {
               // required
             />
           )}
-        />
+        /> */}
       </div>
 
-      <div
+     <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: checked ? '' : 'none',
@@ -596,7 +746,7 @@ function TicketeditForm(props) {
         />
       </div>
 
-      <div
+       <div
         className='flex md:space-x-12 flex-col md:flex-row '
         style={{
           display: checked ? 'none' : '',
@@ -721,8 +871,7 @@ function TicketeditForm(props) {
           }}
         />
       </div>
-
-      <div
+     <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: checked ? 'none' : '',
@@ -898,7 +1047,7 @@ function TicketeditForm(props) {
         />
       </div>
 
-      <div
+        <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: checked ? 'none' : '',
@@ -1058,7 +1207,7 @@ function TicketeditForm(props) {
         />
       </div>
 
-      <div
+        <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
           display: Mltchecked ? '' : 'none',
@@ -1138,23 +1287,59 @@ function TicketeditForm(props) {
           Create
         </Button>
       </div>
-
-      {/* <div id="mLtTicket"></div> */}
-
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <File
-          name='ticket_copy'
-          label='Ticket'
-          className='mt-8 mb-16 w-full md:w-6/12'
-        />
-        <br />
-        <File
-          name='passport_copy'
-          label='Passport'
-          className='mt-8 mb-16 w-full md:w-6/12'
-        />
-      </div>
     </div>
+
+
+    
+    // <div>
+   
+
+   
+
+ 
+
+   
+
+  
+
+    
+
+  
+
+   
+
+   
+
+   
+
+    
+
+    
+
+    
+
+    
+
+   
+
+   
+
+    //   {/* <div id="mLtTicket"></div> */}
+
+    //   {/* <div className='flex md:space-x-12 flex-col md:flex-row'>
+    //     <File
+    //       name='ticket_copy'
+    //       label='Ticket'
+    //       className='mt-8 mb-16 w-full md:w-6/12'
+    //     />
+    //     <br />
+    //     <File
+    //       name='passport_copy'
+    //       label='Passport'
+    //       className='mt-8 mb-16 w-full md:w-6/12'
+    //     />
+    //   </div> */}
+    // </div>
   );
 }
 

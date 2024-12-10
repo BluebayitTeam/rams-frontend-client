@@ -61,6 +61,7 @@ function AgentForm(props) {
 			setFile(`${BASE_URL}/${currentImage}`);
 		}
 	}, [agentId, watch('image')]);
+	
 	const handleChnageCountry = (selectedCountry) => {
 		const countryID = countries.find((data) => data.name === selectedCountry)?.id;
 		setValue('country', countryID);
