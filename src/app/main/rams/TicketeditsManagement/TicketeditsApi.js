@@ -5,9 +5,11 @@ import {
 	CREATE_TICKETDEPUTE,
 	DELETE_TICKETDEPUTE,
 	DELETE_TICKETDEPUTE_MULTIPLE,
+	DELETE_TICKETEDIT,
 	GET_TICKETDEPUTES,
 	GET_TICKETDEPUTE_BY_ID,
 	GET_TICKETEDITS,
+	GET_TICKETEDIT_BY_ID,
 	UPDATE_TICKETDEPUTE,
   UPDATE_TICKETEDIT
 } from 'src/app/constant/constants';
@@ -39,7 +41,7 @@ const TicketeditApi = api
       }),
       getTicketedit: build.query({
         query: (ticketeditId) => ({
-          url: `${GET_TICKETDEPUTE_BY_ID}${ticketeditId}`,
+          url: `${GET_TICKETEDIT_BY_ID}${ticketeditId}`,
         }),
         providesTags: ['ticketedits'],
       }),
@@ -61,7 +63,7 @@ const TicketeditApi = api
       }),
       deleteTicketedit: build.mutation({
         query: (ticketeditId) => ({
-          url: `${DELETE_TICKETDEPUTE}${ticketeditId}`,
+          url: `${DELETE_TICKETEDIT}${ticketeditId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['ticketedits'],
