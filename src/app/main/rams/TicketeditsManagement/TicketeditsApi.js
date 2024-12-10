@@ -8,7 +8,8 @@ import {
 	GET_TICKETDEPUTES,
 	GET_TICKETDEPUTE_BY_ID,
 	GET_TICKETEDITS,
-	UPDATE_TICKETDEPUTE
+	UPDATE_TICKETDEPUTE,
+  UPDATE_TICKETEDIT
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
@@ -52,7 +53,7 @@ const TicketeditApi = api
       }),
       updateTicketedit: build.mutation({
         query: (ticketedit) => ({
-          url: `${UPDATE_TICKETDEPUTE}${ticketedit.id}`,
+          url: `${UPDATE_TICKETEDIT}${ticketedit.id}`,
           method: 'PUT',
           data: jsonToFormData(ticketedit),
         }),

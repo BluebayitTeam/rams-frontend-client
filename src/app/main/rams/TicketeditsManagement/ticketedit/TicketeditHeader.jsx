@@ -33,7 +33,7 @@ function TicketDeputeHeader() {
 	function handleUpdateTicketDepute() {
 		saveTicketDepute(getValues()).then((data) => {
 			UpdatedSuccessfully();
-			navigate(`/apps/ticketDepute/ticketDeputes`);
+			navigate(`/apps/ticketedit/ticketedits`);
 		});
 	}
 
@@ -43,19 +43,19 @@ function TicketDeputeHeader() {
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/ticketDepute/ticketDeputes`);
+				navigate(`/apps/ticketedit/ticketedits`);
 			});
 	}
 
 	function handleRemoveTicketDepute(dispatch) {
 		removeTicketDepute(ticketDeputeId);
 		DeletedSuccessfully();
-		navigate('/apps/ticketDepute/ticketDeputes');
+		navigate('/apps/ticketedit/ticketedits');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/ticketDepute/ticketDeputes`);
+		navigate(`/apps/ticketedit/ticketedits`);
 	}
 
 	return (
@@ -68,7 +68,7 @@ function TicketDeputeHeader() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/apps/ticketDepute/ticketDeputes'
+            to='/apps/ticketedit/ticketedits'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'
