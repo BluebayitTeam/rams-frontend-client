@@ -154,7 +154,6 @@ function PassengerLedgerReportsTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
 
   const navigate = useNavigate();
-  console.log('totalDbAmount', totalDbAmount);
 
   const componentRef = useRef(null);
 
@@ -378,6 +377,7 @@ function PassengerLedgerReportsTable(props) {
   const PassengerDeliveryDate =
     paginatedData?.passenger_delivery?.delivery_date;
   const PassengerDeliveryDateID = paginatedData?.passenger_delivery?.id;
+  const passengerSelected = getValues()?.passenger;
 
   const [updatePassengerLedger] = useUpdatePassengerLedgerReportMutation();
   const [createPassengerLedger] = useCreatePassengerLedgerReportMutation();
@@ -491,76 +491,74 @@ function PassengerLedgerReportsTable(props) {
       </table>
 
       {/* Passenger Bill Details Report  */}
-
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <div id='downloadPage'>
-          {/* each single page (table) */}
-
-          {modifiedPassengerLedgerBillDetailData.map((sales, index) => (
-            <SinglePage2
-              classes={classes}
-              reportTitle='Bill Details'
-              tableColumns={billDetailstableColumns}
-              dispatchTableColumns={dispatchBillDetailsTableColumns}
-              data={{
-                ...sales,
-                data: [
-                  ...sales?.data,
-                  {
-                    debit_amount: totalSl,
-
-                    details: 'Total Balance',
-
-                    hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 },
-                  },
-                ],
-              }}
-              serialNumber={sales.page * sales.size - sales.size + 1}
-              setPage={setPage}
-              inSiglePageMode={inSiglePageMode}
-            />
-          ))}
-        </div>
-      </table>
-
+      {modifiedPassengerLedgerBillDetailData.length > 0 ? (
+        <table
+          id='table-to-xls'
+          className='w-full'
+          style={{ minHeight: '270px' }}>
+          <div id='downloadPage'>
+            {/* each single page (table) */}
+            {modifiedPassengerLedgerBillDetailData.map((sales, index) => (
+              <SinglePage2
+                key={index} // Adding a key for proper list rendering
+                classes={classes}
+                reportTitle='Bill Details'
+                tableColumns={billDetailstableColumns}
+                dispatchTableColumns={dispatchBillDetailsTableColumns}
+                data={{
+                  ...sales,
+                  data: [
+                    ...sales?.data,
+                    {
+                      debit_amount: totalSl,
+                      details: 'Total Balance',
+                      hideSerialNo: true,
+                      rowStyle: { fontWeight: 600 },
+                    },
+                  ],
+                }}
+                serialNumber={sales.page * sales.size - sales.size + 1}
+                setPage={setPage}
+                inSiglePageMode={inSiglePageMode}
+              />
+            ))}
+          </div>
+        </table>
+      ) : null}
       {/* Passenger Cost Details Report  */}
-
-      <table
-        id='table-to-xls'
-        className='w-full'
-        style={{ minHeight: '270px' }}>
-        <div id='downloadPage'>
-          {/* each single page (table) */}
-
-          {modifiedPassengerLedgerCostDetailData.map((cost) => (
-            <SinglePage2
-              classes={classes}
-              reportTitle='Cost Details'
-              tableColumns={costDetailstableColumns}
-              dispatchTableColumns={dispatchCostDetailsTableColumns}
-              data={{
-                ...cost,
-                data: [
-                  ...cost?.data,
-                  {
-                    credit_amount: totalCost,
-                    details: 'Total Balance',
-                    hideSerialNo: true,
-                    rowStyle: { fontWeight: 600 },
-                  },
-                ],
-              }}
-              serialNumber={cost.page * cost.size - cost.size + 1}
-              setPage={setPage}
-              inSiglePageMode={inSiglePageMode}
-            />
-          ))}
-        </div>
-      </table>
+      {modifiedPassengerLedgerCostDetailData.length > 0 ? (
+        <table
+          id='table-to-xls'
+          className='w-full'
+          style={{ minHeight: '270px' }}>
+          <div id='downloadPage'>
+            {/* each single page (table) */}
+            {modifiedPassengerLedgerCostDetailData?.map((cost) => (
+              <SinglePage2
+                classes={classes}
+                reportTitle='Cost Details'
+                tableColumns={costDetailstableColumns}
+                dispatchTableColumns={dispatchCostDetailsTableColumns}
+                data={{
+                  ...cost,
+                  data: [
+                    ...cost?.data,
+                    {
+                      credit_amount: totalCost,
+                      details: 'Total Balance',
+                      hideSerialNo: true,
+                      rowStyle: { fontWeight: 600 },
+                    },
+                  ],
+                }}
+                serialNumber={cost.page * cost.size - cost.size + 1}
+                setPage={setPage}
+                inSiglePageMode={inSiglePageMode}
+              />
+            ))}
+          </div>
+        </table>
+      ) : null}
       <h1
         className='title  pl-0 md:-pl-20 '
         style={{
@@ -607,29 +605,33 @@ function PassengerLedgerReportsTable(props) {
           </TableFooter>
         </Table>
       </TableContainer>
-      <FormProvider {...methods}>
-        <div
-          className='bg-white'
-          style={{
-            display:
-              modifiedPassengerLedgerData[0]?.data.length > 0
-                ? 'block'
-                : 'none',
-          }}>
-          <div className='flex flex-nowrap mt-10 pt-10 ml-40'>
-            <CustomDatePicker name='delivery_date' placeholder='DD-MM-YYYY' />
-            <div className='ml-20'>
-              <Button
-                className='whitespace-nowrap mx-4 mt-10 '
-                variant='contained'
-                color='secondary'
-                onClick={() => handleSavePassengerDelivery()}>
-                {PassengerDeliveryDate ? 'Update' : 'Save'}
-              </Button>
+      {passengerSelected ? (
+        <FormProvider {...methods}>
+          <div
+            className='bg-white mb-10'
+            style={{
+              display:
+                modifiedPassengerLedgerData[0]?.data.length > 0
+                  ? 'block'
+                  : 'none',
+            }}>
+            <div className='flex flex-nowrap mt-10 pt-10 ml-40'>
+              <CustomDatePicker name='delivery_date' placeholder='DD-MM-YYYY' />
+              <div className='ml-20'>
+                <Button
+                  className='whitespace-nowrap mx-4 mt-10 '
+                  variant='contained'
+                  color='secondary'
+                  onClick={() => handleSavePassengerDelivery()}>
+                  {PassengerDeliveryDate ? 'Update' : 'Save'}
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </FormProvider>
+        </FormProvider>
+      ) : (
+        ''
+      )}
     </div>
   );
 }

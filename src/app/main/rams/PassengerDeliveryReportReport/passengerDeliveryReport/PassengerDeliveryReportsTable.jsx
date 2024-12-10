@@ -132,6 +132,8 @@ function PassengerDeliveryReportsTable(props) {
     setSortBySubKey,
     dragAndDropRow,
   ] = useReportData();
+
+  console.log('modifiedPassengerDeliveryData', modifiedPassengerDeliveryData);
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
