@@ -31,7 +31,7 @@ function TicketeditsHeader(props) {
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}>
         <Typography className='text-24 md:text-32 font-extrabold tracking-tight'>
-          Ticketedits
+          Ticket Edits
         </Typography>
       </motion.span>
 
@@ -64,22 +64,7 @@ function TicketeditsHeader(props) {
           />
         </Paper>
 
-        <motion.div
-          className='flex flex-grow-0'
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-          {hasPermission('TICKETEDIT_CREATE') && (
-            <Button
-              className='mx-8'
-              variant='contained'
-              color='secondary'
-              component={NavLinkAdapter}
-              to='/apps/ticketedit/ticketedits/new'>
-              <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-              <span className='hidden sm:flex mx-8'>Add</span>
-            </Button>
-          )}
-        </motion.div>
+      
       </div>
     </div>
   );

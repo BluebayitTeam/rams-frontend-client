@@ -18,76 +18,81 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * Form Validation Schema
  */
 const schema = z.object({
-  name: z.string().nonempty('You must enter an agent name'),
+	
 });
 
 function Ticketedit() {
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-  const routeParams = useParams();
-  const { ticketeditId } = routeParams;
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const routeParams = useParams();
+	const { ticketeditId } = routeParams;
 
-  const {
-    data: ticketedit,
-    isLoading,
-    isError,
-  } = useGetTicketeditQuery(ticketeditId, {
-    skip: !ticketeditId || ticketeditId === 'new',
-  });
-  console.log('ticketeditId', ticketedit, ticketeditId);
+	const {
+		data: ticketedit,
+		isLoading,
+		isError
+	} = useGetTicketeditQuery(ticketeditId, {
+		skip: !ticketeditId || ticketeditId === 'new'
+	});
+	console.log('ticketeditId', ticketedit, ticketeditId);
 
-  const [tabValue, setTabValue] = useState(0);
-  const methods = useForm({
-    mode: 'onChange',
-    defaultValues: {},
-    resolver: zodResolver(schema),
-  });
-  const { reset, watch } = methods;
-  const form = watch();
-  useEffect(() => {
-    if (ticketeditId === 'new') {
-      reset(TicketeditModel({}));
-    }
-  }, [ticketeditId, reset]);
+	const [tabValue, setTabValue] = useState(0);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: {},
+		resolver: zodResolver(schema)
+	});
+	const { reset, watch } = methods;
+	const form = watch();
+	useEffect(() => {
+		if (ticketeditId === 'new') {
+			reset(TicketeditModel({}));
+		}
+	}, [ticketeditId, reset]);
 
-  useEffect(() => {
-    if (ticketedit) {
-      reset({ ...ticketedit });
-    }
-  }, [ticketedit, reset, ticketedit?.id]);
+	useEffect(() => {
+		if (ticketedit) {
+			reset({ ...ticketedit });
+		}
+	}, [ticketedit, reset, ticketedit?.id]);
 
-  function handleTabChange(event, value) {
-    setTabValue(value);
-  }
+	function handleTabChange(event, value) {
+		setTabValue(value);
+	}
 
-  if (isLoading) {
-    return <FuseLoading />;
-  }
+	if (isLoading) {
+		return <FuseLoading />;
+	}
 
-  /**
-   * Show Message if the requested ticketedits is not exists
-   */
-  if (isError && ticketeditId !== 'new') {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className='flex flex-col flex-1 items-center justify-center h-full'>
-        <Typography color='text.secondary' variant='h5'>
-          There is no such ticketedit!
-        </Typography>
-        <Button
-          className='mt-24'
-          component={Link}
-          variant='outlined'
-          to='/apps/ticketedit/ticketedits'
-          color='inherit'>
-          Go to Ticketedits Page
-        </Button>
-      </motion.div>
-    );
-  }
+	/**
+	 * Show Message if the requested ticketedits is not exists
+	 */
+	if (isError && ticketeditId !== 'new') {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1, transition: { delay: 0.1 } }}
+				className="flex flex-col flex-1 items-center justify-center h-full"
+			>
+				<Typography
+					color="text.secondary"
+					variant="h5"
+				>
+					There is no such ticketedit!
+				</Typography>
+				<Button
+					className="mt-24"
+					component={Link}
+					variant="outlined"
+					to="/apps/ticketedit/ticketedits"
+					color="inherit"
+				>
+					Go to Ticketedits Page
+				</Button>
+			</motion.div>
+		);
+	}
 
-  return (
+	return (
     <FormProvider {...methods}>
       {hasPermission('DEPARTURE_DETAILS') && (
         <FusePageCarded

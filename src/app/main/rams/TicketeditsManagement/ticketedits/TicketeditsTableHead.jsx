@@ -12,28 +12,186 @@ import { useDeleteTicketeditsMutation } from '../TicketeditsApi';
  * The ticketedits table head component.
  */
 
+
 const rows = [
-	{
-		id: 'SL',
-		align: 'left',
-		disablePadding: true,
-		label: 'SL',
-		sort: true
-	},
-	{
-		id: 'name',
-		align: 'left',
-		disablePadding: false,
-		label: 'Name',
-		sort: true
-	},
-	{
-		id: 'action',
-		align: 'right',
-		disablePadding: false,
-		label: 'Action',
-		sort: true
-	}
+  {
+    id: 'id',
+    align: 'left',
+    disablePadding: true,
+    label: 'SL',
+    sort: true,
+  },
+  {
+    id: 'issue_date',
+    align: 'left',
+    disablePadding: false,
+    label: 'Issue date',
+    sort: true,
+  },
+  {
+    id: 'invoice_no',
+    align: 'left',
+    disablePadding: false,
+    label: 'Invoice No.',
+    sort: true,
+  },
+  {
+    id: 'issue_person',
+    align: 'left',
+    disablePadding: false,
+    label: 'Issue Person.',
+    sort: true,
+  },
+  // {
+  // 	id: 'passenger_name',
+  // 	align: 'left',
+  // 	disablePadding: false,
+  // 	label: 'User',
+  // 	sort: true
+  // },
+  {
+    id: 'pax_name',
+    align: 'left',
+    disablePadding: false,
+    label: 'Passenger Name',
+    sort: true,
+  },
+
+  {
+    id: 'ticket_agency',
+    align: 'left',
+    disablePadding: false,
+    label: 'Ticket Agency Name',
+    sort: true,
+  },
+
+  {
+    id: 'flight_date',
+    align: 'left',
+    disablePadding: false,
+    label: 'Flight Date',
+    sort: true,
+  },
+  {
+    id: 'gds',
+    align: 'left',
+    disablePadding: false,
+    label: 'GDS',
+    sort: true,
+  },
+  {
+    id: 'gds_pnr',
+    align: 'left',
+    disablePadding: false,
+    label: 'GDS PNR',
+    sort: true,
+  },
+  {
+    id: 'airline_pnr',
+    align: 'left',
+    disablePadding: false,
+    label: 'Airline PNR',
+    sort: true,
+  },
+  {
+    id: 'return_flight_date',
+    align: 'left',
+    disablePadding: false,
+    label: 'Return Flight Date',
+    sort: true,
+  },
+  {
+    id: 'ticket_no',
+    align: 'left',
+    disablePadding: false,
+    label: 'Ticket No',
+    sort: true,
+  },
+  {
+    id: 'sector',
+    align: 'left',
+    disablePadding: false,
+    label: 'Sector ',
+    sort: true,
+  },
+  {
+    id: 'current_airway',
+    align: 'left',
+    disablePadding: false,
+    label: 'Air Way',
+    sort: true,
+  },
+  {
+    id: 'flight_no',
+    align: 'left',
+    disablePadding: false,
+    label: 'Flight No',
+    sort: true,
+  },
+
+  {
+    id: '_class',
+    align: 'left',
+    disablePadding: false,
+    label: 'Class',
+    sort: true,
+  },
+  {
+    id: 'fare_amount',
+    align: 'left',
+    disablePadding: false,
+    label: 'Fare Amount',
+    sort: true,
+  },
+  {
+    id: 'airline_commission_amount',
+    align: 'left',
+    disablePadding: false,
+    label: 'Airline Commision Amount',
+    sort: true,
+  },
+  {
+    id: 'customer_commission_amount',
+    align: 'left',
+    disablePadding: false,
+    label: 'Customer Commision Amount',
+    sort: true,
+  },
+  {
+    id: 'tax_amount',
+    align: 'left',
+    disablePadding: false,
+    label: 'Tax Amount',
+    sort: true,
+  },
+  {
+    id: 'service_charge',
+    align: 'left',
+    disablePadding: false,
+    label: 'Service Charge',
+    sort: true,
+  },
+  {
+    id: 'purchase_amount',
+    align: 'left',
+    disablePadding: false,
+    label: 'Airlines Net Rate',
+    sort: true,
+  },
+  {
+    id: 'sales_amount',
+    align: 'left',
+    disablePadding: false,
+    label: 'Sales Amount',
+    sort: true,
+  },
+  {
+    id: 'action',
+    align: 'center',
+    disablePadding: false,
+    label: 'Action',
+    sort: true,
+  },
 ];
 
 function TicketeditsTableHead(props) {

@@ -7,70 +7,58 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import {
-  AddedSuccessfully,
-  DeletedSuccessfully,
-  UpdatedSuccessfully,
-} from 'src/app/@customHooks/notificationAlert';
-import {
-  useCreateTicketeditMutation,
-  useDeleteTicketeditMutation,
-  useUpdateTicketeditMutation,
-} from '../TicketeditsApi';
+import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+
 import { hasPermission } from 'src/app/constant/permission/permissionList';
-import _ from 'lodash';
+import { useCreateTicketDeputeMutation, useDeleteTicketDeputeMutation, useUpdateTicketDeputeMutation } from '../../TicketDeputesManagement/TicketDeputesApi';
 
 /**
- * The ticketedit header.
+ * The ticketDepute header.
  */
-function TicketeditHeader() {
-  const routeParams = useParams();
+function TicketDeputeHeader() {
+	const routeParams = useParams();
+	const { ticketDeputeId } = routeParams;
+	const [createTicketDepute] = useCreateTicketDeputeMutation();
+	const [saveTicketDepute] = useUpdateTicketDeputeMutation();
+	const [removeTicketDepute] = useDeleteTicketDeputeMutation();
+	const methods = useFormContext();
+	const { formState, watch, getValues } = methods;
+	const { isValid, dirtyFields } = formState;
+	const theme = useTheme();
+	const navigate = useNavigate();
+	const { name, images, featuredImageId } = watch();
+	const handleDelete = localStorage.getItem('deleteTicketDepute');
+	const handleUpdate = localStorage.getItem('updateTicketDepute');
 
-  // console.log('hhhhhhh', routeParams);
-  const { ticketeditId } = routeParams;
-  const [createTicketedit] = useCreateTicketeditMutation();
-  const [saveTicketedit] = useUpdateTicketeditMutation();
-  const [removeTicketedit] = useDeleteTicketeditMutation();
-  const methods = useFormContext();
-  const { formState, watch, getValues } = methods;
-  const { isValid, dirtyFields } = formState;
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const { name, images, featuredImageId } = watch();
-  const handleDelete = localStorage.getItem('deleteTicketedit');
-  const handleUpdate = localStorage.getItem('updateTicketedit');
+	function handleUpdateTicketDepute() {
+		saveTicketDepute(getValues()).then((data) => {
+			UpdatedSuccessfully();
+			navigate(`/apps/ticketDepute/ticketDeputes`);
+		});
+	}
 
-  function handleUpdateTicketedit() {
-    saveTicketedit(getValues()).then((data) => {
-      UpdatedSuccessfully();
-      navigate(`/apps/ticketedit/ticketedits`);
-    });
-  }
+	function handleCreateTicketDepute() {
+		createTicketDepute(getValues())
+			.unwrap()
+			.then((data) => {
+				AddedSuccessfully();
 
-  function handleCreateTicketedit() {
-    createTicketedit(getValues())
-      .unwrap()
-      .then((data) => {
-        AddedSuccessfully();
+				navigate(`/apps/ticketDepute/ticketDeputes`);
+			});
+	}
 
-        navigate(`/apps/ticketedit/ticketedits`);
-      });
-  }
+	function handleRemoveTicketDepute(dispatch) {
+		removeTicketDepute(ticketDeputeId);
+		DeletedSuccessfully();
+		navigate('/apps/ticketDepute/ticketDeputes');
+		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
+	}
 
-  function handleRemoveTicketedit(dispatch) {
-    removeTicketedit(ticketeditId);
-    DeletedSuccessfully();
-    navigate('/apps/ticketedit/ticketedits');
-    dispatch(
-      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
-    );
-  }
+	function handleCancel() {
+		navigate(`/apps/ticketDepute/ticketDeputes`);
+	}
 
-  function handleCancel() {
-    navigate(`/apps/ticketedit/ticketedits`);
-  }
-
-  return (
+	return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -80,14 +68,14 @@ function TicketeditHeader() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/apps/ticketedit/ticketedits'
+            to='/apps/ticketDepute/ticketDeputes'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>Ticketedits</span>
+            <span className='flex mx-4 font-medium'>TicketDeputes</span>
           </Typography>
         </motion.div>
       </div>
@@ -96,44 +84,44 @@ function TicketeditHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {handleDelete === 'deleteTicketedit' && ticketeditId !== 'new' && (
+        {handleDelete === 'deleteTicketDepute' && ticketDeputeId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this ticketedit?
+            Do you want to remove this ticketDepute?
           </Typography>
         )}
-        {handleDelete === 'deleteTicketedit' &&
-          ticketeditId !== 'new' &&
-          hasPermission('TICKETEDIT_DELETE') && (
+        {handleDelete === 'deleteTicketDepute' &&
+          ticketDeputeId !== 'new' &&
+          hasPermission('DEPARTMENT_DELETE') && (
             <Button
               className='whitespace-nowrap mx-4'
               variant='contained'
               color='secondary'
-              onClick={handleRemoveTicketedit}
+              onClick={handleRemoveTicketDepute}
               startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
               style={{ backgroundColor: '#ea5b78', color: 'white' }}>
               Remove
             </Button>
           )}
-        {ticketeditId === 'new' && hasPermission('TICKETEDIT_CREATE') && (
+        {ticketDeputeId === 'new' && hasPermission('DEPARTMENT_CREATE') && (
           <Button
             className='whitespace-nowrap mx-4'
             variant='contained'
             color='secondary'
-            disabled={_.isEmpty(dirtyFields) || !isValid}
-            onClick={handleCreateTicketedit}>
+            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            onClick={handleCreateTicketDepute}>
             Save
           </Button>
         )}
-        {handleDelete !== 'deleteTicketedit' &&
-          handleUpdate === 'updateTicketedit' &&
-          ticketeditId !== 'new' &&
-          hasPermission('TICKETEDIT_UPDATE') && (
+        {handleDelete !== 'deleteTicketDepute' &&
+          handleUpdate === 'updateTicketDepute' &&
+          ticketDeputeId !== 'new' &&
+          hasPermission('DEPARTMENT_UPDATE') && (
             <Button
               className='whitespace-nowrap mx-4'
               color='secondary'
               variant='contained'
               style={{ backgroundColor: '#4dc08e', color: 'white' }}
-              onClick={handleUpdateTicketedit}>
+              onClick={handleUpdateTicketDepute}>
               Update
             </Button>
           )}
@@ -149,4 +137,4 @@ function TicketeditHeader() {
   );
 }
 
-export default TicketeditHeader;
+export default TicketDeputeHeader;

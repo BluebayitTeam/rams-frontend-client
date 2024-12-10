@@ -20,7 +20,7 @@ function Ticketedits() {
         header: 'min-h-80 h-80',
       }}
       header={
-        hasPermission('TICKETEDIT_LIST') && (
+        hasPermission('DEPARTMENT_LIST') && (
           <TicketeditsHeader
             searchKey={searchKey}
             setSearchKey={setSearchKey}
@@ -28,7 +28,7 @@ function Ticketedits() {
         )
       }
       content={
-        hasPermission('TICKETEDIT_LIST') && (
+        hasPermission('DEPARTMENT_LIST') && (
           <TicketeditsTable searchKey={searchKey} setSearchKey={setSearchKey} />
         )
       }
