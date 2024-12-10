@@ -8,11 +8,15 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 import {
-	useCreateRecruitingAgencyMutation,
-	useDeleteRecruitingAgencyMutation,
-	useUpdateRecruitingAgencyMutation
+  AddedSuccessfully,
+  DeletedSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
+import {
+  useCreateRecruitingAgencyMutation,
+  useDeleteRecruitingAgencyMutation,
+  useUpdateRecruitingAgencyMutation,
 } from '../RecruitingAgencysApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
@@ -20,49 +24,51 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The recruitingAgency header.
  */
 function RecruitingAgencyHeader() {
-	const routeParams = useParams();
-	const { recruitingAgencyId } = routeParams;
-	const [createRecruitingAgency] = useCreateRecruitingAgencyMutation();
-	const [saveRecruitingAgency] = useUpdateRecruitingAgencyMutation();
-	const [removeRecruitingAgency] = useDeleteRecruitingAgencyMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteRecruitingAgency');
-	const handleUpdate = localStorage.getItem('updateRecruitingAgency');
+  const routeParams = useParams();
+  const { recruitingAgencyId } = routeParams;
+  const [createRecruitingAgency] = useCreateRecruitingAgencyMutation();
+  const [saveRecruitingAgency] = useUpdateRecruitingAgencyMutation();
+  const [removeRecruitingAgency] = useDeleteRecruitingAgencyMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteRecruitingAgency');
+  const handleUpdate = localStorage.getItem('updateRecruitingAgency');
 
-	function handleUpdateRecruitingAgency() {
-		saveRecruitingAgency(getValues()).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/recruitingAgency/recruitingAgencys`);
-		});
-	}
+  function handleUpdateRecruitingAgency() {
+    saveRecruitingAgency(getValues()).then((data) => {
+      UpdatedSuccessfully();
+      navigate(`/apps/recruitingAgency/recruitingAgencys`);
+    });
+  }
 
-	function handleCreateRecruitingAgency() {
-		createRecruitingAgency(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleCreateRecruitingAgency() {
+    createRecruitingAgency(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
 
-				navigate(`/apps/recruitingAgency/recruitingAgencys`);
-			});
-	}
+        navigate(`/apps/recruitingAgency/recruitingAgencys`);
+      });
+  }
 
-	function handleRemoveRecruitingAgency(dispatch) {
-		removeRecruitingAgency(recruitingAgencyId);
-		DeletedSuccessfully();
-		navigate('/apps/recruitingAgency/recruitingAgencys');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
-	}
+  function handleRemoveRecruitingAgency(dispatch) {
+    removeRecruitingAgency(recruitingAgencyId);
+    DeletedSuccessfully();
+    navigate('/apps/recruitingAgency/recruitingAgencys');
+    dispatch(
+      showMessage({ message: `Please Restart The Backend`, variant: 'error' })
+    );
+  }
 
-	function handleCancel() {
-		navigate(`/apps/recruitingAgency/recruitingAgencys`);
-	}
+  function handleCancel() {
+    navigate(`/apps/recruitingAgency/recruitingAgencys`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -79,7 +85,7 @@ function RecruitingAgencyHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>RecruitingAgencys</span>
+            <span className='flex mx-4 font-medium'>Recruiting Agencys</span>
           </Typography>
         </motion.div>
 
