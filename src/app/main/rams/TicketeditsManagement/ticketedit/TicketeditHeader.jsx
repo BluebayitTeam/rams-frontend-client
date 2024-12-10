@@ -51,7 +51,6 @@ function TicketDeputeHeader() {
 		removeTicketDepute(ticketDeputeId);
 		DeletedSuccessfully();
 		navigate('/apps/ticketedit/ticketedits');
-		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
@@ -75,7 +74,7 @@ function TicketDeputeHeader() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>TicketDeputes</span>
+            <span className='flex mx-4 font-medium'>Ticket Edits</span>
           </Typography>
         </motion.div>
       </div>

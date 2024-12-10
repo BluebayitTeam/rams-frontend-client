@@ -214,7 +214,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           );
         }}
       />
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='branch'
@@ -352,7 +351,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           )}
         />
       </div>
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='passenger'
@@ -412,7 +410,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <FormControlLabel
           control={<Checkbox checked={checked} onChange={handleChange} />}
@@ -538,7 +535,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <CustomDatePicker
           name='flight_date'
@@ -554,7 +550,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           placeholder='DD-MM-YYYY'
         />
       </div>
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='_class'
@@ -597,7 +592,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='flight_time'
@@ -649,7 +643,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
             return (
               <TextField
                 {...field}
-               
                 error={!!errors.airline_pnr}
                 helperText={errors?.airline_pnr?.message}
                 label='Airline PNR'
@@ -666,11 +659,9 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
         <CustomDatePicker
           name='return_flight_date'
           label='return flight date'
-        
           placeholder='DD-MM-YYYY'
         />
       </div>
-
       <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
@@ -727,7 +718,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div
         className='flex md:space-x-12 flex-col md:flex-row '
         style={{
@@ -789,7 +779,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div
         className='flex md:space-x-12 flex-col md:flex-row '
         style={{
@@ -965,7 +954,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
@@ -1028,7 +1016,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
@@ -1113,7 +1100,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
@@ -1131,7 +1117,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           </p>
         </div>
       </div>
-
       <div className='flex md:space-x-12 flex-col md:flex-row'>
         <Controller
           name='ticket_status'
@@ -1188,7 +1173,6 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           }}
         />
       </div>
-
       <div
         className='flex md:space-x-12 flex-col md:flex-row'
         style={{
@@ -1269,11 +1253,34 @@ const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
           Create
         </Button>
       </div>
+      {/* <div id="mLtTicket"></div> */}
+      <div className='flex md:space-x-12 flex-col md:flex-row'>
+        <FileUpload
+          name='ticket_copy'
+          className='mt-8 mb-16 w-full md:w-6/12'
+          label='Ticket'
+          control={control}
+          setValue={setValue}
+          setFile={setFile}
+          file={file}
+          BASE_URL={BASE_URL}
+          classes={classes}
+        />
+        <FileUpload
+          name='passport_copy'
+          label='Passport'
+          className='mt-8 mb-16 w-full md:w-6/12'
+          control={control}
+          setValue={setValue}
+          setFile={setFile}
+          file={file}
+          BASE_URL={BASE_URL}
+          classes={classes}
+        />
+      </div>
     </div>
 
     // <div>
-
-    //   {/* <div id="mLtTicket"></div> */}
 
     //   {/* <div className='flex md:space-x-12 flex-col md:flex-row'>
     //     <File
