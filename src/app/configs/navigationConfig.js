@@ -1510,7 +1510,7 @@ const navigationConfig = [
         translate: 'Ticket Edit ',
         display_order: 7,
         type: 'item',
-        url: '/apps/ticketedit-management/ticketedits',
+        url: '/apps/ticketedit/ticketedits',
         exact: true,
       },
     ],

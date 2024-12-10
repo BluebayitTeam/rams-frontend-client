@@ -165,6 +165,7 @@ import BalanceSheetReportAppConfig from '../rams/BalanceSheetReportManagement/Ba
 import PassengerEditHistoryAppConfig from '../rams/PassengerEditHistorysManagement/PassengerEditHistoryAppConfig';
 import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
 import PassengerDeliveryAppConfig from '../rams/PassengerDeliveryReportManagement/PassengerDeliveryAppConfig';
+import TicketeditAppConfig from '../rams/TicketeditsManagement/TicketeditAppConfig';
 
 /**
  * The list of application configurations.
@@ -258,6 +259,7 @@ const appsConfigs = [
   ProfileAppConfig,
   ScrumboardAppConfig,
   TasksAppConfig,
+  TicketeditAppConfig,
   NotificationsAppConfig,
   UserAppConfig,
   TrainingAppConfig,
