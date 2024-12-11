@@ -1,324 +1,122 @@
-import React, { useState } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  TablePagination,
-} from '@mui/material';
-import Pagination from '@mui/material/Pagination';
-import Modal from '@mui/material/Modal';
-import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import EmployeesTableHead from './EmployeesTableHead';
+import * as React from 'react';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
 
-const BASE_URL = 'https://example.com/'; // Replace with your actual base URL
+const columns = [
+  { id: 'name', label: 'Name', minWidth: 170 },
+  { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+  {
+    id: 'population',
+    label: 'Population',
+    minWidth: 170,
+    align: 'right',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'size',
+    label: 'Size\u00a0(km\u00b2)',
+    minWidth: 170,
+    align: 'right',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'density',
+    label: 'Density',
+    minWidth: 170,
+    align: 'right',
+    format: (value) => value.toFixed(2),
+  },
+];
 
-const EmployeeTable = ({
-  employees,
-  order,
-  selected,
-  handleSelectAllClick,
-  handleRequestSort,
-  handleUpdateEmployee,
-  handlePagination,
-  rowsPerPageOptions,
-  totalPages,
-  totalElements,
-  rowsPerPage,
-  page,
-  classes,
-  UserPermissions,
-  EMPLOYEE_UPDATE,
-}) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [imgUrl, setImgUrl] = useState('');
+function createData(name, code, population, size) {
+  const density = population / size;
+  return { name, code, population, size, density };
+}
 
-  const showImage = (url) => {
-    setImgUrl(url);
-    setOpenModal(true);
+const rows = [
+  createData('India', 'IN', 1324171354, 3287263),
+  createData('China', 'CN', 1403500365, 9596961),
+  createData('Italy', 'IT', 60483973, 301340),
+  createData('United States', 'US', 327167434, 9833520),
+  createData('Canada', 'CA', 37602103, 9984670),
+  createData('Australia', 'AU', 25475400, 7692024),
+  createData('Germany', 'DE', 83019200, 357578),
+  createData('Ireland', 'IE', 4857000, 70273),
+  createData('Mexico', 'MX', 126577691, 1972550),
+  createData('Japan', 'JP', 126317000, 377973),
+  createData('France', 'FR', 67022000, 640679),
+  createData('United Kingdom', 'GB', 67545757, 242495),
+  createData('Russia', 'RU', 146793744, 17098246),
+  createData('Nigeria', 'NG', 200962417, 923768),
+  createData('Brazil', 'BR', 210147125, 8515767),
+];
+
+export default function StickyHeadTable() {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
-    <div className='w-full flex flex-col'>
-      {/* Image Modal */}
-      <Modal
-        open={openModal}
-        className={classes.modal}
-        onClose={() => {
-          setOpenModal(false);
-          setImgUrl('');
-        }}>
-        <div className='imgContainer'>
-          <CloseIcon
-            className='closeIcon'
-            fontSize='large'
-            onClick={() => {
-              setOpenModal(false);
-              setImgUrl('');
-            }}
-          />
-          <img
-            src={imgUrl || '/assets/images/userImg/user.png'}
-            alt='Employee'
-          />
-        </div>
-      </Modal>
-
-      {/* Employee Table */}
-      <FuseScrollbars className='flex-grow overflow-x-auto'>
-        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-          <TicketeditsTableHead
-            selectedTicketeditIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={ticketedits.length}
-            onMenuItemClick={handleDeselect}
-          />
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label='sticky table'>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}>
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
           <TableBody>
-            {_.orderBy(
-              ticketedits,
-              [tableOrder.id],
-              [tableOrder.direction]
-            ).map((n) => {
-              const isSelected = selected.indexOf(n.id) !== -1;
-              return (
-                <TableRow
-                  className='h-72 cursor-pointer border-t-1  border-gray-200'
-                  hover
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={n.id}
-                  selected={isSelected}>
-                  {/* <TableCell className="w-40 md:w-64 text-center" padding="none">
-										<Checkbox
-											checked={isSelected}
-											onClick={ticketeditEvent => ticketeditEvent.stopPropagation()}
-											onChange={ticketeditEvent => handleCheck(ticketeditEvent, n.id)}
-										/>
-									</TableCell> */}
-
-                  <TableCell
-                    className='w-40 md:w-64 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {pageAndSize.page * pageAndSize.size -
-                      pageAndSize.size +
-                      serialNumber++}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {moment(new Date(n.issue_date)).format('YYYY-MM-DD')}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.invoice_no}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {`${n.issue_person?.first_name} ${n.issue_person?.last_name}`}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.final_passenger}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {moment(new Date(n.flight_date)).format('YYYY-MM-DD')}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.gds?.name}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.gds_pnr}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.airline_pnr}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {moment(new Date(n.return_flight_date)).format(
-                      'YYYY-MM-DD'
-                    )}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.ticket_no}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.sector}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.current_airway?.name}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.flight_no}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n._class}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.fare_amount}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.airline_commission_amount}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.customer_commission_amount}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.tax_amount}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.service_charge}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.purchase_amount}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.sales_amount}
-                  </TableCell>
-
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    align='center'
-                    component='th'
-                    scope='row'>
-                    <div>
-                      {/* {UserPermissions?.includes(IATATICKET_UPDATE) && ( */}
-                      <Edit
-                        onClick={(ticketeditEvent) => handleUpdateTicketedit(n)}
-                        className='cursor-pointer custom-edit-icon-style'
-                      />
-                      {/* )} */}
-                      {/* {UserPermissions?.includes(IATATICKET_DELETE) && ( */}
-                      <Delete
-                        onClick={(event) => handleDeleteTicketedit(n, 'Delete')}
-                        className='cursor-pointer'
-                        style={{
-                          color: 'red',
-                          visibility:
-                            user_role === 'ADMIN' || user_role === 'admin'
-                              ? 'visible'
-                              : 'hidden',
-                        }}
-                      />
-                      {/* )} */}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && typeof value === 'number'
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
-      </FuseScrollbars>
-
-      {/* Pagination */}
-      <div className={classes.root}>
-        <Pagination
-          count={totalData?.total_pages}
-          page={page + 1}
-          defaultPage={1}
-          color='primary'
-          showFirstButton
-          showLastButton
-          variant='outlined'
-          shape='rounded'
-          onChange={handlePagination}
-        />
-
-        <TablePagination
-          component='div'
-          rowsPerPageOptions={rowsPerPageOptions}
-          count={totalData?.total_pages}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </div>
-    </div>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component='div'
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
-};
-
-export default EmployeeTable;
+}
