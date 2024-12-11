@@ -19,15 +19,42 @@ import TicketeditsTableHead from './TicketeditsTableHead';
 import { selectFilteredTicketedits, useGetTicketeditsQuery } from '../TicketeditsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import moment from 'moment';
-import { SEARCH_TICKETEDIT } from 'src/app/constant/constants';
-import axios from 'axios';
+
+import { makeStyles } from '@mui/styles';
 
 /**
  * The ticketedits table.
  */
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    position: 'fixed',
+    bottom: 0,
+    backgroundColor: '#fff',
+    padding: '10px 20px',
+    zIndex: 1000,
+    
+    width: '75%',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
 function TicketeditsTable(props) {
 	const dispatch = useDispatch();
 	const { navigate, searchKey } = props;
+	  const classes = useStyles();
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
@@ -44,7 +71,6 @@ function TicketeditsTable(props) {
 	let serialNumber = 1;
 
 	useEffect(() => {
-		// Fetch data with specific page and size when component mounts or when page and size change
 		refetch({ page, rowsPerPage });
 	}, [page, rowsPerPage]);
 
@@ -159,8 +185,7 @@ function TicketeditsTable(props) {
 
 	return (
 		<div className="w-full flex flex-col min-h-full px-10">
-			<FuseScrollbars className="grow overflow-x-auto">
-				<Table
+<div className='grow overflow-x-auto overflow-y-auto'>				<Table
 					stickyHeader
 					className="min-w-xl"
 					aria-labelledby="tableTitle"
@@ -318,11 +343,14 @@ function TicketeditsTable(props) {
 						})}
 					</TableBody>
 				</Table>
-			</FuseScrollbars>
+		</div>
+	<br/>
+	<br/>
+	<br/>
 
-			<div id="pagiContainer">
+		<div className={classes.root} id='pagiContainer'>
 				<Pagination
-					// classes={{ ul: 'flex-nowrap' }}
+					
 					count={totalData?.total_pages}
 					page={page + 1}
 					defaultPage={1}
@@ -335,7 +363,7 @@ function TicketeditsTable(props) {
 				/>
 
 				<TablePagination
-					className="shrink-0 border-t-1"
+			
 					component="div"
 					rowsPerPageOptions={rowsPerPageOptions}
 					count={totalData?.total_pages}

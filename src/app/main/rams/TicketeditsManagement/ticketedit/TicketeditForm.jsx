@@ -147,14 +147,14 @@ function TicketeditForm({ ticketedit }) {
   };
 
 
-useEffect(() => {
-  if (ticketedit?.branch) {
-    console.log('Updating branch in form:', ticketedit.branch.id);
-    setValue('branch', ticketedit.branch.id);
-  } else {
-    console.log('Branch data is missing');
-  }
-}, [ticketedit, setValue]);
+// useEffect(() => {
+//   if (ticketedit?.branch) {
+//     console.log('Updating branch in form:', ticketedit.branch.id);
+//     setValue('branch', ticketedit.branch.id);
+//   } else {
+//     console.log('Branch data is missing');
+//   }
+// }, [ticketedit, setValue]);
 
 
   return (

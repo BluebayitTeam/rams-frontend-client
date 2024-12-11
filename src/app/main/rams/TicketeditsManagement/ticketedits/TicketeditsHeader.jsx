@@ -35,16 +35,17 @@ function TicketeditsHeader(props) {
         </Typography>
       </motion.span>
 
-      <div className='flex w-full sm:w-auto flex-1 items-center justify-end space-x-8'>
+      <div className='flex flex-1 items-center justify-center px-12'>
+        {' '}
         <Paper
           component={motion.div}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0'>
+         className="flex items-center w-full max-w-512 px-8 py-4 rounded-16 shadow">
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search ticketedits'
+            placeholder='Search by Ticket No'
             className='flex flex-1'
             disableUnderline
             fullWidth
@@ -63,8 +64,6 @@ function TicketeditsHeader(props) {
             }}
           />
         </Paper>
-
-      
       </div>
     </div>
   );

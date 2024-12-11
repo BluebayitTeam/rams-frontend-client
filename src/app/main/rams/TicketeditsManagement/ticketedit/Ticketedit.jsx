@@ -34,7 +34,7 @@ function Ticketedit() {
 	} = useGetTicketeditQuery(ticketeditId, {
 		skip: !ticketeditId || ticketeditId === 'new'
 	});
-	console.log('ticketeditId', ticketedit, ticketeditId);
+	
 
 	const [tabValue, setTabValue] = useState(0);
 	const methods = useForm({
