@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Autocomplete, Box, Button, Checkbox, FormControlLabel, Icon, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Checkbox, FormControl, FormControlLabel, Icon, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { getAgencys, getAgents, getAirways, getBranches, getCountries, getCurrencies, getCurrentstatuses, getEmployees, getGDSs, getPassengers, getProfessions } from 'app/store/dataSlice';
@@ -29,65 +29,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TicketeditForm(props) {
+function TicketeditForm({ ticketedit }) {
   const dispatch = useDispatch();
+  const methods = useFormContext();
+  const { control, formState, watch, setValue, setError, getValues, reset } =
+    methods;
+  const { errors } = formState;
+  console.log('FormTicket', ticketedit?.passenger?.passenger_name);
   const routeParams = useParams();
   const { ticketeditId } = routeParams;
-  const classes = useStyles(props);
-const { control, formState, reset, watch, setValue, getValues } = useForm({
-  mode: 'onChange',
-  defaultValues: '',
-  resolver: zodResolver(Schema),
-});
-	const methods = useFormContext();
-	const passengers = useSelector((state) => state.data.passengers);
+  const classes = useStyles();
+  const passengers = useSelector((state) => state.data.passengers);
   const professions = useSelector((state) => state.data.professions);
   const countries = useSelector((state) => state.data.countries);
-    
   const branches = useSelector((state) => state.data.branches);
-    const agencys = useSelector((state) => state.data.agents);
-    const GDSs = useSelector((state) => state.data.gdss);
-	const userID = localStorage.getItem('user_id');
-	const [file, setFile] = useState(null);
-	const [file2, setFile2] = useState(null);
-
-    const employees = useSelector((state) => state.data.employees);
-    const airways = useSelector((state) => state.data.airways);
-    const currencies = useSelector((state) => state.data.currencies);
-    const currentstatuses = useSelector((state) => state.data.currentstatuses);
+  const agents = useSelector((state) => state.data.agents);
+  const GDSs = useSelector((state) => state.data.gdss);
+  const employees = useSelector((state) => state.data.employees);
+  const airways = useSelector((state) => state.data.airways);
+  const currencies = useSelector((state) => state.data.currencies);
+  const currentstatuses = useSelector((state) => state.data.currentstatuses);
   const visaAgents = useSelector((state) => state.data.agents);
-  	const [checked, setChecked] = useState(false);
-	const [Mltchecked, setMltChecked] = useState(false);
-const [ticketfare, setTicketfare] = useState(0);
-const [taxAmount, setTaxAmount] = useState(0);
-const [airlineCommisionRate, setAirlineCommisionRate] = useState(0);
-const [purchaseAmount, setPurchaseAmount] = useState(0);
-const [ServiceCharge, setServiceCharge] = useState(0);
-const [govtVatrate, setgovtVatrate] = useState(0);
-const [CustomerComission, setCustomerComission] = useState(0);
-const [CustomerAmount, setCustomerAmount] = useState(0);
-const [MltTicketqty, setMltTicketqty] = useState(0);
-const [MltTicketNumber, setMltTicketNumber] = useState(0);
-const [SalesAmount, setSalesAmount] = useState(0);
-const [AirlineComissionAmount, setAirlineComissionAmount] = useState(0);
-  const [CustomerComissionAmount, setCustomerComissionAmount] = useState(0);
-   const pcFile = watch('ticket_copy') || '';
-   const dlFile = watch('passport_copy') || '';
+  const getCountryCode1 = watch('country_code1');
+  const image = watch('image');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [iataTableData, setIataTableData] = useState([]);
+  const [mtlTicketDetails, setMltTicketDetails] = useState([]);
 
+  // const [createTicketSale] = useCreateTicketSaleMutation();
+  // const [createTicketSingleSale] = useCreateTicketSingleSaleMutation();
 
-   const [previewPCFile, setPreviewPCFile] = useState('');
-   const [previewDLFile, setPreviewDLFile] = useState('');
-   const [previewDoc2File, setPreviewDoc2File] = useState('');
-
-   const [fileExtPCName, setFileExtPCName] = useState('');
-   const [fileExtDLName, setFileExtDLName] = useState('');
-   const [fileExtDoc1Name, setFileExtDoc1Name] = useState('');
-
-   const [previewDoc1Image, setPreviewDoc1Image] = useState('');
-   const [fileExtDoc2Name, setFileExtDoc2Name] = useState('');
-	const { errors } = formState;
-
-	useEffect(() => {
+  useEffect(() => {
     dispatch(getProfessions());
     dispatch(getCountries());
     dispatch(getAgents());
@@ -97,1727 +70,789 @@ const [AirlineComissionAmount, setAirlineComissionAmount] = useState(0);
     dispatch(getEmployees());
     dispatch(getAirways());
     dispatch(getGDSs());
-
     dispatch(getCurrencies());
     dispatch(getCurrentstatuses());
+    setValue('sales_amount', 0);
+    setValue('purchase_amount', 0);
+    handleGetTicketTempTableData();
   }, []);
-  const createMLTticketTable = (e) => {
-    let output =
-      '<table style="border:1px solid black"><thead> <tr> <th style="border:1px solid black">Ticket No </th border: "1px solid black"> <th style="border:1px solid black">PAX </th> <th style="border:1px solid black">Passport No </th></tr></thead> <tbody> ';
-    let row = parseInt(MltTicketqty);
-    let totalTicket = parseInt(MltTicketNumber);
-    let col = 3;
-    for (let i = MltTicketNumber; i < row + totalTicket; i++) {
-      output =
-        output +
-        '<tr> <td style="border:1px solid black"> <input type="number" placeholder="Ticket no." name="ticket_no" value={{i}}> </td>  <td style="border:1px solid black"> <input type="text" placeholder="Passenger Name" name="pax_name"> </td>  <td style="border:1px solid black"> <input type="number" name="passport_no" placeholder="Passport No."> </td> </tr>';
-    }
-    output = output + '</tbody></table>';
 
-    document.getElementById('mLtTicket').innerHTML = output;
-  };
-  const handleSubmitOnKeyDownEnter = (ev) => {
-    if (ev.key === 'Enter') {
-      if (
-        routeParams.ticketeditId === 'new' &&
-        !(_.isEmpty(dirtyFields) || !isValid)
-      ) {
-        handleSaveTicketedit();
-      } else if (handleDelete !== 'Delete' && routeParams?.ticketeditName) {
-        handleUpdateTicketedit();
-      }
+  const handleGetTicketTempTableData = async () => {
+    try {
+      const response = await axios.get(GET_TICKETSALES_WITH_IMAGE);
+      const data = response.data;
+      setIataTableData(data?.iata_ticket_temp_temps);
+      console.log(`sdfsewryuiwor`, data); // Handle the response data as needed
+    } catch (error) {
+      console.error('Error fetching ticket sales data:', error);
     }
   };
+  const handleDeleteTicketPicsale = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${DELETE_TICKETSALE_WITH_IMAGE}${id}`
+      );
+      const data = response.data;
+      DeletedSuccessfully();
+      // Call function to refresh the table data after deletion
+      handleGetTicketTempTableData();
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
-  const handleChange2 = (event) => {
-    setMltChecked(event.target.checked);
-  };
-  const handleMltTicketqty = (event) => {
-    setMltTicketqty(event.target.value);
-  };
-  const handleMltTicketNumber = (event) => {
-    setMltTicketNumber(event.target.value);
-  };
-
-  const handleAirlineCommisionRate = (e) => {
-    setAirlineCommisionRate(e.target.value);
+      console.log('Successfully deleted:', data);
+    } catch (error) {
+      console.error('Error deleting ticket sale:', error);
+    }
   };
 
-  const handleTaxAmount = (e) => {
-    setTaxAmount(e.target.value);
-  };
-  const handleTicketFareAmount = (e) => {
-    setTicketfare(e.target.value);
-  };
-  const handleCustomerComission = (e) => {
-    setCustomerComission(e.target.value);
-  };
-  const handlegovtVatrate = (e) => {
-    setgovtVatrate(e.target.value);
-  };
-  const handleServiceCharge = (e) => {
-    setServiceCharge(e.target.value);
-  };
+  function handleAddTicketSale() {
+    createTicketSingleSale(getValues())
+      .unwrap()
+      .then((data) => {
+        AddedSuccessfully();
+        handleGetTicketTempTableData();
+        reset({});
+      });
+  }
+  function handleSubmitTicketSale() {
+    createTicketSale(getValues());
+    AddedSuccessfully();
+    handleGetTicketTempTableData();
+    reset({});
+    navigate('/apps/ticketSale/ticketSales');
+  }
 
-  const handleAirlineComissionAmount = (e) => {
-    setAirlineComissionAmount(e.target.value);
-  };
-  const handleCustomerComissionAmount = (e) => {
-    setCustomerComissionAmount(e.target.value);
-  };
-
-  const purchase_amount = parseFloat(
-    parseFloat(ticketfare) +
-      parseFloat(taxAmount) -
-      (parseFloat(ticketfare) + parseFloat(taxAmount)) *
-        parseFloat(parseFloat(airlineCommisionRate) / 100)
-  );
-
-  const Customer_Amount = parseFloat(
-    parseFloat(ticketfare) +
-      parseFloat(taxAmount) +
-      parseFloat(govtVatrate) +
-      parseFloat(ServiceCharge) -
-      (parseFloat(ticketfare) + parseFloat(taxAmount)) *
-        parseFloat(parseFloat(CustomerComission) / 100)
-  );
-
-  const AirlineComissionAmounts =
-    (parseFloat(ticketfare) + parseFloat(taxAmount)) *
-    parseFloat(parseFloat(airlineCommisionRate) / 100);
-  const CustomerComissionAmounts =
-    (parseFloat(ticketfare) + parseFloat(taxAmount)) *
-    parseFloat(parseFloat(CustomerComission) / 100);
-
-  useEffect(() => {
-    setValue('sales_amount', Customer_Amount);
-  }, [Customer_Amount]);
-
-  useEffect(() => {
-    setValue('purchase_amount', purchase_amount);
-  }, [purchase_amount]);
-  useEffect(() => {
-    setValue('airline_commission_amount', AirlineComissionAmounts);
-  }, [AirlineComissionAmounts]);
-  useEffect(() => {
-    setValue('customer_commission_amount', CustomerComissionAmounts);
-  }, [CustomerComissionAmounts]);
-
-
-
-
-  useEffect(() => {
-    setFileExtPCName('');
-    setFileExtDLName('');
-
-    setPreviewPCFile('');
-    setPreviewDLFile('');
-    setFileExtDoc1Name('');
-    setPreviewDoc1Image('');
-    // setpreviewDoc2Image('');
-  }, [getValues('employee')]);
-
-  // removed image
-  const handleRemovePCFile = () => {
-    setPreviewPCFile(null);
-
+  const handleRemoveslipPicFile = () => {
+    setPreviewslipPicFile(null);
     setFileExtPCName(null);
-
-    setValue('ticket_copy', '');
-
+    setValue('file', '');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-
-    console.log('sfsdferwer', getValues());
-  };
-  const handleRemoveDLFile = () => {
-    setPreviewDLFile(null);
-    setFileExtDLName(null);
-    setValue('passport_copy', '');
-
-    if (fileInputdLRef.current) {
-      fileInputdLRef.current.value = '';
-    }
-
-    console.log('878787', getValues());
-  };
-  const handleRemoveDOC1File = () => {
-    setFileExtDoc1Name(null);
-    setPreviewDoc1Image(null);
-    setValue('image_doc_three', '');
-
-    if (fileInputdoc1Ref.current) {
-      fileInputdoc1Ref.current.value = '';
-    }
-
-    console.log('sfsdferwer', getValues());
-  };
-  const handleRemoveDOC2File = () => {
-    setFileExtDoc2Name(null);
-    setPreviewDoc2File(null);
-    setValue('image_doc_four', '');
-
-    if (fileInputdoc2Ref.current) {
-      fileInputdoc2Ref.current.value = '';
-    }
-
     console.log('sfsdferwer', getValues());
   };
 
-	
+  const CreateInputFields = () => {
+    const fields = [];
+    for (let i = 0; i < Number(watch('qty')); i++) {
+      const Specific_ticket_number = Number(watch('tkt_num')) + i;
+      setValue(`items.${i}.ticket_no`, Specific_ticket_number);
+      fields.push({
+        ticket_no: Specific_ticket_number,
+        pax_name: '',
+        passport_no: '',
+      });
+    }
+    console.log(`gasjfsdf`, fields);
+    // setInputFields(data);
+    setMltTicketDetails(fields);
+  };
+
+
+    useEffect(() => {
+      if (ticketedit) {
+        setValue('branch', ticketedit?.branch?.passenger_name);
+        setValue('passenger', ticketedit?.passenger?.branch);
+      }
+    }, [ticketedit]);
   return (
     <div>
-      <Controller
-        name={ticketeditId === 'new' ? 'created_by' : 'updated_by'}
-        control={control}
-        defaultValue={userID}
-        render={({ field }) => {
-          return (
-            <TextField
-              {...field}
-              className={classes.hidden}
-              label='created by'
-              id='created_by'
-              error={false}
-              helperText=''
-              variant='outlined'
-              fullWidth
-            />
-          );
-        }}
-      />
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
+      {ticketeditId !== 'new' && (
         <Controller
-          name='branch'
+          name='mlt_ticket_update'
           control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? branches.find((data) => data.id === value) : null}
-              options={branches}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                // onChange({ id: newValue.id, name: newValue.name });
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Branch '
-                  label='branch'
-                  error={!value}
-                  helperText={errors?.branch?.message}
-                  variant='outlined'
-                  autoFocus
-                  required
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  // onKeyDown={handleSubmitOnKeyDownEnter}
-                />
-              )}
-            />
-          )}
-        />
-
-        <Controller
-          name='customer'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? agencys.find((data) => data.id == value) : null}
-              options={agencys}
-              getOptionLabel={(option) =>
-                `${option.first_name} ${option.last_name}`
-              }
-              onChange={(event, newValue) => {
-                // onChange({ id: newValue.id, name: newValue.first_name });
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Customer'
-                  label='Customer'
-                  error={!value}
-                  required
-                  helperText={errors?.agency?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
-          name='ticket_agency'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? agencys.find((data) => data.id == value) : null}
-              options={agencys}
-              getOptionLabel={(option) =>
-                `${option.first_name} ${option.last_name}`
-              }
-              onChange={(event, newValue) => {
-                onChange(newValue?.id); // onChange({ id: newValue.id, name: newValue.first_name });
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Ticket Agency'
-                  label='Agency'
-                  error={!value}
-                  required
-                  helperText={errors?.agency?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-
-        <Controller
-          name='issue_person'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? employees.find((data) => data.id == value) : null}
-              options={employees}
-              getOptionLabel={(option) =>
-                `${option.first_name} ${option.last_name}`
-              }
-              onChange={(event, newValue) => {
-                // onChange({ id: newValue.id, name: newValue.first_name });
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Issue Person'
-                  label='Issue Person'
-                  // error={!value}
-                  // required
-                  helperText={errors?.employees?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
-          name='passenger'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={
-                value ? passengers.find((data) => data.id === value) : null
-              }
-              options={passengers}
-              getOptionLabel={(option) => `${option.passenger_name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Passenger Name'
-                  label='Passenger'
-                  error={!value}
-                  variant='outlined'
-                  autoFocus
-                  required
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  // onKeyDown={handleSubmitOnKeyDownEnter}
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name='pax_name'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_fare?.message}
-                label='Pax Name'
-                id='passenger'
-                // error={!field.value}
-                checked={false}
-                Mltchecked={false}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <FormControlLabel
-          control={<Checkbox checked={checked} onChange={handleChange} />}
-          label='Other'
-          className='mt-8 mb-16 w-full md:w-6/12'
-        />
-        <FormControlLabel
-          control={
-            <Checkbox Mltchecked={Mltchecked} onChange={handleChange2} />
-          }
-          label='Mult TKT NO'
-          className='mt-8 mb-16 w-full md:w-6/12'
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
-          name='current_airway'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? airways.find((data) => data.id === value) : null}
-              options={airways}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                // onChange({ id: newValue.id, name: newValue.name });
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Carrier Airway'
-                  label='Carrier Airway'
-                  error={!value}
-                  required
-                  helperText={errors?.airways?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name='flight_no'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.flight_no || !field.value}
-                helperText={errors?.flight_no?.message}
-                label='Flight No'
-                id='Flight_no'
-                // required
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row'
-        style={{
-          display: Mltchecked ? 'none' : '',
-        }}>
-        <Controller
-          name='passport_no'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.passport_no?.message}
-                label='Passport No'
-                id='passport_no'
-                type='number'
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-        <Controller
-          name='ticket_no'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                error={
-                  !!errors.ticket_no ||
-                  !field.value ||
-                  getValues().ticket_no?.length != 10
+          render={({ field }) => (
+            <FormControl>
+              <FormControlLabel
+                label='All Ticket Update in this Invoice'
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value ? field.value : false}
+                  />
                 }
-                // required
-                helperText={errors?.ticket_no?.message}
-                label='Ticket No'
-                id='ticket_no'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
               />
-            );
-          }}
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <CustomDatePicker
-          name='flight_date'
-          label='Flight Date'
-          className='mt-8 mb-16 w-full md:w-6/12'
-          placeholder='DD-MM-YYYY'
-        />
-
-        <CustomDatePicker
-          name='issue_date'
-          label='Issue Date'
-          className='mt-8 mb-16 w-full md:w-6/12'
-          placeholder='DD-MM-YYYY'
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
-          name='_class'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.class_name || !field.value}
-                // required
-                helperText={errors?.class_name?.message}
-                label='Class Name'
-                id='Class_name'
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-        <Controller
-          name='sector'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.sector_name || !field.value}
-                // required
-                helperText={errors?.sector_name?.message}
-                label='Sector Name'
-                id='sector_name'
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
-          name='flight_time'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                error={!!errors.flight_time}
-                helperText={errors?.flight_time?.message}
-                label='Flight Time'
-                id='flight_time'
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-
-        <Controller
-          name='arrived_time'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                error={!!errors.arrival_time}
-                helperText={errors?.arrival_time?.message}
-                label='Arrival Time'
-                id='arrival_time'
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
-          name='airline_pnr'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                error={!!errors.airline_pnr}
-                helperText={errors?.airline_pnr?.message}
-                label='Airline PNR'
-                id='airline_pnr'
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-
-        <CustomDatePicker
-          name='return_flight_date'
-          label='return flight date'
-          placeholder='DD-MM-YYYY'
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row'
-        style={{
-          display: checked ? '' : 'none',
-        }}>
-        <Controller
-          name='sales_amount'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_fare?.message}
-                label='Sales Amount'
-                id='ticket_Fare'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-        <Controller
-          name='purchase_amount'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='Enter Purchase NET'
-                id='XT_Other_Tax'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row '
-        style={{
-          display: checked ? 'none' : '',
-        }}>
-        <Controller
-          name='gds'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? GDSs.find((data) => data.id == value) : null}
-              options={GDSs}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select GDS'
-                  label='GDS'
-                  error={!!errors.gds}
-                  helperText={errors?.gds?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
+            </FormControl>
           )}
         />
-
-        <Controller
-          name='gds_pnr'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='GDS PNR'
-                id='gds_pnr'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row '
-        style={{
-          display: checked ? 'none' : '',
-        }}>
-        <Controller
-          name='fare_amount'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_fare?.message}
-                label='Ticket Fare'
-                id='ticket_Fare'
-                type='number'
-                // error={!field.value}
-                checked={false}
-                Mltchecked={false}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onBlur={handleTicketFareAmount}
-                // onChange={(e)=>{
-                // 	handleTicketFareAmount(e)
-                // 	field.onChange(e)
-                // }}
-
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-        <Controller
-          name='tax_amount'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='XT & Other Tax'
-                id='XT_Other_Tax'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                onBlur={handleTaxAmount}
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row'
-        style={{
-          display: checked ? 'none' : '',
-        }}>
-        <Controller
-          name='customer_commission_rate'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-2/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='Customer Comission%'
-                id='customer_comission'
-                type='number'
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onBlur={handleCustomerComission}
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-        <Controller
-          name='customer_commission_amount'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-4/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='BDT'
-                id='customer_comission_bdt'
-                type='number'
-                // error={!field.value}
-                style={{
-                  display: checked ? 'none' : '',
-                }}
-                checked={false}
-                Mltchecked={false}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onBlur={handleCustomerComissionAmount}
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-
-        <Controller
-          name='airline_commission_rate'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-2/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='Airline Comission%'
-                id='airline_comission'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                onBlur={handleAirlineCommisionRate}
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-        <Controller
-          name='airline_commission_amount'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-4/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='BDT'
-                id='airline_comission_bdt'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onBlur={handleAirlineComissionAmount}
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row'
-        style={{
-          display: checked ? 'none' : '',
-        }}>
-        <Controller
-          name='currency'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? currencies.find((data) => data.id == value) : null}
-              options={currencies}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Currency'
-                  label='Currency'
-                  // error={!value}
-                  // required
-                  helperText={errors?.agency?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-
-        <Controller
-          name='dollar_rate'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_no?.message}
-                label='Dollar Rate'
-                id='dollar_rate'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row'
-        style={{
-          display: checked ? 'none' : '',
-        }}>
-        <Controller
-          name='service_charge'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_no?.message}
-                label='Service Charge'
-                id='service_charge'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                onBlur={handleServiceCharge}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-
-        <Controller
-          name='govt_vat_rate'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-2/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='Govt Vat'
-                id='govt_vat'
-                checked={false}
-                Mltchecked={false}
-                type='number'
-                // error={!field.value}
-                variant='outlined'
-                onBlur={handlegovtVatrate}
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-        <Controller
-          name='tax_amount'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-4/12'
-                // error={!!errors.purchase_amount}
-                // required
-                helperText={errors?.ticket_tax?.message}
-                label='BDT'
-                id='govt_vat_bdt'
-                type='number'
-                checked={false}
-                Mltchecked={false}
-                // error={!field.value}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
-      </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row'
-        style={{
-          display: checked ? 'none' : '',
-        }}>
-        <div className='mt-8 mb-16 w-full md:w-6/12'>
-          <p checked={false} Mltchecked={false}>
-            SA : {Customer_Amount}{' '}
-          </p>
+      )}
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='branch'
+            label='Branch'
+            options={branches}
+            required
+          />
         </div>
-        <div className='mt-8 mb-16 w-full md:w-6/12'>
-          <p checked={false} Mltchecked={false}>
-            {' '}
-            PA: {purchase_amount}{' '}
-          </p>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='customer'
+            label='Customer'
+            options={agents}
+            optionLabelFormat={(option) =>
+              `${option.first_name || ''} ${option.last_name || ''}`
+            }
+            required
+          />
         </div>
       </div>
-      <div className='flex md:space-x-12 flex-col md:flex-row'>
-        <Controller
-          name='ticket_status'
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={
-                value
-                  ? ticketSalesTicketStatus.find((data) => data.id == value)
-                  : null
-              }
-              options={ticketSalesTicketStatus}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Select Ticket Status'
-                  label='Ticket Status'
-                  error={!!errors.ticket_status}
-                  helperText={errors?.ticket_status?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
-
-        <Controller
-          name='detail'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-6/12'
-                error={!!errors.ticket_status}
-                helperText={errors?.ticket_status?.message}
-                label='Details'
-                id='Details'
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='ticket_agency'
+            label='Ticket Agency'
+            options={agents}
+            optionLabelFormat={(option) =>
+              `${option.first_name || ''} ${option.last_name || ''}`
+            }
+            required
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='issue_person'
+            label='Issue Person'
+            options={employees}
+            optionLabelFormat={(option) =>
+              `${option.first_name || ''} ${option.last_name || ''}`
+            }
+            required
+          />
+        </div>
       </div>
-      <div
-        className='flex md:space-x-12 flex-col md:flex-row'
-        style={{
-          display: Mltchecked ? '' : 'none',
-        }}>
-        <Controller
-          name='tkt_num'
-          control={control}
-          render={({ field: { onChange, value, name } }) => (
-            <Autocomplete
-              className='mt-8 mb-16 w-full md:w-6/12'
-              freeSolo
-              value={value ? currencies.find((data) => data.id == value) : null}
-              options={currencies}
-              getOptionLabel={(option) => `${option.name}`}
-              onChange={(event, newValue) => {
-                onChange(newValue?.id);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Ticket Num'
-                  label='Ticket Num'
-                  // error={!value}
-                  onBlur={handleMltTicketNumber}
-                  Mltchecked={false}
-                  helperText={errors?.agency?.message}
-                  variant='outlined'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
+
+      {ticketeditId === 'new' && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomCheckbox name='is_other_entry' label='Other' />
+          </div>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomCheckbox
+              name='is_multi_ticket_entry'
+              label='Multiple Ticket No'
             />
-          )}
-        />
+          </div>
+        </div>
+      )}
 
-        <Controller
-          name='qty'
-          id='ticketQuantity'
-          control={control}
-          render={({ field }) => {
-            return (
-              <TextField
-                {...field}
-                className='mt-8 mb-16 w-full md:w-5/12'
-                // error={!!errors.purchase_amount}
+      {!watch('is_multi_ticket_entry') && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomDropdownField
+              name='passenger'
+              label='Passenger'
+              options={passengers}
+              disabled={watch('pax_name')?.length > 1}
+              optionLabelFormat={(option) => `${option.passenger_name || ''}`}
+              required
+            />
+          </div>
+          <div className='w-full md:w-1/2 px-2 mt-8'>
+            <CustomTextField
+              name='pax_name'
+              label='Pax Name'
+              disabled={watch('passenger')}
+            />
+          </div>
+        </div>
+      )}
 
-                helperText={errors?.ticket_no?.message}
-                label='QTY'
-                type='number'
-                Mltchecked={false}
-                // error={!field.value}
-                onBlur={handleMltTicketqty}
-                variant='outlined'
-                InputLabelProps={field.value && { shrink: true }}
-                fullWidth
-                onKeyDown={handleSubmitOnKeyDownEnter}
-              />
-            );
-          }}
-        />
+      {watch('is_multi_ticket_entry') && (
+        <div className='flex md:space-x-12 flex-col md:flex-row my-10'>
+          <h3>Please Enter Ticket Number and Quantity :</h3>
+        </div>
+      )}
+      {watch('is_multi_ticket_entry') && (
+        <div className='flex md:space-x-12 flex-col md:flex-row'>
+          <CustomTextField
+            name='tkt_num'
+            label='Ticket No'
+            placeholder='Ticket number must be 10 digits'
+          />{' '}
+          <CustomTextField
+            name='qty'
+            label='QTY'
+            placeholder='Ticket number must be 10 digits'
+            disabled={watch('tkt_num')?.length !== 10}
+          />
+          <Button
+            className=' '
+            variant='contained'
+            color='secondary'
+            onClick={() => {
+              CreateInputFields();
+            }}
+            disabled={
+              watch('tkt_num')?.length !== 10 || watch('qty')?.length === 0
+            }
+            style={{
+              backgroundColor: '#ea5b78',
+              color: 'white',
+              padding: '13px',
+              height: '40px',
+              marginTop: '13px',
+              marginLeft: '30px',
+            }}>
+            Create
+          </Button>
+        </div>
+      )}
 
+      {watch('is_multi_ticket_entry') &&
+        mtlTicketDetails?.length > 0 &&
+        mtlTicketDetails?.map((data, idx) => (
+          <div key={idx} className='flex md:space-x-12 flex-col md:flex-row'>
+            <CustomTextField
+              name={`items.${idx}.ticket_no`}
+              label='Ticket No'
+              placeholder='Ticket No'
+              defaultValue={data.ticket_no} // Set default value from data
+            />
+            <CustomTextField
+              name={`items.${idx}.pax_name`}
+              label='Pax Name'
+              defaultValue={data.pax_name} // Set default value from data
+            />
+            <CustomTextField
+              name={`items.${idx}.passport_no`}
+              label='Passport No'
+              defaultValue={data.passport_no} // Set default value from data
+            />
+          </div>
+        ))}
+
+      {!watch('is_multi_ticket_entry') && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='passport_no' label='Passport No' />
+          </div>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField
+              name='ticket_no'
+              label='Ticket No'
+              placeholder='Ticket number must be 10 digits'
+              required
+            />
+          </div>
+        </div>
+      )}
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDatePicker
+            name='issue_date'
+            label='Issue Date'
+            placeholder='DD-MM-YYYY'
+            required
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='current_airway'
+            label='Current Airway'
+            options={airways}
+            optionLabelFormat={(option) => `${option.name || ''} `}
+            required
+          />
+        </div>
+      </div>
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDatePicker
+            name='flight_date'
+            label='Flight Date'
+            placeholder='DD-MM-YYYY'
+            required
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='flight_no' label='Flight No' />
+        </div>
+      </div>
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='_class' label='Class name' />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='sector' label='Sector Name' />
+        </div>
+      </div>
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='flight_time' label='Flight Time' />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='arrived_time' label='Arrival Time' />
+        </div>
+      </div>
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='airline_pnr' label='Airline PNR' />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDatePicker
+            name='return_flight_date'
+            label='Return Flight Date'
+            placeholder='DD-MM-YYYY'
+            required
+          />
+        </div>
+      </div>
+
+      {watch('is_sales_purchase_amount_only') && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='sales_amount' label='Sales Amount' />
+          </div>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='purchase_amount' label='Purchase Amount' />
+          </div>
+        </div>
+      )}
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField name='gds' label='GDS' options={GDSs} />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='gds_pnr' label='GDS PNR' />
+        </div>
+      </div>
+
+      {!watch('is_sales_purchase_amount_only') && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField
+              name='fare_amount'
+              label='Ticket Fare Amount'
+              required
+            />
+          </div>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='tax_amount' label='Tax Amount' required />
+          </div>
+        </div>
+      )}
+
+      {!watch('is_sales_purchase_amount_only') && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField
+              name='customer_commission_rate'
+              label='Customer Comission(%)'
+            />
+          </div>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField
+              name='customer_commission_amount'
+              label='Customer Comission Amount'
+            />
+          </div>
+        </div>
+      )}
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField
+            name='airline_commission_rate'
+            label='Airline Comission Rate(%)'
+          />
+        </div>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField
+            name='airline_commission_amount'
+            label='Airline Comission Amount'
+          />
+        </div>
+      </div>
+
+      {!watch('is_sales_purchase_amount_only') && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomDropdownField
+              name='Currency'
+              label='Currency'
+              options={currencies}
+            />
+          </div>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='dollar_rate' label='Dollar Rate' />
+          </div>
+        </div>
+      )}
+
+      {!watch('is_sales_purchase_amount_only') && (
+        <div className='flex flex-wrap md:flex-nowrap w-full'>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='service_charge' label='Service Charge' />
+          </div>
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='govt_vat_rate' label='Govt Vat Rate' />
+          </div>
+        </div>
+      )}
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomTextField name='tax_amount' label='Tax Amount' />
+        </div>
+        {!watch('is_sales_purchase_amount_only') && (
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='sales_amount' label='Sales Amount' />
+          </div>
+        )}
+      </div>
+
+      <div className='flex flex-wrap md:flex-nowrap w-full'>
+        {!watch('is_sales_purchase_amount_only') && (
+          <div className='w-full md:w-1/2 px-2'>
+            <CustomTextField name='purchase_amount' label='Purchase Amount' />
+          </div>
+        )}
+        <div className='w-full md:w-1/2 px-2'>
+          <CustomDropdownField
+            name='ticket_status'
+            label='Ticket Status'
+            options={ticketSalesTicketStatus}
+          />
+        </div>
+      </div>
+
+      <CustomTextField name='detail' label='Details' />
+
+      {
         <Button
-          className=' '
+          className='whitespace-nowrap mx-4 my-4 '
           variant='contained'
           color='secondary'
-          onClick={createMLTticketTable}
-          // startIcon={<Icon className="hidden sm:flex">Create</Icon>}
-          style={{
-            backgroundColor: '#ea5b78',
-            color: 'white',
-            padding: '13px',
-            height: '40px',
-            marginTop: '13px',
-            marginLeft: '30px',
-          }}>
-          Create
+          // disabled={_.isEmpty(dirtyFields) || !isValid}
+          onClick={handleAddTicketSale}>
+          Add
         </Button>
-      </div>
-      {/* <div id="mLtTicket"></div> */}
-      <div className='flex justify-start -mx-16 flex-col md:flex-row'>
-        <Controller
-          name='ticket_copy'
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <div className='flex w-full flex-row items-center justify-center ml-16'>
-              <div className='flex-col'>
-                <Typography className='text-center'>File 1</Typography>
-                <label
-                  htmlFor='ticket_copy-button-file'
-                  className={clsx(
-                    classes.productImageUpload,
-                    'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-                  )}>
-                  <input
-                    accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                    className='hidden'
-                    id='ticket_copy-button-file'
-                    type='file'
-                    onChange={async (e) => {
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        if (reader.readyState === 2) {
-                          setPreviewPCFile(reader.result);
-                        }
-                      };
-                      reader.readAsDataURL(e.target.files[0]);
+      }
 
-                      const file = e.target.files[0];
+      {/* {iataTableData?.length > 0 && (
+        <div>
+          <h2 className='my-5 text-danger font-bold text-center border-bottom mb-10'>
+            Ticket Details
+          </h2>
+          <TableContainer component={Paper} className='mb-48'>
+            <Table
+              sx={{ minWidth: 650 }}
+              aria-label='customized  table p-3 mt-10'>
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    SL
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Issue date
+                  </TableCell>
 
-                      if (file) {
-                        const fileExtension = file.name
-                          .split('.')
-                          .pop()
-                          .toLowerCase();
-                        setFileExtPCName(fileExtension);
-                        onChange(file);
-                      }
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Issue Person.
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    User
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Passenger Name
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Ticket Agency Name
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Flight Date
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    GDS
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    GDS PNR
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Airline PNR
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Return Flight Date
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Ticket No
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Sector
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Air Way
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Flight No
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Class
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Fare Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Airline Commision Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Customer Commision Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Tax Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Service Charge
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Airlines Net Rate
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Sales Amount
+                  </TableCell>
+                  <TableCell
+                    align='left'
+                    className='whitespace-nowrap p-5 text-center border-1 border-gray'>
+                    Action
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {iataTableData.map((n, idx) => (
+                  <TableRow
+                    key={idx}
+                    className='p-4 md:p-16 border-1 border-gray px-5'>
+                    <TableCell
+                      component='th'
+                      scope='row'
+                      className='p-4 md:p-16 border-1 border-gray px-5'>
+                      {idx + 1}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {moment(new Date(n.issue_date)).format('YYYY-MM-DD')}
+                    </TableCell>
 
-                      // Force reset the input value to allow re-uploading the same file
-                      e.target.value = '';
-                    }}
-                  />
-                  <Icon fontSize='large' color='action'>
-                    cloud_upload
-                  </Icon>
-                </label>
-              </div>
-              {!previewPCFile && pcFile && (
-                <div
-                  style={{
-                    display: 'flex',
-                    position: 'relative',
-                    width: 'fit-content',
-                  }}>
-                  <div
-                    id='cancelIcon'
-                    style={{
-                      position: 'absolute',
-                      top: '0',
-                      right: '0',
-                      zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      backgroundColor: 'white',
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <HighlightOffIcon onClick={handleRemovePCFile} />
-                  </div>
-                  <div
-                    style={{
-                      width: 'auto',
-                      height: '150px',
-                      overflow: 'hidden',
-                      display: 'flex',
-                    }}>
-                    {typeof pcFile === 'string' &&
-                    ['pdf', 'doc', 'docx'].includes(
-                      pcFile.split('.').pop().toLowerCase()
-                    ) ? (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          height: '100%',
-                        }}>
-                        {pcFile.toLowerCase().includes('pdf') ? (
-                          <PictureAsPdf
-                            style={{
-                              color: 'red',
-                              cursor: 'pointer',
-                              display: 'block',
-                              fontSize: '137px',
-                              margin: 'auto',
-                            }}
-                            onClick={() => window.open(`${BASE_URL}${pcFile}`)}
-                          />
-                        ) : (
-                          <DescriptionIcon
-                            style={{
-                              color: 'blue',
-                              cursor: 'pointer',
-                              display: 'block',
-                              fontSize: '137px',
-                              margin: 'auto',
-                            }}
-                            onClick={() => window.open(`${BASE_URL}${pcFile}`)}
-                          />
-                        )}
-                      </div>
-                    ) : (
-                      <img
-                        src={`${BASE_URL}${pcFile}`}
-                        style={{ height: '100px' }}
-                      />
-                    )}
-                  </div>
-                </div>
-              )}
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {`${n.issue_person?.first_name} ${n.issue_person?.last_name}`}
+                    </TableCell>
 
-              {previewPCFile ? (
-                <div
-                  style={{
-                    width: 'auto',
-                    height: '150px',
-                    overflow: 'hidden',
-                  }}>
-                  {fileExtPCName &&
-                  ['pdf', 'doc', 'docx'].includes(fileExtPCName) ? (
-                    <div
-                      style={{
-                        display: 'flex',
-                        position: 'relative',
-                        width: 'fit-content',
-                      }}>
-                      <div
-                        id='cancelIcon'
-                        style={{
-                          position: 'absolute',
-                          top: '0',
-                          right: '0',
-                          zIndex: 1,
-                          color: 'red',
-                          cursor: 'pointer',
-                          backgroundColor: 'white',
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <HighlightOffIcon onClick={handleRemovePCFile} />
-                      </div>
-                      {fileExtPCName === 'pdf' ? (
-                        <iframe
-                          src={previewPCFile}
-                          frameBorder='0'
-                          scrolling='auto'
-                          height='150px'
-                          width='150px'
-                        />
-                      ) : (
-                        <DescriptionIcon
-                          style={{
-                            color: 'blue',
-                            cursor: 'pointer',
-                            display: 'block',
-                            fontSize: '137px',
-                            margin: 'auto',
-                          }}
-                          onClick={() => window.open(previewPCFile)}
-                        />
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {`${n.issue_person?.first_name} ${n.issue_person?.last_name}`}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.final_passenger}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {`${n.ticket_agency?.first_name} ${n.ticket_agency?.last_name}`}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {moment(new Date(n.flight_date)).format('YYYY-MM-DD')}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.gds?.name}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.gds_pnr}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.airline_pnr}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {moment(new Date(n.return_flight_date)).format(
+                        'YYYY-MM-DD'
                       )}
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        display: 'flex',
-                        position: 'relative',
-                        width: 'fit-content',
-                      }}>
-                      <div
-                        id='cancelIcon'
-                        style={{
-                          position: 'absolute',
-                          top: '0',
-                          right: '0',
-                          zIndex: 1,
-                          color: 'red',
-                          cursor: 'pointer',
-                          backgroundColor: 'white',
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <HighlightOffIcon onClick={handleRemovePCFile} />
-                      </div>
-                      <img
-                        src={previewPCFile}
-                        style={{ height: '140px', width: '150px' }}
-                      />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                !pcFile && (
-                  <Box
-                    height={180}
-                    width={180}
-                    my={4}
-                    display='flex'
-                    alignItems='center'
-                    gap={4}
-                    p={2}
-                    style={{
-                      width: '150px',
-                      height: '70px',
-                      border: '1px solid red',
-                    }}
-                    className={clsx(
-                      classes.productImageUpload,
-                      'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-                    )}>
-                    <Typography className='text-sm font-700'>
-                      <span className='mr-4 text-xs text-red-500'>
-                        Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
-                      </span>
-                    </Typography>
-                  </Box>
-                )
-              )}
-            </div>
-          )}
-        />
-        <Controller
-          name='passport_copy'
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <div className='flex w-full flex-row items-center justify-center ml-16'>
-              <div className='flex-col'>
-                <Typography className='text-center'>File 2</Typography>
-                <label
-                  htmlFor='passport_copy-button-file'
-                  className={clsx(
-                    classes.productImageUpload,
-                    'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-                  )}>
-                  <input
-                    accept='image/x-png,image/gif,image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                    className='hidden'
-                    id='passport_copy-button-file'
-                    type='file'
-                    onChange={async (e) => {
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        if (reader.readyState === 2) {
-                          setPreviewDLFile(reader.result);
-                        }
-                      };
-                      reader.readAsDataURL(e.target.files[0]);
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.ticket_no}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.sector}
+                    </TableCell>
 
-                      const file = e.target.files[0];
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.current_airway?.name}
+                    </TableCell>
 
-                      if (file) {
-                        const fileExtension = file.name
-                          .split('.')
-                          .pop()
-                          .toLowerCase();
-                        setFileExtDLName(fileExtension);
-                        onChange(file);
-                      }
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.flight_no}
+                    </TableCell>
 
-                      // Force reset the input value to allow re-uploading the same file
-                      e.target.value = '';
-                    }}
-                  />
-                  <Icon fontSize='large' color='action'>
-                    cloud_upload
-                  </Icon>
-                </label>
-              </div>
-              {!previewDLFile && dlFile && (
-                <div
-                  style={{
-                    display: 'flex',
-                    position: 'relative',
-                    width: 'fit-content',
-                  }}>
-                  <div
-                    id='cancelIcon'
-                    style={{
-                      position: 'absolute',
-                      top: '0',
-                      right: '0',
-                      zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      backgroundColor: 'white',
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <HighlightOffIcon onClick={handleRemoveDLFile} />
-                  </div>
-                  <div
-                    style={{
-                      width: 'auto',
-                      height: '150px',
-                      overflow: 'hidden',
-                      display: 'flex',
-                    }}>
-                    {typeof dlFile === 'string' &&
-                    ['pdf', 'doc', 'docx'].includes(
-                      dlFile.split('.').pop().toLowerCase()
-                    ) ? (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          height: '100%',
-                        }}>
-                        {dlFile.toLowerCase().includes('pdf') ? (
-                          <PictureAsPdf
-                            style={{
-                              color: 'red',
-                              cursor: 'pointer',
-                              display: 'block',
-                              fontSize: '137px',
-                              margin: 'auto',
-                            }}
-                            onClick={() => window.open(`${BASE_URL}${dlFile}`)}
-                          />
-                        ) : (
-                          <DescriptionIcon
-                            style={{
-                              color: 'blue',
-                              cursor: 'pointer',
-                              display: 'block',
-                              fontSize: '137px',
-                              margin: 'auto',
-                            }}
-                            onClick={() => window.open(`${BASE_URL}${dlFile}`)}
-                          />
-                        )}
-                      </div>
-                    ) : (
-                      <img
-                        src={`${BASE_URL}${dlFile}`}
-                        style={{ height: '100px' }}
-                      />
-                    )}
-                  </div>
-                </div>
-              )}
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n?._class}
+                    </TableCell>
 
-              {previewDLFile ? (
-                <div
-                  style={{
-                    width: 'auto',
-                    height: '150px',
-                    overflow: 'hidden',
-                  }}>
-                  {fileExtDLName &&
-                  ['pdf', 'doc', 'docx'].includes(fileExtDLName) ? (
-                    <div
-                      style={{
-                        display: 'flex',
-                        position: 'relative',
-                        width: 'fit-content',
-                      }}>
-                      <div
-                        id='cancelIcon'
-                        style={{
-                          position: 'absolute',
-                          top: '0',
-                          right: '0',
-                          zIndex: 1,
-                          color: 'red',
-                          cursor: 'pointer',
-                          backgroundColor: 'white',
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <HighlightOffIcon onClick={handleRemoveDLFile} />
-                      </div>
-                      {fileExtDLName === 'pdf' ? (
-                        <iframe
-                          src={previewDLFile}
-                          frameBorder='0'
-                          scrolling='auto'
-                          height='150px'
-                          width='150px'
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.fare_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.airline_commission_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.customer_commission_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.tax_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.service_charge}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.purchase_amount}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      component='th'
+                      scope='row'>
+                      {n.sales_amount}
+                    </TableCell>
+
+                    <TableCell
+                      className='p-4 md:p-16 border-1 border-gray px-5'
+                      align='center'
+                      component='th'
+                      scope='row'>
+                      <div>
+                        <Delete
+                          onClick={(event) => handleDeleteTicketPicsale(n.id)}
+                          className='cursor-pointer'
+                          style={{ color: 'red' }}
                         />
-                      ) : (
-                        <DescriptionIcon
-                          style={{
-                            color: 'blue',
-                            cursor: 'pointer',
-                            display: 'block',
-                            fontSize: '137px',
-                            margin: 'auto',
-                          }}
-                          onClick={() => window.open(previewDLFile)}
-                        />
-                      )}
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        display: 'flex',
-                        position: 'relative',
-                        width: 'fit-content',
-                      }}>
-                      <div
-                        id='cancelIcon'
-                        style={{
-                          position: 'absolute',
-                          top: '0',
-                          right: '0',
-                          zIndex: 1,
-                          color: 'red',
-                          cursor: 'pointer',
-                          backgroundColor: 'white',
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <HighlightOffIcon onClick={handleRemoveDLFile} />
                       </div>
-                      <img
-                        src={previewDLFile}
-                        style={{ height: '140px', width: '150px' }}
-                      />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                !dlFile && (
-                  <Box
-                    height={180}
-                    width={180}
-                    my={4}
-                    display='flex'
-                    alignItems='center'
-                    gap={4}
-                    p={2}
-                    style={{
-                      width: '150px',
-                      height: '70px',
-                      border: '1px solid red',
-                    }}
-                    className={clsx(
-                      classes.productImageUpload,
-                      'flex items-center justify-center relative w-128 h-128 rounded-16 mx-12 mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg'
-                    )}>
-                    <Typography className='text-sm font-700'>
-                      <span className='mr-4 text-xs text-red-500'>
-                        Note *(JPG, JPEG, PNG, PDF, GIF, DOC, DOCX)
-                      </span>
-                    </Typography>
-                  </Box>
-                )
-              )}
-            </div>
-          )}
-        />
-      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {
+            <Button
+              className='whitespace-nowrap mx-4 my-4 '
+              variant='contained'
+              color='secondary'
+              // disabled={_.isEmpty(dirtyFields) || !isValid}
+              onClick={handleSubmitTicketSale}>
+              Submit
+            </Button>
+          }
+        </div>
+      )} */}
     </div>
 
     // <div>

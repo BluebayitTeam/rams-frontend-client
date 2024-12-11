@@ -2,8 +2,6 @@ import { apiService as api } from 'app/store/apiService';
 import { createSelector } from '@reduxjs/toolkit';
 import FuseUtils from '@fuse/utils';
 import {
-	CREATE_TICKETDEPUTE,
-	DELETE_TICKETDEPUTE,
 	DELETE_TICKETDEPUTE_MULTIPLE,
 	DELETE_TICKETEDIT,
 	GET_TICKETDEPUTES,
@@ -55,7 +53,7 @@ const TicketeditApi = api
       }),
       updateTicketedit: build.mutation({
         query: (ticketedit) => ({
-          url: `${UPDATE_TICKETEDIT}${ticketedit.id}`,
+          url: `${UPDATE_TICKETEDIT}${ticketedit?.id}`,
           method: 'PUT',
           data: jsonToFormData(ticketedit),
         }),

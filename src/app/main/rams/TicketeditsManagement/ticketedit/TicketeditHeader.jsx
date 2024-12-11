@@ -5,14 +5,16 @@ import { useTheme } from "@emotion/react";
 import { motion } from 'framer-motion';
 import { Button, Icon, Link, Typography } from "@mui/material";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import { DeletedSuccessfully, UpdatedSuccessfully } from "src/app/@customHooks/notificationAlert";
+import { useDeleteTicketeditMutation, useUpdateTicketeditMutation } from "../TicketeditsApi";
 
 function TicketeditHeader() {
   const routeParams = useParams();
   const { ticketeditId } = routeParams;
 
   const [createTicketDepute] = useCreateTicketDeputeMutation();
-  const [saveTicketDepute] = useUpdateTicketDeputeMutation();
-  const [removeTicketDepute] = useDeleteTicketDeputeMutation();
+  const [saveTicketDepute] = useUpdateTicketeditMutation();
+  const [removeTicketetEdit] = useDeleteTicketeditMutation();
   const methods = useFormContext();
   const { formState, watch, getValues } = methods;
   const { isValid, dirtyFields } = formState;
@@ -21,10 +23,10 @@ function TicketeditHeader() {
   const { name, images, featuredImageId } = watch();
 
   const handleDelete = localStorage.getItem('deleteTicketedit');
-  const handleUpdate = localStorage.getItem('updateTicketedit');
 
   function handleUpdateTicketDepute() {
-    saveTicketDepute(getValues()).then(() => {
+
+    saveTicketDepute({ ...getValues(),id:getValues().customer}).then(() => {
       UpdatedSuccessfully();
       navigate(`/apps/ticketedit/ticketedits`);
     });
@@ -40,7 +42,7 @@ function TicketeditHeader() {
   }
 
   function handleRemoveTicketedit() {
-    removeTicketDepute(ticketeditId)
+    removeTicketetEdit(ticketeditId)
       .unwrap()
       .then(() => {
         DeletedSuccessfully();

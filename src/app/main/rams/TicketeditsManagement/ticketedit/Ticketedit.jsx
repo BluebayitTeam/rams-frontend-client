@@ -101,7 +101,10 @@ function Ticketedit() {
           content={
             <div className='p-16 '>
               <div className={tabValue !== 0 ? 'hidden' : ''}>
-                <TicketeditForm ticketeditId={ticketeditId} />
+                <TicketeditForm
+                  ticketedit={ticketedit}
+                  ticketeditId={ticketeditId}
+                />
               </div>
             </div>
           }

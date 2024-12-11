@@ -115,7 +115,6 @@ function TicketSaleForm(props) {
   const [iataTableData, setIataTableData] = useState([]);
   const [mtlTicketDetails, setMltTicketDetails] = useState([]);
 
-  console.log('mtlTicketDetails', mtlTicketDetails);
 
   const [createTicketSale] = useCreateTicketSaleMutation();
   const [createTicketSingleSale] = useCreateTicketSingleSaleMutation();
@@ -392,7 +391,7 @@ function TicketSaleForm(props) {
       )}
 
       <div className='flex flex-wrap md:flex-nowrap w-full'>
-        <div className='w-full md:w-1/2 px-2'>
+        <div className=' px-2'>
           <CustomDatePicker
             name='issue_date'
             label='Issue Date'
@@ -400,7 +399,7 @@ function TicketSaleForm(props) {
             required
           />
         </div>
-        <div className='w-full md:w-1/2 px-2'>
+        <div className='  px-2'>
           <CustomDropdownField
             name='current_airway'
             label='Current Airway'
