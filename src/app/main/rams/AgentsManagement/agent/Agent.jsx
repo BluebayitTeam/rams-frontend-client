@@ -47,7 +47,6 @@ function Agent() {
 	} = useGetAgentQuery(agentId, {
 		skip: !agentId || agentId === 'new'
 	});
-	console.log('agentId', agent, agentId);
 
 	const [tabValue, setTabValue] = useState(0);
 

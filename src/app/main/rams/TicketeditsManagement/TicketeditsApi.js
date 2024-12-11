@@ -23,10 +23,12 @@ const TicketeditApi = api
   .injectEndpoints({
     endpoints: (build) => ({
       getTicketedits: build.query({
-        query: ({ page, size }) => ({
+        
+        query: ({ page, size, searchKey }) => ({
           url: GET_TICKETEDITS,
-          params: { page, size },
+          params: { page, size, searchKey },
         }),
+
         providesTags: ['ticketedits'],
       }),
       deleteTicketedits: build.mutation({

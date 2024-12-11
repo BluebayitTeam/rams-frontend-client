@@ -58,17 +58,15 @@ function TicketeditsTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(50);
 	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetTicketeditsQuery({ ...pageAndSize });
+	const { data, isLoading, refetch } = useGetTicketeditsQuery({
+    ...pageAndSize,
+    searchKey,
+  });
 	const totalData = useSelector(selectFilteredTicketedits(data));
 	const ticketedits = useSelector(
     selectFilteredTicketedits(data?.iata_tickets || [])
 	);
-
-
-
-	
-	console.log('ticketedits', searchKey);
-	let serialNumber = 1;
+let serialNumber = 1;
 
 	useEffect(() => {
 		refetch({ page, rowsPerPage });
