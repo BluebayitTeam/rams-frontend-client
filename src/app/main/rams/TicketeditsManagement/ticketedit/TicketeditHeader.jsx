@@ -78,25 +78,23 @@ function TicketeditHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {handleDelete === 'deleteTicketedit' && ticketeditId   !== 'new' && (
+        {handleDelete === 'Delete' && ticketeditId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
             Do you want to remove this ticketDepute?
           </Typography>
         )}
-        {handleDelete === 'deleteTicketedit' &&
-          ticketeditId   !== 'new' &&
-          (
-            <Button
-              className='whitespace-nowrap mx-4'
-              variant='contained'
-              color='secondary'
-              onClick={handleRemoveTicketDepute}
-              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
-              style={{ backgroundColor: '#ea5b78', color: 'white' }}>
-              Remove
-            </Button>
-          )}
-        {ticketeditId   === 'new' && (
+        {handleDelete === 'Delete' && ticketeditId !== 'new' && (
+          <Button
+            className='whitespace-nowrap mx-4'
+            variant='contained'
+            color='secondary'
+            onClick={handleRemoveTicketedit}
+            startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
+            style={{ backgroundColor: '#ea5b78', color: 'white' }}>
+            Remove
+          </Button>
+        )}
+        {ticketeditId === 'new' && (
           <Button
             className='whitespace-nowrap mx-4'
             variant='contained'
@@ -106,10 +104,9 @@ function TicketeditHeader() {
             Save
           </Button>
         )}
-        {handleDelete !== 'deleteTicketedit' &&
-          handleUpdate === 'updateTicketedit' &&
-          ticketeditId   !== 'new' &&
-          (
+        {handleDelete !== 'Delete' &&
+         
+          ticketeditId !== 'new' && (
             <Button
               className='whitespace-nowrap mx-4'
               color='secondary'
