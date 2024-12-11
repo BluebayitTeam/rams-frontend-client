@@ -1,63 +1,58 @@
-import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+import { useNavigate, useParams } from "react-router";
+import { useCreateTicketDeputeMutation, useDeleteTicketDeputeMutation, useUpdateTicketDeputeMutation } from "../../TicketDeputesManagement/TicketDeputesApi";
+import { useFormContext } from "react-hook-form";
+import { useTheme } from "@emotion/react";
 import { motion } from 'framer-motion';
-import { useFormContext } from 'react-hook-form';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Icon } from '@mui/material';
-import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
-import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import { Button, Icon, Link, Typography } from "@mui/material";
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 
-import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { useCreateTicketDeputeMutation, useDeleteTicketDeputeMutation, useUpdateTicketDeputeMutation } from '../../TicketDeputesManagement/TicketDeputesApi';
+function TicketeditHeader() {
+  const routeParams = useParams();
+  const { ticketeditId } = routeParams;
 
-/**
- * The ticketDepute header.
- */
-function TicketDeputeHeader() {
-	const routeParams = useParams();
-	const { ticketDeputeId } = routeParams;
-	const [createTicketDepute] = useCreateTicketDeputeMutation();
-	const [saveTicketDepute] = useUpdateTicketDeputeMutation();
-	const [removeTicketDepute] = useDeleteTicketDeputeMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteTicketDepute');
-	const handleUpdate = localStorage.getItem('updateTicketDepute');
+  const [createTicketDepute] = useCreateTicketDeputeMutation();
+  const [saveTicketDepute] = useUpdateTicketDeputeMutation();
+  const [removeTicketDepute] = useDeleteTicketDeputeMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
 
-	function handleUpdateTicketDepute() {
-		saveTicketDepute(getValues()).then((data) => {
-			UpdatedSuccessfully();
-			navigate(`/apps/ticketedit/ticketedits`);
-		});
-	}
+  const handleDelete = localStorage.getItem('deleteTicketedit');
+  const handleUpdate = localStorage.getItem('updateTicketedit');
 
-	function handleCreateTicketDepute() {
-		createTicketDepute(getValues())
-			.unwrap()
-			.then((data) => {
-				AddedSuccessfully();
+  function handleUpdateTicketDepute() {
+    saveTicketDepute(getValues()).then(() => {
+      UpdatedSuccessfully();
+      navigate(`/apps/ticketedit/ticketedits`);
+    });
+  }
 
-				navigate(`/apps/ticketedit/ticketedits`);
-			});
-	}
+  function handleCreateTicketDepute() {
+    createTicketDepute(getValues())
+      .unwrap()
+      .then(() => {
+        AddedSuccessfully();
+        navigate(`/apps/ticketedit/ticketedits`);
+      });
+  }
 
-	function handleRemoveTicketDepute(dispatch) {
-		removeTicketDepute(ticketDeputeId);
-		DeletedSuccessfully();
-		navigate('/apps/ticketedit/ticketedits');
-	}
+  function handleRemoveTicketedit() {
+    removeTicketDepute(ticketeditId)
+      .unwrap()
+      .then(() => {
+        DeletedSuccessfully();
+        navigate('/apps/ticketedit/ticketedits');
+      });
+  }
 
-	function handleCancel() {
-		navigate(`/apps/ticketedit/ticketedits`);
-	}
+  function handleCancel() {
+    navigate(`/apps/ticketedit/ticketedits`);
+  }
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0'>
         <motion.div
@@ -83,14 +78,14 @@ function TicketDeputeHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}>
-        {handleDelete === 'deleteTicketDepute' && ticketDeputeId !== 'new' && (
+        {handleDelete === 'deleteTicketedit' && ticketeditId   !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
             Do you want to remove this ticketDepute?
           </Typography>
         )}
-        {handleDelete === 'deleteTicketDepute' &&
-          ticketDeputeId !== 'new' &&
-          hasPermission('DEPARTMENT_DELETE') && (
+        {handleDelete === 'deleteTicketedit' &&
+          ticketeditId   !== 'new' &&
+          (
             <Button
               className='whitespace-nowrap mx-4'
               variant='contained'
@@ -101,7 +96,7 @@ function TicketDeputeHeader() {
               Remove
             </Button>
           )}
-        {ticketDeputeId === 'new' && hasPermission('DEPARTMENT_CREATE') && (
+        {ticketeditId   === 'new' && (
           <Button
             className='whitespace-nowrap mx-4'
             variant='contained'
@@ -111,10 +106,10 @@ function TicketDeputeHeader() {
             Save
           </Button>
         )}
-        {handleDelete !== 'deleteTicketDepute' &&
-          handleUpdate === 'updateTicketDepute' &&
-          ticketDeputeId !== 'new' &&
-          hasPermission('DEPARTMENT_UPDATE') && (
+        {handleDelete !== 'deleteTicketedit' &&
+          handleUpdate === 'updateTicketedit' &&
+          ticketeditId   !== 'new' &&
+          (
             <Button
               className='whitespace-nowrap mx-4'
               color='secondary'
@@ -136,4 +131,4 @@ function TicketDeputeHeader() {
   );
 }
 
-export default TicketDeputeHeader;
+export default TicketeditHeader;
