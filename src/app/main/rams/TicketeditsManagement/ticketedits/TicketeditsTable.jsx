@@ -226,13 +226,7 @@ let serialNumber = 1;
                   tabIndex={-1}
                   key={n.id}
                   selected={isSelected}>
-                  {/* <TableCell className="w-40 md:w-64 text-center" padding="none">
-										<Checkbox
-											checked={isSelected}
-											onClick={ticketeditEvent => ticketeditEvent.stopPropagation()}
-											onChange={ticketeditEvent => handleCheck(ticketeditEvent, n.id)}
-										/>
-									</TableCell> */}
+
 
                   <TableCell
                     className='w-40 md:w-64 border-t-1  border-gray-200'
