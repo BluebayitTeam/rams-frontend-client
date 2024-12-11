@@ -19,6 +19,8 @@ import TicketeditsTableHead from './TicketeditsTableHead';
 import { selectFilteredTicketedits, useGetTicketeditsQuery } from '../TicketeditsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 import moment from 'moment';
+import { SEARCH_TICKETEDIT } from 'src/app/constant/constants';
+import axios from 'axios';
 
 /**
  * The ticketedits table.
@@ -33,7 +35,12 @@ function TicketeditsTable(props) {
 	const totalData = useSelector(selectFilteredTicketedits(data));
 	const ticketedits = useSelector(
     selectFilteredTicketedits(data?.iata_tickets || [])
-  );
+	);
+
+
+
+	
+	console.log('ticketedits', searchKey);
 	let serialNumber = 1;
 
 	useEffect(() => {
