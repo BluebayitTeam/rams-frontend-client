@@ -1,215 +1,82 @@
-/* eslint-disable no-nested-ternary */
+import React, { useState } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TablePagination,
+} from '@mui/material';
+import Pagination from '@mui/material/Pagination';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import _ from '@lodash';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import withRouter from '@fuse/core/withRouter';
-import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector, useDispatch } from 'react-redux';
-import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Pagination } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import TicketeditsTableHead from './TicketeditsTableHead';
-import { selectFilteredTicketedits, useGetTicketeditsQuery } from '../TicketeditsApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
-import moment from 'moment';
+import EmployeesTableHead from './EmployeesTableHead';
 
-import { makeStyles } from '@mui/styles';
+const BASE_URL = 'https://example.com/'; // Replace with your actual base URL
 
-/**
- * The ticketedits table.
- */
+const EmployeeTable = ({
+  employees,
+  order,
+  selected,
+  handleSelectAllClick,
+  handleRequestSort,
+  handleUpdateEmployee,
+  handlePagination,
+  rowsPerPageOptions,
+  totalPages,
+  totalElements,
+  rowsPerPage,
+  page,
+  classes,
+  UserPermissions,
+  EMPLOYEE_UPDATE,
+}) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [imgUrl, setImgUrl] = useState('');
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    position: 'fixed',
-    bottom: 0,
-    backgroundColor: '#fff',
-    padding: '10px 20px',
-    zIndex: 1000,
-    
-    width: '75%',
-	},
-	
-	tableHead: {
-    position: 'sticky',
-    top: 0,
-    zIndex: 100,
-    backgroundColor: '#fff',
-  },
-  paginationContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    padding: '0 20px',
-  },
-  pagination: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-  },
-}));
+  const showImage = (url) => {
+    setImgUrl(url);
+    setOpenModal(true);
+  };
 
+  return (
+    <div className='w-full flex flex-col'>
+      {/* Image Modal */}
+      <Modal
+        open={openModal}
+        className={classes.modal}
+        onClose={() => {
+          setOpenModal(false);
+          setImgUrl('');
+        }}>
+        <div className='imgContainer'>
+          <CloseIcon
+            className='closeIcon'
+            fontSize='large'
+            onClick={() => {
+              setOpenModal(false);
+              setImgUrl('');
+            }}
+          />
+          <img
+            src={imgUrl || '/assets/images/userImg/user.png'}
+            alt='Employee'
+          />
+        </div>
+      </Modal>
 
-function TicketeditsTable(props) {
-	const dispatch = useDispatch();
-	const { navigate, searchKey } = props;
-	  const classes = useStyles();
-
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(50);
-	const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-	const { data, isLoading, refetch } = useGetTicketeditsQuery({
-    ...pageAndSize,
-    searchKey,
-  });
-	const totalData = useSelector(selectFilteredTicketedits(data));
-	const ticketedits = useSelector(
-    selectFilteredTicketedits(data?.iata_tickets || [])
-	);
-let serialNumber = 1;
-
-	useEffect(() => {
-		refetch({ page, rowsPerPage });
-	}, [page, rowsPerPage]);
-
-	useEffect(() => {
-		refetch({ searchKey });
-	}, [searchKey]);
-	const [selected, setSelected] = useState([]);
-
-	const [tableOrder, setTableOrder] = useState({
-		direction: 'asc',
-		id: ''
-	});
-		const user_role = localStorage.getItem('user_role');
-
-
-	function handleRequestSort(event, property) {
-		const newOrder = { id: property, direction: 'desc' };
-
-		if (tableOrder.id === property && tableOrder.direction === 'desc') {
-			newOrder.direction = 'asc';
-		}
-
-		setTableOrder(newOrder);
-	}
-
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(ticketedits.map((n) => n.id));
-			return;
-		}
-
-		setSelected([]);
-	}
-
-	function handleDeselect() {
-		setSelected([]);
-	}
-
-	function handleClick(item) {
-		navigate(`/apps/ticketedit/ticketedits/${item.id}/${item.handle}`);
-	}
-
-	function handleUpdateTicketedit(item, event) {
-		localStorage.removeItem('deleteTicketedit');
-		localStorage.setItem('updateTicketedit', event);
-		navigate(`/apps/ticketedit/ticketedits/${item.id}/${item.handle}`);
-	}
-
-	function handleDeleteTicketedit(item, event) {
-		localStorage.removeItem('updateTicketedit');
-		localStorage.setItem('deleteTicketedit', event);
-		navigate(`/apps/ticketedit/ticketedits/${item.id}/${item.handle}`);
-	}
-
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-
-		setSelected(newSelected);
-	}
-
-	// pagination
-	const handlePagination = (e, handlePage) => {
-		setPageAndSize({ ...pageAndSize, page: handlePage });
-		setPage(handlePage - 1);
-	};
-
-	function handleChangePage(event, value) {
-		setPage(value);
-		setPageAndSize({ ...pageAndSize, page: value + 1 });
-	}
-
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(+event.target.value);
-		setPageAndSize({ ...pageAndSize, size: event.target.value });
-	}
-
-	if (isLoading) {
-		return (
-			<div className="flex items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
-
-	if (ticketedits?.length === 0) {
-		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1, transition: { delay: 0.1 } }}
-				className="flex flex-1 items-center justify-center h-full"
-			>
-				<Typography
-					color="text.secondary"
-					variant="h5"
-				>
-					There are no ticketedits!
-				</Typography>
-			</motion.div>
-		);
-	}
-
-	return (
-    <div className='w-full flex flex-col min-h-full px-10'>
-      <div className='grow overflow-x-auto overflow-y-auto'>
+      {/* Employee Table */}
+      <FuseScrollbars className='flex-grow overflow-x-auto'>
         <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
           <TicketeditsTableHead
-            style={{
-              position: 'sticky',
-              top: 0,
-              backgroundColor: 'red',
-              zIndex: 10,
-            }}
             selectedTicketeditIds={selected}
             tableOrder={tableOrder}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={ticketedits.length}
             onMenuItemClick={handleDeselect}
-            className={classes.tableHead}
           />
-
           <TableBody>
             {_.orderBy(
               ticketedits,
@@ -418,12 +285,10 @@ let serialNumber = 1;
             })}
           </TableBody>
         </Table>
-      </div>
-      <br />
-      <br />
-      <br />
+      </FuseScrollbars>
 
-      <div className={classes.root} id='pagiContainer'>
+      {/* Pagination */}
+      <div className={classes.root}>
         <Pagination
           count={totalData?.total_pages}
           page={page + 1}
@@ -454,6 +319,6 @@ let serialNumber = 1;
       </div>
     </div>
   );
-}
+};
 
-export default withRouter(TicketeditsTable);
+export default EmployeeTable;
