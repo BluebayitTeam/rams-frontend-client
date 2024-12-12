@@ -84,8 +84,6 @@ function PassengerSummaryUpdatesTable(props) {
   let serialNumber = 1;
 
   const [rows, setRows] = useState([]);
-  	const [tableClm, setTableClm] = useState({});
-
   useEffect(() => {
     // Fetch data with specific page and size when component mounts or when page and size change
     refetch({ page, rowsPerPage });
@@ -228,6 +226,7 @@ function PassengerSummaryUpdatesTable(props) {
       .then((data) => setTableClm(data.passengers[0] || {}))
       .catch(() => setTableClm({}));
   }, []);
+	const [tableClm, setTableClm] = useState({});
 
   const ModifiedClm = Object.keys(tableClm);
 
@@ -374,13 +373,13 @@ function PassengerSummaryUpdatesTable(props) {
         });
     }
   };
-  // if (isLoading) {
-  //   return (
-  //     <div className='flex items-center justify-center h-full'>
-  //       <FuseLoading />
-  //     </div>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
   if (passengers?.length === 0) {
     return (
