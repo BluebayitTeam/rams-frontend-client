@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles, Pagination, TableCell } from '@mui/material';
+import {  Pagination, TableCell } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
@@ -25,6 +25,7 @@ import { BASE_URL, GET_PASSENGER_UPDATES, SEARCH_PROFESSION, UPDATE_PASSENGER_UP
 import PassengerSummaryUpdatesTableHead from './PassengerSummaryUpdatesTableHead';
 import { selectFilteredPassengerSummaryUpdates, useGetPassengerSummaryUpdatesQuery } from '../PassengerSummaryUpdatesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { makeStyles } from '@mui/styles';
 
 
 const useStyles = makeStyles(() => ({
@@ -83,6 +84,8 @@ function PassengerSummaryUpdatesTable(props) {
   let serialNumber = 1;
 
   const [rows, setRows] = useState([]);
+  	const [tableClm, setTableClm] = useState({});
+
   useEffect(() => {
     // Fetch data with specific page and size when component mounts or when page and size change
     refetch({ page, rowsPerPage });
@@ -371,13 +374,13 @@ function PassengerSummaryUpdatesTable(props) {
         });
     }
   };
-  if (isLoading) {
-    return (
-      <div className='flex items-center justify-center h-full'>
-        <FuseLoading />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className='flex items-center justify-center h-full'>
+  //       <FuseLoading />
+  //     </div>
+  //   );
+  // }
 
   if (passengers?.length === 0) {
     return (
