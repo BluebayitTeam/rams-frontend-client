@@ -68,11 +68,11 @@ function PassengerSummaryUpdatesTable(props) {
 
   const [rowId, setRowId] = useState('');
 
-  console.log('dataPrint', data);
+ 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const totalData = useSelector(selectFilteredPassengerSummaryUpdates(data));
-  const passengers = useSelector(selectFilteredPassengerSummaryUpdates(data?.passengers));
+  const passengers = useSelector(selectFilteredPassengerSummaryUpdates(data?.passengersTest));
 
   useEffect(() => {
     refetch({ searchKey });
