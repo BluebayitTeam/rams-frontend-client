@@ -12,7 +12,7 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
 import ReportClmModel from './passengerSummaryUpdateClm/models/PassengerSummaryUpdateClmModel';
 
-export const addTagTypes = ['reportClms'];
+export const addTagTypes = ['passengerSummaryUpdateClms'];
 const ReportClmApi = api
   .enhanceEndpoints({
     addTagTypes,
@@ -21,23 +21,23 @@ const ReportClmApi = api
     endpoints: (build) => ({
       getReportClms: build.query({
         query: () => ({ url: GET_CLIENTS }),
-        providesTags: ['reportClms'],
+        providesTags: ['passengerSummaryUpdateClms'],
       }),
 
       deleteReportClms: build.mutation({
-        query: (reportClmIds) => ({
+        query: (passengerSummaryUpdateClmIds) => ({
           url: ALL_USERS,
           method: 'DELETE',
-          data: reportClmIds,
+          data: passengerSummaryUpdateClmIds,
         }),
-        invalidatesTags: ['reportClms'],
+        invalidatesTags: ['passengerSummaryUpdateClms'],
       }),
 
       getReportClm: build.query({
-        query: (reportClmId) => ({
-          url: `${GET_REPORT_COLUMN_BY_ID}${reportClmId}`,
+        query: (passengerSummaryUpdateClmId) => ({
+          url: `${GET_REPORT_COLUMN_BY_ID}${passengerSummaryUpdateClmId}`,
         }),
-        providesTags: ['reportClms'],
+        providesTags: ['passengerSummaryUpdateClms'],
       }),
       updateReportClm: build.mutation({
         query: (data) => ({
@@ -46,7 +46,7 @@ const ReportClmApi = api
           data,
         }),
 
-        invalidatesTags: ['reportClms'],
+        invalidatesTags: ['passengerSummaryUpdateClms'],
       }),
       createReportClm: build.mutation({
         query: (newReportClm) => ({
@@ -54,7 +54,7 @@ const ReportClmApi = api
           method: 'POST',
           data: jsonToFormData(ReportClmModel(newReportClm)),
         }),
-        invalidatesTags: ['reportClms'],
+        invalidatesTags: ['passengerSummaryUpdateClms'],
       }),
     }),
     overrideExisting: false,
@@ -69,11 +69,11 @@ export const {
   useCreateReportClmMutation,
 } = ReportClmApi;
 
-export const selectFilteredReportClms = (reportClms) =>
+export const selectFilteredReportClms = (passengerSummaryUpdateClms) =>
   createSelector([selectSearchText], (searchText) => {
     if (searchText?.length === 0) {
-      return reportClms;
+      return passengerSummaryUpdateClms;
     }
 
-    return FuseUtils.filterArrayByString(reportClms, searchText);
+    return FuseUtils.filterArrayByString(passengerSummaryUpdateClms, searchText);
   });
