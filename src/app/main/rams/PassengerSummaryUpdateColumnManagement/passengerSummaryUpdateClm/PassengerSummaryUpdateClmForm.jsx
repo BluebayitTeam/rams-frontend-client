@@ -8,7 +8,7 @@ import {
 	getCities,
 	getCountries,
 	getDepartments,
-	getPassengerSummaryUpdateClms,
+	// getPassengerSummaryUpdateClms,
 	getRoles,
 	getThanas,
 	getThanasBasedOnCity
@@ -20,12 +20,12 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { genders } from 'src/app/@data/data';
 
-import {
-	BASE_URL,
-	CHECK_EMAIL_PASSENGERSUMMARYUPDATECLM,
-	CHECK_PRIMARY_PHONE,
-	CHECK_USERNAME_PASSENGERSUMMARYUPDATECLM
-} from 'src/app/constant/constants';
+// import {
+// 	BASE_URL,
+// 	CHECK_EMAIL_PASSENGERSUMMARYUPDATECLM,
+// 	CHECK_PRIMARY_PHONE,
+// 	CHECK_USERNAME_PASSENGERSUMMARYUPDATECLM
+// } from 'src/app/constant/constants';
 import FileUpload from 'src/app/@components/FileUploader';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { useParams } from 'react-router';
@@ -88,48 +88,48 @@ function PassengerSummaryUpdateClmForm(props) {
 		setValue('country', countryID);
 	};
 
-	const handleCheckUserName = async (name) => {
-		const response = await axios.get(
-			`${CHECK_USERNAME_PASSENGERSUMMARYUPDATECLM}?username=${name}&id=${passengersummaryupdateclmId === 'new' ? '' : passengersummaryupdateclmId}&type=${passengersummaryupdateclmId === 'new' ? 'create' : 'update'}`
-		);
+	// const handleCheckUserName = async (name) => {
+	// 	const response = await axios.get(
+	// 		`${CHECK_USERNAME_PASSENGERSUMMARYUPDATECLM}?username=${name}&id=${passengersummaryupdateclmId === 'new' ? '' : passengersummaryupdateclmId}&type=${passengersummaryupdateclmId === 'new' ? 'create' : 'update'}`
+	// 	);
 
-		if (response?.data.username_exists) {
-			setError('username', {
-				type: 'manual',
-				message: 'User Name Already Exists'
-			});
-		}
-	};
+	// 	if (response?.data.username_exists) {
+	// 		setError('username', {
+	// 			type: 'manual',
+	// 			message: 'User Name Already Exists'
+	// 		});
+	// 	}
+	// };
 
-	const handleCheckEmail = async (email) => {
-		if (!email.trim()) {
-			// Optionally clear the email error if it's empty
-			setError('email', {
-				type: 'manual',
-				message: 'Email cannot be empty'
-			});
-			return;
-		}
+	// const handleCheckEmail = async (email) => {
+	// 	if (!email.trim()) {
+	// 		// Optionally clear the email error if it's empty
+	// 		setError('email', {
+	// 			type: 'manual',
+	// 			message: 'Email cannot be empty'
+	// 		});
+	// 		return;
+	// 	}
 
-		try {
-			const response = await axios.get(
-				`${CHECK_EMAIL_PASSENGERSUMMARYUPDATECLM}?email=${email}&id=${passengersummaryupdateclmId === 'new' ? '' : passengersummaryupdateclmId}&type=${passengersummaryupdateclmId === 'new' ? 'create' : 'update'}`
-			);
+	// 	try {
+	// 		const response = await axios.get(
+	// 			`${CHECK_EMAIL_PASSENGERSUMMARYUPDATECLM}?email=${email}&id=${passengersummaryupdateclmId === 'new' ? '' : passengersummaryupdateclmId}&type=${passengersummaryupdateclmId === 'new' ? 'create' : 'update'}`
+	// 		);
 
-			if (response?.data.email_exists) {
-				setError('email', {
-					type: 'manual',
-					message: 'Email Already Exists'
-				});
-			} else {
-				// Optionally clear the error if the email doesn't exist
-				clearErrors('email');
-			}
-		} catch (error) {
-			// Handle error, possibly log it or show a user-friendly message
-			console.error('Error checking email:', error);
-		}
-	};
+	// 		if (response?.data.email_exists) {
+	// 			setError('email', {
+	// 				type: 'manual',
+	// 				message: 'Email Already Exists'
+	// 			});
+	// 		} else {
+	// 			// Optionally clear the error if the email doesn't exist
+	// 			clearErrors('email');
+	// 		}
+	// 	} catch (error) {
+	// 		// Handle error, possibly log it or show a user-friendly message
+	// 		console.error('Error checking email:', error);
+	// 	}
+	// };
 
 	const handleCheckPhone = async () => {
 		const formattedPhoneNumber = `${watch('country_code1')}${watch('primary_phone')}`;

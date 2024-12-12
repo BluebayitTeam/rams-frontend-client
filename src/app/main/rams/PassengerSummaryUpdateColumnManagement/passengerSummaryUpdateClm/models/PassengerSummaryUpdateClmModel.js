@@ -1,6 +1,6 @@
 import _ from '@lodash';
 
-const EmployeeModel = (data) =>
+const PassengerSummaryUpdateClmModel = (data) =>
 	_.defaults(data || {}, {
 		first_name: '',
 		logo: '',
@@ -10,4 +10,4 @@ const EmployeeModel = (data) =>
 
 		is_employee_active: true
 	});
-export default EmployeeModel;
+export default PassengerSummaryUpdateClmModel;
