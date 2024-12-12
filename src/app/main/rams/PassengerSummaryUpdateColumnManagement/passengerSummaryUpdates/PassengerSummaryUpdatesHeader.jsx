@@ -32,7 +32,7 @@ function PassengerSummaryUpdatesHeader(props) {
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}>
         <Typography className='text-24 md:text-32 font-extrabold tracking-tight'>
-          PassengerSummaryUpdates
+          Passenger Summary Update
         </Typography>
       </motion.span>
 
@@ -71,7 +71,9 @@ function PassengerSummaryUpdatesHeader(props) {
         </Paper>
 
         <ViewWeek
-          onClick={() => navigate(`/apps/column/columns/passengerSummaryUpdate`)}
+          onClick={() =>
+            navigate(`/apps/column/columns/passengerSummaryUpdate`)
+          }
           className='cursor-pointer mr-10 '
           style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
         />
