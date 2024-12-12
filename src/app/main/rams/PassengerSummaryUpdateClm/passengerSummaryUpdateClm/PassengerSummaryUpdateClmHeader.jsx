@@ -43,7 +43,7 @@ function PassengerSummaryUpdateClmHeader() {
     savePassengerSummaryUpdateClm({ passengerSummaryUpdateClms: filteredData, type: passengerSummaryUpdateClmId }).then(
       (data) => {
         if (passengerSummaryUpdateClmId === 'passenger') {
-          navigate(`/apps/passengerReport/passengerReports`);
+          navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates`);
         }
 
         if (passengerSummaryUpdateClmId === 'medical') {
@@ -129,7 +129,7 @@ function PassengerSummaryUpdateClmHeader() {
 
   function handleCancel() {
     if (passengerSummaryUpdateClmId === 'passenger') {
-      navigate(`/apps/passengerReport/passengerReports`);
+      navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates`);
     }
 
     if (passengerSummaryUpdateClmId === 'medical') {

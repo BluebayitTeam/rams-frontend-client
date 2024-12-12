@@ -73,7 +73,7 @@ function PassengerSummaryUpdatesHeader(props) {
         <ViewWeek
           onClick={() =>
             navigate(
-              `/apps/passengerSummaryUpdateClm/passengerSummaryUpdateClms`
+              `/apps/passengerSummaryUpdateClm/passengerSummaryUpdateClms/passenger`
             )
           }
           className='cursor-pointer mr-10 '

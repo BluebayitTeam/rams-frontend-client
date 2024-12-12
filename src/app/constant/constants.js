@@ -2038,7 +2038,7 @@ export const GET_EXPIRABLE_VISA_NOTOFICATION_REPORT_WITHOUT_PG = `${BASE_URL}/ex
 
 // Passenger Summary Update
 
-export const UPDATE_PASSENGER_SUMMARY_UPDATE_CLM = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_passenger/update`;
+export const UPDATE_PASSENGER_SUMMARY_UPDATE_CLM = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_passenger/update/`;
 
 export const GET_PASSENGER_SUMMARY_UPDATE_CLM_ID = `${BASE_URL}/table_column_settings_for_report/api/v1/table_column_settings_for_passenger/`;
 
