@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import EmployeeApp from './EmployeeApp';
+import EmployeeApp from './PassengerSummaryUpdateClmApp';
 import Employees from './passengerSummaryUpdateClms/PassengerSummaryUpdateClms';
 import Employee from './passengerSummaryUpdateClm/PassengerSummaryUpdateClm';
 
