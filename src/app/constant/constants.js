@@ -2040,7 +2040,7 @@ export const GET_EXPIRABLE_VISA_NOTOFICATION_REPORT_WITHOUT_PG = `${BASE_URL}/ex
 
 export const UPDATE_PASSENGER_SUMMARY_UPDATE_CLM = `${BASE_URL}/passenger_update_column/api/v1/passenger_update_column/update/`;
 
-export const GET_PASSENGER_SUMMARY_UPDATE_CLM_ = `${BASE_URL}/passenger_update_column/api/v1/passenger_update_column/all/`;
+export const GET_PASSENGER_SUMMARY_UPDATE_CLM_ID = `${BASE_URL}/passenger_update_column/api/v1/passenger_update_column/all/`;
 
 export const GET_PASSENGER_UPDATES = `${BASE_URL}/passenger_update/api/v1/passenger_update/all/`;
 

@@ -5,7 +5,9 @@ import {
   ALL_USERS,
   CREATE_CLIENT,
   GET_CLIENTS,
+  GET_PASSENGER_SUMMARY_UPDATE_CLM_ID,
   GET_REPORT_COLUMN_BY_ID,
+  UPDATE_PASSENGER_SUMMARY_UPDATE_CLM,
   UPDATE_REPORT_COLUMN,
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
@@ -35,13 +37,13 @@ const PassengerSummaryUpdateClmApi = api
 
       getPassengerSummaryUpdateClm: build.query({
         query: (passengerSummaryUpdateClmId) => ({
-          url: `${GET_REPORT_COLUMN_BY_ID}${passengerSummaryUpdateClmId}`,
+          url: `${GET_PASSENGER_SUMMARY_UPDATE_CLM_ID}${passengerSummaryUpdateClmId}`,
         }),
         providesTags: ['passengerSummaryUpdateClms'],
       }),
       updatePassengerSummaryUpdateClm: build.mutation({
         query: (data) => ({
-          url: `${UPDATE_REPORT_COLUMN}${data?.type}`,
+          url: `${UPDATE_PASSENGER_SUMMARY_UPDATE_CLM}${data?.type}`,
           method: 'PUT',
           data,
         }),
@@ -52,7 +54,9 @@ const PassengerSummaryUpdateClmApi = api
         query: (newPassengerSummaryUpdateClm) => ({
           url: CREATE_CLIENT,
           method: 'POST',
-          data: jsonToFormData(PassengerSummaryUpdateClmModel(newPassengerSummaryUpdateClm)),
+          data: jsonToFormData(
+            PassengerSummaryUpdateClmModel(newPassengerSummaryUpdateClm)
+          ),
         }),
         invalidatesTags: ['passengerSummaryUpdateClms'],
       }),
