@@ -230,14 +230,17 @@ function TicketeditsTableHead(props) {
 
 	return (
     <TableHead >
-      <TableRow className="h-48 sm:h-64 bg-gray-800">
+      <TableRow className="h-48 sm:h-64" >
         {rows.map((row, index, array) => {
           return (
             <TableCell
               sx={{
-              position:'fixed'
+                backgroundColor: (theme) =>
+                  theme.palette.mode === 'light'
+                    ? lighten(theme.palette.background.default, 0.4)
+                    : lighten(theme.palette.background.default, 0.02),
               }}
-              className='p-4 md:p-16 whitespace-nowrap '
+              className='p-4 md:p-16 whitespace-nowrap'
               key={row.id}
               align={row.align}
               padding={row.disablePadding ? 'none' : 'normal'}
