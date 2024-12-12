@@ -10,21 +10,21 @@ import {
 } from 'src/app/constant/constants';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import { selectSearchText } from './store/searchTextSlice';
-import ReportClmModel from './passengerSummaryUpdateClm/models/PassengerSummaryUpdateClmModel';
+import PassengerSummaryUpdateClmModel from './passengerSummaryUpdateClm/models/PassengerSummaryUpdateClmModel';
 
 export const addTagTypes = ['passengerSummaryUpdateClms'];
-const ReportClmApi = api
+const PassengerSummaryUpdateClmApi = api
   .enhanceEndpoints({
     addTagTypes,
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getReportClms: build.query({
+      getPassengerSummaryUpdateClms: build.query({
         query: () => ({ url: GET_CLIENTS }),
         providesTags: ['passengerSummaryUpdateClms'],
       }),
 
-      deleteReportClms: build.mutation({
+      deletePassengerSummaryUpdateClms: build.mutation({
         query: (passengerSummaryUpdateClmIds) => ({
           url: ALL_USERS,
           method: 'DELETE',
@@ -33,13 +33,13 @@ const ReportClmApi = api
         invalidatesTags: ['passengerSummaryUpdateClms'],
       }),
 
-      getReportClm: build.query({
+      getPassengerSummaryUpdateClm: build.query({
         query: (passengerSummaryUpdateClmId) => ({
           url: `${GET_REPORT_COLUMN_BY_ID}${passengerSummaryUpdateClmId}`,
         }),
         providesTags: ['passengerSummaryUpdateClms'],
       }),
-      updateReportClm: build.mutation({
+      updatePassengerSummaryUpdateClm: build.mutation({
         query: (data) => ({
           url: `${UPDATE_REPORT_COLUMN}${data?.type}`,
           method: 'PUT',
@@ -48,28 +48,28 @@ const ReportClmApi = api
 
         invalidatesTags: ['passengerSummaryUpdateClms'],
       }),
-      createReportClm: build.mutation({
-        query: (newReportClm) => ({
+      createPassengerSummaryUpdateClm: build.mutation({
+        query: (newPassengerSummaryUpdateClm) => ({
           url: CREATE_CLIENT,
           method: 'POST',
-          data: jsonToFormData(ReportClmModel(newReportClm)),
+          data: jsonToFormData(PassengerSummaryUpdateClmModel(newPassengerSummaryUpdateClm)),
         }),
         invalidatesTags: ['passengerSummaryUpdateClms'],
       }),
     }),
     overrideExisting: false,
   });
-export default ReportClmApi;
+export default PassengerSummaryUpdateClmApi;
 export const {
-  useGetReportClmsQuery,
-  useDeleteReportClmsMutation,
-  useGetReportClmQuery,
-  useUpdateReportClmMutation,
-  useDeleteReportClmMutation,
-  useCreateReportClmMutation,
-} = ReportClmApi;
+  useGetPassengerSummaryUpdateClmsQuery,
+  useDeletePassengerSummaryUpdateClmsMutation,
+  useGetPassengerSummaryUpdateClmQuery,
+  useUpdatePassengerSummaryUpdateClmMutation,
+  useDeletePassengerSummaryUpdateClmMutation,
+  useCreatePassengerSummaryUpdateClmMutation,
+} = PassengerSummaryUpdateClmApi;
 
-export const selectFilteredReportClms = (passengerSummaryUpdateClms) =>
+export const selectFilteredPassengerSummaryUpdateClms = (passengerSummaryUpdateClms) =>
   createSelector([selectSearchText], (searchText) => {
     if (searchText?.length === 0) {
       return passengerSummaryUpdateClms;
