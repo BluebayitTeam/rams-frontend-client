@@ -167,6 +167,7 @@ import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchApp
 import PassengerDeliveryAppConfig from '../rams/PassengerDeliveryReportManagement/PassengerDeliveryAppConfig';
 import TicketeditAppConfig from '../rams/TicketeditsManagement/TicketeditAppConfig';
 import PassengerSummaryUpdateAppConfig from '../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig';
+import PassengerSummaryUpdateClmAppConfig from '../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig';
 
 /**
  * The list of application configurations.
@@ -293,6 +294,7 @@ const appsConfigs = [
   CreditorReportAppConfig,
   ColumnAppConfig,
   ReportClmAppConfig,
+  PassengerSummaryUpdateClmAppConfig,
   MedicalAppConfig,
   ManPowerAppConfig,
   EmployeeAppConfig,
