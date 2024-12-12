@@ -37,12 +37,14 @@ function PassengerSummaryUpdatesTable(props) {
 
   const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
     ...pageAndSize,
-    searchKey,
+  
   });
+
+  console.log('dataPrint', data);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const totalData = useSelector(selectFilteredPassengerSummaryUpdates(data));
-  const passengerSummaryUpdates = useSelector(selectFilteredPassengerSummaryUpdates(data?.passengerSummaryUpdates));
+  const passengers = useSelector(selectFilteredPassengerSummaryUpdates(data?.passengers));
 
   useEffect(() => {
     refetch({ searchKey });
@@ -59,7 +61,7 @@ function PassengerSummaryUpdatesTable(props) {
     refetch({ page, rowsPerPage });
   }, [page, rowsPerPage]);
   useEffect(() => {
-    if (totalData?.passengerSummaryUpdates) {
+    if (totalData?.passengers) {
       const modifiedRow = [
         {
           id: 'sl',
@@ -70,7 +72,7 @@ function PassengerSummaryUpdatesTable(props) {
         },
       ];
 
-      Object.entries(totalData?.passengerSummaryUpdates[0] || {})
+      Object.entries(totalData?.passengers[0] || {})
         .filter(([key]) => key !== 'id' && key !== 'random_number')
         .map(([key]) => {
           modifiedRow.push({
@@ -96,7 +98,7 @@ function PassengerSummaryUpdatesTable(props) {
 
       setRows(modifiedRow);
     }
-  }, [totalData?.passengerSummaryUpdates, refetch]);
+  }, [totalData?.passengers, refetch]);
 
   const [selected, setSelected] = useState([]);
 
@@ -117,7 +119,7 @@ function PassengerSummaryUpdatesTable(props) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(passengerSummaryUpdates.map((n) => n.id));
+      setSelected(passengers.map((n) => n.id));
       return;
     }
 
@@ -129,19 +131,19 @@ function PassengerSummaryUpdatesTable(props) {
   }
 
   function _handleClick(item) {
-    navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates/${item.id}/${item.handle}`);
+    navigate(`/apps/passengerSummaryUpdate/passengers/${item.id}/${item.handle}`);
   }
 
   function handleUpdatePassengerSummaryUpdate(item, event) {
     localStorage.removeItem('deletePassengerSummaryUpdate');
     localStorage.setItem('updatePassengerSummaryUpdate', event);
-    navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates/${item.id}/${item.handle}`);
+    navigate(`/apps/passengerSummaryUpdate/passengers/${item.id}/${item.handle}`);
   }
 
   function handleDeletePassengerSummaryUpdate(item, event) {
     localStorage.removeItem('updatePassengerSummaryUpdate');
     localStorage.setItem('deletePassengerSummaryUpdate', event);
-    navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates/${item.id}/${item.handle}`);
+    navigate(`/apps/passengerSummaryUpdate/passengers/${item.id}/${item.handle}`);
   }
 
   // console.log('testDelete', handleDeletePassengerSummaryUpdate);
@@ -190,14 +192,14 @@ function PassengerSummaryUpdatesTable(props) {
     );
   }
 
-  if (passengerSummaryUpdates?.length === 0) {
+  if (passengers?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There are no passengerSummaryUpdates!
+          There are no passengers!
         </Typography>
       </motion.div>
     );
@@ -212,13 +214,13 @@ function PassengerSummaryUpdatesTable(props) {
             tableOrder={tableOrder}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={passengerSummaryUpdates?.length}
+            rowCount={passengers?.length}
             onMenuItemClick={handleDeselect}
             rows={rows}
           />
 
           <TableBody>
-            {_.orderBy(passengerSummaryUpdates, [tableOrder.id], [tableOrder.direction]).map(
+            {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction]).map(
               (n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (

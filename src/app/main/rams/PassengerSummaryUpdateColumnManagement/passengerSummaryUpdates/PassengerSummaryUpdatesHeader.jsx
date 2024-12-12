@@ -77,22 +77,7 @@ function PassengerSummaryUpdatesHeader(props) {
           className='cursor-pointer mr-10 '
           style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
         />
-        <motion.div
-          className='flex flex-grow-0'
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-          {hasPermission('DEMAND_CREATE') && (
-            <Button
-              className='mx-8'
-              variant='contained'
-              color='secondary'
-              component={NavLinkAdapter}
-              to='/apps/passengerSummaryUpdate/passengerSummaryUpdates/new'>
-              <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-              <span className='hidden sm:flex mx-8'>Add</span>
-            </Button>
-          )}
-        </motion.div>
+
       </div>
     </div>
   );
