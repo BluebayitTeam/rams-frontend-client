@@ -4,21 +4,23 @@ import { appSelector } from 'app/store/store';
 const initialState = '';
 
 export const searchTextSlice = createSlice({
-	name: 'employeeApp/searchText',
-	initialState,
-	reducers: {
-		resetSearchText: () => initialState,
-		setSearchText: {
-			reducer: (state, action) => action.payload,
-			prepare: (event) => ({
-				payload: event.target.value || '',
-				meta: undefined,
-				error: null
-			})
-		}
-	}
+  name: 'demandApp/searchText',
+  initialState,
+  reducers: {
+    resetSearchText: () => initialState,
+    setSearchText: {
+      reducer: (state, action) => action.payload,
+      prepare: (event) => ({
+        payload: event.target.value || '',
+        meta: undefined,
+        error: null,
+      }),
+    },
+  },
 });
 export const { setSearchText, resetSearchText } = searchTextSlice.actions;
-export const selectSearchText = appSelector((state) => state.employeeApp?.searchText);
+export const selectSearchText = appSelector(
+  (state) => state.demandApp?.searchText
+);
 const searchTextReducer = searchTextSlice.reducer;
 export default searchTextReducer;

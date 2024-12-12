@@ -1,11 +1,14 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useState } from 'react';
-import PassengerSummaryUpdateClmsHeader from './PassengerSummaryUpdateClmsHeader';
-import PassengerSummaryUpdateClmsTable from './PassengerSummaryUpdateClmsTable';
+import PassengerSummaryUpdatesHeader from './PassengerSummaryUpdatesHeader';
+import PassengerSummaryUpdatesTable from './PassengerSummaryUpdatesTable';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
-function PassengerSummaryUpdateClms() {
+/**
+ * The passengerSummaryUpdates page.
+ */
+function PassengerSummaryUpdates() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const [searchKey, setSearchKey] = useState('');
 	return (
@@ -16,13 +19,13 @@ function PassengerSummaryUpdateClms() {
         header: 'min-h-80 h-80',
       }}
       header={
-        hasPermission('PASSENGERSUMMARYUPDATECLM_LIST') && (
-          <PassengerSummaryUpdateClmsHeader searchKey={searchKey} setSearchKey={setSearchKey} />
+        hasPermission('DEMAND_LIST') && (
+          <PassengerSummaryUpdatesHeader searchKey={searchKey} setSearchKey={setSearchKey} />
         )
       }
       content={
-        hasPermission('PASSENGERSUMMARYUPDATECLM_LIST') && (
-          <PassengerSummaryUpdateClmsTable searchKey={searchKey} setSearchKey={setSearchKey} />
+        hasPermission('DEMAND_LIST') && (
+          <PassengerSummaryUpdatesTable searchKey={searchKey} setSearchKey={setSearchKey} />
         )
       }
       scroll={isMobile ? 'normal' : 'content'}
@@ -30,4 +33,4 @@ function PassengerSummaryUpdateClms() {
   );
 }
 
-export default PassengerSummaryUpdateClms;
+export default PassengerSummaryUpdates;

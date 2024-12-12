@@ -9,56 +9,54 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Icon } from '@mui/material';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import { AddedSuccessfully, DeletedSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
-import { useCreatePassengerSummaryUpdateClmMutation, useDeletePassengerSummaryUpdateClmMutation, useUpdatePassengerSummaryUpdateClmMutation } from '../PassengerSummaryUpdateClmsApi';
+import { useCreatePassengerSummaryUpdateMutation, useDeletePassengerSummaryUpdateMutation, useUpdatePassengerSummaryUpdateMutation } from '../PassengerSummaryUpdatesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
- * The passengersummaryupdateclm header.
+ * The passengerSummaryUpdate header.
  */
-function PassengerSummaryUpdateClmHeader() {
+function PassengerSummaryUpdateHeader() {
 	const routeParams = useParams();
-	const { passengersummaryupdateclmId } = routeParams;
-	const [createPassengerSummaryUpdateClm] = useCreatePassengerSummaryUpdateClmMutation();
-	const [savePassengerSummaryUpdateClm] = useUpdatePassengerSummaryUpdateClmMutation();
-	const [removePassengerSummaryUpdateClm] = useDeletePassengerSummaryUpdateClmMutation();
+	const { passengerSummaryUpdateId } = routeParams;
+	const [createPassengerSummaryUpdate] = useCreatePassengerSummaryUpdateMutation();
+	const [savePassengerSummaryUpdate] = useUpdatePassengerSummaryUpdateMutation();
+	const [removePassengerSummaryUpdate] = useDeletePassengerSummaryUpdateMutation();
 	const methods = useFormContext();
 	const { formState, watch, getValues } = methods;
 	const { isValid, dirtyFields } = formState;
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { name, image, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deletePassengerSummaryUpdateClm');
-	const handleUpdate = localStorage.getItem('updatePassengerSummaryUpdateClm');
+	const { name, images, featuredImageId } = watch();
+	const handleDelete = localStorage.getItem('deletePassengerSummaryUpdate');
+	const handleUpdate = localStorage.getItem('updatePassengerSummaryUpdate');
 
-	// console.log('image', image);
-
-	function handleUpdatePassengerSummaryUpdateClm() {
-		savePassengerSummaryUpdateClm(getValues()).then((data) => {
+	function handleUpdatePassengerSummaryUpdate() {
+		savePassengerSummaryUpdate(getValues()).then((data) => {
 			UpdatedSuccessfully();
 
-			navigate(`/apps/passengersummaryupdateclm/passengersummaryupdateclms`);
+			navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates`);
 		});
 	}
 
-	function handleCreatePassengerSummaryUpdateClm() {
-		createPassengerSummaryUpdateClm(getValues())
+	function handleCreatePassengerSummaryUpdate() {
+		createPassengerSummaryUpdate(getValues())
 			.unwrap()
 			.then((data) => {
 				AddedSuccessfully();
 
-				navigate(`/apps/passengersummaryupdateclm/passengersummaryupdateclms`);
+				navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates`);
 			});
 	}
 
-	function handleRemovePassengerSummaryUpdateClm(dispatch) {
-		removePassengerSummaryUpdateClm(passengersummaryupdateclmId);
+	function handleRemovePassengerSummaryUpdate(dispatch) {
+		removePassengerSummaryUpdate(passengerSummaryUpdateId);
 		DeletedSuccessfully();
-		navigate('/apps/passengersummaryupdateclm/passengersummaryupdateclms');
+		navigate('/apps/passengerSummaryUpdate/passengerSummaryUpdates');
 		dispatch(showMessage({ message: `Please Restart The Backend`, variant: 'error' }));
 	}
 
 	function handleCancel() {
-		navigate(`/apps/passengersummaryupdateclm/passengersummaryupdateclms`);
+		navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates`);
 	}
 
 	return (
@@ -71,14 +69,14 @@ function PassengerSummaryUpdateClmHeader() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/apps/passengersummaryupdateclm/passengersummaryupdateclms'
+            to='/apps/passengerSummaryUpdate/passengerSummaryUpdates'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'>PassengerSummaryUpdateClms</span>
+            <span className='flex mx-4 font-medium'>PassengerSummaryUpdates</span>
           </Typography>
         </motion.div>
 
@@ -87,12 +85,16 @@ function PassengerSummaryUpdateClmHeader() {
             className='hidden sm:flex'
             initial={{ scale: 0 }}
             animate={{ scale: 1, transition: { delay: 0.3 } }}>
-            {image ? (
-              <img className='w-32 sm:w-48 rounded' src={image} alt={name} />
+            {images && images.length > 0 && featuredImageId ? (
+              <img
+                className='w-32 sm:w-48 rounded'
+                src={_.find(images, { id: featuredImageId })?.url}
+                alt={name}
+              />
             ) : (
               <img
                 className='w-32 sm:w-48 rounded'
-                src='/public/assets/images/logos/user.jpg'
+                src='assets/images/apps/ecommerce/passengerSummaryUpdate-image-placeholder.png'
                 alt={name}
               />
             )}
@@ -102,10 +104,10 @@ function PassengerSummaryUpdateClmHeader() {
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.3 } }}>
             <Typography className='text-16 sm:text-20 truncate font-semibold'>
-              {name || 'New PassengerSummaryUpdateClm'}
+              {name || 'New PassengerSummaryUpdate'}
             </Typography>
             <Typography variant='caption' className='font-medium'>
-              PassengerSummaryUpdateClm Detail
+              PassengerSummaryUpdate Detail
             </Typography>
           </motion.div>
         </div>
@@ -115,50 +117,52 @@ function PassengerSummaryUpdateClmHeader() {
         className='flex'
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-        {handleDelete === 'deletePassengerSummaryUpdateClm' && passengersummaryupdateclmId !== 'new' && (
+        {handleDelete === 'deletePassengerSummaryUpdate' && passengerSummaryUpdateId !== 'new' && (
           <Typography className='mt-6' variant='subtitle2'>
-            Do you want to remove this passengersummaryupdateclm?
+            Do you want to remove this passengerSummaryUpdate?
           </Typography>
         )}
-        {handleDelete === 'deletePassengerSummaryUpdateClm' &&
-          passengersummaryupdateclmId !== 'new' &&
-          hasPermission('PASSENGERSUMMARYUPDATECLM_DELETE') && (
+        {handleDelete === 'deletePassengerSummaryUpdate' &&
+          passengerSummaryUpdateId !== 'new' &&
+          hasPermission('DEMAND_DELETE') && (
             <Button
               className='whitespace-nowrap mx-1 '
               variant='contained'
               color='secondary'
-              onClick={handleRemovePassengerSummaryUpdateClm}
-              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}>
+              onClick={handleRemovePassengerSummaryUpdate}
+              startIcon={<Icon className='hidden sm:flex'>delete</Icon>}
+              // style={{ backgroundColor: '#ea5b78', color: 'white' }}
+            >
               Remove
             </Button>
           )}
-        {passengersummaryupdateclmId === 'new' && hasPermission('PASSENGERSUMMARYUPDATECLM_CREATE') && (
+        {passengerSummaryUpdateId === 'new' && hasPermission('DEMAND_CREATE') && (
           <Button
             className='whitespace-nowrap mx-4 '
             variant='contained'
             color='secondary'
-            disabled={_.isEmpty(dirtyFields) || !isValid}
-            onClick={handleCreatePassengerSummaryUpdateClm}>
+            // disabled={_.isEmpty(dirtyFields) || !isValid}
+            onClick={handleCreatePassengerSummaryUpdate}>
             Save
           </Button>
         )}
-        {handleDelete !== 'deletePassengerSummaryUpdateClm' &&
-          handleUpdate === 'updatePassengerSummaryUpdateClm' &&
-          passengersummaryupdateclmId !== 'new' &&
-          hasPermission('PASSENGERSUMMARYUPDATECLM_UPDATE') && (
+        {handleDelete !== 'deletePassengerSummaryUpdate' &&
+          handleUpdate === 'updatePassengerSummaryUpdate' &&
+          passengerSummaryUpdateId !== 'new' &&
+          hasPermission('DEMAND_UPDATE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
               color='secondary'
               variant='contained'
-              // disabled={_.isEmpty(dirtyFields) || isValid}
-              onClick={handleUpdatePassengerSummaryUpdateClm}>
+              // style={{ backgroundColor: '#4dc08e', color: 'white' }}
+              onClick={handleUpdatePassengerSummaryUpdate}>
               Update
             </Button>
           )}
-
         <Button
           className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'
+          // style={{ backgroundColor: '#FFAA4C', color: 'white' }}
           onClick={handleCancel}>
           Cancel
         </Button>
@@ -167,4 +171,4 @@ function PassengerSummaryUpdateClmHeader() {
   );
 }
 
-export default PassengerSummaryUpdateClmHeader;
+export default PassengerSummaryUpdateHeader;

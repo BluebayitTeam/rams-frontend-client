@@ -2,7 +2,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
@@ -15,65 +14,42 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Pagination, TableCell } from '@mui/material';
 import { Delete, Edit, PictureAsPdf } from '@mui/icons-material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { BASE_URL } from 'src/app/constant/constants';
-import moment from 'moment';
 import DescriptionIcon from '@mui/icons-material/Description';
-import PassengerSummaryUpdateClmsTableHead from './PassengerSummaryUpdateClmsTableHead';
-import { selectFilteredPassengerSummaryUpdateClms, useGetPassengerSummaryUpdateClmsQuery } from '../PassengerSummaryUpdateClmsApi';
+import { BASE_URL } from 'src/app/constant/constants';
+import PassengerSummaryUpdatesTableHead from './PassengerSummaryUpdatesTableHead';
+import { selectFilteredPassengerSummaryUpdates, useGetPassengerSummaryUpdatesQuery } from '../PassengerSummaryUpdatesApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
-import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    position: 'fixed',
-    bottom: 0,
-    backgroundColor: '#fff',
-    padding: '10px 20px',
-    zIndex: 1000,
-    borderTop: '1px solid #ddd',
-    width: '78%',
-  },
-  paginationContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    padding: '0 20px',
-  },
-  pagination: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-  },
-}));
-
-function PassengerSummaryUpdateClmsTable(props) {
+function PassengerSummaryUpdatesTable(props) {
+  const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const { reset, formState, watch, control, getValues, setValue } = useForm({
     mode: 'onChange',
     resolver: zodResolver(),
   });
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-  const { data, isLoading, refetch } = useGetPassengerSummaryUpdateClmsQuery({
+
+  const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
     ...pageAndSize,
     searchKey,
   });
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
-  const totalData = useSelector(selectFilteredPassengerSummaryUpdateClms(data));
-  const passengersummaryupdateclms = useSelector(selectFilteredPassengerSummaryUpdateClms(data?.passengersummaryupdateclms));
-  const classes = useStyles();
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const totalData = useSelector(selectFilteredPassengerSummaryUpdates(data));
+  const passengerSummaryUpdates = useSelector(selectFilteredPassengerSummaryUpdates(data?.passengerSummaryUpdates));
 
   useEffect(() => {
     refetch({ searchKey });
   }, [searchKey]);
+  useEffect(() => {
+    refetch({ searchKey });
+  }, []);
 
   let serialNumber = 1;
 
@@ -83,7 +59,7 @@ function PassengerSummaryUpdateClmsTable(props) {
     refetch({ page, rowsPerPage });
   }, [page, rowsPerPage]);
   useEffect(() => {
-    if (totalData?.passengersummaryupdateclms) {
+    if (totalData?.passengerSummaryUpdates) {
       const modifiedRow = [
         {
           id: 'sl',
@@ -94,7 +70,7 @@ function PassengerSummaryUpdateClmsTable(props) {
         },
       ];
 
-      Object.entries(totalData?.passengersummaryupdateclms[0] || {})
+      Object.entries(totalData?.passengerSummaryUpdates[0] || {})
         .filter(([key]) => key !== 'id' && key !== 'random_number')
         .map(([key]) => {
           modifiedRow.push({
@@ -120,7 +96,7 @@ function PassengerSummaryUpdateClmsTable(props) {
 
       setRows(modifiedRow);
     }
-  }, [totalData?.passengersummaryupdateclms]);
+  }, [totalData?.passengerSummaryUpdates, refetch]);
 
   const [selected, setSelected] = useState([]);
 
@@ -141,7 +117,7 @@ function PassengerSummaryUpdateClmsTable(props) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(passengersummaryupdateclms.map((n) => n.id));
+      setSelected(passengerSummaryUpdates.map((n) => n.id));
       return;
     }
 
@@ -153,22 +129,22 @@ function PassengerSummaryUpdateClmsTable(props) {
   }
 
   function _handleClick(item) {
-    navigate(`/apps/passengersummaryupdateclm/passengersummaryupdateclms/${item.id}/${item.handle}`);
+    navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates/${item.id}/${item.handle}`);
   }
 
-  function handleUpdatePassengerSummaryUpdateClm(item, event) {
-    localStorage.removeItem('deletePassengerSummaryUpdateClm');
-    localStorage.setItem('updatePassengerSummaryUpdateClm', event);
-    navigate(`/apps/passengersummaryupdateclm/passengersummaryupdateclms/${item.id}/${item.handle}`);
+  function handleUpdatePassengerSummaryUpdate(item, event) {
+    localStorage.removeItem('deletePassengerSummaryUpdate');
+    localStorage.setItem('updatePassengerSummaryUpdate', event);
+    navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates/${item.id}/${item.handle}`);
   }
 
-  function handleDeletePassengerSummaryUpdateClm(item, event) {
-    localStorage.removeItem('updatePassengerSummaryUpdateClm');
-    localStorage.setItem('deletePassengerSummaryUpdateClm', event);
-    navigate(`/apps/passengersummaryupdateclm/passengersummaryupdateclms/${item.id}/${item.handle}`);
+  function handleDeletePassengerSummaryUpdate(item, event) {
+    localStorage.removeItem('updatePassengerSummaryUpdate');
+    localStorage.setItem('deletePassengerSummaryUpdate', event);
+    navigate(`/apps/passengerSummaryUpdate/passengerSummaryUpdates/${item.id}/${item.handle}`);
   }
 
-  // console.log('testDelete', handleDeletePassengerSummaryUpdateClm);
+  // console.log('testDelete', handleDeletePassengerSummaryUpdate);
 
   function _handleCheck(event, id) {
     const selectedIndex = selected.indexOf(id);
@@ -191,7 +167,7 @@ function PassengerSummaryUpdateClmsTable(props) {
   }
 
   // pagination
-  const handlePagination = (event, handlePage) => {
+  const handlePagination = (e, handlePage) => {
     setPageAndSize({ ...pageAndSize, page: handlePage });
     setPage(handlePage - 1);
   };
@@ -214,37 +190,36 @@ function PassengerSummaryUpdateClmsTable(props) {
     );
   }
 
-  if (passengersummaryupdateclms?.length === 0) {
+  if (passengerSummaryUpdates?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.1 } }}
         className='flex flex-1 items-center justify-center h-full'>
         <Typography color='text.secondary' variant='h5'>
-          There are no passengersummaryupdateclms!
+          There are no passengerSummaryUpdates!
         </Typography>
       </motion.div>
     );
   }
 
   return (
-    <div className='w-full flex flex-col min-h-full px-10 "'>
+    <div className='w-full flex flex-col min-h-full px-10 '>
       <div className='grow overflow-x-auto overflow-y-auto'>
         <Table stickyHeader className='min-w-xl ' aria-labelledby='tableTitle'>
-          <PassengerSummaryUpdateClmsTableHead
-            selectedPassengerSummaryUpdateClmIds={selected}
+          <PassengerSummaryUpdatesTableHead
+            selectedPassengerSummaryUpdateIds={selected}
             tableOrder={tableOrder}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={passengersummaryupdateclms?.length}
+            rowCount={passengerSummaryUpdates?.length}
             onMenuItemClick={handleDeselect}
             rows={rows}
           />
 
-          <TableBody className=''>
-            {_.orderBy(passengersummaryupdateclms, [tableOrder.id], [tableOrder.direction])
-
-              .map((n) => {
+          <TableBody>
+            {_.orderBy(passengerSummaryUpdates, [tableOrder.id], [tableOrder.direction]).map(
+              (n) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
                   <TableRow
@@ -270,7 +245,7 @@ function PassengerSummaryUpdateClmsTable(props) {
                         serialNumber++}
                     </TableCell>
 
-                    {Object.entries(n).map(
+                    {Object?.entries(n)?.map(
                       ([key, value]) =>
                         key !== 'id' &&
                         key !== 'random_number' && (
@@ -279,7 +254,7 @@ function PassengerSummaryUpdateClmsTable(props) {
                             component='th'
                             scope='row'
                             key={key}>
-                            {key === 'image' ? (
+                            {key === 'file' ? (
                               n[key]?.split('.').pop()?.toLowerCase() ===
                               'pdf' ? (
                                 <PictureAsPdf
@@ -310,12 +285,12 @@ function PassengerSummaryUpdateClmsTable(props) {
                               ) : (
                                 <img
                                   onClick={() =>
-                                    n[key] && showImage(`${BASE_URL}${n[key]}`)
+                                    n.file && showImage(`${BASE_URL}${n[key]}`)
                                   }
                                   src={
                                     n[key]
                                       ? `${BASE_URL}${n[key]}`
-                                      : '/public/assets/images/logos/user.jpg'
+                                      : 'assets/logos/user.jpg'
                                   }
                                   style={{
                                     height: '40px',
@@ -355,19 +330,19 @@ function PassengerSummaryUpdateClmsTable(props) {
                         zIndex: 1,
                         backgroundColor: '#fff',
                       }}>
-                      {hasPermission('PASSENGERSUMMARYUPDATECLM_UPDATE') && (
+                      {hasPermission('DEMAND_UPDATE') && (
                         <Edit
-                          onClick={() =>
-                            handleUpdatePassengerSummaryUpdateClm(n, 'updatePassengerSummaryUpdateClm')
+                          onClick={(event) =>
+                            handleUpdatePassengerSummaryUpdate(n, 'updatePassengerSummaryUpdate')
                           }
                           className='cursor-pointer custom-edit-icon-style'
                         />
                       )}
 
-                      {hasPermission('PASSENGERSUMMARYUPDATECLM_DELETE') && (
+                      {hasPermission('DEMAND_DELETE') && (
                         <Delete
-                          onClick={() =>
-                            handleDeletePassengerSummaryUpdateClm(n, 'deletePassengerSummaryUpdateClm')
+                          onClick={(event) =>
+                            handleDeletePassengerSummaryUpdate(n, 'deletePassengerSummaryUpdate')
                           }
                           className='cursor-pointer custom-delete-icon-style'
                         />
@@ -375,14 +350,14 @@ function PassengerSummaryUpdateClmsTable(props) {
                     </TableCell>
                   </TableRow>
                 );
-              })}
+              }
+            )}
           </TableBody>
         </Table>
       </div>
 
-      <div className={classes.root} id='pagiContainer'>
+      <div id='pagiContainer' className='flex justify-between mb-6'>
         <Pagination
-          classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}
           page={page + 1}
           defaultPage={1}
@@ -395,9 +370,10 @@ function PassengerSummaryUpdateClmsTable(props) {
         />
 
         <TablePagination
+          className='shrink-0 mb-2'
           component='div'
           rowsPerPageOptions={rowsPerPageOptions}
-          count={totalData?.total_pages}
+          count={totalData?.total_elements}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
@@ -414,4 +390,4 @@ function PassengerSummaryUpdateClmsTable(props) {
   );
 }
 
-export default withRouter(PassengerSummaryUpdateClmsTable);
+export default withRouter(PassengerSummaryUpdatesTable);

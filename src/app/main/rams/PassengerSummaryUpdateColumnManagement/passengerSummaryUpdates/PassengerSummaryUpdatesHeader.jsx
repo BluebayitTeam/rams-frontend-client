@@ -13,7 +13,10 @@ import { ViewWeek } from '@mui/icons-material';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
-function PassengerSummaryUpdateClmsHeader(props) {
+/**
+ * The passengerSummaryUpdates header.
+ */
+function PassengerSummaryUpdatesHeader(props) {
 	const dispatch = useAppDispatch();
 	const searchText = useSelector(selectSearchText);
 	useEffect(() => {
@@ -29,7 +32,7 @@ function PassengerSummaryUpdateClmsHeader(props) {
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}>
         <Typography className='text-24 md:text-32 font-extrabold tracking-tight'>
-          PassengerSummaryUpdateClm
+          PassengerSummaryUpdates
         </Typography>
       </motion.span>
 
@@ -42,19 +45,24 @@ function PassengerSummaryUpdateClmsHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search By Name or Username or Email or Phone'
+            placeholder='Search by profession or company name'
             className='flex flex-1'
             disableUnderline
             fullWidth
             inputProps={{
               'aria-label': 'Search',
             }}
+            // onKeyDown={(ev) => {
+            //   if (ev.key === 'Enter') {
+            //     props?.setSearchKey(ev?.target?.value);
+            //   }
+            // }}
             onKeyDown={(ev) => {
               if (ev.key === 'Enter') {
-                props?.setSearchKey(ev?.target?.value);
+                props?.setSearchKey(ev?.target.value);
               } else if (
                 ev.key === 'Backspace' &&
-                ev?.target?.value?.length === 1
+                ev.target.value?.length === 1
               ) {
                 props?.setSearchKey('');
               }
@@ -63,7 +71,7 @@ function PassengerSummaryUpdateClmsHeader(props) {
         </Paper>
 
         <ViewWeek
-          onClick={() => navigate(`/apps/column/columns/passengersummaryupdateclm`)}
+          onClick={() => navigate(`/apps/column/columns/passengerSummaryUpdate`)}
           className='cursor-pointer mr-10 '
           style={{ color: 'green', marginLeft: '15%', fontSize: '40px' }}
         />
@@ -71,13 +79,13 @@ function PassengerSummaryUpdateClmsHeader(props) {
           className='flex flex-grow-0'
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}>
-          {hasPermission('PASSENGERSUMMARYUPDATECLM_CREATE') && (
+          {hasPermission('DEMAND_CREATE') && (
             <Button
               className='mx-8'
               variant='contained'
               color='secondary'
               component={NavLinkAdapter}
-              to='/apps/passengersummaryupdateclm/passengersummaryupdateclms/new'>
+              to='/apps/passengerSummaryUpdate/passengerSummaryUpdates/new'>
               <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
               <span className='hidden sm:flex mx-8'>Add</span>
             </Button>
@@ -88,4 +96,4 @@ function PassengerSummaryUpdateClmsHeader(props) {
   );
 }
 
-export default PassengerSummaryUpdateClmsHeader;
+export default PassengerSummaryUpdatesHeader;
