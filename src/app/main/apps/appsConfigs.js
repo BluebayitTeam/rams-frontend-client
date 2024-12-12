@@ -166,6 +166,7 @@ import PassengerEditHistoryAppConfig from '../rams/PassengerEditHistorysManageme
 import PassengerSearchAppConfig from '../rams/PassengerSearch/PassengerSearchAppConfig';
 import PassengerDeliveryAppConfig from '../rams/PassengerDeliveryReportManagement/PassengerDeliveryAppConfig';
 import TicketeditAppConfig from '../rams/TicketeditsManagement/TicketeditAppConfig';
+import PassengerSummaryUpdateClmAppConfig from '../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateClmAppConfig';
 
 /**
  * The list of application configurations.
@@ -315,6 +316,7 @@ const appsConfigs = [
   ProfessionAppConfig,
   CurrentStatusAppConfig,
   PaymentDetailAppConfig,
+  PassengerSummaryUpdateClmAppConfig,
   SupportAppConfig,
   RoleMenuAppConfig,
   EmbassyAppConfig,
