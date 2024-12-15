@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import {  Pagination, TableCell } from '@mui/material';
+import {  Pagination, TableCell, TextField } from '@mui/material';
 
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Controller, useForm } from 'react-hook-form';
@@ -28,6 +28,7 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { makeStyles } from '@mui/styles';
 
 import { Delete, DoneOutline, DoneOutlineOutlined, Edit } from '@mui/icons-material';
+import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getDemands, getGroups, getMedicalCenters, getPassengers, getPassengerTypes, getProfessions, getRecruitingAgencys, getThanas, getVisaEntrys } from 'app/store/dataSlice';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -75,6 +76,35 @@ function PassengerSummaryUpdatesTable(props) {
   const passengers = useSelector(
     selectFilteredPassengerSummaryUpdates(data?.passengers)
   );
+
+
+  useEffect(() => {
+    dispatch(getCities());
+    dispatch(getCountries());
+    dispatch(getGroups());
+    dispatch(getThanas());
+    dispatch(getPassengers());
+    dispatch(getProfessions());
+    dispatch(getAgents());
+    dispatch(getRecruitingAgencys());
+    dispatch(getAgents());
+    dispatch(getDemands());
+    dispatch(getAgencys());
+    dispatch(getPassengerTypes());
+    dispatch(getCurrentStatuss());
+    dispatch(getVisaEntrys());
+    dispatch(getMedicalCenters());
+  }, []);
+
+  function capital_letter(str) {
+    str = str.split(' ');
+
+    for (let i = 0, x = str.length; i < x; i++) {
+      str[i] = str[i][0].toUpperCase() + str[i].substr(1);
+    }
+
+    return str.join(' ');
+  }
 
 
   useEffect(() => {
