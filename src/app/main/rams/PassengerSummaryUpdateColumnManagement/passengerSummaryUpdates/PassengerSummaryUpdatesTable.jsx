@@ -60,6 +60,24 @@ function PassengerSummaryUpdatesTable(props) {
   
   });
 
+const countrys = useSelector(state => state.data.countries);
+	const thanas = useSelector(state => state.data.thanas);
+	const passenger = useSelector(state => state.data.passengers);
+	const professions = useSelector(state => state.data.professions);
+	const ticketAgencys = useSelector(state => state.data.agents);
+	const passengerTypes = useSelector(state => state.data.passengerTypes);
+	const agents = useSelector(state => state.data.agents);
+	const demands = useSelector(state => state.data.demands);
+	const agencys = useSelector(state => state.data.agencies);
+	const targetCountrys = useSelector(state => state.data.countries);
+	const currentStatuss = useSelector(state => state.data.currentStatuss);
+	const visaEntrys = useSelector(state => state.data.visaEntries);
+	const districts = useSelector(state => state.data.cities);
+	const groups = useSelector(state => state.data.groups);
+	const medicalCenters = useSelector(state => state.data.medicalCenters);
+	const recruitingAgencys = useSelector(state => state.data.recruitingAgencys);
+
+
   const [searchPassengerUpdate, setSearchPassengerUpdate] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
@@ -76,6 +94,9 @@ function PassengerSummaryUpdatesTable(props) {
   const passengers = useSelector(
     selectFilteredPassengerSummaryUpdates(data?.passengers)
   );
+
+
+  
 
 
   useEffect(() => {
@@ -1302,7 +1323,7 @@ function PassengerSummaryUpdatesTable(props) {
                             key == 'passenger_callingemb' ||
                             key == 'passenger_embassy' ||
                             key == 'passenger_femalecv' ? (
-                            passengers.find((data) => data.id === val)
+                            passenger.find((data) => data.id === val)
                               ?.passenger_name
                           ) : // ID ,  Passenger Id
 
@@ -1656,7 +1677,7 @@ function PassengerSummaryUpdatesTable(props) {
                             key == 'passenger_callingemb' ||
                             key == 'passenger_embassy' ||
                             key == 'passenger_femalecv' ? (
-                            passengers.find((data) => data.id === val)
+                            passenger.find((data) => data.id === val)
                               ?.passenger_name
                           ) : (
                             val
