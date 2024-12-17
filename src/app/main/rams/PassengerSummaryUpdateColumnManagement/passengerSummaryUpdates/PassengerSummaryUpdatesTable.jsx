@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {  Pagination, TableCell, TextField } from '@mui/material';
 
 import { rowsPerPageOptions } from 'src/app/@data/data';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { BASE_URL, GET_PASSENGER_UPDATES, SEARCH_PROFESSION, UPDATE_PASSENGER_UPDATES } from 'src/app/constant/constants';
@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
 
 function PassengerSummaryUpdatesTable(props) {
   const dispatch = useDispatch();
-  	const classes = useStyles();
+  const classes = useStyles();
 
   const { navigate, searchKey } = props;
   const { reset, formState, watch, control, getValues, setValue } = useForm({
@@ -57,37 +57,35 @@ function PassengerSummaryUpdatesTable(props) {
 
   const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
     ...pageAndSize,
-  
   });
 
-const countrys = useSelector(state => state.data.countries);
-	const thanas = useSelector(state => state.data.thanas);
-	const passenger = useSelector(state => state.data.passengers);
-	const professions = useSelector(state => state.data.professions);
-	const ticketAgencys = useSelector(state => state.data.agents);
-	const passengerTypes = useSelector(state => state.data.passengerTypes);
-	const agents = useSelector(state => state.data.agents);
-	const demands = useSelector(state => state.data.demands);
-	const agencys = useSelector(state => state.data.agencies);
-	const targetCountrys = useSelector(state => state.data.countries);
-	const currentStatuss = useSelector(state => state.data.currentStatuss);
-	const visaEntrys = useSelector(state => state.data.visaEntries);
-	const districts = useSelector(state => state.data.cities);
-	const groups = useSelector(state => state.data.groups);
-	const medicalCenters = useSelector(state => state.data.medicalCenters);
-	const recruitingAgencys = useSelector(state => state.data.recruitingAgencys);
-
+  const countrys = useSelector((state) => state.data.countries);
+  const thanas = useSelector((state) => state.data.thanas);
+  const passenger = useSelector((state) => state.data.passengers);
+  const professions = useSelector((state) => state.data.professions);
+  const ticketAgencys = useSelector((state) => state.data.agents);
+  const passengerTypes = useSelector((state) => state.data.passengerTypes);
+  const agents = useSelector((state) => state.data.agents);
+  const demands = useSelector((state) => state.data.demands);
+  const agencys = useSelector((state) => state.data.agencies);
+  const targetCountrys = useSelector((state) => state.data.countries);
+  const currentStatuss = useSelector((state) => state.data.currentStatuss);
+  const visaEntrys = useSelector((state) => state.data.visaEntries);
+  const districts = useSelector((state) => state.data.cities);
+  const groups = useSelector((state) => state.data.groups);
+  const medicalCenters = useSelector((state) => state.data.medicalCenters);
+  const recruitingAgencys = useSelector(
+    (state) => state.data.recruitingAgencys
+  );
 
   const [searchPassengerUpdate, setSearchPassengerUpdate] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
 
-
   const [editableRowIds, setEditableRowIds] = useState({});
 
   const [rowId, setRowId] = useState('');
 
- 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const totalData = useSelector(selectFilteredPassengerSummaryUpdates(data));
@@ -95,9 +93,20 @@ const countrys = useSelector(state => state.data.countries);
     selectFilteredPassengerSummaryUpdates(data?.passengers)
   );
 
+  useEffect(() => {
+    Object.entries(editableRowIds).forEach(([key, value]) => {
+      value == true && setRowId(key);
+    });
+  }, [editableRowIds]);
 
-  
+  // setEditableRowDatas
+  function setEditableRowDatas(passengerId) {}
 
+  const { fields, remove } = useFieldArray({
+    control,
+    name: 'items',
+    keyName: 'key',
+  });
 
   useEffect(() => {
     dispatch(getCities());
@@ -126,7 +135,6 @@ const countrys = useSelector(state => state.data.countries);
 
     return str.join(' ');
   }
-
 
   useEffect(() => {
     refetch({ searchKey });
@@ -182,8 +190,6 @@ const countrys = useSelector(state => state.data.countries);
     }
   }, [totalData?.passengers, refetch]);
 
-
-
   const [tableOrder, setTableOrder] = useState({
     direction: 'asc',
     id: '',
@@ -228,7 +234,6 @@ const countrys = useSelector(state => state.data.countries);
   //   navigate(`/apps/passengerSummaryUpdate/passengers/${n?.id}/${n?.handle}`);
   // }
 
-
   function _handleCheck(event, id) {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -265,8 +270,6 @@ const countrys = useSelector(state => state.data.countries);
     setPageAndSize({ ...pageAndSize, size: event.target.value });
   }
 
-
-
   useEffect(() => {
     const authTOKEN = {
       headers: {
@@ -279,7 +282,7 @@ const countrys = useSelector(state => state.data.countries);
       .then((data) => setTableClm(data.passengers[0] || {}))
       .catch(() => setTableClm({}));
   }, []);
-	const [tableClm, setTableClm] = useState({});
+  const [tableClm, setTableClm] = useState({});
 
   const ModifiedClm = Object.keys(tableClm);
 
