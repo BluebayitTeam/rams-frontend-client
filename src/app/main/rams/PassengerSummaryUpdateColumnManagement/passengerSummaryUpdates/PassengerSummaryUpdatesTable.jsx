@@ -166,6 +166,13 @@ function PassengerSummaryUpdatesTable(props) {
           label: 'SL',
           sort: true,
         },
+        {
+          id: 'id',
+          align: 'left',
+          disablePadding: false,
+          label: 'id',
+          sort: true,
+        },
       ];
 
       Object.entries(totalData?.passengers[0] || {})
