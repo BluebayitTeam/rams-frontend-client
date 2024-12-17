@@ -459,15 +459,15 @@ function PassengerSummaryUpdatesTable(props) {
 
 
   //update updatePassengerRow
-  const updatePassengerRow = () => {
+  const updatePassengerRow = (passengerId) => {
 
     const datas = getValues()?.items;
-    const passengerId = Number(getValues()?.passenger_Id);
-    // console.log('passengerId', passengerId);
+    const passengerIdTest = getValues().passenger_id;
+    console.log('passengerIdTest', passengerIdTest);
    
     const data = datas.find((data) => data.id === passengerId);
 
-    //  console.log('DataSCheck', data);
+     console.log('DataSCheck', data);
     const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
@@ -476,7 +476,7 @@ function PassengerSummaryUpdatesTable(props) {
     };
 
     axios
-      .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
+      .put(`${UPDATE_PASSENGER_UPDATES}${passengerIdTest}`, data, authTOKEN)
       .then((res) => {
         dispatch(getPassengerUpdates(pageAndSize));
       });

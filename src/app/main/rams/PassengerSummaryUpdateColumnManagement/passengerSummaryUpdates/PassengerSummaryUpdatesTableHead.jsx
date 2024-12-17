@@ -22,6 +22,8 @@ function PassengerSummaryUpdatesTableHead(props) {
     rowCount,
     onMenuItemClick,
   } = props;
+
+  console.log('props?.rows', props?.rows);
   const [removePassengerSummaryUpdates] = useDeletePassengerSummaryUpdatesMutation();
   const numSelected = selectedPassengerSummaryUpdateIds.length;
   const [selectedPassengerSummaryUpdatesMenu, setSelectedPassengerSummaryUpdatesMenu] = useState(null);
