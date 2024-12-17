@@ -1,9 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable no-undef */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-nested-ternary */
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -20,14 +14,12 @@ import {  Autocomplete, Pagination, TableCell, TextField } from '@mui/material';
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { BASE_URL, GET_PASSENGER_UPDATES, SEARCH_PROFESSION, UPDATE_PASSENGER_UPDATES } from 'src/app/constant/constants';
+import { GET_PASSENGER_UPDATES, SEARCH_PROFESSION, UPDATE_PASSENGER_UPDATES } from 'src/app/constant/constants';
 import PassengerSummaryUpdatesTableHead from './PassengerSummaryUpdatesTableHead';
 import { selectFilteredPassengerSummaryUpdates, useGetPassengerSummaryUpdatesQuery } from '../PassengerSummaryUpdatesApi';
-import { hasPermission } from 'src/app/constant/permission/permissionList';
 import { makeStyles } from '@mui/styles';
 
-import { Delete, DoneOutline, DoneOutlineOutlined, Edit } from '@mui/icons-material';
+import { DoneOutlineOutlined, Edit } from '@mui/icons-material';
 import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getDemands, getGroups, getMedicalCenters, getPassengers, getPassengerTypes, getProfessions, getRecruitingAgencys, getThanas, getVisaEntrys } from 'app/store/dataSlice';
 import axios from 'axios';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
