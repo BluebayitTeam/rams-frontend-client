@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import withRouter from '@fuse/core/withRouter';
 import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
-import {  Pagination, TableCell, TextField } from '@mui/material';
+import {  Autocomplete, Pagination, TableCell, TextField } from '@mui/material';
 
 import { rowsPerPageOptions } from 'src/app/@data/data';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
@@ -166,17 +166,11 @@ function PassengerSummaryUpdatesTable(props) {
           label: 'SL',
           sort: true,
         },
-        {
-          id: 'id',
-          align: 'left',
-          disablePadding: false,
-          label: 'id',
-          sort: true,
-        },
+
       ];
 
       Object.entries(totalData?.passengers[0] || {})
-        .filter(([key]) => key !== 'id' && key !== 'random_number')
+        .filter(([key]) => key !== 'random_number')
         .map(([key]) => {
           modifiedRow.push({
             id: key,
@@ -469,12 +463,11 @@ function PassengerSummaryUpdatesTable(props) {
   const updatePassengerRow = (passengerId) => {
 
     const datas = getValues()?.items;
-    const passengerIdTest = getValues().passenger_id;
-    console.log('passengerIdTest', passengerIdTest);
-   
-    const data = datas.find((data) => data.id === passengerId);
 
-     console.log('DataSCheck', data);
+   
+    const data = datas.find((data) => data?.id === passengerId);
+
+   
     const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
@@ -483,7 +476,7 @@ function PassengerSummaryUpdatesTable(props) {
     };
 
     axios
-      .put(`${UPDATE_PASSENGER_UPDATES}${passengerIdTest}`, data, authTOKEN)
+      .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
         dispatch(getPassengerUpdates(pageAndSize));
       });
@@ -548,7 +541,7 @@ function PassengerSummaryUpdatesTable(props) {
 
                           key == 'district_passenger' || key == 'city_agent' ? (
                             <Controller
-                              name={`items.${idx}.${key}`}
+                              name={`items?.${idx}?.${key}`}
                               control={control}
                               render={({
                                 field: { onChange, value, name },
@@ -1144,6 +1137,7 @@ function PassengerSummaryUpdatesTable(props) {
                                 />
                               )}
                             />
+                            
                           ) : // ticket_agency_flight Dropdown
 
                           key == 'ticket_agency_flight' ? (
