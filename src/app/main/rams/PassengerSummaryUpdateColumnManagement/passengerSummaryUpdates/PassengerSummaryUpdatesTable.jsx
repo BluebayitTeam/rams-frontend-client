@@ -30,7 +30,8 @@ import { makeStyles } from '@mui/styles';
 import { Delete, DoneOutline, DoneOutlineOutlined, Edit } from '@mui/icons-material';
 import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getDemands, getGroups, getMedicalCenters, getPassengers, getPassengerTypes, getProfessions, getRecruitingAgencys, getThanas, getVisaEntrys } from 'app/store/dataSlice';
 import axios from 'axios';
-import moment from 'moment';
+import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
+import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -95,11 +96,6 @@ function PassengerSummaryUpdatesTable(props) {
     selectFilteredPassengerSummaryUpdates(data?.passengers)
   );
 
-
-
-
-
-  console.log('passengersCkeck', passengers);
   useEffect(() => {
     Object.entries(editableRowIds).forEach(([key, value]) => {
       value == true && setRowId(key);
@@ -114,6 +110,34 @@ function PassengerSummaryUpdatesTable(props) {
     name: 'items',
     keyName: 'key',
   });
+
+  //rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
+  useEffect(() => {
+    reset({ ...getValues(), items: watch('items') });
+  }, [passengers]);
+
+  //set product item list
+  useEffect(() => {
+    let newEdiableRowIds = {};
+    passengers?.map((data) => {
+      newEdiableRowIds = { ...newEdiableRowIds, [data.id]: false };
+      return null;
+    });
+    setEditableRowIds(newEdiableRowIds);
+  }, [passengers]);
+
+  useEffect(() => {
+    if (!passengers) {
+      return;
+    }
+    /**
+     * Reset the form on contra state changes
+     */
+    const convertedContraItems = setIdIfValueIsObjArryData(passengers);
+
+    const convertedContra = setIdIfValueIsObject2(passengers);
+    reset({ ...convertedContra, items: convertedContraItems });
+  }, [passengers, reset]);
 
   useEffect(() => {
     dispatch(getCities());
@@ -167,7 +191,6 @@ function PassengerSummaryUpdatesTable(props) {
           label: 'SL',
           sort: true,
         },
-
       ];
 
       Object.entries(totalData?.passengers[0] || {})
@@ -203,6 +226,8 @@ function PassengerSummaryUpdatesTable(props) {
     id: '',
   });
 
+  
+
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
 
@@ -226,7 +251,6 @@ function PassengerSummaryUpdatesTable(props) {
     setSelected([]);
   }
 
- 
   function _handleCheck(event, id) {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -363,8 +387,7 @@ function PassengerSummaryUpdatesTable(props) {
     setSelected(newSelected);
   }
 
- 
-if (passengers?.length === 0) {
+  if (passengers?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -396,15 +419,12 @@ if (passengers?.length === 0) {
     }
   };
 
-//update updatePassengerRow
+  //update updatePassengerRow
   const updatePassengerRow = (passengerId) => {
-
     const datas = getValues()?.items;
 
-   
     const data = datas.find((data) => data?.id === passengerId);
 
-   
     const authTOKEN = {
       headers: {
         'Content-type': 'application/json',
@@ -419,14 +439,13 @@ if (passengers?.length === 0) {
       });
   };
 
-    if (isLoading) {
-      return (
-        <div className='flex items-center justify-center h-full'>
-          <FuseLoading />
-        </div>
-      );
-    }
-
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <FuseLoading />
+      </div>
+    );
+  }
 
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
@@ -446,7 +465,6 @@ if (passengers?.length === 0) {
             {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
 
               .map((item, idx) => {
-
                 const isSelected = selected.indexOf(item.id) !== -1;
                 return (
                   <TableRow
@@ -1081,7 +1099,6 @@ if (passengers?.length === 0) {
                                 />
                               )}
                             />
-                            
                           ) : // ticket_agency_flight Dropdown
 
                           key == 'ticket_agency_flight' ? (
