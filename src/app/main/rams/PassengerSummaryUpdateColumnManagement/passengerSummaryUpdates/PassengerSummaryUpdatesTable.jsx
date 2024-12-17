@@ -30,6 +30,7 @@ import { makeStyles } from '@mui/styles';
 import { Delete, DoneOutline, DoneOutlineOutlined, Edit } from '@mui/icons-material';
 import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getDemands, getGroups, getMedicalCenters, getPassengers, getPassengerTypes, getProfessions, getRecruitingAgencys, getThanas, getVisaEntrys } from 'app/store/dataSlice';
 import axios from 'axios';
+import moment from 'moment';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -225,22 +226,7 @@ function PassengerSummaryUpdatesTable(props) {
     setSelected([]);
   }
 
-  // function _handleClick(n) {
-  //   navigate(`/apps/passengerSummaryUpdate/passengers/${n?.id}/${n?.handle}`);
-  // }
-
-  // function handleUpdatePassengerSummaryUpdate(n, event) {
-  //   localStorage.removeItem('deletePassengerSummaryUpdate');
-  //   localStorage.setItem('updatePassengerSummaryUpdate', event);
-  //   navigate(`/apps/passengerSummaryUpdate/passengers/${n?.id}/${n?.handle}`);
-  // }
-
-  // function handleDeletePassengerSummaryUpdate(n, event) {
-  //   localStorage.removeItem('updatePassengerSummaryUpdate');
-  //   localStorage.setItem('deletePassengerSummaryUpdate', event);
-  //   navigate(`/apps/passengerSummaryUpdate/passengers/${n?.id}/${n?.handle}`);
-  // }
-
+ 
   function _handleCheck(event, id) {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -262,10 +248,10 @@ function PassengerSummaryUpdatesTable(props) {
   }
 
   // pagination
-  // const handlePagination = (e, handlePage) => {
-  //   setPageAndSize({ ...pageAndSize, page: handlePage });
-  //   setPage(handlePage - 1);
-  // };
+  const handlePagination = (e, handlePage) => {
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
+  };
 
   function handleChangePage(event, value) {
     setPage(value);
@@ -377,35 +363,8 @@ function PassengerSummaryUpdatesTable(props) {
     setSelected(newSelected);
   }
 
-  //pagination
-  const handlePagination = (e, handlePage) => {
-    setPageAndSize({ ...pageAndSize, page: handlePage });
-    setPage(handlePage - 1);
-    dispatch(getPassengerUpdates({ ...pageAndSize, page: handlePage }));
-  };
-
-  function handleChangePage(event, value) {
-    setPage(value);
-    setPageAndSize({ ...pageAndSize, page: value + 1 });
-    dispatch(getPassengerUpdates({ ...pageAndSize, page: value + 1 }));
-  }
-
-  function handleChangeRowsPerPage(passengerUpdateEvent) {
-    setRowsPerPage(passengerUpdateEvent.target.value);
-    setPageAndSize({ ...pageAndSize, size: passengerUpdateEvent.target.value });
-    dispatch(
-      getPassengerUpdates({
-        ...pageAndSize,
-        size: passengerUpdateEvent.target.value,
-      })
-    );
-  }
-
-  // if (loading) {
-  //   return <FuseLoading />;
-  // }
-
-  if (passengers?.length === 0) {
+ 
+if (passengers?.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -436,30 +395,8 @@ function PassengerSummaryUpdatesTable(props) {
         });
     }
   };
-  if (isLoading) {
-    return (
-      <div className='flex items-center justify-center h-full'>
-        <FuseLoading />
-      </div>
-    );
-  }
 
-  if (passengers?.length === 0) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.1 } }}
-        className='flex flex-1 items-center justify-center h-full'>
-        <Typography color='text.secondary' variant='h5'>
-          There are no passengers!
-        </Typography>
-      </motion.div>
-    );
-  }
-
-
-
-  //update updatePassengerRow
+//update updatePassengerRow
   const updatePassengerRow = (passengerId) => {
 
     const datas = getValues()?.items;
@@ -482,7 +419,14 @@ function PassengerSummaryUpdatesTable(props) {
       });
   };
 
-  
+    if (isLoading) {
+      return (
+        <div className='flex items-center justify-center h-full'>
+          <FuseLoading />
+        </div>
+      );
+    }
+
 
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
