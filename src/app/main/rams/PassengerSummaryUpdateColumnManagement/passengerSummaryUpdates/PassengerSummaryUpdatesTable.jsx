@@ -29,6 +29,7 @@ import { makeStyles } from '@mui/styles';
 
 import { Delete, DoneOutline, DoneOutlineOutlined, Edit } from '@mui/icons-material';
 import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getDemands, getGroups, getMedicalCenters, getPassengers, getPassengerTypes, getProfessions, getRecruitingAgencys, getThanas, getVisaEntrys } from 'app/store/dataSlice';
+import axios from 'axios';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -93,6 +94,11 @@ function PassengerSummaryUpdatesTable(props) {
     selectFilteredPassengerSummaryUpdates(data?.passengers)
   );
 
+
+
+
+
+  console.log('passengersCkeck', passengers);
   useEffect(() => {
     Object.entries(editableRowIds).forEach(([key, value]) => {
       value == true && setRowId(key);
@@ -450,6 +456,34 @@ function PassengerSummaryUpdatesTable(props) {
     );
   }
 
+
+
+  //update updatePassengerRow
+  const updatePassengerRow = () => {
+
+    const datas = getValues()?.items;
+    const passengerId = Number(getValues()?.passenger_Id);
+    // console.log('passengerId', passengerId);
+   
+    const data = datas.find((data) => data.id === passengerId);
+
+    //  console.log('DataSCheck', data);
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+
+    axios
+      .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
+      .then((res) => {
+        dispatch(getPassengerUpdates(pageAndSize));
+      });
+  };
+
+  
+
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
       <div className='grow overflow-x-auto overflow-y-auto'>
@@ -468,6 +502,7 @@ function PassengerSummaryUpdatesTable(props) {
             {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
 
               .map((item, idx) => {
+
                 const isSelected = selected.indexOf(item.id) !== -1;
                 return (
                   <TableRow
@@ -561,7 +596,7 @@ function PassengerSummaryUpdatesTable(props) {
                                   }
                                   options={agents}
                                   getOptionLabel={(option) =>
-                                    `${option.first_name}  -${option.agent_code}`
+                                    `${option.first_name}-${option.agent_code}`
                                   }
                                   onChange={(event, newValue) => {
                                     onChange(newValue?.id);
