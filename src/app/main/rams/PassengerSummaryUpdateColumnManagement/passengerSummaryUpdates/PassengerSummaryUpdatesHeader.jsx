@@ -31,8 +31,8 @@ function PassengerSummaryUpdatesHeader(props) {
       <motion.span
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}>
-        <Typography className='text-24 md:text-32 font-extrabold tracking-tight'>
-          Passenger Summary Update
+        <Typography className='text-24 md:text-22 font-extrabold tracking-tight'>
+          Passenger  Update
         </Typography>
       </motion.span>
 
@@ -45,18 +45,14 @@ function PassengerSummaryUpdatesHeader(props) {
           <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
 
           <Input
-            placeholder='Search by profession or company name'
+            placeholder='Search by Agent or passenger or Flight name'
             className='flex flex-1'
             disableUnderline
             fullWidth
             inputProps={{
               'aria-label': 'Search',
             }}
-            // onKeyDown={(ev) => {
-            //   if (ev.key === 'Enter') {
-            //     props?.setSearchKey(ev?.target?.value);
-            //   }
-            // }}
+
             onKeyDown={(ev) => {
               if (ev.key === 'Enter') {
                 props?.setSearchKey(ev?.target.value);
