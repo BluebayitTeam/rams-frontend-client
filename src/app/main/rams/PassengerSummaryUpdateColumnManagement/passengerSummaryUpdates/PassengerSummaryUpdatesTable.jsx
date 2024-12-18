@@ -537,6 +537,7 @@ function PassengerSummaryUpdatesTable(props) {
                           ) : // Agents Dropdown
 
                           key == 'agent' ||
+                            key == 'sub_agent' ||
                             key == 'okala_given_by_musanedokala' ||
                             key == 'visa_agent_visaentry' ||
                             key == 'agent_passenger' ||
@@ -664,7 +665,7 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // marital_status DropDown
 
-                          key == 'marital_status_passenger' ? (
+                          key == 'marital_status' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -750,7 +751,7 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // passenger_type Dropdown
 
-                          key == 'passenger_type_passenger' ? (
+                          key == 'passenger_type' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -911,7 +912,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // doneNotDone Dropdown
 
-                          key == 'current_status' ||
+                        
+                            key == 'interviewed' ||
                             key == 'stamping_status_embassy' ||
                             key == 'calling_status_callingemb' ||
                             key == 'emb_attestation_status_callingemb' ||
@@ -1217,7 +1219,8 @@ function PassengerSummaryUpdatesTable(props) {
                               // required
                             />
                           ) : // current_status_passenger
-                          key == 'current_status_passenger' ||
+                          key == 'current_status' ||
+                            key == 'current_status_passenger' ||
                             key == 'handover_passport_ticket' ||
                             key == 'accounts_cleared' ||
                             key == 'immigration_clearance' ||
@@ -1372,7 +1375,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // profession Dropdown
 
-                          key == 'profession_femalecv' ||
+                          key == 'profession' ||
+                            key == 'profession_femalecv' ||
                             key == 'profession_malecv' ||
                             key == 'profession_passenger' ? (
                             <Controller
@@ -1647,8 +1651,7 @@ function PassengerSummaryUpdatesTable(props) {
                               ?.name
                           ) : // thana Dropdown
 
-                          key == 'thana_agent' ||
-                            key == 'police_station_passenger' ? (
+                          key == 'thana_agent' || key == 'police_station' ? (
                             thanas.find((data) => data.id === val)?.name
                           ) : // medicalResults Dropdown
 
