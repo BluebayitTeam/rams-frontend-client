@@ -11,7 +11,7 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import { useSelector, useDispatch } from 'react-redux';
 import {  Autocomplete, Pagination, TableCell, TextField } from '@mui/material';
 
-import { rowsPerPageOptions } from 'src/app/@data/data';
+import { activeRetrnCncl, balanceType, doneNotDone, genders, maritalStatuses, medicalResults, religions, rowsPerPageOptions } from 'src/app/@data/data';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GET_PASSENGER_UPDATES, SEARCH_PROFESSION, UPDATE_PASSENGER_UPDATES } from 'src/app/constant/constants';
@@ -55,6 +55,7 @@ function PassengerSummaryUpdatesTable(props) {
   });
 
   const countrys = useSelector((state) => state.data.countries);
+  console.log('countrys', countrys);
   const thanas = useSelector((state) => state.data.thanas);
   const passenger = useSelector((state) => state.data.passengers);
   const professions = useSelector((state) => state.data.professions);
@@ -67,6 +68,7 @@ function PassengerSummaryUpdatesTable(props) {
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
   const districts = useSelector((state) => state.data.cities);
+  console.log('districtsCheck', districts);
   const groups = useSelector((state) => state.data.groups);
   const medicalCenters = useSelector((state) => state.data.medicalCenters);
   const recruitingAgencys = useSelector(
@@ -78,6 +80,8 @@ function PassengerSummaryUpdatesTable(props) {
   const [selected, setSelected] = useState([]);
 
   const [editableRowIds, setEditableRowIds] = useState({});
+
+  console.log('editableRowIdsCheck', editableRowIds);
 
   const [rowId, setRowId] = useState('');
 
@@ -102,6 +106,8 @@ function PassengerSummaryUpdatesTable(props) {
     name: 'items',
     keyName: 'key',
   });
+
+  console.log('fieldsCheck', fields);
 
   //rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
   useEffect(() => {
@@ -355,10 +361,7 @@ function PassengerSummaryUpdatesTable(props) {
     dispatch(getPassengerUpdates(pageAndSize));
   }
 
-  function handlePassengerSummaryColumn() {
-    localStorage.removeItem('passengerSummaryEvent');
-    router.push(`/apps/passengerSummaryUpdate-management/columns`);
-  }
+
   function handleCheck(passengerUpdateEvent, id) {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -457,6 +460,7 @@ function PassengerSummaryUpdatesTable(props) {
             {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
 
               .map((item, idx) => {
+                console.log('itemCheck',  idx);
                 const isSelected = selected.indexOf(item.id) !== -1;
                 return (
                   <TableRow
@@ -493,7 +497,9 @@ function PassengerSummaryUpdatesTable(props) {
                         {editableRowIds[item.id] ? (
                           // district Dropdown
 
-                          key == 'district_passenger' || key == 'city_agent' ? (
+                          key == 'district_passenger' ||
+                          key == 'district_passenger' ||
+                          key == 'city_agent' ? (
                             <Controller
                               name={`items?.${idx}?.${key}`}
                               control={control}
@@ -530,7 +536,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // Agents Dropdown
 
-                          key == 'okala_given_by_musanedokala' ||
+                          key == 'agent' ||
+                            key == 'okala_given_by_musanedokala' ||
                             key == 'visa_agent_visaentry' ||
                             key == 'agent_passenger' ||
                             key == 'musaned_given_by_musanedokala' ? (
@@ -574,7 +581,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // thana Dropdown
 
-                          key == 'thana_agent' ||
+                          key == 'district' ||
+                            key == 'thana_agent' ||
                             key == 'police_station_passenger' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
@@ -587,14 +595,13 @@ function PassengerSummaryUpdatesTable(props) {
                                   placeholder='Select District'
                                   freeSolo
                                   value={
-                                    value
-                                      ? thanas.find((data) => data.id === value)
-                                      : null
+                                    thanas.find((data) => data.id === value) ||
+                                    null
                                   }
                                   options={thanas}
-                                  getOptionLabel={(option) => `${option.name}`}
+                                  getOptionLabel={(option) => option.name || ''}
                                   onChange={(event, newValue) => {
-                                    onChange(newValue?.id);
+                                    onChange(newValue?.id || null);
                                   }}
                                   renderInput={(params) => (
                                     <TextField
@@ -608,7 +615,6 @@ function PassengerSummaryUpdatesTable(props) {
                                       InputLabelProps={{
                                         shrink: true,
                                       }}
-                                      // onKeyDown={handleSubmitOnKeyDownEnter}
                                     />
                                   )}
                                 />
@@ -786,7 +792,7 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // gender Dropdown
 
-                          key == 'gender_agent' || key == 'gender_passenger' ? (
+                          key == 'gender' || key == 'gender_passenger' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -905,7 +911,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // doneNotDone Dropdown
 
-                          key == 'stamping_status_embassy' ||
+                          key == 'current_status' ||
+                            key == 'stamping_status_embassy' ||
                             key == 'calling_status_callingemb' ||
                             key == 'emb_attestation_status_callingemb' ||
                             key == 'man_power_status_manpower' ||
@@ -1005,7 +1012,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // Demand Dropdown
 
-                          key == 'demand_passenger' ||
+                          key == 'demand' ||
+                            key == 'demand_passenger' ||
                             key == 'demand_visaentry' ||
                             key == 'demand_visaentry' ? (
                             <Controller
@@ -1049,7 +1057,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // Country Dropdown
 
-                          key == 'country_agent' ||
+                          key == 'target_country' ||
+                            key == 'country_agent' ||
                             key == 'target_country_passenger' ||
                             key == 'country_visaentry' ||
                             key == 'country_femalecv' ? (

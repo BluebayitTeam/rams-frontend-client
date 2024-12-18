@@ -41,6 +41,7 @@ function AgentForm(props) {
 	const cities = useSelector((state) => state.data.cities);
 	const countries = useSelector((state) => state.data.countries);
 	const groups = useSelector((state) => state.data.groups);
+	console.log('groupstest', groups);
 	const getCountryCode1 = watch('country_code1');
 
 	const [file, setFile] = useState(null);
