@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {  Autocomplete, Pagination, TableCell, TextField } from '@mui/material';
 
 import { activeRetrnCncl, balanceType, doneNotDone, genders, maritalStatuses, medicalResults, religions, rowsPerPageOptions } from 'src/app/@data/data';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GET_PASSENGER_UPDATES, SEARCH_PROFESSION, UPDATE_PASSENGER_UPDATES } from 'src/app/constant/constants';
 import PassengerSummaryUpdatesTableHead from './PassengerSummaryUpdatesTableHead';
@@ -24,6 +24,7 @@ import { getAgencys, getAgents, getCities, getCountries, getCurrentStatuss, getD
 import axios from 'axios';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
+import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -44,10 +45,9 @@ function PassengerSummaryUpdatesTable(props) {
   const classes = useStyles();
 
   const { navigate, searchKey } = props;
-  const { reset, formState, watch, control, getValues, setValue } = useForm({
-    mode: 'onChange',
-    resolver: zodResolver(),
-  });
+     const { reset, formState, watch, control, getValues, setValue } =useFormContext();
+
+
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
@@ -1178,7 +1178,8 @@ function PassengerSummaryUpdatesTable(props) {
                               )}
                             />
                           ) : // Date Dropdown
-                          key == 'balance_date_agent' ||
+                          key == 'repatriation_date' ||
+                            key == 'balance_date_agent' ||
                             key == 'bio_submitted_date_callingemb' ||
                             key == 'calling_date_callingemb' ||
                             key == 'date_of_birth_agent' ||
@@ -1208,22 +1209,11 @@ function PassengerSummaryUpdatesTable(props) {
                             key == 'visa_issue_date_visaentry' ||
                             key == 'balance_date_agent' ||
                             key == 'bio_submitted_date_callingemb' ? (
-                            <Controller
+                            <CustomDatePicker
                               name={`items.${idx}.${key}`}
-                              control={control}
-                              render={({ field }) => {
-                                return (
-                                  <CustomDatePicker
-                                    field={field}
-                                    label={capital_letter(
-                                      key.replaceAll('_', ' ')
-                                    )}
-                                    className='mt-8 mb-16 w-full  '
-                                    error={!field.value}
-                                    // required
-                                  />
-                                );
-                              }}
+                              label={capital_letter(key.replaceAll('_', ' '))}
+                              className='mt-8 mb-16 w-full  '
+                              // required
                             />
                           ) : // current_status_passenger
 

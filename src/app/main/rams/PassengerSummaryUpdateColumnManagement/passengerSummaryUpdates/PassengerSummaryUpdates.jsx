@@ -4,32 +4,42 @@ import { useState } from 'react';
 import PassengerSummaryUpdatesHeader from './PassengerSummaryUpdatesHeader';
 import PassengerSummaryUpdatesTable from './PassengerSummaryUpdatesTable';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import { FormProvider, useForm } from 'react-hook-form';
 
 /**
  * The passengerSummaryUpdates page.
  */
 function PassengerSummaryUpdates() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const [searchKey, setSearchKey] = useState('');
-	return (
-    <FusePageCarded
-      classes={{
-        root: {},
-        toolbar: 'p-0',
-        header: 'min-h-80 h-80',
-      }}
-      header={
-        hasPermission('DEMAND_LIST') && (
-          <PassengerSummaryUpdatesHeader searchKey={searchKey} setSearchKey={setSearchKey} />
-        )
-      }
-      content={
-        hasPermission('DEMAND_LIST') && (
-          <PassengerSummaryUpdatesTable searchKey={searchKey} setSearchKey={setSearchKey} />
-        )
-      }
-      scroll={isMobile ? 'normal' : 'content'}
-    />
+  const [searchKey, setSearchKey] = useState('');
+    const methods = useForm();
+  return (
+    <FormProvider {...methods}>
+      <FusePageCarded
+        classes={{
+          root: {},
+          toolbar: 'p-0',
+          header: 'min-h-80 h-80',
+        }}
+        header={
+          hasPermission('DEMAND_LIST') && (
+            <PassengerSummaryUpdatesHeader
+              searchKey={searchKey}
+              setSearchKey={setSearchKey}
+            />
+          )
+        }
+        content={
+          hasPermission('DEMAND_LIST') && (
+            <PassengerSummaryUpdatesTable
+              searchKey={searchKey}
+              setSearchKey={setSearchKey}
+            />
+          )
+        }
+        scroll={isMobile ? 'normal' : 'content'}
+      />
+    </FormProvider>
   );
 }
 
