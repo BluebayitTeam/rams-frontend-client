@@ -1217,8 +1217,14 @@ function PassengerSummaryUpdatesTable(props) {
                               // required
                             />
                           ) : // current_status_passenger
-
-                          key == 'current_status_passenger' ? (
+                          key == 'current_status_passenger' ||
+                            key == 'handover_passport_ticket' ||
+                            key == 'accounts_cleared' ||
+                            key == 'immigration_clearance' ||
+                            key == 'sev_received' ||
+                            key ==
+                              'submitted_for_permission_immigration_clearance' ||
+                            key == 'dispatched' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -1259,7 +1265,8 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // recruiting_agency
 
-                          key == 'recruiting_agency_manpower' ||
+                          key == 'agency' ||
+                            key == 'recruiting_agency_manpower' ||
                             key == 'recruiting_agency_training' ||
                             key == 'agency_passenger' ||
                             key == 'recruiting_agency_embassy' ? (
