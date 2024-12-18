@@ -1179,16 +1179,17 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // Date Dropdown
                           key == 'repatriation_date' ||
-                            key == 'balance_date_agent' ||
-                            key == 'bio_submitted_date_callingemb' ||
-                            key == 'calling_date_callingemb' ||
-                            key == 'date_of_birth_agent' ||
-                            key == 'delivery_date_embassy' ||
-                            key == 'stamping_date_embassy' ||
-                            key == 'submit_date_embassy' ||
-                            key == 'visa_expiry_date_embassy' ||
-                            key == 'flight_date_flight' ||
-                            key == 'issue_date_flight' ||
+                            key == 'dispatched_date' ||
+                            key == 'handover_passport_ticket_date' ||
+                            key == 'accounts_cleared_date' ||
+                            key == 'immigration_clearance_date' ||
+                            key == 'sev_received_date' ||
+                            key == 'submitted_for_sev_date' ||
+                            key == 'interviewed_date' ||
+                            key == 'passport_expiry_date' ||
+                            key == 'passport_issue_date' ||
+                            key ==
+                              'submitted_for_permission_immigration_clearance_date' ||
                             key == 'delivery_date_manpower' ||
                             key == 'man_power_date_manpower' ||
                             key == 'submit_date_manpower' ||
