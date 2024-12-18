@@ -912,8 +912,7 @@ function PassengerSummaryUpdatesTable(props) {
                             />
                           ) : // doneNotDone Dropdown
 
-                        
-                            key == 'interviewed' ||
+                          key == 'interviewed' ||
                             key == 'stamping_status_embassy' ||
                             key == 'calling_status_callingemb' ||
                             key == 'emb_attestation_status_callingemb' ||
@@ -1225,8 +1224,8 @@ function PassengerSummaryUpdatesTable(props) {
                             key == 'accounts_cleared' ||
                             key == 'immigration_clearance' ||
                             key == 'sev_received' ||
-                            key ==
-                              'submitted_for_permission_immigration_clearance' ||
+                            key =='submitted_for_permission_immigration_clearance' ||
+                            key == 'current_status' ||
                             key == 'dispatched' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
