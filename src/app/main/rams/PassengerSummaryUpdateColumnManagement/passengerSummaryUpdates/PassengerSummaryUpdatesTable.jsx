@@ -80,7 +80,7 @@ function PassengerSummaryUpdatesTable(props) {
 
   const [editableRowIds, setEditableRowIds] = useState({});
 
-  // console.log('editableRowIdsCheck', editableRowIds);
+  console.log('editableRowIdsCheck', editableRowIds);
 
   const [rowId, setRowId] = useState('');
 
@@ -396,6 +396,11 @@ function PassengerSummaryUpdatesTable(props) {
 
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === 'Enter') {
+      setEditableRowIds({
+        ...editableRowIds,
+        [item.id]: true,
+      });
+      setEditableRowDatas(item.id);
       const datas = getValues()?.items;
       const data = datas.find((data) => data.id == rowId);
       const authTOKEN = {
@@ -408,7 +413,7 @@ function PassengerSummaryUpdatesTable(props) {
       axios
         .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
         .then((res) => {
-          dispatch(getPassengerUpdates(pageAndSize));
+           refetch();
         });
     }
   };
@@ -430,7 +435,7 @@ function PassengerSummaryUpdatesTable(props) {
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
         console.log('resChcek', res);
-        dispatch(getPassengerUpdates(pageAndSize));
+         refetch();
       });
   };
 
@@ -1224,7 +1229,8 @@ function PassengerSummaryUpdatesTable(props) {
                             key == 'accounts_cleared' ||
                             key == 'immigration_clearance' ||
                             key == 'sev_received' ||
-                            key =='submitted_for_permission_immigration_clearance' ||
+                            key ==
+                              'submitted_for_permission_immigration_clearance' ||
                             key == 'current_status' ||
                             key == 'dispatched' ? (
                             <Controller
@@ -1700,6 +1706,12 @@ function PassengerSummaryUpdatesTable(props) {
                             style={{ color: 'green' }}
                             className='cursor-pointer'
                             onClick={(e) => {
+                               e.stopPropagation();
+                              console.log(
+                                'checkeditableRowIds',
+                                editableRowIds[item.id],
+                                editableRowIds
+                              );
                               setEditableRowIds({
                                 ...editableRowIds,
                                 [item.id]: false,
@@ -1711,7 +1723,8 @@ function PassengerSummaryUpdatesTable(props) {
                           <Edit
                             style={{ color: 'green' }}
                             className='cursor-pointer'
-                            onClick={(e) => {
+                              onClick={(e) => {
+                              e.stopPropagation();
                               setEditableRowIds({
                                 ...editableRowIds,
                                 [item.id]: true,
@@ -1721,11 +1734,7 @@ function PassengerSummaryUpdatesTable(props) {
                             }}
                           />
                         )}{' '}
-                        {/* <DeleteIcon
-												style={{ color: 'red' }}
-												className="cursor-pointer"
-												onClick={() => handleDeletePassengerUpdate(item.id)}
-											/> */}
+                        
                       </div>
                     </TableCell>
                   </TableRow>
