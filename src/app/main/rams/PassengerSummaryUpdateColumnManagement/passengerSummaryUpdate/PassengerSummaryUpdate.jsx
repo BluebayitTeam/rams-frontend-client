@@ -37,7 +37,7 @@ function PassengerSummaryUpdate() {
 
 	const [tabValue, setTabValue] = useState(0);
 
-	console.log('tabValue', tabValue);
+	
 
 	const methods = useForm({
 		mode: 'onChange',
