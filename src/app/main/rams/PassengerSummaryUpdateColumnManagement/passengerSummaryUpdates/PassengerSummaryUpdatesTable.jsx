@@ -55,7 +55,6 @@ function PassengerSummaryUpdatesTable(props) {
   });
 
   const countrys = useSelector((state) => state.data.countries);
-  console.log('countrys', countrys);
   const thanas = useSelector((state) => state.data.thanas);
   const passenger = useSelector((state) => state.data.passengers);
   const professions = useSelector((state) => state.data.professions);
@@ -106,7 +105,6 @@ function PassengerSummaryUpdatesTable(props) {
     keyName: 'key',
   });
 
-  console.log('fieldsCheck', fields);
 
   //rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
   useEffect(() => {
@@ -465,7 +463,7 @@ function PassengerSummaryUpdatesTable(props) {
             {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
 
               .map((item, idx) => {
-                console.log('itemCheck',  idx);
+             
                 const isSelected = selected.indexOf(item.id) !== -1;
                 return (
                   <TableRow
