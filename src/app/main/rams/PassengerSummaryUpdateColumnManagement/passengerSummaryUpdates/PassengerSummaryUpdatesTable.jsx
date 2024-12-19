@@ -396,11 +396,7 @@ function PassengerSummaryUpdatesTable(props) {
 
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === 'Enter') {
-      setEditableRowIds({
-        ...editableRowIds,
-        [item.id]: true,
-      });
-      setEditableRowDatas(item.id);
+      
       const datas = getValues()?.items;
       const data = datas.find((data) => data.id == rowId);
       const authTOKEN = {
@@ -413,8 +409,11 @@ function PassengerSummaryUpdatesTable(props) {
       axios
         .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
         .then((res) => {
-           refetch();
+          refetch();
+          
         });
+    
+      
     }
   };
 
@@ -437,6 +436,7 @@ function PassengerSummaryUpdatesTable(props) {
         console.log('resChcek', res);
          refetch();
       });
+
   };
 
   if (isLoading) {
@@ -1707,17 +1707,14 @@ function PassengerSummaryUpdatesTable(props) {
                             className='cursor-pointer'
                             onClick={(e) => {
                                e.stopPropagation();
-                              console.log(
-                                'checkeditableRowIds',
-                                editableRowIds[item.id],
-                                editableRowIds
-                              );
+                            
                               setEditableRowIds({
                                 ...editableRowIds,
                                 [item.id]: false,
                               });
                               updatePassengerRow(item.id);
                             }}
+                            
                           />
                         ) : (
                           <Edit
