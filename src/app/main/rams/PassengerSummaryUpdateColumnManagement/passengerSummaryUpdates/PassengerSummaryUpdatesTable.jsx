@@ -68,7 +68,6 @@ function PassengerSummaryUpdatesTable(props) {
   const currentStatuss = useSelector((state) => state.data.currentStatuss);
   const visaEntrys = useSelector((state) => state.data.visaEntries);
   const districts = useSelector((state) => state.data.cities);
-  console.log('districtsCheck', districts);
   const groups = useSelector((state) => state.data.groups);
   const medicalCenters = useSelector((state) => state.data.medicalCenters);
   const recruitingAgencys = useSelector(
@@ -81,7 +80,7 @@ function PassengerSummaryUpdatesTable(props) {
 
   const [editableRowIds, setEditableRowIds] = useState({});
 
-  console.log('editableRowIdsCheck', editableRowIds);
+  // console.log('editableRowIdsCheck', editableRowIds);
 
   const [rowId, setRowId] = useState('');
 
@@ -430,6 +429,7 @@ function PassengerSummaryUpdatesTable(props) {
     axios
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
+        console.log('resChcek', res);
         dispatch(getPassengerUpdates(pageAndSize));
       });
   };
