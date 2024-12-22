@@ -16,17 +16,16 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function PassengerSummaryFilterMenu({
-  inShowAllMode,
-  handleGetAllPassengerSummarys,
-}) {
+function PassengerSummaryFilterMenu() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
 
+  
   const methods = useFormContext();
   const { getValues, watch } = methods;
   const [_reRender, setReRender] = useState(0);
+  const [inShowAllMode, setInShowAllMode] = useState(false);
 
 
   const { agents, passengers } = useSelector((state) => state.data);
@@ -36,13 +35,37 @@ function PassengerSummaryFilterMenu({
     dispatch(getPassengers());
   }, [dispatch]);
 
-  //  useEffect(() => {
-  //  if  (!inShowAllMode && paginatedData) {
-  //      setModifiedPassengerAccountSummaryData(paginatedData.passenger || []);
 
-  //      setInShowAllMode(false);
-  //    }
-  //  }, [inShowAllMode,paginatedData]);
+
+  const filterData = watch();
+    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+   const {
+     data: paginatedData,
+     isLoading,
+     refetch,
+   } = useGetPassengerSummaryUpdatesQuery(
+     {
+       agent: filterData.agent || '',
+       passenger: filterData.passenger || '',
+       flight_status: filterData.flight_status || '',
+       pageAndSize,
+     },
+     { skip: inShowAllMode }
+   );
+ 
+  
+ 
+  
+   const handleGetAllPassengerSummarys = () => {
+     const data = {
+       agent: getValues().agent,
+       passenger: getValues().passenger,
+       flight_status: getValues().flight_status,
+       page: 1,
+       size: 100,
+     };
+     refetch(data);
+   };
 
   const commonFieldProps = {
     setReRender,

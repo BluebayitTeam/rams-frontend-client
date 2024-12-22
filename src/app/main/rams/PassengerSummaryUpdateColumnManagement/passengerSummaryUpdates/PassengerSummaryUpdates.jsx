@@ -14,13 +14,14 @@ function PassengerSummaryUpdates() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   const [searchKey, setSearchKey] = useState('');
-  const [inShowAllMode, setInShowAllMode] = useState(false);
   const methods = useForm(); // Initialize form methods here
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  
+  const [inShowAllMode, setInShowAllMode] = useState(false);
 
   const { getValues, watch } = methods;
+
   const filterData = watch();
-  
+    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
    const {
      data: paginatedData,
      isLoading,

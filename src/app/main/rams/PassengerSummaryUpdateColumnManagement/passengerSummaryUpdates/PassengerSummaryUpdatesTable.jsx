@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
+function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   console.log('paginatedDataTabile', paginatedData);
@@ -69,7 +69,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
   const [searchPassengerUpdate, setSearchPassengerUpdate] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const [editableRowIds, setEditableRowIds] = useState({});
 
@@ -77,6 +76,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+
   const totalData = useSelector(
     selectFilteredPassengerSummaryUpdates(paginatedData)
   );
@@ -107,8 +108,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
   //set product item list
   useEffect(() => {
     let newEdiableRowIds = {};
-    passengers?.map((paginatedData) => {
-      newEdiableRowIds = { ...newEdiableRowIds, [paginatedData.id]: false };
+    passengers?.map((data) => {
+      newEdiableRowIds = { ...newEdiableRowIds, [data.id]: false };
       return null;
     });
     setEditableRowIds(newEdiableRowIds);
@@ -158,10 +159,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
   let serialNumber = 1;
 
   const [rows, setRows] = useState([]);
-  // useEffect(() => {
-  //   // Fetch paginatedData with specific page and size when component mounts or when page and size change
-  //   refetch({ page, rowsPerPage });
-  // }, [page, rowsPerPage]);
+
   useEffect(() => {
     if (totalData?.passengers) {
       const modifiedRow = [
@@ -200,7 +198,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
 
       setRows(modifiedRow);
     }
-  }, [totalData?.passengers]);
+  }, [totalData?.passengers, refetch]);
+
+
 
   const [tableOrder, setTableOrder] = useState({
     direction: 'asc',
@@ -275,14 +275,14 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
     };
     fetch(`${GET_PASSENGER_UPDATES}`, authTOKEN)
       .then((response) => response.json())
-      .then((paginatedData) => setTableClm(paginatedData.passengers[0] || {}))
+      .then((data) => setTableClm(data.passengers[0] || {}))
       .catch(() => setTableClm({}));
   }, []);
   const [tableClm, setTableClm] = useState({});
 
   const ModifiedClm = Object.keys(tableClm);
 
-  ModifiedClm.map((paginatedData) => {});
+  ModifiedClm.map((data) => {});
 
   const getSearchPassengerUpdate = () => {
     const authTOKEN = {
@@ -362,6 +362,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
     setSelected(newSelected);
   }
 
+
+
   if (passengers?.length === 0) {
     return (
       <motion.div
@@ -378,9 +380,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === 'Enter') {
       const datas = getValues()?.items;
-      const paginatedData = datas.find(
-        (paginatedData) => paginatedData.id == rowId
-      );
+      const data = datas.find((data) => data.id == rowId);
       const authTOKEN = {
         headers: {
           'Content-type': 'application/json',
@@ -389,9 +389,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
       };
 
       axios
-        .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, paginatedData, authTOKEN)
+        .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
         .then((res) => {
-          refetch();
+          refetch((pageAndSize));
         });
     }
   };
@@ -413,10 +413,11 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
         console.log('resChcek', res);
-        refetch();
+        refetch((pageAndSize));
       });
   };
 
+  
   if (isLoading) {
     return (
       <div className='flex items-center justify-center h-full'>
