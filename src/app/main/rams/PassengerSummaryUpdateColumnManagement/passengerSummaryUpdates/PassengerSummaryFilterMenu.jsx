@@ -82,7 +82,7 @@ function PassengerSummaryFilterMenu({
           name='flight_status'
           options={doneNotDone}
           icon='local_activity'
-          width='108px'
+          width='84px'
         />
       </div>
 

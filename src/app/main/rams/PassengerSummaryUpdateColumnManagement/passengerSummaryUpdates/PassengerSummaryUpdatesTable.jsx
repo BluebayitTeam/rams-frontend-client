@@ -125,7 +125,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
 
     const convertedContra = setIdIfValueIsObject2(passengers);
     // reset({ ...convertedContra, items: convertedContraItems });
-  }, [passengers, reset]);
+  }, [passengers]);
 
   useEffect(() => {
     dispatch(getCities());
