@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function passengerAccountSummaryFilterMenu() {
+function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAccountSummarys, handleGetAllPassengerAccountSummarys }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-  const [inShowAllMode, setInShowAllMode] = useState(false);
+
 	const methods = useFormContext();
 	const { getValues } = methods;
 
@@ -25,27 +25,16 @@ function passengerAccountSummaryFilterMenu() {
 	
 	const [_reRender, setReRender] = useState(0);
 	
-const handleGetAllPassengerSummarys = (e) => {
-  const data = {
-    agent: getValues().agent,
-    passenger: getValues().passenger,
-    flight_status: getValues().flight_status,
-    page: 1,
-    size: 100,
-  };
 
-  // const data = { agent, passenger, flight };
-  dispatch(getPassengerUpdates(data));
-};
 	
 
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllPassengerSummarys() : null)
+		onEnter: () => (inShowAllMode ? handleGetAllPassengerAccountSummarys() : handleGetPassengerAccountSummarys())
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllPassengerSummarys() : null)
+		onClick: () => (inShowAllMode ? handleGetAllPassengerAccountSummarys() : handleGetPassengerAccountSummarys())
 	};
 
 	useEffect(() => {
