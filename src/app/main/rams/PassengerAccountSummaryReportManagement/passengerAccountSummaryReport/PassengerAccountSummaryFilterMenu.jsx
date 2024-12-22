@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme) => ({
 	...getReportFilterMakeStyles(theme)
 }));
 
-function passengerAccountSummaryFilterMenu({ inShowAllMode, handleGetPassengerAccountSummarys, handleGetAllPassengerAccountSummarys }) {
+function passengerAccountSummaryFilterMenu() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-
+  const [inShowAllMode, setInShowAllMode] = useState(false);
 	const methods = useFormContext();
 	const { getValues } = methods;
 
