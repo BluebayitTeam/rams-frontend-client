@@ -1,128 +1,127 @@
 import { makeStyles } from "@mui/styles";
 import { getAgents, getPassengers } from "app/store/dataSlice";
 import { useFormContext } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useGetPassengerSummaryUpdatesQuery } from "../PassengerSummaryUpdatesApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReportSelectPassenger from "src/app/@components/ReportComponents/ReportSelectPassenger";
 import ReportSelect from "src/app/@components/ReportComponents/ReportSelect";
+import Keyword from "src/app/@components/ReportComponents/Keyword";
 import { doneNotDone } from "src/app/@data/data";
+import useTheme from "@mui/material/styles/useTheme";
+import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
-    ...getReportFilterMakeStyles(theme)
+  ...getReportFilterMakeStyles(theme),
 }));
 
 function PassengerSummaryFilterMenu() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const methods = useFormContext();
   const { getValues } = methods;
+  const [_reRender, setReRender] = useState(0);
+
   const [inShowAllMode, setInShowAllMode] = useState(false);
-  const theme = useTheme();
-  const { agents } = useSelector((state) => state.data);
-  const values = getValues();
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
-    const [_reRender, setReRender] = useState(0);
-    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const { agents, passengers } = useSelector((state) => state.data);
 
-      useEffect(() => {
-        dispatch(getAgents());
-         dispatch(getPassengers());
+  useEffect(() => {
+    dispatch(getAgents());
+    dispatch(getPassengers());
   }, [dispatch]);
 
-    
-      const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
-        ...pageAndSize,
-      });
-    
-    
-    const handleGetAllPassengerSummarys = (e) => {
-      const data = {
-        agent: getValues().agent,
-        passenger: getValues().passenger,
-        flight_status: getValues().flight_status,
-        page: 1,
-        size: 25,
-      };
+  const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
+    ...pageAndSize,
+  });
 
-      // const data = { agent, passenger, flight };
-        refetch();
+  const handleGetAllPassengerSummarys = () => {
+    const values = getValues();
+    const queryData = {
+      agent: values.agent,
+      passenger: values.passenger,
+      flight_status: values.flight_status,
+      ...pageAndSize,
     };
-
- const commonFieldProps = {
-   setReRender,
-   onEnter: () => {
-     if (inShowAllMode) {
-       handleGetAllPassengerSummarys();
-     }
-   },
- };
-
-  const commonKewordProps = {
-    setReRender,
-    onClick: () =>
-     if (inShowAllMode) {
-       handleGetAllPassengerSummarys();
-     }
+    refetch(queryData);
   };
 
+  const commonFieldProps = {
+    setReRender,
+    onEnter: () => {
+      if (inShowAllMode) {
+        handleGetAllPassengerSummarys();
+      }
+    },
+  };
+
+  const commonKeywordProps = {
+    setReRender,
+    onClick: () => {
+      if (inShowAllMode) {
+        handleGetAllPassengerSummarys();
+      }
+    },
+  };
 
   return (
     <div className={classes.filterMenuContainer}>
-      <div className='allFieldContainer borderTop mt-4'>
+      <div className="allFieldContainer borderTop mt-4">
         {/* Agent */}
-        <ReportSelectFirstLastName
+        <ReportSelect
           {...commonFieldProps}
-          name='agent'
+          name="agent"
           options={agents}
-          icon='person'
-          width='40px'
-            />
-            
+          icon="person"
+          width="40px"
+        />
+
         {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}
-          name='passenger'
+          name="passenger"
           options={passengers}
           getOptionLabel={(option) =>
-            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
+            `${option.passenger_id} - ${option.office_serial} - ${option.passport_no} - ${option.passenger_name}`
           }
-          icon='person'
-          width='78px'
-            />
-            
+          icon="person"
+          width="78px"
+        />
+
         {/* Flight Status */}
         <ReportSelect
           {...commonFieldProps}
-          name='flight_status'
+          name="flight_status"
           options={doneNotDone}
-          icon='person'
-          width='108px'
+          icon="local_activity"
+          width="108px"
         />
       </div>
 
-      {/* keywords */}
-      <div className='allKeyWrdContainer'>
+      {/* Keywords */}
+      <div className="allKeyWrdContainer">
         <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='agent'
-          icon='person'
+          {...commonKeywordProps}
+          type="select"
+          name="agent"
+          icon="person"
           options={agents}
-          />
-        <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='passenger'
-          icon='person'
         />
-              <Keyword
-          {...commonKewordProps}
-          type='select'
-          name='flight_status'
+        <Keyword
+          {...commonKeywordProps}
+          type="select"
+          name="passenger"
+          icon="person"
+        />
+        <Keyword
+          {...commonKeywordProps}
+          type="select"
+          name="flight_status"
           options={doneNotDone}
-          icon='person'
+          icon="local_activity"
         />
       </div>
     </div>

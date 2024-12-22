@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { ViewWeek } from '@mui/icons-material';
 import { resetSearchText, selectSearchText } from '../store/searchTextSlice';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
+import PassengerSummaryFilterMenu from './PassengerSummaryFilterMenu';
 
 /**
  * The passengerSummaryUpdates header.
@@ -37,34 +38,7 @@ function PassengerSummaryUpdatesHeader(props) {
       </motion.span>
 
       <div className='flex w-full sm:w-auto flex-1 items-center justify-end space-x-8'>
-        <Paper
-          component={motion.div}
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-          className='flex items-center w-full sm:max-w-556 mx-24  space-x-8 px-16 rounded-full border-1 shadow-0'>
-          <FuseSvgIcon color='disabled'>heroicons-solid:search</FuseSvgIcon>
-
-          <Input
-            placeholder='Search by Agent or passenger or Flight name'
-            className='flex flex-1'
-            disableUnderline
-            fullWidth
-            inputProps={{
-              'aria-label': 'Search',
-            }}
-
-            onKeyDown={(ev) => {
-              if (ev.key === 'Enter') {
-                props?.setSearchKey(ev?.target.value);
-              } else if (
-                ev.key === 'Backspace' &&
-                ev.target.value?.length === 1
-              ) {
-                props?.setSearchKey('');
-              }
-            }}
-          />
-        </Paper>
+        <PassengerSummaryFilterMenu/>
 
         <ViewWeek
           onClick={() =>
