@@ -34,26 +34,28 @@ function PassengerSummaryFilterMenu() {
         passenger: getValues().passenger,
         flight_status: getValues().flight_status,
         page: 1,
-        size: 100,
+        size: 25,
       };
 
       // const data = { agent, passenger, flight };
         refetch();
     };
 
-  const commonFieldProps = {
-    setReRender,
-    onEnter: () =>
-      inShowAllMode
-        ? handleGetAllPassengerSummarys()
-        : handleGetPassengerAccountSummarys(),
-  };
+ const commonFieldProps = {
+   setReRender,
+   onEnter: () => {
+     if (inShowAllMode) {
+       handleGetAllPassengerSummarys();
+     }
+   },
+ };
+
   const commonKewordProps = {
     setReRender,
     onClick: () =>
-      inShowAllMode
-        ? handleGetAllPassengerSummarys()
-        : handleGetPassengerAccountSummarys(),
+     if (inShowAllMode) {
+       handleGetAllPassengerSummarys();
+     }
   };
 
   useEffect(() => {
