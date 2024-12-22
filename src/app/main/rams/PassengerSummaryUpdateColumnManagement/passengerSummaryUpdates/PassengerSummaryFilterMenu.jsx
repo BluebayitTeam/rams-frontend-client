@@ -1,9 +1,10 @@
 import { makeStyles } from "@mui/styles";
-import { getAgents } from "app/store/dataSlice";
+import { getAgents, getPassengers } from "app/store/dataSlice";
 import { useFormContext } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useGetPassengerSummaryUpdatesQuery } from "../PassengerSummaryUpdatesApi";
 import { useState } from "react";
+import ReportSelectPassenger from "src/app/@components/ReportComponents/ReportSelectPassenger";
 
 const useStyles = makeStyles((theme) => ({
     ...getReportFilterMakeStyles(theme)
@@ -22,6 +23,12 @@ function PassengerSummaryFilterMenu() {
 
     const [_reRender, setReRender] = useState(0);
     const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+
+      useEffect(() => {
+        dispatch(getAgents());
+         dispatch(getPassengers());
+  }, [dispatch]);
+
     
       const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
         ...pageAndSize,
@@ -58,9 +65,6 @@ function PassengerSummaryFilterMenu() {
      }
   };
 
-  useEffect(() => {
-    dispatch(getAgents());
-  }, [dispatch]);
 
   return (
     <div className={classes.filterMenuContainer}>
@@ -72,6 +76,18 @@ function PassengerSummaryFilterMenu() {
           options={agents}
           icon='person'
           width='40px'
+            />
+            
+             {/* Passenger */}
+        <ReportSelectPassenger
+          {...commonFieldProps}
+          name='passenger'
+          options={passengers}
+          getOptionLabel={(option) =>
+            `${option.passenger_id} -${option.office_serial} - ${option.passport_no}- ${option.passenger_name}`
+          }
+          icon='person'
+          width='78px'
         />
       </div>
 
@@ -83,7 +99,13 @@ function PassengerSummaryFilterMenu() {
           name='agent'
           icon='person'
           options={agents}
-        />
+          />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='passenger'
+          icon='person'
+        />{' '}
       </div>
     </div>
   );
