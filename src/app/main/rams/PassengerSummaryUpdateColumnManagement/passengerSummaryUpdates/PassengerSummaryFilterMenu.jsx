@@ -78,7 +78,7 @@ function PassengerSummaryFilterMenu() {
           width='40px'
             />
             
-             {/* Passenger */}
+        {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}
           name='passenger'
