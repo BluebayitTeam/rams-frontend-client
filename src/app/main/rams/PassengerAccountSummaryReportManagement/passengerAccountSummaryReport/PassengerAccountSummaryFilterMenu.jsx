@@ -25,16 +25,27 @@ function passengerAccountSummaryFilterMenu() {
 	
 	const [_reRender, setReRender] = useState(0);
 	
+const handleGetAllPassengerSummarys = (e) => {
+  const data = {
+    agent: getValues().agent,
+    passenger: getValues().passenger,
+    flight_status: getValues().flight_status,
+    page: 1,
+    size: 100,
+  };
 
+  // const data = { agent, passenger, flight };
+  dispatch(getPassengerUpdates(data));
+};
 	
 
 	const commonFieldProps = {
 		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllPassengerAccountSummarys() : handleGetPassengerAccountSummarys())
+		onEnter: () => (inShowAllMode ? handleGetAllPassengerSummarys() : null)
 	};
 	const commonKewordProps = {
 		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllPassengerAccountSummarys() : handleGetPassengerAccountSummarys())
+		onClick: () => (inShowAllMode ? handleGetAllPassengerSummarys() : null)
 	};
 
 	useEffect(() => {
