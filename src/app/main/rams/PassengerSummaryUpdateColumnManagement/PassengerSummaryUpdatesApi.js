@@ -22,9 +22,9 @@ const PassengerSummaryUpdateApi = api
   .injectEndpoints({
     endpoints: (build) => ({
       getPassengerSummaryUpdates: build.query({
-        query: ({ page, size}) => ({
-          url: GET_PASSENGER_UPDATES,
-          params: { page, size},
+        query: (filterData) => ({
+          url: `${GET_PASSENGER_UPDATES}`,
+          params: filterData,
         }),
         providesTags: ['passengerSummaryUpdates'],
       }),

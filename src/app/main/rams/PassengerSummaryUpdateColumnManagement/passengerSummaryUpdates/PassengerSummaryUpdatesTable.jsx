@@ -40,19 +40,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function PassengerSummaryUpdatesTable(props) {
+function PassengerSummaryUpdatesTable({ paginatedData, refetch,isLoading }) {
   const dispatch = useDispatch();
   const classes = useStyles();
-
-  const { navigate, searchKey } = props;
-     const { reset, formState, watch, control, getValues, setValue } =useFormContext();
-
-
-  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-
-  const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
-    ...pageAndSize,
-  });
+  console.log('paginatedDataTabile', paginatedData);
+  const { reset, formState, watch, control, getValues, setValue } =
+    useFormContext();
 
   const countrys = useSelector((state) => state.data.countries);
   const thanas = useSelector((state) => state.data.thanas);
@@ -76,18 +69,19 @@ function PassengerSummaryUpdatesTable(props) {
   const [searchPassengerUpdate, setSearchPassengerUpdate] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
+    const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const [editableRowIds, setEditableRowIds] = useState({});
-
-  console.log('editableRowIdsCheck', editableRowIds);
 
   const [rowId, setRowId] = useState('');
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
-  const totalData = useSelector(selectFilteredPassengerSummaryUpdates(data));
+  const totalData = useSelector(
+    selectFilteredPassengerSummaryUpdates(paginatedData)
+  );
   const passengers = useSelector(
-    selectFilteredPassengerSummaryUpdates(data?.passengers)
+    selectFilteredPassengerSummaryUpdates(paginatedData?.passengers)
   );
 
   useEffect(() => {
@@ -105,7 +99,6 @@ function PassengerSummaryUpdatesTable(props) {
     keyName: 'key',
   });
 
-
   //rerender feildsArray after ledgers fetched otherwise ledger's option not be shown
   useEffect(() => {
     reset({ ...getValues(), items: watch('items') });
@@ -114,8 +107,8 @@ function PassengerSummaryUpdatesTable(props) {
   //set product item list
   useEffect(() => {
     let newEdiableRowIds = {};
-    passengers?.map((data) => {
-      newEdiableRowIds = { ...newEdiableRowIds, [data.id]: false };
+    passengers?.map((paginatedData) => {
+      newEdiableRowIds = { ...newEdiableRowIds, [paginatedData.id]: false };
       return null;
     });
     setEditableRowIds(newEdiableRowIds);
@@ -162,20 +155,13 @@ function PassengerSummaryUpdatesTable(props) {
     return str.join(' ');
   }
 
-  useEffect(() => {
-    refetch({ searchKey });
-  }, [searchKey]);
-  useEffect(() => {
-    refetch({ searchKey });
-  }, []);
-
   let serialNumber = 1;
 
   const [rows, setRows] = useState([]);
-  useEffect(() => {
-    // Fetch data with specific page and size when component mounts or when page and size change
-    refetch({ page, rowsPerPage });
-  }, [page, rowsPerPage]);
+  // useEffect(() => {
+  //   // Fetch paginatedData with specific page and size when component mounts or when page and size change
+  //   refetch({ page, rowsPerPage });
+  // }, [page, rowsPerPage]);
   useEffect(() => {
     if (totalData?.passengers) {
       const modifiedRow = [
@@ -214,14 +200,12 @@ function PassengerSummaryUpdatesTable(props) {
 
       setRows(modifiedRow);
     }
-  }, [totalData?.passengers, refetch]);
+  }, [totalData?.passengers]);
 
   const [tableOrder, setTableOrder] = useState({
     direction: 'asc',
     id: '',
   });
-
-  
 
   function handleRequestSort(event, property) {
     const newOrder = { id: property, direction: 'desc' };
@@ -291,14 +275,14 @@ function PassengerSummaryUpdatesTable(props) {
     };
     fetch(`${GET_PASSENGER_UPDATES}`, authTOKEN)
       .then((response) => response.json())
-      .then((data) => setTableClm(data.passengers[0] || {}))
+      .then((paginatedData) => setTableClm(paginatedData.passengers[0] || {}))
       .catch(() => setTableClm({}));
   }, []);
   const [tableClm, setTableClm] = useState({});
 
   const ModifiedClm = Object.keys(tableClm);
 
-  ModifiedClm.map((data) => {});
+  ModifiedClm.map((paginatedData) => {});
 
   const getSearchPassengerUpdate = () => {
     const authTOKEN = {
@@ -355,9 +339,8 @@ function PassengerSummaryUpdatesTable(props) {
         // setUpdatedItem();
       });
 
-     refetch();
+    refetch();
   }
-
 
   function handleCheck(passengerUpdateEvent, id) {
     const selectedIndex = selected.indexOf(id);
@@ -394,9 +377,10 @@ function PassengerSummaryUpdatesTable(props) {
 
   const handleSubmitOnKeyDownEnter = (ev) => {
     if (ev.key === 'Enter') {
-      
       const datas = getValues()?.items;
-      const data = datas.find((data) => data.id == rowId);
+      const paginatedData = datas.find(
+        (paginatedData) => paginatedData.id == rowId
+      );
       const authTOKEN = {
         headers: {
           'Content-type': 'application/json',
@@ -405,13 +389,10 @@ function PassengerSummaryUpdatesTable(props) {
       };
 
       axios
-        .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
+        .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, paginatedData, authTOKEN)
         .then((res) => {
           refetch();
-          
         });
-    
-      
     }
   };
 
@@ -432,9 +413,8 @@ function PassengerSummaryUpdatesTable(props) {
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
         console.log('resChcek', res);
-         refetch();
+        refetch();
       });
-
   };
 
   if (isLoading) {
@@ -463,7 +443,6 @@ function PassengerSummaryUpdatesTable(props) {
             {_.orderBy(passengers, [tableOrder.id], [tableOrder.direction])
 
               .map((item, idx) => {
-             
                 const isSelected = selected.indexOf(item.id) !== -1;
                 return (
                   <TableRow
@@ -1704,21 +1683,20 @@ function PassengerSummaryUpdatesTable(props) {
                             style={{ color: 'green' }}
                             className='cursor-pointer'
                             onClick={(e) => {
-                               e.stopPropagation();
-                            
+                              e.stopPropagation();
+
                               setEditableRowIds({
                                 ...editableRowIds,
                                 [item.id]: false,
                               });
                               updatePassengerRow(item.id);
                             }}
-                            
                           />
                         ) : (
                           <Edit
                             style={{ color: 'green' }}
                             className='cursor-pointer'
-                              onClick={(e) => {
+                            onClick={(e) => {
                               e.stopPropagation();
                               setEditableRowIds({
                                 ...editableRowIds,
@@ -1729,7 +1707,6 @@ function PassengerSummaryUpdatesTable(props) {
                             }}
                           />
                         )}{' '}
-                        
                       </div>
                     </TableCell>
                   </TableRow>

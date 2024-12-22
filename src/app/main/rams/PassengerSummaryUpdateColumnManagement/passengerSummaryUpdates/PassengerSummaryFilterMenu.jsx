@@ -16,17 +16,18 @@ const useStyles = makeStyles((theme) => ({
   ...getReportFilterMakeStyles(theme),
 }));
 
-function PassengerSummaryFilterMenu() {
+function PassengerSummaryFilterMenu({
+  inShowAllMode,
+  handleGetAllPassengerSummarys,
+}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
 
   const methods = useFormContext();
-  const { getValues } = methods;
+  const { getValues, watch } = methods;
   const [_reRender, setReRender] = useState(0);
 
-  const [inShowAllMode, setInShowAllMode] = useState(false);
-  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const { agents, passengers } = useSelector((state) => state.data);
 
@@ -35,20 +36,13 @@ function PassengerSummaryFilterMenu() {
     dispatch(getPassengers());
   }, [dispatch]);
 
-  const { data, isLoading, refetch } = useGetPassengerSummaryUpdatesQuery({
-    ...pageAndSize,
-  });
+  //  useEffect(() => {
+  //  if  (!inShowAllMode && paginatedData) {
+  //      setModifiedPassengerAccountSummaryData(paginatedData.passenger || []);
 
-  const handleGetAllPassengerSummarys = () => {
-    const values = getValues();
-    const queryData = {
-      agent: values.agent,
-      passenger: values.passenger,
-      flight_status: values.flight_status,
-      ...pageAndSize,
-    };
-    refetch(queryData);
-  };
+  //      setInShowAllMode(false);
+  //    }
+  //  }, [inShowAllMode,paginatedData]);
 
   const commonFieldProps = {
     setReRender,
@@ -78,7 +72,7 @@ function PassengerSummaryFilterMenu() {
           icon='person'
           width='40px'
         />
-    
+
         {/* Passenger */}
         <ReportSelectPassenger
           {...commonFieldProps}

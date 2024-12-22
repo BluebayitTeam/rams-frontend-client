@@ -20,17 +20,20 @@ import { Icon } from '@mui/material';
  */
 
 
-function PassengerSummaryUpdatesHeader(props) {
-	const dispatch = useAppDispatch();
-	const searchText = useSelector(selectSearchText);
-	useEffect(() => {
-		return () => {
-			dispatch(resetSearchText());
-		};
-	}, []);
-	const navigate = useNavigate();
+function PassengerSummaryUpdatesHeader({
+  inShowAllMode,
+  handleGetAllPassengerSummarys,
+}) {
+  const dispatch = useAppDispatch();
+  const searchText = useSelector(selectSearchText);
+  useEffect(() => {
+    return () => {
+      dispatch(resetSearchText());
+    };
+  }, []);
+  const navigate = useNavigate();
 
-	return (
+  return (
     <div className='flex flex-1 w-full items-center justify-between'>
       <div className='flex items-center'>
         <Icon
@@ -49,7 +52,10 @@ function PassengerSummaryUpdatesHeader(props) {
           Passenger Summary Update
         </Typography>
       </div>
-      <PassengerSummaryFilterMenu />
+      <PassengerSummaryFilterMenu
+        inShowAllMode={inShowAllMode}
+        handleGetAllPassengerSummarys={handleGetAllPassengerSummarys}
+      />
 
       <div className='flex items-center'>
         <ViewWeek
