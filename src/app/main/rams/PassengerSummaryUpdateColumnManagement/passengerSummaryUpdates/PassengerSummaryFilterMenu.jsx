@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { useGetPassengerSummaryUpdatesQuery } from "../PassengerSummaryUpdatesApi";
 import { useState } from "react";
 import ReportSelectPassenger from "src/app/@components/ReportComponents/ReportSelectPassenger";
+import ReportSelect from "src/app/@components/ReportComponents/ReportSelect";
+import { doneNotDone } from "src/app/@data/data";
 
 const useStyles = makeStyles((theme) => ({
     ...getReportFilterMakeStyles(theme)
@@ -88,6 +90,15 @@ function PassengerSummaryFilterMenu() {
           }
           icon='person'
           width='78px'
+            />
+            
+        {/* Flight Status */}
+        <ReportSelect
+          {...commonFieldProps}
+          name='flight_status'
+          options={doneNotDone}
+          icon='person'
+          width='108px'
         />
       </div>
 
@@ -105,7 +116,14 @@ function PassengerSummaryFilterMenu() {
           type='select'
           name='passenger'
           icon='person'
-        />{' '}
+        />
+              <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='flight_status'
+          options={doneNotDone}
+          icon='person'
+        />
       </div>
     </div>
   );
