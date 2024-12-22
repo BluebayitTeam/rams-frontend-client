@@ -29,7 +29,7 @@ function PassengerSummaryUpdates() {
    } = useGetPassengerSummaryUpdatesQuery(
      {
        agent: filterData.agent || '',
-       passenger: filterData.passenger || '',
+       id: filterData.passenger || '',
        flight_status: filterData.flight_status || '',
        pageAndSize,
      },
@@ -42,7 +42,7 @@ function PassengerSummaryUpdates() {
    const handleGetAllPassengerSummarys = () => {
      const data = {
        agent: getValues().agent,
-       passenger: getValues().passenger,
+       id: getValues().passenger,
        flight_status: getValues().flight_status,
        page: 1,
        size: 100,
