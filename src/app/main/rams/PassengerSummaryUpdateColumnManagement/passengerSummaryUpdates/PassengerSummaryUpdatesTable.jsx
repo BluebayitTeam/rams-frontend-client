@@ -355,7 +355,7 @@ function PassengerSummaryUpdatesTable(props) {
         // setUpdatedItem();
       });
 
-    dispatch(getPassengerUpdates(pageAndSize));
+     refetch();
   }
 
 
