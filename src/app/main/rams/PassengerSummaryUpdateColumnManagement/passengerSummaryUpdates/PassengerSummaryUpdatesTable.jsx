@@ -43,7 +43,6 @@ const useStyles = makeStyles(() => ({
 function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
   const dispatch = useDispatch();
   const classes = useStyles();
-  console.log('paginatedDataTabile', paginatedData);
   const { reset, formState, watch, control, getValues, setValue } =
     useFormContext();
 
