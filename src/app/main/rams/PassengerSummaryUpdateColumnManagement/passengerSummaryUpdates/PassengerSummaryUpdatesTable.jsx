@@ -125,7 +125,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     const convertedContraItems = setIdIfValueIsObjArryData(passengers);
 
     const convertedContra = setIdIfValueIsObject2(passengers);
-    reset({ ...convertedContra, items: convertedContraItems });
+    // reset({ ...convertedContra, items: convertedContraItems });
   }, [passengers, reset]);
 
   useEffect(() => {
@@ -284,20 +284,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
 
   ModifiedClm.map((data) => {});
 
-  const getSearchPassengerUpdate = () => {
-    const authTOKEN = {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
-      },
-    };
-    fetch(`${SEARCH_PROFESSION}?name=${searchText}`, authTOKEN)
-      .then((response) => response.json())
-      .then((searchedPassengerUpdateData) => {
-        setSearchPassengerUpdate(searchedPassengerUpdateData?.passengers);
-      })
-      .catch(() => setSearchPassengerUpdate([]));
-  };
+
 
   function handleRequestSort(passengerUpdateEvent, property) {
     const id = property;
