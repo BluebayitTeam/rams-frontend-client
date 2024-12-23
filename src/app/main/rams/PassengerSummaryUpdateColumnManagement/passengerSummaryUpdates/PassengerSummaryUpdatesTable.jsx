@@ -577,8 +577,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               render={({
                                 field: { onChange, value, name },
                               }) => {
-                               
-
                                 return (
                                   <Autocomplete
                                     className='mt-8 mb-16'
@@ -1231,7 +1229,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               render={({
                                 field: { onChange, value, name },
                               }) => {
-
                                 return (
                                   <Autocomplete
                                     className='mt-8 mb-16 w-full'
@@ -1724,6 +1721,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               });
                               updatePassengerRow(item.id);
                             }}
+
                           />
                         ) : (
                           <Edit
@@ -1738,6 +1736,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               // handlegetPassengerRowUpdateData(item.id);
                               setEditableRowDatas(item.id);
                             }}
+
                           />
                         )}{' '}
                       </div>
