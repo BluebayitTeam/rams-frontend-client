@@ -523,38 +523,47 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               control={control}
                               render={({
                                 field: { onChange, value, name },
-                              }) => (
-                                <Autocomplete
-                                  className='mt-8 mb-16'
-                                  freeSolo
-                                  value={
-                                    value
-                                      ? agents.find((data) => data.id == value)
-                                      : null
-                                  }
-                                  options={agents}
-                                  getOptionLabel={(option) =>
-                                    `${option.first_name}-${option.agent_code}`
-                                  }
-                                  onChange={(event, newValue) => {
-                                    onChange(newValue?.id);
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      placeholder='Select Agent'
-                                      label={capital_letter(
-                                        key.replaceAll('_', ' ')
-                                      )}
-                                      id={`${key}`}
-                                      variant='outlined'
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                    />
-                                  )}
-                                />
-                              )}
+                              }) => {
+                                return (
+                                  <Autocomplete
+                                    className='mt-8 mb-16'
+                                    freeSolo
+                                    value={
+                                      value
+                                        ? agents.find(
+                                            (data) => data.username == value
+                                            // data.username == value
+                                          )
+                                        : null
+                                    }
+                                    options={agents}
+                                    getOptionLabel={(option) =>
+                                      `${option.first_name}-${option.agent_code}`
+                                    }
+                                    onChange={(event, newValue) => {
+                                      console.log(
+                                        'Selected newValue:',
+                                        newValue
+                                      ); // Log the new value
+                                      onChange(newValue?.id); // Update the value
+                                    }}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        placeholder='Select Agent'
+                                        label={capital_letter(
+                                          key.replaceAll('_', ' ')
+                                        )}
+                                        id={`${key}`}
+                                        variant='outlined'
+                                        InputLabelProps={{
+                                          shrink: true,
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                );
+                              }}
                             />
                           ) : // thana Dropdown
 
@@ -566,36 +575,47 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               control={control}
                               render={({
                                 field: { onChange, value, name },
-                              }) => (
-                                <Autocomplete
-                                  className='mt-8 mb-16'
-                                  placeholder='Select District'
-                                  freeSolo
-                                  value={
-                                    thanas.find((data) => data.id === value) ||
-                                    null
-                                  }
-                                  options={thanas}
-                                  getOptionLabel={(option) => option.name || ''}
-                                  onChange={(event, newValue) => {
-                                    onChange(newValue?.id || null);
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      placeholder='Select Police Station'
-                                      label={capital_letter(
-                                        key.replaceAll('_', ' ')
-                                      )}
-                                      variant='outlined'
-                                      id={`${key}`}
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                    />
-                                  )}
-                                />
-                              )}
+                              }) => {
+                               
+
+                                return (
+                                  <Autocomplete
+                                    className='mt-8 mb-16'
+                                    placeholder='Select District'
+                                    freeSolo
+                                    value={
+                                      thanas.find(
+                                        (data) => data.city.name === value
+                                      ) || null
+                                    }
+                                    options={thanas}
+                                    getOptionLabel={(option) =>
+                                      option.name || ''
+                                    }
+                                    onChange={(event, newValue) => {
+                                      console.log(
+                                        'Selected newValue:',
+                                        newValue
+                                      ); // Log the new value
+                                      onChange(newValue?.id || null); // Update the value
+                                    }}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        placeholder='Select Police Station'
+                                        label={capital_letter(
+                                          key.replaceAll('_', ' ')
+                                        )}
+                                        variant='outlined'
+                                        id={`${key}`}
+                                        InputLabelProps={{
+                                          shrink: true,
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                );
+                              }}
                             />
                           ) : // group DropDown
 
@@ -1051,7 +1071,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   value={
                                     value
                                       ? targetCountrys.find(
-                                          (data) => data.id == value
+                                          (data) => data.name == value
                                         )
                                       : null
                                   }
@@ -1209,38 +1229,47 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               control={control}
                               render={({
                                 field: { onChange, value, name },
-                              }) => (
-                                <Autocomplete
-                                  className='mt-8 mb-16 w-full  '
-                                  freeSolo
-                                  value={
-                                    value
-                                      ? currentStatuss.find(
-                                          (data) => data.id == value
-                                        )
-                                      : null
-                                  }
-                                  options={currentStatuss}
-                                  getOptionLabel={(option) => `${option.name}`}
-                                  onChange={(event, newValue) => {
-                                    onChange(newValue?.id);
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      placeholder='Select Current Status'
-                                      label={capital_letter(
-                                        key.replaceAll('_', ' ')
-                                      )}
-                                      id={`${key}`}
-                                      variant='outlined'
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                    />
-                                  )}
-                                />
-                              )}
+                              }) => {
+
+                                return (
+                                  <Autocomplete
+                                    className='mt-8 mb-16 w-full'
+                                    freeSolo
+                                    value={
+                                      value
+                                        ? currentStatuss.find(
+                                            (data) => data.name == value
+                                          )
+                                        : null
+                                    }
+                                    options={currentStatuss}
+                                    getOptionLabel={(option) =>
+                                      `${option.name}`
+                                    }
+                                    onChange={(event, newValue) => {
+                                      console.log(
+                                        'Selected newValue:',
+                                        newValue
+                                      ); // Log the new selection
+                                      onChange(newValue?.id); // Update the value
+                                    }}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        placeholder='Select Current Status'
+                                        label={capital_letter(
+                                          key.replaceAll('_', ' ')
+                                        )}
+                                        id={`${key}`}
+                                        variant='outlined'
+                                        InputLabelProps={{
+                                          shrink: true,
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                );
+                              }}
                             />
                           ) : // recruiting_agency
 
@@ -1261,7 +1290,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   value={
                                     value
                                       ? recruitingAgencys.find(
-                                          (data) => data.id == value
+                                          (data) => data.name == value
                                         )
                                       : null
                                   }
@@ -1322,7 +1351,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   value={
                                     value
                                       ? medicalCenters.find(
-                                          (data) => data.id == value
+                                          (data) => data.name == value
                                         )
                                       : null
                                   }
@@ -1360,38 +1389,47 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               control={control}
                               render={({
                                 field: { onChange, value, name },
-                              }) => (
-                                <Autocomplete
-                                  className='mt-8 mb-16 w-full  '
-                                  freeSolo
-                                  value={
-                                    value
-                                      ? professions.find(
-                                          (data) => data.id == value
-                                        )
-                                      : null
-                                  }
-                                  options={professions}
-                                  getOptionLabel={(option) => `${option.name}`}
-                                  onChange={(event, newValue) => {
-                                    onChange(newValue?.id);
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      placeholder='Select Profession'
-                                      label={capital_letter(
-                                        key.replaceAll('_', ' ')
-                                      )}
-                                      id={`${key}`}
-                                      variant='outlined'
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                    />
-                                  )}
-                                />
-                              )}
+                              }) => {
+                                console.log('CurrentType', typeof value); // Log the current value
+                                return (
+                                  <Autocomplete
+                                    className='mt-8 mb-16 w-full'
+                                    freeSolo
+                                    value={
+                                      value
+                                        ? professions.find(
+                                            (data) => data.name === value
+                                          )
+                                        : null
+                                    }
+                                    options={professions}
+                                    getOptionLabel={(option) =>
+                                      `${option.name}`
+                                    }
+                                    onChange={(event, newValue) => {
+                                      console.log(
+                                        'Selected newValue:',
+                                        newValue
+                                      ); // Log the selected value
+                                      onChange(newValue?.id);
+                                    }}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        placeholder='Select Profession'
+                                        label={capital_letter(
+                                          key.replaceAll('_', ' ')
+                                        )}
+                                        id={`${key}`}
+                                        variant='outlined'
+                                        InputLabelProps={{
+                                          shrink: true,
+                                        }}
+                                      />
+                                    )}
+                                  />
+                                );
+                              }}
                             />
                           ) : // Medical Result Dropdown
 
@@ -1406,7 +1444,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   value={
                                     value
                                       ? medicalResults.find(
-                                          (data) => data.id == value
+                                          (data) => data.name == value
                                         )
                                       : null
                                   }
@@ -1449,7 +1487,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   value={
                                     value
                                       ? countrys.find(
-                                          (data) => data.id == value
+                                          (data) => data.name == value
                                         )
                                       : null
                                   }
