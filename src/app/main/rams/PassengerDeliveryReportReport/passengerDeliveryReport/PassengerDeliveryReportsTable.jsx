@@ -42,20 +42,30 @@ function PassengerDeliveryReportsTable(props) {
   });
 
   const [removePassengerDelivery] = useDeletePassengerDeliveryMutation();
-  const handleRemoveAgent = (dispatch, id) => {
-    // Call your async action to remove the delivery
-    dispatch(removePassengerDelivery(id)).then(() => {
-      DeletedSuccessfully(); // Optional: Call any success handler after deletion
+  // const handleRemoveAgent = (dispatch, id) => {
+  //   // Call your async action to remove the delivery
+  //   dispatch(removePassengerDelivery(id)).then(() => {
+  //     DeletedSuccessfully(); // Optional: Call any success handler after deletion
 
-      // Dispatch a message to notify the user
+  //     // Dispatch a message to notify the user
+  //     dispatch(
+  //       showMessage({
+  //         message: `Please Restart The Backend`,
+  //         variant: 'error',
+  //       })
+  //     );
+  //   });
+  // };
+
+  function handleRemoveAgent(dispatch) {
+     console.log('chckIDs',id)
+      removePassengerDelivery(id);
+      DeletedSuccessfully();
+      navigate('/passengerDeliveryReport/passengerDeliveryReports');
       dispatch(
-        showMessage({
-          message: `Please Restart The Backend`,
-          variant: 'error',
-        })
+        showMessage({ message: `Please Restart The Backend`, variant: 'error' })
       );
-    });
-  };
+    }
 
   const initialTableColumnsState = [
     { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
@@ -101,27 +111,31 @@ function PassengerDeliveryReportsTable(props) {
       style: { justifyContent: 'flex-end', marginRight: '5px' },
       headStyle: { textAlign: 'center' },
     },
-    // {
-    //   id: 9,
-    //   label: 'Action',
-    //   getterMethod: (data) =>
-    //     data.passenger_delivery?.id && (
-    //       <Delete
-    //         onClick={() =>
-    //           function handleRemoveAgent(data) {
-    //             console.log('sdsdsdsdsdsd', data);
-    //             removePassengerDelivery(data.passenger_delivery?.id);
-    //             DeletedSuccessfully();
-    //           }
-    //         }
-    //         className='cursor-pointer custom-delete-icon-style'
-    //       />
-    //     ),
-    //   show: true,
+    {
+      id: 9,
+      label: 'Action',
+      getterMethod: (data) =>
 
-    //   style: { justifyContent: 'flex-end', marginRight: '5px' },
-    //   headStyle: { textAlign: 'right' },
-    // },
+          data?.passenger_delivery?.id && (
+          <Delete
+            onClick={() =>
+              // function handleRemoveAgent(data) {
+              //   console.log('sdsdsdsdsdsd', data);
+              //   removePassengerDelivery(data.passenger_delivery?.id);
+              //   DeletedSuccessfully();
+              // }
+              {handleRemoveAgent}
+            }
+            className='cursor-pointer custom-delete-icon-style'
+          />
+        ),
+
+      // console.log('CheckDelete',data),
+      show: true,
+
+      style: { justifyContent: 'flex-end', marginRight: '5px' },
+      headStyle: { textAlign: 'right' },
+    },
   ];
   const { watch, getValues } = methods;
 

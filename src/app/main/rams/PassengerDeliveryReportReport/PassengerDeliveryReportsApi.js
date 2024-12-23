@@ -2,6 +2,7 @@ import FuseUtils from '@fuse/utils';
 import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import {
+  DELETE_PASSENGER_LEDGER_DELIVERY,
   GET_PASSENGER_DELIVERY_REPORT,
   GET_PASSENGER_DELIVERY_REPORT_WITHOUT_PG,
   POSTDATE_FILTER_BY,
@@ -31,8 +32,8 @@ const PassengerDeliveryReportApi = api
         providesTags: ['passengerDeliveryReports'],
       }),
       deletePassengerDelivery: build.mutation({
-        query: (PassengerDeliveryId) => ({
-          url: `${DELETE_PassengerDelivery}${PassengerDeliveryId}`,
+        query: (id) => ({
+          url: `${DELETE_PASSENGER_LEDGER_DELIVERY}${id}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['PassengerDeliverys'],
