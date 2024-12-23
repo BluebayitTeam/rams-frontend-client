@@ -388,6 +388,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
         });
     }
   };
+  
 
   //update updatePassengerRow
   const updatePassengerRow = (passengerId) => {
