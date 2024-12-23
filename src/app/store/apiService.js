@@ -4,7 +4,7 @@ import Axios from 'axios';
 const axiosBaseQuery =
 	() =>
 	async ({ url, method, data, params }) => {
-		console.log(`jbsjbdf`, url, method, data, params);
+		// console.log(`jbsjbdf`, url, method, data, params);
 		try {
 			if (url) {
 				Axios.defaults.headers.common.Authorization = localStorage.getItem('jwt_access_token');
@@ -21,7 +21,7 @@ const axiosBaseQuery =
 			return data;
 		} catch (axiosError) {
 			const error = axiosError;
-			console.log(`jsadkjsbakdf`, error?.response?.data?.detail);
+			// console.log(`jsadkjsbakdf`, error?.response?.data?.detail);
 
 			return {
 				error

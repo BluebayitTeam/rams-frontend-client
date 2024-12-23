@@ -80,7 +80,7 @@ function FuseTheme(props) {
 	// const auth = localStorage.getItem('jwt_access_token');
 	// const auth = useSelector(({ auth }) => auth);
 	const auth = useSelector(({ user }) => user?.data);
-	console.log(`bskdbkasd`, auth);
+	// console.log(`bskdbkasd`, auth);
 	const { direction, theme, children } = props;
 	const { mode } = theme.palette;
 	useEnhancedEffect(() => {

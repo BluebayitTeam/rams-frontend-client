@@ -124,6 +124,13 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     const convertedContraItems = setIdIfValueIsObjArryData(passengers);
 
     const convertedContra = setIdIfValueIsObject2(passengers);
+    if (
+      !getValues().agent &&
+      !getValues().passenger &&
+      !getValues().flight_status
+    ) {
+      reset({ ...convertedContra, items: convertedContraItems });
+    }
     // reset({ ...convertedContra, items: convertedContraItems });
   }, [passengers]);
 

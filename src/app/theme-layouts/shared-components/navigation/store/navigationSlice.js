@@ -698,7 +698,7 @@ export const selectNavigation = createSelector(
 		// Convert unflattened navigation data to a hierarchical structure
 		const navigation = setAdditionalData(navigationSimple);
 
-		console.log('navigationSimple', navigationSimple);
+		// console.log('navigationSimple', navigationSimple);
 
 		function setAdditionalData(data) {
 			return data?.map((item) => ({
@@ -712,7 +712,7 @@ export const selectNavigation = createSelector(
 
 		// Apply additional data and translations
 		const translatedValues = setAdditionalData(navigation);
-		console.log('translatedValues', translatedValues);
+		// console.log('translatedValues', translatedValues);
 
 		return translatedValues;
 	}
