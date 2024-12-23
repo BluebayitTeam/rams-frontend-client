@@ -532,7 +532,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                     value={
                                       value
                                         ? agents.find(
-                                            (data) => data.username == value
+                                            (data) => data.username=== value
                                             // data.username == value
                                           )
                                         : null
@@ -546,7 +546,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                         'Selected newValue:',
                                         newValue
                                       ); // Log the new value
-                                      onChange(newValue?.id); // Update the value
+                                      onChange(newValue?.username); // Update the value
                                     }}
                                     renderInput={(params) => (
                                       <TextField
@@ -596,7 +596,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                         'Selected newValue:',
                                         newValue
                                       ); // Log the new value
-                                      onChange(newValue?.id || null); // Update the value
+                                      onChange(newValue?.city.name || null); // Update the value
                                     }}
                                     renderInput={(params) => (
                                       <TextField
@@ -1077,7 +1077,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   options={targetCountrys}
                                   getOptionLabel={(option) => `${option.name}`}
                                   onChange={(event, newValue) => {
-                                    onChange(newValue?.id);
+                                    onChange(newValue?.name);
                                   }}
                                   renderInput={(params) => (
                                     <TextField
@@ -1249,7 +1249,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                         'Selected newValue:',
                                         newValue
                                       ); // Log the new selection
-                                      onChange(newValue?.id); // Update the value
+                                      onChange(newValue?.name); // Update the value
                                     }}
                                     renderInput={(params) => (
                                       <TextField
@@ -1295,7 +1295,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   options={recruitingAgencys}
                                   getOptionLabel={(option) => `${option.name}`}
                                   onChange={(event, newValue) => {
-                                    onChange(newValue?.id);
+                                    onChange(newValue?.name);
                                   }}
                                   renderInput={(params) => (
                                     <TextField
@@ -1492,7 +1492,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   options={countrys}
                                   getOptionLabel={(option) => `${option.name}`}
                                   onChange={(event, newValue) => {
-                                    onChange(newValue?.id);
+                                    onChange(newValue?.name);
                                   }}
                                   renderInput={(params) => (
                                     <TextField
