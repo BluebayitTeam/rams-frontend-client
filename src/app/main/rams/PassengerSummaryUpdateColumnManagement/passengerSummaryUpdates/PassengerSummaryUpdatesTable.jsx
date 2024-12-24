@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function PassengerSummaryUpdatesTable({ paginatedData ,isLoading }) {
+function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { reset, formState, watch, control, getValues, setValue } =
@@ -84,8 +84,7 @@ function PassengerSummaryUpdatesTable({ paginatedData ,isLoading }) {
     selectFilteredPassengerSummaryUpdates(paginatedData?.passengers)
   );
 
-    const {refetch} = useGetPassengerSummaryUpdatesQuery({...pageAndSize});
- 
+  
   useEffect(() => {
     Object.entries(editableRowIds).forEach(([key, value]) => {
       value == true && setRowId(key);
@@ -170,7 +169,9 @@ function PassengerSummaryUpdatesTable({ paginatedData ,isLoading }) {
 
  
   useEffect(() => {
-    refetch({ page, rowsPerPage });
+    if (totalData?.passengers) {
+      refetch({ page, rowsPerPage });
+   }
   }, [page, rowsPerPage]);
 
   useEffect(() => {
@@ -335,7 +336,7 @@ function PassengerSummaryUpdatesTable({ paginatedData ,isLoading }) {
         // setUpdatedItem();
       });
 
-    refetch();
+    // refetch();
   }
 
   function handleCheck(passengerUpdateEvent, id) {
@@ -387,7 +388,7 @@ function PassengerSummaryUpdatesTable({ paginatedData ,isLoading }) {
       axios
         .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
         .then((res) => {
-          refetch(pageAndSize);
+          // refetch(pageAndSize);
         });
     }
   };
@@ -415,7 +416,7 @@ function PassengerSummaryUpdatesTable({ paginatedData ,isLoading }) {
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
         console.log('Update Response:', res);
-        refetch(pageAndSize); 
+        // refetch(pageAndSize); 
       })
       .catch((err) => {
         console.error('Error updating passenger:', err);
