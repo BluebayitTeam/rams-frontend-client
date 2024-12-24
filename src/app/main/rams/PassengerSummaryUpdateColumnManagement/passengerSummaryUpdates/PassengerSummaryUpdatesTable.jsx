@@ -508,6 +508,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                         console.log(
                                           'Selected newValue:',
                                           newValue
+                                          
                                         );
                                         onChange(newValue?.id);
                                         setValue(
