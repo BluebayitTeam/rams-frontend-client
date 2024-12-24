@@ -393,6 +393,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
   //update updatePassengerRow
   const updatePassengerRow = (passengerId) => {
     const datas = getValues()?.items;
+    console.log('checkDropDown', datas);
 
     const data = datas.find((data) => data?.id === passengerId);
 
@@ -474,9 +475,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                         {editableRowIds[item.id] ? (
                           // district Dropdown
 
-                          key == 'district_passenger' ||
-                          key == 'district_passenger' ||
-                          key == 'city_agent' ? (
+                          key == 'district' ||
+                         
+                          key == 'city' ? (
                             <Controller
                               name={`items?.${idx}?.${key}`}
                               control={control}
@@ -568,7 +569,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                             />
                           ) : // thana Dropdown
 
-                          key == 'district' ||
+                       
                             key == 'thana_agent' ||
                             key == 'police_station_passenger' ? (
                             <Controller
@@ -1579,7 +1580,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                           ) : // Agents Show
                           key == 'musaned_given_by_musanedokala' ||
                             key == 'visa_agent_visaentry' ||
-                            key == 'agent_passenger' ||
+                            key == 'agent' ||
                             key == 'okala_given_by_musanedokala' ? (
                             `${agents.find((data) => data.id === val)?.first_name} ${
                               agents.find((data) => data.id === val)?.last_name
@@ -1651,7 +1652,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               ?.name
                           ) : // district Show
 
-                          key == 'district_passenger' || key == 'city_agent' ? (
+                          key == 'district' || key == 'city' ? (
                             districts.find((data) => data.id === val)?.name
                           ) : // district Show
 
