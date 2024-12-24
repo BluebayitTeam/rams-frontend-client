@@ -75,9 +75,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
   const [rowId, setRowId] = useState('');
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
-
   const totalData = useSelector(
     selectFilteredPassengerSummaryUpdates(paginatedData)
   );
@@ -167,6 +166,11 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
 
   const [rows, setRows] = useState([]);
 
+ 
+  // useEffect(() => {
+  //   refetch({ page, rowsPerPage });
+  // }, [page, rowsPerPage]);
+
   useEffect(() => {
     if (totalData?.passengers) {
       const modifiedRow = [
@@ -180,7 +184,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       ];
 
       Object.entries(totalData?.passengers[0] || {})
-        .filter(([key]) => key !== 'random_number')
+        .filter(([key]) =>key !== 'id' &&  key !== 'random_number')
         .map(([key]) => {
           modifiedRow.push({
             id: key,
@@ -472,7 +476,10 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                     </TableCell>
 
                     {Object.entries(item).map(([key, val]) => {
+                      
                       return (
+                    key !== 'id' &&
+                      (
                         <TableCell
                           className='w-40 md:w-64'
                           component='th'
@@ -1766,7 +1773,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                           ) : (
                             ''
                           )}
-                        </TableCell>
+                          </TableCell>
+                        )
                       );
                     })}
 
