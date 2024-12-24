@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
+function PassengerSummaryUpdatesTable({ paginatedData ,isLoading }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { reset, formState, watch, control, getValues, setValue } =
@@ -84,6 +84,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     selectFilteredPassengerSummaryUpdates(paginatedData?.passengers)
   );
 
+    const {refetch} = useGetPassengerSummaryUpdatesQuery({...pageAndSize});
+ 
   useEffect(() => {
     Object.entries(editableRowIds).forEach(([key, value]) => {
       value == true && setRowId(key);
@@ -167,9 +169,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
   const [rows, setRows] = useState([]);
 
  
-  // useEffect(() => {
-  //   refetch({ page, rowsPerPage });
-  // }, [page, rowsPerPage]);
+  useEffect(() => {
+    refetch({ page, rowsPerPage });
+  }, [page, rowsPerPage]);
 
   useEffect(() => {
     if (totalData?.passengers) {
@@ -209,7 +211,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
 
       setRows(modifiedRow);
     }
-  }, [totalData?.passengers, refetch]);
+  }, [totalData?.passengers]);
 
   const [tableOrder, setTableOrder] = useState({
     direction: 'asc',
