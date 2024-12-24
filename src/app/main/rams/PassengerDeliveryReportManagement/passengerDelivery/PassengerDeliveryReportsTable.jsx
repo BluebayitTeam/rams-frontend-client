@@ -121,7 +121,6 @@ function PassengerDeliverysTable(props) {
     { id: 6, label: 'Amount', name: 'credit_amount', show: true },
   ];
   const { watch, getValues } = methods;
-  console.log('getValuestesrt', getValues().passenger);
 
   const [
     modifiedPassengerDeliveryData,

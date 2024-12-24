@@ -25,6 +25,7 @@ import axios from 'axios';
 import setIdIfValueIsObjArryData from 'src/app/@helpers/setIdIfValueIsObjArryData';
 import setIdIfValueIsObject2 from 'src/app/@helpers/setIdIfValueIsObject2';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
+import moment from 'moment';
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
@@ -421,6 +422,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     );
   }
 
+
+
   return (
     <div className='w-full flex flex-col min-h-full px-10 '>
       <div className='grow overflow-x-auto overflow-y-auto'>
@@ -495,17 +498,20 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   options={districts}
                                   getOptionLabel={(option) => `${option.name}`}
                                   onChange={(event, newValue) => {
+                                    console.log('Selected newValue:', newValue);
                                     onChange(newValue?.id);
                                     setValue(
                                       `items.${idx}.${key}`,
                                       newValue?.id
-                                    ); 
+                                    );
                                   }}
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
                                       placeholder='Select City'
-                                      label={`${key}`}
+                                      label={capital_letter(
+                                        key.replaceAll('_', ' ')
+                                      )}
                                       id={`${key}`}
                                       // error={!!errors.district}
                                       variant='outlined'
@@ -575,8 +581,8 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                             />
                           ) : // thana Dropdown
 
-                          key == 'thana_agent' ||
-                            key == 'police_station_passenger' ? (
+                          key == 'thana' ||
+                            key == 'police_station' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -590,7 +596,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                     freeSolo
                                     value={
                                       thanas.find(
-                                        (data) => data.city.name === value
+                                        (data) => data.id === value
                                       ) || null
                                     }
                                     options={thanas}
@@ -602,7 +608,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                         'Selected newValue:',
                                         newValue
                                       ); // Log the new value
-                                      onChange(newValue?.city.name || null); // Update the value
+                                      onChange(newValue?.id || null); // Update the value
                                     }}
                                     renderInput={(params) => (
                                       <TextField
@@ -624,7 +630,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                             />
                           ) : // group DropDown
 
-                          key == 'group_agent' ? (
+                          key == 'group' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -707,9 +713,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                 />
                               )}
                             />
-                          ) : // ticket_status_flight DropDown
+                          ) : // ticket_status DropDown
 
-                          key == 'ticket_status_flight' ? (
+                          key == 'ticket_status' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -833,7 +839,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                             />
                           ) : // gender Dropdown
 
-                          key == 'balance_type_agent' ? (
+                          key == 'balance_type' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -969,9 +975,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                 />
                               )}
                             />
-                          ) : // visa_entry_passenger Dropdown
+                          ) : // visa_entry Dropdown
 
-                          key == 'visa_entry_passenger' ? (
+                          key == 'visa_entry' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -1015,7 +1021,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                           ) : // Demand Dropdown
 
                           key == 'demand' ||
-                            key == 'demand_passenger' ||
                             key == 'demand_visaentry' ||
                             key == 'demand_visaentry' ? (
                             <Controller
@@ -1102,9 +1107,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                 />
                               )}
                             />
-                          ) : // ticket_agency_flight Dropdown
+                          ) : // ticket_agency Dropdown
 
-                          key == 'ticket_agency_flight' ? (
+                          key == 'ticket_agency' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -1143,9 +1148,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                 />
                               )}
                             />
-                          ) : // mofa_agency_mofa Dropdown
+                          ) : // mofa_agency Dropdown
 
-                          key == 'mofa_agency_mofa' ? (
+                          key == 'mofa_agency' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
                               control={control}
@@ -1206,7 +1211,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                             key == 'finger_date_officework' ||
                             key == 'admission_date_training' ||
                             key == 'certificate_date_training' ||
-                            key == 'date_of_birth_passenger' ||
+                            key == 'date_of_birth' ||
                             key == 'passport_expiry_date_passenger' ||
                             key == 'passport_issue_date_passenger' ||
                             key == 'visa_issue_date_visaentry' ||
@@ -1218,9 +1223,9 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               className='mt-8 mb-16 w-full  '
                               // required
                             />
-                          ) : // current_status_passenger
-                          key == 'current_status' ||
-                            key == 'current_status_passenger' ||
+                          ) : // current_status
+                       
+                            key == 'current_status' ||
                             key == 'handover_passport_ticket' ||
                             key == 'accounts_cleared' ||
                             key == 'immigration_clearance' ||
@@ -1564,7 +1569,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                           key == 'musaned_date_musanedokala' ||
                           key == 'okala_date_musanedokala' ||
                           key == 'finger_date_officework' ||
-                          key == 'date_of_birth_passenger' ||
+                          key == 'date_of_birth' ||
                           key == 'passport_expiry_date_passenger' ||
                           key == 'passport_issue_date_passenger' ||
                           key == 'visa_issue_date_visaentry' ||
@@ -1595,23 +1600,23 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                             medicalCenters.find((data) => data.id === val)?.name
                           ) : // current_status Show
 
-                          key == 'current_status_passenger' ? (
+                          key == 'current_status' ? (
                             currentStatuss.find((data) => data.id === val)?.name
                           ) : // group Show
 
-                          key == 'group_agent' ? (
+                          key == 'group' ? (
                             groups.find((data) => data.id === val)?.name
                           ) : // gender Show
 
                           key == 'gender_agent' || key == 'gender_passenger' ? (
                             genders.find((data) => data.id === val)?.name
-                          ) : // balance_type_agent Show
+                          ) : // balance_type Show
 
-                          key == 'balance_type_agent' ? (
+                          key == 'balance_type' ? (
                             balanceType.find((data) => data.id === val)?.name
                           ) : // Demand Show
 
-                          key == 'demand_passenger' ||
+                          key == 'demand' ||
                             key == 'demand_visaentry' ? (
                             demands.find((data) => data.id === val)
                               ?.company_name
@@ -1645,14 +1650,14 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                           key == 'marital_status_passenger' ? (
                             maritalStatuses.find((data) => data.id === val)
                               ?.name
-                          ) : // visa_entry_passenger Show
+                          ) : // visa_entry Show
 
-                          key == 'visa_entry_passenger' ? (
+                          key == 'visa_entry' ? (
                             visaEntrys.find((data) => data.id === val)
                               ?.visa_number
-                          ) : // ticket_status_flight Show
+                          ) : // ticket_status Show
 
-                          key == 'ticket_status_flight' ? (
+                          key == 'ticket_status' ? (
                             activeRetrnCncl.find((data) => data.id === val)
                               ?.name
                           ) : // district Show
@@ -1669,21 +1674,21 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               ?.name
                           ) : // thana Dropdown
 
-                          key == 'thana_agent' || key == 'police_station' ? (
+                          key == 'thana' || key == 'police_station' ? (
                             thanas.find((data) => data.id === val)?.name
                           ) : // medicalResults Dropdown
 
                           key == 'medical_result_medical' ? (
                             medicalResults.find((data) => data.id === val)?.name
-                          ) : // ticket_agency_flight Dropdown
+                          ) : // ticket_agency Dropdown
 
-                          key == 'ticket_agency_flight' ? (
+                          key == 'ticket_agency' ? (
                             `${agents.find((data) => data.id === val)?.first_name} ${
                               agents.find((data) => data.id === val)?.last_name
                             }`
-                          ) : // mofa_agency_mofa Dropdown
+                          ) : // mofa_agency Dropdown
 
-                          key == 'mofa_agency_mofa' ? (
+                          key == 'mofa_agency' ? (
                             `${agencys.find((data) => data.id === val)?.name}`
                           ) : // passenger Show
                           key == 'passenger_embassy' ||
