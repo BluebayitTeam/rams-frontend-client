@@ -206,8 +206,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     }
   }, [totalData?.passengers, refetch]);
 
-
-
   const [tableOrder, setTableOrder] = useState({
     direction: 'asc',
     id: '',
@@ -290,8 +288,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
 
   ModifiedClm.map((data) => {});
 
-
-
   function handleRequestSort(passengerUpdateEvent, property) {
     const id = property;
     let direction = 'desc';
@@ -355,8 +351,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     setSelected(newSelected);
   }
 
-
-
   if (passengers?.length === 0) {
     return (
       <motion.div
@@ -384,18 +378,22 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       axios
         .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
         .then((res) => {
-          refetch((pageAndSize));
+          refetch(pageAndSize);
         });
     }
   };
-  
 
-  //update updatePassengerRow
+  // Update Passenger Row function
   const updatePassengerRow = (passengerId) => {
-    const datas = getValues()?.items;
-    console.log('checkDropDown', datas);
+    const items = getValues()?.items;
+    console.log('Current Items:', items);
 
-    const data = datas.find((data) => data?.id === passengerId);
+    const data = items.find((item) => item?.id === passengerId);
+
+    if (!data) {
+      console.warn(`Passenger with ID ${passengerId} not found`);
+      return;
+    }
 
     const authTOKEN = {
       headers: {
@@ -407,12 +405,14 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
     axios
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
-        console.log('resChcek', res);
-        refetch((pageAndSize));
+        console.log('Update Response:', res);
+        refetch(pageAndSize); 
+      })
+      .catch((err) => {
+        console.error('Error updating passenger:', err);
       });
   };
 
-  
   if (isLoading) {
     return (
       <div className='flex items-center justify-center h-full'>
@@ -475,9 +475,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                         {editableRowIds[item.id] ? (
                           // district Dropdown
 
-                          key == 'district' ||
-                         
-                          key == 'city' ? (
+                          key == 'district' || key == 'city' ? (
                             <Controller
                               name={`items?.${idx}?.${key}`}
                               control={control}
@@ -498,6 +496,10 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                   getOptionLabel={(option) => `${option.name}`}
                                   onChange={(event, newValue) => {
                                     onChange(newValue?.id);
+                                    setValue(
+                                      `items.${idx}.${key}`,
+                                      newValue?.id
+                                    ); 
                                   }}
                                   renderInput={(params) => (
                                     <TextField
@@ -533,7 +535,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                     value={
                                       value
                                         ? agents.find(
-                                            (data) => data.username=== value
+                                            (data) => data.id === value
                                             // data.username == value
                                           )
                                         : null
@@ -547,7 +549,11 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                                         'Selected newValue:',
                                         newValue
                                       ); // Log the new value
-                                      onChange(newValue?.username); // Update the value
+                                      onChange(newValue?.id); // Update the value
+                                      setValue(
+                                        `items.${idx}.${key}`,
+                                        newValue?.id
+                                      );
                                     }}
                                     renderInput={(params) => (
                                       <TextField
@@ -569,8 +575,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                             />
                           ) : // thana Dropdown
 
-                       
-                            key == 'thana_agent' ||
+                          key == 'thana_agent' ||
                             key == 'police_station_passenger' ? (
                             <Controller
                               name={`items.${idx}.${key}`}
@@ -1722,7 +1727,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               });
                               updatePassengerRow(item.id);
                             }}
-
                           />
                         ) : (
                           <Edit
@@ -1737,7 +1741,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                               // handlegetPassengerRowUpdateData(item.id);
                               setEditableRowDatas(item.id);
                             }}
-
                           />
                         )}{' '}
                       </div>
