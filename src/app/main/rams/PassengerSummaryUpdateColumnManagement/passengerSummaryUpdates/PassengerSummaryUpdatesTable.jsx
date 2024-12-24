@@ -472,7 +472,6 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
                     </TableCell>
 
                     {Object.entries(item).map(([key, val]) => {
-                      console.log('keyCheck', key, val);
                       return (
                         <TableCell
                           className='w-40 md:w-64'
