@@ -168,11 +168,11 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
   const [rows, setRows] = useState([]);
 
  
-  useEffect(() => {
-    if (totalData?.passengers) {
-      refetch({ page, rowsPerPage });
-   }
-  }, [page, rowsPerPage]);
+  // useEffect(() => {
+  //   if (passengers) {
+  //     refetch({ page, rowsPerPage });
+  //   }
+  // }, [page, rowsPerPage,passengers]);
 
   useEffect(() => {
     if (totalData?.passengers) {
@@ -211,6 +211,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       });
 
       setRows(modifiedRow);
+      
     }
   }, [totalData?.passengers]);
 
@@ -388,7 +389,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       axios
         .put(`${UPDATE_PASSENGER_UPDATES}${rowId}`, data, authTOKEN)
         .then((res) => {
-          // refetch(pageAndSize);
+          refetch(pageAndSize);
         });
     }
   };
@@ -416,7 +417,7 @@ function PassengerSummaryUpdatesTable({ paginatedData, refetch ,isLoading }) {
       .put(`${UPDATE_PASSENGER_UPDATES}${passengerId}`, data, authTOKEN)
       .then((res) => {
         console.log('Update Response:', res);
-        // refetch(pageAndSize); 
+        refetch(pageAndSize); 
       })
       .catch((err) => {
         console.error('Error updating passenger:', err);
