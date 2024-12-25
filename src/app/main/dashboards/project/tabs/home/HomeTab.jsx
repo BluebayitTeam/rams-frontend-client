@@ -36,10 +36,7 @@ function HomeTab() {
       className='flex flex-wrap'
       variants={container}
       initial='hidden'
-      animate='show'
-      variants={container}
-      initial='hidden'
-      animate='show'>
+       animate='show'>
       <motion.div variants={item} className='widget flex w-full'>
         <h1 className='font-700 mx-20 text-blue-800'>Expire Status</h1>
       </motion.div>{' '}

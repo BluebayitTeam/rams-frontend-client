@@ -12,10 +12,11 @@ const ProjectDashboardApi = api
     endpoints: (build) => ({
       // Fetch upcoming medical data
       getProjectDashboardUpcomingMedical: build.query({
-        query: ({ no_of_days }) => ({
+       query: (filterData) => ({
           url: GET_UPCOMING_MEDICAL_COUNT,
-          params: { no_of_days },
+          params: filterData,
         }),
+
         providesTags: ['dashboard'],
       }),
 

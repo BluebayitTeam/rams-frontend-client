@@ -7,20 +7,32 @@ import { useDispatch } from 'react-redux';
 import {  Paper, Typography } from '@mui/material';
 import history from '@history';
 import { useGetProjectDashboardUpcomingMedicalQuery } from '../../../ProjectDashboardApi';
-// import { getUpcomingMedical } from '../store/widgetsSlice';
+import { useForm } from 'react-hook-form';
+
 
 function UpcomingMedical(props) {
-  //   const router = useHistory();
 
   const dispatch = useDispatch();
+
+  
+
   const [days, setDays] = useState(15);
-  const [noOfDays,setNoOfDays]=useState('')
-  const { data } = useGetProjectDashboardUpcomingMedicalQuery({  days });
+
+
+  // const filterData = watch();
+
+  
+   const { data} = useGetProjectDashboardUpcomingMedicalQuery({
+     no_of_days:days
+   });
+  
+  console.log('dataCheck', data);
 
 
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event,) => {
     const inputValue = parseInt(event.target.value, 10);
+    console.log('inputValue', inputValue);
     setDays(isNaN(inputValue) ? 0 : inputValue);
   };
 
@@ -38,10 +50,10 @@ function UpcomingMedical(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
-            props?.widget?.total_elements > 0 &&
+            data?.total_elements > 0 &&
               history.push(`/apps/medicalExpires/report/${days}`);
           }}>
-          {props?.widget?.total_elements || 0}
+          {data?.total_elements || 0}
         </Typography>
       </div>
 
@@ -53,6 +65,7 @@ function UpcomingMedical(props) {
           <input
             type='text'
             value={days}
+            name='days'
             onChange={handleInputChange}
             className='p-2  mx-3 '
             style={{

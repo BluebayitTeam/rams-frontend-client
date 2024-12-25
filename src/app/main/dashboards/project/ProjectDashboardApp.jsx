@@ -22,16 +22,13 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
  * The ProjectDashboardApp page.
  */
 function ProjectDashboardApp() {
-  // const { isLoading } = useGetProjectDashboardWidgetsQuery();
   const [tabValue, setTabValue] = useState(0);
 
   function handleChangeTab(event, value) {
     setTabValue(value);
   }
 
-  // if (isLoading) {
-  //   return <FuseLoading />;
-  // }
+ 
 
   return (
     <Root
