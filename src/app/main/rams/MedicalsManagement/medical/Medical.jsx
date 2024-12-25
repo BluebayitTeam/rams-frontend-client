@@ -10,10 +10,7 @@ import { Tabs, Tab, TextField, Autocomplete } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
-import {
-  GET_PASSENGER_BY_ID,
-  MEDICAL_BY_PASSENGER_ID,
-} from 'src/app/constant/constants';
+import { GET_PASSENGER_BY_ID, MEDICAL_BY_PASSENGER_ID } from 'src/app/constant/constants';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
 import setIdIfValueIsObject from 'src/app/@helpers/setIdIfValueIsObject';
 import moment from 'moment';
@@ -23,140 +20,140 @@ import MedicalForm from './MedicalForm';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    borderBottom: `1px solid ${theme.palette.primary.main}`,
-    paddingTop: '0.8rem',
-    paddingBottom: '0.7rem',
-    boxSizing: 'content-box',
-  },
-  textField: {
-    height: '4.8rem',
-    '& > div': {
-      height: '100%',
-    },
-  },
+	container: {
+		borderBottom: `1px solid ${theme.palette.primary.main}`,
+		paddingTop: '0.8rem',
+		paddingBottom: '0.7rem',
+		boxSizing: 'content-box'
+	},
+	textField: {
+		height: '4.8rem',
+		'& > div': {
+			height: '100%'
+		}
+	}
 }));
 
 const schema = z.object({
-  first_name: z
-    .string()
-    .nonempty('You must enter a medical name')
-    .min(5, 'The medical name must be at least 5 characters'),
+	first_name: z
+		.string()
+		.nonempty('You must enter a medical name')
+		.min(5, 'The medical name must be at least 5 characters')
 });
 
 function Medical() {
-  const emptyValue = {
-    passenger: '',
-    medical_center: '',
-    medical_serial_no: '',
-    medical_result: '',
-    medical_card: '',
-    medical_exam_date: '',
-    medical_report_date: '',
-    medical_issue_date: '',
-    medical_expiry_date: '',
-    notes: '',
-    slip_pic: '',
-    medical_card_pic: '',
-    current_status: '',
-  };
+	const emptyValue = {
+		passenger: '',
+		medical_center: '',
+		medical_serial_no: '',
+		medical_result: '',
+		medical_card: '',
+		medical_exam_date: '',
+		medical_report_date: '',
+		medical_issue_date: '',
+		medical_expiry_date: '',
+		notes: '',
+		slip_pic: '',
+		medical_card_pic: '',
+		current_status: ''
+	};
 
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-  const routeParams = useParams();
-  const { medicalId, fromSearch } = routeParams;
-  const passengers = useSelector((state) => state.data.passengers);
-  const classes = useStyles();
-  const navigate = useNavigate();
-  const [formKey, setFormKey] = useState(0);
-  const methods = useForm({
-    mode: 'onChange',
-    defaultValues: emptyValue,
-    resolver: zodResolver(schema),
-  });
-  const {
-    data: medical,
-    isLoading,
-    isError,
-  } = useGetMedicalQuery(medicalId, {
-    skip: !medicalId || medicalId === 'new',
-  });
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const routeParams = useParams();
+	const { medicalId, fromSearch } = routeParams;
+	const passengers = useSelector((state) => state.data.passengers);
+	const classes = useStyles();
+	const navigate = useNavigate();
+	const [formKey, setFormKey] = useState(0);
+	const methods = useForm({
+		mode: 'onChange',
+		defaultValues: emptyValue,
+		resolver: zodResolver(schema)
+	});
+	const {
+		data: medical,
+		isLoading,
+		isError
+	} = useGetMedicalQuery(medicalId, {
+		skip: !medicalId || medicalId === 'new'
+	});
 
-  const [tabValue, setTabValue] = useState(0);
+	const [tabValue, setTabValue] = useState(0);
 
-  const {
-    reset,
-    watch,
-    control,
-    formState: { errors },
-    setValue,
-  } = methods;
+	const {
+		reset,
+		watch,
+		control,
+		formState: { errors },
+		setValue
+	} = methods;
 
-  function handleTabChange(event, value) {
-    setTabValue(value);
-  }
+	function handleTabChange(event, value) {
+		setTabValue(value);
+	}
 
-  const handleReset = (defaultValues) => {
-    reset(defaultValues);
-    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-  };
+	const handleReset = (defaultValues) => {
+		reset(defaultValues);
+		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+	};
 
-  const getCurrentStatus = (passengerId) => {
-    const authTOKEN = {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: localStorage.getItem('jwt_access_token'),
-      },
-    };
-    axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-      setValue('current_status', res.data?.current_status?.id);
-    });
-  };
+	const getCurrentStatus = (passengerId) => {
+		const authTOKEN = {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: localStorage.getItem('jwt_access_token')
+			}
+		};
+		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+			setValue('current_status', res.data?.current_status?.id);
+		});
+	};
 
-  useEffect(() => {
-    if (fromSearch) {
-      const authTOKEN = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: localStorage.getItem('jwt_access_token'),
-        },
-      };
+	useEffect(() => {
+		if (fromSearch) {
+			const authTOKEN = {
+				headers: {
+					'Content-type': 'application/json',
+					Authorization: localStorage.getItem('jwt_access_token')
+				}
+			};
 
-      axios
-        .get(`${MEDICAL_BY_PASSENGER_ID}${medicalId}`, authTOKEN)
-        .then((res) => {
-          if (res.data.id) {
-            // reset({ ...setIdIfValueIsObject(res.data), passenger: medicalId });
-          } else {
-            handleReset({
-              passenger: medicalId,
-              medical_card: doneNotDone.find((data) => data.default)?.id,
-              medical_result: medicalResults.find((data) => data.default)?.id,
-            });
-            sessionStorage.setItem('operation', 'save');
-          }
-        })
-        .catch(() => {
-          handleReset({
-            passenger: medicalId,
-            medical_card: doneNotDone.find((data) => data.default)?.id,
-            medical_result: medicalResults.find((data) => data.default)?.id,
-          });
-          sessionStorage.setItem('operation', 'save');
-        });
-    } else {
-      handleReset({
-        ...emptyValue,
-        medical_card: doneNotDone.find((data) => data.default)?.id,
-        medical_result: medicalResults.find((data) => data.default)?.id,
-      });
-    }
-  }, [fromSearch]);
+			axios
+				.get(`${MEDICAL_BY_PASSENGER_ID}${medicalId}`, authTOKEN)
+				.then((res) => {
+					if (res.data.id) {
+						// reset({ ...setIdIfValueIsObject(res.data), passenger: medicalId });
+					} else {
+						handleReset({
+							passenger: medicalId,
+							medical_card: doneNotDone.find((data) => data.default)?.id,
+							medical_result: medicalResults.find((data) => data.default)?.id
+						});
+						sessionStorage.setItem('operation', 'save');
+					}
+				})
+				.catch(() => {
+					handleReset({
+						passenger: medicalId,
+						medical_card: doneNotDone.find((data) => data.default)?.id,
+						medical_result: medicalResults.find((data) => data.default)?.id
+					});
+					sessionStorage.setItem('operation', 'save');
+				});
+		} else {
+			handleReset({
+				...emptyValue,
+				medical_card: doneNotDone.find((data) => data.default)?.id,
+				medical_result: medicalResults.find((data) => data.default)?.id
+			});
+		}
+	}, [fromSearch]);
 
-  if (isLoading) {
-    return <FuseLoading />;
-  }
+	if (isLoading) {
+		return <FuseLoading />;
+	}
 
-  return (
+	return (
     <FormProvider {...methods} key={formKey}>
       {hasPermission('MEDICAL_DETAILS') && (
         <FusePageCarded
