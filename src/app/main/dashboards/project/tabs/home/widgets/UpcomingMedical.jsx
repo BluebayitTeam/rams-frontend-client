@@ -6,17 +6,19 @@ import { useDispatch } from 'react-redux';
 
 import {  Paper, Typography } from '@mui/material';
 import history from '@history';
+import { useGetProjectDashboardUpcomingMedicalQuery } from '../../../ProjectDashboardApi';
 // import { getUpcomingMedical } from '../store/widgetsSlice';
 
 function UpcomingMedical(props) {
-//   const router = useHistory();
+  //   const router = useHistory();
 
   const dispatch = useDispatch();
   const [days, setDays] = useState(15);
+  const [noOfDays,setNoOfDays]=useState('')
+  const { data } = useGetProjectDashboardUpcomingMedicalQuery({  days });
 
-//   useEffect(() => {
-//     dispatch(getUpcomingMedical(days));
-//   }, [days]);
+
+
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value, 10);
     setDays(isNaN(inputValue) ? 0 : inputValue);

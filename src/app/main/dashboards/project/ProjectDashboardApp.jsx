@@ -9,7 +9,7 @@ import ProjectDashboardAppHeader from './ProjectDashboardAppHeader';
 import HomeTab from './tabs/home/HomeTab';
 import TeamTab from './tabs/team/TeamTab';
 import BudgetTab from './tabs/budget/BudgetTab';
-import { useGetProjectDashboardWidgetsQuery } from './ProjectDashboardApi';
+// import { useGetProjectDashboardWidgetsQuery } from './ProjectDashboardApi';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -22,16 +22,16 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
  * The ProjectDashboardApp page.
  */
 function ProjectDashboardApp() {
-  const { isLoading } = useGetProjectDashboardWidgetsQuery();
+  // const { isLoading } = useGetProjectDashboardWidgetsQuery();
   const [tabValue, setTabValue] = useState(0);
 
   function handleChangeTab(event, value) {
     setTabValue(value);
   }
 
-  if (isLoading) {
-    return <FuseLoading />;
-  }
+  // if (isLoading) {
+  //   return <FuseLoading />;
+  // }
 
   return (
     <Root
