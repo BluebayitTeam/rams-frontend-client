@@ -608,7 +608,7 @@ function PassengerAllDetails() {
         .then((res) => {
           if (res?.data) {
             setOfficeWork({ ...res.data.officework });
-            console.log('dsadsadsadsad', res?.data);
+
             setImages((imgs) =>
               imgs.concat(
                 {
@@ -685,7 +685,28 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          setEmbassy({ ...res?.data?.embassy });
+          if (res?.data) {
+            setEmbassy({ ...res?.data?.embassy });
+                        setImages((imgs) =>
+                          imgs.concat(
+                            {
+                              order: 13,
+                              title: 'Embassy Old Visa',
+                              url: res.data.old_visa_image,
+                              editurl: '/apps/embassy-management/embassy/',
+                              pid: pId,
+                            },
+                            {
+                              order: 14,
+                              title: 'Embassy Stamp Visa',
+                              url: res.data.stamp_visa_image,
+                              editurl: '/apps/embassy-management/embassy/',
+                              pid: pId,
+                            }
+                          )
+                        );
+                        setLoading(false);
+          }
         })
         .catch(() => {
           setImages((imgs) =>

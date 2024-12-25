@@ -118,43 +118,76 @@ function Embassy() {
       },
     };
 
-    if (fromSearch) {
-      axios
-        .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
-        .then((res) => {
-          // update scope
-          if (
-            res.data?.visa_entry?.id &&
-            res.data?.mofa?.id &&
-            res.data?.embassy?.id
-          ) {
-            const visa_entry = res.data?.visa_entry;
-            const mofa = res.data?.mofa;
-            const office_work = res.data?.officework;
-            const musanedokala = res.data?.musanedokala;
-            handleReset({
-              ...setIdIfValueIsObject(res.data.embassy),
-              visa_number_readonly: visa_entry.visa_number,
-              sponsor_id_no_readonly: visa_entry.sponsor_id_no,
-              sponsor_name_english_readonly: visa_entry?.sponsor_name_english,
-              sponsor_name_arabic_readonly: visa_entry?.sponsor_name_arabic,
-              mofa_no_readonly: mofa.mofa_no,
-              passenger: embassyId,
-              updatePermission: true,
-              createPermission: false,
-              police_clearance_no_readonly: office_work.police_clearance_no,
-              oakala_no_readonly: musanedokala.okala_no,
-              driving_license_no_readonly: office_work.driving_license_no,
-              musaned_okala_no_readonly: musanedokala.musaned_no,
-              certificate_experience_no_readonly:
-                office_work.certificate_experience,
-            });
-          }
-        })
-        .catch(() => null);
-    } else {
-      reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
-    }
+    // if (fromSearch) {
+    //   axios
+    //     .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
+    //     .then((res) => {
+    //       // update scope
+    //      					if (
+    //                 res.data?.visa_entry?.id &&
+    //                 res.data?.mofa?.id &&
+    //                 res.data?.embassy?.id
+    //               ) {
+    //                 const visa_entry = res.data?.visa_entry;
+    //                 const mofa = res.data?.mofa;
+    //                 const office_work = res.data?.officework;
+    //                 const musanedokala = res.data?.musanedokala;
+    //                 reset({
+    //                   ...setIdIfValueIsObject(res.data.embassy),
+    //                   visa_number_readonly: visa_entry.visa_number,
+    //                   sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+    //                   sponsor_name_english_readonly:
+    //                     visa_entry?.sponsor_name_english,
+    //                   sponsor_name_arabic_readonly:
+    //                     visa_entry?.sponsor_name_arabic,
+    //                   mofa_no_readonly: mofa.mofa_no,
+    //                   passenger: embassyId,
+    //                   updatePermission: true,
+    //                   createPermission: false,
+    //                   police_clearance_no_readonly:
+    //                     office_work.police_clearance_no,
+    //                   oakala_no_readonly: musanedokala.okala_no,
+    //                   driving_license_no_readonly:
+    //                     office_work.driving_license_no,
+    //                   musaned_okala_no_readonly: musanedokala.musaned_no,
+    //                   certificate_experience_no_readonly:
+    //                     office_work.certificate_experience,
+    //                 });
+    //               }
+    //     })
+    //     .catch(() => null);
+    // } else {
+    //   reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
+    // }
+
+
+
+
+       if (fromSearch) {
+         const authTOKEN = {
+           headers: {
+             'Content-type': 'application/json',
+             Authorization: localStorage.getItem('jwt_access_token'),
+           },
+         };
+         axios
+           .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
+           .then((res) => {
+             if (res.data.id) {
+               reset({
+                 ...setIdIfValueIsObject(res.data),
+                 passenger: embassyId,
+               });
+             }
+           })
+           .catch(() => null);
+       } else {
+         handleReset({
+           ...emptyValue,
+           stamping_status: doneNotDone.find((data) => data.default)?.id,
+         });
+       }
+
   }, [fromSearch]);
 
   useEffect(() => {
