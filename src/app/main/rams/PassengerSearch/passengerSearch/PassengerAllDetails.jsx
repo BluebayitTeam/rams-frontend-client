@@ -32,7 +32,6 @@ import PassengerDetail from './PassengerDetail';
 import { makeStyles } from '@mui/styles';
 
 import StatusStepDetail from './StatusStepDetail';
-import CallingEmbAttestationDetailPrint from './CallingEntryDetailPrint';
 import OfficeWorkDetailPrint from './OfficeWorkDetailPrint';
 import OfficeWorkDetail from './OfficeWorkDetail';
 import MusanedOkalaDetail from './MusanedOkalaDetail';
@@ -53,6 +52,8 @@ import EmbassyDetail from './EmbassyDetail';
 import EmbassyDetailPrint from './EmbassyDetailPrint';
 import CallingEntryDetailPrint from './CallingEntryDetailPrint';
 import CallingEntryDetail from './CallingEntryDetail';
+import MedicalDetailPrint from './MedicalDetailPrint';
+import MedicalDetail from './MedicalDetail';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -317,7 +318,6 @@ function PassengerAllDetails() {
   const [calling, setCalling] = useState({});
 
   const [images, setImages] = useState([]);
-  console.log('calling', visaEntry);
   const [forms, setForms] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -963,7 +963,7 @@ function PassengerAllDetails() {
               <EmbassyDetail classes={classes} data={embassy} pid={pId} />
             )}
             {<FlightDetail classes={classes} data={flight} pid={pId} />}
-            {/* {<MedicalDetail classes={classes} data={medical} pid={pId} />} */}
+            {<MedicalDetail classes={classes} data={medical} pid={pId} />}
 
             {
               <Forms
@@ -1086,13 +1086,13 @@ function PassengerAllDetails() {
                   pid={pId}
                 />
               )}
-              {/* {_.isEmpty(medical) || (
+              {_.isEmpty(medical) || (
                 <MedicalDetailPrint
                   classes={classes}
                   data={medical}
                   pid={pId}
                 />
-              )} */}{' '}
+              )}
               {_.isEmpty(embassy) || (
                 <EmbassyDetailPrint
                   classes={classes}
