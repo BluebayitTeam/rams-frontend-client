@@ -10,6 +10,7 @@ import ScheduleWidget from './widgets/ScheduleWidget';
 import { selectWidget } from '../../ProjectDashboardApi';
 import UpcomingMedical from './widgets/UpcomingMedical';
 import { useSelector } from 'react-redux';
+import UpcomingVisa from './widgets/UpcomingVisa';
 
 /**
  * The HomeTab component.
@@ -36,7 +37,7 @@ function HomeTab() {
       className='flex flex-wrap'
       variants={container}
       initial='hidden'
-       animate='show'>
+      animate='show'>
       <motion.div variants={item} className='widget flex w-full'>
         <h1 className='font-700 mx-20 text-blue-800'>Expire Status</h1>
       </motion.div>{' '}
@@ -44,6 +45,11 @@ function HomeTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <UpcomingMedical widget={widgets.upcomingMedical} />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <UpcomingVisa widget={widgets.upcomingVisa} />
       </motion.div>
       <motion.div variants={item}>
         <SummaryWidget />
