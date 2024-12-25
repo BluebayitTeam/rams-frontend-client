@@ -6,31 +6,37 @@ import FeaturesWidget from './widgets/FeaturesWidget';
 import GithubIssuesWidget from './widgets/GithubIssuesWidget';
 import TaskDistributionWidget from './widgets/TaskDistributionWidget';
 import ScheduleWidget from './widgets/ScheduleWidget';
-import { useSelector } from 'react-redux';
+
 import { selectWidget } from '../../ProjectDashboardApi';
+import UpcomingMedical from './widgets/UpcomingMedical';
+import { useSelector } from 'react-redux';
 
 /**
  * The HomeTab component.
  */
 function HomeTab() {
-  const widget = useSelector(selectWidget);
+	const widgets = useSelector(selectWidget);
 
-  console.log('widget', widget);
+  // console.log('widget', widget);
 
-  const container = {
-    show: {
-      transition: {
-        staggerChildren: 0.04,
+  	const container = {
+      show: {
+        transition: {
+          staggerChildren: 0.1,
+        },
       },
-    },
-  };
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
+    };
+
+    const item = {
+      hidden: { opacity: 0, y: 20 },
+      show: { opacity: 1, y: 0 },
+    };
   return (
     <motion.div
-      className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-24 w-full min-w-0 p-24'
+      className='flex flex-wrap'
+      variants={container}
+      initial='hidden'
+      animate='show'
       variants={container}
       initial='hidden'
       animate='show'>
@@ -40,7 +46,7 @@ function HomeTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <SummaryWidget />
+        <UpcomingMedical widget={widgets.upcomingMedical} />
       </motion.div>
       <motion.div variants={item}>
         <SummaryWidget />
