@@ -21,41 +21,55 @@ function MedicalDetail({ classes, data, pid }) {
           style={{ display: data.id ? 'block' : 'none' }}>
           <div className='container flex-col md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>New Visa No:</i>
-              <b
-                className='value text-xs md:text-sm'
-                style={{ color: 'black' }}>
-                {data?.new_visa_no || ''}
+              <i className='label text-xs md:text-sm'>Medical Serial No:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_serial_no || ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Registration ID:</i>
-              <b
-                className='value text-xs md:text-sm'
-                style={{ color: 'black' }}>
-                {data?.registration_id || ''}
+              <i className='label text-xs md:text-sm'>Medical Result:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_result || ''}
               </b>
             </div>
           </div>
 
           <div className='container flex-col md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Man Power Status:</i>
-              <b
-                className='value text-xs md:text-sm'
-                style={{ color: 'black' }}>
-                {data?.man_power_status || ''}
+              <i className='label text-xs md:text-sm'>Medical Card:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_card || ''}
+              </b>
+            </div>
+            <div className='border hidden md:block'></div>
+            <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+              <i className='label text-xs md:text-sm'>Medical Center:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_center?.name || ''}
+              </b>
+            </div>
+          </div>
+
+          <div className='container flex-col md:flex-row'>
+            <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+              <i className='label text-xs md:text-sm'>Medical Exam Date:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_exam_date
+                  ? moment(new Date(data.medical_exam_date)).format(
+                      'DD/MM/YYYY'
+                    )
+                  : ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Man Power Date:</i>
-              <b
-                className='value text-xs md:text-sm '
-                style={{ color: 'black' }}>
-                {data?.man_power_date
-                  ? moment(new Date(data.man_power_date)).format('DD/MM/YYYY')
+              <i className='label text-xs md:text-sm'>Medical Issue Date:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_issue_date
+                  ? moment(new Date(data.medical_issue_date)).format(
+                      'DD/MM/YYYY'
+                    )
                   : ''}
               </b>
             </div>
@@ -63,45 +77,37 @@ function MedicalDetail({ classes, data, pid }) {
 
           <div className='container flex-col md:flex-row'>
             <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Submit Date:</i>
-              <b
-                className='value text-xs md:text-sm'
-                style={{ color: 'black' }}>
-                {data?.submit_date
-                  ? moment(new Date(data.submit_date)).format('DD/MM/YYYY')
+              <i className='label text-xs md:text-sm'>Medical Expiry Date:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_expiry_date
+                  ? moment(new Date(data.medical_expiry_date)).format(
+                      'DD/MM/YYYY'
+                    )
                   : ''}
               </b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Delivery Date:</i>
-              <b
-                className='value text-xs md:text-sm'
-                style={{ color: 'black' }}>
-                {data?.delivery_date
-                  ? moment(new Date(data.delivery_date)).format('DD/MM/YYYY')
+              <i className='label text-xs md:text-sm'>medical Report Date:</i>
+              <b className='label text-xs md:text-sm'>
+                {data?.medical_report_date
+                  ? moment(new Date(data.medical_report_date)).format(
+                      'DD/MM/YYYY'
+                    )
                   : ''}
               </b>
             </div>
           </div>
 
           <div className='container flex-col md:flex-row'>
-            <div className='leftRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
-              <i className='label text-xs md:text-sm'>Recruiting Agency:</i>
-              <b
-                className='value text-xs md:text-sm'
-                style={{ color: 'black' }}>
-                {data?.recruiting_agency?.name || ''}
-              </b>
+            <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
+              <i className='label text-xs md:text-sm'>Notes:</i>
+              <b className='label text-xs md:text-sm'>{data?.notes || ''}</b>
             </div>
             <div className='border hidden md:block'></div>
             <div className='rightRow w-full md:w-1/2 pl-2 md:pl-16 pr-2 md:pr-16'>
               <i className='label text-xs md:text-sm'>Last Update By:</i>
-              <b
-                className='value text-xs md:text-sm'
-                style={{
-                  color: 'black',
-                }}>{`${data?.updated_by?.username || ''} [DT: ${
+              <b className='label text-xs md:text-sm'>{`${data?.updated_by?.username || ''} [DT: ${
                 data.updated_at
                   ? moment(new Date(data.updated_at)).format('DD/MM/YYYY')
                   : ''
