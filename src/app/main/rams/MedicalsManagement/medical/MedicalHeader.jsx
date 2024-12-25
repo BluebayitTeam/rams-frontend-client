@@ -41,7 +41,7 @@ function MedicalHeader({ handleReset, emptyValue }) {
 			.then((res) => {
 				if (res.data?.id) {
 					if (fromSearch) {
-						history.goBack();
+						navigate(-1);
 					} else {
 						localStorage.setItem('medicalAlert', 'updateMedical');
 
@@ -70,20 +70,20 @@ function MedicalHeader({ handleReset, emptyValue }) {
 		createMedical(getValues())
 			// .unwrap()
 			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'saveMedical');
+				if (res?.id) {
+					if (fromSearch == 'fromSearch') {
+            navigate(-1);
+          } else {
+            localStorage.setItem('medicalAlert', 'saveMedical');
 
-						handleReset({
-							...emptyValue,
-							medical_result: medicalResults.find((data) => data.default)?.id,
-							medical_card: doneNotDone.find((data) => data.default)?.id
-						});
-						navigate('/apps/medical/medicals/new');
-						AddedSuccessfully();
-					}
+            handleReset({
+              ...emptyValue,
+              medical_result: medicalResults.find((data) => data.default)?.id,
+              medical_card: doneNotDone.find((data) => data.default)?.id,
+            });
+            navigate('/apps/medical/medicals/new');
+            AddedSuccessfully();
+          }
 				}
 			});
 	}
@@ -92,20 +92,25 @@ function MedicalHeader({ handleReset, emptyValue }) {
 		removeMedical(getValues()?.id)
 			.unwrap()
 			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({
-							...emptyValue,
-							medical_result: medicalResults.find((data) => data.default)?.id,
-							medical_card: doneNotDone.find((data) => data.default)?.id
-						});
-						localStorage.setItem('medicalAlert', 'saveMedical');
-						navigate('/apps/medical/medicals/new');
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
-					}
-				}
+				if (res.detail) {
+          if (fromSearch) {
+			  navigate(-1);
+		  } else {
+            handleReset({
+              ...emptyValue,
+              medical_result: medicalResults.find((data) => data.default)?.id,
+              medical_card: doneNotDone.find((data) => data.default)?.id,
+            });
+            localStorage.setItem('medicalAlert', 'saveMedical');
+            navigate('/apps/medical/medicals/new');
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
 
 				RemoveSuccessfully();
 			})
@@ -115,12 +120,16 @@ function MedicalHeader({ handleReset, emptyValue }) {
 	}
 
 	const handleCancel = () => {
-		handleReset({
-			...emptyValue,
-			medical_result: medicalResults.find((data) => data.default)?.id,
-			medical_card: doneNotDone.find((data) => data.default)?.id
-		});
-		navigate('/apps/medical/medicals/new');
+	if (fromSearch == 'fromSearch') {
+        navigate(-1);
+      } else {
+	handleReset({
+    ...emptyValue,
+    medical_result: medicalResults.find((data) => data.default)?.id,
+    medical_card: doneNotDone.find((data) => data.default)?.id,
+  });
+  navigate('/apps/medical/medicals/new');
+      }
 	};
 
 	return (
