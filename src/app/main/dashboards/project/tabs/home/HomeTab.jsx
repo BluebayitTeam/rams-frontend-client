@@ -11,6 +11,7 @@ import UnFit from './widgets/UnFit';
 import Visits from './widgets/Visits';
 import Visa from './widgets/Visa';
 import Manpower from './widgets/Manpower';
+import FlightWaiting from './widgets/FlightWaiting';
 
 /**
  * The HomeTab component.
@@ -44,22 +45,22 @@ function HomeTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingMedical widget={widgets.upcomingMedical} />
+        <UpcomingMedical  />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingVisa widget={widgets.upcomingVisa} />
+        <UpcomingVisa  />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingEVisa widget={widgets.upcomingEvisa} />
+        <UpcomingEVisa />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingEmbassy widget={widgets.upcomingEmbassy} />
+        <UpcomingEmbassy />
       </motion.div>
       <motion.div variants={item} className='widget flex w-full mt-24'>
         <h1 className='font-700 mx-20 text-green-800'>Medical Status</h1>
@@ -67,22 +68,22 @@ function HomeTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <NotMedical widget={widgets.notMedical} />
+        <NotMedical  />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Fit widget={widgets.fit} />
+        <Fit  />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UnFit widget={widgets.unFit} />
+        <UnFit  />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Visits  />
+        <Visits />
       </motion.div>
       <motion.div variants={item} className='widget flex w-full mt-24'>
         <h1 className='font-700 mx-20 text-purple-800'>
@@ -92,12 +93,17 @@ function HomeTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Visa  />
+        <Visa />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Manpower  />
+        <Manpower />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <FlightWaiting />
       </motion.div>
     </motion.div>
   );

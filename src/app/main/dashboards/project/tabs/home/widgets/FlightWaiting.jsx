@@ -5,27 +5,28 @@ import { Button, Paper, Typography } from '@mui/material';
 import history from '@history';
 
 import { useForm } from 'react-hook-form';
-import {  useGetProjectDashboardVisaCountQuery } from '../../../ProjectDashboardApi';
-import { ArrowRight } from '@mui/icons-material';
 
-function Visa(props) {
+import { ArrowRight } from '@mui/icons-material';
+import { useGetProjectDashboardFlightWaitingQuery } from '../../../ProjectDashboardApi';
+
+function FlightWaiting(props) {
   const dispatch = useDispatch();
-  const { data } = useGetProjectDashboardVisaCountQuery();
+  const { data } = useGetProjectDashboardFlightWaitingQuery();
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
         <Typography className='text-28 px-16 font-medium' color='textSecondary'>
-          Visa
+          Flight Waiting
         </Typography>
       </div>
       <div className='flex items-center justify-center pt-8 text-primary mx-auto'>
         <Typography
-          className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
+          className='text-72 font-semibold leading-none cursor-pointer text-red tracking-tighter'
           onClick={() => {
-            data?.stamp_waiting > 0 && router.push('/apps/notMedicals/report');
+            data?.flight_waiting > 0 && router.push('/apps/notMedicals/report');
           }}>
-          {data?.stamp_waiting || 0}
+          {data?.flight_waiting || 0}
         </Typography>
       </div>
 
@@ -35,12 +36,12 @@ function Visa(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.stamp_waiting > 0 && router.push('/apps/notMedicals/report');
+          data?.flight_waiting > 0 && router.push('/apps/notMedicals/report');
         }}>
-        View All Visa
+        View All Flight Waiting
       </Button>
     </Paper>
   );
 }
 
-export default memo(Visa);
+export default memo(FlightWaiting);

@@ -1,5 +1,5 @@
 import { apiService as api } from 'app/store/apiService';
-import { GET_MANPOWER_COUNT, GET_MEDICAL_COUNT, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_EMBASSY_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT, GET_VISA_COUNT } from 'src/app/constant/constants';
+import { GET_FLIGHT_COUNT, GET_MANPOWER_COUNT, GET_MEDICAL_COUNT, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_EMBASSY_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT, GET_VISA_COUNT } from 'src/app/constant/constants';
 
 // Define the tag types for cache management
 export const addTagTypes = ['dashboard', 'ProjectDashboardProjects'];
@@ -67,6 +67,14 @@ const ProjectDashboardApi = api
 
         providesTags: ['dashboard'],
       }),
+      getProjectDashboardFlightWaiting: build.query({
+        query: (filterData) => ({
+          url: GET_FLIGHT_COUNT,
+          params: filterData,
+        }),
+
+        providesTags: ['dashboard'],
+      }),
 
       // Fetch project dashboard projects
       getProjectDashboardProjects: build.query({
@@ -88,6 +96,7 @@ export const {
   useGetProjectDashboardNotMedicalQuery,
   useGetProjectDashboardVisaCountQuery,
   useGetProjectDashboardManpowerQuery,
+  useGetProjectDashboardFlightWaitingQuery,
 } = ProjectDashboardApi;
 
 // Selector to fetch a specific widget by ID
