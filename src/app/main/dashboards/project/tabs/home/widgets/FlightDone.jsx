@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardFlightCountQuery } from '../../../ProjectDashboardApi';
 
-function FlightWaiting(props) {
+function FlightDone(props) {
   const dispatch = useDispatch();
   const { data } = useGetProjectDashboardFlightCountQuery();
 
@@ -44,4 +44,4 @@ function FlightWaiting(props) {
   );
 }
 
-export default memo(FlightWaiting);
+export default memo(FlightDone);

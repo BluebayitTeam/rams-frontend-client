@@ -67,7 +67,7 @@ const ProjectDashboardApi = api
 
         providesTags: ['dashboard'],
       }),
-      getProjectDashboardFlightWaiting: build.query({
+      getProjectDashboardFlightCount: build.query({
         query: (filterData) => ({
           url: GET_FLIGHT_COUNT,
           params: filterData,
@@ -96,7 +96,7 @@ export const {
   useGetProjectDashboardNotMedicalQuery,
   useGetProjectDashboardVisaCountQuery,
   useGetProjectDashboardManpowerQuery,
-  useGetProjectDashboardFlightWaitingQuery,
+  useGetProjectDashboardFlightCountQuery,
 } = ProjectDashboardApi;
 
 // Selector to fetch a specific widget by ID
