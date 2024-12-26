@@ -1,17 +1,10 @@
 import { motion } from 'framer-motion';
-import SummaryWidget from './widgets/SummaryWidget';
-import OverdueWidget from './widgets/OverdueWidget';
-import IssuesWidget from './widgets/IssuesWidget';
-import FeaturesWidget from './widgets/FeaturesWidget';
-import GithubIssuesWidget from './widgets/GithubIssuesWidget';
-import TaskDistributionWidget from './widgets/TaskDistributionWidget';
-import ScheduleWidget from './widgets/ScheduleWidget';
-
 import { selectWidget } from '../../ProjectDashboardApi';
 import UpcomingMedical from './widgets/UpcomingMedical';
 import { useSelector } from 'react-redux';
 import UpcomingVisa from './widgets/UpcomingVisa';
 import UpcomingEVisa from './widgets/UpcomingEVisa';
+import UpcomingEmbassy from './widgets/UpcomingEmbassy';
 
 /**
  * The HomeTab component.
@@ -57,42 +50,10 @@ function HomeTab() {
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <UpcomingEVisa widget={widgets.upcomingEvisa} />
       </motion.div>
-      <motion.div variants={item}>
-        <SummaryWidget />
-      </motion.div>
-      <motion.div variants={item}>
-        <SummaryWidget />
-      </motion.div>
-      <motion.div variants={item}>
-        <SummaryWidget />
-      </motion.div>
-      <motion.div variants={item}>
-        <SummaryWidget />
-      </motion.div>
-      <motion.div variants={item}>
-        <SummaryWidget />
-      </motion.div>
-      <motion.div variants={item}>
-        <OverdueWidget />
-      </motion.div>
-      <motion.div variants={item}>
-        <IssuesWidget />
-      </motion.div>
-      <motion.div variants={item}>
-        <FeaturesWidget />
-      </motion.div>
-      <motion.div variants={item} className='sm:col-span-2 md:col-span-4'>
-        <GithubIssuesWidget />
-      </motion.div>
       <motion.div
         variants={item}
-        className='sm:col-span-2 md:col-span-4 lg:col-span-2'>
-        <TaskDistributionWidget />
-      </motion.div>
-      <motion.div
-        variants={item}
-        className='sm:col-span-2 md:col-span-4 lg:col-span-2'>
-        <ScheduleWidget />
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <UpcomingEmbassy widget={widgets.upcomingEmbassy} />
       </motion.div>
     </motion.div>
   );

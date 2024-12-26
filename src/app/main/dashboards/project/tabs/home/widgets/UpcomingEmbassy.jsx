@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { Paper, Typography } from '@mui/material';
 import history from '@history';
 import {
-  useGetProjectDashboardUpcomingEvisaQuery,
-  useGetProjectDashboardUpcomingVisaQuery,
+    useGetProjectDashboardUpcomingEmbassyQuery,
+
 } from '../../../ProjectDashboardApi';
 import { useForm } from 'react-hook-form';
 
@@ -14,7 +14,7 @@ function UpcomingEmbassy(props) {
 
   const [days, setDays] = useState(15);
 
-  const { data } = useGetProjectDashboardUpcomingEvisaQuery({
+  const { data } = useGetProjectDashboardUpcomingEmbassyQuery({
     no_of_days: days,
   });
 
@@ -28,12 +28,12 @@ function UpcomingEmbassy(props) {
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
         <Typography className='text-28 px-16 font-medium' color='textSecondary'>
-          E-Visa
+          Embassy{' '}
         </Typography>
       </div>
       <div className='text-center py-12 cursor-pointer'>
         <Typography
-          className='text-72 font-semibold cursor-pointer leading-none text-red tracking-tighter'
+          className='text-72 font-semibold cursor-pointer leading-none text-blue tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
               history.push(`/apps/visaExpires/report/${days}`);

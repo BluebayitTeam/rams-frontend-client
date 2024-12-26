@@ -1,5 +1,5 @@
 import { apiService as api } from 'app/store/apiService';
-import { GET_MEDICAL_COUNT, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT } from 'src/app/constant/constants';
+import { GET_MEDICAL_COUNT, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_EMBASSY_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT } from 'src/app/constant/constants';
 
 // Define the tag types for cache management
 export const addTagTypes = ['dashboard', 'ProjectDashboardProjects'];
@@ -35,6 +35,22 @@ const ProjectDashboardApi = api
 
         providesTags: ['dashboard'],
       }),
+      getProjectDashboardUpcomingEmbassy: build.query({
+        query: (filterData) => ({
+          url: GET_UPCOMING_EMBASSY_COUNT,
+          params: filterData,
+        }),
+
+        providesTags: ['dashboard'],
+      }),
+      getProjectDashboardNotMedical: build.query({
+        query: (filterData) => ({
+          url: GET_MEDICAL_COUNT,
+          params: filterData,
+        }),
+
+        providesTags: ['dashboard'],
+      }),
 
       // Fetch project dashboard projects
       getProjectDashboardProjects: build.query({
@@ -52,6 +68,8 @@ export const {
   useGetProjectDashboardUpcomingMedicalQuery,
   useGetProjectDashboardUpcomingVisaQuery,
   useGetProjectDashboardUpcomingEvisaQuery,
+  useGetProjectDashboardUpcomingEmbassyQuery,
+  useGetProjectDashboardNotMedicalQuery,
   useGetProjectDashboardProjectsQuery,
 } = ProjectDashboardApi;
 

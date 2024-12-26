@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { Paper, Typography } from '@mui/material';
 import history from '@history';
-import { useGetProjectDashboardUpcomingEvisaQuery, useGetProjectDashboardUpcomingVisaQuery } from '../../../ProjectDashboardApi';
+import { useGetProjectDashboardUpcomingEvisaQuery } from '../../../ProjectDashboardApi';
 import { useForm } from 'react-hook-form';
 
 function UpcomingEvisa(props) {
