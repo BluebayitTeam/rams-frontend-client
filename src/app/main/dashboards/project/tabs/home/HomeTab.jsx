@@ -6,6 +6,8 @@ import UpcomingVisa from './widgets/UpcomingVisa';
 import UpcomingEVisa from './widgets/UpcomingEVisa';
 import UpcomingEmbassy from './widgets/UpcomingEmbassy';
 import NotMedical from './widgets/NotMedical';
+import Fit from './widgets/Fit';
+import UnFit from './widgets/UnFit';
 
 /**
  * The HomeTab component.
@@ -63,6 +65,16 @@ function HomeTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <NotMedical widget={widgets.notMedical} />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Fit widget={widgets.fit} />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <UnFit widget={widgets.unFit} />
       </motion.div>
     </motion.div>
   );
