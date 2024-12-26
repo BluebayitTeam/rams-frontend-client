@@ -11,7 +11,6 @@ function UpcomingVisa(props) {
 
   const [days, setDays] = useState(15);
 
-  // const filterData = watch();
 
   const { data } = useGetProjectDashboardUpcomingVisaQuery({
     no_of_days: days,

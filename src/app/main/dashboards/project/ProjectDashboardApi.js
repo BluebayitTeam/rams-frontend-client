@@ -27,6 +27,14 @@ const ProjectDashboardApi = api
 
         providesTags: ['dashboard'],
       }),
+      getProjectDashboardUpcomingEvisa: build.query({
+        query: (filterData) => ({
+          url: GET_UPCOMING_VISA_COUNT,
+          params: filterData,
+        }),
+
+        providesTags: ['dashboard'],
+      }),
 
       // Fetch project dashboard projects
       getProjectDashboardProjects: build.query({
@@ -43,6 +51,7 @@ const ProjectDashboardApi = api
 export const {
   useGetProjectDashboardUpcomingMedicalQuery,
   useGetProjectDashboardUpcomingVisaQuery,
+  useGetProjectDashboardUpcomingEvisaQuery,
   useGetProjectDashboardProjectsQuery,
 } = ProjectDashboardApi;
 

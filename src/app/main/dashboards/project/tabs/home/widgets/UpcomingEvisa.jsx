@@ -1,61 +1,44 @@
-
-
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-
-import {  Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import history from '@history';
-import { useGetProjectDashboardUpcomingMedicalQuery } from '../../../ProjectDashboardApi';
+import { useGetProjectDashboardUpcomingEvisaQuery, useGetProjectDashboardUpcomingVisaQuery } from '../../../ProjectDashboardApi';
 import { useForm } from 'react-hook-form';
 
-
-function UpcomingMedical(props) {
-
+function UpcomingEvisa(props) {
   const dispatch = useDispatch();
-
-  
 
   const [days, setDays] = useState(15);
 
 
+  const { data } = useGetProjectDashboardUpcomingEvisaQuery({
+    no_of_days: days,
+  });
 
-  
-   const { data} = useGetProjectDashboardUpcomingMedicalQuery({
-     no_of_days:days
-   });
-  
-  console.log('dataCheck', data);
-
-
-
-  const handleInputChange = (event,) => {
+  const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value, 10);
-    console.log('inputValue', inputValue);
+
     setDays(isNaN(inputValue) ? 0 : inputValue);
   };
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
-        <Typography
-          className='text-28 text-center px-16 font-medium'
-          color='textSecondary'>
-          {/* {props.widget?.title} */}
-          Medical
+        <Typography className='text-28 px-16 font-medium' color='textSecondary'>
+          Visa Entry
         </Typography>
       </div>
       <div className='text-center py-12 cursor-pointer'>
         <Typography
-          className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
+          className='text-72 font-semibold cursor-pointer leading-none text-orange tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
-              history.push(`/apps/medicalExpires/report/${days}`);
+              history.push(`/apps/visaExpires/report/${days}`);
           }}>
           {data?.total_elements || 0}
         </Typography>
       </div>
-
       <div className='flex items-center justify-center pt-8 text-primary mx-auto'>
         <Typography
           className='text-16 py-5 text-center font-medium'
@@ -64,7 +47,6 @@ function UpcomingMedical(props) {
           <input
             type='text'
             value={days}
-            name='days'
             onChange={handleInputChange}
             className='p-2  mx-3 '
             style={{
@@ -82,4 +64,4 @@ function UpcomingMedical(props) {
   );
 }
 
-export default memo(UpcomingMedical);
+export default memo(UpcomingEvisa);
