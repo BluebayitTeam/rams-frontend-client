@@ -11,13 +11,11 @@ import { darken } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
 import { BASE_URL } from 'src/app/constant/constants';
-import { useGetProjectDashboardProjectsQuery } from './ProjectDashboardApi';
 
 /**
  * The ProjectDashboardAppHeader page.
  */
 function ProjectDashboardAppHeader() {
-  const { data: projects, isLoading } = useGetProjectDashboardProjectsQuery();
   const user = useSelector(selectUser);
   const [selectedProject, setSelectedProject] = useState({
     id: 1,

@@ -9,6 +9,8 @@ import NotMedical from './widgets/NotMedical';
 import Fit from './widgets/Fit';
 import UnFit from './widgets/UnFit';
 import Visits from './widgets/Visits';
+import Visa from './widgets/Visa';
+import Manpower from './widgets/Manpower';
 
 /**
  * The HomeTab component.
@@ -80,7 +82,22 @@ function HomeTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Visits widget={widgets.visits} />
+        <Visits  />
+      </motion.div>
+      <motion.div variants={item} className='widget flex w-full mt-24'>
+        <h1 className='font-700 mx-20 text-purple-800'>
+          Visa,Manpower & Flight Status
+        </h1>
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Visa  />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Manpower  />
       </motion.div>
     </motion.div>
   );
