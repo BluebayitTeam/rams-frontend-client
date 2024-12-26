@@ -1,11 +1,12 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Paper, Typography } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import history from '@history';
 
 import { useForm } from 'react-hook-form';
 import { useGetProjectDashboardNotMedicalQuery } from '../../../ProjectDashboardApi';
+import { ArrowRight } from '@mui/icons-material';
 
 function NotMedical(props) {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function NotMedical(props) {
 
       <Button
         color='primary'
-        // endIcon={<ArrowRight fontSize='small' />}
+        endIcon={<ArrowRight fontSize='small' />}
         size='medium'
         variant='text'
         onClick={() => {

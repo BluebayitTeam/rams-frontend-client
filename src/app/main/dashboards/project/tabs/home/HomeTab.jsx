@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import UpcomingVisa from './widgets/UpcomingVisa';
 import UpcomingEVisa from './widgets/UpcomingEVisa';
 import UpcomingEmbassy from './widgets/UpcomingEmbassy';
+import NotMedical from './widgets/NotMedical';
 
 /**
  * The HomeTab component.
@@ -54,6 +55,14 @@ function HomeTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <UpcomingEmbassy widget={widgets.upcomingEmbassy} />
+      </motion.div>
+      <motion.div variants={item} className='widget flex w-full mt-10'>
+        <h1 className='font-700 mx-20 text-green-800'>Medical Status</h1>
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <NotMedical widget={widgets.notMedical} />
       </motion.div>
     </motion.div>
   );
