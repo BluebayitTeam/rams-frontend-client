@@ -68,7 +68,9 @@ function VisaEntryForm(props) {
       <Controller
         name='demand'
         control={control}
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value } }) => {
+  
+          return
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
@@ -96,8 +98,8 @@ function VisaEntryForm(props) {
                 //
               />
             )}
-          />
-        )}
+          />;
+        }}
       />
 
       <Controller
