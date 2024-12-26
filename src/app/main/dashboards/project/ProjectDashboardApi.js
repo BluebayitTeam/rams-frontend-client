@@ -1,5 +1,5 @@
 import { apiService as api } from 'app/store/apiService';
-import { GET_MEDICAL_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT } from 'src/app/constant/constants';
+import { GET_MEDICAL_COUNT, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT } from 'src/app/constant/constants';
 
 // Define the tag types for cache management
 export const addTagTypes = ['dashboard', 'ProjectDashboardProjects'];
@@ -29,7 +29,7 @@ const ProjectDashboardApi = api
       }),
       getProjectDashboardUpcomingEvisa: build.query({
         query: (filterData) => ({
-          url: GET_UPCOMING_VISA_COUNT,
+          url: GET_UPCOMING_E_VISA_COUNT,
           params: filterData,
         }),
 

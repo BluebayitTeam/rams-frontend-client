@@ -11,6 +11,7 @@ import { selectWidget } from '../../ProjectDashboardApi';
 import UpcomingMedical from './widgets/UpcomingMedical';
 import { useSelector } from 'react-redux';
 import UpcomingVisa from './widgets/UpcomingVisa';
+import UpcomingEVisa from './widgets/UpcomingEVisa';
 
 /**
  * The HomeTab component.
@@ -50,6 +51,11 @@ function HomeTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <UpcomingVisa widget={widgets.upcomingVisa} />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <UpcomingEVisa widget={widgets.upcomingEvisa} />
       </motion.div>
       <motion.div variants={item}>
         <SummaryWidget />
