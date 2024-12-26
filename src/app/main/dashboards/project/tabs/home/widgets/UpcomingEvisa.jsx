@@ -31,7 +31,7 @@ function UpcomingEvisa(props) {
       </div>
       <div className='text-center py-12 cursor-pointer'>
         <Typography
-          className='text-72 font-semibold cursor-pointer leading-none text-orange tracking-tighter'
+          className='text-72 font-semibold cursor-pointer leading-none text-red tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
               history.push(`/apps/visaExpires/report/${days}`);
