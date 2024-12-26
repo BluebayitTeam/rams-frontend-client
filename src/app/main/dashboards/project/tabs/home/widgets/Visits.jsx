@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useGetProjectDashboardNotMedicalQuery } from '../../../ProjectDashboardApi';
 import { ArrowRight } from '@mui/icons-material';
 
-function Fit(props) {
+function Visits(props) {
   const dispatch = useDispatch();
   const { data } = useGetProjectDashboardNotMedicalQuery();
 
@@ -16,16 +16,16 @@ function Fit(props) {
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
         <Typography className='text-28 px-16 font-medium' color='textSecondary'>
-          Fits
+          Visits
         </Typography>
       </div>
       <div className='flex items-center justify-center pt-8 text-primary mx-auto'>
         <Typography
-          className='text-72 font-semibold leading-none cursor-pointer text-blue tracking-tighter'
+          className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
           onClick={() => {
-            data?.fit > 0 && router.push('/apps/notMedicals/report');
+            data?.visit > 0 && router.push('/apps/notMedicals/report');
           }}>
-          {data?.fit || 0}
+          {data?.visit || 0}
         </Typography>
       </div>
 
@@ -35,12 +35,12 @@ function Fit(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.fit > 0 && router.push('/apps/notMedicals/report');
+          data?.visit > 0 && router.push('/apps/notMedicals/report');
         }}>
-        View All Medical Fit
+        View All Medical Visits
       </Button>
     </Paper>
   );
 }
 
-export default memo(Fit);
+export default memo(Visits);

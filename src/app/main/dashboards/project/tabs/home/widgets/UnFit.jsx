@@ -23,7 +23,7 @@ function UnFit(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
-            data?.not_medical > 0 && router.push('/apps/notMedicals/report');
+            data?.unfit > 0 && router.push('/apps/notMedicals/report');
           }}>
           {data?.unfit || 0}
         </Typography>
@@ -35,9 +35,9 @@ function UnFit(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.not_medical > 0 && router.push('/apps/notMedicals/report');
+          data?.unfit > 0 && router.push('/apps/notMedicals/report');
         }}>
-        View All Not Medical
+        View All Medical UnFit
       </Button>
     </Paper>
   );

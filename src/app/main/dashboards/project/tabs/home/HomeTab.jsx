@@ -8,6 +8,7 @@ import UpcomingEmbassy from './widgets/UpcomingEmbassy';
 import NotMedical from './widgets/NotMedical';
 import Fit from './widgets/Fit';
 import UnFit from './widgets/UnFit';
+import Visits from './widgets/Visits';
 
 /**
  * The HomeTab component.
@@ -58,7 +59,7 @@ function HomeTab() {
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <UpcomingEmbassy widget={widgets.upcomingEmbassy} />
       </motion.div>
-      <motion.div variants={item} className='widget flex w-full mt-10'>
+      <motion.div variants={item} className='widget flex w-full mt-24'>
         <h1 className='font-700 mx-20 text-green-800'>Medical Status</h1>
       </motion.div>{' '}
       <motion.div
@@ -75,6 +76,11 @@ function HomeTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <UnFit widget={widgets.unFit} />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Visits widget={widgets.visits} />
       </motion.div>
     </motion.div>
   );
