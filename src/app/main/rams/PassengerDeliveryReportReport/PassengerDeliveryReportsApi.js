@@ -32,8 +32,8 @@ const PassengerDeliveryReportApi = api
         providesTags: ['passengerDeliveryReports'],
       }),
       deletePassengerDelivery: build.mutation({
-        query: (id) => ({
-          url: `${DELETE_PASSENGER_LEDGER_DELIVERY}${id}`,
+        query: (passengerDeliveryId) => ({
+          url: `${DELETE_PASSENGER_LEDGER_DELIVERY}${passengerDeliveryId.ids}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['PassengerDeliverys'],

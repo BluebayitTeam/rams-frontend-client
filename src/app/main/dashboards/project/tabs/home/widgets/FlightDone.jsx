@@ -17,16 +17,16 @@ function FlightDone(props) {
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
         <Typography className='text-28 px-16 font-medium' color='textSecondary'>
-          Flight Waiting
+          Flight Done
         </Typography>
       </div>
       <div className='flex items-center justify-center pt-8 text-primary mx-auto'>
         <Typography
-          className='text-72 font-semibold leading-none cursor-pointer text-red tracking-tighter'
+          className='text-72 font-semibold leading-none cursor-pointer text-blue tracking-tighter'
           onClick={() => {
-            data?.flight_waiting > 0 && router.push('/apps/notMedicals/report');
+            data?.flight_done > 0 && router.push('/apps/notMedicals/report');
           }}>
-          {data?.flight_waiting || 0}
+          {data?.flight_done || 0}
         </Typography>
       </div>
 
@@ -36,7 +36,7 @@ function FlightDone(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.flight_waiting > 0 && router.push('/apps/notMedicals/report');
+          data?.flight_done > 0 && router.push('/apps/notMedicals/report');
         }}>
         View All Flight Waiting
       </Button>

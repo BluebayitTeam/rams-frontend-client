@@ -22,6 +22,7 @@ import PassengerDeliveryFilterMenu from './PassengerDeliveryFilterMenu';
 import { useDispatch } from 'react-redux';
 import { Delete } from '@mui/icons-material';
 import { useParams } from 'react-router';
+import { DeletedSuccessfully } from 'src/app/@customHooks/notificationAlert';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -33,8 +34,7 @@ function PassengerDeliveryReportsTable(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const routeParams = useParams();
-  // const { agentId } = routeParams;
-  console.log('routeParam111s', routeParams);
+
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
@@ -42,31 +42,6 @@ function PassengerDeliveryReportsTable(props) {
   });
 
   const [removePassengerDelivery] = useDeletePassengerDeliveryMutation();
-  // const handleRemoveAgent = (dispatch, id) => {
-  //   // Call your async action to remove the delivery
-  //   dispatch(removePassengerDelivery(id)).then(() => {
-  //     DeletedSuccessfully(); // Optional: Call any success handler after deletion
-
-  //     // Dispatch a message to notify the user
-  //     dispatch(
-  //       showMessage({
-  //         message: `Please Restart The Backend`,
-  //         variant: 'error',
-  //       })
-  //     );
-  //   });
-  // };
-
-  function handleRemoveAgent(dispatch) {
-     console.log('chckIDs',id)
-      removePassengerDelivery(id);
-      DeletedSuccessfully();
-      navigate('/passengerDeliveryReport/passengerDeliveryReports');
-      dispatch(
-        showMessage({ message: `Please Restart The Backend`, variant: 'error' })
-      );
-    }
-
   const initialTableColumnsState = [
     { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
     {
@@ -115,22 +90,20 @@ function PassengerDeliveryReportsTable(props) {
       id: 9,
       label: 'Action',
       getterMethod: (data) =>
-
-          data?.passenger_delivery?.id && (
+        data?.passenger_delivery?.id && (
           <Delete
-            onClick={() =>
-              // function handleRemoveAgent(data) {
-              //   console.log('sdsdsdsdsdsd', data);
-              //   removePassengerDelivery(data.passenger_delivery?.id);
-              //   DeletedSuccessfully();
-              // }
-              {handleRemoveAgent}
-            }
+            onClick={() => {
+                   removePassengerDelivery({
+                     ids: data?.passenger_delivery?.id,
+                   });
+              DeletedSuccessfully();
+              refetch();
+
+            }}
             className='cursor-pointer custom-delete-icon-style'
           />
         ),
 
-      // console.log('CheckDelete',data),
       show: true,
 
       style: { justifyContent: 'flex-end', marginRight: '5px' },
@@ -147,7 +120,6 @@ function PassengerDeliveryReportsTable(props) {
     dragAndDropRow,
   ] = useReportData();
 
-  console.log('modifiedPassengerDeliveryData', modifiedPassengerDeliveryData);
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
     initialTableColumnsState
@@ -164,7 +136,7 @@ function PassengerDeliveryReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetPassengerDeliveryReportsQuery(
+  const { data: paginatedData,refetch } = useGetPassengerDeliveryReportsQuery(
     {
       date_after: filterData.date_after || '',
       date_before: filterData.date_before || '',
@@ -178,6 +150,8 @@ function PassengerDeliveryReportsTable(props) {
     },
     { skip: inShowAllMode }
   );
+
+
 
   const { data: allData } = useGetPassengerDeliveryAllReportsQuery(
     {

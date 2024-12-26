@@ -12,6 +12,8 @@ import Visits from './widgets/Visits';
 import Visa from './widgets/Visa';
 import Manpower from './widgets/Manpower';
 import FlightWaiting from './widgets/FlightWaiting';
+import FlightDone from './widgets/FlightDone';
+import FlightChart from './widgets/FlightChart';
 
 /**
  * The HomeTab component.
@@ -45,12 +47,12 @@ function HomeTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingMedical  />
+        <UpcomingMedical />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UpcomingVisa  />
+        <UpcomingVisa />
       </motion.div>
       <motion.div
         variants={item}
@@ -68,17 +70,17 @@ function HomeTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <NotMedical  />
+        <NotMedical />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <Fit  />
+        <Fit />
       </motion.div>
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <UnFit  />
+        <UnFit />
       </motion.div>
       <motion.div
         variants={item}
@@ -104,6 +106,14 @@ function HomeTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <FlightWaiting />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <FlightDone />
+      </motion.div>
+      <motion.div variants={item} className='widget flex w-full p-12'>
+        <FlightChart />
       </motion.div>
     </motion.div>
   );
