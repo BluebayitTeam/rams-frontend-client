@@ -71,7 +71,8 @@ function VisaEntryForm(props) {
         render={({ field: { onChange, value } }) => {
   
           return
-          <Autocomplete
+          (
+            <Autocomplete
             className='mt-8 mb-16'
             freeSolo
             value={value ? demands.find((data) => data.id === value) : null}
@@ -98,7 +99,8 @@ function VisaEntryForm(props) {
                 //
               />
             )}
-          />;
+          />
+         )
         }}
       />
 

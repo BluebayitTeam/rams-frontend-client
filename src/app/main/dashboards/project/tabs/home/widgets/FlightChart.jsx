@@ -6,10 +6,10 @@ import {
 } from '@mui/icons-material';
 import { Box, Paper, Typography } from '@mui/material';
 import moment from 'moment';
-import { memo, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
+import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useGetProjectDashboardFlightChartQuery } from '../../../ProjectDashboardApi';
+import Chart from 'react-apexcharts';
 
 function FlightChart(props) {
   const dispatch = useDispatch();
@@ -22,14 +22,24 @@ function FlightChart(props) {
     year: moment(months).format('YYYY'),
   });
 
-  const series = [
-    {
-      name: 'Total Flights',
-      data: flightChartData || [], 
-    },
-  ];
+ 
+	const data = {
+    datasets: [
+      {
+        backgroundColor: '#3F51B5',
+        barPercentage: 0.5,
+        barThickness: 50,
+        borderRadius: 4,
+        categoryPercentage: 0.5,
+        data: flightChartData || [], // Make sure it's an array
+        label: 'Total Flight ',
+        maxBarThickness: 20,
+      },
+    ],
+    labels: Array.from({ length: 31 }, (_, index) => (index + 1).toString()), // Ensure 31 labels
+  };
 
- 	const options = {
+  const options = {
     animation: false,
     cornerRadius: 20,
     layout: { padding: 0 },
@@ -79,6 +89,8 @@ function FlightChart(props) {
   };
 
 
+console.log('flightChartData', flightChartData);
+
 
   return (
     <Paper {...props} className='w-full rounded-40 shadow'>
@@ -88,13 +100,15 @@ function FlightChart(props) {
         </Typography>
       </div>
 
-      <Box sx={{ height: 400 }}>
-        <ReactApexChart
+      <div>
+        <Chart
+          data={data}
           options={options}
-          series={series}
-
+          type='bar' 
+          height={350}
+          width={700}
         />
-      </Box>
+      </div>
 
       <Box
         sx={{
@@ -103,21 +117,17 @@ function FlightChart(props) {
           p: 2,
         }}>
         <button>
-          {
-            <ArrowBackIos
-              fontSize='large'
-              onClick={() => {
-                // sessionStorage.setItem('dashBoardChartDate',moment(months).subtract(1, 'months').endOf('month').format('YYYY-MM-DD'));
-
-                setMonths(
-                  moment(months)
-                    .subtract(1, 'months')
-                    .endOf('month')
-                    .format('YYYY-MM-DD')
-                );
-              }}
-            />
-          }
+          <ArrowBackIos
+            fontSize='large'
+            onClick={() => {
+              setMonths(
+                moment(months)
+                  .subtract(1, 'months')
+                  .endOf('month')
+                  .format('YYYY-MM-DD')
+              );
+            }}
+          />
         </button>
         <div
           className='text-16 font-medium'
@@ -132,27 +142,16 @@ function FlightChart(props) {
 
         {months.slice(0, 7) === todaysDate.slice(0, 7) ? (
           <button>
-            {
-              <ArrowForwardIos
-                style={{ color: '#d1cfcf' }}
-                fontSize='large'
-              />
-            }
+            <ArrowForwardIos style={{ color: '#d1cfcf' }} fontSize='large' />
           </button>
         ) : (
           <button>
-            {
-              <ArrowForwardIos
-                fontSize='large'
-                onClick={() => {
-                  // sessionStorage.setItem('dashBoardChartDate',moment(months).add(1, 'months').format('YYYY-MM-DD'));
-
-                  setMonths(
-                    moment(months).add(1, 'months').format('YYYY-MM-DD')
-                  );
-                }}
-              />
-            }
+            <ArrowForwardIos
+              fontSize='large'
+              onClick={() => {
+                setMonths(moment(months).add(1, 'months').format('YYYY-MM-DD'));
+              }}
+            />
           </button>
         )}
       </Box>
