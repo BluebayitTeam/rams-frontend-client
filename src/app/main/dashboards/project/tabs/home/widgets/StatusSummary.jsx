@@ -24,11 +24,13 @@ import { useDispatch } from 'react-redux';
 import {
   useGetProjectDashboardFlightChartQuery,
   useGetProjectDashboardFlightListQuery,
+  useGetProjectDashboardStatusSummaryQuery,
 } from '../../../ProjectDashboardApi';
 import Chart from 'react-apexcharts';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { BASE_URL } from 'src/app/constant/constants';
 import { makeStyles } from '@mui/styles';
+import { StatusColor } from './StatusColor';
 
 const useStyles = makeStyles((theme) => ({
   tablecell: {
@@ -46,13 +48,13 @@ function StatusSummary(props) {
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const { data: flightlistData, refetch } =
-    useGetProjectDashboardFlightListQuery({
+    useGetProjectDashboardStatusSummaryQuery({
       ...pageAndSize,
     });
 
-  const latest_flights = flightlistData?.latest_flights || [];
+  const todays = flightlistData|| [];
 
-  console.log('flightlistData', flightlistData);
+  console.log('flightlistCheckData', flightlistData);
 
   
 
@@ -80,7 +82,7 @@ function StatusSummary(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props?.widget?.map((order) => {
+            {todays?.map((order) => {
               return (
                 <TableRow hover key={order?.status}>
                   <TableCell>
