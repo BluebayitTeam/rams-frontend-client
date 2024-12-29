@@ -22,75 +22,87 @@ function FlightChart(props) {
     year: moment(months).format('YYYY'),
   });
 
- 
-	const data = {
-    datasets: [
-      {
-        backgroundColor: '#3F51B5',
-        barPercentage: 0.5,
-        barThickness: 50,
-        borderRadius: 4,
-        categoryPercentage: 0.5,
-        data: flightChartData || [], // Make sure it's an array
-        label: 'Total Flight ',
-        maxBarThickness: 20,
-      },
-    ],
-    labels: Array.from({ length: 31 }, (_, index) => (index + 1).toString()), // Ensure 31 labels
+  const transformChartData = (data) => {
+    const daysInMonth = moment(months).daysInMonth(); 
+    const transformedData = Array(daysInMonth).fill(0); 
+
+    if (data) {
+      Object.entries(data).forEach(([day, count]) => {
+        const dayIndex = parseInt(day, 10) - 1; 
+        transformedData[dayIndex] = count;
+      });
+    }
+
+    return transformedData;
   };
 
-  const options = {
-    animation: false,
-    cornerRadius: 20,
-    layout: { padding: 0 },
-    legend: { display: false },
-    maintainAspectRatio: false,
-    responsive: true,
-    xAxes: [
-      {
-        ticks: {
-          fontColor: theme.palette.text.secondary,
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false,
+  const [chartData, setChartData] = useState({
+    options: {
+      chart: {
+        height: 350,
+        type: 'bar',
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '60%',
         },
       },
-    ],
-    yAxes: [
-      {
-        ticks: {
-          fontColor: theme.palette.text.secondary,
-          beginAtZero: true,
-          min: 0,
-        },
-        gridLines: {
-          borderDash: [2],
-          borderDashOffset: [2],
-          color: theme.palette.divider,
-          drawBorder: false,
-          zeroLineBorderDash: [2],
-          zeroLineBorderDashOffset: [2],
-          zeroLineColor: theme.palette.divider,
+      colors: ['#00E396', '#775DD0'],
+      dataLabels: {
+        enabled: false,
+      },
+      legend: {
+        show: true,
+        showForSingleSeries: true,
+        markers: {
+          fillColors: ['#00E396', '#775DD0'],
         },
       },
-    ],
-    tooltips: {
-      backgroundColor: theme.palette.background.paper,
-      bodyFontColor: theme.palette.text.secondary,
-      borderColor: theme.palette.divider,
-      borderWidth: 1,
-      enabled: true,
-      footerFontColor: theme.palette.text.secondary,
-      intersect: false,
-      mode: 'index',
-      titleFontColor: theme.palette.text.primary,
+      xaxis: {
+        categories: Array.from(
+          { length: moment(months).daysInMonth() },
+          (_, i) => (i + 1).toString()
+        ),
+      },
+      title: {
+        text: 'Total Flights Chart',
+        align: 'center',
+        style: {
+          fontSize: '20px',
+        },
+      },
     },
-  };
+    series: [
+      {
+        name: 'Total Flight',
+        data: transformChartData(flightChartData), 
+      },
+    ],
+  });
 
-
-console.log('flightChartData', flightChartData);
-
+  useEffect(() => {
+    if (flightChartData) {
+      setChartData((prev) => ({
+        ...prev,
+        series: [
+          {
+            ...prev.series[0],
+            data: transformChartData(flightChartData),
+          },
+        ],
+        options: {
+          ...prev.options,
+          xaxis: {
+            ...prev.options.xaxis,
+            categories: Array.from(
+              { length: moment(months).daysInMonth() },
+              (_, i) => (i + 1).toString()
+            ),
+          },
+        },
+      }));
+    }
+  }, [flightChartData, months]);
 
   return (
     <Paper {...props} className='w-full rounded-40 shadow'>
@@ -100,15 +112,13 @@ console.log('flightChartData', flightChartData);
         </Typography>
       </div>
 
-      <div>
-        <Chart
-          data={data}
-          options={options}
-          type='bar' 
-          height={350}
-          width={700}
-        />
-      </div>
+      <Chart
+        options={chartData.options}
+        series={chartData.series}
+        type='bar'
+        height={350}
+        width='100%'
+      />
 
       <Box
         sx={{
@@ -160,3 +170,4 @@ console.log('flightChartData', flightChartData);
 }
 
 export default memo(FlightChart);
+
