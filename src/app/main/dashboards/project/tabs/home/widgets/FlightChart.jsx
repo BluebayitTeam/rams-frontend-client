@@ -99,7 +99,7 @@ function FlightChart(props) {
   }, [flightChartData, months]);
 
   return (
-    <Paper {...props} className='w-full rounded-40 shadow'>
+    <Paper  className='w-full rounded-40 shadow'>
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
           <FlightTakeoff /> Flights
