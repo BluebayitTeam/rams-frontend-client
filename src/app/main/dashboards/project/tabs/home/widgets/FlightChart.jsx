@@ -64,13 +64,7 @@ function FlightChart(props) {
           (_, i) => (i + 1).toString()
         ),
       },
-      title: {
-        text: 'Total Flights Chart',
-        align: 'center',
-        style: {
-          fontSize: '20px',
-        },
-      },
+
     },
     series: [
       {
