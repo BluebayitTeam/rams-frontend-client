@@ -12,30 +12,47 @@ import { useGetProjectDashboardFlightChartQuery, useGetProjectDashboardFlightLis
 import Chart from 'react-apexcharts';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { BASE_URL } from 'src/app/constant/constants';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  tablecell: {
+    fontSize: '50px',
+  },
+}));
+
 
 function LatestFlight(props) {
-  const dispatch = useDispatch();
-  const theme = useTheme();
-	const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+const dispatch = useDispatch();
+const classes = useStyles(props);
+const theme = useTheme();
+const [page, setPage] = useState(1);
+const [totalPages, setTotalPages] = useState(0);
+    
+const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
-  const { data: flightlistData } = useGetProjectDashboardFlightListQuery({
-      page,
-      size:6
-  });
+
+  const { data: flightlistData, refetch } =
+    useGetProjectDashboardFlightListQuery({
+      ...pageAndSize,
+    });
     
     const latest_flights = flightlistData?.latest_flights||[];
     
     console.log('flightlistData', flightlistData);
 
-	const handlePagination = (page, hanglePage) => {
-    dispatch(getWidget6({ page: hanglePage, size: 6 })).then((action) => {
-      setPage(action.payload?.page);
-      setTotalPages(action.payload?.total_pages);
-    });
-  };
+// 	const handlePagination = (page, hanglePage) => {
+//     dispatch(getWidget6({ page: hanglePage, size: 6 })).then((action) => {
+//       setPage(action.payload?.page);
+//       setTotalPages(action.payload?.total_pages);
+//     });
+//   };
 
-
+const handlePagination = (event, handlePage) => {
+  // Update page state and trigger re-fetch
+  setPageAndSize((prev) => ({ ...prev, page: handlePage }));
+  setPage(handlePage); // Ensure page state sync for controlled component
+  refetch(); // Manually re-fetch if necessary
+};
 
   return (
     <Paper className='w-full rounded-40 shadow'>
@@ -88,7 +105,9 @@ function LatestFlight(props) {
                   <TableCell>{flight.agent?.first_name}</TableCell>
                   <TableCell style={{ whiteSpace: 'nowrap' }}>
                     {flight?.flight_date &&
-                      moment(new Date(flight?.flight_date)).format('DD-MM-YYYY')}
+                      moment(new Date(flight?.flight_date)).format(
+                        'DD-MM-YYYY'
+                      )}
                   </TableCell>
                 </TableRow>
               );
@@ -103,9 +122,8 @@ function LatestFlight(props) {
           p: 2,
         }}>
         <Pagination
-          count={totalPages}
-          page={page}
-          defaultPage={1}
+          count={flightlistData?.totalPages || 1} 
+          page={page || 1} 
           color='primary'
           showFirstButton
           showLastButton
@@ -113,6 +131,7 @@ function LatestFlight(props) {
           shape='rounded'
           onChange={handlePagination}
         />
+    
         <Button
           color='primary'
           endIcon={<ArrowRightIcon fontSize='small' />}
