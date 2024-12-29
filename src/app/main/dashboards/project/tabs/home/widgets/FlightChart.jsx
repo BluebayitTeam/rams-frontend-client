@@ -52,7 +52,7 @@ function FlightChart(props) {
         enabled: false,
       },
       legend: {
-        show: true,
+        show: false,
         showForSingleSeries: true,
         markers: {
           fillColors: ['#00E396', '#775DD0'],
