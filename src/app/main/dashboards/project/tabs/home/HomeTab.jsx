@@ -14,6 +14,7 @@ import Manpower from './widgets/Manpower';
 import FlightWaiting from './widgets/FlightWaiting';
 import FlightDone from './widgets/FlightDone';
 import FlightChart from './widgets/FlightChart';
+import LatestFlight from './widgets/LatestFlight';
 
 /**
  * The HomeTab component.
@@ -114,6 +115,11 @@ function HomeTab() {
       </motion.div>
       <motion.div variants={item} className='widget flex w-full p-12'>
         <FlightChart />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/2 p-12'>
+        <LatestFlight />
       </motion.div>
     </motion.div>
   );
