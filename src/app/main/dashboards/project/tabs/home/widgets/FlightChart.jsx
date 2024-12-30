@@ -39,8 +39,10 @@ function FlightChart(props) {
   const [chartData, setChartData] = useState({
     options: {
       chart: {
-        height: 350,
-        type: 'bar',
+        height: '100%',
+        toolbar: {
+          show: false, // Hides the menu (three horizontal lines)
+        },
       },
       plotOptions: {
         bar: {
@@ -64,12 +66,11 @@ function FlightChart(props) {
           (_, i) => (i + 1).toString()
         ),
       },
-
     },
     series: [
       {
         name: 'Total Flight',
-        data: transformChartData(flightChartData), 
+        data: transformChartData(flightChartData),
       },
     ],
   });

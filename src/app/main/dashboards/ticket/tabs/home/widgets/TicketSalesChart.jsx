@@ -37,39 +37,42 @@ function TicketSalesChart(props) {
     return transformedData;
   };
 
-  const [chartData, setChartData] = useState({
-    options: {
-      chart: {
-        height: 350,
-        type: 'bar',
-      },
-      plotOptions: {
-        bar: {
-          columnWidth: '60%',
-        },
-      },
-      colors: ['#00E396', '#775DD0'],
-      dataLabels: {
-        enabled: false,
-      },
-      legend: {
-        show: false,
-        showForSingleSeries: true,
-        markers: {
-          fillColors: ['#00E396', '#775DD0'],
-        },
-      },
-      xaxis: {
-        categories: moment.monthsShort()
-      },
-    },
-    series: [
-      {
-        name: 'This month',
-        data: ticketSalesChart?.total_sales_per_month,
-      },
-    ],
-  });
+ const [chartData, setChartData] = useState({
+   options: {
+     chart: {
+       height: 500,
+       toolbar: {
+         show: false, // Hides the menu (three horizontal lines)
+       },
+     },
+     plotOptions: {
+       bar: {
+         columnWidth: '60%',
+       },
+     },
+     colors: ['#00E396', '#775DD0'],
+     dataLabels: {
+       enabled: false,
+     },
+     legend: {
+       show: false,
+       showForSingleSeries: true,
+       markers: {
+         fillColors: ['#00E396', '#775DD0'],
+       },
+     },
+     xaxis: {
+       categories: moment.monthsShort(),
+     },
+   },
+   series: [
+     {
+       name: 'This month',
+       data: ticketSalesChart?.total_sales_per_month || [], // Fallback to empty array
+     },
+   ],
+ });
+
 
   useEffect(() => {
     if (ticketSalesChart?.total_sales_per_month) {
@@ -86,7 +89,7 @@ function TicketSalesChart(props) {
   }, [ticketSalesChart?.total_sales_per_month]);
 
   return (
-    <Paper {...props} className='w-full rounded-40 shadow'>
+    <Paper {...props} className='w-full h-full rounded-40 shadow'>
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
           <PeopleAlt className='mx-5' /> Ticket Sales by Month
@@ -98,7 +101,7 @@ function TicketSalesChart(props) {
           height: 500,
           position: 'relative',
         }}>
-        <Chart options={chartData.options} series={chartData.series} type='bar' />
+        <Chart options={chartData.options} series={chartData.series} type='bar'  height='100%'  />
       </Box>
     </Paper>
   );
