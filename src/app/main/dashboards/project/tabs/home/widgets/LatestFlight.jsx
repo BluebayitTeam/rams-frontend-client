@@ -38,25 +38,15 @@ const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
     
     const latest_flights = flightlistData?.latest_flights||[];
     
-    console.log('flightlistData', flightlistData);
-
-// 	const handlePagination = (page, hanglePage) => {
-//     dispatch(getWidget6({ page: hanglePage, size: 6 })).then((action) => {
-//       setPage(action.payload?.page);
-//       setTotalPages(action.payload?.total_pages);
-//     });
-//   };
-
 const handlePagination = (event, handlePage) => {
-  // Update page state and trigger re-fetch
   setPageAndSize((prev) => ({ ...prev, page: handlePage }));
-  setPage(handlePage); // Ensure page state sync for controlled component
-  refetch(); // Manually re-fetch if necessary
+  setPage(handlePage); 
+  refetch(); 
 };
 
   return (
     <Paper className='w-full rounded-40 shadow'>
-      {/* sx={{ minWidth: 800 }} */}
+
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
           {' '}

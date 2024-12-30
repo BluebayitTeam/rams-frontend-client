@@ -6,28 +6,28 @@ import TotalSales from './widgets/TotalSales';
 import TotalRefund from './widgets/TotalRefund';
 import TotalDepute from './widgets/TotalDepute';
 import TicketSalesChart from './widgets/TicketSalesChart';
-
+import TicketNew from './widgets/TicketNew';
 
 /**
  * The TicketTab component.
  */
 function TicketTab() {
-	const widgets = useSelector(selectWidget);
+  const widgets = useSelector(selectWidget);
 
   // console.log('widget', widget);
 
-  	const container = {
-      show: {
-        transition: {
-          staggerChildren: 0.1,
-        },
+  const container = {
+    show: {
+      transition: {
+        staggerChildren: 0.1,
       },
-    };
+    },
+  };
 
-    const item = {
-      hidden: { opacity: 0, y: 20 },
-      show: { opacity: 1, y: 0 },
-    };
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
   return (
     <motion.div
       className='flex flex-wrap'
@@ -56,8 +56,13 @@ function TicketTab() {
       </motion.div>
       <motion.div
         variants={item}
-        className="widget flex w-full  sm:w-1/2 md:w-1/2 p-12">
+        className='widget flex w-full  sm:w-1/2 md:w-1/2 p-12'>
         <TicketSalesChart />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full  sm:w-1/2 md:w-1/2 p-12'>
+        <TicketNew />
       </motion.div>
     </motion.div>
   );

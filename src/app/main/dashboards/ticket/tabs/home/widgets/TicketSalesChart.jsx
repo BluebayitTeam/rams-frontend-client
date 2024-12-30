@@ -37,42 +37,41 @@ function TicketSalesChart(props) {
     return transformedData;
   };
 
- const [chartData, setChartData] = useState({
-   options: {
-     chart: {
-       height: 500,
-       toolbar: {
-         show: false, // Hides the menu (three horizontal lines)
-       },
-     },
-     plotOptions: {
-       bar: {
-         columnWidth: '60%',
-       },
-     },
-     colors: ['#00E396', '#775DD0'],
-     dataLabels: {
-       enabled: false,
-     },
-     legend: {
-       show: false,
-       showForSingleSeries: true,
-       markers: {
-         fillColors: ['#00E396', '#775DD0'],
-       },
-     },
-     xaxis: {
-       categories: moment.monthsShort(),
-     },
-   },
-   series: [
-     {
-       name: 'This month',
-       data: ticketSalesChart?.total_sales_per_month || [], // Fallback to empty array
-     },
-   ],
- });
-
+  const [chartData, setChartData] = useState({
+    options: {
+      chart: {
+        height: 500,
+        toolbar: {
+          show: false,
+        },
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '60%',
+        },
+      },
+      colors: ['#00E396', '#775DD0'],
+      dataLabels: {
+        enabled: false,
+      },
+      legend: {
+        show: false,
+        showForSingleSeries: true,
+        markers: {
+          fillColors: ['#00E396', '#775DD0'],
+        },
+      },
+      xaxis: {
+        categories: moment.monthsShort(),
+      },
+    },
+    series: [
+      {
+        name: 'This month',
+        data: ticketSalesChart?.total_sales_per_month || [], // Fallback to empty array
+      },
+    ],
+  });
 
   useEffect(() => {
     if (ticketSalesChart?.total_sales_per_month) {
@@ -101,11 +100,15 @@ function TicketSalesChart(props) {
           height: 500,
           position: 'relative',
         }}>
-        <Chart options={chartData.options} series={chartData.series} type='bar'  height='100%'  />
+        <Chart
+          options={chartData.options}
+          series={chartData.series}
+          type='bar'
+          height='100%'
+        />
       </Box>
     </Paper>
   );
 }
 
 export default memo(TicketSalesChart);
-
