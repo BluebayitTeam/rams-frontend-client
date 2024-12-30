@@ -18,6 +18,7 @@ import LatestFlight from './widgets/LatestFlight';
 import StatusSummary from './widgets/StatusSummary';
 import IncompleteFlight from './widgets/IncompleteFlight';
 import AccountSummary from './widgets/AccountSummary';
+import DebtorCreditor from './widgets/DebtorCreditor';
 
 /**
  * The HomeTab component.
@@ -134,6 +135,11 @@ function HomeTab() {
         variants={item}
         className='widget  w-full sm:w-1/2 md:w-1/2 p-12'>
         <AccountSummary />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget  w-full sm:w-1/2 md:w-1/2 p-12'>
+        <DebtorCreditor />
       </motion.div>
     </motion.div>
   );
