@@ -1,5 +1,5 @@
 import { apiService as api } from 'app/store/apiService';
-import { GET_DASHBOARD_CHART_DATA, GET_FLIGHT_COUNT, GET_FLIGHT_STATUS_SUMMARY, GET_INCOMPLETE_TOTAL_FLIGHT_LIST, GET_LATEST_FLIGHT_LIST, GET_MANPOWER_COUNT, GET_MEDICAL_COUNT, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_EMBASSY_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT, GET_VISA_COUNT } from 'src/app/constant/constants';
+import { GET_DASHBOARD_CHART_DATA, GET_FLIGHT_COUNT, GET_FLIGHT_STATUS_SUMMARY, GET_INCOMPLETE_TOTAL_FLIGHT_LIST, GET_LATEST_FLIGHT_LIST, GET_MANPOWER_COUNT, GET_MEDICAL_COUNT, GET_TOTAL_ACCOUNT_SUMMARY_LIST, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_EMBASSY_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT, GET_VISA_COUNT } from 'src/app/constant/constants';
 
 // Define the tag types for cache management
 export const addTagTypes = ['dashboard', 'ProjectDashboardProjects'];
@@ -107,6 +107,14 @@ const ProjectDashboardApi = api
 
         providesTags: ['dashboard'],
       }),
+      getProjectDashboardAccountSummary: build.query({
+        query: (filterData) => ({
+          url: GET_TOTAL_ACCOUNT_SUMMARY_LIST,
+          params: filterData,
+        }),
+
+        providesTags: ['dashboard'],
+      }),
 
       // Fetch project dashboard projects
       getProjectDashboardProjects: build.query({
@@ -133,6 +141,7 @@ export const {
   useGetProjectDashboardFlightListQuery,
   useGetProjectDashboardStatusSummaryQuery,
   useGetProjectDashboardIncompleteFlightQuery,
+  useGetProjectDashboardAccountSummaryQuery,
 } = ProjectDashboardApi;
 
 // Selector to fetch a specific widget by ID

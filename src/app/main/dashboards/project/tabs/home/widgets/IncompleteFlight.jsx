@@ -112,37 +112,7 @@ function IncompleteFlight(props) {
           </TableBody>
         </Table>
       </Box>
-      {/* <Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'flex-end',
-					p: 2
-				}}
-			>
-				
-				<Pagination
-					count={totalPages}
-					page={page }
-					defaultPage={1}
-					color="primary"
-					showFirstButton
-					showLastButton
-					variant="outlined"
-					shape="rounded"
-					onChange={handlePagination}
-				/>
-				<Button
-					color="primary"
-					endIcon={<ArrowRightIcon fontSize="small" />}
-					size="medium"
-					variant="text"
-					onClick={() => {
-						history.push(`/apps/order-managements/orders`);
-					}}
-				>
-					View all Orders
-				</Button>
-			</Box> */}
+     
     </Paper>
   );
 }
