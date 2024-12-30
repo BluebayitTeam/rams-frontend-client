@@ -24,11 +24,13 @@ import { useDispatch } from 'react-redux';
 import {
   useGetProjectDashboardFlightChartQuery,
   useGetProjectDashboardFlightListQuery,
+  useGetProjectDashboardIncompleteFlightQuery,
 } from '../../../ProjectDashboardApi';
 import Chart from 'react-apexcharts';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { BASE_URL } from 'src/app/constant/constants';
 import { makeStyles } from '@mui/styles';
+import { StatusColor } from './StatusColor';
 
 const useStyles = makeStyles((theme) => ({
   tablecell: {
@@ -45,12 +47,14 @@ function IncompleteFlight(props) {
 
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
-  const { data: flightlistData, refetch } =
-    useGetProjectDashboardFlightListQuery({
+  const { data: flightIncompleteData, refetch } =
+    useGetProjectDashboardIncompleteFlightQuery({
       ...pageAndSize,
     });
 
-  const latest_flights = flightlistData?.latest_flights || [];
+  const status = flightIncompleteData || [];
+
+  console.log('flightIncompleteData', flightIncompleteData);
 
 
   const handlePagination = (event, handlePage) => {
@@ -82,7 +86,7 @@ function IncompleteFlight(props) {
           </TableHead>
 
           <TableBody>
-            {props?.widget?.map((flight) => {
+            {status.map((flight) => {
               return (
                 <TableRow hover key={flight?.status}>
                   <TableCell>
