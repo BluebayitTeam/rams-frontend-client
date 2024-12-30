@@ -1,5 +1,5 @@
 import { apiService as api } from 'app/store/apiService';
-import { GET_DASHBOARD_CHART_DATA, GET_DEBTOR_AND_CREDITOR_DATA, GET_FLIGHT_COUNT, GET_FLIGHT_STATUS_SUMMARY, GET_INCOMPLETE_TOTAL_FLIGHT_LIST, GET_LATEST_FLIGHT_LIST, GET_MANPOWER_COUNT, GET_MEDICAL_COUNT, GET_TICKET_DASHBOARD_COUNTING, GET_TICKET_DASHBOARD_LATEST_TICKETS, GET_TOTAL_ACCOUNT_SUMMARY_LIST, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_EMBASSY_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT, GET_VISA_COUNT } from 'src/app/constant/constants';
+import { GET_DASHBOARD_CHART_DATA, GET_DEBTOR_AND_CREDITOR_DATA, GET_FLIGHT_COUNT, GET_FLIGHT_STATUS_SUMMARY, GET_INCOMPLETE_TOTAL_FLIGHT_LIST, GET_LATEST_FLIGHT_LIST, GET_MANPOWER_COUNT, GET_MEDICAL_COUNT, GET_TICKET_DASHBOARD_COUNTING, GET_TICKET_DASHBOARD_LATEST_TICKETS, GET_TICKET_DASHBOARD_SALES_PER_MONTH_COUNTING, GET_TOTAL_ACCOUNT_SUMMARY_LIST, GET_UPCOMING_E_VISA_COUNT, GET_UPCOMING_EMBASSY_COUNT, GET_UPCOMING_MEDICAL_COUNT, GET_UPCOMING_VISA_COUNT, GET_VISA_COUNT } from 'src/app/constant/constants';
 
 // Define the tag types for cache management
 export const addTagTypes = ['ticket', 'TicketDashboardProjects'];
@@ -35,6 +35,22 @@ const TicketDashboardApi = api
 
         providesTags: ['ticket'],
       }),
+      getTicketDashboardTotalDepute: build.query({
+        query: (filterData) => ({
+          url: GET_TICKET_DASHBOARD_COUNTING,
+          params: filterData,
+        }),
+
+        providesTags: ['ticket'],
+      }),
+      getTicketDashboardChart: build.query({
+        query: (filterData) => ({
+          url: GET_TICKET_DASHBOARD_SALES_PER_MONTH_COUNTING,
+          params: filterData,
+        }),
+
+        providesTags: ['ticket'],
+      }),
 
       // Fetch project ticket projects
       getTicketDashboardProjects: build.query({
@@ -52,6 +68,8 @@ export const {
   useGetTicketDashboardTotalTicketQuery,
   useGetTicketDashboardTotalSalesQuery,
   useGetTicketDashboardTotalRefundQuery,
+  useGetTicketDashboardTotalDeputeQuery,
+  useGetTicketDashboardChartQuery,
 } = TicketDashboardApi;
 
 // Selector to fetch a specific widget by ID

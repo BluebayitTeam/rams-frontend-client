@@ -15,7 +15,6 @@ function TotalTicket(props) {
 
   const { data } = useGetTicketDashboardTotalTicketQuery();
 
-  console.log('dataCheck', data);
 
 
 

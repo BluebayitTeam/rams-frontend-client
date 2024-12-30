@@ -6,27 +6,26 @@ import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
-import { useGetTicketDashboardTotalRefundQuery } from '../../../TicketDashboardApi';
+import { useGetTicketDashboardTotalDeputeQuery } from '../../../TicketDashboardApi';
 
-function TotalRefund(props) {
+function TotalDepute(props) {
   const dispatch = useDispatch();
 
-  const { data } = useGetTicketDashboardTotalRefundQuery();
-
+  const { data } = useGetTicketDashboardTotalDeputeQuery();
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>
         <Typography className='text-16 px-16 font-medium' color='textSecondary'>
-          Total Refund
+          Total Depute
         </Typography>
       </div>
       <div className='text-center py-12'>
-        <Typography className='text-72 font-semibold leading-none text-red tracking-tighter'>
+        <Typography className='text-72 font-semibold leading-none text-orange tracking-tighter'>
           {data?.total_refunds || 0}
         </Typography>
-        <Typography className='text-20 text-red-800 font-normal'>
-          Total Refunds
+        <Typography className='text-20 text-orange-800 font-normal'>
+          Total Deputes
         </Typography>
       </div>
 
@@ -45,4 +44,4 @@ function TotalRefund(props) {
   );
 }
 
-export default memo(TotalRefund);
+export default memo(TotalDepute);

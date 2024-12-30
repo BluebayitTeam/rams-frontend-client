@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import TotalTicket from './widgets/TotalTicket';
 import TotalSales from './widgets/TotalSales';
 import TotalRefund from './widgets/TotalRefund';
+import TotalDepute from './widgets/TotalDepute';
+import TicketSalesChart from './widgets/TicketSalesChart';
 
 
 /**
@@ -46,6 +48,16 @@ function TicketTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <TotalRefund />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <TotalDepute />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className="widget flex w-full  sm:w-1/2 md:w-1/2 p-12">
+        <TicketSalesChart />
       </motion.div>
     </motion.div>
   );
