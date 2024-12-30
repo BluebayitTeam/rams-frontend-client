@@ -65,7 +65,7 @@ function IncompleteFlight(props) {
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
           {' '}
-          <FlightTakeoffIcon />
+          <FlightTakeoff />
           Incomplete Total Flight
         </Typography>
       </div>

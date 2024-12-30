@@ -16,6 +16,7 @@ import FlightDone from './widgets/FlightDone';
 import FlightChart from './widgets/FlightChart';
 import LatestFlight from './widgets/LatestFlight';
 import StatusSummary from './widgets/StatusSummary';
+import IncompleteFlight from './widgets/IncompleteFlight';
 
 /**
  * The HomeTab component.
@@ -126,6 +127,11 @@ function HomeTab() {
         variants={item}
         className='widget  w-full sm:w-1/2 md:w-1/2 p-12'>
         <StatusSummary />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget  w-full sm:w-1/2 md:w-1/2 p-12'>
+        <IncompleteFlight />
       </motion.div>
     </motion.div>
   );
