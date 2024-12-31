@@ -14,26 +14,22 @@ import { useGetTicketDashboardChartQuery } from '../../../TicketDashboardApi';
 
 function TicketSalesChart(props) {
   const dispatch = useDispatch();
-  const [year, setYear] = useState(moment().format('YYYY')); // Default to the current year
+  const [year, setYear] = useState(moment().format('YYYY'));
 
-  // Fetch ticket sales chart data based on the year
   const { data: ticketSalesChart } = useGetTicketDashboardChartQuery({
     yaerlyData: year,
   });
 
-  // Transform data for the 12 months
   const transformChartData = (data) => {
-    const monthsOfYear = moment.months(); // Array of month names
+    const monthsOfYear = moment.months();
     const transformedData = Array(12).fill(0);
-
     if (data) {
       monthsOfYear.forEach((month, index) => {
         if (data[month]) {
-          transformedData[index] = data[month]; // Assign data for the month
+          transformedData[index] = data[month];
         }
       });
     }
-
     return transformedData;
   };
 
@@ -68,7 +64,7 @@ function TicketSalesChart(props) {
     series: [
       {
         name: 'This month',
-        data: ticketSalesChart?.total_sales_per_month || [], // Fallback to empty array
+        data: ticketSalesChart?.total_sales_per_month || [],
       },
     ],
   });

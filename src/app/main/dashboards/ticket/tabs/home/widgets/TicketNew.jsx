@@ -18,6 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
+import moment from 'moment';
 
 function TicketNew(props) {
   const dispatch = useDispatch();
@@ -34,8 +35,8 @@ function TicketNew(props) {
   const latest_flights = ticketNew?.latest_flights || [];
 
   const handlePagination = (event, handlePage) => {
-    setPageAndSize((prev) => ({ ...prev, page: handlePage }));
-    setPage(handlePage);
+    setPageAndSize({ ...pageAndSize, page: handlePage });
+    setPage(handlePage - 1);
     refetch();
   };
 
@@ -43,7 +44,6 @@ function TicketNew(props) {
     <Paper className='w-full rounded-40 shadow'>
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
-          {' '}
           <AirplaneTicket />
           New Ticket
         </Typography>
@@ -71,7 +71,7 @@ function TicketNew(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props?.widget?.total_new_tickets_list?.map((ticket) => {
+            {ticketNew?.total_new_tickets_list?.map((ticket) => {
               return (
                 <TableRow hover key={ticket?.id}>
                   <TableCell style={{ whiteSpace: 'nowrap' }}>
@@ -95,8 +95,9 @@ function TicketNew(props) {
           p: 2,
         }}>
         <Pagination
-          count={ticketNew?.totalPages || 1}
-          page={page || 1}
+          count={ticketNew?.total_pages}
+          page={page + 1}
+          defaultPage={1}
           color='primary'
           showFirstButton
           showLastButton

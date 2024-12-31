@@ -1,23 +1,24 @@
-import { Box,  Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { StatusColor } from "./StatusColor";
-import { ShoppingCart } from "@mui/icons-material";
-import { memo, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useTheme } from "@emotion/react";
-import { useGetProjectDashboardAccountSummaryQuery } from "../../../ProjectDashboardApi";
-import { makeStyles } from "@mui/styles";
-
-// const useStyles = makeStyles((theme) => ({
-//   tablecell: {
-//     fontSize: '50px',
-//   },
-// }));
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { StatusColor } from './StatusColor';
+import { ShoppingCart } from '@mui/icons-material';
+import { memo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useTheme } from '@emotion/react';
+import { useGetProjectDashboardAccountSummaryQuery } from '../../../ProjectDashboardApi';
+import { makeStyles } from '@mui/styles';
 
 function AccountSummary(props) {
-const dispatch = useDispatch();
-const theme = useTheme();
-// const classes = useStyles(props);
-
+  const dispatch = useDispatch();
+  const theme = useTheme();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -30,10 +31,7 @@ const theme = useTheme();
 
   const AccountSummary = flightAccountSummaryData || [];
 
-  console.log('flightAccountSummaryData', AccountSummary);
-	const user_role = localStorage.getItem('user_role');
-
-
+  const user_role = localStorage.getItem('user_role');
 
   return (
     <Paper
@@ -42,7 +40,6 @@ const theme = useTheme();
         display:
           user_role === 'ADMIN' || user_role === 'admin' ? 'block' : 'none',
       }}>
-      {/* sx={{ minWidth: 800 }} */}
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
           {' '}
@@ -51,7 +48,7 @@ const theme = useTheme();
         </Typography>
       </div>
       <Box>
-        <Table >
+        <Table>
           <TableHead>
             <TableRow style={{ fontSize: '12px' }}>
               <TableCell className='text-14 font-medium'> Type</TableCell>
@@ -79,8 +76,7 @@ const theme = useTheme();
                     </StatusColor>
                   </TableCell>
 
-                  {/* here ৳ sign is (&#2547;) */}
-                  <TableCell> 
+                  <TableCell>
                     <span style={{ whiteSpace: 'nowrap' }}>
                       &#2547; {account?.today}
                     </span>

@@ -10,14 +10,7 @@ import { useGetTicketDashboardTotalTicketQuery } from '../../../TicketDashboardA
 
 function TotalTicket(props) {
   const dispatch = useDispatch();
-
-
-
   const { data } = useGetTicketDashboardTotalTicketQuery();
-
-
-
-
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>

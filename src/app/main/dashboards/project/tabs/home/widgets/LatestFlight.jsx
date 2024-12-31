@@ -4,11 +4,27 @@ import {
   ArrowForwardIos,
   FlightTakeoff,
 } from '@mui/icons-material';
-import { Box, Button, Pagination, Paper, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Tooltip, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Pagination,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import moment from 'moment';
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useGetProjectDashboardFlightChartQuery, useGetProjectDashboardFlightListQuery } from '../../../ProjectDashboardApi';
+import {
+  useGetProjectDashboardFlightChartQuery,
+  useGetProjectDashboardFlightListQuery,
+} from '../../../ProjectDashboardApi';
 import Chart from 'react-apexcharts';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { BASE_URL } from 'src/app/constant/constants';
@@ -20,36 +36,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 function LatestFlight(props) {
-const dispatch = useDispatch();
-const classes = useStyles(props);
-const theme = useTheme();
-const [page, setPage] = useState(1);
-const [totalPages, setTotalPages] = useState(0);
-    
-const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  const dispatch = useDispatch();
+  const classes = useStyles(props);
+  const theme = useTheme();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
+  const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const { data: flightlistData, refetch } =
     useGetProjectDashboardFlightListQuery({
       ...pageAndSize,
     });
-    
-    const latest_flights = flightlistData?.latest_flights||[];
-    
-const handlePagination = (event, handlePage) => {
-  setPageAndSize((prev) => ({ ...prev, page: handlePage }));
-  setPage(handlePage); 
-  refetch(); 
-};
+
+  const latest_flights = flightlistData?.latest_flights || [];
+
+  const handlePagination = (event, handlePage) => {
+    setPageAndSize((prev) => ({ ...prev, page: handlePage }));
+    setPage(handlePage);
+    refetch();
+  };
 
   return (
     <Paper className='w-full rounded-40 shadow'>
-
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
-          {' '}
           <FlightTakeoff />
           Latest Flight
         </Typography>
@@ -112,8 +124,8 @@ const handlePagination = (event, handlePage) => {
           p: 2,
         }}>
         <Pagination
-          count={flightlistData?.totalPages || 1} 
-          page={page || 1} 
+          count={flightlistData?.total_pages}
+          page={page}
           color='primary'
           showFirstButton
           showLastButton
@@ -121,7 +133,7 @@ const handlePagination = (event, handlePage) => {
           shape='rounded'
           onChange={handlePagination}
         />
-    
+
         <Button
           color='primary'
           endIcon={<ArrowRightIcon fontSize='small' />}

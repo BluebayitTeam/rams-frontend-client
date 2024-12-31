@@ -8,13 +8,8 @@ import TotalDepute from './widgets/TotalDepute';
 import TicketSalesChart from './widgets/TicketSalesChart';
 import TicketNew from './widgets/TicketNew';
 
-/**
- * The TicketTab component.
- */
 function TicketTab() {
   const widgets = useSelector(selectWidget);
-
-  // console.log('widget', widget);
 
   const container = {
     show: {

@@ -10,11 +10,7 @@ import { useGetTicketDashboardTotalSalesQuery } from '../../../TicketDashboardAp
 
 function TotalSales(props) {
   const dispatch = useDispatch();
-
   const { data } = useGetTicketDashboardTotalSalesQuery();
-
-  console.log('dataCheck', data);
-
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>
