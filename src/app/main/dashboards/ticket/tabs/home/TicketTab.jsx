@@ -7,6 +7,7 @@ import TotalRefund from './widgets/TotalRefund';
 import TotalDepute from './widgets/TotalDepute';
 import TicketSalesChart from './widgets/TicketSalesChart';
 import TicketNew from './widgets/TicketNew';
+import PurchaseSummary from '../../../project/tabs/home/widgets/PurchaseSummary';
 
 function TicketTab() {
   const widgets = useSelector(selectWidget);
@@ -58,6 +59,11 @@ function TicketTab() {
         variants={item}
         className='widget flex w-full  sm:w-1/2 md:w-1/2 p-12'>
         <TicketNew />
+      </motion.div>
+      <motion.div
+        variants={item}
+        className='widget flex w-full  sm:w-1/2 md:w-1/2 p-12'>
+        <PurchaseSummary />
       </motion.div>
     </motion.div>
   );

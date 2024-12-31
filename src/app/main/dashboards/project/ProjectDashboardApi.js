@@ -8,6 +8,7 @@ import {
   GET_LATEST_FLIGHT_LIST,
   GET_MANPOWER_COUNT,
   GET_MEDICAL_COUNT,
+  GET_TICKET_DASHBOARD_PURCHASE_SALES,
   GET_TOTAL_ACCOUNT_SUMMARY_LIST,
   GET_UPCOMING_E_VISA_COUNT,
   GET_UPCOMING_EMBASSY_COUNT,
@@ -140,7 +141,7 @@ const ProjectDashboardApi = api
       }),
       getProjectDashboardPurchaseSummary: build.query({
         query: (filterData) => ({
-          url: GET_DEBTOR_AND_CREDITOR_DATA,
+          url: GET_TICKET_DASHBOARD_PURCHASE_SALES,
           params: filterData,
         }),
 

@@ -16,7 +16,7 @@ import { useTheme } from '@emotion/react';
 import { useGetProjectDashboardPurchaseSummaryQuery } from '../../../ProjectDashboardApi';
 import { makeStyles } from '@mui/styles';
 
-function PurchaseSummary(props) {
+function TotalPurchaseSummary(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [page, setPage] = useState(1);
@@ -24,13 +24,13 @@ function PurchaseSummary(props) {
 
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
-  const { data: purchaseSummaryData, refetch } =
+  const { data: totalPurchaseSummaryData, refetch } =
     useGetProjectDashboardPurchaseSummaryQuery({
       ...pageAndSize,
     });
 
-  const PurchaseSummary = purchaseSummaryData || [];
-  console.log('PurchaseSummary', PurchaseSummary);
+  const TotalPurchaseSummary = totalPurchaseSummaryData || [];
+  console.log('TotalPurchaseSummary', TotalPurchaseSummary);
 
   const user_role = localStorage.getItem('user_role');
 
@@ -76,7 +76,7 @@ function PurchaseSummary(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {PurchaseSummary?.map((account) => {
+            {TotalPurchaseSummary?.map((account) => {
               return (
                 <TableRow hover key={account?.status}>
                   <TableCell className='text-16 font-medium'>
@@ -123,4 +123,4 @@ function PurchaseSummary(props) {
   );
 }
 
-export default memo(PurchaseSummary);
+export default memo(TotalPurchaseSummary);
