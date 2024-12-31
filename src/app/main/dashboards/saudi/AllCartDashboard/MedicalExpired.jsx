@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 
 import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
-function OnProcess(props) {
+function MedicalExpired(props) {
   const dispatch = useDispatch();
 
   const { data } = useGetSaudiDashboardTotalSaudiQuery();
@@ -24,11 +24,11 @@ function OnProcess(props) {
           {data?.on_process || 0}
         </Typography>
         <Typography className='text-20 text-pink-800 font-normal'>
-          On Process
+          Medical will Expired within 15 days
         </Typography>
       </div>
     </Paper>
   );
 }
 
-export default memo(OnProcess);
+export default memo(MedicalExpired);
