@@ -22,11 +22,11 @@ function OnProcess(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          props?.widget?.on_process > 0 &&
+          data?.on_process > 0 &&
             router.push(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
-          {data?.total_refunds || 0}
+          {data?.on_process || 0}
         </Typography>
         <Typography className='text-20 text-pink-800 font-normal'>
           On Process

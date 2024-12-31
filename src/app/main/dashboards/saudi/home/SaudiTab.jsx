@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { selectWidget } from '../../SaudiDashboardApi';
 import { useSelector } from 'react-redux';
-import TotalSaudi from '../../../saudi/tabs/home/widgets/TotalSaudi';
+import OnProcess from '../AllCartDashboard/OnProcess';
+import { selectWidget } from '../SaudiDashboardApi';
 
 function SaudiTab() {
   const widgets = useSelector(selectWidget);
@@ -27,7 +27,7 @@ function SaudiTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
-        <TotalSaudi />
+        <OnProcess />
       </motion.div>
     </motion.div>
   );
