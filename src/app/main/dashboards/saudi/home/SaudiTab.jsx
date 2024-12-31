@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import OnProcess from '../AllCartDashboard/OnProcess';
 import { selectWidget } from '../SaudiDashboardApi';
 import MedicalExpired from '../AllCartDashboard/MedicalExpired';
+import VisaExpired from '../AllCartDashboard/VisaExpired';
 
 function SaudiTab() {
   const widgets = useSelector(selectWidget);
@@ -34,6 +35,11 @@ function SaudiTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <MedicalExpired />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <VisaExpired />
       </motion.div>
     </motion.div>
   );

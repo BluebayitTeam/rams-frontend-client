@@ -8,13 +8,17 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { StatusColor } from './StatusColor';
-import { AccountBalance, ShoppingCart } from '@mui/icons-material';
+import {
+  AccountBalance,
+  RequestQuote,
+  ShoppingCart,
+} from '@mui/icons-material';
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@emotion/react';
-import { useGetProjectDashboardPurchaseSummaryQuery } from '../../../ProjectDashboardApi';
 import { makeStyles } from '@mui/styles';
+import { useGetProjectDashboardTotalPurchaseSummaryQuery } from '../../../TicketDashboardApi';
+import { StatusColor } from 'src/app/main/dashboards/project/tabs/home/widgets/StatusColor';
 
 function TotalPurchaseSummary(props) {
   const dispatch = useDispatch();
@@ -25,7 +29,7 @@ function TotalPurchaseSummary(props) {
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const { data: totalPurchaseSummaryData, refetch } =
-    useGetProjectDashboardPurchaseSummaryQuery({
+    useGetProjectDashboardTotalPurchaseSummaryQuery({
       ...pageAndSize,
     });
 
@@ -39,39 +43,26 @@ function TotalPurchaseSummary(props) {
       className='w-full rounded-40 shadow'
       style={{
         display:
-          user_role === 'ADMIN' ||
-          user_role === 'admin' ||
-          user_role === 'ACCOUNTS'
-            ? 'block'
-            : 'none',
+          user_role === 'ADMIN' || user_role === 'ACCOUNTS' ? 'block' : 'none',
       }}>
       {/* sx={{ minWidth: 800 }} */}
       <div className='flex items-center justify-between p-20 h-64'>
-        <Typography className='text-16 font-medium'>
+        <Typography className=' text-16  font-medium'>
           {' '}
-          <AccountBalance className='mx-5' />
-          Sales & Purchase Summary
+          <RequestQuote className='mx-5' />
+          Total Sales & Puchase Summary
         </Typography>
       </div>
       <Box>
-        <Table className='table-fixed	'>
+        <Table>
           <TableHead>
-            <TableRow style={{ fontSize: '16px' }}>
+            <TableRow>
               <TableCell className='text-16 font-medium'>
                 {' '}
                 <b>Type</b>
               </TableCell>
               <TableCell className='text-16 font-medium'>
-                <b>Today</b>
-              </TableCell>
-              <TableCell className='text-16 font-medium'>
-                <b>This Week</b>
-              </TableCell>
-              <TableCell className='text-16 font-medium'>
-                <b>This Month</b>
-              </TableCell>
-              <TableCell className='text-16 font-medium'>
-                <b>This Year</b>
+                <b>Balance</b>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -94,23 +85,7 @@ function TotalPurchaseSummary(props) {
                   {/* here ৳ sign is (&#2547;) */}
                   <TableCell>
                     <span style={{ whiteSpace: 'nowrap' }}>
-                      &#2547; {account?.today}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span style={{ whiteSpace: 'nowrap' }}>
-                      &#2547; {account?.this_week}
-                    </span>
-                  </TableCell>
-
-                  <TableCell>
-                    <span style={{ whiteSpace: 'nowrap' }}>
-                      &#2547; {account?.this_month}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span style={{ whiteSpace: 'nowrap' }}>
-                      &#2547; {account?.this_year}
+                      &#2547; {account?.amount}
                     </span>
                   </TableCell>
                 </TableRow>

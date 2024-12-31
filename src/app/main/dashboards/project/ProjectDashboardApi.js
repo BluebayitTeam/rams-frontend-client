@@ -139,14 +139,6 @@ const ProjectDashboardApi = api
 
         providesTags: ['dashboard'],
       }),
-      getProjectDashboardPurchaseSummary: build.query({
-        query: (filterData) => ({
-          url: GET_TICKET_DASHBOARD_PURCHASE_SALES,
-          params: filterData,
-        }),
-
-        providesTags: ['dashboard'],
-      }),
 
       // Fetch project dashboard projects
       getProjectDashboardProjects: build.query({
@@ -175,7 +167,6 @@ export const {
   useGetProjectDashboardIncompleteFlightQuery,
   useGetProjectDashboardAccountSummaryQuery,
   useGetProjectDashboardDebtorCreditorQuery,
-  useGetProjectDashboardPurchaseSummaryQuery,
 } = ProjectDashboardApi;
 
 // Selector to fetch a specific widget by ID

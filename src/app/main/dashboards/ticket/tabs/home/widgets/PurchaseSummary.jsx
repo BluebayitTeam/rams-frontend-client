@@ -8,13 +8,13 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { StatusColor } from './StatusColor';
 import { AccountBalance, ShoppingCart } from '@mui/icons-material';
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@emotion/react';
-import { useGetProjectDashboardPurchaseSummaryQuery } from '../../../ProjectDashboardApi';
 import { makeStyles } from '@mui/styles';
+import { useGetProjectDashboardPurchaseSummaryQuery } from '../../../TicketDashboardApi';
+import { StatusColor } from 'src/app/main/dashboards/project/tabs/home/widgets/StatusColor';
 
 function PurchaseSummary(props) {
   const dispatch = useDispatch();

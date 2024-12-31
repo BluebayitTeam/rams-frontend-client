@@ -10,7 +10,9 @@ import {
   GET_MEDICAL_COUNT,
   GET_TICKET_DASHBOARD_COUNTING,
   GET_TICKET_DASHBOARD_LATEST_TICKETS,
+  GET_TICKET_DASHBOARD_PURCHASE_SALES,
   GET_TICKET_DASHBOARD_SALES_PER_MONTH_COUNTING,
+  GET_TICKET_DASHBOARD_TOTAL_PURCHASE_SALES,
   GET_TOTAL_ACCOUNT_SUMMARY_LIST,
   GET_UPCOMING_E_VISA_COUNT,
   GET_UPCOMING_EMBASSY_COUNT,
@@ -69,13 +71,21 @@ const TicketDashboardApi = api
 
         providesTags: ['ticket'],
       }),
-
-      // Fetch project ticket projects
-      getTicketDashboardProjects: build.query({
-        query: () => ({
-          url: '/mock-api/tickets/project/projects',
+      getProjectDashboardPurchaseSummary: build.query({
+        query: (filterData) => ({
+          url: GET_TICKET_DASHBOARD_PURCHASE_SALES,
+          params: filterData,
         }),
-        providesTags: ['TicketDashboardProjects'],
+
+        providesTags: ['dashboard'],
+      }),
+      getProjectDashboardTotalPurchaseSummary: build.query({
+        query: (filterData) => ({
+          url: GET_TICKET_DASHBOARD_TOTAL_PURCHASE_SALES,
+          params: filterData,
+        }),
+
+        providesTags: ['dashboard'],
       }),
     }),
     overrideExisting: false,
@@ -88,6 +98,8 @@ export const {
   useGetTicketDashboardTotalRefundQuery,
   useGetTicketDashboardTotalDeputeQuery,
   useGetTicketDashboardChartQuery,
+  useGetProjectDashboardPurchaseSummaryQuery,
+  useGetProjectDashboardTotalPurchaseSummaryQuery,
 } = TicketDashboardApi;
 
 // Selector to fetch a specific widget by ID
