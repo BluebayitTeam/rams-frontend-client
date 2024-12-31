@@ -22,10 +22,10 @@ function PendingAttachment(props) {
           );
         }}>
         <Typography className='text-72 font-semibold leading-none text-green tracking-tighter'>
-          {data?.interviewed || 0}
+          {data?.interview_done || 0}
         </Typography>
         <Typography className='text-12 text-blue-800 font-normal'>
-          Pending Attachment
+          Pending Attachments
         </Typography>
       </div>
     </Paper>
