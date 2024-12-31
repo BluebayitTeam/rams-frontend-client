@@ -1,10 +1,10 @@
 // base url
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.137:8006';
+  ? "https://rl1010api.ramsbd.net"
+  : "http://192.168.68.137:8006";
 
 // added by live api
 
@@ -13,13 +13,13 @@ export const BASE_URL = isProduction
 //   : 'https://rl1010api.ramsbd.net';
 
 export const CLIENT_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.119:3000';
+  ? "https://rl7811api.ramsbd.net"
+  : "http://192.168.0.119:3000";
 export const ADMIN_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.117:8008';
-export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
-export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
+  ? "https://rl7811api.ramsbd.net"
+  : "http://192.168.0.117:8008";
+export const ADMIN_LOGIN_EMAIL = "robin@gmail.com";
+export const ADMIN_LOGIN_PASSWORD = "robin@gmail.com";
 
 // login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -2443,3 +2443,16 @@ export const DELETE_COMPUTE = `${BASE_URL}/compute/api/v1/compute/delete/`;
 export const DELETE_COMPUTE_MULTIPLE = `${BASE_URL}/compute/api/v1/compute/delete/`;
 
 export const SEARCH_COMPUTE = `${BASE_URL}/compute/api/v1/compute/search/`;
+
+// Shift Time Table
+export const DELETE_SHIFT_TIME_TABLE_MULTIPLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
+
+export const GET_SHIFT_TIME_TABLE_BY_ID = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/`;
+
+export const CREATE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/create/`;
+
+export const UPDATE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/update/`;
+
+export const DELETE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
+
+export const GET_SHIFT_TIME_TABLES = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/all/`;
