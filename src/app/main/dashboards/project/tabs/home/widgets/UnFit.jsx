@@ -10,8 +10,18 @@ import { ArrowRight } from '@mui/icons-material';
 
 function UnFit(props) {
   const dispatch = useDispatch();
-  const { data } = useGetProjectDashboardNotMedicalQuery();
+  const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
+  const [dashboardData, setDashboardData] = useState(null);
 
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
@@ -23,9 +33,9 @@ function UnFit(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
-            data?.unfit > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.unfit > 0 && router.push('/apps/notMedicals/report');
           }}>
-          {data?.unfit || 0}
+          {dashboardData?.unfit || 0}
         </Typography>
       </div>
 
@@ -35,7 +45,7 @@ function UnFit(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.unfit > 0 && router.push('/apps/notMedicals/report');
+          dashboardData?.unfit > 0 && router.push('/apps/notMedicals/report');
         }}>
         View All Medical UnFit
       </Button>

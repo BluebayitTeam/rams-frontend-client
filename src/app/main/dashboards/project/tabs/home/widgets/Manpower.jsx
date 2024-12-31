@@ -11,7 +11,19 @@ import { useGetProjectDashboardManpowerQuery } from '../../../ProjectDashboardAp
 
 function Manpower(props) {
   const dispatch = useDispatch();
-  const { data } = useGetProjectDashboardManpowerQuery();
+  const { data, refetch } = useGetProjectDashboardManpowerQuery();
+
+  const [dashboardData, setDashboardData] = useState(null);
+
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
@@ -24,9 +36,10 @@ function Manpower(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
-            data?.waiting > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.waiting > 0 &&
+              router.push('/apps/notMedicals/report');
           }}>
-          {data?.waiting || 0}
+          {dashboardData?.waiting || 0}
         </Typography>
       </div>
 
@@ -36,7 +49,7 @@ function Manpower(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.waiting > 0 && router.push('/apps/notMedicals/report');
+          dashboardData?.waiting > 0 && router.push('/apps/notMedicals/report');
         }}>
         View All Manpower
       </Button>

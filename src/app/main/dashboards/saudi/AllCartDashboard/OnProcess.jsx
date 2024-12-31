@@ -9,19 +9,28 @@ import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 function OnProcess(props) {
   const dispatch = useDispatch();
+  const [dashboardData, setDashboardData] = useState(null);
+  const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
 
-  const { data } = useGetSaudiDashboardTotalSaudiQuery();
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          data?.on_process > 0 &&
+          dashboardData?.on_process > 0 &&
             router.push(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
-          {data?.on_process || 0}
+          {dashboardData?.on_process || 0}
         </Typography>
         <Typography className='text-14 text-pink-800 font-normal'>
           On Process

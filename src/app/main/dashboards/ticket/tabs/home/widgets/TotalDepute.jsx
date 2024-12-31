@@ -11,7 +11,19 @@ import { useGetTicketDashboardTotalDeputeQuery } from '../../../TicketDashboardA
 function TotalDepute(props) {
   const dispatch = useDispatch();
 
-  const { data } = useGetTicketDashboardTotalDeputeQuery();
+  const { data, refetch } = useGetTicketDashboardTotalDeputeQuery();
+
+  const [dashboardData, setDashboardData] = useState(null);
+
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
@@ -22,7 +34,7 @@ function TotalDepute(props) {
       </div>
       <div className='text-center py-12'>
         <Typography className='text-72 font-semibold leading-none text-orange tracking-tighter'>
-          {data?.total_refunds || 0}
+          {dashboardData?.total_refunds || 0}
         </Typography>
         <Typography className='text-20 text-orange-800 font-normal'>
           Total Deputes

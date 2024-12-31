@@ -10,8 +10,18 @@ import { ArrowRight } from '@mui/icons-material';
 
 function Fit(props) {
   const dispatch = useDispatch();
-  const { data } = useGetProjectDashboardNotMedicalQuery();
+  const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
+  const [dashboardData, setDashboardData] = useState(null);
 
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
@@ -23,9 +33,9 @@ function Fit(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-blue tracking-tighter'
           onClick={() => {
-            data?.fit > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.fit > 0 && router.push('/apps/notMedicals/report');
           }}>
-          {data?.fit || 0}
+          {dashboardData?.fit || 0}
         </Typography>
       </div>
 

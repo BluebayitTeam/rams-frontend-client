@@ -10,7 +10,18 @@ import { ArrowRight } from '@mui/icons-material';
 
 function Visits(props) {
   const dispatch = useDispatch();
-  const { data } = useGetProjectDashboardNotMedicalQuery();
+  const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
+  const [dashboardData, setDashboardData] = useState(null);
+
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
@@ -23,9 +34,9 @@ function Visits(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
           onClick={() => {
-            data?.visit > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.visit > 0 && router.push('/apps/notMedicals/report');
           }}>
-          {data?.visit || 0}
+          {dashboardData?.visit || 0}
         </Typography>
       </div>
 
@@ -35,7 +46,7 @@ function Visits(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.visit > 0 && router.push('/apps/notMedicals/report');
+          dashboardData?.visit > 0 && router.push('/apps/notMedicals/report');
         }}>
         View All Medical Visits
       </Button>

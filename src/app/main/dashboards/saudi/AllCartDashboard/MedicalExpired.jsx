@@ -8,19 +8,28 @@ import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 function MedicalExpired(props) {
   const dispatch = useDispatch();
+  const [dashboardData, setDashboardData] = useState(null);
 
-  const { data } = useGetSaudiDashboardTotalSaudiQuery();
+  const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
 
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          data?.medical_expiry_count_next_15_days > 0 &&
+          dashboardData?.medical_expiry_count_next_15_days > 0 &&
             router.push(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography className='text-72 font-semibold leading-none text-blue tracking-tighter'>
-          {data?.medical_expiry_count_next_15_days || 0}
+          {dashboardData?.medical_expiry_count_next_15_days || 0}
         </Typography>
         <Typography className='text-13 text-blue-800 font-normal'>
           Medical will Expired within 15 days

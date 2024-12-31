@@ -8,9 +8,18 @@ import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 function PendingAttachment(props) {
   const dispatch = useDispatch();
+  const [dashboardData, setDashboardData] = useState(null);
 
-  const { data } = useGetSaudiDashboardTotalSaudiQuery();
-  console.log('DataCheck', data);
+  const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <Paper className='w-full  flex flex-col justify-between '>
@@ -22,7 +31,7 @@ function PendingAttachment(props) {
           );
         }}>
         <Typography className='text-72 font-semibold leading-none text-green tracking-tighter'>
-          {data?.interview_done || 0}
+          {dashboardData?.interview_done || 0}
         </Typography>
         <Typography className='text-12 text-blue-800 font-normal'>
           Pending Attachments

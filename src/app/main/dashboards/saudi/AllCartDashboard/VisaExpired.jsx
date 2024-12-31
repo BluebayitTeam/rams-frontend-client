@@ -1,34 +1,41 @@
 import { memo, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
-import { useForm } from 'react-hook-form';
+import { Paper, Typography } from '@mui/material';
 import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
+import router from '@history';
 
 function VisaExpired(props) {
-  const dispatch = useDispatch();
+  const [dashboardData, setDashboardData] = useState(null);
+  const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
-  const { data } = useGetSaudiDashboardTotalSaudiQuery();
-  console.log('DataCheck', data);
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
-    <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
+    <Paper className='w-full rounded-20 shadow flex flex-col justify-between'>
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          data?.ksa_visa_exp_count_next_15_days > 0 &&
+          dashboardData?.ksa_visa_exp_count_next_15_days > 0 &&
             router.push(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography
-          className='text-72 font-semibold leading-none  tracking-tighter'
+          className='text-72 font-semibold leading-none tracking-tighter'
           style={{ color: '#656D41' }}>
-          {data?.ksa_visa_exp_count_next_15_days || 0}
+          {dashboardData?.ksa_visa_exp_count_next_15_days || 0}
         </Typography>
         <Typography
-          className='text-13  font-normal'
+          className='text-13 font-normal'
           style={{ color: '#656D41' }}>
-          Visa will Expired within 15 days
+          Visa will Expire within 15 days
         </Typography>
       </div>
     </Paper>

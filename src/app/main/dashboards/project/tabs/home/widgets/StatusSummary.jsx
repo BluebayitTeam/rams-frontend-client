@@ -52,13 +52,7 @@ function StatusSummary(props) {
       ...pageAndSize,
     });
 
-  const todays = flightlistData|| [];
-
-  console.log('flightlistCheckData', flightlistData);
-
-  
-
-
+  const todays = flightlistData || [];
 
   return (
     <Paper className='w-full rounded-40 shadow'>
@@ -66,7 +60,7 @@ function StatusSummary(props) {
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
           {' '}
-          <FlightTakeoff/>
+          <FlightTakeoff />
           Total Status Summary
         </Typography>
       </div>
@@ -120,7 +114,6 @@ function StatusSummary(props) {
           </TableBody>
         </Table>
       </Box>
-      
     </Paper>
   );
 }

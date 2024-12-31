@@ -11,9 +11,19 @@ import { useGetTicketDashboardTotalRefundQuery } from '../../../TicketDashboardA
 function TotalRefund(props) {
   const dispatch = useDispatch();
 
-  const { data } = useGetTicketDashboardTotalRefundQuery();
+  const { data, refetch } = useGetTicketDashboardTotalRefundQuery();
 
+  const [dashboardData, setDashboardData] = useState(null);
 
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>
@@ -23,7 +33,7 @@ function TotalRefund(props) {
       </div>
       <div className='text-center py-12'>
         <Typography className='text-72 font-semibold leading-none text-red tracking-tighter'>
-          {data?.total_refunds || 0}
+          {dashboardData?.total_refunds || 0}
         </Typography>
         <Typography className='text-20 text-red-800 font-normal'>
           Total Refunds

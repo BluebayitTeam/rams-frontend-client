@@ -30,7 +30,6 @@ function PurchaseSummary(props) {
     });
 
   const PurchaseSummary = purchaseSummaryData || [];
-  console.log('PurchaseSummary', PurchaseSummary);
 
   const user_role = localStorage.getItem('user_role');
 

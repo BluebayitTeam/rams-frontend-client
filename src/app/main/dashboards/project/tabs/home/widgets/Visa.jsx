@@ -5,13 +5,23 @@ import { Button, Paper, Typography } from '@mui/material';
 import history from '@history';
 
 import { useForm } from 'react-hook-form';
-import {  useGetProjectDashboardVisaCountQuery } from '../../../ProjectDashboardApi';
+import { useGetProjectDashboardVisaCountQuery } from '../../../ProjectDashboardApi';
 import { ArrowRight } from '@mui/icons-material';
 
 function Visa(props) {
   const dispatch = useDispatch();
-  const { data } = useGetProjectDashboardVisaCountQuery();
+  const { data, refetch } = useGetProjectDashboardVisaCountQuery();
+  const [dashboardData, setDashboardData] = useState(null);
 
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
@@ -23,9 +33,10 @@ function Visa(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
           onClick={() => {
-            data?.stamp_waiting > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.stamp_waiting > 0 &&
+              router.push('/apps/notMedicals/report');
           }}>
-          {data?.stamp_waiting || 0}
+          {dashboardData?.stamp_waiting || 0}
         </Typography>
       </div>
 
@@ -35,7 +46,8 @@ function Visa(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.stamp_waiting > 0 && router.push('/apps/notMedicals/report');
+          dashboardData?.stamp_waiting > 0 &&
+            router.push('/apps/notMedicals/report');
         }}>
         View All Visa
       </Button>

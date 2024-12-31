@@ -54,13 +54,10 @@ function IncompleteFlight(props) {
 
   const status = flightIncompleteData || [];
 
-  console.log('flightIncompleteData', flightIncompleteData);
-
-
   const handlePagination = (event, handlePage) => {
     setPageAndSize((prev) => ({ ...prev, page: handlePage }));
-    setPage(handlePage); 
-    refetch(); 
+    setPage(handlePage);
+    refetch();
   };
 
   return (
@@ -112,7 +109,6 @@ function IncompleteFlight(props) {
           </TableBody>
         </Table>
       </Box>
-     
     </Paper>
   );
 }

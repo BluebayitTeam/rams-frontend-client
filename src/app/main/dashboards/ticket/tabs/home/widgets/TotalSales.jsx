@@ -10,7 +10,18 @@ import { useGetTicketDashboardTotalSalesQuery } from '../../../TicketDashboardAp
 
 function TotalSales(props) {
   const dispatch = useDispatch();
-  const { data } = useGetTicketDashboardTotalSalesQuery();
+  const { data, refetch } = useGetTicketDashboardTotalSalesQuery();
+  const [dashboardData, setDashboardData] = useState(null);
+
+  useEffect(() => {
+    if (data) {
+      setDashboardData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>
@@ -20,7 +31,7 @@ function TotalSales(props) {
       </div>
       <div className='text-center py-12'>
         <Typography className='text-72 font-semibold leading-none text-green tracking-tighter'>
-          {data?.total_sells || 0}
+          {dashboardData?.total_sells || 0}
         </Typography>
         <Typography className='text-20 text-green-800 font-normal'>
           Total Sales
