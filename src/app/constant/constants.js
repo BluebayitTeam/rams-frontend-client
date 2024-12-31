@@ -2456,3 +2456,16 @@ export const UPDATE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift
 export const DELETE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
 
 export const GET_SHIFT_TIME_TABLES = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/all/`;
+
+// Shifts
+export const GET_SHIFT_BY_ID = `${BASE_URL}/shift/api/v1/shift/`;
+
+export const CREATE_SHIFT = `${BASE_URL}/shift/api/v1/shift/create/`;
+
+export const UPDATE_SHIFT = `${BASE_URL}/shift/api/v1/shift/update/`;
+
+export const DELETE_SHIFT_MULTIPLE = `${BASE_URL}/shift/api/v1/shift/delete/`;
+
+export const DELETE_SHIFT = `${BASE_URL}/shift/api/v1/shift/delete/`;
+
+export const GET_SHIFTS = `${BASE_URL}/shift/api/v1/shift/all/`;

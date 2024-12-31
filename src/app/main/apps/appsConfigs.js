@@ -169,6 +169,7 @@ import TicketeditAppConfig from "../rams/TicketeditsManagement/TicketeditAppConf
 import PassengerSummaryUpdateAppConfig from "../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig";
 import PassengerSummaryUpdateClmAppConfig from "../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig";
 import ShiftTimeTableAppConfig from "../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig";
+import ShiftAppConfig from "../rams/PayRollManagement/ShiftManagement/ShiftAppConfig";
 
 /**
  * The list of application configurations.
@@ -270,6 +271,7 @@ const appsConfigs = [
   TodotasktypeAppConfig,
   AgentAppConfig,
   SubAgentAppConfig,
+  ShiftAppConfig,
   DemandAppConfig,
   TicketSaleAppConfig,
   QualificationAppConfig,
