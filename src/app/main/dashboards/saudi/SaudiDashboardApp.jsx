@@ -5,8 +5,8 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import FuseLoading from '@fuse/core/FuseLoading';
-import HomeTab from './tabs/home/TicketTab';
-import SaudiTab from './tabs/home/TicketTab';
+import SaudiTab from './home/SaudiTab';
+
 // import { useGetSaudiDashboardWidgetsQuery } from './SaudiDashboardApi';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
