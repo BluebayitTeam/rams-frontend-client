@@ -5,9 +5,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import FuseLoading from '@fuse/core/FuseLoading';
-import HomeTab from './tabs/home/TicketTab';
-import TicketTab from './tabs/home/TicketTab';
-// import { useGetTicketDashboardWidgetsQuery } from './TicketDashboardApi';
+import TicketTab from './home/TicketTab';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -25,8 +23,6 @@ function TicketDashboardApp() {
   function handleChangeTab(event, value) {
     setTabValue(value);
   }
-
- 
 
   return (
     <Root
