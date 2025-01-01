@@ -9,6 +9,7 @@ import Registered from '../AllCartDashboard/Registered';
 import MedicalDone from '../AllCartDashboard/MedicalDone';
 import Musaned from '../AllCartDashboard/Musaned';
 import Mofa from '../AllCartDashboard/Mofa';
+import Okala from '../AllCartDashboard/Okala';
 
 function SaudiTab() {
   const widgets = useSelector(selectWidget);
@@ -70,6 +71,11 @@ function SaudiTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <Mofa />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Okala />
       </motion.div>
     </motion.div>
   );
