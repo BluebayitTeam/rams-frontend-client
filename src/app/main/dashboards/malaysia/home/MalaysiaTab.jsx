@@ -12,6 +12,11 @@ import VisaAdvise from '../AllCartDashboard/VisaAdvise';
 import SubmittedForSev from '../AllCartDashboard/SubmittedForSev';
 import SevReceived from '../AllCartDashboard/SevReceived';
 import SubmittedForPermissionImmigrationClearance from '../AllCartDashboard/SubmittedForPermissionImmigrationClearance';
+import ImmigrationClearance from '../AllCartDashboard/ImmigrationClearance';
+import FlightConfirmation from '../AllCartDashboard/FlightConfirmation';
+import Ticket from '../AllCartDashboard/Ticket';
+import AccountsCleared from '../AllCartDashboard/AccountsCleared';
+import OrientationTraining from '../AllCartDashboard/OrientationTraining';
 
 function MalaysiaTab() {
   const widgets = useSelector(selectWidget);
@@ -88,6 +93,31 @@ function MalaysiaTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <SubmittedForPermissionImmigrationClearance />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <ImmigrationClearance />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <FlightConfirmation />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Ticket />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <AccountsCleared />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <OrientationTraining />
       </motion.div>
     </motion.div>
   );

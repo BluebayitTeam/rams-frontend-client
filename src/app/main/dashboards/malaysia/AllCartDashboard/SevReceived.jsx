@@ -29,7 +29,6 @@ function SevReceived(props) {
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>
         <Typography className='text-16 px-16 font-medium' color='textSecondary'>
-          {/* {props.widget?.title} */}
           &nbsp;
         </Typography>
       </div>
@@ -54,7 +53,7 @@ function SevReceived(props) {
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
         variant='text'
-        className='cursor-pointer'
+        className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.sev_received_count > 0 &&
             router.push(`/apps/malaysiaDashboards/report/sev_received`);

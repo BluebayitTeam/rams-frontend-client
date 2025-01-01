@@ -29,7 +29,6 @@ function SubmittedForPermissionImmigrationClearance(props) {
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>
         <Typography className='text-16 px-16 font-medium' color='textSecondary'>
-          {/* {props.widget?.title} */}
           &nbsp;
         </Typography>
       </div>
@@ -58,7 +57,7 @@ function SubmittedForPermissionImmigrationClearance(props) {
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='small'
         variant='text'
-        className='cursor-pointer'
+        className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.submitted_for_permission_immigration_clearance_count >
             0 &&

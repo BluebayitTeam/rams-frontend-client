@@ -31,7 +31,7 @@ function OnProcess(props) {
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
           {dashboardData?.process || 0}
         </Typography>
-        <Typography className='text-14 text-pink-800 font-normal'>
+        <Typography className='text-14 cursor-pointer text-blue-800'>
           On Process
         </Typography>
       </div>

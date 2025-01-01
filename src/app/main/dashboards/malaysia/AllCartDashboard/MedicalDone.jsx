@@ -41,7 +41,7 @@ function MedicalDone(props) {
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
         variant='text'
-        className='text-blue-800'
+        className='cursor-pointer text-blue-800'
         // onClick={() => {
         // 	history.push(`/apps/allMembers/report`);
         // }}

@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
 
-function VisaAdvise(props) {
+function FlightConfirmation(props) {
   const dispatch = useDispatch();
 
   const { data, refetch } = useGetMalaysiaDashboardQuery();
@@ -27,14 +27,19 @@ function VisaAdvise(props) {
 
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
-      <div className='text-center py-12'>
+      <div
+        className='text-center py-12 cursor-pointer'
+        onClick={() => {
+          dashboardData?.flight_confirmation > 0 &&
+            router.push(`/apps/report-management/flight-reports/flight`);
+        }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
-          style={{ color: '#B6750D' }}>
-          {dashboardData?.visa_advise || 0}
+          style={{ color: '#9C3DFD' }}>
+          {dashboardData?.flight_confirmation || 0}
         </Typography>
-        <Typography className='text-20  font-normal text-blue'>
-          Visa Advise
+        <Typography className='text-20 text-blue-800 font-normal'>
+          Flight
         </Typography>
       </div>
 
@@ -44,14 +49,14 @@ function VisaAdvise(props) {
         size='medium'
         variant='text'
         className='cursor-pointer text-blue-800'
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
-        View all Visa Advise
+        onClick={() => {
+          dashboardData?.flight_confirmation > 0 &&
+            router.push(`/apps/report-management/flight-reports/flight`);
+        }}>
+        View all Flight
       </Button>
     </Paper>
   );
 }
 
-export default memo(VisaAdvise);
+export default memo(FlightConfirmation);
