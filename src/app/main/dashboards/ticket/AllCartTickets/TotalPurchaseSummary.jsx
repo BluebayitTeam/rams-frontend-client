@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 import { useTheme } from '@emotion/react';
 import { makeStyles } from '@mui/styles';
 import { useGetProjectDashboardTotalPurchaseSummaryQuery } from '../TicketDashboardApi';
-import { StatusColor } from '../../project/tabs/home/widgets/StatusColor';
+import { StatusColor } from '../../project/AllCartsProjrcts/StatusColor';
 
 function TotalPurchaseSummary(props) {
   const dispatch = useDispatch();

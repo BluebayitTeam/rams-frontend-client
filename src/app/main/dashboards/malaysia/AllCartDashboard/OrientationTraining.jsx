@@ -39,7 +39,7 @@ function OrientationTraining(props) {
           {dashboardData?.training || 0}
         </Typography>
         <Typography className='text-20 text-blue-800 font-normal'>
-          Orientation & Training
+          Orientation Training
         </Typography>
       </div>
 
@@ -47,13 +47,13 @@ function OrientationTraining(props) {
         color='primary'
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='small'
-        className='cursor-pointer'
+        className='cursor-pointer text-blue-800'
         variant='text'
         onClick={() => {
           dashboardData?.training > 0 &&
             router.push(`/apps/report-management/training-reports/malaysia`);
         }}>
-        View all Orientation & Training
+        View all Orientation Training
       </Button>
     </Paper>
   );

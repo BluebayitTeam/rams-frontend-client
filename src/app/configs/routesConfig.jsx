@@ -11,6 +11,7 @@ import DashboardsConfigs from '../main/dashboards/dashboardsConfigs';
 import AppsConfigs from '../main/apps/appsConfigs';
 import UserInterfaceConfigs from '../main/user-interface/UserInterfaceConfigs';
 import authRoleExamplesConfigs from '../main/auth/authRoleExamplesConfigs';
+import ProjectDashboardApp from '../main/dashboards/project/ProjectDashboardApp';
 
 const routeConfigs = [
   SignOutConfig,
@@ -32,7 +33,7 @@ const routes = [
   ),
   {
     path: '/dashboards/project',
-    element: <Navigate to='/dashboards/project' />,
+    element: <ProjectDashboardApp />,
     auth: settingsConfig.defaultAuth,
   },
   {

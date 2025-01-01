@@ -13,8 +13,8 @@ import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@emotion/react';
 import { makeStyles } from '@mui/styles';
-import { StatusColor } from 'src/app/main/dashboards/project/tabs/home/widgets/StatusColor';
 import { useGetProjectDashboardPurchaseSummaryQuery } from '../TicketDashboardApi';
+import { StatusColor } from '../../project/AllCartsProjrcts/StatusColor';
 
 function PurchaseSummary(props) {
   const dispatch = useDispatch();

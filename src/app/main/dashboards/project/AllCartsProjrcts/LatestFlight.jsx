@@ -57,7 +57,9 @@ function LatestFlight(props) {
   };
 
   return (
-    <Paper className='w-full rounded-40 shadow'>
+    <Paper
+      className='w-full rounded-40 shadow'
+      sx={{ position: 'relative', minHeight: '400px' }}>
       <div className='flex items-center justify-between p-20 h-64'>
         <Typography className='text-16 font-medium'>
           <FlightTakeoff />
@@ -75,7 +77,6 @@ function LatestFlight(props) {
                 Passenger Name
               </TableCell>
               <TableCell className='text-16 font-medium'>Agent Name</TableCell>
-
               <TableCell sortDirection='desc' className='text-16 font-medium'>
                 <Tooltip enterDelay={300} title='Sort'>
                   <TableSortLabel direction='desc'>Date</TableSortLabel>
@@ -84,42 +85,44 @@ function LatestFlight(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {latest_flights?.map((flight) => {
-              return (
-                <TableRow hover key={flight?.id}>
-                  <TableCell>
-                    {flight?.passenger?.passenger_pic ? (
-                      <img
-                        src={`${BASE_URL}${flight?.passenger?.passenger_pic}`}
-                        style={{
-                          height: '40px',
-                          width: '40px',
-                          borderRadius: '20px',
-                        }}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </TableCell>
-                  <TableCell>{flight.passenger?.passenger_name}</TableCell>
-                  <TableCell>{flight.agent?.first_name}</TableCell>
-                  <TableCell style={{ whiteSpace: 'nowrap' }}>
-                    {flight?.flight_date &&
-                      moment(new Date(flight?.flight_date)).format(
-                        'DD-MM-YYYY'
-                      )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {latest_flights?.map((flight) => (
+              <TableRow hover key={flight?.id}>
+                <TableCell>
+                  {flight?.passenger?.passenger_pic ? (
+                    <img
+                      src={`${BASE_URL}${flight?.passenger?.passenger_pic}`}
+                      style={{
+                        height: '40px',
+                        width: '40px',
+                        borderRadius: '20px',
+                      }}
+                    />
+                  ) : (
+                    ''
+                  )}
+                </TableCell>
+                <TableCell>{flight.passenger?.passenger_name}</TableCell>
+                <TableCell>{flight.agent?.first_name}</TableCell>
+                <TableCell style={{ whiteSpace: 'nowrap' }}>
+                  {flight?.flight_date &&
+                    moment(new Date(flight?.flight_date)).format('DD-MM-YYYY')}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </Box>
+      {/* Fixed Pagination */}
       <Box
         sx={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
           display: 'flex',
           justifyContent: 'space-between',
           p: 2,
+          backgroundColor: 'white',
         }}>
         <Pagination
           count={flightlistData?.total_pages}
@@ -131,7 +134,6 @@ function LatestFlight(props) {
           shape='rounded'
           onChange={handlePagination}
         />
-
         <Button
           color='primary'
           endIcon={<ArrowRightIcon fontSize='small' />}

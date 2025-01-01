@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
 
-function SubmittedForSev(props) {
+function Dispatched(props) {
   const dispatch = useDispatch();
 
   const { data, refetch } = useGetMalaysiaDashboardQuery();
@@ -30,32 +30,32 @@ function SubmittedForSev(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          dashboardData?.submitted_for_sev_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+          dashboardData?.dispatched_count > 0 &&
+            router.push(`/apps/malaysiaDashboards/report/dispatched`);
         }}>
         <Typography
-          className='text-72 font-semibold leading-none  tracking-tighter'
-          style={{ color: '#0041FF' }}>
-          {dashboardData?.submitted_for_sev_count || 0}
+          className='text-72 font-semibold leading-none tracking-tighter'
+          style={{ color: '#4FB640' }}>
+          {dashboardData?.dispatched_count || 0}
         </Typography>
         <Typography className='text-20 text-blue-800 font-normal'>
-          Submitted For Sev
+          Dispatched
         </Typography>
       </div>
       <Button
         color='primary'
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
-        variant='text'
         className='cursor-pointer text-blue-800'
+        variant='text'
         onClick={() => {
-          dashboardData?.submitted_for_sev_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+          dashboardData?.dispatched_count > 0 &&
+            router.push(`/apps/malaysiaDashboards/report/dispatched`);
         }}>
-        View all Submitted For Sev
+        View all Dispatched
       </Button>
     </Paper>
   );
 }
 
-export default memo(SubmittedForSev);
+export default memo(Dispatched);

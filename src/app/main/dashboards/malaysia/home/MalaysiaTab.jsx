@@ -17,6 +17,9 @@ import FlightConfirmation from '../AllCartDashboard/FlightConfirmation';
 import Ticket from '../AllCartDashboard/Ticket';
 import AccountsCleared from '../AllCartDashboard/AccountsCleared';
 import OrientationTraining from '../AllCartDashboard/OrientationTraining';
+import HandoverPassportTicket from '../AllCartDashboard/HandoverPassportTicket';
+import Dispatched from '../AllCartDashboard/Dispatched';
+import Repatriation from '../AllCartDashboard/Repatriation';
 
 function MalaysiaTab() {
   const widgets = useSelector(selectWidget);
@@ -118,6 +121,21 @@ function MalaysiaTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <OrientationTraining />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <HandoverPassportTicket />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Dispatched />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Repatriation />
       </motion.div>
     </motion.div>
   );

@@ -47,7 +47,7 @@ function AccountsCleared(props) {
         color='primary'
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
-        className='cursor-pointer'
+        className='cursor-pointer text-blue-800'
         variant='text'
         onClick={() => {
           dashboardData?.accounts_cleared_count > 0 &&

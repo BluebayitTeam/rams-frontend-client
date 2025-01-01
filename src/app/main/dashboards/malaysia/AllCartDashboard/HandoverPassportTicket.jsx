@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
 
-function SubmittedForSev(props) {
+function HandoverPassportTicket(props) {
   const dispatch = useDispatch();
 
   const { data, refetch } = useGetMalaysiaDashboardQuery();
@@ -30,32 +30,36 @@ function SubmittedForSev(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          dashboardData?.submitted_for_sev_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+          dashboardData?.handover_passport_ticket_count > 0 &&
+            router.push(
+              `/apps/malaysiaDashboards/report/handover_passport_ticket`
+            );
         }}>
         <Typography
-          className='text-72 font-semibold leading-none  tracking-tighter'
-          style={{ color: '#0041FF' }}>
-          {dashboardData?.submitted_for_sev_count || 0}
+          className='text-72 font-semibold leading-none tracking-tighter'
+          style={{ color: '#753130' }}>
+          {dashboardData?.handover_passport_ticket_count || 0}
         </Typography>
         <Typography className='text-20 text-blue-800 font-normal'>
-          Submitted For Sev
+          Handover Passport & Ticket
         </Typography>
       </div>
       <Button
         color='primary'
         endIcon={<ArrowRightIcon fontSize='small' />}
-        size='medium'
-        variant='text'
+        size='small'
         className='cursor-pointer text-blue-800'
+        variant='text'
         onClick={() => {
-          dashboardData?.submitted_for_sev_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+          dashboardData?.handover_passport_ticket_count > 0 &&
+            router.push(
+              `/apps/malaysiaDashboards/report/handover_passport_ticket`
+            );
         }}>
-        View all Submitted For Sev
+        View all Handover Passport & Ticket
       </Button>
     </Paper>
   );
 }
 
-export default memo(SubmittedForSev);
+export default memo(HandoverPassportTicket);
