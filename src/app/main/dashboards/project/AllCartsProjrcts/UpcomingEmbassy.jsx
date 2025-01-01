@@ -12,10 +12,15 @@ function UpcomingEmbassy(props) {
 
   const [days, setDays] = useState(15);
 
-  const { data } = useGetProjectDashboardUpcomingEmbassyQuery({
+  const { data, refetch } = useGetProjectDashboardUpcomingEmbassyQuery({
     no_of_days: days,
   });
 
+  useEffect(() => {
+    if (days > 0) {
+      refetch();
+    }
+  }, [days, refetch]);
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value, 10);
 
