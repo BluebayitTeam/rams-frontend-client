@@ -685,28 +685,75 @@ function PassengerAllDetails() {
       axios
         .get(`${EMBASSY_BY_PASSENGER_ID}${pId}`, authTOKEN)
         .then((res) => {
-          if (res?.data) {
-            setEmbassy({ ...res?.data?.embassy });
-                        setImages((imgs) =>
-                          imgs.concat(
-                            {
-                              order: 13,
-                              title: 'Embassy Old Visa',
-                              url: res.data.old_visa_image,
-                              editurl: '/apps/embassy-management/embassy/',
-                              pid: pId,
-                            },
-                            {
-                              order: 14,
-                              title: 'Embassy Stamp Visa',
-                              url: res.data.stamp_visa_image,
-                              editurl: '/apps/embassy-management/embassy/',
-                              pid: pId,
-                            }
-                          )
-                        );
-                        setLoading(false);
+          let embassyData = {};
+
+          if (
+            res.data?.visa_entry?.id &&
+            res.data?.mofa?.id &&
+            res.data?.embassy?.id
+          ) {
+            setImages((imgs) =>
+              imgs.concat(
+                {
+                  order: 13,
+                  title: 'Embassy Old Visa',
+                  url: res.data.old_visa_image,
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                },
+                {
+                  order: 14,
+                  title: 'Embassy Stamp Visa',
+                  url: res.data.stamp_visa_image,
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                }
+              )
+            );
+
+            setLoading(false);
+
+            const visa_entry = res.data?.visa_entry;
+            const mofa = res.data?.mofa;
+            const office_work = res.data?.officework;
+            const musanedokala = res.data?.musanedokala;
+            embassyData = {
+              ...res.data.embassy,
+              visa_number_readonly: visa_entry.visa_number,
+              sponsor_id_no_readonly: visa_entry.sponsor_id_no,
+              sponsor_name_english_readonly: visa_entry.sponsor_name_english,
+              sponsor_name_arabic_readonly: visa_entry.sponsor_name_arabic,
+              mofa_no_readonly: mofa.mofa_no,
+              police_clearance_no_readonly: office_work.police_clearance_no,
+              oakala_no_readonly: musanedokala.okala_no,
+              driving_license_no_readonly: office_work.driving_license_no,
+              musaned_okala_no_readonly: musanedokala.musaned_no,
+              certificate_experience_no_readonly:
+                office_work.certificate_experience,
+            };
+          } else {
+            setImages((imgs) =>
+              imgs.concat(
+                {
+                  order: 13,
+                  title: 'Embassy Old Visa',
+                  url: '',
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                },
+                {
+                  order: 14,
+                  title: 'Embassy Stamp Visa',
+                  url: '',
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                }
+              )
+            );
+            embassyData.push({});
           }
+
+          setEmbassy({ ...embassyData });
         })
         .catch(() => {
           setImages((imgs) =>
