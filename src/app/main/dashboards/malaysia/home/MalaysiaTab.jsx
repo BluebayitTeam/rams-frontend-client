@@ -5,6 +5,8 @@ import MedicalExpired from '../AllCartDashboard/MedicalExpired';
 import OnProcess from '../AllCartDashboard/OnProcess';
 import VisaExpired from '../AllCartDashboard/VisaExpired';
 import PendingAttachment from '../AllCartDashboard/PendingAttachment';
+import Registered from '../AllCartDashboard/Registered';
+import MedicalDone from '../AllCartDashboard/MedicalDone';
 
 function MalaysiaTab() {
   const widgets = useSelector(selectWidget);
@@ -46,6 +48,16 @@ function MalaysiaTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <PendingAttachment />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Registered />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <MedicalDone />
       </motion.div>
     </motion.div>
   );
