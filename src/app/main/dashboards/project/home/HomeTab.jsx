@@ -26,8 +26,6 @@ import DebtorCreditor from '../AllCartsProjrcts/DebtorCreditor';
 function HomeTab() {
   const widgets = useSelector(selectWidget);
 
-  // console.log('widget', widget);
-
   const container = {
     show: {
       transition: {
@@ -42,7 +40,7 @@ function HomeTab() {
   };
   return (
     <motion.div
-      className='flex flex-wrap'
+      className='flex flex-wrap overflow-x-hidden overflow-y-auto'
       variants={container}
       initial='hidden'
       animate='show'>

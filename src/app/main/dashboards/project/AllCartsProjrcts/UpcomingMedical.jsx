@@ -11,11 +11,15 @@ function UpcomingMedical(props) {
 
   const [days, setDays] = useState(15);
 
-  const { data } = useGetProjectDashboardUpcomingMedicalQuery({
+  const { data, refetch, status } = useGetProjectDashboardUpcomingMedicalQuery({
     no_of_days: days,
   });
 
-  console.log('dataCheck', data);
+  useEffect(() => {
+    if (days > 0) {
+      refetch();
+    }
+  }, [days, refetch]);
 
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value, 10);
