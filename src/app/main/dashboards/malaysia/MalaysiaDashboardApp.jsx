@@ -5,9 +5,9 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import FuseLoading from '@fuse/core/FuseLoading';
-import SaudiTab from './home/SaudiTab';
+import MalaysiaTab from './home/MalaysiaTab';
 
-// import { useGetSaudiDashboardWidgetsQuery } from './SaudiDashboardApi';
+// import { useGetMalaysiaDashboardWidgetsQuery } from './MalaysiaDashboardApi';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -17,9 +17,9 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }));
 
 /**
- * The SaudiDashboardApp page.
+ * The MalaysiaDashboardApp page.
  */
-function SaudiDashboardApp() {
+function MalaysiaDashboardApp() {
   const [tabValue, setTabValue] = useState(0);
 
   function handleChangeTab(event, value) {
@@ -30,11 +30,11 @@ function SaudiDashboardApp() {
     <Root
       content={
         <div className='w-full p-12 pt-16 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0'>
-          {<SaudiTab />}
+          {<MalaysiaTab />}
         </div>
       }
     />
   );
 }
 
-export default SaudiDashboardApp;
+export default MalaysiaDashboardApp;

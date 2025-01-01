@@ -16,7 +16,7 @@ import ManPower from '../AllCartDashboard/ManPower';
 import FlightWaiting from '../AllCartDashboard/FlightWaiting';
 import FlightDone from '../AllCartDashboard/FlightDone';
 
-function SaudiTab() {
+function MalaysiaTab() {
   const widgets = useSelector(selectWidget);
 
   const container = {
@@ -111,4 +111,4 @@ function SaudiTab() {
   );
 }
 
-export default SaudiTab;
+export default MalaysiaTab;
