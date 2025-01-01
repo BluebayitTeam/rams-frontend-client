@@ -7,6 +7,9 @@ import VisaExpired from '../AllCartDashboard/VisaExpired';
 import PendingAttachment from '../AllCartDashboard/PendingAttachment';
 import Registered from '../AllCartDashboard/Registered';
 import MedicalDone from '../AllCartDashboard/MedicalDone';
+import Interviewed from '../AllCartDashboard/Interviewed';
+import VisaAdvise from '../AllCartDashboard/VisaAdvise';
+import SubmittedForSev from '../AllCartDashboard/SubmittedForSev';
 
 function MalaysiaTab() {
   const widgets = useSelector(selectWidget);
@@ -57,7 +60,22 @@ function MalaysiaTab() {
       <motion.div
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Interviewed />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <MedicalDone />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <VisaAdvise />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <SubmittedForSev />
       </motion.div>
     </motion.div>
   );
