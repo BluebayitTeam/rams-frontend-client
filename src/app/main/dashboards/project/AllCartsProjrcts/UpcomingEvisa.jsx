@@ -11,9 +11,15 @@ function UpcomingEvisa(props) {
 
   const [days, setDays] = useState(15);
 
-  const { data } = useGetProjectDashboardUpcomingEvisaQuery({
+  const { data, refetch } = useGetProjectDashboardUpcomingEvisaQuery({
     no_of_days: days,
   });
+
+  useEffect(() => {
+    if (days > 0) {
+      refetch();
+    }
+  }, [days, refetch]);
 
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value, 10);
