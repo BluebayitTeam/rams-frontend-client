@@ -1,11 +1,11 @@
 import { memo, useEffect, useState } from 'react';
 import { Paper, Typography } from '@mui/material';
-import { useGetSaudiDashboardTotalSaudiQuery } from '../MalaysiaDashboardApi';
 import router from '@history';
+import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
 
 function VisaExpired(props) {
   const [dashboardData, setDashboardData] = useState(null);
-  const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery({
+  const { data, refetch } = useGetMalaysiaDashboardQuery({
     refetchOnMountOrArgChange: true,
   });
 
@@ -24,13 +24,13 @@ function VisaExpired(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          dashboardData?.ksa_visa_exp_count_next_15_days > 0 &&
+          dashboardData?.calling_exp_count_next_15_days > 0 &&
             router.push(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'
           style={{ color: '#656D41' }}>
-          {dashboardData?.ksa_visa_exp_count_next_15_days || 0}
+          {dashboardData?.calling_exp_count_next_15_days || 0}
         </Typography>
         <Typography
           className='text-13 font-normal'

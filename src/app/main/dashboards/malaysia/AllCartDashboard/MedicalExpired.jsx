@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import { Button, Paper, Typography } from '@mui/material';
 import history from '@history';
 import { useForm } from 'react-hook-form';
-import { useGetSaudiDashboardTotalSaudiQuery } from '../MalaysiaDashboardApi';
+import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
 
 function MedicalExpired(props) {
   const dispatch = useDispatch();
   const [dashboardData, setDashboardData] = useState(null);
 
-  const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
+  const { data, refetch } = useGetMalaysiaDashboardQuery();
   useEffect(() => {
     if (data) {
       setDashboardData(data);

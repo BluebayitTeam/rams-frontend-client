@@ -7,8 +7,6 @@ import { styled } from '@mui/material/styles';
 import FuseLoading from '@fuse/core/FuseLoading';
 import MalaysiaTab from './home/MalaysiaTab';
 
-// import { useGetMalaysiaDashboardWidgetsQuery } from './MalaysiaDashboardApi';
-
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
     backgroundColor: theme.palette.background.paper,

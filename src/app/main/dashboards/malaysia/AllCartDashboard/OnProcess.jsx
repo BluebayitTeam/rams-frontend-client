@@ -4,13 +4,12 @@ import { useDispatch } from 'react-redux';
 import { Button, Paper, Typography } from '@mui/material';
 import history from '@history';
 import { useForm } from 'react-hook-form';
-
-import { useGetSaudiDashboardTotalSaudiQuery } from '../MalaysiaDashboardApi';
+import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
 
 function OnProcess(props) {
   const dispatch = useDispatch();
   const [dashboardData, setDashboardData] = useState(null);
-  const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
+  const { data, refetch } = useGetMalaysiaDashboardQuery();
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -26,11 +25,11 @@ function OnProcess(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          dashboardData?.on_process > 0 &&
-            router.push(`/apps/registeredSaudis/report/on_process`);
+          dashboardData?.process > 0 &&
+            router.push(`/apps/registeredSaudis/report/process`);
         }}>
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
-          {dashboardData?.on_process || 0}
+          {dashboardData?.process || 0}
         </Typography>
         <Typography className='text-14 text-pink-800 font-normal'>
           On Process

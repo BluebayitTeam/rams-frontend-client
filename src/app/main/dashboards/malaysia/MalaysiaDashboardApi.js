@@ -10,7 +10,7 @@ const MalaysiaDashboardApi = api
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getMalaysiaDashboardTotalMalaysia: build.query({
+      getMalaysiaDashboard: build.query({
         query: (filterData) => ({
           url: GET_DASHBOARD_COUNT_FOR_MALAYSIA,
           params: filterData,
@@ -22,8 +22,7 @@ const MalaysiaDashboardApi = api
     overrideExisting: false,
   });
 
-export const { useGetMalaysiaDashboardTotalMalaysiaQuery } =
-  MalaysiaDashboardApi;
+export const { useGetMalaysiaDashboardQuery } = MalaysiaDashboardApi;
 
 export const selectWidget = (id) => (state) => {
   const widgets =
