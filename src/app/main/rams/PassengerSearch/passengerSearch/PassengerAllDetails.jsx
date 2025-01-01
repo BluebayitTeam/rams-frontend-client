@@ -1007,9 +1007,12 @@ function PassengerAllDetails() {
             {_.isEmpty(passenger) || (
               <PassengerDetail classes={classes} data={passenger} pid={pId} />
             )}
+
             {country === 'Saudi Arabia' && (
               <VisaEntryDetail classes={classes} data={visaEntry} />
             )}
+            {<OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
+
             {country === 'Saudi Arabia' && (
               <MusanedOkalaDetail
                 classes={classes}
@@ -1023,7 +1026,6 @@ function PassengerAllDetails() {
             {country === 'Malaysia' && (
               <CallingEntryDetail classes={classes} data={calling} pid={pId} />
             )}
-            {<OfficeWorkDetail classes={classes} data={officeWork} pid={pId} />}
 
             {<TrainingDetail classes={classes} data={training} pid={pId} />}
             {<ManPowerDetail classes={classes} data={manPower} pid={pId} />}
