@@ -11,10 +11,15 @@ function UpcomingVisa(props) {
 
   const [days, setDays] = useState(15);
 
-  const { data } = useGetProjectDashboardUpcomingVisaQuery({
+  const { data, refetch } = useGetProjectDashboardUpcomingVisaQuery({
     no_of_days: days,
   });
 
+  useEffect(() => {
+    if (days > 0) {
+      refetch();
+    }
+  }, [days, refetch]);
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value, 10);
 
