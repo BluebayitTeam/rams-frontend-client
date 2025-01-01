@@ -8,7 +8,7 @@ import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 
-function Registered(props) {
+function Musaned(props) {
   const dispatch = useDispatch();
 
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
@@ -30,11 +30,11 @@ function Registered(props) {
       <div className='text-center py-12'>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
-          style={{ color: '#363391' }}>
-          {dashboardData?.registered || 0}
+          style={{ color: '#0041FF' }}>
+          {dashboardData?.musaned || 0}
         </Typography>
         <Typography className='text-20  font-normal text-blue'>
-          Registered
+          Musaned
         </Typography>
       </div>
 
@@ -44,14 +44,15 @@ function Registered(props) {
         size='medium'
         variant='text'
         className='text-blue-800'
+
         // onClick={() => {
         // 	history.push(`/apps/allMembers/report`);
         // }}
       >
-        View all registered
+        View all Musaned
       </Button>
     </Paper>
   );
 }
 
-export default memo(Registered);
+export default memo(Musaned);

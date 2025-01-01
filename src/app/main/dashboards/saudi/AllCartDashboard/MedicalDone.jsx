@@ -8,7 +8,7 @@ import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 
-function Registered(props) {
+function MedicalDone(props) {
   const dispatch = useDispatch();
 
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
@@ -28,13 +28,11 @@ function Registered(props) {
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='text-center py-12'>
-        <Typography
-          className='text-72 font-semibold leading-none  tracking-tighter'
-          style={{ color: '#363391' }}>
-          {dashboardData?.registered || 0}
+        <Typography className='text-72 font-semibold leading-none text-blue tracking-tighter'>
+          {dashboardData?.medical_done || 0}
         </Typography>
-        <Typography className='text-20  font-normal text-blue'>
-          Registered
+        <Typography className='text-20 text-blue font-normal'>
+          Medical Done
         </Typography>
       </div>
 
@@ -48,10 +46,10 @@ function Registered(props) {
         // 	history.push(`/apps/allMembers/report`);
         // }}
       >
-        View all registered
+        View all MedicalDone
       </Button>
     </Paper>
   );
 }
 
-export default memo(Registered);
+export default memo(MedicalDone);
