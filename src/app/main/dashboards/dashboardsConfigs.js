@@ -1,5 +1,5 @@
 import ProjectDashboardAppConfig from './project/ProjectDashboardAppConfig';
-import SaudiDashboardAppConfig from './saudi/TicketDashboardAppConfig';
+import SaudiDashboardAppConfig from './saudi/SaudiDashboardAppConfig';
 import TicketDashboardAppConfig from './ticket/TicketDashboardAppConfig';
 /**
  * Dashboards
