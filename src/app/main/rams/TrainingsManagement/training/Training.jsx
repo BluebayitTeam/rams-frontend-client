@@ -20,129 +20,135 @@ import TrainingForm from './TrainingForm';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		borderBottom: `1px solid ${theme.palette.primary.main}`,
-		paddingTop: '0.8rem',
-		paddingBottom: '0.7rem',
-		boxSizing: 'content-box'
-	},
-	textField: {
-		height: '4.8rem',
-		'& > div': {
-			height: '100%'
-		}
-	}
+  container: {
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    paddingTop: '0.8rem',
+    paddingBottom: '0.7rem',
+    boxSizing: 'content-box',
+  },
+  textField: {
+    height: '4.8rem',
+    '& > div': {
+      height: '100%',
+    },
+  },
 }));
 
 const schema = z.object({
-	first_name: z
-		.string()
-		.nonempty('You must enter a training name')
-		.min(5, 'The training name must be at least 5 characters')
+  first_name: z
+    .string()
+    .nonempty('You must enter a training name')
+    .min(5, 'The training name must be at least 5 characters'),
 });
 
 function Training() {
-	const emptyValue = {
-		passenger: '',
-		training_card_status: '',
-		recruiting_agency: '',
-		training_center: '',
-		admission_date: '',
-		serial_no: '',
-		certificate_no: '',
-		certificate_date: '',
-		batch_number: '',
-		current_status: ''
-	};
-	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const routeParams = useParams();
-	const { trainingId, fromSearch } = routeParams;
-	const passengers = useSelector((state) => state.data.passengers);
-	const classes = useStyles();
-	const navigate = useNavigate();
+  const emptyValue = {
+    passenger: '',
+    training_card_status: '',
+    recruiting_agency: '',
+    training_center: '',
+    admission_date: '',
+    serial_no: '',
+    certificate_no: '',
+    certificate_date: '',
+    batch_number: '',
+    current_status: '',
+  };
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { trainingId, fromSearch } = routeParams;
+  const passengers = useSelector((state) => state.data.passengers);
+  const classes = useStyles();
+  const navigate = useNavigate();
 
-	const methods = useForm({
-		mode: 'onChange',
-		defaultValues: emptyValue,
-		resolver: zodResolver(schema)
-	});
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: emptyValue,
+    resolver: zodResolver(schema),
+  });
 
-	const {
-		data: training,
-		isLoading,
-		isError
-	} = useGetTrainingQuery(trainingId, {
-		skip: !trainingId || trainingId === 'new'
-	});
+  const {
+    data: training,
+    isLoading,
+    isError,
+  } = useGetTrainingQuery(trainingId, {
+    skip: !trainingId || trainingId === 'new',
+  });
 
-	const [tabValue, setTabValue] = useState(0);
-	const [formKey, setFormKey] = useState(0);
-	const {
-		reset,
-		watch,
-		control,
-		formState: { errors },
-		setValue
-	} = methods;
+  const [tabValue, setTabValue] = useState(0);
+  const [formKey, setFormKey] = useState(0);
+  const {
+    reset,
+    watch,
+    control,
+    formState: { errors },
+    setValue,
+  } = methods;
 
-	const handleReset = (defaultValues) => {
-		reset(defaultValues);
-		setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
-	};
-	const getCurrentStatus = (passengerId) => {
-		const authTOKEN = {
-			headers: {
-				'Content-type': 'application/json',
-				Authorization: localStorage.getItem('jwt_access_token')
-			}
-		};
-		axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
-			setValue('current_status', res.data?.current_status?.id);
-		});
-	};
+  const handleReset = (defaultValues) => {
+    reset(defaultValues);
+    setFormKey((prevKey) => prevKey + 1); // Trigger re-render with new form key
+  };
+  const getCurrentStatus = (passengerId) => {
+    const authTOKEN = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: localStorage.getItem('jwt_access_token'),
+      },
+    };
+    axios.get(`${GET_PASSENGER_BY_ID}${passengerId}`, authTOKEN).then((res) => {
+      setValue('current_status', res.data?.current_status?.id);
+    });
+  };
 
-	useEffect(() => {
-		if (fromSearch) {
-			const authTOKEN = {
-				headers: {
-					'Content-type': 'application/json',
-					Authorization: localStorage.getItem('jwt_access_token')
-				}
-			};
-			axios
-				.get(`${TRAINING_BY_PASSENGER_ID}${trainingId}`, authTOKEN)
-				.then((res) => {
-					if (res.data.id) {
-						handleReset({ ...setIdIfValueIsObject(res.data), passenger: trainingId });
-					} else {
-						handleReset({
-							passenger: trainingId,
-							training_card_status: doneNotDone.find((data) => data.default)?.id
-						});
-						sessionStorage.setItem('operation', 'save');
-					}
-				})
-				.catch(() => {
-					handleReset({
-						passenger: trainingId,
-						training_card_status: doneNotDone.find((data) => data.default)?.id
-					});
-					sessionStorage.setItem('operation', 'save');
-				});
-		} else {
-			handleReset({ training_card_status: doneNotDone.find((data) => data.default)?.id });
-		}
-	}, [fromSearch]);
+  useEffect(() => {
+    if (fromSearch) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(`${TRAINING_BY_PASSENGER_ID}${trainingId}`, authTOKEN)
+        .then((res) => {
+          if (res.data.id) {
+            handleReset({
+              ...setIdIfValueIsObject(res.data),
+              passenger: trainingId,
+            });
+          } else {
+            handleReset({
+              passenger: trainingId,
+              training_card_status: doneNotDone.find((data) => data.default)
+                ?.id,
+            });
+            sessionStorage.setItem('operation', 'save');
+          }
+        })
+        .catch(() => {
+          handleReset({
+            passenger: trainingId,
+            training_card_status: doneNotDone.find((data) => data.default)?.id,
+          });
+          sessionStorage.setItem('operation', 'save');
+        });
+    } else {
+      handleReset({
+        training_card_status: doneNotDone.find((data) => data.default)?.id,
+      });
+    }
+  }, [fromSearch]);
 
-	function handleTabChange(event, value) {
-		setTabValue(value);
-	}
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
 
-	if (isLoading) {
-		return <FuseLoading />;
-	}
+  if (isLoading) {
+    return <FuseLoading />;
+  }
 
-	return (
+  return (
     <FormProvider {...methods} key={formKey}>
       {hasPermission('TRAINING_DETAILS') && (
         <FusePageCarded
@@ -182,7 +188,9 @@ function Training() {
                           disabled={!!fromSearch}
                           value={
                             value
-                              ? passengers.find((data) => data.id === value)
+                              ? passengers.find(
+                                  (data) => data.id === Number(value)
+                                )
                               : null
                           }
                           options={passengers}
