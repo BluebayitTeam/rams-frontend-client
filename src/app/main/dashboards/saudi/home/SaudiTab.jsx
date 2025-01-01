@@ -10,6 +10,11 @@ import MedicalDone from '../AllCartDashboard/MedicalDone';
 import Musaned from '../AllCartDashboard/Musaned';
 import Mofa from '../AllCartDashboard/Mofa';
 import Okala from '../AllCartDashboard/Okala';
+import Embassy from '../AllCartDashboard/Embassy';
+import Training from '../AllCartDashboard/Training';
+import ManPower from '../AllCartDashboard/ManPower';
+import FlightWaiting from '../AllCartDashboard/FlightWaiting';
+import FlightDone from '../AllCartDashboard/FlightDone';
 
 function SaudiTab() {
   const widgets = useSelector(selectWidget);
@@ -76,6 +81,31 @@ function SaudiTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <Okala />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Embassy />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <Training />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <ManPower />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <FlightWaiting />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <FlightDone />
       </motion.div>
     </motion.div>
   );
