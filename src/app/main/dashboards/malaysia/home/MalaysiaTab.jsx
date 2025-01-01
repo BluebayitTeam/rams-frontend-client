@@ -10,6 +10,8 @@ import MedicalDone from '../AllCartDashboard/MedicalDone';
 import Interviewed from '../AllCartDashboard/Interviewed';
 import VisaAdvise from '../AllCartDashboard/VisaAdvise';
 import SubmittedForSev from '../AllCartDashboard/SubmittedForSev';
+import SevReceived from '../AllCartDashboard/SevReceived';
+import SubmittedForPermissionImmigrationClearance from '../AllCartDashboard/SubmittedForPermissionImmigrationClearance';
 
 function MalaysiaTab() {
   const widgets = useSelector(selectWidget);
@@ -76,6 +78,16 @@ function MalaysiaTab() {
         variants={item}
         className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
         <SubmittedForSev />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <SevReceived />
+      </motion.div>{' '}
+      <motion.div
+        variants={item}
+        className='widget flex w-full sm:w-1/2 md:w-1/4 p-12'>
+        <SubmittedForPermissionImmigrationClearance />
       </motion.div>
     </motion.div>
   );
