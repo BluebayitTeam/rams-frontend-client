@@ -191,7 +191,9 @@ function Flight() {
                           disabled={!!fromSearch}
                           value={
                             value
-                              ? passengers.find((data) => data.id === value)
+                              ? passengers.find(
+                                  (data) => data.id === Number(value)
+                                )
                               : null
                           }
                           options={passengers}
