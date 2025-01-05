@@ -50,15 +50,18 @@ function ContactList(props) {
   const { data: contacts, isLoading: isContactsLoading } =
     useGetMessengerContactsQuery(userId);
 
-  const chatListContacts = useMemo(() => {
-    return contacts?.messages?.length > 0 && chats?.length > 0
-      ? chats.map((_chat) => ({
-          ..._chat,
-          ...contacts.find((_contact) => _contact.id === _chat.contactId),
-        }))
-      : [];
-  }, [contacts, chats]);
-  console.log('chaeckList', chatListContacts);
+  console.log('contacts', contacts);
+
+  // const chatListContacts = useMemo(() => {
+  //   return contacts?.messages?.length > 0 && chats?.length > 0
+  //     ? chats.map((_chat) => ({
+  //         ..._chat,
+  //         ...contacts.find((_contact) => _contact.id === _chat.contactId),
+  //       }))
+  //     : [];
+  // }, [contacts, chats]);
+  // console.log('chaeckList', chatListContacts);
+
   const scrollToTop = () => {
     if (!contactListScroll.current) {
       return;
@@ -93,13 +96,13 @@ function ContactList(props) {
       )}
       ref={contactListScroll}
       option={{ suppressScrollX: true, wheelPropagation: false }}>
-      {contacts?.length > 0 && (
+      {contacts?.users?.length > 0 && (
         <motion.div
           variants={container}
           initial='hidden'
           animate='show'
           className='flex flex-col shrink-0'>
-          {chatListContacts.map((contact) => {
+          {contacts?.users?.map((contact) => {
             return (
               <motion.div variants={item} key={contact.id}>
                 <ContactButton
@@ -110,9 +113,10 @@ function ContactList(props) {
               </motion.div>
             );
           })}
+
           <Divider className='mx-24 my-8' />
-          {contacts.map((contact) => {
-            const chatContact = chats.find(
+          {contacts?.users?.map((contact) => {
+            const chatContact = contacts?.users?.find(
               (_chat) => _chat.contactId === contact.id
             );
             return !chatContact ? (
