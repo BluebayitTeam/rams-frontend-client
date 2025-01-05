@@ -150,6 +150,13 @@ function Chat(props) {
         className='flex flex-1 flex-col overflow-y-auto overscroll-contain'>
         <div className='flex flex-col pt-16'>
           {useMemo(() => {
+            const shouldShowContactAvatar = (item, i) => {
+              return (
+                item === selectedContactId &&
+                ((chat[i + 1] && chat[i + 1] !== selectedContactId) ||
+                  !chat[i + 1])
+              );
+            };
             const isFirstMessageOfGroup = (item, i) => {
               return (
                 i === 0 ||
