@@ -14,6 +14,7 @@ import {
   useGetMessengerUserProfileQuery,
   useSendMessengerMessageMutation,
 } from '../MessengerApi';
+import { Avatar } from '@mui/material';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
@@ -94,6 +95,7 @@ function Chat(props) {
   const { className } = props;
   const selectedContactId = useSelector(selectSelectedContactId);
   const { data: chat } = useGetMessengerChatQuery(selectedContactId);
+  console.log('chatChxck', chat);
   const { data: user } = useGetMessengerUserProfileQuery();
   const [sendMessage] = useSendMessengerMessageMutation();
   const [messageText, setMessageText] = useState('');
@@ -171,8 +173,9 @@ function Chat(props) {
               );
             };
 
-            return chat?.length > 0
-              ? chat.map((item, i) => {
+            return chat?.messages?.length > 0
+              ? chat?.messages?.map((item, i) => {
+                  console.log('Item:', item, 'Index:', i); // Logs each item and its index
                   return (
                     <StyledMessageRow
                       key={i}
@@ -183,14 +186,20 @@ function Chat(props) {
                         { 'last-of-group': isLastMessageOfGroup(item, i) },
                         i + 1 === chat.length && 'pb-72'
                       )}>
+                      {shouldShowContactAvatar(item, i) && (
+                        <Avatar
+                          className={classes.avatar}
+                          src={contact.avatar}
+                        />
+                      )}
                       <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
                         <div className='leading-tight whitespace-pre-wrap'>
-                          {item.value}
+                          {item?.message}
                         </div>
                         <Typography
                           className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
                           color='text.secondary'>
-                          {formatDistanceToNow(new Date(item.createdAt), {
+                          {formatDistanceToNow(new Date(item.created_at), {
                             addSuffix: true,
                           })}
                         </Typography>
