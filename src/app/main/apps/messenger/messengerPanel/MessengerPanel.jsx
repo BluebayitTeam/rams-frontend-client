@@ -23,6 +23,7 @@ import {
 } from './store/stateSlice';
 import reducer from './store';
 import { useGetMessengerContactsQuery } from '../MessengerApi';
+import { BASE_URL } from 'src/app/constant/constants';
 
 const Root = styled('div')(({ theme, opened }) => ({
   position: 'sticky',
@@ -116,8 +117,12 @@ function MessengerPanel() {
 
   const selectedContactId = useSelector(selectSelectedContactId);
   const { data: contacts } = useGetMessengerContactsQuery(userId);
-  const selectedContact = _.find(contacts, { id: selectedContactId });
+  const selectedContact = contacts?.users?.find(
+    (contact) => contact.id === selectedContactId
+  );
+
   const state = useSelector(selectChatPanelState);
+  // console.log('stateTEst', contacts.users);
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       return state && theme.direction === 'rtl' && dispatch(closeChatPanel());
@@ -193,9 +198,9 @@ function MessengerPanel() {
             )}
             {state && selectedContact && (
               <div className='flex flex-1 items-center px-12'>
-                <Avatar src={selectedContact.avatar} />
+                <Avatar src={`${BASE_URL}${contacts?.users?.image}`} />
                 <Typography className='mx-16 text-16' color='inherit'>
-                  {selectedContact.name}
+                  {selectedContact.first_name} {selectedContact.last_name}
                 </Typography>
               </div>
             )}

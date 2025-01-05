@@ -48,7 +48,7 @@ const StyledUreadBadge = styled('div')(({ theme }) => ({
  */
 function ContactButton(props) {
   const { contact, selectedContactId, onClick } = props;
-  console.log('contactCheck', contact?.image);
+
   return (
     <Root
       title={contact.name}
