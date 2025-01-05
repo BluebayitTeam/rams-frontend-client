@@ -198,7 +198,7 @@ function MessengerPanel() {
             )}
             {state && selectedContact && (
               <div className='flex flex-1 items-center px-12'>
-                <Avatar src={`${BASE_URL}${contacts?.users?.image}`} />
+                <Avatar src={`${BASE_URL}${selectedContact?.image}`} />
                 <Typography className='mx-16 text-16' color='inherit'>
                   {selectedContact.first_name} {selectedContact.last_name}
                 </Typography>
