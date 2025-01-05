@@ -98,6 +98,10 @@ function Chat(props) {
   const [sendMessage] = useSendMessengerMessageMutation();
   const [messageText, setMessageText] = useState('');
   const chatScroll = useRef(null);
+  const [fileState, setFileState] = useState();
+  const [file, setFile] = useState();
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     scrollToBottom();
   }, [chat]);
@@ -116,6 +120,27 @@ function Chat(props) {
   const onInputChange = (ev) => {
     setMessageText(ev.target.value);
   };
+
+  const showFile = (fileUrl) => {
+    setFile(fileUrl);
+    const extStr = getExtenstion(fileUrl);
+    const ticketImgExtensionArr = ['.jpg', '.jpeg', '.png'];
+
+    const isImage = ticketImgExtensionArr.find((url) => url === extStr);
+
+    if (isImage) {
+      setOpen(true);
+    } else {
+      window.open(fileUrl);
+    }
+  };
+
+  const handleOnChange = (event) => {
+    event.preventDefault();
+
+    setFileState(event.target.files[0]);
+  };
+
   return (
     <Paper
       className={clsx('flex flex-col relative pb-64 shadow', className)}
@@ -125,19 +150,19 @@ function Chat(props) {
         className='flex flex-1 flex-col overflow-y-auto overscroll-contain'>
         <div className='flex flex-col pt-16'>
           {useMemo(() => {
-            function isFirstMessageOfGroup(item, i) {
+            const isFirstMessageOfGroup = (item, i) => {
               return (
                 i === 0 ||
                 (chat[i - 1] && chat[i - 1].contactId !== item.contactId)
               );
-            }
+            };
 
-            function isLastMessageOfGroup(item, i) {
+            const isLastMessageOfGroup = (item, i) => {
               return (
                 i === chat.length - 1 ||
                 (chat[i + 1] && chat[i + 1].contactId !== item.contactId)
               );
-            }
+            };
 
             return chat?.length > 0
               ? chat.map((item, i) => {
@@ -197,6 +222,7 @@ function Chat(props) {
           sendMessage({
             message: messageText,
             contactId: selectedContactId,
+            file: fileState,
           })
             .then((response) => console.log('Message sent:', response))
             .catch((error) => console.error('Error sending message:', error));
