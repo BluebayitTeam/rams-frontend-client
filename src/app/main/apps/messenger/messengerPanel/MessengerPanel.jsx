@@ -13,7 +13,6 @@ import { useAppDispatch } from 'app/store/store';
 import withReducer from 'app/store/withReducer';
 import _ from '@lodash';
 import { useSelector } from 'react-redux';
-import Chat from './Chat';
 import ContactList from './ContactList';
 import { selectSelectedContactId } from './store/selectedContactIdSlice';
 import {
@@ -24,6 +23,7 @@ import {
 import reducer from './store';
 import { useGetMessengerContactsQuery } from '../MessengerApi';
 import { BASE_URL } from 'src/app/constant/constants';
+import Chat from './Chat';
 
 const Root = styled('div')(({ theme, opened }) => ({
   position: 'sticky',
@@ -216,21 +216,7 @@ function MessengerPanel() {
         </AppBar>
         <Paper className='flex flex-1 flex-row min-h-px shadow-0'>
           <ContactList className='flex shrink-0' />
-
-          {state && selectedContact ? (
-            <Chat className='flex flex-1 z-10' />
-          ) : (
-            <div className='flex flex-col flex-1 items-center justify-center p-24'>
-              <FuseSvgIcon size={128} color='disabled'>
-                heroicons-outline:chat
-              </FuseSvgIcon>
-              <Typography
-                className='px-16 pb-24 mt-24 text-center'
-                color='text.secondary'>
-                Select a contact to start a conversation.
-              </Typography>
-            </div>
-          )}
+          <Chat className='flex flex-1 z-10' />
         </Paper>
       </div>
     </Root>

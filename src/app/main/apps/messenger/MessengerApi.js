@@ -1,5 +1,9 @@
 import { apiService as api } from 'app/store/apiService';
-import { UNREAD_MESSAGES_WITH_ALL_USERS } from 'src/app/constant/constants';
+import {
+  GET_ALL_MESSAGES_BY_SENDER_ID,
+  POST_MESSAGES,
+  UNREAD_MESSAGES_WITH_ALL_USERS,
+} from 'src/app/constant/constants';
 
 export const addTagTypes = [
   'messenger_contacts',
@@ -46,7 +50,9 @@ const MessengerApi = api
         providesTags: ['messenger_chats'],
       }),
       getMessengerChat: build.query({
-        query: (queryArg) => ({ url: `/mock-api/messenger/chats/${queryArg}` }),
+        query: (queryArg) => ({
+          url: `${GET_ALL_MESSAGES_BY_SENDER_ID}${queryArg}`,
+        }),
         providesTags: ['messenger_chat'],
       }),
       deleteMessengerChat: build.mutation({
@@ -58,9 +64,9 @@ const MessengerApi = api
       }),
       sendMessengerMessage: build.mutation({
         query: (queryArg) => ({
-          url: `/mock-api/messenger/chats/${queryArg.contactId}`,
+          url: POST_MESSAGES,
           method: 'POST',
-          data: queryArg.message,
+          data: { message: queryArg.message, receiver: queryArg.contactId },
         }),
         invalidatesTags: ['messenger_chat', 'messenger_chats'],
       }),
@@ -70,7 +76,7 @@ const MessengerApi = api
       }),
       updateMessengerUserProfile: build.mutation({
         query: (queryArg) => ({
-          url: `/mock-api/messenger/profile`,
+          url: POST_MESSAGES,
           method: 'PUT',
           data: queryArg,
         }),
