@@ -2469,3 +2469,38 @@ export const DELETE_SHIFT_MULTIPLE = `${BASE_URL}/shift/api/v1/shift/delete/`;
 export const DELETE_SHIFT = `${BASE_URL}/shift/api/v1/shift/delete/`;
 
 export const GET_SHIFTS = `${BASE_URL}/shift/api/v1/shift/all/`;
+
+
+//  shift_daytime
+export const CREATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/create/`;
+
+export const GET_SHIFT_DAYTIMES = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/all/`;
+
+export const GET_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/`;
+
+export const GET_SHIFT_DAYTIME_BY_SHIFTID = `${BASE_URL}/shift_daytime/api/v1/get_shift_daytime_by_shift_id/`;
+
+export const UPDATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/update/`;
+
+export const DELETE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/delete/`;
+
+
+
+//  timetable
+export const CREATE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/create/`;
+
+export const GET_TIMETABLES = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/all/`;
+
+export const GET_TIMETABLES_WITHOUT_PAGINATION = `${BASE_URL}/shift_timetable/api/v1/shift_timetable_wp/all/`;
+
+export const GET_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/`;
+
+export const GET_TIMETABLE_BY_SHIFT_ID = `${BASE_URL}/shift/api/v1/get_shift_day_timetable_by_shift_id/`;
+
+export const CHECK_COLOR_CODE = `${BASE_URL}/shift_timetable/api/v1/check_shift_timetable_color/`;
+
+export const UPDATE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/update/`;
+
+export const DELETE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
+
+export const SEARCH_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/search/`;
