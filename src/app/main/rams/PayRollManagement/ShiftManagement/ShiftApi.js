@@ -1,19 +1,22 @@
-import { apiService as api } from "app/store/apiService";
-import { createSelector } from "@reduxjs/toolkit";
 import FuseUtils from "@fuse/utils";
+import { createSelector } from "@reduxjs/toolkit";
+import { apiService as api } from "app/store/apiService";
+import jsonToFormData from "src/app/@helpers/jsonToFormData";
 import {
   CREATE_SHIFT,
-  GET_SHIFT_BY_ID,
-  UPDATE_SHIFT,
   DELETE_SHIFT,
-  GET_SHIFTS,
   DELETE_SHIFT_MULTIPLE,
+  GET_SHIFT_BY_ID,
+  GET_SHIFTS,
+  GET_TIMETABLE_BY_SHIFT_ID,
+  GET_TIMETABLES_WITHOUT_PAGINATION,
+  UPDATE_SHIFT,
 } from "src/app/constant/constants";
-import jsonToFormData from "src/app/@helpers/jsonToFormData";
-import { selectSearchText } from "./store/searchTextSlice";
 import ShiftModel from "./shift/models/ShiftModel";
+import { selectSearchText } from "./store/searchTextSlice";
 
 export const addTagTypes = ["shifts"];
+const shiftId = localStorage.getItem('shiftId');
 
 const ShiftApi = api
   .enhanceEndpoints({
@@ -27,6 +30,20 @@ const ShiftApi = api
           params: { page, size, searchKey },
         }),
         providesTags: ["shifts"],
+      }),
+      getTimetables: build.query({
+        query: ({ page, size, searchKey }) => ({
+          url: GET_TIMETABLES_WITHOUT_PAGINATION,
+          params: { page, size, searchKey },
+        }),
+        providesTags: ["shiftsTimetables"]
+      }),
+      getShiftTimetable: build.query({
+        query: ({ page, size, searchKey }) => ({
+          url: `${GET_TIMETABLE_BY_SHIFT_ID}${shiftId}`,
+          params: { page, size, searchKey },
+        }),
+        providesTags: ["shiftTimetable"]
       }),
       deleteShifts: build.mutation({
         query: (shiftIds) => ({
@@ -72,6 +89,8 @@ export default ShiftApi;
 
 export const {
   useGetShiftsQuery,
+  useGetTimetablesQuery,
+  useGetShiftTimetableQuery,
   useDeleteShiftsMutation,
   useGetShiftQuery,
   useUpdateShiftMutation,

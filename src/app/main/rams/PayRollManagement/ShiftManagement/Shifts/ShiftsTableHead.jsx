@@ -1,10 +1,10 @@
 import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Tooltip from "@mui/material/Tooltip";
-import { useState } from "react";
-import TableHead from "@mui/material/TableHead";
 import { lighten } from "@mui/material/styles";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import { useDeleteShiftsMutation } from "../ShiftApi";
 
@@ -13,13 +13,13 @@ import { useDeleteShiftsMutation } from "../ShiftApi";
  */
 
 const rows = [
-  {
-    id: "SL",
-    align: "left",
-    disablePadding: true,
-    label: "SL",
-    sort: true,
-  },
+  // {
+  //   id: "SL",
+  //   align: "left",
+  //   disablePadding: true,
+  //   label: "SL",
+  //   sort: true,
+  // },
   {
     id: "name",
     align: "left",
@@ -108,7 +108,7 @@ function ShiftsTableHead({
                     ? lighten(theme.palette.background.default, 0.4)
                     : lighten(theme.palette.background.default, 0.02),
               }}
-              className="p-4 md:p-16 whitespace-nowrap"
+              className="p-4 md:p-16 whitespace-nowrap text-sm"
               key={row.id}
               align={row.align}
               padding={row.disablePadding ? "none" : "normal"}

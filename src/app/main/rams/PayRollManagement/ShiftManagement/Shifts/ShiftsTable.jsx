@@ -1,25 +1,29 @@
 /* eslint-disable no-nested-ternary */
+import FuseLoading from "@fuse/core/FuseLoading";
 import FuseScrollbars from "@fuse/core/FuseScrollbars";
+import withRouter from "@fuse/core/withRouter";
 import _ from "@lodash";
+import { Delete, Edit } from "@mui/icons-material";
+import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
+import { Box, Button, Checkbox, FormControl, FormControlLabel, Modal, Pagination } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import withRouter from "@fuse/core/withRouter";
-import FuseLoading from "@fuse/core/FuseLoading";
-import { useSelector, useDispatch } from "react-redux";
-import { rowsPerPageOptions } from "src/app/@data/data";
-import { Pagination } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-import { selectFilteredShifts, useGetShiftsQuery } from "../ShiftApi.js";
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from "react-redux";
+import { rowsPerPageOptions, weeks } from "src/app/@data/data";
+import { GET_TIMETABLE_BY_SHIFT_ID } from "src/app/constant/constants.js";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+import { selectFilteredShifts, useGetShiftsQuery, useGetTimetablesQuery } from "../ShiftApi.js";
 import ShiftsTableHead from "./ShiftsTableHead.jsx";
-import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import WeekTable from "./WeekTable.jsx";
+// import { getShifts, getTimetables } from 'app/store/dataSlice';
 
 /**
  * The Shift table.
@@ -28,15 +32,49 @@ function ShiftsTable(props) {
   const dispatch = useDispatch();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [timeId, setTimeId] = useState(null);
+  const [shiftName, setShiftName] = useState('');
+  const [timeIdUpdate, setTimeIdUpdate] = useState(null);
+  const [newShiftId, setNewShitId] = useState(0);
+  const [shifId, setShifId] = useState(null);
+  const [shiftChecked, setShiftChecked] = useState({});
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
+  // const [timetable, setTimetable] = useState([]);
+  // const timetable = useSelector(state => state.data.timetables);
+  const { data: timetable } = useGetTimetablesQuery({
+    ...pageAndSize,
+    searchKey,
+  });
+
   const { data, isLoading, refetch } = useGetShiftsQuery({
     ...pageAndSize,
     searchKey,
   });
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      sunday: false,
+      monday: false,
+      tuesday: false,
+      wednesday: false,
+      thursday: false,
+      friday: false,
+      saturday: false
+    }
+  });
+
+  console.log("timetable", timetable);
   const totalData = useSelector(selectFilteredShifts(data));
   const shifts = useSelector(selectFilteredShifts(data?.shifts));
   let serialNumber = 1;
+
+  const { control, formState, setValue, getValues } = methods || {};
+
+  const handleChange = id => {
+    setShiftChecked({ [id]: true });
+  };
 
   useEffect(() => {
     // Fetch data with specific page and size when component mounts or when page and size change
@@ -150,12 +188,217 @@ function ShiftsTable(props) {
     );
   }
 
-  const handleOpen = (shift) => {};
+  const handleOpen = shift => {
+    setShiftName(shift.name);
+    timetable?.shift_timetables?.find(e => setValue(`${e.name}`, false));
+    axios
+      .get(`${GET_TIMETABLE_BY_SHIFT_ID}${shift.id}`, {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token')
+        }
+      })
+      .then(res => {
+        setShifId(res.data?.id);
+        setTimeIdUpdate(res.data?.timetable.id);
+        setValue('sunday', res.data?.sunday);
+        setValue('monday', res.data?.monday);
+        setValue('tuesday', res.data?.tuesday);
+        setValue('wednesday', res.data?.wednesday);
+        setValue('thursday', res.data?.thursday);
+        setValue('friday', res.data?.friday);
+        setValue('saturday', res.data?.saturday);
+        setShiftChecked({ [res.data?.timetable.id]: true });
+      });
+    setNewShitId(shift.id);
+
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+
+  const shiftId = e => {
+    localStorage.setItem('shiftId', e);
+    dispatch(getShiftTimetable(e));
+  };
+
+  function handleSaveShiftTimetable() {
+    const timeData = getValues();
+    timeData.id = shifId;
+    timeData.timetable = timeId || timeIdUpdate;
+    timeData.shift = newShiftId;
+    console.log("timeData", timeData, getValues());
+
+    axios
+      .post(`${CREATE_SHIFT_DAYTIME}`, timeData, {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token')
+        }
+      })
+      .then(res => {
+        setOpen(false);
+        dispatch(getShiftTimetable(shifId));
+      });
+  }
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 700,
+    bgcolor: '#111827',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 2,
+  };
 
   return (
     <div className="w-full flex flex-col min-h-full px-10">
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <FormProvider {...methods}>
+            <div
+              className="px-32"
+              style={{
+                display: 'flex',
+                justifyContent: 'space-evenly',
+                marginTop: '2rem'
+              }}
+            >
+              <div
+                style={{
+                  border: '2px solid white',
+                  width: '100%',
+                  height: '350px',
+                  color: 'black',
+                  backgroundColor: 'whitesmoke'
+                }}
+              >
+                <div>
+                  <p className="font-medium">
+                    Select <span className="font-bold">{shiftName}</span> category for this time
+                    period
+                  </p>
+                </div>
+                {timetable?.shift_timetables?.map(support => (
+                  <div style={{ display: 'flex' }}>
+                    <Controller
+                      name={support?.name}
+                      control={control}
+                      render={({ field }) => {
+                        return (
+                          <FormControl>
+                            <FormControlLabel
+                              label={support?.name}
+                              control={
+                                <Checkbox
+                                  {...field}
+                                  checked={
+                                    shiftChecked[support?.id] ||
+                                    // field.value ||
+                                    false
+                                  }
+                                  onChange={event => {
+                                    handleChange(support?.id);
+                                  }}
+                                  onClick={e => {
+                                    setShiftChecked({ [support?.id]: true });
+                                    e.target.checked === true
+                                      ? setTimeId(support.id)
+                                      : 0;
+                                  }}
+                                // onChange={e =>
+                                // 	e.target.checked === true ? support.id : 0
+                                // }
+                                />
+                              }
+                            />
+                          </FormControl>
+                        );
+                      }}
+                    />
+
+
+                  </div>
+                ))}
+              </div>
+              <div
+                style={{
+                  border: '2px solid white',
+                  width: '100%',
+                  height: '350px',
+                  color: 'black',
+                  backgroundColor: 'whitesmoke'
+                }}
+              >
+                {weeks?.map(day => (
+                  <div
+                    key={day?.name}
+                    style={{ display: 'flex', alignItems: 'center', }}
+                  >
+                    <Controller
+                      name={day?.name}
+                      control={control}
+                      render={({ field }) => (
+                        <FormControl>
+                          <FormControlLabel
+                            style={{ width: '100px', marginRight: '22px' }}
+                            label={day?.name}
+                            control={
+                              <Checkbox
+                                {...field}
+                                checked={field.value ? field.value : false}
+                              />
+                            }
+                          />
+                        </FormControl>
+                      )}
+                    />
+                    {/* Uncomment and adjust the following block if you want to include radio buttons as well */}
+                    {/* <input
+				style={{ margin: '5px' }}
+				type="radio"
+				id={support?.name}
+				name="radio"
+				value="30"
+			></input>
+			<label htmlFor={support?.name}>
+				{support?.name}
+			</label> */}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FormProvider>
+          <div className="flex justify-end mr-32">
+            <Button
+              className="whitespace-nowrap mx-4"
+              variant="contained"
+              color="secondary"
+              style={{ backgroundColor: '#22d3ee' }}
+              // disabled={!name || _.isEmpty(name)}
+              onClick={handleSaveShiftTimetable}
+            >
+              Save
+            </Button>
+          </div>
+        </Box>
+      </Modal>
       <FuseScrollbars className="grow overflow-x-auto grid grid-cols-2 gap-10">
-        <div>
+
+        <div className="p-4 mt-10">
+          <Typography
+            variant="h6"
+            className="my-10"
+          >
+            Shift Management
+          </Typography>
           <Table stickyHeader aria-labelledby="tableTitle">
             <ShiftsTableHead
               selectedShiftIds={selected}
@@ -180,7 +423,7 @@ function ShiftsTable(props) {
                       key={n.id}
                       selected={isSelected}
                     >
-                      <TableCell
+                      {/* <TableCell
                         className="w-40 md:w-64 border-t-1  border-gray-200"
                         component="th"
                         scope="row"
@@ -194,40 +437,30 @@ function ShiftsTable(props) {
                         {pageAndSize.page * pageAndSize.size -
                           pageAndSize.size +
                           serialNumber++}
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
                         component="th"
                         scope="row"
                       >
                         {n.name}
                       </TableCell>
                       <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
                         component="th"
                         scope="row"
                       >
                         {n.start_date}
                       </TableCell>
                       <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
                         component="th"
                         scope="row"
                       >
                         {n.end_date}
                       </TableCell>
                       <TableCell
-                        className="p-4 mx-auto md:p-16 border-t-1  border-gray-200"
-                        component="th"
-                        scope="row"
-                      >
-                        <ScheduleSendIcon
-                          onClick={(event) => handleOpen(shift)}
-                          style={{ color: "gray", fontSize: "25px" }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
                         component="th"
                         scope="row"
                         align="right"
@@ -251,6 +484,16 @@ function ShiftsTable(props) {
                             className="cursor-pointer custom-delete-icon-style"
                           />
                         )}
+                      </TableCell>
+                      <TableCell
+                        className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-sm"
+                        component="th"
+                        scope="row"
+                      >
+                        <ScheduleSendIcon
+                          onClick={(event) => handleOpen(n)}
+                          style={{ color: "gray", fontSize: "25px" }}
+                        />
                       </TableCell>
                     </TableRow>
                   );
