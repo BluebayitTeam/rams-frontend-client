@@ -1,7 +1,5 @@
-import { Paper, Typography } from "@mui/material";
-import _ from "@lodash";
-import { memo } from "react";
-import { Box } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
+import { Fragment, memo } from 'react';
 import { useSelector } from "react-redux";
 
 const weeks = [
@@ -54,7 +52,7 @@ function WeekTable() {
             {/* Display table data */}
             {data.map((data, index) => {
               return (
-                <>
+                <Fragment key={index}>
                   {weeks.map((e) => (
                     <tr style={{ border: "1px solid gray" }} key={index}>
                       <td style={{ border: "1px solid gray" }}>{e.day}</td>
@@ -122,12 +120,12 @@ function WeekTable() {
                         const cellStyle = {
                           backgroundColor:
                             isFridayUnhighlighted ||
-                            isSaturdayUnhighlighted ||
-                            isSundayUnhighlighted ||
-                            isMondayUnhighlighted ||
-                            isTuesdayUnhighlighted ||
-                            isWednesdayUnhighlighted ||
-                            isThursdayUnhighlighted
+                              isSaturdayUnhighlighted ||
+                              isSundayUnhighlighted ||
+                              isMondayUnhighlighted ||
+                              isTuesdayUnhighlighted ||
+                              isWednesdayUnhighlighted ||
+                              isThursdayUnhighlighted
                               ? "white"
                               : isHighlighted
                                 ? data?.timetable?.color
@@ -139,7 +137,7 @@ function WeekTable() {
                       })}
                     </tr>
                   ))}
-                </>
+                </Fragment>
               );
             })}
           </tbody>

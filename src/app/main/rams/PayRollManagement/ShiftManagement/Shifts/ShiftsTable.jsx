@@ -18,9 +18,9 @@ import { useEffect, useState } from "react";
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
 import { rowsPerPageOptions, weeks } from "src/app/@data/data";
-import { GET_TIMETABLE_BY_SHIFT_ID } from "src/app/constant/constants.js";
+import { CREATE_SHIFT_DAYTIME, GET_TIMETABLE_BY_SHIFT_ID } from "src/app/constant/constants.js";
 import { hasPermission } from "src/app/constant/permission/permissionList";
-import { selectFilteredShifts, useGetShiftsQuery, useGetTimetablesQuery } from "../ShiftApi.js";
+import { selectFilteredShifts, useGetShiftsQuery, useGetShiftTimetableQuery, useGetTimetablesQuery } from "../ShiftApi.js";
 import ShiftsTableHead from "./ShiftsTableHead.jsx";
 import WeekTable from "./WeekTable.jsx";
 // import { getShifts, getTimetables } from 'app/store/dataSlice';
@@ -44,6 +44,10 @@ function ShiftsTable(props) {
   // const [timetable, setTimetable] = useState([]);
   // const timetable = useSelector(state => state.data.timetables);
   const { data: timetable } = useGetTimetablesQuery({
+    ...pageAndSize,
+    searchKey,
+  });
+  const { data: shiftTimetable, reftech: refetchShiftTimetable } = useGetShiftTimetableQuery({
     ...pageAndSize,
     searchKey,
   });
@@ -199,16 +203,19 @@ function ShiftsTable(props) {
         }
       })
       .then(res => {
-        setShifId(res.data?.id);
-        setTimeIdUpdate(res.data?.timetable.id);
-        setValue('sunday', res.data?.sunday);
-        setValue('monday', res.data?.monday);
-        setValue('tuesday', res.data?.tuesday);
-        setValue('wednesday', res.data?.wednesday);
-        setValue('thursday', res.data?.thursday);
-        setValue('friday', res.data?.friday);
-        setValue('saturday', res.data?.saturday);
-        setShiftChecked({ [res.data?.timetable.id]: true });
+        const { shift_timetables } = res.data;
+        console.log("timeTables", res.data);
+        setShifId(res.data?.shift_timetables[0]?.id);
+        setTimeIdUpdate(res.data?.shift_timetables[0]?.id);
+        setValue('sunday', res.data?.shift_timetables[0]?.sunday);
+        setValue('monday', res.data?.shift_timetables[0]?.monday);
+        setValue('tuesday', res.data?.shift_timetables[0]?.tuesday);
+        setValue('wednesday', res.data?.shift_timetables[0]?.wednesday);
+        setValue('thursday', res.data?.shift_timetables[0]?.thursday);
+        setValue('friday', res.data?.shift_timetables[0]?.friday);
+        setValue('saturday', res.data?.shift_timetables[0]?.saturday);
+        setShiftChecked({ [res.data?.shift_timetables[0]?.id]: true });
+        // setShiftChecked({ [res.data?.shift_timetables[0]?.timetable.id]: true });
       });
     setNewShitId(shift.id);
 
@@ -218,7 +225,8 @@ function ShiftsTable(props) {
 
   const shiftId = e => {
     localStorage.setItem('shiftId', e);
-    dispatch(getShiftTimetable(e));
+    refetchShiftTimetable();
+    // dispatch(getShiftTimetable(e));
   };
 
   function handleSaveShiftTimetable() {
@@ -227,7 +235,7 @@ function ShiftsTable(props) {
     timeData.timetable = timeId || timeIdUpdate;
     timeData.shift = newShiftId;
     console.log("timeData", timeData, getValues());
-
+    // return;
     axios
       .post(`${CREATE_SHIFT_DAYTIME}`, timeData, {
         headers: {
@@ -237,7 +245,8 @@ function ShiftsTable(props) {
       })
       .then(res => {
         setOpen(false);
-        dispatch(getShiftTimetable(shifId));
+        refetchShiftTimetable();
+        // dispatch(getShiftTimetable(shifId));
       });
   }
 
@@ -286,8 +295,8 @@ function ShiftsTable(props) {
                     period
                   </p>
                 </div>
-                {timetable?.shift_timetables?.map(support => (
-                  <div style={{ display: 'flex' }}>
+                {timetable?.shift_timetables?.map((support, index) => (
+                  <div style={{ display: 'flex' }} key={index}>
                     <Controller
                       name={support?.name}
                       control={control}
