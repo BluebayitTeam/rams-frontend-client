@@ -115,19 +115,19 @@ function ShiftsTable(props) {
   }
 
   function handleClick(item) {
-    navigate(`/apps/shift/shifts/${item.id}/${item.handle}`);
+    navigate(`/apps/shifts-management/shifts/${item.id}/${item.handle}`);
   }
 
   function handleUpdateShift(item, event) {
     localStorage.removeItem("deleteShift");
     localStorage.setItem("updateShift", event);
-    navigate(`/apps/shift/shifts/${item.id}`);
+    navigate(`/apps/shifts-management/shifts/${item.id}`);
   }
 
   function handleDeleteShift(item, event) {
     localStorage.removeItem("updateShift");
     localStorage.setItem("deleteShift", event);
-    navigate(`/apps/shift/shifts/${item.id}`);
+    navigate(`/apps/shifts-management/shifts/${item.id}`);
   }
 
   function handleCheck(event, id) {

@@ -3,7 +3,7 @@ import ShiftApp from "./ShiftApp";
 import Shifts from "./Shifts/Shifts";
 import Shift from "./shift/Shift";
 
-// apps/shift/shifts
+// apps/shifts-management/shifts
 
 const ShiftAppConfig = {
   settings: {
@@ -11,7 +11,7 @@ const ShiftAppConfig = {
   },
   routes: [
     {
-      path: "apps/shift",
+      path: "apps/shifts-management",
       element: <ShiftApp />,
       children: [
         {

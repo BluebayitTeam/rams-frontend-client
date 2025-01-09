@@ -1,17 +1,17 @@
+import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import NavLinkAdapter from "@fuse/core/NavLinkAdapter";
+import { Icon } from "@mui/material";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { motion } from "framer-motion";
 import { useAppDispatch } from "app/store/store";
-import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
+import { motion } from "framer-motion";
 import { useEffect } from "react";
-import NavLinkAdapter from "@fuse/core/NavLinkAdapter";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { Icon } from "@mui/material";
-import { resetSearchText, selectSearchText } from "../store/searchTextSlice";
 import { hasPermission } from "src/app/constant/permission/permissionList";
+import { resetSearchText, selectSearchText } from "../store/searchTextSlice";
 
 /**
  * The ShiftTime Table header.
@@ -89,7 +89,7 @@ function ShiftTimeTablesHeader(props) {
               variant="contained"
               color="secondary"
               component={NavLinkAdapter}
-              to="/apps/shiftTimeTable/shiftTimeTables/new"
+              to="/apps/timetables-management/timetables/new"
             >
               <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
               <span className="hidden sm:flex mx-8">Add</span>

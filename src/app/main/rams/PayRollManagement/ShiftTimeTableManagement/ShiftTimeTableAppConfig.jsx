@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
+import ShiftTimeTable from "./shiftTimeTable/ShiftTimeTable";
 import ShiftTimeTableApp from "./ShiftTimeTableApp";
 import ShiftTimeTables from "./shiftTimeTables/ShiftTimeTables";
-import ShiftTimeTable from "./shiftTimeTable/ShiftTimeTable";
 
-// apps/shiftTimeTable/shiftTimeTables
+// apps/timetables-management/timetables
 
 const ShiftTimeTableAppConfig = {
   settings: {
@@ -11,19 +11,19 @@ const ShiftTimeTableAppConfig = {
   },
   routes: [
     {
-      path: "apps/shiftTimeTable",
+      path: "apps/timetables-management",
       element: <ShiftTimeTableApp />,
       children: [
         {
           path: "",
-          element: <Navigate to="shiftTimeTables" />,
+          element: <Navigate to="timetables" />,
         },
         {
-          path: "shiftTimeTables",
+          path: "timetables",
           element: <ShiftTimeTables />,
         },
         {
-          path: "shiftTimeTables/:shiftTimeTableId/*",
+          path: "timetables/:shiftTimeTableId/*",
           element: <ShiftTimeTable />,
         },
       ],
