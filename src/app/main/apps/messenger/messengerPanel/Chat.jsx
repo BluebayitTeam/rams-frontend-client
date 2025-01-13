@@ -15,6 +15,7 @@ import {
   useSendMessengerMessageMutation,
 } from '../MessengerApi';
 import { Avatar } from '@mui/material';
+import { BASE_URL } from 'src/app/constant/constants';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
@@ -175,7 +176,7 @@ function Chat(props) {
 
             return chat?.messages?.length > 0
               ? chat?.messages?.map((item, i) => {
-                  console.log('Item:', item, 'Index:', i); // Logs each item and its index
+                  console.log('Item:', item, 'Index:', i);
                   return (
                     <StyledMessageRow
                       key={i}
@@ -186,23 +187,26 @@ function Chat(props) {
                         { 'last-of-group': isLastMessageOfGroup(item, i) },
                         i + 1 === chat.length && 'pb-72'
                       )}>
-                      {shouldShowContactAvatar(item, i) && (
-                        <Avatar
-                          className={classes?.avatar}
-                          src={contact?.avatar}
-                        />
-                      )}
-                      <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                      <div className='flex items-center'>
                         <div className='leading-tight whitespace-pre-wrap'>
-                          {item?.message}
+                          {shouldShowContactAvatar(item, i) && (
+                            <Avatar
+                              src={`${BASE_URL}${item?.receiver_image}`}
+                            />
+                          )}
+                        </div>{' '}
+                        <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                          <div className='leading-tight whitespace-pre-wrap'>
+                            {item?.message}
+                          </div>
+                          <Typography
+                            className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
+                            color='text.secondary'>
+                            {formatDistanceToNow(new Date(item?.created_at), {
+                              addSuffix: true,
+                            })}
+                          </Typography>
                         </div>
-                        <Typography
-                          className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
-                          color='text.secondary'>
-                          {formatDistanceToNow(new Date(item.created_at), {
-                            addSuffix: true,
-                          })}
-                        </Typography>
                       </div>
                     </StyledMessageRow>
                   );
