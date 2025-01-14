@@ -1,18 +1,18 @@
 import FuseLoading from "@fuse/core/FuseLoading";
 import FusePageCarded from "@fuse/core/FusePageCarded";
+import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
-import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, useParams } from "react-router-dom";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 import { z } from "zod";
 import { useGetShiftTimeTablesQuery } from "../ShiftTimeTableApi";
-import { hasPermission } from "src/app/constant/permission/permissionList";
-import ShiftTimeTableForm from "./ShiftTimeTableForm";
 import ShiftTimeTableModel from "./models/ShiftTimeTableModel";
+import ShiftTimeTableForm from "./ShiftTimeTableForm";
 import ShiftTimeTableHeader from "./ShiftTimeTableHeader";
 /**
  * Form Validation Schema
@@ -80,7 +80,7 @@ function ShiftTimeTable() {
           className="mt-24"
           component={Link}
           variant="outlined"
-          to="/apps/shiftTimeTable/shiftTimeTables"
+          to="/apps/timetables-management/timetables"
           color="inherit"
         >
           Go to Shift TimeTable Page

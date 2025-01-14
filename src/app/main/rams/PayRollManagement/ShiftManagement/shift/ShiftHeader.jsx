@@ -1,23 +1,23 @@
+import { showMessage } from "@fuse/core/FuseMessage/store/fuseMessageSlice";
+import { Icon } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
+import _ from "lodash";
 import { useFormContext } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Icon } from "@mui/material";
-import { showMessage } from "@fuse/core/FuseMessage/store/fuseMessageSlice";
 import {
   AddedSuccessfully,
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from "src/app/@customHooks/notificationAlert";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 import {
   useCreateShiftMutation,
   useDeleteShiftMutation,
   useUpdateShiftMutation,
 } from "../ShiftApi";
-import { hasPermission } from "src/app/constant/permission/permissionList";
-import _ from "lodash";
 
 /**
  * The Shift Table header.
@@ -42,7 +42,7 @@ function ShiftHeader() {
   function handleUpdateShift() {
     saveShift(getValues()).then((data) => {
       UpdatedSuccessfully();
-      navigate(`/apps/shift/shifts`);
+      navigate(`/apps/shifts-management/shifts`);
     });
   }
 
@@ -52,21 +52,21 @@ function ShiftHeader() {
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
-        navigate(`/apps/shift/shifts`);
+        navigate(`/apps/shifts-management/shifts`);
       });
   }
 
   function handleRemoveShift(dispatch) {
     removeShift(shiftId);
     DeletedSuccessfully();
-    navigate("/apps/shift/shifts");
+    navigate("/apps/shifts-management/shifts");
     dispatch(
       showMessage({ message: `Please Restart The Backend`, variant: "error" })
     );
   }
 
   function handleCancel() {
-    navigate(`/apps/shift/shifts`);
+    navigate(`/apps/shifts-management/shifts`);
   }
 
   return (
@@ -80,7 +80,7 @@ function ShiftHeader() {
             className="flex items-center sm:mb-12"
             component={Link}
             role="button"
-            to="/apps/shift/shifts"
+            to="/apps/shifts-management/shifts"
             color="inherit"
           >
             <Icon className="text-20">

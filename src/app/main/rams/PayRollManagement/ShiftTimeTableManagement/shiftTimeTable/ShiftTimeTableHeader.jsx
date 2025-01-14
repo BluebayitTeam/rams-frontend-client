@@ -1,23 +1,23 @@
+import { showMessage } from "@fuse/core/FuseMessage/store/fuseMessageSlice";
+import { Icon } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
+import _ from "lodash";
 import { useFormContext } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Icon } from "@mui/material";
-import { showMessage } from "@fuse/core/FuseMessage/store/fuseMessageSlice";
 import {
   AddedSuccessfully,
   DeletedSuccessfully,
   UpdatedSuccessfully,
 } from "src/app/@customHooks/notificationAlert";
+import { hasPermission } from "src/app/constant/permission/permissionList";
 import {
   useCreateShiftTimeTableMutation,
   useDeleteShiftTimeTableMutation,
   useUpdateShiftTimeTableMutation,
 } from "../ShiftTimeTableApi";
-import { hasPermission } from "src/app/constant/permission/permissionList";
-import _ from "lodash";
 
 /**
  * The ShiftTime Table header.
@@ -42,7 +42,7 @@ function ShiftTimeTableHeader() {
   function handleUpdateShiftTimeTable() {
     saveShiftTimeTable(getValues()).then((data) => {
       UpdatedSuccessfully();
-      navigate(`/apps/shiftTimeTable/shiftTimeTables`);
+      navigate(`/apps/timetables-management/timetables`);
     });
   }
 
@@ -52,21 +52,21 @@ function ShiftTimeTableHeader() {
       .unwrap()
       .then((data) => {
         AddedSuccessfully();
-        navigate(`/apps/shiftTimeTable/shiftTimeTables`);
+        navigate(`/apps/timetables-management/timetables`);
       });
   }
 
   function handleRemoveShiftTimeTable(dispatch) {
     removeShiftTimeTable(shiftTimeTableId);
     DeletedSuccessfully();
-    navigate("/apps/shiftTimeTable/shiftTimeTables");
+    navigate("/apps/timetables-management/timetables");
     dispatch(
       showMessage({ message: `Please Restart The Backend`, variant: "error" })
     );
   }
 
   function handleCancel() {
-    navigate(`/apps/shiftTimeTable/shiftTimeTables`);
+    navigate(`/apps/timetables-management/timetables`);
   }
 
   return (
@@ -80,7 +80,7 @@ function ShiftTimeTableHeader() {
             className="flex items-center sm:mb-12"
             component={Link}
             role="button"
-            to="/apps/shiftTimeTable/shiftTimeTables"
+            to="/apps/timetables-management/timetables"
             color="inherit"
           >
             <Icon className="text-20">
