@@ -195,7 +195,7 @@ function Chat(props) {
                         <div
                           style={{
                             width: 'auto',
-                            height: '150px',
+                            height: 'auto',
                             overflow: 'hidden',
                             display: 'flex',
                           }}>
@@ -208,14 +208,15 @@ function Chat(props) {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                height: '100%',
+                                width: 'auto',
+                                height: '50px',
                               }}>
                               {item.file.toLowerCase().includes('pdf') ? (
                                 <PictureAsPdf
                                   style={{
                                     color: 'red',
                                     cursor: 'pointer',
-                                    fontSize: '137px',
+                                    fontSize: '37px',
                                     margin: 'auto',
                                   }}
                                   onClick={() =>
@@ -227,7 +228,7 @@ function Chat(props) {
                                   style={{
                                     color: 'blue',
                                     cursor: 'pointer',
-                                    fontSize: '137px',
+                                    fontSize: '37px',
                                     margin: 'auto',
                                   }}
                                   onClick={() =>
