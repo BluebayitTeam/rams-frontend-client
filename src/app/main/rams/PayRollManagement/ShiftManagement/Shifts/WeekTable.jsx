@@ -1,6 +1,6 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { Fragment, memo } from 'react';
-import { useSelector } from "react-redux";
+import { useGetShiftTimetableQuery } from "../ShiftApi";
 
 const weeks = [
   { day: "Sunday" },
@@ -13,12 +13,15 @@ const weeks = [
 ];
 
 function WeekTable() {
-  const timetable = useSelector(
-    ({ shiftsManagement }) => shiftsManagement?.shift?.daytime
-  );
+  const shiftId = localStorage.getItem('shiftId'); // Retrieve the current shiftId
+  const { data: timetable, error, isLoading } = useGetShiftTimetableQuery({ page: 1, size: 10, searchKey: '' });
+
+  // const timetable = useSelector(
+  //   ({ shiftsManagement }) => shiftsManagement?.shift?.daytime
+  // );
   const data = [];
   data.push(timetable);
-
+  console.log("shift_data timetable", timetable);
   return (
     <Paper
       className="w-full rounded-40 shadow"
