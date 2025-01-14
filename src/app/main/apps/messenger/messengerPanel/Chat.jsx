@@ -9,6 +9,8 @@ import InputBase from '@mui/material/InputBase';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useSelector } from 'react-redux';
 import { selectSelectedContactId } from './store/selectedContactIdSlice';
+import { PictureAsPdf } from '@mui/icons-material';
+
 import {
   useGetMessengerChatQuery,
   useGetMessengerUserProfileQuery,
@@ -16,6 +18,8 @@ import {
 } from '../MessengerApi';
 import { Avatar } from '@mui/material';
 import { BASE_URL } from 'src/app/constant/constants';
+import { AttachFile } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
@@ -97,12 +101,12 @@ function Chat(props) {
   const selectedContactId = useSelector(selectSelectedContactId);
 
   const { data: chat } = useGetMessengerChatQuery(selectedContactId);
-  console.log('chatChxck', chat);
   const { data: user } = useGetMessengerUserProfileQuery();
   const [sendMessage] = useSendMessengerMessageMutation();
   const [messageText, setMessageText] = useState('');
   const chatScroll = useRef(null);
   const [fileState, setFileState] = useState();
+  console.log('fileState', chat);
   const [file, setFile] = useState();
   const [open, setOpen] = useState(false);
 
@@ -123,6 +127,7 @@ function Chat(props) {
 
   const onInputChange = (ev) => {
     setMessageText(ev.target.value);
+    setFileState(ev.target.value);
   };
 
   const showFile = (fileUrl) => {
@@ -173,19 +178,74 @@ function Chat(props) {
                   key={i}
                   className={clsx(
                     'flex flex-col grow-0 shrink-0 items-start justify-end relative px-16 pb-4',
-                    item.contactId === user.id ? 'me' : 'contact',
+                    item.contactId === user?.id ? 'me' : 'contact',
                     { 'first-of-group': isFirstMessageOfGroup },
                     { 'last-of-group': isLastMessageOfGroup },
                     i + 1 === chat.messages.length && 'pb-72'
                   )}>
                   <div className='flex items-center'>
                     <div className='leading-tight whitespace-pre-wrap'>
-                      <Avatar src={`${BASE_URL}${item.receiver_image || ''}`} />
+                      {/* <Avatar src={`${BASE_URL}${item.receiver_image || ''}`} /> */}
                     </div>
                     <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
                       <div className='leading-tight whitespace-pre-wrap'>
                         {item.message}
                       </div>
+                      {item.file && (
+                        <div
+                          style={{
+                            width: 'auto',
+                            height: '150px',
+                            overflow: 'hidden',
+                            display: 'flex',
+                          }}>
+                          {typeof item.file === 'string' &&
+                          ['pdf', 'doc', 'docx'].includes(
+                            item.file.split('.').pop().toLowerCase()
+                          ) ? (
+                            <div
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                height: '100%',
+                              }}>
+                              {item.file.toLowerCase().includes('pdf') ? (
+                                <PictureAsPdf
+                                  style={{
+                                    color: 'red',
+                                    cursor: 'pointer',
+                                    fontSize: '137px',
+                                    margin: 'auto',
+                                  }}
+                                  onClick={() =>
+                                    window.open(`${BASE_URL}${item.file}`)
+                                  }
+                                />
+                              ) : (
+                                <DescriptionIcon
+                                  style={{
+                                    color: 'blue',
+                                    cursor: 'pointer',
+                                    fontSize: '137px',
+                                    margin: 'auto',
+                                  }}
+                                  onClick={() =>
+                                    window.open(`${BASE_URL}${item.file}`)
+                                  }
+                                />
+                              )}
+                            </div>
+                          ) : (
+                            <img
+                              src={`${BASE_URL}${item.file}`}
+                              style={{ height: '100px' }}
+                              alt='smart_card_image'
+                            />
+                          )}
+                        </div>
+                      )}
+
                       <Typography
                         className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
                         color='text.secondary'>
@@ -220,19 +280,34 @@ function Chat(props) {
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
-            if (messageText === '') return;
+            if (messageText === '' && !fileState) return;
 
             sendMessage({
               message: messageText,
               contactId: selectedContactId,
               file: fileState,
+              test: 'test',
             })
               .then((response) => console.log('Message sent:', response))
               .catch((error) => console.error('Error sending message:', error));
             setMessageText('');
+            setFileState(null); // Reset file after sending
           }}
           className='pb-16 px-8 absolute bottom-0 left-0 right-0'>
           <Paper className='rounded-24 flex items-center relative shadow'>
+            <div>
+              <label htmlFor='file'>
+                <input
+                  type='file'
+                  id='file'
+                  style={{ marginBottom: '20px', display: 'none' }}
+                  name='file'
+                  onChange={(event) => handleOnChange(event)}
+                  multiple
+                />
+                <AttachFile />
+              </label>
+            </div>
             <InputBase
               id='message-input'
               className='flex flex-1 grow shrink-0 mx-16 ltr:mr-48 rtl:ml-48 my-8'
@@ -240,6 +315,7 @@ function Chat(props) {
               onChange={(e) => setMessageText(e.target.value)}
               value={messageText}
             />
+
             <IconButton
               className='absolute ltr:right-0 rtl:left-0 top-0'
               type='submit'

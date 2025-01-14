@@ -1,4 +1,5 @@
 import { apiService as api } from 'app/store/apiService';
+import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
   GET_ALL_MESSAGES_BY_SENDER_ID,
   POST_MESSAGES,
@@ -66,10 +67,15 @@ const MessengerApi = api
         query: (queryArg) => ({
           url: POST_MESSAGES,
           method: 'POST',
-          data: { message: queryArg.message, receiver: queryArg.contactId },
+          data: jsonToFormData({
+            message: queryArg.message,
+            receiver: queryArg.contactId,
+            file: queryArg.file,
+          }),
         }),
         invalidatesTags: ['messenger_chat', 'messenger_chats'],
       }),
+
       getMessengerUserProfile: build.query({
         query: () => ({ url: `/mock-api/messenger/profile` }),
         providesTags: ['messenger_user_profile'],
