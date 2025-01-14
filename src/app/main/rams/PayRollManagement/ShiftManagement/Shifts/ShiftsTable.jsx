@@ -193,8 +193,10 @@ function ShiftsTable(props) {
   }
 
   const handleOpen = shift => {
+
     setShiftName(shift.name);
     timetable?.shift_timetables?.find(e => setValue(`${e.name}`, false));
+
     axios
       .get(`${GET_TIMETABLE_BY_SHIFT_ID}${shift.id}`, {
         headers: {
@@ -203,19 +205,18 @@ function ShiftsTable(props) {
         }
       })
       .then(res => {
-        const { shift_timetables } = res.data;
-        console.log("timeTables", res.data);
-        setShifId(res.data?.shift_timetables[0]?.id);
-        setTimeIdUpdate(res.data?.shift_timetables[0]?.id);
-        setValue('sunday', res.data?.shift_timetables[0]?.sunday);
-        setValue('monday', res.data?.shift_timetables[0]?.monday);
-        setValue('tuesday', res.data?.shift_timetables[0]?.tuesday);
-        setValue('wednesday', res.data?.shift_timetables[0]?.wednesday);
-        setValue('thursday', res.data?.shift_timetables[0]?.thursday);
-        setValue('friday', res.data?.shift_timetables[0]?.friday);
-        setValue('saturday', res.data?.shift_timetables[0]?.saturday);
-        setShiftChecked({ [res.data?.shift_timetables[0]?.id]: true });
-        // setShiftChecked({ [res.data?.shift_timetables[0]?.timetable.id]: true });
+        console.log("shift_data", res.data);
+        // return;
+        setShifId(res.data?.id);
+        setTimeIdUpdate(res.data?.timetable.id);
+        setValue('sunday', res.data?.sunday);
+        setValue('monday', res.data?.monday);
+        setValue('tuesday', res.data?.tuesday);
+        setValue('wednesday', res.data?.wednesday);
+        setValue('thursday', res.data?.thursday);
+        setValue('friday', res.data?.friday);
+        setValue('saturday', res.data?.saturday);
+        setShiftChecked({ [res.data?.timetable.id]: true });
       });
     setNewShitId(shift.id);
 
@@ -225,17 +226,16 @@ function ShiftsTable(props) {
 
   const shiftId = e => {
     localStorage.setItem('shiftId', e);
-    refetchShiftTimetable();
+    // refetchShiftTimetable();
     // dispatch(getShiftTimetable(e));
   };
 
   function handleSaveShiftTimetable() {
     const timeData = getValues();
-    timeData.id = shifId;
+    timeData.id = shifId ?? null;
     timeData.timetable = timeId || timeIdUpdate;
     timeData.shift = newShiftId;
-    console.log("timeData", timeData, getValues());
-    // return;
+
     axios
       .post(`${CREATE_SHIFT_DAYTIME}`, timeData, {
         headers: {
@@ -244,8 +244,10 @@ function ShiftsTable(props) {
         }
       })
       .then(res => {
+        console.log("shift_data", res, shifId);
+
         setOpen(false);
-        refetchShiftTimetable();
+        // refetchShiftTimetable();
         // dispatch(getShiftTimetable(shifId));
       });
   }
@@ -399,7 +401,7 @@ function ShiftsTable(props) {
           </div>
         </Box>
       </Modal>
-      <FuseScrollbars className="grow overflow-x-auto grid grid-cols-2 gap-10">
+      <FuseScrollbars className="grow overflow-x-auto grid grid-cols-2 gap-16">
 
         <div className="p-4 mt-10">
           <Typography
@@ -448,28 +450,28 @@ function ShiftsTable(props) {
                           serialNumber++}
                       </TableCell> */}
                       <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
                         component="th"
                         scope="row"
                       >
                         {n.name}
                       </TableCell>
                       <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
                         component="th"
                         scope="row"
                       >
                         {n.start_date}
                       </TableCell>
                       <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
                         component="th"
                         scope="row"
                       >
                         {n.end_date}
                       </TableCell>
                       <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-sm"
+                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
                         component="th"
                         scope="row"
                         align="right"
@@ -495,7 +497,7 @@ function ShiftsTable(props) {
                         )}
                       </TableCell>
                       <TableCell
-                        className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-sm"
+                        className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-xs"
                         component="th"
                         scope="row"
                       >

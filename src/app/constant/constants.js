@@ -2504,3 +2504,18 @@ export const UPDATE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timeta
 export const DELETE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
 
 export const SEARCH_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/search/`;
+
+
+
+// payhead_type
+export const GET_PAY_HEAD_TYPE_BY_ID = `${BASE_URL}/payhead_type/api/v1/payhead_type/`;
+
+export const CREATE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_type/create/`;
+
+export const UPDATE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_type/update/`;
+
+export const DELETE_PAY_HEAD_TYPE_MULTIPLE = `${BASE_URL}/payhead_type/api/v1/payhead_type/delete/`;
+
+export const DELETE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_type/delete/`;
+
+export const GET_PAY_HEAD_TYPES = `${BASE_URL}/payhead_type/api/v1/payhead_type/all/`;
