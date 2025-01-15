@@ -66,7 +66,7 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
     },
     '&.first-of-group': {
       '& .bubble': {
-        borderTopRightRadius: 20, // Only right side
+        borderTopRightRadius: 20,
       },
     },
     '&.last-of-group': {
