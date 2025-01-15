@@ -146,7 +146,20 @@ function Chat(props) {
       setFileState(file);
 
       const fileExtension = file.name.split('.').pop().toLowerCase();
-      const imageExtensions = ['jpg', 'jpeg', 'png'];
+      const imageExtensions = [
+        'jpg',
+        'jpeg',
+        'png',
+        'gif',
+        'bmp',
+        'svg',
+        'webp',
+        'tiff',
+        'ico',
+        'heic',
+        'heif',
+        'jfif',
+      ];
       const pdfExtensions = ['pdf'];
       const docExtensions = ['docx'];
       const exlsExtensions = ['xls', 'xlsx'];
@@ -473,8 +486,51 @@ function Chat(props) {
                     }}
                   />
                 </>
-              ) : filePreview === 'unsupported' ? (
-                <Typography>File type not supported.</Typography>
+              ) : filePreview === 'jpg' ||
+                'jpeg' ||
+                'png' ||
+                'gif' ||
+                'bmp' ||
+                'svg' ||
+                'webp' ||
+                'tiff' ||
+                'ico' ||
+                'heic' ||
+                'heif' ||
+                'jfif' ? (
+                <>
+                  {/* Cancel Icon */}
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '3px',
+                      left: '55px',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    }}
+                    onClick={handleRemoveDOC1File}>
+                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                  </div>
+                  {/* EXls Icon */}
+                  <GridOnIcon
+                    style={{
+                      color: 'green',
+                      cursor: 'pointer',
+                      display: 'block',
+                      fontSize: '82px',
+                      padding: '16px',
+                    }}
+                  />
+                </>
               ) : (
                 <>
                   {/* Cancel Icon */}
