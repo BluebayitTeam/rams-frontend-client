@@ -20,6 +20,7 @@ import { Avatar } from '@mui/material';
 import { BASE_URL } from 'src/app/constant/constants';
 import { AttachFile } from '@mui/icons-material';
 import DescriptionIcon from '@mui/icons-material/Description';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
@@ -109,6 +110,8 @@ function Chat(props) {
   console.log('fileState', chat);
   const [file, setFile] = useState();
   const [open, setOpen] = useState(false);
+  const fileInputdoc1Ref = useRef(null);
+  const [filePreview, setFilePreview] = useState(null);
 
   useEffect(() => {
     scrollToBottom();
@@ -145,11 +148,32 @@ function Chat(props) {
   };
 
   const handleOnChange = (event) => {
-    event.preventDefault();
+    const file = event.target.files[0];
+    if (file) {
+      setFileState(file);
 
-    setFileState(event.target.files[0]);
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+      const imageExtensions = ['jpg', 'jpeg', 'png'];
+      const pdfExtensions = ['pdf'];
+
+      if (imageExtensions.includes(fileExtension)) {
+        setFilePreview(URL.createObjectURL(file));
+      } else if (pdfExtensions.includes(fileExtension)) {
+        setFilePreview('pdf');
+      } else {
+        setFilePreview('unsupported');
+      }
+    }
   };
 
+  const handleRemoveDOC1File = () => {
+    setFileState(null);
+    setFilePreview(null);
+
+    if (fileInputdoc1Ref.current) {
+      fileInputdoc1Ref.current.value = '';
+    }
+  };
   return (
     <Paper
       className={clsx('flex flex-col relative pb-64 shadow', className)}
@@ -212,17 +236,73 @@ function Chat(props) {
                                 height: '50px',
                               }}>
                               {item.file.toLowerCase().includes('pdf') ? (
-                                <PictureAsPdf
+                                <div
                                   style={{
-                                    color: 'red',
-                                    cursor: 'pointer',
-                                    fontSize: '37px',
-                                    margin: 'auto',
-                                  }}
-                                  onClick={() =>
-                                    window.open(`${BASE_URL}${item.file}`)
-                                  }
-                                />
+                                    display: 'flex',
+                                    position: 'relative',
+                                    width: 'fit-content',
+                                  }}>
+                                  <div
+                                    style={{
+                                      width: 'auto',
+                                      height: '150px',
+                                      overflow: 'hidden',
+                                      display: 'flex',
+                                    }}>
+                                    {typeof item.file === 'string' &&
+                                    ['pdf', 'doc', 'docx'].includes(
+                                      item.file.split('.').pop().toLowerCase()
+                                    ) ? (
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          height: '100%',
+                                        }}>
+                                        {item.file
+                                          .toLowerCase()
+                                          .includes('pdf') ? (
+                                          <PictureAsPdf
+                                            style={{
+                                              color: 'red',
+                                              cursor: 'pointer',
+                                              display: 'block',
+                                              fontSize: '137px',
+                                              margin: 'auto',
+                                            }}
+                                            onClick={() =>
+                                              window.open(
+                                                `${BASE_URL}${item.file}`
+                                              )
+                                            }
+                                          />
+                                        ) : (
+                                          <DescriptionIcon
+                                            style={{
+                                              color: 'blue',
+                                              cursor: 'pointer',
+                                              display: 'block',
+                                              fontSize: '137px',
+                                              margin: 'auto',
+                                            }}
+                                            onClick={() =>
+                                              window.open(
+                                                `${BASE_URL}${item.file}`
+                                              )
+                                            }
+                                          />
+                                        )}
+                                      </div>
+                                    ) : (
+                                      <img
+                                        src={`${BASE_URL}${item.file}`}
+                                        style={{ height: '100px' }}
+                                        alt='smart_card_image'
+                                      />
+                                    )}
+                                  </div>
+                                </div>
                               ) : (
                                 <DescriptionIcon
                                   style={{
@@ -278,55 +358,102 @@ function Chat(props) {
 
       {/* Message Input Section */}
       {chat && (
-        <form
-          onSubmit={(ev) => {
-            ev.preventDefault();
-            if (messageText === '' && !fileState) return;
+        <div>
+          <form
+            onSubmit={(ev) => {
+              ev.preventDefault();
+              if (messageText === '' && !fileState) return;
 
-            sendMessage({
-              message: messageText,
-              contactId: selectedContactId,
-              file: fileState,
-              test: 'test',
-            })
-              .then((response) => console.log('Message sent:', response))
-              .catch((error) => console.error('Error sending message:', error));
-            setMessageText('');
-            setFileState(null); // Reset file after sending
-          }}
-          className='pb-16 px-8 absolute bottom-0 left-0 right-0'>
-          <Paper className='rounded-24 flex items-center relative shadow'>
-            <div>
-              <label htmlFor='file'>
-                <input
-                  type='file'
-                  id='file'
-                  style={{ marginBottom: '20px', display: 'none' }}
-                  name='file'
-                  onChange={(event) => handleOnChange(event)}
-                  multiple
-                />
-                <AttachFile />
-              </label>
+              sendMessage({
+                message: messageText,
+                contactId: selectedContactId,
+                file: fileState,
+                test: 'test',
+              })
+                .then((response) => console.log('Message sent:', response))
+                .catch((error) =>
+                  console.error('Error sending message:', error)
+                );
+
+              setMessageText('');
+              setFileState(null); // Reset file after sending
+              setFilePreview(null); // Reset file preview
+            }}
+            className='pb-16 px-8 absolute bottom-0 left-0 right-0'>
+            <Paper className='rounded-24 flex items-center relative shadow'>
+              <div>
+                <label htmlFor='file'>
+                  <input
+                    type='file'
+                    id='file'
+                    style={{ display: 'none' }}
+                    name='file'
+                    onChange={(event) => handleOnChange(event)}
+                    multiple
+                  />
+                  <AttachFile />
+                </label>
+              </div>
+              <InputBase
+                id='message-input'
+                className='flex flex-1 grow shrink-0 mx-16 ltr:mr-48 rtl:ml-48 my-8'
+                placeholder='Type your message'
+                onChange={(e) => setMessageText(e.target.value)}
+                value={messageText}
+              />
+              <IconButton
+                className='absolute ltr:right-0 rtl:left-0 top-0'
+                type='submit'
+                size='large'>
+                <FuseSvgIcon className='rotate-90' color='action'>
+                  heroicons-outline:paper-airplane
+                </FuseSvgIcon>
+              </IconButton>
+            </Paper>
+          </form>
+
+          {filePreview && (
+            <div className='file-preview' style={{ position: 'relative' }}>
+              {filePreview === 'pdf' ? (
+                <Typography>
+                  Preview not available for PDFs. File ready to send.
+                </Typography>
+              ) : filePreview === 'unsupported' ? (
+                <Typography>File type not supported.</Typography>
+              ) : (
+                <>
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '-25px',
+                      // right: '1px',
+                      left: '85px',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      backgroundColor: 'white',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    }}
+                    onClick={handleRemoveDOC1File}>
+                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                  </div>
+                  <img
+                    src={filePreview}
+                    alt='File preview'
+                    style={{ maxWidth: '40%', marginTop: '10px' }}
+                  />
+                </>
+              )}
             </div>
-            <InputBase
-              id='message-input'
-              className='flex flex-1 grow shrink-0 mx-16 ltr:mr-48 rtl:ml-48 my-8'
-              placeholder='Type your message'
-              onChange={(e) => setMessageText(e.target.value)}
-              value={messageText}
-            />
-
-            <IconButton
-              className='absolute ltr:right-0 rtl:left-0 top-0'
-              type='submit'
-              size='large'>
-              <FuseSvgIcon className='rotate-90' color='action'>
-                heroicons-outline:paper-airplane
-              </FuseSvgIcon>
-            </IconButton>
-          </Paper>
-        </form>
+          )}
+        </div>
       )}
     </Paper>
   );
