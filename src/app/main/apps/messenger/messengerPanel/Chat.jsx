@@ -21,6 +21,7 @@ import { BASE_URL } from 'src/app/constant/constants';
 import { AttachFile } from '@mui/icons-material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import GridOnIcon from '@mui/icons-material/GridOn';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
@@ -155,11 +156,14 @@ function Chat(props) {
       const fileExtension = file.name.split('.').pop().toLowerCase();
       const imageExtensions = ['jpg', 'jpeg', 'png'];
       const pdfExtensions = ['pdf'];
+      const docExtensions = ['docx'];
 
       if (imageExtensions.includes(fileExtension)) {
         setFilePreview(URL.createObjectURL(file));
       } else if (pdfExtensions.includes(fileExtension)) {
         setFilePreview('pdf');
+      } else if (docExtensions.includes(fileExtension)) {
+        setFilePreview('docx');
       } else {
         setFilePreview('unsupported');
       }
@@ -224,7 +228,7 @@ function Chat(props) {
                             display: 'flex',
                           }}>
                           {typeof item.file === 'string' &&
-                          ['pdf', 'doc', 'docx'].includes(
+                          ['pdf', 'doc', 'docx', 'xls', 'xlsx'].includes(
                             item.file.split('.').pop().toLowerCase()
                           ) ? (
                             <div
@@ -249,66 +253,55 @@ function Chat(props) {
                                       overflow: 'hidden',
                                       display: 'flex',
                                     }}>
-                                    {typeof item.file === 'string' &&
-                                    ['pdf', 'doc', 'docx'].includes(
-                                      item.file.split('.').pop().toLowerCase()
-                                    ) ? (
-                                      <div
+                                    <div
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        height: '100%',
+                                      }}>
+                                      <PictureAsPdf
                                         style={{
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                          height: '100%',
-                                        }}>
-                                        {item.file
-                                          .toLowerCase()
-                                          .includes('pdf') ? (
-                                          <PictureAsPdf
-                                            style={{
-                                              color: 'red',
-                                              cursor: 'pointer',
-                                              display: 'block',
-                                              fontSize: '137px',
-                                              margin: 'auto',
-                                            }}
-                                            onClick={() =>
-                                              window.open(
-                                                `${BASE_URL}${item.file}`
-                                              )
-                                            }
-                                          />
-                                        ) : (
-                                          <DescriptionIcon
-                                            style={{
-                                              color: 'blue',
-                                              cursor: 'pointer',
-                                              display: 'block',
-                                              fontSize: '137px',
-                                              margin: 'auto',
-                                            }}
-                                            onClick={() =>
-                                              window.open(
-                                                `${BASE_URL}${item.file}`
-                                              )
-                                            }
-                                          />
-                                        )}
-                                      </div>
-                                    ) : (
-                                      <img
-                                        src={`${BASE_URL}${item.file}`}
-                                        style={{ height: '100px' }}
-                                        alt='smart_card_image'
+                                          color: 'red',
+                                          cursor: 'pointer',
+                                          display: 'block',
+                                          fontSize: '137px',
+                                          margin: 'auto',
+                                        }}
+                                        onClick={() =>
+                                          window.open(`${BASE_URL}${item.file}`)
+                                        }
                                       />
-                                    )}
+                                    </div>
                                   </div>
+                                </div>
+                              ) : item.file.toLowerCase().includes('xls') ||
+                                item.file.toLowerCase().includes('xlsx') ? (
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}>
+                                  <GridOnIcon
+                                    style={{
+                                      color: 'green',
+                                      cursor: 'pointer',
+                                      display: 'block',
+                                      fontSize: '137px',
+                                      margin: 'auto',
+                                    }}
+                                    onClick={() =>
+                                      window.open(`${BASE_URL}${item.file}`)
+                                    }
+                                  />
                                 </div>
                               ) : (
                                 <DescriptionIcon
                                   style={{
                                     color: 'blue',
                                     cursor: 'pointer',
-                                    fontSize: '37px',
+                                    fontSize: '137px',
                                     margin: 'auto',
                                   }}
                                   onClick={() =>
@@ -415,26 +408,19 @@ function Chat(props) {
           {filePreview && (
             <div className='file-preview' style={{ position: 'relative' }}>
               {filePreview === 'pdf' ? (
-                <Typography>
-                  Preview not available for PDFs. File ready to send.
-                </Typography>
-              ) : filePreview === 'unsupported' ? (
-                <Typography>File type not supported.</Typography>
-              ) : (
                 <>
+                  {/* Cancel Icon */}
                   <div
                     id='cancelIcon'
                     style={{
                       position: 'absolute',
-                      top: '-25px',
-                      // right: '1px',
-                      left: '85px',
+                      top: '-5px',
+                      left: '53px',
                       zIndex: 1,
                       color: 'red',
                       cursor: 'pointer',
-                      backgroundColor: 'white',
-                      width: '24px',
-                      height: '24px',
+                      width: '15px',
+                      height: '15px',
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
@@ -444,10 +430,87 @@ function Chat(props) {
                     onClick={handleRemoveDOC1File}>
                     <HighlightOffIcon style={{ fontSize: '20px' }} />
                   </div>
+                  {/* PDF Icon */}
+                  <PictureAsPdf
+                    style={{
+                      color: 'red',
+                      cursor: 'pointer',
+                      display: 'block',
+                      fontSize: '82px',
+                      padding: '16px',
+                    }}
+                    // onClick={() => window.open(`${BASE_URL}${filePreview}`)}
+                  />
+                </>
+              ) : filePreview === 'docx' ? (
+                <>
+                  {/* Cancel Icon */}
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '5px',
+                      left: '55px',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      width: '15px',
+                      height: '15px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    }}
+                    onClick={handleRemoveDOC1File}>
+                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                  </div>
+                  {/* PDF Icon */}
+                  <DescriptionIcon
+                    style={{
+                      color: 'blue',
+                      cursor: 'pointer',
+                      display: 'block',
+                      fontSize: '82px',
+                      padding: '16px',
+                    }}
+                    // onClick={() => window.open(`${BASE_URL}${item.file}`)}
+                  />
+                </>
+              ) : filePreview === 'unsupported' ? (
+                <Typography>File type not supported.</Typography>
+              ) : (
+                <>
+                  {/* Cancel Icon */}
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '-13px',
+                      left: '125px',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      width: '15px',
+                      height: '15px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    }}
+                    onClick={handleRemoveDOC1File}>
+                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                  </div>
+                  {/* Image Preview */}
                   <img
                     src={filePreview}
                     alt='File preview'
-                    style={{ maxWidth: '40%', marginTop: '10px' }}
+                    style={{
+                      maxWidth: '150px',
+                      maxHeight: '130px',
+                      padding: '20px',
+                    }}
                   />
                 </>
               )}
