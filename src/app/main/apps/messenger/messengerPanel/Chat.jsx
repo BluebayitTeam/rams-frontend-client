@@ -412,7 +412,6 @@ function Chat(props) {
                       fontSize: '82px',
                       padding: '16px',
                     }}
-                    // onClick={() => window.open(`${BASE_URL}${filePreview}`)}
                   />
                 </>
               ) : filePreview === 'docx' ? (
@@ -438,7 +437,7 @@ function Chat(props) {
                     onClick={handleRemoveDOC1File}>
                     <HighlightOffIcon style={{ fontSize: '20px' }} />
                   </div>
-                  {/* PDF Icon */}
+                  {/* docx Icon */}
                   <DescriptionIcon
                     style={{
                       color: 'blue',
@@ -447,7 +446,6 @@ function Chat(props) {
                       fontSize: '82px',
                       padding: '16px',
                     }}
-                    // onClick={() => window.open(`${BASE_URL}${item.file}`)}
                   />
                 </>
               ) : filePreview === 'xls' || 'xlsx' ? (
