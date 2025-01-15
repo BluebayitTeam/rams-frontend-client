@@ -441,7 +441,7 @@ function Chat(props) {
                     onClick={handleRemoveDOC1File}>
                     <HighlightOffIcon style={{ fontSize: '20px' }} />
                   </div>
-                  {/* docx Icon */}
+                  {/* DOCX Icon */}
                   <DescriptionIcon
                     style={{
                       color: 'blue',
@@ -452,7 +452,7 @@ function Chat(props) {
                     }}
                   />
                 </>
-              ) : filePreview === 'xls' || 'xlsx' ? (
+              ) : filePreview === 'xls' || filePreview === 'xlsx' ? (
                 <>
                   {/* Cancel Icon */}
                   <div
@@ -475,52 +475,7 @@ function Chat(props) {
                     onClick={handleRemoveDOC1File}>
                     <HighlightOffIcon style={{ fontSize: '20px' }} />
                   </div>
-                  {/* EXls Icon */}
-                  <GridOnIcon
-                    style={{
-                      color: 'green',
-                      cursor: 'pointer',
-                      display: 'block',
-                      fontSize: '82px',
-                      padding: '16px',
-                    }}
-                  />
-                </>
-              ) : filePreview === 'jpg' ||
-                'jpeg' ||
-                'png' ||
-                'gif' ||
-                'bmp' ||
-                'svg' ||
-                'webp' ||
-                'tiff' ||
-                'ico' ||
-                'heic' ||
-                'heif' ||
-                'jfif' ? (
-                <>
-                  {/* Cancel Icon */}
-                  <div
-                    id='cancelIcon'
-                    style={{
-                      position: 'absolute',
-                      top: '3px',
-                      left: '55px',
-                      zIndex: 1,
-                      color: 'red',
-                      cursor: 'pointer',
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-                    }}
-                    onClick={handleRemoveDOC1File}>
-                    <HighlightOffIcon style={{ fontSize: '20px' }} />
-                  </div>
-                  {/* EXls Icon */}
+                  {/* XLS Icon */}
                   <GridOnIcon
                     style={{
                       color: 'green',
@@ -538,13 +493,13 @@ function Chat(props) {
                     id='cancelIcon'
                     style={{
                       position: 'absolute',
-                      top: '-13px',
-                      left: '125px',
+                      top: '3px',
+                      left: '85px',
                       zIndex: 1,
                       color: 'red',
                       cursor: 'pointer',
-                      width: '15px',
-                      height: '15px',
+                      width: '10px',
+                      height: '10px',
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
@@ -554,15 +509,10 @@ function Chat(props) {
                     onClick={handleRemoveDOC1File}>
                     <HighlightOffIcon style={{ fontSize: '20px' }} />
                   </div>
-                  {/* Image Preview */}
                   <img
                     src={filePreview}
                     alt='File preview'
-                    style={{
-                      maxWidth: '150px',
-                      maxHeight: '130px',
-                      padding: '20px',
-                    }}
+                    style={{ maxWidth: '40%', padding: '20px' }}
                   />
                 </>
               )}
