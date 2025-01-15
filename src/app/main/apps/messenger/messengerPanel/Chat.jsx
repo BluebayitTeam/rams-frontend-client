@@ -95,9 +95,6 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
   },
 }));
 
-/**
- * The chat component.
- */
 function Chat(props) {
   const { className } = props;
   const selectedContactId = useSelector(selectSelectedContactId);
@@ -191,7 +188,6 @@ function Chat(props) {
         <div className='flex flex-col pt-16'>
           {chat?.messages?.length > 0 ? (
             chat.messages.map((item, i) => {
-              // Helper functions
               const isFirstMessageOfGroup =
                 i === 0 || chat[i - 1]?.contactId !== item.contactId;
 
@@ -342,8 +338,8 @@ function Chat(props) {
                 );
 
               setMessageText('');
-              setFileState(null); // Reset file after sending
-              setFilePreview(null); // Reset file preview
+              setFileState(null);
+              setFilePreview(null);
             }}
             className='pb-16 px-8 absolute bottom-0 left-0 right-0'>
             <Paper className='rounded-24 flex items-center relative shadow'>
