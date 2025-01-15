@@ -22,6 +22,7 @@ import { AttachFile } from '@mui/icons-material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import GridOnIcon from '@mui/icons-material/GridOn';
+import FolderZipIcon from '@mui/icons-material/FolderZip';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
@@ -38,12 +39,12 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
     },
     '&.first-of-group': {
       '& .bubble': {
-        borderTopLeftRadius: 20,
+        borderTopLeftRadius: 20, // Only left side
       },
     },
     '&.last-of-group': {
       '& .bubble': {
-        borderBottomLeftRadius: 20,
+        borderBottomLeftRadius: 20, // Only left side
       },
     },
   },
@@ -65,33 +66,19 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
     },
     '&.first-of-group': {
       '& .bubble': {
-        borderTopRightRadius: 20,
+        borderTopRightRadius: 20, // Only right side
       },
     },
     '&.last-of-group': {
       '& .bubble': {
-        borderBottomRightRadius: 20,
+        borderBottomRightRadius: 20, // Only right side
       },
     },
   },
+  // Padding and margin for message groups
   '&.contact + .me, &.me + .contact': {
     paddingTop: 20,
     marginTop: 20,
-  },
-  '&.first-of-group': {
-    '& .bubble': {
-      borderTopLeftRadius: 20,
-      paddingTop: 13,
-    },
-  },
-  '&.last-of-group': {
-    '& .bubble': {
-      borderBottomLeftRadius: 20,
-      paddingBottom: 13,
-      '& .time': {
-        display: 'flex',
-      },
-    },
   },
 }));
 
@@ -105,7 +92,7 @@ function Chat(props) {
   const [messageText, setMessageText] = useState('');
   const chatScroll = useRef(null);
   const [fileState, setFileState] = useState();
-  console.log('fileState', chat);
+  console.log('fileState', fileState);
   const [file, setFile] = useState();
   const [open, setOpen] = useState(false);
   const fileInputdoc1Ref = useRef(null);
@@ -221,94 +208,255 @@ function Chat(props) {
                     { 'last-of-group': isLastMessageOfGroup },
                     i + 1 === chat.messages.length && 'pb-72'
                   )}>
-                  <div className='flex items-center'>
-                    <div className='leading-tight whitespace-pre-wrap'>
-                      {/* <Avatar src={`${BASE_URL}${item.receiver_image || ''}`} /> */}
-                    </div>
-                    <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                  {item.sender_image ? (
+                    <div className='flex items-start'>
+                      {/* Avatar Section */}
                       <div className='leading-tight whitespace-pre-wrap'>
-                        {item.message}
+                        <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
                       </div>
-                      {item.file && (
-                        <div
-                          style={{
-                            width: 'auto',
-                            height: 'auto',
-                            overflow: 'hidden',
-                            display: 'flex',
-                          }}>
-                          {typeof item.file === 'string' &&
-                          ['pdf', 'doc', 'docx', 'xls', 'xlsx'].includes(
-                            item.file.split('.').pop().toLowerCase()
-                          ) ? (
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: 'auto',
-                                height: '50px',
-                              }}>
-                              {item.file.toLowerCase().includes('pdf') ? (
-                                <PictureAsPdf
-                                  style={{
-                                    color: 'red',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '47px',
-                                    margin: 'auto',
-                                  }}
-                                  onClick={() =>
-                                    window.open(`${BASE_URL}${item.file}`)
-                                  }
-                                />
-                              ) : item.file.toLowerCase().includes('xls') ||
-                                item.file.toLowerCase().includes('xlsx') ? (
-                                <GridOnIcon
-                                  style={{
-                                    color: 'green',
-                                    cursor: 'pointer',
-                                    display: 'block',
-                                    fontSize: '47px',
-                                    margin: 'auto',
-                                  }}
-                                  onClick={() =>
-                                    window.open(`${BASE_URL}${item.file}`)
-                                  }
-                                />
-                              ) : (
-                                <DescriptionIcon
-                                  style={{
-                                    color: 'blue',
-                                    cursor: 'pointer',
-                                    fontSize: '47px',
-                                    margin: 'auto',
-                                  }}
-                                  onClick={() =>
-                                    window.open(`${BASE_URL}${item.file}`)
-                                  }
-                                />
-                              )}
-                            </div>
-                          ) : (
-                            <img
-                              src={`${BASE_URL}${item.file}`}
-                              style={{ height: '100px' }}
-                              alt='file'
-                            />
-                          )}
-                        </div>
-                      )}
 
-                      <Typography
-                        className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
-                        color='text.secondary'>
-                        {formatDistanceToNow(new Date(item?.created_at), {
-                          addSuffix: true,
-                        })}
-                      </Typography>
+                      {/* Message Bubble */}
+                      <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                        {/* Message Content */}
+                        <div className='leading-tight whitespace-pre-wrap'>
+                          {item.message}
+                        </div>
+
+                        {/* File Attachment */}
+                        {item.file && (
+                          <div
+                            style={{
+                              width: 'auto',
+                              height: 'auto',
+                              overflow: 'hidden',
+                              display: 'flex',
+                            }}>
+                            {typeof item.file === 'string' ? (
+                              // Check for file type
+                              [
+                                'pdf',
+                                'doc',
+                                'docx',
+                                'xls',
+                                'xlsx',
+                                'zip',
+                              ].includes(
+                                item.file.split('.').pop().toLowerCase()
+                              ) ? (
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: 'auto',
+                                    height: '50px',
+                                  }}>
+                                  {item.file.endsWith('.pdf') ? (
+                                    <PictureAsPdf
+                                      style={{
+                                        color: 'red',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  ) : ['xls', 'xlsx'].includes(
+                                      item.file.split('.').pop().toLowerCase()
+                                    ) ? (
+                                    <GridOnIcon
+                                      style={{
+                                        color: 'green',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  ) : item.file.endsWith('.zip') ? (
+                                    <FolderZipIcon
+                                      style={{
+                                        color: 'yellow',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  ) : (
+                                    <DescriptionIcon
+                                      style={{
+                                        color: 'blue',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  )}
+                                </div>
+                              ) : (
+                                <img
+                                  src={`${BASE_URL}${item.file}`}
+                                  style={{ height: '100px' }}
+                                  alt='file'
+                                />
+                              )
+                            ) : null}
+                          </div>
+                        )}
+
+                        {/* Timestamp */}
+                        <Typography
+                          className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
+                          color='text.secondary'>
+                          {formatDistanceToNow(new Date(item?.created_at), {
+                            addSuffix: true,
+                          })}
+                        </Typography>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className='flex items-center justify-end w-full'>
+                      <div className='leading-tight whitespace-pre-wrap'>
+                        {/* Avatar Section */}
+                        <div className='flex items-start'>
+                          {/* Message Bubble */}
+                          <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                            {/* Message Content */}
+                            <div className='leading-tight whitespace-pre-wrap'>
+                              {item.message}
+                            </div>
+
+                            {/* File Attachment */}
+                            {item.file && (
+                              <div
+                                style={{
+                                  width: 'auto',
+                                  height: 'auto',
+                                  overflow: 'hidden',
+                                  display: 'flex',
+                                }}>
+                                {typeof item.file === 'string' ? (
+                                  // Check for file type
+                                  [
+                                    'pdf',
+                                    'doc',
+                                    'docx',
+                                    'xls',
+                                    'xlsx',
+                                    'zip',
+                                  ].includes(
+                                    item.file.split('.').pop().toLowerCase()
+                                  ) ? (
+                                    <div
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: 'auto',
+                                        height: '50px',
+                                      }}>
+                                      {item.file.endsWith('.pdf') ? (
+                                        <PictureAsPdf
+                                          style={{
+                                            color: 'red',
+                                            cursor: 'pointer',
+                                            fontSize: '47px',
+                                            margin: 'auto',
+                                          }}
+                                          onClick={() =>
+                                            window.open(
+                                              `${BASE_URL}${item.file}`
+                                            )
+                                          }
+                                        />
+                                      ) : ['xls', 'xlsx'].includes(
+                                          item.file
+                                            .split('.')
+                                            .pop()
+                                            .toLowerCase()
+                                        ) ? (
+                                        <GridOnIcon
+                                          style={{
+                                            color: 'green',
+                                            cursor: 'pointer',
+                                            fontSize: '47px',
+                                            margin: 'auto',
+                                          }}
+                                          onClick={() =>
+                                            window.open(
+                                              `${BASE_URL}${item.file}`
+                                            )
+                                          }
+                                        />
+                                      ) : item.file.endsWith('.zip') ? (
+                                        <FolderZipIcon
+                                          style={{
+                                            color: 'yellow',
+                                            cursor: 'pointer',
+                                            fontSize: '47px',
+                                            margin: 'auto',
+                                          }}
+                                          onClick={() =>
+                                            window.open(
+                                              `${BASE_URL}${item.file}`
+                                            )
+                                          }
+                                        />
+                                      ) : (
+                                        <DescriptionIcon
+                                          style={{
+                                            color: 'blue',
+                                            cursor: 'pointer',
+                                            fontSize: '47px',
+                                            margin: 'auto',
+                                          }}
+                                          onClick={() =>
+                                            window.open(
+                                              `${BASE_URL}${item.file}`
+                                            )
+                                          }
+                                        />
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <img
+                                      src={`${BASE_URL}${item.file}`}
+                                      style={{ height: '100px' }}
+                                      alt='file'
+                                    />
+                                  )
+                                ) : null}
+                              </div>
+                            )}
+
+                            {/* Timestamp */}
+                            <Typography
+                              className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
+                              color='text.secondary'>
+                              {formatDistanceToNow(new Date(item?.created_at), {
+                                addSuffix: true,
+                              })}
+                            </Typography>
+                          </div>
+                          <div className='leading-tight whitespace-pre-wrap'>
+                            <Avatar
+                              src={`${BASE_URL}${item.sender_image || ''}`}
+                            />
+                          </div>
+                        </div>
+                      </div>{' '}
+                    </div>
+                  )}
                 </StyledMessageRow>
               );
             })
@@ -341,7 +489,6 @@ function Chat(props) {
                 message: messageText,
                 contactId: selectedContactId,
                 file: fileState,
-                test: 'test',
               })
                 .then((response) => console.log('Message sent:', response))
                 .catch((error) =>
@@ -359,6 +506,7 @@ function Chat(props) {
                   <input
                     type='file'
                     id='file'
+                    ref={fileInputdoc1Ref}
                     style={{ display: 'none' }}
                     name='file'
                     onChange={(event) => handleOnChange(event)}
@@ -482,6 +630,40 @@ function Chat(props) {
                   <GridOnIcon
                     style={{
                       color: 'green',
+                      cursor: 'pointer',
+                      display: 'block',
+                      fontSize: '82px',
+                      padding: '16px',
+                    }}
+                  />
+                </>
+              ) : filePreview === 'zip' ? (
+                <>
+                  {/* Cancel Icon */}
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '3px',
+                      left: '55px',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    }}
+                    onClick={handleRemoveDOC1File}>
+                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                  </div>
+                  {/* zip Icon */}
+                  <FolderZipIcon
+                    style={{
+                      color: 'yellow',
                       cursor: 'pointer',
                       display: 'block',
                       fontSize: '82px',
