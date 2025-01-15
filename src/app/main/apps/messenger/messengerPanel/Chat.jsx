@@ -126,24 +126,19 @@ function Chat(props) {
     });
   }
 
-  const onInputChange = (ev) => {
-    setMessageText(ev.target.value);
-    setFileState(ev.target.value);
-  };
+  // const showFile = (fileUrl) => {
+  //   setFile(fileUrl);
+  //   const extStr = getExtenstion(fileUrl);
+  //   const ticketImgExtensionArr = ['.jpg', '.jpeg', '.png'];
 
-  const showFile = (fileUrl) => {
-    setFile(fileUrl);
-    const extStr = getExtenstion(fileUrl);
-    const ticketImgExtensionArr = ['.jpg', '.jpeg', '.png'];
+  //   const isImage = ticketImgExtensionArr.find((url) => url === extStr);
 
-    const isImage = ticketImgExtensionArr.find((url) => url === extStr);
-
-    if (isImage) {
-      setOpen(true);
-    } else {
-      window.open(fileUrl);
-    }
-  };
+  //   if (isImage) {
+  //     setOpen(true);
+  //   } else {
+  //     window.open(fileUrl);
+  //   }
+  // };
 
   const handleOnChange = (event) => {
     const file = event.target.files[0];
@@ -283,7 +278,7 @@ function Chat(props) {
                             <img
                               src={`${BASE_URL}${item.file}`}
                               style={{ height: '100px' }}
-                              alt='smart_card_image'
+                              alt='file'
                             />
                           )}
                         </div>
