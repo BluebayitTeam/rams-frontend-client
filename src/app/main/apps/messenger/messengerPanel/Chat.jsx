@@ -163,6 +163,7 @@ function Chat(props) {
       const pdfExtensions = ['pdf'];
       const docExtensions = ['docx'];
       const exlsExtensions = ['xls', 'xlsx'];
+      const zipExtensions = ['zip'];
 
       if (imageExtensions.includes(fileExtension)) {
         setFilePreview(URL.createObjectURL(file));
@@ -172,6 +173,8 @@ function Chat(props) {
         setFilePreview('docx');
       } else if (exlsExtensions.includes(fileExtension)) {
         setFilePreview('xls', 'xlsx');
+      } else if (zipExtensions.includes(fileExtension)) {
+        setFilePreview('zip');
       } else {
         setFilePreview('unsupported');
       }
