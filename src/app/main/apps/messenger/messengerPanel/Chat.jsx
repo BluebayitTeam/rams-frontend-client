@@ -157,6 +157,7 @@ function Chat(props) {
       const imageExtensions = ['jpg', 'jpeg', 'png'];
       const pdfExtensions = ['pdf'];
       const docExtensions = ['docx'];
+      const exlsExtensions = ['xls', 'xlsx'];
 
       if (imageExtensions.includes(fileExtension)) {
         setFilePreview(URL.createObjectURL(file));
@@ -164,6 +165,8 @@ function Chat(props) {
         setFilePreview('pdf');
       } else if (docExtensions.includes(fileExtension)) {
         setFilePreview('docx');
+      } else if (exlsExtensions.includes(fileExtension)) {
+        setFilePreview('xls', 'xlsx');
       } else {
         setFilePreview('unsupported');
       }
@@ -240,68 +243,38 @@ function Chat(props) {
                                 height: '50px',
                               }}>
                               {item.file.toLowerCase().includes('pdf') ? (
-                                <div
+                                <PictureAsPdf
                                   style={{
-                                    display: 'flex',
-                                    position: 'relative',
-                                    width: 'fit-content',
-                                  }}>
-                                  <div
-                                    style={{
-                                      width: 'auto',
-                                      height: '150px',
-                                      overflow: 'hidden',
-                                      display: 'flex',
-                                    }}>
-                                    <div
-                                      style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        height: '100%',
-                                      }}>
-                                      <PictureAsPdf
-                                        style={{
-                                          color: 'red',
-                                          cursor: 'pointer',
-                                          display: 'block',
-                                          fontSize: '137px',
-                                          margin: 'auto',
-                                        }}
-                                        onClick={() =>
-                                          window.open(`${BASE_URL}${item.file}`)
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
+                                    color: 'red',
+                                    cursor: 'pointer',
+                                    display: 'block',
+                                    fontSize: '47px',
+                                    margin: 'auto',
+                                  }}
+                                  onClick={() =>
+                                    window.open(`${BASE_URL}${item.file}`)
+                                  }
+                                />
                               ) : item.file.toLowerCase().includes('xls') ||
                                 item.file.toLowerCase().includes('xlsx') ? (
-                                <div
+                                <GridOnIcon
                                   style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                  }}>
-                                  <GridOnIcon
-                                    style={{
-                                      color: 'green',
-                                      cursor: 'pointer',
-                                      display: 'block',
-                                      fontSize: '137px',
-                                      margin: 'auto',
-                                    }}
-                                    onClick={() =>
-                                      window.open(`${BASE_URL}${item.file}`)
-                                    }
-                                  />
-                                </div>
+                                    color: 'green',
+                                    cursor: 'pointer',
+                                    display: 'block',
+                                    fontSize: '47px',
+                                    margin: 'auto',
+                                  }}
+                                  onClick={() =>
+                                    window.open(`${BASE_URL}${item.file}`)
+                                  }
+                                />
                               ) : (
                                 <DescriptionIcon
                                   style={{
                                     color: 'blue',
                                     cursor: 'pointer',
-                                    fontSize: '137px',
+                                    fontSize: '47px',
                                     margin: 'auto',
                                   }}
                                   onClick={() =>
@@ -475,6 +448,40 @@ function Chat(props) {
                       padding: '16px',
                     }}
                     // onClick={() => window.open(`${BASE_URL}${item.file}`)}
+                  />
+                </>
+              ) : filePreview === 'xls' || 'xlsx' ? (
+                <>
+                  {/* Cancel Icon */}
+                  <div
+                    id='cancelIcon'
+                    style={{
+                      position: 'absolute',
+                      top: '3px',
+                      left: '55px',
+                      zIndex: 1,
+                      color: 'red',
+                      cursor: 'pointer',
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    }}
+                    onClick={handleRemoveDOC1File}>
+                    <HighlightOffIcon style={{ fontSize: '20px' }} />
+                  </div>
+                  {/* EXls Icon */}
+                  <GridOnIcon
+                    style={{
+                      color: 'green',
+                      cursor: 'pointer',
+                      display: 'block',
+                      fontSize: '82px',
+                      padding: '16px',
+                    }}
                   />
                 </>
               ) : filePreview === 'unsupported' ? (
