@@ -13,6 +13,7 @@ import { PictureAsPdf } from '@mui/icons-material';
 
 import {
   useGetMessengerChatQuery,
+  useGetMessengerContactsQuery,
   useGetMessengerUserProfileQuery,
   useSendMessengerMessageMutation,
 } from '../MessengerApi';
@@ -85,9 +86,12 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
 function Chat(props) {
   const { className } = props;
   const selectedContactId = useSelector(selectSelectedContactId);
+  const userId = localStorage.getItem('user_id');
 
-  const { data: chat } = useGetMessengerChatQuery(selectedContactId);
+  const { data: chat, refetch } = useGetMessengerChatQuery(selectedContactId);
   const { data: user } = useGetMessengerUserProfileQuery();
+  const { data: contacts } = useGetMessengerContactsQuery(userId);
+
   const [sendMessage] = useSendMessengerMessageMutation();
   const [messageText, setMessageText] = useState('');
   const chatScroll = useRef(null);
@@ -176,6 +180,17 @@ function Chat(props) {
       fileInputdoc1Ref.current.value = '';
     }
   };
+
+  useEffect(() => {
+    if (!selectedContactId) return;
+
+    const interval = setInterval(() => {
+      refetch();
+    }, 5000); // Call every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [selectedContactId, refetch]);
+
   return (
     <Paper
       className={clsx('flex flex-col relative pb-64 shadow', className)}
@@ -197,24 +212,25 @@ function Chat(props) {
                 item.contactId === selectedContactId &&
                 (i === chat.messages.length - 1 ||
                   chat[i + 1]?.contactId !== selectedContactId);
-
+              console.log(
+                'check_user',
+                item.sender.id === userId,
+                item.sender.id,
+                userId
+              );
               return (
                 <StyledMessageRow
                   key={i}
+                  //  grow-0 shrink-0 items-start justify-end
                   className={clsx(
-                    'flex flex-col grow-0 shrink-0 items-start justify-end relative px-20 pb-4',
+                    'flex flex-col relative px-20 pb-4',
                     item.contactId === user?.id ? 'me' : 'contact',
                     { 'first-of-group': isFirstMessageOfGroup },
                     { 'last-of-group': isLastMessageOfGroup },
                     i + 1 === chat.messages.length && 'pb-72'
                   )}>
-                  {item.sender_image ? (
-                    <div className='flex items-start'>
-                      {/* Avatar Section */}
-                      <div className='leading-tight whitespace-pre-wrap'>
-                        <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
-                      </div>
-
+                  {Number(item.sender.id) === Number(userId) ? (
+                    <div className='flex justify-end'>
                       {/* Message Bubble */}
                       <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
                         {/* Message Content */}
@@ -323,138 +339,125 @@ function Chat(props) {
                           })}
                         </Typography>
                       </div>
+                      {/* Avatar Section */}
+                      <div className='leading-tight whitespace-pre-wrap'>
+                        <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
+                      </div>
                     </div>
                   ) : (
-                    <div className='flex items-center justify-end w-full'>
+                    <div className='flex justify-start'>
+                      {/* Avatar Section */}
                       <div className='leading-tight whitespace-pre-wrap'>
-                        {/* Avatar Section */}
-                        <div className='flex items-start'>
-                          {/* Message Bubble */}
-                          <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
-                            {/* Message Content */}
-                            <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]'>
-                              {item.message}
-                            </div>
-
-                            {/* File Attachment */}
-                            {item.file && (
-                              <div
-                                style={{
-                                  width: 'auto',
-                                  height: 'auto',
-                                  overflow: 'hidden',
-                                  display: 'flex',
-                                }}>
-                                {typeof item.file === 'string' ? (
-                                  // Check for file type
-                                  [
-                                    'pdf',
-                                    'doc',
-                                    'docx',
-                                    'xls',
-                                    'xlsx',
-                                    'zip',
-                                  ].includes(
-                                    item.file.split('.').pop().toLowerCase()
-                                  ) ? (
-                                    <div
-                                      style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        width: 'auto',
-                                        height: '50px',
-                                      }}>
-                                      {item.file.endsWith('.pdf') ? (
-                                        <PictureAsPdf
-                                          style={{
-                                            color: 'red',
-                                            cursor: 'pointer',
-                                            fontSize: '47px',
-                                            margin: 'auto',
-                                          }}
-                                          onClick={() =>
-                                            window.open(
-                                              `${BASE_URL}${item.file}`
-                                            )
-                                          }
-                                        />
-                                      ) : ['xls', 'xlsx'].includes(
-                                          item.file
-                                            .split('.')
-                                            .pop()
-                                            .toLowerCase()
-                                        ) ? (
-                                        <GridOnIcon
-                                          style={{
-                                            color: 'green',
-                                            cursor: 'pointer',
-                                            fontSize: '47px',
-                                            margin: 'auto',
-                                          }}
-                                          onClick={() =>
-                                            window.open(
-                                              `${BASE_URL}${item.file}`
-                                            )
-                                          }
-                                        />
-                                      ) : item.file.endsWith('.zip') ? (
-                                        <FolderZipIcon
-                                          style={{
-                                            color: 'yellow',
-                                            cursor: 'pointer',
-                                            fontSize: '47px',
-                                            margin: 'auto',
-                                          }}
-                                          onClick={() =>
-                                            window.open(
-                                              `${BASE_URL}${item.file}`
-                                            )
-                                          }
-                                        />
-                                      ) : (
-                                        <DescriptionIcon
-                                          style={{
-                                            color: 'blue',
-                                            cursor: 'pointer',
-                                            fontSize: '47px',
-                                            margin: 'auto',
-                                          }}
-                                          onClick={() =>
-                                            window.open(
-                                              `${BASE_URL}${item.file}`
-                                            )
-                                          }
-                                        />
-                                      )}
-                                    </div>
-                                  ) : (
-                                    <img
-                                      src={`${BASE_URL}${item.file}`}
-                                      style={{ height: '100px' }}
-                                      alt='file'
-                                    />
-                                  )
-                                ) : null}
-                              </div>
-                            )}
-
-                            {/* Timestamp */}
-                            <Typography
-                              className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
-                              color='text.secondary'>
-                              {formatDistanceToNow(new Date(item?.created_at), {
-                                addSuffix: true,
-                              })}
-                            </Typography>
-                          </div>
-                          <div className='leading-tight whitespace-pre-wrap'>
-                            <Avatar
-                              src={`${BASE_URL}${item.sender_image || ''}`}
-                            />
-                          </div>
+                        <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
+                      </div>
+                      {/* Message Bubble */}
+                      <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                        {/* Message Content */}
+                        <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]'>
+                          {item.message}
                         </div>
-                      </div>{' '}
+
+                        {/* File Attachment */}
+                        {item.file && (
+                          <div
+                            style={{
+                              width: 'auto',
+                              height: 'auto',
+                              overflow: 'hidden',
+                              display: 'flex',
+                            }}>
+                            {typeof item.file === 'string' ? (
+                              // Check for file type
+                              [
+                                'pdf',
+                                'doc',
+                                'docx',
+                                'xls',
+                                'xlsx',
+                                'zip',
+                              ].includes(
+                                item.file.split('.').pop().toLowerCase()
+                              ) ? (
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: 'auto',
+                                    height: '50px',
+                                  }}>
+                                  {item.file.endsWith('.pdf') ? (
+                                    <PictureAsPdf
+                                      style={{
+                                        color: 'red',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  ) : ['xls', 'xlsx'].includes(
+                                      item.file.split('.').pop().toLowerCase()
+                                    ) ? (
+                                    <GridOnIcon
+                                      style={{
+                                        color: 'green',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  ) : item.file.endsWith('.zip') ? (
+                                    <FolderZipIcon
+                                      style={{
+                                        color: 'yellow',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  ) : (
+                                    <DescriptionIcon
+                                      style={{
+                                        color: 'blue',
+                                        cursor: 'pointer',
+                                        fontSize: '47px',
+                                        margin: 'auto',
+                                      }}
+                                      onClick={() =>
+                                        window.open(`${BASE_URL}${item.file}`)
+                                      }
+                                    />
+                                  )}
+                                </div>
+                              ) : (
+                                <img
+                                  src={`${BASE_URL}${item.file}`}
+                                  style={{ height: '100px' }}
+                                  alt='file'
+                                />
+                              )
+                            ) : null}
+                          </div>
+                        )}
+
+                        {/* Timestamp */}
+                        <Typography
+                          className='time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-nowrap'
+                          color='text.secondary'>
+                          {formatDistanceToNow(new Date(item?.created_at), {
+                            addSuffix: true,
+                          })}
+                        </Typography>
+                      </div>
                     </div>
                   )}
                 </StyledMessageRow>
