@@ -32,20 +32,20 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
       color: theme.palette.secondary.contrastText,
       borderTopLeftRadius: 5,
       borderBottomLeftRadius: 5,
-      borderTopRightRadius: 20,
-      borderBottomRightRadius: 20,
+      borderTopRightRadius: 5,
+      borderBottomRightRadius: 5,
       '& .time': {
         marginLeft: 12,
       },
     },
     '&.first-of-group': {
       '& .bubble': {
-        borderTopLeftRadius: 20, // Only left side
+        borderTopLeftRadius: 5, // Only left side
       },
     },
     '&.last-of-group': {
       '& .bubble': {
-        borderBottomLeftRadius: 20, // Only left side
+        borderBottomLeftRadius: 5, // Only left side
       },
     },
   },
@@ -55,8 +55,8 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
       marginLeft: 'auto',
       backgroundColor: lighten(theme.palette.primary.main, 0.1),
       color: theme.palette.primary.contrastText,
-      borderTopLeftRadius: 20,
-      borderBottomLeftRadius: 20,
+      borderTopLeftRadius: 5,
+      borderBottomLeftRadius: 5,
       borderTopRightRadius: 5,
       borderBottomRightRadius: 5,
       '& .time': {
@@ -67,12 +67,12 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
     },
     '&.first-of-group': {
       '& .bubble': {
-        borderTopRightRadius: 20,
+        borderTopRightRadius: 5,
       },
     },
     '&.last-of-group': {
       '& .bubble': {
-        borderBottomRightRadius: 20, // Only right side
+        borderBottomRightRadius: 5, // Only right side
       },
     },
   },
@@ -96,7 +96,6 @@ function Chat(props) {
   const [messageText, setMessageText] = useState('');
   const chatScroll = useRef(null);
   const [fileState, setFileState] = useState();
-  console.log('fileState', fileState);
   const [file, setFile] = useState();
   const [open, setOpen] = useState(false);
   const fileInputdoc1Ref = useRef(null);
@@ -233,8 +232,7 @@ function Chat(props) {
                     <div className='flex justify-end'>
                       {/* Message Bubble */}
                       <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
-                        {/* Message Content */}
-                        <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]'>
+                        <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]  '>
                           {item.message}
                         </div>
 
@@ -248,7 +246,6 @@ function Chat(props) {
                               display: 'flex',
                             }}>
                             {typeof item.file === 'string' ? (
-                              // Check for file type
                               [
                                 'pdf',
                                 'doc',
@@ -347,9 +344,7 @@ function Chat(props) {
                   ) : (
                     <div className='flex justify-start'>
                       {/* Avatar Section */}
-                      <div className='leading-tight whitespace-pre-wrap'>
-                        <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
-                      </div>
+                      <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
                       {/* Message Bubble */}
                       <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
                         {/* Message Content */}
