@@ -24,6 +24,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import FolderZipIcon from '@mui/icons-material/FolderZip';
+import { selectChatPanelState } from './store/stateSlice';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
@@ -71,6 +72,8 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
 function Chat(props) {
   const { className } = props;
   const selectedContactId = useSelector(selectSelectedContactId);
+  const chatPanelState = useSelector(selectChatPanelState);
+
   const userId = localStorage.getItem('user_id');
 
   const { data: chat, refetch } = useGetMessengerChatQuery(selectedContactId);
@@ -85,7 +88,7 @@ function Chat(props) {
   const [open, setOpen] = useState(false);
   const fileInputdoc1Ref = useRef(null);
   const [filePreview, setFilePreview] = useState(null);
-
+  console.log('chatPanelState', chatPanelState);
   useEffect(() => {
     scrollToBottom();
   }, [chat]);
@@ -166,14 +169,14 @@ function Chat(props) {
   };
 
   useEffect(() => {
-    if (!selectedContactId) return;
+    if (!selectedContactId || !chatPanelState) return;
 
     const interval = setInterval(() => {
       refetch();
     }, 5000); // Call every 5 seconds
 
     return () => clearInterval(interval);
-  }, [selectedContactId, refetch]);
+  }, [selectedContactId, chatPanelState, refetch]);
 
   return (
     <Paper
