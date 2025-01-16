@@ -27,7 +27,7 @@ import FolderZipIcon from '@mui/icons-material/FolderZip';
 
 const StyledMessageRow = styled('div')(({ theme }) => ({
   '&.contact': {
-    '& .bubble': {
+    '& .bubble-right': {
       backgroundColor: lighten(theme.palette.secondary.main, 0.1),
       color: theme.palette.secondary.contrastText,
       borderTopLeftRadius: 5,
@@ -38,48 +38,33 @@ const StyledMessageRow = styled('div')(({ theme }) => ({
         marginLeft: 12,
       },
     },
-    '&.first-of-group': {
-      '& .bubble': {
-        borderTopLeftRadius: 5, // Only left side
-      },
-    },
-    '&.last-of-group': {
-      '& .bubble': {
-        borderBottomLeftRadius: 5, // Only left side
-      },
-    },
-  },
-  '&.me': {
-    paddingLeft: 40,
-    '& .bubble': {
-      marginLeft: 'auto',
+    '& .bubble-left': {
       backgroundColor: lighten(theme.palette.primary.main, 0.1),
-      color: theme.palette.primary.contrastText,
+      color: theme.palette.secondary.contrastText,
       borderTopLeftRadius: 5,
       borderBottomLeftRadius: 5,
       borderTopRightRadius: 5,
       borderBottomRightRadius: 5,
       '& .time': {
-        justifyContent: 'flex-end',
-        right: 0,
-        marginRight: 12,
+        marginLeft: 12,
       },
     },
     '&.first-of-group': {
-      '& .bubble': {
-        borderTopRightRadius: 5,
+      '& .bubble-right': {
+        borderTopLeftRadius: 5, // Only left side
+      },
+      '& .bubble-left': {
+        borderTopLeftRadius: 5, // Only left side
       },
     },
     '&.last-of-group': {
-      '& .bubble': {
-        borderBottomRightRadius: 5, // Only right side
+      '& .bubble-right': {
+        borderBottomLeftRadius: 5, // Only left side
+      },
+      '& .bubble-left': {
+        borderBottomLeftRadius: 5, // Only left side
       },
     },
-  },
-  // Padding and margin for message groups
-  '&.contact + .me, &.me + .contact': {
-    paddingTop: 20,
-    marginTop: 20,
   },
 }));
 
@@ -187,7 +172,7 @@ function Chat(props) {
       refetch();
     }, 5000); // Call every 5 seconds
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [selectedContactId, refetch]);
 
   return (
@@ -231,7 +216,7 @@ function Chat(props) {
                   {Number(item.sender.id) === Number(userId) ? (
                     <div className='flex justify-end'>
                       {/* Message Bubble */}
-                      <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                      <div className='bubble-right flex relative items-center justify-center p-12 max-w-full'>
                         <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]  '>
                           {item.message}
                         </div>
@@ -346,7 +331,7 @@ function Chat(props) {
                       {/* Avatar Section */}
                       <Avatar src={`${BASE_URL}${item.sender_image || ''}`} />
                       {/* Message Bubble */}
-                      <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
+                      <div className='bubble-left flex relative items-center justify-center p-12 max-w-full'>
                         {/* Message Content */}
                         <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]'>
                           {item.message}
