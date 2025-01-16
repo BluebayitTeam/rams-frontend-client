@@ -202,7 +202,7 @@ function Chat(props) {
                 <StyledMessageRow
                   key={i}
                   className={clsx(
-                    'flex flex-col grow-0 shrink-0 items-start justify-end relative px-16 pb-4',
+                    'flex flex-col grow-0 shrink-0 items-start justify-end relative px-20 pb-4',
                     item.contactId === user?.id ? 'me' : 'contact',
                     { 'first-of-group': isFirstMessageOfGroup },
                     { 'last-of-group': isLastMessageOfGroup },
@@ -218,7 +218,7 @@ function Chat(props) {
                       {/* Message Bubble */}
                       <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
                         {/* Message Content */}
-                        <div className='leading-tight whitespace-pre-wrap'>
+                        <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]'>
                           {item.message}
                         </div>
 
@@ -332,7 +332,7 @@ function Chat(props) {
                           {/* Message Bubble */}
                           <div className='bubble flex relative items-center justify-center p-12 max-w-full'>
                             {/* Message Content */}
-                            <div className='leading-tight whitespace-pre-wrap'>
+                            <div className='leading-tight whitespace-pre-wrap break-words max-w-[150px]'>
                               {item.message}
                             </div>
 
