@@ -116,7 +116,6 @@ function MedicalExpireReportsTable(props) {
   const routeParams = useParams();
 
   const { noOfDays } = routeParams;
-  console.log('noOfDays', noOfDays);
   const filterData = watch();
 
   const { data: paginatedData } = useGetMedicalExpireReportsQuery({
@@ -125,6 +124,8 @@ function MedicalExpireReportsTable(props) {
     size,
     skip: inShowAllMode,
   });
+
+  console.log('paginatedData', paginatedData);
 
   const { data: allData } = useGetMedicalExpireAllReportsQuery({
     no_of_days: noOfDays || '',

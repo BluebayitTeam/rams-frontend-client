@@ -42,7 +42,9 @@ function UpcomingMedical(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
-              navigate(`/apps/medicalExpires/report/${days}`);
+              navigate(
+                `/apps/medicalExpireReport/medicalExpireReports/${days}`
+              );
           }}>
           {data?.total_elements || 0}
         </Typography>
