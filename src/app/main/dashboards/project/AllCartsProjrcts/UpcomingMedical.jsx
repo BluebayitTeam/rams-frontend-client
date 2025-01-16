@@ -5,10 +5,11 @@ import { Paper, Typography } from '@mui/material';
 import history from '@history';
 import { useForm } from 'react-hook-form';
 import { useGetProjectDashboardUpcomingMedicalQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function UpcomingMedical(props) {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [days, setDays] = useState(15);
 
   const { data, refetch, status } = useGetProjectDashboardUpcomingMedicalQuery({
@@ -41,7 +42,7 @@ function UpcomingMedical(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
-              history.push(`/apps/medicalExpires/report/${days}`);
+              navigate(`/apps/medicalExpires/report/${days}`);
           }}>
           {data?.total_elements || 0}
         </Typography>
