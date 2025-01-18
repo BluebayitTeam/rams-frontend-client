@@ -111,7 +111,9 @@ function VisaEntryForm(props) {
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
-            value={value ? countries.find((data) => data.id === value) : null}
+            value={
+              value ? countries.find((data) => data.id === Number(value)) : null
+            }
             options={countries}
             getOptionLabel={(option) => `${option.name}`}
             onChange={(event, newValue) => {

@@ -173,7 +173,7 @@ function Chat(props) {
 
     const interval = setInterval(() => {
       refetch();
-    }, 5000); // Call every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [selectedContactId, chatPanelState, refetch]);

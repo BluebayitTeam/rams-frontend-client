@@ -25,7 +25,6 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 function VisaEntryHeader() {
   const routeParams = useParams();
-  console.log('routeParamsPrint', routeParams);
   const { visaEntryId, fromSearch } = routeParams;
 
   const [createVisaEntry] = useCreateVisaEntryMutation();
@@ -166,9 +165,7 @@ function VisaEntryHeader() {
           </Button>
         )}
         {handleDelete !== 'deleteVisaEntry' &&
-          handleUpdate === 'updateVisaEntry' &&
           visaEntryId !== 'new' &&
-          fromSearch === 'fromSearch' &&
           hasPermission('VISA_ENTRY_UPDATE') && (
             <Button
               className='whitespace-nowrap mx-4 text-white bg-[#4dc08e] hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
