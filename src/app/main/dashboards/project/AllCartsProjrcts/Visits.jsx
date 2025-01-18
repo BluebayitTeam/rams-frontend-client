@@ -7,11 +7,13 @@ import history from '@history';
 import { useForm } from 'react-hook-form';
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardNotMedicalQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function Visits(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -34,9 +36,10 @@ function Visits(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
           onClick={() => {
-            dashboardData?.visit > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.meet > 0 &&
+              navigate('/apps/medicalVisitReport/medicalVisitReports');
           }}>
-          {dashboardData?.visit || 0}
+          {dashboardData?.meet || 0}
         </Typography>
       </div>
 
@@ -46,7 +49,8 @@ function Visits(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          dashboardData?.visit > 0 && router.push('/apps/notMedicals/report');
+          dashboardData?.meet > 0 &&
+            navigate('/apps/medicalVisitReport/medicalVisitReports');
         }}>
         View All Medical Visits
       </Button>

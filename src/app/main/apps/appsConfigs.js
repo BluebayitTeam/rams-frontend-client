@@ -170,6 +170,7 @@ import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/
 import EvisaExpireReportAppConfig from '../rams/EvisaExpireReportManagement/EvisaExpireReportAppConfig';
 import EmbassyExpireReportAppConfig from '../rams/EmbassyExpireReportManagement/EmbassyExpireReportAppConfig';
 import MedicalUnfitReportAppConfig from '../rams/MedicalUnfitReportManagement/MedicalUnfitReportAppConfig';
+import MedicalVisitReportAppConfig from '../rams/MedicalVisitReportManagement/MedicalVisitReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -211,6 +212,7 @@ const appsConfigs = [
   VisaExpireReportAppConfig,
   EvisaExpireReportAppConfig,
   MedicalUnfitReportAppConfig,
+  MedicalVisitReportAppConfig,
   EmbassyExpireReportAppConfig,
   TrainingReportAppConfig,
   FlightFlightDoneReportAppConfig,
