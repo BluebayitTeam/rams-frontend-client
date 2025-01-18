@@ -5,11 +5,13 @@ import { Paper, Typography } from '@mui/material';
 import history from '@history';
 import { useForm } from 'react-hook-form';
 import { useGetProjectDashboardUpcomingVisaQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function UpcomingVisa(props) {
   const dispatch = useDispatch();
 
   const [days, setDays] = useState(15);
+  const navigate = useNavigate();
 
   const { data, refetch } = useGetProjectDashboardUpcomingVisaQuery({
     no_of_days: days,
@@ -38,7 +40,7 @@ function UpcomingVisa(props) {
           className='text-72 font-semibold cursor-pointer leading-none text-orange tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
-              history.push(`/apps/visaExpires/report/${days}`);
+              navigate(`/apps/visaExpireReport/visaExpireReports/${days}`);
           }}>
           {data?.total_elements || 0}
         </Typography>

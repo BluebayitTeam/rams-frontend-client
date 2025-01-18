@@ -107,32 +107,35 @@ function VisaEntryForm(props) {
       <Controller
         name='country'
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <Autocomplete
-            className='mt-8 mb-16'
-            freeSolo
-            value={
-              value ? countries.find((data) => data.id === Number(value)) : null
-            }
-            options={countries}
-            getOptionLabel={(option) => `${option.name}`}
-            onChange={(event, newValue) => {
-              onChange(newValue?.id);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder='Select Country'
-                label='Country'
-                helperText={errors?.country?.message}
-                variant='outlined'
-                InputLabelProps={
-                  value ? { shrink: true } : { style: { color: 'red' } }
-                }
-              />
-            )}
-          />
-        )}
+        render={({ field: { onChange, value } }) => {
+          console.log('Value:', value);
+          return (
+            <Autocomplete
+              className='mt-8 mb-16'
+              freeSolo
+              value={
+                value ? countries.find((data) => data?.id === value) : null
+              }
+              options={countries}
+              getOptionLabel={(option) => `${option.name}`}
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder='Select Country'
+                  label='Country'
+                  helperText={errors?.country?.message}
+                  variant='outlined'
+                  InputLabelProps={
+                    value ? { shrink: true } : { style: { color: 'red' } }
+                  }
+                />
+              )}
+            />
+          );
+        }}
       />
       <Controller
         name='visa_agent'

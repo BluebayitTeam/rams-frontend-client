@@ -143,6 +143,8 @@ function VisaExpireReportsTable(props) {
     skip: inShowAllMode,
   });
 
+  console.log('paginatedData', paginatedData);
+
   const { data: allData } = useGetVisaExpireAllReportsQuery({
     no_of_days: noOfDays || '',
     page,
