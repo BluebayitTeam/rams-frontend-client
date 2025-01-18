@@ -2,17 +2,16 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function SubmittedForPermissionImmigrationClearance(props) {
   const dispatch = useDispatch();
-
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ function SubmittedForPermissionImmigrationClearance(props) {
         onClick={() => {
           dashboardData?.submitted_for_permission_immigration_clearance_count >
             0 &&
-            router.push(
+            navigate(
               `/apps/malaysiaDashboards/report/submitted_for_permission_immigration_clearance`
             );
         }}>
@@ -56,7 +55,7 @@ function SubmittedForPermissionImmigrationClearance(props) {
         onClick={() => {
           dashboardData?.submitted_for_permission_immigration_clearance_count >
             0 &&
-            router.push(
+            navigate(
               `/apps/malaysiaDashboards/report/submitted_for_permission_immigration_clearance`
             );
         }}>

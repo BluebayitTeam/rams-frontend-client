@@ -13,7 +13,6 @@ import {
 } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 // import { doneNotDone, flightResults } from 'src/app/@data/data';
-import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import { activeRetrnCncl } from 'src/app/@data/data';

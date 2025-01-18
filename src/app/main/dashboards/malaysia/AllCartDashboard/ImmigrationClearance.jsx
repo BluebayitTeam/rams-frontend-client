@@ -1,18 +1,15 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
-
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function ImmigrationClearance(props) {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -31,9 +28,7 @@ function ImmigrationClearance(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.immigration_clearance > 0 &&
-            router.push(
-              `/apps/malaysiaDashboards/report/immigration_clearance`
-            );
+            navigate(`/apps/malaysiaDashboards/report/immigration_clearance`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -53,9 +48,7 @@ function ImmigrationClearance(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.immigration_clearance > 0 &&
-            router.push(
-              `/apps/malaysiaDashboards/report/immigration_clearance`
-            );
+            navigate(`/apps/malaysiaDashboards/report/immigration_clearance`);
         }}>
         View all Immigration Clearance
       </Button>

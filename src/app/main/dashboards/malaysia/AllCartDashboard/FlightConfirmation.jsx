@@ -2,17 +2,16 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function FlightConfirmation(props) {
   const dispatch = useDispatch();
-
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ function FlightConfirmation(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.flight_confirmation > 0 &&
-            router.push(`/apps/report-management/flight-reports/flight`);
+            navigate(`/apps/report-management/flight-reports/flight`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -51,7 +50,7 @@ function FlightConfirmation(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.flight_confirmation > 0 &&
-            router.push(`/apps/report-management/flight-reports/flight`);
+            navigate(`/apps/report-management/flight-reports/flight`);
         }}>
         View all Flight
       </Button>

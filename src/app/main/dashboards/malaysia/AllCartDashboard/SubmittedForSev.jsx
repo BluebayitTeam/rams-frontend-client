@@ -1,18 +1,15 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
-
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function SubmittedForSev(props) {
   const dispatch = useDispatch();
-
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -31,7 +28,7 @@ function SubmittedForSev(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.submitted_for_sev_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+            navigate(`/apps/malaysiaDashboards/report/submitted_for_sev`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -50,7 +47,7 @@ function SubmittedForSev(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.submitted_for_sev_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/submitted_for_sev`);
+            navigate(`/apps/malaysiaDashboards/report/submitted_for_sev`);
         }}>
         View all Submitted For Sev
       </Button>

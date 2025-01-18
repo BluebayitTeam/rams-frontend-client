@@ -2,17 +2,16 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function SevReceived(props) {
   const dispatch = useDispatch();
-
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ function SevReceived(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.sev_received_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/sev_received`);
+            navigate(`/apps/malaysiaDashboards/report/sev_received`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -50,7 +49,7 @@ function SevReceived(props) {
         className='cursor-pointer text-blue-800'
         onClick={() => {
           dashboardData?.sev_received_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/sev_received`);
+            navigate(`/apps/malaysiaDashboards/report/sev_received`);
         }}>
         View all SEV Received
       </Button>

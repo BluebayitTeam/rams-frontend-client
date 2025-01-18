@@ -1,20 +1,16 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
-
 import { useForm } from 'react-hook-form';
-
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardManpowerQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function Manpower(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardManpowerQuery();
-
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
-
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -37,7 +33,7 @@ function Manpower(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
             dashboardData?.waiting > 0 &&
-              router.push('/apps/notMedicals/report');
+              navigate('/apps/manpowerWaitingReport/manpowerWaitingReports');
           }}>
           {dashboardData?.waiting || 0}
         </Typography>
@@ -49,7 +45,8 @@ function Manpower(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          dashboardData?.waiting > 0 && router.push('/apps/notMedicals/report');
+          dashboardData?.waiting > 0 &&
+            navigate('/apps/manpowerWaitingReport/manpowerWaitingReports');
         }}>
         View All Manpower
       </Button>

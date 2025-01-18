@@ -2,7 +2,6 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Paper, Typography } from '@mui/material';
-import history from '@history';
 
 import { useForm } from 'react-hook-form';
 import { useGetProjectDashboardUpcomingEmbassyQuery } from '../ProjectDashboardApi';

@@ -2,13 +2,14 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function MedicalExpired(props) {
   const dispatch = useDispatch();
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   const { data, refetch } = useGetMalaysiaDashboardQuery();
   useEffect(() => {
@@ -26,7 +27,7 @@ function MedicalExpired(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.medical_expiry_count_next_15_days > 0 &&
-            router.push(`/apps/registeredSaudis/report/on_process`);
+            navigate(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography className='text-72 font-semibold leading-none text-blue tracking-tighter'>
           {dashboardData?.medical_expiry_count_next_15_days || 0}

@@ -1,16 +1,14 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
-
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function Dispatched(props) {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { data, refetch } = useGetMalaysiaDashboardQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
@@ -31,7 +29,7 @@ function Dispatched(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.dispatched_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/dispatched`);
+            navigate(`/apps/malaysiaDashboards/report/dispatched`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'
@@ -50,7 +48,7 @@ function Dispatched(props) {
         variant='text'
         onClick={() => {
           dashboardData?.dispatched_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/dispatched`);
+            navigate(`/apps/malaysiaDashboards/report/dispatched`);
         }}>
         View all Dispatched
       </Button>

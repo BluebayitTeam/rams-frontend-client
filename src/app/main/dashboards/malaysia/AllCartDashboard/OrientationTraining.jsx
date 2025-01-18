@@ -2,17 +2,16 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function OrientationTraining(props) {
   const dispatch = useDispatch();
-
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ function OrientationTraining(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.training > 0 &&
-            router.push(`/apps/report-management/training-reports/malaysia`);
+            navigate(`/apps/report-management/training-reports/malaysia`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -51,7 +50,7 @@ function OrientationTraining(props) {
         variant='text'
         onClick={() => {
           dashboardData?.training > 0 &&
-            router.push(`/apps/report-management/training-reports/malaysia`);
+            navigate(`/apps/report-management/training-reports/malaysia`);
         }}>
         View all Orientation Training
       </Button>

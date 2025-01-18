@@ -2,13 +2,14 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function PendingAttachment(props) {
   const dispatch = useDispatch();
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   const { data, refetch } = useGetMalaysiaDashboardQuery();
   useEffect(() => {
@@ -26,7 +27,7 @@ function PendingAttachment(props) {
       <div
         className='text-center py-12 cursor-pointer'
         onClick={() => {
-          router.push(
+          navigate(
             `/apps/saudiDashboards/report/${props?.widget?.country?.id}`
           );
         }}>

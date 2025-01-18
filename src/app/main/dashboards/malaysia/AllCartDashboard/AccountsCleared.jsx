@@ -2,19 +2,17 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function AccountsCleared(props) {
   const dispatch = useDispatch();
-
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
   const [dashboardData, setDashboardData] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -31,7 +29,7 @@ function AccountsCleared(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.accounts_cleared_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/accounts_cleared`);
+            navigate(`/apps/malaysiaDashboards/report/accounts_cleared`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -51,7 +49,7 @@ function AccountsCleared(props) {
         variant='text'
         onClick={() => {
           dashboardData?.accounts_cleared_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/accounts_cleared`);
+            navigate(`/apps/malaysiaDashboards/report/accounts_cleared`);
         }}>
         View all Accounts Cleared
       </Button>

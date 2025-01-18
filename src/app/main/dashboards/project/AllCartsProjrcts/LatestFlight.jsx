@@ -21,7 +21,6 @@ import {
 import moment from 'moment';
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import Chart from 'react-apexcharts';
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { BASE_URL } from 'src/app/constant/constants';
@@ -40,15 +39,12 @@ function LatestFlight(props) {
   const theme = useTheme();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-
   const [pageAndSize, setPageAndSize] = useState({ page: 1, size: 25 });
 
   const { data: flightlistData, refetch } =
     useGetProjectDashboardFlightListQuery({
       ...pageAndSize,
     });
-
-  const latest_flights = flightlistData?.latest_flights || [];
 
   const handlePagination = (event, handlePage) => {
     setPageAndSize((prev) => ({ ...prev, page: handlePage }));
@@ -85,7 +81,7 @@ function LatestFlight(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {latest_flights?.map((flight) => (
+            {flightlistData?.latest_flights?.map((flight) => (
               <TableRow hover key={flight?.id}>
                 <TableCell>
                   {flight?.passenger?.passenger_pic ? (

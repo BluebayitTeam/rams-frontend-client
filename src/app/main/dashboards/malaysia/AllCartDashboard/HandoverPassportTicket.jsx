@@ -2,17 +2,16 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function HandoverPassportTicket(props) {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ function HandoverPassportTicket(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.handover_passport_ticket_count > 0 &&
-            router.push(
+            navigate(
               `/apps/malaysiaDashboards/report/handover_passport_ticket`
             );
         }}>
@@ -52,7 +51,7 @@ function HandoverPassportTicket(props) {
         variant='text'
         onClick={() => {
           dashboardData?.handover_passport_ticket_count > 0 &&
-            router.push(
+            navigate(
               `/apps/malaysiaDashboards/report/handover_passport_ticket`
             );
         }}>

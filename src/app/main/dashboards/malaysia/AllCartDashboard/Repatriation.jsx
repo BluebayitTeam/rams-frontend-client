@@ -2,14 +2,15 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function Repatriation(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { data, refetch } = useGetMalaysiaDashboardQuery();
 
@@ -31,7 +32,7 @@ function Repatriation(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.repatriation_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/repatriation`);
+            navigate(`/apps/malaysiaDashboards/report/repatriation`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none  tracking-tighter'
@@ -50,7 +51,7 @@ function Repatriation(props) {
         variant='text'
         onClick={() => {
           dashboardData?.repatriation_count > 0 &&
-            router.push(`/apps/malaysiaDashboards/report/repatriation`);
+            navigate(`/apps/malaysiaDashboards/report/repatriation`);
         }}>
         View all Repatriation
       </Button>

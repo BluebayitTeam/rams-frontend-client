@@ -1,9 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
-
 import { useForm } from 'react-hook-form';
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardNotMedicalQuery } from '../ProjectDashboardApi';
@@ -13,7 +10,6 @@ function NotMedical(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
   const navigate = useNavigate();
-
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {

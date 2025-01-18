@@ -14,8 +14,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetMedicalFitAllReportsQuery,
-  useGetMedicalFitReportsQuery,
+  useGetManpowerWaitingAllReportsQuery,
+  useGetManpowerWaitingReportsQuery,
 } from '../ManpowerWaitingReportsApi';
 
 import { useParams } from 'react-router';
@@ -59,7 +59,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function MedicalFitReportsTable(props) {
+function ManpowerWaitingReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -70,7 +70,8 @@ function MedicalFitReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedMedicalFitData, setModifiedMedicalFitData] = useReportData();
+  const [modifiedManpowerWaitingData, setModifiedManpowerWaitingData] =
+    useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -88,21 +89,20 @@ function MedicalFitReportsTable(props) {
 
   const componentRef = useRef(null);
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetMedicalFitReportsQuery({
+  const { data: paginatedData } = useGetManpowerWaitingReportsQuery({
     skip: inShowAllMode,
   });
 
-  const { data: allData } = useGetMedicalFitAllReportsQuery({
+  const { data: allData } = useGetManpowerWaitingAllReportsQuery({
     skip: !inShowAllMode,
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMedicalFitData(allData.fits || []);
+      setModifiedManpowerWaitingData(allData.fits || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -118,7 +118,7 @@ function MedicalFitReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalFitData(paginatedData?.fits || []);
+      setModifiedManpowerWaitingData(paginatedData?.fits || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -154,16 +154,6 @@ function MedicalFitReportsTable(props) {
     }
   }, []);
 
-  const filteredData = {
-    Date_To: getValues()?.issue_date_before
-      ? moment(new Date(getValues()?.issue_date_before)).format('DD-MM-YYYY')
-      : null,
-    Date_From: getValues()?.issue_date_after
-      ? moment(new Date(getValues()?.issue_date_after)).format('DD-MM-YYYY')
-      : null,
-    Agent: getValues()?.ticket_agencyName || null,
-  };
-
   return (
     <div className={classes.headContainer}>
       <ReportPaginationAndDownload
@@ -186,28 +176,30 @@ function MedicalFitReportsTable(props) {
         handleGetAllData={handleGetAllManpowerWaiting}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalFitReport'
+        filename='ManpowerWaitingReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMedicalFitData.map((medicalFit, index) => (
+          {modifiedManpowerWaitingData.map((manpowerWaiting, index) => (
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Medical Fit Report'
-              filteredData={filteredData}
+              reportTitle='Manpower Report'
+              filteredData={(filteredData = {})}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={medicalFit}
+              data={manpowerWaiting}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * medicalFit.data.length + 1
-                  : medicalFit.page * medicalFit.size - medicalFit.size + 1
+                  ? page * size - size + index * manpowerWaiting.data.length + 1
+                  : manpowerWaiting.page * manpowerWaiting.size -
+                    manpowerWaiting.size +
+                    1
               }
               setPage={setPage}
             />
@@ -218,4 +210,4 @@ function MedicalFitReportsTable(props) {
   );
 }
 
-export default MedicalFitReportsTable;
+export default ManpowerWaitingReportsTable;

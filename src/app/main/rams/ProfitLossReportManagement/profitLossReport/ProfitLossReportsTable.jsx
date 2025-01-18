@@ -36,6 +36,7 @@ import {
   TRIALBALANCE_FILTER_BY_ID,
 } from 'src/app/constant/constants';
 import { Email, LocationOn, PhoneEnabled } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -50,9 +51,8 @@ function ProfitLossReportsTable(props) {
     defaultValues: {},
     resolver: zodResolver(schema),
   });
-
   const { watch, getValues } = methods;
-
+  const navigate = useNavigate();
   const [tableColumns, dispatchTableColumns] = useReducer(tableColumnsReducer);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(25);
@@ -573,7 +573,7 @@ function ProfitLossReportsTable(props) {
                               }[reportName];
 
                               if (reportType) {
-                                router.push(
+                                navigate(
                                   `/apps/report-management/${reportType}/true/${
                                     getValues()?.branch || ' '
                                   }/${getValues().date_after}/${

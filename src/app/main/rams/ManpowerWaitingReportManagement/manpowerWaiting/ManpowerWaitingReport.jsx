@@ -46,7 +46,7 @@ function ManpowerWaitingReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'> Medical Fit Report</span>
+            <span className='flex mx-4 font-medium'> Manpower Report</span>
           </Typography>
         </motion.div>
       }

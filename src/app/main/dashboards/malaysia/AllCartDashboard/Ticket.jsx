@@ -1,18 +1,15 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
-
 import { ArrowRightIcon } from '@mui/x-date-pickers';
+import { useNavigate } from 'react-router';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
 
 function Ticket(props) {
   const dispatch = useDispatch();
-
   const { data, refetch } = useGetMalaysiaDashboardQuery();
-
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
@@ -31,7 +28,7 @@ function Ticket(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.active_ticket > 0 &&
-            router.push(`/apps/report-management/flight-reports/ticket`);
+            navigate(`/apps/report-management/flight-reports/ticket`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'
@@ -51,7 +48,7 @@ function Ticket(props) {
         variant='text'
         onClick={() => {
           dashboardData?.active_ticket > 0 &&
-            router.push(`/apps/report-management/flight-reports/ticket`);
+            navigate(`/apps/report-management/flight-reports/ticket`);
         }}>
         View all Ticket
       </Button>

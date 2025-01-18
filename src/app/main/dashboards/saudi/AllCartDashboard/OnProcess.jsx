@@ -2,13 +2,14 @@ import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
 import { useForm } from 'react-hook-form';
 
 import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
+import { useNavigate } from 'react-router';
 
 function OnProcess(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
   useEffect(() => {
@@ -27,7 +28,7 @@ function OnProcess(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.on_process > 0 &&
-            router.push(`/apps/registeredSaudis/report/on_process`);
+            navigate(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
           {dashboardData?.on_process || 0}

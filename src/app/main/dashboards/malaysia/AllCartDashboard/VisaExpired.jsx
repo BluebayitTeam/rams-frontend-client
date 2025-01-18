@@ -2,8 +2,10 @@ import { memo, useEffect, useState } from 'react';
 import { Paper, Typography } from '@mui/material';
 import router from '@history';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function VisaExpired(props) {
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const { data, refetch } = useGetMalaysiaDashboardQuery({
     refetchOnMountOrArgChange: true,
@@ -25,7 +27,7 @@ function VisaExpired(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.calling_exp_count_next_15_days > 0 &&
-            router.push(`/apps/registeredSaudis/report/on_process`);
+            navigate(`/apps/registeredSaudis/report/on_process`);
         }}>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'

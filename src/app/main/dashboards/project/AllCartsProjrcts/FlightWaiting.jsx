@@ -1,19 +1,16 @@
 import { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button, Paper, Typography } from '@mui/material';
-import history from '@history';
-
 import { useForm } from 'react-hook-form';
-
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardFlightCountQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function FlightWaiting(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardFlightCountQuery();
   const [dashboardData, setDashboardData] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -35,7 +32,7 @@ function FlightWaiting(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-red tracking-tighter'
           onClick={() => {
             dashboardData?.flight_waiting > 0 &&
-              router.push('/apps/notMedicals/report');
+              navigate('/apps/notMedicals/report');
           }}>
           {dashboardData?.flight_waiting || 0}
         </Typography>
@@ -48,7 +45,7 @@ function FlightWaiting(props) {
         variant='text'
         onClick={() => {
           dashboardData?.flight_waiting > 0 &&
-            router.push('/apps/notMedicals/report');
+            navigate('/apps/notMedicals/report');
         }}>
         View All Flight Waiting
       </Button>
