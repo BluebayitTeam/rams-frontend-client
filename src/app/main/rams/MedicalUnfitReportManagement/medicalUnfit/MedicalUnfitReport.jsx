@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import MedicalFitsReportsTable from './MedicalFitReportsTable';
+import MedicalUnfitReportsTable from './MedicalUnfitReportsTable';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
@@ -14,11 +14,11 @@ import { useTheme } from '@mui/material/styles';
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a medicalFitsReport name')
-    .min(5, 'The medicalFitsReport name must be at least 5 characters'),
+    .nonempty('You must enter a medicalUnfitReport name')
+    .min(5, 'The medicalUnfitReport name must be at least 5 characters'),
 });
 
-function MedicalFitsReport() {
+function MedicalUnfitReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -50,10 +50,10 @@ function MedicalFitsReport() {
           </Typography>
         </motion.div>
       }
-      content={<MedicalFitsReportsTable />}
+      content={<MedicalUnfitReportsTable />}
       innerScroll
     />
   );
 }
 
-export default MedicalFitsReport;
+export default MedicalUnfitReport;

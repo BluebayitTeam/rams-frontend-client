@@ -7,11 +7,13 @@ import history from '@history';
 import { useForm } from 'react-hook-form';
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardNotMedicalQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function Fit(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -33,7 +35,8 @@ function Fit(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-blue tracking-tighter'
           onClick={() => {
-            dashboardData?.fit > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.fit > 0 &&
+              navigate('/apps/medicalFitReport/medicalFitReports');
           }}>
           {dashboardData?.fit || 0}
         </Typography>
@@ -45,7 +48,7 @@ function Fit(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          data?.fit > 0 && router.push('/apps/notMedicals/report');
+          data?.fit > 0 && navigate('/apps/medicalFitReport/medicalFitReports');
         }}>
         View All Medical Fit
       </Button>

@@ -12,7 +12,7 @@ function UnFit(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
   const [dashboardData, setDashboardData] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -33,7 +33,8 @@ function UnFit(props) {
         <Typography
           className='text-72 font-semibold leading-none cursor-pointer text-purple tracking-tighter'
           onClick={() => {
-            dashboardData?.unfit > 0 && router.push('/apps/notMedicals/report');
+            dashboardData?.unfit > 0 &&
+              navigate('/apps/medicalUnfitReport/medicalUnfitReports');
           }}>
           {dashboardData?.unfit || 0}
         </Typography>
@@ -45,7 +46,8 @@ function UnFit(props) {
         size='medium'
         variant='text'
         onClick={() => {
-          dashboardData?.unfit > 0 && router.push('/apps/notMedicals/report');
+          dashboardData?.unfit > 0 &&
+            navigate('/apps/medicalUnfitReport/medicalUnfitReports');
         }}>
         View All Medical UnFit
       </Button>
