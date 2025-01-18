@@ -3,8 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-  MEDICAL_FIT_LIST,
-  MEDICAL_FIT_LIST_WITHOUT_PG,
+  GET_MEDICAL_UNFIT_LIST,
+  GET_MEDICAL_UNFIT_LIST_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -17,14 +17,14 @@ const MedicalUnfitReportApi = api
     endpoints: (build) => ({
       getMedicalUnfitReports: build.query({
         query: (filterData) => ({
-          url: MEDICAL_FIT_LIST,
+          url: GET_MEDICAL_UNFIT_LIST,
           params: filterData,
         }),
         providesTags: ['medicalUnfitReports'],
       }),
       getMedicalUnfitAllReports: build.query({
         query: (filterData) => ({
-          url: MEDICAL_FIT_LIST_WITHOUT_PG,
+          url: GET_MEDICAL_UNFIT_LIST_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['medicalUnfitReports'],

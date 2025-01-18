@@ -13,12 +13,12 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
-import {
-  useGetMedicalFitAllReportsQuery,
-  useGetMedicalFitReportsQuery,
-} from '../MedicalUnfitReportsApi';
 
 import { useParams } from 'react-router';
+import {
+  useGetMedicalUnfitAllReportsQuery,
+  useGetMedicalUnfitReportsQuery,
+} from '../MedicalUnfitReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -92,23 +92,23 @@ function MedicalFitReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetMedicalFitReportsQuery({
+  const { data: paginatedData } = useGetMedicalUnfitReportsQuery({
     skip: inShowAllMode,
   });
 
-  const { data: allData } = useGetMedicalFitAllReportsQuery({
+  const { data: allData } = useGetMedicalUnfitAllReportsQuery({
     skip: !inShowAllMode,
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMedicalFitData(allData.fits || []);
+      setModifiedMedicalFitData(allData.not_medicals || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.fits,
+        allData.not_medicals,
         size,
         page
       );
@@ -118,7 +118,7 @@ function MedicalFitReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalFitData(paginatedData?.fits || []);
+      setModifiedMedicalFitData(paginatedData?.not_medicals || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -197,7 +197,7 @@ function MedicalFitReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Medical Fit Report'
+              reportTitle='Medical UnFit Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
