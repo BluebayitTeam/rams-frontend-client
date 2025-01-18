@@ -74,7 +74,7 @@ function NotMedicalReportsTable(props) {
   );
 
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(30);
+  const [size, setSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [inShowAllMode, setInShowAllMode] = useState(false);
@@ -82,39 +82,24 @@ function NotMedicalReportsTable(props) {
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
 
+  console.log('pagination', pagination);
+
   const componentRef = useRef(null);
   const routeParams = useParams();
-  console.log('routeParams', routeParams);
 
   const filterData = watch();
 
   const { data: paginatedData } = useGetNotMedicalReportsQuery(
     {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      branch: filterData.branch || '',
-      current_airway: filterData.current_airway || '',
-      customer: filterData.customer || '',
-      ticket_agency: filterData.ticket_agency || '',
-      issue_person: filterData.issue_person || '',
       page,
       size,
     },
     { skip: inShowAllMode }
   );
 
-  const { data: allData } = useGetNotMedicalAllReportsQuery(
-    {
-      date_after: filterData.date_after || '',
-      date_before: filterData.date_before || '',
-      branch: filterData.branch || '',
-      current_airway: filterData.current_airway || '',
-      customer: filterData.customer || '',
-      ticket_agency: filterData.ticket_agency || '',
-      issue_person: filterData.issue_person || '',
-    },
-    { skip: !inShowAllMode }
-  );
+  const { data: allData } = useGetNotMedicalAllReportsQuery({
+    skip: !inShowAllMode,
+  });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
@@ -131,14 +116,14 @@ function NotMedicalReportsTable(props) {
       );
 
       setPage(page || 1);
-      setSize(size || 25);
+      setSize(size || 10);
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
       setModifiedNotMedicalData(paginatedData?.not_medicals || []);
 
       setTotalAmount(paginatedData.total_amount);
-      setSize(paginatedData?.size || 25);
+      setSize(paginatedData?.size || 10);
       setTotalPages(paginatedData.total_pages || 0);
       setTotalElements(paginatedData.total_elements || 0);
       setPagination(true);
