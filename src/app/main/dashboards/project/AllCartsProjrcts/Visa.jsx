@@ -36,7 +36,7 @@ function Visa(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
           onClick={() => {
             dashboardData?.stamp_waiting > 0 &&
-              navigate('/apps/notMedicals/report');
+              navigate('/apps/visaStatusReport/visaStatusReports');
           }}>
           {dashboardData?.stamp_waiting || 0}
         </Typography>
@@ -49,7 +49,7 @@ function Visa(props) {
         variant='text'
         onClick={() => {
           dashboardData?.stamp_waiting > 0 &&
-            navigate('/apps/notMedicals/report');
+            navigate('/apps/visaStatusReport/visaStatusReports');
         }}>
         View All Visa
       </Button>

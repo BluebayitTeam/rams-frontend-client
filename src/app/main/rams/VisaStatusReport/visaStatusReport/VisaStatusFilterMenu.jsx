@@ -48,6 +48,8 @@ function VisaStatusFilterMenu({
   return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
+        {/* Agent */}
+
         {/* Country */}
         <ReportSelect
           {...commonFieldProps}
@@ -60,14 +62,22 @@ function VisaStatusFilterMenu({
       </div>
 
       {/* keywords */}
-
-      <Keyword
-        {...commonKewordProps}
-        type='select'
-        name='country'
-        label='Country'
-        icon='flag'
-      />
+      <div className='allKeyWrdContainer'>
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='agent'
+          icon='person'
+          options={agents}
+        />
+        <Keyword
+          {...commonKewordProps}
+          type='select'
+          name='country'
+          label='Country'
+          icon='flag'
+        />
+      </div>
     </div>
   );
 }
