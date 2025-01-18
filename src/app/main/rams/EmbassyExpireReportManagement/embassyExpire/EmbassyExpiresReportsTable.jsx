@@ -14,9 +14,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetVisaExpireAllReportsQuery,
-  useGetVisaExpireReportsQuery,
-} from '../EvisaExpireReportsApi';
+  useGetEmbassyExpireAllReportsQuery,
+  useGetEmbassyExpireReportsQuery,
+} from '../EmbassyExpireReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -103,7 +103,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function VisaExpireReportsTable(props) {
+function EmbassyExpireReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -114,7 +114,8 @@ function VisaExpireReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedVisaExpireData, setModifiedVisaExpireData] = useReportData();
+  const [modifiedEmbassyExpireData, setModifiedEmbassyExpireData] =
+    useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -136,7 +137,7 @@ function VisaExpireReportsTable(props) {
   const { noOfDays } = routeParams;
   const filterData = watch();
 
-  const { data: paginatedData } = useGetVisaExpireReportsQuery({
+  const { data: paginatedData } = useGetEmbassyExpireReportsQuery({
     no_of_days: noOfDays || '',
     page,
     size,
@@ -145,7 +146,7 @@ function VisaExpireReportsTable(props) {
 
   console.log('paginatedData', paginatedData);
 
-  const { data: allData } = useGetVisaExpireAllReportsQuery({
+  const { data: allData } = useGetEmbassyExpireAllReportsQuery({
     no_of_days: noOfDays || '',
     page,
     size,
@@ -154,14 +155,14 @@ function VisaExpireReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedVisaExpireData(allData.visa_entries || []);
+      setModifiedEmbassyExpireData(allData.e_visa || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.visa_entries,
+        allData.e_visa,
         size,
         page
       );
@@ -170,7 +171,7 @@ function VisaExpireReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedVisaExpireData(paginatedData?.visa_entries || []);
+      setModifiedEmbassyExpireData(paginatedData?.e_visa || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -190,7 +191,7 @@ function VisaExpireReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetVisaExpires = useCallback(async (newPage) => {
+  const handleGetEmbassyExpires = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -199,10 +200,10 @@ function VisaExpireReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllVisaExpires = useCallback(async () => {
+  const handleGetAllEmbassyExpires = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all visaExpires:', error);
+      console.error('Error fetching all embassyExpires:', error);
     }
   }, []);
 
@@ -228,24 +229,24 @@ function VisaExpireReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetVisaExpires(1)}
-        onPreviousPage={() => handleGetVisaExpires(page - 1)}
-        onNextPage={() => handleGetVisaExpires(page + 1)}
-        onLastPage={() => handleGetVisaExpires(totalPages)}
+        onFirstPage={() => handleGetEmbassyExpires(1)}
+        onPreviousPage={() => handleGetEmbassyExpires(page - 1)}
+        onNextPage={() => handleGetEmbassyExpires(page + 1)}
+        onLastPage={() => handleGetEmbassyExpires(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetVisaExpires}
-        handleGetAllData={handleGetAllVisaExpires}
+        handleGetData={handleGetEmbassyExpires}
+        handleGetAllData={handleGetAllEmbassyExpires}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='VisaExpireReport'
+        filename='EmbassyExpireReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedVisaExpireData.map((visaExpire, index) => (
+          {modifiedEmbassyExpireData.map((embassyExpire, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -253,13 +254,15 @@ function VisaExpireReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={visaExpire}
+              data={embassyExpire}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * visaExpire.data.length + 1
-                  : visaExpire.page * visaExpire.size - visaExpire.size + 1
+                  ? page * size - size + index * embassyExpire.data.length + 1
+                  : embassyExpire.page * embassyExpire.size -
+                    embassyExpire.size +
+                    1
               }
               setPage={setPage}
             />
@@ -270,4 +273,4 @@ function VisaExpireReportsTable(props) {
   );
 }
 
-export default VisaExpireReportsTable;
+export default EmbassyExpireReportsTable;

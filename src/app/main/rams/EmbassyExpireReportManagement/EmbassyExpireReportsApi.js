@@ -5,45 +5,45 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
 import {
+  GET_EXPIRABLE_EMBASSY_NOTOFICATION_REPORT_WITHOUT_PG,
   GET_EXPIRABLE_EVISA_NOTOFICATION_REPORT,
-  GET_EXPIRABLE_EVISA_NOTOFICATION_REPORT_WITHOUT_PG,
 } from 'src/app/constant/constants';
 
-export const addTagTypes = ['evisaExpireReports'];
-const EvisaExpireReportApi = api
+export const addTagTypes = ['embassyExpireReports'];
+const EmbassyExpireReportApi = api
   .enhanceEndpoints({
     addTagTypes,
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getEvisaExpireReports: build.query({
+      getEmbassyExpireReports: build.query({
         query: (filterData) => ({
-          url: GET_EXPIRABLE_EVISA_NOTOFICATION_REPORT,
+          url: GET_EXPIRABLE_EMBASSY_NOTOFICATION_REPORT,
           params: filterData,
         }),
-        providesTags: ['evisaExpireReports'],
+        providesTags: ['embassyExpireReports'],
       }),
-      getEvisaExpireAllReports: build.query({
+      getEmbassyExpireAllReports: build.query({
         query: (filterData) => ({
-          url: GET_EXPIRABLE_EVISA_NOTOFICATION_REPORT_WITHOUT_PG,
+          url: GET_EXPIRABLE_EMBASSY_NOTOFICATION_REPORT_WITHOUT_PG,
           params: filterData,
         }),
-        providesTags: ['evisaExpireReports'],
+        providesTags: ['embassyExpireReports'],
       }),
     }),
     overrideExisting: false,
   });
-export default EvisaExpireReportApi;
+export default EmbassyExpireReportApi;
 export const {
-  useGetEvisaExpireReportsQuery,
-  useGetEvisaExpireAllReportsQuery,
-} = EvisaExpireReportApi;
+  useGetEmbassyExpireReportsQuery,
+  useGetEmbassyExpireAllReportsQuery,
+} = EmbassyExpireReportApi;
 
-export const selectFilteredEvisaExpireReports = (evisaExpireReports) =>
+export const selectFilteredEmbassyExpireReports = (embassyExpireReports) =>
   createSelector([selectSearchText], (searchText) => {
     if (searchText?.length === 0) {
-      return evisaExpireReports;
+      return embassyExpireReports;
     }
 
-    return FuseUtils.filterArrayByString(evisaExpireReports, searchText);
+    return FuseUtils.filterArrayByString(embassyExpireReports, searchText);
   });

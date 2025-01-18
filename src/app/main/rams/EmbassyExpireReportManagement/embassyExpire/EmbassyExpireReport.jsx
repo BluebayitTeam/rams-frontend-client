@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import EvisaExpireReportsTable from './EvisaExpiresReportsTable';
+import EmbassyExpireReportsTable from './EmbassyExpiresReportsTable';
 
 /**
  * Form Validation Schema
@@ -14,11 +14,11 @@ import EvisaExpireReportsTable from './EvisaExpiresReportsTable';
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a evisaExpiresReport name')
-    .min(5, 'The evisaExpiresReport name must be at least 5 characters'),
+    .nonempty('You must enter a embassyExpiresReport name')
+    .min(5, 'The embassyExpiresReport name must be at least 5 characters'),
 });
 
-function EvisaExpiresReport() {
+function EmbassyExpiresReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -53,10 +53,10 @@ function EvisaExpiresReport() {
           </Typography>
         </motion.div>
       }
-      content={<EvisaExpireReportsTable />}
+      content={<EmbassyExpireReportsTable />}
       innerScroll
     />
   );
 }
 
-export default EvisaExpiresReport;
+export default EmbassyExpiresReport;

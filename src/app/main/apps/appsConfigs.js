@@ -167,6 +167,7 @@ import TicketeditAppConfig from '../rams/TicketeditsManagement/TicketeditAppConf
 import PassengerSummaryUpdateAppConfig from '../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig';
 import PassengerSummaryUpdateClmAppConfig from '../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig';
 import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/MedicalExpireReportAppConfig';
+import EvisaExpireReportAppConfig from '../rams/EvisaExpireReportManagement/EvisaExpireReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -206,6 +207,7 @@ const appsConfigs = [
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
   VisaExpireReportAppConfig,
+  EvisaExpireReportAppConfig,
   TrainingReportAppConfig,
   FlightFlightDoneReportAppConfig,
   MalefingerletterAppConfig,

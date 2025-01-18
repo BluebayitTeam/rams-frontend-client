@@ -154,14 +154,14 @@ function EvisaExpireReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedEvisaExpireData(allData.visa_entries || []);
+      setModifiedEvisaExpireData(allData.e_visa || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.visa_entries,
+        allData.e_visa,
         size,
         page
       );
@@ -170,7 +170,7 @@ function EvisaExpireReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedEvisaExpireData(paginatedData?.visa_entries || []);
+      setModifiedEvisaExpireData(paginatedData?.e_visa || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);

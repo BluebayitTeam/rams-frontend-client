@@ -39,7 +39,9 @@ function UpcomingEvisa(props) {
           className='text-72 font-semibold cursor-pointer leading-none text-red tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
-              history.push(`/apps/visaExpires/report/${days}`);
+              history.push(
+                `/apps/evisaExpireReport/evisaExpireReports/${days}`
+              );
           }}>
           {data?.total_elements || 0}
         </Typography>

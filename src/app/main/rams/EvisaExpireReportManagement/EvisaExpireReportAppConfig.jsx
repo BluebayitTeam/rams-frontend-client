@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import EvisaExpireReportApp from './EevisaExpireReportApp';
-import EvisaExpiresReport from './eevisaExpire/EevisaExpireReport';
+import EvisaExpireReportApp from './EvisaExpireReportApp';
+import EvisaExpiresReport from './evisaExpire/EvisaExpireReport';
 
 /**
  * The E-Commerce app configuration.
