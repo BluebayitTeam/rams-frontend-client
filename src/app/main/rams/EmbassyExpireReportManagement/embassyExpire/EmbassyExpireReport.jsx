@@ -48,7 +48,7 @@ function EmbassyExpiresReport() {
             </FuseSvgIcon>
             <span className='flex mx-4 font-medium'>
               {' '}
-              E-Visa Expires Report
+              Embassy Expires Report
             </span>
           </Typography>
         </motion.div>

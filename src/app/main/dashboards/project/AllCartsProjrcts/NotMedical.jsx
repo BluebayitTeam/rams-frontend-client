@@ -7,10 +7,12 @@ import history from '@history';
 import { useForm } from 'react-hook-form';
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardNotMedicalQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function NotMedical(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardNotMedicalQuery();
+  const navigate = useNavigate();
 
   const [dashboardData, setDashboardData] = useState(null);
 
@@ -35,7 +37,7 @@ function NotMedical(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-red tracking-tighter'
           onClick={() => {
             dashboardData?.not_medical > 0 &&
-              router.push('/apps/notMedicals/report');
+              navigate('/apps/notMedicalReport/notMedicalReports');
           }}>
           {dashboardData?.not_medical || 0}
         </Typography>
@@ -48,7 +50,7 @@ function NotMedical(props) {
         variant='text'
         onClick={() => {
           dashboardData?.not_medical > 0 &&
-            router.push('/apps/notMedicals/report');
+            navigate('/apps/notMedicalReport/notMedicalReports');
         }}>
         View All Not Medical
       </Button>

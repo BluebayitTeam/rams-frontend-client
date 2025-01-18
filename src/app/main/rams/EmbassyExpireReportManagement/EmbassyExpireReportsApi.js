@@ -5,8 +5,8 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 
 import { selectSearchText } from './store/searchTextSlice';
 import {
+  GET_EXPIRABLE_EMBASSY_NOTOFICATION_REPORT,
   GET_EXPIRABLE_EMBASSY_NOTOFICATION_REPORT_WITHOUT_PG,
-  GET_EXPIRABLE_EVISA_NOTOFICATION_REPORT,
 } from 'src/app/constant/constants';
 
 export const addTagTypes = ['embassyExpireReports'];

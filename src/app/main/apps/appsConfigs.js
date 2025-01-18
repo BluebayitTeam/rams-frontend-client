@@ -168,6 +168,7 @@ import PassengerSummaryUpdateAppConfig from '../rams/PassengerSummaryUpdateColum
 import PassengerSummaryUpdateClmAppConfig from '../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig';
 import MedicalExpireReportAppConfig from '../rams/MedicalExpireReportManagement/MedicalExpireReportAppConfig';
 import EvisaExpireReportAppConfig from '../rams/EvisaExpireReportManagement/EvisaExpireReportAppConfig';
+import EmbassyExpireReportAppConfig from '../rams/EmbassyExpireReportManagement/EmbassyExpireReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -208,6 +209,7 @@ const appsConfigs = [
   MedicalReportAppConfig,
   VisaExpireReportAppConfig,
   EvisaExpireReportAppConfig,
+  EmbassyExpireReportAppConfig,
   TrainingReportAppConfig,
   FlightFlightDoneReportAppConfig,
   MalefingerletterAppConfig,

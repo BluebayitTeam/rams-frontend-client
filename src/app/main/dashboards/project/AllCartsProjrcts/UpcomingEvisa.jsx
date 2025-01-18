@@ -5,9 +5,11 @@ import { Paper, Typography } from '@mui/material';
 import history from '@history';
 import { useForm } from 'react-hook-form';
 import { useGetProjectDashboardUpcomingEvisaQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function UpcomingEvisa(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [days, setDays] = useState(15);
 
@@ -39,9 +41,7 @@ function UpcomingEvisa(props) {
           className='text-72 font-semibold cursor-pointer leading-none text-red tracking-tighter'
           onClick={() => {
             data?.total_elements > 0 &&
-              history.push(
-                `/apps/evisaExpireReport/evisaExpireReports/${days}`
-              );
+              navigate(`/apps/evisaExpireReport/evisaExpireReports/${days}`);
           }}>
           {data?.total_elements || 0}
         </Typography>

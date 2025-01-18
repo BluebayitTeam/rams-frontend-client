@@ -155,14 +155,14 @@ function EmbassyExpireReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedEmbassyExpireData(allData.e_visa || []);
+      setModifiedEmbassyExpireData(allData.embassy || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.e_visa,
+        allData.embassy,
         size,
         page
       );
@@ -171,7 +171,7 @@ function EmbassyExpireReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedEmbassyExpireData(paginatedData?.e_visa || []);
+      setModifiedEmbassyExpireData(paginatedData?.embassy || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -250,7 +250,7 @@ function EmbassyExpireReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Visa Expires Report'
+              reportTitle='Embassy Expires Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

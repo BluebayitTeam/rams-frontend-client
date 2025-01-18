@@ -143,8 +143,6 @@ function EvisaExpireReportsTable(props) {
     skip: inShowAllMode,
   });
 
-  console.log('paginatedData', paginatedData);
-
   const { data: allData } = useGetEvisaExpireAllReportsQuery({
     no_of_days: noOfDays || '',
     page,
@@ -249,7 +247,7 @@ function EvisaExpireReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Visa Expires Report'
+              reportTitle='E-Visa Expires Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
