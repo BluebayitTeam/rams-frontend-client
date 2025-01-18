@@ -7,11 +7,13 @@ import history from '@history';
 import { useForm } from 'react-hook-form';
 import { ArrowRight } from '@mui/icons-material';
 import { useGetProjectDashboardVisaCountQuery } from '../ProjectDashboardApi';
+import { useNavigate } from 'react-router';
 
 function Visa(props) {
   const dispatch = useDispatch();
   const { data, refetch } = useGetProjectDashboardVisaCountQuery();
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -34,7 +36,7 @@ function Visa(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
           onClick={() => {
             dashboardData?.stamp_waiting > 0 &&
-              router.push('/apps/notMedicals/report');
+              navigate('/apps/notMedicals/report');
           }}>
           {dashboardData?.stamp_waiting || 0}
         </Typography>
@@ -47,7 +49,7 @@ function Visa(props) {
         variant='text'
         onClick={() => {
           dashboardData?.stamp_waiting > 0 &&
-            router.push('/apps/notMedicals/report');
+            navigate('/apps/notMedicals/report');
         }}>
         View All Visa
       </Button>

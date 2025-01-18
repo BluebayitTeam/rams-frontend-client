@@ -29,7 +29,7 @@ function Visits(props) {
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-center px-4 pt-8'>
         <Typography className='text-28 px-16 font-medium' color='textSecondary'>
-          Visits
+          Meets
         </Typography>
       </div>
       <div className='flex items-center justify-center pt-8 text-primary mx-auto'>
@@ -52,7 +52,7 @@ function Visits(props) {
           dashboardData?.meet > 0 &&
             navigate('/apps/medicalVisitReport/medicalVisitReports');
         }}>
-        View All Medical Visits
+        View All Medical Meets
       </Button>
     </Paper>
   );
