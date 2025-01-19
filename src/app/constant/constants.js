@@ -2519,3 +2519,17 @@ export const DELETE_PAY_HEAD_TYPE_MULTIPLE = `${BASE_URL}/payhead_type/api/v1/pa
 export const DELETE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_type/delete/`;
 
 export const GET_PAY_HEAD_TYPES = `${BASE_URL}/payhead_type/api/v1/payhead_type/all/`;
+
+
+// attendance_type
+export const GET_ATTENDANCE_TYPE_BY_ID = `${BASE_URL}/attendance_type/api/v1/attendance_type/`;
+
+export const CREATE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attendance_type/create/`;
+
+export const UPDATE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attendance_type/update/`;
+
+export const DELETE_ATTENDANCE_TYPE_MULTIPLE = `${BASE_URL}/attendance_type/api/v1/attendance_type/delete/`;
+
+export const DELETE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attendance_type/delete/`;
+
+export const GET_ATTENDANCE_TYPES = `${BASE_URL}/attendance_type/api/v1/attendance_type/all/`;
