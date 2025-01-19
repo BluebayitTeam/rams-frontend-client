@@ -166,6 +166,7 @@ import PassengerEditHistoryAppConfig from "../rams/PassengerEditHistorysManageme
 import PassengerSearchAppConfig from "../rams/PassengerSearch/PassengerSearchAppConfig";
 import PassengerSummaryUpdateClmAppConfig from "../rams/PassengerSummaryUpdateClm/PassengerSummaryUpdateClmAppConfig";
 import PassengerSummaryUpdateAppConfig from "../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig";
+import AttendanceTypeAppConfig from "../rams/PayRollManagement/AttendanceTypeManagement/AttendanceTypeAppConfig";
 import PayHeadTypeAppConfig from "../rams/PayRollManagement/PayHeadTypeManagement/PayHeadTypeAppConfig";
 import ShiftAppConfig from "../rams/PayRollManagement/ShiftManagement/ShiftAppConfig";
 import ShiftTimeTableAppConfig from "../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig";
@@ -348,6 +349,7 @@ const appsConfigs = [
   PassengerDeliveryAppConfig,
   ReceivableBillAppConfig,
   PayableBillAppConfig,
-  PayHeadTypeAppConfig
+  PayHeadTypeAppConfig,
+  AttendanceTypeAppConfig
 ];
 export default appsConfigs;
