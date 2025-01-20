@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import FlightWaitingReportsTable from './FlightWaitingReportsTable';
+import FlightDoneReportsTable from './FlightDoneReportsTable';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
@@ -14,11 +14,11 @@ import { useTheme } from '@mui/material/styles';
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a flightWaitingReport name')
-    .min(5, 'The flightWaitingReport name must be at least 5 characters'),
+    .nonempty('You must enter a flightDoneReport name')
+    .min(5, 'The flightDoneReport name must be at least 5 characters'),
 });
 
-function FlightWaitingReport() {
+function FlightDoneReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -53,10 +53,10 @@ function FlightWaitingReport() {
           </Typography>
         </motion.div>
       }
-      content={<FlightWaitingReportsTable />}
+      content={<FlightDoneReportsTable />}
       innerScroll
     />
   );
 }
 
-export default FlightWaitingReport;
+export default FlightDoneReport;

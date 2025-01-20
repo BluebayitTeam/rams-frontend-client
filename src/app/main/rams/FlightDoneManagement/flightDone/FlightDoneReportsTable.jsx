@@ -14,9 +14,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetFlightWaitingAllReportsQuery,
-  useGetFlightWaitingReportsQuery,
-} from '../FlightWaitingReportsApi';
+  useGetFlightDoneAllReportsQuery,
+  useGetFlightDoneReportsQuery,
+} from '../FlightDoneReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -81,7 +81,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function FlightWaitingReportsTable(props) {
+function FlightDoneReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -92,8 +92,7 @@ function FlightWaitingReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedFlightWaitingData, setModifiedFlightWaitingData] =
-    useReportData();
+  const [modifiedFlightDoneData, setModifiedFlightDoneData] = useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -114,17 +113,17 @@ function FlightWaitingReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetFlightWaitingReportsQuery({
+  const { data: paginatedData } = useGetFlightDoneReportsQuery({
     skip: inShowAllMode,
   });
 
-  const { data: allData } = useGetFlightWaitingAllReportsQuery({
+  const { data: allData } = useGetFlightDoneAllReportsQuery({
     skip: !inShowAllMode,
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedFlightWaitingData(allData.flight_waitings || []);
+      setModifiedFlightDoneData(allData.flight_waitings || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -140,7 +139,7 @@ function FlightWaitingReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedFlightWaitingData(paginatedData?.flight_waitings || []);
+      setModifiedFlightDoneData(paginatedData?.flight_waitings || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -160,7 +159,7 @@ function FlightWaitingReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetFlightWaiting = useCallback(async (newPage) => {
+  const handleGetFlightDone = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -169,10 +168,10 @@ function FlightWaitingReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllFlightWaiting = useCallback(async () => {
+  const handleGetAllFlightDone = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all flightWaiting:', error);
+      console.error('Error fetching all flightDone:', error);
     }
   }, []);
 
@@ -190,24 +189,24 @@ function FlightWaitingReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetFlightWaiting(1)}
-        onPreviousPage={() => handleGetFlightWaiting(page - 1)}
-        onNextPage={() => handleGetFlightWaiting(page + 1)}
-        onLastPage={() => handleGetFlightWaiting(totalPages)}
+        onFirstPage={() => handleGetFlightDone(1)}
+        onPreviousPage={() => handleGetFlightDone(page - 1)}
+        onNextPage={() => handleGetFlightDone(page + 1)}
+        onLastPage={() => handleGetFlightDone(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetFlightWaiting}
-        handleGetAllData={handleGetAllFlightWaiting}
+        handleGetData={handleGetFlightDone}
+        handleGetAllData={handleGetAllFlightDone}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='FlightWaitingReport'
+        filename='FlightDoneReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedFlightWaitingData.map((flightWaiting, index) => (
+          {modifiedFlightDoneData.map((flightDone, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -215,15 +214,13 @@ function FlightWaitingReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={flightWaiting}
+              data={flightDone}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * flightWaiting.data.length + 1
-                  : flightWaiting.page * flightWaiting.size -
-                    flightWaiting.size +
-                    1
+                  ? page * size - size + index * flightDone.data.length + 1
+                  : flightDone.page * flightDone.size - flightDone.size + 1
               }
               setPage={setPage}
             />
@@ -234,4 +231,4 @@ function FlightWaitingReportsTable(props) {
   );
 }
 
-export default FlightWaitingReportsTable;
+export default FlightDoneReportsTable;
