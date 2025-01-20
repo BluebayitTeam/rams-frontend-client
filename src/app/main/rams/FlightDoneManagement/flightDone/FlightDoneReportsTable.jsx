@@ -36,7 +36,6 @@ const initialTableColumnsState = [
     show: true,
     type: 'date',
   },
-
   {
     id: 3,
     label: 'Passenger Name',
@@ -44,7 +43,6 @@ const initialTableColumnsState = [
     subName: 'passenger_name',
     show: true,
   },
-
   {
     id: 4,
     label: 'Passenger Passport No',
@@ -123,13 +121,13 @@ function FlightDoneReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedFlightDoneData(allData.flight_waitings || []);
+      setModifiedFlightDoneData(allData.flight_dones || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.flight_waitings,
+        allData.flight_dones,
         size,
         page
       );
@@ -139,7 +137,7 @@ function FlightDoneReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedFlightDoneData(paginatedData?.flight_waitings || []);
+      setModifiedFlightDoneData(paginatedData?.flight_dones || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -210,7 +208,7 @@ function FlightDoneReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Flight Waiting Report'
+              reportTitle=' Flight Done Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

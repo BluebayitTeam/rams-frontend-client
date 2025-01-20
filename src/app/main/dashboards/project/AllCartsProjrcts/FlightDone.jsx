@@ -36,7 +36,7 @@ function FlightDone(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-blue tracking-tighter'
           onClick={() => {
             dashboardData?.flight_done > 0 &&
-              navigate('/apps/notMedicals/report');
+              navigate('/apps/flightDoneReport/flightDoneReports');
           }}>
           {dashboardData?.flight_done || 0}
         </Typography>
@@ -49,7 +49,7 @@ function FlightDone(props) {
         variant='text'
         onClick={() => {
           dashboardData?.flight_done > 0 &&
-            navigate('/apps/notMedicals/report');
+            navigate('/apps/flightDoneReport/flightDoneReports');
         }}>
         View All Flight Waiting
       </Button>

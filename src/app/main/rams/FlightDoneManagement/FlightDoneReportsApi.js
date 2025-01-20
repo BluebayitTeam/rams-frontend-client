@@ -3,6 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
+  GET_FLIGHT_FLIGHT_DONE_LIST,
+  GET_FLIGHT_FLIGHT_DONE_LIST_WITHOUT_PG,
   GET_FLIGHT_FLIGHT_WAITING_LIST,
   GET_FLIGHT_FLIGHT_WAITING_LIST_WITHOUT_PG,
   GET_MANPOWER_WAITING_LIST,
@@ -19,14 +21,14 @@ const FlightDoneReportApi = api
     endpoints: (build) => ({
       getFlightDoneReports: build.query({
         query: (filterData) => ({
-          url: GET_FLIGHT_FLIGHT_WAITING_LIST,
+          url: GET_FLIGHT_FLIGHT_DONE_LIST,
           params: filterData,
         }),
         providesTags: ['flightDoneReports'],
       }),
       getFlightDoneAllReports: build.query({
         query: (filterData) => ({
-          url: GET_FLIGHT_FLIGHT_WAITING_LIST_WITHOUT_PG,
+          url: GET_FLIGHT_FLIGHT_DONE_LIST_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['flightDoneReports'],

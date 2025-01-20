@@ -174,6 +174,7 @@ import MedicalVisitReportAppConfig from '../rams/MedicalVisitReportManagement/Me
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import ManpowerWaitingReportAppConfig from '../rams/ManpowerWaitingReportManagement/ManpowerWaitingReportAppConfig';
 import FlightWaitingReportAppConfig from '../rams/FlightWaitingManagement/FlightWaitingReportAppConfig';
+import FlightDoneReportAppConfig from '../rams/FlightDoneManagement/FlightDoneReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -196,6 +197,7 @@ const appsConfigs = [
   CvBankAppConfig,
   FemalefingerletterAppConfig,
   FlightWaitingReportAppConfig,
+  FlightDoneReportAppConfig,
   PassengerSearchAppConfig,
   FlightReportAppConfig,
   MessengerAppConfig,
