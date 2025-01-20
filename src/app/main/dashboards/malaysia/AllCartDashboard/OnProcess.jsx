@@ -27,7 +27,9 @@ function OnProcess(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.process > 0 &&
-            navigate(`/apps/registeredSaudis/report/process`);
+            navigate(
+              `/apps/registeredSaudiReport/registeredSaudiReports/process`
+            );
         }}>
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
           {dashboardData?.process || 0}

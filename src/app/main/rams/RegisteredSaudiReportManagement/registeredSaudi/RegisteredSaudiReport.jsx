@@ -39,7 +39,7 @@ function RegisteredSaudiReport() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/dashboards/project'
+            to='/dashboards/saudi'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'

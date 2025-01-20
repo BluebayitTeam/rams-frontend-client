@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
 }));
 
-// Define the Zod schema
 const schema = z.object({});
 
 const initialTableColumnsState = [
@@ -42,7 +41,7 @@ const initialTableColumnsState = [
   {
     id: 7,
     label: 'Agency',
-    getterMethod: (data) => `${data.agency || ''} `,
+    getterMethod: (data) => `${data?.agency || ''} `,
 
     show: true,
   },
@@ -75,18 +74,14 @@ function RegisteredSaudiReportsTable(props) {
   const [pagination, setPagination] = useState(false);
   const [inSiglePageMode, setInSiglePageMode] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
-
   const componentRef = useRef(null);
   const routeParams = useParams();
-
   const filterData = watch();
-
   const { data: paginatedData } = useGetRegisteredSaudiReportsQuery({
-    dashboard_type: 'on_process',
+    dashboard_type: routeParams?.registeredSaudiReportId,
   });
-
   const { data: allData } = useGetRegisteredSaudiAllReportsQuery({
-    dashboard_type: 'on_process',
+    dashboard_type: routeParams?.registeredSaudiReportId,
   });
 
   useEffect(() => {
