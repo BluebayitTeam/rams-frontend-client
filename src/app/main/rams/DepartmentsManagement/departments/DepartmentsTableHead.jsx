@@ -88,6 +88,7 @@ function DepartmentsTableHead(props) {
                   ? lighten(theme.palette.background.default, 0.4)
                   : lighten(theme.palette.background.default, 0.02),
             }}
+            className='p-4 md:p-16 whitespace-nowrap'
             key={row.id}
             align={row.align}
             padding={row.disablePadding ? 'none' : 'normal'}>

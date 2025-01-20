@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
     padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
-    width: '78%',
+    width: '76%',
   },
   paginationContainer: {
     display: 'flex',
@@ -183,7 +183,7 @@ function DepartmentsTable(props) {
       <FuseScrollbars className='grow overflow-x-auto'>
         <TableContainer
           sx={{
-            maxHeight: '400px',
+            height: 'calc(100vh - 250px)',
             overflowY: 'auto',
           }}>
           <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>

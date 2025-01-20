@@ -38,7 +38,7 @@ function TotalDepute(props) {
           onClick={() => {
             navigate(`/apps/ticketdeputeReport/ticketdeputeReports`);
           }}>
-          {dashboardData?.total_refunds || 0}
+          {dashboardData?.total_deputes || 0}
         </Typography>
         <Typography className='text-20 text-orange-800 font-normal'>
           Total Deputes

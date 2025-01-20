@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { getAgents, getLedgers, getSubLedgers } from 'app/store/dataSlice';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Keyword from 'src/app/@components/ReportComponents/Keyword';
@@ -31,6 +31,8 @@ function TicketdeputeFilterMenu({
   const { agents } = useSelector((state) => state.data);
   const values = getValues();
   const [_reRender, setReRender] = useState(0);
+  const ticketNoEl = useRef(null);
+  const invoiceNoEl = useRef(null);
 
   const commonFieldProps = {
     setReRender,
@@ -70,6 +72,7 @@ function TicketdeputeFilterMenu({
           {...commonFieldProps}
           name='ticket_no'
           label='Ticket No'
+          domEl={ticketNoEl}
           icon=' confirmation_number'
           width='77px'
         />{' '}
@@ -78,7 +81,8 @@ function TicketdeputeFilterMenu({
           {...commonFieldProps}
           name='invoice_no'
           label='Invoice No'
-          icon=' confirmation_number'
+          domEl={invoiceNoEl}
+          icon=' receipt'
           width='77px'
         />
         {/* Airline Agency */}
@@ -118,13 +122,15 @@ function TicketdeputeFilterMenu({
           {...commonKewordProps}
           type='text'
           name='ticket_no'
+          domEl={ticketNoEl}
           icon='confirmation_number'
         />{' '}
         <Keyword
           {...commonKewordProps}
           type='text'
           name='invoice_no'
-          icon='confirmation_number'
+          domEl={invoiceNoEl}
+          icon='receipt'
         />
         <Keyword
           {...commonKewordProps}
