@@ -4,7 +4,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import withRouter from '@fuse/core/withRouter';
 import _ from '@lodash';
 import { Delete, Edit } from '@mui/icons-material';
-import { Pagination } from '@mui/material';
+import { Pagination, TableContainer } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -31,17 +31,19 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'fixed',
-    bottom: 0,
+    bottom: 15,
     backgroundColor: '#fff',
     padding: '10px 20px',
     zIndex: 1000,
     borderTop: '1px solid #ddd',
-    width: '78%',
+    width: 'calc(100% - 350px)',
   },
   paginationContainer: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
     padding: '0 20px',
   },
@@ -180,86 +182,92 @@ function AttendanceTypesTable(props) {
   return (
     <div className='w-full flex flex-col min-h-full px-10'>
       <FuseScrollbars className='grow overflow-x-auto'>
-        <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
-          <AttendanceTypesTableHead
-            selectedAttendanceTypeIds={selected}
-            tableOrder={tableOrder}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={attendanceTypes.length}
-            onMenuItemClick={handleDeselect}
-          />
+        <TableContainer
+          sx={{
+            height: 'calc(100vh - 250px)',
+            overflowY: 'auto',
+          }}>
+          <Table stickyHeader className='min-w-xl' aria-labelledby='tableTitle'>
+            <AttendanceTypesTableHead
+              selectedAttendanceTypeIds={selected}
+              tableOrder={tableOrder}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={attendanceTypes.length}
+              onMenuItemClick={handleDeselect}
+            />
 
-          <TableBody>
-            {_.orderBy(
-              attendanceTypes,
-              [tableOrder.id],
-              [tableOrder.direction]
-            ).map((n) => {
-              const isSelected = selected.indexOf(n.id) !== -1;
-              return (
-                <TableRow
-                  className='h-20 cursor-pointer border-t-1  border-gray-200'
-                  hover
-                  role='checkbox'
-                  aria-checked={isSelected}
-                  tabIndex={-1}
-                  key={n.id}
-                  selected={isSelected}>
-                  <TableCell
-                    className='w-40 md:w-64 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
-                    style={{
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {pageAndSize.page * pageAndSize.size -
-                      pageAndSize.size +
-                      serialNumber++}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'>
-                    {n.name}
-                  </TableCell>
-                  <TableCell
-                    className='p-4 md:p-16 border-t-1  border-gray-200'
-                    component='th'
-                    scope='row'
-                    align='right'
-                    style={{
-                      position: 'sticky',
-                      right: 0,
-                      zIndex: 1,
-                      backgroundColor: '#fff',
-                    }}>
-                    {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
-                    <Edit
-                      onClick={() =>
-                        handleUpdateAttendanceType(n, 'updateAttendanceType')
-                      }
-                      className='cursor-pointer custom-edit-icon-style'
-                    />
-                    {/* )} */}
+            <TableBody>
+              {_.orderBy(
+                attendanceTypes,
+                [tableOrder.id],
+                [tableOrder.direction]
+              ).map((n) => {
+                const isSelected = selected.indexOf(n.id) !== -1;
+                return (
+                  <TableRow
+                    className='h-20 cursor-pointer border-t-1  border-gray-200'
+                    hover
+                    role='checkbox'
+                    aria-checked={isSelected}
+                    tabIndex={-1}
+                    key={n.id}
+                    selected={isSelected}>
+                    <TableCell
+                      className='w-40 md:w-64 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      style={{
+                        position: 'sticky',
+                        left: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      {pageAndSize.page * pageAndSize.size -
+                        pageAndSize.size +
+                        serialNumber++}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'>
+                      {n.name}
+                    </TableCell>
+                    <TableCell
+                      className='p-4 md:p-16 border-t-1  border-gray-200'
+                      component='th'
+                      scope='row'
+                      align='right'
+                      style={{
+                        position: 'sticky',
+                        right: 0,
+                        zIndex: 1,
+                        backgroundColor: '#fff',
+                      }}>
+                      {/* {hasPermission('PAY_HEAD_TYPE_UPDATE') && ( */}
+                      <Edit
+                        onClick={() =>
+                          handleUpdateAttendanceType(n, 'updateAttendanceType')
+                        }
+                        className='cursor-pointer custom-edit-icon-style'
+                      />
+                      {/* )} */}
 
-                    {/* {hasPermission('PAY_HEAD_TYPE_DELETE') && ( */}
-                    <Delete
-                      onClick={() =>
-                        handleDeleteAttendanceType(n, 'deleteAttendanceType')
-                      }
-                      className='cursor-pointer custom-delete-icon-style'
-                    />
-                    {/* )} */}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                      {/* {hasPermission('PAY_HEAD_TYPE_DELETE') && ( */}
+                      <Delete
+                        onClick={() =>
+                          handleDeleteAttendanceType(n, 'deleteAttendanceType')
+                        }
+                        className='cursor-pointer custom-delete-icon-style'
+                      />
+                      {/* )} */}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </FuseScrollbars>
       <div className={classes.root} id='pagiContainer'>
         <Pagination
