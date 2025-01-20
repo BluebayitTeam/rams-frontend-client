@@ -195,6 +195,7 @@ const appsConfigs = [
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
+  TicketSaleReportAppConfig,
   FemalefingerletterAppConfig,
   FlightWaitingReportAppConfig,
   FlightDoneReportAppConfig,

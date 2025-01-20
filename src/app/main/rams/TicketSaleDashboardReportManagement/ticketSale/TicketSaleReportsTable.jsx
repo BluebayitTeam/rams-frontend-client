@@ -29,56 +29,31 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Flight Date',
-    name: 'flight_date',
-    show: true,
-    type: 'date',
-  },
+  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
   {
     id: 3,
-    label: 'Passenger Name',
+    label: 'Pax Name',
     name: 'passenger',
     subName: 'passenger_name',
     show: true,
   },
   {
     id: 4,
-    label: 'Passenger Passport No',
-    name: 'passenger',
-    subName: 'passport_no',
+    label: 'Ticket Agency',
+    getterMethod: (data) =>
+      `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
     show: true,
   },
-  {
-    id: 5,
-    label: 'Country',
-    getterMethod: (data) => `${data.passenger?.target_country?.name || ''} `,
-    show: true,
-  },
+  { id: 5, label: 'Ticket No', name: 'ticket_no', show: true },
   {
     id: 6,
-    label: 'Agent',
-    getterMethod: (data) => `${data.agent?.first_name || ''} `,
+    label: 'Air Way',
+    name: 'current_airway',
+    subName: 'name',
     show: true,
   },
-
-  {
-    id: 7,
-    label: 'Visa No',
-    name: 'visa_entry',
-    subName: 'visa_number',
-    show: true,
-  },
-  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
-  {
-    id: 9,
-    label: 'Current Status',
-    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
-    show: true,
-  },
+  { id: 7, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
 ];
-
 function TicketSaleReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
