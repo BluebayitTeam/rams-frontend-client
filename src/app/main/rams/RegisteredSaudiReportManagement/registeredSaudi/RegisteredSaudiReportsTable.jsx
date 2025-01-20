@@ -29,52 +29,21 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  {
-    id: 2,
-    label: 'Flight Date',
-    name: 'flight_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 3,
-    label: 'Passenger Name',
-    name: 'passenger',
-    subName: 'passenger_name',
-    show: true,
-  },
-  {
-    id: 4,
-    label: 'Passenger Passport No',
-    name: 'passenger',
-    subName: 'passport_no',
-    show: true,
-  },
-  {
-    id: 5,
-    label: 'Country',
-    getterMethod: (data) => `${data.passenger?.target_country?.name || ''} `,
-    show: true,
-  },
+  { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
+  { id: 3, label: 'Passenger Name', name: 'passenger_name', show: true },
+  { id: 4, label: 'Passenger Id', name: 'passenger_id', show: true },
+  { id: 5, label: 'PP.No', name: 'passport_no', show: true },
   {
     id: 6,
     label: 'Agent',
-    getterMethod: (data) => `${data.agent?.first_name || ''} `,
+    getterMethod: (data) => `${data?.agent || ''} `,
     show: true,
   },
-
   {
     id: 7,
-    label: 'Visa No',
-    name: 'visa_entry',
-    subName: 'visa_number',
-    show: true,
-  },
-  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
-  {
-    id: 9,
-    label: 'Current Status',
-    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
+    label: 'Agency',
+    getterMethod: (data) => `${data.agency || ''} `,
+
     show: true,
   },
 ];
@@ -113,22 +82,22 @@ function RegisteredSaudiReportsTable(props) {
   const filterData = watch();
 
   const { data: paginatedData } = useGetRegisteredSaudiReportsQuery({
-    skip: inShowAllMode,
+    dashboard_type: 'on_process',
   });
 
   const { data: allData } = useGetRegisteredSaudiAllReportsQuery({
-    skip: !inShowAllMode,
+    dashboard_type: 'on_process',
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedRegisteredSaudiData(allData.flight_dones || []);
+      setModifiedRegisteredSaudiData(allData.passengers || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.flight_dones,
+        allData.passengers,
         size,
         page
       );
@@ -138,7 +107,7 @@ function RegisteredSaudiReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedRegisteredSaudiData(paginatedData?.flight_dones || []);
+      setModifiedRegisteredSaudiData(paginatedData?.passengers || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -209,7 +178,7 @@ function RegisteredSaudiReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle=' Flight Done Report'
+              reportTitle='On Process Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

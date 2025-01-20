@@ -176,6 +176,7 @@ import ManpowerWaitingReportAppConfig from '../rams/ManpowerWaitingReportManagem
 import FlightWaitingReportAppConfig from '../rams/FlightWaitingManagement/FlightWaitingReportAppConfig';
 import FlightDoneReportAppConfig from '../rams/FlightDoneManagement/FlightDoneReportAppConfig';
 import TicketSaleDashboardReportAppConfig from '../rams/TicketSaleDashboardReportManagement/TicketSaleDashboardReportAppConfig';
+import RegisteredSaudiReportAppConfig from '../rams/RegisteredSaudiReportManagement/RegisteredSaudiReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -191,6 +192,7 @@ const appsConfigs = [
   BmetV2ApplicationAppConfig,
   PassengerEditHistoryAppConfig,
   BalanceSheetReportAppConfig,
+  RegisteredSaudiReportAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
   CompanyOverviewReportAppConfig,
