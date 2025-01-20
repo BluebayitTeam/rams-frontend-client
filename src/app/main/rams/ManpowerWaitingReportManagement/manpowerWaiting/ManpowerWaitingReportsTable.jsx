@@ -41,7 +41,8 @@ const initialTableColumnsState = [
   {
     id: 3,
     label: 'Passenger Passport No',
-    getterMethod: (data) => `${data.passenger?.passport_no || ''}`,
+    name: 'passenger',
+    subName: 'passport_no',
     show: true,
   },
   {
@@ -50,11 +51,24 @@ const initialTableColumnsState = [
     getterMethod: (data) => `${data.agent?.first_name || ''} `,
     show: true,
   },
-  { id: 5, label: 'Medical Status', name: 'medical_result', show: true },
   {
     id: 5,
     label: 'Current Status',
     getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
+    show: true,
+  },
+  {
+    id: 6,
+    label: 'Visa No',
+    name: 'visa_entry',
+    subName: 'visa_number',
+    show: true,
+  },
+  {
+    id: 7,
+    label: 'Sponsor No',
+    name: 'visa_entry',
+    subName: 'sponsor_id_no',
     show: true,
   },
 ];
@@ -154,6 +168,8 @@ function ManpowerWaitingReportsTable(props) {
     }
   }, []);
 
+  const filteredData = {};
+
   return (
     <div className={classes.headContainer}>
       <ReportPaginationAndDownload
@@ -188,7 +204,7 @@ function ManpowerWaitingReportsTable(props) {
               key={index}
               classes={classes}
               reportTitle='Manpower Report'
-              filteredData={(filteredData = {})}
+              filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
               data={manpowerWaiting}

@@ -3,8 +3,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { apiService as api } from 'app/store/apiService';
 import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import {
-  MEDICAL_FIT_LIST,
-  MEDICAL_FIT_LIST_WITHOUT_PG,
+  GET_MANPOWER_WAITING_LIST,
+  GET_MANPOWER_WAITING_LIST_WITHOUT_PG,
 } from 'src/app/constant/constants';
 import { selectSearchText } from './store/searchTextSlice';
 
@@ -17,14 +17,14 @@ const ManpowerWaitingReportApi = api
     endpoints: (build) => ({
       getManpowerWaitingReports: build.query({
         query: (filterData) => ({
-          url: MEDICAL_FIT_LIST,
+          url: GET_MANPOWER_WAITING_LIST,
           params: filterData,
         }),
         providesTags: ['manpowerWaitingReports'],
       }),
       getManpowerWaitingAllReports: build.query({
         query: (filterData) => ({
-          url: MEDICAL_FIT_LIST_WITHOUT_PG,
+          url: GET_MANPOWER_WAITING_LIST_WITHOUT_PG,
           params: filterData,
         }),
         providesTags: ['manpowerWaitingReports'],
