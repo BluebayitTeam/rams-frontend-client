@@ -14,9 +14,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetTicketSaleAllReportsQuery,
-  useGetTicketSaleReportsQuery,
-} from '../TicketSaleReportsApi';
+  useGetTicketSaleDashboardAllReportsQuery,
+  useGetTicketSaleDashboardReportsQuery,
+} from '../TicketSaleDashboardReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -29,32 +29,57 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
+  {
+    id: 2,
+    label: 'Flight Date',
+    name: 'flight_date',
+    show: true,
+    type: 'date',
+  },
   {
     id: 3,
-    label: 'Pax Name',
+    label: 'Passenger Name',
     name: 'passenger',
     subName: 'passenger_name',
     show: true,
   },
   {
     id: 4,
-    label: 'Ticket Agency',
-    getterMethod: (data) =>
-      `${data.ticket_agency?.first_name || ''}, ${data.ticket_agency?.last_name || ''}`,
+    label: 'Passenger Passport No',
+    name: 'passenger',
+    subName: 'passport_no',
     show: true,
   },
-  { id: 5, label: 'Ticket No', name: 'ticket_no', show: true },
+  {
+    id: 5,
+    label: 'Country',
+    getterMethod: (data) => `${data.passenger?.target_country?.name || ''} `,
+    show: true,
+  },
   {
     id: 6,
-    label: 'Air Way',
-    name: 'current_airway',
-    subName: 'name',
+    label: 'Agent',
+    getterMethod: (data) => `${data.agent?.first_name || ''} `,
     show: true,
   },
-  { id: 7, label: 'Purchase Amount ', name: 'purchase_amount', show: true },
+
+  {
+    id: 7,
+    label: 'Visa No',
+    name: 'visa_entry',
+    subName: 'visa_number',
+    show: true,
+  },
+  { id: 8, label: 'Ticket No', name: 'ticket_no', show: true },
+  {
+    id: 9,
+    label: 'Current Status',
+    getterMethod: (data) => `${data.passenger?.current_status?.name || ''}`,
+    show: true,
+  },
 ];
-function TicketSaleReportsTable(props) {
+
+function TicketSaleDashboardReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -65,7 +90,8 @@ function TicketSaleReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedTicketSaleData, setModifiedTicketSaleData] = useReportData();
+  const [modifiedTicketSaleDashboardData, setModifiedTicketSaleDashboardData] =
+    useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -86,17 +112,17 @@ function TicketSaleReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetTicketSaleReportsQuery({
+  const { data: paginatedData } = useGetTicketSaleDashboardReportsQuery({
     skip: inShowAllMode,
   });
 
-  const { data: allData } = useGetTicketSaleAllReportsQuery({
+  const { data: allData } = useGetTicketSaleDashboardAllReportsQuery({
     skip: !inShowAllMode,
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedTicketSaleData(allData.flight_dones || []);
+      setModifiedTicketSaleDashboardData(allData.flight_dones || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -112,7 +138,7 @@ function TicketSaleReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedTicketSaleData(paginatedData?.flight_dones || []);
+      setModifiedTicketSaleDashboardData(paginatedData?.flight_dones || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -132,7 +158,7 @@ function TicketSaleReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetTicketSale = useCallback(async (newPage) => {
+  const handleGetTicketSaleDashboard = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -141,10 +167,10 @@ function TicketSaleReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllTicketSale = useCallback(async () => {
+  const handleGetAllTicketSaleDashboard = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all ticketSale:', error);
+      console.error('Error fetching all ticketSaleDashboard:', error);
     }
   }, []);
 
@@ -162,24 +188,24 @@ function TicketSaleReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetTicketSale(1)}
-        onPreviousPage={() => handleGetTicketSale(page - 1)}
-        onNextPage={() => handleGetTicketSale(page + 1)}
-        onLastPage={() => handleGetTicketSale(totalPages)}
+        onFirstPage={() => handleGetTicketSaleDashboard(1)}
+        onPreviousPage={() => handleGetTicketSaleDashboard(page - 1)}
+        onNextPage={() => handleGetTicketSaleDashboard(page + 1)}
+        onLastPage={() => handleGetTicketSaleDashboard(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetTicketSale}
-        handleGetAllData={handleGetAllTicketSale}
+        handleGetData={handleGetTicketSaleDashboard}
+        handleGetAllData={handleGetAllTicketSaleDashboard}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='TicketSaleReport'
+        filename='TicketSaleDashboardReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedTicketSaleData.map((ticketSale, index) => (
+          {modifiedTicketSaleDashboardData.map((ticketSaleDashboard, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -187,13 +213,18 @@ function TicketSaleReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={ticketSale}
+              data={ticketSaleDashboard}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * ticketSale.data.length + 1
-                  : ticketSale.page * ticketSale.size - ticketSale.size + 1
+                  ? page * size -
+                    size +
+                    index * ticketSaleDashboard.data.length +
+                    1
+                  : ticketSaleDashboard.page * ticketSaleDashboard.size -
+                    ticketSaleDashboard.size +
+                    1
               }
               setPage={setPage}
             />
@@ -204,4 +235,4 @@ function TicketSaleReportsTable(props) {
   );
 }
 
-export default TicketSaleReportsTable;
+export default TicketSaleDashboardReportsTable;

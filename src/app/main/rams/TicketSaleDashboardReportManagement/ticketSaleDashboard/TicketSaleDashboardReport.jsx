@@ -1,7 +1,7 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import TicketSaleReportsTable from './TicketSaleReportsTable';
+import TicketSaleDashboardReportsTable from './TicketSaleDashboardReportsTable';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
@@ -14,11 +14,11 @@ import { useTheme } from '@mui/material/styles';
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a ticketSaleReport name')
-    .min(5, 'The ticketSaleReport name must be at least 5 characters'),
+    .nonempty('You must enter a ticketSaleDashboardReport name')
+    .min(5, 'The ticketSaleDashboardReport name must be at least 5 characters'),
 });
 
-function TicketSaleReport() {
+function TicketSaleDashboardReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -39,7 +39,7 @@ function TicketSaleReport() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/dashboards/project'
+            to='/dashboards/ticket'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'
@@ -50,10 +50,10 @@ function TicketSaleReport() {
           </Typography>
         </motion.div>
       }
-      content={<TicketSaleReportsTable />}
+      content={<TicketSaleDashboardReportsTable />}
       innerScroll
     />
   );
 }
 
-export default TicketSaleReport;
+export default TicketSaleDashboardReport;
