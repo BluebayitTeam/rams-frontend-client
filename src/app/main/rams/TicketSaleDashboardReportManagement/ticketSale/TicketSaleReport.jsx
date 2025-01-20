@@ -46,7 +46,7 @@ function TicketSaleReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'> Total Ticket Report</span>
+            <span className='flex mx-4 font-medium'> Total Sales Report</span>
           </Typography>
         </motion.div>
       }
