@@ -14,9 +14,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetManpowerWaitingAllReportsQuery,
-  useGetManpowerWaitingReportsQuery,
-} from '../ManpowerWaitingReportsApi';
+  useGetFlightWaitingAllReportsQuery,
+  useGetFlightWaitingReportsQuery,
+} from '../FlightWaitingReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -73,7 +73,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function ManpowerWaitingReportsTable(props) {
+function FlightWaitingReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -84,7 +84,7 @@ function ManpowerWaitingReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedManpowerWaitingData, setModifiedManpowerWaitingData] =
+  const [modifiedFlightWaitingData, setModifiedFlightWaitingData] =
     useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -106,17 +106,17 @@ function ManpowerWaitingReportsTable(props) {
 
   const filterData = watch();
 
-  const { data: paginatedData } = useGetManpowerWaitingReportsQuery({
+  const { data: paginatedData } = useGetFlightWaitingReportsQuery({
     skip: inShowAllMode,
   });
 
-  const { data: allData } = useGetManpowerWaitingAllReportsQuery({
+  const { data: allData } = useGetFlightWaitingAllReportsQuery({
     skip: !inShowAllMode,
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedManpowerWaitingData(allData.waitings || []);
+      setModifiedFlightWaitingData(allData.waitings || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -132,7 +132,7 @@ function ManpowerWaitingReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedManpowerWaitingData(paginatedData?.waitings || []);
+      setModifiedFlightWaitingData(paginatedData?.waitings || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -152,7 +152,7 @@ function ManpowerWaitingReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetManpowerWaiting = useCallback(async (newPage) => {
+  const handleGetFlightWaiting = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -161,10 +161,10 @@ function ManpowerWaitingReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllManpowerWaiting = useCallback(async () => {
+  const handleGetAllFlightWaiting = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all manpowerWaiting:', error);
+      console.error('Error fetching all flightWaiting:', error);
     }
   }, []);
 
@@ -182,24 +182,24 @@ function ManpowerWaitingReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetManpowerWaiting(1)}
-        onPreviousPage={() => handleGetManpowerWaiting(page - 1)}
-        onNextPage={() => handleGetManpowerWaiting(page + 1)}
-        onLastPage={() => handleGetManpowerWaiting(totalPages)}
+        onFirstPage={() => handleGetFlightWaiting(1)}
+        onPreviousPage={() => handleGetFlightWaiting(page - 1)}
+        onNextPage={() => handleGetFlightWaiting(page + 1)}
+        onLastPage={() => handleGetFlightWaiting(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetManpowerWaiting}
-        handleGetAllData={handleGetAllManpowerWaiting}
+        handleGetData={handleGetFlightWaiting}
+        handleGetAllData={handleGetAllFlightWaiting}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='ManpowerWaitingReport'
+        filename='FlightWaitingReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedManpowerWaitingData.map((manpowerWaiting, index) => (
+          {modifiedFlightWaitingData.map((flightWaiting, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -207,14 +207,14 @@ function ManpowerWaitingReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={manpowerWaiting}
+              data={flightWaiting}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * manpowerWaiting.data.length + 1
-                  : manpowerWaiting.page * manpowerWaiting.size -
-                    manpowerWaiting.size +
+                  ? page * size - size + index * flightWaiting.data.length + 1
+                  : flightWaiting.page * flightWaiting.size -
+                    flightWaiting.size +
                     1
               }
               setPage={setPage}
@@ -226,4 +226,4 @@ function ManpowerWaitingReportsTable(props) {
   );
 }
 
-export default ManpowerWaitingReportsTable;
+export default FlightWaitingReportsTable;

@@ -32,7 +32,7 @@ function FlightWaiting(props) {
           className='text-72 font-semibold leading-none cursor-pointer text-red tracking-tighter'
           onClick={() => {
             dashboardData?.flight_waiting > 0 &&
-              navigate('/apps/notMedicals/report');
+              navigate('/apps/flightWaitingReport/flightWaitingReports');
           }}>
           {dashboardData?.flight_waiting || 0}
         </Typography>
@@ -45,7 +45,7 @@ function FlightWaiting(props) {
         variant='text'
         onClick={() => {
           dashboardData?.flight_waiting > 0 &&
-            navigate('/apps/notMedicals/report');
+            navigate('/apps/flightWaitingReport/flightWaitingReports');
         }}>
         View All Flight Waiting
       </Button>

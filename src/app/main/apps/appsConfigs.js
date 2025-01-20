@@ -173,6 +173,7 @@ import MedicalUnfitReportAppConfig from '../rams/MedicalUnfitReportManagement/Me
 import MedicalVisitReportAppConfig from '../rams/MedicalVisitReportManagement/MedicalVisitReportAppConfig';
 import VisaStatusReportAppConfig from '../rams/VisaStatusReport/VisaStatusAppConfig';
 import ManpowerWaitingReportAppConfig from '../rams/ManpowerWaitingReportManagement/ManpowerWaitingReportAppConfig';
+import FlightWaitingReportAppConfig from '../rams/FlightWaitingManagement/FlightWaitingReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -194,7 +195,7 @@ const appsConfigs = [
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
   FemalefingerletterAppConfig,
-
+  FlightWaitingReportAppConfig,
   PassengerSearchAppConfig,
   FlightReportAppConfig,
   MessengerAppConfig,
