@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetTicketDashboardTotalDeputeQuery } from '../TicketDashboardApi';
+import { useNavigate } from 'react-router';
 
 function TotalDepute(props) {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function TotalDepute(props) {
   const { data, refetch } = useGetTicketDashboardTotalDeputeQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -32,7 +33,11 @@ function TotalDepute(props) {
         </Typography>
       </div>
       <div className='text-center py-12'>
-        <Typography className='text-72 font-semibold leading-none text-orange tracking-tighter'>
+        <Typography
+          className='text-72 font-semibold leading-none cursor-pointer text-orange tracking-tighter'
+          onClick={() => {
+            navigate(`/apps/ticketdeputeReport/ticketdeputeReports`);
+          }}>
           {dashboardData?.total_refunds || 0}
         </Typography>
         <Typography className='text-20 text-orange-800 font-normal'>
@@ -45,10 +50,9 @@ function TotalDepute(props) {
         endIcon={<ArrowRightIcon fontSize='small' />}
         size='medium'
         variant='text'
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(`/apps/ticketdeputeReport/ticketdeputeReports`);
+        }}>
         View all tickets
       </Button>
     </Paper>

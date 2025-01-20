@@ -24,13 +24,15 @@ function TotalSales(props) {
   return (
     <Paper className='w-full rounded-20 shadow flex flex-col justify-between '>
       <div className='flex items-center justify-between px-4 pt-8'>
-        <Typography className='text-16 px-16 font-medium' color='textSecondary'>
+        <Typography
+          className='text-16 px-16 font-medium '
+          color='textSecondary'>
           Total Sales
         </Typography>
       </div>
       <div className='text-center py-12'>
         <Typography
-          className='text-72 font-semibold leading-none text-green tracking-tighter'
+          className='text-72 font-semibold leading-none cursor-pointer text-green tracking-tighter'
           onClick={() => {
             dashboardData?.total_sells > 0 &&
               navigate(
@@ -39,7 +41,7 @@ function TotalSales(props) {
           }}>
           {dashboardData?.total_sells || 0}
         </Typography>
-        <Typography className='text-20 text-green-800 font-normal'>
+        <Typography className='text-20 text-green-800 font-normal cursor-pointer'>
           Total Sales
         </Typography>
       </div>
