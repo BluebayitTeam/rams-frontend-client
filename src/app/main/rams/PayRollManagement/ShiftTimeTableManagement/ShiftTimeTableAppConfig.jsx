@@ -11,7 +11,7 @@ const ShiftTimeTableAppConfig = {
   },
   routes: [
     {
-      path: "apps/timetables-management",
+      path: "apps/timetable",
       element: <ShiftTimeTableApp />,
       children: [
         {

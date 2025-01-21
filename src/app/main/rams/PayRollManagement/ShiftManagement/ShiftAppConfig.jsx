@@ -11,7 +11,7 @@ const ShiftAppConfig = {
   },
   routes: [
     {
-      path: "apps/shifts-management",
+      path: "apps/shift",
       element: <ShiftApp />,
       children: [
         {

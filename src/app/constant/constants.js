@@ -2520,6 +2520,8 @@ export const DELETE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_typ
 
 export const GET_PAY_HEAD_TYPES = `${BASE_URL}/payhead_type/api/v1/payhead_type/all/`;
 
+export const GET_PAY_HEAD_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/payhead_type/api/v1/payhead_type_wp/all/`;
+
 
 // attendance_type
 export const GET_ATTENDANCE_TYPE_BY_ID = `${BASE_URL}/attendance_type/api/v1/attendance_type/`;
@@ -2533,3 +2535,18 @@ export const DELETE_ATTENDANCE_TYPE_MULTIPLE = `${BASE_URL}/attendance_type/api/
 export const DELETE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attendance_type/delete/`;
 
 export const GET_ATTENDANCE_TYPES = `${BASE_URL}/attendance_type/api/v1/attendance_type/all/`;
+
+
+
+// calculation_type
+export const GET_CALCULATION_TYPE_BY_ID = `${BASE_URL}/calculation_type/api/v1/calculation_type/`;
+
+export const CREATE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calculation_type/create/`;
+
+export const UPDATE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calculation_type/update/`;
+
+export const DELETE_CALCULATION_TYPE_MULTIPLE = `${BASE_URL}/calculation_type/api/v1/calculation_type/delete/`;
+
+export const DELETE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calculation_type/delete/`;
+
+export const GET_CALCULATION_TYPES = `${BASE_URL}/calculation_type/api/v1/calculation_type/all/`;
