@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
+import { useNavigate } from 'react-router';
 
 function Registered(props) {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function Registered(props) {
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -43,10 +44,11 @@ function Registered(props) {
         size='medium'
         variant='text'
         className='text-blue-800'
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(
+            `/apps/registeredSaudiReport/registeredSaudiReports/registered`
+          );
+        }}>
         View all registered
       </Button>
     </Paper>

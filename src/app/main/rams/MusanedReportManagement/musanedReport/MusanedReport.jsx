@@ -1,12 +1,13 @@
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { z } from 'zod';
-import RegisteredSaudiReportsTable from './RegisteredSaudiReportsTable';
+
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import MusanedReportReportsTable from './MusanedReportsTable';
 
 /**
  * Form Validation Schema
@@ -14,11 +15,11 @@ import { useTheme } from '@mui/material/styles';
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a registeredSaudiReport name')
-    .min(5, 'The registeredSaudiReport name must be at least 5 characters'),
+    .nonempty('You must enter a musanedReportReport name')
+    .min(5, 'The musanedReportReport name must be at least 5 characters'),
 });
 
-function RegisteredSaudiReport() {
+function MusanedReportReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -53,10 +54,10 @@ function RegisteredSaudiReport() {
           </Typography>
         </motion.div>
       }
-      content={<RegisteredSaudiReportsTable />}
+      content={<MusanedReportReportsTable />}
       innerScroll
     />
   );
 }
 
-export default RegisteredSaudiReport;
+export default MusanedReportReport;
