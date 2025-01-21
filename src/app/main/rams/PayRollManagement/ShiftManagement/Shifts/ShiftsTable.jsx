@@ -5,7 +5,7 @@ import withRouter from "@fuse/core/withRouter";
 import _ from "@lodash";
 import { Delete, Edit } from "@mui/icons-material";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
-import { Box, Button, Checkbox, FormControl, FormControlLabel, Modal, Pagination } from "@mui/material";
+import { Box, Button, Checkbox, FormControl, FormControlLabel, Modal, Pagination, TableContainer } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -410,31 +410,37 @@ function ShiftsTable(props) {
           >
             Shift Management
           </Typography>
-          <Table stickyHeader aria-labelledby="tableTitle">
-            <ShiftsTableHead
-              selectedShiftIds={selected}
-              tableOrder={tableOrder}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={shifts.length}
-              onMenuItemClick={handleDeselect}
-            />
+          <TableContainer
+          // sx={{
+          //   height: 'calc(100vh - 250px)',
+          //   overflowY: 'auto',
+          // }}
+          >
+            <Table stickyHeader aria-labelledby="tableTitle">
+              <ShiftsTableHead
+                selectedShiftIds={selected}
+                tableOrder={tableOrder}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={shifts.length}
+                onMenuItemClick={handleDeselect}
+              />
 
-            <TableBody>
-              {_.orderBy(shifts, [tableOrder.id], [tableOrder.direction]).map(
-                (n) => {
-                  const isSelected = selected.indexOf(n.id) !== -1;
-                  return (
-                    <TableRow
-                      className="h-20 cursor-pointer border-t-1  border-gray-200"
-                      hover
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}
-                    >
-                      {/* <TableCell
+              <TableBody>
+                {_.orderBy(shifts, [tableOrder.id], [tableOrder.direction]).map(
+                  (n) => {
+                    const isSelected = selected.indexOf(n.id) !== -1;
+                    return (
+                      <TableRow
+                        className="h-20 cursor-pointer border-t-1  border-gray-200"
+                        hover
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n.id}
+                        selected={isSelected}
+                      >
+                        {/* <TableCell
                         className="w-40 md:w-64 border-t-1  border-gray-200"
                         component="th"
                         scope="row"
@@ -449,69 +455,70 @@ function ShiftsTable(props) {
                           pageAndSize.size +
                           serialNumber++}
                       </TableCell> */}
-                      <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                        component="th"
-                        scope="row"
-                      >
-                        {n.name}
-                      </TableCell>
-                      <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                        component="th"
-                        scope="row"
-                      >
-                        {n.start_date}
-                      </TableCell>
-                      <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                        component="th"
-                        scope="row"
-                      >
-                        {n.end_date}
-                      </TableCell>
-                      <TableCell
-                        className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
-                        component="th"
-                        scope="row"
-                        align="right"
-                        style={{
-                          position: "sticky",
-                          right: 0,
-                          zIndex: 1,
-                          backgroundColor: "#fff",
-                        }}
-                      >
-                        {hasPermission("TODO_TASK_TYPE_UPDATE") && (
-                          <Edit
-                            onClick={() => handleUpdateShift(n, "updateShift")}
-                            className="cursor-pointer custom-edit-icon-style"
-                          />
-                        )}
+                        <TableCell
+                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                          component="th"
+                          scope="row"
+                        >
+                          {n.name}
+                        </TableCell>
+                        <TableCell
+                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                          component="th"
+                          scope="row"
+                        >
+                          {n.start_date}
+                        </TableCell>
+                        <TableCell
+                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                          component="th"
+                          scope="row"
+                        >
+                          {n.end_date}
+                        </TableCell>
+                        <TableCell
+                          className="p-4 md:p-16 border-t-1  border-gray-200 text-xs"
+                          component="th"
+                          scope="row"
+                          align="right"
+                          style={{
+                            position: "sticky",
+                            right: 0,
+                            zIndex: 1,
+                            backgroundColor: "#fff",
+                          }}
+                        >
+                          {hasPermission("TODO_TASK_TYPE_UPDATE") && (
+                            <Edit
+                              onClick={() => handleUpdateShift(n, "updateShift")}
+                              className="cursor-pointer custom-edit-icon-style"
+                            />
+                          )}
 
-                        {hasPermission("TODO_TASK_TYPE_DELETE") && (
-                          <Delete
-                            onClick={() => handleDeleteShift(n, "deleteShift")}
-                            className="cursor-pointer custom-delete-icon-style"
+                          {hasPermission("TODO_TASK_TYPE_DELETE") && (
+                            <Delete
+                              onClick={() => handleDeleteShift(n, "deleteShift")}
+                              className="cursor-pointer custom-delete-icon-style"
+                            />
+                          )}
+                        </TableCell>
+                        <TableCell
+                          className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-xs"
+                          component="th"
+                          scope="row"
+                        >
+                          <ScheduleSendIcon
+                            onClick={(event) => handleOpen(n)}
+                            style={{ color: "gray", fontSize: "25px" }}
                           />
-                        )}
-                      </TableCell>
-                      <TableCell
-                        className="p-4 mx-auto md:p-16 border-t-1  border-gray-200 text-center text-xs"
-                        component="th"
-                        scope="row"
-                      >
-                        <ScheduleSendIcon
-                          onClick={(event) => handleOpen(n)}
-                          style={{ color: "gray", fontSize: "25px" }}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
-              )}
-            </TableBody>
-          </Table>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
         <div>
           <WeekTable />

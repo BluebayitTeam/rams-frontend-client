@@ -11,6 +11,7 @@ import TableCell from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,8 +26,35 @@ import ShiftTimeTablesTableHead from "./ShiftTimeTablesTableHead";
 /**
  * The ShiftTime Table table.
  */
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    position: 'fixed',
+    bottom: 0,
+    backgroundColor: '#fff',
+    padding: '10px 20px',
+    zIndex: 1000,
+    borderTop: '1px solid #ddd',
+    width: '78%',
+  },
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '0 20px',
+  },
+  pagination: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+}));
+
 function ShiftTimeTablesTable(props) {
   const dispatch = useDispatch();
+  const classes = useStyles();
   const { navigate, searchKey } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -156,6 +184,12 @@ function ShiftTimeTablesTable(props) {
   return (
     <div className="w-full flex flex-col min-h-full px-10">
       <FuseScrollbars className="grow overflow-x-auto">
+        {/* <TableContainer
+        // sx={{
+        //   height: 'calc(100vh - 250px)',
+        //   overflowY: 'auto',
+        // }}
+        > */}
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
           <ShiftTimeTablesTableHead
             selectedShiftTimeTableIds={selected}
@@ -296,9 +330,12 @@ function ShiftTimeTablesTable(props) {
             })}
           </TableBody>
         </Table>
+        {/* </TableContainer> */}
       </FuseScrollbars>
 
-      <div id="pagiContainer">
+      <div
+        // className={classes.root}
+        id="pagiContainer">
         <Pagination
           // classes={{ ul: 'flex-nowrap' }}
           count={totalData?.total_pages}

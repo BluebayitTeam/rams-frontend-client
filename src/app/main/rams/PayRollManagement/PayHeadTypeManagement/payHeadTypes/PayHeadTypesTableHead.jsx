@@ -86,12 +86,7 @@ function PayHeadTypesTableHead(props) {
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'normal'}
-							style={{
-								position: index === 0 || index === array.length - 1 ? 'sticky' : 'inherit',
-								left: index === 0 ? 0 : undefined,
-								right: index === array.length - 1 ? 0 : undefined,
-								zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto'
-							}}
+
 							sortDirection={tableOrder.id === row.id ? tableOrder.direction : false}
 						>
 							{row.sort && (
