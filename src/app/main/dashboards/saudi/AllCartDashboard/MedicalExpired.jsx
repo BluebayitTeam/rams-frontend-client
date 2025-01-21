@@ -8,24 +8,21 @@ import { useNavigate } from 'react-router';
 
 function MedicalExpired(props) {
   const dispatch = useDispatch();
-
   const [dashboardData, setDashboardData] = useState(null);
-  const navigate = useNavigate();
   const [days, setDays] = useState(15);
+  const [couintry, setCountry] = useState('saudi');
+
+  const navigate = useNavigate();
+
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery({
-    medical_expiry_count_next_15_days: days,
+    no_of_days: days,
+    country: couintry,
   });
   useEffect(() => {
     if (data) {
       setDashboardData(data);
     }
   }, [data]);
-
-  useEffect(() => {
-    if (days > 0) {
-      setDashboardData(data);
-    }
-  }, [days, refetch]);
 
   useEffect(() => {
     refetch();
@@ -37,7 +34,7 @@ function MedicalExpired(props) {
         onClick={() => {
           dashboardData?.medical_expiry_count_next_15_days > 0 &&
             navigate(
-              `/apps/medicalExpireReport/medicalExpireReports/on_process`
+              `/apps/medicalExpireSaudiReport/medicalExpireSaudiReports/${days}/${couintry}`
             );
         }}>
         <Typography className='text-72 font-semibold leading-none text-blue tracking-tighter'>

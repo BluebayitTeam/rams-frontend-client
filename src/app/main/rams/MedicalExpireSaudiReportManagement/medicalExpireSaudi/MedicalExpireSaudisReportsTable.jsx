@@ -120,9 +120,9 @@ function MedicalExpireSaudiReportsTable(props) {
 
   const { data: paginatedData } = useGetMedicalExpireSaudiReportsQuery({
     no_of_days: noOfDays || '',
+    country: 'saudi',
     page,
     size,
-    skip: inShowAllMode,
   });
 
   console.log('paginatedData', paginatedData);
@@ -131,7 +131,6 @@ function MedicalExpireSaudiReportsTable(props) {
     no_of_days: noOfDays || '',
     page,
     size,
-    skip: !inShowAllMode,
   });
 
   useEffect(() => {

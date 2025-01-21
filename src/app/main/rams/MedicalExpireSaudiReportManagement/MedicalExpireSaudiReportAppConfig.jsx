@@ -20,7 +20,7 @@ const MedicalExpireSaudiReportAppConfig = {
         },
 
         {
-          path: 'medicalExpireSaudiReports/:noOfDays?/*',
+          path: 'medicalExpireSaudiReports/:noOfDays?/:country?/*',
           element: <MedicalExpireSaudisReport />,
         },
       ],
