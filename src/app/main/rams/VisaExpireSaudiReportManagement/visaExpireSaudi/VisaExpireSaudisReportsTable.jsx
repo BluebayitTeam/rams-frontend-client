@@ -16,9 +16,9 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 import { useParams } from 'react-router';
 import {
-  useGetMedicalExpireSaudiAllReportsQuery,
-  useGetMedicalExpireSaudiReportsQuery,
-} from '../MedicalExpireSaudiReportsApi';
+  useGetVisaExpireSaudiAllReportsQuery,
+  useGetVisaExpireSaudiReportsQuery,
+} from '../VisaExpireSaudiReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -32,8 +32,9 @@ const initialTableColumnsState = [
   {
     id: 2,
     label: 'Passenger Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    getterMethod: (data) => console.log('sdfdskfhksdhfd', data),
+    // `${data?.passenger_name || ''}`,
+
     show: true,
   },
   {
@@ -43,48 +44,65 @@ const initialTableColumnsState = [
     subName: 'passport_no',
     show: true,
   },
-  { id: 4, label: 'Agent', name: 'agent', subName: 'username', show: true },
-  { id: 5, label: 'M.Serial No', name: 'medical_serial_no', show: true },
-  { id: 6, label: 'M.Result', name: 'medical_result', show: true },
-  { id: 7, label: 'M.Card', name: 'medical_card', show: true },
-  { id: 8, label: 'M.Ent Date', name: 'created_at', show: true, type: 'date' },
   {
-    id: 9,
-    label: 'M.Exam Date',
-    name: 'medical_exam_date',
+    id: 4,
+    label: 'country',
+
+    getterMethod: (data) => `${data.country.name || ''}`,
+
+    show: true,
+  },
+  {
+    id: 5,
+    label: 'Profession',
+    getterMethod: (data) =>
+      // console.log('sdfdskfhksdhfd', data.profession_arabic),
+      `${data.profession_arabic || ''}`,
+
+    show: true,
+  },
+  {
+    id: 6,
+    label: 'Submit Date',
+    name: 'submit_date',
     show: true,
     type: 'date',
   },
-  {
-    id: 10,
-    label: 'M.Rpt Date',
-    name: 'medical_report_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 11,
-    label: 'M.Issue Date',
-    name: 'medical_issue_date',
-    show: true,
-    type: 'date',
-  },
+  { id: 7, label: 'Profession Eng', name: 'profession_english', show: true },
+  { id: 8, label: 'Profession Arb', name: 'profession_arabic', show: true },
+  { id: 9, label: 'Salary', name: 'salary', show: true },
+  { id: 10, label: 'Stamping Status', name: 'stamping_status', show: true },
+  { id: 11, label: 'V.Ent Date', name: 'created_at', show: true, type: 'date' },
   {
     id: 12,
-    label: 'M.Exp Date',
-    name: 'medical_expiry_date',
+    label: 'Stp Date',
+    name: 'stamping_date',
     show: true,
     type: 'date',
   },
   {
     id: 13,
-    label: 'M.Center',
-    name: 'medical_center',
-    subName: 'name',
+    label: 'V.Exp Date',
+    name: 'visa_expiry_date',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 14,
+    label: 'Delivery Date',
+    name: 'delivery_date',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 15,
+    label: 'recruiting_agency',
+    getterMethod: (data) => `${data?.recruiting_agency || ''}`,
+
     show: true,
   },
 ];
-function MedicalExpireSaudiReportsTable(props) {
+function VisaExpireSaudiReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -95,7 +113,7 @@ function MedicalExpireSaudiReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedMedicalExpireSaudiData, setModifiedMedicalExpireSaudiData] =
+  const [modifiedVisaExpireSaudiData, setModifiedVisaExpireSaudiData] =
     useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -118,14 +136,14 @@ function MedicalExpireSaudiReportsTable(props) {
   const { noOfDays } = routeParams;
   const filterData = watch();
 
-  const { data: paginatedData } = useGetMedicalExpireSaudiReportsQuery({
+  const { data: paginatedData } = useGetVisaExpireSaudiReportsQuery({
     no_of_days: noOfDays || '',
     country: 'saudi arabia',
     page,
     size,
   });
 
-  const { data: allData } = useGetMedicalExpireSaudiAllReportsQuery({
+  const { data: allData } = useGetVisaExpireSaudiAllReportsQuery({
     no_of_days: noOfDays || '',
     country: 'saudi arabia',
     page,
@@ -134,14 +152,14 @@ function MedicalExpireSaudiReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMedicalExpireSaudiData(allData.medicals || []);
+      setModifiedVisaExpireSaudiData(allData.visa_entries || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.medicals,
+        allData.visa_entries,
         size,
         page
       );
@@ -150,7 +168,7 @@ function MedicalExpireSaudiReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalExpireSaudiData(paginatedData?.medicals || []);
+      setModifiedVisaExpireSaudiData(paginatedData?.visa_entries || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -170,7 +188,7 @@ function MedicalExpireSaudiReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetMedicalExpireSaudis = useCallback(async (newPage) => {
+  const handleGetVisaExpireSaudis = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -179,10 +197,10 @@ function MedicalExpireSaudiReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllMedicalExpireSaudis = useCallback(async () => {
+  const handleGetAllVisaExpireSaudis = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicalExpireSaudis:', error);
+      console.error('Error fetching all visaExpireSaudis:', error);
     }
   }, []);
 
@@ -208,24 +226,24 @@ function MedicalExpireSaudiReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetMedicalExpireSaudis(1)}
-        onPreviousPage={() => handleGetMedicalExpireSaudis(page - 1)}
-        onNextPage={() => handleGetMedicalExpireSaudis(page + 1)}
-        onLastPage={() => handleGetMedicalExpireSaudis(totalPages)}
+        onFirstPage={() => handleGetVisaExpireSaudis(1)}
+        onPreviousPage={() => handleGetVisaExpireSaudis(page - 1)}
+        onNextPage={() => handleGetVisaExpireSaudis(page + 1)}
+        onLastPage={() => handleGetVisaExpireSaudis(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetMedicalExpireSaudis}
-        handleGetAllData={handleGetAllMedicalExpireSaudis}
+        handleGetData={handleGetVisaExpireSaudis}
+        handleGetAllData={handleGetAllVisaExpireSaudis}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalExpireSaudiReport'
+        filename='VisaExpireSaudiReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMedicalExpireSaudiData.map((medicalExpireSaudi, index) => (
+          {modifiedVisaExpireSaudiData.map((visaExpireSaudi, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -233,17 +251,14 @@ function MedicalExpireSaudiReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={medicalExpireSaudi}
+              data={visaExpireSaudi}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size -
-                    size +
-                    index * medicalExpireSaudi.data.length +
-                    1
-                  : medicalExpireSaudi.page * medicalExpireSaudi.size -
-                    medicalExpireSaudi.size +
+                  ? page * size - size + index * visaExpireSaudi.data.length + 1
+                  : visaExpireSaudi.page * visaExpireSaudi.size -
+                    visaExpireSaudi.size +
                     1
               }
               setPage={setPage}
@@ -255,4 +270,4 @@ function MedicalExpireSaudiReportsTable(props) {
   );
 }
 
-export default MedicalExpireSaudiReportsTable;
+export default VisaExpireSaudiReportsTable;

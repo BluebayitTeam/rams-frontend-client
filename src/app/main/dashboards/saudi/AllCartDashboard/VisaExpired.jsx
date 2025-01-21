@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router';
 function VisaExpired(props) {
   const [dashboardData, setDashboardData] = useState(null);
   const navigate = useNavigate();
+  const [days, setDays] = useState(15);
 
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery({
+    no_of_days: days,
     refetchOnMountOrArgChange: true,
   });
 
@@ -28,7 +30,9 @@ function VisaExpired(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.ksa_visa_exp_count_next_15_days > 0 &&
-            navigate(`/apps/registeredSaudis/report/on_process`);
+            navigate(
+              `/apps/visaExpireSaudiReport/visaExpireSaudiReports/${days}`
+            );
         }}>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'

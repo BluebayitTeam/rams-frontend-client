@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import MedicalExpireSaudiReportsTable from './MedicalExpireSaudisReportsTable';
+import VisaExpireSaudiReportsTable from './VisaExpireSaudisReportsTable';
 
 /**
  * Form Validation Schema
@@ -14,11 +14,11 @@ import MedicalExpireSaudiReportsTable from './MedicalExpireSaudisReportsTable';
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a medicalExpireSaudisReport name')
-    .min(5, 'The medicalExpireSaudisReport name must be at least 5 characters'),
+    .nonempty('You must enter a visaExpireSaudisReport name')
+    .min(5, 'The visaExpireSaudisReport name must be at least 5 characters'),
 });
 
-function MedicalExpireSaudisReport() {
+function VisaExpireSaudisReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -53,10 +53,10 @@ function MedicalExpireSaudisReport() {
           </Typography>
         </motion.div>
       }
-      content={<MedicalExpireSaudiReportsTable />}
+      content={<VisaExpireSaudiReportsTable />}
       innerScroll
     />
   );
 }
 
-export default MedicalExpireSaudisReport;
+export default VisaExpireSaudisReport;

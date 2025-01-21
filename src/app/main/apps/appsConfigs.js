@@ -178,6 +178,7 @@ import FlightDoneReportAppConfig from '../rams/FlightDoneManagement/FlightDoneRe
 import TicketSaleDashboardReportAppConfig from '../rams/TicketSaleDashboardReportManagement/TicketSaleDashboardReportAppConfig';
 import RegisteredSaudiReportAppConfig from '../rams/RegisteredSaudiReportManagement/RegisteredSaudiReportAppConfig';
 import MedicalExpireSaudiReportAppConfig from '../rams/MedicalExpireSaudiReportManagement/MedicalExpireSaudiReportAppConfig';
+import VisaExpireSaudiReportAppConfig from '../rams/VisaExpireSaudiReportManagement/VisaExpireSaudiReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -195,6 +196,7 @@ const appsConfigs = [
   BalanceSheetReportAppConfig,
   RegisteredSaudiReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
+  VisaExpireSaudiReportAppConfig,
   BmetStampAppConfig,
   CalendarAppConfig,
   CompanyOverviewReportAppConfig,
