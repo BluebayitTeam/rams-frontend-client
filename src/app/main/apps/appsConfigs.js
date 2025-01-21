@@ -168,6 +168,7 @@ import PassengerSummaryUpdateClmAppConfig from "../rams/PassengerSummaryUpdateCl
 import PassengerSummaryUpdateAppConfig from "../rams/PassengerSummaryUpdateColumnManagement/PassengerSummaryUpdateAppConfig";
 import AttendanceTypeAppConfig from "../rams/PayRollManagement/AttendanceTypeManagement/AttendanceTypeAppConfig";
 import CalculationTypeAppConfig from "../rams/PayRollManagement/CalculationTypeManagement/CalculationTypeAppConfig";
+import PayHeadAppConfig from "../rams/PayRollManagement/PayHeadManagement/PayHeadAppConfig";
 import PayHeadTypeAppConfig from "../rams/PayRollManagement/PayHeadTypeManagement/PayHeadTypeAppConfig";
 import ShiftAppConfig from "../rams/PayRollManagement/ShiftManagement/ShiftAppConfig";
 import ShiftTimeTableAppConfig from "../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig";
@@ -350,6 +351,7 @@ const appsConfigs = [
   PassengerDeliveryAppConfig,
   ReceivableBillAppConfig,
   PayableBillAppConfig,
+  PayHeadAppConfig,
   PayHeadTypeAppConfig,
   AttendanceTypeAppConfig,
   CalculationTypeAppConfig

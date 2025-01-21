@@ -2505,7 +2505,20 @@ export const DELETE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timeta
 
 export const SEARCH_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/search/`;
 
+// payhead
+export const GET_PAY_HEAD_BY_ID = `${BASE_URL}/payhead/api/v1/payhead/`;
 
+export const CREATE_PAY_HEAD = `${BASE_URL}/payhead/api/v1/payhead/create/`;
+
+export const UPDATE_PAY_HEAD = `${BASE_URL}/payhead/api/v1/payhead/update/`;
+
+export const DELETE_PAY_HEAD_MULTIPLE = `${BASE_URL}/payhead/api/v1/payhead/delete/`;
+
+export const DELETE_PAY_HEAD = `${BASE_URL}/payhead/api/v1/payhead/delete/`;
+
+export const GET_PAY_HEADS = `${BASE_URL}/payhead/api/v1/payhead/all/`;
+
+export const GET_PAY_HEADS_WITHOUT_PAGINATION = `${BASE_URL}/payhead/api/v1/payhead_wp/all/`;
 
 // payhead_type
 export const GET_PAY_HEAD_TYPE_BY_ID = `${BASE_URL}/payhead_type/api/v1/payhead_type/`;
