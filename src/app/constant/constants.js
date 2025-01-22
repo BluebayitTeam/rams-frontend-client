@@ -1136,6 +1136,7 @@ export const DELETE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/delete/`;
 export const FLIGHT_BY_PASSENGER_ID = `${BASE_URL}/flight/api/v1/flight/get_by_passenger_id/`;
 
 export const FLIGHT_FILTER_BY = `${BASE_URL}/report/api/v1/flight_report/filter/`;
+export const FLIGHT_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/flight_data_report/filter/`;
 
 export const FLIGHT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/flight_report/without_pagination/filter/`;
 

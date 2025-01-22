@@ -33,7 +33,7 @@ function FlightDone(props) {
           {dashboardData?.flight_done || 0}
         </Typography>
         <Typography className='text-20  font-normal text-blue'>
-          Flight Waiting
+          Flight Done
         </Typography>
       </div>
 
