@@ -1305,6 +1305,8 @@ export const DELETE_GROUP_MULTIPLE = `${BASE_URL}/group/api/v1/group/delete_mult
 
 export const SEARCH_GROUP = `${BASE_URL}/group/api/v1/group/search/`;
 
+export const GET_GROUP_BY_PAYHEAD_ID = `${BASE_URL}/group/api/v1/group/groupby_payhead/`;
+
 // bmet
 export const CREATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/create/`;
 
@@ -2549,6 +2551,9 @@ export const DELETE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attend
 
 export const GET_ATTENDANCE_TYPES = `${BASE_URL}/attendance_type/api/v1/attendance_type/all/`;
 
+export const GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/attendance_type/api/v1/attendance_type_wp/all/`;
+
+
 
 
 // calculation_type
@@ -2563,3 +2568,8 @@ export const DELETE_CALCULATION_TYPE_MULTIPLE = `${BASE_URL}/calculation_type/ap
 export const DELETE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calculation_type/delete/`;
 
 export const GET_CALCULATION_TYPES = `${BASE_URL}/calculation_type/api/v1/calculation_type/all/`;
+
+export const GET_CALCULATION_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/calculation_type/api/v1/calculation_type_wp/all/`;
+
+
+

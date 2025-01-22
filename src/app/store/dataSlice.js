@@ -15,13 +15,16 @@ import {
   EMBASSY_BY_PASSENGER_ID,
   FLIGHT_BY_PASSENGER_ID,
   GET_ALL_CALLING_ASSIGN_WP,
+  GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION,
   GET_ATTRIBUTES_WITHOUT_PAGINATION,
   GET_BRANCH_WITHOUT_PAGINATION,
   GET_BRANDS_WITHOUT_PAGINATION,
+  GET_CALCULATION_TYPES_WITHOUT_PAGINATION,
   GET_CATEGORIES_WITHOUT_PAGINATION,
   GET_CITYS_WITHOUT_PAGINATION,
   GET_CLIENT_TYPES_WITHOUT_PAGINATION,
   GET_CLIENTS_WITHOUT_PAGINATION,
+  GET_COMPUTES_WITHOUT_PAGINATION,
   GET_COUNTRIES_WITHOUT_PAGINATION,
   GET_DEPARTMENTS_WITHOUT_PAGINATION,
   GET_EMPLOYEE_USERS_WITHOUT_PAGINATION,
@@ -29,10 +32,12 @@ import {
   GET_FEMALECV_BY_ID,
   GET_FORM_CONTROL_HEAD_WITHOUT_PG,
   GET_GDSS,
+  GET_GROUP_BY_PAYHEAD_ID,
   GET_MENUS_ALL_NESTED,
   GET_MENUS_WITHOUT_PAGINATION,
   GET_PACKAGE_TYPES_WITHOUT_PAGINATION,
   GET_PAY_HEAD_TYPES_WITHOUT_PAGINATION,
+  GET_PAY_HEADS_WITHOUT_PAGINATION,
   GET_PERMISSION_GROUP,
   GET_PERMISSIONS_WITHOUT_PAGINATION,
   GET_ROLES_WITHOUT_PAGINATION,
@@ -457,6 +462,30 @@ export const getEmployees = () => (dispatch) => {
     .then((data) => dispatch(setEmployees(data.employees)))
     .catch(() => { });
 };
+export const getComputes = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(GET_COMPUTES_WITHOUT_PAGINATION, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setComputes(data.computes)))
+    .catch(() => { });
+};
+export const getPayheads = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(GET_PAY_HEADS_WITHOUT_PAGINATION, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setPayheads(data.payheads)))
+    .catch(() => { });
+};
 export const getPayheadTypes = () => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -469,6 +498,31 @@ export const getPayheadTypes = () => (dispatch) => {
     .then((data) => dispatch(setPayheadTypes(data)))
     .catch(() => { });
 };
+export const getCalculationTypes = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(GET_CALCULATION_TYPES_WITHOUT_PAGINATION, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setCalculationTypes(data?.calculation_types)))
+    .catch(() => { });
+};
+export const getAttendanceTypes = () => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setAttendanceTypes(data)))
+    .catch(() => { });
+};
+
 export const getCurrentstatuses = () => (dispatch) => {
   const authTOKEN = {
     headers: {
@@ -653,6 +707,18 @@ export const getGroups = () => (dispatch) => {
     },
   };
   fetch(GROUPS_WITHOUT_PAGINATION, authTOKEN)
+    .then((response) => response.json())
+    .then((data) => dispatch(setGroups(data.groups)))
+    .catch(() => { });
+};
+export const getGroupsByPayheadTypeId = (id) => (dispatch) => {
+  const authTOKEN = {
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: localStorage.getItem('jwt_access_token'),
+    },
+  };
+  fetch(`${GET_GROUP_BY_PAYHEAD_ID}${id}`, authTOKEN)
     .then((response) => response.json())
     .then((data) => dispatch(setGroups(data.groups)))
     .catch(() => { });
@@ -988,7 +1054,11 @@ const dataSlice = createSlice({
     departments: [],
     clients: [],
     employees: [],
+    computes: [],
+    payheads: [],
     payheadTypes: [],
+    calculationTypes: [],
+    attendanceTypes: [],
     products: [],
     attributes: [],
     citys: [],
@@ -1126,8 +1196,20 @@ const dataSlice = createSlice({
     setEmployees: (state, action) => {
       state.employees = action.payload ? action.payload : [];
     },
+    setComputes: (state, action) => {
+      state.computes = action.payload ? action.payload : [];
+    },
+    setPayheads: (state, action) => {
+      state.payheads = action.payload ? action.payload : [];
+    },
     setPayheadTypes: (state, action) => {
       state.payheadTypes = action.payload ? action.payload : [];
+    },
+    setCalculationTypes: (state, action) => {
+      state.calculationTypes = action.payload ? action.payload : [];
+    },
+    setAttendanceTypes: (state, action) => {
+      state.attendanceTypes = action.payload ? action.payload : [];
     },
 
     setProducts: (state, action) => {
@@ -1293,7 +1375,11 @@ const {
   setPermissions,
   setEmployees,
   setAttributes,
+  setPayheads,
+  setComputes,
   setPayheadTypes,
+  setCalculationTypes,
+  setAttendanceTypes,
 
   // To Do Task Type
 

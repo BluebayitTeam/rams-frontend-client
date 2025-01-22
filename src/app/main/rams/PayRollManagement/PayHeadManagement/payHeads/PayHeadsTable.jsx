@@ -66,7 +66,7 @@ function PayHeadsTable(props) {
     searchKey,
   });
   const totalData = useSelector(selectFilteredPayHeads(data));
-  const payHeads = useSelector(selectFilteredPayHeads(data?.payhead_types));
+  const payHeads = useSelector(selectFilteredPayHeads(data?.payheads));
   let serialNumber = 1;
 
   useEffect(() => {
