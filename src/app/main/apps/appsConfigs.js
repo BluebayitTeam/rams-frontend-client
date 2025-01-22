@@ -183,6 +183,8 @@ import MusanedReportReportAppConfig from '../rams/MusanedReportManagement/Musane
 import MedicalSaudiReportAppConfig from '../rams/MedicalSaudiReportManagement/MedicalSaudiReportAppConfig';
 import MofaSaudiReportAppConfig from '../rams/MofaSaudiReportManagement/MofaSaudiReportAppConfig';
 import EmbassySaudiReportAppConfig from '../rams/EmbassySaudiReportManagement/EmbassySaudiReportAppConfig';
+import TraningSaudiReportAppConfig from '../rams/TraningSaudiReportManagement/TraningSaudiReportAppConfig';
+import ManPowerSaudiReportAppConfig from '../rams/ManPowerSaudiReportManagement/ManPowerSaudiReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -196,6 +198,8 @@ const appsConfigs = [
   AirwayAppConfig,
   MofaSaudiReportAppConfig,
   EmbassySaudiReportAppConfig,
+  TraningSaudiReportAppConfig,
+  ManPowerSaudiReportAppConfig,
   BranchAppConfig,
   BmetV2ApplicationAppConfig,
   PassengerEditHistoryAppConfig,

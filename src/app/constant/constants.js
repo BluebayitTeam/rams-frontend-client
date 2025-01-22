@@ -1194,6 +1194,7 @@ export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
 export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;
 
 export const TRAINING_FILTER_BY = `${BASE_URL}/report/api/v1/training_report/filter/`;
+export const TRAINING_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/training_data_report/filter/`;
 
 export const TRAINING_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/training_report/without_pagination/filter/`;
 
@@ -1240,6 +1241,7 @@ export const DELETE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/delete/`;
 export const MANPOWER_BY_PASSENGER_ID = `${BASE_URL}/man_power/api/v1/man_power/check_embassy_by_passenger_id/`;
 
 export const MANPOWER_FILTER_BY = `${BASE_URL}/report/api/v1/man_power_report/filter/`;
+export const MANPOWER_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/manpower_data_report/filter/`;
 
 export const MANPOWER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/man_power_report/without_pagination/filter/`;
 

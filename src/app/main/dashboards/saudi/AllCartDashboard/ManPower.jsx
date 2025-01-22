@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
+import { useNavigate } from 'react-router';
 
 function ManPower(props) {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function ManPower(props) {
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -43,11 +45,9 @@ function ManPower(props) {
         size='medium'
         variant='text'
         className='text-blue-800'
-
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(`/apps/manPowerSaudiReport/manPowerSaudiReports/`);
+        }}>
         View all ManPower
       </Button>
     </Paper>
