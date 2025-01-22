@@ -48,7 +48,7 @@ function VisaExpireSaudisReport() {
             </FuseSvgIcon>
             <span className='flex mx-4 font-medium'>
               {' '}
-              Saudi Medical Expires Report
+              Saudi Visa Expired Report
             </span>
           </Typography>
         </motion.div>

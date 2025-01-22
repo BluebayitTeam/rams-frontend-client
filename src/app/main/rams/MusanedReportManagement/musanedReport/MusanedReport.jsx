@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { motion } from 'framer-motion';
 import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import MusanedReportReportsTable from './MusanedReportsTable';
 
@@ -22,6 +22,7 @@ const schema = z.object({
 function MusanedReportReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
+  const routeParms = useParams();
 
   return (
     <FusePageCarded
@@ -48,8 +49,9 @@ function MusanedReportReport() {
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
             <span className='flex mx-4 font-medium'>
-              {' '}
-              Total Registered Report
+              {routeParms?.musanedReportReportId == 'musaned'
+                ? 'Musaned Report'
+                : 'Okala Report'}
             </span>
           </Typography>
         </motion.div>

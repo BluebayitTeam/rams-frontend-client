@@ -13,12 +13,12 @@ import getPaginationData from 'src/app/@helpers/getPaginationData';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
+
+import { useParams } from 'react-router';
 import {
   useGetMusanedReportAllReportsQuery,
   useGetMusanedReportReportsQuery,
-} from '../MusanedReportReportsApi';
-
-import { useParams } from 'react-router';
+} from '../MusanedReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -28,23 +28,29 @@ const schema = z.object({});
 
 const initialTableColumnsState = [
   { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
-  { id: 2, label: 'Date', name: 'created_at', show: true, type: 'date' },
-  { id: 3, label: 'Passenger Name', name: 'passenger_name', show: true },
-  { id: 4, label: 'Passenger Id', name: 'passenger_id', show: true },
-  { id: 5, label: 'PP.No', name: 'passport_no', show: true },
+  { id: 2, label: 'Date', name: 'musaned_date', show: true, type: 'date' },
   {
-    id: 6,
-    label: 'Agent',
-    getterMethod: (data) => `${data?.agent || ''} `,
+    id: 3,
+    label: 'Passenger Name',
+    name: 'passenger',
+    subName: 'passenger_name',
     show: true,
   },
   {
-    id: 7,
-    label: 'Agency',
-    getterMethod: (data) => `${data?.agency || ''} `,
-
+    id: 4,
+    label: 'PP.No',
+    name: 'passenger',
+    subName: 'passport_no',
     show: true,
   },
+  {
+    id: 5,
+    label: 'Visa No',
+    getterMethod: (data) => `${data.passenger?.visa_entry?.visa_number || ''} `,
+    show: true,
+  },
+  { id: 6, label: 'No', name: 'musaned_no', show: true },
+  { id: 7, label: 'Status', name: 'musaned_status', show: true },
 ];
 
 function MusanedReportReportsTable(props) {
@@ -55,6 +61,8 @@ function MusanedReportReportsTable(props) {
     resolver: zodResolver(schema),
   });
   const dispatch = useDispatch();
+  const routeParms = useParams();
+  console.log('routeParms', routeParms?.musanedReportReportId);
 
   const { watch, getValues } = methods;
 
@@ -77,22 +85,28 @@ function MusanedReportReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
+  const status =
+    routeParams?.musanedReportReportId === 'musaned'
+      ? { musaned_status: 'done' }
+      : { okala_status: 'done' };
+
   const { data: paginatedData } = useGetMusanedReportReportsQuery({
-    dashboard_type: routeParams?.musanedReportReportId,
+    ...status,
   });
+
   const { data: allData } = useGetMusanedReportAllReportsQuery({
-    dashboard_type: routeParams?.musanedReportReportId,
+    musaned_status: 'done',
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMusanedReportData(allData.passengers || []);
+      setModifiedMusanedReportData(allData.musaned || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.passengers,
+        allData.musaned,
         size,
         page
       );
@@ -102,7 +116,7 @@ function MusanedReportReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMusanedReportData(paginatedData?.passengers || []);
+      setModifiedMusanedReportData(paginatedData?.musaned || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -173,7 +187,7 @@ function MusanedReportReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Total Registered Report'
+              reportTitle={`${routeParms?.musanedReportReportId == 'musaned' ? 'Musaned Report' : 'Okala Report'}`}
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

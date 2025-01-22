@@ -247,7 +247,7 @@ function VisaExpireSaudiReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Saudi Medical Expires Report'
+              reportTitle='Saudi Visa Expired  Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}

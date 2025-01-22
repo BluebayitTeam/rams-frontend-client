@@ -229,7 +229,7 @@ function MedicalExpireSaudiReportsTable(props) {
             <SinglePage
               key={index}
               classes={classes}
-              reportTitle='Saudi Medical Expires Report'
+              reportTitle='Saudi Medical Expired Report'
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
