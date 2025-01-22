@@ -1089,6 +1089,7 @@ export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/check
 export const EMBASSY_BY_PASSENGER_IDS = `${BASE_URL}/embassy/api/v1/embassy/get_by_passenger_id/`;
 
 export const EMBASSY_FILTER_BY = `${BASE_URL}/report/api/v1/embassy_report/filter/`;
+export const EMBASSY_FILTE_SAUDI_BY = `${BASE_URL}/report/api/v1/embassy_data_report/filter/`;
 
 export const EMBASSY_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/embassy_report/without_pagination/filter/`;
 
