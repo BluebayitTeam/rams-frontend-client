@@ -186,6 +186,7 @@ import EmbassySaudiReportAppConfig from '../rams/EmbassySaudiReportManagement/Em
 import TraningSaudiReportAppConfig from '../rams/TraningSaudiReportManagement/TraningSaudiReportAppConfig';
 import ManPowerSaudiReportAppConfig from '../rams/ManPowerSaudiReportManagement/ManPowerSaudiReportAppConfig';
 import FlightWaitingSaudiReportAppConfig from '../rams/FlightWaitingSaudiReportManagement/FlightWaitingSaudiReportAppConfig';
+import FlightDoneSaudiReportAppConfig from '../rams/FlightDoneSaudiReportManagement/FlightDoneSaudiReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -215,6 +216,7 @@ const appsConfigs = [
   CompanyOverviewReportAppConfig,
   VisaSubmissionListAppConfig,
   CvBankAppConfig,
+  FlightDoneSaudiReportAppConfig,
   TicketSaleReportAppConfig,
   TicketSaleDashboardReportAppConfig,
   FemalefingerletterAppConfig,
