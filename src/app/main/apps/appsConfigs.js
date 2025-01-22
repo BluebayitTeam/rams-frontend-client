@@ -180,6 +180,7 @@ import RegisteredSaudiReportAppConfig from '../rams/RegisteredSaudiReportManagem
 import MedicalExpireSaudiReportAppConfig from '../rams/MedicalExpireSaudiReportManagement/MedicalExpireSaudiReportAppConfig';
 import VisaExpireSaudiReportAppConfig from '../rams/VisaExpireSaudiReportManagement/VisaExpireSaudiReportAppConfig';
 import MusanedReportReportAppConfig from '../rams/MusanedReportManagement/MusanedReportAppConfig';
+import MedicalSaudiReportAppConfig from '../rams/MedicalSaudiReportManagement/MedicalSaudiReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -196,6 +197,7 @@ const appsConfigs = [
   PassengerEditHistoryAppConfig,
   BalanceSheetReportAppConfig,
   RegisteredSaudiReportAppConfig,
+  MedicalSaudiReportAppConfig,
   MusanedReportReportAppConfig,
   MedicalExpireSaudiReportAppConfig,
   VisaExpireSaudiReportAppConfig,

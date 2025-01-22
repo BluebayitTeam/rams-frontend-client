@@ -1053,6 +1053,7 @@ export const DELETE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/delete/`;
 export const MEDICAL_BY_PASSENGER_ID = `${BASE_URL}/medical/api/v1/medical/get_by_passenger_id/`;
 
 export const MEDICAL_FILTER_BY = `${BASE_URL}/report/api/v1/medical_report/filter/`;
+export const MEDICAL_FILTER_SAUDI_BY = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_fit_medical_data/`;
 
 export const MEDICAL_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/medical_report/without_pagination/filter/`;
 
