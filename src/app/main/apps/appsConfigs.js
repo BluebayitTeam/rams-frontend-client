@@ -187,6 +187,7 @@ import TraningSaudiReportAppConfig from '../rams/TraningSaudiReportManagement/Tr
 import ManPowerSaudiReportAppConfig from '../rams/ManPowerSaudiReportManagement/ManPowerSaudiReportAppConfig';
 import FlightWaitingSaudiReportAppConfig from '../rams/FlightWaitingSaudiReportManagement/FlightWaitingSaudiReportAppConfig';
 import FlightDoneSaudiReportAppConfig from '../rams/FlightDoneSaudiReportManagement/FlightDoneSaudiReportAppConfig';
+import MedicalExpireMalaysiaReportAppConfig from '../rams/MedicalExpireMalaysiaReportManagement/MedicalExpireMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -237,6 +238,7 @@ const appsConfigs = [
   TicketsalessummaryReportAppConfig,
   TicketsalesummeryfilterdataReportAppConfig,
   VisaStampOkReportAppConfig,
+  MedicalExpireMalaysiaReportAppConfig,
   TicketdeputeReportAppConfig,
   MedicalReportAppConfig,
   VisaExpireReportAppConfig,
