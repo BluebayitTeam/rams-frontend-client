@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useGetSaudiDashboardTotalSaudiQuery } from '../SaudiDashboardApi';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
+import { useNavigate } from 'react-router';
 
 function Mofa(props) {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function Mofa(props) {
   const { data, refetch } = useGetSaudiDashboardTotalSaudiQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -41,11 +43,9 @@ function Mofa(props) {
         size='medium'
         variant='text'
         className='text-blue-800'
-
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(`/apps/mofaSaudiReport/mofaSaudiReports/`);
+        }}>
         View all Mofa
       </Button>
     </Paper>

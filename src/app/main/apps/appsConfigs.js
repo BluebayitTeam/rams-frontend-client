@@ -181,6 +181,7 @@ import MedicalExpireSaudiReportAppConfig from '../rams/MedicalExpireSaudiReportM
 import VisaExpireSaudiReportAppConfig from '../rams/VisaExpireSaudiReportManagement/VisaExpireSaudiReportAppConfig';
 import MusanedReportReportAppConfig from '../rams/MusanedReportManagement/MusanedReportAppConfig';
 import MedicalSaudiReportAppConfig from '../rams/MedicalSaudiReportManagement/MedicalSaudiReportAppConfig';
+import MofaSaudiReportAppConfig from '../rams/MofaSaudiReportManagement/MofaSaudiReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -192,6 +193,7 @@ const appsConfigs = [
   BmetContractAppConfig,
   BmetVerifyAppConfig,
   AirwayAppConfig,
+  MofaSaudiReportAppConfig,
   BranchAppConfig,
   BmetV2ApplicationAppConfig,
   PassengerEditHistoryAppConfig,
