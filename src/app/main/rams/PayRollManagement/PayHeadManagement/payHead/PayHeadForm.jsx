@@ -34,6 +34,9 @@ function PayHeadForm(props) {
 	const attendanceTypes = useSelector((state) => state.data?.attendanceTypes);
 	const groups = useSelector((state) => state.data.groups);
 
+	console.log('logs', onAttendance);
+	console.log('payheadTypes', payheadTypes);
+
 	const { fields, remove } = useFieldArray({
 		control,
 		name: 'items',
