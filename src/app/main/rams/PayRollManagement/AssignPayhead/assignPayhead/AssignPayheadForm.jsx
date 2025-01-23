@@ -47,9 +47,9 @@ function AssignPayheadForm(props) {
   const payheads = useSelector((state) => state.data?.payheads);
   const departments = useSelector((state) => state.data?.departments);
   const watchPayhead = watch('payhead');
-  console.log('watchPayhead', getValues());
-  const [selectedRadio, setSelectedRadio] = useState('');
 
+  const [selectedRadio, setSelectedRadio] = useState('');
+  console.log('watchPayhead', selectedRadio);
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getPayheads());

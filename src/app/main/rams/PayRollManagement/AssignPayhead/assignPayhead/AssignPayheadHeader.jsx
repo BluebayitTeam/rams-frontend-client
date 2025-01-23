@@ -40,7 +40,11 @@ function AssignPayheadHeader() {
   const handleUpdate = localStorage.getItem('updateAssignPayhead');
 
   function handleUpdateAssignPayhead() {
-    saveAssignPayhead(getValues()).then((data) => {
+    const payload = {
+      ...getValues(), // Spread the form values
+      id: assignPayheadId, // Add the assignPayheadId to the payload
+    };
+    saveAssignPayhead(payload).then((data) => {
       UpdatedSuccessfully();
       navigate(`/apps/assignPayhead/assignPayheads`);
     });
