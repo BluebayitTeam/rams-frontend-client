@@ -76,6 +76,11 @@ export const balanceType = [
   { id: 'creditors', name: 'Creditor' },
 ];
 
+export const incomeType = [
+  { id: 1, name: 'Fixed' },
+  { id: 2, name: 'Variable' }
+];
+
 export const religions = [
   { id: 'Muslim', name: 'Muslim' },
   { id: 'Non Muslim', name: 'Non Muslim' },
