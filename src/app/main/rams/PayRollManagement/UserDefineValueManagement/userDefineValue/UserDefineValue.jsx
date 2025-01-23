@@ -1,0 +1,108 @@
+import FuseLoading from '@fuse/core/FuseLoading';
+import FusePageCarded from '@fuse/core/FusePageCarded';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Link, useParams } from 'react-router-dom';
+import { z } from 'zod';
+import { useGetUserDefineValueQuery } from '../UserDefineValueApi';
+import UserDefineValueForm from './UserDefineValueForm';
+import UserDefineValueHeader from './UserDefineValueHeader';
+import UserDefineValueModel from './models/UserDefineValueModel';
+/**
+ * Form Validation Schema
+ */
+const schema = z.object({
+  // name: z.string().nonempty(''),
+});
+
+function UserDefineValue() {
+  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const routeParams = useParams();
+  const { userDefineValueId } = routeParams;
+
+  const {
+    data: userDefineValue,
+    isLoading,
+    isError,
+  } = useGetUserDefineValueQuery(userDefineValueId, {
+    skip: !userDefineValueId || userDefineValueId === 'new',
+  });
+  console.log('userDefineValueId', userDefineValue, userDefineValueId);
+
+  const [tabValue, setTabValue] = useState(0);
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {},
+    resolver: zodResolver(schema),
+  });
+  const { reset, watch } = methods;
+  const form = watch();
+  useEffect(() => {
+    if (userDefineValueId === 'new') {
+      reset(UserDefineValueModel({}));
+    }
+  }, [userDefineValueId, reset]);
+
+  useEffect(() => {
+    if (userDefineValue) {
+      reset({ ...userDefineValue });
+    }
+  }, [userDefineValue, reset, userDefineValue?.id]);
+
+  function handleTabChange(event, value) {
+    setTabValue(value);
+  }
+
+  if (isLoading) {
+    return <FuseLoading />;
+  }
+
+  /**
+   * Show Message if the requested userDefineValues is not exists
+   */
+  if (isError && userDefineValueId !== 'new') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className='flex flex-col flex-1 items-center justify-center h-full'>
+        <Typography color='text.secondary' variant='h5'>
+          There is no such userDefineValue!
+        </Typography>
+        <Button
+          className='mt-24'
+          component={Link}
+          variant='outlined'
+          to='/apps/userDefineValue/userDefineValues'
+          color='inherit'>
+          Go to UserDefineValues Page
+        </Button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <FormProvider {...methods}>
+      {/* {hasPermission('DEPARTURE_DETAILS') && ( */}
+      <FusePageCarded
+        header={<UserDefineValueHeader />}
+        content={
+          <div className='p-16 '>
+            <div className={tabValue !== 0 ? 'hidden' : ''}>
+              <UserDefineValueForm userDefineValueId={userDefineValueId} />
+            </div>
+          </div>
+        }
+        scroll={isMobile ? 'normal' : 'content'}
+      />
+      {/* )} */}
+    </FormProvider>
+  );
+}
+
+export default UserDefineValue;

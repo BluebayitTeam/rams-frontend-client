@@ -1,10 +1,10 @@
 import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Tooltip from '@mui/material/Tooltip';
-import { useState } from 'react';
-import TableHead from '@mui/material/TableHead';
 import { lighten } from '@mui/material/styles';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useDeleteComputesMutation } from '../ComputesApi';
 
@@ -94,15 +94,15 @@ function ComputesTableHead(props) {
               key={row.id}
               align={row.align}
               padding={row.disablePadding ? 'none' : 'normal'}
-              style={{
-                position:
-                  index === 0 || index === array.length - 1
-                    ? 'sticky'
-                    : 'inherit',
-                left: index === 0 ? 0 : undefined,
-                right: index === array.length - 1 ? 0 : undefined,
-                zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto',
-              }}
+              // style={{
+              //   position:
+              //     index === 0 || index === array.length - 1
+              //       ? 'sticky'
+              //       : 'inherit',
+              //   left: index === 0 ? 0 : undefined,
+              //   right: index === array.length - 1 ? 0 : undefined,
+              //   zIndex: index === 0 || index === array.length - 1 ? 1 : 'auto',
+              // }}
               sortDirection={
                 tableOrder.id === row.id ? tableOrder.direction : false
               }>

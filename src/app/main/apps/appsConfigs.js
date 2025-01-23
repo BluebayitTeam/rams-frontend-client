@@ -314,6 +314,7 @@ const appsConfigs = [
   TodotasktypeAppConfig,
   AgentAppConfig,
   SubAgentAppConfig,
+  ShiftAppConfig,
   DemandAppConfig,
   TicketSaleAppConfig,
   QualificationAppConfig,
@@ -390,5 +391,10 @@ const appsConfigs = [
   PassengerDeliveryAppConfig,
   ReceivableBillAppConfig,
   PayableBillAppConfig,
+  PayHeadAppConfig,
+  PayHeadTypeAppConfig,
+  AttendanceTypeAppConfig,
+  CalculationTypeAppConfig,
+  UserDefineValueAppConfig,
 ];
 export default appsConfigs;

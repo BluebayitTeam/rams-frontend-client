@@ -12,6 +12,15 @@ export const compound = [
   { id: 1, name: 'Simple' },
   { id: 2, name: 'Compound' },
 ];
+export const weeks = [
+  { name: 'saturday' },
+  { name: 'sunday' },
+  { name: 'monday' },
+  { name: 'tuesday' },
+  { name: 'wednesday' },
+  { name: 'thursday' },
+  { name: 'friday' }
+];
 
 export const months = [
   { id: '1', name: '1' },
@@ -65,6 +74,11 @@ export const maritalStatuses = [
 export const balanceType = [
   { id: 'debtors', name: 'Debtor' },
   { id: 'creditors', name: 'Creditor' },
+];
+
+export const incomeType = [
+  { id: 1, name: 'Fixed' },
+  { id: 2, name: 'Variable' }
 ];
 
 export const religions = [

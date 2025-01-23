@@ -1,10 +1,10 @@
 // base url
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 export const BASE_URL = isProduction
-  ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.137:8006';
+  ? "https://rl1010api.ramsbd.net"
+  : "http://192.168.68.137:8006";
 
 // added by live api
 
@@ -13,13 +13,13 @@ export const BASE_URL = isProduction
 //   : 'https://rl1010api.ramsbd.net';
 
 export const CLIENT_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.119:3000';
+  ? "https://rl7811api.ramsbd.net"
+  : "http://192.168.0.119:3000";
 export const ADMIN_URL = isProduction
-  ? 'https://rl7811api.ramsbd.net'
-  : 'http://192.168.0.117:8008';
-export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
-export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
+  ? "https://rl7811api.ramsbd.net"
+  : "http://192.168.0.117:8008";
+export const ADMIN_LOGIN_EMAIL = "robin@gmail.com";
+export const ADMIN_LOGIN_PASSWORD = "robin@gmail.com";
 
 // login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -1311,6 +1311,8 @@ export const DELETE_GROUP_MULTIPLE = `${BASE_URL}/group/api/v1/group/delete_mult
 
 export const SEARCH_GROUP = `${BASE_URL}/group/api/v1/group/search/`;
 
+export const GET_GROUP_BY_PAYHEAD_ID = `${BASE_URL}/group/api/v1/group/groupby_payhead/`;
+
 // bmet
 export const CREATE_BMET = `${BASE_URL}/bmet/api/v1/bmet/create/`;
 
@@ -2453,3 +2455,147 @@ export const DELETE_COMPUTE = `${BASE_URL}/compute/api/v1/compute/delete/`;
 export const DELETE_COMPUTE_MULTIPLE = `${BASE_URL}/compute/api/v1/compute/delete/`;
 
 export const SEARCH_COMPUTE = `${BASE_URL}/compute/api/v1/compute/search/`;
+
+// Shift Time Table
+export const DELETE_SHIFT_TIME_TABLE_MULTIPLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
+
+export const GET_SHIFT_TIME_TABLE_BY_ID = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/`;
+
+export const CREATE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/create/`;
+
+export const UPDATE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/update/`;
+
+export const DELETE_SHIFT_TIME_TABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
+
+export const GET_SHIFT_TIME_TABLES = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/all/`;
+
+// Shifts
+export const GET_SHIFT_BY_ID = `${BASE_URL}/shift/api/v1/shift/`;
+
+export const CREATE_SHIFT = `${BASE_URL}/shift/api/v1/shift/create/`;
+
+export const UPDATE_SHIFT = `${BASE_URL}/shift/api/v1/shift/update/`;
+
+export const DELETE_SHIFT_MULTIPLE = `${BASE_URL}/shift/api/v1/shift/delete/`;
+
+export const DELETE_SHIFT = `${BASE_URL}/shift/api/v1/shift/delete/`;
+
+export const GET_SHIFTS = `${BASE_URL}/shift/api/v1/shift/all/`;
+
+
+//  shift_daytime
+export const CREATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/create/`;
+
+export const GET_SHIFT_DAYTIMES = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/all/`;
+
+export const GET_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/`;
+
+export const GET_SHIFT_DAYTIME_BY_SHIFTID = `${BASE_URL}/shift_daytime/api/v1/get_shift_daytime_by_shift_id/`;
+
+export const UPDATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/update/`;
+
+export const DELETE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/delete/`;
+
+
+
+//  timetable
+export const CREATE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/create/`;
+
+export const GET_TIMETABLES = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/all/`;
+
+export const GET_TIMETABLES_WITHOUT_PAGINATION = `${BASE_URL}/shift_timetable/api/v1/shift_timetable_wp/all/`;
+
+export const GET_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/`;
+
+export const GET_TIMETABLE_BY_SHIFT_ID = `${BASE_URL}/shift/api/v1/get_shift_day_timetable_by_shift_id/`;
+
+export const CHECK_COLOR_CODE = `${BASE_URL}/shift_timetable/api/v1/check_shift_timetable_color/`;
+
+export const UPDATE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/update/`;
+
+export const DELETE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/delete/`;
+
+export const SEARCH_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/search/`;
+
+// payhead
+export const GET_PAY_HEAD_BY_ID = `${BASE_URL}/payhead/api/v1/payhead/`;
+
+export const CREATE_PAY_HEAD = `${BASE_URL}/payhead/api/v1/payhead/create/`;
+
+export const UPDATE_PAY_HEAD = `${BASE_URL}/payhead/api/v1/payhead/update/`;
+
+export const DELETE_PAY_HEAD_MULTIPLE = `${BASE_URL}/payhead/api/v1/payhead/delete/`;
+
+export const DELETE_PAY_HEAD = `${BASE_URL}/payhead/api/v1/payhead/delete/`;
+
+export const GET_PAY_HEADS = `${BASE_URL}/payhead/api/v1/payhead/all/`;
+
+export const GET_PAY_HEADS_WITHOUT_PAGINATION = `${BASE_URL}/payhead/api/v1/payhead_wp/all/`;
+
+// payhead_type
+export const GET_PAY_HEAD_TYPE_BY_ID = `${BASE_URL}/payhead_type/api/v1/payhead_type/`;
+
+export const CREATE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_type/create/`;
+
+export const UPDATE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_type/update/`;
+
+export const DELETE_PAY_HEAD_TYPE_MULTIPLE = `${BASE_URL}/payhead_type/api/v1/payhead_type/delete/`;
+
+export const DELETE_PAY_HEAD_TYPE = `${BASE_URL}/payhead_type/api/v1/payhead_type/delete/`;
+
+export const GET_PAY_HEAD_TYPES = `${BASE_URL}/payhead_type/api/v1/payhead_type/all/`;
+
+export const GET_PAY_HEAD_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/payhead_type/api/v1/payhead_type_wp/all/`;
+
+
+// attendance_type
+export const GET_ATTENDANCE_TYPE_BY_ID = `${BASE_URL}/attendance_type/api/v1/attendance_type/`;
+
+export const CREATE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attendance_type/create/`;
+
+export const UPDATE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attendance_type/update/`;
+
+export const DELETE_ATTENDANCE_TYPE_MULTIPLE = `${BASE_URL}/attendance_type/api/v1/attendance_type/delete/`;
+
+export const DELETE_ATTENDANCE_TYPE = `${BASE_URL}/attendance_type/api/v1/attendance_type/delete/`;
+
+export const GET_ATTENDANCE_TYPES = `${BASE_URL}/attendance_type/api/v1/attendance_type/all/`;
+
+export const GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/attendance_type/api/v1/attendance_type_wp/all/`;
+
+
+// calculation_type
+export const GET_CALCULATION_TYPE_BY_ID = `${BASE_URL}/calculation_type/api/v1/calculation_type/`;
+
+export const CREATE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calculation_type/create/`;
+
+export const UPDATE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calculation_type/update/`;
+
+export const DELETE_CALCULATION_TYPE_MULTIPLE = `${BASE_URL}/calculation_type/api/v1/calculation_type/delete/`;
+
+export const DELETE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calculation_type/delete/`;
+
+export const GET_CALCULATION_TYPES = `${BASE_URL}/calculation_type/api/v1/calculation_type/all/`;
+
+export const GET_CALCULATION_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/calculation_type/api/v1/calculation_type_wp/all/`;
+
+
+
+//  Userdefinevalue
+export const CREATE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/create/`;
+
+export const GET_USERDEFINEVALUES = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/all/`;
+
+export const GET_USERDEFINEVALUES_WITHOUT_PAGINATION = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/all/`;
+
+export const GET_PAYHEAD_ONLY_USERDEFINEVALUES = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/payhead/all/`;
+
+export const GET_USERDEFINEVALUEID = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/`;
+
+export const UPDATE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/update/`;
+
+export const DELETE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/delete/`;
+
+export const SEARCH_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/search/`;
+
+export const CHECK_USERDEFINEVALUE_BY_EMPLOYEE_PAYHEAD = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/check_if_value_exists_for_employee/`;
