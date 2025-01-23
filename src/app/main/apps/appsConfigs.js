@@ -189,6 +189,7 @@ import FlightWaitingSaudiReportAppConfig from '../rams/FlightWaitingSaudiReportM
 import FlightDoneSaudiReportAppConfig from '../rams/FlightDoneSaudiReportManagement/FlightDoneSaudiReportAppConfig';
 import MedicalExpireMalaysiaReportAppConfig from '../rams/MedicalExpireMalaysiaReportManagement/MedicalExpireMalaysiaReportAppConfig';
 import VisaExpireMalaysiaReportAppConfig from '../rams/VisaExpireMalaysiaReportManagement/VisaExpireMalaysiaReportAppConfig';
+import RegisteredMalaysiaReportAppConfig from '../rams/RegisteredMalaysiaReportManagement/RegisteredMalaysiaReportAppConfig';
 
 /**
  * The list of application configurations.
@@ -231,6 +232,7 @@ const appsConfigs = [
   ManpowerNoteSheetFemaleAppConfig,
   ManpowerNoteSheetMaleAppConfig,
   ManpowerSubmissionV2ListAppConfig,
+  RegisteredMalaysiaReportAppConfig,
   TicketSaleReportAppConfig,
   TicketrefundReportAppConfig,
   SubAgentAppConfig,

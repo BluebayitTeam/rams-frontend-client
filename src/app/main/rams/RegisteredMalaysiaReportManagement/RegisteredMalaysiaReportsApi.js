@@ -10,49 +10,43 @@ import {
   GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG,
 } from 'src/app/constant/constants';
 
-export const addTagTypes = ['registeredSaudiReports'];
-const RegisteredSaudiReportApi = api
+export const addTagTypes = ['registeredMalaysiaReports'];
+const RegisteredMalaysiaReportApi = api
   .enhanceEndpoints({
     addTagTypes,
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getRegisteredSaudiReports: build.query({
-        query: (filterData) => ({
-          url: GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD,
-          params: filterData,
-        }),
-        providesTags: ['registeredSaudiReports'],
-      }),
       getRegisteredMalaysiaReports: build.query({
         query: (filterData) => ({
           url: GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_MALAYSIA_DASHBOARD,
           params: filterData,
         }),
-        providesTags: ['registeredSaudiReports'],
+        providesTags: ['registeredMalaysiaReports'],
       }),
-      getRegisteredSaudiAllReports: build.query({
+      getRegisteredMalaysiaAllReports: build.query({
         query: (filterData) => ({
           url: GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG,
           params: filterData,
         }),
-        providesTags: ['registeredSaudiReports'],
+        providesTags: ['registeredMalaysiaReports'],
       }),
     }),
     overrideExisting: false,
   });
-export default RegisteredSaudiReportApi;
+export default RegisteredMalaysiaReportApi;
 export const {
-  useGetRegisteredSaudiReportsQuery,
   useGetRegisteredMalaysiaReportsQuery,
-  useGetRegisteredSaudiAllReportsQuery,
-} = RegisteredSaudiReportApi;
+  useGetRegisteredMalaysiaAllReportsQuery,
+} = RegisteredMalaysiaReportApi;
 
-export const selectFilteredRegisteredSaudiReports = (registeredSaudiReports) =>
+export const selectFilteredRegisteredMalaysiaReports = (
+  registeredMalaysiaReports
+) =>
   createSelector([selectSearchText], (searchText) => {
     if (searchText?.length === 0) {
-      return registeredSaudiReports;
+      return registeredMalaysiaReports;
     }
 
-    return FuseUtils.filterArrayByString(registeredSaudiReports, searchText);
+    return FuseUtils.filterArrayByString(registeredMalaysiaReports, searchText);
   });

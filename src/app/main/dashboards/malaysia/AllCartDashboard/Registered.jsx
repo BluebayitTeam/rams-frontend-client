@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { ArrowRightIcon } from '@mui/x-date-pickers';
 import { useGetMalaysiaDashboardQuery } from '../MalaysiaDashboardApi';
+import { useNavigate } from 'react-router';
 
 function Registered(props) {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function Registered(props) {
   const { data, refetch } = useGetMalaysiaDashboardQuery();
 
   const [dashboardData, setDashboardData] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setDashboardData(data);
@@ -43,10 +44,11 @@ function Registered(props) {
         size='medium'
         variant='text'
         className='text-blue-800'
-        // onClick={() => {
-        // 	history.push(`/apps/allMembers/report`);
-        // }}
-      >
+        onClick={() => {
+          navigate(
+            `/apps/registeredMalaysiaReport/registeredMalaysiaReports/registered`
+          );
+        }}>
         View all registered
       </Button>
     </Paper>

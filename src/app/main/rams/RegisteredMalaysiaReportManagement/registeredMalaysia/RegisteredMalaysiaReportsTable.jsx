@@ -14,9 +14,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { z } from 'zod';
 import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 import {
-  useGetRegisteredSaudiAllReportsQuery,
-  useGetRegisteredSaudiReportsQuery,
-} from '../RegisteredSaudiReportsApi';
+  useGetRegisteredMalaysiaAllReportsQuery,
+  useGetRegisteredMalaysiaReportsQuery,
+} from '../RegisteredMalaysiaReportsApi';
 
 import { useParams } from 'react-router';
 
@@ -47,7 +47,7 @@ const initialTableColumnsState = [
   },
 ];
 
-function RegisteredSaudiReportsTable(props) {
+function RegisteredMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -58,7 +58,7 @@ function RegisteredSaudiReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [modifiedRegisteredSaudiData, setModifiedRegisteredSaudiData] =
+  const [modifiedRegisteredMalaysiaData, setModifiedRegisteredMalaysiaData] =
     useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
@@ -77,17 +77,17 @@ function RegisteredSaudiReportsTable(props) {
   const componentRef = useRef(null);
   const routeParams = useParams();
   const filterData = watch();
-  const { data: paginatedData } = useGetRegisteredSaudiReportsQuery({
-    dashboard_type: routeParams?.registeredSaudiReportId,
+  const { data: paginatedData } = useGetRegisteredMalaysiaReportsQuery({
+    dashboard_type: routeParams?.registeredMalaysiaReportId,
   });
-  const { data: allData } = useGetRegisteredSaudiAllReportsQuery({
-    dashboard_type: routeParams?.registeredSaudiReportId,
+  const { data: allData } = useGetRegisteredMalaysiaAllReportsQuery({
+    dashboard_type: routeParams?.registeredMalaysiaReportId,
     country: routeParams['*'],
   });
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedRegisteredSaudiData(allData.passengers || []);
+      setModifiedRegisteredMalaysiaData(allData.passengers || []);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
@@ -103,7 +103,7 @@ function RegisteredSaudiReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedRegisteredSaudiData(paginatedData?.passengers || []);
+      setModifiedRegisteredMalaysiaData(paginatedData?.passengers || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -123,7 +123,7 @@ function RegisteredSaudiReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetRegisteredSaudi = useCallback(async (newPage) => {
+  const handleGetRegisteredMalaysia = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -132,10 +132,10 @@ function RegisteredSaudiReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllRegisteredSaudi = useCallback(async () => {
+  const handleGetAllRegisteredMalaysia = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all registeredSaudi:', error);
+      console.error('Error fetching all registeredMalaysia:', error);
     }
   }, []);
 
@@ -153,24 +153,24 @@ function RegisteredSaudiReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetRegisteredSaudi(1)}
-        onPreviousPage={() => handleGetRegisteredSaudi(page - 1)}
-        onNextPage={() => handleGetRegisteredSaudi(page + 1)}
-        onLastPage={() => handleGetRegisteredSaudi(totalPages)}
+        onFirstPage={() => handleGetRegisteredMalaysia(1)}
+        onPreviousPage={() => handleGetRegisteredMalaysia(page - 1)}
+        onNextPage={() => handleGetRegisteredMalaysia(page + 1)}
+        onLastPage={() => handleGetRegisteredMalaysia(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetRegisteredSaudi}
-        handleGetAllData={handleGetAllRegisteredSaudi}
+        handleGetData={handleGetRegisteredMalaysia}
+        handleGetAllData={handleGetAllRegisteredMalaysia}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='RegisteredSaudiReport'
+        filename='RegisteredMalaysiaReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedRegisteredSaudiData.map((registeredSaudi, index) => (
+          {modifiedRegisteredMalaysiaData.map((registeredMalaysia, index) => (
             <SinglePage
               key={index}
               classes={classes}
@@ -178,14 +178,17 @@ function RegisteredSaudiReportsTable(props) {
               filteredData={filteredData}
               tableColumns={tableColumns}
               dispatchTableColumns={dispatchTableColumns}
-              data={registeredSaudi}
+              data={registeredMalaysia}
               totalColumn={initialTableColumnsState?.length}
               inSiglePageMode={inSiglePageMode}
               serialNumber={
                 pagination
-                  ? page * size - size + index * registeredSaudi.data.length + 1
-                  : registeredSaudi.page * registeredSaudi.size -
-                    registeredSaudi.size +
+                  ? page * size -
+                    size +
+                    index * registeredMalaysia.data.length +
+                    1
+                  : registeredMalaysia.page * registeredMalaysia.size -
+                    registeredMalaysia.size +
                     1
               }
               setPage={setPage}
@@ -197,4 +200,4 @@ function RegisteredSaudiReportsTable(props) {
   );
 }
 
-export default RegisteredSaudiReportsTable;
+export default RegisteredMalaysiaReportsTable;
