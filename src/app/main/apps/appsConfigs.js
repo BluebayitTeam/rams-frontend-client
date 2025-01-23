@@ -190,6 +190,13 @@ import FlightDoneSaudiReportAppConfig from '../rams/FlightDoneSaudiReportManagem
 import MedicalExpireMalaysiaReportAppConfig from '../rams/MedicalExpireMalaysiaReportManagement/MedicalExpireMalaysiaReportAppConfig';
 import VisaExpireMalaysiaReportAppConfig from '../rams/VisaExpireMalaysiaReportManagement/VisaExpireMalaysiaReportAppConfig';
 import RegisteredMalaysiaReportAppConfig from '../rams/RegisteredMalaysiaReportManagement/RegisteredMalaysiaReportAppConfig';
+import PayHeadAppConfig from '../rams/PayRollManagement/PayHeadManagement/PayHeadAppConfig';
+import PayHeadTypeAppConfig from '../rams/PayRollManagement/PayHeadTypeManagement/PayHeadTypeAppConfig';
+import AttendanceTypeAppConfig from '../rams/PayRollManagement/AttendanceTypeManagement/AttendanceTypeAppConfig';
+import CalculationTypeAppConfig from '../rams/PayRollManagement/CalculationTypeManagement/CalculationTypeAppConfig';
+import UserDefineValueAppConfig from '../rams/PayRollManagement/UserDefineValueManagement/UserDefineValueAppConfig';
+import ShiftTimeTableAppConfig from '../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig';
+import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppConfig';
 
 /**
  * The list of application configurations.
@@ -396,5 +403,7 @@ const appsConfigs = [
   AttendanceTypeAppConfig,
   CalculationTypeAppConfig,
   UserDefineValueAppConfig,
+  ShiftTimeTableAppConfig,
+  ShiftAppConfig,
 ];
 export default appsConfigs;
