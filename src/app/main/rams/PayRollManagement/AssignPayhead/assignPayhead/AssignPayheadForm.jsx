@@ -5,10 +5,19 @@ import { getPayrollMakeStyles } from '../../payrollMakeStyles/payrollMakeStyles'
 import { useParams } from 'react-router';
 import { getDepartments, getEmployees, getPayheads } from 'app/store/dataSlice';
 import { CHECK_ASSIGN_PAYHEAD, GET_UNITS } from 'src/app/constant/constants';
-import { useEffect } from 'react';
-import { Autocomplete } from '@mui/material';
+import { useEffect, useState } from 'react';
+import {
+  Autocomplete,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from '@mui/material';
 import CustomDatePicker from 'src/app/@components/CustomDatePicker';
 import { makeStyles } from '@mui/styles';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const useStyles = makeStyles((theme) => ({
   ...getPayrollMakeStyles(theme),
@@ -32,17 +41,19 @@ function AssignPayheadForm(props) {
   const { control, formState, getValues, reset, setValue, watch } = methods;
   const { errors, isValid, dirtyField } = formState;
   const routeParams = useParams();
+  const { salaryId } = routeParams;
   const handleDelete = localStorage.getItem('salaryEvent');
   const employees = useSelector((state) => state.data.employees);
   const payheads = useSelector((state) => state.data?.payheads);
   const departments = useSelector((state) => state.data?.departments);
   const watchPayhead = watch('payhead');
+  console.log('watchPayhead', getValues());
   const [selectedRadio, setSelectedRadio] = useState('');
 
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getPayheads());
-    dispatch(GET_UNITS());
+    // dispatch(GET_UNITS());
     dispatch(getDepartments());
   }, [dispatch]);
 
@@ -205,7 +216,7 @@ function AssignPayheadForm(props) {
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
-                className='mt-8 mb-16'
+                className='mt-24 mb-16'
                 freeSolo
                 multiple
                 filterSelectedOptions
@@ -262,7 +273,7 @@ function AssignPayheadForm(props) {
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
-                className='mt-8 mb-16'
+                className='mt-24 mb-16'
                 freeSolo
                 multiple
                 filterSelectedOptions
@@ -309,7 +320,7 @@ function AssignPayheadForm(props) {
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
-                className='mt-8 mb-16'
+                className='mt-24 mb-16'
                 freeSolo
                 multiple
                 filterSelectedOptions
@@ -364,7 +375,7 @@ function AssignPayheadForm(props) {
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
-                className='mt-8 mb-16'
+                className='mt-24 mb-16'
                 freeSolo
                 multiple
                 filterSelectedOptions
@@ -413,7 +424,7 @@ function AssignPayheadForm(props) {
             control={control}
             render={({ field: { onChange, value, name } }) => (
               <Autocomplete
-                className='mt-8 mb-16'
+                className='mt-24 mb-16'
                 freeSolo
                 multiple
                 filterSelectedOptions

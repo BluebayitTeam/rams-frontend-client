@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = isProduction
   ? 'https://rl1010api.ramsbd.net'
-  : 'http://192.168.68.137:8006';
+  : 'http://192.168.68.123:8006';
 
 // added by live api
 
