@@ -6,11 +6,17 @@ import jsonToFormData from 'src/app/@helpers/jsonToFormData';
 import AssignPayheadModel from './assignPayhead/models/AssignPayheadModel';
 import { selectSearchText } from './store/searchTextSlice';
 import {
+  CREATE_PAY_HEAD_ASSIGNMENT,
   CREATE_PAY_HEAD_TYPE,
+  DELETE_PAY_HEAD_ASSIGNMENT,
+  DELETE_PAY_HEAD_ASSIGNMENT_MULTIPLE,
   DELETE_PAY_HEAD_TYPE,
   DELETE_PAY_HEAD_TYPE_MULTIPLE,
+  GET_PAY_HEAD_ASSIGNMENT,
+  GET_PAY_HEAD_ASSIGNMENT_BY_ID,
   GET_PAY_HEAD_TYPE_BY_ID,
   GET_PAY_HEAD_TYPES,
+  UPDATE_PAY_HEAD_ASSIGNMENT,
   UPDATE_PAY_HEAD_TYPE,
 } from 'src/app/constant/constants';
 
@@ -23,14 +29,14 @@ const AssignPayheadApi = api
     endpoints: (build) => ({
       getAssignPayheads: build.query({
         query: ({ page, size, searchKey }) => ({
-          url: GET_PAY_HEAD_TYPES,
+          url: GET_PAY_HEAD_ASSIGNMENT,
           params: { page, size, searchKey },
         }),
         providesTags: ['assignPayheads'],
       }),
       deleteAssignPayheads: build.mutation({
         query: (assignPayheadIds) => ({
-          url: DELETE_PAY_HEAD_TYPE_MULTIPLE,
+          url: DELETE_PAY_HEAD_ASSIGNMENT_MULTIPLE,
           method: 'DELETE',
           data: { ids: assignPayheadIds },
         }),
@@ -38,13 +44,13 @@ const AssignPayheadApi = api
       }),
       getAssignPayhead: build.query({
         query: (assignPayheadId) => ({
-          url: `${GET_PAY_HEAD_TYPE_BY_ID}${assignPayheadId}`,
+          url: `${GET_PAY_HEAD_ASSIGNMENT_BY_ID}${assignPayheadId}`,
         }),
         providesTags: ['assignPayheads'],
       }),
       createAssignPayhead: build.mutation({
         query: (newAssignPayhead) => ({
-          url: CHECK_ASSIGN_PAYHEAD,
+          url: CREATE_PAY_HEAD_ASSIGNMENT,
           method: 'POST',
           data: jsonToFormData(AssignPayheadModel(newAssignPayhead)),
         }),
@@ -52,7 +58,7 @@ const AssignPayheadApi = api
       }),
       updateAssignPayhead: build.mutation({
         query: (assignPayhead) => ({
-          url: `${UPDATE_PAY_HEAD_TYPE}${assignPayhead.id}`,
+          url: `${UPDATE_PAY_HEAD_ASSIGNMENT}${assignPayhead.id}`,
           method: 'PUT',
           data: jsonToFormData(assignPayhead),
         }),
@@ -60,7 +66,7 @@ const AssignPayheadApi = api
       }),
       deleteAssignPayhead: build.mutation({
         query: (assignPayheadId) => ({
-          url: `${DELETE_PAY_HEAD_TYPE}${assignPayheadId}`,
+          url: `${DELETE_PAY_HEAD_ASSIGNMENT}${assignPayheadId}`,
           method: 'DELETE',
         }),
         invalidatesTags: ['assignPayheads'],
