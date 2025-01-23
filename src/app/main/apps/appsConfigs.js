@@ -197,7 +197,7 @@ import CalculationTypeAppConfig from '../rams/PayRollManagement/CalculationTypeM
 import UserDefineValueAppConfig from '../rams/PayRollManagement/UserDefineValueManagement/UserDefineValueAppConfig';
 import ShiftTimeTableAppConfig from '../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig';
 import ShiftAppConfig from '../rams/PayRollManagement/ShiftManagement/ShiftAppConfig';
-import AssignPayheadTypeAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadTypeAppConfig';
+import AssignPayheadAppConfig from '../rams/PayRollManagement/AssignPayhead/AssignPayheadAppConfig';
 
 /**
  * The list of application configurations.
@@ -387,7 +387,7 @@ const appsConfigs = [
   GroupAppConfig,
   LedgerAppConfig,
   ListOfManpowerRefAppConfig,
-  AssignPayheadTypeAppConfig,
+  AssignPayheadAppConfig,
   SubLedgerAppConfig,
   PaymentVoucherAppConfig,
   ReceiptVoucherAppConfig,
