@@ -28,7 +28,7 @@ function OnProcess(props) {
         onClick={() => {
           dashboardData?.on_process > 0 &&
             navigate(
-              `/apps/registeredSaudiReport/registeredSaudiReports/process`
+              `/apps/registeredMalaysiaReport/registeredMalaysiaReports/on_process`
             );
         }}>
         <Typography className='text-72 font-semibold leading-none text-pink tracking-tighter'>
