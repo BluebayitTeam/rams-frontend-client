@@ -44,7 +44,7 @@ const AssignPayheadApi = api
       }),
       createAssignPayhead: build.mutation({
         query: (newAssignPayhead) => ({
-          url: CREATE_PAY_HEAD_TYPE,
+          url: CHECK_ASSIGN_PAYHEAD,
           method: 'POST',
           data: jsonToFormData(AssignPayheadModel(newAssignPayhead)),
         }),

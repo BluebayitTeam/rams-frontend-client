@@ -1,10 +1,10 @@
 // base url
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 
 export const BASE_URL = isProduction
-  ? "https://rl1010api.ramsbd.net"
-  : "http://192.168.68.137:8006";
+  ? 'https://rl1010api.ramsbd.net'
+  : 'http://192.168.68.137:8006';
 
 // added by live api
 
@@ -13,13 +13,13 @@ export const BASE_URL = isProduction
 //   : 'https://rl1010api.ramsbd.net';
 
 export const CLIENT_URL = isProduction
-  ? "https://rl7811api.ramsbd.net"
-  : "http://192.168.0.119:3000";
+  ? 'https://rl7811api.ramsbd.net'
+  : 'http://192.168.0.119:3000';
 export const ADMIN_URL = isProduction
-  ? "https://rl7811api.ramsbd.net"
-  : "http://192.168.0.117:8008";
-export const ADMIN_LOGIN_EMAIL = "robin@gmail.com";
-export const ADMIN_LOGIN_PASSWORD = "robin@gmail.com";
+  ? 'https://rl7811api.ramsbd.net'
+  : 'http://192.168.0.117:8008';
+export const ADMIN_LOGIN_EMAIL = 'robin@gmail.com';
+export const ADMIN_LOGIN_PASSWORD = 'robin@gmail.com';
 
 // login
 export const LOGIN_URL = `${BASE_URL}/user/api/v1/user/login/`;
@@ -2482,7 +2482,6 @@ export const DELETE_SHIFT = `${BASE_URL}/shift/api/v1/shift/delete/`;
 
 export const GET_SHIFTS = `${BASE_URL}/shift/api/v1/shift/all/`;
 
-
 //  shift_daytime
 export const CREATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/create/`;
 
@@ -2495,8 +2494,6 @@ export const GET_SHIFT_DAYTIME_BY_SHIFTID = `${BASE_URL}/shift_daytime/api/v1/ge
 export const UPDATE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/update/`;
 
 export const DELETE_SHIFT_DAYTIME = `${BASE_URL}/shift_daytime/api/v1/shift_daytime/delete/`;
-
-
 
 //  timetable
 export const CREATE_TIMETABLE = `${BASE_URL}/shift_timetable/api/v1/shift_timetable/create/`;
@@ -2547,7 +2544,6 @@ export const GET_PAY_HEAD_TYPES = `${BASE_URL}/payhead_type/api/v1/payhead_type/
 
 export const GET_PAY_HEAD_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/payhead_type/api/v1/payhead_type_wp/all/`;
 
-
 // attendance_type
 export const GET_ATTENDANCE_TYPE_BY_ID = `${BASE_URL}/attendance_type/api/v1/attendance_type/`;
 
@@ -2563,7 +2559,6 @@ export const GET_ATTENDANCE_TYPES = `${BASE_URL}/attendance_type/api/v1/attendan
 
 export const GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/attendance_type/api/v1/attendance_type_wp/all/`;
 
-
 // calculation_type
 export const GET_CALCULATION_TYPE_BY_ID = `${BASE_URL}/calculation_type/api/v1/calculation_type/`;
 
@@ -2578,8 +2573,6 @@ export const DELETE_CALCULATION_TYPE = `${BASE_URL}/calculation_type/api/v1/calc
 export const GET_CALCULATION_TYPES = `${BASE_URL}/calculation_type/api/v1/calculation_type/all/`;
 
 export const GET_CALCULATION_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/calculation_type/api/v1/calculation_type_wp/all/`;
-
-
 
 //  Userdefinevalue
 export const CREATE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/create/`;
@@ -2599,3 +2592,18 @@ export const DELETE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/use
 export const SEARCH_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/search/`;
 
 export const CHECK_USERDEFINEVALUE_BY_EMPLOYEE_PAYHEAD = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/check_if_value_exists_for_employee/`;
+
+// Assignment PayHead
+export const GET_PAY_HEAD_ASSIGNMENT_BY_ID = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/`;
+
+export const CREATE_PAY_HEAD_ASSIGNMENT = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/create/`;
+
+export const UPDATE_PAY_HEAD_ASSIGNMENT = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/update/`;
+
+export const DELETE_PAY_HEAD_ASSIGNMENT_MULTIPLE = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/delete/`;
+
+export const DELETE_PAY_HEAD_ASSIGNMENT = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/delete/`;
+
+export const GET_PAY_HEAD_ASSIGNMENT = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment/all/`;
+
+export const GET_PAY_HEAD_ASSIGNMENT_WITHOUT_PAGINATION = `${BASE_URL}/payhead_assignment/api/v1/payhead_assignment_wp/all/`;
