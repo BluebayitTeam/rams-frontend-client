@@ -52,7 +52,6 @@ function AgentsTable(props) {
 
   const [rows, setRows] = useState([]);
   useEffect(() => {
-    // Fetch data with specific page and size when component mounts or when page and size change
     refetch({ page, rowsPerPage });
   }, [page, rowsPerPage]);
   useEffect(() => {
@@ -140,8 +139,6 @@ function AgentsTable(props) {
     localStorage.setItem('deleteAgent', event);
     navigate(`/apps/agent/agents/${item.id}/${item.handle}`);
   }
-
-  // console.log('testDelete', handleDeleteAgent);
 
   function _handleCheck(event, id) {
     const selectedIndex = selected.indexOf(id);

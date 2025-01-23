@@ -5,15 +5,18 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
-import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import {
-	useCreateVisaReissueListMutation,
-	useDeleteVisaReissueListMutation,
-	useUpdateVisaReissueListMutation
+  useCreateVisaReissueListMutation,
+  useDeleteVisaReissueListMutation,
+  useUpdateVisaReissueListMutation,
 } from '../VisaReissueListsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
@@ -21,93 +24,102 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  * The visaReissueList header.
  */
 function VisaReissueListHeader({ handleReset, emptyValue }) {
-	const routeParams = useParams();
+  const routeParams = useParams();
 
-	const [createVisaReissueList] = useCreateVisaReissueListMutation();
-	const [saveVisaReissueList] = useUpdateVisaReissueListMutation();
-	const [removeVisaReissueList] = useDeleteVisaReissueListMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues } = methods;
-	const { dirtyFields } = formState;
+  const [createVisaReissueList] = useCreateVisaReissueListMutation();
+  const [saveVisaReissueList] = useUpdateVisaReissueListMutation();
+  const [removeVisaReissueList] = useDeleteVisaReissueListMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues } = methods;
+  const { dirtyFields } = formState;
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
 
-	function handleUpdateVisaReissueList() {
-		saveVisaReissueList(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'updateVisaReissueList');
+  function handleUpdateVisaReissueList() {
+    saveVisaReissueList(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('medicalAlert', 'updateVisaReissueList');
 
-						handleReset({ ...emptyValue });
+            handleReset({ ...emptyValue });
 
-						UpdatedSuccessfully();
-						navigate('/apps/visaReissueList-management/visaReissueLists/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-				}
-			})
-			.catch((error) => {
-				// Handle error
+            UpdatedSuccessfully();
+            navigate('/apps/visaReissueList-management/visaReissueLists/new');
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+        }
+      })
+      .catch((error) => {
+        // Handle error
 
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateVisaReissueList() {
-		createVisaReissueList(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						localStorage.setItem('medicalAlert', 'saveVisaReissueList');
+  function handleCreateVisaReissueList() {
+    createVisaReissueList(getValues())
+      // .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            localStorage.setItem('medicalAlert', 'saveVisaReissueList');
 
-						handleReset({ ...emptyValue });
-					}
+            handleReset({ ...emptyValue });
+          }
 
-					navigate('/apps/visaReissueList-management/visaReissueLists/new');
-					AddedSuccessfully();
-				}
-			});
-	}
+          navigate('/apps/visaReissueList-management/visaReissueLists/new');
+          AddedSuccessfully();
+        }
+      });
+  }
 
-	function handleRemoveVisaReissueList() {
-		removeVisaReissueList(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				if (res) {
-					if (fromSearch) {
-						history.goBack();
-					} else {
-						handleReset({ ...emptyValue });
-						localStorage.setItem('medicalAlert', 'saveVisaReissueList');
-						navigate('/apps/visaReissueList-management/visaReissueLists/new');
+  function handleRemoveVisaReissueList() {
+    removeVisaReissueList(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        if (res) {
+          if (fromSearch) {
+            history.goBack();
+          } else {
+            handleReset({ ...emptyValue });
+            localStorage.setItem('medicalAlert', 'saveVisaReissueList');
+            navigate('/apps/visaReissueList-management/visaReissueLists/new');
 
-						dispatch(showMessage({ message: 'Please Restart The Backend', variant: 'error' }));
-					}
-				}
+            dispatch(
+              showMessage({
+                message: 'Please Restart The Backend',
+                variant: 'error',
+              })
+            );
+          }
+        }
 
-				RemoveSuccessfully();
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+        RemoveSuccessfully();
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	const handleCancel = () => {
-		handleReset({ ...emptyValue });
-		navigate('/apps/visaReissueList-management/visaReissueLists/new');
-	};
+  const handleCancel = () => {
+    handleReset({ ...emptyValue });
+    navigate('/apps/visaReissueList-management/visaReissueLists/new');
+  };
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

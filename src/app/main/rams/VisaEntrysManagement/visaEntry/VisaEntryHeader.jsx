@@ -25,7 +25,6 @@ import { hasPermission } from 'src/app/constant/permission/permissionList';
  */
 function VisaEntryHeader() {
   const routeParams = useParams();
-  console.log('routeParamsPrint', routeParams);
   const { visaEntryId, fromSearch } = routeParams;
 
   const [createVisaEntry] = useCreateVisaEntryMutation();
@@ -42,7 +41,7 @@ function VisaEntryHeader() {
 
   function handleUpdateVisaEntry() {
     saveVisaEntry(getValues()).then((data) => {
-      if (fromSearch) {
+      if (fromSearch === 'fromSearch') {
         navigate(-1);
       } else {
         UpdatedSuccessfully();
@@ -166,18 +165,17 @@ function VisaEntryHeader() {
           </Button>
         )}
         {handleDelete !== 'deleteVisaEntry' &&
-          handleUpdate === 'updateVisaEntry' &&
           visaEntryId !== 'new' &&
           hasPermission('VISA_ENTRY_UPDATE') && (
             <Button
-              className='whitespace-nowrap mx-4 text-white bg-[#4dc08e]-500 hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
+              className='whitespace-nowrap mx-4 text-white bg-[#4dc08e] hover:bg-[#4dc08e]-800 active:bg-[#4dc08e]-700 focus:outline-none focus:ring focus:ring-[#4dc08e]-300'
               color='secondary'
               variant='contained'
-              // style={{ backgroundColor: '#4dc08e', color: 'white' }}
               onClick={handleUpdateVisaEntry}>
               Update
             </Button>
           )}
+
         <Button
           className='whitespace-nowrap mx-4 text-white bg-orange-500 hover:bg-orange-800 active:bg-orange-700 focus:outline-none focus:ring focus:ring-orange-300'
           variant='contained'

@@ -1,14 +1,14 @@
-import AnalyticsDashboardAppConfig from './analytics/AnalyticsDashboardAppConfig';
+import MalaysiaDashboardAppConfig from './malaysia/MalaysiaDashboardAppConfig';
 import ProjectDashboardAppConfig from './project/ProjectDashboardAppConfig';
-import FinanceDashboardAppConfig from './finance/FinanceDashboardAppConfig';
-import CryptoDashboardAppConfig from './crypto/CryptoDashboardAppConfig';
+import SaudiDashboardAppConfig from './saudi/SaudiDashboardAppConfig';
+import TicketDashboardAppConfig from './ticket/TicketDashboardAppConfig';
 /**
  * Dashboards
  */
 const dashboardsConfigs = [
-	AnalyticsDashboardAppConfig,
-	ProjectDashboardAppConfig,
-	FinanceDashboardAppConfig,
-	CryptoDashboardAppConfig
+  ProjectDashboardAppConfig,
+  SaudiDashboardAppConfig,
+  TicketDashboardAppConfig,
+  MalaysiaDashboardAppConfig,
 ];
 export default dashboardsConfigs;

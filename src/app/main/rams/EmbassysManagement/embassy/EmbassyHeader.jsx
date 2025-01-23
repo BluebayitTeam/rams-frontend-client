@@ -13,7 +13,6 @@ import {
 } from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone } from 'src/app/@data/data';
-import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
 import {
@@ -43,22 +42,40 @@ function EmbassyHeader({ handleReset, emptyValue }) {
   const handleUpdate = localStorage.getItem('updateEmbassy');
   const passengers = useSelector((state) => state.data.passengers);
   // const user_role = localStorage.getItem('user_role');
+  const { fromSearch } = useParams();
 
   function handleUpdateEmbassy() {
-    saveEmbassy(getValues()).then((res) => {
-      if (res.data?.id) {
-        if (fromSearch) {
-          navigate(-1);
+    saveEmbassy(getValues())
+      .then((res) => {
+        console.log('res', res);
+        if (res?.data) {
+          console.log('fromSearch', fromSearch);
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            handleReset({
+              ...emptyValue,
+              stamping_status: doneNotDone.find((data) => data.default)?.id,
+            });
+
+            UpdatedSuccessfully();
+            navigate('/apps/embassy-management/embassys/new');
+          }
         } else {
-          handleReset({
-            ...emptyValue,
-            stamping_status: doneNotDone.find((data) => data.default)?.id,
-          });
-          UpdatedSuccessfully();
-          navigate('/apps/embassy-management/embassys/new');
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
         }
-      }
-    });
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating medical', error);
+        dispatch(
+          showMessage({
+            message: `Error: ${error.message}`,
+            variant: 'error',
+          })
+        );
+      });
   }
 
   function handleCreateEmbassy() {

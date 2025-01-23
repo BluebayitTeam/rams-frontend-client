@@ -125,6 +125,8 @@ function MedicalExpireReportsTable(props) {
     skip: inShowAllMode,
   });
 
+  console.log('paginatedData', paginatedData);
+
   const { data: allData } = useGetMedicalExpireAllReportsQuery({
     no_of_days: noOfDays || '',
     page,

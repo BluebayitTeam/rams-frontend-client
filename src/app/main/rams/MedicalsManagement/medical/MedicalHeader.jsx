@@ -6,72 +6,81 @@ import { motion } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@mui/material';
-import { AddedSuccessfully, RemoveSuccessfully, UpdatedSuccessfully } from 'src/app/@customHooks/notificationAlert';
+import {
+  AddedSuccessfully,
+  RemoveSuccessfully,
+  UpdatedSuccessfully,
+} from 'src/app/@customHooks/notificationAlert';
 import { useSelector } from 'react-redux';
 import { doneNotDone, medicalResults } from 'src/app/@data/data';
-import history from '@history';
 import { showMessage } from '@fuse/core/FuseMessage/store/fuseMessageSlice';
 import _ from 'lodash';
-import { useCreateMedicalMutation, useDeleteMedicalMutation, useUpdateMedicalMutation } from '../MedicalsApi';
+import {
+  useCreateMedicalMutation,
+  useDeleteMedicalMutation,
+  useUpdateMedicalMutation,
+} from '../MedicalsApi';
 import { hasPermission } from 'src/app/constant/permission/permissionList';
 
 /**
  * The medical header.
  */
 function MedicalHeader({ handleReset, emptyValue }) {
-	const routeParams = useParams();
-	const { medicalId } = routeParams;
-	const [createMedical] = useCreateMedicalMutation();
-	const [saveMedical] = useUpdateMedicalMutation();
-	const [removeMedical] = useDeleteMedicalMutation();
-	const methods = useFormContext();
-	const { formState, watch, getValues, reset } = methods;
-	const { isValid, dirtyFields } = formState;
-	const theme = useTheme();
-	const navigate = useNavigate();
-	const { name, images, featuredImageId } = watch();
-	const handleDelete = localStorage.getItem('deleteMedical');
-	const handleUpdate = localStorage.getItem('updateMedical');
-	const passengers = useSelector((state) => state.data.passengers);
-	const { fromSearch } = useParams();
-	// const user_role = localStorage.getItem('user_role');
+  const routeParams = useParams();
+  const { medicalId } = routeParams;
+  const [createMedical] = useCreateMedicalMutation();
+  const [saveMedical] = useUpdateMedicalMutation();
+  const [removeMedical] = useDeleteMedicalMutation();
+  const methods = useFormContext();
+  const { formState, watch, getValues, reset } = methods;
+  const { isValid, dirtyFields } = formState;
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { name, images, featuredImageId } = watch();
+  const handleDelete = localStorage.getItem('deleteMedical');
+  const handleUpdate = localStorage.getItem('updateMedical');
+  const passengers = useSelector((state) => state.data.passengers);
+  const { fromSearch } = useParams();
+  // const user_role = localStorage.getItem('user_role');
 
-	function handleUpdateMedical() {
-		saveMedical(getValues())
-			.then((res) => {
-				if (res.data?.id) {
-					if (fromSearch) {
-						navigate(-1);
-					} else {
-						localStorage.setItem('medicalAlert', 'updateMedical');
+  function handleUpdateMedical() {
+    saveMedical(getValues())
+      .then((res) => {
+        if (res.data?.id) {
+          if (fromSearch) {
+            navigate(-1);
+          } else {
+            localStorage.setItem('medicalAlert', 'updateMedical');
 
-						handleReset({
-							...emptyValue,
-							medical_card: doneNotDone.find((data) => data.default)?.id,
-							medical_result: medicalResults.find((data) => data.default)?.id
-						});
+            handleReset({
+              ...emptyValue,
+              medical_card: doneNotDone.find((data) => data.default)?.id,
+              medical_result: medicalResults.find((data) => data.default)?.id,
+            });
 
-						UpdatedSuccessfully();
-						navigate('/apps/medical/medicals/new');
-					}
-				} else {
-					// Handle cases where res.data.id is not present
-					console.error('Update failed: No id in response data');
-				}
-			})
-			.catch((error) => {
-				// Handle error
-				console.error('Error updating medical', error);
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+            UpdatedSuccessfully();
+            navigate('/apps/medical/medicals/new');
+          }
+        } else {
+          // Handle cases where res.data.id is not present
+          console.error('Update failed: No id in response data');
+        }
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error updating medical', error);
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	function handleCreateMedical() {
-		createMedical(getValues())
-			// .unwrap()
-			.then((res) => {
-				if (res?.id) {
-					if (fromSearch == 'fromSearch') {
+  function handleCreateMedical() {
+    createMedical(getValues())
+      // .unwrap()
+      .then((res) => {
+        if (res?.id) {
+          if (fromSearch == 'fromSearch') {
             navigate(-1);
           } else {
             localStorage.setItem('medicalAlert', 'saveMedical');
@@ -84,18 +93,18 @@ function MedicalHeader({ handleReset, emptyValue }) {
             navigate('/apps/medical/medicals/new');
             AddedSuccessfully();
           }
-				}
-			});
-	}
+        }
+      });
+  }
 
-	function handleRemoveMedical() {
-		removeMedical(getValues()?.id)
-			.unwrap()
-			.then((res) => {
-				if (res.detail) {
+  function handleRemoveMedical() {
+    removeMedical(getValues()?.id)
+      .unwrap()
+      .then((res) => {
+        if (res.detail) {
           if (fromSearch) {
-			  navigate(-1);
-		  } else {
+            navigate(-1);
+          } else {
             handleReset({
               ...emptyValue,
               medical_result: medicalResults.find((data) => data.default)?.id,
@@ -112,27 +121,29 @@ function MedicalHeader({ handleReset, emptyValue }) {
           }
         }
 
-				RemoveSuccessfully();
-			})
-			.catch((error) => {
-				dispatch(showMessage({ message: `Error: ${error.message}`, variant: 'error' }));
-			});
-	}
+        RemoveSuccessfully();
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({ message: `Error: ${error.message}`, variant: 'error' })
+        );
+      });
+  }
 
-	const handleCancel = () => {
-	if (fromSearch == 'fromSearch') {
-        navigate(-1);
-      } else {
-	handleReset({
-    ...emptyValue,
-    medical_result: medicalResults.find((data) => data.default)?.id,
-    medical_card: doneNotDone.find((data) => data.default)?.id,
-  });
-  navigate('/apps/medical/medicals/new');
-      }
-	};
+  const handleCancel = () => {
+    if (fromSearch == 'fromSearch') {
+      navigate(-1);
+    } else {
+      handleReset({
+        ...emptyValue,
+        medical_result: medicalResults.find((data) => data.default)?.id,
+        medical_card: doneNotDone.find((data) => data.default)?.id,
+      });
+      navigate('/apps/medical/medicals/new');
+    }
+  };
 
-	return (
+  return (
     <div className='flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32'>
       <div className='flex flex-col items-start max-w-full min-w-0'>
         <div className='flex items-center max-w-full'>

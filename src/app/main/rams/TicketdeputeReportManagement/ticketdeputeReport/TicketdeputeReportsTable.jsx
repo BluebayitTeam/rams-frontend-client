@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const schema = z.object({});
 
 const initialPrintTableColumnsState = [
-  { id: 1, label: 'Sl No', sortAction: false, isSerialNo: true, show: true },
+  { id: 1, label: 'SL', sortAction: false, isSerialNo: true, show: true },
   { id: 2, label: 'Issue Date', name: 'issue_date', show: true, type: 'date' },
   { id: 3, label: 'Invoice No', name: 'invoice_no', show: true },
   {

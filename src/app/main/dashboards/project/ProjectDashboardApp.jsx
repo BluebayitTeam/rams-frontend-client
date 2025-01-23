@@ -5,11 +5,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import FuseLoading from '@fuse/core/FuseLoading';
-import ProjectDashboardAppHeader from './ProjectDashboardAppHeader';
-import HomeTab from './tabs/home/HomeTab';
-import TeamTab from './tabs/team/TeamTab';
-import BudgetTab from './tabs/budget/BudgetTab';
-// import { useGetProjectDashboardWidgetsQuery } from './ProjectDashboardApi';
+import HomeTab from './home/HomeTab';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
   '& .FusePageSimple-header': {
@@ -28,16 +24,11 @@ function ProjectDashboardApp() {
     setTabValue(value);
   }
 
- 
-
   return (
     <Root
-     
       content={
         <div className='w-full p-12 pt-16 sm:pt-24 lg:ltr:pr-0 lg:rtl:pl-0'>
-  
           {<HomeTab />}
- 
         </div>
       }
     />

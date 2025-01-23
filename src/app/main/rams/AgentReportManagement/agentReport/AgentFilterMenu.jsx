@@ -11,44 +11,47 @@ import ReportTextField from 'src/app/@components/ReportComponents/ReportTextFiel
 import { getReportFilterMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 const useStyles = makeStyles((theme) => ({
-	...getReportFilterMakeStyles(theme)
+  ...getReportFilterMakeStyles(theme),
 }));
 
-function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents }) {
-	const classes = useStyles();
-	const dispatch = useDispatch();
+function AgentFilterMenu({
+  inShowAllMode,
+  handleGetAgents,
+  handleGetAllAgents,
+}) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
-	const methods = useFormContext();
-	const { getValues } = methods;
+  const methods = useFormContext();
+  const { getValues } = methods;
 
-	const theme = useTheme();
-	const { groups, cities } = useSelector((state) => state.data);
-	const values = getValues();
-	const [_reRender, setReRender] = useState(0);
-	console.log('Passenger Values:', getValues());
+  const theme = useTheme();
+  const { groups, cities } = useSelector((state) => state.data);
+  const values = getValues();
+  const [_reRender, setReRender] = useState(0);
+  console.log('Passenger Values:', getValues());
 
-	// element refs
-	const userNameEl = useRef(null);
-	const primaryPhoneEl = useRef(null);
-	const agentCodeEl = useRef(null);
+  // element refs
+  const userNameEl = useRef(null);
+  const primaryPhoneEl = useRef(null);
+  const agentCodeEl = useRef(null);
 
-	const commonFieldProps = {
-		setReRender,
-		onEnter: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
-	};
-	const commonKewordProps = {
-		setReRender,
-		onClick: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents())
-	};
+  const commonFieldProps = {
+    setReRender,
+    onEnter: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents()),
+  };
+  const commonKewordProps = {
+    setReRender,
+    onClick: () => (inShowAllMode ? handleGetAllAgents() : handleGetAgents()),
+  };
 
-	useEffect(() => {
-		
-		dispatch(getCities());
-		dispatch(getGroups());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(getCities());
+    dispatch(getGroups());
+  }, [dispatch]);
 
-	console.log('sadhbjkasbdkj', getValues());
-	return (
+  console.log('sadhbjkasbdkj', getValues());
+  return (
     <div className={classes.filterMenuContainer}>
       <div className='allFieldContainer borderTop mt-4'>
         {/* user name */}
@@ -149,7 +152,6 @@ function AgentFilterMenu({ inShowAllMode, handleGetAgents, handleGetAllAgents })
           type='select'
           name='district'
           icon='homeSharp'
-		  
         />
 
         <Keyword

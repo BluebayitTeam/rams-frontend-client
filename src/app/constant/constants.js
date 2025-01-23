@@ -1053,6 +1053,7 @@ export const DELETE_MEDICAL = `${BASE_URL}/medical/api/v1/medical/delete/`;
 export const MEDICAL_BY_PASSENGER_ID = `${BASE_URL}/medical/api/v1/medical/get_by_passenger_id/`;
 
 export const MEDICAL_FILTER_BY = `${BASE_URL}/report/api/v1/medical_report/filter/`;
+export const MEDICAL_FILTER_SAUDI_BY = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_fit_medical_data/`;
 
 export const MEDICAL_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/medical_report/without_pagination/filter/`;
 
@@ -1088,6 +1089,7 @@ export const EMBASSY_BY_PASSENGER_ID = `${BASE_URL}/embassy/api/v1/embassy/check
 export const EMBASSY_BY_PASSENGER_IDS = `${BASE_URL}/embassy/api/v1/embassy/get_by_passenger_id/`;
 
 export const EMBASSY_FILTER_BY = `${BASE_URL}/report/api/v1/embassy_report/filter/`;
+export const EMBASSY_FILTE_SAUDI_BY = `${BASE_URL}/report/api/v1/embassy_data_report/filter/`;
 
 export const EMBASSY_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/embassy_report/without_pagination/filter/`;
 
@@ -1101,6 +1103,7 @@ export const DELETE_MOFA = `${BASE_URL}/mofa/api/v1/mofa/delete/`;
 export const MOFA_BY_PASSENGER_ID = `${BASE_URL}/mofa/api/v1/mofa/get_by_passenger_id/`;
 
 export const MOFA_FILTER_BY = `${BASE_URL}/report/api/v1/mofa_report/filter/`;
+export const MOFA_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/mofa_data_report/filter/`;
 
 export const MOFA_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/mofa_report/without_pagination/filter/`;
 
@@ -1133,6 +1136,7 @@ export const DELETE_FLIGHT = `${BASE_URL}/flight/api/v1/flight/delete/`;
 export const FLIGHT_BY_PASSENGER_ID = `${BASE_URL}/flight/api/v1/flight/get_by_passenger_id/`;
 
 export const FLIGHT_FILTER_BY = `${BASE_URL}/report/api/v1/flight_report/filter/`;
+export const FLIGHT_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/flight_data_report/filter/`;
 
 export const FLIGHT_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/flight_report/without_pagination/filter/`;
 
@@ -1191,6 +1195,7 @@ export const DELETE_TRAINING = `${BASE_URL}/training/api/v1/training/delete/`;
 export const TRAINING_BY_PASSENGER_ID = `${BASE_URL}/training/api/v1/training/get_by_passenger_id/`;
 
 export const TRAINING_FILTER_BY = `${BASE_URL}/report/api/v1/training_report/filter/`;
+export const TRAINING_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/training_data_report/filter/`;
 
 export const TRAINING_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/training_report/without_pagination/filter/`;
 
@@ -1237,6 +1242,7 @@ export const DELETE_MANPOWER = `${BASE_URL}/man_power/api/v1/man_power/delete/`;
 export const MANPOWER_BY_PASSENGER_ID = `${BASE_URL}/man_power/api/v1/man_power/check_embassy_by_passenger_id/`;
 
 export const MANPOWER_FILTER_BY = `${BASE_URL}/report/api/v1/man_power_report/filter/`;
+export const MANPOWER_FILTER_SAUDI_BY = `${BASE_URL}/report/api/v1/manpower_data_report/filter/`;
 
 export const MANPOWER_FILTER_WITHOUT_PG = `${BASE_URL}/report/api/v1/man_power_report/without_pagination/filter/`;
 
@@ -2025,6 +2031,10 @@ export const GET_MUSANED_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG = `${BASE_URL}/re
 // Registered /On Process Report For Saudi Dashboard
 export const GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD = `${BASE_URL}/report/api/v1/ksa_report/filter/`;
 export const GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_SAUDI_DASHBOARD_WITHOUT_PG = `${BASE_URL}/report/api/v1/ksa_report/filter/`;
+export const GET_REGISTERED_OR_ON_PROCESS_REPORT_FOR_MALAYSIA_DASHBOARD = `${BASE_URL}/report/api/v1/malaysia_report/filter/`;
+
+// Medical Expaired For Saudi Dashboard
+export const GET_MEDICAL_EXPAIERD_FOR_SAUDI_DASHBOARD = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_expirable_medical_data_for_ksa/`;
 
 // Passport Notification
 export const GET_EXPIRABLE_PASSPORT_NOTOFICATION_REPORT = `${BASE_URL}/expiring_data/api/v1/expiring_data/get_expirable_passport_data/`;

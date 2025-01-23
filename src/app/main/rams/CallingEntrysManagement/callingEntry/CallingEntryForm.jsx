@@ -89,8 +89,7 @@ function CallingEntryForm(props) {
             }
             onChange={(event, newValue) => {
               onChange(newValue?.id);
-              // dispatch(getCallingEntryByDemand(newValue?.id));
-              // setProfession(newValue?.profession?.name);
+
               setValue('profession_english', newValue?.profession?.name);
             }}
             renderInput={(params) => (
@@ -110,8 +109,41 @@ function CallingEntryForm(props) {
           />
         )}
       />
-
       <Controller
+        name='country'
+        control={control}
+        render={({ field: { onChange, value } }) => {
+          console.log('Value:', value);
+          return (
+            <Autocomplete
+              className='mt-8 mb-16'
+              freeSolo
+              value={
+                value ? countries.find((data) => data?.id === value) : null
+              }
+              options={countries}
+              getOptionLabel={(option) => `${option.name}`}
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder='Select Country'
+                  label='Country'
+                  helperText={errors?.country?.message}
+                  variant='outlined'
+                  InputLabelProps={
+                    value ? { shrink: true } : { style: { color: 'red' } }
+                  }
+                />
+              )}
+            />
+          );
+        }}
+      />
+
+      {/* <Controller
         name='country'
         control={control}
         render={({ field: { onChange, value, name } }) => (
@@ -141,7 +173,7 @@ function CallingEntryForm(props) {
             )}
           />
         )}
-      />
+      /> */}
 
       <Controller
         name='visa_agent'

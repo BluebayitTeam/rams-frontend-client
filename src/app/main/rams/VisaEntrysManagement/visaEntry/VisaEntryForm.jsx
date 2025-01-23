@@ -1,7 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 
 import { Autocomplete, Box, Icon, TextField, Typography } from '@mui/material';
-import { getAgents, getCountries, getDemandVisaEntrys } from 'app/store/dataSlice';
+import {
+  getAgents,
+  getCountries,
+  getDemandVisaEntrys,
+} from 'app/store/dataSlice';
 import clsx from 'clsx';
 import { makeStyles } from '@mui/styles';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -13,64 +17,63 @@ import { BASE_URL } from 'src/app/constant/constants';
 import { PictureAsPdf } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
-	hidden: {
-		display: 'none'
-	},
-	productImageUpload: {
-		transitionProperty: 'box-shadow',
-		transitionDuration: theme.transitions.duration.short,
-		transitionTimingFunction: theme.transitions.easing.easeInOut
-	}
+  hidden: {
+    display: 'none',
+  },
+  productImageUpload: {
+    transitionProperty: 'box-shadow',
+    transitionDuration: theme.transitions.duration.short,
+    transitionTimingFunction: theme.transitions.easing.easeInOut,
+  },
 }));
 
 function VisaEntryForm(props) {
-	const dispatch = useDispatch();
-	const methods = useFormContext();
-	const { control, formState, watch, setValue, setError, getValues } = methods;
-	const { errors } = formState;
+  const dispatch = useDispatch();
+  const methods = useFormContext();
+  const { control, formState, watch, setValue, setError, getValues } = methods;
+  const { errors } = formState;
 
-	const classes = useStyles(props);
-	const demands = useSelector((state) => state.data.demandVisaEntrys);
+  const classes = useStyles(props);
+  const demands = useSelector((state) => state.data.demandVisaEntrys);
 
-	const countries = useSelector((state) => state.data.countries);
-	const visaAgents = useSelector((state) => state.data.agents);
+  const countries = useSelector((state) => state.data.countries);
+  const visaAgents = useSelector((state) => state.data.agents);
 
-	const file = watch('file') || '';
+  const file = watch('file') || '';
 
-	const slipPic = watch('file') || '';
+  const slipPic = watch('file') || '';
 
-	const [previewslipPicFile, setPreviewslipPicFile] = useState('');
-	const [fileExtPCName, setFileExtPCName] = useState('');
+  const [previewslipPicFile, setPreviewslipPicFile] = useState('');
+  const [fileExtPCName, setFileExtPCName] = useState('');
 
-	const fileInputRef = useRef(null);
+  const fileInputRef = useRef(null);
 
-	useEffect(() => {
-		dispatch(getDemandVisaEntrys());
-		dispatch(getAgents());
-		dispatch(getCountries());
-	}, []);
+  useEffect(() => {
+    dispatch(getDemandVisaEntrys());
+    dispatch(getAgents());
+    dispatch(getCountries());
+  }, []);
 
-	const handleRemoveslipPicFile = () => {
-		setPreviewslipPicFile(null);
+  const handleRemoveslipPicFile = () => {
+    setPreviewslipPicFile(null);
 
-		setFileExtPCName(null);
+    setFileExtPCName(null);
 
-		setValue('file', '');
+    setValue('file', '');
 
-		if (fileInputRef.current) {
-			fileInputRef.current.value = '';
-		}
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
 
-		console.log('sfsdferwer', getValues());
-	};
-	return (
+    console.log('sfsdferwer', getValues());
+  };
+  return (
     <div>
       <Controller
         name='demand'
         control={control}
         render={({ field: { onChange, value } }) => {
-  
-          return
+          return;
           <Autocomplete
             className='mt-8 mb-16'
             freeSolo
@@ -101,36 +104,39 @@ function VisaEntryForm(props) {
           />;
         }}
       />
-
       <Controller
         name='country'
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <Autocomplete
-            className='mt-8 mb-16'
-            freeSolo
-            value={value ? countries.find((data) => data.id === value) : null}
-            options={countries}
-            getOptionLabel={(option) => `${option.name}`}
-            onChange={(event, newValue) => {
-              onChange(newValue?.id);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder='Select Country'
-                label='Country'
-                helperText={errors?.country?.message}
-                variant='outlined'
-                InputLabelProps={
-                  value ? { shrink: true } : { style: { color: 'red' } }
-                }
-              />
-            )}
-          />
-        )}
+        render={({ field: { onChange, value } }) => {
+          console.log('Value:', value);
+          return (
+            <Autocomplete
+              className='mt-8 mb-16'
+              freeSolo
+              value={
+                value ? countries.find((data) => data?.id === value) : null
+              }
+              options={countries}
+              getOptionLabel={(option) => `${option.name}`}
+              onChange={(event, newValue) => {
+                onChange(newValue?.id);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder='Select Country'
+                  label='Country'
+                  helperText={errors?.country?.message}
+                  variant='outlined'
+                  InputLabelProps={
+                    value ? { shrink: true } : { style: { color: 'red' } }
+                  }
+                />
+              )}
+            />
+          );
+        }}
       />
-
       <Controller
         name='visa_agent'
         control={control}
@@ -163,7 +169,6 @@ function VisaEntryForm(props) {
           />
         )}
       />
-
       <Controller
         name='visa_number'
         control={control}
@@ -185,7 +190,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='sponsor_id_no'
         control={control}
@@ -226,7 +230,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='profession_english'
         control={control}
@@ -246,7 +249,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='quantity'
         control={control}
@@ -266,7 +268,26 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
+      <Controller
+        name='calling_exp_date'
+        control={control}
+        render={({ field }) => {
+          return (
+            <TextField
+              {...field}
+              className='mt-8 mb-16'
+              error={!!errors.calling_exp_date}
+              helperText={errors?.calling_exp_date?.message}
+              label='Calling Exp Date'
+              id='calling_exp_date'
+              type='date'
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              // onKeyDown={handleSubmitOnKeyDownEnter}
+            />
+          );
+        }}
+      />{' '}
       <Controller
         name='visa_issue_date'
         control={control}
@@ -287,7 +308,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='profession_arabic'
         control={control}
@@ -307,7 +327,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='group_no'
         control={control}
@@ -327,7 +346,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='sponsor_dob'
         control={control}
@@ -348,7 +366,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='sponsor_name_english'
         control={control}
@@ -368,7 +385,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='sponsor_name_arabic'
         control={control}
@@ -388,7 +404,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='sponsor_mobile'
         control={control}
@@ -408,7 +423,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='sponsor_address'
         control={control}
@@ -428,7 +442,6 @@ function VisaEntryForm(props) {
           );
         }}
       />
-
       <Controller
         name='notes'
         control={control}

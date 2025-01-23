@@ -27,7 +27,7 @@
         "@popperjs/core": "2.11.8",
         "@reduxjs/toolkit": "2.0.1",
         "@tinymce/tinymce-react": "^5.1.1",
-        "apexcharts": "3.45.1",
+        "apexcharts": "^3.54.1",
         "autosuggest-highlight": "3.3.4",
         "axios": "1.6.5",
         "axios-mock-adapter": "1.21.5",

@@ -687,25 +687,25 @@ function PassengerAllDetails() {
         .then((res) => {
           if (res?.data) {
             setEmbassy({ ...res?.data?.embassy });
-                        setImages((imgs) =>
-                          imgs.concat(
-                            {
-                              order: 13,
-                              title: 'Embassy Old Visa',
-                              url: res.data.old_visa_image,
-                              editurl: '/apps/embassy-management/embassy/',
-                              pid: pId,
-                            },
-                            {
-                              order: 14,
-                              title: 'Embassy Stamp Visa',
-                              url: res.data.stamp_visa_image,
-                              editurl: '/apps/embassy-management/embassy/',
-                              pid: pId,
-                            }
-                          )
-                        );
-                        setLoading(false);
+            setImages((imgs) =>
+              imgs.concat(
+                {
+                  order: 13,
+                  title: 'Embassy Old Visa',
+                  url: res.data.old_visa_image,
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                },
+                {
+                  order: 14,
+                  title: 'Embassy Stamp Visa',
+                  url: res.data.stamp_visa_image,
+                  editurl: '/apps/embassy-management/embassy/',
+                  pid: pId,
+                }
+              )
+            );
+            setLoading(false);
           }
         })
         .catch(() => {

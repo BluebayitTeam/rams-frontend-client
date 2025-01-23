@@ -160,34 +160,30 @@ function Embassy() {
     //   reset({ stamping_status: doneNotDone.find((data) => data.default)?.id });
     // }
 
-
-
-
-       if (fromSearch) {
-         const authTOKEN = {
-           headers: {
-             'Content-type': 'application/json',
-             Authorization: localStorage.getItem('jwt_access_token'),
-           },
-         };
-         axios
-           .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
-           .then((res) => {
-             if (res.data.id) {
-               reset({
-                 ...setIdIfValueIsObject(res.data),
-                 passenger: embassyId,
-               });
-             }
-           })
-           .catch(() => null);
-       } else {
-         handleReset({
-           ...emptyValue,
-           stamping_status: doneNotDone.find((data) => data.default)?.id,
-         });
-       }
-
+    if (fromSearch) {
+      const authTOKEN = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: localStorage.getItem('jwt_access_token'),
+        },
+      };
+      axios
+        .get(`${EMBASSY_BY_PASSENGER_ID}${embassyId}`, authTOKEN)
+        .then((res) => {
+          if (res.data.id) {
+            reset({
+              ...setIdIfValueIsObject(res.data),
+              passenger: embassyId,
+            });
+          }
+        })
+        .catch(() => null);
+    } else {
+      handleReset({
+        ...emptyValue,
+        stamping_status: doneNotDone.find((data) => data.default)?.id,
+      });
+    }
   }, [fromSearch]);
 
   useEffect(() => {

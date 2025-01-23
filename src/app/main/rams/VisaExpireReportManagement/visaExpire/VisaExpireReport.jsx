@@ -39,7 +39,7 @@ function VisaExpiresReport() {
             className='flex items-center sm:mb-12'
             component={Link}
             role='button'
-            to='/apps/agent/agents'
+            to='/dashboards/project'
             color='inherit'>
             <FuseSvgIcon size={20}>
               {theme.direction === 'ltr'
