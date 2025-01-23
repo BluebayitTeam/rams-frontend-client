@@ -2554,8 +2554,6 @@ export const GET_ATTENDANCE_TYPES = `${BASE_URL}/attendance_type/api/v1/attendan
 export const GET_ATTENDANCE_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/attendance_type/api/v1/attendance_type_wp/all/`;
 
 
-
-
 // calculation_type
 export const GET_CALCULATION_TYPE_BY_ID = `${BASE_URL}/calculation_type/api/v1/calculation_type/`;
 
@@ -2573,3 +2571,21 @@ export const GET_CALCULATION_TYPES_WITHOUT_PAGINATION = `${BASE_URL}/calculation
 
 
 
+//  Userdefinevalue
+export const CREATE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/create/`;
+
+export const GET_USERDEFINEVALUES = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/all/`;
+
+export const GET_USERDEFINEVALUES_WITHOUT_PAGINATION = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/all/`;
+
+export const GET_PAYHEAD_ONLY_USERDEFINEVALUES = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/payhead/all/`;
+
+export const GET_USERDEFINEVALUEID = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/`;
+
+export const UPDATE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/update/`;
+
+export const DELETE_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/delete/`;
+
+export const SEARCH_USERDEFINEVALUE = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/search/`;
+
+export const CHECK_USERDEFINEVALUE_BY_EMPLOYEE_PAYHEAD = `${BASE_URL}/user_defined_value/api/v1/user_defined_value/check_if_value_exists_for_employee/`;

@@ -172,6 +172,7 @@ import PayHeadAppConfig from "../rams/PayRollManagement/PayHeadManagement/PayHea
 import PayHeadTypeAppConfig from "../rams/PayRollManagement/PayHeadTypeManagement/PayHeadTypeAppConfig";
 import ShiftAppConfig from "../rams/PayRollManagement/ShiftManagement/ShiftAppConfig";
 import ShiftTimeTableAppConfig from "../rams/PayRollManagement/ShiftTimeTableManagement/ShiftTimeTableAppConfig";
+import UserDefineValueAppConfig from "../rams/PayRollManagement/UserDefineValueManagement/UserDefineValueAppConfig";
 import TicketeditAppConfig from "../rams/TicketeditsManagement/TicketeditAppConfig";
 
 /**
@@ -354,6 +355,7 @@ const appsConfigs = [
   PayHeadAppConfig,
   PayHeadTypeAppConfig,
   AttendanceTypeAppConfig,
-  CalculationTypeAppConfig
+  CalculationTypeAppConfig,
+  UserDefineValueAppConfig
 ];
 export default appsConfigs;
