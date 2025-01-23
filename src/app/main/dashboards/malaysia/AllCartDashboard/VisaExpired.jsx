@@ -27,7 +27,9 @@ function VisaExpired(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.calling_exp_count_next_15_days > 0 &&
-            navigate(`/apps/registeredSaudis/report/on_process`);
+            navigate(
+              `/apps/visaExpireMalaysiaReport/visaExpireMalaysiaReports/15`
+            );
         }}>
         <Typography
           className='text-72 font-semibold leading-none tracking-tighter'

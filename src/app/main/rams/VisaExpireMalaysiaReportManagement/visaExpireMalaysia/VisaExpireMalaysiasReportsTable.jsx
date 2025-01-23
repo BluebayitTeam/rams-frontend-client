@@ -16,9 +16,9 @@ import { getReportMakeStyles } from '../../ReportUtilities/reportMakeStyls';
 
 import { useParams } from 'react-router';
 import {
-  useGetMedicalExpireMalaysiaAllReportsQuery,
-  useGetMedicalExpireMalaysiaReportsQuery,
-} from '../MedicalExpireMalaysiaReportsApi';
+  useGetVisaExpireMalaysiaAllReportsQuery,
+  useGetVisaExpireMalaysiaReportsQuery,
+} from '../VisaExpireMalaysiaReportsApi';
 
 const useStyles = makeStyles((theme) => ({
   ...getReportMakeStyles(theme),
@@ -32,8 +32,9 @@ const initialTableColumnsState = [
   {
     id: 2,
     label: 'Passenger Name',
-    name: 'passenger',
-    subName: 'passenger_name',
+    getterMethod: (data) => console.log('sdfdskfhksdhfd', data),
+    // `${data?.passenger_name || ''}`,
+
     show: true,
   },
   {
@@ -43,48 +44,65 @@ const initialTableColumnsState = [
     subName: 'passport_no',
     show: true,
   },
-  { id: 4, label: 'Agent', name: 'agent', subName: 'username', show: true },
-  { id: 5, label: 'M.Serial No', name: 'medical_serial_no', show: true },
-  { id: 6, label: 'M.Result', name: 'medical_result', show: true },
-  { id: 7, label: 'M.Card', name: 'medical_card', show: true },
-  { id: 8, label: 'M.Ent Date', name: 'created_at', show: true, type: 'date' },
   {
-    id: 9,
-    label: 'M.Exam Date',
-    name: 'medical_exam_date',
+    id: 4,
+    label: 'country',
+
+    getterMethod: (data) => `${data.country?.name || ''}`,
+
+    show: true,
+  },
+  {
+    id: 5,
+    label: 'Profession',
+    getterMethod: (data) =>
+      // console.log('sdfdskfhksdhfd', data.profession_arabic),
+      `${data.profession_arabic || ''}`,
+
+    show: true,
+  },
+  {
+    id: 6,
+    label: 'Submit Date',
+    name: 'submit_date',
     show: true,
     type: 'date',
   },
-  {
-    id: 10,
-    label: 'M.Rpt Date',
-    name: 'medical_report_date',
-    show: true,
-    type: 'date',
-  },
-  {
-    id: 11,
-    label: 'M.Issue Date',
-    name: 'medical_issue_date',
-    show: true,
-    type: 'date',
-  },
+  { id: 7, label: 'Profession Eng', name: 'profession_english', show: true },
+  { id: 8, label: 'Profession Arb', name: 'profession_arabic', show: true },
+  { id: 9, label: 'Salary', name: 'salary', show: true },
+  { id: 10, label: 'Stamping Status', name: 'stamping_status', show: true },
+  { id: 11, label: 'V.Ent Date', name: 'created_at', show: true, type: 'date' },
   {
     id: 12,
-    label: 'M.Exp Date',
-    name: 'medical_expiry_date',
+    label: 'Stp Date',
+    name: 'stamping_date',
     show: true,
     type: 'date',
   },
   {
     id: 13,
-    label: 'M.Center',
-    name: 'medical_center',
-    subName: 'name',
+    label: 'V.Exp Date',
+    name: 'visa_expiry_date',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 14,
+    label: 'Delivery Date',
+    name: 'delivery_date',
+    show: true,
+    type: 'date',
+  },
+  {
+    id: 15,
+    label: 'recruiting_agency',
+    getterMethod: (data) => `${data?.recruiting_agency || ''}`,
+
     show: true,
   },
 ];
-function MedicalExpireMalaysiaReportsTable(props) {
+function VisaExpireMalaysiaReportsTable(props) {
   const classes = useStyles();
   const methods = useForm({
     mode: 'onChange',
@@ -95,10 +113,8 @@ function MedicalExpireMalaysiaReportsTable(props) {
 
   const { watch, getValues } = methods;
 
-  const [
-    modifiedMedicalExpireMalaysiaData,
-    setModifiedMedicalExpireMalaysiaData,
-  ] = useReportData();
+  const [modifiedVisaExpireMalaysiaData, setModifiedVisaExpireMalaysiaData] =
+    useReportData();
 
   const [tableColumns, dispatchTableColumns] = useReducer(
     tableColumnsReducer,
@@ -120,14 +136,14 @@ function MedicalExpireMalaysiaReportsTable(props) {
   const { noOfDays } = routeParams;
   const filterData = watch();
 
-  const { data: paginatedData } = useGetMedicalExpireMalaysiaReportsQuery({
+  const { data: paginatedData } = useGetVisaExpireMalaysiaReportsQuery({
     no_of_days: noOfDays || '',
     country: 'malaysia',
     page,
     size,
   });
 
-  const { data: allData } = useGetMedicalExpireMalaysiaAllReportsQuery({
+  const { data: allData } = useGetVisaExpireMalaysiaAllReportsQuery({
     no_of_days: noOfDays || '',
     country: 'malaysia',
     page,
@@ -136,14 +152,14 @@ function MedicalExpireMalaysiaReportsTable(props) {
 
   useEffect(() => {
     if (inShowAllMode && allData) {
-      setModifiedMedicalExpireMalaysiaData(allData.medicals || []);
+      setModifiedVisaExpireMalaysiaData(allData.visa_entries || []);
       setTotalAmount(allData.total_amount);
 
       setInSiglePageMode(false);
       setInShowAllMode(true);
       setPagination(false);
       const { totalPages, totalElements } = getPaginationData(
-        allData.medicals,
+        allData.visa_entries,
         size,
         page
       );
@@ -152,7 +168,7 @@ function MedicalExpireMalaysiaReportsTable(props) {
       setTotalPages(totalPages);
       setTotalElements(totalElements);
     } else if (!inShowAllMode && paginatedData) {
-      setModifiedMedicalExpireMalaysiaData(paginatedData?.medicals || []);
+      setModifiedVisaExpireMalaysiaData(paginatedData?.visa_entries || []);
 
       setTotalAmount(paginatedData.total_amount);
       setSize(paginatedData?.size || 25);
@@ -172,7 +188,7 @@ function MedicalExpireMalaysiaReportsTable(props) {
     content: () => componentRef.current,
   });
 
-  const handleGetMedicalExpireMalaysias = useCallback(async (newPage) => {
+  const handleGetVisaExpireMalaysias = useCallback(async (newPage) => {
     try {
       const page = newPage || 1;
       setPage(page);
@@ -181,10 +197,10 @@ function MedicalExpireMalaysiaReportsTable(props) {
     }
   }, []);
 
-  const handleGetAllMedicalExpireMalaysias = useCallback(async () => {
+  const handleGetAllVisaExpireMalaysias = useCallback(async () => {
     try {
     } catch (error) {
-      console.error('Error fetching all medicalExpireMalaysias:', error);
+      console.error('Error fetching all visaExpireMalaysias:', error);
     }
   }, []);
 
@@ -210,53 +226,51 @@ function MedicalExpireMalaysiaReportsTable(props) {
         componentRef={componentRef}
         totalPages={totalPages}
         totalElements={totalElements}
-        onFirstPage={() => handleGetMedicalExpireMalaysias(1)}
-        onPreviousPage={() => handleGetMedicalExpireMalaysias(page - 1)}
-        onNextPage={() => handleGetMedicalExpireMalaysias(page + 1)}
-        onLastPage={() => handleGetMedicalExpireMalaysias(totalPages)}
+        onFirstPage={() => handleGetVisaExpireMalaysias(1)}
+        onPreviousPage={() => handleGetVisaExpireMalaysias(page - 1)}
+        onNextPage={() => handleGetVisaExpireMalaysias(page + 1)}
+        onLastPage={() => handleGetVisaExpireMalaysias(totalPages)}
         handleExelDownload={handleExelDownload}
         handlePrint={handlePrint}
-        handleGetData={handleGetMedicalExpireMalaysias}
-        handleGetAllData={handleGetAllMedicalExpireMalaysias}
+        handleGetData={handleGetVisaExpireMalaysias}
+        handleGetAllData={handleGetAllVisaExpireMalaysias}
         tableColumns={tableColumns}
         dispatchTableColumns={dispatchTableColumns}
-        filename='MedicalExpireMalaysiaReport'
+        filename='VisaExpireMalaysiaReport'
       />
       <table
         id='table-to-xls'
         className='w-full'
         style={{ minHeight: '270px' }}>
         <tbody ref={componentRef} id='downloadPage'>
-          {modifiedMedicalExpireMalaysiaData.map(
-            (medicalExpireMalaysia, index) => (
-              <SinglePage
-                key={index}
-                classes={classes}
-                reportTitle='Medical will Expired'
-                filteredData={filteredData}
-                tableColumns={tableColumns}
-                dispatchTableColumns={dispatchTableColumns}
-                data={medicalExpireMalaysia}
-                totalColumn={initialTableColumnsState?.length}
-                inSiglePageMode={inSiglePageMode}
-                serialNumber={
-                  pagination
-                    ? page * size -
-                      size +
-                      index * medicalExpireMalaysia.data.length +
-                      1
-                    : medicalExpireMalaysia.page * medicalExpireMalaysia.size -
-                      medicalExpireMalaysia.size +
-                      1
-                }
-                setPage={setPage}
-              />
-            )
-          )}
+          {modifiedVisaExpireMalaysiaData.map((visaExpireMalaysia, index) => (
+            <SinglePage
+              key={index}
+              classes={classes}
+              reportTitle='Visa will Expire '
+              filteredData={filteredData}
+              tableColumns={tableColumns}
+              dispatchTableColumns={dispatchTableColumns}
+              data={visaExpireMalaysia}
+              totalColumn={initialTableColumnsState?.length}
+              inSiglePageMode={inSiglePageMode}
+              serialNumber={
+                pagination
+                  ? page * size -
+                    size +
+                    index * visaExpireMalaysia.data.length +
+                    1
+                  : visaExpireMalaysia.page * visaExpireMalaysia.size -
+                    visaExpireMalaysia.size +
+                    1
+              }
+              setPage={setPage}
+            />
+          ))}
         </tbody>
       </table>
     </div>
   );
 }
 
-export default MedicalExpireMalaysiaReportsTable;
+export default VisaExpireMalaysiaReportsTable;

@@ -27,7 +27,9 @@ function MedicalExpired(props) {
         className='text-center py-12 cursor-pointer'
         onClick={() => {
           dashboardData?.medical_expiry_count_next_15_days > 0 &&
-            navigate(`/apps/registeredSaudis/report/on_process`);
+            navigate(
+              `/apps/medicalExpireMalaysiaReport/medicalExpireMalaysiaReports/15`
+            );
         }}>
         <Typography className='text-72 font-semibold leading-none text-blue tracking-tighter'>
           {dashboardData?.medical_expiry_count_next_15_days || 0}

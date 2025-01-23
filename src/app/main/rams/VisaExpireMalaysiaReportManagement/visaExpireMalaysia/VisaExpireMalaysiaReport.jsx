@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import MedicalExpireMalaysiaReportsTable from './MedicalExpireMalaysiasReportsTable';
+import VisaExpireMalaysiaReportsTable from './VisaExpireMalaysiasReportsTable';
 
 /**
  * Form Validation Schema
@@ -14,14 +14,11 @@ import MedicalExpireMalaysiaReportsTable from './MedicalExpireMalaysiasReportsTa
 const schema = z.object({
   first_name: z
     .string()
-    .nonempty('You must enter a medicalExpireMalaysiasReport name')
-    .min(
-      5,
-      'The medicalExpireMalaysiasReport name must be at least 5 characters'
-    ),
+    .nonempty('You must enter a visaExpireMalaysiasReport name')
+    .min(5, 'The visaExpireMalaysiasReport name must be at least 5 characters'),
 });
 
-function MedicalExpireMalaysiasReport() {
+function VisaExpireMalaysiasReport() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
 
@@ -49,14 +46,14 @@ function MedicalExpireMalaysiasReport() {
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className='flex mx-4 font-medium'> Medical will Expired</span>
+            <span className='flex mx-4 font-medium'> Visa will Expire </span>
           </Typography>
         </motion.div>
       }
-      content={<MedicalExpireMalaysiaReportsTable />}
+      content={<VisaExpireMalaysiaReportsTable />}
       innerScroll
     />
   );
 }
 
-export default MedicalExpireMalaysiasReport;
+export default VisaExpireMalaysiasReport;
