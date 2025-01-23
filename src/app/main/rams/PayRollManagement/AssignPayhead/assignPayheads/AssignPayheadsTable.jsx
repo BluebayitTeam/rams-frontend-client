@@ -67,7 +67,7 @@ function AssignPayheadsTable(props) {
   });
   const totalData = useSelector(selectFilteredAssignPayheads(data));
   const assignPayheads = useSelector(
-    selectFilteredAssignPayheads(data?.payhead_types)
+    selectFilteredAssignPayheads(data?.payhead_assignments)
   );
   let serialNumber = 1;
 
@@ -97,7 +97,7 @@ function AssignPayheadsTable(props) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      setSelected(assignPayheads.map((n) => n.id));
+      setSelected(assignPayheads?.map((n) => n.id));
       return;
     }
 
@@ -195,7 +195,7 @@ function AssignPayheadsTable(props) {
               tableOrder={tableOrder}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={assignPayheads.length}
+              rowCount={assignPayheads?.length}
               onMenuItemClick={handleDeselect}
             />
 
